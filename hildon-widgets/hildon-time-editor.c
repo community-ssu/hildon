@@ -1,0 +1,1571 @@
+/*
+ * This file is part of hildon-libs
+ *
+ * Copyright (C) 2005 Nokia Corporation.
+ *
+ * Contact: Luc Pionchon <luc.pionchon@nokia.com>
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public License
+ * as published by the Free Software Foundation; either version 2.1 of
+ * the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
+ * 02110-1301 USA
+ *
+ */
+
+/* HILDON DOC
+ * @shortdesc: TimeEditor is a widget for setting, getting and showing a
+ * time.
+ * @longdesc: The Time Editor widget is used to enter the system time
+ * (hours and minutes) in the Date/Time system plugin. It is a composite
+ * widget consisting of two GtkEntry widgets that are placed next to each
+ * other. The leftmost GtkEntry is used to enter the hours, and it accepts
+ * the values 0--23, while the rightmost GtkEntry accepts values 0--59
+ * and is used to set the minutes. Between the two GtkEntries there
+ * is a label displaying a colon.
+ * </para><para>
+ * From the usability point of view, the GtkSpinbutton widget would
+ * have been a better choice than the GtkEntry widgets, but it uses
+ * floating point operations and is thus not acceptable in this
+ * project.
+ *
+ * @seealso: #HildonDateEditor
+ */
+
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
+
+#include <pango/pango.h>
+#include <gtk/gtkbox.h>
+#include <gtk/gtkentry.h>
+#include <gtk/gtk.h>
+#include <gdk/gdkkeysyms.h>
+#include <gtk/gtkwidget.h>
+
+#include <string.h>
+#include <time.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <ctype.h>
+#include <langinfo.h>
+#include <libintl.h>
+
+#include <hildon-widgets/hildon-defines.h>
+#include <hildon-widgets/hildon-time-editor.h>
+#include <hildon-widgets/hildon-time-picker.h>
+#include <hildon-widgets/gtk-infoprint.h>
+#include "hildon-composite-widget.h"
+
+#define _(String) dgettext(PACKAGE, String)
+
+/* empty space on left and right side of a GtkEntry. Space needed
+is 12, we add 4 extra pixels so that the arabic locale works
+correctly. (With 12 only one digit would be shown in the entries).
+*/
+#define TIME_EDITOR_LBORDER         6
+#define TIME_EDITOR_RBORDER         6
+#define TIME_EDITOR_HEIGHT         30
+#define TIME_EDITOR_CLOCK_BORDER    6
+#define ICON_WIDTH                 26
+#define ICON_HEIGHT                26
+#define ICON_NAME                  "qgn_widg_timedit"
+#define ICON_SIZE                  "timepicker-size"
+#define HILDON_TIME_EDITOR_GET_PRIVATE(obj) \
+    (G_TYPE_INSTANCE_GET_PRIVATE ((obj), \
+     HILDON_TYPE_TIME_EDITOR, HildonTimeEditorPrivate));
+#define MIN_DURATION 0
+#define MAX_DURATION (3600 * 99) + (60 * 59) + 59
+
+static GtkContainerClass *parent_class;
+
+typedef struct _HildonTimeEditorPrivate HildonTimeEditorPrivate;
+
+static void
+hildon_time_editor_class_init(HildonTimeEditorClass * editor_class);
+
+static void hildon_time_editor_init(HildonTimeEditor * editor);
+
+static void hildon_time_editor_finalize(GObject * obj_self);
+
+static gboolean
+hildon_time_editor_entry_focusout(GtkWidget * widget,
+                                  GdkEventFocus * event, gpointer data);
+static void hildon_time_editor_entry_activate(GtkWidget * widget,
+                                              gpointer data);
+
+static void
+hildon_time_editor_entry_activate(GtkWidget * widget, gpointer data);
+
+static gboolean
+hildon_time_editor_mnemonic_activate(GtkWidget * widget,
+                                     gboolean group_cycling);
+
+static gboolean
+hildon_time_editor_ampm_clicked(GtkWidget * widget, GdkEventButton * event,
+                                gpointer data);
+static gboolean
+hildon_time_editor_icon_clicked(GtkWidget * widget, gpointer data);
+
+static gboolean
+hildon_time_editor_entry_clicked(GtkWidget * widget,
+                                 GdkEventButton * event, gpointer data);
+
+static void
+hildon_time_editor_size_request(GtkWidget * widget,
+                                GtkRequisition * requisition);
+
+static void
+hildon_time_editor_size_allocate(GtkWidget * widget,
+                                 GtkAllocation * allocation);
+static void
+hildon_time_editor_forall(GtkContainer * container,
+                          gboolean include_internals, GtkCallback callback,
+                          gpointer callback_data);
+static void hildon_time_editor_destroy(GtkObject * self);
+
+static gboolean
+hildon_time_editor_entry_keypress(GtkWidget * widget, GdkEventKey * event,
+                                  gpointer data);
+static void hildon_time_editor_add_style(void);
+
+static void
+set_widget_allocation(GtkWidget * widget, GtkAllocation * alloc,
+                      GtkAllocation * allocation);
+static guint
+hildon_time_editor_check_duration_validity(HildonTimeEditor * editor);
+
+static void
+hildon_time_editor_duration_handle_error(HildonTimeEditor * editor,
+                                         guint type);
+
+static gboolean hildon_time_editor_check_locale(HildonTimeEditor * editor);
+
+static
+void hildon_time_editor_tap_and_hold_setup(GtkWidget * widget,
+                                           GtkWidget * menu,
+                                           GtkCallback func,
+                                           GtkWidgetTapAndHoldFlags flags);
+
+enum {
+    DURATION_MIN_EXCEED,
+    DURATION_MAX_EXCEED,
+    DURATION_OK
+};
+
+struct _HildonTimeEditorPrivate {
+    gchar h_time[4];    /* These hold current */
+    gchar m_time[4];    /* time */
+    gchar s_time[4];
+    gchar *am_symbol;
+    gchar *pm_symbol;
+
+    GtkWidget *eventbox;        /* hold entries */
+    GtkWidget *iconbutton;      /* button for icon */
+
+    GtkWidget *h_entry;
+    GtkWidget *m_entry;
+    GtkWidget *s_entry;
+    GtkWidget *label;   /* between h and m */
+    GtkWidget *label2;  /* between m and s */
+    GtkWidget *ampm;    /* label for showing am or pm */
+    GtkWidget *icon;    /* label for showing am or pm */
+    GtkWidget *frame;   /* frame around the entries */
+
+    gboolean duration_mode;     /* In HildonDurationEditor mode */
+    gboolean show_s;    /* show seconds */
+    gboolean ampm_pos_after;    /* is the am/pm shown after others */
+    gboolean clock_24h; /* whether to show a 24h clock */
+    gboolean am;        /* TRUE == showing am, FALSE == pm */
+    gboolean valid_value; /* If entry has an valid value */
+
+    /* Duration editor ranges */
+    guint duration_min;
+    guint duration_max;
+};
+
+GType hildon_time_editor_get_type(void)
+{
+    static GType editor_type = 0;
+
+    if (!editor_type) {
+        static const GTypeInfo editor_info = {
+            sizeof(HildonTimeEditorClass),
+            NULL,       /* base_init */
+            NULL,       /* base_finalize */
+            (GClassInitFunc) hildon_time_editor_class_init,
+            NULL,       /* class_finalize */
+            NULL,       /* class_data */
+            sizeof(HildonTimeEditor),
+            0,  /* n_preallocs */
+            (GInstanceInitFunc) hildon_time_editor_init,
+        };
+        editor_type = g_type_register_static(GTK_TYPE_CONTAINER,
+                                             "HildonTimeEditor",
+                                             &editor_info, 0);
+    }
+    return editor_type;
+}
+
+static void hildon_time_editor_forall(GtkContainer * container,
+                                      gboolean include_internals,
+                                      GtkCallback callback,
+                                      gpointer callback_data)
+{
+    HildonTimeEditor *editor;
+    HildonTimeEditorPrivate *priv;
+
+    editor = HILDON_TIME_EDITOR(container);
+    priv = HILDON_TIME_EDITOR_GET_PRIVATE(editor);
+
+    g_return_if_fail(container);
+    g_return_if_fail(callback);
+
+    if (!include_internals)
+        return;
+
+
+    /* widget that are always shown */
+    (*callback) (priv->h_entry, callback_data);
+    (*callback) (priv->m_entry, callback_data);
+    (*callback) (priv->label, callback_data);
+    (*callback) (priv->iconbutton, callback_data);
+    (*callback) (priv->frame, callback_data);
+    (*callback) (priv->label2, callback_data);
+    (*callback) (priv->s_entry, callback_data);
+    (*callback) (priv->eventbox, callback_data);
+}
+
+static void hildon_time_editor_destroy(GtkObject * self)
+{
+    HildonTimeEditorPrivate *priv;
+
+    priv = HILDON_TIME_EDITOR_GET_PRIVATE(self);
+
+    if (priv->h_entry) {
+        gtk_widget_unparent(priv->h_entry);
+        priv->h_entry = NULL;
+    }
+    if (priv->m_entry) {
+        gtk_widget_unparent(priv->m_entry);
+        priv->m_entry = NULL;
+    }
+    if (priv->label) {
+        gtk_widget_unparent(priv->label);
+        priv->label = NULL;
+    }
+    if (priv->iconbutton) {
+        gtk_widget_unparent(priv->iconbutton);
+        priv->iconbutton = NULL;
+    }
+    if (priv->frame) {
+        gtk_widget_unparent(priv->frame);
+        priv->frame = NULL;
+    }
+    if (priv->eventbox) {
+        gtk_widget_unparent(priv->eventbox);
+        priv->eventbox = NULL;
+        priv->ampm = NULL;
+    }
+    if (priv->label2) {
+        gtk_widget_unparent(priv->label2);
+        priv->label2 = NULL;
+    }
+    if (priv->s_entry) {
+        gtk_widget_unparent(priv->s_entry);
+        priv->s_entry = NULL;
+    }
+
+    if (GTK_OBJECT_CLASS(parent_class)->destroy)
+        GTK_OBJECT_CLASS(parent_class)->destroy(self);
+
+}
+
+static void
+hildon_time_editor_class_init(HildonTimeEditorClass * editor_class)
+{
+    GObjectClass *object_class = G_OBJECT_CLASS(editor_class);
+    GtkWidgetClass *widget_class = GTK_WIDGET_CLASS(editor_class);
+    GtkContainerClass *container_class = GTK_CONTAINER_CLASS(editor_class);
+
+    parent_class = g_type_class_peek_parent(editor_class);
+
+    g_type_class_add_private(editor_class,
+                             sizeof(HildonTimeEditorPrivate));
+
+    widget_class->mnemonic_activate = hildon_time_editor_mnemonic_activate;
+    widget_class->size_request = hildon_time_editor_size_request;
+    widget_class->size_allocate = hildon_time_editor_size_allocate;
+    widget_class->tap_and_hold_setup =
+        hildon_time_editor_tap_and_hold_setup;
+    widget_class->focus = hildon_composite_widget_focus;
+
+    container_class->forall = hildon_time_editor_forall;
+    GTK_OBJECT_CLASS(editor_class)->destroy = hildon_time_editor_destroy;
+
+    object_class->finalize = hildon_time_editor_finalize;
+}
+
+static
+void hildon_time_editor_tap_and_hold_setup(GtkWidget * widget,
+                                           GtkWidget * menu,
+                                           GtkCallback func,
+                                           GtkWidgetTapAndHoldFlags flags)
+{
+    HildonTimeEditorPrivate *priv = HILDON_TIME_EDITOR_GET_PRIVATE(widget);
+
+    gtk_widget_tap_and_hold_setup(priv->h_entry, menu, func,
+                                  GTK_TAP_AND_HOLD_NO_SIGNALS);
+    gtk_widget_tap_and_hold_setup(priv->m_entry, menu, func,
+                                  GTK_TAP_AND_HOLD_NO_SIGNALS);
+    gtk_widget_tap_and_hold_setup(priv->s_entry, menu, func,
+                                  GTK_TAP_AND_HOLD_NO_SIGNALS);
+    gtk_widget_tap_and_hold_setup(priv->eventbox, menu, func,
+                                  GTK_TAP_AND_HOLD_NO_SIGNALS);
+    gtk_widget_tap_and_hold_setup(priv->iconbutton, menu, func,
+                                  GTK_TAP_AND_HOLD_NONE);
+}
+
+static void hildon_time_editor_init(HildonTimeEditor * editor)
+{
+    HildonTimeEditorPrivate *priv;
+    gchar hours[3] = "01";
+    gchar minutes[3] = "00";
+    gchar seconds[3] = "00";
+
+    priv = HILDON_TIME_EDITOR_GET_PRIVATE(editor);
+
+    gtk_widget_push_composite_child();
+    
+    priv->show_s = FALSE;
+    priv->ampm_pos_after = TRUE;
+    priv->clock_24h = TRUE;
+    priv->duration_mode = FALSE;
+    priv->iconbutton = gtk_button_new();
+    priv->h_entry = gtk_entry_new();
+    priv->m_entry = gtk_entry_new();
+    priv->s_entry = gtk_entry_new();
+    priv->ampm = gtk_label_new(NULL);
+    priv->label = gtk_label_new(":");
+    priv->label2 = gtk_label_new(":");
+    priv->icon = gtk_image_new_from_icon_name(ICON_NAME, HILDON_ICON_SIZE_26);
+    priv->frame = gtk_frame_new(NULL);
+    priv->eventbox = gtk_event_box_new();
+    priv->valid_value = TRUE;
+    
+    GTK_WIDGET_SET_FLAGS(editor, GTK_NO_WINDOW);
+    GTK_WIDGET_UNSET_FLAGS(priv->iconbutton, GTK_CAN_FOCUS);
+    
+    gtk_event_box_set_visible_window(GTK_EVENT_BOX(priv->eventbox), FALSE);
+
+    gtk_container_add(GTK_CONTAINER(priv->iconbutton), priv->icon);
+    gtk_container_add(GTK_CONTAINER(priv->eventbox), priv->ampm);
+
+    gtk_entry_set_has_frame(GTK_ENTRY(priv->h_entry), FALSE);
+    gtk_entry_set_has_frame(GTK_ENTRY(priv->m_entry), FALSE);
+    gtk_entry_set_has_frame(GTK_ENTRY(priv->s_entry), FALSE);
+
+    /* connect the activate signal to a function. */
+    g_signal_connect(G_OBJECT(priv->h_entry), "activate",
+                     G_CALLBACK(hildon_time_editor_entry_activate),
+                     editor);
+    g_signal_connect(G_OBJECT(priv->m_entry), "activate",
+                     G_CALLBACK(hildon_time_editor_entry_activate),
+                     editor);
+    g_signal_connect(G_OBJECT(priv->s_entry), "activate",
+                     G_CALLBACK(hildon_time_editor_entry_activate),
+                     editor);
+
+    /* clicked signal for am/pm label */
+    g_signal_connect(G_OBJECT(priv->eventbox), "button_press_event",
+                     G_CALLBACK(hildon_time_editor_ampm_clicked), editor);
+
+    /* clicked signal for icon */
+    g_signal_connect(G_OBJECT(priv->iconbutton), "clicked",
+                     G_CALLBACK(hildon_time_editor_icon_clicked), editor);
+
+    /* clicked signal for hour entry */
+    g_signal_connect(G_OBJECT(priv->h_entry), "button_release_event",
+                     G_CALLBACK(hildon_time_editor_entry_clicked), editor);
+
+    /* clicked signal for minute entry */
+    g_signal_connect(G_OBJECT(priv->m_entry), "button_release_event",
+                     G_CALLBACK(hildon_time_editor_entry_clicked), editor);
+
+    /* clicked signal for second entry */
+    g_signal_connect(G_OBJECT(priv->s_entry), "button_release_event",
+                     G_CALLBACK(hildon_time_editor_entry_clicked), editor);
+
+    /* focus out events */
+    g_signal_connect(G_OBJECT(priv->h_entry), "focus-out-event",
+                     G_CALLBACK(hildon_time_editor_entry_focusout),
+                     editor);
+    g_signal_connect(G_OBJECT(priv->m_entry), "focus-out-event",
+                     G_CALLBACK(hildon_time_editor_entry_focusout),
+                     editor);
+    g_signal_connect(G_OBJECT(priv->s_entry), "focus-out-event",
+                     G_CALLBACK(hildon_time_editor_entry_focusout),
+                     editor);
+
+    /* key press events */
+    g_signal_connect(G_OBJECT(priv->h_entry), "key-press-event",
+                     G_CALLBACK(hildon_time_editor_entry_keypress),
+                     editor);
+    g_signal_connect(G_OBJECT(priv->m_entry), "key-press-event",
+                     G_CALLBACK(hildon_time_editor_entry_keypress),
+                     editor);
+    g_signal_connect(G_OBJECT(priv->s_entry), "key-press-event",
+                     G_CALLBACK(hildon_time_editor_entry_keypress),
+                     editor);
+
+    gtk_widget_set_parent(priv->iconbutton, GTK_WIDGET(editor));
+    gtk_widget_set_parent(priv->label, GTK_WIDGET(editor));
+
+    gtk_widget_set_parent(priv->label2, GTK_WIDGET(editor));
+    gtk_widget_set_parent(priv->s_entry, GTK_WIDGET(editor));
+    gtk_widget_set_parent(priv->eventbox, GTK_WIDGET(editor));
+    gtk_widget_set_parent(priv->m_entry, GTK_WIDGET(editor));
+    gtk_widget_set_parent(priv->h_entry, GTK_WIDGET(editor));
+
+    gtk_widget_show(priv->h_entry);
+    gtk_widget_show(priv->m_entry);
+    gtk_widget_show_all(priv->iconbutton);
+    gtk_widget_show(priv->label);
+
+    gtk_widget_set_parent(priv->frame, GTK_WIDGET(editor));
+    gtk_widget_show_all(priv->frame);
+
+    /* Check if we are in am/pm time locale */
+    if (!hildon_time_editor_check_locale(editor)) {
+        priv->clock_24h = FALSE;
+        gtk_widget_show_all(priv->eventbox);
+    }
+
+    {   /* get current time */
+        time_t tm;
+        struct tm *stm;
+
+        tm = time(NULL);
+        stm = localtime(&tm);
+
+        if (stm) {
+            if (!priv->clock_24h) {
+                /* Clock is showed in 24h format If hour is 12 we can be
+                   either in am or pm mode */
+                if (stm->tm_hour > 12) {
+                    priv->am = FALSE;
+                    sprintf(hours, "%2d", stm->tm_hour - 12);
+                } else if (stm->tm_hour < 12) {
+                    priv->am = TRUE;
+                    sprintf(hours, "%2d", stm->tm_hour);
+                } else if (stm->tm_hour == 12) {
+                    priv->am = FALSE;
+                    sprintf(hours, "%2d", stm->tm_hour);
+                }
+            } else
+                sprintf(hours, "%02d", stm->tm_hour);
+            sprintf(minutes, "%02d", stm->tm_min);
+            sprintf(seconds, "%02d", stm->tm_sec);
+        }
+    }
+
+    /* set current time (am/pm) */
+    gtk_label_set_label(GTK_LABEL(priv->ampm), priv->am ? priv->am_symbol :
+                        priv->pm_symbol);
+
+    /* Read time values to our internal struct */
+    g_snprintf(priv->h_time, 4, "%s", hours);
+    g_snprintf(priv->m_time, 4, "%s", minutes);
+    g_snprintf(priv->s_time, 4, "%s", seconds);
+
+    gtk_entry_set_text(GTK_ENTRY(priv->h_entry), hours);
+    gtk_entry_set_text(GTK_ENTRY(priv->m_entry), minutes);
+    gtk_entry_set_text(GTK_ENTRY(priv->s_entry), seconds);
+
+    gtk_entry_set_max_length(GTK_ENTRY(priv->h_entry), 2);
+    gtk_entry_set_width_chars(GTK_ENTRY(priv->h_entry), 2);
+    gtk_entry_set_max_length(GTK_ENTRY(priv->m_entry), 2);
+    gtk_entry_set_width_chars(GTK_ENTRY(priv->m_entry), 2);
+    gtk_entry_set_max_length(GTK_ENTRY(priv->s_entry), 2);
+    gtk_entry_set_width_chars(GTK_ENTRY(priv->s_entry), 2);
+
+    hildon_time_editor_add_style();
+    gtk_widget_set_name(GTK_WIDGET(priv->iconbutton),
+                        "hildon-time-editor-icon");
+    
+    gtk_widget_pop_composite_child();
+}
+
+static gboolean
+hildon_time_editor_mnemonic_activate( GtkWidget *widget,
+                                      gboolean group_cycling)
+{
+  HildonTimeEditorPrivate *priv = HILDON_TIME_EDITOR_GET_PRIVATE(widget);
+  gtk_widget_grab_focus( priv->h_entry );
+  gtk_editable_select_region(GTK_EDITABLE(priv->h_entry), 0, 2);
+  return TRUE;
+}
+
+/**
+ * hildon_time_editor_new:
+ *
+ * This function creates a new time editor. 
+ *
+ * Return value: pointer to a new #HildonTimeEditor widget.
+ **/
+
+GtkWidget *hildon_time_editor_new(void)
+{
+    return GTK_WIDGET(g_object_new(HILDON_TYPE_TIME_EDITOR, NULL));
+}
+
+static void hildon_time_editor_finalize(GObject * obj_self)
+{
+    HildonTimeEditorPrivate *priv = HILDON_TIME_EDITOR_GET_PRIVATE(obj_self);
+
+    if (priv->am_symbol)
+        g_free(priv->am_symbol);
+    if (priv->pm_symbol)
+        g_free(priv->pm_symbol);
+
+    if (G_OBJECT_CLASS(parent_class)->finalize)
+        G_OBJECT_CLASS(parent_class)->finalize(obj_self);
+}
+
+static void hildon_time_editor_add_style(void)
+{
+    gtk_rc_parse_string("  style \"hildon-time-editor-icon\" {"
+                        "    GtkButton::default_border = { 0, 0, 0, 0 }"
+                        "    xthickness = 0"
+                        "    ythickness = 0"
+                        "    engine \"pixmap\" {"
+                        "      image {"
+                        "        function = BOX"
+                        "      }"
+                        "    }"
+                        "  }"
+                        "  widget \"*.hildon-time-editor-icon\""
+                        "    style \"hildon-time-editor-icon\"");
+}
+
+/**
+ * hildon_time_editor_set_time:
+ * @editor: the @HildonTimeEditor widget.
+ * @hours: hours
+ * @minutes: minutes
+ * @seconds: seconds
+ *
+ * This function sets the time on an existing time editor. If the
+ * time specified by the arguments is invalid, the function returns
+ * without doing anything else. 
+ **/
+
+void hildon_time_editor_set_time(HildonTimeEditor * editor, guint hours,
+                                 guint minutes, guint seconds)
+{
+    HildonTimeEditorPrivate *priv;
+    gchar h_time[3];
+    gchar m_time[3];
+    gchar s_time[3];
+
+    g_return_if_fail(time);
+    g_return_if_fail(HILDON_IS_TIME_EDITOR(editor));
+
+    priv = HILDON_TIME_EDITOR_GET_PRIVATE(editor);
+
+    if ((priv->duration_mode && hours > 99) ||
+        (!priv->duration_mode && hours > 23) ||
+         minutes > 59 || seconds > 59)
+        return;
+
+    if (priv->clock_24h || priv->duration_mode)
+        sprintf(h_time, "%02u", hours);
+    else {
+        /* we are showing 12h clock and its after noon */
+        if (hours > 12) {
+            hours -= 12;
+            priv->am = FALSE;
+            gtk_label_set_text(GTK_LABEL(priv->ampm), priv->pm_symbol);
+        }
+        /* before noon */
+        else if (hours < 12) {
+            if (hours == 0)
+                hours = 12;
+            priv->am = TRUE;
+            gtk_label_set_text(GTK_LABEL(priv->ampm), priv->am_symbol);
+        } else if (hours == 12) {
+            priv->am = FALSE;
+            gtk_label_set_text(GTK_LABEL(priv->ampm), priv->pm_symbol);
+        }
+
+
+        sprintf(h_time, "%2u", hours);
+    }
+    sprintf(m_time, "%02u", minutes);
+    sprintf(s_time, "%02u", seconds);
+
+    gtk_entry_set_text(GTK_ENTRY(priv->h_entry), h_time);
+    gtk_entry_set_text(GTK_ENTRY(priv->m_entry), m_time);
+    gtk_entry_set_text(GTK_ENTRY(priv->s_entry), s_time);
+
+    /* If in duration mode check time validity */
+    if (priv->duration_mode) {
+        guint response =
+            hildon_time_editor_check_duration_validity(editor);
+        if (response != DURATION_OK)
+            hildon_time_editor_duration_handle_error(editor, response);
+    }
+}
+
+/**
+ * hildon_time_editor_get_time:
+ * @editor: the @HildonTimeEditor widget.
+ * @hours: hours
+ * @minutes: minutes
+ * @seconds: seconds
+ *
+ * Gets the time of the @HildonTimeEditor widget. 
+ **/
+
+void hildon_time_editor_get_time(HildonTimeEditor * editor,
+                                 guint * hours,
+                                 guint * minutes, guint * seconds)
+{
+    HildonTimeEditorPrivate *priv;
+
+    g_return_if_fail(editor);
+    g_return_if_fail(HILDON_IS_TIME_EDITOR(editor));
+
+    priv = HILDON_TIME_EDITOR_GET_PRIVATE(editor);
+
+    *hours = atoi(GTK_ENTRY(priv->h_entry)->text);
+
+    if( !priv->duration_mode )
+    {
+	/* if using 12h clock and its after noon, add 12h hours to get 24h
+	   clock */
+	if (!priv->clock_24h && !priv->am) {
+	    if (*hours != 12)
+		*hours += 12;
+	}
+	if (*hours == 12 && priv->am)
+	    *hours = 0;
+    }
+
+    *minutes = atoi(GTK_ENTRY(priv->m_entry)->text);
+    *seconds = atoi(GTK_ENTRY(priv->s_entry)->text);
+}
+
+/**
+ * hildon_time_editor_set_duration_range:
+ * @editor: the @HildonTimeEditor widget.
+ * @min_seconds: minimum allowed time in seconds
+ * @max_seconds: maximum allowed time in seconds
+ *
+ * Sets the duration editor time range of the @HildonTimeEditor widget.
+ **/
+
+void hildon_time_editor_set_duration_range(HildonTimeEditor * editor,
+                                           guint min_seconds,
+                                           guint max_seconds)
+{
+    HildonTimeEditorPrivate *priv;
+    guint hours, minutes, seconds;
+
+    g_return_if_fail(editor);
+    g_return_if_fail(HILDON_IS_TIME_EDITOR(editor));
+
+    g_return_if_fail(min_seconds >= MIN_DURATION);
+    g_return_if_fail(max_seconds <= MAX_DURATION);
+    g_return_if_fail(min_seconds < max_seconds);
+
+    priv = HILDON_TIME_EDITOR_GET_PRIVATE(editor);
+
+
+    if( !priv->duration_mode )
+      return;
+
+    priv->duration_min = min_seconds;
+    priv->duration_max = max_seconds;
+
+    hours = (min_seconds / 3600);
+    seconds = min_seconds - (hours * 3600);
+    minutes = (seconds / 60);
+    seconds = seconds - (minutes * 60);
+
+    /* Set minimum allowed value for duration editor */
+    hildon_time_editor_set_time(editor, hours, minutes, seconds);
+}
+
+/**
+ * hildon_time_editor_get_duration_range:
+ * @editor: the @HildonTimeEditor widget.
+ * @min_seconds: pointer to guint
+ * @max_seconds: pointer to guint
+ *
+ * Gets the duration editor time range of the @HildonTimeEditor widget.
+ **/
+
+void hildon_time_editor_get_duration_range(HildonTimeEditor * editor,
+                                           guint * min_seconds,
+                                           guint * max_seconds)
+{
+    HildonTimeEditorPrivate *priv;
+
+    g_return_if_fail(editor);
+    g_return_if_fail(HILDON_IS_TIME_EDITOR(editor));
+
+    priv = HILDON_TIME_EDITOR_GET_PRIVATE(editor);
+
+    *min_seconds = priv->duration_min;
+    *max_seconds = priv->duration_max;
+}
+
+static gboolean hildon_time_editor_check_locale(HildonTimeEditor * editor)
+{
+    HildonTimeEditorPrivate *priv;
+    gchar *t_fm;
+
+    priv = HILDON_TIME_EDITOR_GET_PRIVATE(editor);
+
+    priv->am_symbol = g_strdup(nl_langinfo(AM_STR));
+    priv->pm_symbol = g_strdup(nl_langinfo(PM_STR));
+
+    if (!strcmp(priv->am_symbol, ""))
+        return TRUE;
+    else {
+        t_fm = g_strdup(nl_langinfo(T_FMT_AMPM));
+        /* Check what format am/pm time should be */
+        if (!strncmp(t_fm, "%p", 2))
+            priv->ampm_pos_after = FALSE;
+        priv->am_symbol =
+            g_ascii_strdown((const gchar *) priv->am_symbol, -1);
+        priv->pm_symbol =
+            g_ascii_strdown((const gchar *) priv->pm_symbol, -1);
+	g_free(t_fm);
+        return FALSE;
+    }
+}
+
+static
+guint hildon_time_editor_check_duration_validity(HildonTimeEditor * editor)
+{
+    HildonTimeEditorPrivate *priv;
+    guint seconds;
+
+    priv = HILDON_TIME_EDITOR_GET_PRIVATE(editor);
+
+    /* Get current time */
+    seconds =
+        3600 * (guint) atoi(gtk_entry_get_text(GTK_ENTRY(priv->h_entry)))
+        + 60 * (guint) atoi(gtk_entry_get_text(GTK_ENTRY(priv->m_entry)))
+        + (guint) atoi(gtk_entry_get_text(GTK_ENTRY(priv->s_entry)));
+
+    if (seconds > priv->duration_max)
+        return DURATION_MAX_EXCEED;
+    else if (seconds < priv->duration_min)
+        return DURATION_MIN_EXCEED;
+    else
+        return DURATION_OK;
+}
+
+static gboolean hildon_time_editor_entry_focusout(GtkWidget * widget,
+                                                  GdkEventFocus * event,
+                                                  gpointer data)
+{
+    HildonTimeEditor *editor;
+    HildonTimeEditorPrivate *priv;
+
+    editor = HILDON_TIME_EDITOR(data);
+    priv = HILDON_TIME_EDITOR_GET_PRIVATE(editor);
+
+    /* If entry is deleted we should restore previous value for it and
+       infoprint is showed */
+    if (!strcmp(GTK_ENTRY(widget)->text, "")) {
+        if (widget == priv->h_entry) {
+            if (!priv->duration_mode && priv->clock_24h) {
+                gtk_infoprintf(GTK_WINDOW
+                              (gtk_widget_get_ancestor
+                               (widget, GTK_TYPE_WINDOW)),
+                              _("Ckct_ib_set_a_value_within_range"), 0, 23);
+            } else if (!priv->duration_mode && !priv->clock_24h) {
+                gtk_infoprintf(GTK_WINDOW
+                              (gtk_widget_get_ancestor
+                               (widget, GTK_TYPE_WINDOW)),
+                              _("Ckct_ib_set_a_value_within_range"), 1, 12); 
+            } else if (priv->duration_mode) {
+                gtk_infoprintf(GTK_WINDOW
+                              (gtk_widget_get_ancestor
+                               (widget, GTK_TYPE_WINDOW)),
+                              _("Ckct_ib_set_a_value_within_range"), 0, 99);
+            }
+            gtk_entry_set_text(GTK_ENTRY(priv->h_entry), priv->h_time);
+            gtk_widget_grab_focus (widget);
+            gtk_editable_select_region(GTK_EDITABLE(widget), 0, 2);
+            priv->valid_value = FALSE;
+        } else if (widget == priv->m_entry) {
+            gtk_infoprintf(GTK_WINDOW
+                          (gtk_widget_get_ancestor
+                           (widget, GTK_TYPE_WINDOW)),
+                          _("Ckct_ib_set_a_value_within_range"), 0, 59);
+            gtk_entry_set_text(GTK_ENTRY(priv->m_entry), priv->m_time);
+            gtk_widget_grab_focus (widget);
+            gtk_editable_select_region(GTK_EDITABLE(widget), 0, 2);
+            priv->valid_value = FALSE;
+        } else {
+            gtk_infoprintf(GTK_WINDOW
+                          (gtk_widget_get_ancestor
+                           (widget, GTK_TYPE_WINDOW)),
+                          _("Ckct_ib_set_a_value_within_range"), 0, 59);
+            gtk_entry_set_text(GTK_ENTRY(priv->s_entry), priv->s_time);
+            gtk_widget_grab_focus (widget);
+            gtk_editable_select_region(GTK_EDITABLE(widget), 0, 2);
+            priv->valid_value = FALSE;
+        }
+    }
+
+    hildon_time_editor_entry_activate(widget, data);
+
+    /* FIXME - Next part is a kludge. This can only be fixed by writing
+     *         some parts of the widget again.
+     *         Widget has went trough many changes in time, so it would be
+     *         smart to re-write the whole widget and remove this kind of
+     *         kludges at the same time.
+     */
+    if( GTK_WINDOW(gtk_widget_get_ancestor(widget,
+        GTK_TYPE_WINDOW))->focus_widget == widget )
+    {
+      gtk_editable_select_region( GTK_EDITABLE(widget), 0, 2);
+      return TRUE; /*This has to be here! , I hope it wont break any other
+                     implementations runned after this*/
+    }
+    return FALSE;
+}
+
+static void hildon_time_editor_entry_activate(GtkWidget * widget,
+                                              gpointer data)
+{
+
+    HildonTimeEditor *editor;
+    HildonTimeEditorPrivate *priv;
+    gint val;
+    gchar str[3];
+
+    g_return_if_fail(widget);
+    g_return_if_fail(data);
+
+    editor = HILDON_TIME_EDITOR(data);
+    priv = HILDON_TIME_EDITOR_GET_PRIVATE(editor);
+
+    /* check value of the entry */
+    val = atoi(GTK_ENTRY(widget)->text);
+
+    /* check limit of the hour entry */
+    if (widget == priv->h_entry) {
+        /* 24h clock or in duration editor mode */
+        if (priv->clock_24h || priv->duration_mode) {
+            /* too big */
+            if (!priv->duration_mode && val > 23) {
+                gtk_infoprintf(GTK_WINDOW
+                              (gtk_widget_get_ancestor
+                               (widget, GTK_TYPE_WINDOW)),
+                              _("Ckct_ib_maximum_value"), 23);
+                gtk_entry_set_text(GTK_ENTRY(widget), "23");
+                gtk_widget_grab_focus(widget);
+                gtk_editable_select_region(GTK_EDITABLE(widget), 0, 2);
+                priv->valid_value = FALSE;
+            }
+            /* ok, pad with 0 */
+            /* too big */
+            else if (priv->duration_mode && val > 99) {
+                gtk_infoprintf(GTK_WINDOW
+                              (gtk_widget_get_ancestor
+                               (widget, GTK_TYPE_WINDOW)),
+                              _("Ckct_ib_maximum_value"), 99);
+                gtk_entry_set_text(GTK_ENTRY(widget), "99");
+                gtk_widget_grab_focus(widget);
+                gtk_editable_select_region(GTK_EDITABLE(widget), 0, 2);
+                priv->valid_value = FALSE;
+            } else {
+                sprintf(str, "%02d", val);
+                gtk_entry_set_text(GTK_ENTRY(widget), str);
+            }
+        }
+        /* 12h clock */
+        else {
+            /* too big */
+            if (val > 12) {
+                gtk_infoprintf(GTK_WINDOW
+                              (gtk_widget_get_ancestor
+                               (widget, GTK_TYPE_WINDOW)),
+                              _("Ckct_ib_maximum_value"), 12);
+                gtk_entry_set_text(GTK_ENTRY(widget), "12");
+                gtk_widget_grab_focus(widget);
+                gtk_editable_select_region(GTK_EDITABLE(widget), 0, 2);
+                priv->valid_value = FALSE;
+            }
+            /* ok, no padding */
+            else if (val < 1) {
+                gtk_infoprintf(GTK_WINDOW
+                              (gtk_widget_get_ancestor
+                               (widget, GTK_TYPE_WINDOW)),
+                              _("Ckct_ib_minimum_value"), 1);
+                gtk_entry_set_text(GTK_ENTRY(widget), "01");
+                gtk_widget_grab_focus(widget);
+                gtk_editable_select_region(GTK_EDITABLE(widget), 0, 2);
+                priv->valid_value = FALSE;
+            } else {
+                sprintf(str, "%02d", val);
+                gtk_entry_set_text(GTK_ENTRY(widget), str);
+            }
+        }
+
+    }
+    /* check limit of the minute entries */
+    else if (widget == priv->m_entry) {
+        /* too big */
+        if (val > 59) {
+            gtk_infoprintf(GTK_WINDOW
+                          (gtk_widget_get_ancestor
+                           (widget, GTK_TYPE_WINDOW)),
+                          _("Ckct_ib_maximum_value"), 59);
+            gtk_entry_set_text(GTK_ENTRY(widget), "59");
+            gtk_widget_grab_focus(widget);
+            gtk_editable_select_region(GTK_EDITABLE(widget), 0, 2);
+            priv->valid_value = FALSE;
+        }
+        /* ok, pad with 0 */
+        else {
+            sprintf(str, "%02d", val);
+            gtk_entry_set_text(GTK_ENTRY(widget), str);
+        }
+    }
+    /* check limit of the seconds entries */
+    else if (widget == priv->s_entry) {
+        /* too big */
+        if (val > 59) {
+            gtk_infoprintf(GTK_WINDOW
+                          (gtk_widget_get_ancestor
+                           (widget, GTK_TYPE_WINDOW)),
+                          _("Ckct_ib_maximum_value"), 59);
+            gtk_entry_set_text(GTK_ENTRY(widget), "59");
+            gtk_widget_grab_focus(widget);
+            gtk_editable_select_region(GTK_EDITABLE(widget), 0, 2);
+            priv->valid_value = FALSE;
+        }
+        /* ok, pad with 0 */
+        else {
+            sprintf(str, "%02d", val);
+            gtk_entry_set_text(GTK_ENTRY(widget), str);
+        }
+    }
+    /* Handle duration mode minimum and maximum range */
+    if (priv->duration_mode) {
+        guint response;
+
+        response = hildon_time_editor_check_duration_validity(editor);
+        if (response != DURATION_OK)
+        {
+            hildon_time_editor_duration_handle_error(editor, response);
+            /* We have to grab focus back, as the specification says. */
+            if( GTK_IS_EDITABLE(widget) )
+              gtk_widget_grab_focus( widget );
+        }
+    }
+}
+
+static void
+hildon_time_editor_duration_handle_error(HildonTimeEditor * editor,
+                                         guint type)
+{
+    HildonTimeEditorPrivate *priv;
+    guint hours, minutes, seconds, totalsecs;
+    gchar str[256], t_str[3];
+
+    priv = HILDON_TIME_EDITOR_GET_PRIVATE(editor);
+
+    if (type == DURATION_MAX_EXCEED)
+        totalsecs = priv->duration_max;
+    else
+        totalsecs = priv->duration_min;
+
+    hours = (totalsecs / 3600);
+    seconds = totalsecs - (hours * 3600);
+    minutes = (seconds / 60);
+    seconds = seconds - (minutes * 60);
+
+    if (!type)
+        g_snprintf(str, 256,
+                   _("Minimum allowed duration is %02d:%02d:%02d\n"),
+                   hours, minutes, seconds);
+     
+    else
+        g_snprintf(str, 256,
+                   _("Maximum allowed duration is %02d:%02d:%02d\n"),
+                   hours, minutes, seconds);
+
+    /* set correct values to duration editor */
+    sprintf(t_str, "%02u", hours);
+    gtk_entry_set_text(GTK_ENTRY(priv->h_entry), t_str);
+    sprintf(t_str, "%02u", minutes);
+    gtk_entry_set_text(GTK_ENTRY(priv->m_entry), t_str);
+    sprintf(t_str, "%02u", seconds);
+    gtk_entry_set_text(GTK_ENTRY(priv->s_entry), t_str);
+
+    /* show infoprint */
+    gtk_infoprint(GTK_WINDOW
+                  (gtk_widget_get_ancestor
+                  (GTK_WIDGET(editor), GTK_TYPE_WINDOW)), str);
+}
+
+static gboolean
+hildon_time_editor_ampm_clicked(GtkWidget * widget,
+                                GdkEventButton * event, gpointer data)
+{
+    HildonTimeEditor *editor;
+    HildonTimeEditorPrivate *priv;
+
+    g_return_val_if_fail(widget, FALSE);
+    g_return_val_if_fail(data, FALSE);
+
+    editor = HILDON_TIME_EDITOR(data);
+    priv = HILDON_TIME_EDITOR_GET_PRIVATE(editor);
+
+    if (priv->am) {
+        gtk_label_set_text(GTK_LABEL(priv->ampm), priv->pm_symbol);
+        priv->am = FALSE;
+    } else {
+        gtk_label_set_text(GTK_LABEL(priv->ampm), priv->am_symbol);
+        priv->am = TRUE;
+    }
+    return FALSE;
+}
+
+static gboolean
+hildon_time_editor_icon_clicked(GtkWidget * widget, gpointer data)
+{
+    HildonTimeEditor *editor;
+    HildonTimeEditorPrivate *priv;
+    GtkWidget *picker;
+    GtkWidget *parent;
+    guint h, m, s, result;
+
+    g_return_val_if_fail(widget, FALSE);
+    g_return_val_if_fail(data, FALSE);
+
+    editor = HILDON_TIME_EDITOR(data);
+    priv = HILDON_TIME_EDITOR_GET_PRIVATE(editor);
+
+    /* icon is passive in duration editor mode */
+    if (priv->duration_mode)
+        return FALSE;
+
+    /* Check that we have valid values in entries */
+    hildon_time_editor_entry_activate(priv->h_entry, data);
+    hildon_time_editor_entry_activate(priv->m_entry, data);
+    hildon_time_editor_entry_activate(priv->s_entry, data);
+
+    parent = gtk_widget_get_ancestor(GTK_WIDGET(editor), GTK_TYPE_WINDOW);
+    picker = hildon_time_picker_new(GTK_WINDOW(parent));
+
+    hildon_time_editor_get_time(editor, &h, &m, &s);
+    hildon_time_picker_set_time(HILDON_TIME_PICKER(picker), h, m);
+
+    result = gtk_dialog_run(GTK_DIALOG(picker));
+    switch (result) {
+    case GTK_RESPONSE_OK:
+    case GTK_RESPONSE_ACCEPT:
+        hildon_time_picker_get_time(HILDON_TIME_PICKER(picker), &h, &m);
+        hildon_time_editor_set_time(editor, h, m, 0);
+        break;
+    default:
+        break;
+    }
+
+    gtk_widget_destroy(picker);
+    return FALSE;
+}
+
+static gboolean hildon_time_editor_entry_clicked(GtkWidget * widget,
+                                                 GdkEventButton * event,
+                                                 gpointer data)
+{
+     HildonTimeEditor *editor;
+     HildonTimeEditorPrivate *priv;
+
+     editor = HILDON_TIME_EDITOR (data);
+     priv = HILDON_TIME_EDITOR_GET_PRIVATE (editor);
+     
+     if (!priv->valid_value)
+       priv->valid_value = TRUE;
+     else
+       gtk_editable_select_region(GTK_EDITABLE(widget), 0, 2);
+
+    return FALSE;
+}
+
+static void hildon_time_editor_size_request(GtkWidget * widget,
+                                            GtkRequisition * requisition)
+{
+    HildonTimeEditor *editor;
+    HildonTimeEditorPrivate *priv;
+    GtkRequisition req;
+
+    editor = HILDON_TIME_EDITOR(widget);
+    priv = HILDON_TIME_EDITOR_GET_PRIVATE(editor);
+
+    gtk_widget_size_request(priv->frame, &req);
+    *requisition = req;
+
+    requisition->width = TIME_EDITOR_LBORDER +
+        TIME_EDITOR_RBORDER + TIME_EDITOR_CLOCK_BORDER +
+        widget->style->xthickness * 2;
+
+
+    gtk_widget_size_request(priv->h_entry, &req);
+    requisition->width += req.width;
+
+    gtk_widget_size_request(priv->m_entry, &req);
+    requisition->width += req.width;
+
+    gtk_widget_size_request(priv->label, &req);
+    requisition->width += req.width;
+
+    gtk_widget_size_request(priv->iconbutton, &req);
+    requisition->width += req.width;
+
+    if (priv->show_s) {
+        gtk_widget_size_request(priv->s_entry, &req);
+        requisition->width += req.width;
+
+        gtk_widget_size_request(priv->label2, &req);
+        requisition->width += req.width;
+    }
+
+    if (!priv->clock_24h && !priv->duration_mode) {
+        gtk_widget_size_request(priv->eventbox, &req);
+        requisition->width += req.width + 4;
+    }
+
+    requisition->height = TIME_EDITOR_HEIGHT;
+}
+
+static void set_widget_allocation(GtkWidget * widget,
+                                  GtkAllocation * alloc,
+                                  GtkAllocation * allocation)
+{
+    GtkRequisition child_requisition;
+
+    gtk_widget_get_child_requisition(widget, &child_requisition);
+
+    if (allocation->width + allocation->x >
+        alloc->x + child_requisition.width)
+        alloc->width = child_requisition.width;
+    else {
+        alloc->width = allocation->width - (alloc->x - allocation->x);
+        if (alloc->width < 0)
+            alloc->width = 0;
+    }
+    gtk_widget_size_allocate(widget, alloc);
+    alloc->x += alloc->width;
+}
+
+static void hildon_time_editor_size_allocate(GtkWidget * widget,
+                                             GtkAllocation * allocation)
+{
+        HildonTimeEditor *editor;
+        HildonTimeEditorPrivate *priv;
+        GtkAllocation alloc;
+        GtkRequisition child_requisition;
+        gint frame_w = 0, mod_w = 0;
+
+        editor = HILDON_TIME_EDITOR(widget);
+        priv = HILDON_TIME_EDITOR_GET_PRIVATE(editor);
+
+        widget->allocation = *allocation;
+
+/*Init start values*/
+        alloc.y = widget->allocation.y + widget->style->ythickness;
+        
+        if (widget->allocation.height > TIME_EDITOR_HEIGHT) {
+            alloc.height =
+                TIME_EDITOR_HEIGHT - widget->style->ythickness * 2;
+            alloc.y +=
+                (widget->allocation.height - TIME_EDITOR_HEIGHT) / 2;
+        } else
+            alloc.height =
+                widget->allocation.height - widget->style->ythickness * 2;
+
+        if (alloc.height < 0)
+            alloc.height = 0;
+
+        gtk_widget_size_request(widget, &child_requisition);
+        if (allocation->width > child_requisition.width) {
+            mod_w = (allocation->width - child_requisition.width) / 2;
+            alloc.x = allocation->x + mod_w + widget->style->xthickness +
+                      TIME_EDITOR_LBORDER;
+        } else
+            alloc.x = allocation->x + widget->style->xthickness +
+                      TIME_EDITOR_LBORDER;
+
+        /* am/pm label */
+        if (!priv->duration_mode) {
+            if (!priv->clock_24h && !priv->ampm_pos_after) {
+                gint tmp = alloc.height;
+
+                alloc.x += 4;
+                alloc.y -= 5;
+                alloc.height = 27;
+                set_widget_allocation(priv->eventbox, &alloc,
+                                      &widget->allocation);
+                alloc.y += 5;
+                alloc.height = tmp;
+            }
+        }
+        
+        /* hour */
+        if (priv->h_entry && GTK_WIDGET_VISIBLE(priv->h_entry))
+            set_widget_allocation(priv->h_entry, &alloc,
+                                  &widget->allocation);
+
+/* -5/+5 just to make it look nice -- Hildon --
+ * Same y -value for the label, does not just look good
+ * This may be a kludge, or then not
+ */
+        /* first label */
+        if (priv->label && GTK_WIDGET_VISIBLE(priv->label)) {
+            alloc.y -= 5;
+            set_widget_allocation(priv->label, &alloc,
+                                  &widget->allocation);
+            alloc.y += 5;
+        }
+
+        /* minutes */
+        if (priv->m_entry && GTK_WIDGET_VISIBLE(priv->m_entry))
+            set_widget_allocation(priv->m_entry, &alloc,
+                                  &widget->allocation);
+
+        if (priv->show_s) {
+            /* seconds label */
+            if (priv->label2) {
+                alloc.y -= 5;
+                set_widget_allocation(priv->label2, &alloc,
+                                      &widget->allocation);
+                alloc.y += 5;
+            }
+
+            /* seconds */
+            if (priv->s_entry)
+                set_widget_allocation(priv->s_entry, &alloc,
+                                      &widget->allocation);
+        }
+
+        /* am/pm label after the rest */
+        if (!priv->duration_mode) {
+            if (!priv->clock_24h && priv->ampm_pos_after) {
+                gint tmp = alloc.height;
+
+                alloc.y -= 5;
+                alloc.height = 27;
+                set_widget_allocation(priv->eventbox, &alloc,
+                                      &widget->allocation);
+                alloc.y += 5;
+                alloc.height = tmp;
+                alloc.x += 4;
+            }
+        }
+        frame_w = alloc.x - widget->allocation.x + TIME_EDITOR_RBORDER;
+
+        /* icon */
+        if (priv->iconbutton && GTK_WIDGET_VISIBLE(priv->iconbutton)) {
+            alloc.x += TIME_EDITOR_CLOCK_BORDER;
+            alloc.height = ICON_HEIGHT;
+            alloc.width = ICON_WIDTH;
+            set_widget_allocation(priv->iconbutton, &alloc,
+                                  &widget->allocation);
+        }
+
+        /* frame */
+        if (allocation->width > child_requisition.width) {
+            alloc.x = allocation->x + mod_w;
+            alloc.width = frame_w - mod_w;
+
+        } else {
+            alloc.x = allocation->x;
+            alloc.width = frame_w;
+        }
+
+        gtk_widget_get_child_requisition(priv->frame, &child_requisition);
+
+        alloc.y = allocation->y;
+        
+        if (widget->allocation.height > TIME_EDITOR_HEIGHT) {
+            alloc.height = TIME_EDITOR_HEIGHT;
+            alloc.y +=
+                (widget->allocation.height - TIME_EDITOR_HEIGHT) / 2;
+
+        } else
+            alloc.height = widget->allocation.height;
+
+        gtk_widget_size_allocate(priv->frame, &alloc);
+}
+
+static gboolean hildon_time_editor_entry_keypress(GtkWidget * widget,
+                                                  GdkEventKey * event,
+                                                  gpointer data)
+{
+    HildonTimeEditor *editor;
+    HildonTimeEditorPrivate *priv;
+    gint pos;
+
+    g_return_val_if_fail(widget, FALSE);
+    g_return_val_if_fail(event, FALSE);
+    g_return_val_if_fail(data, FALSE);
+
+    editor = HILDON_TIME_EDITOR(data);
+    priv = HILDON_TIME_EDITOR_GET_PRIVATE(editor);
+
+    pos = gtk_editable_get_position(GTK_EDITABLE(widget));
+
+    if (event->keyval == GDK_KP_Enter || event->keyval == GDK_Return) {
+        /* Check that we have correct values in entries */
+        hildon_time_editor_entry_activate(widget, data);
+        _gtk_button_set_depressed(GTK_BUTTON(priv->iconbutton), TRUE);
+        hildon_time_editor_icon_clicked(widget, data);
+        _gtk_button_set_depressed(GTK_BUTTON(priv->iconbutton), FALSE);
+    }
+
+    /* We don't want wrap */
+    if (event->keyval == GDK_KP_Left || event->keyval == GDK_Left) {
+        if (pos == 0 && widget == priv->h_entry) {
+            return TRUE;
+        }
+    }
+
+    if (event->keyval == GDK_KP_Right || event->keyval == GDK_Right) {
+        if (pos >= strlen(GTK_ENTRY(widget)->text)) {
+            if ((widget == priv->m_entry
+                 && !GTK_WIDGET_REALIZED(priv->s_entry))
+                || (widget == priv->s_entry
+                    && GTK_WIDGET_REALIZED(priv->s_entry))) {
+                return TRUE;
+            }
+        }
+    }
+
+    /* numeric key pressed */
+    if (event->keyval >= GDK_0 && event->keyval <= GDK_9) {
+        GtkWidgetClass *c = GTK_WIDGET_GET_CLASS(widget);
+
+        c->key_press_event(widget, event);
+
+        /* Set time values to our internal struct */
+        g_snprintf(priv->h_time, 4, "%s", GTK_ENTRY(priv->h_entry)->text);
+        g_snprintf(priv->m_time, 4, "%s", GTK_ENTRY(priv->m_entry)->text);
+        g_snprintf(priv->s_time, 4, "%s", GTK_ENTRY(priv->s_entry)->text);
+
+        return TRUE;
+    }
+    /* tab pressed in hour entry */
+    else if (widget == priv->h_entry && (event->keyval == GDK_Tab ||
+                   event->keyval == GDK_KP_Tab)) {
+        gtk_widget_grab_focus(priv->m_entry);
+        return TRUE;
+    }
+    /* tab pressed in minute entry */
+    else if (widget == priv->m_entry && (event->keyval == GDK_Tab ||
+                   event->keyval == GDK_KP_Tab)) {
+        if (priv->show_s)
+            gtk_widget_grab_focus(priv->s_entry);
+        else
+            gtk_widget_grab_focus(priv->h_entry);
+        return TRUE;
+    }
+    /* tab pressed in second entry */
+    else if (widget == priv->s_entry && (event->keyval == GDK_Tab ||
+                   event->keyval == GDK_KP_Tab)) {
+        gtk_widget_grab_focus(priv->h_entry);
+        return TRUE;
+    }
+    /* left tab pressed in second entry */
+    else if (widget == priv->s_entry &&
+             event->keyval == GDK_ISO_Left_Tab) {
+        gtk_widget_grab_focus(priv->m_entry);
+        return TRUE;
+    }
+    /* left tab pressed in minute entry */
+    else if (widget == priv->m_entry &&
+             event->keyval == GDK_ISO_Left_Tab) {
+        gtk_widget_grab_focus(priv->h_entry);
+        return TRUE;
+    }
+    /* left tab pressed in hour entry */
+    else if (widget == priv->h_entry &&
+             event->keyval == GDK_ISO_Left_Tab) {
+        if (priv->show_s)
+            gtk_widget_grab_focus(priv->s_entry);
+        else
+            gtk_widget_grab_focus(priv->m_entry);
+        return TRUE;
+    }
+    /* right arrow pressed in hour entry */
+    else if (widget == priv->h_entry &&
+             (event->keyval == GDK_Right || event->keyval == GDK_KP_Right)
+             && pos >= GTK_ENTRY(priv->h_entry)->text_length) {
+        gtk_widget_grab_focus(priv->m_entry);
+        gtk_editable_set_position(GTK_EDITABLE(priv->m_entry), 0);
+        return TRUE;
+    }
+    /* right arrow pressed in minute entry */
+    else if (widget == priv->m_entry &&
+             (event->keyval == GDK_Right || event->keyval == GDK_KP_Right)
+             && pos >= GTK_ENTRY(priv->m_entry)->text_length) {
+        if (priv->show_s) {
+            gtk_widget_grab_focus(priv->s_entry);
+            gtk_editable_set_position(GTK_EDITABLE(priv->s_entry), 0);
+        } else {
+            gtk_widget_grab_focus(priv->h_entry);
+            gtk_editable_set_position(GTK_EDITABLE(priv->h_entry), 0);
+        }
+        return TRUE;
+    }
+    /* right arrow pressed in second entry */
+    else if (widget == priv->s_entry &&
+             (event->keyval == GDK_Right || event->keyval == GDK_KP_Right)
+             && pos >= GTK_ENTRY(priv->s_entry)->text_length) {
+        gtk_widget_grab_focus(priv->h_entry);
+        gtk_editable_set_position(GTK_EDITABLE(priv->h_entry), 0);
+        return TRUE;
+    }
+    /* left arrow key pressed in hour entry */
+    else if (widget == priv->h_entry &&
+             (event->keyval == GDK_Left || event->keyval == GDK_KP_Left) &&
+             pos <= 0) {
+        if (priv->show_s) {
+            gtk_widget_grab_focus(priv->s_entry);
+            gtk_editable_set_position(GTK_EDITABLE(priv->s_entry), -1);
+        } else {
+            gtk_widget_grab_focus(priv->m_entry);
+            gtk_editable_set_position(GTK_EDITABLE(priv->m_entry), -1);
+        }
+        return TRUE;
+    }
+    /* left arrow key pressed in minute entry */
+    else if (widget == priv->m_entry &&
+             (event->keyval == GDK_Left || event->keyval == GDK_KP_Left) &&
+             pos <= 0) {
+        gtk_widget_grab_focus(priv->h_entry);
+        gtk_editable_set_position(GTK_EDITABLE(priv->h_entry), -1);
+        return TRUE;
+    }
+    /* left arrow key pressed in seconds entry */
+    else if (widget == priv->s_entry &&
+             (event->keyval == GDK_Left || event->keyval == GDK_KP_Left) &&
+             pos <= 0) {
+        gtk_widget_grab_focus(priv->m_entry);
+        gtk_editable_set_position(GTK_EDITABLE(priv->m_entry), -1);
+        return TRUE;
+    }
+    /* pass other arrow key presses and backspace and del onwards */
+    else if (event->keyval == GDK_Left || event->keyval == GDK_KP_Left ||
+             event->keyval == GDK_Right || event->keyval == GDK_KP_Right ||
+             event->keyval == GDK_Up || event->keyval == GDK_KP_Up ||
+             event->keyval == GDK_Down || event->keyval == GDK_KP_Down ||
+             event->keyval == GDK_BackSpace || event->keyval == GDK_Delete
+             || event->keyval == GDK_KP_Delete)
+        return FALSE;   /* pass the keypress on */
+
+    /* ingore other keys */
+    return TRUE;
+}
+
+/**
+ * hildon_time_editor_show_seconds:
+ * @editor: The #HildonTimeEditor.
+ * @enable: Enable or disable showing of seconds.
+ *
+ * This function shows or hides the seconds field.
+ *
+ **/
+void hildon_time_editor_show_seconds(HildonTimeEditor * editor,
+                                     gboolean enable)
+{
+    HildonTimeEditorPrivate *priv;
+
+    g_return_if_fail(editor);
+
+    priv = HILDON_TIME_EDITOR_GET_PRIVATE(editor);
+
+    if (!priv->show_s && enable) {
+        priv->show_s = TRUE;
+
+        gtk_widget_show(priv->s_entry);
+        gtk_widget_show(priv->label2);
+        
+    } else if (priv->show_s && !enable) {
+
+        gtk_widget_hide(priv->s_entry);
+        gtk_widget_hide(priv->label2);
+
+        priv->show_s = FALSE;
+    } else
+        return;
+
+    gtk_widget_queue_resize(GTK_WIDGET(editor));
+}
+
+/**
+ * hildon_time_editor_enable_duration_mode:
+ * @editor: The #HildonTimeEditor.
+ * @enable: Enable or disable duration editor mode
+ *
+ * This function sets the duration editor mode in which the maximum hours
+ * is 99 and the #HildonTimePicker is disabled.
+ *
+ **/
+void hildon_time_editor_enable_duration_mode(HildonTimeEditor * editor,
+                                             gboolean enable)
+{
+    HildonTimeEditorPrivate *priv;
+
+    g_return_if_fail(editor);
+
+    priv = HILDON_TIME_EDITOR_GET_PRIVATE(editor);
+
+    /* switch to duration editor mode */
+    if (enable && !priv->duration_mode) {
+        priv->duration_mode = enable;
+        hildon_time_editor_set_duration_range(editor, MIN_DURATION,
+                                              MAX_DURATION);
+
+        if (!priv->clock_24h)
+            gtk_widget_hide(GTK_WIDGET(priv->ampm));
+
+        gtk_widget_hide(GTK_WIDGET(priv->eventbox));
+        gtk_widget_hide(GTK_WIDGET(priv->icon));
+
+        /* Show seconds for duration editor */
+        hildon_time_editor_show_seconds(editor, TRUE);
+    }
+    /* switch to time editor mode */
+    else if (!enable && priv->duration_mode) {
+        priv->duration_mode = enable;
+
+        if (!priv->clock_24h)
+            gtk_widget_show(GTK_WIDGET(priv->ampm));
+
+        gtk_widget_show(GTK_WIDGET(priv->eventbox));
+        gtk_widget_show(GTK_WIDGET(priv->icon));
+    }
+    gtk_widget_queue_resize(GTK_WIDGET(editor));
+}
+

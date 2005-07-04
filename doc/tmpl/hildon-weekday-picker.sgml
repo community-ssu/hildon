@@ -1,0 +1,124 @@
+<!-- ##### SECTION Title ##### -->
+HildonWeekdayPicker
+
+<!-- ##### SECTION Short_Description ##### -->
+A widget for selecting weekday(s)
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+Weekday picker supports non-mutually exclusive selection of days of the week. Selected days of the week are shown with a pushed-in effect.
+</para>
+
+<para>
+Weekday picker is used where users are required to pick days on which a certain event should take place, for example, which days a Calendar event should be repeated on. It is used in Calendar in the Repeat dialog, in Tasks in the Repeat dialog and in the Email set-up wizard.
+</para>
+
+<para>
+<informalexample>
+Example function calls:
+<programlisting>
+	gint i;
+	HildonWeekdayPicker *picker = hildon_weekday_picker_new();
+
+	hildon_weekday_picker_set_day( picker, i );
+	hildon_weekday_picker_unset_day( picker, i );
+	hildon_weekday_picker_toggle_day( picker, i );
+	hildon_weekday_picker_set_all( picker );
+  hildon_weekday_picker_unset_all( picker );
+</programlisting>
+</informalexample>
+</para>
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+<!-- ##### MACRO HILDON_WEEKDAY_PICKER_TYPE ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### STRUCT HildonWeekdayPicker ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SIGNAL HildonWeekdayPicker::activate ##### -->
+<para>
+
+</para>
+
+@hildonweekdaypicker: the object which received the signal.
+
+<!-- ##### SIGNAL HildonWeekdayPicker::selection-changed ##### -->
+<para>
+
+</para>
+
+@hildonweekdaypicker: the object which received the signal.
+@arg1: 
+
+<!-- ##### FUNCTION hildon_weekday_picker_new ##### -->
+<para>
+</para>
+
+@Returns: 
+
+
+<!-- ##### FUNCTION hildon_weekday_picker_set_day ##### -->
+<para>
+
+</para>
+
+@picker: 
+@day: 
+
+
+<!-- ##### FUNCTION hildon_weekday_picker_unset_day ##### -->
+<para>
+
+</para>
+
+@picker: 
+@day: 
+
+
+<!-- ##### FUNCTION hildon_weekday_picker_toggle_day ##### -->
+<para>
+
+</para>
+
+@picker: 
+@day: 
+
+
+<!-- ##### FUNCTION hildon_weekday_picker_set_all ##### -->
+<para>
+
+</para>
+
+@picker: 
+
+
+<!-- ##### FUNCTION hildon_weekday_picker_unset_all ##### -->
+<para>
+
+</para>
+
+@picker: 
+
+
+<!-- ##### FUNCTION hildon_weekday_picker_isset_day ##### -->
+<para>
+
+</para>
+
+@picker: 
+@day: 
+@Returns: 
+
+

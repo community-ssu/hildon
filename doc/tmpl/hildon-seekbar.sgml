@@ -1,0 +1,124 @@
+<!-- ##### SECTION Title ##### -->
+HildonSeekbar
+
+<!-- ##### SECTION Short_Description ##### -->
+HildonSeekbar is used to seek a place from a content. Can be used eg. to browse a mp3 track.
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+HildonSeekbar is used to seek a place from a content. Can be used eg. to browse a mp3 track. 
+
+<informalexample>
+<programlisting>
+	GtkWidget *seekbar = hildon_seekbar_new();
+	hildon_seekbar_set_total_time (GTK_WIDGET(seekbar), 600);
+	hildon_seekbar_set_position (GTK_WIDGET(seekbar), 300);
+
+
+static void seekbar_set_tot (GtkWidget *spin, GtkWidget *seek)
+{
+	hildon_seekbar_set_total_time (seek,
+			(gint)gtk_spin_button_get_value(GTK_SPIN_BUTTON(spin)));
+}
+
+static void seekbar_set_pos (GtkWidget *spin, GtkWidget *seek)
+{
+	hildon_seekbar_set_position (seek,
+			(gint)gtk_spin_button_get_value(GTK_SPIN_BUTTON(spin)));
+}
+
+static gint update_spin_button (GtkWidget *seek, GtkWidget *spin)
+{
+	gtk_spin_button_set_value (GTK_SPIN_BUTTON(spin),
+			hildon_seekbar_get_position(seek));
+	return TRUE;
+}
+</programlisting>
+</informalexample>
+</para>
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+<!-- ##### STRUCT HildonSeekbar ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### ARG HildonSeekbar:position ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG HildonSeekbar:total-time ##### -->
+<para>
+
+</para>
+
+<!-- ##### FUNCTION hildon_seekbar_new ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### FUNCTION hildon_seekbar_get_total_time ##### -->
+<para>
+
+</para>
+
+@seekbar: 
+@Returns: 
+
+
+<!-- ##### FUNCTION hildon_seekbar_set_total_time ##### -->
+<para>
+
+</para>
+
+@seekbar: 
+@time: 
+
+
+<!-- ##### FUNCTION hildon_seekbar_get_position ##### -->
+<para>
+
+</para>
+
+@seekbar: 
+@Returns: 
+
+
+<!-- ##### FUNCTION hildon_seekbar_set_position ##### -->
+<para>
+
+</para>
+
+@seekbar: 
+@time: 
+
+
+<!-- ##### FUNCTION hildon_seekbar_set_fraction ##### -->
+<para>
+
+</para>
+
+@seekbar: 
+@fraction: 
+<!-- # Unused Parameters # -->
+@fract: 
+
+
+<!-- ##### FUNCTION hildon_seekbar_get_fraction ##### -->
+<para>
+
+</para>
+
+@seekbar: 
+@Returns: 
+
+

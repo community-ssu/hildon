@@ -1,0 +1,22 @@
+	/home/ferenc/014/2_rebuild/hildon-libs-0.9.6/../hildon-widgets/hildon-add-home-dialog.c \
+	/home/ferenc/014/2_rebuild/hildon-libs-0.9.6/../hildon-widgets/hildon-calendar-popup.c \
+	/home/ferenc/014/2_rebuild/hildon-libs-0.9.6/../hildon-widgets/hildon-color-selector.c \
+	/home/ferenc/014/2_rebuild/hildon-libs-0.9.6/../hildon-widgets/hildon-controlbar.c \
+	/home/ferenc/014/2_rebuild/hildon-libs-0.9.6/../hildon-widgets/hildon-date-editor.c \
+	/home/ferenc/014/2_rebuild/hildon-libs-0.9.6/../hildon-widgets/hildon-file-details-dialog.c \
+	/home/ferenc/014/2_rebuild/hildon-libs-0.9.6/../hildon-widgets/hildon-file-handling-note.c \
+	/home/ferenc/014/2_rebuild/hildon-libs-0.9.6/../hildon-widgets/hildon-find-object-dialog.c \
+	/home/ferenc/014/2_rebuild/hildon-libs-0.9.6/../hildon-widgets/hildon-font-selection-dialog.c \
+	/home/ferenc/014/2_rebuild/hildon-libs-0.9.6/../hildon-widgets/hildon-get-password-dialog.c \
+	/home/ferenc/014/2_rebuild/hildon-libs-0.9.6/../hildon-widgets/hildon-grid.c \
+	/home/ferenc/014/2_rebuild/hildon-libs-0.9.6/../hildon-widgets/hildon-insert-object-dialog.c \
+	/home/ferenc/014/2_rebuild/hildon-libs-0.9.6/../hildon-widgets/hildon-name-password-dialog.c \
+	/home/ferenc/014/2_rebuild/hildon-libs-0.9.6/../hildon-widgets/hildon-note.c \
+	/home/ferenc/014/2_rebuild/hildon-libs-0.9.6/../hildon-widgets/hildon-number-editor.c \
+	/home/ferenc/014/2_rebuild/hildon-libs-0.9.6/../hildon-widgets/hildon-set-password-dialog.c \
+	/home/ferenc/014/2_rebuild/hildon-libs-0.9.6/../hildon-widgets/hildon-sort-dialog.c \
+	/home/ferenc/014/2_rebuild/hildon-libs-0.9.6/../hildon-widgets/hildon-telephone-editor.c \
+	/home/ferenc/014/2_rebuild/hildon-libs-0.9.6/../hildon-widgets/hildon-time-editor.c \
+	/home/ferenc/014/2_rebuild/hildon-libs-0.9.6/../hildon-widgets/hildon-time-picker.c \
+	/home/ferenc/014/2_rebuild/hildon-libs-0.9.6/../ut/hildon-clock-widgets_tests.c \
+	/home/ferenc/014/2_rebuild/hildon-libs-0.9.6/../ut/hildon-widgets_tests.c

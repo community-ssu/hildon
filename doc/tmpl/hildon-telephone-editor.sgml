@@ -1,0 +1,200 @@
+<!-- ##### SECTION Title ##### -->
+HildonTelephoneEditor
+
+<!-- ##### SECTION Short_Description ##### -->
+A widget which allows a user to enter a telephone number
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+A Single Line Editor widget which allows user to enter a telephone number. There are two modes to choose from (corce/free format). Coerce format has three fields which are placed horizontally. Fields are country code, area code and number. When nothing is inputted to the fields assisting text is displayed in a field. Tapping on the field highlights the field and allows user to input numbers.
+</para>
+
+<para>
+The widget is used where a user should enter a phone number. Free format should be used wherever possible as it enables the user to enter the phone number in the format she likes in addition to entering DTMF strings as a part of the phone number. The format can not be changed at runtime.
+</para>
+
+<para>
+<informalexample>
+<programlisting>
+	editor[0] =
+		hildon_telephone_editor_new( HILDON_TELEPHONE_EDITOR_FORMAT_COERCE );
+</programlisting>
+</informalexample>
+</para>
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+<!-- ##### MACRO HILDON_TELEPHONE_EDITOR_TYPE ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### ENUM HildonTelephoneEditorFormat ##### -->
+<para>
+
+</para>
+
+@HILDON_TELEPHONE_EDITOR_FORMAT_FREE: 
+@HILDON_TELEPHONE_EDITOR_FORMAT_COERCE: 
+@HILDON_TELEPHONE_EDITOR_FORMAT_COERCE_COUNTRY: 
+@HILDON_TELEPHONE_EDITOR_FORMAT_COERCE_AREA: 
+
+<!-- ##### STRUCT HildonTelephoneEditor ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### FUNCTION hildon_telephone_editor_new ##### -->
+<para>
+
+</para>
+
+@format: 
+@Returns: 
+
+
+<!-- ##### FUNCTION hildon_telephone_editor_set_editable ##### -->
+<para>
+
+</para>
+
+@hte: 
+@country: 
+@area: 
+@number: 
+
+
+<!-- ##### FUNCTION hildon_telephone_editor_set_show_plus ##### -->
+<para>
+
+</para>
+
+@hte: 
+@show: 
+
+
+<!-- ##### FUNCTION hildon_telephone_editor_get_show_plus ##### -->
+<para>
+
+</para>
+
+@hte: 
+@Returns: 
+
+
+<!-- ##### FUNCTION hildon_telephone_editor_set_show_border ##### -->
+<para>
+
+</para>
+
+@hte: 
+@show: 
+
+
+<!-- ##### FUNCTION hildon_telephone_editor_get_show_border ##### -->
+<para>
+
+</para>
+
+@hte: 
+@Returns: 
+
+
+<!-- ##### FUNCTION hildon_telephone_editor_set_widths ##### -->
+<para>
+
+</para>
+
+@hte: 
+@country: 
+@area: 
+@number: 
+
+
+<!-- ##### FUNCTION hildon_telephone_editor_get_country ##### -->
+<para>
+
+</para>
+
+@hte: 
+@Returns: 
+
+
+<!-- ##### FUNCTION hildon_telephone_editor_set_country ##### -->
+<para>
+
+</para>
+
+@hte: 
+@country: 
+
+
+<!-- ##### FUNCTION hildon_telephone_editor_get_area ##### -->
+<para>
+
+</para>
+
+@hte: 
+@Returns: 
+
+
+<!-- ##### FUNCTION hildon_telephone_editor_set_area ##### -->
+<para>
+
+</para>
+
+@hte: 
+@area: 
+
+
+<!-- ##### FUNCTION hildon_telephone_editor_get_number ##### -->
+<para>
+
+</para>
+
+@hte: 
+@Returns: 
+
+
+<!-- ##### FUNCTION hildon_telephone_editor_set_number ##### -->
+<para>
+
+</para>
+
+@hte: 
+@number: 
+
+
+<!-- ##### SIGNAL HildonTelephoneEditor::activate ##### -->
+<para>
+
+</para>
+
+@hildontelephoneeditor: the object which received the signal.
+
+<!-- ##### ARG HildonTelephoneEditor:set-area ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG HildonTelephoneEditor:set-country ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG HildonTelephoneEditor:set-format ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG HildonTelephoneEditor:set-number ##### -->
+<para>
+
+</para>
+

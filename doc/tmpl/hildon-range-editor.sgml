@@ -1,0 +1,102 @@
+<!-- ##### SECTION Title ##### -->
+HildonRangeEditor
+
+<!-- ##### SECTION Short_Description ##### -->
+HildonRangeEditor is used to ask a value from a specific limits.
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+HildonRangeEditor is used to ask a value from a specific limits.
+
+<informalexample>
+
+<programlisting>
+	range_editor = hildon_range_editor_new();
+  hildon_range_editor_set_limits( editor, start, end );
+	hildon_range_editor_get_range( editor, &amp;start, &amp;end );
+</programlisting>
+</informalexample>
+</para>
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+<!-- ##### MACRO HILDON_RANGE_EDITOR_TYPE ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### STRUCT HildonRangeEditor ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### FUNCTION hildon_range_editor_new_with_separator ##### -->
+<para>
+
+</para>
+
+@separator: 
+@Returns: 
+
+
+<!-- ##### FUNCTION hildon_range_editor_new ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### FUNCTION hildon_range_editor_set_range ##### -->
+<para>
+
+</para>
+
+@editor: 
+@start: 
+@end: 
+
+
+<!-- ##### FUNCTION hildon_range_editor_get_range ##### -->
+<para>
+
+</para>
+
+@editor: 
+@start: 
+@end: 
+
+
+<!-- ##### FUNCTION hildon_range_editor_set_limits ##### -->
+<para>
+
+</para>
+
+@editor: 
+@start: 
+@end: 
+
+
+<!-- ##### SIGNAL HildonRangeEditor::activate ##### -->
+<para>
+
+</para>
+
+@hildonrangeeditor: the object which received the signal.
+
+<!-- ##### ARG HildonRangeEditor:hildon-range-editor-entry-alignment ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG HildonRangeEditor:hildon-range-editor-separator-padding ##### -->
+<para>
+
+</para>
+

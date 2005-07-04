@@ -1,0 +1,82 @@
+<!-- ##### SECTION Title ##### -->
+HildonTimePicker
+
+<!-- ##### SECTION Short_Description ##### -->
+#HildonTimePicker is a dialog popup widget which lets the user set a time.
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+#HildonTimePicker is a dialog popup widget which lets the user set a time.
+using up/down arrows on hours and minutes. There are two arrows for minutes,
+so that minutes can be added also in 10min steps.
+
+The following code shows how the widget is used.
+
+<informalexample>
+<programlisting>
+...
+parent = gtk_widget_get_ancestor (GTK_WIDGET (editor), GTK_TYPE_WINDOW);
+picker = hildon_time_picker_new (GTK_WINDOW (parent));
+
+hildon_time_editor_get_time (editor, &amp;h, &amp;m, &amp;s);
+hildon_time_picker_set_time( HILDON_TIME_PICKER( picker ), h, m );
+
+result = gtk_dialog_run( GTK_DIALOG ( picker ) );
+switch (result)
+{
+case GTK_RESPONSE_OK:
+case GTK_RESPONSE_ACCEPT:
+    hildon_time_picker_get_time(HILDON_TIME_PICKER( picker ), &amp;h, &amp;m );
+    foo_set_time(h,m);
+break;
+default:
+break;
+}
+
+gtk_widget_destroy( picker );
+...
+</programlisting>
+</informalexample>
+
+</para>
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+#HildonTimeEditor
+</para>
+
+<!-- ##### STRUCT HildonTimePicker ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### FUNCTION hildon_time_picker_new ##### -->
+<para>
+
+</para>
+
+@parent: 
+@Returns: 
+
+
+<!-- ##### FUNCTION hildon_time_picker_set_time ##### -->
+<para>
+
+</para>
+
+@picker: 
+@hours: 
+@minutes: 
+
+
+<!-- ##### FUNCTION hildon_time_picker_get_time ##### -->
+<para>
+
+</para>
+
+@picker: 
+@hours: 
+@minutes: 
+
+

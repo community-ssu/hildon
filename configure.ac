@@ -1,0 +1,139 @@
+AC_INIT(Makefile.am)
+AM_INIT_AUTOMAKE(hildon-libs, 0.9.6)
+AM_CONFIG_HEADER(config.h)
+
+AC_CANONICAL_HOST
+
+AC_PROG_CC
+AC_PROG_CPP
+AC_PROG_INSTALL
+AC_PROG_AWK
+AC_PROG_LIBTOOL
+
+AC_HEADER_STDC
+PKG_CHECK_MODULES(OUTO, outo >= 0.1.1)
+AC_SUBST(OUTO_CFLAGS)
+
+# -pedantic removed due to D-BUS; should be replaced after D-BUS is no
+# longer broken in this regard...
+
+CFLAGS="$CFLAGS -Wall -ansi -Wmissing-prototypes -Wmissing-declarations -Werror"
+
+GTK_VERSION=2.6.4
+
+PKG_CHECK_MODULES(GTK, hildon-lgpl >= 0.9.1 hildon-fm >= 0.8.6)
+AC_SUBST(GTK_LIBS)
+AC_SUBST(GTK_CFLAGS)
+AC_SUBST(GTK_VERSION)
+
+# The hildon-note uses D-BUS directly as an interim solution for sound
+# playback - remove these after this is no longer the case!
+
+PKG_CHECK_MODULES(DBUS, dbus-glib-1 >= 0.20)
+AC_SUBST(DBUS_LIBS)
+AC_SUBST(DBUS_CFLAGS)
+
+# Related to the previous entry, check if we have ESD headers available.
+# If yes, Hildon-note will build sound support with it; we're phasing
+# away from OSSO Multimedia... Clean this up after ESD is the
+# default.
+
+PKG_CHECK_MODULES(ESD, esound, esd_found=1, esd_found=0)
+if test "x$esd_found" = "x1"; then
+AC_SUBST(ESD_LIBS)
+AC_SUBST(ESD_CFLAGS)
+
+AH_TEMPLATE([USE_ESD], [1 if ESD is available])
+
+if $ESD; then
+AC_DEFINE_UNQUOTED([USE_ESD], ["1"])
+fi
+
+else
+echo "No ESD found, so falling back to OSSO Multimedia support"
+fi
+
+# Needed to demonstrate how mime-types can be handled with gnome-vfs
+PKG_CHECK_MODULES(GNOME_VFS, gnome-vfs-2.0 >= 2.6 gnome-vfs-module-2.0 >= 2.6)
+AC_SUBST(GNOME_VFS_CFLAGS)
+AC_SUBST(GNOME_VFS_LIBS)
+
+PKG_CHECK_MODULES(GCONF, gconf-2.0 >= 2.6)
+AC_SUBST(GCONF_CFLAGS)
+AC_SUBST(GCONF_LIBS)
+
+ALL_LINGUAS="en_GB"
+AC_SUBST(ALL_LINGUAS) 
+AM_GLIB_GNU_GETTEXT
+
+##################################################
+# Check for gtk-doc.
+##################################################
+
+AC_ARG_WITH(html-dir, [  --with-html-dir=PATH    path to installed docs ])
+
+if test "x$with_html_dir" = "x" ; then
+  HTML_DIR='${datadir}/gtk-doc/html'
+else
+  HTML_DIR=$with_html_dir
+fi
+
+AC_CHECK_PROG(GTKDOC, gtkdoc-mkdb, true, false)
+
+gtk_doc_min_version=0.10
+if $GTKDOC ; then
+    gtk_doc_version=`gtkdoc-mkdb --version`
+    AC_MSG_CHECKING([gtk-doc version ($gtk_doc_version) >= $gtk_doc_min_version]
+)
+    if perl <<EOF ; then
+      exit (("$gtk_doc_version" =~ /^[[0-9]]+\.[[0-9]]+$/) &&
+            ("$gtk_doc_version" >= "$gtk_doc_min_version") ? 0 : 1);
+EOF
+      AC_MSG_RESULT(yes)
+   else
+      AC_MSG_RESULT(no)
+      GTKDOC=false
+   fi
+fi
+
+# Let people disable the gtk-doc stuff.
+AC_ARG_ENABLE(gtk-doc, [  --enable-gtk-doc        use gtk-doc to build documenta
+tion [default=yes]], enable_gtk_doc="$enableval", enable_gtk_doc=yes)
+
+if test x$enable_gtk_doc = xauto ; then
+  if test x$GTKDOC = xtrue ; then
+    enable_gtk_doc=yes
+  else
+    enable_gtk_doc=no
+  fi
+fi
+
+AM_CONDITIONAL(ENABLE_GTK_DOC, test x$enable_gtk_doc = xyes)
+
+AC_CHECK_PROG(DOXYGEN_FOUND, doxygen, yes, no)
+AM_CONDITIONAL(HAVE_DOXYGEN, [test "$DOXYGEN_FOUND" = "yes"])
+
+localedir=${datadir}/locale
+outomoduledir=${libdir}/outo
+
+AC_ARG_ENABLE(doc-dir, [ --with-doc-dir=PATH path to installed docs ])
+if test "x$with_doc_dir" = "x" ; then
+  docdir='${datadir}/doc'
+else
+  docdir=$with_doc_dir 
+fi
+
+HTML_DIR=${docdir}/html
+
+AC_SUBST(docdir)
+AC_SUBST(localedir)
+AC_SUBST(outomoduledir)
+AC_SUBST(HTML_DIR)
+
+AC_OUTPUT(Makefile \
+  hildon-widgets/Makefile \
+	ut/Makefile \
+	po/Makefile \
+	po/porules.mk \
+	doc/Makefile \
+	hildon-libs.pc)

@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN" 
+               "http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd">
+<book id="index" xmlns:xi="http://www.w3.org/2001/XInclude">
+  <bookinfo>
+    <title>hildon-libs Reference Manual</title>
+  </bookinfo>
+
+  <chapter>
+    <title>Object Hierarchy</title>
+      <xi:include href="xml/tree_index.sgml"/>
+  </chapter>
+
+  <chapter>
+    <title>Hildon Widgets</title>
+      <xi:include href="xml/hildon-calendar-popup.xml"/>
+      <xi:include href="xml/hildon-color-button.xml"/>
+      <xi:include href="xml/hildon-color-selector.xml"/>
+      <xi:include href="xml/hildon-controlbar.xml"/>
+      <xi:include href="xml/hildon-date-editor.xml"/>
+      <xi:include href="xml/hildon-find-object-dialog.xml"/>
+      <xi:include href="xml/hildon-font-selection-dialog.xml"/>
+      <xi:include href="xml/hildon-get-password-dialog.xml"/>
+      <xi:include href="xml/hildon-hvolumebar.xml"/>
+      <xi:include href="xml/hildon-insert-object-dialog.xml"/>
+      <xi:include href="xml/hildon-note.xml"/>
+      <xi:include href="xml/hildon-number-editor.xml"/>
+      <xi:include href="xml/hildon-range-editor.xml"/>
+      <xi:include href="xml/hildon-search.xml"/>
+      <xi:include href="xml/hildon-seekbar.xml"/>
+      <xi:include href="xml/hildon-set-password-dialog.xml"/>
+      <xi:include href="xml/hildon-sort-dialog.xml"/>
+      <xi:include href="xml/hildon-name-password-dialog.xml"/>
+      <xi:include href="xml/hildon-telephone-editor.xml"/>
+      <xi:include href="xml/hildon-time-editor.xml"/>
+      <xi:include href="xml/hildon-time-picker.xml"/>
+      <xi:include href="xml/hildon-volumebar.xml"/>
+      <xi:include href="xml/hildon-vvolumebar.xml"/>
+      <xi:include href="xml/hildon-weekday-picker.xml"/>
+      <xi:include href="xml/hildon-file-details-dialog.xml"/>
+      <xi:include href="xml/hildon-file-handling-note.xml"/>
+      <xi:include href="xml/hildon-grid-item.xml"/>
+      <xi:include href="xml/hildon-grid.xml"/>
+      <xi:include href="xml/hildon-dialoghelp.xml"/>
+      <xi:include href="xml/hildon-scroll-area.xml"/>
+  </chapter>
+</book>

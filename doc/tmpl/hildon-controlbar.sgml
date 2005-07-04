@@ -1,0 +1,114 @@
+<!-- ##### SECTION Title ##### -->
+HildonControlbar
+
+<!-- ##### SECTION Short_Description ##### -->
+A widget that allows increasing or decreasing a value within a pre-defined
+range.
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+#HildonControlbar is a horizontally positioned widget that allows increasing
+or decreasing a value within a pre-defined range. The amount of steps in a
+#HildonControlbar can be changed.
+</para>
+
+<para>
+Here's a simple example that creates a control bar and initializes it.
+
+<informalexample>
+<programlisting>
+GtkWidget *cbar = hildon_controlbar_new();
+hildon_controlbar_set_max( HILDON_CONTROLBAR(cbar), 12 );
+hildon_controlbar_set_value( HILDON_CONTROLBAR(cbar), 6 );
+</programlisting>
+</informalexample>
+</para>
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+<!-- ##### STRUCT HildonControlbar ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### FUNCTION hildon_controlbar_new ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### FUNCTION hildon_controlbar_set_value ##### -->
+<para>
+
+</para>
+
+@self: 
+@value: 
+
+
+<!-- ##### FUNCTION hildon_controlbar_get_value ##### -->
+<para>
+
+</para>
+
+@self: 
+@Returns: 
+
+
+<!-- ##### FUNCTION hildon_controlbar_get_max ##### -->
+<para>
+
+</para>
+
+@self: 
+@Returns: 
+
+
+<!-- ##### FUNCTION hildon_controlbar_get_min ##### -->
+<para>
+
+</para>
+
+@self: 
+@Returns: 
+
+
+<!-- ##### FUNCTION hildon_controlbar_set_max ##### -->
+<para>
+
+</para>
+
+@self: 
+@max: 
+
+
+<!-- ##### FUNCTION hildon_controlbar_set_min ##### -->
+<para>
+
+</para>
+
+@self: 
+@min: 
+
+
+<!-- ##### FUNCTION hildon_controlbar_set_range ##### -->
+<para>
+
+</para>
+
+@self: 
+@min: 
+@max: 
+
+
+<!-- ##### ARG HildonControlbar:inner-border-width ##### -->
+<para>
+
+</para>
+

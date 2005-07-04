@@ -1,0 +1,140 @@
+<!-- ##### SECTION Title ##### -->
+HildonTimeEditor
+
+<!-- ##### SECTION Short_Description ##### -->
+#HildonTimeEditor is a simple widget with entries for hours and minutes and a 
+pm/am indicator as well as a button which pops up a #HildonTimePicker dialog
+window.
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+#HildonTimeEditor is a simple widget with entries for hours and minutes and a 
+pm/am indicator as well as a button which pops up a #HildonTimePicker dialog
+window.
+
+<informalexample>
+<programlisting>
+...
+editor = hildon_time_editor_new();
+hildon_time_editor_set_time( editor, h, m, s );
+...
+gtk_box_pack_start ( ..., editor )
+...
+hildon_time_editor_get_time( editor, &amp;h, &amp;m, &amp;s );
+...
+</programlisting>
+</informalexample>
+
+</para>
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+<!-- ##### STRUCT HildonTimeEditor ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SIGNAL HildonTimeEditor::activate ##### -->
+<para>
+
+</para>
+
+@hildontimeeditor: the object which received the signal.
+
+<!-- ##### SIGNAL HildonTimeEditor::activate ##### -->
+<para>
+
+</para>
+
+@hildontimeeditor: the object which received the signal.
+
+<!-- ##### ENUM HildonTimeEditorField ##### -->
+<para>
+
+</para>
+
+@HILDON_TIME_EDITOR_HOUR_FIELD: 
+@HILDON_TIME_EDITOR_MINUTE_FIELD: 
+@HILDON_TIME_EDITOR_SECOND_FIELD: 
+
+<!-- ##### FUNCTION hildon_time_editor_new ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### FUNCTION hildon_time_editor_set_time ##### -->
+<para>
+
+</para>
+
+@editor: 
+@hours: 
+@minutes: 
+@seconds: 
+
+
+<!-- ##### FUNCTION hildon_time_editor_get_time ##### -->
+<para>
+
+</para>
+
+@editor: 
+@hours: 
+@minutes: 
+@seconds: 
+
+
+<!-- ##### FUNCTION hildon_time_editor_show_seconds ##### -->
+<para>
+
+</para>
+
+@editor: 
+@enable: 
+
+
+<!-- ##### FUNCTION hildon_time_editor_enable_duration_mode ##### -->
+<para>
+
+</para>
+
+@editor: 
+@enable: 
+
+
+<!-- ##### FUNCTION hildon_time_editor_set_duration_range ##### -->
+<para>
+
+</para>
+
+@editor: 
+@min_seconds: 
+@max_seconds: 
+
+
+<!-- ##### FUNCTION hildon_time_editor_get_duration_range ##### -->
+<para>
+
+</para>
+
+@editor: 
+@min_seconds: 
+@max_seconds: 
+
+
+<!-- ##### FUNCTION hildon_time_editor_highlight_field ##### -->
+<para>
+
+</para>
+
+@editor: 
+@field: 
+
+

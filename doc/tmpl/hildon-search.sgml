@@ -1,0 +1,53 @@
+<!-- ##### SECTION Title ##### -->
+HildonSearch
+
+<!-- ##### SECTION Short_Description ##### -->
+HildonSearch is a widget to ask details to a comming search operation.
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+HildonSearch is a widget to ask details to a comming search operation.
+It's possible to set an image to inform ongoing search operation.
+
+<informalexample>
+<programlisting>
+  GtkWidget *search = hildon_search_new( "hildon-search");
+	hildon_search_set_image_stock( HILDON_SEARCH(search), ICON_NAME[counter] );
+</programlisting>
+</informalexample>
+</para>
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+<!-- ##### STRUCT HildonSearch ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### FUNCTION hildon_search_new ##### -->
+<para>
+
+</para>
+
+@image: 
+@Returns: 
+
+
+<!-- ##### FUNCTION hildon_search_set_image_stock ##### -->
+<para>
+
+</para>
+
+@search: 
+@stock_icon: 
+
+
+<!-- ##### ARG HildonSearch:stock-icon-name ##### -->
+<para>
+
+</para>
+

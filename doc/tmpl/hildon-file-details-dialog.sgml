@@ -1,0 +1,99 @@
+<!-- ##### SECTION Title ##### -->
+HildonFileDetailsDialog
+
+<!-- ##### SECTION Short_Description ##### -->
+#HildonFileDetailsDialog is used to show details of a file.
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+#HildonFileDetailsDialog is used to show details of a file.
+
+Here's a simple example that creates and opens a #HildonFileDetailsDialog.
+
+<informalexample>
+<programlisting>
+  GtkWidget *hfdd;
+  gchar *filename = "/bogus/path/to/file";
+  hfdd = hildon_file_details_dialog_new( NULL, filename );
+  gtk_dialog_run(GTK_DIALOG(hfdd));
+  gtk_widget_destroy(hfdd);
+</programlisting>
+</informalexample>
+</para>
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+<!-- ##### STRUCT HildonFileDetailsDialogPrivate ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### STRUCT HildonFileDetailsDialog ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### FUNCTION hildon_file_details_dialog_new ##### -->
+<para>
+
+</para>
+
+@parent: 
+@filename: 
+@Returns: 
+
+
+<!-- ##### FUNCTION hildon_file_details_dialog_new_with_model ##### -->
+<para>
+
+</para>
+
+@parent: 
+@model: 
+@Returns: 
+
+
+<!-- ##### FUNCTION hildon_file_details_dialog_set_file_iter ##### -->
+<para>
+
+</para>
+
+@self: 
+@iter: 
+
+
+<!-- ##### FUNCTION hildon_file_details_dialog_get_file_iter ##### -->
+<para>
+
+</para>
+
+@self: 
+@iter: 
+@Returns: 
+
+
+<!-- ##### ARG HildonFileDetailsDialog:additional-tab ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG HildonFileDetailsDialog:additional-tab-label ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG HildonFileDetailsDialog:model ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG HildonFileDetailsDialog:show-tabs ##### -->
+<para>
+
+</para>
+

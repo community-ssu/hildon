@@ -1,0 +1,66 @@
+#include <hildon-widgets/hildon-calendar-popup.h>
+#include <hildon-widgets/hildon-search.h>
+#include <hildon-widgets/hildon-seekbar.h>
+#include <hildon-widgets/hildon-hvolumebar.h>
+#include <hildon-widgets/hildon-vvolumebar.h>
+#include <hildon-widgets/hildon-volumebar-range.h>
+#include <hildon-widgets/hildon-date-editor.h>
+#include <hildon-widgets/hildon-calendar-popup.h>
+#include <hildon-widgets/hildon-time-editor.h>
+#include <hildon-widgets/hildon-grid-item.h>
+#include <hildon-widgets/hildon-grid.h>
+#include <hildon-widgets/hildon-name-password-dialog.h>
+#include <hildon-widgets/hildon-color-selector.h>
+#include <hildon-widgets/hildon-controlbar.h>
+#include <hildon-widgets/hildon-find-object-dialog.h>
+#include <hildon-widgets/hildon-find-replace-dialog.h>
+#include <hildon-widgets/hildon-font-selection-dialog.h>
+#include <hildon-widgets/hildon-get-password-dialog.h>
+#include <hildon-widgets/hildon-add-home-dialog.h>
+#include <hildon-widgets/hildon-insert-object-dialog.h>
+#include <hildon-widgets/hildon-note.h>
+#include <hildon-widgets/hildon-number-editor.h>
+#include <hildon-widgets/hildon-range-editor.h>
+#include <hildon-widgets/hildon-set-password-dialog.h>
+#include <hildon-widgets/hildon-sort-dialog.h>
+#include <hildon-widgets/hildon-telephone-editor.h>
+#include <hildon-widgets/hildon-time-editor.h>
+#include <hildon-widgets/hildon-time-picker.h>
+#include <hildon-widgets/hildon-weekday-picker.h>
+#include <hildon-widgets/hildon-file-details-dialog.h>
+#include <hildon-widgets/hildon-file-handling-note.h>
+
+hildon_color_selector_get_type
+hildon_controlbar_get_type
+hildon_find_object_dialog_get_type
+hildon_find_replace_dialog_get_type
+hildon_font_selection_dialog_get_type
+hildon_get_password_dialog_get_type
+
+hildon_add_home_dialog_get_type
+hildon_insert_object_dialog_get_type
+hildon_note_get_type
+hildon_number_editor_get_type
+hildon_range_editor_get_type
+hildon_set_password_dialog_get_type
+hildon_sort_dialog_get_type
+hildon_telephone_editor_get_type
+hildon_time_editor_get_type
+hildon_time_picker_get_type
+hildon_weekday_picker_get_type
+hildon_file_details_dialog_get_type
+hildon_file_handling_note_get_type
+
+hildon_calendar_popup_get_type
+hildon_search_get_type
+hildon_seekbar_get_type
+hildon_hvolumebar_get_type
+hildon_vvolumebar_get_type
+hildon_volumebar_get_type
+hildon_volumebar_range_get_type
+hildon_date_editor_get_type
+hildon_calendar_popup_get_type
+hildon_time_editor_get_type
+hildon_grid_item_get_type
+hildon_grid_get_type
+hildon_name_password_dialog_get_type

@@ -1,0 +1,13 @@
+How to make .po files up to date with the current sources?
+
+  1. make merge
+
+How to add a new locale?
+
+  1. xgettext -fPOTFILES --foreign-user -C -onew.po -k_
+  2. edit Makefile.am first line: add your locale to the "languages" variable
+
+How to add a new source file that contains gettext macros?
+
+  1. edit POTFILES and add your file there
+  2. make merge

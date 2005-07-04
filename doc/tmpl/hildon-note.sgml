@@ -1,0 +1,146 @@
+<!-- ##### SECTION Title ##### -->
+HildonNote
+
+<!-- ##### SECTION Short_Description ##### -->
+A widget to ask confirmation from the user.
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+Notes are used to have a confirmation (Ok/Cancel/etc.) from the user.
+A simple note contains an information text and an Ok-button to be pressed.
+Additional features can be e.g. progressbars or animations.
+
+<informalexample>
+<programlisting>
+
+hildon_note_new_confirmation( window, "You are forced to format your drives" );
+
+i = gtk_dialog_run (GTK_DIALOG (note));
+gtk_widget_destroy (GTK_WIDGET (note));
+
+if (i == GTK_RESPONSE_OK)
+   gtk_infoprint( window, "Your pathetic files has been erased, MUAHAH!" );
+else
+   gtk_infoprint( window, "No, you cant change your destiny, MUAHAH!" );
+
+</programlisting>
+</informalexample>
+</para>
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+<!-- ##### STRUCT HildonNote ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### ARG HildonNote:description ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG HildonNote:icon ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG HildonNote:note-type ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG HildonNote:progressbar ##### -->
+<para>
+
+</para>
+
+<!-- ##### FUNCTION hildon_note_new_confirmation ##### -->
+<para>
+
+</para>
+
+@parent: 
+@description: 
+@Returns: 
+
+
+<!-- ##### FUNCTION hildon_note_new_confirmation_add_buttons ##### -->
+<para>
+
+</para>
+
+@parent: 
+@description: 
+@Varargs: 
+@Returns: 
+
+
+<!-- ##### FUNCTION hildon_note_new_confirmation_with_icon_stock ##### -->
+<para>
+
+</para>
+
+@parent: 
+@description: 
+@stock_id: 
+@Returns: 
+
+
+<!-- ##### FUNCTION hildon_note_new_cancel_with_progress_bar ##### -->
+<para>
+
+</para>
+
+@parent: 
+@description: 
+@progressbar: 
+@Returns: 
+
+
+<!-- ##### FUNCTION hildon_note_new_information ##### -->
+<para>
+
+</para>
+
+@parent: 
+@description: 
+@Returns: 
+
+
+<!-- ##### FUNCTION hildon_note_new_information_with_icon_stock ##### -->
+<para>
+
+</para>
+
+@parent: 
+@description: 
+@stock_id: 
+@Returns: 
+
+
+<!-- ##### FUNCTION hildon_note_new_information_with_icon_theme ##### -->
+<para>
+
+</para>
+
+@parent: 
+@description: 
+@icon: 
+@Returns: 
+<!-- # Unused Parameters # -->
+@stock_id: 
+
+
+<!-- ##### FUNCTION hildon_note_set_button_text ##### -->
+<para>
+
+</para>
+
+@note: 
+@text: 
+
+

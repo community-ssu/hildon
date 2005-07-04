@@ -1,0 +1,873 @@
+<!-- ##### SECTION ./tmpl/hildon-hwr-area.sgml:Long_Description ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION ./tmpl/hildon-hwr-area.sgml:See_Also ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION ./tmpl/hildon-hwr-area.sgml:Short_Description ##### -->
+
+
+
+<!-- ##### SECTION ./tmpl/hildon-hwr-area.sgml:Title ##### -->
+HildonHWRArea
+
+
+<!-- ##### MACRO GTK_FILE_SYSTEM_ENABLE_UNSUPPORTED ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### MACRO HILDON_FILE_CHOOSER_DIALOG_CLASS ##### -->
+<para>
+
+</para>
+
+@klass: 
+
+<!-- ##### SIGNAL HildonApp::topmost-status-acquire ##### -->
+<para>
+
+</para>
+
+@hildonapp: the object which received the signal.
+
+<!-- ##### SIGNAL HildonApp::topmost-status-lose ##### -->
+<para>
+
+</para>
+
+@hildonapp: the object which received the signal.
+
+<!-- ##### SIGNAL HildonAppView::fullscreen-state-change ##### -->
+<para>
+
+</para>
+
+@hildonappview: the object which received the signal.
+@arg1: 
+
+<!-- ##### SIGNAL HildonAppView::switched-from ##### -->
+<para>
+
+</para>
+
+@hildonappview: the object which received the signal.
+
+<!-- ##### SIGNAL HildonAppView::switched-to ##### -->
+<para>
+
+</para>
+
+@hildonappview: the object which received the signal.
+
+<!-- ##### SIGNAL HildonAppView::title-change ##### -->
+<para>
+
+</para>
+
+@hildonappview: the object which received the signal.
+
+<!-- ##### SIGNAL HildonAppView::toolbar-changed ##### -->
+<para>
+
+</para>
+
+@hildonappview: the object which received the signal.
+
+<!-- ##### SIGNAL HildonAppView::toolbar-toggle-request ##### -->
+<para>
+
+</para>
+
+@hildonappview: the object which received the signal.
+
+<!-- ##### STRUCT HildonAppViewPrivate ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### STRUCT HildonFileChooserDialogPrivate ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### ENUM HildonFileSelectionMode ##### -->
+<para>
+
+</para>
+
+@HILDON_FILE_SELECTION_MODE_LIST: 
+@HILDON_FILE_SELECTION_MODE_THUMBNAILS: 
+
+<!-- ##### STRUCT HildonFileSelectionPrivate ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### ENUM HildonFileSelectionSortKey ##### -->
+<para>
+
+</para>
+
+@HILDON_FILE_SELECTION_SORT_NAME: 
+@HILDON_FILE_SELECTION_SORT_TYPE: 
+@HILDON_FILE_SELECTION_SORT_MODIFIED: 
+@HILDON_FILE_SELECTION_SORT_SIZE: 
+
+<!-- ##### ENUM HildonFileSystemModelColumns ##### -->
+<para>
+
+</para>
+
+@HILDON_FILE_SYSTEM_MODEL_COLUMN_GTK_PATH: 
+@HILDON_FILE_SYSTEM_MODEL_COLUMN_LOCAL_PATH: 
+@HILDON_FILE_SYSTEM_MODEL_COLUMN_URI: 
+@HILDON_FILE_SYSTEM_MODEL_COLUMN_FILE_NAME: 
+@HILDON_FILE_SYSTEM_MODEL_COLUMN_DISPLAY_NAME: 
+@HILDON_FILE_SYSTEM_MODEL_COLUMN_MIME_TYPE: 
+@HILDON_FILE_SYSTEM_MODEL_COLUMN_FILE_SIZE: 
+@HILDON_FILE_SYSTEM_MODEL_COLUMN_FILE_TIME: 
+@HILDON_FILE_SYSTEM_MODEL_COLUMN_IS_FOLDER: 
+@HILDON_FILE_SYSTEM_MODEL_COLUMN_HAS_LOCAL_PATH: 
+@HILDON_FILE_SYSTEM_MODEL_COLUMN_TYPE: 
+@HILDON_FILE_SYSTEM_MODEL_COLUMN_ICON: 
+@HILDON_FILE_SYSTEM_MODEL_COLUMN_ICON_EXPANDED: 
+@HILDON_FILE_SYSTEM_MODEL_COLUMN_ICON_COLLAPSED: 
+@HILDON_FILE_SYSTEM_MODEL_COLUMN_THUMBNAIL: 
+@HILDON_FILE_SYSTEM_MODEL_NUM_COLUMNS: 
+
+<!-- ##### ENUM HildonFileSystemModelItemType ##### -->
+<para>
+
+</para>
+
+@HILDON_FILE_SYSTEM_MODEL_UNKNOWN: 
+@HILDON_FILE_SYSTEM_MODEL_FILE: 
+@HILDON_FILE_SYSTEM_MODEL_FOLDER: 
+@HILDON_FILE_SYSTEM_MODEL_SAFE_FOLDER_IMAGES: 
+@HILDON_FILE_SYSTEM_MODEL_SAFE_FOLDER_VIDEOS: 
+@HILDON_FILE_SYSTEM_MODEL_SAFE_FOLDER_SOUNDS: 
+@HILDON_FILE_SYSTEM_MODEL_SAFE_FOLDER_DOCUMENTS: 
+@HILDON_FILE_SYSTEM_MODEL_MMC: 
+@HILDON_FILE_SYSTEM_MODEL_GATEWAY: 
+@HILDON_FILE_SYSTEM_MODEL_SPUTNIK: 
+
+<!-- ##### STRUCT HildonFileSystemModelPrivate ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### USER_FUNCTION HildonFileSystemModelThumbnailCallback ##### -->
+<para>
+
+</para>
+
+@uri: 
+@path: 
+@thumbnail_file: 
+@Returns: 
+
+<!-- ##### ENUM HildonHWRAreaMode ##### -->
+<para>
+
+</para>
+
+@HILDON_HWR_AREA_MODE_NORMAL: 
+@HILDON_HWR_AREA_MODE_SECRET: 
+@HILDON_HWR_AREA_MODE_TRAINING: 
+
+<!-- ##### STRUCT HildonHWRAreaPrivate ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### STRUCT HildonInsertObjectDialogPrivate ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SIGNAL HildonVolumebar::level-changed ##### -->
+<para>
+
+</para>
+
+@hildonvolumebar: the object which received the signal.
+
+<!-- ##### SIGNAL HildonVolumebar::mute-toggled ##### -->
+<para>
+
+</para>
+
+@hildonvolumebar: the object which received the signal.
+
+<!-- ##### ENUM HildonZoomLevel ##### -->
+<para>
+
+</para>
+
+@HILDON_ZOOM_SMALL: 
+@HILDON_ZOOM_MEDIUM: 
+@HILDON_ZOOM_LARGE: 
+
+<!-- ##### FUNCTION gtk_banner_close ##### -->
+<para>
+
+</para>
+
+@parent: 
+
+<!-- ##### FUNCTION gtk_banner_set_fraction ##### -->
+<para>
+
+</para>
+
+@parent: 
+@fraction: 
+
+<!-- ##### FUNCTION gtk_banner_set_text ##### -->
+<para>
+
+</para>
+
+@parent: 
+@text: 
+
+<!-- ##### FUNCTION gtk_banner_show_animation ##### -->
+<para>
+
+</para>
+
+@parent: 
+@text: 
+
+<!-- ##### FUNCTION gtk_banner_show_bar ##### -->
+<para>
+
+</para>
+
+@parent: 
+@text: 
+
+<!-- ##### FUNCTION gtk_banner_temporarily_disable_wrap ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### FUNCTION gtk_confirmation_banner ##### -->
+<para>
+
+</para>
+
+@parent: 
+@text: 
+@stock_id: 
+
+<!-- ##### FUNCTION gtk_infoprint ##### -->
+<para>
+
+</para>
+
+@parent: 
+@text: 
+
+<!-- ##### FUNCTION gtk_infoprint_temporarily_disable_wrap ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### FUNCTION gtk_infoprint_with_icon_stock ##### -->
+<para>
+
+</para>
+
+@parent: 
+@text: 
+@stock_id: 
+
+<!-- ##### FUNCTION gtk_infoprintf ##### -->
+<para>
+
+</para>
+
+@parent: 
+@format: 
+@Varargs: 
+
+<!-- ##### FUNCTION hildon_app_get_appview ##### -->
+<para>
+
+</para>
+
+@self: 
+@Returns: 
+
+<!-- ##### FUNCTION hildon_app_get_default_font ##### -->
+<para>
+
+</para>
+
+@self: 
+@Returns: 
+
+<!-- ##### FUNCTION hildon_app_get_title ##### -->
+<para>
+
+</para>
+
+@self: 
+@Returns: 
+
+<!-- ##### FUNCTION hildon_app_get_two_part_title ##### -->
+<para>
+
+</para>
+
+@self: 
+@Returns: 
+
+<!-- ##### FUNCTION hildon_app_get_zoom ##### -->
+<para>
+
+</para>
+
+@self: 
+@Returns: 
+
+<!-- ##### FUNCTION hildon_app_get_zoom_font ##### -->
+<para>
+
+</para>
+
+@self: 
+@Returns: 
+
+<!-- ##### FUNCTION hildon_app_new ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+<!-- ##### FUNCTION hildon_app_new_with_appview ##### -->
+<para>
+
+</para>
+
+@appview: 
+@Returns: 
+
+<!-- ##### FUNCTION hildon_app_set_appview ##### -->
+<para>
+
+</para>
+
+@self: 
+@appview: 
+
+<!-- ##### FUNCTION hildon_app_set_title ##### -->
+<para>
+
+</para>
+
+@self: 
+@newtitle: 
+
+<!-- ##### FUNCTION hildon_app_set_two_part_title ##### -->
+<para>
+
+</para>
+
+@self: 
+@istwoparttitle: 
+
+<!-- ##### FUNCTION hildon_app_set_zoom ##### -->
+<para>
+
+</para>
+
+@self: 
+@newzoom: 
+
+<!-- ##### FUNCTION hildon_appview_add_with_scrollbar ##### -->
+<para>
+
+</para>
+
+@self: 
+@child: 
+
+<!-- ##### FUNCTION hildon_appview_get_fullscreen ##### -->
+<para>
+
+</para>
+
+@self: 
+@Returns: 
+
+<!-- ##### FUNCTION hildon_appview_get_fullscreen_key_allowed ##### -->
+<para>
+
+</para>
+
+@self: 
+@Returns: 
+
+<!-- ##### FUNCTION hildon_appview_get_menu ##### -->
+<para>
+
+</para>
+
+@self: 
+@Returns: 
+
+<!-- ##### FUNCTION hildon_appview_get_title ##### -->
+<para>
+
+</para>
+
+@self: 
+@Returns: 
+
+<!-- ##### FUNCTION hildon_appview_get_toolbar ##### -->
+<para>
+
+</para>
+
+@self: 
+@Returns: 
+
+<!-- ##### FUNCTION hildon_appview_new ##### -->
+<para>
+
+</para>
+
+@title: 
+@Returns: 
+
+<!-- ##### FUNCTION hildon_appview_set_fullscreen ##### -->
+<para>
+
+</para>
+
+@self: 
+@fullscreen: 
+
+<!-- ##### FUNCTION hildon_appview_set_fullscreen_key_allowed ##### -->
+<para>
+
+</para>
+
+@self: 
+@allow: 
+
+<!-- ##### FUNCTION hildon_appview_set_title ##### -->
+<para>
+
+</para>
+
+@self: 
+@newname: 
+
+<!-- ##### FUNCTION hildon_appview_set_toolbar ##### -->
+<para>
+
+</para>
+
+@self: 
+@toolbar: 
+
+<!-- ##### FUNCTION hildon_file_chooser_dialog_new ##### -->
+<para>
+
+</para>
+
+@parent: 
+@action: 
+@Returns: 
+
+<!-- ##### FUNCTION hildon_file_chooser_dialog_new_with_properties ##### -->
+<para>
+
+</para>
+
+@parent: 
+@first_property: 
+@Varargs: 
+@Returns: 
+
+<!-- ##### FUNCTION hildon_file_selection_get_current_content_iter ##### -->
+<para>
+
+</para>
+
+@self: 
+@iter: 
+@Returns: 
+
+<!-- ##### FUNCTION hildon_file_selection_get_current_folder ##### -->
+<para>
+
+</para>
+
+@self: 
+@Returns: 
+
+<!-- ##### FUNCTION hildon_file_selection_get_current_folder_iter ##### -->
+<para>
+
+</para>
+
+@self: 
+@iter: 
+@Returns: 
+
+<!-- ##### FUNCTION hildon_file_selection_get_filter ##### -->
+<para>
+
+</para>
+
+@self: 
+@Returns: 
+
+<!-- ##### FUNCTION hildon_file_selection_get_mode ##### -->
+<para>
+
+</para>
+
+@self: 
+@Returns: 
+
+<!-- ##### FUNCTION hildon_file_selection_get_select_multiple ##### -->
+<para>
+
+</para>
+
+@self: 
+@Returns: 
+
+<!-- ##### FUNCTION hildon_file_selection_get_selected_paths ##### -->
+<para>
+
+</para>
+
+@self: 
+@Returns: 
+
+<!-- ##### FUNCTION hildon_file_selection_get_sort_key ##### -->
+<para>
+
+</para>
+
+@self: 
+@key: 
+@order: 
+
+<!-- ##### FUNCTION hildon_file_selection_hide_content_pane ##### -->
+<para>
+
+</para>
+
+@self: 
+
+<!-- ##### FUNCTION hildon_file_selection_new_with_model ##### -->
+<para>
+
+</para>
+
+@model: 
+@Returns: 
+
+<!-- ##### FUNCTION hildon_file_selection_select_all ##### -->
+<para>
+
+</para>
+
+@self: 
+
+<!-- ##### FUNCTION hildon_file_selection_select_path ##### -->
+<para>
+
+</para>
+
+@self: 
+@path: 
+@error: 
+@Returns: 
+
+<!-- ##### FUNCTION hildon_file_selection_set_current_folder ##### -->
+<para>
+
+</para>
+
+@self: 
+@folder: 
+@error: 
+@Returns: 
+
+<!-- ##### FUNCTION hildon_file_selection_set_filter ##### -->
+<para>
+
+</para>
+
+@self: 
+@filter: 
+
+<!-- ##### FUNCTION hildon_file_selection_set_mode ##### -->
+<para>
+
+</para>
+
+@self: 
+@mode: 
+
+<!-- ##### FUNCTION hildon_file_selection_set_select_multiple ##### -->
+<para>
+
+</para>
+
+@self: 
+@select_multiple: 
+
+<!-- ##### FUNCTION hildon_file_selection_set_sort_key ##### -->
+<para>
+
+</para>
+
+@self: 
+@key: 
+@order: 
+
+<!-- ##### FUNCTION hildon_file_selection_show_content_pane ##### -->
+<para>
+
+</para>
+
+@self: 
+
+<!-- ##### FUNCTION hildon_file_selection_unselect_all ##### -->
+<para>
+
+</para>
+
+@self: 
+
+<!-- ##### FUNCTION hildon_file_selection_unselect_path ##### -->
+<para>
+
+</para>
+
+@self: 
+@path: 
+
+<!-- ##### FUNCTION hildon_file_system_model_load_path ##### -->
+<para>
+
+</para>
+
+@model: 
+@path: 
+@iter: 
+@Returns: 
+
+<!-- ##### FUNCTION hildon_file_system_model_new_item ##### -->
+<para>
+
+</para>
+
+@model: 
+@parent: 
+@stub_name: 
+@extension: 
+@Returns: 
+
+<!-- ##### FUNCTION hildon_file_system_model_search_local_path ##### -->
+<para>
+
+</para>
+
+@model: 
+@path: 
+@iter: 
+@start_iter: 
+@recursive: 
+@Returns: 
+
+<!-- ##### FUNCTION hildon_file_system_model_search_path ##### -->
+<para>
+
+</para>
+
+@model: 
+@path: 
+@iter: 
+@start_iter: 
+@recursive: 
+@Returns: 
+
+<!-- ##### FUNCTION hildon_file_system_model_search_uri ##### -->
+<para>
+
+</para>
+
+@model: 
+@uri: 
+@iter: 
+@start_iter: 
+@recursive: 
+@Returns: 
+
+<!-- ##### FUNCTION hildon_find_replace_dialog_get_new_text ##### -->
+<para>
+
+</para>
+
+@dialog: 
+@Returns: 
+
+<!-- ##### FUNCTION hildon_font_selection_dialog_get_color ##### -->
+<para>
+
+</para>
+
+@fsd: 
+@Returns: 
+
+<!-- ##### FUNCTION hildon_font_selection_dialog_get_font ##### -->
+<para>
+
+</para>
+
+@fsd: 
+@Returns: 
+
+<!-- ##### FUNCTION hildon_font_selection_dialog_set_color ##### -->
+<para>
+
+</para>
+
+@fsd: 
+@color: 
+
+<!-- ##### FUNCTION hildon_get_password_dialog_get_password ##### -->
+<para>
+
+</para>
+
+@dialog: 
+@Returns: 
+
+<!-- ##### FUNCTION hildon_hwr_area_clear ##### -->
+<para>
+
+</para>
+
+@area: 
+
+<!-- ##### FUNCTION hildon_hwr_area_finish_training ##### -->
+<para>
+
+</para>
+
+@area: 
+@ch: 
+@Returns: 
+
+<!-- ##### FUNCTION hildon_hwr_area_get_text ##### -->
+<para>
+
+</para>
+
+@area: 
+@Returns: 
+
+<!-- ##### FUNCTION hildon_hwr_area_new ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+<!-- ##### FUNCTION hildon_hwr_area_send_text ##### -->
+<para>
+
+</para>
+
+@area: 
+@data: 
+@position: 
+@replace: 
+
+<!-- ##### FUNCTION hildon_hwr_area_start_training ##### -->
+<para>
+
+</para>
+
+@area: 
+
+<!-- ##### FUNCTION hildon_insert_object_dialog_get_mime_type ##### -->
+<para>
+
+</para>
+
+@dialog: 
+@Returns: 
+
+<!-- ##### FUNCTION hildon_insert_object_dialog_set_file ##### -->
+<para>
+
+</para>
+
+@dialog: 
+@Returns: 
+
+<!-- ##### FUNCTION hildon_note_new_cancel ##### -->
+<para>
+
+</para>
+
+@parent: 
+@description: 
+@Returns: 
+
+<!-- ##### FUNCTION hildon_set_password_dialog_get_password ##### -->
+<para>
+
+</para>
+
+@dialog: 
+@Returns: 
+
+<!-- ##### FUNCTION hildon_shorten_names_dialog_get_model ##### -->
+<para>
+
+</para>
+
+@dialog: 
+@Returns: 
+
+<!-- ##### FUNCTION hildon_telephone_editor_new_with_strings ##### -->
+<para>
+
+</para>
+
+@format: 
+@country: 
+@area: 
+@number: 
+@Returns: 
+

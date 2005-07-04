@@ -1,0 +1,85 @@
+<!-- ##### SECTION Title ##### -->
+HildonColorSelector
+
+<!-- ##### SECTION Short_Description ##### -->
+A widget for selecting a color.
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+#HildonColorSelector allows a selection of a color. #HildonColorSelector
+consists of a control that displays the default palette of 16 colors and
+a control that can be opened to select a custom color from a 16M color
+palette.
+</para>
+
+<para>
+Here's a simple example for using a color selector.
+
+<informalexample>
+<programlisting>
+
+GtkWidget *selector;
+GdkColor *color;
+gint result;
+
+selector = hildon_color_selector_new( GTK_WINDOW(gtk_widget_get_toplevel( data ) ));
+
+result = gtk_dialog_run( GTK_DIALOG ( selector ) );
+switch (result)
+  {
+    case GTK_RESPONSE_OK:
+      color = hildon_color_selector_get_color( HILDON_COLOR_SELECTOR( selector ) );
+      break;
+    default:
+      break;
+  }
+
+gtk_widget_destroy( selector );
+</programlisting>
+</informalexample>
+</para>
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+<!-- ##### STRUCT HildonColorSelectorPriv ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### STRUCT HildonColorSelector ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### FUNCTION hildon_color_selector_new ##### -->
+<para>
+
+</para>
+
+@parent: 
+@Returns: 
+
+
+<!-- ##### FUNCTION hildon_color_selector_get_color ##### -->
+<para>
+
+</para>
+
+@selector: 
+@Returns: 
+
+
+<!-- ##### FUNCTION hildon_color_selector_set_color ##### -->
+<para>
+
+</para>
+
+@selector: 
+@color: 
+
+

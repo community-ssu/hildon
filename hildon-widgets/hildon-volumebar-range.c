@@ -1,0 +1,227 @@
+/*
+ * This file is part of hildon-libs
+ *
+ * Copyright (C) 2005 Nokia Corporation.
+ *
+ * Contact: Luc Pionchon <luc.pionchon@nokia.com>
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public License
+ * as published by the Free Software Foundation; either version 2.1 of
+ * the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
+ * 02110-1301 USA
+ *
+ */
+
+/** 
+ * @file hildon-volumebar-range.c
+ *
+ * This file contains the implementation of the HildonVolumebarRange.
+ * This widget is an "workhorse" for #HildonVolumebar widget. 
+ * It is not designed to be used as a standalone widget.
+ *
+ * Purpose of this widget is to act as an "container" for GtkScale
+ * widget. #HildonVolumebarRange changes some event parameters so
+ * that #HildonVolumebar can meet it's specifications.
+ *
+ * Currently #HildonVolumebarRange models range of [0..100].
+ * 
+ */
+
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
+
+#include <gtk/gtkrange.h>
+#include <gdk/gdkkeysyms.h>
+#include "hildon-volumebar-range.h"
+
+#define VOLUMEBAR_RANGE_INITIAL_VALUE 50.0
+#define VOLUMEBAR_RANGE_MINIMUM_VALUE 0.0
+#define VOLUMEBAR_RANGE_MAXIMUM_VALUE 100.0
+#define VOLUMEBAR_RANGE_STEP_INCREMENT_VALUE 5.0
+#define VOLUMEBAR_RANGE_PAGE_INCREMENT_VALUE 5.0
+#define VOLUMEBAR_RANGE_PAGE_SIZE_VALUE 0.0
+
+static GtkScaleClass *parent_class;
+
+static void hildon_volumebar_range_class_init(HildonVolumebarRangeClass *  
+                                              volumerange_class);
+static void hildon_volumebar_range_init(HildonVolumebarRange *
+                                        volumerange);
+
+static gint hildon_volumebar_range_button_press_event(GtkWidget * widget,
+                                                      GdkEventButton *
+                                                      event);
+static gint hildon_volumebar_range_button_release_event(GtkWidget * widget,
+                                                        GdkEventButton *
+                                                        event);
+static gboolean hildon_volumebar_range_keypress(GtkWidget * widget,
+                                                GdkEventKey * event);
+
+GType 
+hildon_volumebar_range_get_type(void)
+{
+    static GType volumerange_type = 0;
+
+    if (!volumerange_type) {
+        static const GTypeInfo volumerange_info = {
+            sizeof(HildonVolumebarRangeClass),
+            NULL,       /* base_init */
+            NULL,       /* base_finalize */
+            (GClassInitFunc) hildon_volumebar_range_class_init,
+            NULL,       /* class_finalize */
+            NULL,       /* class_data */
+            sizeof(HildonVolumebarRange),
+            0,  /* n_preallocs */
+            (GInstanceInitFunc) hildon_volumebar_range_init,
+        };
+        volumerange_type = g_type_register_static(GTK_TYPE_SCALE,
+                                                  "HildonVolumebarRange",
+                                                  &volumerange_info, 0);
+    }
+    return volumerange_type;
+}
+
+static void 
+hildon_volumebar_range_class_init(HildonVolumebarRangeClass *
+				  volumerange_class)
+{
+    GtkWidgetClass *widget_class = GTK_WIDGET_CLASS(volumerange_class);
+
+    parent_class = g_type_class_peek_parent(volumerange_class);
+
+    widget_class->button_press_event =
+        hildon_volumebar_range_button_press_event;
+    widget_class->button_release_event =
+        hildon_volumebar_range_button_release_event;
+    widget_class->key_press_event = hildon_volumebar_range_keypress;
+
+    return;
+}
+
+static void 
+hildon_volumebar_range_init(HildonVolumebarRange * volumerange)
+{
+   
+  GTK_RANGE(volumerange)->has_stepper_a = TRUE;
+  GTK_RANGE(volumerange)->has_stepper_d = TRUE;
+  
+  return;
+}
+
+static
+gboolean hildon_volumebar_range_keypress(GtkWidget * widget,
+                                         GdkEventKey * event)
+{
+    if (GTK_RANGE (widget)->orientation == GTK_ORIENTATION_HORIZONTAL)
+      {
+        if (event->keyval == GDK_Up || event->keyval == GDK_Down) {
+          return FALSE;
+        }
+      }
+    else
+      {
+        if (event->keyval == GDK_Left || event->keyval == GDK_Right) {
+          return FALSE;
+        }
+      }
+
+    return ((GTK_WIDGET_CLASS(parent_class)->key_press_event) (widget,
+                                                               event));
+}
+
+GtkWidget *
+hildon_volumebar_range_new(GtkOrientation orientation)
+{
+    GtkAdjustment * adjustment = GTK_ADJUSTMENT (gtk_adjustment_new (VOLUMEBAR_RANGE_INITIAL_VALUE,
+					      VOLUMEBAR_RANGE_MINIMUM_VALUE,
+					      VOLUMEBAR_RANGE_MAXIMUM_VALUE,
+					      VOLUMEBAR_RANGE_STEP_INCREMENT_VALUE,
+					      VOLUMEBAR_RANGE_PAGE_INCREMENT_VALUE,
+					      VOLUMEBAR_RANGE_PAGE_SIZE_VALUE));
+    HildonVolumebarRange *self =
+        g_object_new(HILDON_VOLUMEBAR_RANGE_TYPE,
+		     "adjustment", adjustment,
+		     NULL);
+
+    GTK_RANGE(self)->orientation = orientation;
+
+    /* invert vertical range */
+    gtk_range_set_inverted(GTK_RANGE(self),
+                           (orientation == GTK_ORIENTATION_VERTICAL));
+
+    return GTK_WIDGET(self);
+}
+
+gdouble 
+hildon_volumebar_range_get_level(HildonVolumebarRange * self)
+{
+    g_return_val_if_fail(self, -1.0);
+    return GTK_RANGE (self)->adjustment->value;
+}
+
+void 
+hildon_volumebar_range_set_level(HildonVolumebarRange * self,
+				 gdouble level)
+{
+    gdouble newlevel;
+    g_return_if_fail(self);
+   
+    /* Although the range can clamp by itself, we do the clamping
+     * here to prevent sending value-changed signal when someone
+     * unsuccessfully tries to set level to illegal value. */
+    newlevel = CLAMP (level, GTK_RANGE (self)->adjustment->lower,
+		      GTK_RANGE (self)->adjustment->upper);
+
+    /* Check that value is actually changed. Note that it's not safe to
+     * just compare if floats are equivalent or not */
+    if (ABS(GTK_RANGE (self)->adjustment->value - newlevel) > 0.001) {
+        /* This might be a bit faster because this skips
+	 * gtkadjustment's own clamping and check if value has
+	 * indeed changed. */
+        GTK_RANGE (self)->adjustment->value = newlevel;
+        gtk_adjustment_value_changed(GTK_RANGE (self)->adjustment);
+    }
+}
+
+static gint 
+hildon_volumebar_range_button_press_event(GtkWidget * widget,
+					  GdkEventButton *
+					  event)
+{
+    gboolean result = FALSE;
+
+    event->button = event->button == 1 ? 2 : event->button;
+    if (GTK_WIDGET_CLASS(parent_class)->button_press_event) {
+        result =
+            GTK_WIDGET_CLASS(parent_class)->button_press_event(widget,
+                                                               event);
+    }
+    return result;
+}
+
+static gint 
+hildon_volumebar_range_button_release_event(GtkWidget * widget,
+					    GdkEventButton *
+					    event)
+{
+    gboolean result = FALSE;
+
+    event->button = event->button == 1 ? 2 : event->button;
+    if (GTK_WIDGET_CLASS(parent_class)->button_release_event) {
+        result =
+            GTK_WIDGET_CLASS(parent_class)->button_release_event(widget,
+                                                                 event);
+    }
+    return result;
+}

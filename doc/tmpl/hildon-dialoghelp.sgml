@@ -1,0 +1,24 @@
+<!-- ##### SECTION Title ##### -->
+hildon-dialoghelp
+
+<!-- ##### SECTION Short_Description ##### -->
+HildonDialogHelp is used to show a normal dialog which contains a button to open a help if so is needed.
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+HildonDialogHelp is used to show a normal dialog which contains a button to open a help if so is needed.
+</para>
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+<!-- ##### FUNCTION gtk_dialog_help_enable ##### -->
+<para>
+
+</para>
+
+@dialog: 
+
+

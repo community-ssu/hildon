@@ -1,0 +1,75 @@
+/*
+ * This file is part of hildon-libs
+ *
+ * Copyright (C) 2005 Nokia Corporation.
+ *
+ * Contact: Luc Pionchon <luc.pionchon@nokia.com>
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public License
+ * as published by the Free Software Foundation; either version 2.1 of
+ * the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
+ * 02110-1301 USA
+ *
+ */
+
+/*
+ * @file hildon-grid-item-private.h
+ *
+ * This file is a private header file for he implementation of
+ * HildonGridItem. HildonGridItem is an item mainly used in HildonGrid. It
+ * has an icon, emblem and a label. This private header file exists so that
+ * grid can call semi-public functions of an item.
+ */
+
+#ifndef HILDON_GRID_ITEM_PRIVATE_H_
+#define HILDON_GRID_ITEM_PRIVATE_H_
+
+#include <hildon-widgets/hildon-grid-item.h>
+
+G_BEGIN_DECLS
+    void _hildon_grid_item_set_label(HildonGridItem * item,
+                                     const gchar * label);
+
+void _hildon_grid_item_set_icon_size(HildonGridItem * item,
+                                     HildonGridItemIconSizeType icon_size);
+
+void _hildon_grid_item_set_label_pos(HildonGridItem * item,
+                                     HildonGridPositionType label_pos);
+void _hildon_grid_item_set_emblem_size(HildonGridItem * item,
+                                       const gint emblem_size);
+
+void _hildon_grid_item_set_label_spacing(HildonGridItem * item,
+                                         const gint hspacing,
+                                         const gint vspacing);
+
+/*
+ * These are not needed...
+ *
+const gchar *_hildon_grid_item_get_label    (HildonGridItem *item);
+
+const HildonGridItemIconSizeType _hildon_grid_item_get_icon_size
+                                            (HildonGridItem *item);
+
+const HildonGridPositionType _hildon_grid_item_set_label_pos
+                                            (HildonGridItem *item);
+
+const gint _hildon_grid_item_set_emblem_size    (HildonGridItem *item);
+
+const gint _hildon_grid_item_get_label_spacing  (HildonGridItem *item,
+                                                 gint           *hspacing,
+                                                 gint           *vspacing);
+ *
+ */
+
+G_END_DECLS
+#endif /* ifndef HILDON_GRID_ITEM_PRIVATE_H_ */

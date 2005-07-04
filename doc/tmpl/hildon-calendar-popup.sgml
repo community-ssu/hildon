@@ -1,0 +1,97 @@
+<!-- ##### SECTION Title ##### -->
+HildonCalendarPopup
+
+<!-- ##### SECTION Short_Description ##### -->
+#HildonCalendarPopup is a dialog which contains a GtkCalendar.
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+#HildonCalendarPopup is a dialog which contains a GtkCalendar.
+It also contains arrow buttons for changing month/year. The
+earliest possible date is 1/1/1980 and the latest date 31/12/2100.
+If navigating with keyboard to a date that is not in the current
+month the calendar moves to the corresponding month. If the new
+date would be unallowed then an information banner will be shown.
+
+The usage of CalendarPopup is shown in the following code. This function
+should be connect to eg. button-press-event.
+<informalexample>
+<programlisting>
+...
+  gint y, m, d;
+  GtkWidget *parent, *popup;
+  
+  /* get current date 
+     into &amp;y, &amp;m, &amp;d... */
+  
+  gtk_widget_get_ancestor(GTK_WIDGET(data), GTK_TYPE_WINDOW);
+  popup = hildon_calendar_popup_new(GTK_WINDOW (parent), y, m, d);
+  
+  result = gtk_dialog_run(GTK_DIALOG(popup));
+  switch(result)
+  {
+    case GTK_RESPONSE_OK:
+    case GTK_RESPONSE_ACCEPT:
+  
+    hildon_calendar_popup_get_date(HILDON_CALENDAR_POPUP(popup), &amp;y, &amp;m, &amp;d);
+
+    /* here set the new date*/
+  }
+  gtk_widget_destroy(popup);
+...
+</programlisting>
+</informalexample>
+</para>
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+#GtkCalendar
+</para>
+
+<!-- ##### STRUCT HildonCalendarPopup ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### MACRO HILDON_CALENDAR_POPUP_TYPE ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION hildon_calendar_popup_new ##### -->
+<para>
+
+</para>
+
+@parent: 
+@year: 
+@month: 
+@day: 
+@Returns: 
+
+
+<!-- ##### FUNCTION hildon_calendar_popup_set_date ##### -->
+<para>
+
+</para>
+
+@cal: 
+@year: 
+@month: 
+@day: 
+
+
+<!-- ##### FUNCTION hildon_calendar_popup_get_date ##### -->
+<para>
+
+</para>
+
+@cal: 
+@year: 
+@month: 
+@day: 
+
+

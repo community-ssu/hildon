@@ -1,0 +1,101 @@
+<!-- ##### SECTION Title ##### -->
+HildonFontSelectionDialog
+
+<!-- ##### SECTION Short_Description ##### -->
+A widget is used to select a font. (Selection is made by user)
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+Font selection can be made using this widget. User can select e.g.
+font name, size, style, etc. User can also preview his/her selection.
+
+<informalexample>
+<programlisting>
+
+HildonFontSelectionDialog *hfsd = hildon_font_selection_dialog_new( NULL, NULL );
+  gtk_widget_show_all(hfsd);
+
+response = gtk_dialog_run(GTK_DIALOG(hfsd));
+
+if(response == -5)
+{
+  if(list)
+  pango_attr_list_unref( list );i
+  list = hildon_font_selection_dialog_get_font(
+  											HILDON_FONT_SELECTION_DIALOG(hfsd) );
+  gtk_label_set_attributes( GTK_LABEL(label), list );
+}
+gtk_widget_destroy(hfsd);
+
+</programlisting>
+</informalexample>
+
+</para>
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+<!-- ##### ENUM HildonPositioning ##### -->
+<para>
+
+</para>
+
+@HILDON_POSITIONING_NORMAL: 
+@HILDON_POSITIONING_SUPER: 
+@HILDON_POSITIONING_SUB: 
+
+<!-- ##### ENUM HildonFontFaceType ##### -->
+<para>
+
+</para>
+
+@HILDON_FONT_FACE_NORMAL: 
+@HILDON_FONT_FACE_ITALIC: 
+@HILDON_FONT_FACE_BOLD: 
+@HILDON_FONT_FACE_BOLD_ITALIC: 
+
+<!-- ##### STRUCT HildonFontSelectionDialog ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### FUNCTION hildon_font_selection_dialog_new ##### -->
+<para>
+
+</para>
+
+@parent: 
+@title: 
+@Returns: 
+
+
+<!-- ##### FUNCTION hildon_font_selection_dialog_set_font ##### -->
+<para>
+
+</para>
+
+@fsd: 
+@list: 
+
+
+<!-- ##### FUNCTION hildon_font_selection_dialog_get_preview_text ##### -->
+<para>
+
+</para>
+
+@fsd: 
+@Returns: 
+
+
+<!-- ##### FUNCTION hildon_font_selection_dialog_set_preview_text ##### -->
+<para>
+
+</para>
+
+@fsd: 
+@text: 
+
+

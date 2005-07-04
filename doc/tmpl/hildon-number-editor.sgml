@@ -1,0 +1,74 @@
+<!-- ##### SECTION Title ##### -->
+HildonNumberEditor
+
+<!-- ##### SECTION Short_Description ##### -->
+HildonNumberEditor is used to set a number.
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+HildonNumberEditor is used to set a number from a specific range. There's two buttons to scroll the value in number field, also manual input is possible.
+
+<informalexample>
+<programlisting>
+  number_editor = hildon_number_editor_new (-250, 500);
+  hildon_number_editor_set_range (number_editor, 0, 100);
+</programlisting>
+</informalexample>
+</para>
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+<!-- ##### STRUCT HildonNumberEditor ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### FUNCTION hildon_number_editor_new ##### -->
+<para>
+
+</para>
+
+@min: 
+@max: 
+@Returns: 
+
+
+<!-- ##### FUNCTION hildon_number_editor_set_range ##### -->
+<para>
+
+</para>
+
+@editor: 
+@min: 
+@max: 
+
+
+<!-- ##### FUNCTION hildon_number_editor_get_value ##### -->
+<para>
+
+</para>
+
+@editor: 
+@Returns: 
+
+
+<!-- ##### FUNCTION hildon_number_editor_set_value ##### -->
+<para>
+
+</para>
+
+@editor: 
+@value: 
+
+
+<!-- ##### SIGNAL HildonNumberEditor::activate ##### -->
+<para>
+
+</para>
+
+@hildonnumbereditor: the object which received the signal.
+

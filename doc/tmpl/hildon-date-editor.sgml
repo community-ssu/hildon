@@ -1,0 +1,81 @@
+<!-- ##### SECTION Title ##### -->
+HildonDateEditor
+
+<!-- ##### SECTION Short_Description ##### -->
+HildonDateEditor is a simple widget with three entry field (day, month,
+year) and a icon (eventbox) the clicking of which opens up a
+HildonCalendarPopup.
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+HildonDateEditor is a simple widget with three entry field (day, month,
+year) and a icon (eventbox) the clicking of which opens up a
+HildonCalendarPopup.
+
+<informalexample>
+<programlisting>
+gint y, m, d;
+..
+date_editor = hildon_date_editor_new();
+..
+hildon_date_editor_get_date(date_editor, &amp;y, &amp;m, &amp;d);
+..
+</programlisting>
+</informalexample>
+</para>
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+<!-- ##### MACRO HILDON_DATE_EDITOR_TYPE ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### STRUCT HildonDateEditor ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### FUNCTION hildon_date_editor_new ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### FUNCTION hildon_date_editor_set_date ##### -->
+<para>
+
+</para>
+
+@date: 
+@year: 
+@month: 
+@day: 
+
+
+<!-- ##### FUNCTION hildon_date_editor_get_date ##### -->
+<para>
+
+</para>
+
+@date: 
+@year: 
+@month: 
+@day: 
+
+
+<!-- ##### SIGNAL HildonDateEditor::activate ##### -->
+<para>
+
+</para>
+
+@hildondateeditor: the object which received the signal.
+

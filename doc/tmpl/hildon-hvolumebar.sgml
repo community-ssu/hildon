@@ -1,0 +1,45 @@
+<!-- ##### SECTION Title ##### -->
+HildonHVolumebar
+
+<!-- ##### SECTION Short_Description ##### -->
+A widget that displays a horizontal volume bar.
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+The #HildonHVolumebar widget displays a horizontal volume bar that allows
+increasing or decreasing volume within a pre-defined range, and muting
+the volume by clicking on a specific mute icon.
+</para>
+
+<para>
+Here's a simple example that creates a horizontal volume bar and connects
+both its signals:
+
+<informalexample>
+<programlisting>
+GtkWidget *volbar = hildon_hvolumebar_new ();
+g_signal_connect( G_OBJECT(volbar), "mute_toggled", G_CALLBACK(mute_toggle), NULL );
+g_signal_connect( G_OBJECT(volbar), "level_changed", G_CALLBACK(level_change), NULL );
+</programlisting>
+</informalexample>
+</para>
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+#HildonVVolumebar
+</para>
+
+<!-- ##### STRUCT HildonHVolumebar ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### FUNCTION hildon_hvolumebar_new ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+

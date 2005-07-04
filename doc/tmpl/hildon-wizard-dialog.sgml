@@ -1,0 +1,61 @@
+<!-- ##### SECTION Title ##### -->
+HildonWizardDialog
+
+<!-- ##### SECTION Short_Description ##### -->
+#HildonWizardDialog is a widget to create eg. a guided installation
+process.
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+#HildonWizardDialog is a widget to create eg. a guided installation
+process. The dialog has four buttons to be used. It's parameters are
+the dialogs parent, the wizard dialog name, which is a part of title.
+Last parameter is a #GtkNotebook, which contains the content of wizard.
+This content is created by the application developer.
+
+<informalexample>
+<programlisting>
+
+hildon_wizard_dialog_new (parent, wizard_name, notebook);
+
+</informalexample>
+</programexample>
+
+Using of the API is very simple, it has only one function to create it
+and the rest of it is handled by developers notebook.
+Also the response is returned, either cancel or finnish.
+Next and previous buttons are handled by the wizard dialog it self, by
+switching the page either forward or backward in the notebook.
+
+</para>
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+<!-- ##### STRUCT HildonWizardDialogPrivate ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### STRUCT HildonWizardDialog ##### -->
+<para>
+
+</para>
+
+@parent: 
+@priv: 
+
+<!-- ##### FUNCTION hildon_wizard_dialog_new ##### -->
+<para>
+
+</para>
+
+@parent: 
+@wizard_name: 
+@notebook: 
+@Returns: 
+
+

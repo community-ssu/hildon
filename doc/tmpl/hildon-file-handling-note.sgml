@@ -1,0 +1,110 @@
+<!-- ##### SECTION Title ##### -->
+HildonFileHandlingNote
+
+<!-- ##### SECTION Short_Description ##### -->
+Notification presented when a move operation is in progress.
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+Notification presented when a move operation is in progress.
+The notification uses a progress bar to indicate the progress of the operation.
+For operation containing multiple items, a separator progress bar is shown
+for each item. The notification has single button, which allowes to stop
+the action.
+
+<informalexample>
+<programlisting>
+
+GtkWidget *file_note;
+file_note = hildon_file_handling_note_new_moving (GTK_WINDOW (parent));
+
+hildon_file_handling_note_set_fraction( 
+						HILDON_FILE_HANDLING_NOTE (file_note), 0.7);
+hildon_file_handling_note_set_counter_and_name (
+						HILDON_FILE_HANDLING_NOTE (file_note), 1, 2, "bar.txt");
+
+gtk_dialog_run( GTK_DIALOG( file_note ));
+gtk_widget_destroy( GTK_WIDGET( file_note ));
+
+</programlisting>
+</informalexample>
+
+</para>
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+<!-- ##### STRUCT HildonFileHandlingNote ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### FUNCTION hildon_file_handling_note_new_moving ##### -->
+<para>
+
+</para>
+
+@parent: 
+@Returns: 
+
+
+<!-- ##### FUNCTION hildon_file_handling_note_new_deleting ##### -->
+<para>
+
+</para>
+
+@parent: 
+@Returns: 
+
+
+<!-- ##### FUNCTION hildon_file_handling_note_new_opening ##### -->
+<para>
+
+</para>
+
+@parent: 
+@Returns: 
+
+
+<!-- ##### FUNCTION hildon_file_handling_note_new_saving ##### -->
+<para>
+
+</para>
+
+@parent: 
+@Returns: 
+
+
+<!-- ##### FUNCTION hildon_file_handling_note_set_fraction ##### -->
+<para>
+
+</para>
+
+@note: 
+@frac: 
+
+
+<!-- ##### FUNCTION hildon_file_handling_note_set_counter_and_name ##### -->
+<para>
+
+</para>
+
+@note: 
+@current: 
+@maximum: 
+@name: 
+
+
+<!-- ##### FUNCTION hildon_file_handling_note_set_name ##### -->
+<para>
+
+</para>
+
+@note: 
+@name: 
+
+
