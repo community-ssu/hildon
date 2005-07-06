@@ -9,6 +9,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2005-02-15 16:15+0200\n"
 "PO-Revision-Date: 2005-03-13 12:00+0200\n"
+"Last-Translator: \n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -61,6 +62,8 @@ msgstr "OK"
 msgid "ecdg_bd_colour_selector_cancel"
 msgstr "Cancel"
 
+msgid "ecdg_bd_colour_selector_modify" 	 
+msgstr "Modify"
 
 msgid "ecdg_bd_5bit_colour_selector_ok"
 msgstr "OK"
@@ -155,7 +158,7 @@ msgstr "(no details)"
 #: ../hildon-widgets/hildon-file-details-dialog.c:381
 #: ../hildon-widgets/hildon-file-details-dialog.c:411
 msgid "sfil_ti_file_details"
-msgstr "File details"
+msgstr "Details"
 
 #: ../hildon-widgets/hildon-file-details-dialog.c:466
 msgid "ckdg_va_properties_size_bytes"
@@ -165,41 +168,90 @@ msgstr "%d B"
 msgid "ckdg_va_properties_size_kb"
 msgstr "%d kB"
 
+# hildon-file-handling-note.c 	 
+msgid "sfil_nw_moving_file" 	 
+msgstr "Moving\n%s" 	 
+  	 
+msgid "sfil_bd_moving_file" 	 
+msgstr "Cancel" 	 
+  	 
+msgid "docm_nw_moving_files" 	 
+msgstr "Moving %d/%d\n%s" 	 
+  	 
+msgid "docm_bd_moving_files" 	 
+msgstr "Stop" 	 
+  	 
+msgid "docm_nw_saving_file" 	 
+msgstr "Saving\n%s" 	 
+  	 
+msgid "docm_bd_saving_file" 	 
+msgstr "Cancel" 	 
+  	 
+msgid "docm_nw_saving_files" 	 
+msgstr "Saving %d/%d\n%s" 	 
+  	 
+msgid "docm_bd_saving_files" 	 
+msgstr "Stop" 	 
+  	 
+msgid "docm_nw_opening_file" 	 
+msgstr "Opening\n%s" 	 
+  	 
+msgid "docm_bd_opening_file" 	 
+msgstr "Cancel" 	 
+  	 
+msgid "docm_nw_opening_files" 	 
+msgstr "Opening %d/%d\n%s" 	 
+  	 
+msgid "docm_bd_opening_files" 	 
+msgstr "Stop" 	 
+  	 
+msgid "docm_nw_deleting_file" 	 
+msgstr "Deleting\n%s" 	 
+  	 
+msgid "docm_bd_deleting_file" 	 
+msgstr "Cancel" 	 
+  	 
+msgid "docm_nw_deleting_files" 	 
+msgstr "Deleting %d/%d\n%s" 	 
+  	 
+msgid "docm_bd_deleting_files" 	 
+msgstr "Stop"
+
 #: ../hildon-widgets/hildon-time-picker.c:487
 msgid "ecdg_bd_time_picker_close"
 msgstr "Close"
 
 #: ../hildon-widgets/hildon-font-selection-dialog.c:228
 msgid "ecdg_fi_font_font"
-msgstr "Font face:"
+msgstr "Font face"
 
 #: ../hildon-widgets/hildon-font-selection-dialog.c:238
 msgid "ecdg_fi_font_size"
-msgstr "Font size:"
+msgstr "Font size"
 
 #: ../hildon-widgets/hildon-font-selection-dialog.c:270
 msgid "ecdg_fi_font_color_selector"
-msgstr "Color:"
+msgstr "Colour"
 
 #: ../hildon-widgets/hildon-font-selection-dialog.c:280
 msgid "ecdg_fi_font_bold"
-msgstr "Bold:"
+msgstr "Bold"
 
 #: ../hildon-widgets/hildon-font-selection-dialog.c:291
 msgid "ecdg_fi_font_italic"
-msgstr "Italic:"
+msgstr "Italic"
 
 #: ../hildon-widgets/hildon-font-selection-dialog.c:301
 msgid "ecdg_fi_font_underline"
-msgstr "Underline:"
+msgstr "Underline"
 
 #: ../hildon-widgets/hildon-font-selection-dialog.c:315
 msgid "ecdg_fi_font_strikethrough"
-msgstr "Strikethrough:"
+msgstr "Strikethrough"
 
 #: ../hildon-widgets/hildon-font-selection-dialog.c:324
 msgid "ecdg_fi_font_special"
-msgstr "Positioning:"
+msgstr "Positioning"
 
 #: ../hildon-widgets/hildon-font-selection-dialog.c:335
 msgid "ecdg_ti_font_dialog_style"
@@ -249,25 +301,8 @@ msgstr "Superscript"
 msgid "ecdg_va_font_printpos_3"
 msgstr "Subscript"
 
-#: ../hildon-widgets/hildon-get-password-dialog.c:44
-msgid "ecdg_fi_verify_pwd_enter_pwd"
-msgstr "Enter password:"
-
-#: ../hildon-widgets/hildon-get-password-dialog.c:45
-msgid "ecdg_bd_verify_password_dialog_ok"
-msgstr "OK"
-
-#: ../hildon-widgets/hildon-get-password-dialog.c:46
-msgid "ecdg_bd_verify_password_dialog_cancel"
-msgstr "Cancel"
-
-#: ../hildon-widgets/hildon-get-password-dialog.c:47
-msgid "ecdg_bd_verify_password"
-msgstr "Password protected"
-
-#: ../hildon-widgets/hildon-get-password-dialog.c:48
-msgid "ecdg_ti_get_old_password"
-msgstr "Enter current password"
+msgid "ecdg_va_font_size_trailer"
+msgstr "pt"
 
 #: ../hildon-widgets/hildon-insert-object-dialog.c:127
 msgid "ckdg_ti_insert_insert_objec"
@@ -285,26 +320,6 @@ msgstr "Insert existing"
 msgid "ckdg_bd_insert_cancel"
 msgstr "Cancel"
 
-#: ../hildon-widgets/hildon-name-password-dialog.c:68
-msgid "frw_ti_get_user_name_and_pwd"
-msgstr "Enter user name and password"
-
-#: ../hildon-widgets/hildon-name-password-dialog.c:72
-msgid "frw_bd_get_user_name_and_pwd_ok"
-msgstr "OK"
-
-#: ../hildon-widgets/hildon-name-password-dialog.c:76
-msgid "frw_bd_get_user_name_and_pwd_cancel"
-msgstr "Cancel"
-
-#: ../hildon-widgets/hildon-name-password-dialog.c:82
-msgid "frw_ti_get_user_name_and_pwd_enter_user_name"
-msgstr "Enter user name:"
-
-#: ../hildon-widgets/hildon-name-password-dialog.c:91
-msgid "frw_ti_get_user_name_and_pwd_enter_pwd"
-msgstr "Enter password:"
-
 #: ../hildon-widgets/hildon-number-editor.c:367
 #, c-format
 msgid "Ckct_ib_maximum_value"
@@ -318,71 +333,7 @@ msgstr "Minimum value is %d"
 #: ../hildon-widgets/hildon-number-editor.c:378
 #, c-format
 msgid "Ckct_ib_set_a_value_within_range"
-msgstr "Set a value between %d and %d"
-
-#: ../hildon-widgets/hildon-set-password-dialog.c:179
-msgid "ckdg_fi_dialog_c_passwd_new_pwd"
-msgstr "New password:"
-
-#: ../hildon-widgets/hildon-set-password-dialog.c:180
-msgid "ckdg_fi_dialog_c_passwd_ver_pwd"
-msgstr "Verify new password:"
-
-#: ../hildon-widgets/hildon-set-password-dialog.c:188
-msgid "ckdg_fi_dialog_c_passwd_pwd_protect"
-msgstr "Password protected:"
-
-#: ../hildon-widgets/hildon-set-password-dialog.c:204
-msgid "ecdg_fi_set_passwd_enter_pwd"
-msgstr "New password:"
-
-#: ../hildon-widgets/hildon-set-password-dialog.c:205
-msgid "ecdg_fi_set_passwd_confirm"
-msgstr "Verify new password:"
-
-#: ../hildon-widgets/hildon-set-password-dialog.c:258
-msgid "ckdg_ti_dialog_c_passwd_change_password"
-msgstr "Change password"
-
-#: ../hildon-widgets/hildon-set-password-dialog.c:259
-msgid "ecdg_ti_set_password"
-msgstr "Set password"
-
-#: ../hildon-widgets/hildon-set-password-dialog.c:264
-msgid "ckdg_bd_change_password_dialog_ok"
-msgstr "OK"
-
-#: ../hildon-widgets/hildon-set-password-dialog.c:265
-msgid "ecdg_bd_set_password_dialog_ok"
-msgstr "OK"
-
-#: ../hildon-widgets/hildon-set-password-dialog.c:269
-msgid "ckdg_bd_change_password_dialog_cancel"
-msgstr "Cancel"
-
-#: ../hildon-widgets/hildon-set-password-dialog.c:270
-msgid "ecdg_bd_set_password_dialog_cancel"
-msgstr "Cancel"
-
-#: ../hildon-widgets/hildon-set-password-dialog.c:362
-msgid "ckdg_nc_dialog_c_passwd_remove_pwd"
-msgstr "Remove password protection?"
-
-#: ../hildon-widgets/hildon-set-password-dialog.c:365
-msgid "ckdg_bd_dialog_c_passwd_remove_button"
-msgstr "Remove"
-
-#: ../hildon-widgets/hildon-set-password-dialog.c:423
-msgid "ecdg_ib_password_is_empty"
-msgstr "Enter a password"
-
-#: ../hildon-widgets/hildon-set-password-dialog.c:423
-msgid "ecdg_ib_passwords_do_not_match"
-msgstr "Passwords do not match"
-
-#: ../hildon-widgets/hildon-set-password-dialog.c:423
-msgid "ckdg_ib_dialog_c_passwd_unmatched_pwd"
-msgstr "Passwords do not match"
+msgstr "Value must be between %d and %d"
 
 #: ../hildon-widgets/hildon-sort-dialog.c:94
 msgid "ckdg_ti_sort"
@@ -402,7 +353,7 @@ msgstr "Descending"
 
 #: ../hildon-widgets/hildon-sort-dialog.c:111
 msgid "ckdg_fi_sort_order"
-msgstr "Sorting order:"
+msgstr "Order:"
 
 #: ../hildon-widgets/hildon-sort-dialog.c:123
 msgid "ckdg_bd_sort_dialog_ok"
@@ -436,3 +387,143 @@ msgstr "Next"
 msgid "Ecdg_bd_wizard_finish"
 msgstr "Finish"
 
+#: ../hildon-widgets/hildon-get-password-dialog.h
+msgid "ecdg_ti_get_old_password"
+msgstr "Current password"
+
+#: ../hildon-widgets/hildon-get-password-dialog.h
+msgid "ecdg_fi_get_old_pwd_enter_pwd"
+msgstr "Password:"
+
+#: ../hildon-widgets/hildon-get-password-dialog.h
+msgid "ecdg_bd_get_old_password_dialog_ok"
+msgstr "OK"
+
+#: ../hildon-widgets/hildon-get-password-dialog.h
+msgid "ecdg_bd_get_old_password_dialog_cancel"
+msgstr "Cancel"
+
+#: ../hildon-widgets/hildon-get-password-dialog.h
+msgid "ecdg_ti_verify_password"
+msgstr "Password protected"
+
+#: ../hildon-widgets/hildon-get-password-dialog.h
+msgid "ecdg_fi_verify_pwd_enter_pwd"
+msgstr "Password:"
+
+#: ../hildon-widgets/hildon-get-password-dialog.h
+msgid "ecdg_bd_verify_password_dialog_ok"
+msgstr "OK"
+
+#: ../hildon-widgets/hildon-get-password-dialog.h
+msgid "ecdg_bd_verify_password_dialog_cancel"
+msgstr "Cancel"
+
+#: ../hildon-widgets/hildon-name-password-dialog.h
+msgid "frw_ti_get_user_name_and_pwd"
+msgstr "User name and password"
+
+#: ../hildon-widgets/hildon-name-password-dialog.h
+msgid "frw_ti_get_user_name_and_pwd_enter_user_name"
+msgstr "User name:"
+
+#: ../hildon-widgets/hildon-name-password-dialog.h
+msgid "frw_ti_get_user_name_and_pwd_enter_pwd"
+msgstr "Password:"
+
+#: ../hildon-widgets/hildon-name-password-dialog.h
+msgid "frw_bd_get_user_name_and_pwd_ok"
+msgstr "OK"
+
+#: ../hildon-widgets/hildon-name-password-dialog.h
+msgid "frw_bd_get_user_name_and_pwd_cancel"
+msgstr "Cancel"
+
+#: ../hildon-widgets/hildon-set-password-dialog.h
+msgid "ecdg_ti_set_password"
+msgstr "Set password"
+
+#: ../hildon-widgets/hildon-set-password-dialog.h
+msgid "ecdg_fi_set_passwd_enter_pwd"
+msgstr "New password:"
+
+#: ../hildon-widgets/hildon-set-password-dialog.h
+msgid "ecdg_fi_set_passwd_confirm"
+msgstr "Verify password:"
+
+#: ../hildon-widgets/hildon-set-password-dialog.h
+msgid "ecdg_bd_set_password_dialog_ok"
+msgstr "OK"
+
+#: ../hildon-widgets/hildon-set-password-dialog.h
+msgid "ecdg_bd_set_password_dialog_cancel"
+msgstr "Cancel"
+
+#: ../hildon-widgets/hildon-set-password-dialog.h
+msgid "ckdg_ti_dialog_c_passwd_change_password"
+msgstr "Change password"
+
+#: ../hildon-widgets/hildon-set-password-dialog.h
+msgid "ckdg_fi_dialog_c_passwd_pwd_protect"
+msgstr "Password protected:"
+
+#: ../hildon-widgets/hildon-set-password-dialog.h
+msgid "ckdg_fi_dialog_c_passwd_new_pwd"
+msgstr "New password:"
+
+#: ../hildon-widgets/hildon-set-password-dialog.h
+msgid "ckdg_fi_dialog_c_passwd_ver_pwd"
+msgstr "Verify new password:"
+
+#: ../hildon-widgets/hildon-set-password-dialog.h
+msgid "ckdg_bd_change_password_dialog_ok"
+msgstr "OK"
+
+#: ../hildon-widgets/hildon-set-password-dialog.h
+msgid "ckdg_bd_change_password_dialog_cancel"
+msgstr "Cancel"
+
+#: ../hildon-widgets/hildon-set-password-dialog.h
+msgid "ecdg_ib_passwords_do_not_match"
+msgstr "Passwords do not match"
+
+#: ../hildon-widgets/hildon-set-password-dialog.h
+msgid "ecdg_ib_password_is_empty"
+msgstr "Enter a password"
+
+#: ../hildon-widgets/hildon-set-password-dialog.h
+msgid "ckdg_nc_dialog_c_passwd_remove_pwd"
+msgstr "Remove password protection?"
+
+#: ../hildon-widgets/hildon-set-password-dialog.h
+msgid "ckdg_bd_dialog_c_passwd_remove_button"
+msgstr "Remove"
+
+#: ../hildon-widgets/hildon-set-password-dialog.h
+msgid "ckdg_bd_dialog_c_passwd_cancel_button"
+msgstr "Cancel"
+
+msgid "Ckct_ib_min_allowed_duration_hts"
+msgstr "Minimum allowed duration is %02d:%02d:%02d"
+
+msgid "Ckct_ib_max_allowed_duration_hts"
+msgstr "Maximum allowed duration is %02d:%02d:%02d"
+
+msgid "Ckct_wi_range_separator"
+msgstr "-"
+
+msgid "Ecdg_ti_date_editor_separator"
+msgstr "/"
+
+msgid "Ckct_ib_date_does_not_exist"
+msgstr "Date does not exist"
+
+msgid "Ecdg_ti_time_editor_separator"
+msgstr ":"
+
+msgid "Ecdg_ti_time_picker_separator"
+msgstr ":"
+
+# determines the first day of the week (0 for Sunday, 1 for Monday etc.)
+msgid "week_start"
+msgstr "0"

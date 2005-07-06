@@ -65,10 +65,12 @@ HildonNumberEditor is used to set a number from a specific range. There's two bu
 @value: 
 
 
-<!-- ##### SIGNAL HildonNumberEditor::activate ##### -->
+<!-- ##### SIGNAL HildonNumberEditor::range-error ##### -->
 <para>
 
 </para>
 
 @hildonnumbereditor: the object which received the signal.
+@arg1: 
+@Returns: 
 

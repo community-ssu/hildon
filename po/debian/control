@@ -1,7 +1,7 @@
 Source: hildon-libs-l10n-src
 Section: x11
 Priority: optional
-Maintainer: Luc Piochon <luc.piochon@nokia.com>
+Maintainer: Luc Pionchon <luc.pionchon@nokia.com>
 Build-Depends: debhelper (>= 4.0.0), gettext
 Standards-Version: 3.6.0
 

@@ -72,8 +72,6 @@ static void hildon_calendar_allow_exit(GtkWidget * self, gpointer data);
 
 static gboolean hildon_calendar_deny_exit(GtkWidget * self);
 
-static gboolean
-hildon_calendar_erroneous_date(GtkWidget * widget, gpointer data);
 static gboolean hildon_key_pressed(GtkWidget * widget, GdkEventKey * event,
                                    gpointer data);
 
@@ -209,6 +207,7 @@ static void hildon_calendar_popup_init(HildonCalendarPopup * cal)
 {
     HildonCalendarPopupPrivate *priv;
     static int set_domain = 1;
+    gchar *week_start;
 
     priv = HILDON_CALENDAR_POPUP_GET_PRIVATE(cal);
 
@@ -219,6 +218,12 @@ static void hildon_calendar_popup_init(HildonCalendarPopup * cal)
 
     priv->can_exit = FALSE;
     priv->cal = gtk_calendar_new();
+
+    /* first day of the week is obtained from the PO file */
+    week_start = _("week_start");
+    if (week_start[0] >= '0' && week_start[0] <= '6' && week_start[1] == 0)
+      g_object_set(G_OBJECT(priv->cal),
+                   "week-start", week_start[0] - '0', NULL);
 
     gtk_calendar_set_display_options(GTK_CALENDAR(priv->cal),
                                      GTK_CALENDAR_SHOW_HEADING |
@@ -245,24 +250,12 @@ static void hildon_calendar_popup_init(HildonCalendarPopup * cal)
     g_signal_connect_swapped(G_OBJECT(priv->cal), "button-press-event",
                              G_CALLBACK(hildon_calendar_deny_exit), cal);
 
-    g_signal_connect(G_OBJECT(priv->cal), "erroneous_date",
-                     G_CALLBACK(hildon_calendar_erroneous_date), cal);
-    
     g_signal_connect(G_OBJECT(priv->cal), "selected_date",
                      G_CALLBACK(hildon_calendar_allow_exit), cal);
 
     gtk_widget_realize(GTK_WIDGET(cal));
     gdk_window_set_decorations(GTK_WIDGET(cal)->window, GDK_DECOR_BORDER);
     gtk_widget_grab_focus(priv->cal);
-}
-
-static gboolean hildon_calendar_erroneous_date(GtkWidget * widget,
-                                               gpointer data)
-{
-    gtk_infoprint(GTK_WINDOW(gtk_widget_get_ancestor(GTK_WIDGET(widget),
-                                                     GTK_TYPE_WINDOW)),
-                  _("Date should be between 01/01/1980 and 12/31/2100."));
-    return TRUE;
 }
 
 static gboolean

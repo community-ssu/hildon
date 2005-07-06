@@ -1,5 +1,5 @@
 AC_INIT(Makefile.am)
-AM_INIT_AUTOMAKE(hildon-libs, 0.9.6)
+AM_INIT_AUTOMAKE(hildon-libs, 0.9.35)
 AM_CONFIG_HEADER(config.h)
 
 AC_CANONICAL_HOST
@@ -14,10 +14,7 @@ AC_HEADER_STDC
 PKG_CHECK_MODULES(OUTO, outo >= 0.1.1)
 AC_SUBST(OUTO_CFLAGS)
 
-# -pedantic removed due to D-BUS; should be replaced after D-BUS is no
-# longer broken in this regard...
-
-CFLAGS="$CFLAGS -Wall -ansi -Wmissing-prototypes -Wmissing-declarations -Werror"
+CFLAGS="$CFLAGS -Wall -pedantic -ansi -Wmissing-prototypes -Wmissing-declarations -Werror"
 
 GTK_VERSION=2.6.4
 
@@ -26,32 +23,11 @@ AC_SUBST(GTK_LIBS)
 AC_SUBST(GTK_CFLAGS)
 AC_SUBST(GTK_VERSION)
 
-# The hildon-note uses D-BUS directly as an interim solution for sound
-# playback - remove these after this is no longer the case!
+# ESD is needed for the hildon-note sounds.
 
-PKG_CHECK_MODULES(DBUS, dbus-glib-1 >= 0.20)
-AC_SUBST(DBUS_LIBS)
-AC_SUBST(DBUS_CFLAGS)
-
-# Related to the previous entry, check if we have ESD headers available.
-# If yes, Hildon-note will build sound support with it; we're phasing
-# away from OSSO Multimedia... Clean this up after ESD is the
-# default.
-
-PKG_CHECK_MODULES(ESD, esound, esd_found=1, esd_found=0)
-if test "x$esd_found" = "x1"; then
+PKG_CHECK_MODULES(ESD, esound)
 AC_SUBST(ESD_LIBS)
 AC_SUBST(ESD_CFLAGS)
-
-AH_TEMPLATE([USE_ESD], [1 if ESD is available])
-
-if $ESD; then
-AC_DEFINE_UNQUOTED([USE_ESD], ["1"])
-fi
-
-else
-echo "No ESD found, so falling back to OSSO Multimedia support"
-fi
 
 # Needed to demonstrate how mime-types can be handled with gnome-vfs
 PKG_CHECK_MODULES(GNOME_VFS, gnome-vfs-2.0 >= 2.6 gnome-vfs-module-2.0 >= 2.6)
@@ -131,7 +107,7 @@ AC_SUBST(outomoduledir)
 AC_SUBST(HTML_DIR)
 
 AC_OUTPUT(Makefile \
-  hildon-widgets/Makefile \
+	hildon-widgets/Makefile \
 	ut/Makefile \
 	po/Makefile \
 	po/porules.mk \

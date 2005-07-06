@@ -40,6 +40,16 @@ G_BEGIN_DECLS
   (GTK_CHECK_TYPE (obj, HILDON_TYPE_NAME_PASSWORD_DIALOG))
 #define HILDON_IS_NAME_PASSWORD_DIALOG_CLASS(klass) \
   (GTK_CHECK_CLASS_TYPE ((klass), HILDON_TYPE_NAME_PASSWORD_DIALOG))
+
+#define HILDON_NAME_PASSWORD_DIALOG_TITLE "frw_ti_get_user_name_and_pwd"
+#define HILDON_NAME_PASSWORD_DIALOG_NAME \
+         "frw_ti_get_user_name_and_pwd_enter_user_name"
+#define HILDON_NAME_PASSWORD_DIALOG_PASSWORD \
+         "frw_ti_get_user_name_and_pwd_enter_pwd"
+#define HILDON_NAME_PASSWORD_DIALOG_OK "frw_bd_get_user_name_and_pwd_ok"
+#define HILDON_NAME_PASSWORD_DIALOG_CANCEL \
+         "frw_bd_get_user_name_and_pwd_cancel"
+
   
 typedef struct _HildonNamePasswordDialog HildonNamePasswordDialog;
 typedef struct _HildonNamePasswordDialogClass
@@ -61,11 +71,15 @@ GtkWidget *hildon_name_password_dialog_new_with_default(GtkWindow *parent,
 							gchar *name,
 							gchar *pass);
 
+
 const gchar *hildon_name_password_dialog_get_name(HildonNamePasswordDialog 
                                                   * dialog);
                                                   
 const gchar *hildon_name_password_dialog_get_password(HildonNamePasswordDialog
                                                       * dialog);
+
+void hildon_name_password_dialog_set_domain(HildonNamePasswordDialog *dialog, 
+                                                gchar *domain);
 
 G_END_DECLS
 #endif

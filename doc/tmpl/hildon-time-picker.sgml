@@ -80,3 +80,18 @@ gtk_widget_destroy( picker );
 @minutes: 
 
 
+<!-- ##### ARG HildonTimePicker:minutes ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG HildonTimePicker:arrow-height ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG HildonTimePicker:arrow-width ##### -->
+<para>
+
+</para>
+

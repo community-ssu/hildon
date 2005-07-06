@@ -75,5 +75,17 @@ void hildon_range_editor_get_range(HildonRangeEditor * editor,
 void hildon_range_editor_set_limits(HildonRangeEditor * editor,
                                     gint start, gint end);
 
+void hildon_range_editor_set_lower (HildonRangeEditor *editor, gint value);
+void hildon_range_editor_set_higher (HildonRangeEditor *editor, gint value);
+gint hildon_range_editor_get_lower (HildonRangeEditor *editor);
+gint hildon_range_editor_get_higher (HildonRangeEditor *editor);
+void hildon_range_editor_set_min (HildonRangeEditor *editor, gint value);
+void hildon_range_editor_set_max (HildonRangeEditor *editor, gint value);
+gint hildon_range_editor_get_min (HildonRangeEditor *editor);
+gint hildon_range_editor_get_max (HildonRangeEditor *editor);
+void hildon_range_editor_set_separator (HildonRangeEditor *editor,
+                                        const gchar *separator);
+const gchar *hildon_range_editor_get_separator (HildonRangeEditor *editor);
+
 G_END_DECLS
 #endif

@@ -18,7 +18,6 @@
       <xi:include href="xml/hildon-color-selector.xml"/>
       <xi:include href="xml/hildon-controlbar.xml"/>
       <xi:include href="xml/hildon-date-editor.xml"/>
-      <xi:include href="xml/hildon-find-object-dialog.xml"/>
       <xi:include href="xml/hildon-font-selection-dialog.xml"/>
       <xi:include href="xml/hildon-get-password-dialog.xml"/>
       <xi:include href="xml/hildon-hvolumebar.xml"/>
@@ -26,7 +25,6 @@
       <xi:include href="xml/hildon-note.xml"/>
       <xi:include href="xml/hildon-number-editor.xml"/>
       <xi:include href="xml/hildon-range-editor.xml"/>
-      <xi:include href="xml/hildon-search.xml"/>
       <xi:include href="xml/hildon-seekbar.xml"/>
       <xi:include href="xml/hildon-set-password-dialog.xml"/>
       <xi:include href="xml/hildon-sort-dialog.xml"/>

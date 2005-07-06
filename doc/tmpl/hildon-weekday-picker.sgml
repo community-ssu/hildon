@@ -47,21 +47,6 @@ Example function calls:
 </para>
 
 
-<!-- ##### SIGNAL HildonWeekdayPicker::activate ##### -->
-<para>
-
-</para>
-
-@hildonweekdaypicker: the object which received the signal.
-
-<!-- ##### SIGNAL HildonWeekdayPicker::selection-changed ##### -->
-<para>
-
-</para>
-
-@hildonweekdaypicker: the object which received the signal.
-@arg1: 
-
 <!-- ##### FUNCTION hildon_weekday_picker_new ##### -->
 <para>
 </para>
@@ -121,4 +106,12 @@ Example function calls:
 @day: 
 @Returns: 
 
+
+<!-- ##### SIGNAL HildonWeekdayPicker::selection-changed ##### -->
+<para>
+
+</para>
+
+@hildonweekdaypicker: the object which received the signal.
+@arg1: 
 

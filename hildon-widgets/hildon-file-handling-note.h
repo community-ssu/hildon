@@ -24,6 +24,9 @@
 #ifndef __HILDON_FILE_HANDLING_NOTE_H__
 #define __HILDON_FILE_HANDLING_NOTE_H__
 
+
+#ifndef HILDON_DISABLE_DEPRECATED
+
 #include "hildon-note.h"
 
 G_BEGIN_DECLS
@@ -69,4 +72,6 @@ void hildon_file_handling_note_set_name(HildonFileHandlingNote * note,
 GType hildon_file_handling_note_get_type(void);
 
 G_END_DECLS
+#endif /* HILDON_DISABLE_DEPRECATED */
+
 #endif /* __HILDON_NOTE_H__ */

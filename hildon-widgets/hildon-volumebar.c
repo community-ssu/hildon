@@ -28,7 +28,10 @@
  * This file contains the implementation of the Hildon Volumebar.
  * It is a base class for Hildon Vertical Volumebar and for
  * Hildon Horizontal Volumebar classes.
+ *
  */
+
+#include <gtk/gtkwindow.h>
 #include <gtk/gtksignal.h>
 #include <gdk/gdkkeysyms.h>
 
@@ -60,12 +63,11 @@ static void hildon_volumebar_get_property(GObject * object,
                                            GValue * value, 
                                            GParamSpec * pspec);
 
-static void mute_toggled (HildonVolumebar *self, gpointer data);
+static void mute_toggled (HildonVolumebar *self);
 
 static gboolean
 hildon_volumebar_key_press(GtkWidget * widget,
-                           GdkEventKey * event,
-                           gpointer data);
+                           GdkEventKey * event);
 
 
 enum 
@@ -78,7 +80,9 @@ enum
 enum {
     PROP_NONE = 0,
     PROP_HILDON_HAS_MUTE,
-    PROP_HILDON_FOCUSABLE
+    PROP_HILDON_FOCUSABLE,
+    PROP_HILDON_LEVEL,
+    PROP_HILDON_MUTE
 };
 
 static guint signals[LAST_SIGNAL] = { 0 };
@@ -121,7 +125,9 @@ hildon_volumebar_class_init(HildonVolumebarClass *volumebar_class)
 
     /* Because we derived our widget from GtkContainer, we should also
        override forall method */
+    volumebar_class->mute_toggled = mute_toggled;
     container_class->forall = hildon_child_forall;
+    GTK_WIDGET_CLASS(volumebar_class)->key_press_event = hildon_volumebar_key_press;
     GTK_OBJECT_CLASS(volumebar_class)->destroy = hildon_volumebar_destroy;
 
     signals[MUTE_TOGGLED_SIGNAL] = g_signal_new("mute_toggled",
@@ -167,6 +173,25 @@ hildon_volumebar_class_init(HildonVolumebarClass *volumebar_class)
                                     TRUE,
                                     G_PARAM_CONSTRUCT | G_PARAM_READWRITE));
 
+    g_object_class_install_property(object_class,
+				    PROP_HILDON_LEVEL,
+				    g_param_spec_double("level",
+							"Level",
+							"Current volume level",
+							0.0,
+							100.0,
+							50.0,
+							G_PARAM_READWRITE));
+
+    g_object_class_install_property(object_class,
+				    PROP_HILDON_MUTE,
+				    g_param_spec_boolean("mute",
+							 "Mute",
+							 "Whether volume is muted",
+							 FALSE,
+							 G_PARAM_READWRITE));
+				    
+
 }
 
 static void 
@@ -183,14 +208,6 @@ hildon_volumebar_init(HildonVolumebar * volumebar)
     
     priv->tbutton = GTK_TOGGLE_BUTTON(gtk_toggle_button_new());
     g_object_set (G_OBJECT (priv->tbutton), "can-focus", FALSE, NULL);
-    g_signal_connect (G_OBJECT (volumebar), "mute_toggled",
-                      G_CALLBACK (mute_toggled), NULL);
-    
-    /* set keypress handler (select hardkey) */
-    g_signal_connect(G_OBJECT(volumebar), "key-press-event",
-            G_CALLBACK(hildon_volumebar_key_press),
-            NULL);
-
 }
 
 static void
@@ -241,28 +258,27 @@ hildon_volumebar_set_property(GObject * object,
 {  
     HildonVolumebar *vbar = HILDON_VOLUMEBAR(object);
     HildonVolumebarPrivate *priv;
-    gboolean has_mute = TRUE;
 
     priv = HILDON_VOLUMEBAR_GET_PRIVATE(vbar)
 
     switch (prop_id) {
     case PROP_HILDON_HAS_MUTE:
-        has_mute = g_value_get_boolean(value);
-
-        if (has_mute)
-        {
+        if (g_value_get_boolean(value))
             gtk_widget_show(GTK_WIDGET(priv->tbutton));
-
-        }
         else
-        {
             gtk_widget_hide(GTK_WIDGET(priv->tbutton));
-        }
-        
         break;
     case PROP_HILDON_FOCUSABLE:
         g_object_set( G_OBJECT(priv->volumebar), "can-focus", 
                       g_value_get_boolean(value), NULL );
+        break;
+    case PROP_HILDON_LEVEL:
+        hildon_volumebar_set_level(HILDON_VOLUMEBAR(priv->volumebar),
+				   g_value_get_double(value));
+        break;
+    case PROP_HILDON_MUTE:
+        hildon_volumebar_set_mute(HILDON_VOLUMEBAR(priv->volumebar),
+				  g_value_get_boolean(value));
         break;
     default:
         G_OBJECT_WARN_INVALID_PROPERTY_ID(object, prop_id, pspec);
@@ -276,16 +292,22 @@ hildon_volumebar_get_property(GObject * object,
                               guint prop_id, GValue * value, 
                               GParamSpec * pspec)
 {
-  HildonVolumebarPrivate *priv;
-  priv = HILDON_VOLUMEBAR_GET_PRIVATE(object)
+    HildonVolumebar *vb = HILDON_VOLUMEBAR(object);
+    HildonVolumebarPrivate *priv = HILDON_VOLUMEBAR_GET_PRIVATE(vb);
+
     switch (prop_id) {
     case PROP_HILDON_HAS_MUTE:
-        g_value_set_boolean(value, g_value_get_boolean(value));
+        g_value_set_boolean(value, GTK_WIDGET_VISIBLE(priv->tbutton));
         break;
-     case PROP_HILDON_FOCUSABLE:
-        g_value_set_boolean(value, g_value_get_boolean(value));
-        g_object_set( G_OBJECT(priv->volumebar), "can-focus", 
-                      g_value_get_boolean(value), NULL );
+    case PROP_HILDON_FOCUSABLE:
+        g_value_set_boolean(value, GTK_WIDGET_CAN_FOCUS(priv->volumebar));
+	break;
+    case PROP_HILDON_LEVEL:
+        g_value_set_double(value, hildon_volumebar_get_level(vb));
+	break;
+    case PROP_HILDON_MUTE:
+        g_value_set_boolean(value, hildon_volumebar_get_mute(vb));
+	break;
     default:
         G_OBJECT_WARN_INVALID_PROPERTY_ID(object, prop_id, pspec);
         break;
@@ -360,21 +382,37 @@ void
 hildon_volumebar_set_mute(HildonVolumebar * self, gboolean mute)
 {
     HildonVolumebarPrivate *priv;
-
+    gboolean focusable = TRUE;
+    
     g_return_if_fail(self);
 
     priv = HILDON_VOLUMEBAR_GET_PRIVATE(self);
     gtk_widget_set_sensitive(GTK_WIDGET(priv->volumebar), !mute);
     
+    focusable = GTK_WIDGET_CAN_FOCUS (GTK_WIDGET (priv->volumebar));
+    
     if (mute){   
-        g_object_set (G_OBJECT (priv->tbutton), "can-focus", TRUE, NULL);
-        gtk_widget_grab_focus (GTK_WIDGET(priv->tbutton));
+        if (focusable){
+
+            g_object_set (G_OBJECT (priv->tbutton), "can-focus", TRUE, NULL);
+            gtk_widget_grab_focus (GTK_WIDGET(priv->tbutton));
+        }
     }
     else
     {
         g_object_set (G_OBJECT (priv->tbutton), "can-focus", FALSE, NULL);
-        gtk_widget_grab_focus (GTK_WIDGET (self));
+        
+        if (focusable){
+            gtk_widget_grab_focus (GTK_WIDGET (self));
+        }
+        else{
+            GtkWidget *win = gtk_widget_get_ancestor (GTK_WIDGET (self), 
+                                                      GTK_TYPE_WINDOW);
+            gtk_window_set_focus (GTK_WINDOW (win), NULL);
+        }
     }
+
+    gtk_toggle_button_set_active(priv->tbutton, mute);
 }
 
 /**
@@ -424,7 +462,7 @@ hildon_volumebar_get_adjustment (HildonVolumebar * self)
 }
 
 static void
-mute_toggled (HildonVolumebar *self, gpointer data)
+mute_toggled (HildonVolumebar *self)
 {
   /* only call hildon_volumebar_set_mute. everything is done there */
   hildon_volumebar_set_mute (self, hildon_volumebar_get_mute(self));
@@ -432,8 +470,7 @@ mute_toggled (HildonVolumebar *self, gpointer data)
 
 static gboolean
 hildon_volumebar_key_press (GtkWidget * widget,
-                            GdkEventKey * event,
-                            gpointer data)
+                            GdkEventKey * event)
 {
     HildonVolumebarPrivate *priv;
     
@@ -442,11 +479,11 @@ hildon_volumebar_key_press (GtkWidget * widget,
 
     priv = HILDON_VOLUMEBAR_GET_PRIVATE(widget);
     
-    if (event->keyval == GDK_Return) {
+    if (event->keyval == GDK_Return && GTK_WIDGET_VISIBLE(priv->tbutton)) {
         gtk_toggle_button_set_active(priv->tbutton, 
                 !hildon_volumebar_get_mute(HILDON_VOLUMEBAR(widget)));
         return TRUE;
     }
 
-    return FALSE;
+    return GTK_WIDGET_CLASS(parent_class)->key_press_event(widget, event);
 }

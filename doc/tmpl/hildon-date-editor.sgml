@@ -72,10 +72,26 @@ hildon_date_editor_get_date(date_editor, &amp;y, &amp;m, &amp;d);
 @day: 
 
 
-<!-- ##### SIGNAL HildonDateEditor::activate ##### -->
+<!-- ##### SIGNAL HildonDateEditor::validate-date ##### -->
 <para>
 
 </para>
 
 @hildondateeditor: the object which received the signal.
+@Returns: 
+
+<!-- ##### ARG HildonDateEditor:day ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG HildonDateEditor:month ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG HildonDateEditor:year ##### -->
+<para>
+
+</para>
 

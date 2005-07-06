@@ -58,7 +58,14 @@ static void hildon_volumebar_range_class_init(HildonVolumebarRangeClass *
                                               volumerange_class);
 static void hildon_volumebar_range_init(HildonVolumebarRange *
                                         volumerange);
-
+static void hildon_volumebar_range_set_property(GObject * object,
+						guint prop_id,
+						const GValue * value,
+						GParamSpec * pspec);
+static void hildon_volumebar_range_get_property(GObject * object,
+						guint prop_id,
+						GValue * value,
+						GParamSpec * pspec);
 static gint hildon_volumebar_range_button_press_event(GtkWidget * widget,
                                                       GdkEventButton *
                                                       event);
@@ -67,6 +74,11 @@ static gint hildon_volumebar_range_button_release_event(GtkWidget * widget,
                                                         event);
 static gboolean hildon_volumebar_range_keypress(GtkWidget * widget,
                                                 GdkEventKey * event);
+
+enum {
+  PROP_NONE = 0,
+  PROP_LEVEL
+};
 
 GType 
 hildon_volumebar_range_get_type(void)
@@ -97,6 +109,7 @@ hildon_volumebar_range_class_init(HildonVolumebarRangeClass *
 				  volumerange_class)
 {
     GtkWidgetClass *widget_class = GTK_WIDGET_CLASS(volumerange_class);
+    GObjectClass *object_class = G_OBJECT_CLASS(volumerange_class);
 
     parent_class = g_type_class_peek_parent(volumerange_class);
 
@@ -106,6 +119,18 @@ hildon_volumebar_range_class_init(HildonVolumebarRangeClass *
         hildon_volumebar_range_button_release_event;
     widget_class->key_press_event = hildon_volumebar_range_keypress;
 
+    object_class->set_property = hildon_volumebar_range_set_property;
+    object_class->get_property = hildon_volumebar_range_get_property; 
+
+    g_object_class_install_property(object_class,
+				    PROP_LEVEL,
+				    g_param_spec_double("level",
+							"Level",
+							"Current volume level",
+							VOLUMEBAR_RANGE_MINIMUM_VALUE,
+							VOLUMEBAR_RANGE_MAXIMUM_VALUE,
+							VOLUMEBAR_RANGE_INITIAL_VALUE,
+							G_PARAM_READWRITE));
     return;
 }
 
@@ -117,6 +142,42 @@ hildon_volumebar_range_init(HildonVolumebarRange * volumerange)
   GTK_RANGE(volumerange)->has_stepper_d = TRUE;
   
   return;
+}
+
+static void
+hildon_volumebar_range_set_property(GObject * object,
+				    guint prop_id,
+				    const GValue * value,
+				    GParamSpec * pspec)
+{
+    HildonVolumebarRange *range = HILDON_VOLUMEBAR_RANGE(object);
+
+    switch (prop_id) {
+    case PROP_LEVEL:
+        hildon_volumebar_range_set_level(range, g_value_get_double(value));
+	break;
+    default:
+        G_OBJECT_WARN_INVALID_PROPERTY_ID(object, prop_id, pspec);
+	break;
+    }
+}
+
+static void
+hildon_volumebar_range_get_property(GObject * object,
+				    guint prop_id,
+				    GValue * value,
+				    GParamSpec * pspec)
+{
+    HildonVolumebarRange *range = HILDON_VOLUMEBAR_RANGE(object);
+
+    switch (prop_id) {
+    case PROP_LEVEL:
+        g_value_set_double(value, hildon_volumebar_range_get_level(range));
+        break;
+    default:
+        G_OBJECT_WARN_INVALID_PROPERTY_ID(object, prop_id, pspec);
+	break;
+    }
 }
 
 static

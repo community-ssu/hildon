@@ -1,6 +1,13 @@
 How to make .po files up to date with the current sources?
 
-  1. make merge
+  1. intltool-update -m
+        This will check POTFILES.in for missing or unavailable files.
+        Missing files are list in 'missing' file and unavailable files in
+        'notexist' file.
+  2. intltool-update --pot
+        This creates a pot file.
+  3. make merge
+        Will update all the locale files.
 
 How to add a new locale?
 
@@ -9,5 +16,5 @@ How to add a new locale?
 
 How to add a new source file that contains gettext macros?
 
-  1. edit POTFILES and add your file there
+  1. edit POTFILES and add your file there (or check with intltool-update -m)
   2. make merge

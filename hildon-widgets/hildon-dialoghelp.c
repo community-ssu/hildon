@@ -23,11 +23,12 @@
  */
 
 /*
-   @file hildon-dialoghelp.c
-
-   This file provides API for the help dialog with
-   the optional icon.
-*/
+ *  @file hildon-dialoghelp.c
+ *
+ *  This file provides API for the help dialog with
+ *  the optional icon.
+ *
+ */
 
 #include <gdk/gdkx.h>
 #include "hildon-dialoghelp.h"
@@ -77,9 +78,7 @@ void gtk_dialog_help_enable(GtkDialog * dialog)
     GdkWindow *window;
 
     if (help_signal == 0) {
-        help_signal = g_signal_new("help",
-                                   G_TYPE_FROM_INSTANCE(GTK_OBJECT
-                                                        (dialog)),
+        help_signal = g_signal_new("help", GTK_TYPE_DIALOG,
                                    G_SIGNAL_ACTION, (guint) - 1, NULL,
                                    NULL, g_cclosure_marshal_VOID__VOID,
                                    G_TYPE_NONE, 0);

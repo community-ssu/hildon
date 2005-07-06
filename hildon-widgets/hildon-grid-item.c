@@ -30,6 +30,7 @@
  * emblem and a label. 
  *
  */
+
 /*
  * TODO:
  * - play with libtool to get _-functions private but accesable from grid
@@ -65,19 +66,17 @@ typedef struct _HildonGridItemPrivate HildonGridItemPrivate;
 
 
 /* Default icon. */
-#define DEFAULT_ICON_BASENAME   "Unknown"
+#define DEFAULT_ICON_BASENAME   "qgn_list_gene_unknown_file"
 #define HILDON_GRID_ICON_SIZE         26
 #define HILDON_GRID_EMBLEM_SIZE       16
 
-/* Use somewhat dirty alpha-thing for emblems. */
+/* Use some alpha-thing for emblems. */
 #define USE_DIRTY_ALPHA
 
 struct _HildonGridItemPrivate {
     gchar *icon_basename;
     gint icon_size;
     GtkWidget *icon;
-    gint icon_width;
-    gint icon_height;
 
     gchar *emblem_basename;
     gint emblem_size;
@@ -85,8 +84,22 @@ struct _HildonGridItemPrivate {
     GtkWidget *label;   /* TODO use pango! */
     HildonGridPositionType label_pos;
 
-    gint label_hspacing;
-    gint label_vspacing;
+    gint focus_margin;
+    gint label_height;
+    gint label_icon_margin;
+    gint column_margin;
+    gint icon_width;
+    gint icon_height;
+    gint row_height;
+
+    gint pending_icon_size;
+    gint pending_emblem_size;
+    HildonGridPositionType pending_label_pos;
+    gint pending_focus_margin;
+    gint pending_label_height;
+    gint pending_label_icon_margin;
+    gint pending_icon_width;
+    gint pending_icon_height;
 
     gboolean selected;
 };
@@ -113,6 +126,9 @@ static void hildon_grid_item_finalize(GObject * object);
 
 static void update_icon(HildonGridItem * item);
 static void set_label_justify(HildonGridItem * item);
+
+static void hildon_grid_item_set_icon_size(HildonGridItem *item,
+                                   HildonGridItemIconSizeType icon_size);
 
 
 static GtkContainerClass *parent_class = NULL;
@@ -150,8 +166,6 @@ hildon_grid_item_class_init(HildonGridItemClass *klass)
     GtkContainerClass *container_class;
     GObjectClass *gobject_class;
 
-/* g_message ("hildon_grid_item_class_init (%d)\n", (int) klass); */
-
     widget_class = GTK_WIDGET_CLASS(klass);
     gobject_class = G_OBJECT_CLASS(klass);
     container_class = GTK_CONTAINER_CLASS(klass);
@@ -178,19 +192,24 @@ hildon_grid_item_init(HildonGridItem *item)
     priv = HILDON_GRID_ITEM_GET_PRIVATE(item);
 
     priv->icon_basename = NULL;
-    priv->icon_size = HILDON_GRID_ICON_SIZE;
+    priv->pending_icon_size = priv->icon_size = HILDON_GRID_ICON_SIZE;
     priv->icon = NULL;
 
     priv->emblem_basename = NULL;
-    priv->emblem_size = HILDON_GRID_EMBLEM_SIZE;
+    priv->pending_emblem_size = priv->emblem_size = HILDON_GRID_EMBLEM_SIZE;
 
     priv->label = NULL;
-    priv->label_pos = HILDON_GRID_ITEM_LABEL_POS_BOTTOM;
-    priv->label_hspacing = 0;
-    priv->label_vspacing = 0;
+    priv->pending_label_pos = priv->label_pos =
+        HILDON_GRID_ITEM_LABEL_POS_BOTTOM;
 
     priv->selected = FALSE;
 
+    priv->pending_focus_margin = priv->focus_margin = 6;
+    priv->pending_label_height = priv->label_height = 30;
+    priv->pending_label_icon_margin = priv->label_icon_margin = 6;
+    priv->pending_icon_width = priv->icon_width = 64;
+    priv->pending_icon_height = priv->icon_height = 54;
+    priv->pending_label_height = priv->label_height = 30;
 }
 
 /**
@@ -375,20 +394,19 @@ _hildon_grid_item_set_label(HildonGridItem *item, const gchar *label)
     gtk_label_set_label(GTK_LABEL(priv->label), label);
 }
 
-void
-_hildon_grid_item_set_icon_size(HildonGridItem              *item,
-                                HildonGridItemIconSizeType  icon_size)
+static void
+hildon_grid_item_set_icon_size(HildonGridItem             *item,
+                               HildonGridItemIconSizeType icon_size)
 {
     HildonGridItemPrivate *priv;
 
     g_return_if_fail(HILDON_IS_GRID_ITEM(item));
 
     priv = HILDON_GRID_ITEM_GET_PRIVATE(item);
-    if (priv->icon_size == icon_size) {
+    if (priv->pending_icon_size == icon_size) {
         return;
     }
-    HILDON_GRID_ITEM_GET_PRIVATE(item)->icon_size = icon_size;
-    update_icon(HILDON_GRID_ITEM(item));
+    priv->pending_icon_size = icon_size;
 }
 
 
@@ -401,27 +419,10 @@ _hildon_grid_item_set_label_pos(HildonGridItem          *item,
     g_return_if_fail(HILDON_IS_GRID_ITEM(item));
 
     priv = HILDON_GRID_ITEM_GET_PRIVATE(item);
-    if (priv->label_pos == label_pos) {
+    if (priv->pending_label_pos == label_pos) {
         return;
     }
-    priv->label_pos = label_pos;
-    set_label_justify(item);
-    /* No refresh here, grid will do it. */
-}
-
-void
-_hildon_grid_item_set_label_spacing(HildonGridItem  *item,
-                                    const gint      hspacing,
-                                    const gint      vspacing)
-{
-    HildonGridItemPrivate *priv;
-
-    g_return_if_fail(HILDON_IS_GRID_ITEM(item));
-
-    priv = HILDON_GRID_ITEM_GET_PRIVATE(item);
-
-    priv->label_hspacing = hspacing;
-    priv->label_vspacing = vspacing;
+    priv->pending_label_pos = label_pos;
 }
 
 
@@ -433,12 +434,94 @@ _hildon_grid_item_set_emblem_size(HildonGridItem *item, gint emblem_size)
     g_return_if_fail(HILDON_IS_GRID_ITEM(item));
 
     priv = HILDON_GRID_ITEM_GET_PRIVATE(item);
-    if (priv->emblem_size == emblem_size) {
+    if (priv->pending_emblem_size == emblem_size) {
         return;
     }
-    priv->emblem_size = emblem_size;
-    update_icon(HILDON_GRID_ITEM(item));
+    priv->pending_emblem_size = emblem_size;
 }
+
+
+void
+_hildon_grid_item_set_focus_margin(HildonGridItem *item,
+                                   const gint focus_margin)
+{
+    HildonGridItemPrivate *priv;
+
+    g_return_if_fail(HILDON_IS_GRID_ITEM(item));
+
+    priv = HILDON_GRID_ITEM_GET_PRIVATE(item);
+    if (priv->pending_focus_margin == focus_margin) {
+        return;
+    }
+    priv->pending_focus_margin = focus_margin;
+}
+
+
+void
+_hildon_grid_item_set_label_height(HildonGridItem *item,
+                                   const gint label_height)
+{
+    HildonGridItemPrivate *priv;
+
+    g_return_if_fail(HILDON_IS_GRID_ITEM(item));
+
+    priv = HILDON_GRID_ITEM_GET_PRIVATE(item);
+    if (priv->pending_label_height == label_height) {
+        return;
+    }
+    priv->pending_label_height = label_height;
+}
+
+
+void
+_hildon_grid_item_set_label_icon_margin(HildonGridItem *item,
+                                        const gint label_icon_margin)
+{
+    HildonGridItemPrivate *priv;
+
+    g_return_if_fail(HILDON_IS_GRID_ITEM(item));
+
+    priv = HILDON_GRID_ITEM_GET_PRIVATE(item);
+    if (priv->pending_label_icon_margin == label_icon_margin) {
+        return;
+    }
+    priv->pending_label_icon_margin = label_icon_margin;
+}
+
+
+void
+_hildon_grid_item_set_icon_height(HildonGridItem *item,
+                                  const gint icon_height)
+{
+    HildonGridItemPrivate *priv;
+
+    g_return_if_fail(HILDON_IS_GRID_ITEM(item));
+
+    priv = HILDON_GRID_ITEM_GET_PRIVATE(item);
+    if (priv->pending_icon_height == icon_height) {
+        return;
+    }
+    priv->pending_icon_height = icon_height;
+}
+
+
+void
+_hildon_grid_item_set_icon_width(HildonGridItem *item,
+                                 const gint icon_width)
+{
+    HildonGridItemPrivate *priv;
+
+    g_return_if_fail(HILDON_IS_GRID_ITEM(item));
+
+    hildon_grid_item_set_icon_size(item, icon_width);
+
+    priv = HILDON_GRID_ITEM_GET_PRIVATE(item);
+    if (priv->pending_icon_width == icon_width) {
+        return;
+    }
+    priv->pending_icon_width = icon_width;
+}
+
 
 static void
 set_label_justify(HildonGridItem *item)
@@ -490,8 +573,6 @@ hildon_grid_item_expose(GtkWidget *widget, GdkEventExpose *event)
 {
     HildonGridItem *item;
     HildonGridItemPrivate *priv;
-    GdkRectangle clip;
-    GtkWidget *focused;
 
     g_return_val_if_fail(widget, FALSE);
     g_return_val_if_fail(HILDON_IS_GRID_ITEM(widget), FALSE);
@@ -504,15 +585,40 @@ hildon_grid_item_expose(GtkWidget *widget, GdkEventExpose *event)
         return FALSE;
     }
     if (GTK_WIDGET_HAS_FOCUS(GTK_WIDGET(item))) {
+        GdkRectangle clip;
+        GtkWidget *focused;
+        
         if (priv->label != NULL) {
             focused = priv->label;
         } else {
             focused = priv->icon;
         }
-        clip.x = focused->allocation.x;
-        clip.y = focused->allocation.y;
-        clip.width = focused->allocation.width;
-        clip.height = focused->allocation.height;
+
+        switch (priv->label_pos) {
+        case HILDON_GRID_ITEM_LABEL_POS_BOTTOM:
+            clip.x = focused->allocation.x - priv->focus_margin;
+            clip.y = focused->allocation.y;
+            clip.width = focused->allocation.width + priv->focus_margin * 2;
+            clip.height = focused->allocation.height;
+            if (clip.x < widget->allocation.x ||
+                clip.width > widget->allocation.width) {
+                clip.x = widget->allocation.x;
+                clip.width = widget->allocation.width;
+            }
+            if (clip.y + clip.height >
+                widget->allocation.y + widget->allocation.height) {
+                clip.height = widget->allocation.y +
+                    widget->allocation.height - clip.y;
+            }
+            break;
+
+        case HILDON_GRID_ITEM_LABEL_POS_RIGHT:
+            clip.x = widget->allocation.x;
+            clip.y = widget->allocation.y;
+            clip.width = widget->allocation.width;
+            clip.height = widget->allocation.height;
+            break;
+        }
 
         gtk_paint_box(focused->style,
                       gtk_widget_get_toplevel(focused)->window,
@@ -545,18 +651,7 @@ hildon_grid_item_size_request(GtkWidget *widget, GtkRequisition *requisition)
     item = HILDON_GRID_ITEM(widget);
     priv = HILDON_GRID_ITEM_GET_PRIVATE(item);
 
-    switch (priv->label_pos) {
-    case HILDON_GRID_ITEM_LABEL_POS_BOTTOM:
-        label_margin = priv->label_vspacing;
-        break;
-
-    case HILDON_GRID_ITEM_LABEL_POS_RIGHT:
-        label_margin = priv->label_hspacing;
-        break;
-    default:
-        label_margin = 0;
-        break;
-    }
+    label_margin = priv->focus_margin;
 
     gtk_widget_size_request(priv->icon, requisition);
     gtk_widget_size_request(priv->label, &label_req);
@@ -585,8 +680,6 @@ hildon_grid_item_size_allocate(GtkWidget *widget, GtkAllocation *allocation)
     HildonGridItemPrivate *priv;
     GtkRequisition l_req;
     GtkAllocation i_alloc, l_alloc;
-    gint label_margin;
-    gint label_height;
 
     g_return_if_fail(widget);
     g_return_if_fail(allocation);
@@ -605,59 +698,41 @@ hildon_grid_item_size_allocate(GtkWidget *widget, GtkAllocation *allocation)
         l_req.width = l_req.height = 0;
     }
 
-    label_height = l_req.height;
     switch (priv->label_pos) {
     case HILDON_GRID_ITEM_LABEL_POS_BOTTOM:
-        label_margin = priv->label_vspacing;
-
-        if (priv->icon_width > allocation->width) {
-            priv->icon_width = allocation->width;
+        i_alloc.x = (allocation->width - priv->icon_width) / 2 +
+            allocation->x;
+        if (priv->label != NULL) {
+            i_alloc.y = allocation->y + (allocation->height -
+                                         priv->label_height -
+                                         priv->label_icon_margin -
+                                         priv->icon_height) / 2;
+        } else {
+            i_alloc.y = (allocation->height - priv->icon_height) / 2 +
+                allocation->y;
         }
-        if (priv->icon_height > allocation->height) {
-            priv->icon_height = allocation->height;
-        }
-        i_alloc.x = (allocation->width - priv->icon_width) /
-            2 + allocation->x;
-        i_alloc.y = (allocation->height - priv->icon_height -
-                     label_height - label_margin) / 2 + allocation->y;
-        i_alloc.width = priv->icon_width;
-        i_alloc.height = priv->icon_height;
 
-        if (label_height > 0) {
-            if (l_req.height > allocation->height) {
-                l_req.height = allocation->height;
-            }
-            l_alloc.x = allocation->x;
-            l_alloc.y = i_alloc.y + priv->icon_height + label_margin;
-            l_alloc.width = allocation->width;
-            l_alloc.height = l_req.height;
+        if (priv->label != NULL) {
+            l_alloc.x = allocation->x + priv->focus_margin;
+            l_alloc.y = i_alloc.y + priv->icon_height +
+                priv->label_icon_margin;
+            l_alloc.width = allocation->width - priv->focus_margin * 2;
+            l_alloc.height = priv->label_height;
         }
         break;
 
     case HILDON_GRID_ITEM_LABEL_POS_RIGHT:
-        label_margin = priv->label_hspacing;
+        i_alloc.x = allocation->x + priv->focus_margin;
+        i_alloc.y = allocation->y +
+          (priv->label_height - priv->icon_height) / 2;
 
-        if (priv->icon_width > allocation->width) {
-            priv->icon_width = allocation->width;
-        }
-        if (priv->icon_height > allocation->height) {
-            priv->icon_height = allocation->height;
-        }
-
-        i_alloc.x = allocation->x;
-        i_alloc.y = (allocation->height - priv->icon_height) /
-            2 + allocation->y;
-        i_alloc.width = priv->icon_width;
-        i_alloc.height = priv->icon_height;
-
-        if (label_height > 0) {
-            l_alloc.x = priv->icon_width + label_margin + allocation->x;
-            l_alloc.y = (allocation->height - label_height) / 2
-                + allocation->y;
-
-            l_alloc.width = allocation->width - priv->icon_width
-                - label_margin;
-            l_alloc.height = MIN(l_req.height, allocation->height);
+        if (priv->label != NULL) {
+            l_alloc.x = allocation->x + priv->focus_margin +
+                priv->icon_width + priv->label_icon_margin;
+            l_alloc.y = allocation->y;
+            l_alloc.width = allocation->width - priv->focus_margin * 2 -
+                priv->label_icon_margin - priv->icon_width;
+            l_alloc.height = priv->label_height;
         }
         break;
     default:
@@ -665,6 +740,19 @@ hildon_grid_item_size_allocate(GtkWidget *widget, GtkAllocation *allocation)
         return;
         break;
     }
+
+    if (i_alloc.y < allocation->y) {
+        i_alloc.height -= i_alloc.height - allocation->height;
+        i_alloc.y = allocation->y;
+    }
+    if (i_alloc.y + i_alloc.height > allocation->y + allocation->height) {
+        i_alloc.height-= i_alloc.y + i_alloc.height -
+            allocation->y - allocation->height;
+    }
+      
+
+    i_alloc.width = priv->icon_width;
+    i_alloc.height = priv->icon_height;
 
     if (priv->label != NULL) {
         gtk_widget_size_allocate(priv->label, &l_alloc);
@@ -777,4 +865,70 @@ hildon_grid_item_get_emblem_type(HildonGridItem *item)
     g_return_val_if_fail(HILDON_IS_GRID_ITEM(item), NULL);
 
     return HILDON_GRID_ITEM_GET_PRIVATE(item)->emblem_basename;
+}
+
+
+
+void
+_hildon_grid_item_done_updating_settings(HildonGridItem *item)
+{
+    gboolean need_update_icon;
+    gboolean need_resize;
+
+    HildonGridItemPrivate *priv;
+    g_return_if_fail(HILDON_IS_GRID_ITEM(item));
+    priv = HILDON_GRID_ITEM_GET_PRIVATE(item);
+
+    need_update_icon = need_resize = FALSE;
+    
+    if (priv->pending_icon_size != priv->icon_size) {
+        if (priv->pending_icon_size > 0) {
+            priv->icon_size = priv->pending_icon_size;
+        } else {
+            priv->icon_size = 1;
+        }
+        need_update_icon = TRUE;
+    }
+    if (priv->pending_emblem_size != priv->emblem_size) {
+        priv->emblem_size = priv->pending_emblem_size;
+        need_update_icon = TRUE;
+    }
+    if (priv->pending_label_pos != priv->label_pos) {
+        priv->label_pos = priv->pending_label_pos;
+        /* No refresh here, grid will do it. */
+        set_label_justify(item);
+    }
+    /*
+     * grid will take care of this
+     *
+    if (priv->pending_focus_margin != priv->focus_margin) {
+        priv->focus_margin = priv->pending_focus_margin;
+        need_resize = TRUE;
+    }
+    if (priv->pending_label_height != priv->label_height) {
+        priv->label_height = priv->pending_label_height;
+        need_resize = TRUE;
+    }
+    if (priv->pending_label_icon_margin != priv->label_icon_margin) {
+        priv->label_icon_margin = priv->pending_label_icon_margin;
+        need_resize = TRUE;
+    }
+    if (priv->pending_icon_height != priv->icon_height) {
+        priv->icon_height = priv->pending_icon_height;
+        need_resize = TRUE;
+    }
+    if (priv->pending_icon_width != priv->icon_width) {
+        priv->icon_width = priv->pending_icon_width;
+        need_resize = TRUE;
+    }
+     */
+
+    if (need_update_icon == TRUE) {
+        update_icon(HILDON_GRID_ITEM(item));
+    }
+    /*
+    if (need_resize == TRUE) {
+        gtk_widget_queue_resize(GTK_WIDGET(item));
+    }
+    */
 }

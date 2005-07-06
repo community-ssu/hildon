@@ -57,6 +57,8 @@ struct _HildonDateEditor {
 
 struct _HildonDateEditorClass {
     GtkContainerClass parent_class;
+
+    gboolean (*validate_date) (HildonDateEditor *editor);
 };
 
 GType hildon_date_editor_get_type(void);
@@ -69,6 +71,13 @@ void hildon_date_editor_set_date(HildonDateEditor * date,
 void hildon_date_editor_get_date(HildonDateEditor * date,
                                  guint * year, guint * month, guint * day);
 
+gboolean hildon_date_editor_set_year(HildonDateEditor *editor, guint year);
+gboolean hildon_date_editor_set_month(HildonDateEditor *editor, guint month);
+gboolean hildon_date_editor_set_day(HildonDateEditor *editor, guint day);
+
+guint hildon_date_editor_get_year(HildonDateEditor *editor);
+guint hildon_date_editor_get_month(HildonDateEditor *editor);
+guint hildon_date_editor_get_day(HildonDateEditor *editor);
 
 G_END_DECLS
 #endif

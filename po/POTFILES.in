@@ -1,25 +1,19 @@
 # List of source files containing translatable strings.
 
 # Package source files
-../hildon-widgets/hildon-add-home-dialog.c
-../hildon-widgets/hildon-calendar-popup.c
-../hildon-widgets/hildon-color-selector.c
-../hildon-widgets/hildon-controlbar.c
-../hildon-widgets/hildon-date-editor.c
-../hildon-widgets/hildon-file-details-dialog.c
-../hildon-widgets/hildon-file-handling-note.c
-../hildon-widgets/hildon-find-object-dialog.c
-../hildon-widgets/hildon-font-selection-dialog.c
-../hildon-widgets/hildon-get-password-dialog.c
-../hildon-widgets/hildon-grid.c
-../hildon-widgets/hildon-insert-object-dialog.c
-../hildon-widgets/hildon-name-password-dialog.c
-../hildon-widgets/hildon-note.c
-../hildon-widgets/hildon-number-editor.c
-../hildon-widgets/hildon-set-password-dialog.c
-../hildon-widgets/hildon-sort-dialog.c
-../hildon-widgets/hildon-telephone-editor.c
-../hildon-widgets/hildon-time-editor.c
-../hildon-widgets/hildon-time-picker.c
-../ut/hildon-clock-widgets_tests.c
-../ut/hildon-widgets_tests.c
+hildon-widgets/hildon-add-home-dialog.c
+hildon-widgets/hildon-calendar-popup.c
+hildon-widgets/hildon-color-popup.c
+hildon-widgets/hildon-color-selector.c
+hildon-widgets/hildon-date-editor.c
+hildon-widgets/hildon-file-details-dialog.c
+hildon-widgets/hildon-file-handling-note.c
+hildon-widgets/hildon-font-selection-dialog.c
+hildon-widgets/hildon-insert-object-dialog.c
+hildon-widgets/hildon-note.c
+hildon-widgets/hildon-number-editor.c
+hildon-widgets/hildon-range-editor.c
+hildon-widgets/hildon-sort-dialog.c
+hildon-widgets/hildon-time-editor.c
+hildon-widgets/hildon-time-picker.c
+hildon-widgets/hildon-wizard-dialog.c

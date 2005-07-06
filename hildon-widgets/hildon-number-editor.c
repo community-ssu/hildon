@@ -39,8 +39,10 @@
 #include <stdlib.h>
 
 #include "hildon-number-editor.h"
+#include "hildon-marshalers.h"
 #include <hildon-widgets/gtk-infoprint.h>
 #include "hildon-composite-widget.h"
+#include <hildon-widgets/hildon-input-mode-hint.h>
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -59,14 +61,6 @@
 #define HILDON_NUMBER_EDITOR_GET_PRIVATE(obj) \
         (G_TYPE_INSTANCE_GET_PRIVATE ((obj), HILDON_TYPE_NUMBER_EDITOR, \
         HildonNumberEditorPrivate));
-
-enum
-{
-   MAXIMUM_VALUE_EXCEED,
-   MINIMUM_VALUE_EXCEED,
-   ERRONEOUS_VALUE
-};
-
 
 typedef struct _HildonNumberEditorPrivate HildonNumberEditorPrivate;
 
@@ -91,9 +85,6 @@ static void
 set_widget_allocation (GtkWidget *widget, GtkAllocation *alloc,
                        GtkAllocation *allocation);
 
-static int
-hildon_number_editor_get_font_width (GtkWidget *widget);
-
 static void
 hildon_number_editor_size_allocate (GtkWidget *widget,
                                     GtkAllocation *allocation);
@@ -114,9 +105,6 @@ static gboolean
 hildon_number_editor_button_released (GtkWidget *widget,
                                       GdkEvent *event,
                                       HildonNumberEditor *editor);
-static void
-construct_error_message (HildonNumberEditor *editor, gint type);
-
 static gboolean
 do_mouse_timeout (HildonNumberEditor *editor);
 
@@ -142,9 +130,20 @@ hildon_number_editor_finalize (GObject *self);
 static gboolean
 hildon_number_editor_mnemonic_activate( GtkWidget *widget,
                                         gboolean group_cycle );
+static gboolean
+hildon_number_editor_error_handler(HildonNumberEditor *editor,
+				   HildonNumberEditorErrorType type);
+
+enum
+{
+  RANGE_ERROR,
+
+  LAST_SIGNAL
+};
 
 static GtkContainerClass *parent_class;
 
+static guint HildonNumberEditor_signal[LAST_SIGNAL] = {0};
 
 struct _HildonNumberEditorPrivate
 {
@@ -157,10 +156,7 @@ struct _HildonNumberEditorPrivate
     gint default_val;
     gint button_type;
     gint button_event_id;
-    gint entry_len;
-    gint entry_width;
 
-    gboolean rem_sign_space;
     gboolean negative;
 };
 
@@ -206,11 +202,21 @@ hildon_number_editor_class_init(HildonNumberEditorClass * editor_class)
     widget_class->mnemonic_activate = hildon_number_editor_mnemonic_activate;
     widget_class->focus = hildon_composite_widget_focus;
 
+    editor_class->error_handler = hildon_number_editor_error_handler;
+
     /* Because we derived our widget from GtkContainer, we should override 
        forall method */
     container_class->forall = hildon_number_editor_forall;
     GTK_OBJECT_CLASS(editor_class)->destroy = hildon_number_editor_destroy;
     G_OBJECT_CLASS(editor_class)->finalize = hildon_number_editor_finalize;
+
+    HildonNumberEditor_signal[RANGE_ERROR] =
+      g_signal_new("range_error", HILDON_TYPE_NUMBER_EDITOR,
+		   G_SIGNAL_RUN_LAST, G_STRUCT_OFFSET
+		   (HildonNumberEditorClass, error_handler),
+		   g_signal_accumulator_true_handled, NULL,
+		   _hildon_marshal_BOOLEAN__INT,
+		   G_TYPE_BOOLEAN, 1, G_TYPE_INT);
 }
 
 static void
@@ -294,9 +300,7 @@ hildon_number_editor_init (HildonNumberEditor *editor)
     GTK_WIDGET_UNSET_FLAGS( priv->minus, GTK_CAN_FOCUS );
     GTK_WIDGET_UNSET_FLAGS( priv->plus, GTK_CAN_FOCUS );
     
-    priv->entry_width = 0;
     priv->button_event_id = -1;
-    priv->rem_sign_space = TRUE;
 
     gtk_widget_set_parent(priv->minus, GTK_WIDGET(editor));
     gtk_widget_set_parent(priv->num_entry, GTK_WIDGET(editor));
@@ -342,6 +346,9 @@ hildon_number_editor_init (HildonNumberEditor *editor)
                      G_CALLBACK(hildon_number_editor_button_released),
                      editor);
 
+    g_object_set( G_OBJECT(priv->num_entry),
+                  "input-mode", HILDON_INPUT_MODE_HINT_NUMERIC, NULL );
+    
     gtk_widget_show(priv->num_entry);
     gtk_widget_show(priv->minus);
     gtk_widget_show(priv->plus);
@@ -366,40 +373,6 @@ hildon_number_editor_entry_button_released (GtkWidget *widget,
 {
   gtk_editable_select_region(GTK_EDITABLE(widget), 0, -1);
   return FALSE;
-}
-
-static void
-construct_error_message (HildonNumberEditor *editor, gint type)
-{
-    gint min, max;
-    gchar *err_msg = NULL;
-    HildonNumberEditorPrivate *priv;
-
-    priv = HILDON_NUMBER_EDITOR_GET_PRIVATE(editor);
-    min = priv->start;
-    max = priv->end;
-
-    /* Construct different error message */
-    switch (type)
-      {
-        case MAXIMUM_VALUE_EXCEED:
-          err_msg = g_strdup_printf(_("Ckct_ib_maximum_value"), max, max);
-          break;
-        case MINIMUM_VALUE_EXCEED:
-          err_msg = g_strdup_printf(_("Ckct_ib_minimum_value"), min, min);
-          break;
-        case ERRONEOUS_VALUE:
-          err_msg =
-            g_strdup_printf(_("Ckct_ib_set_a_value_within_range"), min, max);
-          break;
-      }
-
-    if (err_msg)
-      {
-        gtk_infoprint(GTK_WINDOW(gtk_widget_get_ancestor(GTK_WIDGET(editor),
-                      GTK_TYPE_WINDOW)), err_msg);
-        g_free(err_msg);
-      }
 }
 
 static gboolean
@@ -496,6 +469,7 @@ do_mouse_timeout (HildonNumberEditor *editor)
 static gboolean
 change_numbers (HildonNumberEditor *editor, gint type, gint cursor_pos)
 {
+    gboolean r;
     gint nvalue;
     gchar *snvalue;
     HildonNumberEditorPrivate *priv =
@@ -508,7 +482,8 @@ change_numbers (HildonNumberEditor *editor, gint type, gint cursor_pos)
             nvalue += 1;
         else
           {
-            construct_error_message(editor, MAXIMUM_VALUE_EXCEED);
+	    g_signal_emit(editor, HildonNumberEditor_signal[RANGE_ERROR], 
+			  0, MAXIMUM_VALUE_EXCEED, &r);
             return FALSE;
           }
       }
@@ -519,7 +494,8 @@ change_numbers (HildonNumberEditor *editor, gint type, gint cursor_pos)
 
         else
           {
-            construct_error_message(editor, MINIMUM_VALUE_EXCEED);
+	    g_signal_emit(editor, HildonNumberEditor_signal[RANGE_ERROR], 
+			  0, MINIMUM_VALUE_EXCEED, &r);
             return FALSE;
           }
       }
@@ -547,48 +523,52 @@ integer_to_string (gint nvalue)
 static void
 hildon_number_editor_entry_changed (GtkWidget *widget, gpointer data)
 {
-    HildonNumberEditor *editor;
-    HildonNumberEditorPrivate *priv;
-    gchar *tmpstr;
-    gint value;
-    gchar *tail = NULL;
+  HildonNumberEditor *editor;
+  HildonNumberEditorPrivate *priv;
+  gchar *tmpstr;
+  gint value;
+  gchar *tail = NULL;
+  gboolean r;
 
-    editor = HILDON_NUMBER_EDITOR(data);
-    priv = HILDON_NUMBER_EDITOR_GET_PRIVATE(editor);
+  editor = HILDON_NUMBER_EDITOR(data);
+  priv = HILDON_NUMBER_EDITOR_GET_PRIVATE(editor);
 
-    tmpstr = GTK_ENTRY(priv->num_entry)->text;
+  tmpstr = GTK_ENTRY(priv->num_entry)->text;
 
-    if (strlen(tmpstr) > 0)
-      {
-        tmpstr = NULL;
-        value = strtol(GTK_ENTRY(priv->num_entry)->text, &tail, 10);
-        if (!strncmp(tail, "\0", 1) || !strncmp(tail, "-", 1))
-          {    
-            if (atoi(GTK_ENTRY(priv->num_entry)->text) > priv->end)
-              {
-                construct_error_message(editor, MAXIMUM_VALUE_EXCEED);
-                tmpstr = integer_to_string(priv->end);
-                gtk_entry_set_text(GTK_ENTRY(priv->num_entry), tmpstr);
-                if (tmpstr)
-                    g_free(tmpstr);
-              }
-            else if (atoi(GTK_ENTRY(priv->num_entry)->text) < priv->start) {
-                construct_error_message(editor, MINIMUM_VALUE_EXCEED);
-                tmpstr = integer_to_string(priv->start);
-                gtk_entry_set_text(GTK_ENTRY(priv->num_entry), tmpstr);
-                if (tmpstr)
-                    g_free(tmpstr);
-              }
-          }
-        else
-          {
-            construct_error_message(editor, ERRONEOUS_VALUE);
-            tmpstr = integer_to_string(priv->start);
-            gtk_entry_set_text(GTK_ENTRY(priv->num_entry), tmpstr);
-            if (tmpstr)
-                g_free(tmpstr);
-          }
-      }
+  if (strlen(tmpstr) > 0)
+    {
+      tmpstr = NULL;
+      value = strtol(GTK_ENTRY(priv->num_entry)->text, &tail, 10);
+      if (!strncmp(tail, "\0", 1) || !strncmp(tail, "-", 1))
+	{    
+	  if (atoi(GTK_ENTRY(priv->num_entry)->text) > priv->end)
+	    {
+	      g_signal_emit(editor,HildonNumberEditor_signal[RANGE_ERROR], 
+			    0, MAXIMUM_VALUE_EXCEED, &r);
+	      tmpstr = integer_to_string(priv->end);
+	      gtk_entry_set_text(GTK_ENTRY(priv->num_entry), tmpstr);
+	      if (tmpstr)
+		g_free(tmpstr);
+	    }
+	  else if (atoi(GTK_ENTRY(priv->num_entry)->text) < priv->start) {
+	    g_signal_emit(editor, HildonNumberEditor_signal[RANGE_ERROR], 
+			  0, MINIMUM_VALUE_EXCEED, &r);
+	    tmpstr = integer_to_string(priv->start);
+	    gtk_entry_set_text(GTK_ENTRY(priv->num_entry), tmpstr);
+	    if (tmpstr)
+	      g_free(tmpstr);
+	  }
+	}
+      else
+	{
+	  g_signal_emit(editor, HildonNumberEditor_signal[RANGE_ERROR], 
+			0, ERRONEOUS_VALUE, &r);
+	  tmpstr = integer_to_string(priv->start);
+	  gtk_entry_set_text(GTK_ENTRY(priv->num_entry), tmpstr);
+	  if (tmpstr)
+	    g_free(tmpstr);
+	}
+    }
 }
 
 static void
@@ -602,29 +582,14 @@ hildon_number_editor_size_request (GtkWidget *widget,
     editor = HILDON_NUMBER_EDITOR(widget);
     priv = HILDON_NUMBER_EDITOR_GET_PRIVATE(editor);
 
-/* FIXME -- If it's needed to fix button sizes.. priv->minus and priv->plus
- * requisitions are right places to do that.
- */
-
     gtk_widget_size_request(priv->minus, &req);
-    *requisition = req;
+    requisition->width = req.width;
 
     gtk_widget_size_request(priv->num_entry, &req);
     requisition->width += req.width;
 
-    if (!priv->entry_width)
-      {
-        gint font_w = hildon_number_editor_get_font_width(priv->num_entry);
-
-        priv->entry_width = (priv->entry_len + 1) * font_w +
-            widget->style->xthickness * 2 -
-            (font_w / 2 * priv->rem_sign_space);
-        gtk_widget_set_size_request(priv->num_entry, priv->entry_width,
-                                    req.height);
-      }
-
     gtk_widget_size_request(priv->plus, &req);
-    requisition->width += priv->entry_len;
+    requisition->width += req.width;
 
     requisition->width += SPACE_BORDER * 2;
     requisition->height = NUMBER_EDITOR_HEIGHT;
@@ -650,27 +615,6 @@ set_widget_allocation (GtkWidget *widget, GtkAllocation *alloc,
 
     gtk_widget_size_allocate(widget, alloc);
     alloc->x += alloc->width;
-}
-
-static int
-hildon_number_editor_get_font_width (GtkWidget *widget)
-{
-    PangoContext *context;
-    PangoFontMetrics *metrics;
-    gint digit_width;
-
-    context = gtk_widget_get_pango_context(widget);
-    metrics = pango_context_get_metrics(context,
-                                        widget->style->font_desc,
-                                        pango_context_get_language
-                                        (context));
-
-    digit_width = pango_font_metrics_get_approximate_digit_width(metrics);
-    digit_width = PANGO_PIXELS(digit_width);
-
-    pango_font_metrics_unref(metrics);
-
-    return digit_width;
 }
 
 static void
@@ -720,6 +664,7 @@ hildon_number_editor_entry_focusout (GtkWidget *widget, GdkEventFocus *event,
     HildonNumberEditor *editor;
     HildonNumberEditorPrivate *priv;
     gchar *str;
+    gboolean r;
 
     editor = HILDON_NUMBER_EDITOR(data);
     priv = HILDON_NUMBER_EDITOR_GET_PRIVATE(editor);
@@ -727,7 +672,8 @@ hildon_number_editor_entry_focusout (GtkWidget *widget, GdkEventFocus *event,
     /* empty entry, must infoprint error message */
     if (!strlen(GTK_ENTRY(priv->num_entry)->text))
       {
-        construct_error_message(editor, ERRONEOUS_VALUE);
+	g_signal_emit(editor, HildonNumberEditor_signal[RANGE_ERROR], 
+		      0, ERRONEOUS_VALUE, &r);
         /* Changing to default value */
         str = integer_to_string(priv->default_val);
         gtk_entry_set_text(GTK_ENTRY(priv->num_entry), str);
@@ -808,6 +754,44 @@ hildon_number_editor_entry_keypress (GtkWidget *widget, GdkEventKey *event,
    return ret_val;
 }
 
+static gboolean
+hildon_number_editor_error_handler(HildonNumberEditor *editor,
+				   HildonNumberEditorErrorType type)
+{
+
+  gint min, max;
+  gchar *err_msg = NULL;
+  HildonNumberEditorPrivate *priv;
+
+  priv = HILDON_NUMBER_EDITOR_GET_PRIVATE(editor);
+  min = priv->start;
+  max = priv->end;
+
+  /* Construct different error message */
+  switch (type)
+    {
+    case MAXIMUM_VALUE_EXCEED:
+      err_msg = g_strdup_printf(_("Ckct_ib_maximum_value"), max, max);
+      break;
+    case MINIMUM_VALUE_EXCEED:
+      err_msg = g_strdup_printf(_("Ckct_ib_minimum_value"), min, min);
+      break;
+    case ERRONEOUS_VALUE:
+      err_msg =
+	g_strdup_printf(_("Ckct_ib_set_a_value_within_range"), min, max);
+      break;
+    }
+
+  if (err_msg)
+    {
+      gtk_infoprint(GTK_WINDOW(gtk_widget_get_ancestor(GTK_WIDGET(editor),
+						       GTK_TYPE_WINDOW)), err_msg);
+      g_free(err_msg);
+    }
+
+  return TRUE;
+}
+
 
 /**
  * hildon_number_editor_new:
@@ -843,7 +827,7 @@ hildon_number_editor_set_range (HildonNumberEditor *editor, gint min, gint max)
 {
     HildonNumberEditorPrivate *priv;
     gchar *str, *str2;
-    gint a, b;
+    gint a, b, entry_len;
 
     g_return_if_fail(HILDON_IS_NUMBER_EDITOR(editor));
 
@@ -870,23 +854,12 @@ hildon_number_editor_set_range (HildonNumberEditor *editor, gint min, gint max)
     b = strlen(str2);
 
     if (a >= b)
-      {
-        priv->entry_len = a;
-        priv->rem_sign_space = FALSE;
-      }
+        entry_len = a;
     else
-      {
-        priv->entry_len = b;
-        priv->rem_sign_space = TRUE;
-      }
+        entry_len = b;
     
-    /* reserving space for the minus sign */
-    if (priv->negative)
-        priv->entry_len++;
 
-/*  priv->entry_len = a >= b ? a : b;*/
-
-    priv->entry_width = 0;
+    gtk_entry_set_width_chars(GTK_ENTRY(priv->num_entry), entry_len);
 
     gtk_entry_set_text(GTK_ENTRY(priv->num_entry), str);
     gtk_widget_queue_resize(GTK_WIDGET(editor));

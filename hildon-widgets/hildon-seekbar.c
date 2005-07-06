@@ -252,14 +252,14 @@ static void
 hildon_seekbar_set_property(GObject * object, guint prop_id,
                             const GValue * value, GParamSpec * pspec)
 {
-    GtkRange *range = GTK_RANGE(object);
+    HildonSeekbar *seekbar = HILDON_SEEKBAR(object);
 
     switch (prop_id) {
     case PROP_TOTAL_TIME:
-        range->adjustment->upper = g_value_get_double(value);
+        hildon_seekbar_set_total_time(seekbar, g_value_get_double(value));
         break;
     case PROP_POSITION:
-        range->adjustment->value = g_value_get_double(value);
+        hildon_seekbar_set_position(seekbar, g_value_get_double(value));
         break;
     default:
         G_OBJECT_WARN_INVALID_PROPERTY_ID(object, prop_id, pspec);
@@ -360,9 +360,16 @@ void hildon_seekbar_set_total_time(HildonSeekbar *seekbar, gint time)
         hildon_seekbar_set_fraction(seekbar,
                                     MIN(hildon_seekbar_get_fraction(seekbar),
                                         time));
+
+        g_object_freeze_notify (G_OBJECT(seekbar));
+
         hildon_seekbar_set_position(seekbar,
                                     MIN(hildon_seekbar_get_position(seekbar),
                                         time));
+
+        g_object_notify(G_OBJECT (seekbar), "total-time");
+
+        g_object_thaw_notify (G_OBJECT(seekbar));
     }
 }
 
@@ -458,6 +465,8 @@ void hildon_seekbar_set_position(HildonSeekbar *seekbar, gint time)
       if (value <= osso_gtk_range_get_stream_position (range)) {
         adj->value = value;
         gtk_adjustment_value_changed(adj);
+
+        g_object_notify(G_OBJECT(seekbar), "position");
       }
     }
 }

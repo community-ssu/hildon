@@ -38,6 +38,7 @@
 #include <gtk/gtkhbox.h>
 #include <gtk/gtklabel.h>
 #include <gtk/gtkdrawingarea.h>
+#include <gtk/gtkbutton.h>
 #include <gdk/gdkkeysyms.h>
 #include <gconf/gconf-client.h> 
 
@@ -69,8 +70,6 @@
 #define HILDON_COLOR_PALETTE_POS_PAD      45
 #define HILDON_COLOR_BAR_WIDTH 449
 
-#define HILDON_MORE_BUTTON_RESPONSE     1234
-
 /* gconf definitions */
 #define HILDON_COLOR_GCONF_PATH  "/system/osso/af/color_selector"
 #define HILDON_COLOR_GCONF_KEYS  "/system/osso/af/color_selector/custom_colors"
@@ -83,6 +82,7 @@ struct _HildonColorSelectorPriv
 {
     GConfClient *client;
     GtkWidget *drawing_area;
+    GtkWidget *modify_button;
     gint index;
     guint notify_id;
 
@@ -104,15 +104,9 @@ hildon_color_selector_expose (GtkWidget * widget,
                               GdkEventExpose * event, 
                               gpointer data);
 
-static void 
-hildon_color_selector_response (GtkWidget * widget,
-                               gint response_id, 
-                               gpointer data);
-
 static gboolean 
 key_pressed (GtkWidget * widget, 
-             GdkEventKey * event, 
-             gpointer user_data);
+             GdkEventKey * event);
 
 static gboolean 
 color_pressed (GtkWidget * widget, 
@@ -122,14 +116,22 @@ color_pressed (GtkWidget * widget,
 static void
 select_color (HildonColorSelector * selector, 
               int event_x, 
-              int event_y);   
+              int event_y,
+              gboolean motion);
 
 static gboolean
 color_moved (GtkWidget * widget, 
              GdkEventMotion * event, 
              gpointer data);
 
-GType 
+static void
+modify_button_clicked (GtkWidget * button,
+                       HildonColorSelector * selector);
+
+static void
+modify_selected(HildonColorSelector * colselector);
+
+GType
 hildon_color_selector_get_type(void)
 {
     static GType selector_type = 0;
@@ -173,8 +175,12 @@ hildon_color_selector_destroy(GtkObject *obj)
 static void
 hildon_color_selector_class_init(HildonColorSelectorClass * selector_class)
 {
+    GtkWidgetClass *widget_class = GTK_WIDGET_CLASS(selector_class);
+
     parent_class = g_type_class_peek_parent(selector_class);
-    
+
+    widget_class->key_press_event = key_pressed;
+
     g_type_class_add_private(selector_class,
                              sizeof(HildonColorSelectorPriv));
 
@@ -216,7 +222,7 @@ hildon_color_selector_set_custom_colors(
   g_assert(HILDON_IS_COLOR_SELECTOR(selector));
 
   /* We have to be really carefull. At least gconftool's
-     stress test can generate pretty ugly value setups */
+     stress test may generate unexpected value setups */
   if (value == NULL || value->type != GCONF_VALUE_LIST ||
     gconf_value_get_list_type(value) != GCONF_VALUE_STRING)
     list = NULL;
@@ -340,24 +346,25 @@ hildon_color_selector_init(HildonColorSelector * selector)
                       G_CALLBACK(color_pressed), selector);
     g_signal_connect (selector->priv->drawing_area, "motion-notify-event", 
                       G_CALLBACK(color_moved), selector);
-    g_signal_connect (selector, "key-press-event",
-                      G_CALLBACK(key_pressed), selector);
-
 
     gtk_dialog_add_button (GTK_DIALOG(selector), 
                            _("ecdg_bd_colour_selector_ok"), GTK_RESPONSE_OK);
-    gtk_dialog_add_button (GTK_DIALOG(selector),
-                           _("ecdg_ti_5bit_colour_selector"),
-                           HILDON_MORE_BUTTON_RESPONSE);
+
+    selector->priv->modify_button =
+        gtk_button_new_with_label(_("ecdg_bd_colour_selector_modify"));
+    gtk_widget_set_sensitive(selector->priv->modify_button, FALSE);
+    gtk_box_pack_start(GTK_BOX(GTK_DIALOG(selector)->action_area),
+                       selector->priv->modify_button, FALSE, TRUE, 0);
+
+    g_signal_connect(selector->priv->modify_button, "clicked",
+                     G_CALLBACK(modify_button_clicked), selector);
+
     gtk_dialog_add_button (GTK_DIALOG(selector),
                            _("ecdg_bd_colour_selector_cancel"),
                            GTK_RESPONSE_CANCEL);
 
     gtk_dialog_set_default_response (GTK_DIALOG(selector), GTK_RESPONSE_OK);
     
-    g_signal_connect (G_OBJECT(selector), "response",
-                      G_CALLBACK(hildon_color_selector_response), selector);
-
     gtk_window_set_title ( GTK_WINDOW(selector),  
                           _("ecdg_ti_colour_selector") );
     gtk_widget_show_all (GTK_DIALOG(selector)->vbox);
@@ -476,6 +483,8 @@ void hildon_color_selector_set_color(HildonColorSelector * selector,
             selector->priv->color[i].blue  == color->blue) 
         {
             selector->priv->index = i;
+            gtk_widget_set_sensitive(selector->priv->modify_button,
+                                     selector->priv->index >= HILDON_BASE_COLOR_NUM);
             gtk_widget_queue_draw(selector->priv->drawing_area);
             break;
         }
@@ -486,25 +495,24 @@ static gboolean
 color_pressed(GtkWidget * widget, GdkEventButton * event,
               gpointer user_data)
 {
-    select_color(HILDON_COLOR_SELECTOR(user_data), event->x, event->y);
+    select_color(HILDON_COLOR_SELECTOR(user_data), event->x, event->y, FALSE);
     return TRUE;
 }
 
 static gboolean key_pressed(GtkWidget * widget,
-                            GdkEventKey * event, gpointer user_data)
+                            GdkEventKey * event)
 {
     HildonColorSelector *selector;
     gint index;
 
     g_return_val_if_fail(widget, FALSE);
-    g_return_val_if_fail(user_data, FALSE);
 
-    selector = HILDON_COLOR_SELECTOR(user_data);
+    selector = HILDON_COLOR_SELECTOR(widget);
     index = selector->priv->index;
 
     /* if dialog buttons has the focus */
     if (GTK_WIDGET_HAS_FOCUS(selector->priv->drawing_area) == FALSE)
-        return FALSE;
+        return GTK_WIDGET_CLASS(parent_class)->key_press_event(widget, event);
 
     /* go for if available index otherwise stop keypress handler because
        wrapping around is not allowed. */
@@ -537,7 +545,7 @@ static gboolean key_pressed(GtkWidget * widget,
         } 
         else 
         {
-            return FALSE;
+            return GTK_WIDGET_CLASS(parent_class)->key_press_event(widget, event);
         }
         break;
     case GDK_KP_Down:
@@ -548,11 +556,17 @@ static gboolean key_pressed(GtkWidget * widget,
         } 
         else 
         {
-            return FALSE;
+            return GTK_WIDGET_CLASS(parent_class)->key_press_event(widget, event);
         }
         break;
+    case GDK_KP_Enter:
+    case GDK_Return:
+        if (index < HILDON_BASE_COLOR_NUM)
+            return GTK_WIDGET_CLASS(parent_class)->key_press_event(widget, event);
+
+        modify_selected(selector);
     default:
-        return FALSE;
+        return GTK_WIDGET_CLASS(parent_class)->key_press_event(widget, event);
     }
 
     if (index < (HILDON_BASE_COLOR_NUM + HILDON_CUSTOM_COLOR_NUM)) 
@@ -564,14 +578,17 @@ static gboolean key_pressed(GtkWidget * widget,
         selector->priv->index = 
             HILDON_BASE_COLOR_NUM + HILDON_CUSTOM_COLOR_NUM - 1;
     }
-    
+    gtk_widget_set_sensitive(selector->priv->modify_button,
+                             selector->priv->index >= HILDON_BASE_COLOR_NUM);
+
     gtk_widget_queue_draw(selector->priv->drawing_area);
     
     return TRUE;
 }
 
 static void
-select_color(HildonColorSelector * selector, int event_x, int event_y)
+select_color(HildonColorSelector * selector, int event_x, int event_y,
+             gboolean motion)
 {
     gint x, y;
 
@@ -603,8 +620,15 @@ select_color(HildonColorSelector * selector, int event_x, int event_y)
     {
         y = 0;
     }
-    
+
+    if (!motion &&
+        selector->priv->index >= HILDON_BASE_COLOR_NUM &&
+        selector->priv->index == (x + y * HILDON_COLOR_SELECTOR_COLS))
+        modify_selected(selector);
+
     selector->priv->index = (x + y * HILDON_COLOR_SELECTOR_COLS);
+    gtk_widget_set_sensitive(selector->priv->modify_button,
+                             selector->priv->index >= HILDON_BASE_COLOR_NUM);
     
     gtk_widget_queue_draw(selector->priv->drawing_area);
 }
@@ -615,28 +639,23 @@ color_moved(GtkWidget * widget, GdkEventMotion * event, gpointer data)
     if ( event->state &
          (GDK_BUTTON1_MASK | GDK_BUTTON2_MASK | GDK_BUTTON3_MASK) ) 
     {
-        select_color(HILDON_COLOR_SELECTOR(data), event->x, event->y);
+        select_color(HILDON_COLOR_SELECTOR(data), event->x, event->y, TRUE);
         return TRUE;
     }
     return FALSE;
 }
 
-static void 
-hildon_color_selector_response(GtkWidget * widget,
-                               gint response_id, 
-                               gpointer data)
+static void
+modify_button_clicked(GtkWidget * button, HildonColorSelector * selector)
 {
-    HildonColorSelector * colselector;
+    modify_selected (selector);
+}
+
+static void
+modify_selected(HildonColorSelector * colselector)
+{
     HildonColorPopup popupdata;
     GtkWidget *popup;
-
-    g_return_if_fail (HILDON_IS_COLOR_SELECTOR(data));
-
-    if (response_id != HILDON_MORE_BUTTON_RESPONSE)
-        return;
-
-    g_signal_stop_emission_by_name (widget, "response");
-    colselector = HILDON_COLOR_SELECTOR(data);
 
     popup = hildon_color_popup_new(GTK_WINDOW(GTK_WIDGET(colselector)->window), 
 		    hildon_color_selector_get_color(colselector), &popupdata);

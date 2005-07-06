@@ -55,25 +55,13 @@ typedef struct _HildonFontSelectionDialog HildonFontSelectionDialog;
 typedef struct _HildonFontSelectionDialogClass
  HildonFontSelectionDialogClass;
 
-typedef enum {
-    HILDON_POSITIONING_NORMAL,
-    HILDON_POSITIONING_SUPER,
-    HILDON_POSITIONING_SUB
-} HildonPositioning;
-
-typedef enum {
-    HILDON_FONT_FACE_NORMAL,
-    HILDON_FONT_FACE_ITALIC,
-    HILDON_FONT_FACE_BOLD,
-    HILDON_FONT_FACE_BOLD_ITALIC
-} HildonFontFaceType;
-
-
-struct _HildonFontSelectionDialog {
+struct _HildonFontSelectionDialog
+{
     GtkDialog parent;
 };
 
-struct _HildonFontSelectionDialogClass {
+struct _HildonFontSelectionDialogClass
+{
     GtkDialogClass parent_class;
 
     /* Padding for future expansion */
@@ -83,31 +71,35 @@ struct _HildonFontSelectionDialogClass {
     void (*_gtk_reserved4) (void);
 };
 
-
-GType hildon_font_selection_dialog_get_type(void) G_GNUC_CONST;
-GtkWidget *hildon_font_selection_dialog_new(GtkWindow * parent,
-                                            const gchar * title);
-
-/*To set and to get a font, use these functions*/
-PangoAttrList
-    * hildon_font_selection_dialog_get_font(HildonFontSelectionDialog *
+#ifndef HILDON_DISABLE_DEPRECATED
+PangoAttrList* 
+hildon_font_selection_dialog_get_font(HildonFontSelectionDialog *
                                             fsd);
 void hildon_font_selection_dialog_set_font(HildonFontSelectionDialog *
                                            fsd, PangoAttrList * list);
-
-void hildon_font_selection_dialog_set_buffer(HildonFontSelectionDialog *fsd, GtkTextBuffer *buffer);
-GtkTextTag * hildon_font_selection_dialog_get_text_tag (HildonFontSelectionDialog *fsd);
+#endif
 
 
+GType   hildon_font_selection_dialog_get_type          (void) G_GNUC_CONST;
 
-/* This returns the text in the lbl_preview. You should copy the returned
-   text if you need it. */
-gchar*
-hildon_font_selection_dialog_get_preview_text(HildonFontSelectionDialog * fsd);
+GtkWidget*
+        hildon_font_selection_dialog_new               (GtkWindow * parent,
+							const gchar * title);
 
-/* This sets the text in the lbl_preview.*/
-void hildon_font_selection_dialog_set_preview_text
-    (HildonFontSelectionDialog * fsd, const gchar * text);
+
+#ifndef HILDON_DISABLE_DEPRECATED
+void    hildon_font_selection_dialog_set_buffer        (HildonFontSelectionDialog *fsd, 
+							GtkTextBuffer *buffer);
+
+GtkTextTag *
+        hildon_font_selection_dialog_get_text_tag      (HildonFontSelectionDialog *fsd);
+
+#endif
+	
+gchar*  hildon_font_selection_dialog_get_preview_text  (HildonFontSelectionDialog * fsd);
+
+void    hildon_font_selection_dialog_set_preview_text  (HildonFontSelectionDialog * fsd, 
+							const gchar * text);
 
 #ifdef __cplusplus
 }

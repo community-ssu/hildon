@@ -37,39 +37,35 @@
 #include <hildon-widgets/hildon-grid-item.h>
 
 G_BEGIN_DECLS
-    void _hildon_grid_item_set_label(HildonGridItem * item,
-                                     const gchar * label);
 
-void _hildon_grid_item_set_icon_size(HildonGridItem * item,
+
+void _hildon_grid_item_set_label(HildonGridItem *item,
+                                 const gchar *label);
+
+void _hildon_grid_item_set_emblem_size(HildonGridItem *item,
+                                       const gint emblem_size);
+void _hildon_grid_item_set_label_pos(HildonGridItem *item,
+                                     HildonGridPositionType label_pos);
+
+void _hildon_grid_item_set_icon_size(HildonGridItem *item,
                                      HildonGridItemIconSizeType icon_size);
 
-void _hildon_grid_item_set_label_pos(HildonGridItem * item,
-                                     HildonGridPositionType label_pos);
-void _hildon_grid_item_set_emblem_size(HildonGridItem * item,
-                                       const gint emblem_size);
+void _hildon_grid_item_set_focus_margin(HildonGridItem *item,
+                                        const gint focus_margin);
+void _hildon_grid_item_set_label_height(HildonGridItem *item,
+                                        const gint label_height);
+void _hildon_grid_item_set_label_icon_margin(HildonGridItem *item,
+                                             const gint label_icon_margin);
+void _hildon_grid_item_set_icon_width(HildonGridItem *item,
+                                      const gint icon_width);
+void _hildon_grid_item_set_icon_height(HildonGridItem *item,
+                                       const gint icon_height);
+void _hildon_grid_item_set_label_height(HildonGridItem *item,
+ 					const gint label_height);
 
-void _hildon_grid_item_set_label_spacing(HildonGridItem * item,
-                                         const gint hspacing,
-                                         const gint vspacing);
+void _hildon_grid_item_done_updating_settings(HildonGridItem *item);
 
-/*
- * These are not needed...
- *
-const gchar *_hildon_grid_item_get_label    (HildonGridItem *item);
-
-const HildonGridItemIconSizeType _hildon_grid_item_get_icon_size
-                                            (HildonGridItem *item);
-
-const HildonGridPositionType _hildon_grid_item_set_label_pos
-                                            (HildonGridItem *item);
-
-const gint _hildon_grid_item_set_emblem_size    (HildonGridItem *item);
-
-const gint _hildon_grid_item_get_label_spacing  (HildonGridItem *item,
-                                                 gint           *hspacing,
-                                                 gint           *vspacing);
- *
- */
 
 G_END_DECLS
+
 #endif /* ifndef HILDON_GRID_ITEM_PRIVATE_H_ */

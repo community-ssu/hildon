@@ -23,67 +23,58 @@
  */
 
 /*
- * @file hildon-get-password-dialog.c
- *
- * This file contains the API implementation for Hildon Get Password
- * dialog.
- *  Get password dialog:
- *   @desc: Get Password Dialog is used to enter a password when accessing
- *   a password protected function 
- * 
- * Get old password dialog:
- *   @desc: Get Old Password is used to enter the current password 
- *          in order to either change or remove the existing password.
- *
- *  @seealso: #HildonSetPasswordDialog
+ * HILDON DOC
+ * @shortdesc: GetPasswordDialog is a dialog for getting the user
+ * password.
+ * @longdesc: GetPasswordDialog implements two specified dialogs,
+ * which are pretty much functionally the same, but have 
+ * different outlooks.
  */
+#include <glib.h>
+
+#include <errno.h>
+#include <string.h>
+#include <strings.h>
+#include <unistd.h>
+#include <stdio.h>
+
+#include <gtk/gtk.h>
+#include <hildon-lgpl/hildon-widgets/gtk-infoprint.h>
+
+#include <hildon-widgets/hildon-caption.h>
+#include <hildon-widgets/hildon-get-password-dialog.h>
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif
 
-#include <gtk/gtkentry.h>
-#include <gtk/gtkbox.h>
-#include <gtk/gtkeditable.h>
-#include <gtk/gtksignal.h>
-#include <gdk/gdkkeysyms.h>
-
-#include <hildon-widgets/hildon-caption.h>
-#include "hildon-get-password-dialog.h"
-
 #include <libintl.h>
 #define _(String) dgettext(PACKAGE, String)
 
-static GtkDialogClass *parent_class;
+static GtkDialogClass * parent_class;
 
+typedef struct _HildonGetPasswordDialogPrivate 
+  HildonGetPasswordDialogPrivate;
 
-#define PASSWORD_DIALOG_WIDTH       370
-#define PASSWORD_DIALOG_HEIGHT      100
+struct _HildonGetPasswordDialogPrivate {
+  GtkButton *okButton;
+  GtkButton *cancelButton;
+  
+  GtkLabel *domainLabel;
+  HildonCaption *passwordEntry;
+};
 
-#define ENTER_PASSWORD_CHAR         _("ecdg_fi_verify_pwd_enter_pwd")
-#define OK_CHAR                     _("ecdg_bd_verify_password_dialog_ok")
-#define CANCEL_CHAR                 _("ecdg_bd_verify_password_dialog_cancel")
-#define PASSWORD_PROTECTED_CHAR     _("ecdg_bd_verify_password")
-#define ENTER_CURRENT_PASSWORD_CHAR _("ecdg_ti_get_old_password")
 
 #define HILDON_GET_PASSWORD_DIALOG_GET_PRIVATE(obj) \
  (G_TYPE_INSTANCE_GET_PRIVATE ((obj), \
   HILDON_TYPE_GET_PASSWORD_DIALOG, HildonGetPasswordDialogPrivate));
 
-typedef struct _HildonGetPasswordDialogPrivate
-    HildonGetPasswordDialogPrivate;
-
 static void
 hildon_get_password_dialog_class_init(HildonGetPasswordDialogClass *
                                       class);
+
 static void hildon_get_password_dialog_init(HildonGetPasswordDialog *
                                             widget);
-static gboolean hildon_get_password_dialog_released(GtkWidget * widget,
-                                                    GdkEventButton * event,
-                                                    gpointer user_data);
-static gboolean special_key_listener(GtkWidget * widget,
-                                     GdkEventKey * event,
-                                     gpointer user_data);
 
 static void hildon_get_password_set_property(GObject * object,
                                              guint prop_id,
@@ -93,19 +84,15 @@ static void hildon_get_password_get_property(GObject * object,
                                              guint prop_id, GValue * value,
                                              GParamSpec * pspec);
 
-/* private struct */
-struct _HildonGetPasswordDialogPrivate {
-    /* Tab one */
-    GtkWidget *entry1;
-    GtkWidget *caption1;
+void hildon_get_password_dialog_set_domain(HildonGetPasswordDialog *dialog, 
+					   gchar *domain);
 
-    /* OK/Cancel buttons */
-    GtkWidget *okButton;
-    GtkWidget *cancelButton;
-};
+static void _invalid_input(GtkWidget *widget, GtkInvalidInputType reason, 
+			   gpointer user_data);
 
 enum{
     PROP_NONE = 0,
+    PROP_DOMAIN,
     PROP_PASSWORD
 };
 
@@ -115,21 +102,26 @@ hildon_get_password_set_property(GObject * object,
                                  guint prop_id,
                                  const GValue * value, GParamSpec * pspec)
 {
-    HildonGetPasswordDialog *dialog = HILDON_GET_PASSWORD_DIALOG(object);
-    HildonGetPasswordDialogPrivate *priv;
-
-    priv = HILDON_GET_PASSWORD_DIALOG_GET_PRIVATE(dialog);
-    
-    switch (prop_id) {
-    case PROP_PASSWORD:
-        gtk_entry_set_text(GTK_ENTRY(priv->entry1), g_value_get_string(value));
-        break;
-    default:
-        G_OBJECT_WARN_INVALID_PROPERTY_ID(object, prop_id, pspec);
-        break;
-    }
+  HildonGetPasswordDialog *dialog = HILDON_GET_PASSWORD_DIALOG(object);
+  HildonGetPasswordDialogPrivate *priv;
+  
+  priv = HILDON_GET_PASSWORD_DIALOG_GET_PRIVATE(dialog);
+  
+  switch (prop_id) {
+  case PROP_DOMAIN: /* Implemented othervise, here just for completeness */
+    gtk_label_set_text(priv->domainLabel, g_value_get_string(value));
+    break;
+  case PROP_PASSWORD:
+    gtk_entry_set_text(GTK_ENTRY
+		       (gtk_bin_get_child(GTK_BIN(priv->passwordEntry))),
+		       g_value_get_string(value));
+    break;
+  default:
+    G_OBJECT_WARN_INVALID_PROPERTY_ID(object, prop_id, pspec);
+    break;
+  }
 }
-
+  
 static void
 hildon_get_password_get_property(GObject * object,
                                  guint prop_id,
@@ -142,35 +134,48 @@ hildon_get_password_get_property(GObject * object,
     priv = HILDON_GET_PASSWORD_DIALOG_GET_PRIVATE(dialog);
     
     switch (prop_id) {
+    case PROP_DOMAIN:
+      string = gtk_label_get_text(priv->domainLabel);
+      g_value_set_string(value, string);
     case PROP_PASSWORD:
-        string = gtk_entry_get_text(GTK_ENTRY(priv->entry1));
-        g_value_set_string(value, string);
-        break;
+      string = gtk_entry_get_text(GTK_ENTRY(priv->passwordEntry));
+      g_value_set_string(value, string);
+      break;
     default:
-        G_OBJECT_WARN_INVALID_PROPERTY_ID(object, prop_id, pspec);
-        break;
+      G_OBJECT_WARN_INVALID_PROPERTY_ID(object, prop_id, pspec);
+      break;
     }
 }
 static void
 hildon_get_password_dialog_class_init(HildonGetPasswordDialogClass * class)
 {
-    GParamSpec *pspec1;
-    GObjectClass *object_class = G_OBJECT_CLASS(class);
+
+  GObjectClass *object_class = G_OBJECT_CLASS(class);
   
-    parent_class = g_type_class_peek_parent(class);
+  parent_class = g_type_class_peek_parent(class);
+  
+  object_class->set_property = hildon_get_password_set_property;
+  object_class->get_property = hildon_get_password_get_property;
+  
+  g_object_class_install_property 
+    (object_class, 
+     PROP_DOMAIN, 
+     g_param_spec_string ("domain",
+			  "Domain",
+			  "Set domain(content) for optional label.",
+			  NULL,
+			  G_PARAM_WRITABLE));
+  
+  
+  g_object_class_install_property
+    (object_class, 
+     PROP_PASSWORD,
+     g_param_spec_string ("password",
+			  "Password",
+			  "Set content for password entry",
+			  "DEFAULT",
+			  G_PARAM_READWRITE));
 
-    object_class->set_property = hildon_get_password_set_property;
-    object_class->get_property = hildon_get_password_get_property;
-
-    pspec1 = g_param_spec_string("password",
-				 "Password content",
-				 "Set content to dialog",
-				 "DEFAULT",
-				 G_PARAM_READWRITE);
-
-    g_object_class_install_property (object_class,
-				     PROP_PASSWORD,pspec1);
-    
     g_type_class_add_private(class,
                              sizeof(HildonGetPasswordDialogPrivate));
 }
@@ -178,75 +183,50 @@ hildon_get_password_dialog_class_init(HildonGetPasswordDialogClass * class)
 static void
 hildon_get_password_dialog_init(HildonGetPasswordDialog * dialog)
 {
-    HildonGetPasswordDialogPrivate *priv;
-    GtkSizeGroup *group;
-
-    priv = HILDON_GET_PASSWORD_DIALOG_GET_PRIVATE(dialog);
-
-    group = GTK_SIZE_GROUP(gtk_size_group_new(GTK_SIZE_GROUP_HORIZONTAL));
+    GtkSizeGroup * group;
+    GtkWidget *control;
+  
+    HildonGetPasswordDialogPrivate *priv =
+      HILDON_GET_PASSWORD_DIALOG_GET_PRIVATE(dialog);
+    group = GTK_SIZE_GROUP(gtk_size_group_new
+			   (GTK_SIZE_GROUP_HORIZONTAL));
 
     gtk_dialog_set_has_separator(GTK_DIALOG(dialog), FALSE);
 
     gtk_window_set_modal(GTK_WINDOW(dialog), TRUE);
 
-    /* create tab */
-    priv->entry1 = gtk_entry_new();
-    gtk_widget_show(priv->entry1);
+    
+    gtk_window_set_title(GTK_WINDOW(dialog), 
+			 _(HILDON_GET_PASSWORD_DIALOG_TITLE));
 
-    priv->caption1 = hildon_caption_new(group,
-                                        ENTER_PASSWORD_CHAR,
-                                        priv->entry1,
-                                        NULL, HILDON_CAPTION_OPTIONAL);
+    priv->domainLabel = GTK_LABEL(gtk_label_new(NULL));
+    
+    priv->okButton =
+      GTK_BUTTON(gtk_dialog_add_button(GTK_DIALOG(dialog),
+                                       _(HILDON_GET_PASSWORD_DIALOG_OK),
+                                       GTK_RESPONSE_OK));
+    priv->cancelButton =
+      GTK_BUTTON(gtk_dialog_add_button(GTK_DIALOG(dialog),
+                                       _(HILDON_GET_PASSWORD_DIALOG_CANCEL),
+                                       GTK_RESPONSE_CANCEL));
 
-    gtk_entry_set_visibility(GTK_ENTRY(priv->entry1), FALSE);
-
+    control = gtk_entry_new();
+    gtk_entry_set_visibility(GTK_ENTRY(control), FALSE);
+    priv->passwordEntry = HILDON_CAPTION
+      (hildon_caption_new(group,
+			  _(HILDON_GET_PASSWORD_DIALOG_PASSWORD ),
+			  control, NULL,
+			  HILDON_CAPTION_OPTIONAL));
+    hildon_caption_set_separator(HILDON_CAPTION(priv->passwordEntry), "");
+    
     gtk_box_pack_start(GTK_BOX(GTK_DIALOG(dialog)->vbox),
-                       priv->caption1, TRUE, TRUE, 0);
-    gtk_widget_show(priv->caption1);
-
-    /* Callback functions */
-    g_signal_connect(G_OBJECT(priv->entry1), "key-press-event",
-                     G_CALLBACK(special_key_listener), dialog);
-
-    g_signal_connect(priv->entry1, "button-release-event",
-                     G_CALLBACK(hildon_get_password_dialog_released),
-                     NULL);
-
-    /* Create the OK/CANCEL buttons */
-    priv->okButton = gtk_dialog_add_button(GTK_DIALOG(dialog),
-                                           OK_CHAR, GTK_RESPONSE_OK);
-    priv->cancelButton = gtk_dialog_add_button(GTK_DIALOG(dialog),
-                                               CANCEL_CHAR,
-                                               GTK_RESPONSE_CANCEL);
-    gtk_window_resize(GTK_WINDOW(dialog),
-                      PASSWORD_DIALOG_WIDTH, PASSWORD_DIALOG_HEIGHT);
-}
-
-static gboolean
-hildon_get_password_dialog_released(GtkWidget * widget,
-                                    GdkEventButton * event,
-                                    gpointer user_data)
-{
-    GtkEditable *editable = GTK_EDITABLE(widget);
-
-    gtk_editable_select_region(GTK_EDITABLE(editable), 0, -1);
-    gtk_widget_grab_focus(GTK_WIDGET(editable));
-
-    return FALSE;
-}
-
-static gboolean
-special_key_listener(GtkWidget * widget,
-                     GdkEventKey * event, gpointer user_data)
-{
-    HildonGetPasswordDialog *dialog =
-        HILDON_GET_PASSWORD_DIALOG(user_data);
-
-    if ((event->keyval == GDK_Return) || (event->keyval == GDK_KP_Enter)) {
-        gtk_dialog_response(GTK_DIALOG(dialog), GTK_RESPONSE_OK);
-    }
-
-    return FALSE;
+                       GTK_WIDGET(priv->domainLabel), FALSE, FALSE, 0);
+    gtk_box_pack_start(GTK_BOX(GTK_DIALOG(dialog)->vbox),
+                       GTK_WIDGET(priv->passwordEntry), FALSE, FALSE, 0);
+    gtk_widget_show_all(GTK_DIALOG(dialog)->vbox);
+    
+    gtk_dialog_set_default_response (GTK_DIALOG (dialog), GTK_RESPONSE_OK);
+  
 }
 
 /* Public functions */
@@ -301,11 +281,18 @@ GtkWidget *hildon_get_password_dialog_new(GtkWindow * parent,
          NULL);
 
     if (get_old_password_title == FALSE) {
-        gtk_window_set_title(GTK_WINDOW(dialog), PASSWORD_PROTECTED_CHAR);
-    } else {
-        gtk_window_set_title(GTK_WINDOW(dialog),
-                             ENTER_CURRENT_PASSWORD_CHAR);
-    }
+      HildonGetPasswordDialogPrivate *priv;
+      gtk_window_set_title(GTK_WINDOW(dialog), 
+			     _(HILDON_GET_PASSWORD_VERIFY_DIALOG_TITLE));
+		priv = HILDON_GET_PASSWORD_DIALOG_GET_PRIVATE(dialog);
+	gtk_button_set_label(priv->okButton, 
+			     _(HILDON_GET_PASSWORD_VERIFY_DIALOG_OK));
+	gtk_button_set_label(priv->cancelButton, 
+			     _(HILDON_GET_PASSWORD_VERIFY_DIALOG_CANCEL));
+	hildon_caption_set_label(priv->passwordEntry,
+				 _(HILDON_GET_PASSWORD_VERIFY_DIALOG_PASSWORD)
+				 );
+    } /* The other logical strings are set in class init */
 
     if (parent != NULL) {
         gtk_window_set_transient_for(GTK_WINDOW(dialog), parent);
@@ -359,10 +346,112 @@ const gchar
 
     priv = HILDON_GET_PASSWORD_DIALOG_GET_PRIVATE(dialog);
 
-    entry1 = GTK_ENTRY(hildon_caption_get_control
-                       (HILDON_CAPTION(priv->caption1)));
+    entry1 = GTK_ENTRY(gtk_bin_get_child(GTK_BIN(
+                       priv->passwordEntry)));
 
     text1 = GTK_ENTRY(entry1)->text;
 
     return text1;
+}
+
+/**
+ * hildon_get_password_dialog_set_domain(GtkWidget *dialog, 
+ * @dialog: the dialog
+ * @domain: the domain or some other descriptive text to be set.
+ * 
+ * sets the optional descriptive text
+ */
+
+void hildon_get_password_dialog_set_domain(HildonGetPasswordDialog *dialog, 
+                                                gchar *domain)
+{
+  HildonGetPasswordDialogPrivate *priv =
+    HILDON_GET_PASSWORD_DIALOG_GET_PRIVATE(dialog);
+  gtk_label_set_text(priv->domainLabel, domain);
+  
+}
+
+/**
+ * hildon_get_password_dialog_set_dialog_title
+ *        (HildonGetPasswordDialog *dialog, gchar *new_title) 
+ * @dialog: the dialog
+ * @new_ title: the text to be set as the dialog title.
+ * 
+ * sets the dialog title
+ */
+void hildon_get_password_dialog_set_title(HildonGetPasswordDialog *dialog,
+					  gchar *new_title)
+
+{
+  g_return_if_fail (new_title !=NULL);
+  gtk_window_set_title(GTK_WINDOW(dialog), 
+		       new_title);
+
+}
+
+/**
+ * hildon_get_password_dialog_set_caption_label
+ *        (HildonGetPasswordDialog *dialog, gchar *new_caption) 
+ * @dialog: the dialog
+ * @new_caption: the text to be set as the caption label.
+ * 
+ * sets the password entry field's neigbouring label.
+ */
+
+
+void hildon_get_password_dialog_set_caption(HildonGetPasswordDialog *dialog,
+						  gchar *new_caption)
+{
+  
+
+  HildonGetPasswordDialogPrivate *priv =
+    HILDON_GET_PASSWORD_DIALOG_GET_PRIVATE(dialog);  
+  g_return_if_fail (new_caption !=NULL);
+  hildon_caption_set_label(priv->passwordEntry, new_caption);
+
+}
+
+/**
+ * hildon_get_password_dialog_set_max_characters
+ *        (HildonGetPasswordDialog *dialog, gint max_characters,
+ *         gchar *error_ib_message) 
+ * @dialog: the dialog
+ * @max_characters: the maximum number of characters the password dialog
+ * accepts.
+ * @new_caption: the text to be set as the caption label.
+ * 
+ * sets the password entry field's neigbouring label.
+ */
+
+void hildon_get_password_dialog_set_max_characters (HildonGetPasswordDialog *dialog, gint max_characters )
+{
+
+  HildonGetPasswordDialogPrivate *priv =
+    HILDON_GET_PASSWORD_DIALOG_GET_PRIVATE(dialog);  
+
+  g_return_if_fail(max_characters >0);
+  g_return_if_fail(dialog);
+
+  gtk_entry_set_max_length(GTK_ENTRY
+			   (hildon_caption_get_control
+			    (priv->passwordEntry)),
+			   max_characters);
+
+  g_signal_connect(GTK_ENTRY
+		   (hildon_caption_get_control
+		    (priv->passwordEntry)),
+		   "invalid_input",
+		   G_CALLBACK(_invalid_input),
+		   NULL
+		   );
+
+}
+
+static void _invalid_input(GtkWidget *widget, GtkInvalidInputType reason, 
+			   gpointer user_data) 
+{
+  if (reason==GTK_INVALID_INPUT_MAX_CHARS_REACHED) {
+    gtk_infoprint(GTK_WINDOW(widget), _(HILDON_GET_PASSWORD_DIALOG_MAX_CHARS));
+  }
+
 }

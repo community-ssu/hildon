@@ -1,3 +1,26 @@
+/*
+ * This file is part of hildon-libs
+ *
+ * Copyright (C) 2005 Nokia Corporation.
+ *
+ * Contact: Luc Pionchon <luc.pionchon@nokia.com>
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public License
+ * as published by the Free Software Foundation; either version 2.1 of
+ * the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
+ * 02110-1301 USA
+ *
+ */
 #include <stdio.h>
 #include <unistd.h>
 #include <string.h>
@@ -6,13 +29,11 @@
 #include <gtk/gtk.h>
 
 #include "hildon-controlbar.h"
-#include "hildon-search.h"
 #include "hildon-seekbar.h"
 #include "hildon-note.h"
 #include <hildon-widgets/gtk-infoprint.h>
 #include <hildon-widgets/hildon-weekday-picker.h>
 #include <hildon-widgets/hildon-telephone-editor.h>
-#include <hildon-widgets/hildon-find-object-dialog.h>
 #include <hildon-widgets/hildon-range-editor.h>
 #include <hildon-widgets/hildon-sort-dialog.h>
 #include <hildon-widgets/hildon-get-password-dialog.h>
@@ -28,10 +49,8 @@
 #include <hildon-widgets/hildon-grid-item.h>
 #include <hildon-widgets/hildon-grid.h>
 #include <hildon-widgets/hildon-time-editor.h>
-#include <hildon-widgets/hildon-find-replace-dialog.h>
 #include <hildon-widgets/hildon-name-password-dialog.h>
 #include <hildon-widgets/hildon-file-details-dialog.h>
-
 #include <outo.h>
 
 /* Icon which must exist (HildonGridItem). */
@@ -100,11 +119,6 @@ int test6c(void);
 int test6d(void);
 int test6e(void);
 
-int test7a(void);
-int test7b(void);
-int test7c(void);
-int test7d(void);
-int test7e(void);
 int test8a(void);
 int test8b(void);
 int test8c(void);
@@ -210,8 +224,10 @@ int test25d(void);
 int test25e(void);
 
 /*FontSelectionDialog*/
+#ifndef HILDON_DISABLE_DEPRECATED
 int fsd_set_font(void);
 int fsd_get_font(void);
+#endif
 int fsd_set_pretext(void);
 int fsd_get_pretext(void);
 
@@ -314,8 +330,9 @@ int test39a(void);
 int test39b(void);
 
 /* file details dialog */
+#ifndef HILDON_DISABLE_DEPRECATED
 int test41a(void);
-
+#endif
 /* this has to be like this (not static). outo
    calls for this! */
 testcase *get_tests(void);
@@ -882,52 +899,6 @@ int test6e()
     
     volumeBar = HILDON_VVOLUMEBAR(hildon_vvolumebar_new());
     gtk_widget_destroy(GTK_WIDGET(volumeBar));
-    return 1;
-}
-
-int test7a()
-{
-    GtkWidget *search;
-    
-    search = hildon_search_new( NULL );
-    assert(search);
-    return 1;
-}
-
-int test7b()
-{
-    GtkWidget *search;
-    
-    search = hildon_search_new( "some text" );
-    assert(search);
-    return 1;
-}
-
-int test7c()
-{
-    GtkWidget *search;
-    
-    search = hildon_search_new( "gtk-add" );
-    hildon_search_set_image_stock(HILDON_SEARCH(search), "soopaa");
-    assert(search);
-    return 1;
-}
-
-int test7d()
-{
-    GtkWidget *search;
-    
-    search = hildon_search_new( NULL );
-    hildon_search_set_image_stock(HILDON_SEARCH(search), "gtk-add");
-    return 1;
-}
-
-int test7e()
-{
-    GtkWidget *search;
-    
-    search = hildon_search_new( NULL );
-    gtk_widget_destroy(search);
     return 1;
 }
 
@@ -1514,47 +1485,6 @@ int test19e()
     return 1;
 }
 
-/* find object dialog: new */
-int test20a(void){
-  GtkWidget *dialog;
-  dialog = hildon_find_object_dialog_new(NULL);
-  g_assert(dialog);
-  return 1;  
-}
-
-/* find object dialog: new with options */
-int test20b(void){
-  GtkWidget *dialog;
-  GtkWidget *options;
-  
-  options = gtk_dialog_new();
-  dialog = hildon_find_object_dialog_new_with_options(NULL,GTK_DIALOG(options));
-  gtk_widget_destroy(dialog);
-
-  return 1;
-}
-
-/* find object dialog: get_text */
-int test20c(void){
-  const gchar *string;
-  GtkWidget *dialog;
-
-  dialog = hildon_find_object_dialog_new(NULL);
-  string = hildon_find_object_dialog_get_text(HILDON_FIND_OBJECT_DIALOG(dialog));
-  g_assert(string);
-  return 1;
-}
-
-/* find object dialog: set_label */
-int test20d(void){
-  GtkWidget *dialog;
-
-  dialog = hildon_find_object_dialog_new(NULL);
-  hildon_find_object_dialog_set_label(HILDON_FIND_OBJECT_DIALOG(dialog),"labeltext");
-  
-  return 1;
-}
-
 /* find object options dialog: new */
 /*int test21a(void){
   GtkWidget *dialog;
@@ -2067,7 +1997,8 @@ int test25e()
     
     return 1;
 }
- 
+
+#ifndef HILDON_DISABLE_DEPRECATED
 int fsd_get_font(void)
 {
 	GtkWidget *fsd;
@@ -2087,7 +2018,7 @@ int fsd_set_font(void)
 	hildon_font_selection_dialog_set_font(HILDON_FONT_SELECTION_DIALOG(fsd), list);
 	return 1;
 }
-
+#endif
 int fsd_set_pretext(void)
 {
 	GtkWidget *fsd;
@@ -2834,8 +2765,13 @@ int test35b (void){
 int test35c (void){
     GtkWidget *editor;
     editor = hildon_time_editor_new ();
+#ifndef HILDON_DISABLE_DEPRECATED    
     hildon_time_editor_show_seconds (HILDON_TIME_EDITOR (editor), 1);
     hildon_time_editor_show_seconds (HILDON_TIME_EDITOR (editor), 0);
+#else
+    hildon_time_editor_set_show_seconds (HILDON_TIME_EDITOR (editor), 1);
+    hildon_time_editor_set_show_seconds (HILDON_TIME_EDITOR (editor), 0);
+#endif
     return 1;
 }
 
@@ -2843,8 +2779,13 @@ int test35c (void){
 int test35d (void){
     GtkWidget *editor;
     editor = hildon_time_editor_new ();
+#ifndef HILDON_DISABLE_DEPRECATED    
     hildon_time_editor_enable_duration_mode (HILDON_TIME_EDITOR (editor),
                                              1);
+#else
+    hildon_time_editor_set_duration_mode (HILDON_TIME_EDITOR (editor),
+                                             1);
+#endif
     return 1;
 }
 
@@ -2855,8 +2796,13 @@ int test35e (void){
     GtkWidget *editor;
     guint min_seconds, max_seconds;
     editor = hildon_time_editor_new ();
+#ifndef HILDON_DISABLE_DEPRECATED    
     hildon_time_editor_enable_duration_mode (HILDON_TIME_EDITOR (editor),
                                              1);
+#else
+    hildon_time_editor_set_duration_mode (HILDON_TIME_EDITOR (editor),
+                                             1);
+#endif
     hildon_time_editor_set_duration_range (HILDON_TIME_EDITOR (editor),
                                            3600, 14500);
     hildon_time_editor_get_duration_range (HILDON_TIME_EDITOR (editor),
@@ -2870,10 +2816,17 @@ int test35e (void){
 int test35f (void){
     GtkWidget *editor;
     editor = hildon_time_editor_new ();
+#ifndef HILDON_DISABLE_DEPRECATED    
     hildon_time_editor_enable_duration_mode (HILDON_TIME_EDITOR (editor),
                                              1);
     hildon_time_editor_enable_duration_mode (HILDON_TIME_EDITOR (editor),
                                              0);
+#else
+    hildon_time_editor_set_duration_mode (HILDON_TIME_EDITOR (editor),
+                                             1);
+    hildon_time_editor_set_duration_mode (HILDON_TIME_EDITOR (editor),
+                                             0);
+#endif
     return 1;
 }
 
@@ -2901,8 +2854,13 @@ int test35h (void){
     GtkWidget *editor;
     guint min_seconds, max_seconds;
     editor = hildon_time_editor_new ();
+#ifndef HILDON_DISABLE_DEPRECATED
     hildon_time_editor_enable_duration_mode (HILDON_TIME_EDITOR (editor),
                                              1);
+#else
+    hildon_time_editor_set_duration_mode (HILDON_TIME_EDITOR (editor),
+                                             1);
+#endif
     hildon_time_editor_set_duration_range (HILDON_TIME_EDITOR (editor),
                                            3600, 14500);
     hildon_time_editor_get_duration_range (HILDON_TIME_EDITOR (editor),
@@ -2912,58 +2870,6 @@ int test35h (void){
     return 1;
 }
 
-
-/* find replace dialog: new */
-int test36a(void)
-{
-   
-     GtkWidget *dialog;
-     dialog = hildon_find_replace_dialog_new(NULL, HILDON_REPLACE_NORMAL);
-     g_assert(dialog);
-     return 1;
-}
-
-
-/* find replace dialog: new with options */
-int test36b(void)
-{
-   
-     GtkWidget *dialog;
-     GtkWidget *options;
-   
-     options = gtk_dialog_new();
-     dialog = hildon_find_replace_dialog_new_with_options(NULL,GTK_DIALOG(options), HILDON_REPLACE_NORMAL);
-     gtk_widget_destroy(dialog);
-   
-     return 1;
-}
-
-
-/* find replace dialog: get_text */
-int test36c(void)
-{
-   
-     const gchar *string;
-     GtkWidget *dialog;
-   
-     dialog = hildon_find_replace_dialog_new(NULL, HILDON_REPLACE_NORMAL);
-     string = hildon_find_replace_dialog_get_text(HILDON_FIND_REPLACE_DIALOG(dialog));
-     g_assert(string);
-     return 1;
-}
-
-/* find replace dialog: get_new_text */
-int test36d(void)
-{
-   
-     const gchar *string;
-     GtkWidget *dialog;
-   
-     dialog = hildon_find_replace_dialog_new(NULL, HILDON_REPLACE_NORMAL);
-     string = hildon_find_replace_dialog_get_new_text(HILDON_FIND_REPLACE_DIALOG(dialog));
-     g_assert(string);
-     return 1;
-}
 
 int test37a()
 {
@@ -3003,6 +2909,7 @@ int test39b()
    return 1;
 }
 
+#ifndef HILDON_DISABLE_DEPRECATED
 int test41a()
 {
   GtkWidget *fdialog;
@@ -3011,7 +2918,7 @@ int test41a()
   assert (HILDON_FILE_DETAILS_DIALOG (fdialog));
   return 1;
 }
-
+#endif
 testcase tcases[] =
 {
     {*test1a, "hildon_controlbar_new", EXPECT_OK},
@@ -3068,11 +2975,6 @@ testcase tcases[] =
     {*test6c, "hildon_volumebar_get/set_level", EXPECT_OK},
     {*test6d, "hildon_volumebar_get/set_mute", EXPECT_OK},
     {*test6e, "gtk_widget_destroy", EXPECT_OK},
-    {*test7a, "hildon_search_new", EXPECT_OK},
-    {*test7b, "hildon_search_new (fake icon)", EXPECT_OK},
-    {*test7c, "hildon_search_set_image (fake icon)", EXPECT_OK},
-    {*test7d, "hildon_search_set_image", EXPECT_OK},
-    {*test7e, "gtk_widget_destroy", EXPECT_OK},
     {*test10a, "hildon_weekday_picker_new", EXPECT_OK},
     {*test11a, "hildon_weekday_picker_{,un,is}set", EXPECT_OK},
     {*test11b, "hildon_weekday_picker_set: null", EXPECT_ASSERT},
@@ -3149,8 +3051,10 @@ testcase tcases[] =
     {*test25c, "set_password_dialog_new_get_password", EXPECT_OK},
     {*test25d, "set_password_dialog_new_get_protected", EXPECT_ASSERT},
     {*test25e, "gtk_widget_destroy", EXPECT_OK},
+#ifndef HILDON_DISABLE_DEPRECATED
     {*fsd_set_font, "FontSelectionDialog Set font", EXPECT_OK},
     {*fsd_get_font,"FontSelectionDialog Get font", EXPECT_OK},
+#endif
     {*fsd_set_pretext, "FontSelectionDialog Set preview text", EXPECT_OK},
     {*fsd_get_pretext, "FontSelectionDialog Get preview text", EXPECT_OK},
     {*test27a, "hildon_insert_object: new", EXPECT_OK},
@@ -3231,7 +3135,9 @@ testcase tcases[] =
     {*test37b, "gtk_banner_temporarily_disable_wrap", EXPECT_OK},
     {*test39a, "namepassword dialog get_name", EXPECT_OK},
     {*test39b, "namepassword dialog get_password", EXPECT_OK},
+#ifndef HILDON_DISABLE_DEPRECATED
     {*test41a, "hildon_file_details_dialog_new", EXPECT_OK},
+#endif
 /*    {*test38a, "gtk_confirmation_banner (sometext)", EXPECT_OK},
     {*test38a, "gtk_confirmation_banner (NULL)", EXPECT_OK},*/
    

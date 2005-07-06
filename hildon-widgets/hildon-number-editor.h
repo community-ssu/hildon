@@ -42,25 +42,39 @@ G_BEGIN_DECLS
 typedef struct _HildonNumberEditor HildonNumberEditor;
 typedef struct _HildonNumberEditorClass HildonNumberEditorClass;
 
-struct _HildonNumberEditor {
-    GtkContainer parent;
+struct _HildonNumberEditor 
+{
+  GtkContainer parent;
 };
 
-struct _HildonNumberEditorClass {
-    GtkContainerClass parent_class;
+typedef enum
+{
+  MAXIMUM_VALUE_EXCEED,
+  MINIMUM_VALUE_EXCEED,
+  ERRONEOUS_VALUE
+
+}HildonNumberEditorErrorType;
+
+struct _HildonNumberEditorClass 
+{
+  GtkContainerClass parent_class;
+  
+  gboolean	(*error_handler)	(HildonNumberEditor *editor, 
+					 HildonNumberEditorErrorType type); 
 };
 
 /* Public API */
 
-GType hildon_number_editor_get_type(void);
+GType 		hildon_number_editor_get_type	(void);
 
-GtkWidget *hildon_number_editor_new(gint min, gint max);
+GtkWidget*	hildon_number_editor_new	(gint min, gint max);
 
-void hildon_number_editor_set_range(HildonNumberEditor *editor, gint min,
-                                    gint max);
+void 		hildon_number_editor_set_range	(HildonNumberEditor *editor, 
+						 gint min, gint max);
 
-gint hildon_number_editor_get_value(HildonNumberEditor *editor);
-void hildon_number_editor_set_value(HildonNumberEditor *editor, gint value);
+gint 		hildon_number_editor_get_value	(HildonNumberEditor *editor);
+void 		hildon_number_editor_set_value	(HildonNumberEditor *editor, 
+						 gint value);
 
 G_END_DECLS
 #endif /* __HILDON_NUMBER_EDITOR_H__ */

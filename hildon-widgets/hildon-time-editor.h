@@ -48,20 +48,6 @@ struct _HildonTimeEditorClass {
     GtkContainerClass parent_class;
 };
 
-/**
- * HildonTimeEditorField:
- * @HILDON_TIME_EDITOR_HOUR_FIELD: select and highlight hour field.
- * @HILDON_TIME_EDITOR_MINUTE_FIELD: select and highlight minute field.
- * @HILDON_TIME_EDITOR_SECOND_FIELD: select and highlight second field.
- *
- * These values are used to indicate which editor field should be highlighted.
- */
-typedef enum {
-    HILDON_TIME_EDITOR_HOUR_FIELD,
-    HILDON_TIME_EDITOR_MINUTE_FIELD,
-    HILDON_TIME_EDITOR_SECOND_FIELD
-} HildonTimeEditorField;
-
 GType hildon_time_editor_get_type(void);
 GtkWidget *hildon_time_editor_new(void);
 
@@ -70,10 +56,13 @@ void hildon_time_editor_set_time(HildonTimeEditor * editor, guint hours,
 void hildon_time_editor_get_time(HildonTimeEditor * editor, guint * hours,
                                  guint * minutes, guint * seconds);
 
+#ifndef HILDON_DISABLE_DEPRECATED
+
 void hildon_time_editor_show_seconds(HildonTimeEditor * editor,
                                      gboolean enable);
 void hildon_time_editor_enable_duration_mode(HildonTimeEditor * editor,
                                              gboolean enable);
+#endif /* HILDON_DISABLE_DEPRECATED */
 
 void hildon_time_editor_set_duration_range(HildonTimeEditor * editor,
                                            guint min_seconds,
@@ -81,6 +70,27 @@ void hildon_time_editor_set_duration_range(HildonTimeEditor * editor,
 void hildon_time_editor_get_duration_range(HildonTimeEditor * editor,
                                            guint * min_seconds,
                                            guint * max_seconds);
+
+void hildon_time_editor_set_ticks (HildonTimeEditor * editor,
+                                          guint ticks);
+guint hildon_time_editor_get_ticks (HildonTimeEditor * editor);
+
+void hildon_time_editor_set_show_seconds (HildonTimeEditor * editor,
+                                          gboolean show_seconds);
+gboolean hildon_time_editor_get_show_seconds (HildonTimeEditor * editor);
+
+void hildon_time_editor_set_duration_mode (HildonTimeEditor * editor,
+                                           gboolean duration_mode);
+gboolean hildon_time_editor_get_duration_mode (HildonTimeEditor * editor);
+
+void hildon_time_editor_set_duration_min (HildonTimeEditor * editor,
+                                          guint duration_min);
+guint hildon_time_editor_get_duration_min (HildonTimeEditor * editor);
+
+void hildon_time_editor_set_duration_max (HildonTimeEditor * editor,
+                                          guint duration_max);
+guint hildon_time_editor_get_duration_max (HildonTimeEditor * editor);
+
 
 
 G_END_DECLS

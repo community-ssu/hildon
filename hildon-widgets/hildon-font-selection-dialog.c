@@ -22,14 +22,6 @@
  *
  */
 
-/*
- * @file hildon-font-selection-dialog.c
- *
- * This file implements the HildonFontSelectionDialog widget
- *
- * A modification from the gtk_font_selection_dialog
-*/
-
 #include <stdlib.h>
 #include <string.h>
 
@@ -41,12 +33,14 @@
 #include <gtk/gtkvbox.h>
 #include <gtk/gtkliststore.h>
 #include <gtk/gtknotebook.h>
-#include <gdk/gdkkeysyms.h>
 #include <gtk/gtk.h>
+#include <glib.h>
+#include <gdk/gdkkeysyms.h>
 
 #include "hildon-font-selection-dialog.h"
 #include <hildon-widgets/hildon-caption.h>
 #include <hildon-widgets/hildon-color-selector.h>
+#include <hildon-widgets/hildon-color-button.h>
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -55,1056 +49,1486 @@
 #include <libintl.h>
 #define _(String) dgettext(PACKAGE, String)
 
-#define PREVIEW_RESPONSE_ID 12345
+#define SUPERSCRIPT_RISE 3333
+#define SUBSCRIPT_LOW -3333
+#define ON_BIT 0x01
+#define OFF_BIT 0x02
+#define REFERENCE_LINE "Reference: " /*localized string?*/
 
 /*
  * These are what we use as the standard font sizes, for the size list.
  */
-static const guint16 font_sizes[] = {
-    8, 9, 10, 11, 12, 13, 14, 16, 18, 20, 22, 24, 26, 28,
-    32, 36, 40, 48, 56, 64, 72
+static const guint16 font_sizes[] = 
+{
+  6, 8, 10, 12, 16, 24, 32
 };
 
 #define HILDON_FONT_SELECTION_DIALOG_GET_PRIVATE(obj) \
-        (G_TYPE_INSTANCE_GET_PRIVATE ((obj), \
-        HILDON_TYPE_FONT_SELECTION_DIALOG, HildonFontSelectionDialogPrivate))
+(G_TYPE_INSTANCE_GET_PRIVATE ((obj), \
+			      HILDON_TYPE_FONT_SELECTION_DIALOG, \
+			      HildonFontSelectionDialogPrivate))
+
+/*None of designed api function works, so now it all comes down to 
+ *use properties to achieve what we are supposed to achieve*/
+enum
+{
+  PROP_FAMILY = 1,
+  PROP_FAMILY_SET,
+  PROP_SIZE,
+  PROP_SIZE_SET,
+  PROP_COLOR,
+  PROP_COLOR_SET,
+  PROP_BOLD,
+  PROP_BOLD_SET,
+  PROP_ITALIC,
+  PROP_ITALIC_SET,
+  PROP_UNDERLINE,
+  PROP_UNDERLINE_SET,
+  PROP_STRIKETHROUGH,
+  PROP_STRIKETHROUGH_SET,
+  PROP_POSITION,
+  PROP_POSITION_SET
+};
 
 typedef struct
 _HildonFontSelectionDialogPrivate HildonFontSelectionDialogPrivate;
-struct _HildonFontSelectionDialogPrivate {
-    GtkNotebook *notebook;
-    GtkWidget *vbox_tab[3];
-    GtkWidget *caption_control;
-    GtkSizeGroup *group;
 
-    gchar *preview_text;
-    guint keysnooper;
+struct _HildonFontSelectionDialogPrivate 
+{  
+  GtkNotebook *notebook;
 
-/*Tab one*/
-    GtkWidget *cbx_font_type;
-    GtkWidget *cbx_font_size;
-    GtkWidget *font_color_box;
-    GtkWidget *font_color_button;
-    GdkColor c_table;
-    GtkWidget *e_table;
+  gchar *preview_text;
 
-/*Tab two*/
-    GtkWidget *chk_bold;
-    GtkWidget *chk_italic;
-    GtkWidget *chk_underline;
+  /*Tab one*/
+  GtkWidget *cbx_font_type;
+  GtkWidget *cbx_font_size;
+  GtkWidget *font_color_button;
 
-/*Tab three*/
-    GtkWidget *chk_strikethrough;
-    GtkWidget *cbx_positioning;
+  /*Tab two*/
+  GtkWidget *chk_bold;
+  GtkWidget *chk_italic;
+  GtkWidget *chk_underline;
 
-    gboolean both;      /* Most of the fonts has a bold-italic font type.
-                           (Not just Bold and Italic BUT --> Bold-italic) */
-/*	gboolean auto_resize;*/
-/*	gint dialog_width;*/
+  /*Tab three*/
+  GtkWidget *chk_strikethrough;
+  GtkWidget *cbx_positioning;
 
-    HildonPositioning positioning;      /* Current positioning */
-    PangoFontFamily *family;    /* Current family */
-    HildonFontFaceType face;    /* Current face number */
-    gint size;  /* Current size */
+  /*Every family*/
+  PangoFontFamily **families;
+  gint n_families;
 
-/*Components for the preview dialog*/
-    GtkWidget *dlg_preview;
-    GtkWidget *lbl_preview;
-
-/*Every family*/
-    PangoFontFamily **families;
-    gint n_families;
-/*The faces for current family*/
-    PangoFontFace **faces;
-/*There's different names for the faces (Bold == Demi, etc.) -
-  So we have "a layer" to determine the correct one*/
-    HildonFontFaceType facetypes[4];
+  /*color_set is used to show whether the color is inconsistent
+   * The handler id is used to block the signal emission
+   * when we change the color setting*/
+  
+  gboolean color_set;
+  gulong color_modified_signal_handler;
 };
 
-static void hildon_font_preview_dialog_close(GtkDialog * dialog,
-                                             gint response, gpointer data);
+/*combo box active row indicator -2--inconsistent, -1--undefined 
+ * please make sure that you use settings_init settings_apply
+ * and settings_destroy, dont even try to touch this structure 
+ * without using the three above interface functions, of course
+ * if you know what you are doing, do as you please ;-)*/
+typedef struct
+{
+  HildonFontSelectionDialog
+               *fsd; /*pointer to our font selection dialog*/
+  
+  gint         family; /*combo box indicator*/
+  gint         size; /*combo box indicator*/
+  GdkColor     *color; /*free after read the setting*/
+  gboolean     color_inconsist;
+  gint         weight; /*bit mask*/
+  gint         style;  /*bit mask*/
+  gint         underline; /*bit mask*/
+  gint         strikethrough; /*bit mask*/
+  gint         position; /*combo box indicator*/
+
+}HildonFontSelectionDialogSettings;
+
 static gboolean
-hildon_font_selection_dialog_preview_key_press(GtkWidget * widget,
-                                               GdkEventKey * event,
-                                               gpointer data);
+              hildon_font_selection_dialog_preview_key_press
+	                                     (GtkWidget * widget,
+					      GdkEventKey * event,
+					      gpointer data);
 
 /*Some tools from gtk_font_selection*/
-static int cmp_families(const void *a, const void *b);
-static int faces_sort_func(const void *a, const void *b);
-static int compare_font_descriptions(const PangoFontDescription * a,
-                                     const PangoFontDescription * b); 
-				     
+static int    cmp_families                   (const void *a, const void *b);
 
-static void 
-hildon_font_selection_dialog_check_button_clicked(GtkToggleButton *chk,
-		gpointer data);
-static void
-hildon_font_selection_dialog_show_preview(HildonFontSelectionDialog *
-                                          fontsel);
-static void
-hildon_font_selection_dialog_set_font_for_preview(HildonFontSelectionDialog
-                                                  * fontsel);
-static PangoAttrList
-    *hildon_font_selection_dialog_create_font(HildonFontSelectionDialog *
-                                              fontsel);
+static void   hildon_font_selection_dialog_show_preview
+                                             (HildonFontSelectionDialog 
+				              *fontsel);
+					     
+static PangoAttrList*
+              hildon_font_selection_dialog_create_attrlist
+	                                     (HildonFontSelectionDialog 
+					      *fontsel, guint start_index,
+					      guint len);
 
-static void
-hildon_font_selection_dialog_show_available_positionings
-(HildonFontSelectionDialog * fontsel);
-static void
-hildon_font_selection_dialog_show_available_fonts(HildonFontSelectionDialog
-                                                  * fontseldiag);
-static void
-hildon_font_selection_dialog_show_available_styles
-(HildonFontSelectionDialog * fontsel);
-static void
-hildon_font_selection_dialog_show_available_sizes(HildonFontSelectionDialog
-                                                  * fontsel,
-                                                  gboolean first_time);
-static void
-hildon_font_selection_dialog_class_init(HildonFontSelectionDialogClass *
-                                        klass);
-static void hildon_font_selection_dialog_init(HildonFontSelectionDialog *
-                                              fontseldiag);
-static void hildon_font_selection_dialog_finalize(GObject * object);
+static void   hildon_font_selection_dialog_show_available_positionings
+                                             (HildonFontSelectionDialogPrivate
+					      *priv);
+						 
+static void   hildon_font_selection_dialog_show_available_fonts
+                                             (HildonFontSelectionDialog
+				              *fontsel);
+						 
+static void   hildon_font_selection_dialog_show_available_sizes
+                                             (HildonFontSelectionDialogPrivate
+					      *priv);
 
-static void hildon_font_selection_dialog_preview_click(GtkDialog * dialog,
-                                                       gint response,
-                                                       gpointer data);
-static void hildon_font_selection_dialog_font_type_changed(GtkComboBox *
-                                                           cbox,
-                                                           gpointer
-                                                           userdata);
-static void
-hildon_font_selection_dialog_check_button_toggled(GtkToggleButton * chk,
-                                                  gpointer user_data);
+static void   hildon_font_selection_dialog_class_init
+                                             (HildonFontSelectionDialogClass 
+					      *klass);
+						 
+static void   hildon_font_selection_dialog_init
+                                             (HildonFontSelectionDialog 
+					      *fontseldiag);
 
-static void show_selector(GtkWidget * widget, GtkButton * b,
-                          gpointer data);
-static void set_event_box_color(GtkWidget * b, GdkColor * color);
-static gboolean color_key_press(GtkWidget * widget, GdkEventKey * event,
-                                gpointer data);
-static gint hildon_font_selection_dialog_key_snooper(GtkWidget * swidget,
-                                                     GdkEventKey * event,
-                                                     GtkWidget * widget);
+static void   hildon_font_selection_dialog_finalize
+                                             (GObject * object);
 
+static void   hildon_font_selection_dialog_construct_notebook  
+                                             (HildonFontSelectionDialog
+				              *fontsel);
+					     
+static void   color_modified_cb              (HildonColorButton *button,
+					      GParamSpec *pspec,
+					      gpointer data);
+
+static void   check_tags                     (gpointer data,
+					      gpointer user_data);
+
+static void   settings_init                  (HildonFontSelectionDialogSettings
+					      *setttings,
+					      HildonFontSelectionDialog
+					      *fsd);
+
+static void   settings_apply                 (HildonFontSelectionDialogSettings
+					      *setttings);
+
+static void   settings_destroy               (HildonFontSelectionDialogSettings
+					      *setttings);
+
+static void   bit_mask_toggle                (gint mask, GtkToggleButton*
+					      button, GObject *object, 
+					      const gchar *prop, 
+					      const gchar *prop_set);
+
+static void   combo_active                   (gint active, GtkComboBox *box,
+					      GObject *object, 
+					      const gchar *prop,
+					      const gchar *prop_set);
+
+static void   add_preview_text_attr          (PangoAttrList *list, 
+					      PangoAttribute *attr, 
+					      guint start, 
+					      guint len);
+
+static void   toggle_clicked                 (GtkButton *button, 
+					      gpointer data);
+	
+					     
+					     
 static GtkDialogClass *font_selection_dialog_parent_class = NULL;
-
-/* property setter and getter */
-static void hildon_font_selection_dialog_set_property(GObject * object,
-		guint property_id,
-		const GValue * value,
-		GParamSpec * pspec);
-static void hildon_font_selection_dialog_get_property(GObject * object,
-		guint property_id,
-		GValue * value,
-		GParamSpec * pspec);
-
-enum {
-	PROP_SELECTOR_BOLD = 1,
-	PROP_SELECTOR_ITALIC,	/* add all needed properties here */
-	PROP_SELECTOR_UNDERLINE,
-	PROP_SELECTOR_STRIKETHROUGH
-};
-
-enum {
-	PROP_SET,
-	PROP_INTERMEDIATE,
-	PROP_DIMMED,
-	PROP_UNSET
-};
-
 
 GType hildon_font_selection_dialog_get_type(void)
 {
-    static GType font_selection_dialog_type = 0;
+  static GType font_selection_dialog_type = 0;
 
-    if (!font_selection_dialog_type) {
-        static const GTypeInfo fontsel_diag_info = {
-            sizeof(HildonFontSelectionDialogClass),
-            NULL,       /* base_init */
-            NULL,       /* base_finalize */
-            (GClassInitFunc) hildon_font_selection_dialog_class_init,
-            NULL,       /* class_finalize */
-            NULL,       /* class_data */
-            sizeof(HildonFontSelectionDialog),
-            0,  /* n_preallocs */
-            (GInstanceInitFunc) hildon_font_selection_dialog_init,
-        };
+  if (!font_selection_dialog_type) {
+    static const GTypeInfo fontsel_diag_info = {
+      sizeof(HildonFontSelectionDialogClass),
+      NULL,       /* base_init */
+      NULL,       /* base_finalize */
+      (GClassInitFunc) hildon_font_selection_dialog_class_init,
+      NULL,       /* class_finalize */
+      NULL,       /* class_data */
+      sizeof(HildonFontSelectionDialog),
+      0,  /* n_preallocs */
+      (GInstanceInitFunc) hildon_font_selection_dialog_init,
+    };
 
-        font_selection_dialog_type =
-            g_type_register_static(GTK_TYPE_DIALOG,
-                                   "HildonFontSelectionDialog",
-                                   &fontsel_diag_info, 0);
+    font_selection_dialog_type =
+      g_type_register_static(GTK_TYPE_DIALOG,
+			     "HildonFontSelectionDialog",
+			     &fontsel_diag_info, 0);
+  }
+
+  return font_selection_dialog_type;
+}
+
+static void
+hildon_font_selection_dialog_get_property (GObject      *object,
+					   guint         prop_id,
+					   GValue       *value,
+					   GParamSpec   *pspec)
+{
+  gint i;
+  GdkColor *color = NULL;
+  
+  HildonFontSelectionDialogPrivate *priv =
+    HILDON_FONT_SELECTION_DIALOG_GET_PRIVATE(
+	HILDON_FONT_SELECTION_DIALOG(object));
+  
+  
+  switch (prop_id)
+    {
+    case PROP_FAMILY:
+      i = gtk_combo_box_get_active(GTK_COMBO_BOX(priv->cbx_font_type));
+      if(i >= 0 && i < priv->n_families)
+	g_value_set_string(value, 
+			   pango_font_family_get_name(priv->families[i]));
+      else
+	g_value_set_string(value, "Nokia Sans");
+      break;
+      
+    case PROP_FAMILY_SET:
+      i = gtk_combo_box_get_active(GTK_COMBO_BOX(priv->cbx_font_type));
+      if(i >= 0 && i < priv->n_families)
+	g_value_set_boolean(value, TRUE);
+      else
+	g_value_set_boolean(value, FALSE);
+      break;
+      
+    case PROP_SIZE:
+      i = gtk_combo_box_get_active(GTK_COMBO_BOX(priv->cbx_font_size));
+      if(i >= 0 && i < G_N_ELEMENTS(font_sizes))
+	g_value_set_int(value, font_sizes[i]);
+      else
+	g_value_set_int(value, 16);
+      break;
+      
+    case PROP_SIZE_SET:
+      i = gtk_combo_box_get_active(GTK_COMBO_BOX(priv->cbx_font_size));
+      if(i >= 0 && i < G_N_ELEMENTS(font_sizes))
+	g_value_set_boolean(value, TRUE);
+      else
+	g_value_set_boolean(value, FALSE);
+      break;
+
+    case PROP_COLOR:
+      color = hildon_color_button_get_color
+	(HILDON_COLOR_BUTTON(priv->font_color_button));
+      g_value_set_boxed(value, (gconstpointer) color);
+      if(color != NULL)
+	gdk_color_free(color);
+      break;
+      
+    case PROP_COLOR_SET:
+      g_value_set_boolean(value, priv->color_set);
+      break;
+
+    case PROP_BOLD:
+      g_value_set_boolean(value, 
+	gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(priv->chk_bold)));
+      break;
+
+    case PROP_BOLD_SET:
+      g_value_set_boolean(value,
+	!gtk_toggle_button_get_inconsistent
+	(GTK_TOGGLE_BUTTON(priv->chk_bold)));
+      break;
+      
+    case PROP_ITALIC:
+      g_value_set_boolean(value, 
+	gtk_toggle_button_get_active
+	(GTK_TOGGLE_BUTTON(priv->chk_italic)));
+      break;
+
+    case PROP_ITALIC_SET:
+      g_value_set_boolean(value,
+	!gtk_toggle_button_get_inconsistent
+	(GTK_TOGGLE_BUTTON(priv->chk_italic)));
+      break;
+      
+    case PROP_UNDERLINE:
+      g_value_set_boolean(value, 
+	gtk_toggle_button_get_active
+	(GTK_TOGGLE_BUTTON(priv->chk_underline)));
+      break;
+
+    case PROP_UNDERLINE_SET:
+      g_value_set_boolean(value,
+	!gtk_toggle_button_get_inconsistent
+	(GTK_TOGGLE_BUTTON(priv->chk_underline)));
+      break;
+      
+    case PROP_STRIKETHROUGH:
+      g_value_set_boolean(value, 
+	gtk_toggle_button_get_active
+	(GTK_TOGGLE_BUTTON(priv->chk_strikethrough)));
+      break;
+
+    case PROP_STRIKETHROUGH_SET:
+      g_value_set_boolean(value,
+	!gtk_toggle_button_get_inconsistent
+	(GTK_TOGGLE_BUTTON(priv->chk_strikethrough)));
+      break;
+
+    case PROP_POSITION:
+      i = gtk_combo_box_get_active(GTK_COMBO_BOX(priv->cbx_positioning));
+      if(i == 1)/*super*/
+	g_value_set_int(value, 1);
+      else if(i == 2)/*sub*/
+	g_value_set_int(value, -1);
+      else
+	g_value_set_int(value, 0);
+      break;
+      
+    case PROP_POSITION_SET:
+      i = gtk_combo_box_get_active(GTK_COMBO_BOX(priv->cbx_positioning));
+      if(i >= 0 && i < 3)
+	g_value_set_boolean(value, TRUE);
+      else
+	g_value_set_boolean(value, FALSE);
+      break;
+    
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      break;
     }
+}
 
-    return font_selection_dialog_type;
+static void 
+hildon_font_selection_dialog_set_property (GObject         *object,
+					   guint            prop_id,
+					   const GValue    *value,
+					   GParamSpec      *pspec)
+{
+  gint i, size;
+  const gchar *str;
+  gboolean b;
+  GdkColor *color = NULL;
+  GdkColor black;
+  
+  HildonFontSelectionDialogPrivate *priv =
+    HILDON_FONT_SELECTION_DIALOG_GET_PRIVATE(
+	HILDON_FONT_SELECTION_DIALOG(object));
+  black.red = black.green = black.blue = 0;
+  
+  switch (prop_id)
+    {
+    case PROP_FAMILY:
+      str = g_value_get_string(value);
+      for(i = 0; i < priv->n_families; i++)
+	{
+	  if(strcmp(str, pango_font_family_get_name(priv->families[i]))
+	     == 0)
+	    {
+	      gtk_combo_box_set_active(GTK_COMBO_BOX(priv->cbx_font_type), i);
+	      break;
+	    }
+	}
+      break;
+      
+    case PROP_FAMILY_SET:
+      b = g_value_get_boolean(value);
+      if(!b)
+	gtk_combo_box_set_active(GTK_COMBO_BOX(priv->cbx_font_type), -1);
+      break;
+    
+    case PROP_SIZE:
+      size = g_value_get_int(value);
+      for(i = 0; i < G_N_ELEMENTS(font_sizes); i++)
+	{
+	  if(size == font_sizes[i])
+	    {
+	      gtk_combo_box_set_active(GTK_COMBO_BOX(priv->cbx_font_size), i);
+	      break;
+	    }
+	}
+      break;
+      
+    case PROP_SIZE_SET:
+      b = g_value_get_boolean(value);
+      if(!b)
+	gtk_combo_box_set_active(GTK_COMBO_BOX(priv->cbx_font_size), -1);
+      break;
+
+    case PROP_COLOR:
+      color = (GdkColor *) g_value_get_boxed(value);
+      if(color != NULL)
+	hildon_color_button_set_color(HILDON_COLOR_BUTTON
+				      (priv->font_color_button),
+				      color);
+      else
+	hildon_color_button_set_color(HILDON_COLOR_BUTTON
+				      (priv->font_color_button),
+				      &black);
+      break;
+
+    case PROP_COLOR_SET:
+      priv->color_set = g_value_get_boolean(value);
+      if(!priv->color_set)
+	{
+	  /*set color to black, but block our signal handler*/
+	  g_signal_handler_block((gpointer) priv->font_color_button,
+				 priv->color_modified_signal_handler);
+	  
+	  hildon_color_button_set_color(HILDON_COLOR_BUTTON
+					(priv->font_color_button), 
+					&black);
+	  
+	  g_signal_handler_unblock((gpointer) priv->font_color_button,
+				 priv->color_modified_signal_handler);
+	}
+      break;
+
+    case PROP_BOLD:
+      /*this call will make sure that we dont get extra clicked signal*/
+      gtk_toggle_button_set_inconsistent(GTK_TOGGLE_BUTTON(priv->chk_bold),
+					 FALSE);
+      gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(priv->chk_bold),
+				   g_value_get_boolean(value));
+      break;
+
+    case PROP_BOLD_SET:
+      gtk_toggle_button_set_inconsistent(GTK_TOGGLE_BUTTON(priv->chk_bold),
+					 !g_value_get_boolean(value));
+      break;
+      
+    case PROP_ITALIC:
+      gtk_toggle_button_set_inconsistent(GTK_TOGGLE_BUTTON(priv->chk_italic),
+					 FALSE);
+      gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(priv->chk_italic),
+				   g_value_get_boolean(value));
+      break;
+
+    case PROP_ITALIC_SET:
+      gtk_toggle_button_set_inconsistent(GTK_TOGGLE_BUTTON(priv->chk_italic),
+					 !g_value_get_boolean(value));
+      break;
+      
+    case PROP_UNDERLINE:
+      gtk_toggle_button_set_inconsistent(GTK_TOGGLE_BUTTON
+					 (priv->chk_underline),
+					 FALSE);
+      gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(priv->chk_underline),
+				   g_value_get_boolean(value));
+      break;
+
+    case PROP_UNDERLINE_SET:
+      gtk_toggle_button_set_inconsistent(GTK_TOGGLE_BUTTON(priv->chk_underline),
+					 !g_value_get_boolean(value));
+      break;
+  
+    case PROP_STRIKETHROUGH:
+      gtk_toggle_button_set_inconsistent(GTK_TOGGLE_BUTTON
+					 (priv->chk_strikethrough),
+					 FALSE);
+      gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(priv->chk_strikethrough),
+				   g_value_get_boolean(value));
+      break;
+
+    case PROP_STRIKETHROUGH_SET:
+      gtk_toggle_button_set_inconsistent(GTK_TOGGLE_BUTTON
+					 (priv->chk_strikethrough),
+					 !g_value_get_boolean(value));
+      break;
+
+    case PROP_POSITION:
+      i = g_value_get_int(value);
+      if( i == 1 )
+	gtk_combo_box_set_active(GTK_COMBO_BOX(priv->cbx_positioning), 1);
+      else if(i == -1)
+	gtk_combo_box_set_active(GTK_COMBO_BOX(priv->cbx_positioning), 2);
+      else
+	gtk_combo_box_set_active(GTK_COMBO_BOX(priv->cbx_positioning), 0);
+      break;
+      
+    case PROP_POSITION_SET:
+      b = g_value_get_boolean(value);
+      if(!b)
+	gtk_combo_box_set_active(GTK_COMBO_BOX(priv->cbx_positioning), -1);
+      break;
+
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      break;
+    }
 }
 
 static void
 hildon_font_selection_dialog_class_init(HildonFontSelectionDialogClass *
-                                        klass)
+					klass)
 {
-    GObjectClass *gobject_class;
+  GObjectClass *gobject_class;
 
-    font_selection_dialog_parent_class = g_type_class_peek_parent(klass);
-    gobject_class = G_OBJECT_CLASS(klass);
-    gobject_class->finalize = hildon_font_selection_dialog_finalize;
+  font_selection_dialog_parent_class = g_type_class_peek_parent(klass);
+  gobject_class = G_OBJECT_CLASS(klass);
+  gobject_class->finalize = hildon_font_selection_dialog_finalize;
+  gobject_class->get_property = hildon_font_selection_dialog_get_property;
+  gobject_class->set_property = hildon_font_selection_dialog_set_property;
 
-    /* property stuff */
-    gobject_class->set_property = hildon_font_selection_dialog_set_property;
-    gobject_class->get_property = hildon_font_selection_dialog_get_property;
+  g_object_class_install_property(gobject_class, PROP_FAMILY,
+				  g_param_spec_string("family",
+				  "Font family", "String defines"
+				  " the font family", "Nokia Sans",
+				  G_PARAM_READWRITE));
+  
+  g_object_class_install_property(gobject_class, PROP_FAMILY_SET,
+				  g_param_spec_boolean ("family-set",
+				  "family inconsistent state",
+				  "Whether the family property"
+				  " is inconsistent", FALSE,
+				  G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
+  
+  g_object_class_install_property(gobject_class, PROP_SIZE,
+				   g_param_spec_int ("size",
+				   "Font size",
+				   "Font size in Pt",
+				   6, 32, 16,
+				   G_PARAM_READWRITE));
+  
+  g_object_class_install_property(gobject_class, PROP_SIZE_SET,
+				  g_param_spec_boolean ("size-set",
+				  "size inconsistent state",
+				  "Whether the size property"
+				  " is inconsistent", FALSE,
+				  G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
+  
+  g_object_class_install_property(gobject_class, PROP_COLOR,
+				  g_param_spec_boxed ("color",
+				  "text color",
+				  "gdk color for the text",
+				  GDK_TYPE_COLOR,
+				  G_PARAM_READWRITE));
 
-    g_object_class_install_property (gobject_class, PROP_SELECTOR_BOLD, 
-		    g_param_spec_boolean ("is_bold_face", "BoldFace", 
-                                    "Whether the text is boldface or not",
-			    FALSE, G_PARAM_CONSTRUCT|G_PARAM_READWRITE));
+  g_object_class_install_property(gobject_class, PROP_COLOR_SET,
+				  g_param_spec_boolean ("color-set",
+				  "color inconsistent state",
+				  "Whether the color property"
+				  " is inconsistent", FALSE,
+				  G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
 
-    g_type_class_add_private(klass,
-        sizeof(struct _HildonFontSelectionDialogPrivate));
+  g_object_class_install_property(gobject_class, PROP_BOLD,
+				  g_param_spec_boolean ("bold",
+				  "text weight",
+				  "Whether the text is bold",
+				  FALSE,
+				  G_PARAM_READWRITE));
+  
+  g_object_class_install_property(gobject_class, PROP_BOLD_SET,
+				  g_param_spec_boolean ("bold-set",
+				  "bold inconsistent state",
+				  "Whether the bold"
+				  " is inconsistent", FALSE,
+				  G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
+  
+  g_object_class_install_property(gobject_class, PROP_ITALIC,
+				  g_param_spec_boolean ("italic",
+				  "text style",
+				  "Whether the text is italic",
+				  FALSE,
+				  G_PARAM_READWRITE));
+  
+  g_object_class_install_property(gobject_class, PROP_ITALIC_SET,
+				  g_param_spec_boolean ("italic-set",
+				  "italic inconsistent state",
+				  "Whether the italic"
+				  " is inconsistent", FALSE,
+				  G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
+  
+  g_object_class_install_property(gobject_class, PROP_UNDERLINE,
+				  g_param_spec_boolean ("underline",
+				  "text underline",
+				  "Whether the text is underlined",
+				  FALSE,
+				  G_PARAM_READWRITE));
+  
+  g_object_class_install_property(gobject_class, PROP_UNDERLINE_SET,
+				  g_param_spec_boolean ("underline-set",
+				  "underline inconsistent state",
+				  "Whether the underline"
+				  " is inconsistent", FALSE,
+				  G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
+  
+  g_object_class_install_property(gobject_class, PROP_STRIKETHROUGH,
+				  g_param_spec_boolean ("strikethrough",
+				  "strikethroughed text",
+				  "Whether the text is strikethroughed",
+				  FALSE,
+				  G_PARAM_READWRITE));
+  
+  g_object_class_install_property(gobject_class, PROP_STRIKETHROUGH_SET,
+				  g_param_spec_boolean ("strikethrough-set",
+				  "strikethrough inconsistent state",
+				  "Whether the strikethrough"
+				  " is inconsistent", FALSE,
+				  G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
+  
+  g_object_class_install_property(gobject_class, PROP_POSITION,
+				   g_param_spec_int ("position",
+				   "Font position",
+				   "Font position super or subscript",
+				   -1, 1, 0,
+				   G_PARAM_READWRITE));
+  
+  g_object_class_install_property(gobject_class, PROP_POSITION_SET,
+				  g_param_spec_boolean ("position-set",
+				  "position inconsistent state",
+				  "Whether the position"
+				  " is inconsistent", FALSE,
+				  G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
+
+  g_type_class_add_private(klass,
+			   sizeof(struct _HildonFontSelectionDialogPrivate));
 }
 
 
-static void hildon_font_selection_dialog_init(HildonFontSelectionDialog *
-                                              fontseldiag)
+static void 
+hildon_font_selection_dialog_init(HildonFontSelectionDialog *fontseldiag)
 {
-    HildonFontSelectionDialogPrivate *priv =
-        HILDON_FONT_SELECTION_DIALOG_GET_PRIVATE(fontseldiag);
-    int i;
-    for (i = 0; i < 4; ++i){
-	    priv->facetypes[i] = -1;
-    }
-    
-    priv->positioning = HILDON_POSITIONING_NORMAL;
-    priv->size = 10;
-    priv->face = 0;
-    priv->families = NULL;
-    priv->notebook = GTK_NOTEBOOK(gtk_notebook_new());
+  HildonFontSelectionDialogPrivate *priv =
+    HILDON_FONT_SELECTION_DIALOG_GET_PRIVATE(fontseldiag);
+  GtkWidget *preview_button;
+  
+  priv->notebook = GTK_NOTEBOOK(gtk_notebook_new());
 
-    for (i = 0; i < 3; i++)
-        priv->vbox_tab[i] = gtk_vbox_new(FALSE, 0);
+  hildon_font_selection_dialog_construct_notebook(fontseldiag);
+  
+  gtk_box_pack_start(GTK_BOX(GTK_DIALOG(fontseldiag)->vbox),
+		     GTK_WIDGET(priv->notebook), TRUE, TRUE, 0);
+  
+  /* Add dialog buttons */
+  gtk_dialog_add_button(GTK_DIALOG(fontseldiag),
+			_("ecdg_bd_font_dialog_ok"),
+			GTK_RESPONSE_OK);
+  
+  preview_button = gtk_button_new_with_label(_("ecdg_bd_font_dialog_preview"));
+  gtk_box_pack_start(GTK_BOX(GTK_DIALOG(fontseldiag)->action_area), 
+		     preview_button, FALSE, TRUE, 0);
+  g_signal_connect_swapped(preview_button, "clicked",
+			   G_CALLBACK
+			   (hildon_font_selection_dialog_show_preview),
+			   fontseldiag);
+  gtk_widget_show(preview_button);
 
-    priv->group =
-        GTK_SIZE_GROUP(gtk_size_group_new(GTK_SIZE_GROUP_HORIZONTAL));
+  gtk_dialog_add_button(GTK_DIALOG(fontseldiag),
+			_("ecdg_bd_font_dialog_cancel"),
+			GTK_RESPONSE_CANCEL);
 
-/*Tab one*/
-    priv->cbx_font_type = gtk_combo_box_new_text();
-    hildon_font_selection_dialog_show_available_fonts(fontseldiag);
-    priv->caption_control = hildon_caption_new(priv->group,
-                                               _("ecdg_fi_font_font"),
-                                               priv->cbx_font_type,
-                                               NULL,
-                                               HILDON_CAPTION_OPTIONAL);
-    gtk_box_pack_start(GTK_BOX(priv->vbox_tab[0]), priv->caption_control,
-                       FALSE, FALSE, 0);
+  /*Set default preview text*/
+  priv->preview_text = g_strdup(_("ecdg_fi_preview_font_preview_text"));
 
-    priv->cbx_font_size = gtk_combo_box_new_text();
-    hildon_font_selection_dialog_show_available_sizes(fontseldiag, TRUE);
-    priv->caption_control = hildon_caption_new(priv->group,
-                                               _("ecdg_fi_font_size"),
-                                               priv->cbx_font_size,
-                                               NULL,
-                                               HILDON_CAPTION_OPTIONAL);
-    gtk_box_pack_start(GTK_BOX(priv->vbox_tab[0]), priv->caption_control,
-                       FALSE, FALSE, 0);
-
-    priv->font_color_box = gtk_hbox_new(FALSE, 0);
-    g_object_set(G_OBJECT(priv->font_color_box), "can-focus", TRUE, NULL);
-    priv->font_color_button = gtk_event_box_new();
-    g_object_set(G_OBJECT(priv->font_color_button), "can-focus", TRUE,
-                 NULL);
-    g_signal_connect_swapped(GTK_WIDGET(priv->font_color_button),
-                             "button-release-event",
-                             G_CALLBACK(show_selector),
-                             (HildonFontSelectionDialog *) fontseldiag);
-    g_signal_connect_swapped(GTK_WIDGET(priv->font_color_box),
-                             "key-press-event",
-                             G_CALLBACK(color_key_press), fontseldiag);
-    gtk_box_pack_start(GTK_BOX(priv->font_color_box),
-                       priv->font_color_button, FALSE, FALSE, 0);
-    gtk_box_pack_start(GTK_BOX(priv->font_color_box), gtk_label_new(""),
-                       TRUE, TRUE, 0);
-
-    gtk_widget_set_size_request(GTK_WIDGET(priv->font_color_button), 20,
-                                20);
-    priv->c_table.red = 0;      /* (0,0,0) is black */
-    priv->c_table.green = 0;
-    priv->c_table.blue = 0;
-    set_event_box_color(GTK_WIDGET(priv->font_color_button),
-                        &priv->c_table);
-    priv->caption_control =
-        hildon_caption_new(priv->group, _("ecdg_fi_font_color_selector"),
-                           priv->font_color_box,
-                           NULL, HILDON_CAPTION_OPTIONAL);
-    gtk_box_pack_start(GTK_BOX(priv->vbox_tab[0]), priv->caption_control,
-                       FALSE, FALSE, 0);
-
-/*Tab two*/
-    priv->chk_bold = gtk_check_button_new();
-    gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(priv->chk_bold), FALSE);
-    priv->caption_control = hildon_caption_new(priv->group,
-                                               _("ecdg_fi_font_bold"),
-                                               priv->chk_bold,
-                                               NULL,
-                                               HILDON_CAPTION_OPTIONAL);
-    gtk_box_pack_start(GTK_BOX(priv->vbox_tab[1]), priv->caption_control,
-                       FALSE, FALSE, 0);
-
-    priv->chk_italic = gtk_check_button_new();
-    gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(priv->chk_italic),
-                                 FALSE);
-    priv->caption_control =
-        hildon_caption_new(priv->group, _("ecdg_fi_font_italic"),
-                           priv->chk_italic,
-                           NULL, HILDON_CAPTION_OPTIONAL);
-    gtk_box_pack_start(GTK_BOX(priv->vbox_tab[1]), priv->caption_control,
-                       FALSE, FALSE, 0);
-
-    priv->chk_underline = gtk_check_button_new();
-    gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(priv->chk_underline),
-                                 FALSE);
-    priv->caption_control =
-        hildon_caption_new(priv->group, _("ecdg_fi_font_underline"),
-                           priv->chk_underline, NULL,
-                           HILDON_CAPTION_OPTIONAL);
-    gtk_box_pack_start(GTK_BOX(priv->vbox_tab[1]), priv->caption_control,
-                       FALSE, FALSE, 0);
-
-    /* Sets bold and italic checkboxes */
-    hildon_font_selection_dialog_show_available_styles(fontseldiag);
-
-/*Tab three*/
-    priv->chk_strikethrough = gtk_check_button_new();
-    gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON
-                                 (priv->chk_strikethrough), FALSE);
-    priv->caption_control =
-        hildon_caption_new(priv->group, _("ecdg_fi_font_strikethrough"),
-                           priv->chk_strikethrough, NULL,
-                           HILDON_CAPTION_OPTIONAL);
-    gtk_box_pack_start(GTK_BOX(priv->vbox_tab[2]), priv->caption_control,
-                       FALSE, FALSE, 0);
-
-    priv->cbx_positioning = gtk_combo_box_new_text();
-    hildon_font_selection_dialog_show_available_positionings(fontseldiag);
-    priv->caption_control =
-        hildon_caption_new(priv->group, _("ecdg_fi_font_special"),
-                           priv->cbx_positioning, NULL,
-                           HILDON_CAPTION_OPTIONAL);
-    gtk_box_pack_start(GTK_BOX(priv->vbox_tab[2]), priv->caption_control,
-                       FALSE, FALSE, 0);
-
-    /* Populate notebook */
-    gtk_notebook_insert_page(priv->notebook, priv->vbox_tab[0], NULL, 0);
-    gtk_notebook_insert_page(priv->notebook, priv->vbox_tab[1], NULL, 1);
-    gtk_notebook_insert_page(priv->notebook, priv->vbox_tab[2], NULL, 2);
-    gtk_notebook_set_tab_label_text(priv->notebook, priv->vbox_tab[0],
-                                    _("ecdg_ti_font_dialog_style"));
-    gtk_notebook_set_tab_label_text(priv->notebook, priv->vbox_tab[1],
-                                    _("ecdg_ti_font_dialog_format"));
-    gtk_notebook_set_tab_label_text(priv->notebook, priv->vbox_tab[2],
-                                    _("ecdg_ti_font_dialog_other"));
-    gtk_box_pack_start(GTK_BOX(GTK_DIALOG(fontseldiag)->vbox),
-                       GTK_WIDGET(priv->notebook), TRUE, TRUE, 0);
-    gtk_widget_show(GTK_WIDGET(priv->notebook));
-
-    /* Add dialog buttons */
-    gtk_dialog_add_button(GTK_DIALOG(fontseldiag),
-                          _("ecdg_bd_font_dialog_ok"),
-                          GTK_RESPONSE_OK);
-    gtk_dialog_add_button(GTK_DIALOG(fontseldiag),
-                          _("ecdg_bd_font_dialog_preview"),
-                          PREVIEW_RESPONSE_ID);
-    gtk_dialog_add_button(GTK_DIALOG(fontseldiag),
-                          _("ecdg_bd_font_dialog_cancel"),
-                          GTK_RESPONSE_CANCEL);
-
-/*Set default preview text*/
-    priv->preview_text = g_strdup(_("ecdg_fi_preview_font_preview_text"));
-
-/*Set response-handler*/
-    g_signal_connect(G_OBJECT(fontseldiag), "response",
-                     G_CALLBACK
-                     (hildon_font_selection_dialog_preview_click), NULL);
-
-/*If we change the font, we have to check all the possible styles for it
-  --> connecting signal*/
-    g_signal_connect(G_OBJECT(priv->cbx_font_type), "changed",
-                     G_CALLBACK
-                     (hildon_font_selection_dialog_font_type_changed),
-                     NULL);
-
-/*If we have a font, where is Bold and italic styles,
-  BUT the font does NOT have Bold-Italic style --> connecting signals*/
-    g_signal_connect(G_OBJECT(priv->chk_bold), "clicked",
-                     G_CALLBACK
-                     (hildon_font_selection_dialog_check_button_clicked),
-                     NULL);
-    g_signal_connect(G_OBJECT(priv->chk_italic), "clicked",
-                     G_CALLBACK
-                     (hildon_font_selection_dialog_check_button_clicked),
-                     NULL);
-
-    g_signal_connect(G_OBJECT(priv->chk_underline), "clicked",
-                     G_CALLBACK
-                     (hildon_font_selection_dialog_check_button_clicked),
-                     NULL);
-    g_signal_connect(G_OBJECT(priv->chk_strikethrough), "clicked",
-                     G_CALLBACK
-                     (hildon_font_selection_dialog_check_button_clicked),
-                     NULL);
-
-    
-    g_signal_connect(G_OBJECT(priv->chk_bold), "toggled",
-                     G_CALLBACK
-                     (hildon_font_selection_dialog_check_button_toggled),
-                     NULL);
-    g_signal_connect(G_OBJECT(priv->chk_italic), "toggled",
-                     G_CALLBACK
-                     (hildon_font_selection_dialog_check_button_toggled),
-                     NULL);
-
-/*Preview dialog init*/
-    priv->dlg_preview =
-        gtk_dialog_new_with_buttons(_("ecdg_ti_preview_font"), NULL,
-                                    GTK_DIALOG_MODAL |
-                                    GTK_DIALOG_DESTROY_WITH_PARENT,
-                                    GTK_STOCK_OK,
-                                    GTK_RESPONSE_ACCEPT,
-                                    NULL);
-    priv->lbl_preview = gtk_label_new(priv->preview_text);
-
-    gtk_container_add(GTK_CONTAINER(GTK_DIALOG(priv->dlg_preview)->vbox),
-                      priv->lbl_preview);
-    gtk_dialog_set_has_separator(GTK_DIALOG(priv->dlg_preview), FALSE);
-    gtk_label_set_use_markup(GTK_LABEL(priv->lbl_preview), FALSE);
-    gtk_label_set_use_underline(GTK_LABEL(priv->lbl_preview), FALSE);
-
-/*Connect a signal to hide the preview dialog*/
-    g_signal_connect(G_OBJECT(priv->dlg_preview), "response",
-                     G_CALLBACK(hildon_font_preview_dialog_close),
-                     fontseldiag);
-/* set keypress handler (ESC hardkey) */
-    g_signal_connect(G_OBJECT(priv->dlg_preview), "key-press-event",
-                     G_CALLBACK
-                     (hildon_font_selection_dialog_preview_key_press),
-                     NULL);
-
-    gtk_window_set_title(GTK_WINDOW(fontseldiag), _("ecdg_ti_font"));
-
-
-    priv->keysnooper =
-        (guint) (gtk_key_snooper_install(
-            (GtkKeySnoopFunc) (hildon_font_selection_dialog_key_snooper),
-            GTK_WIDGET (fontseldiag)));
-    
-    
-    
-    
-    
-    for (i = 0; i < 3; i++)
-        gtk_widget_show_all(GTK_WIDGET(priv->vbox_tab[i]));
-}
-
-static void hildon_font_selection_dialog_set_property(GObject * object,
-		guint property_id,
-		const GValue * value,
-		GParamSpec * pspec)
-{
-	gboolean bold;
-	switch (property_id){
-		case PROP_SELECTOR_BOLD: /* add other cases and handling of them */
-			bold = g_value_get_boolean (value);	
-			break;
-		default:
-			G_OBJECT_WARN_INVALID_PROPERTY_ID(object, property_id, pspec);
-			break;
-	}
-}
-
-static void hildon_font_selection_dialog_get_property(GObject * object,
-		guint property_id,
-		GValue * value,
-		GParamSpec * pspec)
-{
-	switch (property_id){
-		case PROP_SELECTOR_BOLD:
-			g_value_set_boolean(value, g_value_get_boolean(value)); 
-			/* should set priv->bold? */
-			break;
-		default:
-			G_OBJECT_WARN_INVALID_PROPERTY_ID(object, property_id, pspec);
-	}
-}
-
-static void hildon_font_preview_dialog_close(GtkDialog * dialog,
-                                             gint response, gpointer data)
-{
-    HildonFontSelectionDialog *d;
-    HildonFontSelectionDialogPrivate *priv;
-
-    g_return_if_fail(HILDON_IS_FONT_SELECTION_DIALOG(data));
-    d = HILDON_FONT_SELECTION_DIALOG(data);
-    priv = HILDON_FONT_SELECTION_DIALOG_GET_PRIVATE(d);
-    gtk_widget_hide(GTK_WIDGET(dialog));
-    gtk_window_present(GTK_WINDOW(data));
-}
-
-static void set_event_box_color(GtkWidget * b, GdkColor * color)
-{
-    GdkColor c = { 0, 32000, 32000, 32000 };
-
-    g_return_if_fail(b);
-
-    if (!color) {
-        color = &c;
-    }
-
-    gtk_widget_modify_bg(b, GTK_STATE_NORMAL, color);
-    gtk_widget_modify_bg(b, GTK_STATE_ACTIVE, color);
-    gtk_widget_modify_bg(b, GTK_STATE_PRELIGHT, color);
-    gtk_widget_modify_bg(b, GTK_STATE_SELECTED, color);
-    gtk_widget_modify_bg(b, GTK_STATE_INSENSITIVE, color);
-}
-
-static gboolean color_key_press(GtkWidget * widget,
-                                GdkEventKey * event, gpointer data)
-{
-    if (event->keyval == GDK_Return || event->keyval == GDK_KP_Enter)
-        show_selector(widget, NULL, NULL);
-    return FALSE;
-}
-
-static void show_selector(GtkWidget * widget, GtkButton * b, gpointer data)
-{
-    GtkWidget *selector;
-
-    gint result;
-    HildonFontSelectionDialogPrivate *priv;
-    HildonFontSelectionDialog *fontseldiag;
-    GdkColor *color;
-
-    g_return_if_fail(widget);
-
-    selector = hildon_color_selector_new(NULL);
-
-    fontseldiag = HILDON_FONT_SELECTION_DIALOG(widget);
-    priv = HILDON_FONT_SELECTION_DIALOG_GET_PRIVATE(fontseldiag);
-    hildon_color_selector_set_color(HILDON_COLOR_SELECTOR(selector),
-                                    &priv->c_table);
-    result = gtk_dialog_run(GTK_DIALOG(selector));
-
-    color =
-        hildon_color_selector_get_color(HILDON_COLOR_SELECTOR(selector));
-
-    gtk_widget_destroy(selector);
-    gtk_window_present(GTK_WINDOW(fontseldiag));
-
-    if (result != GTK_RESPONSE_OK)
-        return;
-
-    priv->c_table = *color;
-    set_event_box_color(GTK_WIDGET(priv->font_color_button),
-                        &priv->c_table);
-    gtk_widget_modify_fg(priv->lbl_preview, GTK_STATE_NORMAL,
-                         &priv->c_table);
-    gtk_widget_modify_fg(priv->lbl_preview, GTK_STATE_ACTIVE,
-                         &priv->c_table);
-    gtk_widget_modify_fg(priv->lbl_preview, GTK_STATE_PRELIGHT,
-                         &priv->c_table);
-    gtk_widget_modify_fg(priv->lbl_preview, GTK_STATE_SELECTED,
-                         &priv->c_table);
-    gtk_widget_modify_fg(priv->lbl_preview, GTK_STATE_INSENSITIVE,
-                         &priv->c_table);
-
-}
-
-static void hildon_font_selection_dialog_finalize(GObject * object)
-{
-    HildonFontSelectionDialogPrivate *priv;
-    HildonFontSelectionDialog *fontsel;
-
-    g_return_if_fail(HILDON_IS_FONT_SELECTION_DIALOG(object));
-    fontsel = HILDON_FONT_SELECTION_DIALOG(object);
-
-    priv = HILDON_FONT_SELECTION_DIALOG_GET_PRIVATE(fontsel);
-
-    gtk_key_snooper_remove(priv->keysnooper);
-
-    if (priv->faces)
-        g_free(priv->faces);
-    if (priv->preview_text)
-        g_free(priv->preview_text);
-    if (priv->families)
-        g_free(priv->families);
-
-    if (G_OBJECT_CLASS(font_selection_dialog_parent_class)->finalize)
-        G_OBJECT_CLASS(font_selection_dialog_parent_class)->
-            finalize(object);
+  gtk_window_set_title(GTK_WINDOW(fontseldiag), _("ecdg_ti_font"));
+  /*here is the line to make sure that notebook has the default focus*/
+  gtk_container_set_focus_child(GTK_CONTAINER(GTK_DIALOG(fontseldiag)->vbox),
+				GTK_WIDGET(priv->notebook));
 }
 
 static void 
-hildon_font_selection_dialog_check_button_clicked(GtkToggleButton *chk,
-		gpointer data){
+hildon_font_selection_dialog_construct_notebook (HildonFontSelectionDialog
+				                 *fontsel)
+{
+  gint i;
+  GtkWidget *vbox_tab[3];
+  GtkWidget *font_color_box;
+  GtkWidget *caption_control;
+  GtkSizeGroup *group;
+  
+  HildonFontSelectionDialogPrivate *priv =
+    HILDON_FONT_SELECTION_DIALOG_GET_PRIVATE(fontsel);
 
-	gboolean inconsistent = FALSE;
+  for (i = 0; i < 3; i++)
+    vbox_tab[i] = gtk_vbox_new(TRUE, 0);
 
-	g_object_get(G_OBJECT(chk), "inconsistent", &inconsistent, NULL);
-	if (inconsistent)
-		g_object_set(G_OBJECT(chk), "active", TRUE, "inconsistent", FALSE, NULL);
+  group =
+    GTK_SIZE_GROUP(gtk_size_group_new(GTK_SIZE_GROUP_HORIZONTAL));
+  
+  /*Tab one*/
+  priv->cbx_font_type = gtk_combo_box_new_text();
+  hildon_font_selection_dialog_show_available_fonts(fontsel);
+  caption_control = hildon_caption_new(group,
+				       _("ecdg_fi_font_font"),
+				       priv->cbx_font_type,
+				       NULL,
+				       HILDON_CAPTION_OPTIONAL);
+  gtk_box_pack_start(GTK_BOX(vbox_tab[0]), caption_control,
+		     FALSE, FALSE, 0);
+
+  priv->cbx_font_size = gtk_combo_box_new_text();
+  hildon_font_selection_dialog_show_available_sizes(priv);
+  caption_control = hildon_caption_new(group,
+				       _("ecdg_fi_font_size"),
+				       priv->cbx_font_size,
+				       NULL,
+				       HILDON_CAPTION_OPTIONAL);
+  gtk_box_pack_start(GTK_BOX(vbox_tab[0]), caption_control,
+		     FALSE, FALSE, 0);
+
+  font_color_box = gtk_hbox_new(FALSE, 0);
+  priv->font_color_button = hildon_color_button_new();
+  priv->color_set = FALSE;
+  priv->color_modified_signal_handler = 
+    g_signal_connect(G_OBJECT(priv->font_color_button), "notify::color",
+		     G_CALLBACK(color_modified_cb), (gpointer) priv);
+  gtk_box_pack_start(GTK_BOX(font_color_box),
+		     priv->font_color_button, FALSE, FALSE, 0);
+  
+  /*dummy widget for packing purpose only*/
+  gtk_box_pack_start(GTK_BOX(font_color_box), gtk_label_new(""),
+		     TRUE, TRUE, 0);
+  
+  caption_control =
+    hildon_caption_new(group, _("ecdg_fi_font_color_selector"),
+		       font_color_box,
+		       NULL, HILDON_CAPTION_OPTIONAL);
+  
+  gtk_box_pack_start(GTK_BOX(vbox_tab[0]), caption_control,
+		     FALSE, FALSE, 0);
+
+  /*Tab two*/
+  priv->chk_bold = gtk_check_button_new();
+  caption_control = hildon_caption_new(group,
+				       _("ecdg_fi_font_bold"),
+				       priv->chk_bold,
+				       NULL,
+				       HILDON_CAPTION_OPTIONAL);
+  gtk_box_pack_start(GTK_BOX(vbox_tab[1]), caption_control,
+		     FALSE, FALSE, 0);
+  g_signal_connect(G_OBJECT(priv->chk_bold), "clicked", 
+		   G_CALLBACK(toggle_clicked), NULL);
+
+  priv->chk_italic = gtk_check_button_new();
+  caption_control =
+    hildon_caption_new(group, _("ecdg_fi_font_italic"),
+		       priv->chk_italic,
+		       NULL, HILDON_CAPTION_OPTIONAL);
+  gtk_box_pack_start(GTK_BOX(vbox_tab[1]), caption_control,
+		     FALSE, FALSE, 0);
+  g_signal_connect(G_OBJECT(priv->chk_italic), "clicked", 
+		   G_CALLBACK(toggle_clicked), NULL);
+
+  priv->chk_underline = gtk_check_button_new();
+  caption_control =
+    hildon_caption_new(group, _("ecdg_fi_font_underline"),
+		       priv->chk_underline, NULL,
+		       HILDON_CAPTION_OPTIONAL);
+  gtk_box_pack_start(GTK_BOX(vbox_tab[1]), caption_control,
+		     FALSE, FALSE, 0);
+  g_signal_connect(G_OBJECT(priv->chk_underline), "clicked", 
+		   G_CALLBACK(toggle_clicked), NULL);
+
+  /*Tab three*/
+  priv->chk_strikethrough = gtk_check_button_new();
+  caption_control =
+    hildon_caption_new(group, _("ecdg_fi_font_strikethrough"),
+		       priv->chk_strikethrough, NULL,
+		       HILDON_CAPTION_OPTIONAL);
+  gtk_box_pack_start(GTK_BOX(vbox_tab[2]), caption_control,
+		     FALSE, FALSE, 0);
+  g_signal_connect(G_OBJECT(priv->chk_strikethrough), "clicked", 
+		   G_CALLBACK(toggle_clicked), NULL);
+
+  priv->cbx_positioning = gtk_combo_box_new_text();
+  hildon_font_selection_dialog_show_available_positionings(priv);
+  caption_control =
+    hildon_caption_new(group, _("ecdg_fi_font_special"),
+		       priv->cbx_positioning, NULL,
+		       HILDON_CAPTION_OPTIONAL);
+  gtk_box_pack_start(GTK_BOX(vbox_tab[2]), caption_control,
+		     FALSE, FALSE, 0);
+  
+  /* Populate notebook */
+  gtk_notebook_insert_page(priv->notebook, vbox_tab[0], NULL, 0);
+  gtk_notebook_insert_page(priv->notebook, vbox_tab[1], NULL, 1);
+  gtk_notebook_insert_page(priv->notebook, vbox_tab[2], NULL, 2);
+  gtk_notebook_set_tab_label_text(priv->notebook, vbox_tab[0],
+				  _("ecdg_ti_font_dialog_style"));
+  gtk_notebook_set_tab_label_text(priv->notebook, vbox_tab[1],
+				  _("ecdg_ti_font_dialog_format"));
+  gtk_notebook_set_tab_label_text(priv->notebook, vbox_tab[2],
+				  _("ecdg_ti_font_dialog_other"));
+  
+  gtk_widget_show_all(GTK_WIDGET(priv->notebook));
 }
 
-/*When we toggle either the bold or the italic togglebutton*/
-static void
-hildon_font_selection_dialog_check_button_toggled(GtkToggleButton * chk,
-                                                  gpointer user_data)
+static void 
+color_modified_cb(HildonColorButton *button, GParamSpec *pspec, gpointer data)
 {
-    HildonFontSelectionDialog *fontsel;
-    HildonFontSelectionDialogPrivate *priv;
-    gboolean bold, italic;
+  HildonFontSelectionDialogPrivate *priv = 
+    (HildonFontSelectionDialogPrivate *) data;
 
-    bold = italic = TRUE;
-
-    fontsel =
-        HILDON_FONT_SELECTION_DIALOG(gtk_widget_get_ancestor
-                                     (GTK_WIDGET(chk),
-                                      HILDON_TYPE_FONT_SELECTION_DIALOG));
-    priv = HILDON_FONT_SELECTION_DIALOG_GET_PRIVATE(fontsel);
-	
-    if (priv->facetypes[HILDON_FONT_FACE_BOLD] == -1)
-	    bold = FALSE;
-    if (priv->facetypes[HILDON_FONT_FACE_ITALIC] == -1)
-	    italic = FALSE;
-    
-    if (!priv->both) {
-        if (GTK_WIDGET(chk) == priv->chk_bold) {
-            if (gtk_toggle_button_get_active(chk)) {
-                priv->face = HILDON_FONT_FACE_BOLD;
-		gtk_widget_set_sensitive(priv->chk_italic, FALSE);
-            } else {
-                priv->face = HILDON_FONT_FACE_NORMAL;
-		if (italic){
-		       	gtk_widget_set_sensitive(priv->chk_italic, TRUE);
-		}
-            }
-        } else {
-            if (gtk_toggle_button_get_active(chk)) {
-                priv->face = HILDON_FONT_FACE_ITALIC;
-                gtk_widget_set_sensitive(priv->chk_bold, FALSE);
-            } else {
-                priv->face = HILDON_FONT_FACE_NORMAL;
-                if (bold){
-		       	gtk_widget_set_sensitive(priv->chk_bold, TRUE);
-		}
-            }
-        }
-
-    } else
-        if (gtk_toggle_button_get_active
-            (GTK_TOGGLE_BUTTON(priv->chk_bold)))
-        if (gtk_toggle_button_get_active
-            (GTK_TOGGLE_BUTTON(priv->chk_italic)))
-            priv->face = HILDON_FONT_FACE_BOLD_ITALIC;
-        else
-            priv->face = HILDON_FONT_FACE_BOLD;
-    else if (gtk_toggle_button_get_active
-             (GTK_TOGGLE_BUTTON(priv->chk_italic)))
-        priv->face = HILDON_FONT_FACE_ITALIC;
-    else
-        priv->face = HILDON_FONT_FACE_NORMAL;
+  priv->color_set = TRUE;
 }
 
-/*Some gtk_fontsel general pango functions -- BEGIN*/
-
-static int compare_font_descriptions(const PangoFontDescription * a,
-                                     const PangoFontDescription * b)
+static void 
+hildon_font_selection_dialog_finalize(GObject * object)
 {
-    int val = strcmp(pango_font_description_get_family(a),
-                     pango_font_description_get_family(b));
+  HildonFontSelectionDialogPrivate *priv;
+  HildonFontSelectionDialog *fontsel;
 
-    if (val != 0)
-        return val;
+  g_return_if_fail(HILDON_IS_FONT_SELECTION_DIALOG(object));
+  fontsel = HILDON_FONT_SELECTION_DIALOG(object);
 
-    if (pango_font_description_get_weight(a) !=
-        pango_font_description_get_weight(b))
-        return pango_font_description_get_weight(a) -
-            pango_font_description_get_weight(b);
+  priv = HILDON_FONT_SELECTION_DIALOG_GET_PRIVATE(fontsel);
+  
+  g_free(priv->preview_text);
+  g_free(priv->families);
 
-    if (pango_font_description_get_style(a) !=
-        pango_font_description_get_style(b))
-        return pango_font_description_get_style(a) -
-            pango_font_description_get_style(b);
-
-    if (pango_font_description_get_stretch(a) !=
-        pango_font_description_get_stretch(b))
-        return pango_font_description_get_stretch(a) -
-            pango_font_description_get_stretch(b);
-
-    if (pango_font_description_get_variant(a) !=
-        pango_font_description_get_variant(b))
-        return pango_font_description_get_variant(a) -
-            pango_font_description_get_variant(b);
-
-    return 0;
-}
-static int faces_sort_func(const void *a, const void *b)
-{
-    PangoFontDescription *desc_a;
-    PangoFontDescription *desc_b;
-    int ord;
-
-    desc_a = pango_font_face_describe(*(PangoFontFace **) a);
-    desc_b = pango_font_face_describe(*(PangoFontFace **) b);
-    ord = compare_font_descriptions(desc_a, desc_b);
-
-    pango_font_description_free(desc_a);
-    pango_font_description_free(desc_b);
-
-    return ord;
-}
-static int cmp_families(const void *a, const void *b)
-{
-    const char *a_name =
-        pango_font_family_get_name(*(PangoFontFamily **) a);
-    const char *b_name =
-        pango_font_family_get_name(*(PangoFontFamily **) b);
-
-    return g_utf8_collate(a_name, b_name);
+  if (G_OBJECT_CLASS(font_selection_dialog_parent_class)->finalize)
+    G_OBJECT_CLASS(font_selection_dialog_parent_class)->finalize(object);
 }
 
-/*The general pango functions -- END*/
-
-/*Run only once in the init*/
-static void hildon_font_selection_dialog_preview_click(GtkDialog * dialog,
-                                                       gint response,
-                                                       gpointer data)
+static int 
+cmp_families(const void *a, const void *b)
 {
-    if (response == PREVIEW_RESPONSE_ID) {
-        g_signal_stop_emission_by_name(G_OBJECT(dialog), "response");
-        hildon_font_selection_dialog_show_preview
-            (HILDON_FONT_SELECTION_DIALOG(dialog));
-    }
+  const char *a_name =
+    pango_font_family_get_name(*(PangoFontFamily **) a);
+  const char *b_name =
+    pango_font_family_get_name(*(PangoFontFamily **) b);
+
+  return g_utf8_collate(a_name, b_name);
 }
 
 static gboolean
 hildon_font_selection_dialog_preview_key_press(GtkWidget * widget,
-                                               GdkEventKey * event,
-                                               gpointer data)
+					       GdkEventKey * event,
+					       gpointer data)
 {
-    g_return_val_if_fail(widget, FALSE);
-    g_return_val_if_fail(event, FALSE);
+  g_return_val_if_fail(widget, FALSE);
+  g_return_val_if_fail(event, FALSE);
 
-    if (event->keyval == GDK_Escape) {
-        gtk_dialog_response(GTK_DIALOG(widget), GTK_RESPONSE_CANCEL);
-        return TRUE;
+  if (event->keyval == GDK_Escape) 
+    {
+      gtk_dialog_response(GTK_DIALOG(widget), GTK_RESPONSE_CANCEL);
+      return TRUE;
     }
 
-    return FALSE;
-}
-
-/*If the font type is changed -> update the components
-  (... We may not have a sensitive bold or/and italic toggle button)*/
-static void hildon_font_selection_dialog_font_type_changed(GtkComboBox *
-                                                           cbox,
-                                                           gpointer
-                                                           userdata)
-{
-    gint i;
-    GtkWidget *fontsel =
-        gtk_widget_get_ancestor(GTK_WIDGET(cbox),
-                                HILDON_TYPE_FONT_SELECTION_DIALOG);
-    HildonFontSelectionDialogPrivate *priv =
-        HILDON_FONT_SELECTION_DIALOG_GET_PRIVATE
-        (HILDON_FONT_SELECTION_DIALOG(fontsel));
-    priv->family = priv->families[gtk_combo_box_get_active(cbox)];
-    for (i = 0; i < 4; ++i) {
-	    priv->facetypes[i] = -1;
-    }
-    hildon_font_selection_dialog_show_available_styles
-        (HILDON_FONT_SELECTION_DIALOG(fontsel));
-}
-
-
-static PangoAttrList
-    *hildon_font_selection_dialog_create_font(HildonFontSelectionDialog *
-                                              fontsel)
-{
-    PangoFontDescription *font_desc;
-    PangoAttrList *list;
-    PangoAttribute *attr;
-    int len;
-    HildonFontSelectionDialogPrivate *priv =
-        HILDON_FONT_SELECTION_DIALOG_GET_PRIVATE(fontsel);
-
-/*Setting size to a temporar variable*/
-    priv->size =
-        font_sizes[gtk_combo_box_get_active
-                   (GTK_COMBO_BOX(priv->cbx_font_size))];
-
-    list = pango_attr_list_new();
-    gtk_label_set_text(GTK_LABEL(priv->lbl_preview), priv->preview_text);
-    len = strlen(priv->preview_text);
-
-/*Create a font_desc attribute for the font*/
-
-    font_desc = pango_font_face_describe(priv->faces[priv->facetypes[priv->face]]);
-    pango_font_description_set_size(font_desc, priv->size * PANGO_SCALE);
-    pango_font_description_set_family(font_desc,
-                                      pango_font_family_get_name(priv->
-                                                                 family));
-
-    attr = pango_attr_font_desc_new(font_desc);
-    attr->start_index = 0;
-    attr->end_index = len;
-    pango_attr_list_insert(list, attr);
-
-/*Create an underline attribute for the font*/
-    if (gtk_toggle_button_get_active
-        (GTK_TOGGLE_BUTTON(priv->chk_underline))) {
-        attr = pango_attr_underline_new(PANGO_UNDERLINE_SINGLE);
-        attr->start_index = 0;
-        attr->end_index = len;
-        pango_attr_list_insert(list, attr);
-    }
-
-/*Create a striketrough attribute for the font*/
-    if (gtk_toggle_button_get_active
-        (GTK_TOGGLE_BUTTON(priv->chk_strikethrough))) {
-        attr = pango_attr_strikethrough_new(TRUE);
-        attr->start_index = 0;
-        attr->end_index = len;
-        pango_attr_list_insert(list, attr);
-    }
-
-/*Create a positioning attribute for the font*/
-    attr = NULL;
-    switch (gtk_combo_box_get_active
-            (GTK_COMBO_BOX(priv->cbx_positioning))) {
-    case HILDON_POSITIONING_SUPER:
-        attr = pango_attr_rise_new(priv->size * (PANGO_SCALE / 2));
-        break;
-    case HILDON_POSITIONING_SUB:
-        attr = pango_attr_rise_new(-priv->size * (PANGO_SCALE / 2));
-        break;
-    };
-
-    if (attr) {
-        attr->start_index = 0;
-        attr->end_index = len;
-        pango_attr_list_insert(list, attr);
-    }
-/*Create a color attribute for the font*/
-    attr =
-        pango_attr_foreground_new(priv->c_table.red, priv->c_table.green,
-                                  priv->c_table.blue);
-    attr->start_index = 0;
-    attr->end_index = len;
-    pango_attr_list_insert(list, attr);
-
-    return list;
+  return FALSE;
 }
 
 static void
-hildon_font_selection_dialog_set_font_for_preview(HildonFontSelectionDialog
-                                                  * fsd)
+add_preview_text_attr(PangoAttrList *list, PangoAttribute *attr, 
+		      guint start, guint len)
 {
-/*set the attribute list for the preview label*/
-    HildonFontSelectionDialogPrivate *priv;
-    PangoAttrList *attr = hildon_font_selection_dialog_create_font(fsd);
-
-    priv = HILDON_FONT_SELECTION_DIALOG_GET_PRIVATE(fsd);
-    gtk_label_set_attributes(GTK_LABEL(priv->lbl_preview), attr);
-    pango_attr_list_unref(attr);
+  attr->start_index = start;
+  attr->end_index = start + len;
+  pango_attr_list_insert(list, attr);
 }
 
-/*When the user clicks the preview button*/
+static PangoAttrList*
+hildon_font_selection_dialog_create_attrlist(HildonFontSelectionDialog *
+					 fontsel, guint start_index, guint len)
+{
+  PangoAttrList *list;
+  PangoAttribute *attr;
+  gint size, position;
+  gboolean family_set, size_set, color_set, bold, bold_set,
+           italic, italic_set, underline, underline_set,
+	   strikethrough, strikethrough_set, position_set;
+  GdkColor *color = NULL;
+  gchar *family = NULL;
+
+  list = pango_attr_list_new();
+ 
+  g_object_get(G_OBJECT(fontsel),
+	       "family", &family, "family-set", &family_set,
+	       "size", &size, "size-set", &size_set,
+	       "color", &color, "color-set", &color_set,
+	       "bold", &bold, "bold-set", &bold_set,
+	       "italic", &italic, "italic-set", &italic_set,
+	       "underline", &underline, "underline-set", &underline_set,
+	       "strikethrough", &strikethrough, "strikethrough-set", 
+	       &strikethrough_set, "position", &position, 
+	       "position-set", &position_set, NULL);
+
+  /*family*/
+  if(family_set)
+    {
+      attr = pango_attr_family_new(family);
+      add_preview_text_attr(list, attr, start_index, len);
+    }
+  g_free(family);
+  
+  /*size*/
+  if(size_set)
+    {
+      attr = pango_attr_size_new(size * PANGO_SCALE);
+      add_preview_text_attr(list, attr, start_index, len);
+    }
+  
+  /*color*/
+  if(color_set)
+    {
+      attr = pango_attr_foreground_new(color->red, color->green, color->blue);
+      add_preview_text_attr(list, attr, start_index, len);
+    }
+  
+  if(color != NULL)
+    gdk_color_free(color);
+  
+  /*weight*/
+  if(bold_set)
+    {
+      if(bold)
+        attr = pango_attr_weight_new(PANGO_WEIGHT_BOLD);
+      else
+	attr = pango_attr_weight_new(PANGO_WEIGHT_NORMAL);
+
+      add_preview_text_attr(list, attr, start_index, len);
+    }
+  
+  /*style*/
+  if(italic_set)
+    {
+      if(italic)
+        attr = pango_attr_style_new(PANGO_STYLE_ITALIC);
+      else
+	attr = pango_attr_style_new(PANGO_STYLE_NORMAL);
+
+      add_preview_text_attr(list, attr, start_index, len);
+    }
+  
+  /*underline*/
+  if(underline_set)
+    {
+      if(underline)
+        attr = pango_attr_underline_new(PANGO_UNDERLINE_SINGLE);
+      else
+	attr = pango_attr_underline_new(PANGO_UNDERLINE_NONE);
+
+      add_preview_text_attr(list, attr, start_index, len);
+    }
+  
+  /*strikethrough*/
+  if(strikethrough_set)
+    {
+      if(strikethrough)
+        attr = pango_attr_strikethrough_new(TRUE);
+      else
+	attr = pango_attr_strikethrough_new(FALSE);
+
+      add_preview_text_attr(list, attr, start_index, len);
+    }
+  
+  /*position*/
+  if(position_set)
+    {
+      switch(position)
+	{
+	case 1: /*super*/
+	  attr = pango_attr_rise_new(SUPERSCRIPT_RISE);
+	  break;
+	case -1: /*sub*/
+	  attr = pango_attr_rise_new(SUBSCRIPT_LOW);
+	  break;
+	default: /*normal*/
+	  attr = pango_attr_rise_new(0);
+	  break;
+	}
+
+      add_preview_text_attr(list, attr, start_index, len);
+    }
+  
+  return list;
+}
+
 static void
 hildon_font_selection_dialog_show_preview(HildonFontSelectionDialog *
-                                          fontsel)
+					  fontsel)
 {
-    HildonFontSelectionDialogPrivate *priv =
-        HILDON_FONT_SELECTION_DIALOG_GET_PRIVATE(fontsel);
+  HildonFontSelectionDialogPrivate *priv =
+    HILDON_FONT_SELECTION_DIALOG_GET_PRIVATE(fontsel);
+  gint size;
+  gboolean family_set, size_set;
+  PangoAttribute *attr;
+  PangoAttrList *list;
+  GtkWidget *preview_dialog;
+  GtkWidget *preview_label;
+  gchar *str = NULL;
+  
+  /*Preview dialog init*/
+  preview_dialog=
+    gtk_dialog_new_with_buttons(_("ecdg_ti_preview_font"), NULL,
+				GTK_DIALOG_MODAL |
+				GTK_DIALOG_DESTROY_WITH_PARENT |
+				GTK_DIALOG_NO_SEPARATOR,
+				_("ecdg_bd_font_dialog_ok"),
+				GTK_RESPONSE_ACCEPT,
+				NULL);
 
-/*Set the font*/
-    hildon_font_selection_dialog_set_font_for_preview(fontsel);
+  str = g_strconcat(REFERENCE_LINE, priv->preview_text, 0);
+  preview_label = gtk_label_new(str);
+  g_free(str);
+  str = NULL;
 
-/*Set a correct size for the label and for the window*/
-/*First we minimize the window, if we resize from larger font to smaller*/
-    gtk_window_resize(GTK_WINDOW(priv->dlg_preview), 1, 1);
-    gtk_widget_set_size_request(priv->lbl_preview, -1, priv->size*4);
+  gtk_container_add(GTK_CONTAINER(GTK_DIALOG(preview_dialog)->vbox),
+		    preview_label);
 
-/*And show the dialog*/
-    gtk_widget_show_all(priv->dlg_preview);
-    gtk_dialog_run(GTK_DIALOG(priv->dlg_preview));
-    gtk_widget_hide(priv->dlg_preview);
+  /* set keypress handler (ESC hardkey) */
+  g_signal_connect(G_OBJECT(preview_dialog), "key-press-event",
+		   G_CALLBACK
+		   (hildon_font_selection_dialog_preview_key_press),
+		   NULL);
+
+  /*Set the font*/
+  list = hildon_font_selection_dialog_create_attrlist(fontsel, 
+				strlen(REFERENCE_LINE),
+				strlen(priv->preview_text));
+
+  g_object_get(G_OBJECT(fontsel), "family", &str, "family-set",
+	       &family_set, "size", &size, "size-set", &size_set,
+	       NULL);
+  /*make reference text to have the same fontface and size*/
+  if(family_set)
+    {
+      attr = pango_attr_family_new(str);
+      add_preview_text_attr(list, attr, 0, strlen(REFERENCE_LINE));
+    }
+  g_free(str);
+  
+  /*size*/
+  if(size_set)
+    {
+      attr = pango_attr_size_new(size * PANGO_SCALE);
+      add_preview_text_attr(list, attr, 0, strlen(REFERENCE_LINE));
+    }
+  
+  gtk_label_set_attributes(GTK_LABEL(preview_label), list);
+  pango_attr_list_unref(list);
+  
+  /*And show the dialog*/
+  gtk_window_set_transient_for(GTK_WINDOW(preview_dialog), 
+			       GTK_WINDOW(fontsel));
+  gtk_widget_show_all(preview_dialog);
+  gtk_dialog_run(GTK_DIALOG(preview_dialog));
+  gtk_widget_destroy(preview_dialog);
 }
 
-
-/*Run only once in the init --> Collect all the available fonts*/
 static void
-hildon_font_selection_dialog_show_available_fonts(HildonFontSelectionDialog
-                                                  * fontsel)
+hildon_font_selection_dialog_show_available_fonts(HildonFontSelectionDialog 
+						  *fontsel)
+
 {
-    PangoFontFamily *match_family = NULL;
-    gint i, match_row;
-    HildonFontSelectionDialogPrivate *priv =
-        HILDON_FONT_SELECTION_DIALOG_GET_PRIVATE(fontsel);
-    match_row = 0;
+  gint i;
+  
+  HildonFontSelectionDialogPrivate *priv =
+    HILDON_FONT_SELECTION_DIALOG_GET_PRIVATE(fontsel);
 
-    pango_context_list_families(gtk_widget_get_pango_context
-                                (GTK_WIDGET(fontsel)), &priv->families,
-                                &priv->n_families);
-    qsort(priv->families, priv->n_families, sizeof(PangoFontFamily *),
-          cmp_families);
+  pango_context_list_families(gtk_widget_get_pango_context
+			      (GTK_WIDGET(fontsel)), &priv->families,
+			      &priv->n_families);
+
+  qsort(priv->families, priv->n_families, sizeof(PangoFontFamily *),
+	cmp_families);
 
 
-    for (i = 0; i < priv->n_families; i++) {
-        const gchar *name = pango_font_family_get_name(priv->families[i]);
+  for (i = 0; i < priv->n_families; i++) 
+    {
+      const gchar *name = pango_font_family_get_name(priv->families[i]);
 
-        gtk_combo_box_append_text(GTK_COMBO_BOX(priv->cbx_font_type),
-                                  name);
-
-        if (i == 0 || !g_ascii_strcasecmp(name, "sans")) {
-            match_family = priv->families[i];
-            match_row = i;
-        }
+      gtk_combo_box_append_text(GTK_COMBO_BOX(priv->cbx_font_type),
+				name);
     }
-
-    priv->family = match_family;
-    gtk_combo_box_set_active(GTK_COMBO_BOX(priv->cbx_font_type),
-                             match_row);
 }
 
 
 static void
 hildon_font_selection_dialog_show_available_positionings
-(HildonFontSelectionDialog * fontsel)
+                                             (HildonFontSelectionDialogPrivate
+					      *priv)
 {
-    HildonFontSelectionDialogPrivate *priv =
-        HILDON_FONT_SELECTION_DIALOG_GET_PRIVATE(fontsel);
-
-    gtk_combo_box_append_text(GTK_COMBO_BOX(priv->cbx_positioning),
-                              _("ecdg_va_font_printpos_1"));
-    gtk_combo_box_append_text(GTK_COMBO_BOX(priv->cbx_positioning),
-                              _("ecdg_va_font_printpos_2"));
-    gtk_combo_box_append_text(GTK_COMBO_BOX(priv->cbx_positioning),
-                              _("ecdg_va_font_printpos_3"));
-    gtk_combo_box_set_active(GTK_COMBO_BOX(priv->cbx_positioning), 0);
+  gtk_combo_box_append_text(GTK_COMBO_BOX(priv->cbx_positioning),
+			    _("ecdg_va_font_printpos_1"));
+  gtk_combo_box_append_text(GTK_COMBO_BOX(priv->cbx_positioning),
+			    _("ecdg_va_font_printpos_2"));
+  gtk_combo_box_append_text(GTK_COMBO_BOX(priv->cbx_positioning),
+			    _("ecdg_va_font_printpos_3"));
 }
-
-
-/*Run after the hildon_font_selection_dialog_show_available_fonts
-  -function*/
-static void
-hildon_font_selection_dialog_show_available_styles
-(HildonFontSelectionDialog * fontsel)
-{
-    gint n_faces, i;
-    PangoFontFace **faces;
-    gchar *familyname;
-    HildonFontSelectionDialogPrivate *priv =
-        HILDON_FONT_SELECTION_DIALOG_GET_PRIVATE(fontsel);
-    faces = priv->faces;
-
-    if (faces)
-        g_free(faces);
-
-    familyname = (gchar *)pango_font_family_get_name (priv->family);
-	    
-/*Fetch and sort faces*/
-    pango_font_family_list_faces(priv->family, &faces, &n_faces);
-
-    qsort(faces, n_faces, sizeof(PangoFontFace *), faces_sort_func); 
-
-    priv->faces = faces;
-
-/*Set the checkbuttons to false ->
-  If we have italic or/and bold, we'll set that to true*/
-    gtk_widget_set_sensitive(priv->chk_bold, FALSE);
-    gtk_widget_set_sensitive(priv->chk_italic, FALSE);
-
-    priv->both = FALSE;
-
-/*Check all the faces we have for the selected font type*/
-    for (i = 0; i < n_faces; i++) {
-        const gchar *str = pango_font_face_get_face_name(faces[i]);
-	
-        
-	if (!(strcmp(str, "Bold Italic")) || !(strcmp(str, "Demi Italic"))
-            || !(strcmp(str, "Bold Oblique"))
-            || !(strcmp(str, "Demi Bold Italic"))) {
-            priv->facetypes[HILDON_FONT_FACE_BOLD_ITALIC] = i;
-            gtk_widget_set_sensitive(priv->chk_bold, TRUE);
-            gtk_widget_set_sensitive(priv->chk_italic, TRUE);
-            priv->both = TRUE;
-            i = n_faces;        /* IHOPE -- Regular/Normal (what ever name 
-                                   it has) is assumed to be first one */
-        } else if (g_str_has_prefix(str, "Bold")
-                   || g_str_has_prefix(str, "Demi")) {
-            priv->facetypes[HILDON_FONT_FACE_BOLD] = i;
-            gtk_widget_set_sensitive(priv->chk_bold, TRUE);
-        } else if (g_str_has_suffix(str, "Italic") ||
-                   g_str_has_suffix(str, "Oblique"))
-        {
-            priv->facetypes[HILDON_FONT_FACE_ITALIC] = i;
-            gtk_widget_set_sensitive(priv->chk_italic, TRUE);
-        } 	
-	else if (i == 0)  {    /* First one is Regular, Normal, etc. */
-            priv->facetypes[HILDON_FONT_FACE_NORMAL] = i;
-	}
-    }
-
-/*If we had only one legal face (Regular), both are same ->
-  change both to TRUE*/
-    if (i == 1)
-        priv->both = TRUE;
-
-/*And then.. If a chk_button is not sensitive -> un_check it*/
-    if (!GTK_WIDGET_IS_SENSITIVE(priv->chk_bold))
-        gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(priv->chk_bold),
-                                     FALSE);
-
-    if (!GTK_WIDGET_IS_SENSITIVE(priv->chk_italic))
-        gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(priv->chk_italic),
-                                     FALSE);
-
-    if (priv->both) {
-        if (!GTK_WIDGET_IS_SENSITIVE(priv->chk_bold))
-            gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON
-                                         (priv->chk_italic), FALSE);
-        else if (!GTK_WIDGET_IS_SENSITIVE(priv->chk_italic))
-            gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(priv->chk_bold),
-                                         FALSE);
-    }
-}
-
 
 /*Loads the sizes from a pre-allocated table*/
 static void
-hildon_font_selection_dialog_show_available_sizes(HildonFontSelectionDialog
-                                                  * fontsel,
-                                                  gboolean first_time)
+hildon_font_selection_dialog_show_available_sizes
+                                             (HildonFontSelectionDialogPrivate
+					      *priv)
 {
-    gint i;
-    GtkListStore *model;
-    HildonFontSelectionDialogPrivate *priv =
-        HILDON_FONT_SELECTION_DIALOG_GET_PRIVATE(fontsel);
+  gchar *size_str;
+  gint i;
 
-    if (first_time) {
-        model = gtk_list_store_new(1, G_TYPE_INT);
-        gtk_combo_box_set_model(GTK_COMBO_BOX(priv->cbx_font_size),
-                                GTK_TREE_MODEL(model));
-        for (i = 0; i < G_N_ELEMENTS(font_sizes); i++) {
-            GtkTreeIter iter;
+  for (i = 0; i < G_N_ELEMENTS(font_sizes); i++) 
+    {
+      size_str = g_strdup_printf ("%i %s",
+				  font_sizes[i],
+				  _("ecdg_va_font_size_trailer"));
 
-            gtk_list_store_append(model, &iter);
-            /* 0 == First column in the combobox */
-            gtk_list_store_set(model, &iter, 0, font_sizes[i], -1);
+      gtk_combo_box_append_text(GTK_COMBO_BOX(priv->cbx_font_size),
+				size_str);
+      g_free (size_str);
+    }
+}
 
-            if (i == 0 || font_sizes[i] * PANGO_SCALE == priv->size)
-                gtk_combo_box_set_active_iter(GTK_COMBO_BOX
-                                              (priv->cbx_font_size),
-                                              &iter);
-        }
+static
+void check_tags(gpointer data, gpointer user_data)
+{
+  gchar *font_family;
+  GdkColor *fore_color =  NULL;
+  gint p_size, p_weight, p_style, p_underline, p_rise;
+  gboolean b_st, ff_s, size_s, fgc_s, w_s, ss_s, u_s, sth_s, r_s;
+  
+  GtkTextTag *tag = (GtkTextTag*) data;
+  HildonFontSelectionDialogSettings *settings = 
+    (HildonFontSelectionDialogSettings *) user_data;
+  HildonFontSelectionDialogPrivate *priv = 
+    HILDON_FONT_SELECTION_DIALOG_GET_PRIVATE(settings->fsd);
+  
+  /*get all the properties*/
+  g_object_get(G_OBJECT(tag),
+	       "family", &font_family, "family-set", &ff_s,
+	       "size", &p_size, "size-set", &size_s,
+	       "foreground-gdk", &fore_color, "foreground-set", &fgc_s,
+	       "weight", &p_weight, "weight-set", &w_s,
+	       "style", &p_style, "style-set", &ss_s,
+	       "underline", &p_underline, "underline-set", &u_s,
+	       "strikethrough", &b_st, "strikethrough-set", &sth_s, 
+	       "rise", &p_rise, "rise-set", & r_s,
+	       NULL);
+  
+  /*settings*/
+  if(ff_s)
+    {
+      gint new_f = -1;
+      gint i;
+      
+      for(i = 0; i < priv->n_families; i++)
+	{
+	  if(strcmp(font_family, 
+		    pango_font_family_get_name(priv->families[i])) == 0)
+	    {
+	      new_f = i;
+	      break;
+	    }
+	}
+      
+      if(settings->family == -1)
+	settings->family = new_f;
+      else if(settings->family != -2 && 
+	      settings->family != new_f)
+	settings->family = -2;/*inconsist*/
+
+      g_free(font_family);
+    }
+  
+  if(size_s)
+    {
+      gint new_size = -1;
+      gint i;
+      
+      for(i = 0; i < G_N_ELEMENTS(font_sizes); i++)
+	{
+	  if(p_size == font_sizes[i] * PANGO_SCALE)
+	    {
+	      new_size = i;
+	      break;
+	    }
+	}
+      
+      if(settings->size == -1)
+	settings->size = new_size;
+      else if(settings->size != -2 && 
+	      settings->size != new_size)
+	settings->size = -2;/*inconsist*/
+    }
+  
+  if(fgc_s && settings->color == NULL 
+     && !settings->color_inconsist)
+	settings->color = fore_color;
+  else if(fore_color != NULL)
+    {
+      if(!gdk_color_equal(fore_color, settings->color) 
+	 && fgc_s)
+	settings->color_inconsist = TRUE;
+      
+      gdk_color_free(fore_color);
+    }
+
+  if(w_s)
+    settings->weight |= p_weight == PANGO_WEIGHT_NORMAL ? OFF_BIT : ON_BIT;
+  
+  if(ss_s)
+    settings->style |= p_style == PANGO_STYLE_NORMAL ? OFF_BIT : ON_BIT;
+  
+  if(u_s)
+    settings->underline |= 
+      p_underline == PANGO_UNDERLINE_NONE ? OFF_BIT : ON_BIT;
+  
+  if(sth_s)
+    settings->strikethrough |= b_st ? ON_BIT : OFF_BIT;
+
+  if(r_s)
+    {
+      gint new_rs = -1;
+      
+      if(p_rise == 0)
+	new_rs = 0;/*normal*/
+      else if (p_rise > 0)
+	new_rs = 1;/*super*/
+      else
+	new_rs = 2;/*sub*/
+
+      if(settings->position == -1)
+	settings->position = new_rs;
+      else if(settings->position != -2 && 
+	      settings->position != new_rs)
+	settings->position = -2;/*inconsist*/
+    }
+}
+
+static
+void check_attrs(gpointer data, gpointer user_data)
+{
+  PangoAttribute *attr = (PangoAttribute *) data;
+  HildonFontSelectionDialogSettings *settings = 
+    (HildonFontSelectionDialogSettings *) user_data;
+  HildonFontSelectionDialogPrivate *priv = 
+    HILDON_FONT_SELECTION_DIALOG_GET_PRIVATE(settings->fsd);
+  
+  gchar *family;
+  GdkColor color;
+  gint i;
+  gint size, weight, style, underline, strikethrough, rise;
+  gint new_f = -1, new_size = -1, new_rise = -1;
+
+  switch(attr->klass->type)
+    {
+    case PANGO_ATTR_FAMILY:
+      family = ((PangoAttrString *) attr)->value;
+
+      for(i = 0; i < priv->n_families; i++)
+	{
+	  if(strcmp(family, 
+		    pango_font_family_get_name(priv->families[i])) == 0)
+	    {
+	      new_f = i;
+	      break;
+	    }
+	}
+
+      if(settings->family == -1)
+	settings->family = new_f;
+      else if(settings->family != -2 && 
+	      settings->family != new_f)
+	settings->family = -2;/*inconsist*/
+      
+      break;
+    case PANGO_ATTR_SIZE:
+      size = ((PangoAttrInt *) attr)->value;
+      
+      for(i = 0; i < G_N_ELEMENTS(font_sizes); i++)
+	{
+	  if(size == font_sizes[i] * PANGO_SCALE)
+	    {
+	      new_size = i;
+	      break;
+	    }
+	}
+      
+      if(settings->size == -1)
+	settings->size = new_size;
+      else if(settings->size != -2 && 
+	      settings->size != new_size)
+	settings->size = -2;/*inconsist*/
+
+      break;
+    case PANGO_ATTR_FOREGROUND:
+      color.red = ((PangoAttrColor *) attr)->color.red;
+      color.green = ((PangoAttrColor *) attr)->color.green;
+      color.blue = ((PangoAttrColor *) attr)->color.blue;
+
+      if(!settings->color_inconsist &&  settings->color == NULL)
+	settings->color = gdk_color_copy(&color);
+      else if(settings->color != NULL && 
+	      !gdk_color_equal(&color, settings->color))
+	settings->color_inconsist = TRUE;
+
+      break;
+    case PANGO_ATTR_WEIGHT:
+      weight = ((PangoAttrInt *) attr)->value;
+
+      settings->weight |= weight == PANGO_WEIGHT_NORMAL ? OFF_BIT : ON_BIT;
+      
+      break;
+    case PANGO_ATTR_STYLE:
+      style = ((PangoAttrInt *) attr)->value;
+
+      settings->style |= style == PANGO_STYLE_NORMAL ? OFF_BIT : ON_BIT; 
+      
+      break;
+    case PANGO_ATTR_UNDERLINE:
+      underline = ((PangoAttrInt *) attr)->value;
+
+      settings->underline |= 
+	underline == PANGO_UNDERLINE_NONE ? OFF_BIT : ON_BIT;
+  
+      break;
+    case PANGO_ATTR_STRIKETHROUGH:
+      strikethrough = ((PangoAttrInt *) attr)->value;
+      
+      settings->strikethrough |= strikethrough ? ON_BIT : OFF_BIT;
+
+      break;
+    case PANGO_ATTR_RISE:
+      rise = ((PangoAttrInt *) attr)->value;
+      
+      if(rise == 0)
+	new_rise = 0;/*normal*/
+      else if (rise > 0)
+	new_rise = 1;/*super*/
+      else
+	new_rise = 2;/*sub*/
+
+      if(settings->position == -1)
+	settings->position = new_rise;
+      else if(settings->position != -2 && 
+	      settings->position != new_rise)
+	settings->position = -2;/*inconsist*/
+
+      break;
+    default:
+      break;
+    }
+
+  pango_attribute_destroy(attr);
+}
+
+static void
+settings_init(HildonFontSelectionDialogSettings *settings,
+	      HildonFontSelectionDialog  *fsd)
+{
+  settings->fsd = fsd;
+  settings->family = -1;
+  settings->size = -1;
+  settings->color = NULL;
+  settings->color_inconsist = FALSE;
+  settings->weight = 0;
+  settings->style = 0;
+  settings->underline = 0;
+  settings->strikethrough = 0;
+  settings->position = -1;
+}
+
+static void
+bit_mask_toggle(gint mask, GtkToggleButton *button,
+		GObject *object, const gchar *prop,
+		const gchar *prop_set)
+{
+  
+  if(mask == 3)
+    gtk_toggle_button_set_inconsistent(button, TRUE);
+  else
+    {
+      gtk_toggle_button_set_inconsistent(button, FALSE);
+
+      if(mask == 1)
+	gtk_toggle_button_set_active(button, TRUE);
+      else
+	gtk_toggle_button_set_active(button, FALSE);
+
+      g_object_notify(object, prop);
+    }
+
+  g_object_notify(object, prop_set);
+}
+
+static void
+combo_active(gint active, GtkComboBox *box, 
+	     GObject *object, const gchar *prop, const gchar *prop_set)
+{
+  /*probaly not the best function, but we need all these
+   * parameters to keep things together*/
+ 
+  
+  if(active >= 0)
+    {
+      gtk_combo_box_set_active(box, active);
+      g_object_notify(object, prop);
+    }
+  else
+    gtk_combo_box_set_active(box, -1);
+
+  g_object_notify(object, prop_set);
+}
+
+static void
+settings_apply(HildonFontSelectionDialogSettings *settings)
+{
+
+  HildonFontSelectionDialogPrivate *priv = 
+    HILDON_FONT_SELECTION_DIALOG_GET_PRIVATE(settings->fsd);
+  
+  /*family*/
+  combo_active(settings->family, GTK_COMBO_BOX(priv->cbx_font_type),
+	       G_OBJECT(settings->fsd), "family", "family-set");
+  
+  /*size*/
+  combo_active(settings->size, GTK_COMBO_BOX(priv->cbx_font_size),
+	       G_OBJECT(settings->fsd), "size", "size-set");
+  
+  /*block our signal handler indicating color has been changed by
+   * the user before set the color, and unblock it after setting
+   * is done*/
+  
+  if(settings->color == NULL || settings->color_inconsist)
+    {
+      GdkColor black;
+
+      black.red = black.green = black.blue = 0;
+      g_signal_handler_block((gpointer) priv->font_color_button,
+			     priv->color_modified_signal_handler);
+      
+      g_object_set(G_OBJECT(settings->fsd), "color", &black, "color-set", 
+		   FALSE, NULL);
+
+      g_signal_handler_unblock((gpointer) priv->font_color_button,
+			       priv->color_modified_signal_handler);
+    }
+  else 
+      g_object_set(G_OBJECT(settings->fsd), "color", settings->color, NULL);
+  
+  /*weight*/
+  bit_mask_toggle(settings->weight, GTK_TOGGLE_BUTTON(priv->chk_bold),
+		  G_OBJECT(settings->fsd), "bold", "bold-set");
+  
+  /*style*/
+  bit_mask_toggle(settings->style, GTK_TOGGLE_BUTTON(priv->chk_italic),
+		  G_OBJECT(settings->fsd), "italic", "italic-set");
+  
+  /*underline*/
+  bit_mask_toggle(settings->underline, 
+		  GTK_TOGGLE_BUTTON(priv->chk_underline), 
+		  G_OBJECT(settings->fsd), "underline", "underline-set");
+  
+  /*strikethrough*/
+  bit_mask_toggle(settings->strikethrough, 
+		  GTK_TOGGLE_BUTTON(priv->chk_strikethrough),
+		  G_OBJECT(settings->fsd), "strikethrough", 
+		  "strikethrough-set");
+
+  /*position*/
+  combo_active(settings->position, GTK_COMBO_BOX(priv->cbx_positioning),
+	       G_OBJECT(settings->fsd), "position", "position-set");
+}
+
+static void
+settings_destroy(HildonFontSelectionDialogSettings *settings)
+{
+  if(settings->color != NULL)
+    gdk_color_free(settings->color);
+}
+
+static void
+toggle_clicked(GtkButton *button, gpointer data)
+{
+  GtkToggleButton *t_b = GTK_TOGGLE_BUTTON(button);
+
+  /*we have to remove the inconsistent state ourselves*/
+  if(gtk_toggle_button_get_inconsistent(t_b))
+    {
+      gtk_toggle_button_set_inconsistent(t_b, FALSE);
+      gtk_toggle_button_set_active(t_b, FALSE);
     }
 }
 
@@ -1117,45 +1541,46 @@ hildon_font_selection_dialog_show_available_sizes(HildonFontSelectionDialog
  * @parent: the parent window.
  * @title: the title of font selection dialog.
  *
- * if the title is left to %NULL, the title will be left
- * to DEFAULT == "Font".
+ * If NULL is passed for title, then default title
+ * "Font" will be used.
  *
  * Return value: a new #HildonFontSelectionDialog.
  */
-GtkWidget *hildon_font_selection_dialog_new(GtkWindow * parent,
-                                            const gchar * title)
+GtkWidget *
+hildon_font_selection_dialog_new(GtkWindow * parent,
+				 const gchar * title)
 {
-    HildonFontSelectionDialog *fontseldiag;
+  HildonFontSelectionDialog *fontseldiag;
 
-    fontseldiag = g_object_new(HILDON_TYPE_FONT_SELECTION_DIALOG,
-                               "has-separator", FALSE, NULL);
+  fontseldiag = g_object_new(HILDON_TYPE_FONT_SELECTION_DIALOG,
+			     "has-separator", FALSE, NULL);
 
-    if (title)
-        gtk_window_set_title(GTK_WINDOW(fontseldiag), title);
+  if (title)
+    gtk_window_set_title(GTK_WINDOW(fontseldiag), title);
 
-    if (parent)
-        gtk_window_set_transient_for(GTK_WINDOW(fontseldiag), parent);
+  if (parent)
+    gtk_window_set_transient_for(GTK_WINDOW(fontseldiag), parent);
 
-    return GTK_WIDGET(fontseldiag);
+  return GTK_WIDGET(fontseldiag);
 }
 
 /**
  * hildon_font_selection_dialog_get_preview_text:
  * @fsd: the font selection dialog.
  *
- * Gets the text in preview dialog.
- * The returned string must be freed by the user.
+ * Gets the text in preview dialog, which does not include the 
+ * reference text. The returned string must be freed by the user.
  *
  * Returns: a string pointer.
  */
 gchar *
 hildon_font_selection_dialog_get_preview_text(HildonFontSelectionDialog * fsd)
 {
-    HildonFontSelectionDialogPrivate *priv;
+  HildonFontSelectionDialogPrivate *priv;
 
-    g_return_val_if_fail(HILDON_IS_FONT_SELECTION_DIALOG(fsd), FALSE);
-    priv = HILDON_FONT_SELECTION_DIALOG_GET_PRIVATE(fsd);
-    return g_strdup(priv->preview_text);
+  g_return_val_if_fail(HILDON_IS_FONT_SELECTION_DIALOG(fsd), FALSE);
+  priv = HILDON_FONT_SELECTION_DIALOG_GET_PRIVATE(fsd);
+  return g_strdup(priv->preview_text);
 }
 
 /**
@@ -1163,19 +1588,19 @@ hildon_font_selection_dialog_get_preview_text(HildonFontSelectionDialog * fsd)
  * @fsd: the font selection dialog.
  * @text: the text to be set to the preview dialog.
  *
- * Sets the text to the preview dialog.
- * DEFAULT == "The quick brown fox jumped over the lazy dogs"
+ * The default preview text is
+ * "The quick brown fox jumped over the lazy dogs"
  */
 void
 hildon_font_selection_dialog_set_preview_text(HildonFontSelectionDialog *
-                                              fsd, const gchar * text)
+					      fsd, const gchar * text)
 {
-    if (HILDON_IS_FONT_SELECTION_DIALOG(fsd)) ;
+  if (HILDON_IS_FONT_SELECTION_DIALOG(fsd)) ;
     {
-        HildonFontSelectionDialogPrivate *priv =
-            HILDON_FONT_SELECTION_DIALOG_GET_PRIVATE(fsd);
-        g_free(priv->preview_text);
-        priv->preview_text = g_strdup(text);
+      HildonFontSelectionDialogPrivate *priv =
+	HILDON_FONT_SELECTION_DIALOG_GET_PRIVATE(fsd);
+      g_free(priv->preview_text);
+      priv->preview_text = g_strdup(text);
     }
 }
 
@@ -1183,469 +1608,255 @@ hildon_font_selection_dialog_set_preview_text(HildonFontSelectionDialog *
  * hildon_font_selection_dialog_get_text_tag:
  * @fsd: the font selection dialog.
  *
- * Get the #GtkTextTag for selections.
+ * Get the #GtkTextTag for selections. This function
+ * is deprecated function. The best way to use
+ * the text tags is to reuse them as much as possible.
+ * The recommended way is to get the properties of font
+ * selection dialog on GTK_RESPONSE_OK, according to
+ * these property use the tags that you have pre-created.
  * 
- * Returns: a #GtkTextTag representing the choises selected (eg. font name, font size, bolding, italic, underlinening etc.)
+ * Returns: a #GtkTextTag having corresponding properties
+ * set. 
  */ 
-GtkTextTag * hildon_font_selection_dialog_get_text_tag (
-		HildonFontSelectionDialog *fsd)
+#ifndef HILDON_DISABLE_DEPRECATED
+GtkTextTag * 
+hildon_font_selection_dialog_get_text_tag (HildonFontSelectionDialog *fsd)
 {
-	GtkTextTag *tag = NULL;
-	gboolean bold, italic, strikethrough, underline;
-	gint i=-1, fontsize = 0, rise=0;
-	gchar *fontname;
-	HildonFontSelectionDialogPrivate *priv = HILDON_FONT_SELECTION_DIALOG_GET_PRIVATE(fsd);
-	bold=italic=strikethrough=underline=FALSE;
+  GtkTextTag *tag;
+  gint size, position;
+  gboolean family_set, size_set, color_set, bold, bold_set,
+           italic, italic_set, underline, underline_set,
+	   strikethrough, strikethrough_set, position_set;
+  GdkColor *color = NULL;
+  gchar *family = NULL;
 
-	g_object_get(G_OBJECT(priv->chk_bold), "active", &bold, NULL);
-	g_object_get(G_OBJECT(priv->chk_italic), "active", &italic, NULL);
-	g_object_get(G_OBJECT(priv->chk_underline), "active", &underline, NULL);
-	g_object_get(G_OBJECT(priv->chk_strikethrough), "active", &strikethrough, NULL);
-	
-	i = gtk_combo_box_get_active(GTK_COMBO_BOX(priv->cbx_font_type));
-	fontname = (gchar *) pango_font_family_get_name(priv->families[i]);
-	
-	fontsize = font_sizes[gtk_combo_box_get_active (GTK_COMBO_BOX(priv->cbx_font_size))];
+  tag = gtk_text_tag_new(NULL);
+  
+  g_object_get(G_OBJECT(fsd),
+	       "family", &family, "family-set", &family_set,
+	       "size", &size, "size-set", &size_set,
+	       "color", &color, "color-set", &color_set,
+	       "bold", &bold, "bold-set", &bold_set,
+	       "italic", &italic, "italic-set", &italic_set,
+	       "underline", &underline, "underline-set", &underline_set,
+	       "strikethrough", &strikethrough, "strikethrough-set", 
+	       &strikethrough_set, "position", &position, 
+	       "position-set", &position_set, NULL);
+  /*family*/
+  if(family_set)
+    g_object_set(G_OBJECT(tag), "family",
+		 family, "family-set", TRUE, NULL);
+  else
+    g_object_set(G_OBJECT(tag), "family-set", FALSE, NULL);
 
-	switch (gtk_combo_box_get_active (GTK_COMBO_BOX(priv->cbx_positioning))) {
-		case HILDON_POSITIONING_SUPER:
-		     rise = (priv->size * (PANGO_SCALE / 2));
-		     break;
-		case HILDON_POSITIONING_SUB:
-		     rise = (-priv->size * (PANGO_SCALE / 2));
-	             break;
-		case HILDON_POSITIONING_NORMAL:
-	    	     rise = 0; break;
-	}; 
+  g_free(family);
+  
+  /*size*/
+  if(size_set)
+    g_object_set(G_OBJECT(tag), "size", size * PANGO_SCALE, 
+		 "size-set", TRUE, NULL);
+  else
+    g_object_set(G_OBJECT(tag), "size-set", FALSE, NULL);
+  
+  /*color*/
+  if(color_set)
+    g_object_set(G_OBJECT(tag), "foreground-gdk", color, 
+		 "foreground-set", TRUE ,NULL);
+  else
+    g_object_set(G_OBJECT(tag), "foreground-set", FALSE, NULL);
+
+  if(color != NULL)
+    gdk_color_free(color);
+  
+  /*weight*/
+  if(bold_set)
+    {
+      if(bold)
+        g_object_set(G_OBJECT(tag), "weight", PANGO_WEIGHT_BOLD, NULL);
+      else
+        g_object_set(G_OBJECT(tag), "weight", PANGO_WEIGHT_NORMAL, NULL);
 	
-        tag = gtk_text_tag_new(NULL);
-	if (fontname)
-		g_object_set(G_OBJECT(tag), "font", fontname, NULL);             	
-	g_object_set(G_OBJECT(tag), "size", fontsize*PANGO_SCALE, NULL);	 	
-	if (bold)
-		g_object_set(G_OBJECT(tag), "weight", PANGO_WEIGHT_BOLD, NULL);
-	if (italic)
-		g_object_set(G_OBJECT(tag), "style", PANGO_STYLE_ITALIC, NULL);
-	if (underline)
-		g_object_set(G_OBJECT(tag), "underline", TRUE, NULL);
-	if (strikethrough)
-		g_object_set(G_OBJECT(tag), "strikethrough", TRUE, NULL);
-	if (rise)
-		g_object_set(G_OBJECT(tag), "rise", rise, NULL);
+      g_object_set(G_OBJECT(tag), "weight-set", TRUE, NULL);
+    }
+  else
+    g_object_set(G_OBJECT(tag), "weight-set", FALSE, NULL);
+  
+  /*style*/
+  if(italic_set)
+    {
+      if(italic)
+        g_object_set(G_OBJECT(tag), "style", PANGO_STYLE_ITALIC, NULL);
+      else
+        g_object_set(G_OBJECT(tag), "style", PANGO_STYLE_NORMAL, NULL);
 	
-	g_object_set(G_OBJECT(tag), "foreground-gdk", &priv->c_table, NULL);
-	return tag;
+      g_object_set(G_OBJECT(tag), "style-set", TRUE, NULL);
+    }
+  else
+    g_object_set(G_OBJECT(tag), "style-set", FALSE, NULL);
+  
+  /*underline*/
+  if(underline_set)
+    {
+      if(underline)
+        g_object_set(G_OBJECT(tag), "underline", PANGO_UNDERLINE_SINGLE, NULL);
+      else
+        g_object_set(G_OBJECT(tag), "underline", PANGO_UNDERLINE_NONE, NULL);
+	
+      g_object_set(G_OBJECT(tag), "underline-set", TRUE, NULL);
+    }
+  else
+    g_object_set(G_OBJECT(tag), "underline-set", FALSE, NULL);
+  
+  /*strikethrough*/
+  if(strikethrough_set)
+    {
+      if(strikethrough)
+        g_object_set(G_OBJECT(tag), "strikethrough", TRUE, NULL);
+      else
+        g_object_set(G_OBJECT(tag), "strikethrough", FALSE, NULL);
+	
+      g_object_set(G_OBJECT(tag), "strikethrough-set", TRUE, NULL);
+    }
+  else
+    g_object_set(G_OBJECT(tag), "strikethrough-set", FALSE, NULL);
+  
+  /*position*/
+  if(position_set)
+    {
+      switch(position)
+	{
+	case 1: /*super*/
+	  g_object_set(G_OBJECT(tag), "rise", SUPERSCRIPT_RISE, NULL);
+	  break;
+	case -1: /*sub*/
+	  g_object_set(G_OBJECT(tag), "rise", SUBSCRIPT_LOW, NULL);
+	  break;
+	case 0: /*normal*/
+	  g_object_set(G_OBJECT(tag), "rise", 0, NULL);
+	  break;
+	}
+      g_object_set(G_OBJECT(tag), "rise-set", TRUE, NULL);
+    }
+  else
+    g_object_set(G_OBJECT(tag), "rise-set", FALSE, NULL);
+  
+  return tag;
 }
+#endif
 
 /** 
  * hildon_font_selection_dialog_set_buffer:
  * @fsd: the font selection dialog.
- * @buffer: a #GtkTextBuffer containing the text to which the selections will be applied. Applying is responsibility of application.
+ * @buffer: a #GtkTextBuffer containing the text to which the selections will 
+ * be applied. Applying is responsibility of application.
  *
- * Sets the textbuffer under editing. The dialog will look what selections (bolding/italic/font/fontsize etc.) are present in the 
- * buffer text and make these selections be default in the dialog.
+ * This is deprecated function. GtkTextBuffer is not enough
+ * to get the attributes of currently selected text. Please 
+ * inspect the attributes yourself, and set the properties of
+ * font selection dialog to reflect your inspection.
  * 
  */
-void hildon_font_selection_dialog_set_buffer (		 
-		HildonFontSelectionDialog *fsd,
-		GtkTextBuffer *buffer)
+#ifndef HILDON_DISABLE_DEPRECATED
+void 
+hildon_font_selection_dialog_set_buffer (HildonFontSelectionDialog *fsd,
+					 GtkTextBuffer *buffer)
 {
-	GtkTextIter begin, end;
-	GtkStyle *wstyle = NULL; 
-	gint size = 0, i;
-	gchar *font = NULL;	
-	gboolean bold_on, bold_off, italic_on, italic_off, underline_on, underline_off, 
-		 strike_through_off, strike_through_on, superscript_on, superscript_off, subscript_on, subscript_off;
-	HildonFontSelectionDialogPrivate *priv;
+  GtkTextIter begin, end, iter;
+  HildonFontSelectionDialogSettings settings;
 
-	priv = HILDON_FONT_SELECTION_DIALOG_GET_PRIVATE(fsd);
-	
-	/* bold_on and bold_off and the likes are used to recognize conflicts so that the checkbuttons can be put to 'inconsistent' state 
-	 * NOTE: they are set initially to TRUE! */
-	bold_on = bold_off = italic_on = italic_off = underline_on = underline_off = TRUE;
-	strike_through_off = strike_through_on = superscript_on = superscript_off = subscript_on = subscript_off = TRUE;
+  gtk_text_buffer_get_selection_bounds(buffer, &begin, &end);
+  
+  settings_init(&settings, fsd);
+  
+  iter = begin;
+  if(gtk_text_iter_compare(&iter, &end) == 0)/*if no selection*/
+    {
+      GSList *slist;
+      
+      slist = gtk_text_iter_get_tags(&iter);
+      g_slist_foreach(slist, check_tags, (gpointer) &settings);
+      g_slist_free(slist);
+    }
 
-	/* go through the selection */
-	gtk_text_buffer_get_selection_bounds (buffer, &begin, &end);
-	priv->preview_text = gtk_text_buffer_get_slice(buffer, &begin, &end, FALSE);
+  while(gtk_text_iter_compare(&iter, &end) < 0)
+    {
+      GSList *slist;
+      
+      slist = gtk_text_iter_get_tags(&iter);
+      g_slist_foreach(slist, check_tags, (gpointer) &settings);
+      g_slist_free(slist);
+      
+      if(!gtk_text_iter_forward_cursor_position(&iter))
+	break;
+    }
 
-	if (!gtk_text_iter_equal(&begin, &end)) /* this fails if no selection */
-	{
-		gboolean tags_found = FALSE; /* this is needed so we know we need to get the default font */
-		GtkTextIter iter = begin;
-		
-		/* loop letter by letter */
-		while (!gtk_text_iter_equal(&iter, &end))
-		{
-			GSList *tags;
-			gboolean bset, iset, stset, ulset, rset, sset, fgset; /* these are flags for whether the property is set or not */
-			
-			gboolean strike_through, underline; /* these are the */
-			gint weight=0, rise=0;		    /* values of the */
-			PangoStyle style;		    /* properties of one tag */
-			
-			gboolean b, i, st, ul, r, l, s, c; /* these booleans tell whether or not there was at least one tags in the
-								  tags list with the corresponding property set */
-			
-			GdkColor *color;
-			b = i = st = ul = r = l =s= c=FALSE;
-			size = 0;
-			bset=iset=strike_through=underline=stset=ulset=rset=FALSE; /* all are assumed to FALSE */
-			
-			tags = gtk_text_iter_get_tags(&iter); /* TODO: free the list! */
-			if (tags) tags_found=TRUE;
-			while (tags){
-				/* TODO: positioning?? foreground color?? */
-
-				g_object_get(G_OBJECT(tags->data), 
-						"weight-set", &bset, 
-						"style-set", &iset,
-						"strikethrough-set", &stset,
-						"underline-set", &ulset,
-						"rise-set", &rset,
-						"family", &font,
-						"foreground-set", &fgset, 
-						"size-set", &sset, 
-						NULL);
-				
-				if (bset){
-					g_object_get(G_OBJECT(tags->data), "weight", &weight, NULL);
-			       		if (weight > PANGO_WEIGHT_NORMAL)	
-						b = TRUE;
-				}
-				if (iset){
-					g_object_get(G_OBJECT(tags->data), "style", &style, NULL);
-					if (style == PANGO_STYLE_ITALIC)
-						i = TRUE;
-				}
-				if (stset){
-					g_object_get(G_OBJECT(tags->data), "strikethrough", &strike_through, NULL);
-					if (strike_through)
-						st = TRUE;
-				}
-				if (ulset){
-					g_object_get(G_OBJECT(tags->data), "underline", &underline, NULL);
-					if (underline)
-						ul = TRUE;
-				}
-				if (rset){
-					g_object_get(G_OBJECT(tags->data), "rise", &rise, NULL);
-					if (rise > 0) r=TRUE; 
-					else if (rise<0) l=TRUE; 
-				}			
-				if (sset){
-					g_object_get(G_OBJECT(tags->data), "size", &size, NULL);
-					s = TRUE;
-				}
-				if (fgset){
-					g_object_get(G_OBJECT(tags->data), "foreground-gdk", &color, NULL);
-					c = TRUE;
-				}
-								
-				tags = tags->next;
-			}
-			if (!b) bold_on = FALSE; /* if no tag in the tag list for this letter had bolding then bold_on should be false
-						    the idea is that if the next (or some letter later has bolding the we have
-						    bold_on = bolf_off = FALSE and thus we're in inconsistent state */
-			else bold_off = FALSE;
-			if (!i) italic_on = FALSE;
-			else italic_off = FALSE;
-			if (!st) strike_through_on = FALSE;
-			else strike_through_off = FALSE;
-			if (!ul) underline_on = FALSE;
-			else underline_off = FALSE;
-			if (!r) superscript_on = FALSE;
-			else superscript_off = FALSE;
-			if (!l) subscript_on = FALSE;
-			else subscript_off = FALSE;
-			
-			if (!bold_on && !bold_off){
-				g_object_set(GTK_TOGGLE_BUTTON(priv->chk_bold), 
-						"inconsistent", TRUE, 
-						NULL);
-			}
-			else {
-				g_object_set(GTK_TOGGLE_BUTTON(priv->chk_bold), 
-						"inconsistent", FALSE,
-						"active", bold_on, 
-						NULL);
-				if (!priv->both) gtk_widget_set_sensitive (GTK_WIDGET(priv->chk_italic), FALSE);
-			}
-			if (!italic_on && !italic_off){
-				g_object_set(GTK_TOGGLE_BUTTON(priv->chk_italic), 
-						"inconsistent", TRUE, 
-						NULL);
-			}
-			else {
-				g_object_set(GTK_TOGGLE_BUTTON(priv->chk_italic), 
-						"inconsistent", FALSE,
-						"active", italic_on, 
-						NULL);
-				if (!priv->both) gtk_widget_set_sensitive (GTK_WIDGET(priv->chk_bold), FALSE);
-			}
-			if (!underline_on && !underline_off){
-				g_object_set(GTK_TOGGLE_BUTTON(priv->chk_underline), 
-						"inconsistent", TRUE, 
-						NULL);
-			}
-			else {
-				g_object_set(GTK_TOGGLE_BUTTON(priv->chk_underline), 
-						"inconsistent", FALSE,
-						"active", underline_on,              			
-						NULL);
-			}
-			if (!strike_through_on && !strike_through_off) {
-				g_object_set(GTK_TOGGLE_BUTTON(priv->chk_strikethrough),
-						"inconsistent", TRUE,
-						NULL);
-			}
-			else{
-				g_object_set(GTK_TOGGLE_BUTTON(priv->chk_strikethrough),
-						"inconsistent", FALSE,
-						"active", strike_through_on,
-						NULL);
-			}
-			if ((!superscript_on && !superscript_off)||(!subscript_on && !subscript_off));
-			else{
-				if (superscript_on)
-					g_object_set(G_OBJECT(priv->cbx_positioning), "active", 1, NULL);
-				else if (subscript_on)
-					g_object_set(G_OBJECT(priv->cbx_positioning), "active", 2, NULL);
-				else 
-					g_object_set(G_OBJECT(priv->cbx_positioning), "active", 0, NULL);
-			}
-			if (c){
-				priv->c_table = *color;
-				set_event_box_color(priv->font_color_button, color);
-			}
-			if (!s){
-				wstyle = gtk_rc_get_style_by_paths(gtk_settings_get_default(), NULL, NULL, GTK_TYPE_TEXT_VIEW);
-				size = pango_font_description_get_size(wstyle->font_desc);
-				wstyle = NULL;
-			}
-			gtk_text_iter_forward_cursor_position(&iter);
-			
-		}
-		if (!tags_found){
-			wstyle = gtk_rc_get_style_by_paths(gtk_settings_get_default(), NULL, NULL, GTK_TYPE_TEXT_VIEW);
-		}
-	}
-	else wstyle = gtk_rc_get_style_by_paths(gtk_settings_get_default(), NULL, NULL, GTK_TYPE_TEXT_VIEW);
-	if (wstyle)                                                         		
-	{                                                                               	
-		font = (gchar *) pango_font_description_get_family(wstyle->font_desc);	
-		size = pango_font_description_get_size(wstyle->font_desc);  	
-	}
-
-	for (i = 0; i < G_N_ELEMENTS(font_sizes); i++) {
-		if ((font_sizes[i]*PANGO_SCALE)==size)
-			gtk_combo_box_set_active(GTK_COMBO_BOX(priv->cbx_font_size), i);
-	}
-	for (i = 0; i < priv->n_families; i++) {
-		const gchar *name = pango_font_family_get_name(priv->families[i]);
-		if (font && name && !strcmp(font, name))
-			gtk_combo_box_set_active(GTK_COMBO_BOX(priv->cbx_font_type), i);
-	}
-
-}		
+  settings_apply(&settings);
+  settings_destroy(&settings);
+}
+#endif
 
 /**
  * hildon_font_selection_dialog_get_font:
  * @fsd: the font selection dialog.
  *
- * Gets the font from the dialog.
+ * This is a deprecated function, @PangoAttrList needs
+ * starting index, and end index on construction.
  *
  * Return value: pointer to @PangoAttrList.
  */
+#ifndef HILDON_DISABLE_DEPRECATED
 PangoAttrList
-    *hildon_font_selection_dialog_get_font(HildonFontSelectionDialog * fsd)
+*hildon_font_selection_dialog_get_font(HildonFontSelectionDialog * fsd)
 {
-    g_return_val_if_fail(HILDON_IS_FONT_SELECTION_DIALOG(fsd), FALSE);
-    return hildon_font_selection_dialog_create_font(fsd);
+  HildonFontSelectionDialogPrivate *priv
+    = HILDON_FONT_SELECTION_DIALOG_GET_PRIVATE(fsd);
+  
+  g_return_val_if_fail(HILDON_IS_FONT_SELECTION_DIALOG(fsd), FALSE);
+  /*an approve of none working api, should have ask for start_index,
+   * and length in bytes of the string, currently using preview_text 
+   * length, KLUDGE!*/
+  
+  return hildon_font_selection_dialog_create_attrlist(fsd, 
+				0, strlen(priv->preview_text));
 }
+#endif
 
 /**
  * hildon_font_selection_dialog_set_font:
  * @fsd: the font selection dialog.
  * @list: the pango attribute list.
  *
+ * This is a deprecated function.
+ * 
  * Sets the font to the dialog.
  */
-void hildon_font_selection_dialog_set_font(HildonFontSelectionDialog * fsd,
-                                           PangoAttrList * list)
+#ifndef HILDON_DISABLE_DEPRECATED
+void 
+hildon_font_selection_dialog_set_font(HildonFontSelectionDialog * fsd,
+				      PangoAttrList * list)
 {
-    if (HILDON_IS_FONT_SELECTION_DIALOG(fsd)) {
-        gint i, tmp;
-        gchar *str;
-        PangoAttribute *attr;
-        PangoFontDescription *desc;
-        gboolean is_italic, is_bold;
-        PangoAttrIterator *iter;
-        HildonFontSelectionDialogPrivate *priv =
-            HILDON_FONT_SELECTION_DIALOG_GET_PRIVATE(fsd);
-        iter = pango_attr_list_get_iterator(list);
-        attr = pango_attr_iterator_get(iter, PANGO_ATTR_FONT_DESC);
-        desc = ((PangoAttrFontDesc *) attr)->desc;
-        str = (gchar *) g_strdup(pango_font_description_get_family(desc));
+  PangoAttrIterator *iter;
+  HildonFontSelectionDialogSettings settings;
 
-        /* Set family */
-        for (i = 0; i < priv->n_families; i++) {
-            if (g_ascii_strcasecmp
-                (pango_font_family_get_name(priv->families[i]), str) == 0) {
-                priv->family = priv->families[i];
-                gtk_combo_box_set_active(GTK_COMBO_BOX
-                                         (priv->cbx_font_type), i);
-                i = priv->n_families;
-            }
-        }
-
-        is_italic = is_bold = FALSE;
-
-        /* If it's not normal -> it's italic */
-        if (pango_font_description_get_style(desc) != PANGO_STYLE_NORMAL) {
-            is_italic = TRUE;
-            gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON
-                                         (priv->chk_italic), TRUE);
-        } else
-            gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON
-                                         (priv->chk_italic), FALSE);
-
-        if (pango_font_description_get_weight(desc) > PANGO_WEIGHT_NORMAL) {
-            is_bold = TRUE;
-            gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(priv->chk_bold),
-                                         TRUE);
-        } else
-            gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(priv->chk_bold),
-                                         FALSE);
-
-        if (is_bold) {
-            if (is_italic)
-                priv->face = HILDON_FONT_FACE_BOLD_ITALIC;
-            else
-                priv->face = HILDON_FONT_FACE_BOLD;
-        } else if (is_italic)
-            priv->face = HILDON_FONT_FACE_ITALIC;
-        else
-            priv->face = HILDON_FONT_FACE_NORMAL;
-
-        /* Set size */
-        priv->size = pango_font_description_get_size(desc);
-        tmp = priv->size / PANGO_SCALE;
-        for (i = 0; i < G_N_ELEMENTS(font_sizes); i++) {
-            if (tmp == font_sizes[i]) {
-                gtk_combo_box_set_active(GTK_COMBO_BOX
-                                         (priv->cbx_font_size), i);
-                i = G_N_ELEMENTS(font_sizes) + 1;
-            }
-        }
-        /* If we went trough the whole for-loop -> set the size to 10 */
-        if (i == G_N_ELEMENTS(font_sizes))
-            gtk_combo_box_set_active(GTK_COMBO_BOX(priv->cbx_font_size),
-                                     10);
-
-        /* Set underline */
-        attr = pango_attr_iterator_get(iter, PANGO_ATTR_UNDERLINE);
-        if (attr) {
-            if (((PangoAttrInt *) attr)->value)
-                gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON
-                                             (priv->chk_underline), TRUE);
-            else
-                gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON
-                                             (priv->chk_underline), FALSE);
-        }
-        /* Set striketrought */
-        attr = pango_attr_iterator_get(iter, PANGO_ATTR_STRIKETHROUGH);
-        if (attr) {
-            if (((PangoAttrInt *) attr)->value)
-                gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON
-                                             (priv->chk_strikethrough),
-                                             TRUE);
-            else
-                gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON
-                                             (priv->chk_strikethrough),
-                                             FALSE);
-        }
-
-        /* Set positioning */
-        attr = pango_attr_iterator_get(iter, PANGO_ATTR_RISE);
-        if (attr) {
-            if (((PangoAttrInt *) attr)->value > 0)
-                gtk_combo_box_set_active(GTK_COMBO_BOX
-                                         (priv->cbx_positioning),
-                                         HILDON_POSITIONING_SUPER);
-            else if (((PangoAttrInt *)
-                      pango_attr_iterator_get(iter,
-                                              PANGO_ATTR_RISE))->value < 0)
-                gtk_combo_box_set_active(GTK_COMBO_BOX
-                                         (priv->cbx_positioning),
-                                         HILDON_POSITIONING_SUB);
-        }
-
-        /* Set color */
-        attr = pango_attr_iterator_get(iter, PANGO_ATTR_FOREGROUND);
-        if (attr) {
-            priv->c_table.red =
-                (guint) (((PangoAttrColor *) attr)->color).red;
-            priv->c_table.green =
-                (guint) (((PangoAttrColor *) attr)->color).green;
-            priv->c_table.blue =
-                (guint) (((PangoAttrColor *) attr)->color).blue;
-            set_event_box_color(GTK_WIDGET(priv->font_color_button),
-                                &priv->c_table);
-        }
-        pango_attr_iterator_destroy(iter);
+  iter = pango_attr_list_get_iterator(list);
+  
+  settings_init(&settings, fsd);
+  
+  while(iter != NULL)
+    {
+      GSList *slist;
+      
+      slist = pango_attr_iterator_get_attrs(iter);
+      g_slist_foreach(slist, check_attrs, (gpointer) &settings);
+      g_slist_free(slist);
+      
+      if(!pango_attr_iterator_next(iter))
+	break;
     }
-}
 
-static gint hildon_font_selection_dialog_key_snooper(GtkWidget * swidget,
-                                                     GdkEventKey * event,
-                                                     GtkWidget * widget)
-{
-    HildonFontSelectionDialog *dialog =
-        HILDON_FONT_SELECTION_DIALOG(widget);
-    HildonFontSelectionDialogPrivate *priv =
-        HILDON_FONT_SELECTION_DIALOG_GET_PRIVATE(dialog);
-    if (event->type == GDK_KEY_RELEASE)
-        switch (event->keyval) {
-        case GDK_P:
-        case GDK_p:
-            gtk_dialog_response(GTK_DIALOG(widget), PREVIEW_RESPONSE_ID);
-            break;
-        case GDK_B:
-        case GDK_b:
-        {
-            gboolean state =
-                gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON
-                                             (priv->chk_bold));
-            if (GTK_WIDGET_IS_SENSITIVE (priv->chk_bold))
-              gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(priv->chk_bold),
-                                           state ? FALSE : TRUE);
-            break;
-        }
-        case GDK_I:
-        case GDK_i:
-        {
-            gboolean state =
-                gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON
-                                             (priv->chk_italic));
-            if (GTK_WIDGET_IS_SENSITIVE (priv->chk_italic))
-              gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON
-                                           (priv->chk_italic),
-                                           state ? FALSE : TRUE);
-            break;
-        }
-        case GDK_U:
-        case GDK_u:
-        {
-            gboolean state =
-                gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON
-                                             (priv->chk_underline));
-            if (GTK_WIDGET_IS_SENSITIVE (priv->chk_underline))
-              gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON
-                                           (priv->chk_underline),
-                                           state ? FALSE : TRUE);
-            break;
-        }
-        }
-    return FALSE;
+  pango_attr_iterator_destroy(iter);
+
+  settings_apply(&settings);
+  settings_destroy(&settings);
 }
+#endif

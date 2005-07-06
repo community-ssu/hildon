@@ -152,12 +152,12 @@ hildon_color_popup_new(GtkWindow *parent, GdkColor *initial_color,
                       G_CALLBACK(hildon_popup_palette_expose), 
                       popup_data);
   
-  popup = gtk_dialog_new_with_buttons (_("ecdg_ti_colour_selector"), 
+  popup = gtk_dialog_new_with_buttons (_("ecdg_ti_5bit_colour_selector"), 
                                        GTK_WINDOW(parent),
                                        GTK_DIALOG_DESTROY_WITH_PARENT |
                                        GTK_DIALOG_NO_SEPARATOR,
-                                       _("ecdg_bd_colour_selector_ok"), GTK_RESPONSE_OK,
-                                       _("ecdg_bd_colour_selector_cancel"),
+                                       _("ecdg_bd_5bit_colour_selector_ok"), GTK_RESPONSE_OK,
+                                       _("Ecdg_bd_5bit_colour_selector_cancel"),
                                        GTK_RESPONSE_CANCEL,
                                        NULL);
 

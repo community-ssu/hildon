@@ -36,7 +36,7 @@
 #include "hildon-controlbar.h"
 
 #include <libintl.h>
-#define _(String) gettext(String)
+#define _(string) dgettext(PACKAGE, string)
 
 #define HILDON_CONTROLBAR_GET_PRIVATE(obj) \
     (G_TYPE_INSTANCE_GET_PRIVATE ((obj),\
@@ -57,6 +57,13 @@ static GtkScaleClass *parent_class;
 
 typedef struct _HildonControlbarPrivate HildonControlbarPrivate;
 
+enum
+{
+  PROP_MIN = 1,
+  PROP_MAX,
+  PROP_VALUE
+};
+
 static void
 hildon_controlbar_class_init(HildonControlbarClass * controlbar_class);
 static void hildon_controlbar_init(HildonControlbar * controlbar);
@@ -76,6 +83,11 @@ static void
 hildon_controlbar_paint(HildonControlbar * self, GdkRectangle * area);
 static gboolean
 hildon_controlbar_keypress(GtkWidget * widget, GdkEventKey * event);
+
+static void hildon_controlbar_set_property( GObject *object, guint param_id,
+                                       const GValue *value, GParamSpec *pspec );
+static void hildon_controlbar_get_property( GObject *object, guint param_id,
+                                         GValue *value, GParamSpec *pspec );
 
 static void
 hildon_controlbar_value_changed( GtkAdjustment *adj, GtkRange *range );
@@ -111,6 +123,7 @@ struct _HildonControlbarPrivate {
 static void
 hildon_controlbar_class_init(HildonControlbarClass * controlbar_class)
 {
+  GObjectClass *gobject_class = G_OBJECT_CLASS(controlbar_class);
   GtkWidgetClass *widget_class = GTK_WIDGET_CLASS(controlbar_class);
 
   parent_class = g_type_class_peek_parent(controlbar_class);
@@ -118,6 +131,8 @@ hildon_controlbar_class_init(HildonControlbarClass * controlbar_class)
   g_type_class_add_private(controlbar_class,
                            sizeof(HildonControlbarPrivate));
 
+  gobject_class->get_property = hildon_controlbar_get_property;
+  gobject_class->set_property = hildon_controlbar_set_property;
   widget_class->size_request = hildon_controlbar_size_request;
   widget_class->button_press_event = hildon_controlbar_button_press_event;
   widget_class->button_release_event = hildon_controlbar_button_release_event;
@@ -125,10 +140,50 @@ hildon_controlbar_class_init(HildonControlbarClass * controlbar_class)
   widget_class->key_press_event = hildon_controlbar_keypress;
   G_OBJECT_CLASS(controlbar_class)->constructor = hildon_controlbar_constructor;
 
+  /**
+   * HildonControlbar:min:
+   *
+   * Controlbar minimum value.
+   */
+  g_object_class_install_property( gobject_class, PROP_MIN,
+                                   g_param_spec_int("min",
+                                   "Minimum value",
+                                   "Smallest possible value",
+                                   G_MININT, G_MAXINT,
+                                   HILDON_CONTROLBAR_LOWER_VALUE,
+                                   G_PARAM_READABLE | G_PARAM_WRITABLE) );
+
+  /**
+   * HildonControlbar:max:
+   *
+   * Controlbar maximum value.
+   */
+  g_object_class_install_property( gobject_class, PROP_MAX,
+                                   g_param_spec_int("max",
+                                   "Maximum value",
+                                   "Greatest possible value",
+                                   G_MININT, G_MAXINT, 
+                                   HILDON_CONTROLBAR_UPPER_VALUE,
+                                   G_PARAM_READABLE | G_PARAM_WRITABLE) );
+
+  /**
+   * HildonControlbar:value:
+   *
+   * Controlbar value.
+   */
+  g_object_class_install_property( gobject_class, PROP_VALUE,
+                                   g_param_spec_int("value",
+                                   "Current value",
+                                   "Current value",
+                                   G_MININT, G_MAXINT,
+                                   HILDON_CONTROLBAR_INITIAL_VALUE,
+                                   G_PARAM_READABLE | G_PARAM_WRITABLE) );
+
+
   gtk_widget_class_install_style_property(widget_class,
 				  g_param_spec_uint("inner_border_width",
 						    "Inner border width",
-						    "The border spacing between the controlbar border and controlbar blocks.",
+			"The border spacing between the controlbar border and controlbar blocks.",
 						    0, G_MAXINT,
 						    DEFAULT_BORDER_WIDTH,
 						    G_PARAM_READABLE));
@@ -167,13 +222,60 @@ static GObject *hildon_controlbar_constructor(GType type,
   adj->step_increment = HILDON_CONTROLBAR_STEP_INCREMENT;
   adj->page_increment = HILDON_CONTROLBAR_PAGE_INCREMENT;
   adj->page_size = HILDON_CONTROLBAR_PAGE_SIZE;
-  adj->upper = HILDON_CONTROLBAR_UPPER_VALUE;
-  adj->lower = HILDON_CONTROLBAR_LOWER_VALUE;
-  adj->value = HILDON_CONTROLBAR_INITIAL_VALUE;
+
   g_signal_connect( adj, "value-changed", 
                     G_CALLBACK(hildon_controlbar_value_changed), obj );
   return obj;
 }
+
+static void hildon_controlbar_set_property (GObject *object, guint param_id,
+                                       const GValue *value, GParamSpec *pspec)
+{
+  HildonControlbar *controlbar = HILDON_CONTROLBAR(object);
+  switch (param_id)
+  {
+    case PROP_MIN:
+      hildon_controlbar_set_min (controlbar, g_value_get_int(value));
+      break;
+
+    case PROP_MAX:
+      hildon_controlbar_set_max (controlbar, g_value_get_int(value));
+      break;
+
+    case PROP_VALUE:
+      hildon_controlbar_set_value (controlbar, g_value_get_int(value));
+      break;
+
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID(object, param_id, pspec);
+      break;
+  }
+}
+
+static void hildon_controlbar_get_property( GObject *object, guint param_id,
+                                         GValue *value, GParamSpec *pspec )
+{
+  HildonControlbar *controlbar = HILDON_CONTROLBAR(object);
+  switch (param_id)
+  {
+    case PROP_MIN:
+      g_value_set_int (value, hildon_controlbar_get_min (controlbar));
+      break;
+
+    case PROP_MAX:
+      g_value_set_int (value, hildon_controlbar_get_max (controlbar));
+      break;
+
+    case PROP_VALUE:
+      g_value_set_int (value, hildon_controlbar_get_value (controlbar));
+      break;
+
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID(object, param_id, pspec);
+      break;
+  }
+}
+
 
 static void
 hildon_controlbar_value_changed( GtkAdjustment *adj, GtkRange *range )
@@ -244,6 +346,8 @@ void hildon_controlbar_set_value(HildonControlbar * self, gint value)
 
     adj->value = value;
     gtk_adjustment_value_changed(adj);
+
+    g_object_notify (G_OBJECT(self), "value");
 }
 
 /**
@@ -282,17 +386,15 @@ void hildon_controlbar_set_max(HildonControlbar * self, gint max)
     adj = GTK_RANGE(self)->adjustment;
 
     if (max < adj->lower)
-        return;
-    else if( max == adj->lower )
-      gtk_widget_set_sensitive( GTK_WIDGET(self), FALSE );
-    else
-      gtk_widget_set_sensitive( GTK_WIDGET(self), TRUE );
+      max = adj->lower;
     
     if (adj->value > max)
-        adj->value = max;
+        hildon_controlbar_set_value (self, max);
 
     adj->upper = max;
     gtk_adjustment_changed(adj);
+
+    g_object_notify (G_OBJECT(self), "max");
 }
 
 /**
@@ -313,18 +415,15 @@ void hildon_controlbar_set_min(HildonControlbar * self, gint min)
     g_return_if_fail (HILDON_IS_CONTROLBAR (self));
     adj = GTK_RANGE(self)->adjustment;
 
-    if (min < 0 || min >= adj->upper)
-        return;
-    else if( min == adj->upper )
-      gtk_widget_set_sensitive( GTK_WIDGET(self), FALSE );
-    else
-      gtk_widget_set_sensitive( GTK_WIDGET(self), TRUE );
+    if (min > adj->upper)
+      min = adj->upper;
     
-    if (adj->value > min)
-        adj->value = min;
+    if (adj->value < min)
+        hildon_controlbar_set_value (self, min);
 
     adj->lower = min;
     gtk_adjustment_changed(adj);
+    g_object_notify (G_OBJECT(self), "min");
 }
 
 /**
@@ -347,25 +446,15 @@ void hildon_controlbar_set_min(HildonControlbar * self, gint min)
 void hildon_controlbar_set_range(HildonControlbar * self, gint min,
                                  gint max)
 {
-    GtkAdjustment *adj;
     g_return_if_fail (HILDON_IS_CONTROLBAR (self));
-    adj = GTK_RANGE(self)->adjustment;
 
-    if (min < 0 || min >= max)
-        return;
-
-    if (adj->value > max)
-        adj->value = max;
-
-    adj->upper = max;
-    adj->lower = min;
-    
-    if( adj->upper == adj->lower )
-       gtk_widget_set_sensitive( GTK_WIDGET(self), FALSE );
-    else
-      gtk_widget_set_sensitive( GTK_WIDGET(self), TRUE );
-
-    gtk_adjustment_changed(adj);
+    if (min > max)
+      min = max;
+    /* We need to set max first here, because when min is set before
+     * max is set, it would end up 0, because max can't be bigger than 0.
+     */
+    hildon_controlbar_set_max (self, max);
+    hildon_controlbar_set_min (self, min);
 }
 
 /**
@@ -526,6 +615,7 @@ static void hildon_controlbar_paint(HildonControlbar * self,
 {
     HildonControlbarPrivate *priv;
     GtkWidget *widget = GTK_WIDGET(self);
+    GtkAdjustment *ctrlbar = GTK_RANGE(self)->adjustment;
     gint x = widget->allocation.x;
     gint y = widget->allocation.y;
     gint h = widget->allocation.height;
@@ -535,12 +625,15 @@ static void hildon_controlbar_paint(HildonControlbar * self,
     gint stepper_spacing = 0;
     gint inner_border_width = 0;
     gint block_area = 0, block_width = 0, block_x = 0, block_max = 0, block_height,block_y;
-    gint block_count = 0;
-    gint selected_blocks = 0;
+    /* Number of blocks on the controlbar */
+    guint block_count = 0;
+    /* Number of displayed active blocks */
+    guint block_act = 0;
+    /* Minimum no. of blocks visible */
+    guint block_min = 0;
     gint separatingpixels = 2;
     gint block_remains = 0;
     gint i, start_x, end_x, current_width;
-    gint minimum_visible_bars = 0;
     GtkStateType state = GTK_STATE_NORMAL;
 
     g_return_if_fail(area);
@@ -553,21 +646,21 @@ static void hildon_controlbar_paint(HildonControlbar * self,
                          "stepper-size", &stepper_size,
                          "stepper-spacing", &stepper_spacing,
 			 "inner_border_width", &inner_border_width, NULL);
-    g_object_get(G_OBJECT(self), "minimum_visible_bars", &minimum_visible_bars, NULL);
+    g_object_get(G_OBJECT(self), "minimum_visible_bars", &block_min, NULL);
 
     block_area = (w - 2 * stepper_size - 2 * stepper_spacing - 2 * inner_border_width);
     if (block_area <= 0)
         return;
 
-    max = hildon_controlbar_get_max(self);
-    block_max = max - GTK_RANGE(self)->adjustment->lower + minimum_visible_bars; 
-    selected_blocks = priv->old_value - GTK_RANGE(self)->adjustment->lower;
+    block_max = ctrlbar->upper - ctrlbar->lower + block_min; 
+    block_act = priv->old_value - GTK_RANGE(self)->adjustment->lower + block_min;
  
     /* We check border width and maximum value and adjust
      * separating pixels for block width here. If the block size would
      * become too small, we make the separators smaller. Graceful fallback.
      */
-    if( max == 0 )
+    max = ctrlbar->upper;
+    if( ctrlbar->upper == 0 )
     {
       separatingpixels = 3;
     }
@@ -600,8 +693,7 @@ static void hildon_controlbar_paint(HildonControlbar * self,
     block_y = y + inner_border_width;
     block_height = h - 2 * inner_border_width;
 
-    block_count = hildon_controlbar_get_value(self)/* - GTK_RANGE(self)->adjustment->lower*/;
-    if (minimum_visible_bars == 0) block_count=block_count - GTK_RANGE(self)->adjustment->lower;
+    block_count = ctrlbar->value - ctrlbar->lower +  block_min;
 
     /* Without this there is vertical block corruption when block_height = 
        1. This should work from 0 up to whatever */

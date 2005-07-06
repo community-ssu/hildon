@@ -5,7 +5,7 @@ EXTRA_DIST = $(foreach po,$(languages),$(po).po) POTFILES.in README \
 	debian/compat \
 	debian/control \
 	debian/rules \
-	debian/hildon-libs-l10n-engb.install
+	debian/hildon-libs-l10n-engb.install \
 
 %.mo: %.po
 	msgfmt --statistics -v -o$(top_builddir)/po/$@ $(srcdir)/$<
@@ -14,10 +14,10 @@ all: $(foreach mo,$(languages),$(mo).mo)
 
 merge:
 	for mo in $(languages); do \
-		xgettext -fPOTFILES --foreign-user -C -o$$mo.pot -k_; \
-		msgmerge -v $$mo.po $$mo.pot >messages.tmp; \
+		echo "Merging $$mo..."; \
+		msgmerge -v $$mo.po hildon-libs.pot >messages.tmp; \
 		mv messages.tmp $$mo.po; \
-		rm $$mo.pot; \
+		msgfmt --statistics $$mo.po -o /dev/null; \
 	done
 
 install-data-local: all

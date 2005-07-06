@@ -2,11 +2,23 @@
 HildonGrid
 
 <!-- ##### SECTION Short_Description ##### -->
-
+#HildonGrid is intended to be used where ever a number of single tap
+activatable items need to be presented (e.g. Control Panel applets).
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
+HildonGrid is a set of application-defineable items that are presented in a
+table. The form of this table is selected from two modes; large icon mode and
+small icon mode.
 
+In large icon mode, the Grid View items are presented with a large icon and a
+label underneath it. In small icon mode, the items are presented with a small
+icon and a label on the right side of the icon.
+
+The label of an item is displayed within a band of colour displayed as a
+background colour as wide as the maximum text width. This allows the text to
+have focus as well as be legible when displayed upon a black or dark background
+image. Long names are truncated with an ellipsis ("...") appended.
 </para>
 
 <para>
@@ -361,7 +373,7 @@ set_icon_size (GtkMenuItem *item, gpointer data)
 
 <!-- ##### SECTION See_Also ##### -->
 <para>
-
+#HildonGridItem
 </para>
 
 <!-- ##### STRUCT HildonGrid ##### -->
@@ -473,6 +485,11 @@ set_icon_size (GtkMenuItem *item, gpointer data)
 </para>
 
 <!-- ##### ARG HildonGrid:item-width ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG HildonGrid:label-height ##### -->
 <para>
 
 </para>

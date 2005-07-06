@@ -47,11 +47,20 @@
         (G_TYPE_INSTANCE_GET_PRIVATE ((obj), \
         HILDON_TYPE_FILE_HANDLING_NOTE, HildonFileHandlingNotePrivate));
 
-static HildonNote *parent_class;
-
 typedef struct _HildonFileHandlingNotePrivate
     HildonFileHandlingNotePrivate;
 
+struct _HildonFileHandlingNotePrivate {
+    guint note_type;
+};
+
+#ifndef HILDON_DISABLE_DEPRECATED
+
+static HildonNote *parent_class;
+
+
+/* standard forbids empty source file, therefore the ifdef must be
+   placed here. */
 
 static void
 hildon_file_handling_note_class_init(HildonFileHandlingNoteClass * class);
@@ -62,9 +71,6 @@ static void hildon_file_handling_note_init(HildonFileHandlingNote *
 static void hildon_file_handling_note_finalize(GObject * obj_self);
 
 
-struct _HildonFileHandlingNotePrivate {
-    guint note_type;
-};
 
 
 GType hildon_file_handling_note_get_type()
@@ -123,7 +129,8 @@ static void hildon_file_handling_note_finalize(GObject * obj_self)
  * @name: Filename
  *
  * This function sets current counter value, maximum
- * counter value and filename for dialog
+ * counter value and filename for dialog 
+ * DEPRECATED: use hildon-note instead of hildon-file-handling-note.
  */
 void hildon_file_handling_note_set_counter_and_name(HildonFileHandlingNote
                                                     * note, guint current,
@@ -187,6 +194,7 @@ void hildon_file_handling_note_set_counter_and_name(HildonFileHandlingNote
  * @name: Filename
  *
  * This function sets filename for dialog
+ * DEPRECATED: use hildon-note instead of hildon-file-handling-note.
  */
 void hildon_file_handling_note_set_name(HildonFileHandlingNote * note,
                                         const gchar * name)
@@ -216,6 +224,7 @@ void hildon_file_handling_note_set_name(HildonFileHandlingNote * note,
 
  * This function sets fraction value for
  * progress bar.
+ * DEPRECATED: use hildon-note instead of hildon-file-handling-note.
  */
 void hildon_file_handling_note_set_fraction(HildonFileHandlingNote * note,
                                             gfloat frac)
@@ -234,6 +243,7 @@ void hildon_file_handling_note_set_fraction(HildonFileHandlingNote * note,
  * which is "moving" type.
  *
  * Return value: a new #HildonFileHandlingNote.
+ * DEPRECATED: use hildon-note instead of hildon-file-handling-note.
  */
 GtkWidget *hildon_file_handling_note_new_moving(GtkWindow * parent)
 {
@@ -245,7 +255,7 @@ GtkWidget *hildon_file_handling_note_new_moving(GtkWindow * parent)
 
     file_note = g_object_new(HILDON_TYPE_FILE_HANDLING_NOTE,
                              "note_type", HILDON_NOTE_PROGRESSBAR_TYPE,
-                             "description", _("Moving..."),
+                             "description", _("sfil_nw_moving_file"), 
                              "progressbar", progbar, NULL);
 
     priv = HILDON_FILE_HANDLING_NOTE_GET_PRIVATE(file_note);
@@ -265,6 +275,7 @@ GtkWidget *hildon_file_handling_note_new_moving(GtkWindow * parent)
  * which is "deleting" type.
  *
  * Return value: a new #HildonFileHandlingNote.
+ * DEPRECATED: use hildon-note instead of hildon-file-handling-note.
  */
 GtkWidget *hildon_file_handling_note_new_deleting(GtkWindow * parent)
 {
@@ -276,7 +287,7 @@ GtkWidget *hildon_file_handling_note_new_deleting(GtkWindow * parent)
 
     file_note = g_object_new(HILDON_TYPE_FILE_HANDLING_NOTE,
                              "note_type", HILDON_NOTE_PROGRESSBAR_TYPE,
-                             "description", _("Deleting..."),
+                             "description", _("docm_nw_deleting_file"),
                              "progressbar", progbar, NULL);
 
     priv = HILDON_FILE_HANDLING_NOTE_GET_PRIVATE(file_note);
@@ -296,6 +307,7 @@ GtkWidget *hildon_file_handling_note_new_deleting(GtkWindow * parent)
  * which is "opening" type
  *
  * Return value: a new #HildonFileHandlingNote.
+ * DEPRECATED: use hildon-note instead of hildon-file-handling-note.
  */
 GtkWidget *hildon_file_handling_note_new_opening(GtkWindow * parent)
 {
@@ -307,7 +319,7 @@ GtkWidget *hildon_file_handling_note_new_opening(GtkWindow * parent)
 
     file_note = g_object_new(HILDON_TYPE_FILE_HANDLING_NOTE,
                              "note_type", HILDON_NOTE_PROGRESSBAR_TYPE,
-                             "description", _("Opening..."),
+                             "description", _("docm_nw_opening_file"),
                              "progressbar", progbar, NULL);
 
     priv = HILDON_FILE_HANDLING_NOTE_GET_PRIVATE(file_note);
@@ -327,6 +339,7 @@ GtkWidget *hildon_file_handling_note_new_opening(GtkWindow * parent)
  * which is "saving" type.
  *
  * Return value: a new #HildonFileHandlingNote.
+ * DEPRECATED: use hildon-note instead of hildon-file-handling-note.
  */
 GtkWidget *hildon_file_handling_note_new_saving(GtkWindow * parent)
 {
@@ -335,9 +348,10 @@ GtkWidget *hildon_file_handling_note_new_saving(GtkWindow * parent)
     HildonFileHandlingNotePrivate *priv;
 
     progbar = gtk_progress_bar_new();
+
     file_note = g_object_new(HILDON_TYPE_FILE_HANDLING_NOTE,
                              "note_type", HILDON_NOTE_PROGRESSBAR_TYPE,
-                             "description", _("Saving..."),
+                             "description", _("docm_nw_saving_file"),
                              "progressbar", progbar, NULL);
 
     priv = HILDON_FILE_HANDLING_NOTE_GET_PRIVATE(file_note);
@@ -348,3 +362,5 @@ GtkWidget *hildon_file_handling_note_new_saving(GtkWindow * parent)
 
     return GTK_WIDGET(file_note);
 }
+
+#endif /* HILDON_DISABLE_DEPRECATED */

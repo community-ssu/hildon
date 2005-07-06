@@ -48,16 +48,6 @@ static gint update_spin_button (GtkWidget *seek, GtkWidget *spin)
 </para>
 
 
-<!-- ##### ARG HildonSeekbar:position ##### -->
-<para>
-
-</para>
-
-<!-- ##### ARG HildonSeekbar:total-time ##### -->
-<para>
-
-</para>
-
 <!-- ##### FUNCTION hildon_seekbar_new ##### -->
 <para>
 
@@ -121,4 +111,14 @@ static gint update_spin_button (GtkWidget *seek, GtkWidget *spin)
 @seekbar: 
 @Returns: 
 
+
+<!-- ##### ARG HildonSeekbar:position ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG HildonSeekbar:total-time ##### -->
+<para>
+
+</para>
 

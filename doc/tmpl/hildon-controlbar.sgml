@@ -107,6 +107,21 @@ hildon_controlbar_set_value( HILDON_CONTROLBAR(cbar), 6 );
 @max: 
 
 
+<!-- ##### ARG HildonControlbar:max ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG HildonControlbar:min ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG HildonControlbar:value ##### -->
+<para>
+
+</para>
+
 <!-- ##### ARG HildonControlbar:inner-border-width ##### -->
 <para>
 

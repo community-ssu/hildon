@@ -27,6 +27,8 @@
 #include <gtk/gtkimage.h>
 #include <gtk/gtkbox.h>
 #include <gtk/gtkhbox.h>
+#include <gtk/gtkvbox.h>
+#include <gtk/gtkbutton.h>
 #include <hildon-widgets/hildon-defines.h>
 
 #include "hildon-wizard-dialog.h"
@@ -46,9 +48,8 @@ static void hildon_wizard_dialog_class_init(HildonWizardDialogClass *
 static void hildon_wizard_dialog_init(HildonWizardDialog * wizard_dialog);
 static void
 hildon_wizard_dialog_create_title(HildonWizardDialog * wizard_dialog);
-static void hildon_wizard_dialog_response(HildonWizardDialog *
-                                          wizard_dialog, gint response_id,
-                                          gpointer data);
+static void direction_button_clicked(GtkWidget *widget,
+                                     HildonWizardDialog *wizard_dialog);
 static void hildon_wizard_dialog_set_property(GObject * object,
                                               guint property_id,
                                               const GValue * value,
@@ -69,7 +70,9 @@ struct _HildonWizardDialogPrivate {
     gchar *wizard_name;
     GtkNotebook *notebook;
     GtkBox *box;
-    GtkImage *image;
+    GtkWidget *image;
+    GtkWidget *previous_button;
+    GtkWidget *next_button;
 };
 
 
@@ -142,37 +145,48 @@ static void hildon_wizard_dialog_init(HildonWizardDialog * wizard_dialog)
                                     HILDON_TYPE_WIZARD_DIALOG,
                                     HildonWizardDialogPrivate);
     GtkDialog *dialog = GTK_DIALOG(wizard_dialog);
+    GtkWidget *vbox = gtk_vbox_new(FALSE, 0);
+    
+    gtk_dialog_set_has_separator(dialog, FALSE);
 
     wizard_dialog->priv = priv;
     priv->box = GTK_BOX(gtk_hbox_new(FALSE, 0));
-    priv->image = GTK_IMAGE(gtk_image_new_from_stock("hildon-wizard-icon",
-                                                     HILDON_ICON_SIZE_WIDG_WIZARD));
+    priv->image = gtk_image_new_from_icon_name("qgn_widg_wizard",
+					       HILDON_ICON_SIZE_WIDG_WIZARD);
     priv->notebook = NULL;
     priv->wizard_name = NULL;
 
     gtk_box_pack_start_defaults(GTK_BOX(dialog->vbox),
                                 GTK_WIDGET(priv->box));
-    gtk_box_pack_start_defaults(GTK_BOX(priv->box),
-                                GTK_WIDGET(priv->image));
+    gtk_box_pack_start_defaults(GTK_BOX(priv->box), GTK_WIDGET(vbox));
+    gtk_box_pack_start(GTK_BOX(vbox),GTK_WIDGET(priv->image), FALSE, FALSE, 0);
 
     gtk_dialog_add_button(dialog, _("Ecdg_bd_wizard_cancel"),
                           HILDON_WIZARD_DIALOG_CANCEL);
-    gtk_dialog_add_button(dialog, _("Ecdg_bd_wizard_previous"),
-                          HILDON_WIZARD_DIALOG_PREVIOUS);
-    gtk_dialog_add_button(dialog, _("Ecdg_bd_wizard_next"),
-                          HILDON_WIZARD_DIALOG_NEXT);
+
+    priv->previous_button =
+        gtk_button_new_with_label(_("Ecdg_bd_wizard_previous"));
+    gtk_box_pack_start(GTK_BOX(dialog->action_area),
+                       priv->previous_button, FALSE, TRUE, 0);
+
+    g_signal_connect(priv->previous_button, "clicked",
+                     G_CALLBACK(direction_button_clicked), wizard_dialog);
+
+    priv->next_button =
+        gtk_button_new_with_label(_("Ecdg_bd_wizard_next"));
+    gtk_box_pack_start(GTK_BOX(dialog->action_area),
+                       priv->next_button, FALSE, TRUE, 0);
+
+    g_signal_connect(priv->next_button, "clicked",
+                     G_CALLBACK(direction_button_clicked), wizard_dialog);
+
     gtk_dialog_add_button(dialog, _("Ecdg_bd_wizard_finish"),
                           HILDON_WIZARD_DIALOG_FINISH);
 
-    g_signal_connect(G_OBJECT(dialog), "response",
-                     G_CALLBACK(hildon_wizard_dialog_response), NULL);
-
-    gtk_dialog_set_response_sensitive(GTK_DIALOG(wizard_dialog),
-                                      HILDON_WIZARD_DIALOG_PREVIOUS,
-                                      FALSE);
     gtk_dialog_set_response_sensitive(GTK_DIALOG(wizard_dialog),
                                       HILDON_WIZARD_DIALOG_FINISH,
                                       FALSE);
+    gtk_widget_set_sensitive(priv->previous_button, FALSE);
 
     hildon_wizard_dialog_create_title(wizard_dialog);
 }
@@ -196,8 +210,10 @@ hildon_wizard_dialog_set_property(GObject * object, guint property_id,
     case PROP_WIZARD_NOTEBOOK:
         priv->notebook = GTK_NOTEBOOK(g_value_get_object(value));
         gtk_notebook_set_show_tabs(priv->notebook, FALSE);
+        gtk_notebook_set_show_border(priv->notebook, FALSE);
         gtk_box_pack_start_defaults(GTK_BOX(priv->box),
                                     GTK_WIDGET(priv->notebook));
+        
         if (priv->wizard_name)
             hildon_wizard_dialog_create_title(HILDON_WIZARD_DIALOG
                                               (object));
@@ -281,62 +297,44 @@ hildon_wizard_dialog_create_title(HildonWizardDialog * wizard_dialog)
     g_free(str);
 }
 
-
-static void hildon_wizard_dialog_response(HildonWizardDialog *
-                                          wizard_dialog, gint response_id,
-                                          gpointer data)
+static void direction_button_clicked(GtkWidget *widget,
+                                     HildonWizardDialog *wizard_dialog)
 {
     HildonWizardDialogPrivate *priv = wizard_dialog->priv;
     GtkNotebook *notebook = priv->notebook;
     gint current = 0;
     gint last = gtk_notebook_get_n_pages(notebook) - 1;
 
-    switch (response_id) {
-    case HILDON_WIZARD_DIALOG_PREVIOUS:
+    if (widget == priv->previous_button)
+    {
         gtk_notebook_prev_page(notebook);
         current = gtk_notebook_get_current_page(notebook);
         if (current == 0)
         {
-            gtk_dialog_set_response_sensitive
-                (GTK_DIALOG(wizard_dialog),
-                 HILDON_WIZARD_DIALOG_PREVIOUS,
-                 FALSE);
+            gtk_widget_set_sensitive(priv->previous_button, FALSE);
             gtk_dialog_set_response_sensitive
                 (GTK_DIALOG(wizard_dialog),
                  HILDON_WIZARD_DIALOG_FINISH,
                  FALSE);
         }
         if (current != last)
-            gtk_dialog_set_response_sensitive(GTK_DIALOG(wizard_dialog),
-                                              HILDON_WIZARD_DIALOG_NEXT,
-                                              TRUE);
-
-        g_signal_stop_emission_by_name(wizard_dialog, "response");
-        break;
-    case HILDON_WIZARD_DIALOG_NEXT:
+            gtk_widget_set_sensitive(priv->next_button, TRUE);
+    }
+    else /* Next button */
+    {
         gtk_notebook_next_page(notebook);
         current = gtk_notebook_get_current_page(notebook);
         if (gtk_notebook_get_current_page(notebook) != 0)
         {
-            gtk_dialog_set_response_sensitive
-                (GTK_DIALOG(wizard_dialog),
-                 HILDON_WIZARD_DIALOG_PREVIOUS,
-                 TRUE);
+            gtk_widget_set_sensitive(priv->previous_button, TRUE);
             gtk_dialog_set_response_sensitive
                 (GTK_DIALOG(wizard_dialog),
                  HILDON_WIZARD_DIALOG_FINISH,
                  TRUE);
         }
         if (current == last)
-            gtk_dialog_set_response_sensitive(GTK_DIALOG(wizard_dialog),
-                                              HILDON_WIZARD_DIALOG_NEXT,
-                                              FALSE);
-        g_signal_stop_emission_by_name(wizard_dialog, "response");
-        break;
-    case HILDON_WIZARD_DIALOG_CANCEL:
-    case HILDON_WIZARD_DIALOG_FINISH:
-        return;
-    };
+            gtk_widget_set_sensitive(priv->next_button, FALSE);
+    }
 
     if (current == last || current == 0)
         gtk_widget_show(GTK_WIDGET(priv->image));

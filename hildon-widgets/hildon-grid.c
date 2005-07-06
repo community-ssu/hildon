@@ -55,6 +55,7 @@
 #include <gdk/gdkkeysyms.h>
 
 #include "hildon-grid-item-private.h"
+#include "hildon-marshalers.h"
 #include <hildon-widgets/hildon-grid.h>
 #include <hildon-widgets/hildon-grid-item.h>
 
@@ -68,17 +69,7 @@
 
 #define DEFAULT_STYLE   "largeicons-home"
 
-#define DEFAULT_WIDTH         128
-#define DEFAULT_HEIGHT         96
-#define DEFAULT_HSPACING        8
-#define DEFAULT_VSPACING        8
-#define DEFAULT_LABEL_HSPACING  4
-#define DEFAULT_LABEL_VSPACING  0
-
-#define DEFAULT_EMBLEM_SIZE    25
-#define DEFAULT_ICON_SIZE      64
 #define DEFAULT_N_COLUMNS       3
-#define DEFAULT_LABEL_POS       1
 #define GRID_LABEL_POS_PAD     16
 
 #define DRAG_SENSITIVITY        6
@@ -112,25 +103,19 @@ struct _HildonGridPrivate {
     GdkWindow *event_window;
 
     gchar *style;
-    /* We don't want to fetch style properties every single time. */
-    guint icon_size;
-    guint emblem_size;
-    guint num_columns;
-    HildonGridPositionType label_pos;
-    gint label_hspacing;
-    gint label_vspacing;
+    gint emblem_size;
     GtkWidget *empty_label;
 
-    guint widget_width;
-    guint widget_height;
-    guint widget_hspacing;
-    guint widget_vspacing;
-
-    guint saved_width;
-    guint saved_height;
-    guint saved_hspacing;
-    guint saved_vspacing;
-
+    gint item_width;
+    gint item_height;
+    gint h_margin;
+    gint v_margin;
+    gint focus_margin;
+    gint icon_label_margin;
+    gint icon_width;
+    gint num_columns;
+    HildonGridPositionType label_pos;
+    gint label_height;
 
     gint focus_index;
     guint click_x;
@@ -140,10 +125,10 @@ struct _HildonGridPrivate {
     gint area_height;
     gint area_rows;
     gint scrollbar_width;
-    gint visible_cols;
 
     gint first_index;
     GdkEventType last_button_event;
+    gint old_item_height;
 };
 
 
@@ -186,32 +171,30 @@ static void hildon_grid_get_property(GObject * object,
                                      guint prop_id,
                                      GValue * value, GParamSpec * pspec);
 
-static void _hildon_grid_set_empty_label(HildonGrid * grid,
-                                         const gchar * empty_label);
-static const gchar *_hildon_grid_get_empty_label(HildonGrid * grid);
-static void _hildon_grid_set_n_columns(HildonGrid * grid, gint num_cols);
-static void _hildon_grid_set_label_pos(HildonGrid * grid,
-                                       HildonGridPositionType label_pos);
-static void _hildon_grid_set_label_hspacing(HildonGrid * grid,
-                                            gint hspacing);
-static void _hildon_grid_set_label_vspacing(HildonGrid * grid,
-                                            gint vspacing);
-static void _hildon_grid_set_icon_size(HildonGrid * grid, gint icon_size);
-static void _hildon_grid_set_emblem_size(HildonGrid * grid,
-                                         gint emblem_size);
+static void hildon_grid_set_empty_label(HildonGrid *grid,
+                                        const gchar *empty_label);
+static const gchar *hildon_grid_get_empty_label(HildonGrid * grid);
+static void hildon_grid_set_num_columns(HildonGrid *grid, gint num_cols);
+static void hildon_grid_set_label_pos(HildonGrid *grid,
+                                      HildonGridPositionType label_pos);
+static void hildon_grid_set_focus_margin(HildonGrid *grid,
+                                         gint focus_margin);
+static void hildon_grid_set_icon_label_margin(HildonGrid *grid,
+                                              gint icon_label_margin);
+static void hildon_grid_set_icon_width(HildonGrid *grid, gint icon_width);
+static void hildon_grid_set_emblem_size(HildonGrid *grid, gint emblem_size);
+static void hildon_grid_set_label_height(HildonGrid *grid,
+                                         gint label_height);
 static void hildon_grid_destroy(GtkObject * self);
 static void hildon_grid_finalize(GObject * object);
 
 /* Signal handlers. */
 static gboolean hildon_grid_button_pressed(GtkWidget * widget,
-                                           GdkEventButton * event,
-                                           gpointer data);
+                                           GdkEventButton * event);
 static gboolean hildon_grid_button_released(GtkWidget * widget,
-                                            GdkEventButton * event,
-                                            gpointer data);
+                                            GdkEventButton * event);
 static gboolean hildon_grid_key_pressed(GtkWidget * widget,
-                                        GdkEventKey * event,
-                                        gpointer data);
+                                        GdkEventKey * event);
 static gboolean hildon_grid_scrollbar_moved(GtkWidget * widget,
                                             gpointer data);
 static gboolean hildon_grid_state_changed(GtkWidget * widget,
@@ -230,15 +213,6 @@ static gboolean adjust_scrollbar_height(HildonGrid * grid);
 static gboolean update_contents(HildonGrid * grid);
 static void set_focus(HildonGrid * grid,
                       GtkWidget * widget, gboolean refresh_view);
-
-/* Our fancy little marshaler. */
-static void marshal_BOOLEAN__INT_INT_INT(GClosure * closure,
-                                         GValue * return_value,
-                                         guint n_param_values,
-                                         const GValue * param_values,
-                                         gpointer invocation_hint,
-                                         gpointer marshal_data);
-
 
 static GtkContainerClass *parent_class = NULL;
 static guint grid_signals[LAST_SIGNAL] = { 0 };
@@ -296,6 +270,9 @@ static void hildon_grid_class_init(HildonGridClass * klass)
     widget_class->size_request = hildon_grid_size_request;
     widget_class->size_allocate = hildon_grid_size_allocate;
     widget_class->tap_and_hold_setup = hildon_grid_tap_and_hold_setup;
+    widget_class->key_press_event = hildon_grid_key_pressed;
+    widget_class->button_press_event = hildon_grid_button_pressed;
+    widget_class->button_release_event = hildon_grid_button_released;
 
     container_class->add = hildon_grid_add;
     container_class->remove = hildon_grid_remove;
@@ -307,85 +284,73 @@ static void hildon_grid_class_init(HildonGridClass * klass)
         g_param_spec_string("empty_label",
                             "Empty label",
                             "Label to show when grid has no items",
-                            _("No icons"),
-                            G_PARAM_READWRITE));
+                            "", G_PARAM_READWRITE));
 
     gtk_widget_class_install_style_property(widget_class,
         g_param_spec_uint("item_width",
                           "Item width",
-                          "Total width of an item",
-                          1, G_MAXINT,
-                          DEFAULT_WIDTH,
-                          G_PARAM_READABLE));
+                          "Total width of an item (obsolete)",
+                          1, G_MAXINT, 212, G_PARAM_READABLE));
 
     gtk_widget_class_install_style_property(widget_class,
         g_param_spec_uint("item_height",
                           "Item height",
                           "Total height of an item",
-                          1, G_MAXINT, DEFAULT_HEIGHT,
-                          G_PARAM_READABLE));
+                          1, G_MAXINT, 96, G_PARAM_READABLE));
 
     gtk_widget_class_install_style_property(widget_class,
         g_param_spec_uint("item_hspacing",
                           "Item horizontal spacing",
-                          "Horizontal space between items",
-                          0, G_MAXINT, DEFAULT_HSPACING,
-                          G_PARAM_READABLE));
+                          "Margin between two columns and labels",
+                          0, G_MAXINT, 12, G_PARAM_READABLE));
 
     gtk_widget_class_install_style_property(widget_class,
         g_param_spec_uint("item_vspacing",
                           "Item vertical spacing",
-                          "Vertical space between items",
-                          0, G_MAXINT, DEFAULT_VSPACING,
-                          G_PARAM_READABLE));
+                          "Icon on right: Margin between rows / Icon at bottom: Vertical margin betweeb label and icon",
+                          0, G_MAXINT, 6, G_PARAM_READABLE));
 
     gtk_widget_class_install_style_property(widget_class,
         g_param_spec_uint("label_hspacing",
-                          "Horizontal label spacing",
-                          "Horizontal margin between item and label",
-                          0, G_MAXINT,
-                          DEFAULT_LABEL_HSPACING,
-                          G_PARAM_READABLE));
+                          "Focus margin",
+                          "Margin between focus edge and item edge",
+                          0, G_MAXINT, 6, G_PARAM_READABLE));
 
     gtk_widget_class_install_style_property(widget_class,
         g_param_spec_uint("label_vspacing",
                           "Vertical label spacing",
                           "Vertical margin between item and label",
-                          0, G_MAXINT,
-                          DEFAULT_LABEL_VSPACING,
-                          G_PARAM_READABLE));
+                          0, G_MAXINT, 6, G_PARAM_READABLE));
+
+    gtk_widget_class_install_style_property(widget_class,
+        g_param_spec_uint("label_height",
+                          "Label height",
+                          "Height of icon label",
+                          1, G_MAXINT, 30, G_PARAM_READABLE));
 
     gtk_widget_class_install_style_property(widget_class,
         g_param_spec_uint("n_columns",
                           "Columns",
                           "Number of columns",
-                          0, G_MAXINT,
-                          DEFAULT_N_COLUMNS,
-                          G_PARAM_READABLE));
+                          0, G_MAXINT, DEFAULT_N_COLUMNS, G_PARAM_READABLE));
 
     gtk_widget_class_install_style_property(widget_class,
         g_param_spec_uint("label_pos",
                           "Label position",
                           "Position of label related to the icon",
-                          1, 2,
-                          DEFAULT_LABEL_POS,
-                          G_PARAM_READABLE));
+                          1, 2, 1, G_PARAM_READABLE));
 
     gtk_widget_class_install_style_property(widget_class,
         g_param_spec_uint("icon_size",
                           "Icon size",
-                          "Size of the icon in pixels",
-                          1, G_MAXINT,
-                          DEFAULT_ICON_SIZE,
-                          G_PARAM_READABLE));
+                          "Size of the icon in pixels (width)",
+                          1, G_MAXINT, 64, G_PARAM_READABLE));
 
     gtk_widget_class_install_style_property(widget_class,
         g_param_spec_uint("emblem_size",
                           "Emblem size",
                           "Size of the emblem in pixels",
-                          1, G_MAXINT,
-                          DEFAULT_EMBLEM_SIZE,
-                          G_PARAM_READABLE));
+                          1, G_MAXINT, 25, G_PARAM_READABLE));
 
     /**
      * HildonGrid::activate-child:
@@ -413,7 +378,7 @@ static void hildon_grid_class_init(HildonGridClass * klass)
                      G_SIGNAL_RUN_LAST,
                      G_STRUCT_OFFSET(HildonGridClass, popup_context_menu),
                      g_signal_accumulator_true_handled, NULL,
-                     marshal_BOOLEAN__INT_INT_INT,
+                     _hildon_marshal_BOOLEAN__INT_INT_INT,
                      G_TYPE_BOOLEAN, 3,
                      G_TYPE_INT, G_TYPE_INT, G_TYPE_INT);
 }
@@ -421,14 +386,14 @@ static void hildon_grid_class_init(HildonGridClass * klass)
 
 
 /*
- * _hildon_grid_set_empty_label:
+ * hildon_grid_set_empty_label:
  * @grid:           #HildonGrid
  * @empty_label:    New label
  *
  * Sets empty label.
  */
 static void
-_hildon_grid_set_empty_label(HildonGrid * grid, const gchar * empty_label)
+hildon_grid_set_empty_label(HildonGrid * grid, const gchar * empty_label)
 {
     /* No need to worry about update -- label receives a signal for it. */
     gtk_label_set_label(GTK_LABEL(HILDON_GRID_GET_PRIVATE
@@ -444,54 +409,57 @@ _hildon_grid_set_empty_label(HildonGrid * grid, const gchar * empty_label)
  *
  * Return value: Label
  */
-static const gchar *_hildon_grid_get_empty_label(HildonGrid * grid)
+static const gchar *
+hildon_grid_get_empty_label(HildonGrid * grid)
 {
     return gtk_label_get_label(GTK_LABEL(HILDON_GRID_GET_PRIVATE
                                          (grid)->empty_label));
 }
 
 /*
- * _hildon_grid_set_n_columns:
+ * hildon_grid_set_num_columns:
  * @grid:       #HildonGrid
  * @columsn:    Number of columns
  *
  * Sets number of columns.
  */
-static void _hildon_grid_set_n_columns(HildonGrid * grid, gint columns)
+static void
+hildon_grid_set_num_columns(HildonGrid * grid, gint columns)
 {
-    GtkWidget *focus;
     HildonGridPrivate *priv;
 
     g_return_if_fail(HILDON_IS_GRID(grid));
-
     priv = HILDON_GRID_GET_PRIVATE(grid);
 
     if (priv->num_columns == columns) {
         return;
     }
 
-    priv->num_columns = columns;
+    if (columns != 0)
+        priv->num_columns = columns;
+    else
+        priv->num_columns = DEFAULT_N_COLUMNS;
+    
+    /* Update estimated row-count for jump_scrollbar... */
+    priv->area_rows = priv->area_height / priv->num_columns;
 
-    /* If number of columns is defined (non-zero), use it immediately. */
-    if (columns != 0) {
-        priv->visible_cols = columns;
-    }
-    focus = GTK_CONTAINER(grid)->focus_child;
+    /* Size could have changed. Scroll view so there's something to show. */
+    adjust_scrollbar_height(grid);
+    jump_scrollbar_to_focused(grid);
     gtk_widget_queue_resize(GTK_WIDGET(grid));
 }
 
 /*
- * _hildon_grid_set_label_pos:
+ * hildon_grid_set_label_pos:
  * @grid:       #HildonGrid
  * @label_pos:  Label position
  *
  * Sets icon label position.
  */
 static void
-_hildon_grid_set_label_pos(HildonGrid * grid,
-                           HildonGridPositionType label_pos)
+hildon_grid_set_label_pos(HildonGrid * grid,
+                          HildonGridPositionType label_pos)
 {
-    GtkRequisition req;
     HildonGridPrivate *priv;
     GList *list;
     GtkWidget *child;
@@ -511,86 +479,69 @@ _hildon_grid_set_label_pos(HildonGrid * grid,
 
         _hildon_grid_item_set_label_pos(HILDON_GRID_ITEM(child),
                                         label_pos);
-        gtk_widget_size_request(child, &req);
-        gtk_widget_queue_resize(child);
     }
 }
 
 /*
- * _hildon_grid_set_label_hspacing:
- * @grid:       #HildonGrid
- * @hspacing:   Horizontal spacing
+ * hildon_grid_set_focus_margin:
+ * @grid:         #HildonGrid
+ * @focus_margin: Focus margin
  *
- * Sets horizontal spacing for label.
+ * Sets margin between icon edge and label edge
  */
 static void
-_hildon_grid_set_label_hspacing(HildonGrid * grid, gint hspacing)
+hildon_grid_set_focus_margin(HildonGrid *grid, gint focus_margin)
 {
     HildonGridPrivate *priv;
     GList *list;
     GtkWidget *child;
 
     priv = HILDON_GRID_GET_PRIVATE(grid);
-    if (hspacing == priv->label_hspacing)
+    if (focus_margin == priv->focus_margin)
         return;
 
-    priv->label_hspacing = hspacing;
+    priv->focus_margin = focus_margin;
 
     /* Update children. */
     for (list = priv->children; list != NULL; list = list->next) {
         child = ((HildonGridChild *) list->data)->widget;
 
-        _hildon_grid_item_set_label_spacing(HILDON_GRID_ITEM(child),
-                                            priv->label_hspacing,
-                                            priv->label_vspacing);
-        if (priv->label_pos == HILDON_GRID_ITEM_LABEL_POS_RIGHT) {
-            gtk_widget_queue_resize(child);
-        }
+        _hildon_grid_item_set_focus_margin(HILDON_GRID_ITEM(child),
+                                           priv->focus_margin);
     }
 }
 
 
 /*
- * _hildon_grid_set_label_vspacing:
+ * hildon_grid_set_icon_label_margin:
  * @grid:       #HildonGrid
  * @hspacing:   Vertical spacing
  *
  * Sets vertical spacing for label.
+ * XXX
  */
 static void
-_hildon_grid_set_label_vspacing(HildonGrid * grid, gint vspacing)
+hildon_grid_set_icon_label_margin(HildonGrid *grid, gint icon_label_margin)
 {
     HildonGridPrivate *priv;
-    GList *list;
-    GtkWidget *child;
 
     priv = HILDON_GRID_GET_PRIVATE(grid);
-    if (vspacing == priv->label_vspacing)
+    if (icon_label_margin == priv->icon_label_margin)
         return;
 
-    priv->label_vspacing = vspacing;
-
-    /* Update children. */
-    for (list = priv->children; list != NULL; list = list->next) {
-        child = ((HildonGridChild *) list->data)->widget;
-
-        _hildon_grid_item_set_label_spacing(HILDON_GRID_ITEM(child),
-                                            priv->label_hspacing,
-                                            priv->label_vspacing);
-        if (priv->label_pos == HILDON_GRID_ITEM_LABEL_POS_BOTTOM) {
-            gtk_widget_queue_resize(child);
-        }
-    }
+    priv->icon_label_margin = icon_label_margin;
 }
 
+
 /*
- * _hildon_grid_set_icon_size:
+ * hildon_grid_set_icon_width:
  * @grid:       #HildonGrid
- * @icon_size:  Icon size
+ * @icon_size:  Icon size (width)
  *
  * Sets icon size (in pixels).
  */
-static void _hildon_grid_set_icon_size(HildonGrid * grid, gint icon_size)
+static void
+hildon_grid_set_icon_width(HildonGrid * grid, gint icon_width)
 {
     HildonGridPrivate *priv;
     GList *list;
@@ -598,30 +549,29 @@ static void _hildon_grid_set_icon_size(HildonGrid * grid, gint icon_size)
 
     priv = HILDON_GRID_GET_PRIVATE(grid);
 
-    if (icon_size == priv->icon_size)
+    if (icon_width == priv->icon_width)
         return;
 
-    priv->icon_size = icon_size;
+    priv->icon_width = icon_width;
 
     for (list = priv->children; list != NULL; list = list->next) {
         child = ((HildonGridChild *) list->data)->widget;
 
-        _hildon_grid_item_set_icon_size(HILDON_GRID_ITEM(child),
-                                        icon_size);
-        gtk_widget_queue_resize(child);
+        _hildon_grid_item_set_icon_width(HILDON_GRID_ITEM(child),
+                                         icon_width);
     }
 }
 
 
 /*
- * _hildon_grid_set_emblem_size:
+ * hildon_grid_set_emblem_size:
  * @grid:           #HildonGrid
  * @emblem_size:    Emblem size
  *
  * Sets emblem size (in pixels).
  */
 static void
-_hildon_grid_set_emblem_size(HildonGrid * grid, gint emblem_size)
+hildon_grid_set_emblem_size(HildonGrid *grid, gint emblem_size)
 {
     HildonGridPrivate *priv;
     GList *list;
@@ -639,9 +589,33 @@ _hildon_grid_set_emblem_size(HildonGrid * grid, gint emblem_size)
 
         _hildon_grid_item_set_emblem_size(HILDON_GRID_ITEM(child),
                                           emblem_size);
-        gtk_widget_queue_draw(child);
     }
 }
+
+
+static void
+hildon_grid_set_label_height(HildonGrid *grid,
+                             gint label_height)
+{
+    HildonGridPrivate *priv;
+    GList *list;
+    GtkWidget *child;
+
+    priv = HILDON_GRID_GET_PRIVATE(grid);
+
+    if (label_height == priv->label_height)
+        return;
+
+    priv->label_height = label_height;
+
+    for (list = priv->children; list != NULL; list = list->next) {
+        child = ((HildonGridChild *) list->data)->widget;
+
+        _hildon_grid_item_set_label_height(HILDON_GRID_ITEM(child),
+                                           label_height);
+    }
+}
+
 
 static GType hildon_grid_child_type(GtkContainer * container)
 {
@@ -658,7 +632,7 @@ static void hildon_grid_init(HildonGrid * grid)
     priv->focus_index = -1;
 
     priv->scrollbar = gtk_vscrollbar_new(NULL);
-    priv->empty_label = gtk_label_new(_("No items"));
+    priv->empty_label = gtk_label_new("");
     priv->style = NULL;
 
     priv->area_height = 1;
@@ -669,13 +643,16 @@ static void hildon_grid_init(HildonGrid * grid)
     priv->click_x = 0;
     priv->click_y = 0;
 
-    priv->visible_cols = DEFAULT_N_COLUMNS;
-    priv->widget_width = 1;
-    priv->widget_hspacing = 0;
-    priv->widget_height = 1;
-    priv->widget_vspacing = 0;
+    priv->item_height = 96;
+    priv->h_margin = 12;
+    priv->v_margin = 6;
+    priv->focus_margin = 6;
+    priv->icon_label_margin = 6;
+    priv->icon_width = 64;
+    priv->label_pos = HILDON_GRID_ITEM_LABEL_POS_BOTTOM;
 
     priv->old_sb_pos = -1;
+    priv->old_item_height = -1;
 
     gtk_widget_set_parent(priv->scrollbar, GTK_WIDGET(grid));
     gtk_widget_set_parent(priv->empty_label, GTK_WIDGET(grid));
@@ -691,8 +668,6 @@ static void hildon_grid_init(HildonGrid * grid)
     /* Signal for key press. */
     GTK_WIDGET_SET_FLAGS(GTK_WIDGET(grid), GTK_CAN_FOCUS);
     gtk_widget_set_events(GTK_WIDGET(grid), GDK_KEY_PRESS_MASK);
-    g_signal_connect(G_OBJECT(grid), "key-press-event",
-                     G_CALLBACK(hildon_grid_key_pressed), grid);
 
     GTK_WIDGET_UNSET_FLAGS(priv->scrollbar, GTK_CAN_FOCUS);
     hildon_grid_set_style(grid, DEFAULT_STYLE);
@@ -751,13 +726,6 @@ static void hildon_grid_realize(GtkWidget * widget)
 
     gtk_style_set_background(widget->style,
                              widget->window, GTK_STATE_NORMAL);
-
-    g_signal_connect(G_OBJECT(widget),
-                     "button-press-event",
-                     G_CALLBACK(hildon_grid_button_pressed), grid);
-    g_signal_connect(G_OBJECT(widget),
-                     "button-release-event",
-                     G_CALLBACK(hildon_grid_button_released), grid);
 }
 
 
@@ -797,8 +765,7 @@ static void hildon_grid_map(GtkWidget * widget)
 
     (*GTK_WIDGET_CLASS(parent_class)->map) (widget);
 
-    /* We don't really need the following... They never do anything I
-       think. */
+    /* We shouldn't really need the following...*/
     if (priv->scrollbar != NULL && GTK_WIDGET_VISIBLE(priv->scrollbar)) {
         if (!GTK_WIDGET_MAPPED(priv->scrollbar)) {
             gtk_widget_map(priv->scrollbar);
@@ -878,14 +845,14 @@ hildon_grid_expose(GtkWidget * widget, GdkEventExpose * event)
         ;       /* Nothing here. */
     }
 
-    for (; list != NULL && child_no < priv->first_index
-         + priv->visible_cols * priv->area_rows; list = list->next) {
+    for (; list != NULL && child_no < priv->first_index +
+         priv->num_columns * priv->area_rows; list = list->next) {
         gtk_container_propagate_expose(container,
                                        ((HildonGridChild *) list->data)
                                        ->widget, event);
     }
 
-    /* Kludge to keep focused item focused. Enjoy. */
+    /* Keep focused item focused. */
     if (container->focus_child != NULL
         && !GTK_WIDGET_HAS_FOCUS(container->focus_child)) {
         set_focus(grid, container->focus_child, FALSE);
@@ -938,7 +905,7 @@ hildon_grid_size_request(GtkWidget * widget, GtkRequisition * requisition)
 /*
  * hildon_grid_size_allocate:
  *
- * Supposedly called when size of grid changes and after view have moved so
+ * Supposingly called when size of grid changes and after view have moved so
  * that items need to be relocated.
  */
 static void
@@ -950,11 +917,10 @@ hildon_grid_size_allocate(GtkWidget * widget, GtkAllocation * allocation)
     GtkWidget *child;
     gint child_no;
     gint y_offset;
+    gint row_margin;
 
     GtkAllocation alloc;
     GtkRequisition req;
-    GtkRequisition c_req;
-    gint item_width, item_height;
 
     g_return_if_fail(widget);
     g_return_if_fail(allocation);
@@ -963,7 +929,6 @@ hildon_grid_size_allocate(GtkWidget * widget, GtkAllocation * allocation)
     priv = HILDON_GRID_GET_PRIVATE(grid);
     widget->allocation = *allocation;
 
-
     get_style_properties(grid);
 
     /* First of all, make sure GdkWindow is over our widget. */
@@ -971,8 +936,8 @@ hildon_grid_size_allocate(GtkWidget * widget, GtkAllocation * allocation)
         gdk_window_move_resize(priv->event_window,
                                widget->allocation.x,
                                widget->allocation.y,
-                               widget->allocation.width
-                               - priv->scrollbar_width,
+                               widget->allocation.width -
+			           priv->scrollbar_width,
                                widget->allocation.height);
     }
     /* Show the label if there are no items. */
@@ -1023,39 +988,28 @@ hildon_grid_size_allocate(GtkWidget * widget, GtkAllocation * allocation)
         gtk_widget_hide(priv->empty_label);
     }
 
-    /* Get item size. */
-    item_width = priv->widget_width + priv->widget_hspacing;
-    item_height = priv->widget_height + priv->widget_vspacing;
-
     priv->area_height = allocation->height;
-    priv->area_rows = allocation->height / item_height;
-
+    priv->area_rows = allocation->height / priv->item_height;
 
     /* Adjust/show/hide scrollbar. */
     adjust_scrollbar_height(grid);
+    if (priv->old_item_height != priv->item_height) {
+        priv->old_item_height = priv->item_height;
+        jump_scrollbar_to_focused(grid);
+    }
 
-
-    /* Only one column? Lets use all the space we have. */
-    if (priv->visible_cols == 1) {
-        if (priv->scrollbar != NULL &&
-            GTK_WIDGET_VISIBLE(priv->scrollbar)) {
-            gtk_widget_get_child_requisition(priv->scrollbar, &req);
-        } else {
-            req.width = 0;
-        }
-
-        item_width = allocation->width - priv->scrollbar_width
-            - priv->widget_hspacing - req.width;
-        priv->widget_width = item_width;
+    /* Update item width. */
+    if (priv->num_columns == 1) {
+        priv->item_width = allocation->width - priv->scrollbar_width -
+            priv->h_margin - priv->scrollbar_width;
     } else {
-        priv->widget_width = priv->saved_width;
-        priv->widget_hspacing = priv->saved_hspacing;
-        item_width = priv->widget_width + priv->widget_hspacing;
+        priv->item_width = (allocation->width - priv->scrollbar_width) /
+            priv->num_columns;
     }
 
     priv->first_index =
-        (int) gtk_range_get_value(GTK_RANGE(priv->scrollbar))
-        / item_height * priv->visible_cols;
+        (int) gtk_range_get_value(GTK_RANGE(priv->scrollbar)) /
+        priv->item_height * priv->num_columns;
 
     /* Hide items before visible ones. */
     for (list = priv->children, child_no = 0;
@@ -1069,25 +1023,37 @@ hildon_grid_size_allocate(GtkWidget * widget, GtkAllocation * allocation)
     }
 
     /* Allocate visible items. */
-    for (y_offset = priv->first_index / priv->visible_cols * item_height;
-         list != NULL && child_no < priv->first_index
-         + priv->area_rows * priv->visible_cols;
+    alloc.width = priv->item_width - priv->h_margin;
+    switch (priv->label_pos) {
+    case HILDON_GRID_ITEM_LABEL_POS_BOTTOM:
+        row_margin = priv->icon_label_margin;
+        break;
+    case HILDON_GRID_ITEM_LABEL_POS_RIGHT:
+        row_margin = priv->v_margin;
+        break;
+    default:
+        row_margin = 0;
+        break;
+    }
+    alloc.height = priv->item_height - row_margin;
+
+    for (y_offset = priv->first_index / priv->num_columns * priv->item_height;
+         list != NULL && child_no < priv->first_index +
+         priv->area_rows * priv->num_columns;
          list = list->next, child_no++) {
         child = ((HildonGridChild *) list->data)->widget;
 
         if (!GTK_WIDGET_VISIBLE(child)) {
             gtk_widget_show(child);
         }
-        gtk_widget_get_child_requisition(child, &c_req);
 
         /* Don't update icons which are not visible... */
-        alloc.y = (child_no / priv->visible_cols) * item_height +
-            allocation->y - y_offset + priv->widget_vspacing;
-        alloc.x = (child_no % priv->visible_cols) * item_width
-            + allocation->x + priv->widget_hspacing;
-        alloc.width = priv->widget_width;
-        alloc.height = priv->widget_height;
+        alloc.y = (child_no / priv->num_columns) * priv->item_height +
+                  allocation->y - y_offset + row_margin;
+        alloc.x = (child_no % priv->num_columns) * priv->item_width +
+	          allocation->x;
 
+        _hildon_grid_item_done_updating_settings(HILDON_GRID_ITEM(child));
         gtk_widget_size_allocate(child, &alloc);
     }
 
@@ -1133,11 +1099,10 @@ static void hildon_grid_add(GtkContainer * container, GtkWidget * widget)
 
     _hildon_grid_item_set_label_pos(HILDON_GRID_ITEM(widget),
                                     priv->label_pos);
-    _hildon_grid_item_set_label_spacing(HILDON_GRID_ITEM(widget),
-                                        priv->label_hspacing,
-                                        priv->label_vspacing);
-    _hildon_grid_item_set_icon_size(HILDON_GRID_ITEM(widget),
-                                    priv->icon_size);
+    _hildon_grid_item_set_focus_margin(HILDON_GRID_ITEM(widget),
+                                       priv->focus_margin);
+    _hildon_grid_item_set_icon_width(HILDON_GRID_ITEM(widget),
+                                     priv->icon_width);
     _hildon_grid_item_set_emblem_size(HILDON_GRID_ITEM(widget),
                                       priv->emblem_size);
     priv->children = g_list_append(priv->children, child);
@@ -1155,8 +1120,8 @@ static void hildon_grid_add(GtkContainer * container, GtkWidget * widget)
      * If item was added in visible area, relocate items. Otherwise update
      * scrollbar and see if items need relocating.
      */
-    if (g_list_length(priv->children) < priv->first_index
-        + priv->area_rows * priv->visible_cols) {
+    if (g_list_length(priv->children) < priv->first_index +
+        priv->area_rows * priv->num_columns) {
         gtk_widget_queue_resize(GTK_WIDGET(grid));
     } else {
         gboolean updated;
@@ -1303,7 +1268,6 @@ set_focus(HildonGrid * grid, GtkWidget * widget, gboolean refresh_view)
     }
 
     if (view_updated) {
-        /* Don't just queue it, let's do it now! */
         hildon_grid_size_allocate(GTK_WIDGET(grid),
                                   &GTK_WIDGET(grid)->allocation);
     }
@@ -1401,7 +1365,7 @@ static void hildon_grid_finalize(GObject * object)
  */
 static gboolean
 hildon_grid_key_pressed(GtkWidget * widget,
-                        GdkEventKey * event, gpointer data)
+                        GdkEventKey * event)
 {
     GtkAdjustment *adjustment;
     GtkContainer *container;
@@ -1418,24 +1382,24 @@ hildon_grid_key_pressed(GtkWidget * widget,
 
     g_return_val_if_fail(widget, FALSE);
 
-    grid = HILDON_GRID(data);
+    grid = HILDON_GRID(widget);
     priv = HILDON_GRID_GET_PRIVATE(grid);
 
     /* 
-     * If focus was never lost (which is supposedly a bug), we could just
-     * see if an item is focused - if not, there's nothing else to focus...
+     * If focus was never lost, we could just see if an item is focused - 
+     * if not, there's nothing else to focus...
      */
 
     /* No items? */
     if (priv->children == NULL || g_list_length(priv->children) == 0)
-        return FALSE;
+        return GTK_WIDGET_CLASS (parent_class)->key_press_event (widget, event);
 
     /* Focused item is dimmed? */
     /* If we have no focus, allow non-existing focus to move... */
     container = GTK_CONTAINER(grid);
     if (container->focus_child != NULL
         && !GTK_WIDGET_IS_SENSITIVE(container->focus_child)) {
-        return FALSE;
+        return GTK_WIDGET_CLASS (parent_class)->key_press_event (widget, event);
     }
     /* At the moment we don't want to do anything here if alt or control
        or MODX is pressed, so return now. Shift + TAB are accepted (from
@@ -1468,11 +1432,11 @@ hildon_grid_key_pressed(GtkWidget * widget,
     }
 
     child_count = g_list_length(priv->children);
-    child_rows = (child_count - 1) / priv->visible_cols + 1;
+    child_rows = (child_count - 1) / priv->num_columns + 1;
 
     if (priv->focus_index != -1) {
-        x = priv->focus_index % priv->visible_cols;
-        y = priv->focus_index / priv->visible_cols;
+        x = priv->focus_index % priv->num_columns;
+        y = priv->focus_index / priv->num_columns;
     } else {
         x = y = 0;
     }
@@ -1488,11 +1452,9 @@ hildon_grid_key_pressed(GtkWidget * widget,
             return TRUE;
         }
 
-        t = MAX(priv->first_index / priv->visible_cols
-                - priv->area_rows, 0);
+        t = MAX(priv->first_index / priv->num_columns - priv->area_rows, 0);
         adjustment = gtk_range_get_adjustment(GTK_RANGE(priv->scrollbar));
-        adjustment->value = (gdouble) (t * (priv->widget_height
-                                            + priv->widget_vspacing));
+        adjustment->value = (gdouble) (t * priv->item_height);
         gtk_range_set_adjustment(GTK_RANGE(priv->scrollbar), adjustment);
         gtk_widget_queue_draw(priv->scrollbar);
         update_contents(grid);
@@ -1506,8 +1468,8 @@ hildon_grid_key_pressed(GtkWidget * widget,
 
     case GDK_KP_Page_Down:
     case GDK_Page_Down:
-        if (priv->first_index / priv->visible_cols
-            == child_rows - priv->area_rows) {
+        if (priv->first_index / priv->num_columns ==
+            child_rows - priv->area_rows) {
             if (priv->focus_index == child_count - 1) {
                 return TRUE;
             }
@@ -1516,11 +1478,10 @@ hildon_grid_key_pressed(GtkWidget * widget,
             return TRUE;
         }
 
-        t = MIN(priv->first_index / priv->visible_cols
-                + priv->area_rows, child_rows - priv->area_rows);
+        t = MIN(priv->first_index / priv->num_columns +
+                priv->area_rows, child_rows - priv->area_rows);
         adjustment = gtk_range_get_adjustment(GTK_RANGE(priv->scrollbar));
-        adjustment->value = (gdouble) (t * (priv->widget_height
-                                            + priv->widget_vspacing));
+        adjustment->value = (gdouble) (t * priv->item_height);
         gtk_range_set_adjustment(GTK_RANGE(priv->scrollbar), adjustment);
         gtk_widget_queue_draw(priv->scrollbar);
         update_contents(grid);
@@ -1537,25 +1498,25 @@ hildon_grid_key_pressed(GtkWidget * widget,
         if (y <= 0) {
             return TRUE;
         }
-        addition = -priv->visible_cols;
+        addition = -priv->num_columns;
         max_add = y;
         y--;
         break;
 
     case GDK_KP_Down:
     case GDK_Down:
-        if (y >= (child_count - 1) / priv->visible_cols) {
+        if (y >= (child_count - 1) / priv->num_columns) {
             return TRUE;
         }
-        t = child_count % priv->visible_cols;
+        t = child_count % priv->num_columns;
         if (t == 0) {
-            t = priv->visible_cols;
+            t = priv->num_columns;
         }
-        if (y == (child_count - 1) / priv->visible_cols - 1 && x >= t) {
+        if (y == (child_count - 1) / priv->num_columns - 1 && x >= t) {
             x = t - 1;
         }
         y++;
-        addition = priv->visible_cols;
+        addition = priv->num_columns;
         max_add = child_rows - y;
         break;
 
@@ -1571,7 +1532,7 @@ hildon_grid_key_pressed(GtkWidget * widget,
 
     case GDK_KP_Right:
     case GDK_Right:
-        if (x >= priv->visible_cols - 1) {
+        if (x >= priv->num_columns - 1) {
             return TRUE;
         }
         if (y == 0 && x >= child_count - 1) {
@@ -1579,8 +1540,8 @@ hildon_grid_key_pressed(GtkWidget * widget,
         }
         x++;
         addition = 1;
-        max_add = priv->visible_cols - x;
-        if (y * priv->visible_cols + x == child_count) {
+        max_add = priv->num_columns - x;
+        if (y * priv->num_columns + x == child_count) {
             y--;
         }
         break;
@@ -1592,11 +1553,11 @@ hildon_grid_key_pressed(GtkWidget * widget,
         return TRUE;
         break;
     default:
-        return FALSE;
+        return GTK_WIDGET_CLASS (parent_class)->key_press_event (widget, event);
         break;
     }
 
-    focus_index = y * priv->visible_cols + x;
+    focus_index = y * priv->num_columns + x;
     new_focus = get_child_by_index(priv, focus_index);
 
     while (new_focus != NULL &&
@@ -1629,25 +1590,23 @@ hildon_grid_key_pressed(GtkWidget * widget,
  */
 static gboolean
 hildon_grid_button_pressed(GtkWidget * widget,
-                           GdkEventButton * event, gpointer data)
+                           GdkEventButton * event)
 {
     HildonGrid *grid;
     HildonGridPrivate *priv;
     GtkWidget *child;
     int child_no;
 
+    grid = HILDON_GRID(widget);
+    priv = HILDON_GRID_GET_PRIVATE(grid);
+
 /* Watch out for double/triple click press events */
 
     if (event->type == GDK_2BUTTON_PRESS ||
         event->type == GDK_3BUTTON_PRESS) {
-        grid = HILDON_GRID(data);
-        priv = HILDON_GRID_GET_PRIVATE(grid);
         priv->last_button_event = event->type;
         return FALSE;
     }
-
-    grid = HILDON_GRID(data);
-    priv = HILDON_GRID_GET_PRIVATE(grid);
 
     priv->last_button_event = event->type;
 
@@ -1684,17 +1643,17 @@ hildon_grid_button_pressed(GtkWidget * widget,
  */
 static gboolean
 hildon_grid_button_released(GtkWidget * widget,
-                            GdkEventButton * event, gpointer data)
+                            GdkEventButton * event)
 {
     HildonGrid *grid;
     HildonGridPrivate *priv;
     GtkWidget *child;
     int child_no;
 
-    grid = HILDON_GRID(data);
+    grid = HILDON_GRID(widget);
     priv = HILDON_GRID_GET_PRIVATE(grid);
 
-/* In case of double/triple click, silently ignore the release event */
+    /* In case of double/triple click, silently ignore the release event */
 
     if (priv->last_button_event == GDK_2BUTTON_PRESS ||
         priv->last_button_event == GDK_3BUTTON_PRESS) {
@@ -1743,8 +1702,6 @@ hildon_grid_scrollbar_moved(GtkWidget * widget, gpointer data)
     updated = update_contents(grid);
 
     /* 
-     * Kludge-time!
-     *
      * If grid changes focus while dragging scrollbar and pointer leaves
      * scrollbar, focus is moved to prev_focus... This prevents that.
      */
@@ -1777,11 +1734,11 @@ static gboolean update_contents(HildonGrid * grid)
 
     priv = HILDON_GRID_GET_PRIVATE(grid);
     new_row = (int) gtk_range_get_value(GTK_RANGE(priv->scrollbar))
-        / (priv->widget_height + priv->widget_vspacing);
+        / priv->item_height;
 
     if (new_row != priv->old_sb_pos) {
         priv->old_sb_pos = new_row;
-        priv->first_index = new_row * priv->visible_cols;
+        priv->first_index = new_row * priv->num_columns;
 
         return TRUE;
     }
@@ -1811,21 +1768,29 @@ static gboolean jump_scrollbar_to_focused(HildonGrid * grid)
     g_return_val_if_fail(priv->scrollbar != NULL, FALSE);
 
     /* Make sure "first widget" is something sensible. */
-    priv->first_index = priv->first_index / priv->visible_cols
-        * priv->visible_cols;
+    priv->first_index = priv->first_index -
+        priv->first_index % priv->num_columns;
 
     child_count = g_list_length(priv->children);
-    empty_grids = priv->visible_cols * priv->area_rows - child_count
-        + priv->first_index;
+    empty_grids = priv->num_columns * priv->area_rows - child_count +
+        priv->first_index;
 
     if (priv->focus_index < priv->first_index) {
-        new_row = priv->focus_index / priv->visible_cols;
-    } else if (priv->focus_index >= priv->first_index
-               + priv->area_rows * priv->visible_cols) {
-        new_row = priv->focus_index / priv->visible_cols -
+        new_row = priv->focus_index / priv->num_columns;
+    } else if (priv->focus_index >= priv->first_index +
+               priv->area_rows * priv->num_columns) {
+        gint last_top_row;
+        new_row = priv->focus_index / priv->num_columns -
             priv->area_rows + 1;
-    } else if (empty_grids >= priv->visible_cols) {
-        new_row = ((child_count - 1) / priv->visible_cols + 1)
+        last_top_row = child_count / priv->num_columns - priv->area_rows + 1;
+        if (child_count % priv->num_columns != 0) {
+            last_top_row++;
+        }
+        if (new_row > last_top_row) {
+            new_row = last_top_row;
+	}
+    } else if (empty_grids >= priv->num_columns) {
+        new_row = ((child_count - 1) / priv->num_columns + 1)
             - priv->area_rows;
         if (new_row < 0) {
             new_row = 0;
@@ -1836,10 +1801,9 @@ static gboolean jump_scrollbar_to_focused(HildonGrid * grid)
 
     /* Move scrollbar accordingly. */
     adjustment = gtk_range_get_adjustment(GTK_RANGE(priv->scrollbar));
-    adjustment->value = (gdouble) (new_row * (priv->widget_height
-                                              + priv->widget_vspacing));
+    adjustment->value = (gdouble) (new_row * priv->item_height);
     gtk_range_set_adjustment(GTK_RANGE(priv->scrollbar), adjustment);
-    priv->first_index = new_row * priv->visible_cols;
+    priv->first_index = new_row * priv->num_columns;
     priv->old_sb_pos = new_row;
 
     gtk_widget_queue_draw(priv->scrollbar);
@@ -1878,23 +1842,21 @@ static gboolean adjust_scrollbar_height(HildonGrid * grid)
 
     /* See if we need scrollbar at all. */
     if (priv->num_columns == 0) {
-        priv->visible_cols = MAX(1,
-                                 gridalloc->width /
-                                 (priv->widget_width +
-                                  priv->widget_hspacing));
+        priv->num_columns = DEFAULT_N_COLUMNS;
     } else {
-        priv->visible_cols = MAX(1, priv->num_columns);
+        priv->num_columns = MAX(1, priv->num_columns);
     }
 
     if (g_list_length(priv->children) != 0) {
-        need_rows = (g_list_length(priv->children) - 1)
-            / priv->visible_cols + 1;
+        need_rows = (g_list_length(priv->children) - 1) /
+            priv->num_columns + 1;
     } else {
         need_rows = 0;
     }
 
     if (need_rows <= priv->area_rows) {
         updated = priv->first_index != 0;
+	priv->scrollbar_width = 0;
 
         priv->first_index = 0;
         if (GTK_WIDGET_VISIBLE(priv->scrollbar)) {
@@ -1921,48 +1883,25 @@ static gboolean adjust_scrollbar_height(HildonGrid * grid)
     }
 
 
-    /* 
-     * If we're fitting as many columns as possible, 
-     * recount number of visible
-     * columns and recalculate number of needed rows accordingly.
-     */
-    if (priv->num_columns == 0) {
-        priv->visible_cols = MAX(1,
-                                 (gridalloc->width -
-                                  priv->scrollbar_width) /
-                                 (priv->widget_width +
-                                  priv->widget_hspacing));
-        need_rows = (g_list_length(priv->children) - 1) /
-            priv->visible_cols + 1;
-    }
-
-    need_pixels =
-        need_rows * (priv->widget_height + priv->widget_vspacing);
+    need_pixels = need_rows * priv->item_height;
 
     /* Once we know how much space we need, update the scrollbar. */
     adj = gtk_range_get_adjustment(GTK_RANGE(priv->scrollbar));
     old_upper = (int) adj->upper;
     adj->lower = 0.0;
     adj->upper = (gdouble) need_pixels;
-    adj->step_increment = (gdouble) (priv->widget_height
-                                     + priv->widget_vspacing);
-    adj->page_increment =
-        (gdouble) (priv->area_rows *
-                   (priv->widget_height + priv->widget_vspacing));
+    adj->step_increment = (gdouble) priv->item_height;
+    adj->page_increment = (gdouble) (priv->area_rows * priv->item_height);
     adj->page_size =
-        (gdouble) (priv->area_height /
-                   (priv->widget_height +
-                    priv->widget_vspacing) * (priv->widget_height +
-                                              priv->widget_vspacing));
+        (gdouble) (priv->area_height - priv->area_height % priv->item_height);
 
     /* Also update position if needed to show focused item. */
 
     gtk_range_set_adjustment(GTK_RANGE(priv->scrollbar), adj);
 
     /* Then set first_index. */
-    priv->first_index = (int) adj->value / (priv->widget_height +
-                                            priv->widget_vspacing) *
-        priv->visible_cols;
+    priv->first_index = (int) adj->value / priv->item_height *
+                              priv->num_columns;
 
     /* Finally, ask Gtk to redraw the scrollbar. */
     if (old_upper != (int) adj->upper) {
@@ -1984,24 +1923,21 @@ static gboolean adjust_scrollbar_height(HildonGrid * grid)
 static gint
 get_child_index_by_coord(HildonGridPrivate * priv, gint x, gint y)
 {
+    int xgap, ygap;
     int t;
 
-    if (x >
-        priv->visible_cols * (priv->widget_width + priv->widget_hspacing)
-        || x % (priv->widget_width + priv->widget_hspacing)
-        < priv->widget_hspacing
-        || y % (priv->widget_height + priv->widget_vspacing)
-        < priv->widget_vspacing) {
+    xgap = x % priv->item_width;
+    ygap = y % priv->item_height;
+
+    if (xgap > priv->item_width - priv->h_margin) { /*FIXME*/
         return -1;
     }
 
-    t = y / (priv->widget_height + priv->widget_vspacing) *
-        priv->visible_cols
-        + x / (priv->widget_width + priv->widget_hspacing)
-        + priv->first_index;
+    t = y / priv->item_height * priv->num_columns +
+        x / priv->item_width + priv->first_index;
 
-    if (t >= priv->first_index + priv->area_rows * priv->visible_cols
-        || t >= g_list_length(priv->children) || t < 0) {
+    if (t >= priv->first_index + priv->area_rows * priv->num_columns ||
+        t >= g_list_length(priv->children) || t < 0) {
         return -1;
     }
     return t;
@@ -2129,56 +2065,6 @@ const gchar *hildon_grid_get_style(HildonGrid * grid)
 }
 
 /*
- * For registering signal handler...
- */
-static void
-marshal_BOOLEAN__INT_INT_INT(GClosure * closure,
-                             GValue * return_value,
-                             guint n_param_values,
-                             const GValue * param_values,
-                             gpointer invocation_hint,
-                             gpointer marshal_data)
-{
-    typedef gboolean(*marshal_func_BOOLEAN__INT_INT_INT)
-     (gpointer data1, gint arg_1, gint arg_2, gint arg_3, gpointer data2);
-    register marshal_func_BOOLEAN__INT_INT_INT callback;
-    register GCClosure *cc = (GCClosure *) closure;
-    register gpointer data1, data2;
-    gboolean v_return;
-
-    g_return_if_fail(return_value != NULL);
-    g_return_if_fail(n_param_values == 4);
-
-    if (G_CCLOSURE_SWAP_DATA(closure)) {
-        data1 = closure->data;
-        data2 = g_value_peek_pointer(param_values + 0);
-    } else {
-        data1 = g_value_peek_pointer(param_values + 0);
-        data2 = closure->data;
-    }
-    callback = (marshal_func_BOOLEAN__INT_INT_INT)
-        (marshal_data ? marshal_data : cc->callback);
-
-    /* Doing this is somewhat ugly but it works. */
-    v_return = callback(data1,
-                        (int) (param_values + 1)->data[0].v_pointer,
-                        (int) (param_values + 2)->data[0].v_pointer,
-                        (int) (param_values + 3)->data[0].v_pointer,
-                        data2);
-    /* 
-     * And here's the original code from gtkmarshal.c:
-     * 
-     v_return = callback (data1,
-     g_marshal_value_peek_int (param_values + 1),
-     g_marshal_value_peek_int (param_values + 2),
-     g_marshal_value_peek_int (param_values + 3),
-     data2);
-     */
-
-    g_value_set_boolean(return_value, v_return);
-}
-
-/*
  * get_style_properties:
  * @grid:   #HildonGrid
  *
@@ -2187,41 +2073,54 @@ marshal_BOOLEAN__INT_INT_INT(GClosure * closure,
  */
 static void get_style_properties(HildonGrid * grid)
 {
-    gint icon_size;
+    GList *iter;
     gint num_columns;
     HildonGridPositionType label_pos;
-    gint label_hspacing;
-    gint label_vspacing;
     gint emblem_size;
 
+    gint h_margin, v_margin;
+    gint item_height;
+    gint icon_width;
+    gint focus_margin, icon_label_margin;
+    gint label_height;
+
     HildonGridPrivate *priv;
-
     g_return_if_fail(HILDON_IS_GRID(grid));
-
     priv = HILDON_GRID_GET_PRIVATE(grid);
+
     gtk_widget_style_get(GTK_WIDGET(grid),
-                         "item_width", &priv->widget_width,
-                         "item_hspacing", &priv->widget_hspacing,
-                         "item_height", &priv->widget_height,
-                         "item_vspacing", &priv->widget_vspacing,
-                         "icon_size", &icon_size,
+                         "item_hspacing", &h_margin,
+                         "item_vspacing", &v_margin,
+                         "item_height", &item_height,
+                         "icon_size", &icon_width,
                          "n_columns", &num_columns,
                          "label_pos", &label_pos,
-                         "label_hspacing", &label_hspacing,
-                         "label_vspacing", &label_vspacing,
-                         "emblem_size", &emblem_size, NULL);
+                         "label_hspacing", &focus_margin,
+                         "label_vspacing", &icon_label_margin,
+                         "emblem_size", &emblem_size,
+                         "label_height", &label_height,
+                         NULL);
 
-    priv->saved_width = priv->widget_width;
-    priv->saved_height = priv->widget_height;
-    priv->saved_hspacing = priv->widget_hspacing;
-    priv->saved_vspacing = priv->widget_vspacing;
+    hildon_grid_set_icon_width(grid, icon_width);
+    hildon_grid_set_num_columns(grid, num_columns);
+    hildon_grid_set_label_pos(grid, label_pos);
+    hildon_grid_set_focus_margin(grid, focus_margin);
+    hildon_grid_set_icon_label_margin(grid, icon_label_margin);
+    hildon_grid_set_emblem_size(grid, emblem_size);
+    hildon_grid_set_label_height(grid, label_height);
 
-    _hildon_grid_set_icon_size(grid, icon_size);
-    _hildon_grid_set_n_columns(grid, num_columns);
-    _hildon_grid_set_label_pos(grid, label_pos);
-    _hildon_grid_set_label_hspacing(grid, label_hspacing);
-    _hildon_grid_set_label_vspacing(grid, label_vspacing);
-    _hildon_grid_set_emblem_size(grid, emblem_size);
+    priv->h_margin = h_margin;
+    priv->v_margin = v_margin;
+    priv->item_height = item_height;
+
+    iter = NULL;
+    /*
+    for (iter = priv->children; iter != NULL; iter = iter->next) {
+        HildonGridItem *child;
+        child = HILDON_GRID_ITEM(((HildonGridChild *) iter->data)->widget);
+        _hildon_grid_item_done_updating_settings(child);
+    }
+    */
 }
 
 
@@ -2284,7 +2183,7 @@ hildon_grid_set_property(GObject * object,
 
     switch (prop_id) {
     case PROP_EMPTY_LABEL:
-        _hildon_grid_set_empty_label(grid, g_value_get_string(value));
+        hildon_grid_set_empty_label(grid, g_value_get_string(value));
         break;
 
     default:
@@ -2300,7 +2199,7 @@ hildon_grid_get_property(GObject * object,
     switch (prop_id) {
     case PROP_EMPTY_LABEL:
         g_value_set_string(value,
-                           _hildon_grid_get_empty_label(HILDON_GRID
+                           hildon_grid_get_empty_label(HILDON_GRID
                                                         (object)));
         break;
 

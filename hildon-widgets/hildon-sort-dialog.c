@@ -29,6 +29,7 @@
  * @desc: The sort dialog is used to define the order in which item are 
  * shown in a list. Choise lists always display the current value when 
  * the dialog is opened. 
+ *
  */
 
 #ifdef HAVE_CONFIG_H
@@ -117,7 +118,7 @@ static void hildon_sort_dialog_init(HildonSortDialog * dialog)
     priv->combo1 = gtk_combo_box_new_text();
     priv->caption1 = hildon_caption_new(group, _("ckdg_fi_sort_field"), priv->combo1,
                                         NULL, HILDON_CAPTION_OPTIONAL);
-
+    hildon_caption_set_separator(HILDON_CAPTION(priv->caption1), "");
     gtk_box_pack_start(GTK_BOX(GTK_DIALOG(dialog)->vbox),
                        priv->caption1, FALSE, FALSE, 0);
 
@@ -131,7 +132,7 @@ static void hildon_sort_dialog_init(HildonSortDialog * dialog)
     priv->caption2 = hildon_caption_new(group, _("ckdg_fi_sort_order"),
                                         priv->combo2,
                                         NULL, HILDON_CAPTION_OPTIONAL);
-
+    hildon_caption_set_separator(HILDON_CAPTION(priv->caption2), "");
     gtk_box_pack_start(GTK_BOX(GTK_DIALOG(dialog)->vbox),
                        priv->caption2, FALSE, FALSE, 0);
 
@@ -219,7 +220,8 @@ gint hildon_sort_dialog_get_sort_key(HildonSortDialog * dialog)
     g_return_val_if_fail(HILDON_IS_SORT_DIALOG(dialog), -1);
 
     priv = HILDON_SORT_DIALOG_GET_PRIVATE(dialog);
-    combo_key = hildon_caption_get_control(HILDON_CAPTION(priv->caption1));
+    
+    combo_key = gtk_bin_get_child(GTK_BIN(priv->caption1));
     priv->sort_by_value =
         gtk_combo_box_get_active(GTK_COMBO_BOX(combo_key));
     return priv->sort_by_value;
@@ -241,7 +243,7 @@ GtkSortType hildon_sort_dialog_get_sort_order(HildonSortDialog * dialog)
     g_return_val_if_fail(HILDON_IS_SORT_DIALOG(dialog), 0);
 
     priv = HILDON_SORT_DIALOG_GET_PRIVATE(dialog);
-    combo_key = hildon_caption_get_control(HILDON_CAPTION(priv->caption2));
+    combo_key = gtk_bin_get_child(GTK_BIN(priv->caption2));
     priv->sort_order_type =
         gtk_combo_box_get_active(GTK_COMBO_BOX(combo_key));
     return priv->sort_order_type;
@@ -262,7 +264,7 @@ void hildon_sort_dialog_set_sort_key(HildonSortDialog * dialog, gint key)
     g_return_if_fail(HILDON_IS_SORT_DIALOG(dialog));
 
     priv = HILDON_SORT_DIALOG_GET_PRIVATE(dialog);
-    combo_key = hildon_caption_get_control(HILDON_CAPTION(priv->caption1));
+    combo_key = gtk_bin_get_child(GTK_BIN(priv->caption1));
     gtk_combo_box_set_active(GTK_COMBO_BOX(combo_key), key);
 }
 
@@ -283,8 +285,7 @@ hildon_sort_dialog_set_sort_order(HildonSortDialog * dialog,
     g_return_if_fail(HILDON_IS_SORT_DIALOG(dialog));
 
     priv = HILDON_SORT_DIALOG_GET_PRIVATE(dialog);
-    combo_order =
-        hildon_caption_get_control(HILDON_CAPTION(priv->caption2));
+    combo_order = gtk_bin_get_child(GTK_BIN(priv->caption2));
     gtk_combo_box_set_active(GTK_COMBO_BOX(combo_order), order);
 }
 

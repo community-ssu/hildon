@@ -59,8 +59,6 @@ CXXDEPMODE = @CXXDEPMODE@
 CXXFLAGS = @CXXFLAGS@
 CYGPATH_W = @CYGPATH_W@
 DATADIRNAME = @DATADIRNAME@
-DBUS_CFLAGS = @DBUS_CFLAGS@
-DBUS_LIBS = @DBUS_LIBS@
 DEFS = @DEFS@
 DEPDIR = @DEPDIR@
 DOXYGEN_FOUND = @DOXYGEN_FOUND@
@@ -199,10 +197,10 @@ RECURSIVE_TARGETS = info-recursive dvi-recursive pdf-recursive \
 	all-recursive install-data-recursive install-exec-recursive \
 	installdirs-recursive install-recursive uninstall-recursive \
 	check-recursive installcheck-recursive
-DIST_COMMON = $(srcdir)/Makefile.in $(srcdir)/configure COPYING \
-	Makefile.am aclocal.m4 config.guess config.h.in config.sub \
-	configure configure.ac depcomp hildon-libs.pc.in install-sh \
-	ltmain.sh missing mkinstalldirs
+DIST_COMMON = $(srcdir)/Makefile.in $(srcdir)/configure Makefile.am \
+	aclocal.m4 config.guess config.h.in config.sub configure \
+	configure.ac depcomp hildon-libs.pc.in install-sh ltmain.sh \
+	missing mkinstalldirs
 DIST_SUBDIRS = $(SUBDIRS)
 all: config.h
 	$(MAKE) $(AM_MAKEFLAGS) all-recursive

@@ -1,17 +1,21 @@
-INCLUDES = $(GTK_CFLAGS) $(GNOME_VFS_CFLAGS) $(GCONF_CFLAGS) $(DBUS_CFLAGS) \
-	-DLOCALEDIR=\"$(localedir)\" -I$(srcdir)/..
+INCLUDES = $(GTK_CFLAGS) $(GNOME_VFS_CFLAGS) $(GCONF_CFLAGS) \
+	   $(ESD_CFLAGS) -DLOCALEDIR=\"$(localedir)\" -I$(srcdir)/..
 
 lib_LTLIBRARIES = libhildonwidgets.la
 
-EXTRA_DIST = 
+EXTRA_DIST = hildon-marshalers.list
+
+libhildonwidgets_la_LDFLAGS = -version-info 5:0:5
 
 libhildonwidgets_la_LIBADD = $(GTK_LIBS) $(GNOME_VFS_LIBS) $(GCONF_LIBS) \
-	$(DBUS_LIBS)
-libhildonwidgets_la_LDFLAGS = -version-info 3:0:3
+			     $(ESD_LIBS)
+
 libhildonwidgets_la_SOURCES = \
-  hildon-composite-widget.c \
+	hildon-marshalers.c \
+	hildon-marshalers.h \
+	hildon-composite-widget.c \
 	hildon-composite-widget.h \
-  hildon-controlbar.c \
+	hildon-controlbar.c \
 	hildon-controlbar.h \
 	hildon-seekbar.c \
 	hildon-seekbar.h \
@@ -19,8 +23,6 @@ libhildonwidgets_la_SOURCES = \
 	hildon-color-selector.h \
 	hildon-note.c \
 	hildon-note.h \
-	hildon-search.c \
-	hildon-search.h \
 	hildon-volumebar.c \
 	hildon-volumebar.h \
 	hildon-volumebar-range.c \
@@ -56,25 +58,21 @@ libhildonwidgets_la_SOURCES = \
 	hildon-sort-dialog.h \
 	hildon-add-home-dialog.c \
 	hildon-add-home-dialog.h \
-	hildon-find-object-dialog.c \
-	hildon-find-object-dialog.h \
 	hildon-font-selection-dialog.c \
 	hildon-font-selection-dialog.h \
 	hildon-insert-object-dialog.c \
 	hildon-insert-object-dialog.h \
-    hildon-file-details-dialog.c \
+	hildon-file-details-dialog.c \
 	hildon-file-details-dialog.h \
-    hildon-grid.c \
-    hildon-grid.h \
+	hildon-grid.c \
+	hildon-grid.h \
 	hildon-grid-item.c \
 	hildon-grid-item.h \
 	hildon-grid-item-private.h \
 	hildon-file-handling-note.c \
 	hildon-file-handling-note.h \
 	hildon-name-password-dialog.c \
-    hildon-name-password-dialog.h \
-    hildon-find-replace-dialog.c \
-	hildon-find-replace-dialog.h \
+	hildon-name-password-dialog.h \
 	hildon-scroll-area.c \
 	hildon-scroll-area.h \
 	hildon-wizard-dialog.c \
@@ -84,13 +82,21 @@ libhildonwidgets_la_SOURCES = \
 	hildon-color-button.c \
 	hildon-color-button.h
 
+hildon-marshalers.h: hildon-marshalers.list
+	glib-genmarshal --prefix _hildon_marshal --header \
+			hildon-marshalers.list >hildon-marshalers.h
+
+hildon-marshalers.c: hildon-marshalers.list hildon-marshalers.h
+	echo '#include "hildon-marshalers.h"' >hildon-marshalers.c
+	glib-genmarshal --prefix _hildon_marshal --body \
+			hildon-marshalers.list >>hildon-marshalers.c
+
 hildonwidgetsincludeinstdir=$(includedir)/hildon-widgets
 hildonwidgetsincludeinst_DATA = \
 	hildon-controlbar.h \
 	hildon-note.h \
 	hildon-seekbar.h \
 	hildon-color-selector.h \
-	hildon-search.h \
 	hildon-volumebar.h \
 	hildon-hvolumebar.h \
 	hildon-vvolumebar.h \
@@ -107,15 +113,13 @@ hildonwidgetsincludeinst_DATA = \
 	hildon-set-password-dialog.h \
 	hildon-sort-dialog.h \
 	hildon-add-home-dialog.h \
-	hildon-find-object-dialog.h \
 	hildon-font-selection-dialog.h \
 	hildon-insert-object-dialog.h \
 	hildon-file-details-dialog.h \
 	hildon-grid.h \
 	hildon-grid-item.h \
 	hildon-file-handling-note.h \
-    hildon-name-password-dialog.h \
-	hildon-find-replace-dialog.h \
+	hildon-name-password-dialog.h \
 	hildon-scroll-area.h \
 	hildon-wizard-dialog.h \
 	hildon-color-popup.h \

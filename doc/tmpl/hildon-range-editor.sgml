@@ -83,12 +83,30 @@ HildonRangeEditor is used to ask a value from a specific limits.
 @end: 
 
 
-<!-- ##### SIGNAL HildonRangeEditor::activate ##### -->
+<!-- ##### ARG HildonRangeEditor:higher ##### -->
 <para>
 
 </para>
 
-@hildonrangeeditor: the object which received the signal.
+<!-- ##### ARG HildonRangeEditor:lower ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG HildonRangeEditor:max ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG HildonRangeEditor:min ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG HildonRangeEditor:separator ##### -->
+<para>
+
+</para>
 
 <!-- ##### ARG HildonRangeEditor:hildon-range-editor-entry-alignment ##### -->
 <para>

@@ -1,33 +1,26 @@
 Source: hildon-libs
 Section: x11
 Priority: optional
-Maintainer: Luc Piochon <luc.piochon@nokia.com>
-Build-Depends: debhelper (>= 4.0.0), pkg-config, dbus-1-dev, hildon-lgpl-dev (>= 0.9.1), outo, libosso-gnomevfs2-dev, hildon-fm-dev, libgtk2.0-dev (>= 2:2.6.4-1.osso6)
+Maintainer: Luc Pionchon <luc.pionchon@nokia.com>
+Build-Depends: debhelper (>= 4.0.0), pkg-config, hildon-lgpl-dev (>= 0.9.24-1), outo, libosso-gnomevfs2-dev, hildon-fm-dev (>= 0.9.15-1), libgtk2.0-dev (>= 2:2.6.4-1.osso6), osso-esd-dev
 Standards-Version: 3.6.0
 
 Package: hildon-libs-dev
 Section: devel
 Architecture: any
-Depends: hildon-libs0 (= ${Source-Version}), libgtk2.0-dev (>= 2:2.6.4-1.osso6), hildon-lgpl-dev, hildon-fm-dev, libosso-gnomevfs2-dev
+Depends: hildon-libs0 (= ${Source-Version}), libgtk2.0-dev (>= 2:2.6.4-1.osso6), hildon-lgpl-dev (>= 0.9.24-1), hildon-fm-dev (>= 0.9.15-1), libosso-gnomevfs2-dev, osso-esd-dev
 Description: Hildon libraries development files
 
 Package: hildon-libs0
 Section: libs
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, dbus-1, hildon-lgpl0, hildon-fm1, osso-sounds-ui, libosso-gnomevfs2-0
+Depends: ${shlibs:Depends}, ${misc:Depends}, hildon-lgpl0, hildon-fm1, osso-sounds-ui, libosso-gnomevfs2-0, osso-esd
 Description: Hildon libraries
-
-Package: hildon-libs-test
-Section: libs
-Architecture: any
-Conflicts: hildon-libs (<<0.8.12)
-Depends: hildon-libs0, outo
-Description: Hildon libraries unit tests.
 
 Package: hildon-libs0-dbg
 Section: libs
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, dbus-1, hildon-lgpl0-dbg, hildon-fm1-dbg, osso-sounds-ui, libosso-gnomevfs2-0
+Depends: ${shlibs:Depends}, ${misc:Depends}, hildon-lgpl0-dbg, hildon-fm1-dbg, osso-sounds-ui, libosso-gnomevfs2-0, osso-esd
 Description: Hildon libraries (with debug info)
 
 Package: hildon-libs-l10n-engb

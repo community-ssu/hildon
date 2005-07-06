@@ -38,29 +38,6 @@ hildon_time_editor_get_time( editor, &amp;h, &amp;m, &amp;s );
 </para>
 
 
-<!-- ##### SIGNAL HildonTimeEditor::activate ##### -->
-<para>
-
-</para>
-
-@hildontimeeditor: the object which received the signal.
-
-<!-- ##### SIGNAL HildonTimeEditor::activate ##### -->
-<para>
-
-</para>
-
-@hildontimeeditor: the object which received the signal.
-
-<!-- ##### ENUM HildonTimeEditorField ##### -->
-<para>
-
-</para>
-
-@HILDON_TIME_EDITOR_HOUR_FIELD: 
-@HILDON_TIME_EDITOR_MINUTE_FIELD: 
-@HILDON_TIME_EDITOR_SECOND_FIELD: 
-
 <!-- ##### FUNCTION hildon_time_editor_new ##### -->
 <para>
 
@@ -129,12 +106,53 @@ hildon_time_editor_get_time( editor, &amp;h, &amp;m, &amp;s );
 @max_seconds: 
 
 
-<!-- ##### FUNCTION hildon_time_editor_highlight_field ##### -->
+<!-- ##### ARG HildonTimeEditor:duration-max ##### -->
 <para>
 
 </para>
 
-@editor: 
-@field: 
+<!-- ##### ARG HildonTimeEditor:duration-min ##### -->
+<para>
 
+</para>
+
+<!-- ##### ARG HildonTimeEditor:duration-mode ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG HildonTimeEditor:show-seconds ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG HildonTimeEditor:ticks ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG HildonTimeEditor:duration-max ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG HildonTimeEditor:duration-min ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG HildonTimeEditor:duration-mode ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG HildonTimeEditor:show-seconds ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG HildonTimeEditor:ticks ##### -->
+<para>
+
+</para>
 

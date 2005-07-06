@@ -27,7 +27,7 @@
  *
  * This file contains API for conformation, information
  * and cancel notes. 
- *
+ * 
  * 9/2004 Removed animation type of cancel note as separate task.
  */
 
@@ -45,11 +45,12 @@
 #include <libintl.h>
 #include <hildon-widgets/hildon-defines.h>
 
-/* For now, we use D-BUS directly to request sound playback. This
-   should later be replaced with calls to a wrapper API. */
+#include <stdio.h>
+#include <string.h>
+#include <unistd.h>
+#include <signal.h>
 
-#define DBUS_API_SUBJECT_TO_CHANGE
-#include <dbus/dbus.h>
+#include <esd.h>
 
 /* Can these be included from somewhere? */
 
@@ -58,21 +59,25 @@
 #define OSSO_MEDIA_INTERFACE "com.nokia.osso_media_server.sound"
 #define OSSO_MEDIA_PLAY_METHOD "play_sound"
 
-#define CONFIRMATION_SOUND_PATH "file:///usr/share/sounds/"\
+#define CONFIRMATION_SOUND_URI "file:///usr/share/sounds/"\
                                 "ui-confirmation_note.wav"
-#define INFORMATION_SOUND_PATH "file:///usr/share/sounds/"\
-                               "ui-information_note.wav"
+#define CONFIRMATION_SOUND_PATH "/usr/share/sounds/ui-confirmation_note.wav"
 
-#define HILDON_NOTE_CONFIRMATION_STOCK        "hildon-note-confirmation"
-#define HILDON_NOTE_INFORMATION_STOCK         "hildon-note-info"
-#define HILDON_NOTE_DELETE_CONFIRMATION_STOCK \
-        "hildon-note-delete-confirmation"
+#define INFORMATION_SOUND_URI "file:///usr/share/sounds/"\
+                               "ui-information_note.wav"
+#define INFORMATION_SOUND_PATH "/usr/share/sounds/ui-information_note.wav"
+
+#define HILDON_NOTE_CONFIRMATION_ICON        "qgn_note_confirm"
+#define HILDON_NOTE_INFORMATION_ICON         "qgn_note_info"
+
+/* Not exactly sure what this actually _should_ be, because there is
+   practically no documentation for the ESD... */
+
+#define ESD_NAME "hildon-note-instance"
 
 #define _(String) dgettext(PACKAGE, String)
 
 static GtkDialogClass *parent_class;
-
-#define HILDON_NOTE_TITLE  _("note")
 
 #define HILDON_NOTE_GET_PRIVATE(obj)\
  (G_TYPE_INSTANCE_GET_PRIVATE ((obj), \
@@ -83,10 +88,12 @@ typedef struct _HildonNotePrivate HildonNotePrivate;
 static void hildon_note_class_init(HildonNoteClass * class);
 static void hildon_note_init(HildonNote * dialog);
 
+static void hildon_note_create (HildonNote *note);
 static void hildon_note_create_form(GtkDialog * dialog, GtkWidget * item,
                                     gboolean IsHorizontal);
 static void hildon_note_finalize(GObject * obj_self);
-static void hildon_note_map_event(GtkWidget * widget);
+static void hildon_note_realize (GtkWidget *widget);
+
 static GObject *hildon_note_constructor(GType type,
                                         guint n_construct_properties,
                                         GObjectConstructParam
@@ -99,46 +106,25 @@ static void hildon_note_get_property(GObject * object,
                                      guint prop_id,
                                      GValue * value, GParamSpec * pspec);
 
+static gboolean
+sound_handling(GtkWidget * widget, gpointer data);
+
 /* common measurement */
-const int _HILDON_NOTE_BORDER_WIDTH = 20;       /* for top and bottom
-                                                   border is height, for
-                                                   left and right is
-                                                   width */
-const int _HILDON_NOTE_TEXT_HEIGHT = 26;
-
-/* height, width for confirmation notes and information notes
-   button height 47, text height =24?
-*/
-const int _HILDON_NOTE_CONFIRMATION_TEXT_MIN_WIDTH = 180; /*270-20-20-50*/
-const int _HILDON_NOTE_CONFIRMATION_TEXT_MAX_WIDTH = 370; /*460-20-20-50*/
-const int _HILDON_NOTE_CONFIRMATION_NOTATION_SIDE = 50;
-
-/* height, width for cancel notes with progress bar
- */
-const int _HILDON_NOTE_CANCEL_PROGRESS_HEIGHT = 153; /* 6+24+26+30+20+47 */
-const int _HILDON_NOTE_CANCEL_PROGRESS_WIDTH = 215;
-const int _HILDON_NOTE_PROGRESS_HEIGHT = 30;
-const int _HILDON_NOTE_PROGRESS_WIDTH = 215;
-
-/* height, width for cancel notes with animation
- */
-const int _HILDON_NOTE_CANCEL_ANIME_HEIGHT = 177; /* 6+24+26+54+20+47 */
- /* This is more than in the specifications -> the specification width is 
-    not enough for the button.. (nor the text) */
-const int _HILDON_NOTE_CANCEL_ANIME_WIDTH = 181;
-const int _HILDON_NOTE_ANIME_HEIGHT = 54;
-const int _HILDON_NOTE_ANIME_WIDTH = 26;
+const int _HILDON_NOTE_CONFIRMATION_TEXT_MAX_WIDTH = 319; 
 
 struct _HildonNotePrivate {
     GtkWidget *okButton;
     GtkWidget *cancelButton;
     GtkWidget *label;
+    GtkWidget *box;
 
-    gint note_n;
+    HildonNoteType note_n;
     GtkWidget *progressbar;
     gchar *icon;
 
     gchar *original_description;
+
+    gboolean constructed;
 };
 
 enum {
@@ -148,6 +134,8 @@ enum {
     PROP_HILDON_NOTE_ICON,
     PROP_HILDON_NOTE_PROGRESSBAR
 };
+
+gulong sound_signal_handler = 0;
 
 /* This function is just a modified version of two_lines_truncate
  * in gtk-infoprint.c */
@@ -212,7 +200,8 @@ hildon_note_five_line_truncate(const HildonNote * note, const gchar * text)
             PangoLayoutLine *line;
             gint index = 0;
 
-            if (pango_layout_get_line_count(layout) > 5) {
+            /* Here we ellipsize the last line... */
+            if (pango_layout_get_line_count(layout) > 1) {
                 gchar *templine = NULL;
 
                 line = pango_layout_get_line(layout, 0);
@@ -344,22 +333,35 @@ hildon_note_set_property(GObject * object,
 
     switch (prop_id) {
     case PROP_HILDON_NOTE_TYPE:
-        priv->note_n = g_value_get_int(value);
+        priv->note_n = g_value_get_enum(value);
+        if (priv->constructed) {
+            hildon_note_create (note);
+        }
         break;
+
     case PROP_HILDON_NOTE_DESCRIPTION:
         if (priv->note_n == HILDON_NOTE_PROGRESSBAR_TYPE)
             hildon_note_one_line_truncate(note, g_value_get_string(value));
         else
             hildon_note_five_line_truncate(note, g_value_get_string(value));
         break;
+
     case PROP_HILDON_NOTE_ICON:
-	if( priv->icon )
-	    g_free(priv->icon);
+      	if( priv->icon )
+	        g_free(priv->icon);
         priv->icon = g_value_dup_string(value);
+        if (priv->constructed) {
+            hildon_note_create (note);
+        }
         break;
+
     case PROP_HILDON_NOTE_PROGRESSBAR:
         priv->progressbar = g_value_get_object(value);
+        if (priv->constructed) {
+            hildon_note_create (note);
+        }
         break;
+
     default:
         G_OBJECT_WARN_INVALID_PROPERTY_ID(object, prop_id, pspec);
         break;
@@ -377,8 +379,9 @@ hildon_note_get_property(GObject * object,
 
     switch (prop_id) {
     case PROP_HILDON_NOTE_TYPE:
-        g_value_set_int(value, g_value_get_int(value));
+        g_value_set_enum(value, priv->note_n);
         break;
+
     case PROP_HILDON_NOTE_DESCRIPTION:
         if (priv->original_description != NULL) {
             g_value_set_string(value, priv->original_description);
@@ -386,17 +389,48 @@ hildon_note_get_property(GObject * object,
             g_value_set_string(value, "");
         }
         break;
+
     case PROP_HILDON_NOTE_ICON:
         g_value_set_string(value, priv->icon);
         break;
+
     case PROP_HILDON_NOTE_PROGRESSBAR:
         g_value_set_object(value, priv->progressbar);
         break;
+
     default:
         G_OBJECT_WARN_INVALID_PROPERTY_ID(object, prop_id, pspec);
         break;
     }
 }
+
+GType hildon_note_type_get_type (void)
+{
+  static GType notetype = 0;
+  if (notetype == 0) {
+    static const GEnumValue values[] = {
+      { HILDON_NOTE_CONFIRMATION_TYPE,
+        "HILDON_NOTE_CONFIRMATION_TYPE", 
+        "confirmation" },
+      { HILDON_NOTE_CONFIRMATION_BUTTON_TYPE,
+        "HILDON_NOTE_CONFIRMATION_BUTTON_TYPE",
+        "confirmation-button" },
+      { HILDON_NOTE_INFORMATION_TYPE,
+        "HILDON_NOTE_INFORMATION_TYPE",
+        "note-information" },
+      { HILDON_NOTE_INFORMATION_THEME_TYPE,
+        "HILDON_NOTE_INFORMATION_THEME_TYPE",
+        "note-information-theme" },
+      { HILDON_NOTE_PROGRESSBAR_TYPE,
+        "HILDON_NOTE_PROGRESSBAR_TYPE",
+        "note-progressbar" },
+      { 0, NULL, NULL }
+    };
+    notetype = g_enum_register_static ("HildonNoteType", values);
+  }
+  return notetype;
+}
+
 
 GType hildon_note_get_type()
 {
@@ -414,7 +448,6 @@ GType hildon_note_get_type()
             0,  /* n_preallocs */
             (GInstanceInitFunc) hildon_note_init
         };
-
         dialog_type = g_type_register_static(GTK_TYPE_DIALOG,
                                              "HildonNote",
                                              &dialog_info, 0);
@@ -429,79 +462,14 @@ static GObject *hildon_note_constructor(GType type,
 {
     GObject *dialog;
     HildonNotePrivate *priv;
-    GtkWidget *item = NULL;
-    gboolean IsHorizontal = TRUE;
-
 
     dialog = G_OBJECT_CLASS(parent_class)->constructor
              (type, n_construct_properties, construct_properties);
     priv = HILDON_NOTE_GET_PRIVATE(dialog);
 
-    if (priv->note_n == HILDON_NOTE_CONFIRMATION_TYPE ||
-        priv->note_n == HILDON_NOTE_CONFIRMATION_BUTTON_TYPE ||
-        priv->note_n == HILDON_NOTE_INFORMATION_THEME_TYPE ||
-        priv->note_n == HILDON_NOTE_INFORMATION_TYPE) {
-        if (priv->note_n == HILDON_NOTE_CONFIRMATION_TYPE) {
-            /* ok button clickable with mouse or whatever */
-            priv->okButton = 
-                gtk_dialog_add_button(GTK_DIALOG(dialog),
-                                      _("Ecdg_bd_confirmation_note_ok"),
-                                      GTK_RESPONSE_OK);
-            /* cancel button clickable with mouse or whatever */
-            priv->cancelButton =
-                gtk_dialog_add_button(GTK_DIALOG(dialog),
-                                      _("Ecdg_bd_confirmation_note_cancel"),
-                                      GTK_RESPONSE_CANCEL);
+    hildon_note_create (HILDON_NOTE (dialog));
 
-        } else if (priv->note_n == HILDON_NOTE_INFORMATION_TYPE || 
-		   priv->note_n == HILDON_NOTE_INFORMATION_THEME_TYPE ) {
-            priv->okButton = NULL;
-            /* cancel button clickable with mouse or whatever */
-            priv->cancelButton =
-                gtk_dialog_add_button(GTK_DIALOG(dialog),
-                                      _("Ecdg_bd_information_note_ok"),
-                                      GTK_RESPONSE_CANCEL);
-        }
-
-        gtk_widget_realize(GTK_WIDGET(dialog));
-        gdk_window_set_decorations(GTK_WIDGET(dialog)->window,
-                                   GDK_DECOR_BORDER);
-
-        if ((priv->note_n == HILDON_NOTE_INFORMATION_TYPE || priv->note_n == HILDON_NOTE_INFORMATION_THEME_TYPE) && 
-	    priv->icon) {
-            item = gtk_image_new_from_icon_name(priv->icon,
-                                            HILDON_ICON_SIZE_BIG_NOTE);
-	}
-	else {
-            if (priv->note_n == HILDON_NOTE_CONFIRMATION_TYPE ||
-                priv->note_n == HILDON_NOTE_CONFIRMATION_BUTTON_TYPE) {
-                    item = gtk_image_new_from_icon_name
-                        ("qgn_note_confirm", 
-                         HILDON_ICON_SIZE_50); 
-            } else {
-                    item =
-                        gtk_image_new_from_icon_name
-                        ("qgn_note_info", 
-                         HILDON_ICON_SIZE_50);
-            }
-        }
-
-    } else {
-        priv->cancelButton = 
-            gtk_dialog_add_button(GTK_DIALOG(dialog),
-                                  _("Ecdg_bd_cancel_note_cancel"),
-                                  GTK_RESPONSE_CANCEL);
-        IsHorizontal = FALSE;
-        priv->okButton = NULL;
-
-        item = priv->progressbar;
-
-        gtk_widget_realize(GTK_WIDGET(dialog));
-        gdk_window_set_decorations(GTK_WIDGET(dialog)->window,
-                                   GDK_DECOR_BORDER);
-    }
-
-    hildon_note_create_form(GTK_DIALOG(dialog), item, IsHorizontal);
+    priv->constructed = TRUE;
 
     return dialog;
 }
@@ -518,43 +486,59 @@ static void hildon_note_class_init(HildonNoteClass * class)
 
     object_class->finalize = hildon_note_finalize;
 
-    widget_class->map = hildon_note_map_event;
     object_class->set_property = hildon_note_set_property;
     object_class->get_property = hildon_note_get_property;
     object_class->constructor = hildon_note_constructor;
 
+    widget_class->realize = hildon_note_realize;
+
     g_object_class_install_property(object_class,
         PROP_HILDON_NOTE_TYPE,
-        g_param_spec_int("note_type",
-                         "note type",
-                         "Set type to dialog",
-                         0, 5, 5,
-                         G_PARAM_CONSTRUCT_ONLY | G_PARAM_READWRITE));
+        g_param_spec_enum("note_type",
+                          "note type",
+                          "The type of the note dialog",
+                          hildon_note_type_get_type(),
+                          HILDON_NOTE_CONFIRMATION_TYPE,
+                          G_PARAM_READWRITE));
 
+  /**
+   * HildonNote:description:
+   *
+   * Description for note.
+   */
     g_object_class_install_property(object_class,
         PROP_HILDON_NOTE_DESCRIPTION,
         g_param_spec_string("description",
                             "note description",
-                            "Description for note",
+                            "The text that appears in the note dialog",
                             "",
-                            G_PARAM_READABLE | G_PARAM_WRITABLE));
+                            G_PARAM_READWRITE));
 
+  /**
+   * HildonNote:icon:
+   *
+   * Icon for note.
+   */
     g_object_class_install_property(object_class,
         PROP_HILDON_NOTE_ICON,
         g_param_spec_string("icon",
                             "note icon",
-                            "Icon for note",
+                            "The name of the icon that appears in the note dialog",
                             "",
-                            G_PARAM_CONSTRUCT_ONLY
-                            | G_PARAM_READABLE
-                            | G_PARAM_WRITABLE));
+                            G_PARAM_READWRITE));
+
+  /**
+   * HildonNote:progressbar:
+   *
+   * Progresbar for note.
+   */
     g_object_class_install_property(object_class,
         PROP_HILDON_NOTE_PROGRESSBAR,
         g_param_spec_object("progressbar",
                             "Progressbar widget",
-                            "The progressbar for note",
+                            "The progressbar that appear in the note dialog",
                             GTK_TYPE_PROGRESS_BAR,
-                            G_PARAM_CONSTRUCT_ONLY | G_PARAM_READWRITE));
+                            G_PARAM_READWRITE));
 }
 
 static void hildon_note_init(HildonNote * dialog)
@@ -564,124 +548,167 @@ static void hildon_note_init(HildonNote * dialog)
     priv->label = gtk_label_new(NULL);
     priv->original_description = NULL;
     priv->icon = NULL;
-
+    
     gtk_dialog_set_has_separator(GTK_DIALOG(dialog), FALSE);
     gtk_window_set_modal(GTK_WINDOW(dialog), TRUE);
-    gtk_window_set_title(GTK_WINDOW(dialog), HILDON_NOTE_TITLE);
+
+    /* Because ESD is synchronous, we wish to play sound after the
+       note is already on screen to avoid blocking its appearance */
+    sound_signal_handler = 
+      g_signal_connect_after(G_OBJECT(dialog), "expose-event",
+			     G_CALLBACK(sound_handling), dialog);
 }
 
-static void hildon_note_map_event(GtkWidget * widget)
-{
-  DBusConnection *conn = NULL;
-  DBusMessage *msg = NULL;
-  DBusError err;
-  dbus_bool_t b;
-  HildonNotePrivate *priv = HILDON_NOTE_GET_PRIVATE(widget);
-
-  GTK_WIDGET_CLASS (parent_class)->map(widget);
-
-  /* Is the type of the note such that we will have to play a sound? */
-
-  if (priv->note_n != HILDON_NOTE_INFORMATION_TYPE &&
-      priv->note_n != HILDON_NOTE_INFORMATION_THEME_TYPE &&
-      priv->note_n != HILDON_NOTE_CONFIRMATION_TYPE &&
-      priv->note_n != HILDON_NOTE_CONFIRMATION_BUTTON_TYPE)
-    {
-      return;
-    }
-
-  dbus_error_init(&err);
-  conn = dbus_bus_get(DBUS_BUS_SESSION, &err);
-
-  if (conn == NULL)
-    {
-      dbus_error_free(&err);
-      return;
-    }
-
-  msg = dbus_message_new_method_call(OSSO_MEDIA_SERVICE, 
-				     OSSO_MEDIA_PATH,
-				     OSSO_MEDIA_INTERFACE, 
-				     OSSO_MEDIA_PLAY_METHOD);
-  if (msg == NULL)
-    {
-      dbus_connection_unref(conn);
-      return;
-    }
-
-  dbus_message_set_auto_activation(msg, FALSE);
-  dbus_message_set_no_reply(msg, TRUE);
-
-  if (priv->note_n == HILDON_NOTE_INFORMATION_TYPE ||
-      priv->note_n == HILDON_NOTE_INFORMATION_THEME_TYPE)
-    {
-      dbus_message_append_args(msg, DBUS_TYPE_STRING, INFORMATION_SOUND_PATH,
-			       DBUS_TYPE_INT32, 1, DBUS_TYPE_INVALID);
-    }
-  else if (priv->note_n == HILDON_NOTE_CONFIRMATION_TYPE ||
-	   priv->note_n ==  HILDON_NOTE_CONFIRMATION_BUTTON_TYPE)
-    {
-      dbus_message_append_args(msg, DBUS_TYPE_STRING,
-			       CONFIRMATION_SOUND_PATH,
-			       DBUS_TYPE_INT32, 1, DBUS_TYPE_INVALID);
-    }
-
-  b = dbus_connection_send(conn, msg, NULL);
-
-  if (!b)
-    {
-      dbus_message_unref(msg);
-      return;
-    }
-  dbus_connection_flush(conn);
-  dbus_message_unref(msg);
-  
-}
 
 static void hildon_note_finalize(GObject * obj_self)
 {
     HildonNotePrivate *priv = HILDON_NOTE_GET_PRIVATE(obj_self);
-
-    if (G_OBJECT_CLASS(parent_class)->finalize)
-        G_OBJECT_CLASS(parent_class)->finalize(obj_self);
 
     if(priv->icon)
 	g_free(priv->icon);
 
     if (priv->original_description != NULL)
         g_free(priv->original_description);
+
+    G_OBJECT_CLASS(parent_class)->finalize(obj_self);
+}
+
+static void
+hildon_note_realize (GtkWidget *widget)
+{
+    GTK_WIDGET_CLASS (parent_class)->realize (widget);
+
+    gdk_window_set_decorations (widget->window, GDK_DECOR_BORDER);
+}
+
+static void
+hildon_note_create (HildonNote *note)
+{
+    HildonNotePrivate *priv;
+    GtkWidget *item = NULL;
+    gboolean IsHorizontal = TRUE;
+
+    priv = HILDON_NOTE_GET_PRIVATE (note);
+
+    if (priv->okButton) {
+        gtk_container_remove (GTK_CONTAINER (priv->okButton->parent),
+                              priv->okButton);
+        priv->okButton = NULL;
+    }
+
+    if (priv->cancelButton) {
+        gtk_container_remove (GTK_CONTAINER (priv->cancelButton->parent),
+                              priv->cancelButton);
+        priv->cancelButton = NULL;
+    }
+
+    if (priv->progressbar && priv->progressbar->parent) {
+        gtk_container_remove (GTK_CONTAINER (priv->progressbar->parent),
+                              priv->progressbar);
+        priv->progressbar = NULL;
+    }
+
+    if (priv->note_n == HILDON_NOTE_CONFIRMATION_TYPE ||
+        priv->note_n == HILDON_NOTE_CONFIRMATION_BUTTON_TYPE ||
+        priv->note_n == HILDON_NOTE_INFORMATION_THEME_TYPE ||
+        priv->note_n == HILDON_NOTE_INFORMATION_TYPE) {
+
+        if (priv->note_n == HILDON_NOTE_CONFIRMATION_TYPE) {
+            /* ok button clickable with mouse or whatever */
+            priv->okButton = 
+                gtk_dialog_add_button(GTK_DIALOG(note),
+                                      _("Ecdg_bd_confirmation_note_ok"),
+                                      GTK_RESPONSE_OK);
+            /* cancel button clickable with mouse or whatever */
+            priv->cancelButton =
+                gtk_dialog_add_button(GTK_DIALOG(note),
+                                      _("Ecdg_bd_confirmation_note_cancel"),
+                                      GTK_RESPONSE_CANCEL);
+
+        } else if (priv->note_n == HILDON_NOTE_INFORMATION_TYPE || 
+		   priv->note_n == HILDON_NOTE_INFORMATION_THEME_TYPE ) {
+            priv->okButton = NULL;
+            /* cancel button clickable with mouse or whatever */
+            priv->cancelButton =
+                gtk_dialog_add_button(GTK_DIALOG(note),
+                                      _("Ecdg_bd_information_note_ok"),
+                                      GTK_RESPONSE_CANCEL);
+        }
+
+        if ((priv->note_n == HILDON_NOTE_INFORMATION_TYPE ||
+            priv->note_n == HILDON_NOTE_INFORMATION_THEME_TYPE) && 
+	          priv->icon)
+        {
+            item = gtk_image_new_from_icon_name(priv->icon,
+                                            HILDON_ICON_SIZE_BIG_NOTE);
+        }
+        else {
+          if (priv->note_n == HILDON_NOTE_CONFIRMATION_TYPE ||
+            priv->note_n == HILDON_NOTE_CONFIRMATION_BUTTON_TYPE)
+          {
+            item = gtk_image_new_from_icon_name(HILDON_NOTE_CONFIRMATION_ICON, 
+                                                HILDON_ICON_SIZE_BIG_NOTE);
+          } else {
+            item = gtk_image_new_from_icon_name(HILDON_NOTE_INFORMATION_ICON, 
+                                                HILDON_ICON_SIZE_BIG_NOTE);
+            }
+        }
+
+    } else {
+        priv->cancelButton = 
+            gtk_dialog_add_button(GTK_DIALOG(note),
+                                  _("Ecdg_bd_cancel_note_cancel"),
+                                  GTK_RESPONSE_CANCEL);
+        IsHorizontal = FALSE;
+
+        item = priv->progressbar;
+    }
+
+    hildon_note_create_form(GTK_DIALOG(note), item, IsHorizontal);
 }
 
 static void
 hildon_note_create_form(GtkDialog * dialog, GtkWidget * item,
                         gboolean IsHorizontal)
 {
-    GtkWidget *box;
     HildonNotePrivate *priv = HILDON_NOTE_GET_PRIVATE(dialog);
 
+    g_object_ref (priv->label);
+
+    if (priv->label->parent) {
+        gtk_container_remove (GTK_CONTAINER (priv->label->parent), priv->label);
+    }
+
+    if (priv->box) {
+        gtk_container_remove (GTK_CONTAINER (priv->box->parent), priv->box);
+        priv->box = NULL;
+    }
+
     if (IsHorizontal) {
-        box = gtk_hbox_new(FALSE, 10);
-        gtk_container_add(GTK_CONTAINER(dialog->vbox), box);
+        priv->box = gtk_hbox_new(FALSE, 10);
+        gtk_container_add(GTK_CONTAINER(dialog->vbox), priv->box);
 
         if (item) {
             GtkWidget *alignment = gtk_alignment_new(0, 0, 0, 0);
 
-            gtk_box_pack_start(GTK_BOX(box), alignment, FALSE, FALSE, 0);
+            gtk_box_pack_start(GTK_BOX(priv->box), alignment, FALSE, FALSE, 0);
             gtk_container_add(GTK_CONTAINER(alignment), item);
         }
-        gtk_box_pack_start(GTK_BOX(box), priv->label, FALSE, FALSE, 0);
+        gtk_box_pack_start(GTK_BOX(priv->box), priv->label, FALSE, FALSE, 0);
 
     } else {
-        box = gtk_vbox_new(FALSE, 10);
-        gtk_container_add(GTK_CONTAINER(dialog->vbox), box);
-        gtk_box_pack_start(GTK_BOX(box), priv->label, FALSE, FALSE, 0);
+        priv->box = gtk_vbox_new(FALSE, 10);
+        gtk_container_add(GTK_CONTAINER(dialog->vbox), priv->box);
+        gtk_box_pack_start(GTK_BOX(priv->box), priv->label, FALSE, FALSE, 0);
 
         if (item) {
-            gtk_box_pack_start(GTK_BOX(box), item, FALSE, FALSE, 0);
+            gtk_box_pack_start(GTK_BOX(priv->box), item, FALSE, FALSE, 0);
         }
     }
     
-    gtk_widget_show_all(box);
+    gtk_widget_show_all(priv->box);
+
+    g_object_unref (priv->label);
 }
 
 /**
@@ -712,7 +739,7 @@ GtkWidget *hildon_note_new_confirmation_add_buttons(GtkWindow * parent,
         g_object_new(HILDON_TYPE_NOTE,
                      "note_type", HILDON_NOTE_CONFIRMATION_BUTTON_TYPE,
                      "description", description,
-                     "icon", "qgn_note_confirm", /*HILDON_NOTE_CONFIRMATION_STOCK, */
+                     "icon", HILDON_NOTE_CONFIRMATION_ICON, 
                      NULL);
 
     g_return_val_if_fail(conf_note, FALSE);
@@ -757,7 +784,7 @@ GtkWidget *hildon_note_new_confirmation(GtkWindow * parent,
                                         const gchar * description)
 {
     return hildon_note_new_confirmation_with_icon_name
-        (parent, description, "qgn_note_confirm"); /*HILDON_NOTE_CONFIRMATION_STOCK);*/
+        (parent, description, HILDON_NOTE_CONFIRMATION_ICON);
 }
 
 
@@ -1004,4 +1031,66 @@ void hildon_note_set_button_text(HildonNote * note, const gchar * text)
     } else {
         gtk_button_set_label(GTK_BUTTON(priv->cancelButton), text);
     }
+}
+
+/**
+ * hildon_note_set_button_texts:
+ * @note: A #HildonNote
+ * @text: Sets the button text and if there is two buttons in dialog, 
+ *   the button texts will be &lt;textOk&gt;, &lt;textCancel&gt;.  
+ *
+ * Sets the button texts to be used by this hildon_note widget.
+ */
+void hildon_note_set_button_texts(HildonNote * note, const gchar * textOk,
+				 const gchar * textCancel)
+{
+    HildonNotePrivate *priv;
+
+    priv = HILDON_NOTE_GET_PRIVATE(HILDON_NOTE(note));
+    if (priv->okButton) {
+      gtk_button_set_label(GTK_BUTTON(priv->okButton), textOk);
+      gtk_button_set_label(GTK_BUTTON(priv->cancelButton),
+			   textCancel);
+    } else {
+      gtk_button_set_label(GTK_BUTTON(priv->cancelButton), textCancel);
+    }
+}
+
+
+
+static gboolean
+sound_handling(GtkWidget * widget, gpointer data)
+{
+  
+  HildonNotePrivate *priv = HILDON_NOTE_GET_PRIVATE(HILDON_NOTE(widget));
+
+  if (priv->note_n != HILDON_NOTE_INFORMATION_TYPE &&
+      priv->note_n != HILDON_NOTE_INFORMATION_THEME_TYPE &&
+      priv->note_n != HILDON_NOTE_CONFIRMATION_TYPE &&
+      priv->note_n != HILDON_NOTE_CONFIRMATION_BUTTON_TYPE)
+    {
+      g_signal_handler_disconnect(G_OBJECT(widget),
+				  sound_signal_handler);
+      return FALSE;
+    }
+
+  if (priv->note_n == HILDON_NOTE_INFORMATION_TYPE ||
+      priv->note_n == HILDON_NOTE_INFORMATION_THEME_TYPE)
+    {
+      esd_play_file(ESD_NAME, INFORMATION_SOUND_PATH, 1);
+
+      g_signal_handler_disconnect(G_OBJECT(widget), sound_signal_handler);
+      return FALSE;
+    }
+
+    else if (priv->note_n == HILDON_NOTE_CONFIRMATION_TYPE ||
+	   priv->note_n ==  HILDON_NOTE_CONFIRMATION_BUTTON_TYPE)
+    {
+      esd_play_file(ESD_NAME, CONFIRMATION_SOUND_PATH, 1);
+
+      g_signal_handler_disconnect(G_OBJECT(widget), sound_signal_handler);
+      return FALSE;
+    }
+  g_signal_handler_disconnect(G_OBJECT(widget), sound_signal_handler);
+  return FALSE;
 }

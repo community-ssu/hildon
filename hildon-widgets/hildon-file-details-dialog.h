@@ -63,8 +63,10 @@ struct _HildonFileDetailsDialogClass {
 GType hildon_file_details_dialog_get_type(void) G_GNUC_CONST;
 
 /* Depricated constructor... */
+#ifndef HILDON_DISABLE_DEPRECATED
 GtkWidget *hildon_file_details_dialog_new(GtkWindow * parent,
   const gchar * filename);
+#endif
 
 /* New API inspired by GtkComboBox */
 GtkWidget *hildon_file_details_dialog_new_with_model(GtkWindow *parent,

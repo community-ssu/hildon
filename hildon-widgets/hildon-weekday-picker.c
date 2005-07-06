@@ -61,7 +61,7 @@
 #include "hildon-weekday-picker.h"
 #include "hildon-composite-widget.h"
 
-#define _(String) gettext (String)
+#define _(string) dgettext(PACKAGE, string)
 
 #define HILDON_WEEKDAY_PICKER_GET_PRIVATE(obj) \
     (G_TYPE_INSTANCE_GET_PRIVATE ((obj), \

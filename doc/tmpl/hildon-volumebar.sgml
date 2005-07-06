@@ -22,15 +22,6 @@ the volume by clicking on a specific mute icon.
 </para>
 
 
-<!-- ##### STRUCT HildonVolumebarClass ##### -->
-<para>
-
-</para>
-
-@parent_class: 
-@mute_toggled: 
-@level_changed: 
-
 <!-- ##### FUNCTION hildon_volumebar_set_level ##### -->
 <para>
 
@@ -98,7 +89,22 @@ the volume by clicking on a specific mute icon.
 
 @hildonvolumebar: the object which received the signal.
 
+<!-- ##### ARG HildonVolumebar:can-focus ##### -->
+<para>
+
+</para>
+
 <!-- ##### ARG HildonVolumebar:has-mute ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG HildonVolumebar:level ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG HildonVolumebar:mute ##### -->
 <para>
 
 </para>

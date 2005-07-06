@@ -171,13 +171,6 @@ The widget is used where a user should enter a phone number. Free format should 
 @number: 
 
 
-<!-- ##### SIGNAL HildonTelephoneEditor::activate ##### -->
-<para>
-
-</para>
-
-@hildontelephoneeditor: the object which received the signal.
-
 <!-- ##### ARG HildonTelephoneEditor:set-area ##### -->
 <para>
 

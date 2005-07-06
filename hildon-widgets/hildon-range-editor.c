@@ -48,24 +48,24 @@
 #include <glib/gprintf.h>
 #include <string.h>
 #include <stdlib.h>
+#include <hildon-widgets/hildon-input-mode-hint.h>
 
-#include <hildon-widgets/hildon-range-editor.h>
+#include "hildon-range-editor.h"
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif
 
 #include <libintl.h>
-#define _(String) gettext(String)
+#define _(string) dgettext(PACKAGE, string)
 
 /* Alignment in entry box ( 0 = left, 1 = right ) */
 #define DEFAULT_ALIGNMENT 1
 /* Amount of padding to add to each side of the separator */
 #define DEFAULT_PADDING 3
 
-#define DEFAULT_SEPARATOR _("-")
-#define DEFAULT_START -999 /*_("-999")*/
-#define DEFAULT_END 999 /*_("999")*/
+#define DEFAULT_START -999
+#define DEFAULT_END 999
 #define DEFAULT_LENGTH 4
 
 #define HILDON_RANGE_EDITOR_GET_PRIVATE(obj) \
@@ -73,6 +73,15 @@
  HILDON_RANGE_EDITOR_TYPE, HildonRangeEditorPrivate));
 
 typedef struct _HildonRangeEditorPrivate HildonRangeEditorPrivate;
+
+enum
+{
+  PROP_LOWER = 1,
+  PROP_HIGHER,
+  PROP_MIN,
+  PROP_MAX,
+  PROP_SEPARATOR
+};
 
 /*our parent class*/
 static GtkContainerClass *parent_class = NULL;
@@ -117,6 +126,11 @@ static gboolean
 hildon_range_editor_mnemonic_activate (GtkWidget *widget,
                                        gboolean group_cycling);
 
+static void hildon_range_editor_set_property( GObject *object, guint param_id,
+                                       const GValue *value, GParamSpec *pspec );
+static void hildon_range_editor_get_property( GObject *object, guint param_id,
+                                         GValue *value, GParamSpec *pspec );
+
 /* Private struct */
 struct _HildonRangeEditorPrivate
 {
@@ -132,6 +146,7 @@ struct _HildonRangeEditorPrivate
 static void
 hildon_range_editor_class_init  (HildonRangeEditorClass *editor_class)
 {
+    GObjectClass *gobject_class = G_OBJECT_CLASS(editor_class);
     GtkWidgetClass *widget_class = GTK_WIDGET_CLASS(editor_class);
     GtkContainerClass *container_class = GTK_CONTAINER_CLASS(editor_class);
 
@@ -142,6 +157,8 @@ hildon_range_editor_class_init  (HildonRangeEditorClass *editor_class)
     g_type_class_add_private(editor_class,
                              sizeof(HildonRangeEditorPrivate));
 
+    gobject_class->set_property = hildon_range_editor_set_property;
+    gobject_class->get_property = hildon_range_editor_get_property;
     widget_class->size_request = hildon_range_editor_size_request;
     widget_class->size_allocate = hildon_range_editor_size_allocate;
 
@@ -165,7 +182,75 @@ hildon_range_editor_class_init  (HildonRangeEditorClass *editor_class)
                          DEFAULT_PADDING,
                          G_PARAM_READABLE));
 
-    return;
+  /**
+   * HildonRangeEditor:min:
+   *
+   * Minimum value in a range.
+   * Default: -999
+   */
+  g_object_class_install_property( gobject_class, PROP_MIN,
+                                   g_param_spec_int("min",
+                                   "Minimum value",
+                                   "Minimum value in a range",
+                                   G_MININT, G_MAXINT,
+                                   DEFAULT_START, G_PARAM_CONSTRUCT | 
+                                   G_PARAM_READABLE | G_PARAM_WRITABLE) );
+
+  /**
+   * HildonRangeEditor:max:
+   *
+   * Maximum value in a range.
+   * Default: 999
+   */
+  g_object_class_install_property( gobject_class, PROP_MAX,
+                                   g_param_spec_int("max",
+                                   "Maximum value",
+                                    "Maximum value in a range",
+                                   G_MININT, G_MAXINT,
+                                   DEFAULT_END, G_PARAM_CONSTRUCT | 
+                                   G_PARAM_READABLE | G_PARAM_WRITABLE) );
+
+  /**
+   * HildonRangeEditor:lower:
+   *
+   * Current value in the entry presenting lower end of selected range.
+   * Default: -999
+   */
+  g_object_class_install_property( gobject_class, PROP_LOWER,
+                                   g_param_spec_int("lower",
+                                   "Current lower value",
+           "Current value in the entry presenting lower end of selected range",
+                                   G_MININT, G_MAXINT,
+                                   DEFAULT_START, G_PARAM_CONSTRUCT | 
+                                   G_PARAM_READABLE | G_PARAM_WRITABLE) );
+
+  /**
+   * HildonRangeEditor:higher:
+   *
+   * Current value in the entry presenting higher end of selected range.
+   * Default: 999
+   */
+  g_object_class_install_property( gobject_class, PROP_HIGHER,
+                                   g_param_spec_int("higher",
+                                   "Current higher value",
+           "Current value in the entry presenting higher end of selected range",
+                                   G_MININT, G_MAXINT,
+                                   DEFAULT_END, G_PARAM_CONSTRUCT | 
+                                   G_PARAM_READABLE | G_PARAM_WRITABLE) );
+
+  /**
+   * HildonRangeEditor:separator:
+   *
+   * Separator string to separate range editor entries.
+   * Default: "-"
+   */
+  g_object_class_install_property( gobject_class, PROP_SEPARATOR,
+                                   g_param_spec_string("separator",
+                                   "Separator",
+                                    "Separator string to separate entries",
+                                   _("Ckct_wi_range_separator"),
+                                   G_PARAM_CONSTRUCT | 
+                                   G_PARAM_READABLE | G_PARAM_WRITABLE) );
 }
 
 static void
@@ -184,9 +269,9 @@ hildon_range_editor_init (HildonRangeEditor *editor)
     
     priv->start_entry = GTK_WIDGET(gtk_entry_new());
     priv->end_entry = GTK_WIDGET(gtk_entry_new());
-    priv->label = GTK_WIDGET(gtk_label_new(DEFAULT_SEPARATOR));
+    priv->label = GTK_WIDGET(gtk_label_new(_("Ckct_wi_range_separator")));
     priv->bp = FALSE;
-    
+
     /* Get values from gtkrc (or use defaults) */
     gtk_widget_style_get(GTK_WIDGET(editor),
                          "hildon_range_editor_entry_alignment",
@@ -204,13 +289,6 @@ hildon_range_editor_init (HildonRangeEditor *editor)
     gtk_entry_set_alignment(GTK_ENTRY(priv->end_entry),
                             range_editor_entry_alignment);
 
-/*    gtk_entry_set_text(GTK_ENTRY(priv->start_entry), DEFAULT_START);
-    gtk_entry_set_text(GTK_ENTRY(priv->end_entry), DEFAULT_END);
-    gtk_entry_set_max_length(GTK_ENTRY(priv->start_entry), DEFAULT_LENGTH);
-    gtk_entry_set_max_length(GTK_ENTRY(priv->end_entry), DEFAULT_LENGTH);
-    gtk_entry_set_width_chars(GTK_ENTRY(priv->start_entry), DEFAULT_LENGTH);
-    gtk_entry_set_width_chars(GTK_ENTRY(priv->end_entry), DEFAULT_LENGTH);
-  */  
     gtk_widget_set_parent(priv->start_entry, GTK_WIDGET(editor));
     gtk_widget_set_parent(priv->end_entry, GTK_WIDGET(editor));
     gtk_widget_set_parent(priv->label, GTK_WIDGET(editor));
@@ -240,13 +318,81 @@ hildon_range_editor_init (HildonRangeEditor *editor)
     g_signal_connect(G_OBJECT(priv->end_entry), "focus-out-event",
                      G_CALLBACK(hildon_range_editor_entry_focus_out), editor);
                        
+    g_object_set( G_OBJECT(priv->start_entry),
+                    "input-mode", HILDON_INPUT_MODE_HINT_NUMERIC, NULL );
+    g_object_set( G_OBJECT(priv->end_entry),
+                    "input-mode", HILDON_INPUT_MODE_HINT_NUMERIC, NULL );
+    
     gtk_widget_show(priv->start_entry);
     gtk_widget_show(priv->end_entry);
     gtk_widget_show(priv->label);
 
-    hildon_range_editor_set_limits(editor, DEFAULT_START, DEFAULT_END);
-    
     gtk_widget_pop_composite_child();
+}
+
+static void hildon_range_editor_set_property (GObject *object, guint param_id,
+                                       const GValue *value, GParamSpec *pspec)
+{
+  HildonRangeEditor *editor = HILDON_RANGE_EDITOR(object);
+  switch (param_id)
+  {
+    case PROP_LOWER:
+      hildon_range_editor_set_lower (editor, g_value_get_int (value));
+      break;
+
+    case PROP_HIGHER:
+      hildon_range_editor_set_higher (editor, g_value_get_int (value));
+      break;
+
+    case PROP_MIN:
+      hildon_range_editor_set_min (editor, g_value_get_int (value));
+      break;
+
+    case PROP_MAX:
+      hildon_range_editor_set_max (editor, g_value_get_int (value));
+      break;
+
+    case PROP_SEPARATOR:
+      hildon_range_editor_set_separator (editor,
+                                         g_value_get_string (value));
+      break;
+
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID(object, param_id, pspec);
+      break;
+  }
+}
+
+static void hildon_range_editor_get_property( GObject *object, guint param_id,
+                                         GValue *value, GParamSpec *pspec )
+{
+  HildonRangeEditor *editor = HILDON_RANGE_EDITOR(object);
+  switch (param_id)
+  {
+    case PROP_LOWER:
+      g_value_set_int (value, hildon_range_editor_get_lower (editor));
+      break;
+
+    case PROP_HIGHER:
+      g_value_set_int (value, hildon_range_editor_get_higher (editor));
+      break;
+
+    case PROP_MIN:
+      g_value_set_int (value, hildon_range_editor_get_min (editor));
+      break;
+
+    case PROP_MAX:
+      g_value_set_int (value, hildon_range_editor_get_max (editor));
+      break;
+
+    case PROP_SEPARATOR:
+      g_value_set_string (value, hildon_range_editor_get_separator (editor));
+      break;
+
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID(object, param_id, pspec);
+      break;
+  }
 }
 
 static gboolean
@@ -361,8 +507,7 @@ hildon_range_editor_size_request(GtkWidget *widget,
     requisition->width = mreq.width * 2 + lab_req.width +
                          widget->style->xthickness * 2;
     requisition->height = mreq.height + widget->style->ythickness * 2;
-    requisition->height = (requisition->height > lab_req.height) ?
-                           requisition->height : lab_req.height;
+    requisition->height = MAX (requisition->height, lab_req.height);
 }
 
 static void
@@ -466,12 +611,12 @@ hildon_range_editor_entry_keypress(GtkWidget *widget, GdkEventKey *event,
       gtk_widget_grab_focus(wdgt);
       if (widget == priv->start_entry)
       {
-        gtk_editable_set_position(GTK_EDITABLE(priv->end_entry), -1);
+        gtk_editable_set_position(GTK_EDITABLE(wdgt), -1);
         gtk_editable_select_region(GTK_EDITABLE(wdgt), 0, -1);
       }
       else
       {
-        gtk_editable_set_position(GTK_EDITABLE(priv->end_entry), 0);
+        gtk_editable_set_position(GTK_EDITABLE(wdgt), 0);
         gtk_editable_select_region(GTK_EDITABLE(wdgt), -1, 0);
       }
     }
@@ -549,16 +694,8 @@ hildon_range_editor_new (void)
 GtkWidget *
 hildon_range_editor_new_with_separator (gchar *separator)
 {
-    HildonRangeEditor *editor;
-    HildonRangeEditorPrivate *priv;
-
-    editor = g_object_new(HILDON_RANGE_EDITOR_TYPE, NULL);
-    priv = HILDON_RANGE_EDITOR_GET_PRIVATE(editor);
-
-    if (separator)
-      gtk_label_set_text(GTK_LABEL(priv->label), separator);
-
-    return GTK_WIDGET(editor);
+    return GTK_WIDGET (g_object_new (HILDON_RANGE_EDITOR_TYPE,
+                                     "separator", separator, NULL));
 }
 
 
@@ -575,28 +712,11 @@ hildon_range_editor_new_with_separator (gchar *separator)
 void
 hildon_range_editor_set_range (HildonRangeEditor *editor, gint start, gint end)
 {
-    HildonRangeEditorPrivate *priv;
-    gchar start_range[12];
-    gchar end_range[12];
+    g_return_if_fail (editor);
+    g_return_if_fail (HILDON_IS_RANGE_EDITOR (editor));
 
-    g_return_if_fail(editor);
-    g_return_if_fail(HILDON_IS_RANGE_EDITOR(editor));
-
-    priv = HILDON_RANGE_EDITOR_GET_PRIVATE(editor);
-
-    if (priv->range_limits_start <= start && priv->range_limits_end >= start)
-      g_sprintf(start_range, "%d", start);
-    else
-      g_sprintf(start_range, "%d", priv->range_limits_start);
-
-    gtk_entry_set_text(GTK_ENTRY(priv->start_entry), start_range);
-    
-    if (priv->range_limits_start <= end && priv->range_limits_end >= end)
-      g_sprintf(end_range, "%d", end);
-    else
-      g_sprintf(end_range, "%d", priv->range_limits_end);
-
-    gtk_entry_set_text(GTK_ENTRY(priv->end_entry), end_range);
+    hildon_range_editor_set_lower (editor, start);
+    hildon_range_editor_set_higher (editor, end);
 }
 
 
@@ -613,11 +733,12 @@ hildon_range_editor_get_range (HildonRangeEditor *editor, gint *start,
                                gint *end)
 {
     HildonRangeEditorPrivate *priv;
-    g_return_if_fail (HILDON_IS_RANGE_EDITOR(editor) || start || end);
-    priv = HILDON_RANGE_EDITOR_GET_PRIVATE(editor);
+    g_return_if_fail (editor);
+    g_return_if_fail (HILDON_IS_RANGE_EDITOR (editor) || start || end);
+    priv = HILDON_RANGE_EDITOR_GET_PRIVATE (editor);
 
-    *start = g_strtod(GTK_ENTRY(priv->start_entry)->text, NULL);
-    *end = g_strtod(GTK_ENTRY(priv->end_entry)->text, NULL);
+    *start = hildon_range_editor_get_lower (editor);
+    *end = hildon_range_editor_get_higher (editor);
 }
 
 
@@ -639,43 +760,184 @@ void
 hildon_range_editor_set_limits (HildonRangeEditor *editor, gint start,
                                 gint end)
 {
+    hildon_range_editor_set_min (editor, start);
+    hildon_range_editor_set_max (editor, end);
+}
+
+void
+hildon_range_editor_set_lower (HildonRangeEditor *editor, gint value)
+{
     HildonRangeEditorPrivate *priv;
-    gchar start_range[12];
-    gchar end_range[12];
-    gint lenght = 0;
-    gint at, bt;
-    
-    g_return_if_fail(editor);
-    g_return_if_fail(HILDON_IS_RANGE_EDITOR(editor));
+    gchar range[12];
+    g_return_if_fail (editor);
+    g_return_if_fail (HILDON_IS_RANGE_EDITOR (editor));
+    priv = HILDON_RANGE_EDITOR_GET_PRIVATE (editor);
 
-    priv = HILDON_RANGE_EDITOR_GET_PRIVATE(editor);
-
-    if(start>end)
-    {
-      gint tmp = start;
-      start = end;
-      end = tmp;
-    }
-    
-    g_sprintf(start_range, "%d", start);
-    g_sprintf(end_range, "%d", end);
-    
-    at = strlen( start_range );
-    bt = strlen( end_range );
-    
-    if (at > bt)
-      lenght = at;
+    if (priv->range_limits_start <= value && priv->range_limits_end >= value)
+      g_sprintf (range, "%d", value);
     else
-      lenght = bt;
-    
-    gtk_entry_set_width_chars(GTK_ENTRY(priv->start_entry), lenght);
-    gtk_entry_set_max_length(GTK_ENTRY(priv->start_entry), lenght);
-    gtk_entry_set_text(GTK_ENTRY(priv->start_entry), start_range);
+      g_sprintf (range, "%d", priv->range_limits_start);
 
-    gtk_entry_set_width_chars(GTK_ENTRY(priv->end_entry), lenght);
-    gtk_entry_set_max_length(GTK_ENTRY(priv->end_entry), lenght);
-    gtk_entry_set_text(GTK_ENTRY(priv->end_entry), end_range);
+    gtk_entry_set_text (GTK_ENTRY (priv->start_entry), range);
+    g_object_notify (G_OBJECT (editor), "lower");
+}
 
-    priv->range_limits_start = start;
-    priv->range_limits_end = end;
+void
+hildon_range_editor_set_higher (HildonRangeEditor *editor, gint value)
+{
+    HildonRangeEditorPrivate *priv;
+    gchar range[12];
+    g_return_if_fail (editor);
+    g_return_if_fail (HILDON_IS_RANGE_EDITOR (editor));
+    priv = HILDON_RANGE_EDITOR_GET_PRIVATE (editor);
+
+    if (priv->range_limits_start <= value && priv->range_limits_end >= value)
+      g_sprintf (range, "%d", value);
+    else
+      g_sprintf (range, "%d", priv->range_limits_end);
+
+    gtk_entry_set_text (GTK_ENTRY (priv->end_entry), range);
+    g_object_notify (G_OBJECT (editor), "higher");
+}
+
+gint
+hildon_range_editor_get_lower (HildonRangeEditor *editor)
+{
+    HildonRangeEditorPrivate *priv;
+    g_return_val_if_fail (editor, 0);
+    g_return_val_if_fail (HILDON_IS_RANGE_EDITOR (editor), 0);
+    priv = HILDON_RANGE_EDITOR_GET_PRIVATE (editor);
+
+    return (gint)g_strtod (GTK_ENTRY (priv->start_entry)->text, NULL);
+}
+
+gint
+hildon_range_editor_get_higher (HildonRangeEditor *editor)
+{
+    HildonRangeEditorPrivate *priv;
+    g_return_val_if_fail (editor, 0);
+    g_return_val_if_fail (HILDON_IS_RANGE_EDITOR (editor), 0);
+    priv = HILDON_RANGE_EDITOR_GET_PRIVATE (editor);
+
+    return (gint)g_strtod (GTK_ENTRY (priv->end_entry)->text, NULL);
+}
+
+void
+hildon_range_editor_set_min (HildonRangeEditor *editor, gint value)
+{
+    HildonRangeEditorPrivate *priv;
+    gchar end_range[12], start_range[12];
+    GtkEntry *start_entry, *end_entry;
+    gint length = 0;
+
+    g_return_if_fail (editor);
+    g_return_if_fail (HILDON_IS_RANGE_EDITOR (editor));
+
+    priv = HILDON_RANGE_EDITOR_GET_PRIVATE (editor);
+
+    g_sprintf (start_range, "%d", value);
+    start_entry = GTK_ENTRY (priv->start_entry);
+
+    if (priv->range_limits_end < value)
+      hildon_range_editor_set_max (editor, value);
+    else
+    {
+      g_sprintf (end_range, "%d", priv->range_limits_end);
+      end_entry = GTK_ENTRY (priv->end_entry);
+      length = MAX (strlen (start_range), strlen (end_range));
+
+      gtk_entry_set_width_chars (start_entry, length);
+      gtk_entry_set_max_length (start_entry, length);
+      gtk_entry_set_width_chars (end_entry, length);
+      gtk_entry_set_max_length (end_entry, length);
+    }
+
+    if (hildon_range_editor_get_lower (editor) < value)
+      gtk_entry_set_text (start_entry, start_range);
+
+    priv->range_limits_start = value;
+    g_object_notify (G_OBJECT (editor), "min");
+}
+
+void
+hildon_range_editor_set_max (HildonRangeEditor *editor, gint value)
+{
+    HildonRangeEditorPrivate *priv;
+    gchar start_range[12], end_range[12];
+    GtkEntry *start_entry, *end_entry;
+    gint length = 0;
+
+    g_return_if_fail (editor);
+    g_return_if_fail (HILDON_IS_RANGE_EDITOR (editor));
+
+    priv = HILDON_RANGE_EDITOR_GET_PRIVATE (editor);
+
+    g_sprintf (end_range, "%d", value);
+    end_entry = GTK_ENTRY (priv->end_entry);
+
+    if (priv->range_limits_start > value)
+      hildon_range_editor_set_min (editor, value);
+    else
+    {
+      g_sprintf (start_range, "%d", priv->range_limits_start);
+      start_entry = GTK_ENTRY (priv->start_entry);
+      length = MAX (strlen (end_range), strlen (start_range));
+
+      gtk_entry_set_width_chars (start_entry, length);
+      gtk_entry_set_max_length (start_entry, length);
+      gtk_entry_set_width_chars (end_entry, length);
+      gtk_entry_set_max_length (end_entry, length);
+    }
+
+    if (hildon_range_editor_get_higher (editor) > value)
+      gtk_entry_set_text (end_entry, end_range);
+
+    priv->range_limits_end = value;
+    g_object_notify (G_OBJECT (editor), "max");
+}
+
+gint
+hildon_range_editor_get_min (HildonRangeEditor *editor)
+{
+    HildonRangeEditorPrivate *priv;
+    g_return_val_if_fail (editor, 0);
+    g_return_val_if_fail (HILDON_IS_RANGE_EDITOR (editor), 0);
+    priv = HILDON_RANGE_EDITOR_GET_PRIVATE (editor);
+
+    return priv->range_limits_start;
+}
+
+gint
+hildon_range_editor_get_max (HildonRangeEditor *editor)
+{
+    HildonRangeEditorPrivate *priv;
+    g_return_val_if_fail (editor, 0);
+    g_return_val_if_fail (HILDON_IS_RANGE_EDITOR (editor), 0);
+    priv = HILDON_RANGE_EDITOR_GET_PRIVATE (editor);
+
+    return priv->range_limits_end;
+}
+
+void
+hildon_range_editor_set_separator (HildonRangeEditor *editor,
+                                   const gchar *separator)
+{
+    HildonRangeEditorPrivate *priv;
+    g_return_if_fail (editor);
+    g_return_if_fail (HILDON_IS_RANGE_EDITOR (editor));
+    priv = HILDON_RANGE_EDITOR_GET_PRIVATE (editor);
+
+    gtk_label_set_text (GTK_LABEL (priv->label), separator);
+    g_object_notify (G_OBJECT(editor), "separator");
+}
+
+const gchar *
+hildon_range_editor_get_separator (HildonRangeEditor *editor)
+{
+    HildonRangeEditorPrivate *priv;
+    g_return_val_if_fail (editor, 0);
+    g_return_val_if_fail (HILDON_IS_RANGE_EDITOR (editor), 0);
+    priv = HILDON_RANGE_EDITOR_GET_PRIVATE (editor);
+
+    return gtk_label_get_text (GTK_LABEL (priv->label));
 }

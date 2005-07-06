@@ -38,26 +38,6 @@ else
 </para>
 
 
-<!-- ##### ARG HildonNote:description ##### -->
-<para>
-
-</para>
-
-<!-- ##### ARG HildonNote:icon ##### -->
-<para>
-
-</para>
-
-<!-- ##### ARG HildonNote:note-type ##### -->
-<para>
-
-</para>
-
-<!-- ##### ARG HildonNote:progressbar ##### -->
-<para>
-
-</para>
-
 <!-- ##### FUNCTION hildon_note_new_confirmation ##### -->
 <para>
 
@@ -143,4 +123,24 @@ else
 @note: 
 @text: 
 
+
+<!-- ##### ARG HildonNote:description ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG HildonNote:icon ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG HildonNote:note-type ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG HildonNote:progressbar ##### -->
+<para>
+
+</para>
 
