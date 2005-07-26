@@ -134,6 +134,9 @@ static gboolean
 hildon_number_editor_error_handler(HildonNumberEditor *editor,
 				   HildonNumberEditorErrorType type);
 
+static gboolean
+hildon_number_editor_select_all (HildonNumberEditorPrivate *priv);
+    
 enum
 {
   RANGE_ERROR,
@@ -547,6 +550,7 @@ hildon_number_editor_entry_changed (GtkWidget *widget, gpointer data)
 			    0, MAXIMUM_VALUE_EXCEED, &r);
 	      tmpstr = integer_to_string(priv->end);
 	      gtk_entry_set_text(GTK_ENTRY(priv->num_entry), tmpstr);
+              g_idle_add ((GSourceFunc)hildon_number_editor_select_all, priv);
 	      if (tmpstr)
 		g_free(tmpstr);
 	    }
@@ -555,6 +559,7 @@ hildon_number_editor_entry_changed (GtkWidget *widget, gpointer data)
 			  0, MINIMUM_VALUE_EXCEED, &r);
 	    tmpstr = integer_to_string(priv->start);
 	    gtk_entry_set_text(GTK_ENTRY(priv->num_entry), tmpstr);
+            g_idle_add ((GSourceFunc)hildon_number_editor_select_all, priv);
 	    if (tmpstr)
 	      g_free(tmpstr);
 	  }
@@ -565,6 +570,7 @@ hildon_number_editor_entry_changed (GtkWidget *widget, gpointer data)
 			0, ERRONEOUS_VALUE, &r);
 	  tmpstr = integer_to_string(priv->start);
 	  gtk_entry_set_text(GTK_ENTRY(priv->num_entry), tmpstr);
+          g_idle_add ((GSourceFunc)hildon_number_editor_select_all, priv);
 	  if (tmpstr)
 	    g_free(tmpstr);
 	}
@@ -781,7 +787,7 @@ hildon_number_editor_error_handler(HildonNumberEditor *editor,
 	g_strdup_printf(_("Ckct_ib_set_a_value_within_range"), min, max);
       break;
     }
-
+  
   if (err_msg)
     {
       gtk_infoprint(GTK_WINDOW(gtk_widget_get_ancestor(GTK_WIDGET(editor),
@@ -920,3 +926,20 @@ hildon_number_editor_set_value (HildonNumberEditor *editor, gint value)
     if (str)
         g_free(str);
 }
+
+/* When calling gtk_entry_set_text, the entry widget does things that can
+ * cause the whole widget to redraw. This redrawing is delayed and if any
+ * selections are made right after calling the gtk_entry_set_text the
+ * setting of the selection might seem to have no effect.
+ *
+ * If the selection is delayed with a lower priority than the redrawing,
+ * the selection should stick. Calling this function with g_idle_add should
+ * do it.
+ */
+static gboolean
+hildon_number_editor_select_all (HildonNumberEditorPrivate *priv)
+{   
+    gtk_editable_select_region(GTK_EDITABLE(priv->num_entry), 0, -1);
+    return FALSE;
+} 
+

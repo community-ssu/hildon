@@ -1,8 +1,14 @@
-2005-07-26  Luc Pionchon <luc.pionchon@nokia.com>
+2005-07-26  Luc Pionchon  <luc.pionchon@nokia.com>
+
+	* hildon-widgets/hildon-number-editor.c: 
+	(hildon_number_editor_select_all): new function, selects all
+	the text in the entry.
+	* hildon-widgets/hildon-number-editor.c: added several calls to
+	hildon_number_editor_select_all with g_idle_add.
 
 	* hildon-controlbar.c : add signal when end reached
 
-2005-07-25  Luc Pionchon <luc.pionchon@nokia.com>
+2005-07-25  Luc Pionchon  <luc.pionchon@nokia.com>
 
 	Fixed incorrect values in <Filetype> Details Dialog
 	
