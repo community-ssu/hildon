@@ -1739,7 +1739,6 @@ static void hildon_time_editor_size_allocate(GtkWidget * widget,
     GtkAllocation child_alloc;
     GtkRequisition child_requisition;
     gint mod_w = 0;
-    gint tmp;
 
     editor = HILDON_TIME_EDITOR(widget);
     priv = HILDON_TIME_EDITOR_GET_PRIVATE(editor);
@@ -1793,72 +1792,89 @@ static void hildon_time_editor_size_allocate(GtkWidget * widget,
         gtk_widget_size_allocate(priv->iconbutton, &child_alloc);
     }
 
-    /* allocation of the entry widgets */
+    /* allocation of child widgets */
     child_alloc.x = alloc.x + TIME_EDITOR_LBORDER;
-    child_alloc.y = alloc.y + ENTRY_BORDER;
-    child_alloc.height = TIME_EDITOR_HEIGHT - (ENTRY_BORDER * 2);
+    child_alloc.y = alloc.y;
+    child_alloc.height = TIME_EDITOR_HEIGHT;
+    child_alloc.width = -1;
 
     /* am/pm label (when first) */
     if (!priv->duration_mode) {
         if (!priv->clock_24h && !priv->ampm_pos_after)
+          {
             set_widget_allocation(priv->eventbox, &child_alloc,
                     &widget->allocation);
+          }
     }
 
     /* hours */
     if (priv->h_entry && GTK_WIDGET_VISIBLE(priv->h_entry))
+      {
+        child_alloc.y += ENTRY_BORDER;
+        child_alloc.height -= ENTRY_BORDER * 2;
         set_widget_allocation(priv->h_entry, &child_alloc,
                 &widget->allocation);
+        child_alloc.y -= ENTRY_BORDER;
+        child_alloc.height += ENTRY_BORDER * 2;
+      }
 
     /* first separator label */
     if (priv->label && GTK_WIDGET_VISIBLE(priv->label))
       {
-        /* Don't offset the labels from the top */
-        tmp = child_alloc.y;
-        child_alloc.y = 0;
-        child_alloc.height += tmp;
+        /* We'll have to subtract the ythickness from the labels
+         * allocation or it'll be there twice
+         */
+        child_alloc.y -= widget->style->ythickness;
         set_widget_allocation(priv->label, &child_alloc,
                 &widget->allocation);
-        child_alloc.height -= tmp;
-        child_alloc.y = tmp;
+        child_alloc.y += widget->style->ythickness;
       }
     /* minutes */
     if (priv->m_entry && GTK_WIDGET_VISIBLE(priv->m_entry))
+      {
+        /* Entries have a little different allocation requirements
+         * so we'll have to accommodate. This is done per entry
+         * so that the "running" width value of the allocation isn't lost
+         * FIXME: Rearrange this code so it could be done just once
+         */
+        child_alloc.y += ENTRY_BORDER;
+        child_alloc.height -= ENTRY_BORDER * 2;
         set_widget_allocation(priv->m_entry, &child_alloc,
                 &widget->allocation);
-
+        child_alloc.y -= ENTRY_BORDER;
+        child_alloc.height += ENTRY_BORDER * 2;
+      }
+    
     if (priv->show_s) {
         /* second separator label */
         if (priv->label2)
           {
-            /* Don't offset the labels from the top */
-            tmp = child_alloc.y;
-            child_alloc.y = 0;
-            child_alloc.height += tmp;
+            child_alloc.y -= widget->style->ythickness;
             set_widget_allocation(priv->label2, &child_alloc,
                     &widget->allocation);
-            child_alloc.height -= tmp;
-            child_alloc.y = tmp;
+            child_alloc.y += widget->style->ythickness;
           }
 
         /* seconds */
         if (priv->s_entry)
+          {
+            child_alloc.y += ENTRY_BORDER;
+            child_alloc.height -= ENTRY_BORDER * 2;
             set_widget_allocation(priv->s_entry, &child_alloc,
                     &widget->allocation);
+            child_alloc.y -= ENTRY_BORDER;
+            child_alloc.height += ENTRY_BORDER * 2;
+          }
     }
 
     /* am/pm label (when last) */
     if (!priv->duration_mode) {
         if (!priv->clock_24h && priv->ampm_pos_after)
           {
-            /* Don't offset the labels from the top */
-            tmp = child_alloc.y;
-            child_alloc.y = 0;
-            child_alloc.height += tmp;
+            child_alloc.y -= widget->style->ythickness;
             set_widget_allocation(priv->eventbox, &child_alloc,
                     &widget->allocation);
-            child_alloc.height -= tmp;
-            child_alloc.y = tmp;
+            child_alloc.y += widget->style->ythickness;
           }
     }
 }
