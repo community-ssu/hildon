@@ -10,6 +10,8 @@
 
 	* hildon-time-editor.c : fixed: Time chooser widget displays am/pm and time separator indicators badly alligned.
 
+	* hildon-time-picker.c : displays valid date at 12:00 am/pm. 
+	
 2005-07-25  Luc Pionchon  <luc.pionchon@nokia.com>
 
 	Fixed incorrect values in <Filetype> Details Dialog

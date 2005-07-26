@@ -284,10 +284,12 @@ static void hildon_time_picker_init( HildonTimePicker *picker )
 
   for( i = LABEL_HOURS; i <= LABEL_LMINUTES; i++ )
   {
-    priv->child[i] = gtk_label_new( "00" );
+    priv->child[i] = gtk_label_new( "0" );
     gtk_misc_set_padding( GTK_MISC( priv->child[i] ), 0, 1 );
     gtk_widget_set_name( priv->child[i], "osso-LargeFont" );
   }
+
+  gtk_label_set_text (GTK_LABEL (priv->child[LABEL_HOURS]), "00");
 
   priv->child[LABEL_COLON] = gtk_label_new(_("Ecdg_ti_time_picker_separator"));
   gtk_widget_set_name( priv->child[LABEL_COLON], "osso-LargeFont" );
@@ -449,6 +451,9 @@ static void hildon_time_picker_init( HildonTimePicker *picker )
 
   gtk_container_add( GTK_CONTAINER(maintocenter), priv->child[TABLE] );
   gtk_box_pack_start( GTK_BOX(dialog->vbox), maintocenter, TRUE, FALSE, 0 );
+
+  hildon_time_picker_change_time (picker, priv->minutes);
+
   gtk_widget_show_all( maintocenter );
 }
 
@@ -825,7 +830,8 @@ hildon_time_picker_change_time( HildonTimePicker *picker, guint minutes )
  **/
 GtkWidget *hildon_time_picker_new( GtkWindow *parent )
 {
-  GtkWidget *widget = g_object_new( HILDON_TYPE_TIME_PICKER, NULL );
+  GtkWidget *widget = g_object_new( HILDON_TYPE_TIME_PICKER,
+                                    "minutes", 360, NULL );
 
   if( parent )
     gtk_window_set_transient_for( GTK_WINDOW(widget), parent );
