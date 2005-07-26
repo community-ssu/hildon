@@ -64,6 +64,14 @@ enum
   PROP_VALUE
 };
 
+enum
+{
+  END_REACHED,
+  LAST_SIGNAL
+};
+
+static guint signals[LAST_SIGNAL] = { 0 };
+
 static void
 hildon_controlbar_class_init(HildonControlbarClass * controlbar_class);
 static void hildon_controlbar_init(HildonControlbar * controlbar);
@@ -91,6 +99,10 @@ static void hildon_controlbar_get_property( GObject *object, guint param_id,
 
 static void
 hildon_controlbar_value_changed( GtkAdjustment *adj, GtkRange *range );
+
+static gboolean
+hildon_controlbar_change_value( GtkRange *range, GtkScrollType scroll,
+                                gdouble new_value, gpointer data );
 
 GType hildon_controlbar_get_type(void)
 {
@@ -139,6 +151,7 @@ hildon_controlbar_class_init(HildonControlbarClass * controlbar_class)
   widget_class->expose_event = hildon_controlbar_expose_event;
   widget_class->key_press_event = hildon_controlbar_keypress;
   G_OBJECT_CLASS(controlbar_class)->constructor = hildon_controlbar_constructor;
+  controlbar_class->end_reached = NULL;
 
   /**
    * HildonControlbar:min:
@@ -187,6 +200,15 @@ hildon_controlbar_class_init(HildonControlbarClass * controlbar_class)
 						    0, G_MAXINT,
 						    DEFAULT_BORDER_WIDTH,
 						    G_PARAM_READABLE));
+
+  signals[END_REACHED] =
+        g_signal_new("end-reached",
+                     G_OBJECT_CLASS_TYPE(gobject_class),
+                     G_SIGNAL_RUN_FIRST,
+                     G_STRUCT_OFFSET(HildonControlbarClass, end_reached),
+                     NULL, NULL,
+                     g_cclosure_marshal_VOID__BOOLEAN, G_TYPE_NONE, 1,
+                     G_TYPE_BOOLEAN);
 }
 
 static void hildon_controlbar_init(HildonControlbar * controlbar)
@@ -205,6 +227,8 @@ static void hildon_controlbar_init(HildonControlbar * controlbar)
     
     gtk_widget_set_size_request( GTK_WIDGET(controlbar), DEFAULT_WIDTH,
                                  DEFAULT_HEIGHT );
+  g_signal_connect( range, "change-value",
+                    G_CALLBACK(hildon_controlbar_change_value), NULL );
 }
 
 static GObject *hildon_controlbar_constructor(GType type, 
@@ -282,14 +306,14 @@ hildon_controlbar_value_changed( GtkAdjustment *adj, GtkRange *range )
 {
   HildonControlbarPrivate *priv = HILDON_CONTROLBAR_GET_PRIVATE(range);
 
-  if( ABS(ceil(range->adjustment->value) - priv->old_value) >= 1 )
+  if( ABS(ceil(adj->value) - priv->old_value) >= 1 )
   {
-    priv->old_value = ceil(range->adjustment->value);
-    range->adjustment->value = priv->old_value;
+    priv->old_value = ceil(adj->value);
+    adj->value = priv->old_value;
   }
   else
-    g_signal_stop_emission_by_name( range->adjustment, "value-changed" );
-  gtk_adjustment_set_value( range->adjustment, priv->old_value );
+    g_signal_stop_emission_by_name( adj, "value-changed" );
+  gtk_adjustment_set_value( adj, priv->old_value );
 }
 
 /**
@@ -531,6 +555,37 @@ static gint hildon_controlbar_button_press_event(GtkWidget * widget,
             GTK_WIDGET_CLASS(parent_class)->button_press_event(widget, event);
 
     return result;
+}
+
+static gboolean
+hildon_controlbar_change_value( GtkRange *range, GtkScrollType scroll,
+                                gdouble new_value, gpointer data )
+{
+  HildonControlbarPrivate *priv;
+  GtkAdjustment *adj = range->adjustment;
+
+  priv = HILDON_CONTROLBAR_GET_PRIVATE(range);
+
+  switch (scroll)
+  {
+    case GTK_SCROLL_STEP_FORWARD :
+    case GTK_SCROLL_PAGE_FORWARD :
+      if( adj->value == priv->old_value )
+        if( adj->value == adj->upper )
+          g_signal_emit( G_OBJECT(range), signals[END_REACHED], 0, TRUE );
+      break;
+
+    case GTK_SCROLL_STEP_BACKWARD :
+    case GTK_SCROLL_PAGE_BACKWARD :
+      if( adj->value == priv->old_value )
+        if( adj->value == adj->lower )
+          g_signal_emit( G_OBJECT(range), signals[END_REACHED], 0, FALSE );
+      break;
+
+    default:
+      break;
+  }
+return FALSE;
 }
 
 /*

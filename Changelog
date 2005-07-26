@@ -1,3 +1,7 @@
+2005-07-26  Luc Pionchon <luc.pionchon@nokia.com>
+
+	* hildon-controlbar.c : add signal when end reached
+
 2005-07-25  Luc Pionchon <luc.pionchon@nokia.com>
 
 	Fixed incorrect values in <Filetype> Details Dialog
