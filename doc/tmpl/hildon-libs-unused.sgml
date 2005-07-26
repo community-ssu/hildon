@@ -1,38 +1,3 @@
-<!-- ##### SECTION ./tmpl/hildon-find-object-dialog.sgml:Long_Description ##### -->
-<para>
-#HildonFindObjectDialog is a widget to query a string from the user.
-This string is ment to be searched from a selected content of text.
-There's a two kind of dialogs, one with different search options and
-another with only one field to enter the searched parameter.
-
-<informalexample>
-<programlisting>
-
-FindDialog = hildon_find_object_dialog_new (grand_parent);
-...
-findDialogOptions = hildon_find_object_dialog_new_with_options (
-					grand_parent,GTK_DIALOG(dialog));
-
-</programlisting>
-</informalexample>
-</para>
-
-
-<!-- ##### SECTION ./tmpl/hildon-find-object-dialog.sgml:See_Also ##### -->
-<para>
-
-</para>
-
-
-<!-- ##### SECTION ./tmpl/hildon-find-object-dialog.sgml:Short_Description ##### -->
-#HildonFindObjectDialog is a widget to query a string from the user.
-This string is ment to be searched from a selected content of text.
-
-
-<!-- ##### SECTION ./tmpl/hildon-find-object-dialog.sgml:Title ##### -->
-HildonFindObjectDialog
-
-
 <!-- ##### SECTION ./tmpl/hildon-hwr-area.sgml:Long_Description ##### -->
 <para>
 
@@ -51,34 +16,6 @@ HildonFindObjectDialog
 
 <!-- ##### SECTION ./tmpl/hildon-hwr-area.sgml:Title ##### -->
 HildonHWRArea
-
-
-<!-- ##### SECTION ./tmpl/hildon-search.sgml:Long_Description ##### -->
-<para>
-HildonSearch is a widget to ask details to a comming search operation.
-It's possible to set an image to inform ongoing search operation.
-
-<informalexample>
-<programlisting>
-  GtkWidget *search = hildon_search_new( "hildon-search");
-	hildon_search_set_image_stock( HILDON_SEARCH(search), ICON_NAME[counter] );
-</programlisting>
-</informalexample>
-</para>
-
-
-<!-- ##### SECTION ./tmpl/hildon-search.sgml:See_Also ##### -->
-<para>
-
-</para>
-
-
-<!-- ##### SECTION ./tmpl/hildon-search.sgml:Short_Description ##### -->
-HildonSearch is a widget to ask details to a comming search operation.
-
-
-<!-- ##### SECTION ./tmpl/hildon-search.sgml:Title ##### -->
-HildonSearch
 
 
 <!-- ##### MACRO GTK_FILE_SYSTEM_ENABLE_UNSUPPORTED ##### -->
@@ -156,13 +93,6 @@ HildonSearch
 
 </para>
 
-
-<!-- ##### SIGNAL HildonDateEditor::activate ##### -->
-<para>
-
-</para>
-
-@hildondateeditor: the object which received the signal.
 
 <!-- ##### STRUCT HildonFileChooserDialogPrivate ##### -->
 <para>
@@ -248,12 +178,6 @@ HildonSearch
 @thumbnail_file: 
 @Returns: 
 
-<!-- ##### STRUCT HildonFindObjectDialog ##### -->
-<para>
-
-</para>
-
-
 <!-- ##### ENUM HildonHWRAreaMode ##### -->
 <para>
 
@@ -275,70 +199,19 @@ HildonSearch
 </para>
 
 
-<!-- ##### SIGNAL HildonNumberEditor::activate ##### -->
+<!-- ##### SIGNAL HildonVolumebar::level-changed ##### -->
 <para>
 
 </para>
 
-@hildonnumbereditor: the object which received the signal.
+@hildonvolumebar: the object which received the signal.
 
-<!-- ##### SIGNAL HildonRangeEditor::activate ##### -->
+<!-- ##### SIGNAL HildonVolumebar::mute-toggled ##### -->
 <para>
 
 </para>
 
-@hildonrangeeditor: the object which received the signal.
-
-<!-- ##### STRUCT HildonSearch ##### -->
-<para>
-
-</para>
-
-
-<!-- ##### ARG HildonSearch:stock-icon-name ##### -->
-<para>
-
-</para>
-
-
-<!-- ##### SIGNAL HildonTelephoneEditor::activate ##### -->
-<para>
-
-</para>
-
-@hildontelephoneeditor: the object which received the signal.
-
-<!-- ##### SIGNAL HildonTimeEditor::activate ##### -->
-<para>
-
-</para>
-
-@hildontimeeditor: the object which received the signal.
-
-<!-- ##### ENUM HildonTimeEditorField ##### -->
-<para>
-
-</para>
-
-@HILDON_TIME_EDITOR_HOUR_FIELD: 
-@HILDON_TIME_EDITOR_MINUTE_FIELD: 
-@HILDON_TIME_EDITOR_SECOND_FIELD: 
-
-<!-- ##### STRUCT HildonVolumebarClass ##### -->
-<para>
-
-</para>
-
-@parent_class: 
-@mute_toggled: 
-@level_changed: 
-
-<!-- ##### SIGNAL HildonWeekdayPicker::activate ##### -->
-<para>
-
-</para>
-
-@hildonweekdaypicker: the object which received the signal.
+@hildonvolumebar: the object which received the signal.
 
 <!-- ##### ENUM HildonZoomLevel ##### -->
 <para>
@@ -858,39 +731,6 @@ HildonSearch
 @recursive: 
 @Returns: 
 
-<!-- ##### FUNCTION hildon_find_object_dialog_get_text ##### -->
-<para>
-
-</para>
-
-@dialog: 
-@Returns: 
-
-<!-- ##### FUNCTION hildon_find_object_dialog_new ##### -->
-<para>
-
-</para>
-
-@parent: 
-@Returns: 
-
-<!-- ##### FUNCTION hildon_find_object_dialog_new_with_options ##### -->
-<para>
-
-</para>
-
-@parent: 
-@dialog: 
-@Returns: 
-
-<!-- ##### FUNCTION hildon_find_object_dialog_set_label ##### -->
-<para>
-
-</para>
-
-@dialog: 
-@label: 
-
 <!-- ##### FUNCTION hildon_find_replace_dialog_get_new_text ##### -->
 <para>
 
@@ -900,6 +740,14 @@ HildonSearch
 @Returns: 
 
 <!-- ##### FUNCTION hildon_font_selection_dialog_get_color ##### -->
+<para>
+
+</para>
+
+@fsd: 
+@Returns: 
+
+<!-- ##### FUNCTION hildon_font_selection_dialog_get_font ##### -->
 <para>
 
 </para>
@@ -995,22 +843,6 @@ HildonSearch
 @parent: 
 @description: 
 @Returns: 
-
-<!-- ##### FUNCTION hildon_search_new ##### -->
-<para>
-
-</para>
-
-@image: 
-@Returns: 
-
-<!-- ##### FUNCTION hildon_search_set_image_stock ##### -->
-<para>
-
-</para>
-
-@search: 
-@stock_icon: 
 
 <!-- ##### FUNCTION hildon_set_password_dialog_get_password ##### -->
 <para>

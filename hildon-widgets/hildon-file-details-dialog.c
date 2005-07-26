@@ -28,12 +28,11 @@
  * 
  */
 
-#include <gtk/gtkbox.h>
 #include <gtk/gtkcheckbutton.h>
 #include <gtk/gtklabel.h>
 #include <gtk/gtknotebook.h>
-#include <gtk/gtktable.h>
 #include <gtk/gtkhbox.h>
+#include <gtk/gtkvbox.h>
 #include <gtk/gtkimage.h>
 #include <gtk/gtkscrolledwindow.h>
 #include <time.h>
@@ -46,6 +45,7 @@
 #include <hildon-widgets/hildon-caption.h>
 #include <hildon-widgets/hildon-file-system-model.h>
 #include <hildon-widgets/gtk-infoprint.h>
+#include <hildon-widgets/hildon-defines.h>
 #include "hildon-file-details-dialog.h"
 
 #ifdef HAVE_CONFIG_H
@@ -53,8 +53,6 @@
 #endif
 
 #define _(String) dgettext(PACKAGE, String)
-#define HILDON_MARGIN_DEFAULT 6
-#define HILDON_MARGIN_DOUBLE 12
 
 enum
 {
@@ -190,8 +188,19 @@ hildon_file_details_dialog_read_only_toggled(GtkWidget *widget, gpointer data)
 static void 
 hildon_file_details_dialog_map(GtkWidget *widget)
 {
+  HildonFileDetailsDialogPrivate *priv;
+
+  priv = HILDON_FILE_DETAILS_DIALOG(widget)->priv;
+
   GTK_WIDGET_CLASS(file_details_dialog_parent_class)->map(widget);
-  gtk_widget_grab_focus(HILDON_FILE_DETAILS_DIALOG(widget)->priv->ok_button);
+
+  if (gtk_notebook_get_show_tabs(priv->notebook))
+  {
+    gtk_notebook_set_current_page(priv->notebook, 0);
+    gtk_widget_grab_focus(GTK_WIDGET(priv->notebook));
+  }
+  else
+    gtk_widget_grab_focus(priv->ok_button);
 }
 
 static void
@@ -246,6 +255,20 @@ hildon_file_details_dialog_class_init(HildonFileDetailsDialogClass * klass)
                  HILDON_TYPE_FILE_SYSTEM_MODEL, G_PARAM_READWRITE));
 }
 
+/* This handler is needed to correctly position the scrollbar down. 
+   It doesn't happen automatically... */
+static gboolean 
+handle_focus(GtkWidget *widget, GtkDirectionType *dir, gpointer data)
+{
+  if (!GTK_WIDGET_HAS_FOCUS(widget))
+  {
+    GtkAdjustment *adj;
+    adj = gtk_scrolled_window_get_vadjustment(GTK_SCROLLED_WINDOW(data));
+    gtk_adjustment_set_value(adj, adj->upper - adj->page_size);
+  }
+
+  return FALSE;
+}
 
 static void
 hildon_file_details_dialog_init(HildonFileDetailsDialog *self)
@@ -254,7 +277,8 @@ hildon_file_details_dialog_init(HildonFileDetailsDialog *self)
     GtkWidget *caption_date, *caption_size, *caption_time;
     GtkWidget *caption_read, *caption_device;
     GtkWidget *hbox_location, *hbox_device;
-    GtkTable *table;
+    GtkWidget *vbox;
+    GtkWidget *scroll;
     GtkSizeGroup *group;
     GdkGeometry geometry;
 
@@ -265,31 +289,14 @@ hildon_file_details_dialog_init(HildonFileDetailsDialog *self)
           HILDON_TYPE_FILE_DETAILS_DIALOG, HildonFileDetailsDialogPrivate);
 
     priv->notebook = GTK_NOTEBOOK(gtk_notebook_new());
-    table = GTK_TABLE(gtk_table_new(6, 4, FALSE));
+    scroll = gtk_scrolled_window_new(NULL, NULL);
+    vbox = gtk_vbox_new(FALSE, 0);
     group = gtk_size_group_new(GTK_SIZE_GROUP_BOTH);
     
     priv->tab_label = gtk_label_new(_("sfil_ti_notebook_file"));
     g_object_ref(priv->tab_label);
     gtk_object_sink(GTK_OBJECT(priv->tab_label));
     gtk_widget_show(priv->tab_label);
-
-    gtk_container_set_border_width(GTK_CONTAINER(table), 
-        HILDON_MARGIN_DEFAULT);
-    gtk_table_set_col_spacings(table, HILDON_MARGIN_DOUBLE);
-
-    /* Tab one */
-    caption_device = g_object_new(GTK_TYPE_LABEL, 
-        "label", _("sfil_fi_properties_device_prompt"), "xalign", 1.0f, NULL);
-    caption_location = g_object_new(GTK_TYPE_LABEL,
-        "label", _("sfil_fi_properties_location_prompt"), "xalign", 1.0f, NULL);
-    caption_name = g_object_new(GTK_TYPE_LABEL,
-        "label", _("ckdg_fi_properties_name_prompt"), "xalign", 1.0f, NULL);
-    caption_type = g_object_new(GTK_TYPE_LABEL, 
-        "label", _("ckdg_fi_properties_type_prompt"), "xalign", 1.0f, NULL);
-    caption_date = g_object_new(GTK_TYPE_LABEL,
-        "label", _("ckdg_fi_properties_date_prompt"), "xalign", 1.0f, NULL);
-    caption_time = g_object_new(GTK_TYPE_LABEL, 
-        "label", _("ckdg_fi_properties_time_prompt"), "xalign", 1.0f, NULL);
 
     priv->file_device = g_object_new(GTK_TYPE_LABEL, "xalign", 0.0f, NULL);
     priv->file_location = g_object_new(GTK_TYPE_LABEL, "xalign", 0.0f, NULL);
@@ -299,17 +306,6 @@ hildon_file_details_dialog_init(HildonFileDetailsDialog *self)
     priv->file_date = g_object_new(GTK_TYPE_LABEL,"xalign", 0.0f, NULL);
     priv->file_time = g_object_new(GTK_TYPE_LABEL, "xalign", 0.0f, NULL);
     priv->file_readonly = gtk_check_button_new();
-
-    /* We have to use caption control also for non-editable object, 
-        because sizings will fail otherwise */
-    caption_size = hildon_caption_new(group, _("ckdg_fi_properties_size_prompt"), 
-      priv->file_size, NULL, HILDON_CAPTION_OPTIONAL);
-    caption_read = hildon_caption_new(group, _("ckdg_fi_properties_read_only"), 
-      priv->file_readonly, NULL, HILDON_CAPTION_OPTIONAL);
-    hildon_caption_set_separator(HILDON_CAPTION(caption_size), "");
-    hildon_caption_set_separator(HILDON_CAPTION(caption_read), "");
-    if (G_IS_OBJECT(group))
-      g_object_unref(group);
 
     hbox_location = gtk_hbox_new(FALSE, HILDON_MARGIN_DEFAULT);
     hbox_device = gtk_hbox_new(FALSE, HILDON_MARGIN_DEFAULT);
@@ -322,26 +318,58 @@ hildon_file_details_dialog_init(HildonFileDetailsDialog *self)
     gtk_box_pack_start(GTK_BOX(hbox_device), priv->file_device_image, FALSE, TRUE, 0);
     gtk_box_pack_start(GTK_BOX(hbox_device), priv->file_device, TRUE, TRUE, 0);
 
-    /* Labels */
-    gtk_table_attach(table, caption_name, 0, 1, 0, 1, GTK_FILL, GTK_FILL, 0, 0);
-    gtk_table_attach(table, caption_type, 0, 1, 1, 2, GTK_FILL, GTK_FILL, 0, 0);
-    gtk_table_attach(table, caption_location, 0, 1, 2, 3, GTK_FILL, GTK_FILL, 0, 0);
-    gtk_table_attach(table, caption_device, 0, 1, 3, 4, GTK_FILL, GTK_FILL, 0, 0); 
-    gtk_table_attach(table, caption_date, 0, 1, 4, 5, GTK_FILL, GTK_FILL, 0, 0);
-    gtk_table_attach(table, caption_time, 0, 1, 5, 6, GTK_FILL, GTK_FILL, 0, 0);
-    gtk_table_attach(table, caption_size, 2, 3, 4, 5, GTK_SHRINK | GTK_FILL, GTK_FILL, 0, 0);
-    gtk_table_attach(table, caption_read, 2, 4, 5, 6, GTK_SHRINK | GTK_FILL, GTK_FILL, 0, 0);
+    /* Tab one */
+    caption_name = hildon_caption_new(group, _("ckdg_fi_properties_name_prompt"), 
+      priv->file_name, NULL, HILDON_CAPTION_OPTIONAL);
+    caption_type = hildon_caption_new(group, _("ckdg_fi_properties_type_prompt"), 
+      priv->file_type, NULL, HILDON_CAPTION_OPTIONAL);
+    caption_location = hildon_caption_new(group, _("sfil_fi_properties_location_prompt"), 
+      hbox_location, NULL, HILDON_CAPTION_OPTIONAL);
+    caption_device = hildon_caption_new(group, _("sfil_fi_properties_device_prompt"), 
+      hbox_device, NULL, HILDON_CAPTION_OPTIONAL);
+    caption_date = hildon_caption_new(group, _("ckdg_fi_properties_date_prompt"), 
+      priv->file_date, NULL, HILDON_CAPTION_OPTIONAL);
+    caption_time = hildon_caption_new(group, _("ckdg_fi_properties_time_prompt"), 
+      priv->file_time, NULL, HILDON_CAPTION_OPTIONAL);
+    caption_size = hildon_caption_new(group, _("ckdg_fi_properties_size_prompt"), 
+      priv->file_size, NULL, HILDON_CAPTION_OPTIONAL);
+    caption_read = hildon_caption_new(group, _("ckdg_fi_properties_read_only"), 
+      priv->file_readonly, NULL, HILDON_CAPTION_OPTIONAL);
 
-    /* Data */
-    gtk_table_attach(table, priv->file_name, 1, 4, 0, 1, GTK_SHRINK | GTK_FILL, GTK_FILL, 0, 0);
-    gtk_table_attach(table, priv->file_type, 1, 4, 1, 2, GTK_SHRINK | GTK_FILL, GTK_FILL, 0, 0);
-    gtk_table_attach(table, hbox_location, 1, 4, 2, 3, GTK_SHRINK | GTK_FILL, GTK_FILL, 0, 0);
-    gtk_table_attach(table, hbox_device, 1, 4, 3, 4, GTK_SHRINK | GTK_FILL, GTK_FILL, 0, 0); 
-    gtk_table_attach(table, priv->file_date, 1, 2, 4, 5, GTK_SHRINK | GTK_FILL, GTK_FILL, 0, 0);
-    gtk_table_attach(table, priv->file_time, 1, 2, 5, 6, GTK_SHRINK | GTK_FILL, GTK_FILL, 0, 0);
+    hildon_caption_set_separator(HILDON_CAPTION(caption_name), "");
+    hildon_caption_set_separator(HILDON_CAPTION(caption_type), "");
+    hildon_caption_set_separator(HILDON_CAPTION(caption_location), "");
+    hildon_caption_set_separator(HILDON_CAPTION(caption_device), "");
+    hildon_caption_set_separator(HILDON_CAPTION(caption_date), "");
+    hildon_caption_set_separator(HILDON_CAPTION(caption_time), "");
+    hildon_caption_set_separator(HILDON_CAPTION(caption_size), "");
+    hildon_caption_set_separator(HILDON_CAPTION(caption_read), "");
+
+    g_object_unref(group);
+
+    gtk_box_pack_start(GTK_BOX(vbox), caption_name, FALSE, TRUE, 0);
+    gtk_box_pack_start(GTK_BOX(vbox), caption_type, FALSE, TRUE, 0);
+    gtk_box_pack_start(GTK_BOX(vbox), caption_location, FALSE, TRUE, 0);
+    gtk_box_pack_start(GTK_BOX(vbox), caption_device, FALSE, TRUE, 0);
+    gtk_box_pack_start(GTK_BOX(vbox), caption_date, FALSE, TRUE, 0);
+    gtk_box_pack_start(GTK_BOX(vbox), caption_time, FALSE, TRUE, 0);
+    gtk_box_pack_start(GTK_BOX(vbox), caption_size, FALSE, TRUE, 0);
+    gtk_box_pack_start(GTK_BOX(vbox), caption_read, FALSE, TRUE, 0);
+
+    gtk_scrolled_window_add_with_viewport(GTK_SCROLLED_WINDOW(scroll), vbox);
+    gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(scroll), 
+        GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
+    gtk_container_set_border_width(GTK_CONTAINER(scroll), 
+        HILDON_MARGIN_DEFAULT);
+    /* Both scrolled window and viewport have separate shadows... */
+    gtk_scrolled_window_set_shadow_type(GTK_SCROLLED_WINDOW(scroll),
+        GTK_SHADOW_NONE);
+    gtk_viewport_set_shadow_type(
+        GTK_VIEWPORT(gtk_bin_get_child(GTK_BIN(scroll))),
+        GTK_SHADOW_NONE);
 
     /* Populate dialog */
-    gtk_notebook_append_page(priv->notebook, GTK_WIDGET(table),
+    gtk_notebook_append_page(priv->notebook, scroll,
 			     gtk_label_new(_("sfil_ti_notebook_common")));
 
     gtk_box_pack_start(GTK_BOX(GTK_DIALOG(self)->vbox),
@@ -350,8 +378,10 @@ hildon_file_details_dialog_init(HildonFileDetailsDialog *self)
     /* From widget specs, generic dialog size */
     geometry.min_width = 133;
     geometry.max_width = 602;
-    geometry.min_height = 120;
-    geometry.max_height = 240;
+    /* Scrolled windows do not ask space for whole contents in size_request.
+       So, we must force the dialog to have larger than minimum size */
+    geometry.min_height = 240 + (2 * HILDON_MARGIN_DEFAULT);
+    geometry.max_height = 240 + (2 * HILDON_MARGIN_DEFAULT);
 
     gtk_window_set_geometry_hints(GTK_WINDOW(self),
 				  GTK_WIDGET(priv->notebook), &geometry,
@@ -370,6 +400,8 @@ hildon_file_details_dialog_init(HildonFileDetailsDialog *self)
     priv->toggle_handler = g_signal_connect(priv->file_readonly, "toggled", 
       G_CALLBACK(hildon_file_details_dialog_read_only_toggled), 
       self);
+    g_signal_connect(priv->file_readonly, "focus",
+      G_CALLBACK(handle_focus), scroll);
 }
 
 static void
@@ -403,7 +435,8 @@ hildon_file_details_dialog_set_property( GObject *object, guint param_id,
 
       if (widget == NULL)
       {
-        widget = gtk_label_new(_("sfil_ia_filetype_no_details"));
+        widget = g_object_new(GTK_TYPE_LABEL, 
+            "label", _("sfil_ia_filetype_no_details"), "yalign", 0.0f, NULL);
         gtk_widget_show(widget);
       }
 

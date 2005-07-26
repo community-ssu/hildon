@@ -172,6 +172,8 @@ struct _HildonDateEditorPrivate {
     GtkWidget *d_image; /* normal icon image */
     GtkWidget *d_image_pressed;
     guint locale_type;
+
+    gboolean skip_validation;
 };
 
 enum {
@@ -812,6 +814,9 @@ static gboolean hildon_date_editor_keyrelease(GtkWidget * widget,
             return TRUE;
         }
     }
+    else if (event->keyval == GDK_Escape)
+	priv->skip_validation = FALSE;
+    
     return FALSE;
 }
 
@@ -1041,6 +1046,10 @@ static gboolean hildon_date_editor_keypress(GtkWidget * widget,
     case GDK_Down:
         return FALSE;
 
+    case GDK_Escape:
+        priv->skip_validation = TRUE;
+        return FALSE;
+
         /* select date */
     default:
         return TRUE;
@@ -1063,6 +1072,9 @@ static gboolean hildon_date_editor_entry_focus_out(GtkWidget * widget,
     
     /* deselect the entry */
     gtk_editable_select_region(GTK_EDITABLE(widget), 0, 0);
+
+    if (priv->skip_validation)
+        return FALSE;
     
     g_signal_emit_by_name (G_OBJECT(ed), "validate_date", &return_value);
 

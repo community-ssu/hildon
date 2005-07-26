@@ -2,7 +2,7 @@
 hildon-scroll-area
 
 <!-- ##### SECTION Short_Description ##### -->
-@GtkScrollArea is a helper to create specific views,
+@GtkScrollArea is a helper to create Maemo specific views,
 which are using scrollable area.
 
 <!-- ##### SECTION Long_Description ##### -->

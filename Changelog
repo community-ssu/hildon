@@ -1,0 +1,18 @@
+2005-07-25  Luc Pionchon <luc.pionchon@nokia.com>
+
+	Fixed incorrect values in <Filetype> Details Dialog
+	
+	Fixed help button usage in dialogs
+	
+	* hildon-dialoghelp.c: Added more documentation about the
+	help signal
+	
+	* hildon-file-details-dialog.c: Updated to match
+	'File Management in OSSO' version 3.0
+	
+	* Fixed application hang after calling gtk_main_quit
+	
+	* hildon-date-editor.c: Fixed HildonDateEditor that caught
+	ESC presses needlessly
+	
+	* hildon-time-editor.c: Fixed memory corruption

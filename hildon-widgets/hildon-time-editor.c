@@ -371,9 +371,6 @@ static void hildon_time_editor_destroy(GtkObject * self)
         priv->s_entry = NULL;
     }
   
-    g_free (priv->am_symbol);
-    g_free (priv->pm_symbol);
-
     if (GTK_OBJECT_CLASS(parent_class)->destroy)
         GTK_OBJECT_CLASS(parent_class)->destroy(self);
 

@@ -70,6 +70,10 @@ handle_xevent(GdkXEvent * xevent, GdkEvent * event, gpointer data)
  * Enables context help button for given dialog. The signal "help" can be
  * connected to handler by normal gtk methods. Note that this function
  * has to be called before the dialog is shown.
+ *
+ * The "help" signal itself has no other parameters than the dialog where
+ * it is connected to, ie.:
+ * void user_function(GtkDialog *, gpointer user_data);
  **/
 void gtk_dialog_help_enable(GtkDialog * dialog)
 {
