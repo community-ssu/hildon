@@ -53,6 +53,7 @@ struct _HildonControlbar {
 
 struct _HildonControlbarClass {
     GtkScaleClass parent_class;
+    void (*end_reached) (HildonControlbar *controlbar, gboolean end);
 };
 
 GType hildon_controlbar_get_type(void);
