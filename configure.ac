@@ -14,7 +14,10 @@ AC_HEADER_STDC
 PKG_CHECK_MODULES(OUTO, outo >= 0.1.1)
 AC_SUBST(OUTO_CFLAGS)
 
-CFLAGS="$CFLAGS -Wall -pedantic -ansi -Wmissing-prototypes -Wmissing-declarations -Werror"
+CFLAGS="$CFLAGS -std=c99 -Wall -pedantic -Wmissing-prototypes -Wmissing-declarations"
+# -Werror disabled due to the flaw in glib-2.0
+# See http://bugzilla.gnome.org/show_bug.cgi?id=310175 and
+# http://bugzilla.gnome.org/show_bug.cgi?id=310216
 
 GTK_VERSION=2.6.4
 

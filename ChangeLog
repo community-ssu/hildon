@@ -1,3 +1,10 @@
+2005-08-01  Luc Pionchon  <luc.pionchon@nokia.com>
+
+	* configure.ac: Adjusted CFLAGS and removed -Werror due to the
+	glib-2.0 flaw. See
+	http://bugzilla.gnome.org/show_bug.cgi?id=310175 and
+	http://bugzilla.gnome.org/show_bug.cgi?id=310216
+
 2005-07-29  Luc Pionchon  <luc.pionchon@nokia.com>
 
 	* hildon-widgets/hildon-controlbar.h: added missing signal when end reached
