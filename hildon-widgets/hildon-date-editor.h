@@ -51,6 +51,21 @@ G_BEGIN_DECLS
 typedef struct _HildonDateEditor HildonDateEditor;
 typedef struct _HildonDateEditorClass HildonDateEditorClass;
 
+typedef enum
+{
+  MAX_DAY,
+  MAX_MONTH,
+  MAX_YEAR,
+  MIN_DAY,
+  MIN_MONTH,
+  MIN_YEAR,
+  EMPTY_DAY,
+  EMPTY_MONTH,
+  EMPTY_YEAR,
+  INVALID_DATE
+    
+}HildonDateEditorErrorType;
+
 struct _HildonDateEditor {
     GtkContainer par;
 };
@@ -58,7 +73,8 @@ struct _HildonDateEditor {
 struct _HildonDateEditorClass {
     GtkContainerClass parent_class;
 
-    gboolean (*validate_date) (HildonDateEditor *editor);
+    gboolean (*date_error) (HildonDateEditor *editor, 
+			    HildonDateEditorErrorType type);
 };
 
 GType hildon_date_editor_get_type(void);

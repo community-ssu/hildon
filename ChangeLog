@@ -1,3 +1,25 @@
+2005-08-03  Luc Pionchon  <luc.pionchon@nokia.com>
+
+	* hildon-widgets/hildon-date-editor.h: added
+	HildonDateEditorErrorType error enumeration type, removed signal
+	"validate-date" virtual function, added signal "date-error"
+	virtual function.
+
+	* hildon-widgets/hildon-date-editor.c (hildon_date_editor_date_error):
+	added custom info prints.
+	(hildon_date_editor_validate_date): removed
+	(hildon_date_editor_entry_validate): validate maximum and minimum
+	limits on each field.
+	(hildon_date_editor_entry_focus_out): check the date validation
+	in simpler manner, don't put content if field is empty (spec
+	doesn't say if there should be anything placed in the entry if
+	it is empty).
+	(hildon_date_editor_get_date),
+	(hildon_date_editor_get_month),
+	(hildon_date_editor_get_year),
+	(hildon_date_editor_get_day): use direct entry content, so that 0
+	indicates empty entry, and information is more accurate.
+
 2005-08-01  Luc Pionchon  <luc.pionchon@nokia.com>
 
 	* configure.ac: Adjusted CFLAGS and removed -Werror due to the

@@ -50,6 +50,7 @@
 #include <hildon-widgets/hildon-defines.h>
 #include <hildon-widgets/hildon-input-mode-hint.h>
 #include "hildon-composite-widget.h"
+#include "hildon-marshalers.h"
 
 #ifdef HAVE_CONFIG_H
 #include<config.h>
@@ -89,7 +90,6 @@ hildon_date_editor_icon_press(GtkWidget * widget, GdkEventButton * event,
 static gboolean
 hildon_date_editor_entry_released(GtkWidget * widget,
                                   GdkEventButton * event, gpointer data);
-
 static gboolean
 hildon_date_editor_released(GtkWidget * widget, GdkEventButton * event,
                             gpointer data);
@@ -101,12 +101,15 @@ hildon_date_editor_keypress(GtkWidget * widget, GdkEventKey * event,
 static gboolean
 hildon_date_editor_keyrelease(GtkWidget * widget, GdkEventKey * event,
                               gpointer data);
+static void
+hildon_date_editor_entry_validate(GtkEditable *widget, gpointer data);
 
 static gboolean
 hildon_date_editor_entry_focus_out(GtkWidget * widget, GdkEventFocus * event,
                                    gpointer data);
 
-static gboolean hildon_date_editor_validate_date(HildonDateEditor *editor);
+static gboolean hildon_date_editor_date_error(HildonDateEditor *editor, 
+					      HildonDateEditorErrorType type);
 
 static gboolean hildon_date_editor_entry_focusin(GtkWidget * widget,
                                                  GdkEventFocus * event,
@@ -135,6 +138,9 @@ static guint
 hildon_date_editor_check_locale_settings(HildonDateEditor * editor);
 
 static void hildon_date_editor_finalize(GObject * object);
+
+static gboolean
+_hildon_date_editor_entry_select_all(GtkWidget *widget);
 
 enum
 {
@@ -183,7 +189,7 @@ enum {
 };
 
 enum {
-    VALIDATE_DATE,
+    DATE_ERROR,
     LAST_SIGNAL
 };
 
@@ -235,17 +241,16 @@ hildon_date_editor_class_init(HildonDateEditorClass * editor_class)
     GTK_OBJECT_CLASS(editor_class)->destroy = hildon_date_editor_destroy;
     gobject_class->finalize = hildon_date_editor_finalize;
 
-    editor_class->validate_date = hildon_date_editor_validate_date; 
-
+    editor_class->date_error = hildon_date_editor_date_error; 
     
-    date_editor_signals[VALIDATE_DATE] =
-        g_signal_new("validate-date",
+    date_editor_signals[DATE_ERROR] =
+        g_signal_new("date-error",
                 G_OBJECT_CLASS_TYPE(gobject_class),
                 G_SIGNAL_RUN_LAST,
-                G_STRUCT_OFFSET(HildonDateEditorClass, validate_date),
-                NULL, NULL,
-                gtk_marshal_BOOLEAN__VOID,
-                G_TYPE_BOOLEAN, 0);
+                G_STRUCT_OFFSET(HildonDateEditorClass, date_error),
+                g_signal_accumulator_true_handled, NULL,
+		_hildon_marshal_BOOLEAN__INT,
+                G_TYPE_BOOLEAN, 1, G_TYPE_INT);
 
   /**
    * HildonDateEditor:year:
@@ -256,7 +261,7 @@ hildon_date_editor_class_init(HildonDateEditorClass * editor_class)
                                    g_param_spec_uint("year",
                                    "Current year",
                                    "Current year",
-                                   1, G_MAXUINT,
+                                   1, 2100,
                                    2005,
                                    G_PARAM_READABLE | G_PARAM_WRITABLE) );
 
@@ -465,6 +470,15 @@ static void hildon_date_editor_init(HildonDateEditor * editor)
     g_signal_connect(GTK_OBJECT(priv->y_entry), "key-release-event",
                      G_CALLBACK(hildon_date_editor_keyrelease), editor);
 
+    g_signal_connect(GTK_OBJECT(priv->d_entry), "changed",
+                     G_CALLBACK(hildon_date_editor_entry_validate), editor);
+
+    g_signal_connect(GTK_OBJECT(priv->m_entry), "changed",
+                     G_CALLBACK(hildon_date_editor_entry_validate), editor);
+
+    g_signal_connect(GTK_OBJECT(priv->y_entry), "changed",
+                     G_CALLBACK(hildon_date_editor_entry_validate), editor);
+
     hildon_date_editor_set_date(editor, priv->year, priv->month, priv->day);
 
     gtk_widget_pop_composite_child();
@@ -531,7 +545,7 @@ hildon_date_editor_mnemonic_activate(GtkWidget *widget, gboolean group_cycling)
     entry = priv->d_entry;
 
   gtk_widget_grab_focus( entry );
-  gtk_editable_select_region(GTK_EDITABLE(entry), 0, -1);
+  g_idle_add((GSourceFunc)_hildon_date_editor_entry_select_all, entry);
   return TRUE;
 }
 
@@ -657,9 +671,14 @@ void hildon_date_editor_get_date(HildonDateEditor * date,
 
     priv = HILDON_DATE_EDITOR_GET_PRIVATE(date);
 
-    *year = priv->year;
-    *month = priv->month;
-    *day = priv->day;
+    /*dont know why these variable are used, i think it makes more
+     * sense to directly get the content from the current text entry field*/
+    *year = /*priv->year;*/
+      (guint) atoi(gtk_entry_get_text(GTK_ENTRY(priv->y_entry)));
+    *month = /*priv->month;*/
+      (guint) atoi(gtk_entry_get_text(GTK_ENTRY(priv->m_entry)));
+    *day = /*priv->day;*/ 
+      (guint) atoi(gtk_entry_get_text(GTK_ENTRY(priv->d_entry)));
 }
 
 static gboolean hildon_date_editor_icon_press(GtkWidget * widget,
@@ -698,12 +717,11 @@ static gboolean hildon_date_editor_entry_released(GtkWidget * widget,
     priv = HILDON_DATE_EDITOR_GET_PRIVATE(ed);
 
     if (priv->valid_value && event->button == 1) {
-        GtkEntry *e = GTK_ENTRY(widget);
-        gint start = 0, end = gtk_entry_get_max_length(e);
 
         /* We might not get focus because unvalid values in entries */
         if (GTK_WIDGET_HAS_FOCUS(widget))
-            gtk_editable_select_region(GTK_EDITABLE(e), start, end);
+			g_idle_add((GSourceFunc)
+					_hildon_date_editor_entry_select_all, GTK_ENTRY(widget));
     } else
         priv->valid_value = TRUE;
     return FALSE;
@@ -715,9 +733,8 @@ static gboolean hildon_date_editor_entry_focusin(GtkWidget * widget,
 {
     if (!GTK_ENTRY(widget)->button)
     {
-        GtkEntry *e = GTK_ENTRY(widget);
-        gint end = gtk_entry_get_max_length(e);
-        gtk_editable_select_region(GTK_EDITABLE(widget), 0, end);
+		g_idle_add((GSourceFunc)
+				_hildon_date_editor_entry_select_all, GTK_ENTRY(widget));
     }
 
     return FALSE;
@@ -788,6 +805,115 @@ static gboolean hildon_date_editor_released(GtkWidget * widget,
     return FALSE;
 }
 
+static void
+hildon_date_editor_entry_validate(GtkEditable *widget, gpointer data)
+{
+    HildonDateEditor *ed;
+    HildonDateEditorPrivate *priv;
+
+    gint d, m, y;
+    gboolean r; /*return value storage needed, but no real use*/
+
+    g_return_if_fail(data);
+    g_return_if_fail(widget);
+
+    ed = HILDON_DATE_EDITOR(data);
+    priv = HILDON_DATE_EDITOR_GET_PRIVATE(ed);
+
+    /*if the field is empty, we skip the checking*/
+    if(gtk_entry_get_text(GTK_ENTRY(widget)) == NULL || 
+            *gtk_entry_get_text(GTK_ENTRY(widget)) == '\0')
+        return;
+
+    if(!priv->skip_validation) {
+        d = atoi(gtk_entry_get_text(GTK_ENTRY(priv->d_entry)));
+        m = atoi(gtk_entry_get_text(GTK_ENTRY(priv->m_entry)));
+        y = atoi(gtk_entry_get_text(GTK_ENTRY(priv->y_entry)));
+
+        /*NOTICE we could/should use hildon_date_editor_set_year and such functions
+         * to set the date, instead of use gtk_entry_set_text, and then change the priv member
+         * but hildon_date_editor_set_year and such functions check if the date is valid,
+         * we do want to do date validation check here according to spec*/
+        if(GTK_WIDGET(widget) == priv->d_entry)
+        {
+            if(d > 0 && d < 32) {
+                priv->day = d;
+                return;
+            }
+            else if(d < 1) {
+                g_signal_emit(ed, date_editor_signals[DATE_ERROR], 0, 
+                        MIN_DAY, &r);
+                gtk_entry_set_text(GTK_ENTRY(priv->d_entry), "01");
+                priv->day = priv->d_orig = 1;
+            }
+            else {
+                g_signal_emit(ed, date_editor_signals[DATE_ERROR], 0, 
+                        MAX_DAY, &r);
+                gtk_entry_set_text(GTK_ENTRY(priv->d_entry), "31");
+                priv->day = priv->d_orig = 31;
+            }
+            g_idle_add ((GSourceFunc) 
+                    _hildon_date_editor_entry_select_all, 
+                    priv->d_entry);
+            return;
+        }
+
+        if(GTK_WIDGET(widget) == priv->m_entry)
+        {
+            if(m > 0 && m < 13)
+            {
+                priv->month = m;
+                return;
+            }
+            else if(m < 1)
+            {
+                g_signal_emit(ed, date_editor_signals[DATE_ERROR], 0, 
+                        MIN_MONTH, &r);
+                gtk_entry_set_text(GTK_ENTRY(priv->m_entry), "01");
+                priv->month = priv->m_orig = 1;
+
+            }
+            else
+            {
+                g_signal_emit(ed, date_editor_signals[DATE_ERROR], 0, 
+                        MAX_MONTH, &r);
+                gtk_entry_set_text(GTK_ENTRY(priv->m_entry), "12");
+                priv->month = priv->m_orig = 12;
+            }
+
+            g_idle_add ((GSourceFunc) 
+                    _hildon_date_editor_entry_select_all, 
+                    priv->m_entry);
+            return;
+        }
+
+        if(GTK_WIDGET(widget) == priv->y_entry)
+        {
+            if(y >= 1 && y <= 2100) {
+                priv->year = y;
+                return;
+            }
+            else if(y < 1) {
+                g_signal_emit(ed, date_editor_signals[DATE_ERROR], 0, 
+                        MIN_YEAR, &r);
+                gtk_entry_set_text(GTK_ENTRY(priv->y_entry), "0001");
+                priv->year = priv->y_orig = 1;
+            }
+            /* y > 2100 */
+            else {
+                g_signal_emit(ed, date_editor_signals[DATE_ERROR], 0, 
+                        MAX_YEAR, &r);
+                gtk_entry_set_text(GTK_ENTRY(priv->y_entry), "2100");
+                priv->year = priv->y_orig = 2100;
+            }
+            g_idle_add ((GSourceFunc) 
+                    _hildon_date_editor_entry_select_all, 
+                    priv->y_entry);
+            return;
+        }
+    }
+}
+
 static gboolean hildon_date_editor_keyrelease(GtkWidget * widget,
                                               GdkEventKey * event,
                                               gpointer data)
@@ -813,9 +939,8 @@ static gboolean hildon_date_editor_keyrelease(GtkWidget * widget,
             priv->editor_pressed = FALSE;
             return TRUE;
         }
-    }
-    else if (event->keyval == GDK_Escape)
-	priv->skip_validation = FALSE;
+    } else if (event->keyval == GDK_Escape)
+		priv->skip_validation = FALSE;
     
     return FALSE;
 }
@@ -1060,230 +1185,125 @@ static gboolean hildon_date_editor_entry_focus_out(GtkWidget * widget,
                                              GdkEventFocus * event,
                                              gpointer data)
 {
-    HildonDateEditor *ed;
-    HildonDateEditorPrivate *priv;
-    gint d, m, y;
-    gboolean return_value = FALSE;
-    GDate gd;
-    gchar new_val[5];
+  HildonDateEditor *ed;
+  HildonDateEditorPrivate *priv;
+  gint d, m, y;
+  gboolean r; /*for the sake of signal emission*/
+  GDate gd;
 
-    ed = HILDON_DATE_EDITOR(data);
-    priv = HILDON_DATE_EDITOR_GET_PRIVATE(ed);
-    
-    /* deselect the entry */
-    gtk_editable_select_region(GTK_EDITABLE(widget), 0, 0);
+  ed = HILDON_DATE_EDITOR(data);
+  priv = HILDON_DATE_EDITOR_GET_PRIVATE(ed);
 
-    if (priv->skip_validation)
-        return FALSE;
-    
-    g_signal_emit_by_name (G_OBJECT(ed), "validate_date", &return_value);
-
-    d = atoi(gtk_entry_get_text(GTK_ENTRY(priv->d_entry)));
-    m = atoi(gtk_entry_get_text(GTK_ENTRY(priv->m_entry)));
-    y = atoi(gtk_entry_get_text(GTK_ENTRY(priv->y_entry)));
-
-    /* If date is invalid we'll try to fix it */
-    if(!return_value) {
-        
-        g_date_clear(&gd, 1);
-        g_date_set_time(&gd, time(NULL));
-            
-        /* Year is illegal, year 0 is not allowed by this code */
-        if ((g_utf8_strlen(gtk_entry_get_text(GTK_ENTRY(priv->y_entry)),
-                           -1) == 0) || (y == 0)) {
-            gint end = gtk_entry_get_max_length(GTK_ENTRY(priv->y_entry));
-
-            gtk_infoprint(NULL, _("Ckct_ib_date_does_not_exist"));
-
-            /* set year to current year or to orignal value, if one exists 
-             */
-            if (priv->y_orig == 0)
-                y = g_date_get_year(&gd);
-            else
-                y = priv->y_orig;
-
-            sprintf(new_val, "%02d", y);
-            gtk_entry_set_text(GTK_ENTRY(priv->y_entry), new_val);
-            gtk_widget_grab_focus(priv->y_entry);
-
-            gtk_editable_select_region(GTK_EDITABLE(priv->y_entry),
-                                       0, end);
-            priv->valid_value = FALSE;
-        }
-
-        /* month is illegal */
-        else if ((g_utf8_strlen
-             (gtk_entry_get_text(GTK_ENTRY(priv->m_entry)), -1) == 0)
-            || (m == 0)) {
-            gint end = gtk_entry_get_max_length(GTK_ENTRY(priv->m_entry));
-
-            gtk_infoprintf(NULL, _("Ckct_ib_set_a_value_within_range"), 1, 12);
-
-            /* set month to current month or to orignal value, if one
-               exists */
-            if (priv->m_orig == 0)
-                m = g_date_get_month(&gd);
-            else
-                m = priv->m_orig;
-
-            sprintf(new_val, "%02d", m);
-            gtk_entry_set_text(GTK_ENTRY(priv->m_entry), new_val);
-            gtk_widget_grab_focus(priv->m_entry);
-
-            gtk_editable_select_region(GTK_EDITABLE(priv->m_entry), 0,
-                                       end);
-            priv-> valid_value = FALSE;
-        }
-
-        /* day is illegal */
-        else if ((g_utf8_strlen
-             (gtk_entry_get_text(GTK_ENTRY(priv->d_entry)), -1) == 0)
-            || (d == 0)) {
-            gint end = gtk_entry_get_max_length(GTK_ENTRY(priv->d_entry));
-
-            gtk_infoprintf(NULL, _("Ckct_ib_set_a_value_within_range"), 1,  31);
-
-            /* set day to current day or to orginal value, if one exists */
-            if (priv->d_orig == 0)
-                d = g_date_get_day(&gd);
-            else
-                d = priv->d_orig;
-
-            sprintf(new_val, "%02d", d);
-            gtk_entry_set_text(GTK_ENTRY(priv->d_entry), new_val);
-            gtk_widget_grab_focus(priv->d_entry);
-
-            gtk_editable_select_region(GTK_EDITABLE(priv->d_entry), 0,
-                                       end);
-            priv->valid_value = FALSE;
-        }
-
-        else {
-           /* date is not valid. Check what's wrong and correct it */
-           /* day entry was edited */
-           if (widget == priv->d_entry) {
-              gint l =
-                  gtk_entry_get_max_length(GTK_ENTRY(priv->d_entry));
-              gint c;
-
-              /* set day to 1 */
-              if (d < 1) {
-                  d = 1;
-                  gtk_infoprintf(NULL, _("Ckct_ib_minimum_value"), 1);
-
-                  sprintf(new_val, "%02d", d);
-                  gtk_entry_set_text(GTK_ENTRY(priv->d_entry),
-                                     new_val);
-                  c = g_utf8_strlen(gtk_entry_get_text
-                                    (GTK_ENTRY(priv->d_entry)), l);
-                  gtk_widget_grab_focus (priv->d_entry);
-                  gtk_editable_select_region(GTK_EDITABLE
-                                             (priv->d_entry), 0, c);
-                  priv->valid_value = FALSE;
-              }
-              /* set day to max number of days in this month */
-              else if (d > g_date_get_days_in_month(m,y)) {
-                  d = g_date_get_days_in_month(m, y);
-                  gtk_infoprintf(NULL, _("Ckct_ib_maximum_value"), d);
-
-                  sprintf(new_val, "%02d", d);
-                  gtk_entry_set_text(GTK_ENTRY(priv->d_entry),
-                                     new_val);
-                  c = g_utf8_strlen(gtk_entry_get_text
-                                    (GTK_ENTRY(priv->d_entry)), l);
-                  gtk_widget_grab_focus (priv->d_entry);
-                  gtk_editable_select_region(GTK_EDITABLE
-                                             (priv->d_entry), 0, c);
-                  priv->valid_value = FALSE;
-              }
-          }
-
-          /* month entry was edited */
-          else if (widget == priv->m_entry) {
-              gint l =
-                  gtk_entry_get_max_length(GTK_ENTRY(priv->m_entry));
-              gint c;
-
-              /* set month to 1 */
-              if (m < 1) {
-                  m = 1;
-                  gtk_infoprintf(NULL, _("Ckct_ib_minimum_value"), 1);
-
-                  sprintf(new_val, "%02d", m);
-                  gtk_entry_set_text(GTK_ENTRY(priv->m_entry),
-                                     new_val);
-                  c = g_utf8_strlen(gtk_entry_get_text
-                                    (GTK_ENTRY(priv->m_entry)), l);
-                  gtk_widget_grab_focus (priv->m_entry);
-                  gtk_editable_select_region(GTK_EDITABLE
-                                            (priv->m_entry), 0, c);
-                  priv->valid_value = FALSE;
-              }
-              /* set month to 12 */
-              else if (m > 12) {
-                  m = 12;
-                  gtk_infoprintf(NULL, _("Ckct_ib_maximum_value"), m);
-                  sprintf(new_val, "%02d", m);
-                  gtk_entry_set_text(GTK_ENTRY(priv->m_entry),
-                                      new_val);
-                  c = g_utf8_strlen(gtk_entry_get_text
-                                    (GTK_ENTRY(priv->m_entry)), l);
-                  gtk_widget_grab_focus (priv->m_entry);
-                  gtk_editable_select_region(GTK_EDITABLE
-                                             (priv->m_entry), 0, c);
-                  priv->valid_value = FALSE;
-              }
-              else if (d > g_date_get_days_in_month(m,y)) {
-                  d = g_date_get_days_in_month(m, y);
-                  gtk_infoprintf(NULL, _("Ckct_ib_maximum_value"), d);
-
-                  sprintf(new_val, "%02d", d);
-                  gtk_entry_set_text(GTK_ENTRY(priv->d_entry),
-                          new_val);
-                  c = g_utf8_strlen(gtk_entry_get_text
-                          (GTK_ENTRY(priv->d_entry)), l);
-                  gtk_widget_grab_focus (priv->d_entry);
-                  gtk_editable_select_region(GTK_EDITABLE
-                          (priv->d_entry), 0, c);
-                  priv->valid_value = FALSE;
-              }
-          }
-        }
-    }
-
-    hildon_date_editor_set_date(ed, y, m, d);
-
-    priv->d_orig = d;
-    priv->m_orig = m;
-    priv->y_orig = y;
-
-    /* if month entry has only one character, prepend it with 0 */
-    if (g_utf8_strlen(gtk_entry_get_text(GTK_ENTRY(priv->m_entry)), -1) ==
-            1) {
-        sprintf(new_val, "%02d", m);
-        gtk_entry_set_text(GTK_ENTRY(priv->m_entry), new_val);
-    }
-
-    /* if day entry has only one character, prepend it with 0 */
-    if (g_utf8_strlen(gtk_entry_get_text(GTK_ENTRY(priv->d_entry)), -1) ==
-            1) {
-        sprintf(new_val, "%02d", d);
-        gtk_entry_set_text(GTK_ENTRY(priv->d_entry), new_val);
-    }
+  if (priv->skip_validation)
     return FALSE;
+
+  /*check if the calling entry is empty*/
+  if(gtk_entry_get_text(GTK_ENTRY(widget)) == NULL ||
+     *(gtk_entry_get_text(GTK_ENTRY(widget))) == '\0')
+    {
+      if(widget == priv->d_entry)
+	g_signal_emit(ed, date_editor_signals[DATE_ERROR], 0, 
+		      EMPTY_DAY, &r);
+      else if(widget == priv->m_entry)
+	g_signal_emit(ed, date_editor_signals[DATE_ERROR], 0, 
+		      EMPTY_MONTH, &r);
+      else
+	g_signal_emit(ed, date_editor_signals[DATE_ERROR], 0, 
+		      EMPTY_YEAR, &r);
+
+      return FALSE;
+    }
+
+  /*date validation starts*/
+  d = atoi(gtk_entry_get_text(GTK_ENTRY(priv->d_entry)));
+  m = atoi(gtk_entry_get_text(GTK_ENTRY(priv->m_entry)));
+  y = atoi(gtk_entry_get_text(GTK_ENTRY(priv->y_entry)));
+
+  /*the only reason why a date is not valid is because that 
+   * some months dont have 31st 30th or even 29th(since we 
+   * have done max and min range checking for each field), for 
+   * now we will only fix day field, if trying to fix day
+   * field fails to make the date valid, we will set the 
+   * date to be current date, if any value is 0, that means
+   * this entry is empty, therefore skip validation*/
+   
+  if(d != 0 && m != 0 && y != 0 && !g_date_valid_dmy(d, m, y))
+    {
+      gint new_d;
+      gint max_d;
+      gchar day_str[3];
+      
+      g_signal_emit(ed, date_editor_signals[DATE_ERROR], 0, 
+		    INVALID_DATE, &r);
+      
+      max_d = g_date_get_days_in_month(m,y);
+	
+      if(priv->d_orig <= max_d && priv->d_orig > 0)
+	new_d = priv->d_orig;
+      else
+	new_d = priv->d_orig = max_d;
+      
+      if(g_date_valid_dmy(new_d, m, y))
+	{
+	  d = priv->day = new_d;
+	  sprintf(day_str, "%02d", new_d);
+	  gtk_entry_set_text(GTK_ENTRY(priv->d_entry), day_str);
+	}
+      else
+	{
+	  g_date_clear(&gd, 1);
+	  g_date_set_time(&gd, time(NULL));
+	  d = g_date_get_year(&gd);
+	  m = g_date_get_month(&gd);
+	  y = g_date_get_day(&gd);
+	}
+      
+      gtk_widget_grab_focus(priv->d_entry);
+      g_idle_add((GSourceFunc)
+		 _hildon_date_editor_entry_select_all, priv->d_entry);
+    }
+  /*make sure to have 0 in front single digits*/
+  hildon_date_editor_set_date(ed, (guint) y, (guint) m, (guint) d);
+  return FALSE;
 }
 
-static gboolean hildon_date_editor_validate_date(HildonDateEditor *editor)
+static gboolean 
+hildon_date_editor_date_error(HildonDateEditor *editor,
+			      HildonDateEditorErrorType type)
 {
-    gint d, m, y;
-    HildonDateEditorPrivate *priv = HILDON_DATE_EDITOR_GET_PRIVATE(editor);
-    
-    /* get texts */
-    d = atoi(gtk_entry_get_text(GTK_ENTRY(priv->d_entry)));
-    m = atoi(gtk_entry_get_text(GTK_ENTRY(priv->m_entry)));
-    y = atoi(gtk_entry_get_text(GTK_ENTRY(priv->y_entry)));
-
-    return g_date_valid_dmy(d, m, y);
+  switch(type)
+    {
+    case MAX_DAY:
+      gtk_infoprintf(NULL, _("Ckct_ib_maximum_value"), 31);
+      break;
+    case MAX_MONTH:
+      gtk_infoprintf(NULL, _("Ckct_ib_maximum_value"), 12);
+      break;
+    case MAX_YEAR:
+      gtk_infoprintf(NULL, _("Ckct_ib_maximum_value"), 2100);
+      break;
+    case MIN_DAY:
+    case MIN_MONTH:
+    case MIN_YEAR:
+      gtk_infoprintf(NULL, _("Ckct_ib_minimum_value"), 1);
+      break;
+    case EMPTY_DAY:
+      gtk_infoprintf(NULL, _("Ckct_ib_set_a_value_within_range"), 1, 31);
+      break;
+    case EMPTY_MONTH:
+      gtk_infoprintf(NULL, _("Ckct_ib_set_a_value_within_range"), 1, 12);
+      break;
+    case EMPTY_YEAR:
+      gtk_infoprintf(NULL, _("Ckct_ib_set_a_value_within_range"), 1, 2100);
+      break;
+    case INVALID_DATE:
+      gtk_infoprint(NULL, _("Ckct_ib_date_does_not_exist"));
+      break;
+   default:
+      /*default error message ?*/
+      break;
+    }
+  return TRUE;
 }
 
 static void hildon_date_editor_size_request(GtkWidget * widget,
@@ -1417,12 +1437,10 @@ gboolean hildon_date_editor_set_year(HildonDateEditor *editor, guint year)
 
   if (g_date_valid_dmy(priv->day, priv->month, year))
   {
-    GDate date;
     gchar str[MAX_DATE_LEN + 1];
     priv->year = year;
-    g_date_set_dmy(&date, priv->day, priv->month, year);
 
-    g_date_strftime(str, MAX_DATE_LEN, "%EY", &date);
+    sprintf(str, "%04d", year);
     gtk_entry_set_text(GTK_ENTRY(priv->y_entry), str);
 
     g_object_notify(G_OBJECT(editor), "year");
@@ -1508,7 +1526,8 @@ guint hildon_date_editor_get_year(HildonDateEditor *editor)
   HildonDateEditorPrivate *priv;
   g_return_val_if_fail( HILDON_IS_DATE_EDITOR(editor), 0 );
   priv = HILDON_DATE_EDITOR_GET_PRIVATE(editor);
-  return priv->year;
+  /*change to have the content in the entry*/
+  return (guint) atoi(gtk_entry_get_text(GTK_ENTRY(priv->y_entry)));
 }
 
 /**
@@ -1525,7 +1544,7 @@ guint hildon_date_editor_get_month(HildonDateEditor *editor)
   HildonDateEditorPrivate *priv;
   g_return_val_if_fail( HILDON_IS_DATE_EDITOR(editor), 0 );
   priv = HILDON_DATE_EDITOR_GET_PRIVATE(editor);
-  return priv->month;
+  return (guint) atoi(gtk_entry_get_text(GTK_ENTRY(priv->m_entry)));
 }
 
 /**
@@ -1542,5 +1561,12 @@ guint hildon_date_editor_get_day(HildonDateEditor *editor)
   HildonDateEditorPrivate *priv;
   g_return_val_if_fail( HILDON_IS_DATE_EDITOR(editor), 0 );
   priv = HILDON_DATE_EDITOR_GET_PRIVATE(editor);
-  return priv->day;
+  return (guint) atoi(gtk_entry_get_text(GTK_ENTRY(priv->d_entry)));
+}
+
+static gboolean
+_hildon_date_editor_entry_select_all (GtkWidget *widget)
+{
+	gtk_editable_select_region(GTK_EDITABLE(widget), 0, -1);
+	return FALSE;
 }
