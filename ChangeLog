@@ -1,5 +1,8 @@
 2005-08-03  Luc Pionchon  <luc.pionchon@nokia.com>
 
+	* doc/tmpl/hildon-note.sgml: code example, use slightly less funny
+	string examples.
+
 	* hildon-widgets/hildon-scroll-area.c
 	(hildon_scroll_area_destroy): one-instruction function:
 	removed. Call g_free directly.

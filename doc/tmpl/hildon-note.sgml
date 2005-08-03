@@ -13,15 +13,15 @@ Additional features can be e.g. progressbars or animations.
 <informalexample>
 <programlisting>
 
-hildon_note_new_confirmation( window, "You are forced to format your drives" );
+hildon_note_new_confirmation( window, "Confirmation message..." );
 
 i = gtk_dialog_run (GTK_DIALOG (note));
 gtk_widget_destroy (GTK_WIDGET (note));
 
 if (i == GTK_RESPONSE_OK)
-   gtk_infoprint( window, "Your pathetic files has been erased, MUAHAH!" );
+   gtk_infoprint( window, "User pressed 'OK' button'" );
 else
-   gtk_infoprint( window, "No, you cant change your destiny, MUAHAH!" );
+   gtk_infoprint( window, "User pressed 'Cancel' button" );
 
 </programlisting>
 </informalexample>
