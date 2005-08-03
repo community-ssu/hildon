@@ -58,8 +58,7 @@ static void hildon_scroll_area_child_requisition (GtkWidget *widget,
 static void hildon_scroll_area_fixed_allocate (GtkWidget *widget,
 					       GtkAllocation *allocation,
 					       HildonScrollArea *sc);
-static void hildon_scroll_area_destroy (GtkObject *object,
-					HildonScrollArea *sc);
+
 /**
  * hildon_scroll_area_new:
  * @sw: #GtkWidget - #GtkScrolledWindow
@@ -123,17 +122,11 @@ GtkWidget *hildon_scroll_area_new (GtkWidget *sw, GtkWidget *child)
 			  G_CALLBACK (hildon_scroll_area_size_allocate), sc);
   g_signal_connect (G_OBJECT (sc->fixed), "size-allocate",
 		    G_CALLBACK (hildon_scroll_area_fixed_allocate), sc);
-  g_signal_connect (G_OBJECT (sw), "destroy",
-		    G_CALLBACK (hildon_scroll_area_destroy), sc);
+  g_signal_connect_swapped (G_OBJECT (sw), "destroy",
+		    G_CALLBACK (g_free), sc);
 
   gtk_widget_show_all (sw);
   return fixed;
-}
-
-static void hildon_scroll_area_destroy (GtkObject *object,
-					HildonScrollArea *sc)
-{
-  g_free (sc);
 }
 
 static void hildon_scroll_area_fixed_allocate (GtkWidget *widget,
@@ -161,14 +154,12 @@ static void hildon_scroll_area_outer_value_changed (GtkAdjustment *adjustment,
   gtk_widget_size_request (sc->child, &req);
 
   if ((sc->outadj->value + sc->outadj->page_size) > sc->fixed->allocation.y
-      && sc->outadj->value <
-      (sc->fixed->allocation.y + req.height))
+      && sc->outadj->value < (sc->fixed->allocation.y + req.height))
     {
       gdouble new_pos = 0;
 
       new_pos = MAX (sc->outadj->value - sc->fixed->allocation.y, 0);
-      new_pos = MIN (new_pos,
-		     req.height - sc->inadj->page_size);
+      new_pos = MIN (new_pos, req.height - sc->inadj->page_size);
       new_pos = MAX (new_pos, 0);
 
       gtk_fixed_move (GTK_FIXED (sc->fixed), sc->swinner, 0, new_pos);
