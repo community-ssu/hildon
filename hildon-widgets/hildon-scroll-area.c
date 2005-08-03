@@ -36,6 +36,7 @@
 typedef struct
   {
     GtkWidget *fixed;
+    GtkWidget *swouter;
     GtkWidget *swinner;
     GtkWidget *child;
 
@@ -105,6 +106,7 @@ GtkWidget *hildon_scroll_area_new (GtkWidget *sw, GtkWidget *child)
   gtk_fixed_put (GTK_FIXED (fixed), swi, 0, 0);
 
   sc->fixed = fixed;
+  sc->swouter = sw;
   sc->swinner = swi;
   sc->child = child;
   sc->outadj = gtk_scrolled_window_get_vadjustment (GTK_SCROLLED_WINDOW (sw));
@@ -175,12 +177,16 @@ static void hildon_scroll_area_inner_value_changed (GtkAdjustment *adjustment,
 			      sc->fixed->allocation.y + adjustment->value);
 }
 
+__inline__ static gint calculate_width (HildonScrollArea *sc)
+{
+  GtkScrolledWindow *scwin = GTK_SCROLLED_WINDOW (sc->swouter);
+  return (scwin->hscrollbar_visible * scwin->hscrollbar->allocation.width);
+}
+
 static void hildon_scroll_area_size_allocate (GtkWidget *widget,
 					      GtkAllocation *allocation,
 					      HildonScrollArea *sc)
 {
-  g_signal_handlers_disconnect_by_func (widget,
-					(void*)hildon_scroll_area_size_allocate,
-					sc);
+  gtk_widget_set_size_request (sc->fixed, calculate_width (sc), sc->fixed->allocation.height);
   gtk_widget_set_size_request (sc->child, sc->fixed->allocation.width, -1);
 }

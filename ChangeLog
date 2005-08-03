@@ -4,6 +4,9 @@
 	(hildon_scroll_area_destroy): one-instruction function:
 	removed. Call g_free directly.
 	+ minor cleanup
+	(hildon_scroll_area_size_allocate):When a scrollbar appears to the
+	right edge of window, size of the child is also shrinked. 'fixed'
+	does not automatically update this data -> Doing it manually.
 
 	* hildon-widgets/hildon-date-editor.h: added
 	HildonDateEditorErrorType error enumeration type, removed signal
