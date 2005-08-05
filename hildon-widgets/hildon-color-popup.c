@@ -197,8 +197,6 @@ static gboolean
 hildon_popup_palette_expose (GtkWidget * widget,
                              GdkEventExpose *event, gpointer data)
 {
-  GTimer *timer = g_timer_new();
-  g_timer_start(timer);
   if (GTK_WIDGET_DRAWABLE(widget))
   {
     GdkColor color;
@@ -222,8 +220,6 @@ hildon_popup_palette_expose (GtkWidget * widget,
 
     g_object_unref(gc);
   }
-  g_timer_stop(timer);
-  g_print("---%f---\n",g_timer_elapsed(timer,NULL));
-  g_timer_destroy(timer);
+
   return TRUE;
 }
