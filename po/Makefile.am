@@ -5,7 +5,7 @@ EXTRA_DIST = $(foreach po,$(languages),$(po).po) POTFILES.in README \
 	debian/compat \
 	debian/control \
 	debian/rules \
-	debian/hildon-libs-l10n-engb.install \
+	debian/hildon-libs-l10n-engb.install
 
 %.mo: %.po
 	msgfmt --statistics -v -o$(top_builddir)/po/$@ $(srcdir)/$<
