@@ -656,8 +656,8 @@ modify_selected(HildonColorSelector * colselector)
 {
     HildonColorPopup popupdata;
     GtkWidget *popup;
-
-    popup = hildon_color_popup_new(GTK_WINDOW(GTK_WIDGET(colselector)->window), 
+    
+    popup = hildon_color_popup_new(GTK_WINDOW(colselector), 
 		    hildon_color_selector_get_color(colselector), &popupdata);
     
     if ( gtk_dialog_run(GTK_DIALOG(popup) ) == GTK_RESPONSE_OK) 
