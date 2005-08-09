@@ -1374,13 +1374,13 @@ hildon_time_editor_validate (HildonTimeEditor *editor)
               {
                 gtk_infoprintf(window,
                                _("Ckct_ib_set_a_value_within_range"),
-                               0, 23);
+                               HOURS_MIN_24, HOURS_MAX_24);
               }
             else
               {
                 gtk_infoprintf(window,
                                _("Ckct_ib_set_a_value_within_range"),
-                               0, 12);
+                               HOURS_MIN_12, HOURS_MAX_12);
               }
           }
         else
@@ -1398,7 +1398,7 @@ hildon_time_editor_validate (HildonTimeEditor *editor)
           {
             gtk_infoprintf(window,
                            _("Ckct_ib_set_a_value_within_range"),
-                           0, 59);
+                           MINUTES_MIN, MINUTES_MAX);
           }
         else
           {
@@ -1415,7 +1415,7 @@ hildon_time_editor_validate (HildonTimeEditor *editor)
           {
             gtk_infoprintf(window,
                            _("Ckct_ib_set_a_value_within_range"),
-                           0, 59);
+                           SECONDS_MIN, SECONDS_MAX);
           }
         else
           {
@@ -2253,21 +2253,6 @@ convert_to_12h (guint *h, guint *m, guint *s, gboolean *am)
 static void
 convert_to_24h (guint *h, guint *m, guint *s, gboolean am)
 {
-  /* Official time hack: As 12am and 12pm are technically invalid
-     times, we add a minute to 24h time 00:00 and subtract one from
-     24h time 12:00 when in 12h mode. This is a custom in railroads
-     airlines and insurance companies.
-   */
-  if (am && *h == 12 && *m == 0 && *s == 0)
-    {
-      *m++;
-    }
-  else if (!am && *h == 12 && *m == 0 && *s == 0)
-    {
-      *h--;
-      *m = 59;
-    }
-  
   /* 12 midnight - 12:59 AM
    * subtract 12 hours
    */

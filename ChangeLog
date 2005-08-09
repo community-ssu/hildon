@@ -1,3 +1,11 @@
+2005-08-09  Luc Pionchon  <luc.pionchon@nokia.com>
+
+	* hildon-widgets/hildon-time-editor.c:
+	(hildon_time_editor_validate): Replace solid numbers with defined
+	values
+	(convert_to_12h): Remove "work-around" for the broken 12h timespec
+
+
 2005-08-05  Luc Pionchon  <luc.pionchon@nokia.com>
 
 	* hildon-widgets/hildon-color-selector.c (modify_selected): fix
