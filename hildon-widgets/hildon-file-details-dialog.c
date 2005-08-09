@@ -37,10 +37,7 @@
 #include <gtk/gtkscrolledwindow.h>
 #include <time.h>
 #include <libintl.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <unistd.h>
-#include <errno.h>
+#include <libgnomevfs/gnome-vfs.h>
 
 #include <hildon-widgets/hildon-caption.h>
 #include <hildon-widgets/hildon-file-system-model.h>
@@ -127,6 +124,21 @@ GType hildon_file_details_dialog_get_type(void)
     return file_details_dialog_type;
 }
 
+static gboolean write_access(const gchar *uri)
+{
+  GnomeVFSFileInfo *info;
+  gboolean result = FALSE;
+
+  info = gnome_vfs_file_info_new ();
+  if (gnome_vfs_get_file_info(uri, info, 
+    GNOME_VFS_FILE_INFO_GET_ACCESS_RIGHTS) == GNOME_VFS_OK)
+    result = ((info->permissions & GNOME_VFS_PERM_ACCESS_WRITABLE) 
+              == GNOME_VFS_PERM_ACCESS_WRITABLE);
+
+  gnome_vfs_file_info_unref(info);
+  return result;
+}
+
 static void change_state(HildonFileDetailsDialog *self, gboolean readonly)
 {
   GtkTreeIter iter;
@@ -135,27 +147,34 @@ static void change_state(HildonFileDetailsDialog *self, gboolean readonly)
 
   if (hildon_file_details_dialog_get_file_iter(self, &iter))
   {  
-    gchar *path;
-    struct stat buf;
+    gchar *uri;
+    GnomeVFSFileInfo *info;
+    GnomeVFSResult result;
 
     gtk_tree_model_get(GTK_TREE_MODEL(self->priv->model), &iter, 
-      HILDON_FILE_SYSTEM_MODEL_COLUMN_LOCAL_PATH, &path, -1);    
+      HILDON_FILE_SYSTEM_MODEL_COLUMN_URI, &uri, -1);    
 
-    /* Here we should set the read only state */
-    if (stat(path, &buf) == 0)
+    info = gnome_vfs_file_info_new();
+    result = gnome_vfs_get_file_info(uri, info, 
+      GNOME_VFS_FILE_INFO_DEFAULT);
+
+    if (result == GNOME_VFS_OK)
     {
-      mode_t perm = (readonly ? 
-                        buf.st_mode & ~(S_IWUSR | S_IWGRP | S_IWOTH) : 
-                        buf.st_mode | (S_IWUSR | S_IWGRP));
-
-      (void) chmod(path, perm);
+      if (readonly)
+        info->permissions &= ~(S_IWUSR | S_IWGRP | S_IWOTH);
+      else      
+        info->permissions |= (S_IWUSR | S_IWGRP);
+      
+      result = gnome_vfs_set_file_info(uri, info, 
+          GNOME_VFS_SET_FILE_INFO_PERMISSIONS);
     }
 
     /* No errors are defined in the specs, but the previous operations can still fail */
-    if (errno)
-      gtk_infoprint(GTK_WINDOW(self), g_strerror(errno));
+    if (result != GNOME_VFS_OK)
+      gtk_infoprint(GTK_WINDOW(self), gnome_vfs_result_to_string(result));
     
-    g_free(path);
+    gnome_vfs_file_info_unref(info);
+    g_free(uri);
   }
   else
     g_assert_not_reached();
@@ -599,7 +618,7 @@ void hildon_file_details_dialog_set_file_iter(HildonFileDetailsDialog *self, Gtk
   GtkTreeModel *model;
   GtkTreePath *path;
   GtkTreeIter temp_iter, parent_iter;
-  gchar *name, *mime, *local_path;
+  gchar *name, *mime, *uri;
   const gchar *fmt;
   gint64 time_stamp, size;
   gchar buffer[256];
@@ -622,7 +641,7 @@ void hildon_file_details_dialog_set_file_iter(HildonFileDetailsDialog *self, Gtk
   gtk_tree_model_get(model, iter,
     HILDON_FILE_SYSTEM_MODEL_COLUMN_DISPLAY_NAME, &name,
     HILDON_FILE_SYSTEM_MODEL_COLUMN_MIME_TYPE, &mime,
-    HILDON_FILE_SYSTEM_MODEL_COLUMN_LOCAL_PATH, &local_path,
+    HILDON_FILE_SYSTEM_MODEL_COLUMN_URI, &uri,
     HILDON_FILE_SYSTEM_MODEL_COLUMN_FILE_SIZE, &size,
     HILDON_FILE_SYSTEM_MODEL_COLUMN_FILE_TIME, &time_stamp,
     -1);
@@ -664,11 +683,11 @@ void hildon_file_details_dialog_set_file_iter(HildonFileDetailsDialog *self, Gtk
 
     gtk_tree_model_get(model, &parent_iter,
       HILDON_FILE_SYSTEM_MODEL_COLUMN_DISPLAY_NAME, &location_name,
-      HILDON_FILE_SYSTEM_MODEL_COLUMN_LOCAL_PATH, &parent_path,
+      HILDON_FILE_SYSTEM_MODEL_COLUMN_URI, &parent_path,
       HILDON_FILE_SYSTEM_MODEL_COLUMN_ICON, &location_icon, -1);      
 
     if (parent_path)
-      location_readonly = access(parent_path, W_OK)  != 0;
+      location_readonly = !write_access(parent_path);
 
     gtk_label_set_text(GTK_LABEL(self->priv->file_location), location_name);
     gtk_image_set_from_pixbuf(GTK_IMAGE(self->priv->file_location_image), 
@@ -718,27 +737,16 @@ void hildon_file_details_dialog_set_file_iter(HildonFileDetailsDialog *self, Gtk
   /* We do not want initial setting to cause any action */
   g_signal_handler_block(self->priv->file_readonly, self->priv->toggle_handler);
 
-  if (local_path)
-  {
-    gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(self->priv->file_readonly), 
-      location_readonly || access(local_path, W_OK)  != 0);
-    gtk_widget_set_sensitive(self->priv->file_readonly, !location_readonly);
-  }
-  else  
-  {
-      /* Backend do not support setting permissions, so we 
-          cannot do anything for paths that are not local */
-    gtk_toggle_button_set_inconsistent(
-        GTK_TOGGLE_BUTTON(self->priv->file_readonly), TRUE);
-    gtk_widget_set_sensitive(self->priv->file_readonly, FALSE);
-  }
+  gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(self->priv->file_readonly), 
+    location_readonly || !write_access(uri));
+  gtk_widget_set_sensitive(self->priv->file_readonly, !location_readonly);
 
   self->priv->checkbox_original_state = gtk_toggle_button_get_active(
         GTK_TOGGLE_BUTTON(self->priv->file_readonly));
 
   g_signal_handler_unblock(self->priv->file_readonly, self->priv->toggle_handler);
 
-  g_free(local_path);
+  g_free(uri);
   g_free(name);
   g_free(mime);
 }

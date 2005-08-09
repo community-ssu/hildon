@@ -1,5 +1,8 @@
 2005-08-09  Luc Pionchon  <luc.pionchon@nokia.com>
 
+	* hildon-widgets/hildon-file-details-dialog.c: Added read only
+	checks to cover gateway content as well.
+	
 	* hildon-widgets/hildon-time-editor.c:
 	(hildon_time_editor_validate): Replace solid numbers with defined
 	values
