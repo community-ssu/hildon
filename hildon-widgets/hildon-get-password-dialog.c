@@ -40,6 +40,7 @@
 
 #include <gtk/gtk.h>
 #include <hildon-lgpl/hildon-widgets/gtk-infoprint.h>
+#include <hildon-lgpl/hildon-widgets/hildon-input-mode-hint.h>
 
 #include <hildon-widgets/hildon-caption.h>
 #include <hildon-widgets/hildon-get-password-dialog.h>
@@ -93,7 +94,8 @@ static void _invalid_input(GtkWidget *widget, GtkInvalidInputType reason,
 enum{
     PROP_NONE = 0,
     PROP_DOMAIN,
-    PROP_PASSWORD
+    PROP_PASSWORD,
+    PROP_NUMBERS_ONLY  
 };
 
 /* Private functions */
@@ -115,6 +117,11 @@ hildon_get_password_set_property(GObject * object,
     gtk_entry_set_text(GTK_ENTRY
 		       (gtk_bin_get_child(GTK_BIN(priv->passwordEntry))),
 		       g_value_get_string(value));
+    break;
+  case PROP_NUMBERS_ONLY:
+    g_object_set( G_OBJECT
+		  (gtk_bin_get_child(GTK_BIN(priv->passwordEntry))),
+                  "input-mode", HILDON_INPUT_MODE_HINT_NUMERIC, NULL );
     break;
   default:
     G_OBJECT_WARN_INVALID_PROPERTY_ID(object, prop_id, pspec);
@@ -175,6 +182,15 @@ hildon_get_password_dialog_class_init(HildonGetPasswordDialogClass * class)
 			  "Set content for password entry",
 			  "DEFAULT",
 			  G_PARAM_READWRITE));
+
+  g_object_class_install_property
+    (object_class, 
+     PROP_NUMBERS_ONLY,
+     g_param_spec_boolean ("numbers_only",
+			  "NumbersOnly",
+			  "Set entry to accept only numeric values",
+			  FALSE,
+			  G_PARAM_WRITABLE));
 
     g_type_class_add_private(class,
                              sizeof(HildonGetPasswordDialogPrivate));
