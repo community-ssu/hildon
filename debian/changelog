@@ -1,3 +1,11 @@
+hildon-libs (0.9.35-3) unstable; urgency=low
+
+  * debian/control:
+  * debian/rules: remove l10n packages, add Depends:
+    hildon-libs-l10n-3.0-engb | hildon-libs-l10n-3.0-english
+
+ -- Tommi Komulainen <tommi.komulainen@nokia.com>  Wed, 17 Aug 2005 17:40:47 +0300
+
 hildon-libs (0.9.35-2) unstable; urgency=low
 
   * Maemo dev release

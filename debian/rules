@@ -80,13 +80,6 @@ install: build
 	-mkdir -p $(CURDIR)/debian/build/usr/lib/debug
 	-cp -vd $(CURDIR)/debian/build/usr/lib/lib*.so* $(CURDIR)/debian/build/usr/lib/debug
 
-	# Install locale stuff
-	mkdir -p $(CURDIR)/debian/build/usr/share/osso/l10n/hildon-libs
-	cp po/*.po po/porules.mk $(CURDIR)/debian/build/usr/share/osso/l10n/hildon-libs/
-	cp -a po/debian $(CURDIR)/debian/build/usr/share/osso/l10n/hildon-libs/
-	cp debian/hildon-libs-l10n-engb.install $(CURDIR)/debian/build/usr/share/osso/l10n/hildon-libs/debian/
-	cp debian/copyright $(CURDIR)/debian/build/usr/share/osso/l10n/hildon-libs/debian/
-	sed -r -e "s/^([a-z0-9-]+) /\1-l10n-src /g" debian/changelog > $(CURDIR)/debian/build/usr/share/osso/l10n/hildon-libs/debian/changelog 
 
 # Build architecture-independent files here.
 binary-indep: build install

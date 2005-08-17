@@ -14,7 +14,7 @@ Description: Hildon libraries development files
 Package: hildon-libs0
 Section: libs
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, hildon-lgpl0, hildon-fm1, osso-sounds-ui, libosso-gnomevfs2-0, osso-esd
+Depends: ${shlibs:Depends}, ${misc:Depends}, hildon-lgpl0, hildon-fm1, osso-sounds-ui, libosso-gnomevfs2-0, osso-esd, hildon-libs-l10n-3.0-engb | hildon-libs-l10n-3.0-english
 Description: Hildon libraries
 
 Package: hildon-libs0-dbg
@@ -23,13 +23,3 @@ Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}, hildon-lgpl0-dbg, hildon-fm1-dbg, osso-sounds-ui, libosso-gnomevfs2-0, osso-esd
 Description: Hildon libraries (with debug info)
 
-Package: hildon-libs-l10n-engb
-Architecture: all
-Description: Locale for package hildon-libs
- en_GB locale for hildon-libs.
-
-Package: hildon-libs-l10n-src
-Architecture: all
-Depends: gettext
-Description: Locale source package for hildon-libs
- Source package for locales.
