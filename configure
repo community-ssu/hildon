@@ -1773,7 +1773,7 @@ fi
 
 # Define the identity of the package.
  PACKAGE=hildon-libs
- VERSION=0.9.35
+ VERSION=0.9.47
 
 
 cat >>confdefs.h <<_ACEOF
@@ -19330,7 +19330,10 @@ echo "$as_me: error: Library requirements (outo >= 0.1.1) not met; consider adju
 
 
 
-CFLAGS="$CFLAGS -Wall -pedantic -ansi -Wmissing-prototypes -Wmissing-declarations -Werror"
+CFLAGS="$CFLAGS -std=c99 -Wall -pedantic -Wmissing-prototypes -Wmissing-declarations"
+# -Werror disabled due to the flaw in glib-2.0
+# See http://bugzilla.gnome.org/show_bug.cgi?id=310175 and
+# http://bugzilla.gnome.org/show_bug.cgi?id=310216
 
 GTK_VERSION=2.6.4
 
