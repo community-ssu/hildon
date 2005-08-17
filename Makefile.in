@@ -167,7 +167,7 @@ sbindir = @sbindir@
 sharedstatedir = @sharedstatedir@
 sysconfdir = @sysconfdir@
 target_alias = @target_alias@
-SUBDIRS = hildon-widgets ut po doc 
+SUBDIRS = hildon-widgets ut doc 
 EXTRA_DIST = \
 	debian/changelog \
 	debian/control \
@@ -176,8 +176,6 @@ EXTRA_DIST = \
 	debian/hildon-libs-dev.install \
 	debian/hildon-libs0.install \
 	debian/hildon-libs0-dbg.install \
-	debian/hildon-libs-l10n-engb.install \
-	debian/hildon-libs-l10n-src.install \
 	debian/rules
 
 
@@ -197,10 +195,10 @@ RECURSIVE_TARGETS = info-recursive dvi-recursive pdf-recursive \
 	all-recursive install-data-recursive install-exec-recursive \
 	installdirs-recursive install-recursive uninstall-recursive \
 	check-recursive installcheck-recursive
-DIST_COMMON = $(srcdir)/Makefile.in $(srcdir)/configure Makefile.am \
-	aclocal.m4 config.guess config.h.in config.sub configure \
-	configure.ac depcomp hildon-libs.pc.in install-sh ltmain.sh \
-	missing mkinstalldirs
+DIST_COMMON = $(srcdir)/Makefile.in $(srcdir)/configure COPYING \
+	ChangeLog Makefile.am aclocal.m4 config.guess config.h.in \
+	config.sub configure configure.ac depcomp hildon-libs.pc.in \
+	install-sh ltmain.sh missing mkinstalldirs
 DIST_SUBDIRS = $(SUBDIRS)
 all: config.h
 	$(MAKE) $(AM_MAKEFLAGS) all-recursive

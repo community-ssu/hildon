@@ -1,4 +1,4 @@
-SUBDIRS = hildon-widgets ut po doc 
+SUBDIRS = hildon-widgets ut doc 
 EXTRA_DIST = \
 	debian/changelog \
 	debian/control \
@@ -7,8 +7,6 @@ EXTRA_DIST = \
 	debian/hildon-libs-dev.install \
 	debian/hildon-libs0.install \
 	debian/hildon-libs0-dbg.install \
-	debian/hildon-libs-l10n-engb.install \
-	debian/hildon-libs-l10n-src.install \
 	debian/rules
 
 pkgconfigdir = $(libdir)/pkgconfig
