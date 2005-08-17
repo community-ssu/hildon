@@ -1,3 +1,11 @@
+hildon-libs (0.9.47-1) unstable; urgency=low
+
+  * Bugs fixed:
+    14587: Inconsistency in <filetype> details dialog and File manager
+           behaviour
+
+ -- Tommi Komulainen <tommi.komulainen@nokia.com>  Wed, 17 Aug 2005 19:02:41 +0300
+
 hildon-libs (0.9.35-3) unstable; urgency=low
 
   * debian/control:
