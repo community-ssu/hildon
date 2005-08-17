@@ -1,5 +1,12 @@
 2005-08-17  Tommi Komulainen  <tommi.komulainen@nokia.com>
 
+	* hildon-widgets/hildon-calendar-popup.c (MAX_YEAR, MIN_YEAR):
+	* hildon-widgets/hildon-note.c (ELLIPSATION_STRING, BOX_SPAXING):
+	* hildon-widgets/hildon-volumebar-range.c (CHANGE_THRESHOLD):
+	Use defines rather than magic numbers in the code.
+
+2005-08-17  Tommi Komulainen  <tommi.komulainen@nokia.com>
+
 	Update to new l10n packaging style.  po-files (inside this package)
 	are not used for now, the message catalogs come from separate packages
 	and including them here would conflict.

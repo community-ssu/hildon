@@ -70,6 +70,9 @@
 #define HILDON_NOTE_CONFIRMATION_ICON        "qgn_note_confirm"
 #define HILDON_NOTE_INFORMATION_ICON         "qgn_note_info"
 
+#define ELLIPSATION_STRING "\342\200\246"
+#define BOX_SPACING 10
+
 /* Not exactly sure what this actually _should_ be, because there is
    practically no documentation for the ESD... */
 
@@ -207,7 +210,7 @@ hildon_note_five_line_truncate(const HildonNote * note, const gchar * text)
                 line = pango_layout_get_line(layout, 0);
                 templine = g_strndup(lines[last_line], line->length);
                 g_free(lines[last_line]);
-                lines[last_line] = g_strconcat(templine, "\342\200\246", NULL);
+                lines[last_line] = g_strconcat(templine, ELLIPSATION_STRING, NULL);
                 g_free(templine);
             }
 
@@ -218,7 +221,7 @@ hildon_note_five_line_truncate(const HildonNote * note, const gchar * text)
                 gchar *tempresult;
                 PangoLayout *ellipsis = pango_layout_new(context);
 
-                pango_layout_set_text(ellipsis, "\342\200\246", -1);
+                pango_layout_set_text(ellipsis, ELLIPSATION_STRING, -1);
                 pango_layout_get_size(ellipsis, &ellipsiswidth, NULL);
                 pango_layout_xy_to_index(layout,
                                          max_width * PANGO_SCALE -
@@ -227,7 +230,7 @@ hildon_note_five_line_truncate(const HildonNote * note, const gchar * text)
                 g_object_unref(G_OBJECT(ellipsis));
                 tempresult = g_strndup(lines[last_line], index);
                 lines[last_line] = g_strconcat(tempresult,
-                                               "\342\200\246",
+                                               ELLIPSATION_STRING,
                                                NULL);
                 g_free(tempresult);
             }
@@ -291,7 +294,7 @@ hildon_note_one_line_truncate(const HildonNote * note, const gchar * text)
         line = pango_layout_get_line(layout, 0);
         templine = g_strndup(str, line->length);
         g_free(str);
-        str = g_strconcat(templine, "\342\200\246", NULL);
+        str = g_strconcat(templine, ELLIPSATION_STRING, NULL);
         g_free(templine);
     }
 
@@ -302,7 +305,7 @@ hildon_note_one_line_truncate(const HildonNote * note, const gchar * text)
         gchar *tempresult;
         PangoLayout *ellipsis = pango_layout_new(context);
 
-        pango_layout_set_text(ellipsis, "\342\200\246", -1);
+        pango_layout_set_text(ellipsis, ELLIPSATION_STRING, -1);
         pango_layout_get_size(ellipsis, &ellipsiswidth, NULL);
         pango_layout_xy_to_index(layout,
                                  max_width * PANGO_SCALE -
@@ -311,7 +314,7 @@ hildon_note_one_line_truncate(const HildonNote * note, const gchar * text)
         g_object_unref(G_OBJECT(ellipsis));
         tempresult = g_strndup(str, index);
         str = g_strconcat(tempresult,
-                          "\342\200\246",
+                          ELLIPSATION_STRING,
                           NULL);
         g_free(tempresult);
     }
@@ -685,7 +688,7 @@ hildon_note_create_form(GtkDialog * dialog, GtkWidget * item,
     }
 
     if (IsHorizontal) {
-        priv->box = gtk_hbox_new(FALSE, 10);
+        priv->box = gtk_hbox_new(FALSE, BOX_SPACING);
         gtk_container_add(GTK_CONTAINER(dialog->vbox), priv->box);
 
         if (item) {
@@ -697,7 +700,7 @@ hildon_note_create_form(GtkDialog * dialog, GtkWidget * item,
         gtk_box_pack_start(GTK_BOX(priv->box), priv->label, FALSE, FALSE, 0);
 
     } else {
-        priv->box = gtk_vbox_new(FALSE, 10);
+        priv->box = gtk_vbox_new(FALSE, BOX_SPACING);
         gtk_container_add(GTK_CONTAINER(dialog->vbox), priv->box);
         gtk_box_pack_start(GTK_BOX(priv->box), priv->label, FALSE, FALSE, 0);
 

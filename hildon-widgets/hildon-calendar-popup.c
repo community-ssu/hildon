@@ -47,6 +47,9 @@
 #include <hildon-widgets/hildon-calendar-popup.h>
 #include <hildon-widgets/gtk-infoprint.h>
 
+#define MAX_YEAR 2100
+#define MIN_YEAR 1980
+
 #define _(String) dgettext(PACKAGE, String)
 
 #define HILDON_CALENDAR_POPUP_GET_PRIVATE(obj) \
@@ -309,14 +312,14 @@ init_dmy(guint year, guint month, guint day, guint * d, guint * m,
 {
     GDate date;
 
-    if (year > 2100) {
+    if (year > MAX_YEAR) {
         *d = 31;
         *m = 12;
-        *y = 2100;
-    } else if (year < 1980) {
+        *y = MAX_YEAR;
+    } else if (year < MIN_YEAR) {
         *d = 1;
         *m = 1;
-        *y = 1980;
+        *y = MIN_YEAR;
     } else if (!g_date_valid_dmy(day, month, year)) {
         g_date_clear(&date, 1);
         g_date_set_time(&date, time(NULL));

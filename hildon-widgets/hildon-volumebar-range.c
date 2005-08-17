@@ -52,6 +52,8 @@
 #define VOLUMEBAR_RANGE_PAGE_INCREMENT_VALUE 5.0
 #define VOLUMEBAR_RANGE_PAGE_SIZE_VALUE 0.0
 
+#define CHANGE_THRESHOLD 0.001
+
 static GtkScaleClass *parent_class;
 
 static void hildon_volumebar_range_class_init(HildonVolumebarRangeClass *  
@@ -246,7 +248,7 @@ hildon_volumebar_range_set_level(HildonVolumebarRange * self,
 
     /* Check that value is actually changed. Note that it's not safe to
      * just compare if floats are equivalent or not */
-    if (ABS(GTK_RANGE (self)->adjustment->value - newlevel) > 0.001) {
+    if (ABS(GTK_RANGE (self)->adjustment->value - newlevel) > CHANGE_THRESHOLD) {
         /* This might be a bit faster because this skips
 	 * gtkadjustment's own clamping and check if value has
 	 * indeed changed. */
