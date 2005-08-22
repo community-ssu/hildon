@@ -1,3 +1,12 @@
+hildon-libs (0.9.48-1) unstable; urgency=low
+
+  * Bugs fixed:
+    12176: it_IT Control Panel Date Time: Calendar view in English
+    17142: HildonGrid - By default, after calling gtk_widget_show, Second row
+           is getting displayed instead of first.
+
+ -- Tommi Komulainen <tommi.komulainen@nokia.com>  Mon, 22 Aug 2005 18:25:25 +0300
+
 hildon-libs (0.9.47-1) unstable; urgency=low
 
   * Bugs fixed:
