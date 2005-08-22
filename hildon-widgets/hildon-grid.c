@@ -441,7 +441,7 @@ hildon_grid_set_num_columns(HildonGrid * grid, gint columns)
         priv->num_columns = DEFAULT_N_COLUMNS;
     
     /* Update estimated row-count for jump_scrollbar... */
-    priv->area_rows = priv->area_height / priv->num_columns;
+    priv->area_rows = MAX(priv->area_height / priv->num_columns, 1);
 
     /* Size could have changed. Scroll view so there's something to show. */
     adjust_scrollbar_height(grid);
