@@ -1,5 +1,9 @@
 2005-08-22  Tommi Komulainen  <tommi.komulainen@nokia.com>
 
+	* configure.ac: Release 0.9.48
+
+2005-08-22  Tommi Komulainen  <tommi.komulainen@nokia.com>
+
 	* hildon-widgets/hildon-grid.c (hildon_grid_set_num_columns): Never
 	allow area_rows to be 0 (ie. before widget is visible), otherwise the
 	initial jump_scrollbar_to_focused() scrolls wrong.  N#17152
