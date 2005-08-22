@@ -210,7 +210,6 @@ static void hildon_calendar_popup_init(HildonCalendarPopup * cal)
 {
     HildonCalendarPopupPrivate *priv;
     static int set_domain = 1;
-    gchar *week_start;
 
     priv = HILDON_CALENDAR_POPUP_GET_PRIVATE(cal);
 
@@ -221,12 +220,6 @@ static void hildon_calendar_popup_init(HildonCalendarPopup * cal)
 
     priv->can_exit = FALSE;
     priv->cal = gtk_calendar_new();
-
-    /* first day of the week is obtained from the PO file */
-    week_start = _("week_start");
-    if (week_start[0] >= '0' && week_start[0] <= '6' && week_start[1] == 0)
-      g_object_set(G_OBJECT(priv->cal),
-                   "week-start", week_start[0] - '0', NULL);
 
     gtk_calendar_set_display_options(GTK_CALENDAR(priv->cal),
                                      GTK_CALENDAR_SHOW_HEADING |
