@@ -1,4 +1,9 @@
 2005-08-30  Tommi Komulainen  <tommi.komulainen@nokia.com>
+
+	* hildon-widgets/hildon-number-editor.c (button_event_id): GSource
+	id's are unsigned and undefined at zero (instead of signed and -1)
+
+2005-08-30  Tommi Komulainen  <tommi.komulainen@nokia.com>
 	
 	* hildon-widgets/hildon-time-editor.c (convert_to_12h): Removed a hack
 	that was not working.  N#16805

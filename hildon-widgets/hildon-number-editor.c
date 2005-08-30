@@ -158,7 +158,7 @@ struct _HildonNumberEditorPrivate
     gint end;
     gint default_val;
     gint button_type;
-    gint button_event_id;
+    guint button_event_id;
 
     gboolean negative;
 };
@@ -303,7 +303,7 @@ hildon_number_editor_init (HildonNumberEditor *editor)
     GTK_WIDGET_UNSET_FLAGS( priv->minus, GTK_CAN_FOCUS );
     GTK_WIDGET_UNSET_FLAGS( priv->plus, GTK_CAN_FOCUS );
     
-    priv->button_event_id = -1;
+    priv->button_event_id = 0;
 
     gtk_widget_set_parent(priv->minus, GTK_WIDGET(editor));
     gtk_widget_set_parent(priv->num_entry, GTK_WIDGET(editor));
@@ -385,10 +385,10 @@ hildon_number_editor_button_released (GtkWidget *widget, GdkEvent *event,
     HildonNumberEditorPrivate *priv =
         HILDON_NUMBER_EDITOR_GET_PRIVATE(editor);
         
-    if (priv->button_event_id != -1)
+    if (priv->button_event_id)
       {
         g_source_remove(priv->button_event_id);
-        priv->button_event_id = -1;
+        priv->button_event_id = 0;
       }
     return FALSE;
 }
@@ -414,7 +414,7 @@ hildon_number_editor_button_pressed (GtkWidget *widget, GdkEventButton *event,
     else
         priv->button_type = -1;
 
-    if (priv->button_event_id == -1)
+    if (!priv->button_event_id)
       {
         do_mouse_timeout(editor);
         priv->button_event_id = g_timeout_add (timeout,
