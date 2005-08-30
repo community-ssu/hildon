@@ -2203,21 +2203,6 @@ hildon_time_editor_get_max_values(HildonTimeEditor *editor,
 static void
 convert_to_12h (guint *h, guint *m, guint *s, gboolean *am)
 {
-  /* Official time hack: As 12am and 12pm are technically invalid
-     times, we add a minute to 24h time 00:00 and subtract one from
-     24h time 12:00 when in 12h mode. This is a custom in railroads
-     airlines and insurance companies.
-   */
-  if (*h == 0 && *m == 0 && *s == 0)
-    {
-      *m++;
-    }
-  else if (*h == 12 && *m == 0 && *s == 0)
-    {
-      *h--;
-      *m = 59;
-    }
-  
   /* 0000 to 0059
    * add 12 hours
    */
