@@ -158,7 +158,9 @@ struct _HildonNumberEditorPrivate
     gint end;
     gint default_val;
     gint button_type;
+
     guint button_event_id;
+    guint select_all_idle_id;
 
     gboolean negative;
 };
@@ -277,6 +279,9 @@ hildon_number_editor_finalize (GObject *self)
    if (priv->button_event_id)
      g_source_remove (priv->button_event_id);
 
+   if (priv->select_all_idle_id)
+     g_source_remove (priv->select_all_idle_id);
+
     /* Call parent class finalize, if have one */
     if (G_OBJECT_CLASS (parent_class)->finalize)
         G_OBJECT_CLASS (parent_class)->finalize(self);
@@ -304,6 +309,7 @@ hildon_number_editor_init (HildonNumberEditor *editor)
     GTK_WIDGET_UNSET_FLAGS( priv->plus, GTK_CAN_FOCUS );
     
     priv->button_event_id = 0;
+    priv->select_all_idle_id = 0;
 
     gtk_widget_set_parent(priv->minus, GTK_WIDGET(editor));
     gtk_widget_set_parent(priv->num_entry, GTK_WIDGET(editor));
@@ -524,6 +530,16 @@ integer_to_string (gint nvalue)
 }
 
 static void
+add_select_all_idle (HildonNumberEditorPrivate *priv)
+{
+  if (!priv->select_all_idle_id)
+    {
+      priv->select_all_idle_id =
+        g_idle_add((GSourceFunc) hildon_number_editor_select_all, priv);
+    }    
+}
+
+static void
 hildon_number_editor_entry_changed (GtkWidget *widget, gpointer data)
 {
   HildonNumberEditor *editor;
@@ -550,7 +566,7 @@ hildon_number_editor_entry_changed (GtkWidget *widget, gpointer data)
 			    0, MAXIMUM_VALUE_EXCEED, &r);
 	      tmpstr = integer_to_string(priv->end);
 	      gtk_entry_set_text(GTK_ENTRY(priv->num_entry), tmpstr);
-              g_idle_add ((GSourceFunc)hildon_number_editor_select_all, priv);
+              add_select_all_idle(priv);
 	      if (tmpstr)
 		g_free(tmpstr);
 	    }
@@ -559,7 +575,7 @@ hildon_number_editor_entry_changed (GtkWidget *widget, gpointer data)
 			  0, MINIMUM_VALUE_EXCEED, &r);
 	    tmpstr = integer_to_string(priv->start);
 	    gtk_entry_set_text(GTK_ENTRY(priv->num_entry), tmpstr);
-            g_idle_add ((GSourceFunc)hildon_number_editor_select_all, priv);
+            add_select_all_idle(priv);
 	    if (tmpstr)
 	      g_free(tmpstr);
 	  }
@@ -570,7 +586,7 @@ hildon_number_editor_entry_changed (GtkWidget *widget, gpointer data)
 			0, ERRONEOUS_VALUE, &r);
 	  tmpstr = integer_to_string(priv->start);
 	  gtk_entry_set_text(GTK_ENTRY(priv->num_entry), tmpstr);
-          g_idle_add ((GSourceFunc)hildon_number_editor_select_all, priv);
+          add_select_all_idle(priv);
 	  if (tmpstr)
 	    g_free(tmpstr);
 	}
@@ -940,6 +956,7 @@ static gboolean
 hildon_number_editor_select_all (HildonNumberEditorPrivate *priv)
 {   
     gtk_editable_select_region(GTK_EDITABLE(priv->num_entry), 0, -1);
+    priv->select_all_idle_id = 0;
     return FALSE;
 } 
 
