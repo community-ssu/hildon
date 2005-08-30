@@ -1,3 +1,11 @@
+hildon-libs (0.9.49-1) unstable; urgency=low
+
+  * Bugs fixed:
+    16805: problem with setting time in HildonTimeEditor
+    18096: hildon_number_editor crashes the PDF viewer
+
+ -- Tommi Komulainen <tommi.komulainen@nokia.com>  Tue, 30 Aug 2005 19:17:20 +0300
+
 hildon-libs (0.9.48-1) unstable; urgency=low
 
   * Bugs fixed:
