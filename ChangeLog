@@ -1,5 +1,9 @@
 2005-08-30  Tommi Komulainen  <tommi.komulainen@nokia.com>
 
+	* configure.ac: Release 0.9.49
+
+2005-08-30  Tommi Komulainen  <tommi.komulainen@nokia.com>
+
 	* hildon-widgets/hildon-number-editor.c (add_select_all_idle,
 	hildon_number_editor_finalize, hildon_number_editor_entry_changed):
 	Save the id of the idle callback and remove it when the widget is
