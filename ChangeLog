@@ -1,3 +1,7 @@
+2005-08-31  Luc Pionchon  <luc.pionchon@nokia.com>
+
+	* po/en_GB.po (ecdg_ti_verify_password): translation update.
+
 2005-08-30  Tommi Komulainen  <tommi.komulainen@nokia.com>
 
 	* configure.ac: Release 0.9.49

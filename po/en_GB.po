@@ -405,7 +405,7 @@ msgstr "Cancel"
 
 #: ../hildon-widgets/hildon-get-password-dialog.h
 msgid "ecdg_ti_verify_password"
-msgstr "Password protected"
+msgstr "Password needed"
 
 #: ../hildon-widgets/hildon-get-password-dialog.h
 msgid "ecdg_fi_verify_pwd_enter_pwd"
