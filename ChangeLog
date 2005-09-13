@@ -1,3 +1,14 @@
+2005-09-13  Luc Pionchon  <luc.pionchon@nokia.com>
+
+	Part of N#11129,
+
+	* po/en_GB.po: Added "Ckct_wi_grid_no_items"
+
+	* hildon-widgets/hildon-grid.c
+	(hildon_grid_class_init, hildon_grid_init): Replaced default empty
+	label by logical name "Ckct_wi_grid_no_items"
+
+
 2005-08-31  Luc Pionchon  <luc.pionchon@nokia.com>
 
 	* po/en_GB.po (ecdg_ti_verify_password): translation update.

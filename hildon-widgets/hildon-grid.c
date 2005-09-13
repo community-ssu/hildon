@@ -284,7 +284,7 @@ static void hildon_grid_class_init(HildonGridClass * klass)
         g_param_spec_string("empty_label",
                             "Empty label",
                             "Label to show when grid has no items",
-                            "", G_PARAM_READWRITE));
+                            _("Ckct_wi_grid_no_items"), G_PARAM_READWRITE));
 
     gtk_widget_class_install_style_property(widget_class,
         g_param_spec_uint("item_width",
@@ -632,7 +632,7 @@ static void hildon_grid_init(HildonGrid * grid)
     priv->focus_index = -1;
 
     priv->scrollbar = gtk_vscrollbar_new(NULL);
-    priv->empty_label = gtk_label_new("");
+    priv->empty_label = gtk_label_new(_("Ckct_wi_grid_no_items"));
     priv->style = NULL;
 
     priv->area_height = 1;
