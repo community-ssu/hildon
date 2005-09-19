@@ -1,3 +1,9 @@
+2005-09-19 Tapani Palli <tapani.palli@nokia.com>
+
+	* hildon-widgets/hildon-dialoghelp.h,
+	hildon-widgets/hildon-dialoghelp.c : added gtk_dialog_help_disable and
+	fixed bug #19468
+
 2005-09-14  Luc Pionchon  <luc.pionchon@nokia.com>
 
 	* configure.ac: Release 0.9.50 
