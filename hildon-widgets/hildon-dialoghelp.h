@@ -33,6 +33,7 @@ extern "C" {
 #include <gtk/gtkdialog.h>
 
 void gtk_dialog_help_enable(GtkDialog * dialog);
+void gtk_dialog_help_disable(GtkDialog * dialog);
 
 #ifdef __cplusplus
 }

@@ -77,10 +77,11 @@ handle_xevent(GdkXEvent * xevent, GdkEvent * event, gpointer data)
  **/
 void gtk_dialog_help_enable(GtkDialog * dialog)
 {
-    Atom help_atom;
-    Display *disp;
     GdkWindow *window;
-
+    GdkDisplay *display;
+    Atom protocols[4];
+    int n = 0;
+    
     if (help_signal == 0) {
         help_signal = g_signal_new("help", GTK_TYPE_DIALOG,
                                    G_SIGNAL_ACTION, (guint) - 1, NULL,
@@ -92,9 +93,47 @@ void gtk_dialog_help_enable(GtkDialog * dialog)
 
     gtk_widget_realize(GTK_WIDGET(dialog));
     window = GTK_WIDGET(dialog)->window;
-    disp = GDK_WINDOW_XDISPLAY(window);
 
-    help_atom = XInternAtom(disp, "_NET_WM_CONTEXT_HELP", False);
-    XSetWMProtocols(disp, GDK_WINDOW_XID(window), &help_atom, 1);
+    display = gdk_drawable_get_display (window);
+
+    protocols[n++] = gdk_x11_get_xatom_by_name_for_display (display, "WM_DELETE_WINDOW");
+    protocols[n++] = gdk_x11_get_xatom_by_name_for_display (display, "WM_TAKE_FOCUS");
+    protocols[n++] = gdk_x11_get_xatom_by_name_for_display (display, "_NET_WM_PING");
+    protocols[n++] = gdk_x11_get_xatom_by_name_for_display (display, "_NET_WM_CONTEXT_HELP");
+
+    XSetWMProtocols (GDK_DISPLAY_XDISPLAY (display), GDK_WINDOW_XID (window), protocols, n);
+    
     gdk_window_add_filter(window, handle_xevent, dialog);
 }
+
+
+/*
+ * gtk_dialog_help_disable:
+ * @dialog: The dialog of which help is to be disabled.
+ * 
+ */
+void gtk_dialog_help_disable(GtkDialog * dialog)
+{
+    GdkWindow *window=NULL;
+    GdkDisplay *display;
+    Atom protocols[4];
+    int n = 0;
+    
+    g_return_if_fail(GTK_IS_DIALOG(dialog));
+
+    gtk_widget_realize(GTK_WIDGET(dialog));
+    window = GTK_WIDGET(dialog)->window;
+    display = gdk_drawable_get_display (window);
+    
+    protocols[n++] = gdk_x11_get_xatom_by_name_for_display (display, "WM_DELETE_WINDOW");
+    protocols[n++] = gdk_x11_get_xatom_by_name_for_display (display, "WM_TAKE_FOCUS");
+    protocols[n++] = gdk_x11_get_xatom_by_name_for_display (display, "_NET_WM_PING");
+
+    XSetWMProtocols (GDK_DISPLAY_XDISPLAY (display), GDK_WINDOW_XID (window), protocols, n);
+    
+    gdk_window_add_filter(window, handle_xevent, dialog);
+}
+
+
+
+
