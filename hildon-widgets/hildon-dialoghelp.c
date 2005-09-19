@@ -79,8 +79,11 @@ void gtk_dialog_help_enable(GtkDialog * dialog)
 {
     GdkWindow *window;
     GdkDisplay *display;
-    Atom protocols[4];
+    Atom protocols[16];
+    Atom *list;
+    int amount;
     int n = 0;
+    int i = 0;
     
     if (help_signal == 0) {
         help_signal = g_signal_new("help", GTK_TYPE_DIALOG,
@@ -93,16 +96,19 @@ void gtk_dialog_help_enable(GtkDialog * dialog)
 
     gtk_widget_realize(GTK_WIDGET(dialog));
     window = GTK_WIDGET(dialog)->window;
-
     display = gdk_drawable_get_display (window);
 
-    protocols[n++] = gdk_x11_get_xatom_by_name_for_display (display, "WM_DELETE_WINDOW");
-    protocols[n++] = gdk_x11_get_xatom_by_name_for_display (display, "WM_TAKE_FOCUS");
-    protocols[n++] = gdk_x11_get_xatom_by_name_for_display (display, "_NET_WM_PING");
-    protocols[n++] = gdk_x11_get_xatom_by_name_for_display (display, "_NET_WM_CONTEXT_HELP");
+    XGetWMProtocols(GDK_DISPLAY_XDISPLAY (display), GDK_WINDOW_XID (window),
+		    &list, &amount);
 
+    for (i=0; i<amount; i++)
+    {
+      protocols[n++] = list[i];
+    }
+
+    XFree (list);
+    protocols[n++] = gdk_x11_get_xatom_by_name_for_display (display, "_NET_WM_CONTEXT_HELP");
     XSetWMProtocols (GDK_DISPLAY_XDISPLAY (display), GDK_WINDOW_XID (window), protocols, n);
-    
     gdk_window_add_filter(window, handle_xevent, dialog);
 }
 
@@ -116,21 +122,32 @@ void gtk_dialog_help_disable(GtkDialog * dialog)
 {
     GdkWindow *window=NULL;
     GdkDisplay *display;
-    Atom protocols[4];
+    Atom protocols[16];
+    Atom *list;
+    int amount;
     int n = 0;
+    int i = 0;
+    Atom helpatom;
     
     g_return_if_fail(GTK_IS_DIALOG(dialog));
 
     gtk_widget_realize(GTK_WIDGET(dialog));
     window = GTK_WIDGET(dialog)->window;
     display = gdk_drawable_get_display (window);
-    
-    protocols[n++] = gdk_x11_get_xatom_by_name_for_display (display, "WM_DELETE_WINDOW");
-    protocols[n++] = gdk_x11_get_xatom_by_name_for_display (display, "WM_TAKE_FOCUS");
-    protocols[n++] = gdk_x11_get_xatom_by_name_for_display (display, "_NET_WM_PING");
 
+    XGetWMProtocols(GDK_DISPLAY_XDISPLAY (display), GDK_WINDOW_XID (window),
+		    &list, &amount);
+
+    helpatom = gdk_x11_get_xatom_by_name_for_display (display, "_NET_WM_CONTEXT_HELP");
+
+    for (i=0; i<amount; i++)
+    {
+      if (list[i] != helpatom)
+	protocols[n++] = list[i];
+    }
+
+    XFree (list);
     XSetWMProtocols (GDK_DISPLAY_XDISPLAY (display), GDK_WINDOW_XID (window), protocols, n);
-    
     gdk_window_add_filter(window, handle_xevent, dialog);
 }
 
