@@ -168,7 +168,7 @@ void gtk_dialog_help_disable(GtkDialog * dialog)
     XSetWMProtocols (GDK_DISPLAY_XDISPLAY (display), GDK_WINDOW_XID (window), protocols, n);
     free (protocols);
 
-    gdk_window_add_filter(window, handle_xevent, dialog);
+    gdk_window_remove_filter(window, handle_xevent, dialog);
 }
 
 
