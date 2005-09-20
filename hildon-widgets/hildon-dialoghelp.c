@@ -85,7 +85,7 @@ void gtk_dialog_help_enable(GtkDialog * dialog)
     int amount = 0;
     int n = 0;
     int i = 0;
-    int help_enabled = -1;
+    int help_enabled = 0;
     
     if (help_signal == 0) {
         help_signal = g_signal_new("help", GTK_TYPE_DIALOG,
