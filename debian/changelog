@@ -1,3 +1,9 @@
+hildon-libs (0.9.50-2) unstable; urgency=low
+
+  * Added gtk_dialog_help_disable(), fixes #19468
+
+ -- Tapani Palli <tapani.palli@nokia.com>  Tue, 20 Sep 2005 13:17:17 +0300
+
 hildon-libs (0.9.50-1) unstable; urgency=low
 
   * Bugs fixed:
