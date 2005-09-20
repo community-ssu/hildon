@@ -103,7 +103,7 @@ void gtk_dialog_help_enable(GtkDialog * dialog)
     XGetWMProtocols(GDK_DISPLAY_XDISPLAY (display), GDK_WINDOW_XID (window),
 		    &list, &amount);
     
-    protocols = (Atom *) malloc (amount * sizeof (Atom));
+    protocols = (Atom *) malloc ((amount+1) * sizeof (Atom));
     helpatom = gdk_x11_get_xatom_by_name_for_display (display, "_NET_WM_CONTEXT_HELP");
 
     for (i=0; i<amount; i++)
