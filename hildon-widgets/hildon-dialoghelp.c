@@ -79,11 +79,13 @@ void gtk_dialog_help_enable(GtkDialog * dialog)
 {
     GdkWindow *window;
     GdkDisplay *display;
-    Atom protocols[16];
+    Atom *protocols;
     Atom *list;
-    int amount;
+    Atom helpatom;
+    int amount = 0;
     int n = 0;
     int i = 0;
+    int help_enabled = -1;
     
     if (help_signal == 0) {
         help_signal = g_signal_new("help", GTK_TYPE_DIALOG,
@@ -100,15 +102,28 @@ void gtk_dialog_help_enable(GtkDialog * dialog)
 
     XGetWMProtocols(GDK_DISPLAY_XDISPLAY (display), GDK_WINDOW_XID (window),
 		    &list, &amount);
+    
+    protocols = (Atom *) malloc (amount * sizeof (Atom));
+    helpatom = gdk_x11_get_xatom_by_name_for_display (display, "_NET_WM_CONTEXT_HELP");
 
     for (i=0; i<amount; i++)
     {
-      protocols[n++] = list[i];
+	    protocols[n++] = list[i];
+	    if (list[i] == helpatom)
+	    {
+		    help_enabled = 1;
+	    }
     }
-
     XFree (list);
-    protocols[n++] = gdk_x11_get_xatom_by_name_for_display (display, "_NET_WM_CONTEXT_HELP");
+
+    if (!help_enabled)
+    {
+	    protocols[n++] = gdk_x11_get_xatom_by_name_for_display (display, "_NET_WM_CONTEXT_HELP");
+    }
+    
     XSetWMProtocols (GDK_DISPLAY_XDISPLAY (display), GDK_WINDOW_XID (window), protocols, n);
+    free (protocols);
+    
     gdk_window_add_filter(window, handle_xevent, dialog);
 }
 
@@ -122,12 +137,12 @@ void gtk_dialog_help_disable(GtkDialog * dialog)
 {
     GdkWindow *window=NULL;
     GdkDisplay *display;
-    Atom protocols[16];
+    Atom *protocols;
     Atom *list;
-    int amount;
+    Atom helpatom;
+    int amount = 0;
     int n = 0;
     int i = 0;
-    Atom helpatom;
     
     g_return_if_fail(GTK_IS_DIALOG(dialog));
 
@@ -137,17 +152,22 @@ void gtk_dialog_help_disable(GtkDialog * dialog)
 
     XGetWMProtocols(GDK_DISPLAY_XDISPLAY (display), GDK_WINDOW_XID (window),
 		    &list, &amount);
-
+    
     helpatom = gdk_x11_get_xatom_by_name_for_display (display, "_NET_WM_CONTEXT_HELP");
+    protocols = (Atom *) malloc (amount * sizeof (Atom));
 
     for (i=0; i<amount; i++)
     {
-      if (list[i] != helpatom)
-	protocols[n++] = list[i];
+	    if (list[i] != helpatom)
+	    {
+		    protocols[n++] = list[i];
+	    }
     }
-
     XFree (list);
+    
     XSetWMProtocols (GDK_DISPLAY_XDISPLAY (display), GDK_WINDOW_XID (window), protocols, n);
+    free (protocols);
+
     gdk_window_add_filter(window, handle_xevent, dialog);
 }
 
