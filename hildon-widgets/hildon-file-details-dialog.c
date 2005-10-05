@@ -72,6 +72,7 @@ struct _HildonFileDetailsDialogPrivate {
     GtkTreeRowReference *active_file;
     gboolean checkbox_original_state;
     gulong toggle_handler;
+    gulong delete_handler;
 
     /* Properties */
     HildonFileSystemModel *model;
@@ -139,12 +140,29 @@ static gboolean write_access(const gchar *uri)
   return result;
 }
 
+/* When model deletes a file, we check if our reference is still valid.
+   If not, we emit response, which usually closes the dialog */
+static void check_validity(GtkTreeModel *model, 
+  GtkTreePath *path, gpointer data)
+{
+  GtkTreeRowReference *ref;
+
+  g_return_if_fail(HILDON_IS_FILE_DETAILS_DIALOG(data));
+
+  ref = HILDON_FILE_DETAILS_DIALOG(data)->priv->active_file;
+
+  if (ref && !gtk_tree_row_reference_valid(ref))
+    gtk_dialog_response(GTK_DIALOG(data), GTK_RESPONSE_NONE);
+}
+
 static void change_state(HildonFileDetailsDialog *self, gboolean readonly)
 {
   GtkTreeIter iter;
 
   g_return_if_fail(HILDON_IS_FILE_DETAILS_DIALOG(self));
 
+  /* We fail to get the iterator in cases when the reference is 
+     invalidated, for example when the file is removed. */
   if (hildon_file_details_dialog_get_file_iter(self, &iter))
   {  
     gchar *uri;
@@ -176,8 +194,6 @@ static void change_state(HildonFileDetailsDialog *self, gboolean readonly)
     gnome_vfs_file_info_unref(info);
     g_free(uri);
   }
-  else
-    g_assert_not_reached();
 }
 
 /* Cancel changes if read-only is changed */
@@ -272,21 +288,6 @@ hildon_file_details_dialog_class_init(HildonFileDetailsDialogClass * klass)
                  g_param_spec_object("model", "Model", 
                  "HildonFileSystemModel to use when fetching information",
                  HILDON_TYPE_FILE_SYSTEM_MODEL, G_PARAM_READWRITE));
-}
-
-/* This handler is needed to correctly position the scrollbar down. 
-   It doesn't happen automatically... */
-static gboolean 
-handle_focus(GtkWidget *widget, GtkDirectionType *dir, gpointer data)
-{
-  if (!GTK_WIDGET_HAS_FOCUS(widget))
-  {
-    GtkAdjustment *adj;
-    adj = gtk_scrolled_window_get_vadjustment(GTK_SCROLLED_WINDOW(data));
-    gtk_adjustment_set_value(adj, adj->upper - adj->page_size);
-  }
-
-  return FALSE;
 }
 
 static void
@@ -387,6 +388,9 @@ hildon_file_details_dialog_init(HildonFileDetailsDialog *self)
         GTK_VIEWPORT(gtk_bin_get_child(GTK_BIN(scroll))),
         GTK_SHADOW_NONE);
 
+    gtk_container_set_focus_vadjustment(GTK_CONTAINER(vbox), 
+      gtk_scrolled_window_get_vadjustment(GTK_SCROLLED_WINDOW(scroll)));
+
     /* Populate dialog */
     gtk_notebook_append_page(priv->notebook, scroll,
 			     gtk_label_new(_("sfil_ti_notebook_common")));
@@ -419,8 +423,6 @@ hildon_file_details_dialog_init(HildonFileDetailsDialog *self)
     priv->toggle_handler = g_signal_connect(priv->file_readonly, "toggled", 
       G_CALLBACK(hildon_file_details_dialog_read_only_toggled), 
       self);
-    g_signal_connect(priv->file_readonly, "focus",
-      G_CALLBACK(handle_focus), scroll);
 }
 
 static void
@@ -478,10 +480,18 @@ hildon_file_details_dialog_set_property( GObject *object, guint param_id,
       if (new_model != priv->model)
       {
         if (G_IS_OBJECT(priv->model))
+        {
+          g_signal_handler_disconnect(priv->model, priv->delete_handler);
           g_object_unref(priv->model);
+          priv->delete_handler = 0;
+        }
         priv->model = new_model;
         if (new_model)
+        {
           g_object_ref(new_model);
+          priv->delete_handler = g_signal_connect(priv->model, "row-deleted",
+            G_CALLBACK(check_validity), object);
+        }
       }  
       break;
     }
@@ -528,7 +538,10 @@ static void hildon_file_details_dialog_finalize(GObject * object)
 
   priv = HILDON_FILE_DETAILS_DIALOG(object)->priv;
   if (G_IS_OBJECT(priv->model))
+  {
+    g_signal_handler_disconnect(priv->model, priv->delete_handler);
     g_object_unref(priv->model);
+  }
   if (G_IS_OBJECT(priv->tab_label))
     g_object_unref(priv->tab_label);
   if (priv->active_file)

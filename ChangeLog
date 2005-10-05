@@ -1,5 +1,21 @@
 2005-10-05  Luc Pionchon  <luc.pionchon@nokia.com>
 
+	N#20027 PDF Reader crashes on selecting read only option in the
+	details dialog box.
+
+	* hildon-widgets/hildon-file-details-dialog.c:
+	(change_state): Fixed assertion that was causing problems
+	(check_validity): New function: We now automatically close the
+	dialog if the displayed file is removed.
+	(handle_focus): Callback removed:
+	(init): Now using correct gtk way to bind container and adjustment
+	together. Not the previous callback.
+	(set_property): Connecting/disconnecting new handlers (for
+	change_state).
+	(finalize): disconnecting new handler.
+	
+2005-10-05  Luc Pionchon  <luc.pionchon@nokia.com>
+
 	N#17918 Volumebar widget background image doesn't change when
 	widget goes into mute state,
 	
