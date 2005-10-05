@@ -170,9 +170,12 @@ static void hildon_hvolumebar_map(GtkWidget * widget)
 static gboolean hildon_hvolumebar_expose(GtkWidget * widget,
                                          GdkEventExpose * event)
 {
+    HildonVolumebarPrivate *priv;
+    priv = HILDON_VOLUMEBAR_GET_PRIVATE(HILDON_VOLUMEBAR(widget));
+    
     if (GTK_WIDGET_DRAWABLE(widget)) {
         gtk_paint_box(widget->style, widget->window,
-                      GTK_WIDGET_STATE(widget), GTK_SHADOW_OUT,
+                      GTK_WIDGET_STATE(priv->volumebar), GTK_SHADOW_OUT,
                       NULL, widget, "background",
                       widget->allocation.x,
                       widget->allocation.y,

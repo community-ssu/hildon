@@ -413,6 +413,8 @@ hildon_volumebar_set_mute(HildonVolumebar * self, gboolean mute)
     }
 
     gtk_toggle_button_set_active(priv->tbutton, mute);
+
+    gtk_widget_queue_draw (GTK_WIDGET (self));
 }
 
 /**

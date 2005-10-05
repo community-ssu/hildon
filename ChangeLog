@@ -1,8 +1,21 @@
+2005-10-05  Luc Pionchon  <luc.pionchon@nokia.com>
+
+	N#17918 Volumebar widget background image doesn't change when
+	widget goes into mute state,
+	
+	* hildon-vvolumebar.c (hildon_volumebar_set_mute): queued widget
+	for drawing
+	
+	* hildon-hvolumebar.c (hildon_hvolumebar_expose): paint background
+	using the state of the internal volumebar, not the whole container
+
+	* hildon-vvolumebar.c (hildon_vvolumebar_expose): paint background
+	using the state of the internal volumebar, not the whole container
+
 2005-09-19 Tapani Palli <tapani.palli@nokia.com>
 
-	* hildon-widgets/hildon-dialoghelp.h,
-	hildon-widgets/hildon-dialoghelp.c : added gtk_dialog_help_disable and
-	fixed bug #19468
+	* hildon-widgets/hildon-dialoghelp.[ch]: added
+	gtk_dialog_help_disable and fixed bug N#19468
 
 2005-09-14  Luc Pionchon  <luc.pionchon@nokia.com>
 
