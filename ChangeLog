@@ -1,5 +1,9 @@
 2005-10-05  Luc Pionchon  <luc.pionchon@nokia.com>
 
+	* configure.ac: 0.9.51
+
+2005-10-05  Luc Pionchon  <luc.pionchon@nokia.com>
+
 	N#20027 PDF Reader crashes on selecting read only option in the
 	details dialog box.
 
