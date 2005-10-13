@@ -1,3 +1,20 @@
+2005-10-12  Luc Pionchon  <luc.pionchon@nokia.com>
+
+        N#19140 System alerts still audible despite being turned off
+	
+	* hildon-widgets/hildon-note.c (sound_handling): 
+
+	* hildon-system-sound.[ch]: New files, implements hildon_play_system_sound.
+
+	* hildon-note.c (sound_handling): Changed to use new
+	hildon_play_system_sound.
+	(hildon_note_init): Signal handler id is changed to be in private
+	structure, not in global variable.
+  	
+	* hildon-note.c: Removed unused defines etc.
+
+        * Makefile.am: Appended new files to build rules.
+
 2005-10-05  Luc Pionchon  <luc.pionchon@nokia.com>
 
 	* configure.ac: 0.9.51

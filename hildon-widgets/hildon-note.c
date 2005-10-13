@@ -44,27 +44,16 @@
 #include <gtk/gtkbutton.h>
 #include <libintl.h>
 #include <hildon-widgets/hildon-defines.h>
+#include <hildon-widgets/hildon-system-sound.h>
 
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>
 #include <signal.h>
 
-#include <esd.h>
-
 /* Can these be included from somewhere? */
 
-#define OSSO_MEDIA_SERVICE "com.nokia.osso_media_server"
-#define OSSO_MEDIA_PATH "/com/nokia/osso_media_server"
-#define OSSO_MEDIA_INTERFACE "com.nokia.osso_media_server.sound"
-#define OSSO_MEDIA_PLAY_METHOD "play_sound"
-
-#define CONFIRMATION_SOUND_URI "file:///usr/share/sounds/"\
-                                "ui-confirmation_note.wav"
 #define CONFIRMATION_SOUND_PATH "/usr/share/sounds/ui-confirmation_note.wav"
-
-#define INFORMATION_SOUND_URI "file:///usr/share/sounds/"\
-                               "ui-information_note.wav"
 #define INFORMATION_SOUND_PATH "/usr/share/sounds/ui-information_note.wav"
 
 #define HILDON_NOTE_CONFIRMATION_ICON        "qgn_note_confirm"
@@ -72,11 +61,6 @@
 
 #define ELLIPSATION_STRING "\342\200\246"
 #define BOX_SPACING 10
-
-/* Not exactly sure what this actually _should_ be, because there is
-   practically no documentation for the ESD... */
-
-#define ESD_NAME "hildon-note-instance"
 
 #define _(String) dgettext(PACKAGE, String)
 
@@ -110,7 +94,7 @@ static void hildon_note_get_property(GObject * object,
                                      GValue * value, GParamSpec * pspec);
 
 static gboolean
-sound_handling(GtkWidget * widget, gpointer data);
+sound_handling(GtkWidget * widget, GdkEventExpose *event, gpointer data);
 
 /* common measurement */
 const int _HILDON_NOTE_CONFIRMATION_TEXT_MAX_WIDTH = 319; 
@@ -123,6 +107,7 @@ struct _HildonNotePrivate {
 
     HildonNoteType note_n;
     GtkWidget *progressbar;
+    gulong sound_signal_handler;
     gchar *icon;
 
     gchar *original_description;
@@ -137,8 +122,6 @@ enum {
     PROP_HILDON_NOTE_ICON,
     PROP_HILDON_NOTE_PROGRESSBAR
 };
-
-gulong sound_signal_handler = 0;
 
 /* This function is just a modified version of two_lines_truncate
  * in gtk-infoprint.c */
@@ -557,7 +540,7 @@ static void hildon_note_init(HildonNote * dialog)
 
     /* Because ESD is synchronous, we wish to play sound after the
        note is already on screen to avoid blocking its appearance */
-    sound_signal_handler = 
+    priv->sound_signal_handler = 
       g_signal_connect_after(G_OBJECT(dialog), "expose-event",
 			     G_CALLBACK(sound_handling), dialog);
 }
@@ -1059,41 +1042,25 @@ void hildon_note_set_button_texts(HildonNote * note, const gchar * textOk,
     }
 }
 
-
-
 static gboolean
-sound_handling(GtkWidget * widget, gpointer data)
+sound_handling(GtkWidget * widget, GdkEventExpose *event, gpointer data)
 {
-  
-  HildonNotePrivate *priv = HILDON_NOTE_GET_PRIVATE(HILDON_NOTE(widget));
+  HildonNotePrivate *priv = HILDON_NOTE_GET_PRIVATE(widget);
+  g_signal_handler_disconnect(widget, priv->sound_signal_handler);
 
-  if (priv->note_n != HILDON_NOTE_INFORMATION_TYPE &&
-      priv->note_n != HILDON_NOTE_INFORMATION_THEME_TYPE &&
-      priv->note_n != HILDON_NOTE_CONFIRMATION_TYPE &&
-      priv->note_n != HILDON_NOTE_CONFIRMATION_BUTTON_TYPE)
-    {
-      g_signal_handler_disconnect(G_OBJECT(widget),
-				  sound_signal_handler);
-      return FALSE;
-    }
+  switch (priv->note_n)
+  {
+    case HILDON_NOTE_INFORMATION_TYPE:
+    case HILDON_NOTE_INFORMATION_THEME_TYPE:
+      hildon_play_system_sound(INFORMATION_SOUND_PATH);
+      break;
+    case HILDON_NOTE_CONFIRMATION_TYPE:
+    case HILDON_NOTE_CONFIRMATION_BUTTON_TYPE:
+      hildon_play_system_sound(CONFIRMATION_SOUND_PATH);
+      break;
+    default:
+      break;
+  };
 
-  if (priv->note_n == HILDON_NOTE_INFORMATION_TYPE ||
-      priv->note_n == HILDON_NOTE_INFORMATION_THEME_TYPE)
-    {
-      esd_play_file(ESD_NAME, INFORMATION_SOUND_PATH, 1);
-
-      g_signal_handler_disconnect(G_OBJECT(widget), sound_signal_handler);
-      return FALSE;
-    }
-
-    else if (priv->note_n == HILDON_NOTE_CONFIRMATION_TYPE ||
-	   priv->note_n ==  HILDON_NOTE_CONFIRMATION_BUTTON_TYPE)
-    {
-      esd_play_file(ESD_NAME, CONFIRMATION_SOUND_PATH, 1);
-
-      g_signal_handler_disconnect(G_OBJECT(widget), sound_signal_handler);
-      return FALSE;
-    }
-  g_signal_handler_disconnect(G_OBJECT(widget), sound_signal_handler);
   return FALSE;
 }

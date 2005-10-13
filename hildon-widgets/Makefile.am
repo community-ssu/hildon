@@ -80,7 +80,9 @@ libhildonwidgets_la_SOURCES = \
 	hildon-color-popup.c \
 	hildon-color-popup.h \
 	hildon-color-button.c \
-	hildon-color-button.h
+	hildon-color-button.h \
+	hildon-system-sound.c \
+	hildon-system-sound.h
 
 hildon-marshalers.h: hildon-marshalers.list
 	glib-genmarshal --prefix _hildon_marshal --header \
@@ -123,4 +125,5 @@ hildonwidgetsincludeinst_DATA = \
 	hildon-scroll-area.h \
 	hildon-wizard-dialog.h \
 	hildon-color-popup.h \
-	hildon-color-button.h
+	hildon-color-button.h \
+	hildon-system-sound.h
