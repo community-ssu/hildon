@@ -1,3 +1,7 @@
+2005-10-13  Luc Pionchon  <luc.pionchon@nokia.com>
+
+	* configure.ac: 0.9.52
+
 2005-10-12  Luc Pionchon  <luc.pionchon@nokia.com>
 
         N#19140 System alerts still audible despite being turned off
