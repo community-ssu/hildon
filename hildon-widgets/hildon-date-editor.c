@@ -68,6 +68,9 @@
 #define MONTH_ENTRY_WIDTH 2
 #define YEAR_ENTRY_WIDTH 4
 
+#define DEFAULT_MIN_YEAR 1970
+#define DEFAULT_MAX_YEAR 2037
+
 #define HILDON_DATE_EDITOR_GET_PRIVATE(obj) \
         (G_TYPE_INSTANCE_GET_PRIVATE((obj),\
         HILDON_DATE_EDITOR_TYPE, HildonDateEditorPrivate));
@@ -103,6 +106,15 @@ hildon_date_editor_keyrelease(GtkWidget * widget, GdkEventKey * event,
                               gpointer data);
 static void
 hildon_date_editor_entry_validate(GtkEditable *widget, gpointer data);
+
+static void
+hildon_date_editor_d_entry_changed(GtkEditable *widget, gpointer data);
+
+static void
+hildon_date_editor_m_entry_changed(GtkEditable *widget, gpointer data);
+
+static void
+hildon_date_editor_y_entry_changed(GtkEditable *widget, gpointer data);
 
 static gboolean
 hildon_date_editor_entry_focus_out(GtkWidget * widget, GdkEventFocus * event,
@@ -146,7 +158,9 @@ enum
 {
   PROP_DAY = 1,
   PROP_MONTH,
-  PROP_YEAR
+  PROP_YEAR,
+  PROP_MIN_YEAR,
+  PROP_MAX_YEAR
 };
 
 struct _HildonDateEditorPrivate {
@@ -180,6 +194,9 @@ struct _HildonDateEditorPrivate {
     guint locale_type;
 
     gboolean skip_validation;
+
+    gint min_year;
+    gint max_year;
 };
 
 enum {
@@ -266,7 +283,7 @@ hildon_date_editor_class_init(HildonDateEditorClass * editor_class)
                                    G_PARAM_READABLE | G_PARAM_WRITABLE) );
 
   /**
-   * HildonControlbar:month:
+   * HildonDateEditor:month:
    *
    * Current month.
    */
@@ -279,7 +296,7 @@ hildon_date_editor_class_init(HildonDateEditorClass * editor_class)
                                    G_PARAM_READABLE | G_PARAM_WRITABLE) );
 
   /**
-   * HildonControlbar:day:
+   * HildonDateEditor:day:
    *
    * Current day.
    */
@@ -290,6 +307,32 @@ hildon_date_editor_class_init(HildonDateEditorClass * editor_class)
                                    1, 31,
                                    1,
                                    G_PARAM_READABLE | G_PARAM_WRITABLE) );
+
+  /**
+   * HildonDateEditor:min-year:
+   *
+   * Minimum valid year.
+   */
+  g_object_class_install_property( gobject_class, PROP_MIN_YEAR,
+                                   g_param_spec_uint("min-year",
+                                   "Minimum valid year",
+                                   "Minimum valid year",
+                                   1, 2100,
+                                   DEFAULT_MIN_YEAR,
+                                   G_PARAM_READWRITE) );
+
+  /**
+   * HildonDateEditor:max-year:
+   *
+   * Maximum valid year.
+   */
+  g_object_class_install_property( gobject_class, PROP_MAX_YEAR,
+                                   g_param_spec_uint("max-year",
+                                   "Maximum valid year",
+                                   "Maximum valid year",
+                                   1, 2100,
+                                   DEFAULT_MAX_YEAR,
+                                   G_PARAM_READWRITE) );
 }
 
 static void hildon_date_editor_init(HildonDateEditor * editor)
@@ -311,6 +354,8 @@ static void hildon_date_editor_init(HildonDateEditor * editor)
     priv->day = g_date_get_day(&cur_date);
     priv->month = g_date_get_month(&cur_date);
     priv->year = g_date_get_year(&cur_date);
+    priv->min_year = DEFAULT_MIN_YEAR;
+    priv->max_year = DEFAULT_MAX_YEAR;
 
     priv->y_orig = 0;
     priv->m_orig = 0;
@@ -470,16 +515,16 @@ static void hildon_date_editor_init(HildonDateEditor * editor)
     g_signal_connect(GTK_OBJECT(priv->y_entry), "key-release-event",
                      G_CALLBACK(hildon_date_editor_keyrelease), editor);
 
+    hildon_date_editor_set_date(editor, priv->year, priv->month, priv->day);
+
     g_signal_connect(GTK_OBJECT(priv->d_entry), "changed",
-                     G_CALLBACK(hildon_date_editor_entry_validate), editor);
+                     G_CALLBACK(hildon_date_editor_d_entry_changed), editor);
 
     g_signal_connect(GTK_OBJECT(priv->m_entry), "changed",
-                     G_CALLBACK(hildon_date_editor_entry_validate), editor);
+                     G_CALLBACK(hildon_date_editor_m_entry_changed), editor);
 
     g_signal_connect(GTK_OBJECT(priv->y_entry), "changed",
-                     G_CALLBACK(hildon_date_editor_entry_validate), editor);
-
-    hildon_date_editor_set_date(editor, priv->year, priv->month, priv->day);
+                     G_CALLBACK(hildon_date_editor_y_entry_changed), editor);
 
     gtk_widget_pop_composite_child();
 }
@@ -488,6 +533,9 @@ static void hildon_date_editor_set_property (GObject *object, guint param_id,
                                        const GValue *value, GParamSpec *pspec)
 {
   HildonDateEditor *editor = HILDON_DATE_EDITOR(object);
+  HildonDateEditorPrivate *priv = HILDON_DATE_EDITOR_GET_PRIVATE(editor);
+  gint val;
+
   switch (param_id)
   {
     case PROP_YEAR:
@@ -502,6 +550,30 @@ static void hildon_date_editor_set_property (GObject *object, guint param_id,
       hildon_date_editor_set_day (editor, g_value_get_uint(value));
       break;
 
+    case PROP_MIN_YEAR:
+      val = g_value_get_uint(value);
+      if (val <= priv->max_year)
+        {
+          priv->min_year = val;
+          if (hildon_date_editor_get_year (editor) < priv->min_year)
+            hildon_date_editor_set_year (editor, priv->min_year);
+        }
+      else
+        g_warning("min-year cannot be greater than max-year");
+      break;
+
+    case PROP_MAX_YEAR:
+      val = g_value_get_uint(value);
+      if (val >= priv->min_year)
+        {
+          priv->max_year = val;
+          if (hildon_date_editor_get_year (editor) > priv->max_year)
+            hildon_date_editor_set_year (editor, priv->max_year);
+        }
+      else
+        g_warning("max-year cannot be less than min-year");
+      break;
+
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID(object, param_id, pspec);
       break;
@@ -512,6 +584,8 @@ static void hildon_date_editor_get_property( GObject *object, guint param_id,
                                          GValue *value, GParamSpec *pspec )
 {
   HildonDateEditor *editor = HILDON_DATE_EDITOR(object);
+  HildonDateEditorPrivate *priv = HILDON_DATE_EDITOR_GET_PRIVATE(editor);
+
   switch (param_id)
   {
     case PROP_YEAR:
@@ -526,6 +600,14 @@ static void hildon_date_editor_get_property( GObject *object, guint param_id,
       g_value_set_uint (value, hildon_date_editor_get_day (editor));
       break;
 
+    case PROP_MIN_YEAR:
+      g_value_set_uint (value, priv->min_year);
+      break;
+
+    case PROP_MAX_YEAR:
+      g_value_set_uint (value, priv->max_year);
+      break;
+    
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID(object, param_id, pspec);
       break;
@@ -750,6 +832,7 @@ static gboolean idle_popup(gpointer data)
     GtkWidget *popup;
     GtkWidget *parent;
     guint result;
+    GValue val = {0, };
 
     ed = HILDON_DATE_EDITOR(data);
 
@@ -757,6 +840,12 @@ static gboolean idle_popup(gpointer data)
 
     parent = gtk_widget_get_ancestor(GTK_WIDGET(ed), GTK_TYPE_WINDOW);
     popup = hildon_calendar_popup_new(GTK_WINDOW(parent), y, m, d);
+
+    g_value_init(&val, G_TYPE_INT);
+    g_object_get_property(G_OBJECT(data), "min-year", &val);
+    g_object_set_property(G_OBJECT(popup), "min-year", &val);
+    g_object_get_property(G_OBJECT(data), "max-year", &val);
+    g_object_set_property(G_OBJECT(popup), "max-year", &val);
 
     result = gtk_dialog_run(GTK_DIALOG(popup));
     switch (result) {
@@ -852,9 +941,10 @@ hildon_date_editor_entry_validate(GtkEditable *widget, gpointer data)
                 gtk_entry_set_text(GTK_ENTRY(priv->d_entry), "31");
                 priv->day = priv->d_orig = 31;
             }
-            g_idle_add ((GSourceFunc) 
+            g_idle_add ((GSourceFunc)
                     _hildon_date_editor_entry_select_all, 
                     priv->d_entry);
+            gtk_widget_grab_focus(priv->d_entry);
             return;
         }
 
@@ -884,33 +974,86 @@ hildon_date_editor_entry_validate(GtkEditable *widget, gpointer data)
             g_idle_add ((GSourceFunc) 
                     _hildon_date_editor_entry_select_all, 
                     priv->m_entry);
+            gtk_widget_grab_focus(priv->m_entry);
             return;
         }
 
         if(GTK_WIDGET(widget) == priv->y_entry)
         {
-            if(y >= 1 && y <= 2100) {
+            if(y >= priv->min_year && y <= priv->max_year) {
                 priv->year = y;
                 return;
             }
-            else if(y < 1) {
+            else if (y < priv->min_year) {
+                char year[5];
+
                 g_signal_emit(ed, date_editor_signals[DATE_ERROR], 0, 
-                        MIN_YEAR, &r);
-                gtk_entry_set_text(GTK_ENTRY(priv->y_entry), "0001");
-                priv->year = priv->y_orig = 1;
+                              MIN_YEAR, &r);
+                sprintf(year, "%04d", priv->min_year);
+                gtk_entry_set_text(GTK_ENTRY(priv->y_entry), year);
+                priv->year = priv->y_orig = priv->min_year;
             }
-            /* y > 2100 */
+            /* y > priv->max_year */
             else {
+                char year[5];
+
                 g_signal_emit(ed, date_editor_signals[DATE_ERROR], 0, 
-                        MAX_YEAR, &r);
-                gtk_entry_set_text(GTK_ENTRY(priv->y_entry), "2100");
-                priv->year = priv->y_orig = 2100;
+                              MAX_YEAR, &r);
+                sprintf(year, "%04d", priv->max_year);
+                gtk_entry_set_text(GTK_ENTRY(priv->y_entry), year);
+                priv->year = priv->y_orig = priv->max_year;
             }
             g_idle_add ((GSourceFunc) 
                     _hildon_date_editor_entry_select_all, 
                     priv->y_entry);
+            gtk_widget_grab_focus(priv->y_entry);
             return;
         }
+    }
+}
+
+static void
+hildon_date_editor_d_entry_changed(GtkEditable *ed, gpointer data)
+{
+  HildonDateEditorPrivate *priv = HILDON_DATE_EDITOR_GET_PRIVATE(data);
+
+  if (strlen(gtk_entry_get_text(GTK_ENTRY(ed))) == DAY_ENTRY_WIDTH)
+    {
+      if (priv->locale_type == DAY_MONTH_YEAR)
+        gtk_widget_grab_focus(priv->m_entry);
+      else if (priv->locale_type == MONTH_DAY_YEAR)
+        gtk_widget_grab_focus(priv->y_entry);
+      else
+        hildon_date_editor_entry_validate(ed, data);
+    }
+}
+
+static void
+hildon_date_editor_m_entry_changed(GtkEditable *ed, gpointer data)
+{
+  HildonDateEditorPrivate *priv = HILDON_DATE_EDITOR_GET_PRIVATE(data);
+
+  if (strlen(gtk_entry_get_text(GTK_ENTRY(ed))) == MONTH_ENTRY_WIDTH)
+    {
+      if (priv->locale_type == DAY_MONTH_YEAR)
+        gtk_widget_grab_focus(priv->y_entry);
+      else if (priv->locale_type == MONTH_DAY_YEAR ||
+               priv->locale_type == YEAR_MONTH_DAY)
+        gtk_widget_grab_focus(priv->d_entry);
+    }
+}
+
+static void
+hildon_date_editor_y_entry_changed(GtkEditable *ed, gpointer data)
+{
+  HildonDateEditorPrivate *priv = HILDON_DATE_EDITOR_GET_PRIVATE(data);
+
+  if (strlen(gtk_entry_get_text(GTK_ENTRY(ed))) == YEAR_ENTRY_WIDTH)
+    {
+      if (priv->locale_type == YEAR_MONTH_DAY)
+        gtk_widget_grab_focus(priv->m_entry);
+      else
+        hildon_date_editor_entry_validate(ed, data);
     }
 }
 
@@ -1214,6 +1357,8 @@ static gboolean hildon_date_editor_entry_focus_out(GtkWidget * widget,
       return FALSE;
     }
 
+  hildon_date_editor_entry_validate(GTK_EDITABLE(widget), ed);
+
   /*date validation starts*/
   d = atoi(gtk_entry_get_text(GTK_ENTRY(priv->d_entry)));
   m = atoi(gtk_entry_get_text(GTK_ENTRY(priv->m_entry)));
@@ -1271,6 +1416,8 @@ static gboolean
 hildon_date_editor_date_error(HildonDateEditor *editor,
 			      HildonDateEditorErrorType type)
 {
+  HildonDateEditorPrivate *priv = HILDON_DATE_EDITOR_GET_PRIVATE(editor);
+
   switch(type)
     {
     case MAX_DAY:
@@ -1280,12 +1427,14 @@ hildon_date_editor_date_error(HildonDateEditor *editor,
       gtk_infoprintf(NULL, _("Ckct_ib_maximum_value"), 12);
       break;
     case MAX_YEAR:
-      gtk_infoprintf(NULL, _("Ckct_ib_maximum_value"), 2100);
+      gtk_infoprintf(NULL, _("Ckct_ib_maximum_value"), priv->max_year);
       break;
     case MIN_DAY:
     case MIN_MONTH:
-    case MIN_YEAR:
       gtk_infoprintf(NULL, _("Ckct_ib_minimum_value"), 1);
+      break;
+    case MIN_YEAR:
+      gtk_infoprintf(NULL, _("Ckct_ib_minimum_value"), priv->min_year);
       break;
     case EMPTY_DAY:
       gtk_infoprintf(NULL, _("Ckct_ib_set_a_value_within_range"), 1, 31);
@@ -1294,7 +1443,8 @@ hildon_date_editor_date_error(HildonDateEditor *editor,
       gtk_infoprintf(NULL, _("Ckct_ib_set_a_value_within_range"), 1, 12);
       break;
     case EMPTY_YEAR:
-      gtk_infoprintf(NULL, _("Ckct_ib_set_a_value_within_range"), 1, 2100);
+      gtk_infoprintf(NULL, _("Ckct_ib_set_a_value_within_range"),
+                     priv->min_year, priv->max_year);
       break;
     case INVALID_DATE:
       gtk_infoprint(NULL, _("Ckct_ib_date_does_not_exist"));

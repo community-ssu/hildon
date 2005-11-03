@@ -1,3 +1,33 @@
+2005-10-31  Luc Pionchon  <luc.pionchon@nokia.com>
+
+	same fix for,
+        N#19283 Control panel - The values entered are not saved.
+	N#19648 Hildon Date Editor widget detects values too high
+        (note: complete fix include also fixes in GTk+)
+
+	* hildon-widgets/hildon-calendar-popup.c
+	(hildon_calendar_popup_set_property),
+	(hildon_calendar_popup_class_init),
+	(init_dmy): Added 'min-year', 'max-year' properties for passing
+	the information through from HildonDateEditor to GtkCalendar
+
+	* hildon-widgets/hildon-date-editor.c:
+	(hildon_date_editor_class_init),
+	(hildon_date_editor_init),
+	(hildon_date_editor_set_property),
+	(hildon_date_editor_get_property),
+	(idle_popup),
+	(hildon_date_editor_entry_validate),
+	(hildon_date_editor_date_error): Added 'min-year', 'max-year'
+	properties and replaced hardcoded constants with them
+
+	* hildon-widgets/hildon-date-editor.c
+	(hildon_date_editor_d_entry_changed),
+	(hildon_date_editor_m_entry_changed),
+	(hildon_date_editor_d_entry_changed): new functions to ensure that
+	the fields are validated and the focus is moved when maximum
+	number of characters has been entered.
+	
 2005-10-13  Luc Pionchon  <luc.pionchon@nokia.com>
 
 	* configure.ac: 0.9.52
