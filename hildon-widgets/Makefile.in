@@ -251,7 +251,9 @@ libhildonwidgets_la_SOURCES = \
 	hildon-color-popup.c \
 	hildon-color-popup.h \
 	hildon-color-button.c \
-	hildon-color-button.h
+	hildon-color-button.h \
+	hildon-system-sound.c \
+	hildon-system-sound.h
 
 
 hildonwidgetsincludeinstdir = $(includedir)/hildon-widgets
@@ -286,7 +288,8 @@ hildonwidgetsincludeinst_DATA = \
 	hildon-scroll-area.h \
 	hildon-wizard-dialog.h \
 	hildon-color-popup.h \
-	hildon-color-button.h
+	hildon-color-button.h \
+	hildon-system-sound.h
 
 subdir = hildon-widgets
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
@@ -312,7 +315,7 @@ am_libhildonwidgets_la_OBJECTS = hildon-marshalers.lo \
 	hildon-grid-item.lo hildon-file-handling-note.lo \
 	hildon-name-password-dialog.lo hildon-scroll-area.lo \
 	hildon-wizard-dialog.lo hildon-color-popup.lo \
-	hildon-color-button.lo
+	hildon-color-button.lo hildon-system-sound.lo
 libhildonwidgets_la_OBJECTS = $(am_libhildonwidgets_la_OBJECTS)
 
 DEFAULT_INCLUDES =  -I. -I$(srcdir) -I$(top_builddir)
@@ -344,6 +347,7 @@ am__depfiles_maybe = depfiles
 @AMDEP_TRUE@	./$(DEPDIR)/hildon-seekbar.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/hildon-set-password-dialog.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/hildon-sort-dialog.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/hildon-system-sound.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/hildon-telephone-editor.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/hildon-time-editor.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/hildon-time-picker.Plo \
@@ -437,6 +441,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/hildon-seekbar.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/hildon-set-password-dialog.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/hildon-sort-dialog.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/hildon-system-sound.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/hildon-telephone-editor.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/hildon-time-editor.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/hildon-time-picker.Plo@am__quote@
