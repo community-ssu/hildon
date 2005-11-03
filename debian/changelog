@@ -1,3 +1,12 @@
+hildon-libs (0.9.53-1) unstable; urgency=low
+
+  * same fix for,
+    N#19283 Control panel - The values entered are not saved.
+    N#19648 Hildon Date Editor widget detects values too high
+    (note: complete fix include also fixes in GTk+)
+
+ -- Luc Pionchon <luc.pionchon@nokia.com>  Thu,  3 Nov 2005 19:09:17 +0200
+
 hildon-libs (0.9.52-1) unstable; urgency=low
 
   * Bugs fixed:
