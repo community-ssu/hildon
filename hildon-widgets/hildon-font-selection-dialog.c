@@ -87,7 +87,8 @@ enum
   PROP_STRIKETHROUGH,
   PROP_STRIKETHROUGH_SET,
   PROP_POSITION,
-  PROP_POSITION_SET
+  PROP_POSITION_SET,
+  PROP_PREVIEW_TEXT
 };
 
 typedef struct
@@ -385,6 +386,12 @@ hildon_font_selection_dialog_get_property (GObject      *object,
 	g_value_set_boolean(value, FALSE);
       break;
     
+    case PROP_PREVIEW_TEXT:
+	g_value_set_string(value,
+		hildon_font_selection_dialog_get_preview_text(
+		    HILDON_FONT_SELECTION_DIALOG(object)));
+      break;
+    
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
@@ -544,6 +551,12 @@ hildon_font_selection_dialog_set_property (GObject         *object,
 	gtk_combo_box_set_active(GTK_COMBO_BOX(priv->cbx_positioning), -1);
       break;
 
+    case PROP_PREVIEW_TEXT:
+      hildon_font_selection_dialog_set_preview_text(
+	      HILDON_FONT_SELECTION_DIALOG(object),
+	      g_value_get_string(value));
+      break;
+    
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
@@ -672,6 +685,15 @@ hildon_font_selection_dialog_class_init(HildonFontSelectionDialogClass *
 				  "Whether the position"
 				  " is inconsistent", FALSE,
 				  G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
+  
+  g_object_class_install_property(gobject_class, PROP_PREVIEW_TEXT,
+				  g_param_spec_string("preview-text",
+				  "Preview Text", 
+				  "the text in preview dialog, which does" 
+				  "not include the reference text",
+				  "",
+				  G_PARAM_READWRITE));
+  
 
   g_type_class_add_private(klass,
 			   sizeof(struct _HildonFontSelectionDialogPrivate));
@@ -1601,6 +1623,7 @@ hildon_font_selection_dialog_set_preview_text(HildonFontSelectionDialog *
 	HILDON_FONT_SELECTION_DIALOG_GET_PRIVATE(fsd);
       g_free(priv->preview_text);
       priv->preview_text = g_strdup(text);
+      g_object_notify (G_OBJECT (fsd), "preview-text");
     }
 }
 

@@ -88,6 +88,20 @@ static void hildon_insert_object_dialog_finalize(GObject * obj_self);
 static gint hildon_insert_object_dialog_key_snooper(GtkWidget * gadget,
                                                     GdkEventKey * event,
                                                     GtkWidget * widget);
+static void hildon_insert_object_dialog_set_property(GObject * object,
+                                     guint prop_id,
+                                     const GValue * value,
+                                     GParamSpec * pspec);
+static void hildon_insert_object_dialog_get_property(GObject * object,
+                                     guint prop_id,
+                                     GValue * value, GParamSpec * pspec);
+
+enum {
+    PROP_0,
+    PROP_NAME,
+    PROP_MIME_TYPE
+};
+
 static gboolean hildon_insert_object_foo(gpointer data)
 {
     gnome_vfs_shutdown();
@@ -108,6 +122,21 @@ hildon_insert_object_dialog_class_init(HildonInsertObjectDialogClass *
                              sizeof(HildonInsertObjectDialogPrivate));
 
     object_class->finalize = hildon_insert_object_dialog_finalize;
+    object_class->set_property = hildon_insert_object_dialog_set_property;
+    object_class->get_property = hildon_insert_object_dialog_get_property;
+
+    g_object_class_install_property(object_class, PROP_NAME,
+        g_param_spec_string("name",
+                            "Name",
+                            "The text in name field",
+                            "", G_PARAM_READWRITE));
+
+    g_object_class_install_property(object_class, PROP_MIME_TYPE,
+        g_param_spec_string("mime-type",
+                            "Mime-Type",
+                            "The mime type selected in the combobox",
+                            GNOME_VFS_MIME_TYPE_UNKNOWN,
+			    G_PARAM_READABLE));
 }
 
 static void hildon_insert_object_dialog_finalize(GObject * obj_self)
@@ -412,3 +441,44 @@ const gchar
 
     return dialog->priv->mimetype;
 }
+
+static void
+hildon_insert_object_dialog_set_property(GObject * object,
+                         guint prop_id,
+                         const GValue * value, GParamSpec * pspec)
+{
+    HildonInsertObjectDialog *dialog;
+
+    dialog = HILDON_INSERT_OBJECT_DIALOG(object);
+
+    switch (prop_id) {
+    case PROP_NAME:
+       gtk_entry_set_text(dialog->priv->entry, g_value_get_string(value));
+        break;
+    default:
+        G_OBJECT_WARN_INVALID_PROPERTY_ID(object, prop_id, pspec);
+        break;
+    }
+}
+
+static void
+hildon_insert_object_dialog_get_property(GObject * object,
+                         guint prop_id, GValue * value, GParamSpec * pspec)
+{
+    HildonInsertObjectDialog *dialog;
+
+    dialog = HILDON_INSERT_OBJECT_DIALOG(object);
+
+    switch (prop_id) {
+    case PROP_NAME:
+        g_value_set_string(value, gtk_entry_get_text(dialog->priv->entry));
+        break;
+    case PROP_MIME_TYPE:
+        g_value_set_string(value, dialog->priv->mimetype);
+        break;
+    default:
+        G_OBJECT_WARN_INVALID_PROPERTY_ID(object, prop_id, pspec);
+        break;
+    }
+}
+

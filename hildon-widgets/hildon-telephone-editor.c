@@ -72,6 +72,8 @@ enum {
     PROP_COUNTRY_STR,
     PROP_AREA_STR,
     PROP_NUMBER_STR,
+    PROP_SHOW_BORDER,
+    PROP_SHOW_PLUS,
     PROP_FORMAT
 };
 
@@ -199,22 +201,35 @@ hildon_telephone_editor_class_init(HildonTelephoneEditorClass *
 
     /* Install properties */
     g_object_class_install_property(object_class, PROP_COUNTRY_STR,
-        g_param_spec_string("set-country",
+        g_param_spec_string("country",
                             ("Country string"),
-                            ("Sets country string"),
-                            COUNTRY_STR, G_PARAM_READABLE | G_PARAM_WRITABLE));
+                            ("Country string"),
+                            COUNTRY_STR, G_PARAM_READWRITE));
 
     g_object_class_install_property(object_class, PROP_AREA_STR,
-        g_param_spec_string("set-area",
-                            ("Country string"),
-                            ("Sets country string"),
-                            AREA_STR, G_PARAM_READABLE | G_PARAM_WRITABLE));
+        g_param_spec_string("area",
+                            ("Area string"),
+                            ("Area string"),
+                            AREA_STR, G_PARAM_READWRITE));
 
     g_object_class_install_property(object_class, PROP_NUMBER_STR,
-        g_param_spec_string("set-number",
-                            ("Country string"),
-                            ("Sets country string"),
-                            NUMBER_STR, G_PARAM_READABLE | G_PARAM_WRITABLE));
+        g_param_spec_string("number",
+                            ("Number string"),
+                            ("Number string"),
+                            NUMBER_STR, G_PARAM_READWRITE));
+
+    g_object_class_install_property(object_class, PROP_SHOW_BORDER,
+        g_param_spec_boolean ("show-border",
+			      "Show Border",
+			      "Wether to show the border around the widget",
+			      TRUE, G_PARAM_READWRITE));
+
+    g_object_class_install_property(object_class, PROP_SHOW_PLUS,
+        g_param_spec_boolean ("show-plus",
+			      "Show Plus",
+			      "Wether to show the plus sign in front of"
+			      " coerce format's country field",
+			      TRUE, G_PARAM_READWRITE));
 
     g_object_class_install_property(object_class, PROP_FORMAT,
         g_param_spec_int("set-format",
@@ -363,21 +378,32 @@ hildon_telephone_editor_get_property(GObject * object,
                                                  GValue * value,
                                                  GParamSpec * pspec)
 {
+    HildonTelephoneEditor *editor;
     HildonTelephoneEditorPriv *priv;
 
+    editor = HILDON_TELEPHONE_EDITOR (object);
     priv = HILDON_TELEPHONE_EDITOR_GET_PRIVATE(object);
 
     switch (prop_id) {
     case PROP_COUNTRY_STR:
-        g_value_set_string(value, GTK_ENTRY(priv->country)->text);
+        g_value_set_string(value,
+		hildon_telephone_editor_get_country(editor));
         break;
     case PROP_AREA_STR:
-        g_value_set_string(value, GTK_ENTRY(priv->area)->text);
+        g_value_set_string(value, 
+		hildon_telephone_editor_get_area(editor));
         break;
     case PROP_NUMBER_STR:
-        if (priv->format != HILDON_TELEPHONE_EDITOR_FORMAT_FREE) {
-            g_value_set_string(value, GTK_ENTRY(priv->number)->text);
-        }
+        g_value_set_string(value,
+		    hildon_telephone_editor_get_number(editor));
+        break;
+    case PROP_SHOW_BORDER:
+        g_value_set_boolean(value, 
+		hildon_telephone_editor_get_show_border(editor));
+        break;
+    case PROP_SHOW_PLUS:
+        g_value_set_boolean(value, 
+		hildon_telephone_editor_get_show_plus(editor));
         break;
     case PROP_FORMAT:
         g_value_set_int(value, priv->format);
@@ -394,21 +420,32 @@ hildon_telephone_editor_set_property(GObject * object,
                                                  const GValue * value,
                                                  GParamSpec * pspec)
 {
+    HildonTelephoneEditor *editor;
     HildonTelephoneEditorPriv *priv;
+   
+    editor = HILDON_TELEPHONE_EDITOR (object);
     priv = HILDON_TELEPHONE_EDITOR_GET_PRIVATE(object);
 
     switch (prop_id) {
     case PROP_COUNTRY_STR:
-        gtk_entry_set_text(GTK_ENTRY(priv->country),
+        hildon_telephone_editor_set_country(editor,
                            _(g_value_get_string(value)));
         break;
     case PROP_AREA_STR:
-        gtk_entry_set_text(GTK_ENTRY(priv->area),
+        hildon_telephone_editor_set_area(editor,
                            _(g_value_get_string(value)));
         break;
     case PROP_NUMBER_STR:
-        gtk_entry_set_text(GTK_ENTRY(priv->number),
+        hildon_telephone_editor_set_number(editor,
                            _(g_value_get_string(value)));
+        break;
+    case PROP_SHOW_BORDER:
+        hildon_telephone_editor_set_show_border(
+		editor, g_value_get_boolean(value));
+        break;
+    case PROP_SHOW_PLUS:
+        hildon_telephone_editor_set_show_plus(
+		editor, g_value_get_boolean(value));
         break;
     case PROP_FORMAT:
         priv->format = g_value_get_int(value);

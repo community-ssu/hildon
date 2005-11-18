@@ -95,7 +95,9 @@ enum{
     PROP_NONE = 0,
     PROP_DOMAIN,
     PROP_PASSWORD,
-    PROP_NUMBERS_ONLY  
+    PROP_NUMBERS_ONLY,
+    PROP_CAPTION_LABEL,
+    PROP_MAX_CHARS
 };
 
 /* Private functions */
@@ -123,6 +125,13 @@ hildon_get_password_set_property(GObject * object,
 		  (gtk_bin_get_child(GTK_BIN(priv->passwordEntry))),
                   "input-mode", HILDON_INPUT_MODE_HINT_NUMERIC, NULL );
     break;
+  case PROP_CAPTION_LABEL:
+    hildon_get_password_dialog_set_caption(dialog, g_value_get_string(value));
+    break;
+  case PROP_MAX_CHARS:
+    hildon_get_password_dialog_set_max_characters(dialog, 
+						  g_value_get_string(value));
+    break;
   default:
     G_OBJECT_WARN_INVALID_PROPERTY_ID(object, prop_id, pspec);
     break;
@@ -137,6 +146,7 @@ hildon_get_password_get_property(GObject * object,
     HildonGetPasswordDialog *dialog = HILDON_GET_PASSWORD_DIALOG(object);
     HildonGetPasswordDialogPrivate *priv;
     const gchar *string;
+    gint max_length; 
 
     priv = HILDON_GET_PASSWORD_DIALOG_GET_PRIVATE(dialog);
     
@@ -148,11 +158,21 @@ hildon_get_password_get_property(GObject * object,
       string = gtk_entry_get_text(GTK_ENTRY(priv->passwordEntry));
       g_value_set_string(value, string);
       break;
+    case PROP_CAPTION_LABEL:
+      string = hildon_caption_get_label(priv->passwordEntry);
+      g_value_set_string(value, string);
+      break;
+    case PROP_MAX_CHARS:
+      max_length = gtk_entry_get_max_length(
+	      GTK_ENTRY (hildon_caption_get_control (priv->passwordEntry)));
+      g_value_set_int(value, max_length);
+      break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID(object, prop_id, pspec);
       break;
     }
 }
+
 static void
 hildon_get_password_dialog_class_init(HildonGetPasswordDialogClass * class)
 {
@@ -191,6 +211,27 @@ hildon_get_password_dialog_class_init(HildonGetPasswordDialogClass * class)
 			  "Set entry to accept only numeric values",
 			  FALSE,
 			  G_PARAM_WRITABLE));
+
+  g_object_class_install_property
+    (object_class, 
+     PROP_CAPTION_LABEL,
+     g_param_spec_string ("caption-label",
+			  "Caption Label",
+			  "The text to be set as the caption label",
+			  NULL,
+			  G_PARAM_READWRITE));
+
+  g_object_class_install_property
+    (object_class, 
+     PROP_MAX_CHARS,
+     g_param_spec_int ("max-characters",
+		       "Maximum Characters",
+		       "The maximum number of characters the password"
+		       " dialog accepts",
+		       G_MININT,
+		       G_MAXINT,
+		       0,
+		       G_PARAM_READWRITE));
 
     g_type_class_add_private(class,
                              sizeof(HildonGetPasswordDialogPrivate));
@@ -406,7 +447,7 @@ void hildon_get_password_dialog_set_title(HildonGetPasswordDialog *dialog,
 }
 
 /**
- * hildon_get_password_dialog_set_caption_label
+ * hildon_get_password_dialog_set_caption
  *        (HildonGetPasswordDialog *dialog, gchar *new_caption) 
  * @dialog: the dialog
  * @new_caption: the text to be set as the caption label.

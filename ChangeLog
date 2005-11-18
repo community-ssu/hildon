@@ -1,3 +1,20 @@
+2005-11-18  Luc Pionchon  <luc.pionchon@nokia.com>
+
+
+	Gazpacho support, added the following properties:
+	
+	* hildon-widgets/hildon-insert-object-dialog.c: "name", "mimetype"
+	* hildon-widgets/hildon-seekbar.c: "position", "fraction"
+	* hildon-widgets/hildon-grid-item.c: "emblem-type"
+	* hildon-widgets/hildon-sort-dialog.c: "sort-key", "sort-order"
+	* hildon-widgets/hildon-grid.c: "style", "scrollbar-pos"
+	* hildon-widgets/hildon-font-selection-dialog.c: "preview-text"
+	* hildon-widgets/hildon-get-password-dialog.c: "caption-label", "max-characters"
+	* hildon-widgets/hildon-telephone-editor.c: "border", "plus" (obsolet widget)
+	* hildon-widgets/hildon-number-editor.c: "value"
+
+	* hildon-widgets/hildon-color-button.c: minor cleanup
+
 2005-11-03  Luc Pionchon  <luc.pionchon@nokia.com>
 
 	* configure.ac: 0.9.53

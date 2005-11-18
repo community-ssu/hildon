@@ -137,11 +137,25 @@ hildon_number_editor_error_handler(HildonNumberEditor *editor,
 static gboolean
 hildon_number_editor_select_all (HildonNumberEditorPrivate *priv);
     
+static void hildon_number_editor_set_property(GObject * object,
+                                     guint prop_id,
+                                     const GValue * value,
+                                     GParamSpec * pspec);
+
+static void hildon_number_editor_get_property(GObject * object,
+                                     guint prop_id,
+                                     GValue * value, GParamSpec * pspec);
+
 enum
 {
   RANGE_ERROR,
 
   LAST_SIGNAL
+};
+
+enum {
+    PROP_0,
+    PROP_VALUE
 };
 
 static GtkContainerClass *parent_class;
@@ -196,6 +210,7 @@ hildon_number_editor_class_init(HildonNumberEditorClass * editor_class)
 {
     GtkContainerClass *container_class = GTK_CONTAINER_CLASS(editor_class);
     GtkWidgetClass *widget_class = GTK_WIDGET_CLASS(editor_class);
+    GObjectClass *gobject_class = G_OBJECT_CLASS(editor_class);
 
     g_type_class_add_private(editor_class,
                              sizeof(HildonNumberEditorPrivate));
@@ -213,7 +228,17 @@ hildon_number_editor_class_init(HildonNumberEditorClass * editor_class)
        forall method */
     container_class->forall = hildon_number_editor_forall;
     GTK_OBJECT_CLASS(editor_class)->destroy = hildon_number_editor_destroy;
-    G_OBJECT_CLASS(editor_class)->finalize = hildon_number_editor_finalize;
+    gobject_class->finalize = hildon_number_editor_finalize;
+    gobject_class->set_property = hildon_number_editor_set_property;
+    gobject_class->get_property = hildon_number_editor_get_property;
+
+    g_object_class_install_property(gobject_class, PROP_VALUE,
+        g_param_spec_int("value",
+			 "Value",
+			 "The current value of number editor",
+			 G_MININT,
+			 G_MAXINT,
+			 0, G_PARAM_READWRITE));
 
     HildonNumberEditor_signal[RANGE_ERROR] =
       g_signal_new("range_error", HILDON_TYPE_NUMBER_EDITOR,
@@ -940,7 +965,10 @@ hildon_number_editor_set_value (HildonNumberEditor *editor, gint value)
     str = integer_to_string(value);
     gtk_entry_set_text(GTK_ENTRY(priv->num_entry), str);
     if (str)
+      {
         g_free(str);
+      }
+    g_object_notify (G_OBJECT(editor), "value");
 }
 
 /* When calling gtk_entry_set_text, the entry widget does things that can
@@ -959,4 +987,41 @@ hildon_number_editor_select_all (HildonNumberEditorPrivate *priv)
     priv->select_all_idle_id = 0;
     return FALSE;
 } 
+
+static void
+hildon_number_editor_set_property(GObject * object,
+                         guint prop_id,
+                         const GValue * value, GParamSpec * pspec)
+{
+    HildonNumberEditor *editor;
+
+    editor = HILDON_NUMBER_EDITOR(object);
+
+    switch (prop_id) {
+    case PROP_VALUE:
+        hildon_number_editor_set_value(editor, g_value_get_int(value));
+        break;
+    default:
+        G_OBJECT_WARN_INVALID_PROPERTY_ID(object, prop_id, pspec);
+        break;
+    }
+}
+
+static void
+hildon_number_editor_get_property(GObject * object,
+                         guint prop_id, GValue * value, GParamSpec * pspec)
+{
+    HildonNumberEditor *editor;
+
+    editor = HILDON_NUMBER_EDITOR(object);
+
+    switch (prop_id) {
+    case PROP_VALUE:
+        g_value_set_int(value, hildon_number_editor_get_value(editor));
+        break;
+    default:
+        G_OBJECT_WARN_INVALID_PROPERTY_ID(object, prop_id, pspec);
+        break;
+    }
+}
 

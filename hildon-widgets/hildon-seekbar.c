@@ -118,7 +118,8 @@ static gboolean hildon_seekbar_keypress(GtkWidget * widget,
 /* enum for properties */
 enum {
     PROP_TOTAL_TIME = 1,
-    PROP_POSITION
+    PROP_POSITION,
+    PROP_FRACTION
 };
 
 /* private variables */
@@ -193,7 +194,7 @@ static void hildon_seekbar_class_init(HildonSeekbarClass * seekbar_class)
                             0,           /* min value */
                             G_MAXDOUBLE, /* max value */
                             0,           /* default */
-                            G_PARAM_READABLE | G_PARAM_WRITABLE));
+                            G_PARAM_READWRITE));
 
     g_object_class_install_property(object_class, PROP_POSITION,
         g_param_spec_double("position",
@@ -202,8 +203,17 @@ static void hildon_seekbar_class_init(HildonSeekbarClass * seekbar_class)
                             0,           /* min value */
                             G_MAXDOUBLE, /* max value */
                             0,           /* default */
-                            G_PARAM_READABLE | G_PARAM_WRITABLE));
-    /* readable and writable */
+                            G_PARAM_READWRITE));
+    
+    g_object_class_install_property(object_class, PROP_FRACTION,
+        g_param_spec_double("fraction",
+                            "Fraction",
+                            "current fraction related to the"
+			    "progress indicator",
+                            0,           /* min value */
+                            G_MAXDOUBLE, /* max value */
+                            0,           /* default */
+                            G_PARAM_READWRITE));
 }
 
 
@@ -261,6 +271,9 @@ hildon_seekbar_set_property(GObject * object, guint prop_id,
     case PROP_POSITION:
         hildon_seekbar_set_position(seekbar, g_value_get_double(value));
         break;
+    case PROP_FRACTION:
+        hildon_seekbar_set_fraction(seekbar, g_value_get_double(value));
+        break;
     default:
         G_OBJECT_WARN_INVALID_PROPERTY_ID(object, prop_id, pspec);
         break;
@@ -280,6 +293,10 @@ hildon_seekbar_get_property(GObject * object, guint prop_id,
         break;
     case PROP_POSITION:
         g_value_set_double(value, range->adjustment->value);
+        break;
+    case PROP_FRACTION:
+        g_value_set_double(value, 
+		hildon_seekbar_get_fraction(HILDON_SEEKBAR(object)));
         break;
     default:
         G_OBJECT_WARN_INVALID_PROPERTY_ID(object, prop_id, pspec);
@@ -417,6 +434,8 @@ void hildon_seekbar_set_fraction( HildonSeekbar *seekbar, guint fraction )
   
   if (fraction < hildon_seekbar_get_position(seekbar))
     hildon_seekbar_set_position(seekbar, fraction);
+  
+  g_object_notify (G_OBJECT (seekbar), "fraction");
 }
 
 /**

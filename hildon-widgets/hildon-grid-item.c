@@ -104,7 +104,10 @@ struct _HildonGridItemPrivate {
     gboolean selected;
 };
 
-
+enum{
+    PROP_NONE = 0,
+    PROP_EMBLEM_TYPE
+};
 
 /* Prototypes. */
 static void hildon_grid_item_class_init(HildonGridItemClass * klass);
@@ -130,8 +133,60 @@ static void set_label_justify(HildonGridItem * item);
 static void hildon_grid_item_set_icon_size(HildonGridItem *item,
                                    HildonGridItemIconSizeType icon_size);
 
+static void hildon_grid_item_set_property(GObject * object,
+                                             guint prop_id,
+                                             const GValue * value,
+                                             GParamSpec * pspec);
+
+static void hildon_grid_item_get_property(GObject * object,
+                                             guint prop_id, GValue * value,
+                                             GParamSpec * pspec);
+
 
 static GtkContainerClass *parent_class = NULL;
+
+/* Private functions */
+static void
+hildon_grid_item_set_property(GObject * object,
+                                 guint prop_id,
+                                 const GValue * value, GParamSpec * pspec)
+{
+  HildonGridItem *item = HILDON_GRID_ITEM(object);
+  HildonGridItemPrivate *priv;
+  
+  priv = HILDON_GRID_ITEM_GET_PRIVATE(item);
+  
+  switch (prop_id) {
+  case PROP_EMBLEM_TYPE:
+    hildon_grid_item_set_emblem_type(item, g_value_get_string(value));
+    break;
+  default:
+    G_OBJECT_WARN_INVALID_PROPERTY_ID(object, prop_id, pspec);
+    break;
+  }
+}
+  
+static void
+hildon_grid_item_get_property(GObject * object,
+                                 guint prop_id,
+                                 GValue * value, GParamSpec * pspec)
+{
+    HildonGridItem *item = HILDON_GRID_ITEM(object);
+    HildonGridItemPrivate *priv;
+    const gchar *string;
+
+    priv = HILDON_GRID_ITEM_GET_PRIVATE(item);
+    
+    switch (prop_id) {
+    case PROP_EMBLEM_TYPE:
+      string = hildon_grid_item_get_emblem_type(item);
+      g_value_set_string(value, string);
+      break;
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID(object, prop_id, pspec);
+      break;
+    }
+}
 
 
 GType
@@ -182,6 +237,19 @@ hildon_grid_item_class_init(HildonGridItemClass *klass)
 
     container_class->forall = hildon_grid_item_forall;
     container_class->remove = hildon_grid_item_remove;
+  
+    gobject_class->set_property = hildon_grid_item_set_property;
+    gobject_class->get_property = hildon_grid_item_get_property;
+  
+    g_object_class_install_property 
+      (gobject_class, 
+       PROP_EMBLEM_TYPE, 
+       g_param_spec_string ("emblem-type",
+			    "Emblem Type",
+			    "The emblem's basename",
+			    NULL,
+			    G_PARAM_WRITABLE));
+  
 }
 
 static void
@@ -849,6 +917,8 @@ hildon_grid_item_set_emblem_type(HildonGridItem *item,
     priv->emblem_basename = g_strdup(emblem_basename);
 
     update_icon(item);
+
+    g_object_notify (G_OBJECT (item), "emblem-type");
 }
 
 /**

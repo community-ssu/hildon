@@ -59,6 +59,19 @@ typedef struct _HildonSortDialogPrivate HildonSortDialogPrivate;
 
 static void hildon_sort_dialog_class_init(HildonSortDialogClass * class);
 static void hildon_sort_dialog_init(HildonSortDialog * widget);
+static void hildon_sort_dialog_set_property(GObject * object,
+                                     guint prop_id,
+                                     const GValue * value,
+                                     GParamSpec * pspec);
+static void hildon_sort_dialog_get_property(GObject * object,
+                                     guint prop_id,
+                                     GValue * value, GParamSpec * pspec);
+
+enum {
+    PROP_0,
+    PROP_SORT_KEY,
+    PROP_SORT_ORDER
+};
 
 /* private data */
 struct _HildonSortDialogPrivate {
@@ -92,8 +105,28 @@ struct _HildonSortDialogPrivate {
  */
 static void hildon_sort_dialog_class_init(HildonSortDialogClass * class)
 {
+    GObjectClass *gobject_class = G_OBJECT_CLASS(class);
     parent_class = g_type_class_peek_parent(class);
     g_type_class_add_private(class, sizeof(HildonSortDialogPrivate));
+    
+    gobject_class->set_property = hildon_sort_dialog_set_property;
+    gobject_class->get_property = hildon_sort_dialog_get_property;
+    
+    g_object_class_install_property(gobject_class, PROP_SORT_KEY,
+        g_param_spec_int("sort-key",
+                         "Sort Key",
+                         "The currently active sort key",
+			 G_MININT,
+			 G_MAXINT,
+                         0, G_PARAM_READWRITE));
+    
+    g_object_class_install_property(gobject_class, PROP_SORT_ORDER,
+        g_param_spec_enum("sort-order",
+                         "Sort Order",
+                         "The current sorting order",
+			 GTK_TYPE_SORT_TYPE,
+                         GTK_SORT_ASCENDING,
+			 G_PARAM_READWRITE));
 }
 
 static void hildon_sort_dialog_init(HildonSortDialog * dialog)
@@ -266,6 +299,8 @@ void hildon_sort_dialog_set_sort_key(HildonSortDialog * dialog, gint key)
     priv = HILDON_SORT_DIALOG_GET_PRIVATE(dialog);
     combo_key = gtk_bin_get_child(GTK_BIN(priv->caption1));
     gtk_combo_box_set_active(GTK_COMBO_BOX(combo_key), key);
+
+    g_object_notify (G_OBJECT (dialog), "sort-key");
 }
 
 /**
@@ -287,6 +322,8 @@ hildon_sort_dialog_set_sort_order(HildonSortDialog * dialog,
     priv = HILDON_SORT_DIALOG_GET_PRIVATE(dialog);
     combo_order = gtk_bin_get_child(GTK_BIN(priv->caption2));
     gtk_combo_box_set_active(GTK_COMBO_BOX(combo_order), order);
+
+    g_object_notify (G_OBJECT (dialog), "sort-order");
 }
 
 /**
@@ -319,3 +356,47 @@ hildon_sort_dialog_add_sort_key(HildonSortDialog * dialog,
         return priv->index_counter += 1;
     }
 }
+
+static void
+hildon_sort_dialog_set_property(GObject * object,
+                         guint prop_id,
+                         const GValue * value, GParamSpec * pspec)
+{
+    HildonSortDialog *dialog;
+
+    dialog = HILDON_SORT_DIALOG(object);
+
+    switch (prop_id) {
+    case PROP_SORT_KEY:
+        hildon_sort_dialog_set_sort_key(dialog, g_value_get_int(value));
+        break;
+    case PROP_SORT_ORDER:
+        hildon_sort_dialog_set_sort_order(dialog, g_value_get_enum(value));
+        break;
+    default:
+        G_OBJECT_WARN_INVALID_PROPERTY_ID(object, prop_id, pspec);
+        break;
+    }
+}
+
+static void
+hildon_sort_dialog_get_property(GObject * object,
+                         guint prop_id, GValue * value, GParamSpec * pspec)
+{
+    HildonSortDialog *dialog;
+
+    dialog = HILDON_SORT_DIALOG(object);
+
+    switch (prop_id) {
+    case PROP_SORT_KEY:
+        g_value_set_int(value, hildon_sort_dialog_get_sort_key(dialog));
+        break;
+    case PROP_SORT_ORDER:
+        g_value_set_enum(value, hildon_sort_dialog_get_sort_order(dialog));
+        break;
+    default:
+        G_OBJECT_WARN_INVALID_PROPERTY_ID(object, prop_id, pspec);
+        break;
+    }
+}
+

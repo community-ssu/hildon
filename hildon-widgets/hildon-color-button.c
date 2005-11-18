@@ -147,8 +147,8 @@ hildon_color_button_class_init(HildonColorButtonClass *klass)
                                    g_param_spec_boxed ("color",
                                      "Current Color",
                                      "The selected color",
-                                     GDK_TYPE_COLOR, G_PARAM_READABLE | 
-                                     G_PARAM_WRITABLE));
+                                     GDK_TYPE_COLOR,
+                                     G_PARAM_READWRITE));
 
   g_type_class_add_private (gobject_class, sizeof (HildonColorButtonPrivate));
 }

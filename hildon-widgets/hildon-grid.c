@@ -83,7 +83,9 @@ enum {
 
 enum {
     PROP_0,
-    PROP_EMPTY_LABEL
+    PROP_EMPTY_LABEL,
+    PROP_STYLE,
+    PROP_SCROLLBAR_POS
 };
 
 
@@ -285,6 +287,20 @@ static void hildon_grid_class_init(HildonGridClass * klass)
                             "Empty label",
                             "Label to show when grid has no items",
                             _("Ckct_wi_grid_no_items"), G_PARAM_READWRITE));
+
+    g_object_class_install_property(gobject_class, PROP_STYLE,
+        g_param_spec_string("style",
+                            "Style",
+                            "Widget's Style. Setting style sets widget size, "
+			    "spacing, label position, number of columns, "
+			    "and icon sizeLabel to show when grid has no items",
+                            DEFAULT_STYLE, G_PARAM_READWRITE));
+
+    g_object_class_install_property(gobject_class, PROP_SCROLLBAR_POS,
+        g_param_spec_int("scrollbar-position",
+                         "Scrollbar Position",
+                         "View (scrollbar) position.",
+                         G_MININT, G_MAXINT, 0, G_PARAM_READWRITE));
 
     gtk_widget_class_install_style_property(widget_class,
         g_param_spec_uint("item_width",
@@ -2145,6 +2161,8 @@ void hildon_grid_set_scrollbar_pos(HildonGrid * grid, gint scrollbar_pos)
 
     gtk_range_set_adjustment(GTK_RANGE(priv->scrollbar), adjustment);
 
+    g_object_notify (G_OBJECT (grid), "scrollbar-position");
+
     /* If grid isn't drawable, updating anything could mess up focus. */
     if (!GTK_WIDGET_DRAWABLE(GTK_WIDGET(grid)))
         return;
@@ -2186,6 +2204,14 @@ hildon_grid_set_property(GObject * object,
         hildon_grid_set_empty_label(grid, g_value_get_string(value));
         break;
 
+    case PROP_STYLE:
+        hildon_grid_set_style(grid, g_value_get_string(value));
+        break;
+
+    case PROP_SCROLLBAR_POS:
+        hildon_grid_set_scrollbar_pos(grid, g_value_get_int(value));
+        break;
+
     default:
         G_OBJECT_WARN_INVALID_PROPERTY_ID(object, prop_id, pspec);
         break;
@@ -2196,11 +2222,21 @@ static void
 hildon_grid_get_property(GObject * object,
                          guint prop_id, GValue * value, GParamSpec * pspec)
 {
+    HildonGrid *grid;
+
+    grid = HILDON_GRID(object);
+
     switch (prop_id) {
     case PROP_EMPTY_LABEL:
-        g_value_set_string(value,
-                           hildon_grid_get_empty_label(HILDON_GRID
-                                                        (object)));
+        g_value_set_string(value, hildon_grid_get_empty_label(grid));
+        break;
+
+    case PROP_STYLE:
+        g_value_set_string(value, hildon_grid_get_style(grid));
+        break;
+
+    case PROP_SCROLLBAR_POS:
+        g_value_set_int(value, hildon_grid_get_scrollbar_pos(grid));
         break;
 
     default:
