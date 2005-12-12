@@ -1,3 +1,15 @@
+2005-12-12  Luc Pionchon  <luc.pionchon@nokia.com>
+
+	Some more properties for Gazpacho support,	
+
+	* hildon-widgets/hildon-calendar-popup.c: "day", "month", "year"
+	* hildon-widgets/hildon-color-selector.c: "color"
+
+
+	* hildon-widgets/hildon-color-selector.[ch]
+	(hildon_color_selector_get_color): return const pointer to the
+	color (not a copy).
+	
 2005-11-18  Luc Pionchon  <luc.pionchon@nokia.com>
 
 

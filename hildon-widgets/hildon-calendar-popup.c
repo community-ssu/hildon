@@ -65,10 +65,6 @@ hildon_calendar_popup_class_init(HildonCalendarPopupClass * cal_class);
 
 static void hildon_calendar_popup_init(HildonCalendarPopup * cal);
 
-static void hildon_calendar_popup_set_property(GObject *object, guint param_id,
-                                               const GValue *value,
-                                               GParamSpec *pspec);
-
 static gboolean hildon_calendar_day_selected(GtkWidget * widget,
                                              gpointer data);
 
@@ -79,9 +75,17 @@ static gboolean hildon_calendar_deny_exit(GtkWidget * self);
 static gboolean hildon_key_pressed(GtkWidget * widget, GdkEventKey * event,
                                    gpointer data);
 
-enum
-{
-  PROP_MIN_YEAR = 1,
+static void hildon_calendar_popup_set_property(GObject * object, guint property_id,
+                                    const GValue * value, GParamSpec * pspec);
+static void hildon_calendar_popup_get_property(GObject * object, guint property_id,
+                                    GValue * value, GParamSpec * pspec);
+
+enum {
+  PROP_0,
+  PROP_DAY,
+  PROP_MONTH,
+  PROP_YEAR,
+  PROP_MIN_YEAR,
   PROP_MAX_YEAR
 };
 
@@ -208,28 +212,58 @@ hildon_calendar_popup_get_date(HildonCalendarPopup * cal,
 static void
 hildon_calendar_popup_class_init(HildonCalendarPopupClass * cal_class)
 {
-    GObjectClass *gobject_class = G_OBJECT_CLASS(cal_class);
+    GObjectClass *object_class = G_OBJECT_CLASS(cal_class);
     parent_class = g_type_class_peek_parent(cal_class);
+    
+    object_class->set_property = hildon_calendar_popup_set_property;
+    object_class->get_property = hildon_calendar_popup_get_property;
 
     g_type_class_add_private(cal_class,
                              sizeof(HildonCalendarPopupPrivate));
 
-    gobject_class->set_property = hildon_calendar_popup_set_property;
-
-    g_object_class_install_property(gobject_class, PROP_MIN_YEAR,
+    g_object_class_install_property(object_class, PROP_MIN_YEAR,
                                     g_param_spec_uint("min-year",
                                                       "Minimum valid year",
                                                       "Minimum valid year",
                                                       1, 2100,
                                                       1970,
                                                       G_PARAM_WRITABLE));
-    g_object_class_install_property(gobject_class, PROP_MAX_YEAR,
+
+    g_object_class_install_property(object_class, PROP_MAX_YEAR,
                                     g_param_spec_uint("max-year",
                                                       "Maximum valid year",
                                                       "Maximum valid year",
                                                       1, 2100,
                                                       2037,
                                                       G_PARAM_WRITABLE));
+
+    g_object_class_install_property(object_class, PROP_DAY,
+				    g_param_spec_int ("day",
+						      "Day",
+						      "currently selected day",
+						      G_MININT,
+						      G_MAXINT,
+						      0,
+						      G_PARAM_READWRITE));
+
+    g_object_class_install_property(object_class, PROP_MONTH,
+				    g_param_spec_int ("month",
+						      "Month",
+						      "currently selected month",
+						      G_MININT,
+						      G_MAXINT,
+						      0,
+						      G_PARAM_READWRITE));
+
+    g_object_class_install_property(object_class, PROP_YEAR,
+				    g_param_spec_int ("year",
+						      "Year",
+						      "the currently selected year",
+						      G_MININT,
+						      G_MAXINT,
+						      0,
+						      G_PARAM_READWRITE));
+
 }
 
 static void hildon_calendar_popup_init(HildonCalendarPopup * cal)
@@ -278,26 +312,6 @@ static void hildon_calendar_popup_init(HildonCalendarPopup * cal)
     gtk_widget_realize(GTK_WIDGET(cal));
     gdk_window_set_decorations(GTK_WIDGET(cal)->window, GDK_DECOR_BORDER);
     gtk_widget_grab_focus(priv->cal);
-}
-
-static void hildon_calendar_popup_set_property(GObject *object, guint param_id,
-                                               const GValue *value,
-                                               GParamSpec *pspec)
-{
-  HildonCalendarPopupPrivate *priv = HILDON_CALENDAR_POPUP_GET_PRIVATE(object);
-
-  switch (param_id)
-  {
-    case PROP_MIN_YEAR:
-      g_object_set_property(G_OBJECT(priv->cal), "min-year", value);
-      break;
-    case PROP_MAX_YEAR:
-      g_object_set_property(G_OBJECT(priv->cal), "max-year", value);
-      break;
-    default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID(object, param_id, pspec);
-      break;
-  }
 }
 
 static gboolean
@@ -390,4 +404,55 @@ static gboolean hildon_calendar_deny_exit(GtkWidget * self)
 
     priv->can_exit = FALSE;
     return FALSE;
+}
+
+static void hildon_calendar_popup_set_property(GObject * object, guint property_id,
+                                    const GValue * value, GParamSpec * pspec)
+{
+    HildonCalendarPopupPrivate *priv = 
+	HILDON_CALENDAR_POPUP_GET_PRIVATE(HILDON_CALENDAR_POPUP (object));
+
+    switch (property_id) {
+    case PROP_DAY:
+         g_object_set_property(G_OBJECT(priv->cal), pspec->name, value);
+        break;
+    case PROP_MONTH:
+         g_object_set_property(G_OBJECT(priv->cal), pspec->name, value);
+        break;
+    case PROP_YEAR:
+         g_object_set_property(G_OBJECT(priv->cal), pspec->name, value);
+        break;
+    case PROP_MIN_YEAR:
+      g_object_set_property(G_OBJECT(priv->cal), "min-year", value);
+      break;
+    case PROP_MAX_YEAR:
+      g_object_set_property(G_OBJECT(priv->cal), "max-year", value);
+      break;
+    default:
+        G_OBJECT_WARN_INVALID_PROPERTY_ID(object, property_id, pspec);
+        break;
+    }
+}
+
+static void hildon_calendar_popup_get_property(GObject * object, guint property_id,
+                                    GValue * value, GParamSpec * pspec)
+{
+    HildonCalendarPopupPrivate *priv = 
+	HILDON_CALENDAR_POPUP_GET_PRIVATE(HILDON_CALENDAR_POPUP (object));
+    gint day, month, year;
+
+    switch (property_id) {
+    case PROP_DAY:
+          g_object_get_property(G_OBJECT(priv->cal), pspec->name, value);
+        break;
+    case PROP_MONTH:
+          g_object_get_property(G_OBJECT(priv->cal), pspec->name, value);
+        break;
+    case PROP_YEAR:
+          g_object_get_property(G_OBJECT(priv->cal), pspec->name, value);
+        break;
+    default:
+        G_OBJECT_WARN_INVALID_PROPERTY_ID(object, property_id, pspec);
+        break;
+    }
 }

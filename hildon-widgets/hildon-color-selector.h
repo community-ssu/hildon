@@ -63,7 +63,7 @@ struct _HildonColorSelectorClass {
 };
 
 GtkWidget *hildon_color_selector_new(GtkWindow * parent);
-GdkColor *hildon_color_selector_get_color(HildonColorSelector * selector);
+G_CONST_RETURN GdkColor *hildon_color_selector_get_color(HildonColorSelector * selector);
 void hildon_color_selector_set_color(HildonColorSelector * selector,
                                      GdkColor * color);
 

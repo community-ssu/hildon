@@ -90,6 +90,12 @@ struct _HildonColorSelectorPriv
     GdkColor color[HILDON_TOTAL_COLOR_NUM + 1];
 };
 
+enum 
+{
+  PROP_NONE,
+  PROP_COLOR
+};
+
 /* 
  * Private function prototype definitions 
  */
@@ -130,6 +136,13 @@ modify_button_clicked (GtkWidget * button,
 
 static void
 modify_selected(HildonColorSelector * colselector);
+
+static void
+hildon_color_selector_set_property(GObject *object, guint param_id,
+                    					   const GValue *value, GParamSpec *pspec);
+static void
+hildon_color_selector_get_property(GObject *object, guint param_id,
+                       				   GValue *value, GParamSpec *pspec);
 
 GType
 hildon_color_selector_get_type(void)
@@ -176,6 +189,7 @@ static void
 hildon_color_selector_class_init(HildonColorSelectorClass * selector_class)
 {
     GtkWidgetClass *widget_class = GTK_WIDGET_CLASS(selector_class);
+    GObjectClass *gobject_class = G_OBJECT_CLASS (selector_class);
 
     parent_class = g_type_class_peek_parent(selector_class);
 
@@ -185,6 +199,21 @@ hildon_color_selector_class_init(HildonColorSelectorClass * selector_class)
                              sizeof(HildonColorSelectorPriv));
 
     GTK_OBJECT_CLASS(selector_class)->destroy = hildon_color_selector_destroy;
+  
+    gobject_class->get_property = hildon_color_selector_get_property;
+    gobject_class->set_property = hildon_color_selector_set_property;
+  
+    /**
+     * HildonColorSelector:color:
+     *
+     * The selected color.
+     */
+    g_object_class_install_property (gobject_class, PROP_COLOR,
+	    g_param_spec_boxed ("color",
+		"Current Color",
+		"The selected color",
+		GDK_TYPE_COLOR,
+		G_PARAM_READWRITE));
 }
 
 
@@ -450,9 +479,10 @@ hildon_color_selector_expose(GtkWidget * widget,
  * 
  * Gets the currently selected base color as #GdkColor.
  * 
- * Returns: A copy of the currently selected #GdkColor.
+ * Returns: The currently selected #GdkColor. The returned pointer must 
+ * not be freed.
  */
-GdkColor *hildon_color_selector_get_color(HildonColorSelector * selector)
+G_CONST_RETURN GdkColor *hildon_color_selector_get_color(HildonColorSelector * selector)
 {
     g_return_val_if_fail(HILDON_IS_COLOR_SELECTOR(selector), NULL);    
     return &(selector->priv->color[selector->priv->index]);
@@ -489,6 +519,8 @@ void hildon_color_selector_set_color(HildonColorSelector * selector,
             break;
         }
     }
+ 
+    g_object_notify (G_OBJECT (selector), "color");
 }
 
 static gboolean
@@ -718,3 +750,37 @@ modify_selected(HildonColorSelector * colselector)
     gtk_widget_destroy (popup); 
     gtk_window_present (GTK_WINDOW(colselector));
 }
+static void
+hildon_color_selector_set_property(GObject *object, guint param_id,
+			                           const GValue *value, GParamSpec *pspec)
+{
+  HildonColorSelector *selector = HILDON_COLOR_SELECTOR(object);
+
+  switch (param_id) 
+    {
+    case PROP_COLOR:
+      hildon_color_selector_set_color(selector, (GdkColor*)g_value_get_boxed(value));
+      break;
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID(object, param_id, pspec);
+      break;
+    }
+}
+
+static void
+hildon_color_selector_get_property(GObject *object, guint param_id,
+			                           GValue *value, GParamSpec *pspec)
+{
+  HildonColorSelector *selector = HILDON_COLOR_SELECTOR(object);
+
+  switch (param_id) 
+    {
+    case PROP_COLOR:
+      g_value_set_boxed(value, (gconstpointer)hildon_color_selector_get_color(selector));
+      break;
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID(object, param_id, pspec);
+      break;
+    }
+}
+
