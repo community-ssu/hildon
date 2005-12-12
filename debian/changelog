@@ -1,3 +1,9 @@
+hildon-libs (0.10.0-pre) unstable; urgency=low
+
+  * started development branch (maintenance continues with versions 0.9.x)
+
+ -- Luc Pionchon <luc.pionchon@nokia.com>  Mon, 12 Dec 2005 20:50:52 +0200
+
 hildon-libs (0.9.53-1) unstable; urgency=low
 
   * same fix for,

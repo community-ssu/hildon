@@ -27,6 +27,12 @@
 
 	* hildon-widgets/hildon-color-button.c: minor cleanup
 
+
+2005-11-18  Luc Pionchon  <luc.pionchon@nokia.com>
+
+        Started new development
+	(branche for maintenance continues with versions 0.9.x)
+
 2005-11-03  Luc Pionchon  <luc.pionchon@nokia.com>
 
 	* configure.ac: 0.9.53
