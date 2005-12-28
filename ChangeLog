@@ -1,3 +1,7 @@
+2005-12-28  Luc Pionchon  <luc.pionchon@nokia.com>
+
+	* configure.ac: 0.10.0pre1
+
 2005-12-12  Luc Pionchon  <luc.pionchon@nokia.com>
 
 	Some more properties for Gazpacho support,	
