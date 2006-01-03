@@ -52,7 +52,7 @@
 #define HILDON_COLOR_CONTROLBAR_MIN        0 
 #define HILDON_COLOR_LABELS_LEFT_PAD      35
 #define HILDON_COLOR_PALETTE_POS_PAD      45
-#define HILDON_COLOR_BAR_WIDTH 449
+#define HILDON_COLOR_BAR_WIDTH           449
 
 /* 
  * Private function prototype definitions 
@@ -89,12 +89,14 @@ hildon_color_popup_new(GtkWindow *parent, GdkColor *initial_color,
 
   current_color = initial_color;
 
+  /* Create control bars for HildonColorPopup */
   popup_data->ctrlbar_red   = hildon_controlbar_new (); 
   popup_data->ctrlbar_green = hildon_controlbar_new ();
   popup_data->ctrlbar_blue  = hildon_controlbar_new ();
   area = gtk_drawing_area_new();
   layout = GTK_TABLE(gtk_table_new(12, 2, FALSE));
 
+  /* Set widgets' size */
   gtk_widget_set_size_request (area, 
                                HILDON_COLOR_PALETTE_SIZE, 
                                HILDON_COLOR_PALETTE_SIZE);
@@ -105,6 +107,7 @@ hildon_color_popup_new(GtkWindow *parent, GdkColor *initial_color,
   gtk_widget_set_size_request(popup_data->ctrlbar_blue,
                                HILDON_COLOR_BAR_WIDTH, -1); 
 
+  /* Create labels for three kinds of color */
   l_red = gtk_label_new( _("Ecdg_fi_5bit_colour_selector_red"));
   l_green = gtk_label_new(_("Ecdg_fi_5bit_colour_selector_green"));
   l_blue = gtk_label_new(_("Ecdg_fi_5bit_colour_selector_blue"));
@@ -114,6 +117,7 @@ hildon_color_popup_new(GtkWindow *parent, GdkColor *initial_color,
   gtk_misc_set_alignment(GTK_MISC(l_green), 0.08f, 0.5f);  
   gtk_misc_set_alignment(GTK_MISC(l_blue), 0.08f, 0.5f);
 
+  /* Add labels and control bars to the layout table */
   gtk_table_attach_defaults(layout, l_red, 0, 1, 0, 2);
   gtk_table_attach_defaults(layout, popup_data->ctrlbar_red, 0, 1, 2, 4);
   gtk_table_attach_defaults(layout, l_green, 0, 1, 4, 6);
@@ -122,7 +126,7 @@ hildon_color_popup_new(GtkWindow *parent, GdkColor *initial_color,
   gtk_table_attach_defaults(layout, popup_data->ctrlbar_blue, 0, 1, 10, 12);
   gtk_table_attach(layout, area, 1, 2, 3, 11, GTK_SHRINK, GTK_SHRINK, 0, 0);
 
-  /* control bars */
+  /* Give the maximum and minimum limits for each control bar */
   hildon_controlbar_set_range (HILDON_CONTROLBAR(popup_data->ctrlbar_red),
                                  HILDON_COLOR_CONTROLBAR_MIN, 
                                  HILDON_COLOR_CONTROLBAR_MAX);
@@ -133,6 +137,7 @@ hildon_color_popup_new(GtkWindow *parent, GdkColor *initial_color,
                                  HILDON_COLOR_CONTROLBAR_MIN, 
                                  HILDON_COLOR_CONTROLBAR_MAX);
 
+  /* Give the initial values for each control bar */
   hildon_controlbar_set_value (HILDON_CONTROLBAR(popup_data->ctrlbar_red),   
                                  (current_color->red >> 11)&0x1F);
   hildon_controlbar_set_value (HILDON_CONTROLBAR(popup_data->ctrlbar_green),
@@ -140,7 +145,7 @@ hildon_color_popup_new(GtkWindow *parent, GdkColor *initial_color,
   hildon_controlbar_set_value (HILDON_CONTROLBAR(popup_data->ctrlbar_blue),
                                  (current_color->blue >> 11)&0x1F);
 
-  /* controlbars callbacks */
+  /* Register controlbar callbacks */
   g_signal_connect_swapped(popup_data->ctrlbar_red, "value-changed",
                       G_CALLBACK(gtk_widget_queue_draw), area);
   g_signal_connect_swapped(popup_data->ctrlbar_green, "value-changed",
@@ -148,10 +153,12 @@ hildon_color_popup_new(GtkWindow *parent, GdkColor *initial_color,
   g_signal_connect_swapped(popup_data->ctrlbar_blue, "value-changed",
                       G_CALLBACK(gtk_widget_queue_draw), area);
 
+  /* Attach expose_event callback function to drawing area */
   g_signal_connect (area,  "expose_event",
                       G_CALLBACK(hildon_popup_palette_expose), 
                       popup_data);
   
+  /* Create popup dialog */
   popup = gtk_dialog_new_with_buttons (_("ecdg_ti_5bit_colour_selector"), 
                                        GTK_WINDOW(parent),
                                        GTK_DIALOG_DESTROY_WITH_PARENT |
@@ -162,8 +169,12 @@ hildon_color_popup_new(GtkWindow *parent, GdkColor *initial_color,
                                        NULL);
 
   gtk_dialog_set_default_response(GTK_DIALOG(popup), GTK_RESPONSE_OK);
+
+  /* Add layout table to the Vbox of the popup dialog */
   gtk_box_pack_start (GTK_BOX(GTK_DIALOG(popup)->vbox), 
                         GTK_WIDGET(layout), TRUE, TRUE, 0);
+
+  /* Show thw Vbox of the popup dialog */
   gtk_widget_show_all(GTK_DIALOG(popup)->vbox);	     
 
   return popup;
@@ -193,6 +204,7 @@ hildon_color_popup_set_color_from_sliders(GdkColor *color,
         HILDON_CONTROLBAR(popup_data->ctrlbar_blue)) <<  11;
 }
 
+/* expose_event callback function */
 static gboolean 
 hildon_popup_palette_expose (GtkWidget * widget,
                              GdkEventExpose *event, gpointer data)
@@ -202,10 +214,11 @@ hildon_popup_palette_expose (GtkWidget * widget,
     GdkColor color;
     GdkGC * gc = gdk_gc_new (widget->window); 
 
+    /* Get the current color value */
     hildon_color_popup_set_color_from_sliders(&color, data);
     gdk_gc_set_rgb_fg_color(gc, &color);
                          
-    /* draw the color */
+    /* draw the color area */
     gdk_draw_rectangle( widget->window, gc, TRUE /* filled */,  
                         1, 1, widget->allocation.width - 2, 
                         widget->allocation.height - 2);    
@@ -213,11 +226,12 @@ hildon_popup_palette_expose (GtkWidget * widget,
     color.pixel = color.red = color.green = color.blue = 0;
     gdk_gc_set_rgb_fg_color(gc, &color);
 
-    /* frames on color box */
+    /* Draw frames on color box */
     gdk_draw_rectangle( widget->window, gc, FALSE, 
                         0, 0, widget->allocation.width - 1, 
                         widget->allocation.height - 1); 
 
+    /* Free memory used by the graphics contexts */
     g_object_unref(gc);
   }
 

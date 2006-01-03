@@ -282,6 +282,7 @@ static void hildon_grid_class_init(HildonGridClass * klass)
     container_class->child_type = hildon_grid_child_type;
     container_class->set_focus_child = hildon_grid_set_focus_child;
 
+    /* Install properties to the class */
     g_object_class_install_property(gobject_class, PROP_EMPTY_LABEL,
         g_param_spec_string("empty_label",
                             "Empty label",
@@ -490,6 +491,7 @@ hildon_grid_set_label_pos(HildonGrid * grid,
 
     priv->label_pos = label_pos;
 
+    /* Set label position to each HildonGridItem */
     for (list = priv->children; list != NULL; list = list->next) {
         child = ((HildonGridChild *) list->data)->widget;
 
@@ -844,6 +846,8 @@ hildon_grid_expose(GtkWidget * widget, GdkEventExpose * event)
     priv = HILDON_GRID_GET_PRIVATE(grid);
     container = GTK_CONTAINER(grid);
 
+    /* If grid has no children,
+     * propagate the expose event to the label is one exists */ 
     if (priv->children == NULL || g_list_length(priv->children) == 0) {
         if (priv->empty_label != NULL) {
             gtk_container_propagate_expose(container,
@@ -1113,14 +1117,12 @@ static void hildon_grid_add(GtkContainer * container, GtkWidget * widget)
     }
     child->widget = widget;
 
-    _hildon_grid_item_set_label_pos(HILDON_GRID_ITEM(widget),
-                                    priv->label_pos);
-    _hildon_grid_item_set_focus_margin(HILDON_GRID_ITEM(widget),
-                                       priv->focus_margin);
-    _hildon_grid_item_set_icon_width(HILDON_GRID_ITEM(widget),
-                                     priv->icon_width);
-    _hildon_grid_item_set_emblem_size(HILDON_GRID_ITEM(widget),
-                                      priv->emblem_size);
+    _hildon_grid_item_set_label_pos   (HILDON_GRID_ITEM(widget), priv->label_pos);
+    _hildon_grid_item_set_focus_margin(HILDON_GRID_ITEM(widget), priv->focus_margin);
+    _hildon_grid_item_set_icon_width  (HILDON_GRID_ITEM(widget), priv->icon_width);
+    _hildon_grid_item_set_emblem_size (HILDON_GRID_ITEM(widget), priv->emblem_size);
+
+    /* Add the new item to the grid */
     priv->children = g_list_append(priv->children, child);
     gtk_widget_set_parent(widget, GTK_WIDGET(grid));
 
@@ -1185,6 +1187,8 @@ hildon_grid_remove(GtkContainer * container, GtkWidget * widget)
          list != NULL; list = list->next, index++) {
         child = (HildonGridChild *) list->data;
         child_widget = child->widget;
+
+	/* Remove the Item if it is found in the grid */
         if (child_widget == widget) {
             gtk_widget_unparent(child_widget);
             priv->children = g_list_remove_link(priv->children, list);
@@ -1197,6 +1201,7 @@ hildon_grid_remove(GtkContainer * container, GtkWidget * widget)
         }
     }
 
+    /* Emit warning if the item is not found */
     if (!deleted) {
         g_warning("tried to remove unexisting item");
         return;
@@ -1264,6 +1269,7 @@ set_focus(HildonGrid * grid, GtkWidget * widget, gboolean refresh_view)
     priv = HILDON_GRID_GET_PRIVATE(grid);
     container = GTK_CONTAINER(grid);
 
+    /* If widget is NULL -> unfocus */ 
     if (widget == NULL && container->focus_child != NULL)
         GTK_WIDGET_UNSET_FLAGS(container->focus_child, GTK_HAS_FOCUS);
 
@@ -1273,6 +1279,7 @@ set_focus(HildonGrid * grid, GtkWidget * widget, gboolean refresh_view)
         return;
     }
 
+    /* Get the child index which the user wanted to focus */
     priv->focus_index = get_child_index(priv, widget);
 
     gtk_widget_grab_focus(widget);
@@ -1304,6 +1311,7 @@ hildon_grid_forall(GtkContainer * container,
     grid = HILDON_GRID(container);
     priv = HILDON_GRID_GET_PRIVATE(grid);
 
+    /* Connect callback functions */
     if (include_internals) {
         if (priv->scrollbar != NULL) {
             (*callback) (priv->scrollbar, callback_data);
@@ -1372,8 +1380,10 @@ static void hildon_grid_finalize(GObject * object)
  * . 1 # 2      . 1 # #     1 # # #     1 # # #
  * . . .        . . 2       . . .       . 2 .
  *
- * '.' = item, '#' = dimmed item, 
- * '1' = starting position, '2' = final position
+ * '.' = item,
+ * '#' = dimmed item, 
+ * '1' = starting position,
+ * '2' = final position
  *
  * ...although only the first example is implemented right now.
  *
@@ -1791,6 +1801,7 @@ static gboolean jump_scrollbar_to_focused(HildonGrid * grid)
     empty_grids = priv->num_columns * priv->area_rows - child_count +
         priv->first_index;
 
+    /* Determine the position of the new row */ 
     if (priv->focus_index < priv->first_index) {
         new_row = priv->focus_index / priv->num_columns;
     } else if (priv->focus_index >= priv->first_index +

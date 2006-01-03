@@ -87,6 +87,7 @@ void gtk_dialog_help_enable(GtkDialog * dialog)
     int i = 0;
     int help_enabled = 0;
     
+    /* Create help signal if it didn't exist */   
     if (help_signal == 0) {
         help_signal = g_signal_new("help", GTK_TYPE_DIALOG,
                                    G_SIGNAL_ACTION, (guint) - 1, NULL,
@@ -100,12 +101,14 @@ void gtk_dialog_help_enable(GtkDialog * dialog)
     window = GTK_WIDGET(dialog)->window;
     display = gdk_drawable_get_display (window);
 
+    /* Create a list of atoms stored in GdkWindow */
     XGetWMProtocols(GDK_DISPLAY_XDISPLAY (display), GDK_WINDOW_XID (window),
 		    &list, &amount);
     
     protocols = (Atom *) malloc ((amount+1) * sizeof (Atom));
     helpatom = gdk_x11_get_xatom_by_name_for_display (display, "_NET_WM_CONTEXT_HELP");
 
+    /* Enable the dialoghelp if help_atom is in the atoms' list */
     for (i=0; i<amount; i++)
     {
 	    protocols[n++] = list[i];
@@ -116,14 +119,17 @@ void gtk_dialog_help_enable(GtkDialog * dialog)
     }
     XFree (list);
 
+    /* Add the help_atom to the atoms' list if it was not in it */ 
     if (!help_enabled)
     {
 	    protocols[n++] = gdk_x11_get_xatom_by_name_for_display (display, "_NET_WM_CONTEXT_HELP");
     }
     
+    /* Replace the protocol property of the GdkWindow with the new atoms' list */
     XSetWMProtocols (GDK_DISPLAY_XDISPLAY (display), GDK_WINDOW_XID (window), protocols, n);
     free (protocols);
     
+    /* Add a callback function as event filter */ 
     gdk_window_add_filter(window, handle_xevent, dialog);
 }
 
@@ -150,12 +156,14 @@ void gtk_dialog_help_disable(GtkDialog * dialog)
     window = GTK_WIDGET(dialog)->window;
     display = gdk_drawable_get_display (window);
 
+    /* Create a list of atoms stored in GdkWindow */
     XGetWMProtocols(GDK_DISPLAY_XDISPLAY (display), GDK_WINDOW_XID (window),
 		    &list, &amount);
     
     helpatom = gdk_x11_get_xatom_by_name_for_display (display, "_NET_WM_CONTEXT_HELP");
     protocols = (Atom *) malloc (amount * sizeof (Atom));
 
+    /* Remove the help_atom if it is in the atoms' list */
     for (i=0; i<amount; i++)
     {
 	    if (list[i] != helpatom)
@@ -165,9 +173,11 @@ void gtk_dialog_help_disable(GtkDialog * dialog)
     }
     XFree (list);
     
+    /* Replace the protocol property of the GdkWindow with the new atoms' list */
     XSetWMProtocols (GDK_DISPLAY_XDISPLAY (display), GDK_WINDOW_XID (window), protocols, n);
     free (protocols);
 
+    /* Remove the event filter */
     gdk_window_remove_filter(window, handle_xevent, dialog);
 }
 

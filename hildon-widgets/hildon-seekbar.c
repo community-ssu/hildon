@@ -85,15 +85,10 @@ static gboolean hildon_seekbar_button_release_event(GtkWidget * widget,
 static gboolean hildon_seekbar_keypress(GtkWidget * widget,
                                         GdkEventKey * event);
 
-/* private stuff */
 
-/*
- * Some constants
- * These should be named so that they are quite self
- * explanatory
- */
 #define MINIMUM_WIDTH 115
 #define DEFAULT_HEIGHT 58
+
 /* Toolbar width and height defines */
 #define TOOL_MINIMUM_WIDTH 75
 #define TOOL_DEFAULT_HEIGHT 40
@@ -104,8 +99,9 @@ static gboolean hildon_seekbar_keypress(GtkWidget * widget,
 #define TOOL_EXTRA_SIDE_BORDER 0
 
 /* the number of steps it takes to move from left to right */
-#define SECONDS_PER_MINUTE 60
 #define NUM_STEPS 20
+
+#define SECONDS_PER_MINUTE 60
 
 /* the number of digits precision for the internal range.
  * note, this needs to be enough so that the step size for
@@ -115,7 +111,7 @@ static gboolean hildon_seekbar_keypress(GtkWidget * widget,
  * add one for safety */
 #define MAX_ROUND_DIGITS 3
 
-/* enum for properties */
+/* Property indices */
 enum {
     PROP_TOTAL_TIME = 1,
     PROP_POSITION,
@@ -124,9 +120,11 @@ enum {
 
 /* private variables */
 struct _HildonSeekbarPrivate {
-    GtkWidget *label;
-    gboolean draw_value;
-    gboolean is_toolbar;
+    GtkWidget *label; /* FIXME: XXX This is unused */
+    gboolean draw_value; /* FIXME: XXX This is unused */
+
+    gboolean is_toolbar; /* TRUE if this widget is inside a toolbar */
+
     guint fraction; /* This is the amount of time that has progressed from
                        the beginning. It should be an integer between the
                        minimum and maximum values of the corresponding
@@ -167,12 +165,10 @@ static void hildon_seekbar_class_init(HildonSeekbarClass * seekbar_class)
     GtkWidgetClass *widget_class = GTK_WIDGET_CLASS(seekbar_class);
     GObjectClass *object_class = G_OBJECT_CLASS(seekbar_class);
 
-    /* set the global parent_class */
     parent_class = g_type_class_peek_parent(seekbar_class);
 
     g_type_class_add_private(seekbar_class, sizeof(HildonSeekbarPrivate));
 
-    /* setup our widgets v-table */
     widget_class->size_request = hildon_seekbar_size_request;
     widget_class->size_allocate = hildon_seekbar_size_allocate;
     widget_class->expose_event = hildon_seekbar_expose;
@@ -181,12 +177,10 @@ static void hildon_seekbar_class_init(HildonSeekbarClass * seekbar_class)
         hildon_seekbar_button_release_event;
     widget_class->key_press_event = hildon_seekbar_keypress;
 
-    /* now the object stuff */
     object_class->set_property = hildon_seekbar_set_property;
     object_class->get_property = hildon_seekbar_get_property;
     object_class->finalize = hildon_seekbar_finalize;
 
-    /* install the properties */
     g_object_class_install_property(object_class, PROP_TOTAL_TIME,
         g_param_spec_double("total_time",
                             "total time",
@@ -224,6 +218,7 @@ static void hildon_seekbar_init(HildonSeekbar * seekbar)
 
     priv = HILDON_SEEKBAR_GET_PRIVATE(seekbar);
 
+    /* Initialize range widget */
     range->orientation = GTK_ORIENTATION_HORIZONTAL;
     range->flippable = TRUE;
     range->has_stepper_a = TRUE;
@@ -233,7 +228,7 @@ static void hildon_seekbar_init(HildonSeekbar * seekbar)
     gtk_scale_set_draw_value (GTK_SCALE (seekbar), FALSE);
 }
 
-/* is this even necessary? */
+/* FIXME: XXX This isn't necessary */
 static void hildon_seekbar_finalize( GObject *obj_self )	
 {	
     HildonSeekbar *self;	
@@ -247,7 +242,6 @@ static void hildon_seekbar_finalize( GObject *obj_self )
 }
 
 
-/* handle keypress events */
 static gboolean hildon_seekbar_keypress(GtkWidget * widget,
                                         GdkEventKey * event)
 {
@@ -257,7 +251,6 @@ static gboolean hildon_seekbar_keypress(GtkWidget * widget,
                                                                event));
 }
 
-/* handle setting of seekbar properties */
 static void
 hildon_seekbar_set_property(GObject * object, guint prop_id,
                             const GValue * value, GParamSpec * pspec)
@@ -307,13 +300,12 @@ hildon_seekbar_get_property(GObject * object, guint prop_id,
 /**
  * hildon_seekbar_new:
  *
- * Creates a new #HildonSeekbar widget.
+ * Create a new #HildonSeekbar widget.
  * 
  * Return value: A #GtkWidget pointer of #HildonSeekbar widget.
  */
 GtkWidget *hildon_seekbar_new(void)
 {
-    /* return a new object */
     return g_object_new(HILDON_TYPE_SEEKBAR, NULL);
 }
 
@@ -321,8 +313,7 @@ GtkWidget *hildon_seekbar_new(void)
  * hildon_seekbar_get_total_time:
  * @seekbar: Pointer to #HildonSeekbar widget.
  *
- * Accessor method for getting total playing time of stream
- * in seconds.
+ * Get total playing time of stream in seconds.
  *
  * Returns: Total time as gint.
  **/
@@ -340,8 +331,7 @@ gint hildon_seekbar_get_total_time(HildonSeekbar *seekbar)
  * @seekbar: Pointer to #HildonSeekbar widget.
  * @time: Time within range of > 0 && < G_MAXINT
  *
- * Accessor method for setting total playing time of stream
- * in seconds.
+ * Set total playing time of stream in seconds.
  *
  **/
 void hildon_seekbar_set_total_time(HildonSeekbar *seekbar, gint time)
@@ -362,16 +352,19 @@ void hildon_seekbar_set_total_time(HildonSeekbar *seekbar, gint time)
     adj = GTK_RANGE(widget)->adjustment;
     adj->upper = time;
 
+    /* Clamp position to total time */
     if (adj->value > time) {
         adj->value = time;
         value_changed = TRUE;
     }
 
+    /* Calculate new step value */
     adj->step_increment = adj->upper / NUM_STEPS;
     adj->page_increment = adj->step_increment;
 
     gtk_adjustment_changed(adj);
 
+    /* Update range widget position/fraction */
     if (value_changed) {
         gtk_adjustment_value_changed(adj);
         hildon_seekbar_set_fraction(seekbar,
@@ -394,8 +387,7 @@ void hildon_seekbar_set_total_time(HildonSeekbar *seekbar, gint time)
  * hildon_seekbar_get_fraction:
  * @seekbar: Pointer to #HildonSeekbar widget.
  *
- * Accessor method for getting current fraction related to the progress indicator.
- * It should be between min and max of seekbar range.
+ * Get current fraction related to the progress indicator.
  *
  * Returns: Current fraction.
  **/
@@ -411,7 +403,7 @@ guint hildon_seekbar_get_fraction( HildonSeekbar *seekbar )
  * @seekbar: Pointer to #HildonSeekbar widget.
  * @fraction: The new position of the progress indicator.
  *
- * Method for setting current value related to the progress indicator.
+ * Set current fraction value related to the progress indicator.
  * It should be between the minimal and maximal values of the range in seekbar.
  **/
 void hildon_seekbar_set_fraction( HildonSeekbar *seekbar, guint fraction )
@@ -430,6 +422,7 @@ void hildon_seekbar_set_fraction( HildonSeekbar *seekbar, guint fraction )
   fraction = CLAMP(fraction, range->adjustment->lower,
                    range->adjustment->upper);
   
+  /* Update stream position of range widget */
   osso_gtk_range_set_stream_position( range, fraction );
   
   if (fraction < hildon_seekbar_get_position(seekbar))
@@ -442,9 +435,7 @@ void hildon_seekbar_set_fraction( HildonSeekbar *seekbar, guint fraction )
  * hildon_seekbar_get_position:
  * @seekbar: Pointer to #HildonSeekbar widget.
  *
- * Accessor method for getting current position in stream
- * in seconds.
- *
+ * Get current position in stream in seconds.
  *
  * Returns: Current position in stream in seconds.
  **/
@@ -461,8 +452,7 @@ gint hildon_seekbar_get_position(HildonSeekbar *seekbar)
  * @seekbar: Pointer to #HildonSeekbar widget.
  * @time: Time within range of >= 0 && < G_MAXINT
  *
- * Accessor method for setting current position in stream
- * in seconds.
+ * Set current position in stream in seconds.
  **/
 void hildon_seekbar_set_position(HildonSeekbar *seekbar, gint time)
 {
@@ -508,6 +498,8 @@ static void hildon_seekbar_size_request(GtkWidget * widget,
     if (GTK_WIDGET_CLASS(parent_class)->size_request)
         GTK_WIDGET_CLASS(parent_class)->size_request(widget, req);
 
+    /* Request minimum size, depending on whether the widget is in a
+     * toolbar or not */
     req->width = priv->is_toolbar ? TOOL_MINIMUM_WIDTH : MINIMUM_WIDTH;
     req->height = priv->is_toolbar ? TOOL_DEFAULT_HEIGHT : DEFAULT_HEIGHT;
 }
@@ -519,6 +511,7 @@ static void hildon_seekbar_size_allocate(GtkWidget * widget,
 
     priv = HILDON_SEEKBAR_GET_PRIVATE(HILDON_SEEKBAR(widget));
 
+    /* Center vertically */
     if (priv->is_toolbar == TRUE)
       {
         if (allocation->height > TOOL_DEFAULT_HEIGHT) {
@@ -536,6 +529,7 @@ static void hildon_seekbar_size_allocate(GtkWidget * widget,
           }
       }
 
+    /* Add space for border */
     if (priv->is_toolbar == TRUE)
       {
         allocation->x += TOOL_EXTRA_SIDE_BORDER;
@@ -563,6 +557,7 @@ static gboolean hildon_seekbar_expose(GtkWidget * widget,
                                             EXTRA_SIDE_BORDER;
 
     if (GTK_WIDGET_DRAWABLE(widget)) {
+	/* Paint border */
         gtk_paint_box(widget->style, widget->window,
                       GTK_WIDGET_STATE(widget), GTK_SHADOW_OUT,
                       NULL, widget, "seekbar",
@@ -577,9 +572,6 @@ static gboolean hildon_seekbar_expose(GtkWidget * widget,
     return FALSE;
 }
 
-/*
- * Event handler for button_press_event
- */
 static gboolean
 hildon_seekbar_button_press_event(GtkWidget * widget,
                                   GdkEventButton * event)
@@ -592,6 +584,7 @@ hildon_seekbar_button_press_event(GtkWidget * widget,
     self = HILDON_SEEKBAR(widget);
     priv = HILDON_SEEKBAR_GET_PRIVATE(self);
 
+    /* hack, translate first mouse button to second? */
     event->button = event->button == 1 ? 2 : event->button;
 
     /* call the parent handler */
@@ -602,9 +595,6 @@ hildon_seekbar_button_press_event(GtkWidget * widget,
     return result;
 }
 
-/*
- * Event handler for button_release_event
- */
 static gboolean
 hildon_seekbar_button_release_event(GtkWidget * widget,
                                     GdkEventButton * event)

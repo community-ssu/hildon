@@ -575,6 +575,7 @@ hildon_font_selection_dialog_class_init(HildonFontSelectionDialogClass *
   gobject_class->get_property = hildon_font_selection_dialog_get_property;
   gobject_class->set_property = hildon_font_selection_dialog_set_property;
 
+  /* Install property to the class */
   g_object_class_install_property(gobject_class, PROP_FAMILY,
 				  g_param_spec_string("family",
 				  "Font family", "String defines"
@@ -760,7 +761,7 @@ hildon_font_selection_dialog_construct_notebook (HildonFontSelectionDialog
   group =
     GTK_SIZE_GROUP(gtk_size_group_new(GTK_SIZE_GROUP_HORIZONTAL));
   
-  /*Tab one*/
+  /* Build the first page of the GtkNotebook: font style */
   priv->cbx_font_type = gtk_combo_box_new_text();
   hildon_font_selection_dialog_show_available_fonts(fontsel);
   caption_control = hildon_caption_new(group,
@@ -802,7 +803,7 @@ hildon_font_selection_dialog_construct_notebook (HildonFontSelectionDialog
   gtk_box_pack_start(GTK_BOX(vbox_tab[0]), caption_control,
 		     FALSE, FALSE, 0);
 
-  /*Tab two*/
+  /* Build the second page of the GtkNotebook: font formatting */ 
   priv->chk_bold = gtk_check_button_new();
   caption_control = hildon_caption_new(group,
 				       _("ecdg_fi_font_bold"),
@@ -834,7 +835,7 @@ hildon_font_selection_dialog_construct_notebook (HildonFontSelectionDialog
   g_signal_connect(G_OBJECT(priv->chk_underline), "clicked", 
 		   G_CALLBACK(toggle_clicked), NULL);
 
-  /*Tab three*/
+  /* Build the third page of the GtkNotebook: other font properties */
   priv->chk_strikethrough = gtk_check_button_new();
   caption_control =
     hildon_caption_new(group, _("ecdg_fi_font_strikethrough"),
@@ -1209,7 +1210,8 @@ void check_tags(gpointer data, gpointer user_data)
 	       "rise", &p_rise, "rise-set", & r_s,
 	       NULL);
   
-  /*settings*/
+  /* Check that the given values are valid. 
+   * If not, set the combobox row indicator to 'inconsistent' */
   if(ff_s)
     {
       gint new_f = -1;
@@ -1314,6 +1316,8 @@ void check_attrs(gpointer data, gpointer user_data)
   gint size, weight, style, underline, strikethrough, rise;
   gint new_f = -1, new_size = -1, new_rise = -1;
 
+  /* Check that the given values are valid.
+   * If not, set the combobox row indicator to 'inconsistent' */
   switch(attr->klass->type)
     {
     case PANGO_ATTR_FAMILY:
@@ -1792,7 +1796,9 @@ hildon_font_selection_dialog_set_buffer (HildonFontSelectionDialog *fsd,
   settings_init(&settings, fsd);
   
   iter = begin;
-  if(gtk_text_iter_compare(&iter, &end) == 0)/*if no selection*/
+
+  /* Keep original settings if the selection includes nothing */ 
+  if(gtk_text_iter_compare(&iter, &end) == 0)
     {
       GSList *slist;
       
@@ -1801,6 +1807,7 @@ hildon_font_selection_dialog_set_buffer (HildonFontSelectionDialog *fsd,
       g_slist_free(slist);
     }
 
+  /* Apply the user settings to the selected text */
   while(gtk_text_iter_compare(&iter, &end) < 0)
     {
       GSList *slist;

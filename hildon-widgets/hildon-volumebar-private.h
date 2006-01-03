@@ -33,11 +33,12 @@ typedef struct _HildonVolumebarPrivate HildonVolumebarPrivate;
 struct _HildonVolumebarPrivate {
   HildonVolumebarRange *volumebar;
 
-  GtkOrientation orientation;
-  GtkOrientation ownorientation;
+  GtkOrientation orientation;   /* Orientation of range *//* FIXME: XXX This isn't needed */
+  GtkOrientation ownorientation;/* Orientation of widget *//* FIXME: XXX This isn't needed */
+
   GtkToggleButton *tbutton;
 
-  gboolean is_toolbar;
+  gboolean is_toolbar;/* Is inside toolbar (for horizontal volumebar) */
 };
 
 #endif /* __HILDON_VOLUMEBAR_PRIVATE__ */

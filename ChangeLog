@@ -1,3 +1,37 @@
+2006-01-03  Luc Pionchon  <luc.pionchon@nokia.com>
+
+	* hildon-widgets/hildon-calendar-popup.c
+	* hildon-widgets/hildon-color-button.c
+	* hildon-widgets/hildon-color-popup.c
+	* hildon-widgets/hildon-color-selector.c
+	* hildon-widgets/hildon-composite-widget.c
+	* hildon-widgets/hildon-controlbar.c
+	* hildon-widgets/hildon-date-editor.c
+	* hildon-widgets/hildon-dialoghelp.c
+	* hildon-widgets/hildon-file-details-dialog.c
+	* hildon-widgets/hildon-font-selection-dialog.c
+	* hildon-widgets/hildon-get-password-dialog.c
+	* hildon-widgets/hildon-grid-item.c
+	* hildon-widgets/hildon-grid.c
+	* hildon-widgets/hildon-hvolumebar.c
+	* hildon-widgets/hildon-name-password-dialog.c
+	* hildon-widgets/hildon-note.c
+	* hildon-widgets/hildon-number-editor.c
+	* hildon-widgets/hildon-range-editor.c
+	* hildon-widgets/hildon-scroll-area.c
+	* hildon-widgets/hildon-seekbar.c
+	* hildon-widgets/hildon-set-password-dialog.c
+	* hildon-widgets/hildon-sort-dialog.c
+	* hildon-widgets/hildon-time-editor.c
+	* hildon-widgets/hildon-time-picker.c
+	* hildon-widgets/hildon-volumebar-private.h
+	* hildon-widgets/hildon-volumebar-range.c
+	* hildon-widgets/hildon-volumebar.c
+	* hildon-widgets/hildon-vvolumebar.c
+	* hildon-widgets/hildon-weekday-picker.c
+	* hildon-widgets/hildon-wizard-dialog.c
+	  commented code
+
 2005-12-28  Luc Pionchon  <luc.pionchon@nokia.com>
 
 	* configure.ac: 0.10.0

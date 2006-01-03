@@ -250,14 +250,16 @@ hildon_color_selector_set_custom_colors(
 
   g_assert(HILDON_IS_COLOR_SELECTOR(selector));
 
-  /* We have to be really carefull. At least gconftool's
+  /* We have to be really careful. At least gconftool's
      stress test may generate unexpected value setups */
-  if (value == NULL || value->type != GCONF_VALUE_LIST ||
-    gconf_value_get_list_type(value) != GCONF_VALUE_STRING)
+  if (value == NULL
+      || value->type != GCONF_VALUE_LIST
+      || gconf_value_get_list_type(value) != GCONF_VALUE_STRING)
     list = NULL;
   else
     list = gconf_value_get_list(value);
 
+  /* Use list to fill in the selector's color property */
   for ( i = 0; i < HILDON_CUSTOM_COLOR_NUM; ++i)
   {
     const gchar *color_string = NULL;
@@ -318,6 +320,7 @@ hildon_color_selector_init(HildonColorSelector * selector)
                               GCONF_CLIENT_PRELOAD_NONE,
                               NULL);
     
+    /* Use the value directed by GConfValue to set the color */
     value = gconf_client_get(selector->priv->client, 
       HILDON_COLOR_GCONF_KEYS, NULL);    
 
@@ -354,6 +357,7 @@ hildon_color_selector_init(HildonColorSelector * selector)
     gtk_widget_add_events (selector->priv->drawing_area,
                           GDK_BUTTON_PRESS_MASK | GDK_POINTER_MOTION_MASK);
 
+    /* Arrange size of the drawing area */ 
     gtk_widget_set_size_request (selector->priv->drawing_area,
                                  (HILDON_COLOR_SELECTOR_BOX_W *
                                   HILDON_COLOR_SELECTOR_COLS) +
@@ -369,6 +373,7 @@ hildon_color_selector_init(HildonColorSelector * selector)
     gtk_box_pack_start (GTK_BOX(hbox), selector->priv->drawing_area,
                        FALSE, FALSE, 0);
 
+    /* Register callback functions for the drawing area */
     g_signal_connect (selector->priv->drawing_area, "expose_event",
                       G_CALLBACK(hildon_color_selector_expose), selector);
     g_signal_connect (selector->priv->drawing_area, "button_press_event", 
@@ -504,6 +509,7 @@ void hildon_color_selector_set_color(HildonColorSelector * selector,
     g_return_if_fail(HILDON_IS_COLOR_SELECTOR(selector));
     g_return_if_fail(color);
 
+    /* Select the specified color */
     for (i = 0; 
          i < (HILDON_BASE_COLOR_NUM + HILDON_CUSTOM_COLOR_NUM);
          ++i) 
@@ -513,13 +519,18 @@ void hildon_color_selector_set_color(HildonColorSelector * selector,
             selector->priv->color[i].blue  == color->blue) 
         {
             selector->priv->index = i;
+
+            /* The modify button is active if the color index is bigger than
+             * the number of base colours.
+             */
             gtk_widget_set_sensitive(selector->priv->modify_button,
                                      selector->priv->index >= HILDON_BASE_COLOR_NUM);
             gtk_widget_queue_draw(selector->priv->drawing_area);
             break;
         }
     }
- 
+
+    /* Notify the color selector that the color has changed */  
     g_object_notify (G_OBJECT (selector), "color");
 }
 
@@ -531,6 +542,7 @@ color_pressed(GtkWidget * widget, GdkEventButton * event,
     return TRUE;
 }
 
+/* Handle key press of right, left, up, down and return */
 static gboolean key_pressed(GtkWidget * widget,
                             GdkEventKey * event)
 {
@@ -546,8 +558,9 @@ static gboolean key_pressed(GtkWidget * widget,
     if (GTK_WIDGET_HAS_FOCUS(selector->priv->drawing_area) == FALSE)
         return GTK_WIDGET_CLASS(parent_class)->key_press_event(widget, event);
 
-    /* go for if available index otherwise stop keypress handler because
-       wrapping around is not allowed. */
+    /* Since wrapping is not allowed,
+     * move only if the next index is a valid one.
+     */
     switch (event->keyval) {
     case GDK_KP_Right:
     case GDK_Right:
@@ -610,6 +623,9 @@ static gboolean key_pressed(GtkWidget * widget,
         selector->priv->index = 
             HILDON_BASE_COLOR_NUM + HILDON_CUSTOM_COLOR_NUM - 1;
     }
+    /* The modify button is active if the color index is bigger than
+     * the number of base colours.
+     */
     gtk_widget_set_sensitive(selector->priv->modify_button,
                              selector->priv->index >= HILDON_BASE_COLOR_NUM);
 
@@ -626,6 +642,7 @@ select_color(HildonColorSelector * selector, int event_x, int event_y,
 
     g_return_if_fail(HILDON_IS_COLOR_SELECTOR(selector));
 
+    /* Get the selection coordinates */ 
     x = ( (event_x - HILDON_COLOR_SELECTOR_BOX_BORDER) /
           (HILDON_COLOR_SELECTOR_BOX_BORDER * 2 +
            HILDON_COLOR_SELECTOR_BOX_W)
@@ -636,6 +653,7 @@ select_color(HildonColorSelector * selector, int event_x, int event_y,
            HILDON_COLOR_SELECTOR_BOX_H)
         );
 
+    /* Get the row and column numbers for the selected color */ 
     if (x > (HILDON_COLOR_SELECTOR_COLS + HILDON_CUSTOM_COLOR_NUM - 1)) 
     {
         x = HILDON_COLOR_SELECTOR_COLS + HILDON_CUSTOM_COLOR_NUM - 1;
@@ -653,6 +671,7 @@ select_color(HildonColorSelector * selector, int event_x, int event_y,
         y = 0;
     }
 
+    /* If a custom colour is selected, open a popup to modify the colour */ 
     if (!motion &&
         selector->priv->index >= HILDON_BASE_COLOR_NUM &&
         selector->priv->index == (x + y * HILDON_COLOR_SELECTOR_COLS))
@@ -689,6 +708,7 @@ modify_selected(HildonColorSelector * colselector)
     HildonColorPopup popupdata;
     GtkWidget *popup;
     
+    /* Create a HildonColorPopup dialog */     
     popup = hildon_color_popup_new(GTK_WINDOW(colselector), 
 		    hildon_color_selector_get_color(colselector), &popupdata);
     
@@ -705,6 +725,8 @@ modify_selected(HildonColorSelector * colselector)
       }
 
       color = hildon_color_selector_get_color(colselector);
+
+      /* Get the current color value */
       hildon_color_popup_set_color_from_sliders(color, &popupdata);
 
       /* If we modified a base color we just accept the dialog */      
@@ -750,6 +772,7 @@ modify_selected(HildonColorSelector * colselector)
     gtk_widget_destroy (popup); 
     gtk_window_present (GTK_WINDOW(colselector));
 }
+
 static void
 hildon_color_selector_set_property(GObject *object, guint param_id,
 			                           const GValue *value, GParamSpec *pspec)

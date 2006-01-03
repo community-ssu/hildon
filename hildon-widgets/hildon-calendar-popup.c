@@ -45,7 +45,7 @@
 #include <time.h>
 #include <libintl.h>
 #include <hildon-widgets/hildon-calendar-popup.h>
-#include <hildon-widgets/gtk-infoprint.h>
+#include <hildon-widgets/gtk-infoprint.h> /* FIXME: broken include ? */
 
 #define _(String) dgettext(PACKAGE, String)
 
@@ -140,6 +140,7 @@ GtkWidget *hildon_calendar_popup_new(GtkWindow * parent, guint year,
 
     init_dmy(year, month, day, &dtmp, &mtmp, &ytmp);
 
+    /* Create new HildonCalendarPopup */
     cal = HILDON_CALENDAR_POPUP(g_object_new(HILDON_CALENDAR_POPUP_TYPE,
                                              NULL));
     priv = HILDON_CALENDAR_POPUP_GET_PRIVATE(cal);
@@ -175,8 +176,11 @@ hildon_calendar_popup_set_date(HildonCalendarPopup * cal,
     g_return_if_fail(HILDON_IS_CALENDAR_POPUP(cal));
 
     priv = HILDON_CALENDAR_POPUP_GET_PRIVATE(cal);
+
+    /* Remove all visual markers */
     gtk_calendar_clear_marks(GTK_CALENDAR(priv->cal));
 
+    /* Set a new date */
     gtk_calendar_select_month(GTK_CALENDAR(priv->cal), month - 1, year);
     gtk_calendar_select_day(GTK_CALENDAR(priv->cal), day);
 }
@@ -221,6 +225,7 @@ hildon_calendar_popup_class_init(HildonCalendarPopupClass * cal_class)
     g_type_class_add_private(cal_class,
                              sizeof(HildonCalendarPopupPrivate));
 
+    /* Install new properties for the GObject_class */
     g_object_class_install_property(object_class, PROP_MIN_YEAR,
                                     g_param_spec_uint("min-year",
                                                       "Minimum valid year",
@@ -273,6 +278,7 @@ static void hildon_calendar_popup_init(HildonCalendarPopup * cal)
 
     priv = HILDON_CALENDAR_POPUP_GET_PRIVATE(cal);
 
+    /* set the domain directory for different language */
     if (set_domain) {
         (void) bindtextdomain(PACKAGE, LOCALEDIR);
         set_domain = 0;
@@ -341,12 +347,14 @@ hildon_key_pressed(GtkWidget * widget, GdkEventKey * event, gpointer data)
     cal = HILDON_CALENDAR_POPUP(data);
     priv = HILDON_CALENDAR_POPUP_GET_PRIVATE(cal);
 
+    /* Handle Return_key press as OK response */ 
     if (event->keyval == GDK_Return) {
         priv->can_exit = TRUE;
         gtk_dialog_response(GTK_DIALOG(cal), GTK_RESPONSE_OK);
         return TRUE;
     }
 
+    /* Handle Esc and F1-8 key press as CANCEL response */
     if ((event->keyval == GDK_Escape) || (event->keyval == GDK_F1) ||
         (event->keyval == GDK_F2) || (event->keyval == GDK_F3) ||
         (event->keyval == GDK_F4) || (event->keyval == GDK_F5) ||
@@ -365,11 +373,14 @@ init_dmy(guint year, guint month, guint day, guint * d, guint * m,
 {
     GDate date;
 
+    /* Initialize the date with a valid selected date */ 
     if (g_date_valid_dmy(day, month, year)) {
         *d = day;
         *m = month;
         *y = year;
-    } else {
+    } else { 
+
+      /* If selected date is invalid initialize the date with current date */ 
         g_date_clear(&date, 1);
         g_date_set_time(&date, time(NULL));
 
@@ -414,20 +425,20 @@ static void hildon_calendar_popup_set_property(GObject * object, guint property_
 
     switch (property_id) {
     case PROP_DAY:
-         g_object_set_property(G_OBJECT(priv->cal), pspec->name, value);
+        g_object_set_property(G_OBJECT(priv->cal), pspec->name, value);
         break;
     case PROP_MONTH:
-         g_object_set_property(G_OBJECT(priv->cal), pspec->name, value);
+        g_object_set_property(G_OBJECT(priv->cal), pspec->name, value);
         break;
     case PROP_YEAR:
-         g_object_set_property(G_OBJECT(priv->cal), pspec->name, value);
+        g_object_set_property(G_OBJECT(priv->cal), pspec->name, value);
         break;
     case PROP_MIN_YEAR:
-      g_object_set_property(G_OBJECT(priv->cal), "min-year", value);
-      break;
+        g_object_set_property(G_OBJECT(priv->cal), "min-year", value);
+        break;
     case PROP_MAX_YEAR:
-      g_object_set_property(G_OBJECT(priv->cal), "max-year", value);
-      break;
+        g_object_set_property(G_OBJECT(priv->cal), "max-year", value);
+        break;
     default:
         G_OBJECT_WARN_INVALID_PROPERTY_ID(object, property_id, pspec);
         break;
@@ -443,13 +454,13 @@ static void hildon_calendar_popup_get_property(GObject * object, guint property_
 
     switch (property_id) {
     case PROP_DAY:
-          g_object_get_property(G_OBJECT(priv->cal), pspec->name, value);
+        g_object_get_property(G_OBJECT(priv->cal), pspec->name, value);
         break;
     case PROP_MONTH:
-          g_object_get_property(G_OBJECT(priv->cal), pspec->name, value);
+        g_object_get_property(G_OBJECT(priv->cal), pspec->name, value);
         break;
     case PROP_YEAR:
-          g_object_get_property(G_OBJECT(priv->cal), pspec->name, value);
+        g_object_get_property(G_OBJECT(priv->cal), pspec->name, value);
         break;
     default:
         G_OBJECT_WARN_INVALID_PROPERTY_ID(object, property_id, pspec);

@@ -31,7 +31,7 @@
  *
  * Purpose of this widget is to act as an "container" for GtkScale
  * widget. #HildonVolumebarRange changes some event parameters so
- * that #HildonVolumebar can meet it's specifications.
+ * that #HildonVolumebar can meet its specifications.
  *
  * Currently #HildonVolumebarRange models range of [0..100].
  * 
@@ -139,7 +139,7 @@ hildon_volumebar_range_class_init(HildonVolumebarRangeClass *
 static void 
 hildon_volumebar_range_init(HildonVolumebarRange * volumerange)
 {
-   
+  /* stepper_a = "less", stepper_d = "more" */
   GTK_RANGE(volumerange)->has_stepper_a = TRUE;
   GTK_RANGE(volumerange)->has_stepper_d = TRUE;
   
@@ -186,6 +186,7 @@ static
 gboolean hildon_volumebar_range_keypress(GtkWidget * widget,
                                          GdkEventKey * event)
 {
+    /* Accept arrow keys only if they match the orientation of the widget */
     if (GTK_RANGE (widget)->orientation == GTK_ORIENTATION_HORIZONTAL)
       {
         if (event->keyval == GDK_Up || event->keyval == GDK_Down) {
@@ -219,7 +220,7 @@ hildon_volumebar_range_new(GtkOrientation orientation)
 
     GTK_RANGE(self)->orientation = orientation;
 
-    /* invert vertical range */
+    /* Default vertical range is upside down for purposes of this widget */
     gtk_range_set_inverted(GTK_RANGE(self),
                            (orientation == GTK_ORIENTATION_VERTICAL));
 
@@ -264,7 +265,8 @@ hildon_volumebar_range_button_press_event(GtkWidget * widget,
 {
     gboolean result = FALSE;
 
-    event->button = event->button == 1 ? 2 : event->button;
+    /* FIXME: Ugly hack to trick GtkRange event handler */
+    event->button = (event->button == 1) ? 2 : event->button;
     if (GTK_WIDGET_CLASS(parent_class)->button_press_event) {
         result =
             GTK_WIDGET_CLASS(parent_class)->button_press_event(widget,
@@ -280,6 +282,7 @@ hildon_volumebar_range_button_release_event(GtkWidget * widget,
 {
     gboolean result = FALSE;
 
+    /* FIXME: Ugly hack to trick GtkRange event handler */
     event->button = event->button == 1 ? 2 : event->button;
     if (GTK_WIDGET_CLASS(parent_class)->button_release_event) {
         result =

@@ -27,7 +27,7 @@
  * 
  * This file contains API for Hildon Sort dialog.
  * @desc: The sort dialog is used to define the order in which item are 
- * shown in a list. Choise lists always display the current value when 
+ * shown in a list. Choice lists always display the current value when 
  * the dialog is opened. 
  *
  */

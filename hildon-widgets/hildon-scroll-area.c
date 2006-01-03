@@ -22,10 +22,6 @@
  *
  */
 
-/* hildon-scroll-area.c
- *
- */
-
 #include "hildon-scroll-area.h"
 #include <gtk/gtkscrolledwindow.h>
 #include <gtk/gtkfixed.h>
@@ -36,10 +32,15 @@
 typedef struct
   {
     GtkWidget *fixed;
+
+    /* Scrolled windows */
     GtkWidget *swouter;
     GtkWidget *swinner;
+
+    /* Widget that's being contained */
     GtkWidget *child;
 
+    /* Vertical adjustment for scrolled windows */
     GtkAdjustment *outadj;
     GtkAdjustment *inadj;
 
@@ -143,8 +144,10 @@ static void hildon_scroll_area_child_requisition (GtkWidget *widget,
 						  GtkRequisition *req,
 						  HildonScrollArea *sc)
 {
+  /* Limit height to fixed height */
   gint new_req = MAX (req->height, sc->fixed->allocation.height);
   gtk_widget_set_size_request (sc->fixed, -1, req->height);
+  /* Request inner scrolled window at most page size */
   gtk_widget_set_size_request (sc->swinner, -1,
 			       MIN (sc->outadj->page_size, new_req));
 }
@@ -155,6 +158,7 @@ static void hildon_scroll_area_outer_value_changed (GtkAdjustment *adjustment,
   GtkRequisition req;
   gtk_widget_size_request (sc->child, &req);
 
+  /* Update inner adjustment position based on outer one, update fixed position */
   if ((sc->outadj->value + sc->outadj->page_size) > sc->fixed->allocation.y
       && sc->outadj->value < (sc->fixed->allocation.y + req.height))
     {
@@ -172,6 +176,7 @@ static void hildon_scroll_area_outer_value_changed (GtkAdjustment *adjustment,
 static void hildon_scroll_area_inner_value_changed (GtkAdjustment *adjustment,
 						    HildonScrollArea *sc)
 {
+  /* Update outer adjustment based on inner adjustment position */
   if (sc->outadj->value != sc->fixed->allocation.y + adjustment->value)
     gtk_adjustment_set_value (sc->outadj,
 			      sc->fixed->allocation.y + adjustment->value);

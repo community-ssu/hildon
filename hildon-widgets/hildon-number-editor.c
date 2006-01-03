@@ -55,6 +55,7 @@
 #define SPACE_BORDER 6
 #define NUMBER_EDITOR_HEIGHT 30
 
+/* Size of plus and minus buttons */
 #define BUTTON_HEIGHT 30
 #define BUTTON_WIDTH 30
 
@@ -146,6 +147,7 @@ static void hildon_number_editor_get_property(GObject * object,
                                      guint prop_id,
                                      GValue * value, GParamSpec * pspec);
 
+/* Signal indices */
 enum
 {
   RANGE_ERROR,
@@ -153,6 +155,7 @@ enum
   LAST_SIGNAL
 };
 
+/* Property indices */
 enum {
     PROP_0,
     PROP_VALUE
@@ -164,19 +167,22 @@ static guint HildonNumberEditor_signal[LAST_SIGNAL] = {0};
 
 struct _HildonNumberEditorPrivate
 {
+    /* Child widgets */
     GtkWidget *num_entry;
     GtkWidget *plus;
     GtkWidget *minus;
 
-    gint start;
-    gint end;
+    gint start; /* Minimum */
+    gint end;   /* Maximum */
     gint default_val;
-    gint button_type;
+    gint button_type; /* Type of button pressed: 1 = plus, -1 = minus */
 
-    guint button_event_id;
-    guint select_all_idle_id;
+    /* Timer IDs */
+    guint button_event_id; /* Repeat change when button is held */
+    guint select_all_idle_id; /* Selection repaint hack
+				 see hildon_number_editor_select_all */
 
-    gboolean negative;
+    gboolean negative; /* FIXME: XXX This is unused */
 };
 
 
@@ -261,6 +267,7 @@ hildon_number_editor_forall(GtkContainer *container, gboolean include_internals,
     if (!include_internals)
         return;
 
+    /* Enumerate child widgets */
     (*callback) (priv->minus, callback_data);
     (*callback) (priv->num_entry, callback_data);
     (*callback) (priv->plus, callback_data);
@@ -273,6 +280,7 @@ hildon_number_editor_destroy(GtkObject *self)
 
     priv = HILDON_NUMBER_EDITOR_GET_PRIVATE(self);
 
+    /* Free child widgets */
     if (priv->minus)
       {
         gtk_widget_unparent(priv->minus);
@@ -300,7 +308,7 @@ hildon_number_editor_finalize (GObject *self)
 
    priv = HILDON_NUMBER_EDITOR_GET_PRIVATE(self);
 
-   /* Free timer */
+   /* Free timers */
    if (priv->button_event_id)
      g_source_remove (priv->button_event_id);
 
@@ -320,6 +328,7 @@ hildon_number_editor_init (HildonNumberEditor *editor)
     priv = HILDON_NUMBER_EDITOR_GET_PRIVATE(editor);
     GTK_WIDGET_SET_FLAGS(GTK_WIDGET(editor), GTK_NO_WINDOW);
 
+    /* Create child widgets */
     priv->num_entry = gtk_entry_new();
     priv->minus = gtk_button_new();
     priv->plus = gtk_button_new();
@@ -340,6 +349,7 @@ hildon_number_editor_init (HildonNumberEditor *editor)
     gtk_widget_set_parent(priv->num_entry, GTK_WIDGET(editor));
     gtk_widget_set_parent(priv->plus, GTK_WIDGET(editor));
 
+    /* Connect child widget signals */
     g_signal_connect(GTK_OBJECT(priv->num_entry), "changed",
                      G_CALLBACK(hildon_number_editor_entry_changed),
                      editor);
@@ -395,6 +405,7 @@ hildon_number_editor_mnemonic_activate (GtkWidget *widget,
                                         gboolean group_cycle)
 {
   HildonNumberEditorPrivate *priv = HILDON_NUMBER_EDITOR_GET_PRIVATE(widget);
+  /* Focus and select all of number entry on activation */
   gtk_widget_grab_focus(priv->num_entry);
   gtk_editable_select_region(GTK_EDITABLE(priv->num_entry), 0, -1);
   return TRUE;
@@ -416,6 +427,7 @@ hildon_number_editor_button_released (GtkWidget *widget, GdkEvent *event,
     HildonNumberEditorPrivate *priv =
         HILDON_NUMBER_EDITOR_GET_PRIVATE(editor);
         
+    /* Stop repetition timer */
     if (priv->button_event_id)
       {
         g_source_remove(priv->button_event_id);
@@ -428,6 +440,7 @@ static gboolean
 hildon_number_editor_button_pressed (GtkWidget *widget, GdkEventButton *event,
                                      gpointer data)
 {
+    /* FIXME: XXX Why aren't we using hildon_number_editor_start_timer here? XXX */
     /* Need to fetch current value from entry and increment or decrement
        it */
     HildonNumberEditor *editor;
@@ -440,11 +453,13 @@ hildon_number_editor_button_pressed (GtkWidget *widget, GdkEventButton *event,
     settings = gtk_settings_get_default();
     g_object_get(settings, "gtk-initial-timeout", &timeout, NULL);
 
+    /* Save type of button pressed */
     if (GTK_BUTTON(widget) == GTK_BUTTON(priv->plus))
         priv->button_type = 1;
     else
         priv->button_type = -1;
 
+    /* Start repetition timer */
     if (!priv->button_event_id)
       {
         do_mouse_timeout(editor);
@@ -482,6 +497,7 @@ do_mouse_timeout (HildonNumberEditor *editor)
     priv = HILDON_NUMBER_EDITOR_GET_PRIVATE(editor);
     success = TRUE;
 
+    /* Update value based on button held */
     if (priv->button_type == 1)
       {
         if (change_numbers(editor, 1, -1) == FALSE)
@@ -510,6 +526,7 @@ change_numbers (HildonNumberEditor *editor, gint type, gint cursor_pos)
         HILDON_NUMBER_EDITOR_GET_PRIVATE(editor);
     nvalue = atoi(GTK_ENTRY(priv->num_entry)->text);
 
+    /* Update value */
     if (type == 1)
       {
         if (nvalue < priv->end)
@@ -534,7 +551,7 @@ change_numbers (HildonNumberEditor *editor, gint type, gint cursor_pos)
           }
       }
 
-    /* write value to num_entry */
+    /* Write updated value to num_entry */
     snvalue = integer_to_string(nvalue);
     gtk_entry_set_text(GTK_ENTRY(priv->num_entry), snvalue);
 
@@ -582,9 +599,12 @@ hildon_number_editor_entry_changed (GtkWidget *widget, gpointer data)
   if (strlen(tmpstr) > 0)
     {
       tmpstr = NULL;
+      /* Try to convert entry text to number */
       value = strtol(GTK_ENTRY(priv->num_entry)->text, &tail, 10);
+      /* Check if conversion succeeded or value contains minus sign */
       if (!strncmp(tail, "\0", 1) || !strncmp(tail, "-", 1))
 	{    
+	  /* Check if value isn't in allowed range */
 	  if (atoi(GTK_ENTRY(priv->num_entry)->text) > priv->end)
 	    {
 	      g_signal_emit(editor,HildonNumberEditor_signal[RANGE_ERROR], 
@@ -629,6 +649,7 @@ hildon_number_editor_size_request (GtkWidget *widget,
     editor = HILDON_NUMBER_EDITOR(widget);
     priv = HILDON_NUMBER_EDITOR_GET_PRIVATE(editor);
 
+    /* Requested size is size of all child widgets plus border space */
     gtk_widget_size_request(priv->minus, &req);
     requisition->width = req.width;
 
@@ -639,9 +660,12 @@ hildon_number_editor_size_request (GtkWidget *widget,
     requisition->width += req.width;
 
     requisition->width += SPACE_BORDER * 2;
+
+    /* FIXME: XXX Height is fixed */
     requisition->height = NUMBER_EDITOR_HEIGHT;
 }
 
+/* Update @alloc->width so widget fits, update @alloc->x to point to free space */
 static void
 set_widget_allocation (GtkWidget *widget, GtkAllocation *alloc,
                       GtkAllocation *allocation)
@@ -650,6 +674,7 @@ set_widget_allocation (GtkWidget *widget, GtkAllocation *alloc,
 
     gtk_widget_get_child_requisition(widget, &child_requisition);
 
+    /* Fit to widget width */
     if (allocation->width + allocation->x >
         alloc->x + child_requisition.width)
         alloc->width = child_requisition.width;
@@ -661,6 +686,7 @@ set_widget_allocation (GtkWidget *widget, GtkAllocation *alloc,
       }
 
     gtk_widget_size_allocate(widget, alloc);
+    /* Update x position */
     alloc->x += alloc->width;
 }
 
@@ -677,9 +703,10 @@ hildon_number_editor_size_allocate (GtkWidget *widget,
 
   widget->allocation = *allocation;
 
-/*Init start values*/
+  /* Add upper border */
   alloc.y = widget->allocation.y + widget->style->ythickness;
 
+  /* Fix height */
   if (widget->allocation.height > NUMBER_EDITOR_HEIGHT)
     {
       alloc.height = NUMBER_EDITOR_HEIGHT - widget->style->ythickness * 2;
@@ -687,14 +714,14 @@ hildon_number_editor_size_allocate (GtkWidget *widget,
     }
   else
       alloc.height = widget->allocation.height - widget->style->ythickness * 2;
-
-
   
   if (alloc.height < 0)
     alloc.height = 0;
 
+  /* Add left border */
   alloc.x = allocation->x + widget->style->xthickness;
 
+  /* Allocate positions for widgets (left-to-right) */
   set_widget_allocation(priv->minus, &alloc, &widget->allocation);
   alloc.x += SPACE_BORDER;
 
@@ -716,12 +743,12 @@ hildon_number_editor_entry_focusout (GtkWidget *widget, GdkEventFocus *event,
     editor = HILDON_NUMBER_EDITOR(data);
     priv = HILDON_NUMBER_EDITOR_GET_PRIVATE(editor);
     
-    /* empty entry, must infoprint error message */
+    /* If entry is empty, emit error signal */
     if (!strlen(GTK_ENTRY(priv->num_entry)->text))
       {
 	g_signal_emit(editor, HildonNumberEditor_signal[RANGE_ERROR], 
 		      0, ERRONEOUS_VALUE, &r);
-        /* Changing to default value */
+        /* Change to default value */
         str = integer_to_string(priv->default_val);
         gtk_entry_set_text(GTK_ENTRY(priv->num_entry), str);
         gtk_editable_select_region(GTK_EDITABLE(priv->num_entry), 0, -1);
@@ -743,6 +770,7 @@ hildon_number_editor_entry_keypress (GtkWidget *widget, GdkEventKey *event,
     priv = HILDON_NUMBER_EDITOR_GET_PRIVATE(data);
     tmp_pos = gtk_editable_get_position( GTK_EDITABLE(priv->num_entry) );
     
+    /* Change value when left or right key pressed and cursor is at boundary */
     if( (event->keyval == GDK_Left) || (event->keyval == GDK_Right) )
     {
       if( ((event->keyval == GDK_Left) && tmp_pos == 0 ) ||
@@ -774,6 +802,7 @@ hildon_number_editor_entry_keypress (GtkWidget *widget, GdkEventKey *event,
       return FALSE;
     }
    
+    /* Allow numbers, minus key and editing keys */
     scnd_chr = gtk_editable_get_chars( GTK_EDITABLE(priv->num_entry),
                                               0, 1 );
     if (event->keyval == GDK_minus || event->keyval == GDK_KP_Subtract)
@@ -786,13 +815,13 @@ hildon_number_editor_entry_keypress (GtkWidget *widget, GdkEventKey *event,
     else if ((event->keyval == GDK_Up) || (event->keyval == GDK_Down)
         || (event->keyval == GDK_KP_Up) || (event->keyval == GDK_KP_Down))
         ret_val = FALSE;
-    else if (((event->keyval >= GDK_0) && (event->keyval <= GDK_9)) ||
-             ((event->keyval >= GDK_KP_0) && (event->keyval <= GDK_KP_9))
+    else if (   ( (event->keyval >= GDK_0)    && (event->keyval <= GDK_9)    )
+             || ( (event->keyval >= GDK_KP_0) && (event->keyval <= GDK_KP_9) )
              || (event->keyval == GDK_BackSpace)
              || (event->keyval == GDK_Delete)
              || (event->keyval == GDK_Return)
-             || (((event->keyval == GDK_minus)
-             || (event->keyval == GDK_KP_Subtract))))
+             || (((event->keyval == GDK_minus) || (event->keyval == GDK_KP_Subtract)))
+            )
         ret_val = FALSE;
     else
       ret_val = TRUE;
@@ -814,7 +843,7 @@ hildon_number_editor_error_handler(HildonNumberEditor *editor,
   min = priv->start;
   max = priv->end;
 
-  /* Construct different error message */
+  /* Construct error message */
   switch (type)
     {
     case MAXIMUM_VALUE_EXCEED:
@@ -829,6 +858,7 @@ hildon_number_editor_error_handler(HildonNumberEditor *editor,
       break;
     }
   
+  /* Infoprint error */
   if (err_msg)
     {
       gtk_infoprint(GTK_WINDOW(gtk_widget_get_ancestor(GTK_WIDGET(editor),
@@ -845,7 +875,7 @@ hildon_number_editor_error_handler(HildonNumberEditor *editor,
  * @min: Minimum accepted value
  * @max: Maximum accepted value
  * 
- * This function creates new number editor
+ * Creates new number editor
  *
  * Return value: a new #HildonNumberEditor widget.
  */
@@ -867,7 +897,7 @@ hildon_number_editor_new (gint min, gint max)
  * @min: Minimum accepted value
  * @max: Maximum accepted value
  *
- * This function set accepted number range for editor
+ * Sets accepted number range for editor
  */
 void
 hildon_number_editor_set_range (HildonNumberEditor *editor, gint min, gint max)
@@ -878,6 +908,7 @@ hildon_number_editor_set_range (HildonNumberEditor *editor, gint min, gint max)
 
     g_return_if_fail(HILDON_IS_NUMBER_EDITOR(editor));
 
+    /* Sort min and max */
     if (min > max)
       {
         gint temp = min;
@@ -888,13 +919,14 @@ hildon_number_editor_set_range (HildonNumberEditor *editor, gint min, gint max)
 
     priv = HILDON_NUMBER_EDITOR_GET_PRIVATE(editor);
 
-    /* we need to store user inputted values */
+    /* Set preferences */
     priv->start = min;
     priv->end = max;
     priv->default_val = min;
 
     priv->negative = min < 0 ? TRUE : FALSE;
 
+    /* Find maximum allowed length of value */
     str = integer_to_string(max);
     str2 = integer_to_string(min);
     a = strlen(str);
@@ -906,6 +938,7 @@ hildon_number_editor_set_range (HildonNumberEditor *editor, gint min, gint max)
         entry_len = b;
     
 
+    /* Set maximum size of entry */
     gtk_entry_set_width_chars(GTK_ENTRY(priv->num_entry), entry_len);
 
     gtk_entry_set_text(GTK_ENTRY(priv->num_entry), str);
@@ -920,8 +953,6 @@ hildon_number_editor_set_range (HildonNumberEditor *editor, gint min, gint max)
 /**
  * hildon_number_editor_get_value:
  * @editor: pointer to #HildonNumberEditor
- *
- * This function returns current value of number editor
  *
  * Return value: Current NumberEditor value
  */
@@ -945,7 +976,7 @@ hildon_number_editor_get_value (HildonNumberEditor *editor)
  * @editor: pointer to #HildonNumberEditor
  * @value: numeric value for number editor
  *
- * This function sets numeric value to number editor
+ * Sets numeric value for number editor
  */
 void
 hildon_number_editor_set_value (HildonNumberEditor *editor, gint value)
@@ -961,7 +992,8 @@ hildon_number_editor_set_value (HildonNumberEditor *editor, gint value)
     g_return_if_fail(value >= priv->start);
 
     priv->default_val = value;
-        
+    
+    /* Update text in entry to new value */
     str = integer_to_string(value);
     gtk_entry_set_text(GTK_ENTRY(priv->num_entry), str);
     if (str)

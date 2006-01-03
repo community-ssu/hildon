@@ -205,7 +205,8 @@ hildon_volumebar_init(HildonVolumebar * volumebar)
        GtkContainer */
     GTK_WIDGET_SET_FLAGS(GTK_WIDGET(volumebar), GTK_NO_WINDOW);
     GTK_WIDGET_UNSET_FLAGS(GTK_WIDGET(volumebar), GTK_CAN_FOCUS);
-    
+
+    /* Initialize mute button */
     priv->tbutton = GTK_TOGGLE_BUTTON(gtk_toggle_button_new());
     g_object_set (G_OBJECT (priv->tbutton), "can-focus", FALSE, NULL);
 }
@@ -223,9 +224,11 @@ hildon_child_forall(GtkContainer * container,
 
     g_return_if_fail(callback != NULL);
 
+    /* No external children */
     if (!include_internals)
         return;
 
+    /* Execute callback for both internals */
     (*callback) (GTK_WIDGET(priv->tbutton), callback_data);
     (*callback) (GTK_WIDGET(priv->volumebar), callback_data);
 }
@@ -263,6 +266,7 @@ hildon_volumebar_set_property(GObject * object,
 
     switch (prop_id) {
     case PROP_HILDON_HAS_MUTE:
+        /* Mute button always exists, but might be hidden */
         if (g_value_get_boolean(value))
             gtk_widget_show(GTK_WIDGET(priv->tbutton));
         else
@@ -344,9 +348,6 @@ hildon_volumebar_set_level(HildonVolumebar * self, gdouble level)
 
     priv = HILDON_VOLUMEBAR_GET_PRIVATE(self);
    
-    /* No need to clamp the level to legal values here as volumebarrange
-     * will do it anyway. And here we don't know the correct values anyway.
-     */
     hildon_volumebar_range_set_level(priv->volumebar, level);
 }
 
@@ -356,7 +357,7 @@ hildon_volumebar_set_level(HildonVolumebar * self, gdouble level)
  *
  * Gets the volumelevel of this #HildonVolumebar.
  *
- * Return value: Volume level.
+ * Return value: Volume level or -1 on error.
  **/
 gdouble 
 hildon_volumebar_get_level(HildonVolumebar * self)
@@ -387,13 +388,15 @@ hildon_volumebar_set_mute(HildonVolumebar * self, gboolean mute)
     g_return_if_fail(self);
 
     priv = HILDON_VOLUMEBAR_GET_PRIVATE(self);
+
+    /* Slider should be insensitive when mute is on */
     gtk_widget_set_sensitive(GTK_WIDGET(priv->volumebar), !mute);
     
     focusable = GTK_WIDGET_CAN_FOCUS (GTK_WIDGET (priv->volumebar));
     
     if (mute){   
         if (focusable){
-
+	    /* Make mute button focusable since the slider isn't anymore */
             g_object_set (G_OBJECT (priv->tbutton), "can-focus", TRUE, NULL);
             gtk_widget_grab_focus (GTK_WIDGET(priv->tbutton));
         }
@@ -402,16 +405,19 @@ hildon_volumebar_set_mute(HildonVolumebar * self, gboolean mute)
     {
         g_object_set (G_OBJECT (priv->tbutton), "can-focus", FALSE, NULL);
         
+	/* Mute off grabs focus */
         if (focusable){
             gtk_widget_grab_focus (GTK_WIDGET (self));
         }
         else{
+	    /* If volumebar is not focusable, focus the parent window instead */
             GtkWidget *win = gtk_widget_get_ancestor (GTK_WIDGET (self), 
                                                       GTK_TYPE_WINDOW);
             gtk_window_set_focus (GTK_WINDOW (win), NULL);
         }
     }
 
+    /* Update mute button state and redraw */
     gtk_toggle_button_set_active(priv->tbutton, mute);
 
     gtk_widget_queue_draw (GTK_WIDGET (self));
@@ -466,7 +472,6 @@ hildon_volumebar_get_adjustment (HildonVolumebar * self)
 static void
 mute_toggled (HildonVolumebar *self)
 {
-  /* only call hildon_volumebar_set_mute. everything is done there */
   hildon_volumebar_set_mute (self, hildon_volumebar_get_mute(self));
 }
 
@@ -480,7 +485,8 @@ hildon_volumebar_key_press (GtkWidget * widget,
     g_return_val_if_fail(event, FALSE);
 
     priv = HILDON_VOLUMEBAR_GET_PRIVATE(widget);
-    
+
+    /* Enter key toggles mute button (unless it is hidden) */
     if (event->keyval == GDK_Return && GTK_WIDGET_VISIBLE(priv->tbutton)) {
         gtk_toggle_button_set_active(priv->tbutton, 
                 !hildon_volumebar_get_mute(HILDON_VOLUMEBAR(widget)));

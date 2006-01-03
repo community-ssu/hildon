@@ -30,7 +30,7 @@
  */
 
 /* HILDON DOC
- * @desc: Range Editor is used to define the range some attribute. Accepted
+ * @desc: Range Editor is used to define the range of some attribute. Accepted
  * number type is integer and '-' character is also acceptable. Range can
  * be used in application area and in dialog.  
  * 
@@ -65,7 +65,7 @@
 #define DEFAULT_PADDING 3
 
 #define DEFAULT_START -999
-#define DEFAULT_END 999
+#define DEFAULT_END    999
 #define DEFAULT_LENGTH 4
 
 #define HILDON_RANGE_EDITOR_GET_PRIVATE(obj) \
@@ -74,6 +74,7 @@
 
 typedef struct _HildonRangeEditorPrivate HildonRangeEditorPrivate;
 
+/* Property indices */
 enum
 {
   PROP_LOWER = 1,
@@ -83,7 +84,6 @@ enum
   PROP_SEPARATOR
 };
 
-/*our parent class*/
 static GtkContainerClass *parent_class = NULL;
 
 /*Init functions*/
@@ -134,12 +134,15 @@ static void hildon_range_editor_get_property( GObject *object, guint param_id,
 /* Private struct */
 struct _HildonRangeEditorPrivate
 {
-    GtkWidget *start_entry;
-    GtkWidget *end_entry;
+    GtkWidget *start_entry; /* Entry for lower  value */
+    GtkWidget *end_entry;   /* Entry for higher value */
+
     GtkWidget *label;
-    gint range_limits_start;
-    gint range_limits_end;
-    gboolean bp;
+
+    gint range_limits_start; /* Minimum value allowed for range start/end */
+    gint range_limits_end;   /* Maximum value allowed for range start/end */
+
+    gboolean bp; /* Button pressed, don't overwrite selection */
 };
 
 /* Private functions */
@@ -150,10 +153,8 @@ hildon_range_editor_class_init  (HildonRangeEditorClass *editor_class)
     GtkWidgetClass *widget_class = GTK_WIDGET_CLASS(editor_class);
     GtkContainerClass *container_class = GTK_CONTAINER_CLASS(editor_class);
 
-    /* set the global parent_class */
     parent_class = g_type_class_peek_parent(editor_class);
 
-    /* now the object stuff */
     g_type_class_add_private(editor_class,
                              sizeof(HildonRangeEditorPrivate));
 
@@ -419,6 +420,7 @@ hildon_range_editor_entry_focus_out (GtkEditable *editable,
                                     HildonRangeEditor *editor)
 {
   HildonRangeEditorPrivate *priv = HILDON_RANGE_EDITOR_GET_PRIVATE(editor);
+  /* Update internal value */
   hildon_range_editor_set_range( editor,
                             g_strtod(GTK_ENTRY(priv->start_entry)->text, NULL),
                             g_strtod(GTK_ENTRY(priv->end_entry)->text, NULL));
@@ -434,6 +436,7 @@ hildon_range_editor_press (GtkEditable *editable, GdkEventButton *event,
   return FALSE;
 }
 
+/* FIXME: XXX Mnemonics aren't used */
 static gboolean
 hildon_range_editor_mnemonic_activate (GtkWidget *widget,
                                        gboolean group_cycling)
@@ -504,9 +507,12 @@ hildon_range_editor_size_request(GtkWidget *widget,
     gtk_widget_size_request(priv->end_entry, &mreq);
     gtk_widget_size_request(priv->label, &lab_req);
 
+    /* Width for entries and separator label and border */
     requisition->width = mreq.width * 2 + lab_req.width +
                          widget->style->xthickness * 2;
+    /* Add vertical border */
     requisition->height = mreq.height + widget->style->ythickness * 2;
+    /* Fit label height */
     requisition->height = MAX (requisition->height, lab_req.height);
 }
 
@@ -521,6 +527,7 @@ hildon_range_editor_size_allocate(GtkWidget *widget,
 
     widget->allocation = *allocation;
 
+    /* Allocate entries, left-to-right */
     if (priv->start_entry && GTK_WIDGET_VISIBLE(priv->start_entry))
       {
         GtkRequisition child_requisition;
@@ -545,6 +552,7 @@ hildon_range_editor_size_allocate(GtkWidget *widget,
 
         child2_allocation.x = child1_allocation.x + child1_allocation.width;
         child2_allocation.y = allocation->y;
+	/* Add spacing */
         child2_allocation.width = child_requisition.width + 4;
         child2_allocation.height = allocation->height;
 
@@ -567,6 +575,7 @@ hildon_range_editor_size_allocate(GtkWidget *widget,
       }
 }
 
+/* Button released inside entries */
 static gboolean
 hildon_range_editor_released(GtkEditable *editable, GdkEventButton *event,
                              HildonRangeEditor *editor)
@@ -584,7 +593,7 @@ hildon_range_editor_entry_keypress(GtkWidget *widget, GdkEventKey *event,
                                    HildonRangeEditor *editor)
 {
     HildonRangeEditorPrivate *priv;
-    GtkWidget *wdgt;
+    GtkWidget *wdgt; /* Next widget */
     gint pos;
     gchar *str;
 
@@ -608,25 +617,32 @@ hildon_range_editor_entry_keypress(GtkWidget *widget, GdkEventKey *event,
         (event->keyval == GDK_ISO_Left_Tab|| (pos == 0 &&
         (event->keyval == GDK_Left || event->keyval == GDK_KP_Left)))))
     {
+      /* Set focus to next widget */
       gtk_widget_grab_focus(wdgt);
       if (widget == priv->start_entry)
       {
+	/* Select all, move cursor to end */
         gtk_editable_set_position(GTK_EDITABLE(wdgt), -1);
         gtk_editable_select_region(GTK_EDITABLE(wdgt), 0, -1);
       }
       else
       {
+	/* Select none (or all??), move cursor to beginning */
         gtk_editable_set_position(GTK_EDITABLE(wdgt), 0);
         gtk_editable_select_region(GTK_EDITABLE(wdgt), -1, 0);
       }
     }
-    else if ((event->keyval >= GDK_0 && event->keyval <= GDK_9) ||
+    else if ((event->keyval >= GDK_0    && event->keyval <= GDK_9)    ||
              (event->keyval >= GDK_KP_0 && event->keyval <= GDK_KP_9) ||
              (event->keyval == GDK_minus || event->keyval == GDK_KP_Subtract) ||
-             event->keyval == GDK_Up || event->keyval == GDK_Down ||
-             event->keyval == GDK_Right || event->keyval == GDK_KP_Right ||
-             event->keyval == GDK_Left || event->keyval == GDK_KP_Left ||
-             event->keyval == GDK_BackSpace || event->keyval == GDK_Delete)
+             event->keyval == GDK_Up        ||
+             event->keyval == GDK_Down      ||
+             event->keyval == GDK_Right     ||
+             event->keyval == GDK_KP_Right  ||
+             event->keyval == GDK_Left      ||
+             event->keyval == GDK_KP_Left   ||
+             event->keyval == GDK_BackSpace ||
+             event->keyval == GDK_Delete)
     {
       return FALSE;
     }
@@ -639,7 +655,7 @@ hildon_range_editor_entry_keypress(GtkWidget *widget, GdkEventKey *event,
  * hildon_range_editor_get_type:
  * @Returns : GType of #HildonRangeEditor.
  *
- * Initialises, and returns the type of a hildon range editor.
+ * Initializes, and returns the type of a hildon range editor.
  */
 GType
 hildon_range_editor_get_type (void)
@@ -778,6 +794,7 @@ hildon_range_editor_set_lower (HildonRangeEditor *editor, gint value)
     else
       g_sprintf (range, "%d", priv->range_limits_start);
 
+    /* Update entry text with new value */
     gtk_entry_set_text (GTK_ENTRY (priv->start_entry), range);
     g_object_notify (G_OBJECT (editor), "lower");
 }
@@ -796,6 +813,7 @@ hildon_range_editor_set_higher (HildonRangeEditor *editor, gint value)
     else
       g_sprintf (range, "%d", priv->range_limits_end);
 
+    /* Update entry text with new value */
     gtk_entry_set_text (GTK_ENTRY (priv->end_entry), range);
     g_object_notify (G_OBJECT (editor), "higher");
 }
@@ -842,6 +860,7 @@ hildon_range_editor_set_min (HildonRangeEditor *editor, gint value)
       hildon_range_editor_set_max (editor, value);
     else
     {
+      /* Calculate length of entry so minimum would fit */
       g_sprintf (end_range, "%d", priv->range_limits_end);
       end_entry = GTK_ENTRY (priv->end_entry);
       length = MAX (strlen (start_range), strlen (end_range));
@@ -852,6 +871,7 @@ hildon_range_editor_set_min (HildonRangeEditor *editor, gint value)
       gtk_entry_set_max_length (end_entry, length);
     }
 
+    /* Update lower value if it isn't in range */
     if (hildon_range_editor_get_lower (editor) < value)
       gtk_entry_set_text (start_entry, start_range);
 
@@ -879,6 +899,7 @@ hildon_range_editor_set_max (HildonRangeEditor *editor, gint value)
       hildon_range_editor_set_min (editor, value);
     else
     {
+      /* Calculate length of entry so maximum would fit */
       g_sprintf (start_range, "%d", priv->range_limits_start);
       start_entry = GTK_ENTRY (priv->start_entry);
       length = MAX (strlen (end_range), strlen (start_range));
@@ -889,6 +910,7 @@ hildon_range_editor_set_max (HildonRangeEditor *editor, gint value)
       gtk_entry_set_max_length (end_entry, length);
     }
 
+    /* Update higher value if it isn't in range */
     if (hildon_range_editor_get_higher (editor) > value)
       gtk_entry_set_text (end_entry, end_range);
 

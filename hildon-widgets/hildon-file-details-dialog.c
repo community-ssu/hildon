@@ -130,9 +130,12 @@ static gboolean write_access(const gchar *uri)
   GnomeVFSFileInfo *info;
   gboolean result = FALSE;
 
+  /* Get information about file */
   info = gnome_vfs_file_info_new ();
   if (gnome_vfs_get_file_info(uri, info, 
     GNOME_VFS_FILE_INFO_GET_ACCESS_RIGHTS) == GNOME_VFS_OK)
+
+    /* Detect that the file is writable or not */
     result = ((info->permissions & GNOME_VFS_PERM_ACCESS_WRITABLE) 
               == GNOME_VFS_PERM_ACCESS_WRITABLE);
 
@@ -169,6 +172,7 @@ static void change_state(HildonFileDetailsDialog *self, gboolean readonly)
     GnomeVFSFileInfo *info;
     GnomeVFSResult result;
 
+    /* Get the value of cells referenced by a tree_modle */
     gtk_tree_model_get(GTK_TREE_MODEL(self->priv->model), &iter, 
       HILDON_FILE_SYSTEM_MODEL_COLUMN_URI, &uri, -1);    
 
@@ -176,6 +180,7 @@ static void change_state(HildonFileDetailsDialog *self, gboolean readonly)
     result = gnome_vfs_get_file_info(uri, info, 
       GNOME_VFS_FILE_INFO_DEFAULT);
 
+    /* Change the file information */
     if (result == GNOME_VFS_OK)
     {
       if (readonly)
@@ -187,7 +192,6 @@ static void change_state(HildonFileDetailsDialog *self, gboolean readonly)
           GNOME_VFS_SET_FILE_INFO_PERMISSIONS);
     }
 
-    /* No errors are defined in the specs, but the previous operations can still fail */
     if (result != GNOME_VFS_OK)
       gtk_infoprint(GTK_WINDOW(self), gnome_vfs_result_to_string(result));
     
@@ -227,14 +231,19 @@ hildon_file_details_dialog_map(GtkWidget *widget)
 
   priv = HILDON_FILE_DETAILS_DIALOG(widget)->priv;
 
+  /* Map the GtkWidget */ 
   GTK_WIDGET_CLASS(file_details_dialog_parent_class)->map(widget);
 
+  /* Set the first page as default and
+   * make the GtkNotebook focusable if it shows tabs */ 
   if (gtk_notebook_get_show_tabs(priv->notebook))
   {
     gtk_notebook_set_current_page(priv->notebook, 0);
     gtk_widget_grab_focus(GTK_WIDGET(priv->notebook));
   }
   else
+    /* Otherwise make one GtkButton in the dialog
+     * sensitive with the keyboard event */
     gtk_widget_grab_focus(priv->ok_button);
 }
 
@@ -245,6 +254,7 @@ hildon_file_details_dialog_class_init(HildonFileDetailsDialogClass * klass)
 
     file_details_dialog_parent_class = g_type_class_peek_parent(klass);
     gobject_class = G_OBJECT_CLASS(klass);
+
     gobject_class->finalize = hildon_file_details_dialog_finalize;
     gobject_class->get_property = hildon_file_details_dialog_get_property;
     gobject_class->set_property = hildon_file_details_dialog_set_property;
@@ -304,6 +314,7 @@ hildon_file_details_dialog_init(HildonFileDetailsDialog *self)
 
     HildonFileDetailsDialogPrivate *priv;
 
+    /* Initialize the private property */
     self->priv = priv =
       G_TYPE_INSTANCE_GET_PRIVATE(self, \
           HILDON_TYPE_FILE_DETAILS_DIALOG, HildonFileDetailsDialogPrivate);
@@ -338,7 +349,7 @@ hildon_file_details_dialog_init(HildonFileDetailsDialog *self)
     gtk_box_pack_start(GTK_BOX(hbox_device), priv->file_device_image, FALSE, TRUE, 0);
     gtk_box_pack_start(GTK_BOX(hbox_device), priv->file_device, TRUE, TRUE, 0);
 
-    /* Tab one */
+    /* Create captions for the dialog */
     caption_name = hildon_caption_new(group, _("ckdg_fi_properties_name_prompt"), 
       priv->file_name, NULL, HILDON_CAPTION_OPTIONAL);
     caption_type = hildon_caption_new(group, _("ckdg_fi_properties_type_prompt"), 
@@ -367,6 +378,7 @@ hildon_file_details_dialog_init(HildonFileDetailsDialog *self)
 
     g_object_unref(group);
 
+    /* Pack captions to the dialog */
     gtk_box_pack_start(GTK_BOX(vbox), caption_name, FALSE, TRUE, 0);
     gtk_box_pack_start(GTK_BOX(vbox), caption_type, FALSE, TRUE, 0);
     gtk_box_pack_start(GTK_BOX(vbox), caption_location, FALSE, TRUE, 0);

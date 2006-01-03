@@ -110,7 +110,7 @@ struct _HildonTimePickerPrivate
   gchar *pm_symbol;
 
   guint key_repeat;
-  guint minutes;
+  guint minutes; /* time in minutes since midnight */
   gint mul;
   guint timer_id;
 
@@ -123,7 +123,7 @@ struct _HildonTimePickerPrivate
 enum
 {
   PROP_MINUTES = 1,
-  PROP_AMPM
+  PROP_AMPM /* FIXME: unused */
 };
 
 
@@ -221,12 +221,13 @@ hildon_time_picker_class_init( HildonTimePickerClass *klass )
   /**
    * HildonTimePicker:minutes:
    *
-   * Currently selected minutes.
+   * Currently selected time in minutes since midnight.
    */
   g_object_class_install_property( gobject_class, PROP_MINUTES,
                                    g_param_spec_uint("minutes",
                                      "Current minutes",
-                                     "The selected minutes",
+                                     "The selected time in minutes "
+                                     "since midnight",
                                      0, 1440, 0,
                                      G_PARAM_READABLE | G_PARAM_WRITABLE) );
 
@@ -265,11 +266,14 @@ static void hildon_time_picker_init( HildonTimePicker *picker )
 
   gtk_widget_push_composite_child();
 
+  /* Pack all our internal widgets into a table */
   priv->child[TABLE] = gtk_table_new( 3, 6, FALSE );
   table = GTK_TABLE(priv->child[TABLE]);
 
+  /* Put everything centered into window */
   maintocenter = gtk_alignment_new( 0.5, 0, 0, 0 );
 
+  /* Create our internal widgets */
   for( i = FRAME_HOURS; i <= FRAME_LMINUTES; i++ )
   {
     priv->child[i] = gtk_frame_new( NULL );
@@ -284,13 +288,17 @@ static void hildon_time_picker_init( HildonTimePicker *picker )
 
   for( i = LABEL_HOURS; i <= LABEL_LMINUTES; i++ )
   {
+    /* minute fields are "0" initially */
     priv->child[i] = gtk_label_new( "0" );
+    /* Add 1 pixel of padding on top and bottom of labels */
     gtk_misc_set_padding( GTK_MISC( priv->child[i] ), 0, 1 );
     gtk_widget_set_name( priv->child[i], "osso-LargeFont" );
   }
 
+  /* Hour field defaults to "00" */
   gtk_label_set_text (GTK_LABEL (priv->child[LABEL_HOURS]), "00");
 
+  /* Label between hour and minutes */
   priv->child[LABEL_COLON] = gtk_label_new(_("Ecdg_ti_time_picker_separator"));
   gtk_widget_set_name( priv->child[LABEL_COLON], "osso-LargeFont" );
 
@@ -301,40 +309,34 @@ static void hildon_time_picker_init( HildonTimePicker *picker )
   priv->timer_id = 0;
   priv->button_press = FALSE;
 
-  /* Load locales */
+  /* Get AM/PM strings from locale. If they're set, the time is wanted
+     in 12 hour mode. */
   priv->am_symbol = nl_langinfo(AM_STR);
   priv->pm_symbol = nl_langinfo(PM_STR);
 
   priv->c12h = priv->am_symbol[0] == '\0' ? FALSE : TRUE;
 
+  /* Get current time for initializing fields */
   stamp = time( NULL );
   local = localtime( &stamp );
 
-  gtk_table_attach( table, priv->child[BUTTON_HOURS_UP], 1, 2, 0, 1,
-                    GTK_SHRINK, GTK_SHRINK, 0, 0 );
-  gtk_table_attach( table, priv->child[FRAME_HOURS], 1, 2, 1, 2,
-                    GTK_SHRINK, GTK_SHRINK, 0, 0 );
-  gtk_table_attach( table, priv->child[BUTTON_HOURS_DOWN], 1, 2, 2, 3,
-                    GTK_SHRINK, GTK_SHRINK, 0, 0 );
-  gtk_table_attach( table, priv->child[LABEL_COLON], 2, 3, 1, 2,
-                    GTK_SHRINK, GTK_SHRINK, 6, 0 );
-  gtk_table_attach( table, priv->child[BUTTON_MMINUTES_UP], 3, 4, 0, 1,
-                    GTK_SHRINK, GTK_SHRINK, 0, 0 );
-  gtk_table_attach( table, priv->child[FRAME_MMINUTES], 3, 4, 1, 2,
-                    GTK_FILL, GTK_SHRINK, 0, 0 );
-  gtk_table_attach( table, priv->child[BUTTON_MMINUTES_DOWN], 3, 4, 2, 3,
-                    GTK_SHRINK, GTK_SHRINK, 0, 0 );
-
-  gtk_table_attach( table, priv->child[BUTTON_LMINUTES_UP], 4, 5, 0, 1,
-                    GTK_SHRINK, GTK_SHRINK, 0, 0 );
-  gtk_table_attach( table, priv->child[FRAME_LMINUTES], 4, 5, 1, 2,
-                    GTK_FILL, GTK_SHRINK, 0, 0 );
-  gtk_table_attach( table, priv->child[BUTTON_LMINUTES_DOWN], 4, 5, 2, 3,
-                    GTK_SHRINK, GTK_SHRINK, 0, 0 );
+  /* Pack widgets into table */
+  gtk_table_attach( table, priv->child[BUTTON_HOURS_UP],      1, 2, 0, 1, GTK_SHRINK, GTK_SHRINK, 0, 0 );
+  gtk_table_attach( table, priv->child[FRAME_HOURS],          1, 2, 1, 2, GTK_SHRINK, GTK_SHRINK, 0, 0 );
+  gtk_table_attach( table, priv->child[BUTTON_HOURS_DOWN],    1, 2, 2, 3, GTK_SHRINK, GTK_SHRINK, 0, 0 );
+  gtk_table_attach( table, priv->child[LABEL_COLON],          2, 3, 1, 2, GTK_SHRINK, GTK_SHRINK, 6, 0 );
+  gtk_table_attach( table, priv->child[BUTTON_MMINUTES_UP],   3, 4, 0, 1, GTK_SHRINK, GTK_SHRINK, 0, 0 );
+  gtk_table_attach( table, priv->child[FRAME_MMINUTES],       3, 4, 1, 2, GTK_FILL,   GTK_SHRINK, 0, 0 );
+  gtk_table_attach( table, priv->child[BUTTON_MMINUTES_DOWN], 3, 4, 2, 3, GTK_SHRINK, GTK_SHRINK, 0, 0 );
+  gtk_table_attach( table, priv->child[BUTTON_LMINUTES_UP],   4, 5, 0, 1, GTK_SHRINK, GTK_SHRINK, 0, 0 );
+  gtk_table_attach( table, priv->child[FRAME_LMINUTES],       4, 5, 1, 2, GTK_FILL,   GTK_SHRINK, 0, 0 );
+  gtk_table_attach( table, priv->child[BUTTON_LMINUTES_DOWN], 4, 5, 2, 3, GTK_SHRINK, GTK_SHRINK, 0, 0 );
 
   gtk_table_set_row_spacing( table, 0, 6 );
   gtk_table_set_row_spacing( table, 1, 6 );
 
+  /* Put minute labels and buttons into same size group, so they each have
+     the exact same horizontal width. */
   size_group = gtk_size_group_new( GTK_SIZE_GROUP_HORIZONTAL );
   gtk_size_group_add_widget( size_group, priv->child[BUTTON_MMINUTES_UP] );
   gtk_size_group_add_widget( size_group, priv->child[FRAME_MMINUTES] );
@@ -348,12 +350,20 @@ static void hildon_time_picker_init( HildonTimePicker *picker )
   {
     GtkWidget *ampmtotop = NULL;
     guint placement = 0;
+
+    /* 12h clock mode. Check if AM/PM should be before or after time.
+       %p is the AM/PM string, so we assume that if the format string
+       begins with %p it's in the beginning, and in any other case it's
+       in the end (although that's not necessarily the case). */
     priv->ampm_pos = strncmp(nl_langinfo(T_FMT_AMPM), "%p", 2) ? TRUE : FALSE;
+    /* Show the AM/PM label centered vertically */
     ampmtotop = gtk_alignment_new( 0, 0.5, 0, 0 );
     priv->child[FRAME_AMPM] = gtk_frame_new( NULL );
     priv->child[EBOX_AMPM] = gtk_event_box_new();
     priv->child[LABEL_AMPM] = gtk_label_new( priv->pm_symbol );
 
+    /* Pack AM/PM widgets. If AM/PM is before time, pack them into table
+       position 0..1. If it's after time, pack to 5..6 */
     placement = priv->ampm_pos * 5;
 
     gtk_container_add( GTK_CONTAINER(ampmtotop), priv->child[FRAME_AMPM] );
@@ -365,6 +375,7 @@ static void hildon_time_picker_init( HildonTimePicker *picker )
                       GTK_SHRINK, GTK_SHRINK, 0, 0 );
     gtk_table_set_col_spacing( table, placement - 1, 6 );
 
+    /* Connect AM/PM signal handlers */
     g_signal_connect( G_OBJECT(priv->child[EBOX_AMPM]), "button-release-event",
                       (GCallback)hildon_time_picker_ampm_release, picker );
     g_signal_connect( G_OBJECT(priv->child[EBOX_AMPM]), "focus-out-event",
@@ -379,6 +390,7 @@ static void hildon_time_picker_init( HildonTimePicker *picker )
                       (GCallback)hildon_time_picker_event_box_key_press,
                       picker );
 
+    /* Set AM/PM evenbox focusable */
     g_object_set( G_OBJECT(priv->child[EBOX_AMPM]), "can-focus", TRUE, NULL );
     gtk_widget_set_events( priv->child[EBOX_AMPM],
                            GDK_FOCUS_CHANGE_MASK | GDK_BUTTON_PRESS_MASK );
@@ -389,11 +401,14 @@ static void hildon_time_picker_init( HildonTimePicker *picker )
 
   gtk_widget_pop_composite_child();
 
+  /* Set default time to current time */
   hildon_time_picker_set_time( picker, local->tm_hour, local->tm_min );
 
+  /* Get button press repeater timeout from settings (in milliseconds) */
   settings = gtk_settings_get_default();
   g_object_get( settings, "gtk-update-timeout", &priv->key_repeat, NULL );
 
+  /* Handle hour and minute fields */
   for( i = 0; i < 3; i++ )
   {
     gtk_container_add( GTK_CONTAINER(priv->child[FRAME_HOURS + i]),
@@ -424,6 +439,7 @@ static void hildon_time_picker_init( HildonTimePicker *picker )
                          "hildon-time-picker-down" );
   }
 
+  /* Handle hour/minute up/down buttons */
   for( i = BUTTON_HOURS_UP; i <= BUTTON_LMINUTES_DOWN; i++ )
   {
     g_object_set( G_OBJECT(priv->child[i]), "can-focus", FALSE, NULL );
@@ -435,6 +451,7 @@ static void hildon_time_picker_init( HildonTimePicker *picker )
                       (GCallback)hildon_time_picker_arrow_release, picker );
   }
 
+  /* Handle hour/minute eventboxes */
   for( i = EBOX_HOURS; i <= EBOX_LMINUTES; i++ )
   {
     g_object_set( G_OBJECT(priv->child[i]), "can-focus", TRUE, NULL );
@@ -444,7 +461,9 @@ static void hildon_time_picker_init( HildonTimePicker *picker )
                            GDK_FOCUS_CHANGE_MASK | GDK_BUTTON_PRESS_MASK );
   }
 
+  /* This dialog isn't modal */
   gtk_window_set_modal( GTK_WINDOW(dialog), FALSE );
+  /* And final dialog packing */
   gtk_dialog_set_has_separator( dialog, FALSE );
   gtk_dialog_add_button( dialog, _("ecdg_bd_time_picker_close"),
                          GTK_RESPONSE_OK );
@@ -452,6 +471,7 @@ static void hildon_time_picker_init( HildonTimePicker *picker )
   gtk_container_add( GTK_CONTAINER(maintocenter), priv->child[TABLE] );
   gtk_box_pack_start( GTK_BOX(dialog->vbox), maintocenter, TRUE, FALSE, 0 );
 
+  /* FIXME: no point in setting the time to its current value */
   hildon_time_picker_change_time (picker, priv->minutes);
 
   gtk_widget_show_all( maintocenter );
@@ -500,8 +520,10 @@ hildon_time_picker_map( GtkWidget *widget )
   gint i;
   HildonTimePickerPrivate *priv = HILDON_TIME_PICKER(widget)->priv;
 
+  /* Widget is now mapped. Set border for the dialog. */
   gdk_window_set_decorations( widget->window, GDK_DECOR_BORDER );
 
+  /* Update hour/minute up/down buttons sizes from style properties */
   gtk_widget_style_get( widget,
                         "arrow-width", &width,
                         "arrow-height", &height, NULL );
@@ -516,6 +538,7 @@ static gboolean
 hildon_time_picker_event_box_press( GtkWidget *widget,  GdkEventKey *event,
                                     gpointer data )
 {
+  /* Clicked hour/minute field. Move focus to it. */
   gtk_widget_grab_focus( widget );
   return FALSE;
 }
@@ -524,6 +547,7 @@ static gboolean
 hildon_time_picker_ampm_release( GtkWidget *widget, GdkEvent *event,
                                  HildonTimePicker *picker )
 {
+  /* Clicked AM/PM label. Move focus to it and move the time by 12 hours. */
   gtk_widget_grab_focus( widget );
   hildon_time_picker_change_time( picker, picker->priv->minutes > 720 ?
                                   picker->priv->minutes - 720 :
@@ -538,11 +562,15 @@ hildon_time_picker_arrow_press( GtkWidget *widget, GdkEvent *event,
   HildonTimePickerPrivate *priv = picker->priv;
   gint newval = 0;
 
+  /* Make sure we don't add repeat timer twice. Normally it shouldn't
+     happen but WM can cause button release to be lost. */
   if( priv->button_press )
     return FALSE;
 
   priv->start_key_repeat = priv->button_press = TRUE;
 
+  /* Move the focus to field whose arrow was clicked, and get the minute
+     change multiplier. */
   if( widget == priv->child[BUTTON_HOURS_UP] )
   {
     priv->mul = 60;
@@ -574,11 +602,14 @@ hildon_time_picker_arrow_press( GtkWidget *widget, GdkEvent *event,
     gtk_widget_grab_focus( priv->child[EBOX_LMINUTES] );
   }
 
+  /* Change the time now, wrapping if needed. */
   newval = priv->minutes + priv->mul;
   if( newval < 0 )
     newval += 1440;
 
   hildon_time_picker_change_time( picker, newval );
+  /* Keep changing the time as long as button is being pressed.
+     The first repeat takes 3 times longer to start than the rest. */
   priv->timer_id = g_timeout_add( priv->key_repeat * 3, hildon_time_picker_timeout, picker );
   return FALSE;
 }
@@ -590,6 +621,7 @@ hildon_time_picker_arrow_release( GtkWidget *widget, GdkEvent *event,
   HildonTimePickerPrivate *priv = picker->priv;
   if( priv->timer_id )
   {
+    /* Stop repeat timer */
     g_source_remove( priv->timer_id );
     priv->timer_id = 0;
   }
@@ -601,6 +633,7 @@ static gboolean
 hildon_time_picker_event_box_focus_in( GtkWidget *widget, GdkEvent *event,
                                        gpointer data )
 {
+  /* Draw the widget in selected state so focus shows clearly. */
   gtk_widget_set_state( widget, GTK_STATE_SELECTED );
   return FALSE;
 }
@@ -609,6 +642,7 @@ static gboolean
 hildon_time_picker_event_box_focus_out( GtkWidget *widget, GdkEvent *event,
                                         gpointer data )
 {
+  /* Draw the widget in normal state */
   gtk_widget_set_state( widget, GTK_STATE_NORMAL );
   return FALSE;
 }
@@ -619,20 +653,24 @@ hildon_time_picker_event_box_key_press( GtkWidget *widget, GdkEventKey *event,
 {
   HildonTimePickerPrivate *priv = picker->priv;
 
+  /* If mouse button is already being pressed, ignore this keypress */
   if( priv->timer_id )
     return TRUE;
 
+  /* Handle keypresses in hour/minute/AMPM fields */
   switch( event->keyval )
   {
     case GDK_Up:
       if( widget == priv->child[EBOX_HOURS] )
       {
+        /* Fake a hour button up press */
         hildon_time_picker_arrow_press( priv->child[BUTTON_HOURS_UP], NULL,
                                         picker );
         gtk_widget_set_state( priv->child[BUTTON_HOURS_UP], GTK_STATE_SELECTED );
       }
       else if( widget == priv->child[EBOX_MMINUTES] )
       {
+        /* Fake a 10-minute button up press */
         hildon_time_picker_arrow_press( priv->child[BUTTON_MMINUTES_UP], NULL,
                                         picker );
         gtk_widget_set_state( priv->child[BUTTON_MMINUTES_UP],
@@ -640,18 +678,21 @@ hildon_time_picker_event_box_key_press( GtkWidget *widget, GdkEventKey *event,
       }
       else if( widget == priv->child[EBOX_LMINUTES] )
       {
+        /* Fake a minute button up press */
         hildon_time_picker_arrow_press( priv->child[BUTTON_LMINUTES_UP], NULL,
                                         picker );
         gtk_widget_set_state( priv->child[BUTTON_LMINUTES_UP],
                               GTK_STATE_SELECTED );
       }
       else
+        /* Fake a AM/PM button release */
         hildon_time_picker_ampm_release( priv->child[EBOX_AMPM], NULL, picker );
       return TRUE;
 
     case GDK_Down:
       if( widget == priv->child[EBOX_HOURS] )
       {
+        /* Fake a hour button down press */
         hildon_time_picker_arrow_press( priv->child[BUTTON_HOURS_DOWN], NULL,
                                         picker );
         gtk_widget_set_state( priv->child[BUTTON_HOURS_DOWN],
@@ -659,6 +700,7 @@ hildon_time_picker_event_box_key_press( GtkWidget *widget, GdkEventKey *event,
       }
       else if( widget == priv->child[EBOX_MMINUTES] )
       {
+        /* Fake a 10-minute button down press */
         hildon_time_picker_arrow_press( priv->child[BUTTON_MMINUTES_DOWN], NULL,
                                         picker );
         gtk_widget_set_state( priv->child[BUTTON_MMINUTES_DOWN],
@@ -666,16 +708,20 @@ hildon_time_picker_event_box_key_press( GtkWidget *widget, GdkEventKey *event,
       }
       else if( widget == priv->child[EBOX_LMINUTES] )
       {
+        /* Fake a minute button down press */
         hildon_time_picker_arrow_press( priv->child[BUTTON_LMINUTES_DOWN], NULL,
                                         picker );
         gtk_widget_set_state( priv->child[BUTTON_LMINUTES_DOWN],
                               GTK_STATE_SELECTED );
       }
       else
+        /* Fake a AM/PM button release */
         hildon_time_picker_ampm_release( priv->child[EBOX_AMPM], NULL, picker );
       return TRUE;
 
     case GDK_Left:
+      /* If we're in leftmost field, stop this keypress signal.
+         Otherwise let the default key handler move focus to field in left. */
       if( priv->c12h )
       {
         if( !priv->ampm_pos )
@@ -692,6 +738,8 @@ hildon_time_picker_event_box_key_press( GtkWidget *widget, GdkEventKey *event,
     break;
 
     case GDK_Right:
+      /* If we're in rightmost field, stop this keypress signal.
+         Otherwise let the default key handler move focus to field in right. */
       if( priv->c12h )
       {
         if( priv->ampm_pos )
@@ -724,6 +772,7 @@ hildon_time_picker_event_box_key_release( GtkWidget *widget, GdkEventKey *event,
 {
   gint i;
 
+  /* Fake a button release if in key-press handler we faked a button press. */
   switch( event->keyval )
   {
     case GDK_Up:
@@ -741,30 +790,37 @@ hildon_time_picker_event_box_key_release( GtkWidget *widget, GdkEventKey *event,
   return FALSE;
 }
 
+/* Button up/down is being pressed. Update the time. */
 static gboolean
-hildon_time_picker_timeout( gpointer data )
+hildon_time_picker_timeout( gpointer data )/* FIXME: use meaningful name */
 {
   HildonTimePicker *picker = NULL;
   HildonTimePickerPrivate *priv = NULL;
   gint newval = 0;
 
+  /* FIXME: the following condition never occurs */
+  /* luc: function should check its parameters. Otherwise document the use of the function "parameter must not be NULL". */
   if( !data )
     return FALSE;
 
   picker = HILDON_TIME_PICKER(data);
   priv = picker->priv;
 
+  /* FIXME: the following condition never occurs */
   if( !picker->priv->timer_id )
     return FALSE;
 
+  /* Change the time, wrapping if needed */
   newval = priv->minutes + priv->mul;
   if( newval < 0 )
-    newval += 1440;
+    newval += 1440;/*FIXME: document, or use 24*60 if this is the case */
 
   hildon_time_picker_change_time( picker, newval );
 
   if( priv->start_key_repeat )
   {
+    /* This is the first repeat. Shorten the timeout to key_repeat
+       (instead of the first time's 3*key_repeat) */
     priv->timer_id = g_timeout_add( priv->key_repeat, hildon_time_picker_timeout, picker );
     priv->start_key_repeat = FALSE;
     return FALSE;
@@ -783,24 +839,31 @@ hildon_time_picker_change_time( HildonTimePicker *picker, guint minutes )
   guint hours = 0;
   gboolean ampm = TRUE;
 
+  /* If the minutes isn't in valid range, wrap them. */
   minutes %= 1440;
 
   if( priv->minutes == minutes )
     return;
 
+  /* Minutes changed. Update widgets to show the new time. */
   priv->minutes = minutes;
 
   if( priv->c12h )
   {
+    /* am < 12:00 (720 minutes) <= pm */
     ampm = !((guint)(minutes / 720));
+    /* 12:00 - 23:59 -> 00:00 - 11:59 */
     minutes %= 720;
     if( minutes < 60 )
+      /* 00:mm is always shown as 12:mm */
       minutes += 720;
 
+    /* Update the AM/PM label */
     gtk_label_set_text( GTK_LABEL(priv->child[LABEL_AMPM]),
                         ampm ? priv->am_symbol : priv->pm_symbol );
   }
 
+  /* Update hour and minute fields */
   hours = minutes / 60;
   minutes %= 60;
 

@@ -216,6 +216,7 @@ static void hildon_controlbar_init(HildonControlbar * controlbar)
     GtkRange *range;
     HildonControlbarPrivate *priv;
 
+    /* Initialize the private property */
     priv = HILDON_CONTROLBAR_GET_PRIVATE(controlbar);
     priv->button_press = FALSE;
     priv->old_value = 0;
@@ -242,6 +243,7 @@ static GObject *hildon_controlbar_constructor(GType type,
    
   gtk_scale_set_draw_value (GTK_SCALE (obj), FALSE);
 
+  /* Initialize the GtkAdjustment of the controlbar*/
   adj = GTK_RANGE(obj)->adjustment;
   adj->step_increment = HILDON_CONTROLBAR_STEP_INCREMENT;
   adj->page_increment = HILDON_CONTROLBAR_PAGE_INCREMENT;
@@ -306,6 +308,9 @@ hildon_controlbar_value_changed( GtkAdjustment *adj, GtkRange *range )
 {
   HildonControlbarPrivate *priv = HILDON_CONTROLBAR_GET_PRIVATE(range);
 
+  /* Change the controlbar value if the adjusted value is large enough 
+   * otherwise, keep the old value
+   */
   if( ABS(ceil(adj->value) - priv->old_value) >= 1 )
   {
     priv->old_value = ceil(adj->value);
@@ -566,6 +571,7 @@ hildon_controlbar_change_value( GtkRange *range, GtkScrollType scroll,
 
   priv = HILDON_CONTROLBAR_GET_PRIVATE(range);
 
+  /* Emit a signal when upper or lower limit is reached */
   switch (scroll)
   {
     case GTK_SCROLL_STEP_FORWARD :

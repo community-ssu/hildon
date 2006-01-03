@@ -662,6 +662,7 @@ hildon_grid_item_expose(GtkWidget *widget, GdkEventExpose *event)
             focused = priv->icon;
         }
 
+	/* Determine the coordinates and size of clip */ 
         switch (priv->label_pos) {
         case HILDON_GRID_ITEM_LABEL_POS_BOTTOM:
             clip.x = focused->allocation.x - priv->focus_margin;
@@ -688,6 +689,7 @@ hildon_grid_item_expose(GtkWidget *widget, GdkEventExpose *event)
             break;
         }
 
+	/* Build painting box for the exposure event */
         gtk_paint_box(focused->style,
                       gtk_widget_get_toplevel(focused)->window,
                       GTK_STATE_SELECTED,
@@ -766,6 +768,7 @@ hildon_grid_item_size_allocate(GtkWidget *widget, GtkAllocation *allocation)
         l_req.width = l_req.height = 0;
     }
 
+    /* Determine icon and label allocation based on label position */
     switch (priv->label_pos) {
     case HILDON_GRID_ITEM_LABEL_POS_BOTTOM:
         i_alloc.x = (allocation->width - priv->icon_width) / 2 +
@@ -845,6 +848,7 @@ hildon_grid_item_forall(GtkContainer    *container,
     item = HILDON_GRID_ITEM(container);
     priv = HILDON_GRID_ITEM_GET_PRIVATE(item);
 
+    /* Connect callback functions to the item */
     if (priv->icon != NULL) {
         (*callback) (priv->icon, callback_data);
     }

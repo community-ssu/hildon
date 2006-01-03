@@ -25,10 +25,7 @@
 /* 
  * @file hildon-note.c
  *
- * This file contains API for conformation, information
- * and cancel notes. 
- * 
- * 9/2004 Removed animation type of cancel note as separate task.
+ * This file contains API for confirmation, information and cancel notes. 
  */
 
 #ifdef HAVE_CONFIG_H
@@ -51,7 +48,7 @@
 #include <unistd.h>
 #include <signal.h>
 
-/* Can these be included from somewhere? */
+/* FIXME: Can these be included from somewhere? */
 
 #define CONFIRMATION_SOUND_PATH "/usr/share/sounds/ui-confirmation_note.wav"
 #define INFORMATION_SOUND_PATH "/usr/share/sounds/ui-information_note.wav"
@@ -125,6 +122,7 @@ enum {
 
 /* This function is just a modified version of two_lines_truncate
  * in gtk-infoprint.c */
+/* FIXME: factor this code, we now have _one, _two, _three, _five _line _truncate (...) */
 static void
 hildon_note_five_line_truncate(const HildonNote * note, const gchar * text)
 {
@@ -140,6 +138,7 @@ hildon_note_five_line_truncate(const HildonNote * note, const gchar * text)
     if (priv->original_description != NULL)
         g_free(priv->original_description);
 
+    /* Save original text */
     priv->original_description = g_strdup(text);
 
     if (text == NULL) {
@@ -157,10 +156,12 @@ hildon_note_five_line_truncate(const HildonNote * note, const gchar * text)
 
         layout = pango_layout_new(context);
         pango_layout_set_text(layout, str, -1);
+        /* Set wrapping options */
         pango_layout_set_width(layout, max_width * PANGO_SCALE);
         pango_layout_set_wrap(layout, PANGO_WRAP_WORD_CHAR);
         last_line = MIN(4, pango_layout_get_line_count(layout) - 1);
 
+        /* Copy first 5 lines */
         for (current_line = 0;
              current_line <= last_line;
              current_line++) {
@@ -179,6 +180,7 @@ hildon_note_five_line_truncate(const HildonNote * note, const gchar * text)
 
         g_object_unref(layout);
 
+        /* Create new layout starting from last line */
         layout = pango_layout_new(context);
         pango_layout_set_text(layout, lines[last_line], -1);
 
@@ -186,7 +188,7 @@ hildon_note_five_line_truncate(const HildonNote * note, const gchar * text)
             PangoLayoutLine *line;
             gint index = 0;
 
-            /* Here we ellipsize the last line... */
+            /* Cut text, add ellipsis to last line */
             if (pango_layout_get_line_count(layout) > 1) {
                 gchar *templine = NULL;
 
@@ -197,6 +199,8 @@ hildon_note_five_line_truncate(const HildonNote * note, const gchar * text)
                 g_free(templine);
             }
 
+            /* Find point where to add ellipsis so it would fit, 
+               if it doesn't already */
             if (pango_layout_xy_to_index(layout,
                                          max_width * PANGO_SCALE, 0,
                                          &index, NULL) == TRUE) {
@@ -211,6 +215,7 @@ hildon_note_five_line_truncate(const HildonNote * note, const gchar * text)
                                          ellipsiswidth, 0, &index,
                                          NULL);
                 g_object_unref(G_OBJECT(ellipsis));
+                /* Cut text from that point and add ellipsis */
                 tempresult = g_strndup(lines[last_line], index);
                 lines[last_line] = g_strconcat(tempresult,
                                                ELLIPSATION_STRING,
@@ -219,9 +224,11 @@ hildon_note_five_line_truncate(const HildonNote * note, const gchar * text)
             }
         }
 
+        /* Remove newlines */
         for (current_line = 0; current_line <= last_line; current_line++)
             g_strchomp(lines[current_line]);
 
+        /* Get resulting string */
         result = g_strconcat(lines[0], "\n",
                              lines[1], "\n",
                              lines[2], "\n",
@@ -261,6 +268,7 @@ hildon_note_one_line_truncate(const HildonNote * note, const gchar * text)
     if (priv->original_description != NULL)
         g_free(priv->original_description);
 
+    /* Save original text */
     priv->original_description = g_strdup(text);
 
     str = g_strdup(text == NULL ? "" : text);
@@ -268,9 +276,11 @@ hildon_note_one_line_truncate(const HildonNote * note, const gchar * text)
 
     layout = pango_layout_new(context);
     pango_layout_set_text(layout, str, -1);
+    /* Set wrapping options */
     pango_layout_set_width(layout, max_width * PANGO_SCALE);
     pango_layout_set_wrap(layout, PANGO_WRAP_WORD_CHAR);
 
+    /* Cut string and add ellipsis if more than one line */
     if (pango_layout_get_line_count(layout) > 1) {
         gchar *templine = NULL;
 
@@ -281,6 +291,8 @@ hildon_note_one_line_truncate(const HildonNote * note, const gchar * text)
         g_free(templine);
     }
 
+    /* Find point where to add ellipsis so it would fit, 
+       if it doesn't already */
     if (pango_layout_xy_to_index(layout,
                                  max_width * PANGO_SCALE, 0,
                                  &index, NULL) == TRUE) {
@@ -295,6 +307,7 @@ hildon_note_one_line_truncate(const HildonNote * note, const gchar * text)
                                  ellipsiswidth, 0, &index,
                                  NULL);
         g_object_unref(G_OBJECT(ellipsis));
+	/* Cut text from that point and add ellipsis (again) */
         tempresult = g_strndup(str, index);
         str = g_strconcat(tempresult,
                           ELLIPSATION_STRING,
@@ -395,21 +408,11 @@ GType hildon_note_type_get_type (void)
   static GType notetype = 0;
   if (notetype == 0) {
     static const GEnumValue values[] = {
-      { HILDON_NOTE_CONFIRMATION_TYPE,
-        "HILDON_NOTE_CONFIRMATION_TYPE", 
-        "confirmation" },
-      { HILDON_NOTE_CONFIRMATION_BUTTON_TYPE,
-        "HILDON_NOTE_CONFIRMATION_BUTTON_TYPE",
-        "confirmation-button" },
-      { HILDON_NOTE_INFORMATION_TYPE,
-        "HILDON_NOTE_INFORMATION_TYPE",
-        "note-information" },
-      { HILDON_NOTE_INFORMATION_THEME_TYPE,
-        "HILDON_NOTE_INFORMATION_THEME_TYPE",
-        "note-information-theme" },
-      { HILDON_NOTE_PROGRESSBAR_TYPE,
-        "HILDON_NOTE_PROGRESSBAR_TYPE",
-        "note-progressbar" },
+      { HILDON_NOTE_CONFIRMATION_TYPE,        "HILDON_NOTE_CONFIRMATION_TYPE",        "confirmation" },
+      { HILDON_NOTE_CONFIRMATION_BUTTON_TYPE, "HILDON_NOTE_CONFIRMATION_BUTTON_TYPE", "confirmation-button" },
+      { HILDON_NOTE_INFORMATION_TYPE,         "HILDON_NOTE_INFORMATION_TYPE",         "note-information" },
+      { HILDON_NOTE_INFORMATION_THEME_TYPE,   "HILDON_NOTE_INFORMATION_THEME_TYPE",   "note-information-theme" },
+      { HILDON_NOTE_PROGRESSBAR_TYPE,         "HILDON_NOTE_PROGRESSBAR_TYPE",         "note-progressbar" },
       { 0, NULL, NULL }
     };
     notetype = g_enum_register_static ("HildonNoteType", values);
@@ -516,13 +519,13 @@ static void hildon_note_class_init(HildonNoteClass * class)
   /**
    * HildonNote:progressbar:
    *
-   * Progresbar for note.
+   * Progressbar for note.
    */
     g_object_class_install_property(object_class,
         PROP_HILDON_NOTE_PROGRESSBAR,
         g_param_spec_object("progressbar",
                             "Progressbar widget",
-                            "The progressbar that appear in the note dialog",
+                            "The progressbar that appears in the note dialog",
                             GTK_TYPE_PROGRESS_BAR,
                             G_PARAM_READWRITE));
 }
@@ -564,6 +567,7 @@ hildon_note_realize (GtkWidget *widget)
 {
     GTK_WIDGET_CLASS (parent_class)->realize (widget);
 
+    /* Add border */
     gdk_window_set_decorations (widget->window, GDK_DECOR_BORDER);
 }
 
@@ -600,12 +604,12 @@ hildon_note_create (HildonNote *note)
         priv->note_n == HILDON_NOTE_INFORMATION_TYPE) {
 
         if (priv->note_n == HILDON_NOTE_CONFIRMATION_TYPE) {
-            /* ok button clickable with mouse or whatever */
+            /* Add clickable OK button */
             priv->okButton = 
                 gtk_dialog_add_button(GTK_DIALOG(note),
                                       _("Ecdg_bd_confirmation_note_ok"),
                                       GTK_RESPONSE_OK);
-            /* cancel button clickable with mouse or whatever */
+            /* Add clickable Cancel button */
             priv->cancelButton =
                 gtk_dialog_add_button(GTK_DIALOG(note),
                                       _("Ecdg_bd_confirmation_note_cancel"),
@@ -614,7 +618,8 @@ hildon_note_create (HildonNote *note)
         } else if (priv->note_n == HILDON_NOTE_INFORMATION_TYPE || 
 		   priv->note_n == HILDON_NOTE_INFORMATION_THEME_TYPE ) {
             priv->okButton = NULL;
-            /* cancel button clickable with mouse or whatever */
+            /* Add clickable OK button (cancel really,
+	       but doesn't matter since this is info) */
             priv->cancelButton =
                 gtk_dialog_add_button(GTK_DIALOG(note),
                                       _("Ecdg_bd_information_note_ok"),
@@ -625,10 +630,12 @@ hildon_note_create (HildonNote *note)
             priv->note_n == HILDON_NOTE_INFORMATION_THEME_TYPE) && 
 	          priv->icon)
         {
+	    /* Information with custom icon */
             item = gtk_image_new_from_icon_name(priv->icon,
                                             HILDON_ICON_SIZE_BIG_NOTE);
         }
         else {
+	  /* Use default icon */
           if (priv->note_n == HILDON_NOTE_CONFIRMATION_TYPE ||
             priv->note_n == HILDON_NOTE_CONFIRMATION_BUTTON_TYPE)
           {
@@ -671,6 +678,7 @@ hildon_note_create_form(GtkDialog * dialog, GtkWidget * item,
     }
 
     if (IsHorizontal) {
+        /* Pack item with label horizontally */
         priv->box = gtk_hbox_new(FALSE, BOX_SPACING);
         gtk_container_add(GTK_CONTAINER(dialog->vbox), priv->box);
 
@@ -683,6 +691,7 @@ hildon_note_create_form(GtkDialog * dialog, GtkWidget * item,
         gtk_box_pack_start(GTK_BOX(priv->box), priv->label, FALSE, FALSE, 0);
 
     } else {
+        /* Pack item with label vertically */
         priv->box = gtk_vbox_new(FALSE, BOX_SPACING);
         gtk_container_add(GTK_CONTAINER(dialog->vbox), priv->box);
         gtk_box_pack_start(GTK_BOX(priv->box), priv->label, FALSE, FALSE, 0);
@@ -713,6 +722,10 @@ hildon_note_create_form(GtkDialog * dialog, GtkWidget * item,
  *
  * Return value: A #GtkWidget pointer of the note.
  */
+
+/* FIXME: XXX This doc seems to be wrong, the two buttons aren't added so it
+ * would only contain the "additional" buttons? */
+
 GtkWidget *hildon_note_new_confirmation_add_buttons(GtkWindow * parent,
                                                     const gchar *
                                                     description, ...)
@@ -733,6 +746,7 @@ GtkWidget *hildon_note_new_confirmation_add_buttons(GtkWindow * parent,
     if (parent != NULL)
         gtk_window_set_transient_for(GTK_WINDOW(conf_note), parent);
 
+    /* Add the buttons from varargs */
     va_start(args, description);
 
     while (TRUE) {

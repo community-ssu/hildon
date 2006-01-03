@@ -40,11 +40,14 @@
 #include "hildon-volumebar-range.h"
 #include "hildon-volumebar-private.h"
 
+/* Volume bar */
 #define DEFAULT_BAR_WIDTH               58
 #define MINIMUM_BAR_HEIGHT             165
+/* Toggle button */
 #define DEFAULT_VERTICAL_TBUTTON_WIDTH  26
 #define DEFAULT_VERTICAL_TBUTTON_HEIGHT 26
 #define DEFAULT_ENDING_SIZE             20
+/* Gap to leave for mute button */
 #define HORIZONTAL_MUTE_GAP             16
 #define VERTICAL_MUTE_GAP                6
 
@@ -121,7 +124,6 @@ static void vvolumebar_init(HildonVVolumebar * vvolumebar)
                              vvolumebar);
     g_signal_connect(G_OBJECT(priv->tbutton), "toggled",
                      G_CALLBACK(hildon_vvolumebar_mute), vvolumebar);
-    /* end here */
 
     gtk_widget_show(GTK_WIDGET(priv->volumebar));
 }
@@ -145,6 +147,7 @@ static gboolean hildon_vvolumebar_expose(GtkWidget * widget,
     priv = HILDON_VOLUMEBAR_GET_PRIVATE(HILDON_VOLUMEBAR(widget));
     
     if (GTK_WIDGET_DRAWABLE(widget)) {
+        /* Paint background */
         gtk_paint_box(widget->style, widget->window,
                       GTK_WIDGET_STATE(priv->volumebar), GTK_SHADOW_OUT,
                       NULL, widget, "background",
@@ -153,6 +156,7 @@ static gboolean hildon_vvolumebar_expose(GtkWidget * widget,
                       widget->allocation.width,
                       widget->allocation.height);
 
+	/* The contents of the widget can paint themselves */
         (*GTK_WIDGET_CLASS(parent_class)->expose_event) (widget, event);
     }
 
@@ -179,6 +183,7 @@ hildon_vvolumebar_size_allocate(GtkWidget * widget,
     vbar = HILDON_VOLUMEBAR(widget);
     priv = HILDON_VOLUMEBAR_GET_PRIVATE(vbar);
 
+    /* Center the widget horizontally */
     if (allocation->width > DEFAULT_BAR_WIDTH) {
         allocation->x +=
 	  (allocation->width - DEFAULT_BAR_WIDTH) / 2;
@@ -188,6 +193,7 @@ hildon_vvolumebar_size_allocate(GtkWidget * widget,
     widget->allocation = *allocation;
 
     if (priv->volumebar && GTK_WIDGET_VISIBLE(priv->volumebar)) {
+        /* Allocate space for the slider */
         range_allocation.x = allocation->x;
         range_allocation.y = allocation->y + DEFAULT_ENDING_SIZE;
 
@@ -195,6 +201,7 @@ hildon_vvolumebar_size_allocate(GtkWidget * widget,
         
         if (priv->tbutton && GTK_WIDGET_VISIBLE(priv->tbutton))
         {
+	    /* Leave room for the mute button */
             range_allocation.height = MAX(0,
                                           allocation->height
                                           - 2 * DEFAULT_ENDING_SIZE
@@ -214,6 +221,7 @@ hildon_vvolumebar_size_allocate(GtkWidget * widget,
     }
     
     if (priv->tbutton && GTK_WIDGET_VISIBLE(priv->tbutton)) {
+        /* Allocate space for the mute button */
         button_allocation.x = allocation->x + HORIZONTAL_MUTE_GAP;
         button_allocation.y = allocation->y + allocation->height -
                               VERTICAL_MUTE_GAP - 2 * DEFAULT_ENDING_SIZE;

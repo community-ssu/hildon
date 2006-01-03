@@ -191,6 +191,7 @@ hildon_color_button_init(HildonColorButton *cb)
   gtk_widget_set_size_request(GTK_WIDGET(cb->priv->drawing_area),
                               COLOR_FIELD_WIDTH, COLOR_FIELD_HEIGHT);
 
+  /* Connect the callback function for exposure event */
   g_signal_connect(G_OBJECT(cb->priv->drawing_area), "expose-event",
                    G_CALLBACK(hildon_color_field_expose_event), cb);
 
@@ -204,6 +205,7 @@ hildon_color_button_init(HildonColorButton *cb)
   gtk_widget_pop_composite_child();
 }
 
+/* Free memory used by HildonColorButton */
 static void
 hildon_color_button_finalize(GObject *object)
 {
@@ -237,12 +239,14 @@ hildon_color_button_realize(GtkWidget *widget)
 
   GTK_WIDGET_CLASS(parent_class)->realize(widget);
 
+  /* Create new graphics context if it doesn't exist */
   if (!cb->priv->gc)
     cb->priv->gc = gdk_gc_new(widget->window);
 
   hildon_color_button_recolor_pixbuf(cb);
 }
 
+/* Make the widget sensitive with the keyboard event */
 static gboolean
 hildon_color_button_mnemonic_activate( GtkWidget *widget,
                                        gboolean group_cycling )
@@ -260,6 +264,7 @@ hildon_color_button_recolor_pixbuf(HildonColorButton *cb)
   GdkPixbuf *pb = cb->priv->pixbuf;
   GdkColor *color = &cb->priv->color;
   
+  /* Initialize the base color */
   r = (color->red >> 8);
   g = (color->green >> 8);
   b = (color->blue >> 8);
@@ -267,16 +272,18 @@ hildon_color_button_recolor_pixbuf(HildonColorButton *cb)
   pixels = gdk_pixbuf_get_pixels(pb);
   rowstride = gdk_pixbuf_get_rowstride(pb);
   
+  /* Queue drawing of the widget */
   for (j=0; j<COLOR_FIELD_HEIGHT; j++)
     for (i=0; i<COLOR_FIELD_WIDTH; i++)
     {
-      *(j * rowstride + pixels + i * 3)     = r;
-      *(j * rowstride + pixels + i * 3 + 1) = g;
-      *(j * rowstride + pixels + i * 3 + 2) = b;
+      *(rowstride * j + pixels + i * 3)     = r;
+      *(rowstride * j + pixels + i * 3 + 1) = g;
+      *(rowstride * j + pixels + i * 3 + 2) = b;
     }
   gtk_widget_queue_draw(GTK_WIDGET(cb));
 }
 
+/* Popup a color selector dialog on button click */
 static void
 hildon_color_button_clicked(GtkButton *button)
 {
@@ -284,6 +291,7 @@ hildon_color_button_clicked(GtkButton *button)
   HildonColorButton *cb = HILDON_COLOR_BUTTON(button);
   HildonColorSelector *csd = HILDON_COLOR_SELECTOR(cb->priv->dialog);
 
+  /* Popup the color selector dialog */
   if (!csd)
   {
     GtkWidget *parent = gtk_widget_get_toplevel(GTK_WIDGET(cb));
@@ -294,9 +302,12 @@ hildon_color_button_clicked(GtkButton *button)
       gtk_window_set_transient_for(GTK_WINDOW(csd), GTK_WINDOW(parent));
   }
   
+  /* Set the initial color for the color selector dialog */
   hildon_color_selector_set_color(csd, &cb->priv->color);
   
   result = gtk_dialog_run(GTK_DIALOG(csd));
+
+  /* Update the color for color button if selection was made */
   if (result == GTK_RESPONSE_OK)
   {
     cb->priv->color = *hildon_color_selector_get_color(csd);
@@ -305,6 +316,7 @@ hildon_color_button_clicked(GtkButton *button)
   gtk_widget_hide(GTK_WIDGET(csd));
 }
 
+/* Set_property function for HildonColorButtonClass initialization */
 static void
 hildon_color_button_set_property(GObject *object, guint param_id,
 			                           const GValue *value, GParamSpec *pspec)
@@ -323,6 +335,7 @@ hildon_color_button_set_property(GObject *object, guint param_id,
     }
 }
 
+/* Get_property function for HildonColorButtonClass initialization */
 static void
 hildon_color_button_get_property(GObject *object, guint param_id,
 			                           GValue *value, GParamSpec *pspec)
