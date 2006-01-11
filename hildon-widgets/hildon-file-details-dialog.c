@@ -423,14 +423,13 @@ hildon_file_details_dialog_init(HildonFileDetailsDialog *self)
 				  GDK_HINT_MIN_SIZE | GDK_HINT_MAX_SIZE);
 
     gtk_widget_show_all(GTK_WIDGET(priv->notebook));
+
     priv->ok_button = gtk_dialog_add_button(GTK_DIALOG(self),
                           _("sfil_bd_filetype_details_dialog_ok"),
                           GTK_RESPONSE_OK);
     gtk_dialog_add_button(GTK_DIALOG(self),
                           _("sfil_bd_filetype_details_dialog_cancel"),
                           GTK_RESPONSE_CANCEL);
-    gtk_dialog_set_default_response(GTK_DIALOG(self),
-                          GTK_RESPONSE_OK);
 
     priv->toggle_handler = g_signal_connect(priv->file_readonly, "toggled", 
       G_CALLBACK(hildon_file_details_dialog_read_only_toggled), 

@@ -1,5 +1,11 @@
 2006-01-11  Luc Pionchon  <luc.pionchon@nokia.com>
 
+	N#21884 Cannot select read-only by using the center of the scroll key
+	* hildon-widgets/hildon-file-details-dialog.c
+	(hildon_file_details_dialog_init): Removed dialog default response.
+
+2006-01-11  Luc Pionchon  <luc.pionchon@nokia.com>
+
 	N#8094 5-bit color selector: wrong margins and pixel measurements
 	M#59   HildonColorSelector needs more space
 	* hildon-widgets/hildon-color-popup.c (HILDON_COLOR_COL_SPACING)
