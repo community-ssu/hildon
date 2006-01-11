@@ -1,5 +1,9 @@
 2006-01-11  Luc Pionchon  <luc.pionchon@nokia.com>
 
+	* configure.ac: 0.10.1
+
+2006-01-11  Luc Pionchon  <luc.pionchon@nokia.com>
+
 	Missing/Buggy documentation from,
 	N#11566 make password dialog customizable (messages)
 	* hildon-widgets/hildon-get-password-dialog.c
