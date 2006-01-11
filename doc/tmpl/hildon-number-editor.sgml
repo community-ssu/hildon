@@ -21,11 +21,14 @@ HildonNumberEditor is used to set a number from a specific range. There's two bu
 
 </para>
 
-<!-- ##### STRUCT HildonNumberEditor ##### -->
+<!-- ##### ENUM HildonNumberEditorErrorType ##### -->
 <para>
 
 </para>
 
+@MAXIMUM_VALUE_EXCEED: 
+@MINIMUM_VALUE_EXCEED: 
+@ERRONEOUS_VALUE: 
 
 <!-- ##### FUNCTION hildon_number_editor_new ##### -->
 <para>

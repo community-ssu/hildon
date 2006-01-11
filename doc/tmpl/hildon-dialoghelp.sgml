@@ -22,3 +22,11 @@ HildonDialogHelp is used to show a normal dialog which contains a button to open
 @dialog: 
 
 
+<!-- ##### FUNCTION gtk_dialog_help_disable ##### -->
+<para>
+
+</para>
+
+@dialog: 
+
+

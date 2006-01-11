@@ -47,12 +47,6 @@ create_basic_icons (HildonGrid *grid)
 #HildonGrid
 </para>
 
-<!-- ##### STRUCT HildonGridItem ##### -->
-<para>
-
-</para>
-
-
 <!-- ##### ENUM HildonGridPositionType ##### -->
 <para>
 

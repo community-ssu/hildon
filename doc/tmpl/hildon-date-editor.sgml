@@ -36,11 +36,21 @@ hildon_date_editor_get_date(date_editor, &amp;y, &amp;m, &amp;d);
 
 
 
-<!-- ##### STRUCT HildonDateEditor ##### -->
+<!-- ##### ENUM HildonDateEditorErrorType ##### -->
 <para>
 
 </para>
 
+@MAX_DAY: 
+@MAX_MONTH: 
+@MAX_YEAR: 
+@MIN_DAY: 
+@MIN_MONTH: 
+@MIN_YEAR: 
+@EMPTY_DAY: 
+@EMPTY_MONTH: 
+@EMPTY_YEAR: 
+@INVALID_DATE: 
 
 <!-- ##### FUNCTION hildon_date_editor_new ##### -->
 <para>
@@ -72,12 +82,70 @@ hildon_date_editor_get_date(date_editor, &amp;y, &amp;m, &amp;d);
 @day: 
 
 
-<!-- ##### SIGNAL HildonDateEditor::validate-date ##### -->
+<!-- ##### FUNCTION hildon_date_editor_set_year ##### -->
+<para>
+
+</para>
+
+@editor: 
+@year: 
+@Returns: 
+
+
+<!-- ##### FUNCTION hildon_date_editor_set_month ##### -->
+<para>
+
+</para>
+
+@editor: 
+@month: 
+@Returns: 
+
+
+<!-- ##### FUNCTION hildon_date_editor_set_day ##### -->
+<para>
+
+</para>
+
+@editor: 
+@day: 
+@Returns: 
+
+
+<!-- ##### FUNCTION hildon_date_editor_get_year ##### -->
+<para>
+
+</para>
+
+@editor: 
+@Returns: 
+
+
+<!-- ##### FUNCTION hildon_date_editor_get_month ##### -->
+<para>
+
+</para>
+
+@editor: 
+@Returns: 
+
+
+<!-- ##### FUNCTION hildon_date_editor_get_day ##### -->
+<para>
+
+</para>
+
+@editor: 
+@Returns: 
+
+
+<!-- ##### SIGNAL HildonDateEditor::date-error ##### -->
 <para>
 
 </para>
 
 @hildondateeditor: the object which received the signal.
+@arg1: 
 @Returns: 
 
 <!-- ##### ARG HildonDateEditor:day ##### -->

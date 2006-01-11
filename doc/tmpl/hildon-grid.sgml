@@ -376,12 +376,6 @@ set_icon_size (GtkMenuItem *item, gpointer data)
 #HildonGridItem
 </para>
 
-<!-- ##### STRUCT HildonGrid ##### -->
-<para>
-
-</para>
-
-
 <!-- ##### FUNCTION hildon_grid_new ##### -->
 <para>
 

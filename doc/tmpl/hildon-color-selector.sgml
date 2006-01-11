@@ -50,12 +50,6 @@ gtk_widget_destroy( selector );
 </para>
 
 
-<!-- ##### STRUCT HildonColorSelector ##### -->
-<para>
-
-</para>
-
-
 <!-- ##### FUNCTION hildon_color_selector_new ##### -->
 <para>
 

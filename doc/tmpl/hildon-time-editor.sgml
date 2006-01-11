@@ -32,12 +32,6 @@ hildon_time_editor_get_time( editor, &amp;h, &amp;m, &amp;s );
 
 </para>
 
-<!-- ##### STRUCT HildonTimeEditor ##### -->
-<para>
-
-</para>
-
-
 <!-- ##### FUNCTION hildon_time_editor_new ##### -->
 <para>
 
@@ -104,6 +98,96 @@ hildon_time_editor_get_time( editor, &amp;h, &amp;m, &amp;s );
 @editor: 
 @min_seconds: 
 @max_seconds: 
+
+
+<!-- ##### FUNCTION hildon_time_editor_set_ticks ##### -->
+<para>
+
+</para>
+
+@editor: 
+@ticks: 
+
+
+<!-- ##### FUNCTION hildon_time_editor_get_ticks ##### -->
+<para>
+
+</para>
+
+@editor: 
+@Returns: 
+
+
+<!-- ##### FUNCTION hildon_time_editor_set_show_seconds ##### -->
+<para>
+
+</para>
+
+@editor: 
+@show_seconds: 
+
+
+<!-- ##### FUNCTION hildon_time_editor_get_show_seconds ##### -->
+<para>
+
+</para>
+
+@editor: 
+@Returns: 
+
+
+<!-- ##### FUNCTION hildon_time_editor_set_duration_mode ##### -->
+<para>
+
+</para>
+
+@editor: 
+@duration_mode: 
+
+
+<!-- ##### FUNCTION hildon_time_editor_get_duration_mode ##### -->
+<para>
+
+</para>
+
+@editor: 
+@Returns: 
+
+
+<!-- ##### FUNCTION hildon_time_editor_set_duration_min ##### -->
+<para>
+
+</para>
+
+@editor: 
+@duration_min: 
+
+
+<!-- ##### FUNCTION hildon_time_editor_get_duration_min ##### -->
+<para>
+
+</para>
+
+@editor: 
+@Returns: 
+
+
+<!-- ##### FUNCTION hildon_time_editor_set_duration_max ##### -->
+<para>
+
+</para>
+
+@editor: 
+@duration_max: 
+
+
+<!-- ##### FUNCTION hildon_time_editor_get_duration_max ##### -->
+<para>
+
+</para>
+
+@editor: 
+@Returns: 
 
 
 <!-- ##### ARG HildonTimeEditor:duration-max ##### -->

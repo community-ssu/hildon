@@ -37,12 +37,6 @@ gtk_widget_destroy( GTK_WIDGET( file_note ));
 
 </para>
 
-<!-- ##### STRUCT HildonFileHandlingNote ##### -->
-<para>
-
-</para>
-
-
 <!-- ##### FUNCTION hildon_file_handling_note_new_moving ##### -->
 <para>
 

@@ -44,12 +44,6 @@ The widget is used where a user should enter a phone number. Free format should 
 @HILDON_TELEPHONE_EDITOR_FORMAT_COERCE_COUNTRY: 
 @HILDON_TELEPHONE_EDITOR_FORMAT_COERCE_AREA: 
 
-<!-- ##### STRUCT HildonTelephoneEditor ##### -->
-<para>
-
-</para>
-
-
 <!-- ##### FUNCTION hildon_telephone_editor_new ##### -->
 <para>
 

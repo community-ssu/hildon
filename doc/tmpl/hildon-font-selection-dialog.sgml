@@ -18,19 +18,12 @@ or subscript).
 
 </para>
 
-<!-- ##### STRUCT HildonFontSelectionDialog ##### -->
+<!-- ##### FUNCTION hildon_font_selection_dialog_get_font ##### -->
 <para>
 
 </para>
 
-
-<!-- ##### FUNCTION hildon_font_selection_dialog_new ##### -->
-<para>
-
-</para>
-
-@parent: 
-@title: 
+@fsd: 
 @Returns: 
 
 
@@ -43,12 +36,13 @@ or subscript).
 @list: 
 
 
-<!-- ##### FUNCTION hildon_font_selection_dialog_get_font ##### -->
+<!-- ##### FUNCTION hildon_font_selection_dialog_new ##### -->
 <para>
 
 </para>
 
-@fsd: 
+@parent: 
+@title: 
 @Returns: 
 
 
@@ -70,15 +64,6 @@ or subscript).
 @Returns: 
 
 
-<!-- ##### FUNCTION hildon_font_selection_dialog_set_preview_text ##### -->
-<para>
-
-</para>
-
-@fsd: 
-@text: 
-
-
 <!-- ##### FUNCTION hildon_font_selection_dialog_get_preview_text ##### -->
 <para>
 
@@ -86,6 +71,15 @@ or subscript).
 
 @fsd: 
 @Returns: 
+
+
+<!-- ##### FUNCTION hildon_font_selection_dialog_set_preview_text ##### -->
+<para>
+
+</para>
+
+@fsd: 
+@text: 
 
 
 <!-- ##### ARG HildonFontSelectionDialog:bold ##### -->

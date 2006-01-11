@@ -438,7 +438,7 @@ void hildon_get_password_dialog_set_domain(HildonGetPasswordDialog *dialog,
 }
 
 /**
- * hildon_get_password_dialog_set_dialog_title
+ * hildon_get_password_dialog_set_title
  *        (HildonGetPasswordDialog *dialog, gchar *new_title) 
  * @dialog: the dialog
  * @new_ title: the text to be set as the dialog title.

@@ -32,12 +32,6 @@ Here's a simple example that creates and opens a #HildonFileDetailsDialog.
 </para>
 
 
-<!-- ##### STRUCT HildonFileDetailsDialog ##### -->
-<para>
-
-</para>
-
-
 <!-- ##### FUNCTION hildon_file_details_dialog_new ##### -->
 <para>
 

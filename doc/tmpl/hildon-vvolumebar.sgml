@@ -29,12 +29,6 @@ g_signal_connect( G_OBJECT(volbar), "level_changed", G_CALLBACK(level_change), N
 #HildonHVolumebar
 </para>
 
-<!-- ##### STRUCT HildonVVolumebar ##### -->
-<para>
-
-</para>
-
-
 <!-- ##### FUNCTION hildon_vvolumebar_new ##### -->
 <para>
 

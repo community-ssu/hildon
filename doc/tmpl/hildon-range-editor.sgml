@@ -30,12 +30,6 @@ HildonRangeEditor is used to ask a value from a specific limits.
 
 
 
-<!-- ##### STRUCT HildonRangeEditor ##### -->
-<para>
-
-</para>
-
-
 <!-- ##### FUNCTION hildon_range_editor_new_with_separator ##### -->
 <para>
 
@@ -81,6 +75,96 @@ HildonRangeEditor is used to ask a value from a specific limits.
 @editor: 
 @start: 
 @end: 
+
+
+<!-- ##### FUNCTION hildon_range_editor_set_lower ##### -->
+<para>
+
+</para>
+
+@editor: 
+@value: 
+
+
+<!-- ##### FUNCTION hildon_range_editor_set_higher ##### -->
+<para>
+
+</para>
+
+@editor: 
+@value: 
+
+
+<!-- ##### FUNCTION hildon_range_editor_get_lower ##### -->
+<para>
+
+</para>
+
+@editor: 
+@Returns: 
+
+
+<!-- ##### FUNCTION hildon_range_editor_get_higher ##### -->
+<para>
+
+</para>
+
+@editor: 
+@Returns: 
+
+
+<!-- ##### FUNCTION hildon_range_editor_set_min ##### -->
+<para>
+
+</para>
+
+@editor: 
+@value: 
+
+
+<!-- ##### FUNCTION hildon_range_editor_set_max ##### -->
+<para>
+
+</para>
+
+@editor: 
+@value: 
+
+
+<!-- ##### FUNCTION hildon_range_editor_get_min ##### -->
+<para>
+
+</para>
+
+@editor: 
+@Returns: 
+
+
+<!-- ##### FUNCTION hildon_range_editor_get_max ##### -->
+<para>
+
+</para>
+
+@editor: 
+@Returns: 
+
+
+<!-- ##### FUNCTION hildon_range_editor_set_separator ##### -->
+<para>
+
+</para>
+
+@editor: 
+@separator: 
+
+
+<!-- ##### FUNCTION hildon_range_editor_get_separator ##### -->
+<para>
+
+</para>
+
+@editor: 
+@Returns: 
 
 
 <!-- ##### ARG HildonRangeEditor:higher ##### -->

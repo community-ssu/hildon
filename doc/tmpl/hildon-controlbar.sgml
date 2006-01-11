@@ -29,12 +29,6 @@ hildon_controlbar_set_value( HILDON_CONTROLBAR(cbar), 6 );
 
 </para>
 
-<!-- ##### STRUCT HildonControlbar ##### -->
-<para>
-
-</para>
-
-
 <!-- ##### FUNCTION hildon_controlbar_new ##### -->
 <para>
 
@@ -106,6 +100,14 @@ hildon_controlbar_set_value( HILDON_CONTROLBAR(cbar), 6 );
 @min: 
 @max: 
 
+
+<!-- ##### SIGNAL HildonControlbar::end-reached ##### -->
+<para>
+
+</para>
+
+@hildoncontrolbar: the object which received the signal.
+@arg1: 
 
 <!-- ##### ARG HildonControlbar:max ##### -->
 <para>

@@ -42,12 +42,6 @@ static gint update_spin_button (GtkWidget *seek, GtkWidget *spin)
 
 </para>
 
-<!-- ##### STRUCT HildonSeekbar ##### -->
-<para>
-
-</para>
-
-
 <!-- ##### FUNCTION hildon_seekbar_new ##### -->
 <para>
 

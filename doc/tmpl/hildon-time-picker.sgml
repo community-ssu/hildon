@@ -45,7 +45,7 @@ gtk_widget_destroy( picker );
 #HildonTimeEditor
 </para>
 
-<!-- ##### STRUCT HildonTimePicker ##### -->
+<!-- ##### STRUCT HildonTimePickerPrivate ##### -->
 <para>
 
 </para>

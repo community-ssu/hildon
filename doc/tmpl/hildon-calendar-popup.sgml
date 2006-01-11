@@ -48,12 +48,6 @@ should be connect to eg. button-press-event.
 #GtkCalendar
 </para>
 
-<!-- ##### STRUCT HildonCalendarPopup ##### -->
-<para>
-
-</para>
-
-
 <!-- ##### MACRO HILDON_CALENDAR_POPUP_TYPE ##### -->
 <para>
 

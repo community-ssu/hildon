@@ -16,12 +16,6 @@ the volume by clicking on a specific mute icon.
 #HildonHVolumebar,#HildonVVolumebar
 </para>
 
-<!-- ##### STRUCT HildonVolumebar ##### -->
-<para>
-
-</para>
-
-
 <!-- ##### FUNCTION hildon_volumebar_set_level ##### -->
 <para>
 

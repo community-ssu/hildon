@@ -1,5 +1,7 @@
 hildon-libs (0.10.1-1) unstable; urgency=low
 
+  * Fixed Missing/Buggy documentation from N#11566 "make password dialog
+    customizable (messages)"
   * N#19369 TRUE Scketch does not show colour change when using white color
   * N#21063 hildon_note_new_confirmation_add_buttons has misleading docs
   * N#21884 Cannot select read-only by using the center of the scroll key

@@ -55,12 +55,6 @@ Here's a simple example for using #HildonInsertObjectDialog:
 
 
 
-<!-- ##### STRUCT HildonInsertObjectDialog ##### -->
-<para>
-
-</para>
-
-
 <!-- ##### FUNCTION hildon_insert_object_dialog_new ##### -->
 <para>
 

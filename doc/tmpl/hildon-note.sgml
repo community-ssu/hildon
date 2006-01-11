@@ -32,11 +32,16 @@ else
 
 </para>
 
-<!-- ##### STRUCT HildonNote ##### -->
+<!-- ##### ENUM HildonNoteType ##### -->
 <para>
 
 </para>
 
+@HILDON_NOTE_CONFIRMATION_TYPE: 
+@HILDON_NOTE_CONFIRMATION_BUTTON_TYPE: 
+@HILDON_NOTE_INFORMATION_TYPE: 
+@HILDON_NOTE_INFORMATION_THEME_TYPE: 
+@HILDON_NOTE_PROGRESSBAR_TYPE: 
 
 <!-- ##### FUNCTION hildon_note_new_confirmation ##### -->
 <para>
@@ -70,6 +75,17 @@ else
 @Returns: 
 
 
+<!-- ##### FUNCTION hildon_note_new_confirmation_with_icon_name ##### -->
+<para>
+
+</para>
+
+@parent: 
+@description: 
+@icon_name: 
+@Returns: 
+
+
 <!-- ##### FUNCTION hildon_note_new_cancel_with_progress_bar ##### -->
 <para>
 
@@ -88,6 +104,17 @@ else
 
 @parent: 
 @description: 
+@Returns: 
+
+
+<!-- ##### FUNCTION hildon_note_new_information_with_icon_name ##### -->
+<para>
+
+</para>
+
+@parent: 
+@description: 
+@icon_name: 
 @Returns: 
 
 
@@ -122,6 +149,24 @@ else
 
 @note: 
 @text: 
+
+
+<!-- ##### FUNCTION hildon_note_set_button_texts ##### -->
+<para>
+
+</para>
+
+@note: 
+@textOk: 
+@textCancel: 
+
+
+<!-- ##### FUNCTION hildon_note_type_get_type ##### -->
+<para>
+
+</para>
+
+@Returns: 
 
 
 <!-- ##### ARG HildonNote:description ##### -->

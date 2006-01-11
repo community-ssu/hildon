@@ -40,14 +40,6 @@ switching the page either forward or backward in the notebook.
 </para>
 
 
-<!-- ##### STRUCT HildonWizardDialog ##### -->
-<para>
-
-</para>
-
-@parent: 
-@priv: 
-
 <!-- ##### FUNCTION hildon_wizard_dialog_new ##### -->
 <para>
 
