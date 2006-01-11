@@ -85,6 +85,9 @@ static gboolean
 hildon_color_button_mnemonic_activate( GtkWidget *widget,
                                        gboolean group_cycling );
 static void
+hildon_color_button_draw_pixbuf_borders(HildonColorButton *cb);
+
+static void
 hildon_color_button_recolor_pixbuf(HildonColorButton *cb);
 
 
@@ -198,6 +201,7 @@ hildon_color_button_init(HildonColorButton *cb)
   gtk_container_add(GTK_CONTAINER(align), cb->priv->drawing_area);
   gtk_container_add(GTK_CONTAINER(cb), align);
   
+  hildon_color_button_draw_pixbuf_borders(cb);
   hildon_color_button_recolor_pixbuf(cb);
   
   gtk_widget_show_all(align);
@@ -243,6 +247,7 @@ hildon_color_button_realize(GtkWidget *widget)
   if (!cb->priv->gc)
     cb->priv->gc = gdk_gc_new(widget->window);
 
+  hildon_color_button_draw_pixbuf_borders(cb);
   hildon_color_button_recolor_pixbuf(cb);
 }
 
@@ -253,6 +258,45 @@ hildon_color_button_mnemonic_activate( GtkWidget *widget,
 {
   gtk_widget_grab_focus( widget );
   return TRUE;
+}
+
+static void
+hildon_color_button_draw_pixbuf_borders(HildonColorButton *cb)
+{
+  gint i, j, rowstride;
+  guchar *pixels;
+  GdkPixbuf *pb = cb->priv->pixbuf;
+
+  pixels = gdk_pixbuf_get_pixels(pb);
+  rowstride = gdk_pixbuf_get_rowstride(pb);
+
+  /* Paint the first and last row black 
+   * and the second and next to last white */
+  for (i=0; i<COLOR_FIELD_WIDTH; ++i)
+    for (j=0; j<3; ++j)
+    {
+      /* first row */
+      *(pixels + i * 3 + j) = 0x00;
+      /* second row */
+      *(rowstride + pixels + i * 3 + j) = 0xff;
+      /* next to last row */
+      *((COLOR_FIELD_HEIGHT - 2) * rowstride + pixels + i * 3 + j) = 0xff;
+      /* last row */
+      *((COLOR_FIELD_HEIGHT - 1) * rowstride + pixels + i * 3 + j) = 0x00;
+    }
+  
+  /* Paint the first and last pixel black
+   * and second and next to last pixel white
+   * on every row except the first and the last row 
+   * since they are supposed to be all black */
+  for (i=1; i<COLOR_FIELD_HEIGHT-1; ++i)
+    for (j=0; j<3; ++j)
+    {
+      *(i * rowstride + pixels + j) = 0x00;
+      *(i * rowstride + pixels + 3 + j) = 0xff;
+      *(i * rowstride + pixels + (COLOR_FIELD_WIDTH-2) * 3 + j) = 0xff;
+      *(i * rowstride + pixels + (COLOR_FIELD_WIDTH-1) * 3 + j) = 0x00;
+    }
 }
 
 static void
@@ -273,8 +317,9 @@ hildon_color_button_recolor_pixbuf(HildonColorButton *cb)
   rowstride = gdk_pixbuf_get_rowstride(pb);
   
   /* Queue drawing of the widget */
-  for (j=0; j<COLOR_FIELD_HEIGHT; j++)
-    for (i=0; i<COLOR_FIELD_WIDTH; i++)
+  /* Paint only the pixels inside the border */
+  for (j=2; j<COLOR_FIELD_HEIGHT-2; j++)
+    for (i=2; i<COLOR_FIELD_WIDTH-2; i++)
     {
       *(rowstride * j + pixels + i * 3)     = r;
       *(rowstride * j + pixels + i * 3 + 1) = g;

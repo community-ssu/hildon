@@ -1,5 +1,16 @@
 2006-01-11  Luc Pionchon  <luc.pionchon@nokia.com>
 
+	N#19369 TRUE Scketch does not show colour change when using white color
+	
+	Color button needs inner border white, and outer border black.
+	* hildon-widgets/hildon-color-button.c
+	(hildon_color_button_draw_pixbuf_borders): new function. Paint the
+	border
+	* hildon-widgets/hildon-color-button.c (hildon_color_button_init):
+	(hildon_color_button_realize): call the above function
+
+2006-01-11  Luc Pionchon  <luc.pionchon@nokia.com>
+
         N#21063 hildon_note_new_confirmation_add_buttons has misleading docs
 	* hildon-widgets/hildon-note.c: 
 	(hildon_note_new_confirmation_add_buttons): updated doc
