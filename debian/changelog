@@ -1,3 +1,10 @@
+hildon-libs (0.10.1-1) unstable; urgency=low
+
+  * N#8094 5-bit color selector: wrong margins and pixel measurements
+    M#59   HildonColorSelector needs more space
+
+ -- Luc Pionchon <luc.pionchon@nokia.com>  Wed, 11 Jan 2006 20:03:33 +0200
+
 hildon-libs (0.10.0-1) unstable; urgency=low
 
   * started development branch (maintenance continues with versions 0.9.x)

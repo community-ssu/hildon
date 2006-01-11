@@ -53,6 +53,7 @@
 #define HILDON_COLOR_LABELS_LEFT_PAD      35
 #define HILDON_COLOR_PALETTE_POS_PAD      45
 #define HILDON_COLOR_BAR_WIDTH           449
+#define HILDON_COLOR_COL_SPACING          18
 
 /* 
  * Private function prototype definitions 
@@ -118,6 +119,7 @@ hildon_color_popup_new(GtkWindow *parent, GdkColor *initial_color,
   gtk_misc_set_alignment(GTK_MISC(l_blue), 0.08f, 0.5f);
 
   /* Add labels and control bars to the layout table */
+  gtk_table_set_col_spacing(layout, 0, HILDON_COLOR_COL_SPACING);
   gtk_table_attach_defaults(layout, l_red, 0, 1, 0, 2);
   gtk_table_attach_defaults(layout, popup_data->ctrlbar_red, 0, 1, 2, 4);
   gtk_table_attach_defaults(layout, l_green, 0, 1, 4, 6);

@@ -1,3 +1,11 @@
+2006-01-11  Luc Pionchon  <luc.pionchon@nokia.com>
+
+	N#8094 5-bit color selector: wrong margins and pixel measurements
+	M#59   HildonColorSelector needs more space
+	* hildon-widgets/hildon-color-popup.c (HILDON_COLOR_COL_SPACING)
+	(hildon_color_popup_new): add space between the control bars and
+	the color preview area.
+
 2006-01-03  Luc Pionchon  <luc.pionchon@nokia.com>
 
 	* hildon-widgets/hildon-calendar-popup.c
