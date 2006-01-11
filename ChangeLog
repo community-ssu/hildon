@@ -1,5 +1,12 @@
 2006-01-11  Luc Pionchon  <luc.pionchon@nokia.com>
 
+        N#21063 hildon_note_new_confirmation_add_buttons has misleading docs
+	* hildon-widgets/hildon-note.c: 
+	(hildon_note_new_confirmation_add_buttons): updated doc
+	(hildon_note_set_button_texts): likewise.
+
+2006-01-11  Luc Pionchon  <luc.pionchon@nokia.com>
+
 	N#21884 Cannot select read-only by using the center of the scroll key
 	* hildon-widgets/hildon-file-details-dialog.c
 	(hildon_file_details_dialog_init): Removed dialog default response.

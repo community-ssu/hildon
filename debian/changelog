@@ -1,5 +1,6 @@
 hildon-libs (0.10.1-1) unstable; urgency=low
 
+  * N#21063 hildon_note_new_confirmation_add_buttons has misleading docs
   * N#21884 Cannot select read-only by using the center of the scroll key
   * N#8094 5-bit color selector: wrong margins and pixel measurements
     M#59   HildonColorSelector needs more space

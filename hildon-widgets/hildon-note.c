@@ -715,10 +715,14 @@ hildon_note_create_form(GtkDialog * dialog, GtkWidget * item,
  *   In GTK the X window ID can be checked with
  *   GDK_WINDOW_XID(GTK_WIDGET(parent)->window).
  * @description: The message to confirm.
- * @Varargs: Arguments pairs for new buttons(label and return value)
+ * @Varargs: Arguments pairs for new buttons(label and return value). 
+ *   Terminate the list with %NULL value.
  * 
- * Create a new confirmation note. Confirmation note has a text, 
- * two buttons and infinite number of additional buttons and an icon.
+ * Create a new confirmation note with custom buttons. Confirmation
+ * note has a text and any number of buttons. It's important to note
+ * that even though the name of the function might suggest, the
+ * default ok/cancel buttons are not appended but you have to provide
+ * all of the buttons.
  *
  * Return value: A #GtkWidget pointer of the note.
  */
@@ -1036,13 +1040,14 @@ void hildon_note_set_button_text(HildonNote * note, const gchar * text)
 /**
  * hildon_note_set_button_texts:
  * @note: A #HildonNote
- * @text: Sets the button text and if there is two buttons in dialog, 
- *   the button texts will be &lt;textOk&gt;, &lt;textCancel&gt;.  
+ * @textOk: the new text of the default OK button.
+ * @textCancel: the new text of the default cancel button. 
  *
  * Sets the button texts to be used by this hildon_note widget.
  */
-void hildon_note_set_button_texts(HildonNote * note, const gchar * textOk,
-				 const gchar * textCancel)
+void hildon_note_set_button_texts(HildonNote * note,
+                                  const gchar * textOk,
+                                  const gchar * textCancel)
 {
     HildonNotePrivate *priv;
 
