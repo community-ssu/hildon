@@ -1,3 +1,15 @@
+2006-01-18  Luc Pionchon  <luc.pionchon@nokia.com>
+
+	* configure.ac: 0.10.2
+
+2006-01-18  Luc Pionchon  <luc.pionchon@nokia.com>
+
+	N#22240 CP: Tapping outside the scroll bar invoke the applet.
+	* hildon-widgets/hildon-grid.c (adjust_scrollbar_height):
+	hildon-apps scroll-control property is now handled.
+	(get_child_index_by_coord): ignores events not matching a grid
+	item.
+
 2006-01-11  Luc Pionchon  <luc.pionchon@nokia.com>
 
 	* configure.ac: 0.10.1

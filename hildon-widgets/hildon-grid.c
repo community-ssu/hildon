@@ -58,6 +58,7 @@
 #include "hildon-marshalers.h"
 #include <hildon-widgets/hildon-grid.h>
 #include <hildon-widgets/hildon-grid-item.h>
+#include <hildon-widgets/hildon-app.h>
 
 #include <libintl.h>
 #define _(String) dgettext(PACKAGE, String)
@@ -1887,6 +1888,9 @@ static gboolean adjust_scrollbar_height(HildonGrid * grid)
 
         priv->first_index = 0;
         if (GTK_WIDGET_VISIBLE(priv->scrollbar)) {
+            GtkWidget *parent = gtk_widget_get_toplevel (GTK_WIDGET (grid));
+            if (HILDON_IS_APP (parent))
+                g_object_set (parent, "scroll-control", FALSE, NULL);
             gtk_widget_hide(priv->scrollbar);
             updated = TRUE;
         }
@@ -1905,6 +1909,9 @@ static gboolean adjust_scrollbar_height(HildonGrid * grid)
     gtk_widget_size_allocate(priv->scrollbar, &alloc);
 
     if (!GTK_WIDGET_VISIBLE(priv->scrollbar)) {
+        GtkWidget *parent = gtk_widget_get_toplevel (GTK_WIDGET (grid));
+        if (HILDON_IS_APP (parent))
+            g_object_set (parent, "scroll-control", TRUE, NULL);
         gtk_widget_show(priv->scrollbar);
         updated = TRUE;
     }
@@ -1959,6 +1966,10 @@ get_child_index_by_coord(HildonGridPrivate * priv, gint x, gint y)
     if (xgap > priv->item_width - priv->h_margin) { /*FIXME*/
         return -1;
     }
+    
+    /* Event may come from outside of the grid. Skipping those events */
+    if (x >= priv->item_width * priv->num_columns)
+        return -1;
 
     t = y / priv->item_height * priv->num_columns +
         x / priv->item_width + priv->first_index;
