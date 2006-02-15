@@ -32,9 +32,8 @@
 
 #include <gtk/gtk.h>
 
-/* FIXME: These two includes are broken */
-#include <hildon-lgpl/hildon-widgets/gtk-infoprint.h>
-#include <hildon-lgpl/hildon-widgets/hildon-input-mode-hint.h>
+#include "gtk-infoprint.h"
+#include "hildon-input-mode-hint.h"
 
 #include <hildon-widgets/hildon-caption.h>
 #include <hildon-widgets/hildon-get-password-dialog.h>

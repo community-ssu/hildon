@@ -1,5 +1,5 @@
 AC_INIT(Makefile.am)
-AM_INIT_AUTOMAKE(hildon-libs, 0.10.2)
+AM_INIT_AUTOMAKE(hildon-libs, 0.12.0)
 AM_CONFIG_HEADER(config.h)
 
 AC_CANONICAL_HOST
@@ -21,7 +21,7 @@ CFLAGS="$CFLAGS -std=c99 -Wall -pedantic -Wmissing-prototypes -Wmissing-declarat
 
 GTK_VERSION=2.6.4
 
-PKG_CHECK_MODULES(GTK, hildon-lgpl >= 0.9.1 hildon-fm >= 0.8.6)
+PKG_CHECK_MODULES(GTK, gtk+-2.0)
 AC_SUBST(GTK_LIBS)
 AC_SUBST(GTK_CFLAGS)
 AC_SUBST(GTK_VERSION)
@@ -40,6 +40,10 @@ AC_SUBST(GNOME_VFS_LIBS)
 PKG_CHECK_MODULES(GCONF, gconf-2.0 >= 2.6)
 AC_SUBST(GCONF_CFLAGS)
 AC_SUBST(GCONF_LIBS)
+
+PKG_CHECK_MODULES(LIBMB, libmb >= 1.3)
+AC_SUBST(LIBMB_CFLAGS)
+AC_SUBST(LIBMB_LIBS)
 
 ALL_LINGUAS="en_GB"
 AC_SUBST(ALL_LINGUAS) 
@@ -111,6 +115,7 @@ AC_SUBST(HTML_DIR)
 
 AC_OUTPUT(Makefile \
 	hildon-widgets/Makefile \
+        timer/Makefile \
 	ut/Makefile \
 	po/Makefile \
 	po/porules.mk \

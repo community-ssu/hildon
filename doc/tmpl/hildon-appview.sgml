@@ -1,0 +1,254 @@
+<!-- ##### SECTION Title ##### -->
+HildonAppView
+
+<!-- ##### SECTION Short_Description ##### -->
+A widget which present one view of an application.
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+A widget which present one view of an application.
+Application can have many different views and the appview helps to organize.
+It has automatic fullscreen and menu handling. It also helps to handle components
+like a toolbar.
+
+<informalexample>
+<programlisting>
+
+appview = hildon_appview_new( "This is an application view" );
+hildon_appview_set_fullscreen_key_allowed( appview, TRUE );
+hildon_appview_set_toolbar( appview, toolbar );
+
+hildon_app_set_appview( appview );
+
+hildon_appview_set_fullscreen( appview, TRUE );
+
+</programlisting>
+</informalexample>
+
+By default, HildonAppView doesn't toggle fullscreen from the fullscreen
+hardware key. This is because there might be applications that are not intended to
+have ability to switch to fullscreen mode at all. To enable fullscreen
+toggling from fullscreen hardware key, use #hildon_appview_set_fullscreen_key_allowed -function.
+
+</para>
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+<!-- ##### STRUCT HildonAppViewPrivate ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### STRUCT HildonAppView ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### FUNCTION hildon_appview_new ##### -->
+<para>
+
+</para>
+
+@title: 
+@Returns: 
+
+
+<!-- ##### FUNCTION hildon_appview_add_with_scrollbar ##### -->
+<para>
+
+</para>
+
+@self: 
+@child: 
+
+
+<!-- ##### FUNCTION hildon_appview_set_fullscreen_key_allowed ##### -->
+<para>
+
+</para>
+
+@self: 
+@allow: 
+
+
+<!-- ##### FUNCTION hildon_appview_get_fullscreen_key_allowed ##### -->
+<para>
+
+</para>
+
+@self: 
+@Returns: 
+
+
+<!-- ##### FUNCTION hildon_appview_get_fullscreen ##### -->
+<para>
+
+</para>
+
+@self: 
+@Returns: 
+
+
+<!-- ##### FUNCTION hildon_appview_set_fullscreen ##### -->
+<para>
+
+</para>
+
+@self: 
+@fullscreen: 
+
+
+<!-- ##### FUNCTION hildon_appview_get_menu ##### -->
+<para>
+
+</para>
+
+@self: 
+@Returns: 
+
+
+<!-- ##### FUNCTION hildon_appview_set_toolbar ##### -->
+<para>
+
+</para>
+
+@self: 
+@toolbar: 
+
+
+<!-- ##### FUNCTION hildon_appview_get_toolbar ##### -->
+<para>
+
+</para>
+
+@self: 
+@Returns: 
+
+
+<!-- ##### FUNCTION hildon_appview_set_title ##### -->
+<para>
+
+</para>
+
+@self: 
+@newname: 
+
+
+<!-- ##### FUNCTION hildon_appview_get_title ##### -->
+<para>
+
+</para>
+
+@self: 
+@Returns: 
+
+
+<!-- ##### FUNCTION hildon_appview_set_connected_adjustment ##### -->
+<para>
+
+</para>
+
+@self: 
+@adjustment: 
+
+
+<!-- ##### FUNCTION hildon_appview_get_connected_adjustment ##### -->
+<para>
+
+</para>
+
+@self: 
+@Returns: 
+
+
+<!-- ##### SIGNAL HildonAppView::decrease-button-event ##### -->
+<para>
+
+</para>
+
+@hildonappview: the object which received the signal.
+@arg1: the Gdk key state.
+
+<!-- ##### SIGNAL HildonAppView::fullscreen-state-change ##### -->
+<para>
+
+</para>
+
+@hildonappview: the object which received the signal.
+@arg1: 
+
+<!-- ##### SIGNAL HildonAppView::increase-button-event ##### -->
+<para>
+
+</para>
+
+@hildonappview: the object which received the signal.
+@arg1: the Gdk key state.
+
+<!-- ##### SIGNAL HildonAppView::switched-from ##### -->
+<para>
+
+</para>
+
+@hildonappview: the object which received the signal.
+
+<!-- ##### SIGNAL HildonAppView::switched-to ##### -->
+<para>
+
+</para>
+
+@hildonappview: the object which received the signal.
+
+<!-- ##### SIGNAL HildonAppView::title-change ##### -->
+<para>
+
+</para>
+
+@hildonappview: the object which received the signal.
+
+<!-- ##### SIGNAL HildonAppView::toolbar-changed ##### -->
+<para>
+This is not a valid signal to listen to. Since HildonAppView supports
+ multi-toolbar, and packing of these toolbars is in the hand of the
+ programmers. Please access the public member GtkVBox in HildonAppView
+ to set/get your toolbars.
+
+</para>
+
+@hildonappview: the object which received the signal.
+
+<!-- ##### SIGNAL HildonAppView::toolbar-toggle-request ##### -->
+<para>
+This is not a valid signal to listen to. Since HildonAppView supports
+ multi-toolbar, and showing/hiding of the these toolbars is required from
+ the programmers.
+
+</para>
+
+@hildonappview: the object which received the signal.
+
+<!-- ##### ARG HildonAppView:connected-adjustment ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG HildonAppView:fullscreen ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG HildonAppView:fullscreen-key-allowed ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG HildonAppView:title ##### -->
+<para>
+
+</para>
+

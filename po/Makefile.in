@@ -94,6 +94,8 @@ INSTALL_STRIP_PROGRAM = @INSTALL_STRIP_PROGRAM@
 INSTOBJEXT = @INSTOBJEXT@
 INTLLIBS = @INTLLIBS@
 LDFLAGS = @LDFLAGS@
+LIBMB_CFLAGS = @LIBMB_CFLAGS@
+LIBMB_LIBS = @LIBMB_LIBS@
 LIBOBJS = @LIBOBJS@
 LIBS = @LIBS@
 LIBTOOL = @LIBTOOL@
@@ -174,7 +176,7 @@ EXTRA_DIST = $(foreach po,$(languages),$(po).po) POTFILES.in README \
 	debian/compat \
 	debian/control \
 	debian/rules \
-	debian/hildon-libs-l10n-engb.install \
+	debian/hildon-libs-l10n-engb.install
 
 subdir = po
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4

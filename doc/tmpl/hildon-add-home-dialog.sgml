@@ -1,0 +1,38 @@
+<!-- ##### SECTION Title ##### -->
+HildonAddHomeDialog
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### FUNCTION hildon_add_home_dialog_new ##### -->
+<para>
+
+</para>
+
+@parent: 
+@name: 
+@new_name: 
+@Returns: 
+
+
+<!-- ##### FUNCTION hildon_add_home_dialog_get_name ##### -->
+<para>
+
+</para>
+
+@dialog: 
+@Returns: 
+
+

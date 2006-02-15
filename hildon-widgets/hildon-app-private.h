@@ -22,27 +22,53 @@
  *
  */
 
-#ifndef HILDON_USE_TIMESTAMPING
 
-#define TIMER_START( filename )
-#define TIMER_STOP()
-#define TIMER_STOP_AND_EXIT()
-#define TIMESTAMP( message )
+#ifndef HILDON_APP_PRIVATE_H
+#define HILDON_APP_PRIVATE_H
 
-#else
+enum {
+    TOPMOST_STATUS_ACQUIRE,
+    TOPMOST_STATUS_LOSE,
+    SWITCH_TO,
+    IM_CLOSE,
+    CLIPBOARD_COPY,
+    CLIPBOARD_CUT,
+    CLIPBOARD_PASTE,
 
-#ifndef TIMER_H
-#define TIMER_H
+    HILDON_APP_LAST_SIGNAL
+};
 
-#define TIMER_START( filename ) timer_start( filename );
-#define TIMER_STOP() timer_stop()
-#define TIMER_STOP_AND_EXIT() timer_stop(); return 0;
-#define TIMESTAMP( message ) print_timestamp( message );
+struct _HildonAppPrivate {
+    GList *children;
+    gchar *title;
+#ifndef HILDON_DISABLE_DEPRECATED
+    HildonZoomLevel zoom;
+#endif
 
-void timer_start( char * );
-void timer_stop( void );
-void print_timestamp( char * );
+    /* Used to keep track of menu key press/release */
+    gint lastmenuclick;
 
-#endif /* TIMER_H */
+    gulong curr_view_id;
+    gulong view_id_counter;
+    GSList *view_ids;
+    gboolean scroll_control;
 
-#endif /* HILDON_USE_TIMESTAMPING */
+    guint twoparttitle: 1;
+    guint is_topmost: 1;
+    gboolean killable;
+    gboolean autoregistration;
+
+    guint escape_timeout;
+    guint key_snooper;
+    
+    GtkUIManager *uim;
+    
+    guint active_menu_id;
+};
+
+typedef struct {
+  gpointer view_ptr;
+  unsigned long view_id;
+} view_item;
+
+#endif /* HILDON_APP_PRIVATE_H */

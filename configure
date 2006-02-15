@@ -463,7 +463,7 @@ ac_includes_default="\
 # include <unistd.h>
 #endif"
 
-ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA CYGPATH_W PACKAGE VERSION ACLOCAL AUTOCONF AUTOMAKE AUTOHEADER MAKEINFO AMTAR install_sh STRIP ac_ct_STRIP INSTALL_STRIP_PROGRAM AWK SET_MAKE am__leading_dot build build_cpu build_vendor build_os host host_cpu host_vendor host_os CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT DEPDIR am__include am__quote AMDEP_TRUE AMDEP_FALSE AMDEPBACKSLASH CCDEPMODE am__fastdepCC_TRUE am__fastdepCC_FALSE CPP EGREP LN_S ECHO AR ac_ct_AR RANLIB ac_ct_RANLIB CXX CXXFLAGS ac_ct_CXX CXXDEPMODE am__fastdepCXX_TRUE am__fastdepCXX_FALSE CXXCPP F77 FFLAGS ac_ct_F77 LIBTOOL PKG_CONFIG OUTO_CFLAGS OUTO_LIBS GTK_CFLAGS GTK_LIBS GTK_VERSION ESD_CFLAGS ESD_LIBS GNOME_VFS_CFLAGS GNOME_VFS_LIBS GCONF_CFLAGS GCONF_LIBS ALL_LINGUAS USE_NLS MSGFMT GMSGFMT XGETTEXT CATALOGS CATOBJEXT DATADIRNAME GMOFILES INSTOBJEXT INTLLIBS PO_IN_DATADIR_TRUE PO_IN_DATADIR_FALSE POFILES POSUB MKINSTALLDIRS GTKDOC ENABLE_GTK_DOC_TRUE ENABLE_GTK_DOC_FALSE DOXYGEN_FOUND HAVE_DOXYGEN_TRUE HAVE_DOXYGEN_FALSE docdir localedir outomoduledir HTML_DIR LIBOBJS LTLIBOBJS'
+ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA CYGPATH_W PACKAGE VERSION ACLOCAL AUTOCONF AUTOMAKE AUTOHEADER MAKEINFO AMTAR install_sh STRIP ac_ct_STRIP INSTALL_STRIP_PROGRAM AWK SET_MAKE am__leading_dot build build_cpu build_vendor build_os host host_cpu host_vendor host_os CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT DEPDIR am__include am__quote AMDEP_TRUE AMDEP_FALSE AMDEPBACKSLASH CCDEPMODE am__fastdepCC_TRUE am__fastdepCC_FALSE CPP EGREP LN_S ECHO AR ac_ct_AR RANLIB ac_ct_RANLIB CXX CXXFLAGS ac_ct_CXX CXXDEPMODE am__fastdepCXX_TRUE am__fastdepCXX_FALSE CXXCPP F77 FFLAGS ac_ct_F77 LIBTOOL PKG_CONFIG OUTO_CFLAGS OUTO_LIBS GTK_CFLAGS GTK_LIBS GTK_VERSION ESD_CFLAGS ESD_LIBS GNOME_VFS_CFLAGS GNOME_VFS_LIBS GCONF_CFLAGS GCONF_LIBS LIBMB_CFLAGS LIBMB_LIBS ALL_LINGUAS USE_NLS MSGFMT GMSGFMT XGETTEXT CATALOGS CATOBJEXT DATADIRNAME GMOFILES INSTOBJEXT INTLLIBS PO_IN_DATADIR_TRUE PO_IN_DATADIR_FALSE POFILES POSUB MKINSTALLDIRS GTKDOC ENABLE_GTK_DOC_TRUE ENABLE_GTK_DOC_FALSE DOXYGEN_FOUND HAVE_DOXYGEN_TRUE HAVE_DOXYGEN_FALSE docdir localedir outomoduledir HTML_DIR LIBOBJS LTLIBOBJS'
 ac_subst_files=''
 
 # Initialize some variables set by options.
@@ -1773,7 +1773,7 @@ fi
 
 # Define the identity of the package.
  PACKAGE=hildon-libs
- VERSION=0.10.2
+ VERSION=0.12.0
 
 
 cat >>confdefs.h <<_ACEOF
@@ -19388,23 +19388,23 @@ fi
   else
      PKG_CONFIG_MIN_VERSION=0.9.0
      if $PKG_CONFIG --atleast-pkgconfig-version $PKG_CONFIG_MIN_VERSION; then
-        echo "$as_me:$LINENO: checking for hildon-lgpl >= 0.9.1 hildon-fm >= 0.8.6" >&5
-echo $ECHO_N "checking for hildon-lgpl >= 0.9.1 hildon-fm >= 0.8.6... $ECHO_C" >&6
+        echo "$as_me:$LINENO: checking for gtk+-2.0" >&5
+echo $ECHO_N "checking for gtk+-2.0... $ECHO_C" >&6
 
-        if $PKG_CONFIG --exists "hildon-lgpl >= 0.9.1 hildon-fm >= 0.8.6" ; then
+        if $PKG_CONFIG --exists "gtk+-2.0" ; then
             echo "$as_me:$LINENO: result: yes" >&5
 echo "${ECHO_T}yes" >&6
             succeeded=yes
 
             echo "$as_me:$LINENO: checking GTK_CFLAGS" >&5
 echo $ECHO_N "checking GTK_CFLAGS... $ECHO_C" >&6
-            GTK_CFLAGS=`$PKG_CONFIG --cflags "hildon-lgpl >= 0.9.1 hildon-fm >= 0.8.6"`
+            GTK_CFLAGS=`$PKG_CONFIG --cflags "gtk+-2.0"`
             echo "$as_me:$LINENO: result: $GTK_CFLAGS" >&5
 echo "${ECHO_T}$GTK_CFLAGS" >&6
 
             echo "$as_me:$LINENO: checking GTK_LIBS" >&5
 echo $ECHO_N "checking GTK_LIBS... $ECHO_C" >&6
-            GTK_LIBS=`$PKG_CONFIG --libs "hildon-lgpl >= 0.9.1 hildon-fm >= 0.8.6"`
+            GTK_LIBS=`$PKG_CONFIG --libs "gtk+-2.0"`
             echo "$as_me:$LINENO: result: $GTK_LIBS" >&5
 echo "${ECHO_T}$GTK_LIBS" >&6
         else
@@ -19412,7 +19412,7 @@ echo "${ECHO_T}$GTK_LIBS" >&6
             GTK_LIBS=""
             ## If we have a custom action on failure, don't print errors, but
             ## do set a variable so people can do so.
-            GTK_PKG_ERRORS=`$PKG_CONFIG --errors-to-stdout --print-errors "hildon-lgpl >= 0.9.1 hildon-fm >= 0.8.6"`
+            GTK_PKG_ERRORS=`$PKG_CONFIG --errors-to-stdout --print-errors "gtk+-2.0"`
             echo $GTK_PKG_ERRORS
         fi
 
@@ -19427,8 +19427,8 @@ echo "${ECHO_T}$GTK_LIBS" >&6
   if test $succeeded = yes; then
      :
   else
-     { { echo "$as_me:$LINENO: error: Library requirements (hildon-lgpl >= 0.9.1 hildon-fm >= 0.8.6) not met; consider adjusting the PKG_CONFIG_PATH environment variable if your libraries are in a nonstandard prefix so pkg-config can find them." >&5
-echo "$as_me: error: Library requirements (hildon-lgpl >= 0.9.1 hildon-fm >= 0.8.6) not met; consider adjusting the PKG_CONFIG_PATH environment variable if your libraries are in a nonstandard prefix so pkg-config can find them." >&2;}
+     { { echo "$as_me:$LINENO: error: Library requirements (gtk+-2.0) not met; consider adjusting the PKG_CONFIG_PATH environment variable if your libraries are in a nonstandard prefix so pkg-config can find them." >&5
+echo "$as_me: error: Library requirements (gtk+-2.0) not met; consider adjusting the PKG_CONFIG_PATH environment variable if your libraries are in a nonstandard prefix so pkg-config can find them." >&2;}
    { (exit 1); exit 1; }; }
   fi
 
@@ -19736,6 +19736,107 @@ echo "${ECHO_T}$GCONF_LIBS" >&6
   else
      { { echo "$as_me:$LINENO: error: Library requirements (gconf-2.0 >= 2.6) not met; consider adjusting the PKG_CONFIG_PATH environment variable if your libraries are in a nonstandard prefix so pkg-config can find them." >&5
 echo "$as_me: error: Library requirements (gconf-2.0 >= 2.6) not met; consider adjusting the PKG_CONFIG_PATH environment variable if your libraries are in a nonstandard prefix so pkg-config can find them." >&2;}
+   { (exit 1); exit 1; }; }
+  fi
+
+
+
+
+
+  succeeded=no
+
+  if test -z "$PKG_CONFIG"; then
+    # Extract the first word of "pkg-config", so it can be a program name with args.
+set dummy pkg-config; ac_word=$2
+echo "$as_me:$LINENO: checking for $ac_word" >&5
+echo $ECHO_N "checking for $ac_word... $ECHO_C" >&6
+if test "${ac_cv_path_PKG_CONFIG+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  case $PKG_CONFIG in
+  [\\/]* | ?:[\\/]*)
+  ac_cv_path_PKG_CONFIG="$PKG_CONFIG" # Let the user override the test with a path.
+  ;;
+  *)
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+  for ac_exec_ext in '' $ac_executable_extensions; do
+  if $as_executable_p "$as_dir/$ac_word$ac_exec_ext"; then
+    ac_cv_path_PKG_CONFIG="$as_dir/$ac_word$ac_exec_ext"
+    echo "$as_me:$LINENO: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+done
+
+  test -z "$ac_cv_path_PKG_CONFIG" && ac_cv_path_PKG_CONFIG="no"
+  ;;
+esac
+fi
+PKG_CONFIG=$ac_cv_path_PKG_CONFIG
+
+if test -n "$PKG_CONFIG"; then
+  echo "$as_me:$LINENO: result: $PKG_CONFIG" >&5
+echo "${ECHO_T}$PKG_CONFIG" >&6
+else
+  echo "$as_me:$LINENO: result: no" >&5
+echo "${ECHO_T}no" >&6
+fi
+
+  fi
+
+  if test "$PKG_CONFIG" = "no" ; then
+     echo "*** The pkg-config script could not be found. Make sure it is"
+     echo "*** in your path, or set the PKG_CONFIG environment variable"
+     echo "*** to the full path to pkg-config."
+     echo "*** Or see http://www.freedesktop.org/software/pkgconfig to get pkg-config."
+  else
+     PKG_CONFIG_MIN_VERSION=0.9.0
+     if $PKG_CONFIG --atleast-pkgconfig-version $PKG_CONFIG_MIN_VERSION; then
+        echo "$as_me:$LINENO: checking for libmb >= 1.3" >&5
+echo $ECHO_N "checking for libmb >= 1.3... $ECHO_C" >&6
+
+        if $PKG_CONFIG --exists "libmb >= 1.3" ; then
+            echo "$as_me:$LINENO: result: yes" >&5
+echo "${ECHO_T}yes" >&6
+            succeeded=yes
+
+            echo "$as_me:$LINENO: checking LIBMB_CFLAGS" >&5
+echo $ECHO_N "checking LIBMB_CFLAGS... $ECHO_C" >&6
+            LIBMB_CFLAGS=`$PKG_CONFIG --cflags "libmb >= 1.3"`
+            echo "$as_me:$LINENO: result: $LIBMB_CFLAGS" >&5
+echo "${ECHO_T}$LIBMB_CFLAGS" >&6
+
+            echo "$as_me:$LINENO: checking LIBMB_LIBS" >&5
+echo $ECHO_N "checking LIBMB_LIBS... $ECHO_C" >&6
+            LIBMB_LIBS=`$PKG_CONFIG --libs "libmb >= 1.3"`
+            echo "$as_me:$LINENO: result: $LIBMB_LIBS" >&5
+echo "${ECHO_T}$LIBMB_LIBS" >&6
+        else
+            LIBMB_CFLAGS=""
+            LIBMB_LIBS=""
+            ## If we have a custom action on failure, don't print errors, but
+            ## do set a variable so people can do so.
+            LIBMB_PKG_ERRORS=`$PKG_CONFIG --errors-to-stdout --print-errors "libmb >= 1.3"`
+            echo $LIBMB_PKG_ERRORS
+        fi
+
+
+
+     else
+        echo "*** Your version of pkg-config is too old. You need version $PKG_CONFIG_MIN_VERSION or newer."
+        echo "*** See http://www.freedesktop.org/software/pkgconfig"
+     fi
+  fi
+
+  if test $succeeded = yes; then
+     :
+  else
+     { { echo "$as_me:$LINENO: error: Library requirements (libmb >= 1.3) not met; consider adjusting the PKG_CONFIG_PATH environment variable if your libraries are in a nonstandard prefix so pkg-config can find them." >&5
+echo "$as_me: error: Library requirements (libmb >= 1.3) not met; consider adjusting the PKG_CONFIG_PATH environment variable if your libraries are in a nonstandard prefix so pkg-config can find them." >&2;}
    { (exit 1); exit 1; }; }
   fi
 
@@ -21468,7 +21569,7 @@ HTML_DIR=${docdir}/html
 
 
 
-                                                                      ac_config_files="$ac_config_files Makefile hildon-widgets/Makefile ut/Makefile po/Makefile po/porules.mk doc/Makefile hildon-libs.pc"
+                                                                                ac_config_files="$ac_config_files Makefile hildon-widgets/Makefile timer/Makefile ut/Makefile po/Makefile po/porules.mk doc/Makefile hildon-libs.pc"
 cat >confcache <<\_ACEOF
 # This file is a shell script that caches the results of configure
 # tests run on this system so they can be shared between configure
@@ -22042,6 +22143,7 @@ do
   # Handling of arguments.
   "Makefile" ) CONFIG_FILES="$CONFIG_FILES Makefile" ;;
   "hildon-widgets/Makefile" ) CONFIG_FILES="$CONFIG_FILES hildon-widgets/Makefile" ;;
+  "timer/Makefile" ) CONFIG_FILES="$CONFIG_FILES timer/Makefile" ;;
   "ut/Makefile" ) CONFIG_FILES="$CONFIG_FILES ut/Makefile" ;;
   "po/Makefile" ) CONFIG_FILES="$CONFIG_FILES po/Makefile" ;;
   "po/porules.mk" ) CONFIG_FILES="$CONFIG_FILES po/porules.mk" ;;
@@ -22209,6 +22311,8 @@ s,@GNOME_VFS_CFLAGS@,$GNOME_VFS_CFLAGS,;t t
 s,@GNOME_VFS_LIBS@,$GNOME_VFS_LIBS,;t t
 s,@GCONF_CFLAGS@,$GCONF_CFLAGS,;t t
 s,@GCONF_LIBS@,$GCONF_LIBS,;t t
+s,@LIBMB_CFLAGS@,$LIBMB_CFLAGS,;t t
+s,@LIBMB_LIBS@,$LIBMB_LIBS,;t t
 s,@ALL_LINGUAS@,$ALL_LINGUAS,;t t
 s,@USE_NLS@,$USE_NLS,;t t
 s,@MSGFMT@,$MSGFMT,;t t

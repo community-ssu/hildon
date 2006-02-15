@@ -1,0 +1,357 @@
+<!-- ##### SECTION Title ##### -->
+HildonCaption
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+<para>
+<informalexample>
+<programlisting>
+<!-- hildon-tests/wt/hildon-widgets-combo/testcaptioncontrol.c -->
+##include &lt;hildon-widgets/hildon-caption.h&gt;
+
+##include &lt;gtk/gtkwidget.h&gt;
+##include &lt;gtk/gtkvbox.h&gt;
+##include &lt;gtk/gtkhbox.h&gt;
+##include &lt;gtk/gtkcombobox.h&gt;
+##include &lt;gtk/gtkcomboboxentry.h&gt;
+##include &lt;gtk/gtkentry.h&gt;
+##include &lt;gtk/gtkscrolledwindow.h&gt;
+##include &lt;gtk/gtkimage.h&gt;
+##include &lt;gtk/gtkcheckbutton.h&gt;
+##include &lt;glib/glist.h&gt;
+##include &lt;gtk/gtktogglebutton.h&gt;
+##include &lt;gtk/gtklabel.h&gt;
+
+##include &lt;libintl.h&gt;
+##define _(String) gettext(String)
+
+static void destroy_callback( GtkWidget *widget );
+void _testCaptionControl(GtkWidget *parent, gchar **help);
+
+gchar *hildon_icons[] = { "hildon-file-open",
+	"gtk-ok",
+	"gtk-refresh",
+	"gtk-remove"
+};
+
+const int num_icons = sizeof( hildon_icons ) / sizeof( gchar * );
+
+static GList *caption_list = NULL;
+
+static void text_changed_callback( HildonCaption *caption, gpointer user_data )
+{
+	hildon_caption_set_label( caption, gtk_entry_get_text( user_data ) );
+}
+
+static void icon_toggled_callback( HildonCaption *caption, gpointer user_data )
+{
+	GtkWidget *phone_image = NULL;
+	GList *cur = caption_list;
+	int i = 0;
+	while ( cur )
+	{
+		if ( !hildon_caption_get_icon_image( HILDON_CAPTION(cur-&gt;data) ) )
+		{
+			phone_image = gtk_image_new_from_stock( hildon_icons[i], GTK_ICON_SIZE_SMALL_TOOLBAR );
+		}
+
+		hildon_caption_set_icon_image( HILDON_CAPTION( cur-&gt;data), phone_image );
+
+		cur = cur-&gt;next;
+		if ( ++i &gt;= num_icons )
+		{
+			i = 0;
+		}
+
+	}
+}
+static void mandatory_toggled_callback( HildonCaption *caption, gpointer user_data )
+{
+	GList *cur = caption_list;
+	int i = 0;
+	while ( cur )
+	{
+		if ( hildon_caption_is_mandatory( HILDON_CAPTION(cur-&gt;data) ) )
+		{
+			hildon_caption_set_status( HILDON_CAPTION(cur-&gt;data), HILDON_CAPTION_OPTIONAL );
+		}
+		else
+		{
+			hildon_caption_set_status( HILDON_CAPTION(cur-&gt;data), HILDON_CAPTION_MANDATORY );
+		}
+
+		cur = cur-&gt;next;
+		if ( ++i &gt; num_icons )
+		{
+			i = 0;
+		}
+	}
+}
+
+static void destroy_callback( GtkWidget *widget )
+{
+	g_print( "Destroying the empty label\n" );
+}
+
+void _testCaptionControl(GtkWidget *parent, gchar **help)
+{
+
+	GtkWidget *control = NULL;
+	GtkWidget *caption_control = NULL;
+	GtkWidget *vbox = gtk_vbox_new( FALSE, 0 );
+	GtkWidget *top_vbox = GTK_WIDGET(gtk_vbox_new( FALSE, 0 ));
+	GtkWidget *hbox = GTK_WIDGET(gtk_hbox_new( FALSE, 0 ));
+	GtkSizeGroup *group= GTK_SIZE_GROUP( gtk_size_group_new( GTK_SIZE_GROUP_HORIZONTAL ) );
+
+	GtkWidget *some_image = gtk_image_new_from_file( "../share/themes/commonimages/question.png" );
+
+	control = gtk_entry_new();
+	caption_control = hildon_caption_new( group, _("Man Entry"), control,
+			NULL, HILDON_CAPTION_MANDATORY);
+	gtk_box_pack_start( GTK_BOX( top_vbox ), caption_control, FALSE, FALSE, 0 );
+
+	g_signal_connect( G_OBJECT( control ), "destroy", G_CALLBACK( destroy_callback ), NULL );
+
+	control = gtk_entry_new();
+	caption_control = hildon_caption_new( group, _("O grow"), control,
+			NULL, HILDON_CAPTION_OPTIONAL);
+	g_signal_connect_swapped( control, "changed",
+			G_CALLBACK( text_changed_callback ), caption_control );
+	gtk_box_pack_start( GTK_BOX( top_vbox ), caption_control, FALSE, FALSE, 0 );
+
+	gtk_box_pack_end( GTK_BOX( hbox ), some_image, FALSE, FALSE, 0 );
+	gtk_box_pack_end( GTK_BOX( hbox ), top_vbox, TRUE, TRUE, 0 );
+
+	gtk_box_pack_start( GTK_BOX( vbox ), hbox, FALSE, FALSE, 0 );
+
+	control = gtk_combo_box_entry_new_text();
+	gtk_combo_box_append_text(GTK_COMBO_BOX(control), _("First Item"));
+	gtk_combo_box_append_text(GTK_COMBO_BOX(control), _("Second Item"));
+	gtk_combo_box_append_text(GTK_COMBO_BOX(control), _("Third Item"));
+	gtk_combo_box_append_text(GTK_COMBO_BOX(control), _("Fourth Item"));
+	gtk_combo_box_append_text(GTK_COMBO_BOX(control), _("Fifth Item"));
+	caption_control = hildon_caption_new( group, _("M Com"), control,
+			NULL, HILDON_CAPTION_MANDATORY);
+	gtk_box_pack_start( GTK_BOX( vbox ), caption_control, FALSE, FALSE, 0 );
+	caption_list = g_list_append( caption_list, (gpointer)caption_control );
+
+	control = gtk_label_new("This text should not be focusable");
+	caption_control = hildon_caption_new (group, _("UFLabel"), control, NULL, HILDON_CAPTION_OPTIONAL);
+	gtk_box_pack_start( GTK_BOX( vbox ), caption_control, FALSE, FALSE, 0 );
+	caption_list = g_list_append (caption_list, (gpointer) caption_control );
+
+	control = gtk_combo_box_new_text(); /* entry */
+
+	gtk_combo_box_append_text(GTK_COMBO_BOX(control), _("Tango"));
+	gtk_combo_box_append_text(GTK_COMBO_BOX(control), _("Mambo"));
+	gtk_combo_box_append_text(GTK_COMBO_BOX(control), _("Merengue"));
+	gtk_combo_box_append_text(GTK_COMBO_BOX(control), _("Salsa"));
+	caption_control = hildon_caption_new( group, _("O Option Menu"), control,
+			NULL, HILDON_CAPTION_MANDATORY);
+	gtk_box_pack_start( GTK_BOX( vbox ), caption_control, FALSE, FALSE, 0 );
+	caption_list = g_list_append( caption_list, (gpointer)caption_control );
+
+
+	control = gtk_check_button_new();
+	caption_control = hildon_caption_new( group, _("show icon"), control,
+			NULL, HILDON_CAPTION_MANDATORY);
+	g_signal_connect_swapped( control, "toggled",
+			G_CALLBACK( icon_toggled_callback ), caption_control );
+	gtk_box_pack_start( GTK_BOX( vbox ), caption_control, FALSE, FALSE, 0 );
+	caption_list = g_list_append( caption_list, (gpointer)caption_control );
+
+	control = gtk_check_button_new();
+	caption_control = hildon_caption_new( group, _("toggle status"), control,
+			NULL, HILDON_CAPTION_OPTIONAL);
+	g_signal_connect_swapped( control, "toggled",
+			G_CALLBACK( mandatory_toggled_callback ), caption_control );
+	gtk_box_pack_start( GTK_BOX( vbox ), caption_control, FALSE, FALSE, 0 );
+	caption_list = g_list_append( caption_list, (gpointer)caption_control );
+
+
+	gtk_container_add( GTK_CONTAINER( parent ), vbox );
+
+	gtk_widget_show_all( parent );
+
+	if (help)
+		*help = g_strdup ("");
+
+}
+</programlisting>
+</informalexample>
+</para>
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+<!-- ##### ENUM HildonCaptionStatus ##### -->
+<para>
+
+</para>
+
+@HILDON_CAPTION_OPTIONAL: 
+@HILDON_CAPTION_MANDATORY: 
+
+<!-- ##### STRUCT HildonCaption ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### FUNCTION hildon_caption_new ##### -->
+<para>
+
+</para>
+
+@group: 
+@value: 
+@control: 
+@icon: 
+@flag: 
+@Returns: 
+
+
+<!-- ##### FUNCTION hildon_caption_get_sizegroup ##### -->
+<para>
+
+</para>
+
+@caption: 
+@Returns: 
+
+
+<!-- ##### FUNCTION hildon_caption_set_sizegroup ##### -->
+<para>
+
+</para>
+
+@caption: 
+@new_group: 
+
+
+<!-- ##### FUNCTION hildon_caption_is_mandatory ##### -->
+<para>
+
+</para>
+
+@caption: 
+@Returns: 
+
+
+<!-- ##### FUNCTION hildon_caption_set_status ##### -->
+<para>
+
+</para>
+
+@caption: 
+@flag: 
+
+
+<!-- ##### FUNCTION hildon_caption_get_status ##### -->
+<para>
+
+</para>
+
+@caption: 
+@Returns: 
+
+
+<!-- ##### FUNCTION hildon_caption_set_icon_image ##### -->
+<para>
+
+</para>
+
+@caption: 
+@icon: 
+
+
+<!-- ##### FUNCTION hildon_caption_get_icon_image ##### -->
+<para>
+
+</para>
+
+@caption: 
+@Returns: 
+
+
+<!-- ##### FUNCTION hildon_caption_set_label ##### -->
+<para>
+
+</para>
+
+@caption: 
+@label: 
+
+
+<!-- ##### FUNCTION hildon_caption_get_label ##### -->
+<para>
+
+</para>
+
+@caption: 
+@Returns: 
+
+
+<!-- ##### FUNCTION hildon_caption_get_control ##### -->
+<para>
+
+</para>
+
+@caption: 
+@Returns: 
+
+
+<!-- ##### FUNCTION hildon_caption_set_control ##### -->
+<para>
+
+</para>
+
+@caption: 
+@control: 
+
+
+<!-- ##### SIGNAL HildonCaption::activate ##### -->
+<para>
+
+</para>
+
+@hildoncaption: the object which received the signal.
+
+<!-- ##### ARG HildonCaption:icon ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG HildonCaption:label ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG HildonCaption:separator ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG HildonCaption:size-group ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG HildonCaption:status ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG HildonCaption:expand ##### -->
+<para>
+
+</para>
+

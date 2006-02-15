@@ -5,9 +5,7 @@ lib_LIBRARIES = libtimer.a
 
 EXTRA_DIST = 
 
-libtimer_a_SOURCES = \
-	timer.h timer.c
-	
+libtimer_a_SOURCES = timer.h timer.c
+
 timerincludeinstdir=$(includedir)/hildon-lgpl/timer
-timerincludeinst_DATA = \
-	timer.h
+timerincludeinst_DATA = timer.h

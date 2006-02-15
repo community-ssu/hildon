@@ -1,0 +1,53 @@
+<!-- ##### SECTION Title ##### -->
+hildon-input-mode-hint
+
+<!-- ##### SECTION Short_Description ##### -->
+Wrappers for setting GtkEntry and GtkTextView input modes and autocapitalization.
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+<informalexample>
+<programlisting>
+
+g_object_set(G_OBJECT(entry), "input-mode", HILDON_INPUT_MODE_HINT_NUMERIC, NULL);
+
+g_object_set(G_OBJECT(entry), "autocap", FALSE, NULL);
+
+
+</programlisting>
+</informalexample>
+
+</para>
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+<!-- ##### MACRO HILDON_INPUT_MODE_HINT ##### -->
+<para>
+
+Use this to set the input mode in text widget. Note that this affects
+only input methods layout.
+
+</para>
+
+
+
+<!-- ##### ENUM HildonInputModeHint ##### -->
+<para>
+
+</para>
+
+@HILDON_INPUT_MODE_HINT_ALPHANUMERICSPECIAL: 
+@HILDON_INPUT_MODE_HINT_NUMERIC: 
+@HILDON_INPUT_MODE_HINT_ALPHA: 
+@HILDON_INPUT_MODE_HINT_NUMERICSPECIAL: 
+@HILDON_INPUT_MODE_HINT_ALPHASPECIAL: 
+@HILDON_INPUT_MODE_HINT_ALPHANUMERIC: 
+@HILDON_INPUT_MODE_HINT_HEXA: 
+@HILDON_INPUT_MODE_HINT_HEXASPECIAL: 
+@HILDON_INPUT_MODE_HINT_TELE: 
+@HILDON_INPUT_MODE_HINT_TELESPECIAL: 
+

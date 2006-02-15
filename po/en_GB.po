@@ -530,3 +530,17 @@ msgstr "No items"
 # determines the first day of the week (0 for Sunday, 1 for Monday etc.)
 msgid "week_start"
 msgstr "0"
+
+#: ../hildon-widgets/hildon-app.c:650
+msgid "ckct_ib_min_zoom_level_reached"
+msgstr "Maximum zoom level reached"
+
+#: ../hildon-widgets/hildon-app.c:654
+msgid "ckct_ib_max_zoom_level_reached"
+msgstr "Minimum zoom level reached"
+
+msgid "Ecdg_ti_find_toolbar_label"
+msgstr "Find"
+
+msgid "Ecdg_ti_caption_separator"
+msgstr ":"

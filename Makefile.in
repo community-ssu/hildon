@@ -94,6 +94,8 @@ INSTALL_STRIP_PROGRAM = @INSTALL_STRIP_PROGRAM@
 INSTOBJEXT = @INSTOBJEXT@
 INTLLIBS = @INTLLIBS@
 LDFLAGS = @LDFLAGS@
+LIBMB_CFLAGS = @LIBMB_CFLAGS@
+LIBMB_LIBS = @LIBMB_LIBS@
 LIBOBJS = @LIBOBJS@
 LIBS = @LIBS@
 LIBTOOL = @LIBTOOL@
@@ -167,7 +169,7 @@ sbindir = @sbindir@
 sharedstatedir = @sharedstatedir@
 sysconfdir = @sysconfdir@
 target_alias = @target_alias@
-SUBDIRS = hildon-widgets ut doc 
+SUBDIRS = hildon-widgets timer ut doc 
 EXTRA_DIST = \
 	debian/changelog \
 	debian/control \

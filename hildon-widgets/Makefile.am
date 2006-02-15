@@ -1,5 +1,5 @@
 INCLUDES = $(GTK_CFLAGS) $(GNOME_VFS_CFLAGS) $(GCONF_CFLAGS) \
-	   $(ESD_CFLAGS) -DLOCALEDIR=\"$(localedir)\" -I$(srcdir)/..
+	   $(ESD_CFLAGS) $(LIBMB_CFLAGS) -DLOCALEDIR=\"$(localedir)\" -I$(srcdir)/..
 
 lib_LTLIBRARIES = libhildonwidgets.la
 
@@ -8,7 +8,7 @@ EXTRA_DIST = hildon-marshalers.list
 libhildonwidgets_la_LDFLAGS = -version-info 5:0:5
 
 libhildonwidgets_la_LIBADD = $(GTK_LIBS) $(GNOME_VFS_LIBS) $(GCONF_LIBS) \
-			     $(ESD_LIBS)
+			     $(ESD_LIBS) $(LIBMB_LIBS)
 
 libhildonwidgets_la_SOURCES = \
 	hildon-marshalers.c \
@@ -62,8 +62,6 @@ libhildonwidgets_la_SOURCES = \
 	hildon-font-selection-dialog.h \
 	hildon-insert-object-dialog.c \
 	hildon-insert-object-dialog.h \
-	hildon-file-details-dialog.c \
-	hildon-file-details-dialog.h \
 	hildon-grid.c \
 	hildon-grid.h \
 	hildon-grid-item.c \
@@ -82,7 +80,22 @@ libhildonwidgets_la_SOURCES = \
 	hildon-color-button.c \
 	hildon-color-button.h \
 	hildon-system-sound.c \
-	hildon-system-sound.h
+	hildon-system-sound.h \
+	hildon-app.c \
+	hildon-defines.c \
+	hildon-app.h \
+	hildon-defines.h \
+	hildon-appview.c \
+	hildon-find-toolbar.c \
+	gtk-infoprint.c \
+	hildon-appview.h \
+	hildon-find-toolbar.h \
+	gtk-infoprint.h \
+	hildon-caption.c \
+	hildon-input-mode-hint.h \
+	hildon-app-private.h \
+	hildon-caption.h
+
 
 hildon-marshalers.h: hildon-marshalers.list
 	glib-genmarshal --prefix _hildon_marshal --header \
@@ -117,7 +130,6 @@ hildonwidgetsincludeinst_DATA = \
 	hildon-add-home-dialog.h \
 	hildon-font-selection-dialog.h \
 	hildon-insert-object-dialog.h \
-	hildon-file-details-dialog.h \
 	hildon-grid.h \
 	hildon-grid-item.h \
 	hildon-file-handling-note.h \
@@ -126,4 +138,12 @@ hildonwidgetsincludeinst_DATA = \
 	hildon-wizard-dialog.h \
 	hildon-color-popup.h \
 	hildon-color-button.h \
-	hildon-system-sound.h
+	hildon-system-sound.h \
+	hildon-app.h \
+	hildon-defines.h \
+	hildon-appview.h \
+	hildon-find-toolbar.h \
+	gtk-infoprint.h \
+	hildon-input-mode-hint.h \
+	hildon-app-private.h \
+	hildon-caption.h

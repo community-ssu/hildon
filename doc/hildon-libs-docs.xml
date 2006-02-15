@@ -35,7 +35,6 @@
       <xi:include href="xml/hildon-volumebar.xml"/>
       <xi:include href="xml/hildon-vvolumebar.xml"/>
       <xi:include href="xml/hildon-weekday-picker.xml"/>
-      <xi:include href="xml/hildon-file-details-dialog.xml"/>
       <xi:include href="xml/hildon-file-handling-note.xml"/>
       <xi:include href="xml/hildon-grid-item.xml"/>
       <xi:include href="xml/hildon-grid.xml"/>

@@ -1,0 +1,38 @@
+<!-- ##### SECTION Title ##### -->
+hildon-color-popup
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### FUNCTION hildon_color_popup_new ##### -->
+<para>
+
+</para>
+
+@parent: 
+@initial_color: 
+@popupdata: 
+@Returns: 
+
+
+<!-- ##### FUNCTION hildon_color_popup_set_color_from_sliders ##### -->
+<para>
+
+</para>
+
+@color: 
+@popupdata: 
+
+

@@ -50,7 +50,6 @@
 #include <hildon-widgets/hildon-grid.h>
 #include <hildon-widgets/hildon-time-editor.h>
 #include <hildon-widgets/hildon-name-password-dialog.h>
-#include <hildon-widgets/hildon-file-details-dialog.h>
 #include <outo.h>
 
 /* Icon which must exist (HildonGridItem). */
@@ -2909,16 +2908,6 @@ int test39b()
    return 1;
 }
 
-#ifndef HILDON_DISABLE_DEPRECATED
-int test41a()
-{
-  GtkWidget *fdialog;
-
-  fdialog = hildon_file_details_dialog_new (NULL, "this is probably very very long filename");
-  assert (HILDON_FILE_DETAILS_DIALOG (fdialog));
-  return 1;
-}
-#endif
 testcase tcases[] =
 {
     {*test1a, "hildon_controlbar_new", EXPECT_OK},
@@ -3135,9 +3124,6 @@ testcase tcases[] =
     {*test37b, "gtk_banner_temporarily_disable_wrap", EXPECT_OK},
     {*test39a, "namepassword dialog get_name", EXPECT_OK},
     {*test39b, "namepassword dialog get_password", EXPECT_OK},
-#ifndef HILDON_DISABLE_DEPRECATED
-    {*test41a, "hildon_file_details_dialog_new", EXPECT_OK},
-#endif
 /*    {*test38a, "gtk_confirmation_banner (sometext)", EXPECT_OK},
     {*test38a, "gtk_confirmation_banner (NULL)", EXPECT_OK},*/
    

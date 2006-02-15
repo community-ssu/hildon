@@ -1,3 +1,77 @@
+2006-02-14  Luc Pionchon  <luc.pionchon@nokia.com>
+
+	* configure.ac: 0.12.0
+
+	Merged hildon-lgpl into hildon-libs (and hildon-fm)
+
+	* doc/tmpl/hildon-system-sound.sgml: added from hildon-lgpl
+	* doc/tmpl/hildon-appview.sgml: likewise.
+	* doc/tmpl/hildon-color-popup.sgml: likewise.
+	* doc/tmpl/hildon-find-toolbar.sgml: likewise.
+	* doc/tmpl/hildon-app.sgml: likewise.
+	* doc/tmpl/hildon-input-mode-hint.sgml: likewise.
+	* doc/tmpl/hildon-caption.sgml: likewise.
+	* doc/tmpl/hildon-marshalers.sgml: likewise.
+	* doc/tmpl/hildon-add-home-dialog.sgml: likewise.
+	* doc/tmpl/hildon-defines.sgml: likewise.
+	* doc/tmpl/gtk-infoprint.sgml: likewise.
+	* doc/tmpl/hildon-composite-widget.sgml: likewise.
+
+	* hildon-widgets/gtk-infoprint.[ch]: added from hildon-lgpl
+	* hildon-widgets/hildon-app.[ch]:likewise.
+	* hildon-widgets/hildon-app-private.h:likewise.
+	* hildon-widgets/hildon-appview.[ch]:likewise.
+	* hildon-widgets/hildon-caption.[ch]:likewise.
+	* hildon-widgets/hildon-defines.[ch]:likewise.
+	* hildon-widgets/hildon-find-toolbar.[ch]:likewise.
+	* hildon-widgets/hildon-input-mode-hint.h:likewise.
+	
+	* hildon-widgets/Makefile.am (libhildonwidgets_la_SOURCES): 
+	removed hildon-file-details-dialog.[ch] (moved to hildon-fm)
+	added,
+	    gtk-infoprint.[ch]
+	    hildon-app.[ch]
+	    hildon-app-private.h
+	    hildon-appview.[ch]
+	    hildon-caption.[ch]
+	    hildon-defines.[ch]
+	    hildon-find-toolbar.[ch]
+	    hildon-input-mode-hint.h
+
+	* hildon-widgets/hildon-get-password-dialog.c: corrected #include
+	path for gtk-infoprint.h and hildon-input-mode-hint.h
+
+	* po/en_GB.po: merged msgstr from hildon-lgpl
+
+	* timer/*: added from hildon-lgpl
+
+
+
+	Moved hildon-file-details-dialog from hildon-libs to hildon-fm
+
+	* hildon-widgets/hildon-file-details-dialog.[ch]: moved to
+	hildon-fm
+
+	* ut/hildon-widgets_tests.c (test41a): removed test case for
+	hildon_file_details_dialog
+
+	* doc/hildon-libs.types: likewise.
+	* doc/hildon-libs-docs.xml: likewise.
+
+
+
+	Update build files
+
+	* hildon-libs.pc.in (Libs): do not requires hildon-lgpl anymore
+	nor hildon-fm
+
+	* Makefile.am (SUBDIRS): added timer/
+
+	* configure.ac: do not depend anymore on hildon-lgpl nor
+	hildon-fm, check for libmb, added Makefile output for timer/
+
+
+	
 2006-01-18  Luc Pionchon  <luc.pionchon@nokia.com>
 
 	* configure.ac: 0.10.2
