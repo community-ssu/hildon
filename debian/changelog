@@ -1,3 +1,9 @@
+hildon-libs (0.12.1-1) unstable; urgency=low
+
+  * added hildon-window and hildon-program
+
+ -- Luc Pionchon <luc.pionchon@nokia.com>  Tue, 21 Feb 2006 16:11:39 +0200
+
 hildon-libs (0.12.0-1) unstable; urgency=low
 
   * Merge hildon-lgpl into hildon-libs and hildon-fm

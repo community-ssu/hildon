@@ -1,3 +1,7 @@
+2006-02-21  Luc Pionchon  <luc.pionchon@nokia.com>
+
+	* configure.ac: 0.12.1
+
 2006-02-21  Johan Bilien  <johan.bilien@nokia.com>
 
 	* doc/tmpl/hildon-program.sgml: added from hildon-lgpl HW branch
