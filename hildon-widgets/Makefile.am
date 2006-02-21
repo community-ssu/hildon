@@ -82,18 +82,18 @@ libhildonwidgets_la_SOURCES = \
 	hildon-system-sound.c \
 	hildon-system-sound.h \
 	hildon-app.c \
-	hildon-defines.c \
 	hildon-app.h \
+	hildon-defines.c \
 	hildon-defines.h \
 	hildon-appview.c \
-	hildon-find-toolbar.c \
-	gtk-infoprint.c \
 	hildon-appview.h \
+	hildon-find-toolbar.c \
 	hildon-find-toolbar.h \
+	gtk-infoprint.c \
 	gtk-infoprint.h \
-	hildon-caption.c \
 	hildon-input-mode-hint.h \
 	hildon-app-private.h \
+	hildon-caption.c \
 	hildon-caption.h \
 	hildon-window.c \
 	hildon-window.h \
