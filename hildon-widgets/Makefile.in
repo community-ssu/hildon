@@ -267,7 +267,12 @@ libhildonwidgets_la_SOURCES = \
 	hildon-caption.c \
 	hildon-input-mode-hint.h \
 	hildon-app-private.h \
-	hildon-caption.h
+	hildon-caption.h \
+	hildon-window.c \
+	hildon-window.h \
+	hildon-window-private.h \
+	hildon-program.c \
+	hildon-program.h
 
 
 hildonwidgetsincludeinstdir = $(includedir)/hildon-widgets
@@ -310,7 +315,10 @@ hildonwidgetsincludeinst_DATA = \
 	gtk-infoprint.h \
 	hildon-input-mode-hint.h \
 	hildon-app-private.h \
-	hildon-caption.h
+	hildon-caption.h \
+	hildon-window.h \
+	hildon-program.h \
+	hildon-window-private.h
 
 subdir = hildon-widgets
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
@@ -337,7 +345,8 @@ am_libhildonwidgets_la_OBJECTS = hildon-marshalers.lo \
 	hildon-wizard-dialog.lo hildon-color-popup.lo \
 	hildon-color-button.lo hildon-system-sound.lo hildon-app.lo \
 	hildon-defines.lo hildon-appview.lo hildon-find-toolbar.lo \
-	gtk-infoprint.lo hildon-caption.lo
+	gtk-infoprint.lo hildon-caption.lo hildon-window.lo \
+	hildon-program.lo
 libhildonwidgets_la_OBJECTS = $(am_libhildonwidgets_la_OBJECTS)
 
 DEFAULT_INCLUDES =  -I. -I$(srcdir) -I$(top_builddir)
@@ -369,6 +378,7 @@ am__depfiles_maybe = depfiles
 @AMDEP_TRUE@	./$(DEPDIR)/hildon-name-password-dialog.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/hildon-note.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/hildon-number-editor.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/hildon-program.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/hildon-range-editor.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/hildon-scroll-area.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/hildon-seekbar.Plo \
@@ -382,6 +392,7 @@ am__depfiles_maybe = depfiles
 @AMDEP_TRUE@	./$(DEPDIR)/hildon-volumebar.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/hildon-vvolumebar.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/hildon-weekday-picker.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/hildon-window.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/hildon-wizard-dialog.Plo
 COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
 	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
@@ -468,6 +479,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/hildon-name-password-dialog.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/hildon-note.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/hildon-number-editor.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/hildon-program.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/hildon-range-editor.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/hildon-scroll-area.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/hildon-seekbar.Plo@am__quote@
@@ -481,6 +493,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/hildon-volumebar.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/hildon-vvolumebar.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/hildon-weekday-picker.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/hildon-window.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/hildon-wizard-dialog.Plo@am__quote@
 
 .c.o:

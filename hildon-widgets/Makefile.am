@@ -94,7 +94,12 @@ libhildonwidgets_la_SOURCES = \
 	hildon-caption.c \
 	hildon-input-mode-hint.h \
 	hildon-app-private.h \
-	hildon-caption.h
+	hildon-caption.h \
+	hildon-window.c \
+	hildon-window.h \
+	hildon-window-private.h \
+	hildon-program.c \
+	hildon-program.h
 
 
 hildon-marshalers.h: hildon-marshalers.list
@@ -146,4 +151,7 @@ hildonwidgetsincludeinst_DATA = \
 	gtk-infoprint.h \
 	hildon-input-mode-hint.h \
 	hildon-app-private.h \
-	hildon-caption.h
+	hildon-caption.h \
+	hildon-window.h \
+	hildon-program.h \
+	hildon-window-private.h

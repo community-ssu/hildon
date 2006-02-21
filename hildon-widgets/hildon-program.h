@@ -1,7 +1,7 @@
 /*
- * This file is part of hildon-lgpl
+ * This file is part of hildon-libs
  *
- * Copyright (C) 2005 Nokia Corporation.
+ * Copyright (C) 2006 Nokia Corporation.
  *
  * Contact: Luc Pionchon <luc.pionchon@nokia.com>
  *
