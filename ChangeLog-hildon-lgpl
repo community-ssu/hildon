@@ -1,0 +1,408 @@
+2006-02-21  Luc Pionchon  <luc.pionchon@nokia.com>
+
+	* configure.ac: 0.12.1
+
+2006-02-17  Guillem Jover  <guillem.jover@nokia.com>
+
+        * hildon-lgpl.pc.in (Requires): Remove indirect dependency gtk+-2.0.
+        (Libs): Remove indirect dependency @X_LIBS@.
+        (Cflags): Remove indirect cflags @X_CFGLAGS@.
+        * configure.ac (AC_CANONICAL_HOST, AC_PROG_CC, AC_PROG_CPP)
+        (AC_PROG_INSTALL, AC_PROG_AWK, AC_PROG_LIBTOOL, AC_HEADER_STDC)
+        (ALL_LINGUAS, AM_GLIB_GNU_GETTEXT, AC_PATH_XTRA, localedir)
+        (outomoduledir, docdir, HTML_DIR, CFLAGS, GTK_VERSION): Remove macros.
+        (OUTO, GTK, GCONF, LIBMB, GTKDOC): Remove modules.
+        (AC_INIT, AM_INIT_AUTOMAKE): Switch to autoconf 2.50 macro form.
+        (AC_CONFIG_SRCDIR): New macro.
+        (AM_CONFIG_HEADER): Renamed to ...
+        (AC_CONFIG_HEADERS): ... this.
+        (AC_OUTPUT): Move contents to ...
+        (AC_CONFIG_FILES): ... here. New macro.
+        * Makefile.am (EXTRA_DIST): Remove 'debian/hildon-lgpl-dev.docs'.
+        * autogen.sh: Replace individual autotool calls with autoreconf.
+        * config.guess: Remove file.
+        * config.sub: Likewise.
+        * depcomp: Likewise.
+        * ltmain.sh: Likewise.
+        * mkinstalldirs: Likewise.
+
+2006-02-14  Luc Pionchon  <luc.pionchon@nokia.com>
+
+	* configure.ac: 0.12.0
+
+        Merge hildon-lgpl into hidon-libs. hildon-lgpl is now just a dummy
+	package, temporarily kept for compatibility.
+	
+	* Makefile.am (SUBDIRS): removed all subfolders
+	* Makefile.am (EXTRA_DIST): removed lib install
+	* configure.ac (AC_OUTPUT): removed all except .pc file 
+	* hildon-lgpl.pc.in (Requires): requires hildon-libs 0.12.0
+	
+	* hildon-lgpl/gtk-infoprint.c: moved to hildon-lgpl.
+	* hildon-lgpl/gtk-infoprint.h: likewise.
+	* hildon-lgpl/hildon-app-private.h: likewise.
+	* hildon-lgpl/hildon-app.c: likewise.
+	* hildon-lgpl/hildon-app.h: likewise.
+	* hildon-lgpl/hildon-appview.c: likewise.
+	* hildon-lgpl/hildon-appview.h: likewise.
+	* hildon-lgpl/hildon-caption.c: likewise.
+	* hildon-lgpl/hildon-caption.h: likewise.
+	* hildon-lgpl/hildon-defines.c: likewise.
+	* hildon-lgpl/hildon-defines.h: likewise.
+	* hildon-lgpl/hildon-find-toolbar.c: likewise.
+	* hildon-lgpl/hildon-find-toolbar.h: likewise.
+	* hildon-lgpl/hildon-input-mode-hint.h: likewise.
+
+	* timer/*: moved to hildon-libs
+	* doc/*: likewise.
+
+	* po/*: merged into hildon-libs (4 msgstr)
+
+
+2006-01-18  Luc Pionchon  <luc.pionchon@nokia.com>
+
+	* configure.ac: 0.10.1
+
+2006-01-18  Luc Pionchon  <luc.pionchon@nokia.com>
+
+	N#16991 Find toolbar: wrong order of items in find toolbar history list.
+
+	* hildon-lgpl/hildon-find-toolbar.c
+	(hildon_find_toolbar_history_append): now remove the oldest item
+	if the history is full (more items than the history_limit property
+	allowes).
+
+2006-01-04  Luc Pionchon  <luc.pionchon@nokia.com>
+
+	N#22187 HildonAppview leaks memory on each menu open
+
+	* hildon-lgpl/hildon-appview.c (_hildon_appview_toggle_menu): free
+	the list of children returned by gtk_container_get_children().
+	
+2006-01-04  Luc Pionchon  <luc.pionchon@nokia.com>
+
+	N#20354 Find Toolbar doesn't initiate search on VKBD enter
+
+	* hildon-lgpl/hildon-find-toolbar.c
+	(hildon_find_toolbar_entry_key_press): new static function. When
+	enter pressed, emmits the signals needed for searching and keeps
+	focus within entry.
+
+	* hildon-lgpl/hildon-find-toolbar.c (hildon_find_toolbar_init):
+	connected the new key-press handler to the entry in the combo and
+	unset GTK_CAN_FOCUS flags for the buttons.
+
+2006-01-04  Luc Pionchon  <luc.pionchon@nokia.com>
+
+	N#18086 Captioned control highlighted even if content in CC is dimmed
+
+	* hildon-lgpl/hildon-caption.c (hildon_caption_button_press)
+	(get_first_focusable_child): check for sensitivity of child widget
+	when caption receives focus.
+
+2006-01-04  Luc Pionchon  <luc.pionchon@nokia.com>
+
+	N#16991 Find toolbar: wrong order of items in find toolbar history list
+	* hildon-lgpl/hildon-find-toolbar.c
+	(hildon_find_toolbar_history_append): append the items (do not
+	prepend)
+
+2006-01-03  Luc Pionchon  <luc.pionchon@nokia.com>
+
+	N#19656 Memory leak in hildon-lgpl	
+	* hildon-lgpl/hildon-app.c (hildon_app_destroy): free
+	priv->view_ids elements.
+
+2006-01-03  Luc Pionchon  <luc.pionchon@nokia.com>
+
+	* hildon-lgpl/hildon-caption.c
+	* hildon-lgpl/hildon-appview.c
+	* hildon-lgpl/hildon-defines.c
+	* hildon-lgpl/hildon-app.c
+	* hildon-lgpl/hildon-find-toolbar.c
+	  commented code
+	
+2005-12-12  Luc Pionchon  <luc.pionchon@nokia.com>
+
+        N#21833 Implement robust timer handling in Info Banner.
+
+        (this is a workaround:)
+        * hildon-lgpl/gtk-infoprint.c: Added a check to see if the timer
+        has been created before removing it, in case of creating a new
+        InfoPrint when one already exists. Also if the timer wasn't
+        removed on the account that it hadn't been created already and the
+        program is trying to recreate the same InfoPrint, we do not set up
+        a new timer, but wait for the original timer to handle the removal
+        of the InfoPrint.
+	(infoprint_idle_before_timer, infoprint_start_timer): new functions
+	
+2005-11-28  Luc Pionchon  <luc.pionchon@nokia.com>
+
+	N#17142 HildonCaption shall be top aligned (multiline control)
+	
+	* hildon-caption.[ch]:
+	(hildon_caption_set_label_alignment): New function
+	(hildon_caption_get_label_alignment): New function
+	(hildon_caption_init): Added GtkAlignment for custom icon.
+	(hildon_caption_set_property): Changed alignments of mandatory
+	icon and custom icon.
+	(hildon_caption_expose): Take alignment into account when painting
+	focus box.
+
+2005-11-28  Luc Pionchon  <luc.pionchon@nokia.com>
+
+	* configure.ac: 0.10.0 branch (0.9.xx continues for maintenance releases)
+	                Gazpacho support added to 0.10 branch (not 0.9).
+
+2005-11-18  Luc Pionchon  <luc.pionchon@nokia.com>
+
+	Gazpacho support
+	
+	* hildon-lgpl/hildon-app-private.h:
+	* hildon-lgpl/hildon-app.h:
+	* hildon-lgpl/hildon-app.c:
+        - Added support for properties,
+          - "autoregistration"
+          - "appview"
+          - "ui-manager" *
+        - Added support for containing any type of widget (not just AppViews)
+        - Change hildon_app_get_children to actually return the children,
+          not just the active one (BIN(app)->child will give you that)
+        - Added support for appview-specific and global menuitems with
+          GtkUIManager
+        - * new features, GtkUIManager support
+
+	* hildon-lgpl/hildon-appview.h:
+	* hildon-lgpl/hildon-appview.c:
+        - Added support for properties,
+          - "title"
+          - "menu-ui" *
+        - Now using GtkUIManager internally (retains backwards compatibilty)
+        - * new feature, GtkUIManager support
+
+2005-11-16  Luc Pionchon  <luc.pionchon@nokia.com>
+
+	* configure.ac: 0.9.57
+
+2005-11-16  Luc Pionchon  <luc.pionchon@nokia.com>
+
+        N#11861 tasknavigator app switcher has incorrect window-title.
+
+	* hildon-lgpl/hildon-app.c (hildon_app_set_appview): Active view
+	needs to be updated before the view name, otherwise Task Navigator
+	may update the name of the previous view instead the name of the
+	current view.
+
+	* hildon-lgpl/hildon-app.c (hildon_app_notify_view_changed): Added
+	XFlush() to speed up the propagation of the active view change.
+
+2005-11-03  Luc Pionchon  <luc.pionchon@nokia.com>
+
+	* configure.ac: 0.9.56
+
+2005-11-03  Luc Pionchon  <luc.pionchon@nokia.com>
+
+	* hildon-lgpl/hildon-app.c: Removed copy&pasting code. It's in
+	HildonIMContext now.
+
+2005-10-19  Luc Pionchon  <luc.pionchon@nokia.com>
+
+	* configure.ac: 0.9.55
+
+2005-10-12  Luc Pionchon  <luc.pionchon@nokia.com>
+
+	* hildon-lgpl/gtk-infoprint.c (queue_new_cbanner)
+	(gtk_msg_window_init): If the new infoprint is identical to the
+	existing infoprint and therefore the timeout of the existing
+	infoprint is reset instead of creating a new infoprint, the widget
+	that was supposed be displayed in the new infoprint is now
+	freed. N#20011
+
+2005-10-05  Luc Pionchon  <luc.pionchon@nokia.com>
+
+	* configure.ac: 0.9.54
+
+2005-10-04  Luc Pionchon  <luc.pionchon@nokia.com>
+
+	* hildon-lgpl/hildon-caption.c (hildon_caption_expose):
+	caption_area is now exposed twice only if the widget is focused
+	and we also need to draw the focus background. N#16647 (Text looks
+	wrong in captioned labels)
+
+2005-10-04  Luc Pionchon  <luc.pionchon@nokia.com>
+
+	N#19554 Application menu does not emit "deactivate" signal when
+	closed with the menu HW key,
+	
+	* hildon-lgpl/hildon-appview.c (_hildon_appview_toggle_menu): Make
+	sure gtk_menu_shell_deactivate() is always called when app menu is
+	closed.
+	
+	* hildon-lgpl/hildon-app.c (hildon_app_event_filter): Removed
+	gtk_menu_shell_deactivate() call since it's now done in
+	_hildon_appview_toggle_menu().
+
+2005-10-04  Luc Pionchon  <luc.pionchon@nokia.com>
+
+	* hildon-lgpl/gtk-infoprint.c (gtk_msg_window_real_destroy)
+	(gtk_msg_window_init): Added check for reference decrementing when
+	window is destroyed with its parent. N#19047
+
+2005-09-14  Luc Pionchon  <luc.pionchon@nokia.com>
+
+	* configure.ac: Release 0.9.53
+
+2005-09-09  Luc Pionchon  <luc.pionchon@nokia.com>
+
+	* hildon-lgpl/hildon-app.c (hildon_app_event_filter): when
+	receiving "Open app menu" event from WM, don't open the menu if
+	mouse is in grabbed state. N#18991
+
+2005-08-30  Tommi Komulainen  <tommi.komulainen@nokia.com>
+
+	* configure.ac: Release 0.9.52
+
+2005-08-30  Tommi Komulainen  <tommi.komulainen@nokia.com>
+
+	* hildon-lgpl/hildon-caption.c (hildon_caption_button_press): Consider
+	also internal children of composite widgets when trying to find the
+	widget to focus.
+	N#17712
+
+2005-08-25  Tommi Komulainen  <tommi.komulainen@nokia.com>
+
+	* configure.ac: Release 0.9.51
+
+2005-08-25  Tommi Komulainen  <tommi.komulainen@nokia.com>
+
+	* hildon-lgpl/hildon-app.c (hildon_app_key_snooper): Don't stop the
+	menu key event so that it reaches GTK where it closes all existing
+	menus that might be open.
+	N#16593
+
+2005-08-17  Tommi Komulainen  <tommi.komulainen@nokia.com>
+
+	* configure.ac: Release 0.9.50
+
+2005-08-17  Tommi Komulainen  <tommi.komulainen@nokia.com>
+
+	* hildon-lgpl/hildon-app.c (hildon_app_key_snooper): Don't act on menu
+	key when a modal dialog is open/active.  N#17216
+
+2005-08-16  Tommi Komulainen  <tommi.komulainen@nokia.com>
+
+	* configure.ac: Release 0.9.49
+
+2005-08-16  Tommi Komulainen  <tommi.komulainen@nokia.com>
+	
+	* hildon-lgpl/hildon-app.c (hildon_app_event_filter): Application
+	topping needs to follow _MB_CURRENT_APP_WINDOW rather than
+	_NET_ACTIVE_WINDOW.  N#15427
+
+2005-08-16  Tommi Komulainen  <tommi.komulainen@nokia.com>
+
+	* hildon-lgpl/hildon-app.c (get_active_main_window): Trap X errors
+	when querying window transiency.  
+	N#15170
+	
+2005-08-16  Tommi Komulainen  <tommi.komulainen@nokia.com>
+
+	* hildon-lgpl/hildon-caption.c (hildon_caption_size_allocate): Check
+	children for focusability.  N#16222
+
+2005-08-16  Tommi Komulainen  <tommi.komulainen@nokia.com>
+
+	* configure.ac (CFLAGS): Change -std=c99 to -ansi
+	* hildon-lgpl/hildon-caption.c (hildon_caption_hierarchy_changed):
+	* hildon-lgpl/hildon-appview.c (hildon_appview_signal_marshal):
+	* hildon-lgpl/hildon-defines.c (hildon_change_style_recursive_from_ld):
+	* hildon-lgpl/hildon-app.c (hildon_app_remove): Add GNUC __extension__
+	to fix compilation with GCC3.4.
+	N#13414
+
+2005-08-16  Tommi Komulainen  <tommi.komulainen@nokia.com>
+
+	Update to new l10 packaging style.  po-files (inside this package) are
+	not used for now, the message catalogs come from separate packages and
+	including them here would conflict.
+
+	* Makefile.am (SUBDIRS): stop including po-files
+	* Makefile.am (EXTRA_DIST):
+	* debian/hildon-lgpl-l10n-engb.install:
+	* debian/hildon-lgpl-l10n-src.install:
+	* po/debian/*: Removed
+
+2005-08-09  Luc Pionchon  <luc.pionchon@nokia.com>
+
+	ScrollControl was never working as it was designed, and it had
+	debendency to libxtst. Fixed the feature and removed the
+	dependency:
+
+	* hildon-lgpl/hildon-app.c (find_window): new function. Finds the
+	window which for the fake mouse press/release event is sent.
+	(hildon_app_button_press): Renamed to hildon_app_button, now also
+	handling mouse release. Changed xtst related code to the new fake
+	event based system.
+
+	* debian/control (Depends, Build-Depends): removed dependency to libxtst
+	* hildon-lgpl/Makefile.am (libhildonlgpl_la_LIBADD): likewise
+
+
+2005-08-05  Luc Pionchon  <luc.pionchon@nokia.com>
+
+	* hildon-lgpl/hildon-app.c: Grab X events in init() instead of
+	realize() since the HildonApp is never shown if application has
+	only dialog window.  Also don't break in the event handler if
+	HildonApp's GdkWindow doesn't exist.
+
+	* hildon-lgpl/hildon-find-toolbar.c: changed icons and add the
+	space between label and combobox entry.
+
+2005-08-03  Luc Pionchon  <luc.pionchon@nokia.com>
+
+	* hildon-lgpl.pc.in (Libs): Removed old -lXtst dependency
+
+	* hildon-lgpl/hildon-app.c (hildon_app_event_filter): Appmenu
+	click checking shouldn't be done when we're in fullscreen mode,
+	since there is no appmenu then.
+
+2005-08-01  Luc Pionchon  <luc.pionchon@nokia.com>
+
+	* hildon-caption.c: check if the child is container which contains
+	focusable widget
+	
+	* hildon-find-toolbar.[ch] (hildon_find_toolbar_highlight_entry):
+	new function to highlight text entry and let it grab focus
+	depending on passed value.
+	
+	* configure.ac: Adjusted CFLAGS and removed -Werror due to the
+	glib-2.0 flaw. See
+	http://bugzilla.gnome.org/show_bug.cgi?id=310175 and
+	http://bugzilla.gnome.org/show_bug.cgi?id=310216
+
+	* hildon-lgpl/hildon-app.c: handle 'menu' hardkey (fix), do not
+	react to long press.
+
+	* hildon-lgpl/gtk-infoprint.c: fixed a crash in
+	GtkInfoprint. gtk_banner_close attempted to destroy a banner which
+	was actually already destroyed automatically when its transient
+	parent was destroyed
+
+	* hildon-lgpl/hildon-defines.h: Fixed problem where
+	HILDON_ICON_SIZE_INDI_WLAN_STRENGTH was set too small
+
+	* Fixed dimming paste option when copied text cannot / should not
+	be pasted
+
+	* hildon-app.c: Disallowed copying / cutting text from non-visible
+	widgets Removed forced geometry constraints
+
+	* hildon-defines.[ch]: Icon size definition fixes
+
+	* Fixed critical GTK+ error in open file dialog
+
+	* Fixed drag and drop not working correctly
+
+	* gtk-infoprint.c: replace gtk_if_fail with code which doesn't
+	spam the console with Gtk-CRITICAL messages
+
