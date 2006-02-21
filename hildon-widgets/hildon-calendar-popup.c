@@ -26,7 +26,7 @@
  * @shortdesc: CalendarPopup allows choosing a date from a popup calendar.
  * @longdesc: The Calendar popup is a dialog that contains a GtkCalendar 
  * widget. The pop-up is cancelled by
- * either a mouse click outside of the dialog or pressing the ESC
+ * pressing the ESC
  * key.
  * </para><para>
  * 
@@ -91,7 +91,8 @@ enum {
 
 struct _HildonCalendarPopupPrivate {
     GtkWidget *cal;
-    gboolean can_exit;
+    gboolean can_exit; /* FIXME this variable is not necessary 
+                          and shuold be removed*/
 };
 
 GType hildon_calendar_popup_get_type(void)
@@ -287,6 +288,7 @@ static void hildon_calendar_popup_init(HildonCalendarPopup * cal)
     priv->can_exit = FALSE;
     priv->cal = gtk_calendar_new();
 
+    /* dialog options and packing */
     gtk_calendar_set_display_options(GTK_CALENDAR(priv->cal),
                                      GTK_CALENDAR_SHOW_HEADING |
                                      GTK_CALENDAR_SHOW_DAY_NAMES |
@@ -315,11 +317,18 @@ static void hildon_calendar_popup_init(HildonCalendarPopup * cal)
     g_signal_connect(G_OBJECT(priv->cal), "selected_date",
                      G_CALLBACK(hildon_calendar_allow_exit), cal);
 
+    /* set decorations, needs realizing first*/
     gtk_widget_realize(GTK_WIDGET(cal));
     gdk_window_set_decorations(GTK_WIDGET(cal)->window, GDK_DECOR_BORDER);
+    /*FIXME grabbing focus is useless here*/
     gtk_widget_grab_focus(priv->cal);
 }
 
+/* FIXME this function is useless and should be removed.
+ * Signal handler for day-selected signal from GtkCalendar. 
+ * Closes the dialog when the signal is received and accepts the 
+ * selected date.
+ */
 static gboolean
 hildon_calendar_day_selected(GtkWidget * widget, gpointer data)
 {
@@ -336,6 +345,10 @@ hildon_calendar_day_selected(GtkWidget * widget, gpointer data)
     return FALSE;
 }
 
+/*
+ * Signal handler for key-press-event. Closes the dialog for some
+ * special keys.
+ */
 static gboolean
 hildon_key_pressed(GtkWidget * widget, GdkEventKey * event, gpointer data)
 {
@@ -347,7 +360,7 @@ hildon_key_pressed(GtkWidget * widget, GdkEventKey * event, gpointer data)
     cal = HILDON_CALENDAR_POPUP(data);
     priv = HILDON_CALENDAR_POPUP_GET_PRIVATE(cal);
 
-    /* Handle Return_key press as OK response */ 
+    /* Handle Return key press as OK response */ 
     if (event->keyval == GDK_Return) {
         priv->can_exit = TRUE;
         gtk_dialog_response(GTK_DIALOG(cal), GTK_RESPONSE_OK);
@@ -367,6 +380,9 @@ hildon_key_pressed(GtkWidget * widget, GdkEventKey * event, gpointer data)
     return FALSE;
 }
 
+/*
+ * Validates the given date or initializes it with the current date
+ */
 static void
 init_dmy(guint year, guint month, guint day, guint * d, guint * m,
          guint * y)
@@ -390,6 +406,10 @@ init_dmy(guint year, guint month, guint day, guint * d, guint * m,
     }
 }
 
+/*
+ * Exits the dialog when selected_date signal is emmited.
+ * FIXME change name to better reflect the functionality
+ */
 static void
 hildon_calendar_allow_exit(GtkWidget * self, gpointer data)
 {
@@ -405,6 +425,9 @@ hildon_calendar_allow_exit(GtkWidget * self, gpointer data)
     gtk_dialog_response(GTK_DIALOG(cal), GTK_RESPONSE_OK);
 }
 
+/* FIXME this function is useless and should be 
+ * removed, along with can_exit flag
+ */
 static gboolean hildon_calendar_deny_exit(GtkWidget * self)
 {
     HildonCalendarPopup *cal;

@@ -334,6 +334,10 @@ GtkWidget *hildon_controlbar_new(void)
     return GTK_WIDGET(g_object_new(HILDON_TYPE_CONTROLBAR, NULL));
 }
 
+/* This function prevents Up and Down keys from changing the
+ * widget's value (like Left and Right).
+ * Instead they are used for changing focus to other widgtes.
+ */
 static gboolean
 hildon_controlbar_keypress(GtkWidget * widget, GdkEventKey * event)
 {

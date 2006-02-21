@@ -25,6 +25,12 @@
 #include <gtk/gtkwindow.h>
 #include "hildon-composite-widget.h"
 
+/* This function is a private function of hildon-libs. It hadles focus 
+ * changing for composite hildon widgets: HildonDateEditor, 
+ * HildonNumberEditor, HildonTimeEditor, HildonWeekdayPicker. 
+ * Its purpose is to focus the first widget (from left) inside the container 
+ * regardless of where the focus is coming from.
+ */
 gboolean
 hildon_composite_widget_focus (GtkWidget *widget, GtkDirectionType direction)
 {
