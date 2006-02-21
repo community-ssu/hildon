@@ -91,6 +91,8 @@ libhildonwidgets_la_SOURCES = \
 	hildon-find-toolbar.h \
 	gtk-infoprint.c \
 	gtk-infoprint.h \
+	hildon-banner.c \
+	hildon-banner.h \
 	hildon-input-mode-hint.h \
 	hildon-app-private.h \
 	hildon-caption.c \
@@ -149,6 +151,7 @@ hildonwidgetsincludeinst_DATA = \
 	hildon-appview.h \
 	hildon-find-toolbar.h \
 	gtk-infoprint.h \
+	hildon-banner.h \
 	hildon-input-mode-hint.h \
 	hildon-app-private.h \
 	hildon-caption.h \

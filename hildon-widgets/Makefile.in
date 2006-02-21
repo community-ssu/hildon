@@ -255,18 +255,20 @@ libhildonwidgets_la_SOURCES = \
 	hildon-system-sound.c \
 	hildon-system-sound.h \
 	hildon-app.c \
-	hildon-defines.c \
 	hildon-app.h \
+	hildon-defines.c \
 	hildon-defines.h \
 	hildon-appview.c \
-	hildon-find-toolbar.c \
-	gtk-infoprint.c \
 	hildon-appview.h \
+	hildon-find-toolbar.c \
 	hildon-find-toolbar.h \
+	gtk-infoprint.c \
 	gtk-infoprint.h \
-	hildon-caption.c \
+	hildon-banner.c \
+	hildon-banner.h \
 	hildon-input-mode-hint.h \
 	hildon-app-private.h \
+	hildon-caption.c \
 	hildon-caption.h \
 	hildon-window.c \
 	hildon-window.h \
@@ -313,6 +315,7 @@ hildonwidgetsincludeinst_DATA = \
 	hildon-appview.h \
 	hildon-find-toolbar.h \
 	gtk-infoprint.h \
+	hildon-banner.h \
 	hildon-input-mode-hint.h \
 	hildon-app-private.h \
 	hildon-caption.h \
@@ -345,8 +348,8 @@ am_libhildonwidgets_la_OBJECTS = hildon-marshalers.lo \
 	hildon-wizard-dialog.lo hildon-color-popup.lo \
 	hildon-color-button.lo hildon-system-sound.lo hildon-app.lo \
 	hildon-defines.lo hildon-appview.lo hildon-find-toolbar.lo \
-	gtk-infoprint.lo hildon-caption.lo hildon-window.lo \
-	hildon-program.lo
+	gtk-infoprint.lo hildon-banner.lo hildon-caption.lo \
+	hildon-window.lo hildon-program.lo
 libhildonwidgets_la_OBJECTS = $(am_libhildonwidgets_la_OBJECTS)
 
 DEFAULT_INCLUDES =  -I. -I$(srcdir) -I$(top_builddir)
@@ -356,6 +359,7 @@ am__depfiles_maybe = depfiles
 @AMDEP_TRUE@	./$(DEPDIR)/hildon-add-home-dialog.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/hildon-app.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/hildon-appview.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/hildon-banner.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/hildon-calendar-popup.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/hildon-caption.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/hildon-color-button.Plo \
@@ -457,6 +461,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/hildon-add-home-dialog.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/hildon-app.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/hildon-appview.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/hildon-banner.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/hildon-calendar-popup.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/hildon-caption.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/hildon-color-button.Plo@am__quote@

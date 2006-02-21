@@ -1,9 +1,19 @@
 2006-02-21  Luc Pionchon  <luc.pionchon@nokia.com>
 
+        Added hildon-banner, as a clean replacement for gtk-infoprint
+	* hildon-widgets/hildon-banner.[ch]: implementation and header	
+	* hildon-widgets/Makefile.am: reference new files
+	* hildon-widgets/gtk-infoprint.c: removed implementation, now just
+	a compatibility wrapper to hildon-banner
+	
+2006-02-21  Luc Pionchon  <luc.pionchon@nokia.com>
+	
 	* hildon-widgets/hildon-color-button.c: added comments
 	* hildon-widgets/hildon-controlbar.c: Likewise.
 	* hildon-widgets/hildon-composite-widget.c: Likewise.
 	* hildon-widgets/hildon-calendar-popup.c: Likewise.
+
+2006-02-21  Luc Pionchon  <luc.pionchon@nokia.com>
 
 	* ChangeLog-hildon-lgpl: copied from old hildon-lgpl/ChangeLog for
 	reference
