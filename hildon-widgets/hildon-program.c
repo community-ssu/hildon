@@ -112,9 +112,9 @@ hildon_program_init (HildonProgram *self)
     priv->killable = FALSE;
     priv->window_count = 0;
     priv->is_topmost = FALSE;
-    priv->window_group = 0;
+    priv->window_group = GDK_WINDOW_XID (gdk_display_get_default_group
+                                  (gdk_display_get_default()));
     priv->name = NULL;
-/*    priv->group_leader = NULL;*/
 }
 
 static void
@@ -216,7 +216,7 @@ hildon_program_window_list_compare (gconstpointer window_a,
     g_return_val_if_fail (1, HILDON_IS_WINDOW(window_a) && 
                              HILDON_IS_WINDOW(window_b));
 
-    return GTK_WIDGET (window_a)->window != GTK_WIDGET(window_b)->window;
+    return window_a != window_b;
 }
 
 /*
@@ -357,9 +357,6 @@ hildon_program_add_window (HildonProgram *self, HildonWindow *window)
 
     if (!priv->window_count)
     {
-        priv->window_group = GDK_WINDOW_XID (gdk_window_get_group (
-                    GTK_WIDGET (window)->window));
-            
         hildon_program_update_top_most (self);
         
         /* Now that we have a window we should start keeping track of

@@ -726,7 +726,7 @@ hildon_window_is_topmost_notify (GObject *self,
                                  gpointer null)
 {
     HildonWindow *window = HILDON_WINDOW (self);
-    
+
     if (window->priv->is_topmost)
     {
         hildon_window_take_common_toolbar (window);
@@ -1201,6 +1201,8 @@ hildon_window_take_common_toolbar (HildonWindow *self)
         GtkWidget *common_toolbar =  
            GTK_WIDGET (hildon_program_get_common_toolbar (self->priv->program));
 
+        fprintf( stderr, "Got common toolbar\n");
+
         if (common_toolbar && common_toolbar->parent != self->priv->vbox)
         {
             g_object_ref (common_toolbar);
@@ -1211,10 +1213,12 @@ hildon_window_take_common_toolbar (HildonWindow *self)
             }
 
             gtk_box_pack_end (GTK_BOX(self->priv->vbox), common_toolbar,
-                    TRUE, TRUE, 7);
+                    TRUE, TRUE, 0);
             g_object_unref (common_toolbar);
 
-            gtk_widget_show_all  (self->priv->vbox);
+            gtk_widget_set_size_request (common_toolbar, -1, TOOLBAR_HEIGHT);
+
+            gtk_widget_show  (self->priv->vbox);
 
         }
     }
@@ -1265,6 +1269,11 @@ hildon_window_update_title (HildonWindow *window)
 {
     const gchar * application_name;
     g_return_if_fail (window && HILDON_IS_WINDOW (window));
+
+    if (!GTK_WIDGET_REALIZED (window))
+    {
+        return;
+    }
 
     application_name = g_get_application_name ();
 
@@ -1428,7 +1437,9 @@ hildon_window_add_toolbar (HildonWindow *self, GtkToolbar *toolbar)
 
     vbox = GTK_BOX (self->priv->vbox);
 
-    gtk_box_pack_start (vbox, GTK_WIDGET(toolbar), TRUE, TRUE, 7);
+    gtk_box_pack_start (vbox, GTK_WIDGET(toolbar), TRUE, TRUE, 0);
+    gtk_box_reorder_child (vbox, GTK_WIDGET(toolbar), 0);
+    gtk_widget_set_size_request (GTK_WIDGET (toolbar), -1, TOOLBAR_HEIGHT);
 
     gtk_widget_queue_resize (GTK_WIDGET(self));
 }
@@ -1448,6 +1459,11 @@ hildon_window_remove_toolbar (HildonWindow *self, GtkToolbar *toolbar)
     g_return_if_fail (self && HILDON_IS_WINDOW (self));
 
     gtk_container_remove (vbox, GTK_WIDGET(toolbar));
+    /* FIXME: As the toolbar border graphics go beyond the VBox, we
+     * need to trigger a manual redraw */
+    gtk_widget_queue_draw_area (GTK_WIDGET (self) , 0, 0, 
+                GTK_WIDGET(self)->allocation.width,
+                GTK_WIDGET(self)->allocation.height);
 }
 
 /**
