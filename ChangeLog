@@ -1,3 +1,18 @@
+2006-03-02  Johan Bilien  <johan.bilien@nokia.com>
+
+	* hildon-widgets/hildon-code-dialog.[ch], hildon-widgets/Makefile.am:
+	  added HildonCodeDialog widget
+
+2006-03-02  Johan Bilien  <johan.bilien@nokia.com>
+
+	* hildon-widgets/hildon-window.c: 
+	  - set the toolbar height explicitely
+	  - use show instead of show_all on the common_toolbar
+	  - add the toolbars bottom-up instead of top-down
+	* hildon-widgets/hildon-program.c:
+	  - don't assume that a window was realized when added to 
+	    the program
+
 2006-02-21  Luc Pionchon  <luc.pionchon@nokia.com>
 
         Added hildon-banner, as a clean replacement for gtk-infoprint

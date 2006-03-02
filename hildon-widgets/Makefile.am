@@ -101,7 +101,9 @@ libhildonwidgets_la_SOURCES = \
 	hildon-window.h \
 	hildon-window-private.h \
 	hildon-program.c \
-	hildon-program.h
+	hildon-program.h \
+	hildon-code-dialog.c \
+	hildon-code-dialog.h
 
 
 hildon-marshalers.h: hildon-marshalers.list
@@ -157,4 +159,5 @@ hildonwidgetsincludeinst_DATA = \
 	hildon-caption.h \
 	hildon-window.h \
 	hildon-program.h \
-	hildon-window-private.h
+	hildon-window-private.h \
+	hildon-code-dialog.h
