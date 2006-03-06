@@ -59,7 +59,9 @@ struct _HildonWizardDialog {
 
 struct _HildonWizardDialogClass {
     GtkDialogClass parent_class;
-    void (*_gtk_reserved1) (void);
+    gboolean (*page_change) (HildonWizardDialog *wizard_dialog,
+                             gint response,
+                             gpointer user_data);
     void (*_gtk_reserved2) (void);
     void (*_gtk_reserved3) (void);
     void (*_gtk_reserved4) (void);

@@ -30,6 +30,7 @@
 #include <gtk/gtkvbox.h>
 #include <gtk/gtkbutton.h>
 #include <hildon-widgets/hildon-defines.h>
+#include <hildon-widgets/hildon-marshalers.h>
 
 #include "hildon-wizard-dialog.h"
 
@@ -59,11 +60,23 @@ static void hildon_wizard_dialog_get_property(GObject * object,
                                               GValue * value,
                                               GParamSpec * pspec);
 static void hildon_wizard_dialog_finalize(GObject * object);
+static void hildon_wizard_dialog_update_state(HildonWizardDialog *
+					      wizard_dialog);
+static gboolean hildon_wizard_dialog_page_change (HildonWizardDialog *
+						  wizard_dialog,
+						  gint response,
+						  gpointer user_data);
 
 
 enum {
     PROP_WIZARD_NAME = 1,
     PROP_WIZARD_NOTEBOOK
+};
+
+enum {
+  PAGE_CHANGE = 0,
+
+  LAST_SIGNAL
 };
 
 struct _HildonWizardDialogPrivate {
@@ -75,6 +88,7 @@ struct _HildonWizardDialogPrivate {
     GtkWidget *next_button;
 };
 
+static guint HildonWizardDialog_signal[LAST_SIGNAL] = {0};
 
 GType hildon_wizard_dialog_get_type(void)
 {
@@ -117,6 +131,8 @@ hildon_wizard_dialog_class_init(HildonWizardDialogClass *
     object_class->get_property = hildon_wizard_dialog_get_property;
     object_class->finalize = hildon_wizard_dialog_finalize;
 
+    wizard_dialog_class->page_change = hildon_wizard_dialog_page_change;
+    
     /**
      * HildonWizardDialog:wizard-name:
      *
@@ -140,6 +156,25 @@ hildon_wizard_dialog_class_init(HildonWizardDialogClass *
                             "GtkNotebook object to be used in the "
                               "HildonWizardDialog",
                             GTK_TYPE_NOTEBOOK, G_PARAM_READWRITE));
+    /**
+     * HildonWizardDialog:page:
+     * 
+     * Gets emitted when the current page is about to change.
+     * It provides buttons response code as a parameter.
+     * Users handler can return TRUE to prevent page changing
+     * (e.g. in case of invalid data) or FALSE to change page.
+     * If FALSE is returned than default handler is called that
+     * change the page (hildon_wizard_dialog_page_change).
+     */ 
+    HildonWizardDialog_signal[PAGE_CHANGE] = 
+    			    g_signal_new(
+			    "page_change", HILDON_TYPE_WIZARD_DIALOG,
+			    G_SIGNAL_RUN_LAST, G_STRUCT_OFFSET 
+			    (HildonWizardDialogClass, page_change),
+			    g_signal_accumulator_true_handled, NULL, 
+			    _hildon_marshal_BOOLEAN__INT,
+			    G_TYPE_BOOLEAN, 1, G_TYPE_INT);
+    
 }
 
 static void hildon_wizard_dialog_finalize(GObject * object)
@@ -242,8 +277,12 @@ hildon_wizard_dialog_set_property(GObject * object, guint property_id,
 
         /* Update dialog title to reflact current page stats etc */        
         if (priv->wizard_name)
+	{
             hildon_wizard_dialog_create_title(HILDON_WIZARD_DIALOG
                                               (object));
+	    hildon_wizard_dialog_update_state(HILDON_WIZARD_DIALOG
+                                              (object));
+	}
         break;
     default:
         G_OBJECT_WARN_INVALID_PROPERTY_ID(object, property_id, pspec);
@@ -320,68 +359,128 @@ hildon_wizard_dialog_create_title(HildonWizardDialog * wizard_dialog)
           other buttons in action area?? Now they cannot be conveniently
           dimmed.
 */
-static void direction_button_clicked(GtkWidget *widget,
-                                     HildonWizardDialog *wizard_dialog)
+static void
+direction_button_clicked(GtkWidget *widget, HildonWizardDialog *wizard_dialog)
 {
     HildonWizardDialogPrivate *priv = wizard_dialog->priv;
-    GtkNotebook *notebook = priv->notebook;
-    gint current = 0;
-    gint last = gtk_notebook_get_n_pages(notebook) - 1;
-
+    gboolean rb;
+	
     /* Previous button clicked, we probably are on the first page now */
     if (widget == priv->previous_button)
     {
-        gtk_notebook_prev_page(notebook);
-        current = gtk_notebook_get_current_page(notebook);
-
-        /* If we are on the first page, we disable previous button. */
-        if (current == 0)
-        {
-            gtk_widget_set_sensitive(priv->previous_button, FALSE);
-            gtk_dialog_set_response_sensitive
-                (GTK_DIALOG(wizard_dialog),
-                 HILDON_WIZARD_DIALOG_FINISH,
-                 FALSE);
-        }
-
-        /* We want next button to be enabled, unless this is also
-           our last (and only) page. */
-        if (current != last)
-            gtk_widget_set_sensitive(priv->next_button, TRUE);
+	g_signal_emit_by_name (wizard_dialog,
+			       "page_change",
+			       HILDON_WIZARD_DIALOG_PREVIOUS,
+			       &rb,
+			       NULL);
     }
     else /* handle the "Next" button */
     {
-        /* Move forward */
-        gtk_notebook_next_page(notebook);
-        current = gtk_notebook_get_current_page(notebook);
-
-        /* If we actually moved somewhere else than to the first page,
-           we allow user to go backwards and also finish the dialog.
-           FIXME: Is this the desired behaviour? */
-        if (gtk_notebook_get_current_page(notebook) != 0)
-        {
-            gtk_widget_set_sensitive(priv->previous_button, TRUE);
-            gtk_dialog_set_response_sensitive
-                (GTK_DIALOG(wizard_dialog),
-                 HILDON_WIZARD_DIALOG_FINISH,
-                 TRUE);
-        }
-
-        /* If we ended up to the last page, going forward must be disabled */
-        if (current == last)
-            gtk_widget_set_sensitive(priv->next_button, FALSE);
+	g_signal_emit_by_name (wizard_dialog,
+			       "page_change",
+			       HILDON_WIZARD_DIALOG_NEXT,
+			       &rb,
+			       NULL);
     }
+}
 
+/* Updates the state of buttons and wizard icon
+ * based on the current page.
+ */
+static void
+hildon_wizard_dialog_update_state(HildonWizardDialog *wizard_dialog)
+{
+	HildonWizardDialogPrivate *priv = wizard_dialog->priv;
+	GtkNotebook *notebook = priv->notebook;
+	gint current =  gtk_notebook_get_current_page(notebook);
+	gint last = gtk_notebook_get_n_pages(notebook) - 1;
+
+	if (current==0)
+	{
+		/* first page */
+		gtk_widget_set_sensitive(priv->previous_button, FALSE);
+		
+		if (current!=last)
+		{
+			/* multi-page wizard */
+			gtk_widget_set_sensitive(priv->next_button, TRUE);
+			gtk_dialog_set_response_sensitive
+				(GTK_DIALOG(wizard_dialog),
+				 HILDON_WIZARD_DIALOG_FINISH,
+				 FALSE);
+		}
+		else
+		{
+			/* one page wizard */
+			gtk_widget_set_sensitive(priv->next_button, FALSE);
+			gtk_dialog_set_response_sensitive
+				(GTK_DIALOG(wizard_dialog),
+				 HILDON_WIZARD_DIALOG_FINISH,
+				 TRUE);
+		}
+	}
+	else if (current==last)
+	{
+		/* last page */
+		gtk_widget_set_sensitive(priv->next_button, FALSE);
+
+		gtk_widget_set_sensitive(priv->previous_button, TRUE);
+		gtk_dialog_set_response_sensitive
+			(GTK_DIALOG(wizard_dialog),
+			 HILDON_WIZARD_DIALOG_FINISH,
+			 TRUE);
+	}
+	else
+	{
+		/* in the middle */
+		gtk_widget_set_sensitive(priv->next_button, TRUE);
+
+		gtk_widget_set_sensitive(priv->previous_button, TRUE);
+		gtk_dialog_set_response_sensitive
+			(GTK_DIALOG(wizard_dialog),
+			 HILDON_WIZARD_DIALOG_FINISH,
+			 TRUE);
+	}
+	
     /* We show the default image on first and last pages */
     if (current == last || current == 0)
         gtk_widget_show(GTK_WIDGET(priv->image));
     else
         gtk_widget_hide(GTK_WIDGET(priv->image));
-
-    /* New page number may appear in the title, update it */
-    hildon_wizard_dialog_create_title(wizard_dialog);
+	
 }
 
+/* Deafult handler for page_change event.
+ * it is just change wizard-notebook current page and update buttons state
+ */
+static gboolean
+hildon_wizard_dialog_page_change (HildonWizardDialog *wizard_dialog,
+				  gint response,
+				  gpointer user_data)
+{
+    HildonWizardDialogPrivate *priv = wizard_dialog->priv;
+    GtkNotebook *notebook = priv->notebook;
+
+    /* Previous button clicked, we probably are on the first page now */
+    if (response == HILDON_WIZARD_DIALOG_PREVIOUS)
+    {
+        gtk_notebook_prev_page(notebook);
+    }
+    else if (response == HILDON_WIZARD_DIALOG_NEXT)/* handle the "Next" button */
+    {
+        /* Move forward */
+        gtk_notebook_next_page(notebook);
+    }
+
+    
+    /* New page number may appear in the title, update it */
+    hildon_wizard_dialog_create_title(wizard_dialog);
+
+    /* Update buttons state and wizard icon*/
+    hildon_wizard_dialog_update_state (wizard_dialog);
+    
+    return TRUE;
+}
 
 /**
  * hildon_wizard_dialog_new:

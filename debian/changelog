@@ -1,3 +1,26 @@
+hildon-libs (0.12.2-1) unstable; urgency=low
+
+  * ChangeLog-hildon-lgpl: copied from old hildon-lgpl/ChangeLog for
+    reference
+  * hildon-widgets/hildon-color-button.c: added comments
+  * hildon-widgets/hildon-controlbar.c: Likewise.
+  * hildon-widgets/hildon-composite-widget.c: Likewise.
+  * hildon-widgets/hildon-calendar-popup.c: Likewise
+  * Added hildon-banner, as a clean replacement for gtk-infoprint
+  * hildon-widgets/hildon-window.c:
+    - set the toolbar height explicitely
+    - use show instead of show_all on the common_toolbar
+    - add the toolbars bottom-up instead of top-down
+  * hildon-widgets/hildon-program.c:
+    - don't assume that a window was realized when added to
+      the program
+  * hildon-widgets/hildon-code-dialog.[ch], hildon-widgets/Makefile.am:
+    added HildonCodeDialog widget
+  * hildon-wizard-dialog.[ch]: Add page_change signal. Patch courtesy
+    of Artem Garmash (Closes M#422)
+  
+ -- Johan Bilien <johan.bilien@nokia.com>  Mon,  6 Mar 2006 16:15:56 +0200
+
 hildon-libs (0.12.1-1) unstable; urgency=low
 
   * added hildon-window and hildon-program

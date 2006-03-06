@@ -1,3 +1,9 @@
+2006-03-06  Johan Bilien  <johan.bilien@nokia.com>
+
+	* hildon-wizard-dialog.[ch]: Add page_change signal. Patch courtesy
+	  of Artem Garmash 
+	* configure.ac: 0.12.2
+
 2006-03-02  Johan Bilien  <johan.bilien@nokia.com>
 
 	* hildon-widgets/hildon-code-dialog.[ch], hildon-widgets/Makefile.am:
