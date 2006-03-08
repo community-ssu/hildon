@@ -1016,7 +1016,7 @@ hildon_window_key_press_event (GtkWidget *widget, GdkEventKey *event)
             break;
     }
 
-    return FALSE;
+    return GTK_WIDGET_CLASS (parent_class)->key_press_event (widget, event);
 
 }
 

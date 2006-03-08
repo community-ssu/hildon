@@ -1,3 +1,9 @@
+2006-03-07  Johan Bilien  <johan.bilien@nokia.com>
+
+	* hildon-widgets/hildon-window.c: propagate key-press event to the
+	  parent class (Closes N#23400)
+	* configure.ac: 0.12.3
+
 2006-03-06  Johan Bilien  <johan.bilien@nokia.com>
 
 	* hildon-wizard-dialog.[ch]: Add page_change signal. Patch courtesy

@@ -1,3 +1,11 @@
+hildon-libs (0.12.3-1) unstable; urgency=low
+
+  * hildon-widgets/hildon-window.c: propagate key-press event to the
+    parent class (Closes N#23400)
+  * Replaces hildon-lgpl0 < 0.12
+
+ -- Johan Bilien <johan.bilien@nokia.com>  Wed,  8 Mar 2006 17:32:18 +0200
+
 hildon-libs (0.12.2-1) unstable; urgency=low
 
   * ChangeLog-hildon-lgpl: copied from old hildon-lgpl/ChangeLog for
