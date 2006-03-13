@@ -19,6 +19,12 @@
 # suit your project. See the GTK+ Makefiles in gtk+/docs/reference for examples
 # of using the various options.
 
+# -*- mode: makefile -*-
+
+####################################
+# Everything below here is generic #
+####################################
+
 srcdir = @srcdir@
 top_srcdir = @top_srcdir@
 VPATH = @srcdir@
@@ -85,8 +91,9 @@ GMOFILES = @GMOFILES@
 GMSGFMT = @GMSGFMT@
 GNOME_VFS_CFLAGS = @GNOME_VFS_CFLAGS@
 GNOME_VFS_LIBS = @GNOME_VFS_LIBS@
-GTKDOC = @GTKDOC@
 GTK_CFLAGS = @GTK_CFLAGS@
+GTK_DOC_USE_LIBTOOL_FALSE = @GTK_DOC_USE_LIBTOOL_FALSE@
+GTK_DOC_USE_LIBTOOL_TRUE = @GTK_DOC_USE_LIBTOOL_TRUE@
 GTK_LIBS = @GTK_LIBS@
 GTK_VERSION = @GTK_VERSION@
 HAVE_DOXYGEN_FALSE = @HAVE_DOXYGEN_FALSE@
@@ -151,7 +158,6 @@ build_cpu = @build_cpu@
 build_os = @build_os@
 build_vendor = @build_vendor@
 datadir = @datadir@
-docdir = @docdir@
 exec_prefix = @exec_prefix@
 host = @host@
 host_alias = @host_alias@
@@ -181,70 +187,65 @@ DOC_MODULE = hildon-libs
 # The top-level SGML file. Change it if you want.
 DOC_MAIN_SGML_FILE = $(DOC_MODULE)-docs.xml
 
+# Extra options to supply to gtkdoc-scan.
+SCAN_OPTIONS = 
+
+# Extra options to pass to gtkdoc-scanobj or gtkdoc-scangobj.
+SCANOBJ_OPTIONS = --type-init-func="gtk_type_init(0)"
+
 # The directory containing the source code. Relative to $(srcdir).
 # gtk-doc will search all .c & .h files beneath here for inline comments
 # documenting functions and macros.
 DOC_SOURCE_DIR = ../hildon-widgets
 
-# Extra options to pass to gtkdoc-scanobj or gtkdoc-scangobj.
-SCANOBJ_OPTIONS = --type-init-func="gtk_type_init(0)"
-
-# Extra options to supply to gtkdoc-scan.
-SCAN_OPTIONS = 
+# Used for dependencies.
+HFILE_GLOB = $(top_srcdir)/hildon-widgets/*.h
+CFILE_GLOB = $(top_srcdir)/hildon-widgets/*.c
 
 # Header files to ignore when scanning.
 IGNORE_HFILES = *private* config.h ut md5.h hildon-volumebar-range.h hildon-volumebar-private.h \
 		hildon-app-private.h
 
 
-# Files to ignore when making the DB.
-IGNORE_FILES = $(IGNORE_HFILES)
+# CFLAGS and LDFLAGS for compiling scan program. Only needed if 
+# $(DOC_MODULE).types is non-empty.
+INCLUDES = $(GTK_CFLAGS) -I$(top_srcdir) $(GNOME_VFS_CFLAGS)
+
+GTKDOC_LIBS = $(GTK_LIBS) ../hildon-widgets/libhildonwidgets.la 
 
 # Extra options to supply to gtkdoc-mkdb.
-MKDB_OPTIONS = --ignore-files="$(IGNORE_FILES)" --sgml-mode --output-format=xml
-
-# Extra options to supply to gtkdoc-fixref.
-FIXXREF_OPTIONS = 
-
-# Used for dependencies.
-HFILE_GLOB = $(top_srcdir)/hildon-widgets/*.h
-CFILE_GLOB = $(top_srcdir)/hildon-widgets/*.c
-
-# Images to copy into HTML directory.
-HTML_IMAGES = 
+MKDB_OPTIONS = --sgml-mode --output-format=xml
 
 # Extra SGML files that are included by $(DOC_MAIN_SGML_FILE).
 content_files = 
 
-# Other files to distribute.
-extra_files = 
+# Images to copy into HTML directory.
+HTML_IMAGES = 
 
-# CFLAGS and LDFLAGS for compiling scan program. Only needed if your app/lib
-# contains GtkObjects/GObjects and you want to document signals and properties.
-GTKDOC_CFLAGS = $(GTK_CFLAGS) -I$(top_srcdir) $(GNOME_VFS_CFLAGS)
-GTKDOC_LIBS = $(GTK_LIBS) ../hildon-widgets/libhildonwidgets.la 
+# Extra options to supply to gtkdoc-fixref.
+FIXXREF_OPTIONS = 
+@GTK_DOC_USE_LIBTOOL_FALSE@GTKDOC_CC = $(CC) $(INCLUDES) $(AM_CFLAGS) $(CFLAGS)
 
-GTKDOC_CC = $(LIBTOOL) --mode=compile $(CC)
-GTKDOC_LD = $(LIBTOOL) --mode=link $(CC)
+@GTK_DOC_USE_LIBTOOL_TRUE@GTKDOC_CC = $(LIBTOOL) --mode=compile $(CC) $(INCLUDES) $(AM_CFLAGS) $(CFLAGS)
+@GTK_DOC_USE_LIBTOOL_FALSE@GTKDOC_LD = $(CC) $(AM_CFLAGS) $(CFLAGS) $(LDFLAGS)
+@GTK_DOC_USE_LIBTOOL_TRUE@GTKDOC_LD = $(LIBTOOL) --mode=link $(CC) $(AM_CFLAGS) $(CFLAGS) $(LDFLAGS)
 
-# If you need to override some of the declarations, place them in the
-# $(DOC_MODULE)-overrides.txt file and uncomment the second line here.
-DOC_OVERRIDES = 
+# We set GPATH here; this gives us semantics for GNU make
+# which are more like other make's VPATH, when it comes to
+# whether a source that is a target of one rule is then
+# searched for in VPATH/GPATH.
+#
+GPATH = $(srcdir)
 
-#DOC_OVERRIDES = $(DOC_MODULE)-overrides.txt
-
-###########################################################################
-# Everything below here is generic and you shouldn't need to change it.
-###########################################################################
 TARGET_DIR = $(HTML_DIR)/$(DOC_MODULE)
 
 EXTRA_DIST = \
 	$(content_files)		\
-	$(extra_files)			\
 	$(HTML_IMAGES)			\
 	$(DOC_MAIN_SGML_FILE)		\
 	$(DOC_MODULE).types		\
-	$(DOC_OVERRIDES)
+	$(DOC_MODULE)-sections.txt	\
+	$(DOC_MODULE)-overrides.txt
 
 
 DOC_STAMPS = scan-build.stamp tmpl-build.stamp sgml-build.stamp html-build.stamp \
@@ -259,24 +260,19 @@ SCANOBJ_FILES = \
 	$(DOC_MODULE).signals
 
 
-gtkdocdir = $(docdir)
-gtkdochtmldir = $(gtkdocdir)/html
-gtkdocpackagedir = $(gtkdochtmldir)/$(DOC_MODULE)
-
-gtkdocpackage_DATA = $(wildcard $(srcdir)/html/*.html)
+CLEANFILES = $(SCANOBJ_FILES) $(DOC_MODULE)-scan.o $(DOC_MODULE)-unused.txt $(DOC_STAMPS)
 subdir = doc
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
 CONFIG_HEADER = $(top_builddir)/config.h
 CONFIG_CLEAN_FILES =
 DIST_SOURCES =
-DATA = $(gtkdocpackage_DATA)
-
-DIST_COMMON = $(srcdir)/Makefile.in Makefile.am
+DIST_COMMON = $(srcdir)/Makefile.in $(top_srcdir)/gtk-doc.make \
+	Makefile.am
 all: all-am
 
 .SUFFIXES:
-$(srcdir)/Makefile.in:  Makefile.am  $(top_srcdir)/configure.ac $(ACLOCAL_M4)
+$(srcdir)/Makefile.in:  Makefile.am $(top_srcdir)/gtk-doc.make $(top_srcdir)/configure.ac $(ACLOCAL_M4)
 	cd $(top_srcdir) && \
 	  $(AUTOMAKE) --foreign  doc/Makefile
 Makefile:  $(srcdir)/Makefile.in  $(top_builddir)/config.status
@@ -291,24 +287,6 @@ clean-libtool:
 distclean-libtool:
 	-rm -f libtool
 uninstall-info-am:
-gtkdocpackageDATA_INSTALL = $(INSTALL_DATA)
-install-gtkdocpackageDATA: $(gtkdocpackage_DATA)
-	@$(NORMAL_INSTALL)
-	$(mkinstalldirs) $(DESTDIR)$(gtkdocpackagedir)
-	@list='$(gtkdocpackage_DATA)'; for p in $$list; do \
-	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
-	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " $(gtkdocpackageDATA_INSTALL) $$d$$p $(DESTDIR)$(gtkdocpackagedir)/$$f"; \
-	  $(gtkdocpackageDATA_INSTALL) $$d$$p $(DESTDIR)$(gtkdocpackagedir)/$$f; \
-	done
-
-uninstall-gtkdocpackageDATA:
-	@$(NORMAL_UNINSTALL)
-	@list='$(gtkdocpackage_DATA)'; for p in $$list; do \
-	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " rm -f $(DESTDIR)$(gtkdocpackagedir)/$$f"; \
-	  rm -f $(DESTDIR)$(gtkdocpackagedir)/$$f; \
-	done
 tags: TAGS
 TAGS:
 
@@ -321,6 +299,7 @@ top_distdir = ..
 distdir = $(top_distdir)/$(PACKAGE)-$(VERSION)
 
 distdir: $(DISTFILES)
+	$(mkinstalldirs) $(distdir)/..
 	@srcdirstrip=`echo "$(srcdir)" | sed 's|.|.|g'`; \
 	topsrcdirstrip=`echo "$(top_srcdir)" | sed 's|.|.|g'`; \
 	list='$(DISTFILES)'; for file in $$list; do \
@@ -352,10 +331,9 @@ distdir: $(DISTFILES)
 	  dist-hook
 check-am: all-am
 check: check-am
-all-am: Makefile $(DATA) all-local
+all-am: Makefile all-local
 
 installdirs:
-	$(mkinstalldirs) $(DESTDIR)$(gtkdocpackagedir)
 install: install-am
 install-exec: install-exec-am
 install-data: install-data-am
@@ -373,6 +351,7 @@ install-strip:
 mostlyclean-generic:
 
 clean-generic:
+	-test -z "$(CLEANFILES)" || rm -f $(CLEANFILES)
 
 distclean-generic:
 	-rm -f $(CONFIG_CLEAN_FILES)
@@ -396,7 +375,7 @@ info: info-am
 
 info-am:
 
-install-data-am: install-gtkdocpackageDATA
+install-data-am: install-data-local
 
 install-exec-am:
 
@@ -423,19 +402,18 @@ ps: ps-am
 
 ps-am:
 
-uninstall-am: uninstall-gtkdocpackageDATA uninstall-info-am
+uninstall-am: uninstall-info-am uninstall-local
 
 .PHONY: all all-am all-local check check-am clean clean-generic \
 	clean-libtool clean-local distclean distclean-generic \
 	distclean-libtool distdir dvi dvi-am info info-am install \
-	install-am install-data install-data-am install-exec \
-	install-exec-am install-gtkdocpackageDATA install-info \
-	install-info-am install-man install-strip installcheck \
-	installcheck-am installdirs maintainer-clean \
-	maintainer-clean-generic maintainer-clean-local mostlyclean \
-	mostlyclean-generic mostlyclean-libtool pdf pdf-am ps ps-am \
-	uninstall uninstall-am uninstall-gtkdocpackageDATA \
-	uninstall-info-am
+	install-am install-data install-data-am install-data-local \
+	install-exec install-exec-am install-info install-info-am \
+	install-man install-strip installcheck installcheck-am \
+	installdirs maintainer-clean maintainer-clean-generic \
+	maintainer-clean-local mostlyclean mostlyclean-generic \
+	mostlyclean-libtool pdf pdf-am ps ps-am uninstall uninstall-am \
+	uninstall-info-am uninstall-local
 
 
 @ENABLE_GTK_DOC_TRUE@all-local: html-build.stamp
@@ -444,8 +422,9 @@ uninstall-am: uninstall-gtkdocpackageDATA uninstall-info-am
 
 @ENABLE_GTK_DOC_TRUE@scan-build.stamp: $(HFILE_GLOB)
 @ENABLE_GTK_DOC_TRUE@	@echo '*** Scanning header files ***'
+@ENABLE_GTK_DOC_TRUE@	@-chmod -R u+w $(srcdir)
 @ENABLE_GTK_DOC_TRUE@	if grep -l '^..*$$' $(srcdir)/$(DOC_MODULE).types > /dev/null ; then \
-@ENABLE_GTK_DOC_TRUE@	    CC="$(GTKDOC_CC)" LD="$(GTKDOC_LD)" CFLAGS="$(GTKDOC_CFLAGS)" LDFLAGS="$(GTKDOC_LIBS)" gtkdoc-scangobj $(SCANOBJ_OPTIONS) --module=$(DOC_MODULE) --output-dir=$(srcdir) ; \
+@ENABLE_GTK_DOC_TRUE@	    CC="$(GTKDOC_CC)" LD="$(GTKDOC_LD)" CFLAGS="$(GTKDOC_CFLAGS)" LDFLAGS="$(GTKDOC_LIBS)" gtkdoc-scangobj $(SCANGOBJ_OPTIONS) --module=$(DOC_MODULE) --output-dir=$(srcdir) ; \
 @ENABLE_GTK_DOC_TRUE@	else \
 @ENABLE_GTK_DOC_TRUE@	    cd $(srcdir) ; \
 @ENABLE_GTK_DOC_TRUE@	    for i in $(SCANOBJ_FILES) ; do \
@@ -461,8 +440,9 @@ uninstall-am: uninstall-gtkdocpackageDATA uninstall-info-am
 
 #### templates ####
 
-@ENABLE_GTK_DOC_TRUE@tmpl-build.stamp: $(DOC_MODULE)-decl.txt $(SCANOBJ_FILES) $(DOC_MODULE)-sections.txt $(DOC_OVERRIDES)
+@ENABLE_GTK_DOC_TRUE@tmpl-build.stamp: $(DOC_MODULE)-decl.txt $(SCANOBJ_FILES) $(DOC_MODULE)-sections.txt $(DOC_MODULE)-overrides.txt
 @ENABLE_GTK_DOC_TRUE@	@echo '*** Rebuilding template files ***'
+@ENABLE_GTK_DOC_TRUE@	@-chmod -R u+w $(srcdir)
 @ENABLE_GTK_DOC_TRUE@	cd $(srcdir) && gtkdoc-mktmpl --module=$(DOC_MODULE)
 @ENABLE_GTK_DOC_TRUE@	touch tmpl-build.stamp
 
@@ -473,8 +453,9 @@ uninstall-am: uninstall-gtkdocpackageDATA uninstall-info-am
 
 @ENABLE_GTK_DOC_TRUE@sgml-build.stamp: tmpl.stamp $(CFILE_GLOB) $(srcdir)/tmpl/*.sgml
 @ENABLE_GTK_DOC_TRUE@	@echo '*** Building XML ***'
+@ENABLE_GTK_DOC_TRUE@	@-chmod -R u+w $(srcdir)
 @ENABLE_GTK_DOC_TRUE@	cd $(srcdir) && \
-@ENABLE_GTK_DOC_TRUE@	gtkdoc-mkdb --module=$(DOC_MODULE) --source-dir=$(DOC_SOURCE_DIR) --output-format=xml --main-sgml-file=$(DOC_MAIN_SGML_FILE) $(MKDB_OPTIONS)
+@ENABLE_GTK_DOC_TRUE@	gtkdoc-mkdb --module=$(DOC_MODULE) --source-dir=$(DOC_SOURCE_DIR) --output-format=xml $(MKDB_OPTIONS)
 @ENABLE_GTK_DOC_TRUE@	touch sgml-build.stamp
 
 @ENABLE_GTK_DOC_TRUE@sgml.stamp: sgml-build.stamp
@@ -484,7 +465,8 @@ uninstall-am: uninstall-gtkdocpackageDATA uninstall-info-am
 
 @ENABLE_GTK_DOC_TRUE@html-build.stamp: sgml.stamp $(DOC_MAIN_SGML_FILE) $(content_files)
 @ENABLE_GTK_DOC_TRUE@	@echo '*** Building HTML ***'
-@ENABLE_GTK_DOC_TRUE@	rm -rf $(srcdir)/html
+@ENABLE_GTK_DOC_TRUE@	@-chmod -R u+w $(srcdir)
+@ENABLE_GTK_DOC_TRUE@	rm -rf $(srcdir)/html 
 @ENABLE_GTK_DOC_TRUE@	mkdir $(srcdir)/html
 @ENABLE_GTK_DOC_TRUE@	cd $(srcdir)/html && gtkdoc-mkhtml $(DOC_MODULE) ../$(DOC_MAIN_SGML_FILE)
 @ENABLE_GTK_DOC_TRUE@	test "x$(HTML_IMAGES)" = "x" || ( cd $(srcdir) && cp $(HTML_IMAGES) html )
@@ -495,24 +477,27 @@ uninstall-am: uninstall-gtkdocpackageDATA uninstall-info-am
 ##############
 
 clean-local:
-	rm -rf *~ *.bak $(SCANOBJ_FILES) .libs *-unused.txt $(DOC_STAMPS)
+	rm -f *~ *.bak
 
 maintainer-clean-local: clean
-	cd $(srcdir) && rm -rf sgml html $(DOC_MODULE)-decl-list.txt $(DOC_MODULE)-decl.txt
+	cd $(srcdir) && rm -rf xml html $(DOC_MODULE)-decl-list.txt $(DOC_MODULE)-decl.txt
 
-#install-data-local:
-#	$(mkinstalldirs) $(DESTDIR)$(TARGET_DIR)
-#	(installfiles=`echo $(srcdir)/html/*.html`; \
-#	if test "$$installfiles" = '$(srcdir)/html/*.html'; \
-#	then echo '-- Nothing to install' ; \
-#	else \
-#	  for i in $$installfiles; do \
-#	    echo '-- Installing '$$i ; \
-#	    $(INSTALL_DATA) $$i $(DESTDIR)$(TARGET_DIR); \
-#	  done; \
-#	  echo '-- Installing $(srcdir)/html/index.sgml' ; \
-#	  $(INSTALL_DATA) $(srcdir)/html/index.sgml $(DESTDIR)$(TARGET_DIR); \
-#	fi)
+install-data-local:
+	$(mkinstalldirs) $(DESTDIR)$(TARGET_DIR)
+	(installfiles=`echo $(srcdir)/html/*`; \
+	if test "$$installfiles" = '$(srcdir)/html/*'; \
+	then echo '-- Nothing to install' ; \
+	else \
+	  for i in $$installfiles; do \
+	    echo '-- Installing '$$i ; \
+	    $(INSTALL_DATA) $$i $(DESTDIR)$(TARGET_DIR); \
+	  done; \
+	  echo '-- Installing $(srcdir)/html/index.sgml' ; \
+	  $(INSTALL_DATA) $(srcdir)/html/index.sgml $(DESTDIR)$(TARGET_DIR) || :; \
+	fi)
+
+uninstall-local:
+	rm -f $(DESTDIR)$(TARGET_DIR)/*
 
 #
 # Require gtk-doc when making dist
@@ -524,16 +509,11 @@ maintainer-clean-local: clean
 
 dist-hook: dist-check-gtkdoc dist-hook-local
 	mkdir $(distdir)/tmpl
-	mkdir $(distdir)/sgml
+	mkdir $(distdir)/xml
 	mkdir $(distdir)/html
 	-cp $(srcdir)/tmpl/*.sgml $(distdir)/tmpl
 	-cp $(srcdir)/xml/*.xml $(distdir)/xml
-	-cp $(srcdir)/html/*.html $(srcdir)/html/*.css $(distdir)/html
-
-	images=$(HTML_IMAGES) ;    	      \
-	for i in $$images ; do		      \
-	  cp $(srcdir)/$$i $(distdir)/html ;  \
-	done
+	-cp $(srcdir)/html/* $(distdir)/html
 
 .PHONY : dist-hook-local
 # Tell versions [3.59,3.63) of GNU make to not export all variables.

@@ -1,3 +1,11 @@
+2006-03-13  Tommi Komulainen  <tommi.komulainen@nokia.com>
+	
+	* autogen.sh
+	* configure.ac
+	* doc/Makefile.am: Update gtk-doc framework bits
+	* gtk-doc.make (commit generated file)
+	* doc/hildon-libs-overrides.txt (add empty file for gtk-doc 1.1) 
+
 2006-03-13  Johan Bilien  <johan.bilien@nokia.com>
 	* hildon-widgets/hildon-code-dialog.c:
 	  - Add default title

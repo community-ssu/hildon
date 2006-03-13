@@ -463,7 +463,7 @@ ac_includes_default="\
 # include <unistd.h>
 #endif"
 
-ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA CYGPATH_W PACKAGE VERSION ACLOCAL AUTOCONF AUTOMAKE AUTOHEADER MAKEINFO AMTAR install_sh STRIP ac_ct_STRIP INSTALL_STRIP_PROGRAM AWK SET_MAKE am__leading_dot build build_cpu build_vendor build_os host host_cpu host_vendor host_os CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT DEPDIR am__include am__quote AMDEP_TRUE AMDEP_FALSE AMDEPBACKSLASH CCDEPMODE am__fastdepCC_TRUE am__fastdepCC_FALSE CPP EGREP LN_S ECHO AR ac_ct_AR RANLIB ac_ct_RANLIB CXX CXXFLAGS ac_ct_CXX CXXDEPMODE am__fastdepCXX_TRUE am__fastdepCXX_FALSE CXXCPP F77 FFLAGS ac_ct_F77 LIBTOOL PKG_CONFIG OUTO_CFLAGS OUTO_LIBS GTK_CFLAGS GTK_LIBS GTK_VERSION ESD_CFLAGS ESD_LIBS GNOME_VFS_CFLAGS GNOME_VFS_LIBS GCONF_CFLAGS GCONF_LIBS LIBMB_CFLAGS LIBMB_LIBS ALL_LINGUAS USE_NLS MSGFMT GMSGFMT XGETTEXT CATALOGS CATOBJEXT DATADIRNAME GMOFILES INSTOBJEXT INTLLIBS PO_IN_DATADIR_TRUE PO_IN_DATADIR_FALSE POFILES POSUB MKINSTALLDIRS GTKDOC ENABLE_GTK_DOC_TRUE ENABLE_GTK_DOC_FALSE DOXYGEN_FOUND HAVE_DOXYGEN_TRUE HAVE_DOXYGEN_FALSE docdir localedir outomoduledir HTML_DIR LIBOBJS LTLIBOBJS'
+ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA CYGPATH_W PACKAGE VERSION ACLOCAL AUTOCONF AUTOMAKE AUTOHEADER MAKEINFO AMTAR install_sh STRIP ac_ct_STRIP INSTALL_STRIP_PROGRAM AWK SET_MAKE am__leading_dot build build_cpu build_vendor build_os host host_cpu host_vendor host_os CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT DEPDIR am__include am__quote AMDEP_TRUE AMDEP_FALSE AMDEPBACKSLASH CCDEPMODE am__fastdepCC_TRUE am__fastdepCC_FALSE CPP EGREP LN_S ECHO AR ac_ct_AR RANLIB ac_ct_RANLIB CXX CXXFLAGS ac_ct_CXX CXXDEPMODE am__fastdepCXX_TRUE am__fastdepCXX_FALSE CXXCPP F77 FFLAGS ac_ct_F77 LIBTOOL PKG_CONFIG OUTO_CFLAGS OUTO_LIBS GTK_CFLAGS GTK_LIBS GTK_VERSION ESD_CFLAGS ESD_LIBS GNOME_VFS_CFLAGS GNOME_VFS_LIBS GCONF_CFLAGS GCONF_LIBS LIBMB_CFLAGS LIBMB_LIBS ALL_LINGUAS USE_NLS MSGFMT GMSGFMT XGETTEXT CATALOGS CATOBJEXT DATADIRNAME GMOFILES INSTOBJEXT INTLLIBS PO_IN_DATADIR_TRUE PO_IN_DATADIR_FALSE POFILES POSUB MKINSTALLDIRS HTML_DIR ENABLE_GTK_DOC_TRUE ENABLE_GTK_DOC_FALSE GTK_DOC_USE_LIBTOOL_TRUE GTK_DOC_USE_LIBTOOL_FALSE DOXYGEN_FOUND HAVE_DOXYGEN_TRUE HAVE_DOXYGEN_FALSE localedir outomoduledir LIBOBJS LTLIBOBJS'
 ac_subst_files=''
 
 # Initialize some variables set by options.
@@ -1032,9 +1032,7 @@ Optional Features:
   --enable-fast-install[=PKGS]
                           optimize for fast installation [default=yes]
   --disable-libtool-lock  avoid locking (might break parallel builds)
-  --enable-gtk-doc        use gtk-doc to build documenta
-tion default=yes
- --with-doc-dir=PATH path to installed docs
+  --enable-gtk-doc        use gtk-doc to build documentation default=no
 
 Optional Packages:
   --with-PACKAGE[=ARG]    use PACKAGE [ARG=yes]
@@ -3955,7 +3953,7 @@ ia64-*-hpux*)
   ;;
 *-*-irix6*)
   # Find out which ABI we are using.
-  echo '#line 3958 "configure"' > conftest.$ac_ext
+  echo '#line 3956 "configure"' > conftest.$ac_ext
   if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
   (eval $ac_compile) 2>&5
   ac_status=$?
@@ -5278,7 +5276,7 @@ fi
 
 
 # Provide some information about the compiler.
-echo "$as_me:5281:" \
+echo "$as_me:5279:" \
      "checking for Fortran 77 compiler version" >&5
 ac_compiler=`set X $ac_compile; echo $2`
 { (eval echo "$as_me:$LINENO: \"$ac_compiler --version </dev/null >&5\"") >&5
@@ -6310,11 +6308,11 @@ else
    -e 's:.*FLAGS}? :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:6313: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:6311: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:6317: \$? = $ac_status" >&5
+   echo "$as_me:6315: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings
@@ -6543,11 +6541,11 @@ else
    -e 's:.*FLAGS}? :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:6546: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:6544: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:6550: \$? = $ac_status" >&5
+   echo "$as_me:6548: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings
@@ -6603,11 +6601,11 @@ else
    -e 's:.*FLAGS}? :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:6606: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:6604: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>out/conftest.err)
    ac_status=$?
    cat out/conftest.err >&5
-   echo "$as_me:6610: \$? = $ac_status" >&5
+   echo "$as_me:6608: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s out/conftest2.$ac_objext
    then
      # The compiler can only warn and ignore the option if not recognized
@@ -8778,7 +8776,7 @@ else
   lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<EOF
-#line 8781 "configure"
+#line 8779 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -8876,7 +8874,7 @@ else
   lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<EOF
-#line 8879 "configure"
+#line 8877 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -11053,11 +11051,11 @@ else
    -e 's:.*FLAGS}? :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:11056: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:11054: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:11060: \$? = $ac_status" >&5
+   echo "$as_me:11058: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings
@@ -11113,11 +11111,11 @@ else
    -e 's:.*FLAGS}? :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:11116: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:11114: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>out/conftest.err)
    ac_status=$?
    cat out/conftest.err >&5
-   echo "$as_me:11120: \$? = $ac_status" >&5
+   echo "$as_me:11118: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s out/conftest2.$ac_objext
    then
      # The compiler can only warn and ignore the option if not recognized
@@ -12467,7 +12465,7 @@ else
   lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<EOF
-#line 12470 "configure"
+#line 12468 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -12565,7 +12563,7 @@ else
   lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<EOF
-#line 12568 "configure"
+#line 12566 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -13392,11 +13390,11 @@ else
    -e 's:.*FLAGS}? :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:13395: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:13393: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:13399: \$? = $ac_status" >&5
+   echo "$as_me:13397: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings
@@ -13452,11 +13450,11 @@ else
    -e 's:.*FLAGS}? :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:13455: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:13453: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>out/conftest.err)
    ac_status=$?
    cat out/conftest.err >&5
-   echo "$as_me:13459: \$? = $ac_status" >&5
+   echo "$as_me:13457: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s out/conftest2.$ac_objext
    then
      # The compiler can only warn and ignore the option if not recognized
@@ -15484,11 +15482,11 @@ else
    -e 's:.*FLAGS}? :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:15487: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:15485: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:15491: \$? = $ac_status" >&5
+   echo "$as_me:15489: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings
@@ -15717,11 +15715,11 @@ else
    -e 's:.*FLAGS}? :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:15720: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:15718: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:15724: \$? = $ac_status" >&5
+   echo "$as_me:15722: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings
@@ -15777,11 +15775,11 @@ else
    -e 's:.*FLAGS}? :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:15780: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:15778: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>out/conftest.err)
    ac_status=$?
    cat out/conftest.err >&5
-   echo "$as_me:15784: \$? = $ac_status" >&5
+   echo "$as_me:15782: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s out/conftest2.$ac_objext
    then
      # The compiler can only warn and ignore the option if not recognized
@@ -17952,7 +17950,7 @@ else
   lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<EOF
-#line 17955 "configure"
+#line 17953 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -18050,7 +18048,7 @@ else
   lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<EOF
-#line 18053 "configure"
+#line 18051 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -21411,87 +21409,86 @@ echo "${ECHO_T}$LINGUAS" >&6
 if test "${with_html_dir+set}" = set; then
   withval="$with_html_dir"
 
+else
+  with_html_dir='${datadir}/gtk-doc/html'
+fi;
+  HTML_DIR="$with_html_dir"
+
+
+    # Check whether --enable-gtk-doc or --disable-gtk-doc was given.
+if test "${enable_gtk_doc+set}" = set; then
+  enableval="$enable_gtk_doc"
+
+else
+  enable_gtk_doc=no
 fi;
 
-if test "x$with_html_dir" = "x" ; then
-  HTML_DIR='${datadir}/gtk-doc/html'
-else
-  HTML_DIR=$with_html_dir
-fi
-
-# Extract the first word of "gtkdoc-mkdb", so it can be a program name with args.
-set dummy gtkdoc-mkdb; ac_word=$2
+  have_gtk_doc=no
+  if test -z "$PKG_CONFIG"; then
+    # Extract the first word of "pkg-config", so it can be a program name with args.
+set dummy pkg-config; ac_word=$2
 echo "$as_me:$LINENO: checking for $ac_word" >&5
 echo $ECHO_N "checking for $ac_word... $ECHO_C" >&6
-if test "${ac_cv_prog_GTKDOC+set}" = set; then
+if test "${ac_cv_path_PKG_CONFIG+set}" = set; then
   echo $ECHO_N "(cached) $ECHO_C" >&6
 else
-  if test -n "$GTKDOC"; then
-  ac_cv_prog_GTKDOC="$GTKDOC" # Let the user override the test.
-else
-as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+  case $PKG_CONFIG in
+  [\\/]* | ?:[\\/]*)
+  ac_cv_path_PKG_CONFIG="$PKG_CONFIG" # Let the user override the test with a path.
+  ;;
+  *)
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
 for as_dir in $PATH
 do
   IFS=$as_save_IFS
   test -z "$as_dir" && as_dir=.
   for ac_exec_ext in '' $ac_executable_extensions; do
   if $as_executable_p "$as_dir/$ac_word$ac_exec_ext"; then
-    ac_cv_prog_GTKDOC="true"
+    ac_cv_path_PKG_CONFIG="$as_dir/$ac_word$ac_exec_ext"
     echo "$as_me:$LINENO: found $as_dir/$ac_word$ac_exec_ext" >&5
     break 2
   fi
 done
 done
 
-  test -z "$ac_cv_prog_GTKDOC" && ac_cv_prog_GTKDOC="false"
+  test -z "$ac_cv_path_PKG_CONFIG" && ac_cv_path_PKG_CONFIG="no"
+  ;;
+esac
 fi
-fi
-GTKDOC=$ac_cv_prog_GTKDOC
-if test -n "$GTKDOC"; then
-  echo "$as_me:$LINENO: result: $GTKDOC" >&5
-echo "${ECHO_T}$GTKDOC" >&6
+PKG_CONFIG=$ac_cv_path_PKG_CONFIG
+
+if test -n "$PKG_CONFIG"; then
+  echo "$as_me:$LINENO: result: $PKG_CONFIG" >&5
+echo "${ECHO_T}$PKG_CONFIG" >&6
 else
   echo "$as_me:$LINENO: result: no" >&5
 echo "${ECHO_T}no" >&6
 fi
 
+  fi
+  if test "$PKG_CONFIG" != "no" && $PKG_CONFIG --exists gtk-doc; then
+    have_gtk_doc=yes
+  fi
 
-gtk_doc_min_version=0.10
-if $GTKDOC ; then
-    gtk_doc_version=`gtkdoc-mkdb --version`
-    echo "$as_me:$LINENO: checking gtk-doc version ($gtk_doc_version) >= $gtk_doc_min_version
-" >&5
-echo $ECHO_N "checking gtk-doc version ($gtk_doc_version) >= $gtk_doc_min_version
-... $ECHO_C" >&6
-    if perl <<EOF ; then
-      exit (("$gtk_doc_version" =~ /^[0-9]+\.[0-9]+$/) &&
-            ("$gtk_doc_version" >= "$gtk_doc_min_version") ? 0 : 1);
-EOF
+  gtk_doc_min_version=1.0
+  if test "$have_gtk_doc" = yes; then
+    echo "$as_me:$LINENO: checking gtk-doc version >= $gtk_doc_min_version" >&5
+echo $ECHO_N "checking gtk-doc version >= $gtk_doc_min_version... $ECHO_C" >&6
+    if $PKG_CONFIG --atleast-version $gtk_doc_min_version gtk-doc; then
       echo "$as_me:$LINENO: result: yes" >&5
 echo "${ECHO_T}yes" >&6
-   else
+    else
       echo "$as_me:$LINENO: result: no" >&5
 echo "${ECHO_T}no" >&6
-      GTKDOC=false
-   fi
-fi
-
-# Let people disable the gtk-doc stuff.
-# Check whether --enable-gtk-doc or --disable-gtk-doc was given.
-if test "${enable_gtk_doc+set}" = set; then
-  enableval="$enable_gtk_doc"
-  enable_gtk_doc="$enableval"
-else
-  enable_gtk_doc=yes
-fi;
-
-if test x$enable_gtk_doc = xauto ; then
-  if test x$GTKDOC = xtrue ; then
-    enable_gtk_doc=yes
-  else
-    enable_gtk_doc=no
+      have_gtk_doc=no
+    fi
   fi
-fi
+
+  if test x$enable_gtk_doc = xyes; then
+    if test "$have_gtk_doc" != yes; then
+      enable_gtk_doc=no
+    fi
+  fi
 
 
 
@@ -21502,6 +21499,17 @@ else
   ENABLE_GTK_DOC_TRUE='#'
   ENABLE_GTK_DOC_FALSE=
 fi
+
+
+
+if test -n "$LIBTOOL"; then
+  GTK_DOC_USE_LIBTOOL_TRUE=
+  GTK_DOC_USE_LIBTOOL_FALSE='#'
+else
+  GTK_DOC_USE_LIBTOOL_TRUE='#'
+  GTK_DOC_USE_LIBTOOL_FALSE=
+fi
+
 
 
 # Extract the first word of "doxygen", so it can be a program name with args.
@@ -21553,21 +21561,6 @@ fi
 
 localedir=${datadir}/locale
 outomoduledir=${libdir}/outo
-
-# Check whether --enable-doc-dir or --disable-doc-dir was given.
-if test "${enable_doc_dir+set}" = set; then
-  enableval="$enable_doc_dir"
-
-fi;
-if test "x$with_doc_dir" = "x" ; then
-  docdir='${datadir}/doc'
-else
-  docdir=$with_doc_dir
-fi
-
-HTML_DIR=${docdir}/html
-
-
 
 
 
@@ -21689,6 +21682,13 @@ if test -z "${ENABLE_GTK_DOC_TRUE}" && test -z "${ENABLE_GTK_DOC_FALSE}"; then
   { { echo "$as_me:$LINENO: error: conditional \"ENABLE_GTK_DOC\" was never defined.
 Usually this means the macro was only invoked conditionally." >&5
 echo "$as_me: error: conditional \"ENABLE_GTK_DOC\" was never defined.
+Usually this means the macro was only invoked conditionally." >&2;}
+   { (exit 1); exit 1; }; }
+fi
+if test -z "${GTK_DOC_USE_LIBTOOL_TRUE}" && test -z "${GTK_DOC_USE_LIBTOOL_FALSE}"; then
+  { { echo "$as_me:$LINENO: error: conditional \"GTK_DOC_USE_LIBTOOL\" was never defined.
+Usually this means the macro was only invoked conditionally." >&5
+echo "$as_me: error: conditional \"GTK_DOC_USE_LIBTOOL\" was never defined.
 Usually this means the macro was only invoked conditionally." >&2;}
    { (exit 1); exit 1; }; }
 fi
@@ -22332,16 +22332,16 @@ s,@PO_IN_DATADIR_FALSE@,$PO_IN_DATADIR_FALSE,;t t
 s,@POFILES@,$POFILES,;t t
 s,@POSUB@,$POSUB,;t t
 s,@MKINSTALLDIRS@,$MKINSTALLDIRS,;t t
-s,@GTKDOC@,$GTKDOC,;t t
+s,@HTML_DIR@,$HTML_DIR,;t t
 s,@ENABLE_GTK_DOC_TRUE@,$ENABLE_GTK_DOC_TRUE,;t t
 s,@ENABLE_GTK_DOC_FALSE@,$ENABLE_GTK_DOC_FALSE,;t t
+s,@GTK_DOC_USE_LIBTOOL_TRUE@,$GTK_DOC_USE_LIBTOOL_TRUE,;t t
+s,@GTK_DOC_USE_LIBTOOL_FALSE@,$GTK_DOC_USE_LIBTOOL_FALSE,;t t
 s,@DOXYGEN_FOUND@,$DOXYGEN_FOUND,;t t
 s,@HAVE_DOXYGEN_TRUE@,$HAVE_DOXYGEN_TRUE,;t t
 s,@HAVE_DOXYGEN_FALSE@,$HAVE_DOXYGEN_FALSE,;t t
-s,@docdir@,$docdir,;t t
 s,@localedir@,$localedir,;t t
 s,@outomoduledir@,$outomoduledir,;t t
-s,@HTML_DIR@,$HTML_DIR,;t t
 s,@LIBOBJS@,$LIBOBJS,;t t
 s,@LTLIBOBJS@,$LTLIBOBJS,;t t
 CEOF

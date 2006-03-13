@@ -52,46 +52,7 @@ AM_GLIB_GNU_GETTEXT
 ##################################################
 # Check for gtk-doc.
 ##################################################
-
-AC_ARG_WITH(html-dir, [  --with-html-dir=PATH    path to installed docs ])
-
-if test "x$with_html_dir" = "x" ; then
-  HTML_DIR='${datadir}/gtk-doc/html'
-else
-  HTML_DIR=$with_html_dir
-fi
-
-AC_CHECK_PROG(GTKDOC, gtkdoc-mkdb, true, false)
-
-gtk_doc_min_version=0.10
-if $GTKDOC ; then
-    gtk_doc_version=`gtkdoc-mkdb --version`
-    AC_MSG_CHECKING([gtk-doc version ($gtk_doc_version) >= $gtk_doc_min_version]
-)
-    if perl <<EOF ; then
-      exit (("$gtk_doc_version" =~ /^[[0-9]]+\.[[0-9]]+$/) &&
-            ("$gtk_doc_version" >= "$gtk_doc_min_version") ? 0 : 1);
-EOF
-      AC_MSG_RESULT(yes)
-   else
-      AC_MSG_RESULT(no)
-      GTKDOC=false
-   fi
-fi
-
-# Let people disable the gtk-doc stuff.
-AC_ARG_ENABLE(gtk-doc, [  --enable-gtk-doc        use gtk-doc to build documenta
-tion [default=yes]], enable_gtk_doc="$enableval", enable_gtk_doc=yes)
-
-if test x$enable_gtk_doc = xauto ; then
-  if test x$GTKDOC = xtrue ; then
-    enable_gtk_doc=yes
-  else
-    enable_gtk_doc=no
-  fi
-fi
-
-AM_CONDITIONAL(ENABLE_GTK_DOC, test x$enable_gtk_doc = xyes)
+GTK_DOC_CHECK([1.0])
 
 AC_CHECK_PROG(DOXYGEN_FOUND, doxygen, yes, no)
 AM_CONDITIONAL(HAVE_DOXYGEN, [test "$DOXYGEN_FOUND" = "yes"])
@@ -99,19 +60,8 @@ AM_CONDITIONAL(HAVE_DOXYGEN, [test "$DOXYGEN_FOUND" = "yes"])
 localedir=${datadir}/locale
 outomoduledir=${libdir}/outo
 
-AC_ARG_ENABLE(doc-dir, [ --with-doc-dir=PATH path to installed docs ])
-if test "x$with_doc_dir" = "x" ; then
-  docdir='${datadir}/doc'
-else
-  docdir=$with_doc_dir 
-fi
-
-HTML_DIR=${docdir}/html
-
-AC_SUBST(docdir)
 AC_SUBST(localedir)
 AC_SUBST(outomoduledir)
-AC_SUBST(HTML_DIR)
 
 AC_OUTPUT(Makefile \
 	hildon-widgets/Makefile \
