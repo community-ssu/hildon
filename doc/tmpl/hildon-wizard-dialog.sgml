@@ -18,8 +18,8 @@ This content is created by the application developer.
 
 hildon_wizard_dialog_new (parent, wizard_name, notebook);
 
+</programlisting>
 </informalexample>
-</programexample>
 
 Using of the API is very simple, it has only one function to create it
 and the rest of it is handled by developers notebook.
