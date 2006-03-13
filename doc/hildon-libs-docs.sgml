@@ -1,55 +1,93 @@
 <?xml version="1.0"?>
 <!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN" 
                "http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd">
-<book id="index" xmlns:xi="http://www.w3.org/2001/XInclude">
+<book id="index" xmlns:xi="http://www.w3.org/2003/XInclude">
   <bookinfo>
     <title>[Insert name here] Reference Manual</title>
   </bookinfo>
 
   <chapter>
-    <title>[Insert title here]</title>
-    <xi:include href="xml/hildon-find-toolbar.xml"/>
-    <xi:include href="xml/hildon-volumebar.xml"/>
-    <xi:include href="xml/hildon-weekday-picker.xml"/>
-    <xi:include href="xml/hildon-file-handling-note.xml"/>
-    <xi:include href="xml/hildon-note.xml"/>
-    <xi:include href="xml/hildon-calendar-popup.xml"/>
-    <xi:include href="xml/hildon-time-picker.xml"/>
-    <xi:include href="xml/hildon-name-password-dialog.xml"/>
-    <xi:include href="xml/hildon-range-editor.xml"/>
-    <xi:include href="xml/hildon-vvolumebar.xml"/>
-    <xi:include href="xml/hildon-banner.xml"/>
-    <xi:include href="xml/hildon-code-dialog.xml"/>
-    <xi:include href="xml/hildon-insert-object-dialog.xml"/>
-    <xi:include href="xml/hildon-window.xml"/>
-    <xi:include href="xml/hildon-seekbar.xml"/>
+    <title>Object Hierarchy</title>
+    <xi:include href="xml/tree_index.sgml"/>
+  </chapter>
+
+  <chapter>
+    <title>Toplevel Widgets</title>
     <xi:include href="xml/hildon-app.xml"/>
-    <xi:include href="xml/hildon-grid-item.xml"/>
-    <xi:include href="xml/hildon-time-editor.xml"/>
-    <xi:include href="xml/hildon-sort-dialog.xml"/>
-    <xi:include href="xml/hildon-grid.xml"/>
-    <xi:include href="xml/hildon-font-selection-dialog.xml"/>
+    <xi:include href="xml/hildon-appview.xml"/>
+    <xi:include href="xml/hildon-scroll-area.xml"/>
+    <xi:include href="xml/hildon-window.xml"/>
+    <xi:include href="xml/hildon-program.xml"/>
+  </chapter>
+
+  <chapter>
+    <title>Selectors</title>
     <xi:include href="xml/hildon-color-button.xml"/>
     <xi:include href="xml/hildon-color-selector.xml"/>
-    <xi:include href="xml/hildon-hvolumebar.xml"/>
-    <xi:include href="xml/hildon-controlbar.xml"/>
-    <xi:include href="xml/hildon-appview.xml"/>
-    <xi:include href="xml/hildon-get-password-dialog.xml"/>
-    <xi:include href="xml/hildon-set-password-dialog.xml"/>
-    <xi:include href="xml/hildon-wizard-dialog.xml"/>
-    <xi:include href="xml/hildon-caption.xml"/>
-    <xi:include href="xml/hildon-date-editor.xml"/>
-    <xi:include href="xml/hildon-telephone-editor.xml"/>
-    <xi:include href="xml/hildon-program.xml"/>
-    <xi:include href="xml/hildon-add-home-dialog.xml"/>
-    <xi:include href="xml/hildon-number-editor.xml"/>
     <xi:include href="xml/hildon-color-popup.xml"/>
-    <xi:include href="xml/hildon-input-mode-hint.xml"/>
-    <xi:include href="xml/hildon-system-sound.xml"/>
-    <xi:include href="xml/hildon-composite-widget.xml"/>
-    <xi:include href="xml/hildon-scroll-area.xml"/>
+    <xi:include href="xml/hildon-controlbar.xml"/>
+    <xi:include href="xml/hildon-volumebar.xml"/>
+    <xi:include href="xml/hildon-vvolumebar.xml"/>
+    <xi:include href="xml/hildon-hvolumebar.xml"/>
+    <xi:include href="xml/hildon-seekbar.xml"/>
+    <xi:include href="xml/hildon-calendar-popup.xml"/>
+    <xi:include href="xml/hildon-weekday-picker.xml"/>
+    <xi:include href="xml/hildon-time-picker.xml"/>
+    <xi:include href="xml/hildon-grid.xml"/>
+    <xi:include href="xml/hildon-grid-item.xml"/>
+  </chapter>
+
+  <chapter>
+    <title>Editors</title>
+    <xi:include href="xml/hildon-number-editor.xml"/>
+    <xi:include href="xml/hildon-range-editor.xml"/>
+    <xi:include href="xml/hildon-time-editor.xml"/>
+    <xi:include href="xml/hildon-date-editor.xml"/>
+  </chapter>
+
+  <chapter>
+    <title>Miscellaneous controls</title>
+    <xi:include href="xml/hildon-find-toolbar.xml"/>
+    <xi:include href="xml/hildon-caption.xml"/>
+    <xi:include href="xml/hildon-wizard-dialog.xml"/>
+  </chapter>
+
+  <chapter>
+    <title>Notifications</title>
     <xi:include href="xml/gtk-infoprint.xml"/>
+    <xi:include href="xml/hildon-banner.xml"/>
+    <xi:include href="xml/hildon-note.xml"/>
+    <xi:include href="xml/hildon-file-handling-note.xml"/>
+  </chapter>
+
+  <chapter>
+    <title>Dialogs</title>
+    <xi:include href="xml/hildon-set-password-dialog.xml"/>
+    <xi:include href="xml/hildon-get-password-dialog.xml"/>
+    <xi:include href="xml/hildon-name-password-dialog.xml"/>
+    <xi:include href="xml/hildon-sort-dialog.xml"/>
+    <xi:include href="xml/hildon-font-selection-dialog.xml"/>
+    <xi:include href="xml/hildon-code-dialog.xml"/>
+  </chapter>
+
+  <chapter>
+    <title>Other</title>
+    <!--
+    <xi:include href="xml/hildon-insert-object-dialog.xml"/>
+    <xi:include href="xml/hildon-telephone-editor.xml"/>
+    <xi:include href="xml/hildon-add-home-dialog.xml"/>
+    -->
+    <xi:include href="xml/hildon-composite-widget.xml"/>
     <xi:include href="xml/hildon-dialoghelp.xml"/>
+    <xi:include href="xml/hildon-system-sound.xml"/>
+    <xi:include href="xml/hildon-input-mode-hint.xml"/>
     <xi:include href="xml/hildon-defines.xml"/>
   </chapter>
+
+  <index>
+    <title>Index</title>
+  </index>
+  <index role="deprecated">
+    <title>Index of deprecated symbols</title>
+  </index>
 </book>
