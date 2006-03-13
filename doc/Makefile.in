@@ -185,7 +185,7 @@ target_alias = @target_alias@
 DOC_MODULE = hildon-libs
 
 # The top-level SGML file. Change it if you want.
-DOC_MAIN_SGML_FILE = $(DOC_MODULE)-docs.xml
+DOC_MAIN_SGML_FILE = $(DOC_MODULE)-docs.sgml
 
 # Extra options to supply to gtkdoc-scan.
 SCAN_OPTIONS = 

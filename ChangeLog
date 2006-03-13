@@ -1,5 +1,10 @@
 2006-03-13  Tommi Komulainen  <tommi.komulainen@nokia.com>
 
+	* doc/Makefile.am: 
+	* doc/hildon-libs-docs.xml: rename to hildon-libs-docs.sgml
+
+2006-03-13  Tommi Komulainen  <tommi.komulainen@nokia.com>
+
 	* doc/tmpl/hildon-wizard-dialog.sgml: Fix unmatching tags
 	* doc/Makefile.am: Ignore right files with IGNORE_HFILES
 
