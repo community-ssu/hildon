@@ -22,7 +22,7 @@
  *
  */
 
-/**
+/*
  * @file hildon-vvolumebar.c
  *
  * This file contains the implementation of HildonVVolumebar.

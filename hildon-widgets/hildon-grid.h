@@ -22,7 +22,7 @@
  *
  */
 
-/**
+/*
  * @file hildon-grid.h
  *
  * This file is a header file for hildon-grid.c, the implementation of

@@ -22,7 +22,7 @@
  *
  */
 
-/** 
+/* 
  * @file hildon-volumebar-range.c
  *
  * This file contains the implementation of the HildonVolumebarRange.

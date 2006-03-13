@@ -1,5 +1,16 @@
 2006-03-13  Tommi Komulainen  <tommi.komulainen@nokia.com>
 
+	* hildon-widgets/hildon-caption.c
+	* hildon-widgets/hildon-composite-widget.h
+	* hildon-widgets/hildon-get-password-dialog.c
+	* hildon-widgets/hildon-grid.h
+	* hildon-widgets/hildon-grid-item.h
+	* hildon-widgets/hildon-volumebar-range.c
+	* hildon-widgets/hildon-vvolumebar.c: Fix erroneous gtk-doc comment
+	blocks.
+
+2006-03-13  Tommi Komulainen  <tommi.komulainen@nokia.com>
+
 	* doc/hildon-libs.types: Add missing types
 	* doc/hildon-libs-docs.sgml: Add missing links and some organization
 	* doc/tmpl/*: Regenerate and add new files

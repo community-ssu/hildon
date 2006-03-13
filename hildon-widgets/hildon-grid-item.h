@@ -22,7 +22,7 @@
  *
  */
 
-/**
+/*
  * @file hildon-grid-item.h
  *
  * This file is a header file for he implementation of HildonGridItem.

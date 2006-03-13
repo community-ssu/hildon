@@ -437,10 +437,9 @@ void hildon_get_password_dialog_set_domain(HildonGetPasswordDialog *dialog,
 }
 
 /**
- * hildon_get_password_dialog_set_title
- *        (HildonGetPasswordDialog *dialog, gchar *new_title) 
+ * hildon_get_password_dialog_set_title:
  * @dialog: the dialog
- * @new_ title: the text to be set as the dialog title.
+ * @new_title: the text to be set as the dialog title.
  * 
  * sets the dialog title
  */
@@ -455,8 +454,7 @@ void hildon_get_password_dialog_set_title(HildonGetPasswordDialog *dialog,
 }
 
 /**
- * hildon_get_password_dialog_set_caption
- *        (HildonGetPasswordDialog *dialog, gchar *new_caption) 
+ * hildon_get_password_dialog_set_caption:
  * @dialog: the dialog
  * @new_caption: the text to be set as the caption label.
  * 
@@ -477,15 +475,12 @@ void hildon_get_password_dialog_set_caption(HildonGetPasswordDialog *dialog,
 }
 
 /**
- * hildon_get_password_dialog_set_max_characters
- *        (HildonGetPasswordDialog *dialog, gint max_characters,
- *         gchar *error_ib_message) 
+ * hildon_get_password_dialog_set_max_characters:
  * @dialog: the dialog
  * @max_characters: the maximum number of characters the password dialog
  * accepts.
- * @new_caption: the text to be set as the caption label.
  * 
- * sets the password entry field's neigbouring label.
+ * sets the maximum number of characters allowed as the password
  */
 
 void hildon_get_password_dialog_set_max_characters (HildonGetPasswordDialog *dialog, gint max_characters )

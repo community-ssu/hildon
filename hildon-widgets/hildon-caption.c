@@ -816,7 +816,7 @@ static void hildon_caption_forall( GtkContainer *container,
  *
  * Sets a #GtkSizeGroup of a given captioned control.
  *
- * Deprecated: Use g_object_set, property "size_group". 
+ * Deprecated: Use g_object_set, property &quot;size_group&quot;. 
  */
 #ifndef HILDON_DISABLE_DEPRECATED
 void hildon_caption_set_sizegroup( const HildonCaption *self,
@@ -832,7 +832,7 @@ void hildon_caption_set_sizegroup( const HildonCaption *self,
  *
  * Query given captioned control for the #GtkSizeGroup assigned to it.
  *
- * Deprecated: Use g_object_get, property "size_group". 
+ * Deprecated: Use g_object_get, property &quot;size_group&quot;. 
  */
 #ifndef HILDON_DISABLE_DEPRECATED
 GtkSizeGroup *hildon_caption_get_sizegroup( const HildonCaption *self )

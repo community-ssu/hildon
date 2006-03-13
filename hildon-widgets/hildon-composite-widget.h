@@ -22,7 +22,7 @@
  *
  */
 
-/**
+/*
  * @file
  *
  * Hildon composite widget includes all features which were not fitting into
