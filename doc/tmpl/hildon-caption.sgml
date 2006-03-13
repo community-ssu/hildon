@@ -200,10 +200,19 @@ void _testCaptionControl(GtkWidget *parent, gchar **help)
 @HILDON_CAPTION_OPTIONAL: 
 @HILDON_CAPTION_MANDATORY: 
 
-<!-- ##### STRUCT HildonCaption ##### -->
+<!-- ##### MACRO HILDON_TYPE_CAPTION_STATUS ##### -->
 <para>
 
 </para>
+
+
+
+<!-- ##### FUNCTION hildon_caption_get_type ##### -->
+<para>
+
+</para>
+
+@Returns: 
 
 
 <!-- ##### FUNCTION hildon_caption_new ##### -->
@@ -300,6 +309,42 @@ void _testCaptionControl(GtkWidget *parent, gchar **help)
 @Returns: 
 
 
+<!-- ##### FUNCTION hildon_caption_set_separator ##### -->
+<para>
+
+</para>
+
+@caption: 
+@separator: 
+
+
+<!-- ##### FUNCTION hildon_caption_get_separator ##### -->
+<para>
+
+</para>
+
+@caption: 
+@Returns: 
+
+
+<!-- ##### FUNCTION hildon_caption_set_label_alignment ##### -->
+<para>
+
+</para>
+
+@caption: 
+@alignment: 
+
+
+<!-- ##### FUNCTION hildon_caption_get_label_alignment ##### -->
+<para>
+
+</para>
+
+@caption: 
+@Returns: 
+
+
 <!-- ##### FUNCTION hildon_caption_get_control ##### -->
 <para>
 
@@ -316,6 +361,24 @@ void _testCaptionControl(GtkWidget *parent, gchar **help)
 
 @caption: 
 @control: 
+
+
+<!-- ##### FUNCTION hildon_caption_set_child_expand ##### -->
+<para>
+
+</para>
+
+@caption: 
+@expand: 
+
+
+<!-- ##### FUNCTION hildon_caption_get_child_expand ##### -->
+<para>
+
+</para>
+
+@caption: 
+@Returns: 
 
 
 <!-- ##### SIGNAL HildonCaption::activate ##### -->

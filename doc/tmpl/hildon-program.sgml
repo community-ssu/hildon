@@ -68,24 +68,12 @@ hildon_program_set_can_hibernate (program, TRUE);
 
 </para>
 
-<!-- ##### SECTION Stability_Level ##### -->
-
-
-<!-- ##### STRUCT HildonProgram ##### -->
+<!-- ##### MACRO hildon_program_new ##### -->
 <para>
 
 </para>
 
 
-<!-- ##### ARG HildonProgram:can-hibernate ##### -->
-<para>
-
-</para>
-
-<!-- ##### ARG HildonProgram:is-topmost ##### -->
-<para>
-
-</para>
 
 <!-- ##### FUNCTION hildon_program_get_instance ##### -->
 <para>
@@ -166,4 +154,23 @@ hildon_program_set_can_hibernate (program, TRUE);
 @self: 
 @Returns: 
 
+
+<!-- ##### FUNCTION hildon_program_get_is_topmost ##### -->
+<para>
+
+</para>
+
+@self: 
+@Returns: 
+
+
+<!-- ##### ARG HildonProgram:can-hibernate ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG HildonProgram:is-topmost ##### -->
+<para>
+
+</para>
 

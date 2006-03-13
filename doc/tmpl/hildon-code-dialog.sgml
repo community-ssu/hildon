@@ -1,0 +1,56 @@
+<!-- ##### SECTION Title ##### -->
+HildonCodeDialog
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+<!-- ##### STRUCT HildonCodeDialogPrivate ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### FUNCTION hildon_code_dialog_new ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### FUNCTION hildon_code_dialog_get_code ##### -->
+<para>
+
+</para>
+
+@dialog: 
+@Returns: 
+
+
+<!-- ##### FUNCTION hildon_code_dialog_clear_code ##### -->
+<para>
+
+</para>
+
+@dialog: 
+
+
+<!-- ##### FUNCTION hildon_code_dialog_set_help_text ##### -->
+<para>
+
+</para>
+
+@dialog: 
+@text: 
+
+

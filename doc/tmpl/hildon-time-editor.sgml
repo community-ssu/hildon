@@ -215,28 +215,3 @@ hildon_time_editor_get_time( editor, &amp;h, &amp;m, &amp;s );
 
 </para>
 
-<!-- ##### ARG HildonTimeEditor:duration-max ##### -->
-<para>
-
-</para>
-
-<!-- ##### ARG HildonTimeEditor:duration-min ##### -->
-<para>
-
-</para>
-
-<!-- ##### ARG HildonTimeEditor:duration-mode ##### -->
-<para>
-
-</para>
-
-<!-- ##### ARG HildonTimeEditor:show-seconds ##### -->
-<para>
-
-</para>
-
-<!-- ##### ARG HildonTimeEditor:ticks ##### -->
-<para>
-
-</para>
-

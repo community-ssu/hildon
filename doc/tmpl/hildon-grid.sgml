@@ -453,6 +453,16 @@ set_icon_size (GtkMenuItem *item, gpointer data)
 
 </para>
 
+<!-- ##### ARG HildonGrid:scrollbar-position ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG HildonGrid:style ##### -->
+<para>
+
+</para>
+
 <!-- ##### ARG HildonGrid:emblem-size ##### -->
 <para>
 

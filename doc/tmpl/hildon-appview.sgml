@@ -43,12 +43,6 @@ toggling from fullscreen hardware key, use #hildon_appview_set_fullscreen_key_al
 </para>
 
 
-<!-- ##### STRUCT HildonAppView ##### -->
-<para>
-
-</para>
-
-
 <!-- ##### FUNCTION hildon_appview_new ##### -->
 <para>
 
@@ -166,6 +160,24 @@ toggling from fullscreen hardware key, use #hildon_appview_set_fullscreen_key_al
 @Returns: 
 
 
+<!-- ##### FUNCTION hildon_appview_set_menu_ui ##### -->
+<para>
+
+</para>
+
+@self: 
+@ui_string: 
+
+
+<!-- ##### FUNCTION hildon_appview_get_menu_ui ##### -->
+<para>
+
+</para>
+
+@self: 
+@Returns: 
+
+
 <!-- ##### SIGNAL HildonAppView::decrease-button-event ##### -->
 <para>
 
@@ -243,6 +255,11 @@ This is not a valid signal to listen to. Since HildonAppView supports
 </para>
 
 <!-- ##### ARG HildonAppView:fullscreen-key-allowed ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG HildonAppView:menu-ui ##### -->
 <para>
 
 </para>

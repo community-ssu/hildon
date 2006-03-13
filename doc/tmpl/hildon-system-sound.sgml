@@ -1,5 +1,5 @@
 <!-- ##### SECTION Title ##### -->
-hildon-marshalers
+hildon-system-sound
 
 <!-- ##### SECTION Short_Description ##### -->
 
@@ -13,4 +13,12 @@ hildon-marshalers
 <para>
 
 </para>
+
+<!-- ##### FUNCTION hildon_play_system_sound ##### -->
+<para>
+
+</para>
+
+@sample: 
+
 

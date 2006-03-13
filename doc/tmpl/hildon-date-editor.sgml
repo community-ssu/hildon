@@ -153,6 +153,16 @@ hildon_date_editor_get_date(date_editor, &amp;y, &amp;m, &amp;d);
 
 </para>
 
+<!-- ##### ARG HildonDateEditor:max-year ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG HildonDateEditor:min-year ##### -->
+<para>
+
+</para>
+
 <!-- ##### ARG HildonDateEditor:month ##### -->
 <para>
 

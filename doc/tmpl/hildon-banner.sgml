@@ -1,0 +1,82 @@
+<!-- ##### SECTION Title ##### -->
+HildonBanner
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+<!-- ##### STRUCT HildonBannerPrivate ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### FUNCTION hildon_banner_show_information ##### -->
+<para>
+
+</para>
+
+@widget: 
+@icon_name: 
+@text: 
+
+
+<!-- ##### FUNCTION hildon_banner_show_confirmation ##### -->
+<para>
+
+</para>
+
+@widget: 
+@icon_name: 
+@text: 
+
+
+<!-- ##### FUNCTION hildon_banner_show_animation ##### -->
+<para>
+
+</para>
+
+@widget: 
+@animation_name: 
+@text: 
+@Returns: 
+
+
+<!-- ##### FUNCTION hildon_banner_show_progress ##### -->
+<para>
+
+</para>
+
+@widget: 
+@bar: 
+@text: 
+@Returns: 
+
+
+<!-- ##### FUNCTION hildon_banner_set_text ##### -->
+<para>
+
+</para>
+
+@self: 
+@text: 
+
+
+<!-- ##### FUNCTION hildon_banner_set_fraction ##### -->
+<para>
+
+</para>
+
+@self: 
+@fraction: 
+
+

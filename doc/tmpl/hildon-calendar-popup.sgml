@@ -89,3 +89,28 @@ should be connect to eg. button-press-event.
 @day: 
 
 
+<!-- ##### ARG HildonCalendarPopup:day ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG HildonCalendarPopup:max-year ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG HildonCalendarPopup:min-year ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG HildonCalendarPopup:month ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG HildonCalendarPopup:year ##### -->
+<para>
+
+</para>
+

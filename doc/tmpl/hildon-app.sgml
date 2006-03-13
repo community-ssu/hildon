@@ -25,12 +25,6 @@ hildon_app_set_title( app, "This is a hello dude application" );
 
 </para>
 
-<!-- ##### STRUCT HildonApp ##### -->
-<para>
-
-</para>
-
-
 <!-- ##### ENUM HildonZoomLevel ##### -->
 <para>
 
@@ -39,6 +33,125 @@ hildon_app_set_title( app, "This is a hello dude application" );
 @HILDON_ZOOM_SMALL: 
 @HILDON_ZOOM_MEDIUM: 
 @HILDON_ZOOM_LARGE: 
+
+<!-- ##### MACRO HILDON_TYPE_ZOOM_LEVEL ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO HILDON_MENU_KEY ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO HILDON_HOME_KEY ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO HILDON_TOOLBAR_KEY ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO HILDON_FULLSCREEN_KEY ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO HILDON_INCREASE_KEY ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO HILDON_DECREASE_KEY ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO HILDON_TOOLBAR_MODIFIERS ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO HILDON_KEYEVENT_IS_MENU_KEY ##### -->
+<para>
+
+</para>
+
+@keyevent: 
+
+
+<!-- ##### MACRO HILDON_KEYEVENT_IS_HOME_KEY ##### -->
+<para>
+
+</para>
+
+@keyevent: 
+
+
+<!-- ##### MACRO HILDON_KEYEVENT_IS_TOOLBAR_KEY ##### -->
+<para>
+
+</para>
+
+@keyevent: 
+
+
+<!-- ##### MACRO HILDON_KEYEVENT_IS_FULLSCREEN_KEY ##### -->
+<para>
+
+</para>
+
+@keyevent: 
+
+
+<!-- ##### MACRO HILDON_KEYEVENT_IS_INCREASE_KEY ##### -->
+<para>
+
+</para>
+
+@keyevent: 
+
+
+<!-- ##### MACRO HILDON_KEYEVENT_IS_DECREASE_KEY ##### -->
+<para>
+
+</para>
+
+@keyevent: 
+
+
+<!-- ##### MACRO TRANSIENCY_MAXITER ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION hildon_app_get_type ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
 
 <!-- ##### FUNCTION hildon_app_new ##### -->
 <para>
@@ -147,13 +260,13 @@ hildon_app_set_title( app, "This is a hello dude application" );
 @Returns: 
 
 
-<!-- ##### FUNCTION hildon_app_unregister_view ##### -->
+<!-- ##### FUNCTION hildon_app_set_autoregistration ##### -->
 <para>
 
 </para>
 
 @self: 
-@view_ptr: 
+@auto_reg: 
 
 
 <!-- ##### FUNCTION hildon_app_register_view ##### -->
@@ -163,6 +276,49 @@ hildon_app_set_title( app, "This is a hello dude application" );
 
 @self: 
 @view_ptr: 
+
+
+<!-- ##### FUNCTION hildon_app_register_view_with_id ##### -->
+<para>
+
+</para>
+
+@self: 
+@view_ptr: 
+@Param3: 
+@Returns: 
+<!-- # Unused Parameters # -->
+@view_id: 
+
+
+<!-- ##### FUNCTION hildon_app_unregister_view ##### -->
+<para>
+
+</para>
+
+@self: 
+@view_ptr: 
+
+
+<!-- ##### FUNCTION hildon_app_unregister_view_with_id ##### -->
+<para>
+
+</para>
+
+@self: 
+@Param2: 
+<!-- # Unused Parameters # -->
+@view_id: 
+
+
+<!-- ##### FUNCTION hildon_app_find_view_id ##### -->
+<para>
+
+</para>
+
+@self: 
+@view_ptr: 
+@Returns: 
 
 
 <!-- ##### FUNCTION hildon_app_notify_view_changed ##### -->
@@ -183,47 +339,22 @@ hildon_app_set_title( app, "This is a hello dude application" );
 @killability: 
 
 
-<!-- ##### FUNCTION hildon_app_find_view_id ##### -->
+<!-- ##### FUNCTION hildon_app_set_ui_manager ##### -->
 <para>
 
 </para>
 
 @self: 
-@view_ptr: 
+@uim: 
+
+
+<!-- ##### FUNCTION hildon_app_get_ui_manager ##### -->
+<para>
+
+</para>
+
+@self: 
 @Returns: 
-
-
-<!-- ##### FUNCTION hildon_app_register_view_with_id ##### -->
-<para>
-
-</para>
-
-@self: 
-@view_ptr: 
-@Param3: 
-@Returns: 
-<!-- # Unused Parameters # -->
-@view_id: 
-
-
-<!-- ##### FUNCTION hildon_app_unregister_view_with_id ##### -->
-<para>
-
-</para>
-
-@self: 
-@Param2: 
-<!-- # Unused Parameters # -->
-@view_id: 
-
-
-<!-- ##### FUNCTION hildon_app_set_autoregistration ##### -->
-<para>
-
-</para>
-
-@self: 
-@auto_reg: 
 
 
 <!-- ##### SIGNAL HildonApp::clipboard-copy ##### -->
@@ -284,6 +415,16 @@ hildon_app_set_title( app, "This is a hello dude application" );
 
 </para>
 
+<!-- ##### ARG HildonApp:appview ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG HildonApp:autoregistration ##### -->
+<para>
+
+</para>
+
 <!-- ##### ARG HildonApp:killable ##### -->
 <para>
 
@@ -295,6 +436,11 @@ hildon_app_set_title( app, "This is a hello dude application" );
 </para>
 
 <!-- ##### ARG HildonApp:two-part-title ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG HildonApp:ui-manager ##### -->
 <para>
 
 </para>

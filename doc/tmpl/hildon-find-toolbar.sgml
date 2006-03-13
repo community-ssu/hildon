@@ -18,7 +18,15 @@ has the text items that the user has searched. But once the application is termi
 
 </para>
 
-<!-- ##### STRUCT HildonFindToolbar ##### -->
+<!-- ##### MACRO HILDON_FIND_TOOLBARClass ##### -->
+<para>
+
+</para>
+
+@klass: 
+
+
+<!-- ##### STRUCT HildonFindToolbarPrivate ##### -->
 <para>
 
 </para>
@@ -44,71 +52,12 @@ Creat a HildonFindToolbar with a preset GtkListStore.
 @Returns: 
 
 
-<!-- ##### SIGNAL HildonFindToolbar::close ##### -->
-<para>
-It is emitted everytime the close button is clicked. Note that HildonFindToolbar
-does not hide itself. It is programmer's responsibility to hide the HildonFindToolbar
- on receiving this signal, or do whatever he thinks is appropreiate.
-</para>
-
-@hildonfindtoolbar: the object which received the signal.
-
-<!-- ##### SIGNAL HildonFindToolbar::history-append ##### -->
-<para>
-Every time the user presses search button, the search signal is first emitted,
- then history-append signal is emitted. The default handler will add
- the currect item to the search history list. In case that the programmer
- does not want to have the item added to list, for instance, when the search
- fails, he must write his own handler and return TRUE.
-
-</para>
-
-@hildonfindtoolbar: the object which received the signal.
-@Returns: 
-
-<!-- ##### SIGNAL HildonFindToolbar::invalid-input ##### -->
-<para>
-This signal indicates that the user has reached the maximum allowed character in the
- search field. The typical action is to kindly inform the user that he has
- reached the limit of search field using info print.
-</para>
-
-@hildonfindtoolbar: the object which received the signal.
-
-<!-- ##### SIGNAL HildonFindToolbar::search ##### -->
-<para>
-It is emitted everytime the search button is clicked, even the GtkComboboxEntry is empty.
-</para>
-
-@hildonfindtoolbar: the object which received the signal.
-
-<!-- ##### ARG HildonFindToolbar:column ##### -->
+<!-- ##### FUNCTION hildon_find_toolbar_highlight_entry ##### -->
 <para>
 
 </para>
 
-<!-- ##### ARG HildonFindToolbar:history-limit ##### -->
-<para>
+@ftb: 
+@get_focus: 
 
-</para>
-
-<!-- ##### ARG HildonFindToolbar:label ##### -->
-<para>
-
-</para>
-
-<!-- ##### ARG HildonFindToolbar:list ##### -->
-<para>
-
-</para>
-
-<!-- ##### ARG HildonFindToolbar:max-characters ##### -->
-<para>
-
-</para>
-
-<!-- ##### ARG HildonFindToolbar:prefix ##### -->
-<para>
-
-</para>
 

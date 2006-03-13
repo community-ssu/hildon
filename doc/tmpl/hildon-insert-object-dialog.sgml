@@ -73,3 +73,13 @@ Here's a simple example for using #HildonInsertObjectDialog:
 @Returns: 
 
 
+<!-- ##### ARG HildonInsertObjectDialog:mime-type ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG HildonInsertObjectDialog:name ##### -->
+<para>
+
+</para>
+

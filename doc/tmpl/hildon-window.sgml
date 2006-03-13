@@ -62,24 +62,11 @@ gtk_window_set_icon (GTK_WINDOW (window), icon_pixbuf);
 
 </para>
 
-<!-- ##### SECTION Stability_Level ##### -->
-
-
-<!-- ##### STRUCT HildonWindow ##### -->
+<!-- ##### STRUCT HildonWindowPrivate ##### -->
 <para>
 
 </para>
 
-
-<!-- ##### ARG HildonWindow:is-topmost ##### -->
-<para>
-
-</para>
-
-<!-- ##### ARG HildonWindow:borders ##### -->
-<para>
-
-</para>
 
 <!-- ##### FUNCTION hildon_window_new ##### -->
 <para>
@@ -135,4 +122,28 @@ gtk_window_set_icon (GTK_WINDOW (window), icon_pixbuf);
 @self: 
 @toolbar: 
 
+
+<!-- ##### FUNCTION hildon_window_get_is_topmost ##### -->
+<para>
+
+</para>
+
+@self: 
+@Returns: 
+
+
+<!-- ##### ARG HildonWindow:is-topmost ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG HildonWindow:borders ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG HildonWindow:toolbar-borders ##### -->
+<para>
+
+</para>
 

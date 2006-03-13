@@ -77,3 +77,8 @@ HildonNumberEditor is used to set a number from a specific range. There's two bu
 @arg1: 
 @Returns: 
 
+<!-- ##### ARG HildonNumberEditor:value ##### -->
+<para>
+
+</para>
+

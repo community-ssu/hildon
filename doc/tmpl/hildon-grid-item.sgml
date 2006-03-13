@@ -100,3 +100,8 @@ create_basic_icons (HildonGrid *grid)
 @Returns: 
 
 
+<!-- ##### ARG HildonGridItem:emblem-type ##### -->
+<para>
+
+</para>
+
