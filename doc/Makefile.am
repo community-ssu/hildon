@@ -27,8 +27,12 @@ HFILE_GLOB=$(top_srcdir)/hildon-widgets/*.h
 CFILE_GLOB=$(top_srcdir)/hildon-widgets/*.c
 
 # Header files to ignore when scanning.
-IGNORE_HFILES=*private* config.h ut md5.h hildon-volumebar-range.h hildon-volumebar-private.h \
-		hildon-app-private.h
+IGNORE_HFILES = \
+		hildon-app-private.h            \
+		hildon-grid-item-private.h      \
+		hildon-volumebar-private.h      \
+		hildon-volumebar-range.h        \
+		hildon-window-private.h
 
 # CFLAGS and LDFLAGS for compiling scan program. Only needed if 
 # $(DOC_MODULE).types is non-empty.
