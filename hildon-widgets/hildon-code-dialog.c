@@ -38,12 +38,22 @@
 #include<gtk/gtklabel.h>
 #include<gtk/gtkalignment.h>
 
-#define CODELOCK_DIALOG_TITLE "FIXME"
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
+
+#include <libintl.h>
+
 #define HEIGHT (38-HILDON_MARGIN_DEFAULT)
 #define WIDTH  (60-HILDON_MARGIN_DEFAULT)
 #define BACKSPACE_ICON    "qgn_calculator_backspace"
-#define DEVICELOCK_OK     "secu_enter_lock_code_dialog_ok"
-#define DEVICELOCK_CANCEL "secu_enter_lock_code_dialog_cancel"
+
+#define _(String) dgettext(PACKAGE, String)
+#define DEVICELOCK_OK     _("secu_Enter_lock_code_dialog_ok")
+#define DEVICELOCK_CANCEL _("secu_Enter_lock_code_dialog_cancel")
+#define DEVICELOCK_TITLE  _("secu_application_title")
+
+
 #define MAX_PINCODE_LEN   (10)
 
 
@@ -133,6 +143,9 @@ static void hildon_code_dialog_init (HildonCodeDialog *dialog)
     GtkIconTheme* icon_theme = NULL;
     GtkIconInfo *icon_info = NULL;
     gint base_size=0;
+
+    /* Set default title */
+    gtk_window_set_title (GTK_WINDOW (dialog), DEVICELOCK_TITLE);
 
     gtk_window_set_type_hint(GTK_WINDOW (dialog), GDK_WINDOW_TYPE_HINT_DIALOG);
 
