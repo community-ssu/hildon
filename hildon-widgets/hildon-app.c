@@ -774,19 +774,19 @@ G_GNUC_EXTENSION
  * It returns FALSE in order to get called only once.
  */
 static gboolean
-hildon_app_escape_timeout(gpointer data)
+hildon_app_escape_timeout(gpointer app)
 {
 	HildonAppPrivate *priv;
 	GdkEvent *event;
 
-  g_assert(GTK_WIDGET_REALIZED(data));
+  g_assert(GTK_WIDGET_REALIZED(app));
 
-	priv = HILDON_APP_GET_PRIVATE(data);
+	priv = HILDON_APP_GET_PRIVATE(app);
 
   /* Send fake event, simulation a situation that user 
      pressed 'x' from the corner */
   event = gdk_event_new(GDK_DELETE);
-  ((GdkEventAny *)event)->window = GTK_WIDGET(data)->window;
+  ((GdkEventAny *)event)->window = GTK_WIDGET(app)->window;
   gtk_main_do_event(event);
   gdk_event_free(event);
 
