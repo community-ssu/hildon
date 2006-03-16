@@ -25,8 +25,8 @@
 #include <gtk/gtk.h>
 #include "hildon-defines.h"
 
-HildonIconSizes *hildoniconsizes = NULL; /* FIXME: could be const */
-HildonIconSizes hildoninternaliconsizes; /* FIXME: should be static */
+const  HildonIconSizes *hildoniconsizes = NULL;
+static HildonIconSizes iis; /* hildon internal icon sizes */
 
 /**
  * hildon_icon_sizes_init:
@@ -40,33 +40,33 @@ void hildon_icon_sizes_init (void)
   if (hildoniconsizes != NULL)
     return;
   
-  hildoniconsizes = &hildoninternaliconsizes;
+  hildoniconsizes = &iis;
   
-  hildoniconsizes->icon_size_list = gtk_icon_size_register ("hildon_icon_size_list", 64, 64);
-  hildoniconsizes->icon_size_small = gtk_icon_size_register ("*icon_size_small", 26, 26);
-  hildoniconsizes->icon_size_toolbar = gtk_icon_size_register ("icon_size_toolbar", 26, 26);
-  hildoniconsizes->icon_size_widg = gtk_icon_size_register ("icon_size_widg", 26, 26);
-  hildoniconsizes->icon_size_widg_wizard = gtk_icon_size_register ("icon_size_widg_wizard", 50, 50);
-  hildoniconsizes->icon_size_grid = gtk_icon_size_register ("icon_size_grid", 64, 64);
-  hildoniconsizes->icon_size_big_note = gtk_icon_size_register ("icon_size_big_note", 50, 50);
-  hildoniconsizes->icon_size_note = gtk_icon_size_register ("icon_size_note", 26, 26);
-  hildoniconsizes->icon_size_statusbar = gtk_icon_size_register ("icon_size_statusbar", 40, 40);
-  hildoniconsizes->icon_size_indi_video_player_pre_roll = gtk_icon_size_register ("icon_size_indi_video_player_pre_roll", 64, 64);
-  hildoniconsizes->icon_size_indi_key_pad_lock = gtk_icon_size_register ("icon_size_indi_key_pad_lock", 50, 50);
-  hildoniconsizes->icon_size_indi_copy = gtk_icon_size_register ("icon_size_indi_copy", 64, 64);
-  hildoniconsizes->icon_size_indi_delete = gtk_icon_size_register ("icon_size_indi_delete", 64, 64);
-  hildoniconsizes->icon_size_indi_process = gtk_icon_size_register ("icon_size_indi_process", 64, 64);
-  hildoniconsizes->icon_size_indi_progressball = gtk_icon_size_register ("icon_size_indi_progressball", 64, 64);
-  hildoniconsizes->icon_size_indi_send = gtk_icon_size_register ("icon_size_indi_send", 64, 64);
-  hildoniconsizes->icon_size_indi_offmode_charging = gtk_icon_size_register ("icon_size_indi_offmode_charging", 50, 50);
-  hildoniconsizes->icon_size_indi_tap_and_hold = gtk_icon_size_register ("icon_size_indi_tap_and_hold", 34, 34);
-  hildoniconsizes->icon_size_indi_send_receive = gtk_icon_size_register ("icon_size_indi_send_receive", 64, 64);
-  hildoniconsizes->icon_size_indi_wlan_strength = gtk_icon_size_register ("icon_size_indi_wlan_strength", 64, 64);
-  
-  hildoniconsizes->image_size_indi_nokia_logo = gtk_icon_size_register ("image_size_indi_nokia_logo", 64, 64);
-  hildoniconsizes->image_size_indi_startup_failed = gtk_icon_size_register ("image_size_indi_startup_failed", 64, 64);
-  hildoniconsizes->image_size_indi_startup_nokia_logo = gtk_icon_size_register ("image_size_indi_startup_nokia_logo", 64, 64);
-  hildoniconsizes->image_size_indi_nokia_hands = gtk_icon_size_register ("image_size_indi_nokia_hands", 64, 64);
+  iis.icon_size_list                       = gtk_icon_size_register ("hildon_icon_size_list",                64, 64);
+  iis.icon_size_small                      = gtk_icon_size_register ("*icon_size_small",                     26, 26);
+  iis.icon_size_toolbar                    = gtk_icon_size_register ("icon_size_toolbar",                    26, 26);
+  iis.icon_size_widg                       = gtk_icon_size_register ("icon_size_widg",                       26, 26);
+  iis.icon_size_widg_wizard                = gtk_icon_size_register ("icon_size_widg_wizard",                50, 50);
+  iis.icon_size_grid                       = gtk_icon_size_register ("icon_size_grid",                       64, 64);
+  iis.icon_size_big_note                   = gtk_icon_size_register ("icon_size_big_note",                   50, 50);
+  iis.icon_size_note                       = gtk_icon_size_register ("icon_size_note",                       26, 26);
+  iis.icon_size_statusbar                  = gtk_icon_size_register ("icon_size_statusbar",                  40, 40);
+  iis.icon_size_indi_video_player_pre_roll = gtk_icon_size_register ("icon_size_indi_video_player_pre_roll", 64, 64);
+  iis.icon_size_indi_key_pad_lock          = gtk_icon_size_register ("icon_size_indi_key_pad_lock",          50, 50);
+  iis.icon_size_indi_copy                  = gtk_icon_size_register ("icon_size_indi_copy",                  64, 64);
+  iis.icon_size_indi_delete                = gtk_icon_size_register ("icon_size_indi_delete",                64, 64);
+  iis.icon_size_indi_process               = gtk_icon_size_register ("icon_size_indi_process",               64, 64);
+  iis.icon_size_indi_progressball          = gtk_icon_size_register ("icon_size_indi_progressball",          64, 64);
+  iis.icon_size_indi_send                  = gtk_icon_size_register ("icon_size_indi_send",                  64, 64);
+  iis.icon_size_indi_offmode_charging      = gtk_icon_size_register ("icon_size_indi_offmode_charging",      50, 50);
+  iis.icon_size_indi_tap_and_hold          = gtk_icon_size_register ("icon_size_indi_tap_and_hold",          34, 34);
+  iis.icon_size_indi_send_receive          = gtk_icon_size_register ("icon_size_indi_send_receive",          64, 64);
+  iis.icon_size_indi_wlan_strength         = gtk_icon_size_register ("icon_size_indi_wlan_strength",         64, 64);
+
+  iis.image_size_indi_nokia_logo           = gtk_icon_size_register ("image_size_indi_nokia_logo",           64, 64);
+  iis.image_size_indi_startup_failed       = gtk_icon_size_register ("image_size_indi_startup_failed",       64, 64);
+  iis.image_size_indi_startup_nokia_logo   = gtk_icon_size_register ("image_size_indi_startup_nokia_logo",   64, 64);
+  iis.image_size_indi_nokia_hands          = gtk_icon_size_register ("image_size_indi_nokia_hands",          64, 64);
 }
 
 typedef struct _HildonLogicalData HildonLogicalData;
@@ -90,16 +90,13 @@ static void hildon_change_style_recursive_from_ld (GtkWidget *widget, GtkStyle *
      "style_set" signal, we need to block this function from being called
      again or we get into inifinite loop.
 
-     Compiling with gcc > 3.3 and -pedantic won't allow conversion between
-     function and object pointers. GLib API however requires an object pointer
-     for a function, so we have to work around this. See
-     see http://bugzilla.gnome.org/show_bug.cgi?id=310175
-
-     FIXME: Use G_GNUC_EXTENSION instead of our own ifdef
+     FIXME: Compiling with gcc > 3.3 and -pedantic won't allow
+     conversion between function and object pointers. GLib API however
+     requires an object pointer for a function, so we have to work
+     around this.
+     See http://bugzilla.gnome.org/show_bug.cgi?id=310175
   */
-#ifdef __GNUC__
-  __extension__
-#endif
+  G_GNUC_EXTENSION
   g_signal_handlers_block_matched (G_OBJECT (widget), G_SIGNAL_MATCH_ID | G_SIGNAL_MATCH_FUNC,
 				   g_signal_lookup ("style_set", G_TYPE_FROM_INSTANCE (widget)),
 				   0, NULL,
@@ -142,15 +139,20 @@ static void hildon_change_style_recursive_from_ld (GtkWidget *widget, GtkStyle *
     }
    
 
-  /* Compilation workaround for gcc > 3.3 + -pedantic again */
-#ifdef __GNUC__
-  __extension__
-#endif
+  /* FIXME: Compilation workaround for gcc > 3.3 + -pedantic again */
+  G_GNUC_EXTENSION
   g_signal_handlers_unblock_matched (G_OBJECT (widget), G_SIGNAL_MATCH_ID | G_SIGNAL_MATCH_FUNC,
 				   g_signal_lookup ("style_set", G_TYPE_FROM_INSTANCE (widget)),
 				   0, NULL,
 				   (gpointer) hildon_change_style_recursive_from_ld,
 				   NULL);
+}
+
+static void hildon_logical_data_free (HildonLogicalData *ld)
+{
+  g_free(ld->logicalcolorstring);
+  g_free(ld->logicalfontstring);
+  g_free(ld);
 }
 
 /**
@@ -164,7 +166,7 @@ static void hildon_change_style_recursive_from_ld (GtkWidget *widget, GtkStyle *
  * 
  * Return value : The signal id that is triggered every time theme is changed. 0 if font set failed.
  **/
-gulong hildon_gtk_widget_set_logical_font (GtkWidget *widget, gchar *logicalfontname)
+gulong hildon_gtk_widget_set_logical_font (GtkWidget *widget, const gchar *logicalfontname)
 {
   HildonLogicalData *ld;
   gulong signum = 0;
@@ -177,15 +179,20 @@ gulong hildon_gtk_widget_set_logical_font (GtkWidget *widget, gchar *logicalfont
   ld->rcflags = 0;
   ld->state = 0;
   ld->logicalcolorstring = NULL;
-  ld->logicalfontstring = logicalfontname; /* FIXME: g_strdup() */
+  ld->logicalfontstring = g_strdup(logicalfontname);
 
   /* Change the font now */
   hildon_change_style_recursive_from_ld (widget, NULL, ld);
 
-  /* Connect to "style_set" so that the font gets changed whenever theme
-     changes. FIXME: if this function is called multiple times, the old signal
-     handler should be disconnected */
-  signum = g_signal_connect_data (G_OBJECT (widget), "style_set", G_CALLBACK (hildon_change_style_recursive_from_ld), ld, (GClosureNotify) g_free, 0);
+  /* Connect to "style_set" so that the font gets changed whenever theme changes.
+
+     FIXME: if this function is called multiple times, the old signal
+     handler should be disconnected. However since signal ID is
+     returned, this probably can't be done without breaking backwards
+     compatibility. */
+  signum = g_signal_connect_data (G_OBJECT (widget), "style_set",
+                                  G_CALLBACK (hildon_change_style_recursive_from_ld),
+                                  ld, (GClosureNotify) hildon_logical_data_free, 0);
 
   return signum;
 }
@@ -206,7 +213,7 @@ gulong hildon_gtk_widget_set_logical_font (GtkWidget *widget, gchar *logicalfont
  * Return value : The signal id that is triggered every time theme is changed. 0 if color set failed.
  **/
 gulong hildon_gtk_widget_set_logical_color (GtkWidget *widget, GtkRcFlags rcflags,
-				    GtkStateType state, gchar *logicalcolorname)
+				    GtkStateType state, const gchar *logicalcolorname)
 {
   HildonLogicalData *ld;
   gulong signum = 0;
@@ -218,16 +225,17 @@ gulong hildon_gtk_widget_set_logical_color (GtkWidget *widget, GtkRcFlags rcflag
 
   ld->rcflags = rcflags;
   ld->state = state;
-  ld->logicalcolorstring = logicalcolorname; /* FIXME: g_strdup() */
+  ld->logicalcolorstring = g_strdup(logicalcolorname);
   ld->logicalfontstring = NULL;
   
   /* Change the colors now */
   hildon_change_style_recursive_from_ld (widget, NULL, ld);
 
   /* Connect to "style_set" so that the colors gets changed whenever theme
-     changes. FIXME: if this function is called multiple times, the old signal
-     handler should be disconnected */
-  signum = g_signal_connect_data (G_OBJECT (widget), "style_set", G_CALLBACK (hildon_change_style_recursive_from_ld), ld, (GClosureNotify) g_free, 0);
+     changes. FIXME: same as above */
+  signum = g_signal_connect_data (G_OBJECT (widget), "style_set",
+                                  G_CALLBACK (hildon_change_style_recursive_from_ld),
+                                  ld, (GClosureNotify) hildon_logical_data_free, 0);
 
   return signum;
 }

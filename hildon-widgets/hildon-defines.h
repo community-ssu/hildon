@@ -62,7 +62,7 @@ struct _HildonIconSizes
   GtkIconSize image_size_indi_nokia_hands;
 };
 
-extern HildonIconSizes *hildoniconsizes;
+extern const HildonIconSizes *hildoniconsizes;
 
 #define HILDON_ICON_SIZE_CHECK_AND_GET(iconvar) (!hildoniconsizes ? hildon_icon_sizes_init (), hildoniconsizes->iconvar : hildoniconsizes->iconvar)
 
@@ -134,9 +134,9 @@ extern HildonIconSizes *hildoniconsizes;
 #define HILDON_HARDKEY_INCREASE   GDK_F7
 #define HILDON_HARDKEY_DECREASE   GDK_F8
 
-gulong hildon_gtk_widget_set_logical_font (GtkWidget *widget, gchar *logicalfontname);
+gulong hildon_gtk_widget_set_logical_font (GtkWidget *widget, const gchar *logicalfontname);
 gulong hildon_gtk_widget_set_logical_color (GtkWidget *widget, GtkRcFlags rcflags,
-				    GtkStateType state, gchar *logicalcolorname);
+				    GtkStateType state, const gchar *logicalcolorname);
 
 G_END_DECLS
 #endif /* HILDON_DEFINES_H */

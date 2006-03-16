@@ -1,3 +1,23 @@
+2006-03-15  Luc Pionchon  <luc.pionchon@nokia.com>
+
+	Cleanup hildon-defines,
+	
+	* hildon-widgets/hildon-defines.c (hildon_icon_sizes_init) 
+	(hildon_change_style_recursive_from_ld): use G_GNUC_EXTENSION macro instead of #ifdef
+
+	(hildon_logical_data_free): new function. Free logical data.
+	(hildon_gtk_widget_set_logical_font): store logicalfontstring g_strdup()ed.
+	(hildon_gtk_widget_set_logical_color): store logicalcolorstring g_strdup()ed.
+
+	* hildon-widgets/hildon-defines.[ch]
+	(hildon_gtk_widget_set_logical_font): use const gchar*
+	(hildon_gtk_widget_set_logical_color): likewise.
+
+	* hildon-widgets/hildon-defines.c: 
+	(hildoniconsizes): set const
+	(hildoninternaliconsizes): set static, renamed 'iis'
+
+	
 2006-03-14  Luc Pionchon  <luc.pionchon@nokia.com>
 
 	Cleanup Caption widget,
