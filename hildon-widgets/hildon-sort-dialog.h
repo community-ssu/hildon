@@ -52,7 +52,7 @@ struct _HildonSortDialogClass {
     GtkDialogClass parent_class;
 };
 
-GType hildon_sort_dialog_get_type(void);
+GType hildon_sort_dialog_get_type(void) G_GNUC_CONST;
 
 
 GtkWidget *hildon_sort_dialog_new(GtkWindow * parent);

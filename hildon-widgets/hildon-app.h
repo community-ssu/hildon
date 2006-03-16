@@ -113,7 +113,7 @@ G_CONST_RETURN GType hildon_zoom_level_get_type (void);
 
 #define TRANSIENCY_MAXITER 50
 
-GType hildon_app_get_type(void);
+GType hildon_app_get_type(void) G_GNUC_CONST;
 GtkWidget *hildon_app_new(void);
 GtkWidget *hildon_app_new_with_appview(HildonAppView * appview);
 void hildon_app_set_appview(HildonApp * self, HildonAppView * appview);

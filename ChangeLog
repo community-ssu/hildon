@@ -67,6 +67,26 @@
 
 2006-02-28  Luc Pionchon  <luc.pionchon@nokia.com>
 
+	(*_get_type): declared G_GNUC_CONST
+	
+	* hildon-widgets/hildon-app.h:
+	* hildon-widgets/hildon-appview.h:
+	* hildon-widgets/hildon-calendar-popup.h:
+	* hildon-widgets/hildon-color-selector.h:
+	* hildon-widgets/hildon-date-editor.h:
+	* hildon-widgets/hildon-find-toolbar.h: 
+	* hildon-widgets/hildon-get-password-dialog.h:
+	* hildon-widgets/hildon-name-password-dialog.h:
+	* hildon-widgets/hildon-number-editor.h:
+	* hildon-widgets/hildon-seekbar.h:
+	* hildon-widgets/hildon-set-password-dialog.h:
+	* hildon-widgets/hildon-sort-dialog.h:
+	* hildon-widgets/hildon-time-editor.h:
+	* hildon-widgets/hildon-weekday-picker.h:
+	* hildon-widgets/hildon-wizard-dialog.h:
+
+2006-02-28  Luc Pionchon  <luc.pionchon@nokia.com>
+
         Volume bars cleanup
 	
 	* hildon-widgets/hildon-volumebar.c

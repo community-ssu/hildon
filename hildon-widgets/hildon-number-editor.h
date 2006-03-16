@@ -65,7 +65,7 @@ struct _HildonNumberEditorClass
 
 /* Public API */
 
-GType 		hildon_number_editor_get_type	(void);
+GType 		hildon_number_editor_get_type	(void) G_GNUC_CONST;
 
 GtkWidget*	hildon_number_editor_new	(gint min, gint max);
 

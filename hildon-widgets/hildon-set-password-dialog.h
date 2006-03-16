@@ -100,7 +100,7 @@ GtkWidget *hildon_set_password_dialog_new_with_default
 					  gchar *password,
                                           gboolean modify_protection);
 
-GType hildon_set_password_dialog_get_type(void);
+GType hildon_set_password_dialog_get_type(void) G_GNUC_CONST;
 
 const gchar
     *hildon_set_password_dialog_get_password(HildonSetPasswordDialog *

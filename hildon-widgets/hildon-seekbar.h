@@ -52,7 +52,7 @@ struct _HildonSeekbarClass {
     GtkScaleClass parent_class;
 };
 
-GType hildon_seekbar_get_type(void);
+GType hildon_seekbar_get_type(void) G_GNUC_CONST;
 GtkWidget *hildon_seekbar_new(void);
 gint hildon_seekbar_get_total_time(HildonSeekbar *seekbar);
 void hildon_seekbar_set_total_time(HildonSeekbar *seekbar, gint time);

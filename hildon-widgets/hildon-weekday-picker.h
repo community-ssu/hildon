@@ -63,7 +63,7 @@ struct _HildonWeekdayPickerClass {
     void (*selection_changed) (HildonWeekdayPicker * self);
 };
   
-GType hildon_weekday_picker_get_type(void);
+GType hildon_weekday_picker_get_type(void) G_GNUC_CONST;
 
 /**
  * hildon_weekday_picker_new:

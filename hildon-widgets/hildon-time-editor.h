@@ -37,6 +37,7 @@ G_BEGIN_DECLS
         HILDON_TYPE_TIME_EDITOR))
 #define HILDON_IS_TIME_EDITOR_CLASS(klass) (GTK_CHECK_CLASS_TYPE ((klass),\
         HILDON_TYPE_TIME_EDITOR))
+
 typedef struct _HildonTimeEditor HildonTimeEditor;
 typedef struct _HildonTimeEditorClass HildonTimeEditorClass;
 
@@ -48,7 +49,7 @@ struct _HildonTimeEditorClass {
     GtkContainerClass parent_class;
 };
 
-GType hildon_time_editor_get_type(void);
+GType hildon_time_editor_get_type(void) G_GNUC_CONST;
 GtkWidget *hildon_time_editor_new(void);
 
 void hildon_time_editor_set_time(HildonTimeEditor * editor, guint hours,
@@ -90,8 +91,6 @@ guint hildon_time_editor_get_duration_min (HildonTimeEditor * editor);
 void hildon_time_editor_set_duration_max (HildonTimeEditor * editor,
                                           guint duration_max);
 guint hildon_time_editor_get_duration_max (HildonTimeEditor * editor);
-
-
 
 G_END_DECLS
 #endif

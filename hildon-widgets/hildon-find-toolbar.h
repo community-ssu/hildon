@@ -66,7 +66,7 @@ struct _HildonFindToolbarClass
   gboolean	(*history_append)	(HildonFindToolbar *tooblar, gpointer data);
 };
 
-GType		hildon_find_toolbar_get_type		(void);
+GType		hildon_find_toolbar_get_type		(void) G_GNUC_CONST;
 GtkWidget*	hildon_find_toolbar_new			(gchar *label);
 GtkWidget*	hildon_find_toolbar_new_with_model	(gchar *label,
 							 GtkListStore*

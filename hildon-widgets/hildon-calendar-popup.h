@@ -62,7 +62,7 @@ struct _HildonCalendarPopupClass {
     GtkDialogClass parent_class;
 };
 
-GType hildon_calendar_popup_get_type(void);
+GType hildon_calendar_popup_get_type(void) G_GNUC_CONST;
 
 GtkWidget *hildon_calendar_popup_new(GtkWindow * parent, guint year,
                                      guint month, guint day);

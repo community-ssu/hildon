@@ -70,7 +70,7 @@ struct _HildonGetPasswordDialogClass {
     GtkDialogClass parent_class;
 };
 
-GType hildon_get_password_dialog_get_type(void);
+GType hildon_get_password_dialog_get_type(void) G_GNUC_CONST;
 
 GtkWidget *hildon_get_password_dialog_new(GtkWindow * parent,
                                           gboolean get_old_password_title);

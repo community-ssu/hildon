@@ -77,7 +77,7 @@ struct _HildonDateEditorClass {
 			    HildonDateEditorErrorType type);
 };
 
-GType hildon_date_editor_get_type(void);
+GType hildon_date_editor_get_type(void) G_GNUC_CONST;
 
 GtkWidget *hildon_date_editor_new(void);
 

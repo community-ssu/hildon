@@ -81,7 +81,7 @@ struct _HildonAppViewClass {
 };
 
 
-GType hildon_appview_get_type(void);
+GType hildon_appview_get_type(void) G_GNUC_CONST;
 GtkWidget *hildon_appview_new(const gchar * title);
 void hildon_appview_add_with_scrollbar(HildonAppView * self,
                                        GtkWidget * child);

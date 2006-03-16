@@ -68,7 +68,7 @@ struct _HildonWizardDialogClass {
 };
 
 
-GType hildon_wizard_dialog_get_type(void);
+GType hildon_wizard_dialog_get_type(void) G_GNUC_CONST;
 
 GtkWidget *hildon_wizard_dialog_new(GtkWindow * parent,
                                     const char *wizard_name,
