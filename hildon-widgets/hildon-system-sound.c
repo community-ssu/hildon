@@ -46,10 +46,8 @@ void hildon_play_system_sound(const gchar *sample)
 
   /* We want error cases to match full volume, not silence, so
      we do not want to use gconf_client_get_int */
-  if (!value || value->type != GCONF_VALUE_INT) {
-    g_message("Failed to get volume level. Using default");
+  if (!value || value->type != GCONF_VALUE_INT)
     volume = 2;
-  }
   else
     volume = gconf_value_get_int(value);
 
@@ -60,7 +58,6 @@ void hildon_play_system_sound(const gchar *sample)
   switch (volume)
   {
     case 0:
-      g_message("System sounds are off");
       return;
     case 1:
       scale = 0x80;
@@ -72,19 +69,15 @@ void hildon_play_system_sound(const gchar *sample)
   };
     
   sock = esd_open_sound(NULL);
-  if (sock <= 0) {
-    g_warning("Failed to setup ESD");
+  if (sock <= 0)
     return;
-  }
 
   sample_id = esd_file_cache(sock, g_get_prgname(), sample);
   if (sample_id < 0) {
     close(sock);
-    g_warning("error while caching sample.");
     return;
   }
   
-  g_message("Playing sample %s at volume %d", sample, scale);
   esd_set_default_sample_pan(sock, sample_id, scale, scale);
   esd_sample_play(sock, sample_id);
   esd_sample_free(sock, sample_id);
