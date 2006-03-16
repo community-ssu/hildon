@@ -265,7 +265,6 @@ hildon_find_toolbar_find_string(HildonFindToolbar *self,
   return FALSE;
 }
 
-
 static gboolean
 hildon_find_toolbar_history_append(HildonFindToolbar *self,
 				   gpointer data) 
@@ -280,51 +279,66 @@ hildon_find_toolbar_history_append(HildonFindToolbar *self,
   
   g_object_get(self, "prefix", &string, NULL);
   
-  if (*string != '\0')
+  if (*string == '\0')
     {
-      /* If list store is set, get it */
-      model = hildon_find_toolbar_get_list_model(priv);
-      if(model != NULL)
-	{
-          list = GTK_LIST_STORE(model);
-	  g_object_get(self, "column", &column, NULL);
-	}
-      else
-	{
-          /* No list store set. Create our own. */
-	  list = gtk_list_store_new(1, G_TYPE_STRING);
-          model = GTK_TREE_MODEL(list);
-          g_object_set(self, "column", 0, NULL);
-	  self_create = TRUE;
-	}
-
-      /* Column number is -1 if "column" property hasn't been set but
-         "list" property is. */
-      if(column >= 0)
-        {
-          /* Latest string is always the first one in list. If the string
-             already exists, remove it so there are no duplicates in list. */
-          if (hildon_find_toolbar_find_string(self, &iter, column, string))
-            gtk_list_store_remove(list, &iter);
-
-          /* Add the string to first in list */
-          gtk_list_store_append(list, &iter);
-          gtk_list_store_set(list, &iter, column, string, -1);
-          if(self_create)
-            {
-              /* Add the created list to ComboBoxEntry */
-	      hildon_find_toolbar_apply_filter(self, model);
-              /* ComboBoxEntry keeps the only needed reference to this list */
-	      g_object_unref(list);
-	    }
-	  else
-            /* Refilter to get the oldest entry hidden from history */
-	    gtk_tree_model_filter_refilter(GTK_TREE_MODEL_FILTER(
-		gtk_combo_box_get_model(GTK_COMBO_BOX(priv->entry_combo_box))));
-	}
+      /* empty prefix, ignore */
+      g_free(string);
+      return TRUE;
     }
+
+
+  /* If list store is set, get it */
+  model = hildon_find_toolbar_get_list_model(priv);
+  if(model != NULL)
+    {
+      list = GTK_LIST_STORE(model);
+      g_object_get(self, "column", &column, NULL);
+
+      if (column < 0)
+	{
+          /* Column number is -1 if "column" property hasn't been set but
+             "list" property is. */
+	  g_free(string);
+	  return TRUE;
+	}
+
+      /* Latest string is always the first one in list. If the string
+         already exists, remove it so there are no duplicates in list. */
+      if (hildon_find_toolbar_find_string(self, &iter, column, string))
+	gtk_list_store_remove(list, &iter);
+    }
+  else
+    {
+      /* No list store set. Create our own. */
+      list = gtk_list_store_new(1, G_TYPE_STRING);
+      model = GTK_TREE_MODEL(list);
+      self_create = TRUE;
+    }
+
+  /* Add the string to first in list */
+  gtk_list_store_append(list, &iter);
+  gtk_list_store_set(list, &iter, column, string, -1);
+
+  if(self_create)
+    {
+      /* Add the created list to ComboBoxEntry */
+      hildon_find_toolbar_apply_filter(self, model);
+      /* ComboBoxEntry keeps the only needed reference to this list */
+      g_object_unref(list);
+
+      /* Set the column only after ComboBoxEntry's model is set
+         in hildon_find_toolbar_apply_filter() */
+      g_object_set(self, "column", 0, NULL);
+    }
+  else
+    {
+      /* Refilter to get the oldest entry hidden from history */
+      gtk_tree_model_filter_refilter(GTK_TREE_MODEL_FILTER(
+        gtk_combo_box_get_model(GTK_COMBO_BOX(priv->entry_combo_box))));
+    }
+
   g_free(string);
- 
+
   return TRUE;
 }
 

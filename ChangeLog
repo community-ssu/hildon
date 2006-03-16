@@ -1,5 +1,12 @@
 2006-03-15  Luc Pionchon  <luc.pionchon@nokia.com>
 
+	* hildon-widgets/hildon-find-toolbar.c
+	(hildon_find_toolbar_history_append): set "column" property only
+	after model has been set.
+	
+	
+2006-03-15  Luc Pionchon  <luc.pionchon@nokia.com>
+
 	* hildon-widgets/hildon-app.c (hildon_app_escape_timeout): rename
 	the parameter more descriptively
 
