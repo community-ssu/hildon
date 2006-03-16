@@ -54,6 +54,14 @@
 
 2006-03-03  Luc Pionchon  <luc.pionchon@nokia.com>
 
+	* hildon-widgets/hildon-get-password-dialog.[ch]: 
+	(hildon_get_password_dialog_set_title) marked deprecated.
+
+	+ cleanup header coding style
+
+	
+2006-03-03  Luc Pionchon  <luc.pionchon@nokia.com>
+
 	Cleanup font selection dialog
 	
 	* hildon-widgets/hildon-font-selection-dialog.c
