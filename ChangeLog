@@ -1,5 +1,41 @@
 2006-03-15  Luc Pionchon  <luc.pionchon@nokia.com>
 
+	Cleanup number editor
+	
+	* hildon-widgets/hildon-number-editor.c: 
+	(SPACE_BORDER): removed
+	
+	(hildon_number_editor_size_request):
+	(hildon_number_editor_size_allocate): updated to use hildondefines
+	
+	(hildon_number_editor_mnemonic_activate): function removed,
+	mnemonic are not used
+	
+	(hildon_number_editor_stop_repeat_timer): new function, to avoid
+	duplicated code
+	(hildon_number_editor_button_release):
+	(hildon_number_editor_finalize): updated to use new function
+
+	(hildon_number_editor_entry_keypress): completely rewritten
+	(change_numbers): likewise
+	(do_mouse_timeout): likewise
+	(hildon_number_editor_set_range): likewise
+
+	(hildon_number_editor_validate_value): new function, used for all
+	validation
+	(hildon_number_editor_focus_out):
+	(hildon_number_editor_entry_changed): updated to use previous.
+
+	(hildon_number_editor_real_set_value): new function that formats
+	given int to field. Used by change_numbers and set_value
+
+	(integer_to_string): removed, we now have one place that
+	converts numbers and that uses buffer from stack.
+	(hildon_number_editor_set_value): changed to use new format function.
+
+
+2006-03-15  Luc Pionchon  <luc.pionchon@nokia.com>
+
 	* hildon-widgets/hildon-time-picker.c:
 	reorganized how the widgets are stored to reduce code
 	(HildonTimePickerWidgetGroup): new struct
