@@ -84,7 +84,7 @@ hildon_number_editor_size_request (GtkWidget *widget,
 
 static void
 set_widget_allocation (GtkWidget *widget, GtkAllocation *alloc,
-                       GtkAllocation *allocation);
+                       const GtkAllocation *allocation);
 
 static void
 hildon_number_editor_size_allocate (GtkWidget *widget,
@@ -181,8 +181,6 @@ struct _HildonNumberEditorPrivate
     guint button_event_id; /* Repeat change when button is held */
     guint select_all_idle_id; /* Selection repaint hack
 				 see hildon_number_editor_select_all */
-
-    gboolean negative; /* FIXME: XXX This is unused */
 };
 
 
@@ -262,7 +260,7 @@ hildon_number_editor_forall(GtkContainer *container, gboolean include_internals,
     HildonNumberEditorPrivate *priv =
         HILDON_NUMBER_EDITOR_GET_PRIVATE(container);
 
-    g_return_if_fail(callback != NULL);              
+    g_assert(callback != NULL);              
 
     if (!include_internals)
         return;
@@ -668,7 +666,7 @@ hildon_number_editor_size_request (GtkWidget *widget,
 /* Update @alloc->width so widget fits, update @alloc->x to point to free space */
 static void
 set_widget_allocation (GtkWidget *widget, GtkAllocation *alloc,
-                      GtkAllocation *allocation)
+                       const GtkAllocation *allocation)
 {
     GtkRequisition child_requisition;
 
@@ -923,8 +921,6 @@ hildon_number_editor_set_range (HildonNumberEditor *editor, gint min, gint max)
     priv->start = min;
     priv->end = max;
     priv->default_val = min;
-
-    priv->negative = min < 0 ? TRUE : FALSE;
 
     /* Find maximum allowed length of value */
     str = integer_to_string(max);

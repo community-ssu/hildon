@@ -68,6 +68,30 @@
 
 2006-03-01  Luc Pionchon  <luc.pionchon@nokia.com>
 
+	* hildon-widgets/hildon-number-editor.c
+
+	(set_widget_allocation): use const parameter.
+
+	(hildon_number_editor_forall): use g_assert instead of g_return_if_fail
+
+	(struct _HildonNumberEditorPrivate): removed unused member 'negative'
+	(hildon_number_editor_set_range): removed 'negative'
+
+
+	* hildon-widgets/hildon-sort-dialog.c (hildon_sort_dialog_init):
+	use g_assert instead of g_return_if_fail
+
+
+	* hildon-widgets/hildon-time-picker.c:
+	- in several places, replace 1440 by 24*60
+	(PROP_AMPM): removed, unused.
+	(hildon_time_picker_timeout): use significant parameter name,
+	                              removed dead code
+	(hildon_time_picker_init): removed useless call to _change_time()
+
+
+2006-03-01  Luc Pionchon  <luc.pionchon@nokia.com>
+	
         Cleanup Seekbar,
 	
 	* hildon-widgets/hildon-seekbar.c

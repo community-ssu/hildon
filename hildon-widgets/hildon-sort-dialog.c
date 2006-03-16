@@ -134,7 +134,7 @@ static void hildon_sort_dialog_init(HildonSortDialog * dialog)
     HildonSortDialogPrivate *priv;
     GtkSizeGroup *group;
 
-    g_return_if_fail(HILDON_IS_SORT_DIALOG(dialog));
+    g_assert(HILDON_IS_SORT_DIALOG(dialog));
 
     priv = HILDON_SORT_DIALOG_GET_PRIVATE(dialog);
 

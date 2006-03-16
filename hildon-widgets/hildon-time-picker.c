@@ -123,7 +123,6 @@ struct _HildonTimePickerPrivate
 enum
 {
   PROP_MINUTES = 1,
-  PROP_AMPM /* FIXME: unused */
 };
 
 
@@ -134,7 +133,7 @@ static void
 hildon_time_picker_init( HildonTimePicker *picker );
 
 static gboolean
-hildon_time_picker_timeout( gpointer data );
+hildon_time_picker_timeout( gpointer hildon_time_picker );
 
 static void
 hildon_time_picker_change_time( HildonTimePicker *picker, guint minutes );
@@ -160,11 +159,11 @@ hildon_time_picker_set_property( GObject *object, guint param_id,
 
 static gboolean
 hildon_time_picker_event_box_focus_in( GtkWidget *widget, GdkEvent *event,
-                                       gpointer data );
+                                       gpointer unused );
 
 static gboolean
 hildon_time_picker_event_box_focus_out( GtkWidget *widget, GdkEvent *event,
-                                        gpointer data );
+                                        gpointer unused );
 
 static gboolean
 hildon_time_picker_event_box_key_press( GtkWidget *widget,  GdkEventKey *event,
@@ -176,7 +175,7 @@ hildon_time_picker_event_box_key_release( GtkWidget *widget,  GdkEventKey *event
 
 static gboolean
 hildon_time_picker_event_box_press( GtkWidget *widget,  GdkEventKey *event,
-                                    gpointer data );
+                                    gpointer unused );
 
 static void
 hildon_time_picker_map( GtkWidget *widget );
@@ -471,9 +470,6 @@ static void hildon_time_picker_init( HildonTimePicker *picker )
   gtk_container_add( GTK_CONTAINER(maintocenter), priv->child[TABLE] );
   gtk_box_pack_start( GTK_BOX(dialog->vbox), maintocenter, TRUE, FALSE, 0 );
 
-  /* FIXME: no point in setting the time to its current value */
-  hildon_time_picker_change_time (picker, priv->minutes);
-
   gtk_widget_show_all( maintocenter );
 }
 
@@ -536,7 +532,7 @@ hildon_time_picker_map( GtkWidget *widget )
 
 static gboolean
 hildon_time_picker_event_box_press( GtkWidget *widget,  GdkEventKey *event,
-                                    gpointer data )
+                                    gpointer unused )
 {
   /* Clicked hour/minute field. Move focus to it. */
   gtk_widget_grab_focus( widget );
@@ -605,7 +601,7 @@ hildon_time_picker_arrow_press( GtkWidget *widget, GdkEvent *event,
   /* Change the time now, wrapping if needed. */
   newval = priv->minutes + priv->mul;
   if( newval < 0 )
-    newval += 1440;
+    newval += 24*60;
 
   hildon_time_picker_change_time( picker, newval );
   /* Keep changing the time as long as button is being pressed.
@@ -631,7 +627,7 @@ hildon_time_picker_arrow_release( GtkWidget *widget, GdkEvent *event,
 
 static gboolean
 hildon_time_picker_event_box_focus_in( GtkWidget *widget, GdkEvent *event,
-                                       gpointer data )
+                                       gpointer unused )
 {
   /* Draw the widget in selected state so focus shows clearly. */
   gtk_widget_set_state( widget, GTK_STATE_SELECTED );
@@ -640,7 +636,7 @@ hildon_time_picker_event_box_focus_in( GtkWidget *widget, GdkEvent *event,
 
 static gboolean
 hildon_time_picker_event_box_focus_out( GtkWidget *widget, GdkEvent *event,
-                                        gpointer data )
+                                        gpointer unused )
 {
   /* Draw the widget in normal state */
   gtk_widget_set_state( widget, GTK_STATE_NORMAL );
@@ -792,7 +788,7 @@ hildon_time_picker_event_box_key_release( GtkWidget *widget, GdkEventKey *event,
 
 /* Button up/down is being pressed. Update the time. */
 static gboolean
-hildon_time_picker_timeout( gpointer data )/* FIXME: use meaningful name */
+hildon_time_picker_timeout( gpointer hildon_time_picker )
 {
   HildonTimePicker *picker = NULL;
   HildonTimePickerPrivate *priv = NULL;
@@ -800,20 +796,16 @@ hildon_time_picker_timeout( gpointer data )/* FIXME: use meaningful name */
 
   /* FIXME: the following condition never occurs */
   /* luc: function should check its parameters. Otherwise document the use of the function "parameter must not be NULL". */
-  if( !data )
+  if( !hildon_time_picker )
     return FALSE;
 
-  picker = HILDON_TIME_PICKER(data);
+  picker = HILDON_TIME_PICKER(hildon_time_picker);
   priv = picker->priv;
-
-  /* FIXME: the following condition never occurs */
-  if( !picker->priv->timer_id )
-    return FALSE;
 
   /* Change the time, wrapping if needed */
   newval = priv->minutes + priv->mul;
   if( newval < 0 )
-    newval += 1440;/*FIXME: document, or use 24*60 if this is the case */
+    newval += 24*60;
 
   hildon_time_picker_change_time( picker, newval );
 
@@ -840,7 +832,7 @@ hildon_time_picker_change_time( HildonTimePicker *picker, guint minutes )
   gboolean ampm = TRUE;
 
   /* If the minutes isn't in valid range, wrap them. */
-  minutes %= 1440;
+  minutes %= 24*60;
 
   if( priv->minutes == minutes )
     return;
