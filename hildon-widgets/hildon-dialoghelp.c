@@ -36,7 +36,7 @@
 static guint help_signal = 0;
 
 static GdkFilterReturn
-handle_xevent(GdkXEvent * xevent, GdkEvent * event, gpointer data)
+handle_xevent(GdkXEvent * xevent, GdkEvent * event, gpointer dialog)
 {
     XAnyEvent *eventti = xevent;
 
@@ -53,7 +53,7 @@ handle_xevent(GdkXEvent * xevent, GdkEvent * event, gpointer data)
 
         if (cm->message_type == wm_atom && cm->data.l[0] == help_atom) {
             /* XClientMessageEvent *cm = xevent; */
-            g_signal_emit(G_OBJECT(data), help_signal, 0);
+            g_signal_emit(G_OBJECT(dialog), help_signal, 0);
         }
 
         return GDK_FILTER_REMOVE;       /* Event handled, don't process
@@ -65,7 +65,7 @@ handle_xevent(GdkXEvent * xevent, GdkEvent * event, gpointer data)
 
 /**
  * gtk_dialog_help_enable:
- * @dialog: The dialog of which help is to be enabled.
+ * @dialog: The dialog for which help is to be enabled.
  *
  * Enables context help button for given dialog. The signal "help" can be
  * connected to handler by normal gtk methods. Note that this function
@@ -73,7 +73,7 @@ handle_xevent(GdkXEvent * xevent, GdkEvent * event, gpointer data)
  *
  * The "help" signal itself has no other parameters than the dialog where
  * it is connected to, ie.:
- * void user_function(GtkDialog *, gpointer user_data);
+ * void user_function(GtkDialog *dialog, gpointer user_data);
  **/
 void gtk_dialog_help_enable(GtkDialog * dialog)
 {
@@ -133,12 +133,12 @@ void gtk_dialog_help_enable(GtkDialog * dialog)
     gdk_window_add_filter(window, handle_xevent, dialog);
 }
 
-
-/*
+/**
  * gtk_dialog_help_disable:
- * @dialog: The dialog of which help is to be disabled.
- * 
- */
+ * @dialog: The dialog for which help is to be disabled.
+ *
+ * Disables context help button for the given dialog.
+ **/
 void gtk_dialog_help_disable(GtkDialog * dialog)
 {
     GdkWindow *window=NULL;
