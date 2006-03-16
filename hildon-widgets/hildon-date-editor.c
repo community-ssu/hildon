@@ -913,7 +913,7 @@ hildon_date_editor_entry_validate(GtkWidget *widget, gpointer data)
     gint d, m, y, max_days;
     gboolean r;  /* temp return values for signals */
     const gchar *text;        
-    gint error_code = 0;
+    gint error_code = NO_ERROR;
 
     g_assert(HILDON_IS_DATE_EDITOR(data));
     g_assert(GTK_IS_ENTRY(widget));
@@ -996,7 +996,7 @@ hildon_date_editor_entry_validate(GtkWidget *widget, gpointer data)
            widget = priv->d_entry; /* Note! Change param to point day entry */
         }
 
-        if (error_code != 0)
+        if (error_code != NO_ERROR)
         {
             g_signal_emit(ed, date_editor_signals[DATE_ERROR], 0, error_code, &r);
 

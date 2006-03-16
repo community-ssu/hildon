@@ -1,5 +1,15 @@
 2006-03-14  Luc Pionchon  <luc.pionchon@nokia.com>
- 
+
+	* hildon-widgets/hildon-date-editor.h
+	(enum HildonDateEditorErrorType): added NO_ERROR entry.
+
+	* hildon-widgets/hildon-date-editor.c
+	(hildon_date_editor_entry_validate): initialize error_code to NO_ERROR.
+	(hildon_date_editor_entry_validate): check error_code against NO_ERROR
+
+
+2006-03-14  Luc Pionchon  <luc.pionchon@nokia.com>
+
 	* hildon-widgets/hildon-get-password-dialog.c:
 	(hildon_get_password_dialog_set_title): Removed the deprecation
 	#ifdefs from the .c file.
