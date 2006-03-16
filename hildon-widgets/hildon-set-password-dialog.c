@@ -220,14 +220,14 @@ create_contents(HildonSetPasswordDialog *dialog)
 	   priv->checkbox,
 	   NULL, HILDON_CAPTION_OPTIONAL);
 	hildon_caption_set_separator(HILDON_CAPTION(priv->checkboxCaption), "");
-        gtk_signal_connect(GTK_OBJECT(priv->checkbox), "toggled",
-                           G_CALLBACK(hildon_checkbox_toggled), dialog);
         gtk_box_pack_start(GTK_BOX(GTK_DIALOG(dialog)->vbox),
                            priv->checkboxCaption, TRUE, TRUE, 0);
         gtk_widget_show(priv->checkboxCaption);
         gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(priv->checkbox),
                                      TRUE);
-
+        gtk_signal_connect(GTK_OBJECT(priv->checkbox), "toggled",
+                           G_CALLBACK(hildon_checkbox_toggled), dialog);
+ 
 	/* Setup appropriate response handler */
         g_signal_connect(G_OBJECT(dialog), "response",
                          G_CALLBACK(hildon_set_password_response_change),
