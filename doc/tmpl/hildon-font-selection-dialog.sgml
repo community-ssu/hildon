@@ -2,21 +2,19 @@
 HildonFontSelectionDialog
 
 <!-- ##### SECTION Short_Description ##### -->
-A widget is used to select a font with certain properties
+
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
-Font selection dialog provides the user with the possiblity to
-choose a different font family, font size, font color, font 
-weight(bold or not bold), font style(italic or not italic), 
-underline, strikethrough, and position(normal, superscript 
-or subscript).
 </para>
 
 <!-- ##### SECTION See_Also ##### -->
 <para>
 
 </para>
+
+<!-- ##### SECTION Stability_Level ##### -->
+
 
 <!-- ##### FUNCTION hildon_font_selection_dialog_get_font ##### -->
 <para>
@@ -81,89 +79,4 @@ or subscript).
 @fsd: 
 @text: 
 
-
-<!-- ##### ARG HildonFontSelectionDialog:bold ##### -->
-<para>
-
-</para>
-
-<!-- ##### ARG HildonFontSelectionDialog:bold-set ##### -->
-<para>
-
-</para>
-
-<!-- ##### ARG HildonFontSelectionDialog:color ##### -->
-<para>
-
-</para>
-
-<!-- ##### ARG HildonFontSelectionDialog:color-set ##### -->
-<para>
-
-</para>
-
-<!-- ##### ARG HildonFontSelectionDialog:family ##### -->
-<para>
-
-</para>
-
-<!-- ##### ARG HildonFontSelectionDialog:family-set ##### -->
-<para>
-
-</para>
-
-<!-- ##### ARG HildonFontSelectionDialog:italic ##### -->
-<para>
-
-</para>
-
-<!-- ##### ARG HildonFontSelectionDialog:italic-set ##### -->
-<para>
-
-</para>
-
-<!-- ##### ARG HildonFontSelectionDialog:position ##### -->
-<para>
-
-</para>
-
-<!-- ##### ARG HildonFontSelectionDialog:position-set ##### -->
-<para>
-
-</para>
-
-<!-- ##### ARG HildonFontSelectionDialog:preview-text ##### -->
-<para>
-
-</para>
-
-<!-- ##### ARG HildonFontSelectionDialog:size ##### -->
-<para>
-
-</para>
-
-<!-- ##### ARG HildonFontSelectionDialog:size-set ##### -->
-<para>
-
-</para>
-
-<!-- ##### ARG HildonFontSelectionDialog:strikethrough ##### -->
-<para>
-
-</para>
-
-<!-- ##### ARG HildonFontSelectionDialog:strikethrough-set ##### -->
-<para>
-
-</para>
-
-<!-- ##### ARG HildonFontSelectionDialog:underline ##### -->
-<para>
-
-</para>
-
-<!-- ##### ARG HildonFontSelectionDialog:underline-set ##### -->
-<para>
-
-</para>
 

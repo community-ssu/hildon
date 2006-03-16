@@ -22,24 +22,21 @@
  *
  */
 
-/* 
- * @file hildon-set-password-dialog.c
+/**
+ * SECTION:hildon-set-password-dialog
+ * @short_description: A dialog used to set, change or remove a password
+ * @see_also: #HildonGetPasswordDialog
  *
- * This file implements API for Hildon Set and Change Password dialog.
+ * HildonSetPasswordDialog allows setting and changing a password. 
  * 
- *  Change password dialog:
- *   @desc: Change Password Dialog is used to change an existing one in
- *   situtations where the password can be removed. Unselecting the check
- *   box dims the password fields below it. If the dialog is accepted with
- *   'OK' while the check box is unselected, a Confirmation Note is played.
- *   If a Confirmation Note Dialog is accepted with 'Remove', the password
- *   protection is removed.  
+ * In Change mode: Dialog is used to change or remove an existing
+ * password. Unselecting the check box dims the password fields below
+ * it. If the dialog is accepted with 'OK' while the check box is
+ * unselected, a Confirmation Note is shown.  If the Confirmation Note
+ * Dialog is accepted with 'Remove', the password protection is removed.  
  * 
- *  Set password dialog:
- *   @desc: Set Password Dialog is used to define a password, or change a
- *   password that cannot be removed.
- *   @seealso: #HildonGetPasswordDialog
- *
+ * In Set mode: Set Password Dialog is used to define a password, or
+ * change a password that cannot be removed.
  */
 
 #ifdef HAVE_CONFIG_H
@@ -528,8 +525,8 @@ static void hildon_checkbox_toggled(GtkWidget * widget, gpointer dialog)
  * Returns GType for HildonPasswordDialog as produced by
  * g_type_register_static().
  *
- * Return value: HildonSetPasswordDialog type
- **/
+ * Returns: HildonSetPasswordDialog type
+ */
 GType hildon_set_password_dialog_get_type(void)
 {
     static GType dialog_type = 0;
@@ -560,10 +557,10 @@ GType hildon_set_password_dialog_get_type(void)
  * @modify_protection: TRUE creates a new change password dialog and FALSE
  *                     creates a new set password dialog 
  * 
- * Construct a new HildonSetPasswordDialog.
+ * Constructs a new HildonSetPasswordDialog.
  *
- * Return value: a new #GtkWidget of type HildonSetPasswordDialog
- **/
+ * Returns: a new #GtkWidget of type HildonSetPasswordDialog
+ */
 
 GtkWidget *hildon_set_password_dialog_new(GtkWindow * parent,
                                           gboolean modify_protection)
@@ -575,15 +572,15 @@ GtkWidget *hildon_set_password_dialog_new(GtkWindow * parent,
 /**
  * hildon_set_password_dialog_new_with_default:
  * @parent: parent window; can be NULL
- * @password: a default password to be shown in password field.
+ * @password: a default password to be shown in password field
  * @modify_protection: TRUE creates a new change password dialog and FALSE
  *                     creates a new set password dialog 
  * 
  * Same as #hildon_set_password_dialog_new, but with a default password
  * in password field.
  *
- * Return value: a new #GtkWidget of type HildonSetPasswordDialog
- **/
+ * Returns: a new #GtkWidget of type HildonSetPasswordDialog
+ */
 
 GtkWidget *hildon_set_password_dialog_new_with_default
                                          (GtkWindow *parent,
@@ -607,10 +604,10 @@ GtkWidget *hildon_set_password_dialog_new_with_default
  * 
  * Returns current password.
  *
- * Return value: changed password ( if the dialog is successfully 
+ * Returns: changed password ( if the dialog is successfully 
  * accepted with 'OK' ( and when the check box is 'ON' ( in Change Password
  * Dialog ))
- **/
+ */
 const gchar
     *hildon_set_password_dialog_get_password(HildonSetPasswordDialog *
                                              dialog)
@@ -628,11 +625,11 @@ const gchar
  * hildon_set_password_dialog_get_protected:
  * @dialog: pointer to HildonSetPasswordDialog
  * 
- * Returns protection mode.
+ * Returns the protection mode.
  *
- * Return value: password protection mode ( TRUE when the protection is
+ * Returns: password protection mode ( TRUE when the protection is
  *               'ON' and FALSE when the protection is 'OFF' )
- **/
+ */
 gboolean
 hildon_set_password_dialog_get_protected(HildonSetPasswordDialog * dialog)
 {
@@ -648,9 +645,9 @@ hildon_set_password_dialog_get_protected(HildonSetPasswordDialog * dialog)
 /**
  * hildon_set_password_dialog_set_domain(GtkWidget *dialog, 
  * @dialog: the dialog
- * @domain: the domain or some other descriptive text to be set.
+ * @domain: the domain or some other descriptive text to be set
  * 
- * sets the optional descriptive text
+ * Sets the optional descriptive text.
  */
 
 void hildon_set_password_dialog_set_domain(HildonSetPasswordDialog *dialog, 

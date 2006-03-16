@@ -22,6 +22,14 @@
  *
  */
 
+/**
+ * SECTION:hildon-system-sound
+ * @short_description: An esd-based utility function for playing a sound
+ * 
+ * HildonSystemSound is an esd-based utility function for playing a sound 
+ * from the system sounds directory with volume taken from GConf.
+ */
+
 #include <gconf/gconf-client.h>
 #include <esd.h>
 #include "hildon-system-sound.h"
@@ -30,7 +38,7 @@
 
 /**
  * hildon_play_system_sound:
- * @sample: Sound file to play
+ * @sample: sound file to play
  * 
  * Plays the given sample using esd sound daemon.
  * Volume level is received from gconf. 

@@ -22,13 +22,18 @@
  *
  */
 
-/* HILDON DOC
+/**
+ * SECTION:hildon-calendar-popup
  * @shortdesc: CalendarPopup allows choosing a date from a popup calendar.
  * @longdesc: The Calendar popup is a dialog that contains a GtkCalendar 
  * widget. The pop-up is cancelled by pressing the ESC key.
  * </para><para>
  * 
  * @seealso: #HildonDateEditor, #HildonTimeEditor
+ * 
+ * HildonCalendarPopup is a dialog which contains a GtkCalendar.  It
+ * also contains arrow buttons for changing the month/year. If an
+ * entered date is invalid, an information message will be shown.
  */
 
 #ifdef HAVE_CONFIG_H
@@ -120,8 +125,8 @@ GType hildon_calendar_popup_get_type(void)
  * selected date is specified by the parameters (year, month, day).
  * If the specified date is invalid, the current date is used. 
  *
- * Return value: Pointer to a new @HildonCalendarPopup widget.
- **/
+ * Returns: new @HildonCalendarPopup widget
+ */
 GtkWidget *hildon_calendar_popup_new(GtkWindow * parent, guint year,
                                      guint month, guint day)
 {
@@ -154,7 +159,7 @@ GtkWidget *hildon_calendar_popup_new(GtkWindow * parent, guint year,
  * @month: month
  * @day: day
  *
- * This function activates a new date on the calendar popup.
+ * activates a new date on the calendar popup.
  **/
 void
 hildon_calendar_popup_set_date(HildonCalendarPopup * cal,
@@ -181,9 +186,8 @@ hildon_calendar_popup_set_date(HildonCalendarPopup * cal,
  * @month: month
  * @day: day
  *
- * This function is used to get the currently selected year, month,
- * and day. 
- **/
+ * Gets the currently selected year, month, and day. 
+ */
 void
 hildon_calendar_popup_get_date(HildonCalendarPopup * cal,
                                guint * year, guint * month, guint * day)

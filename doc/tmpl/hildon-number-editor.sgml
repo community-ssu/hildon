@@ -2,12 +2,10 @@
 HildonNumberEditor
 
 <!-- ##### SECTION Short_Description ##### -->
-HildonNumberEditor is used to set a number.
+
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
-HildonNumberEditor is used to set a number from a specific range. There's two buttons to scroll the value in number field, also manual input is possible.
-
 <informalexample>
 <programlisting>
   number_editor = hildon_number_editor_new (-250, 500);
@@ -20,6 +18,9 @@ HildonNumberEditor is used to set a number from a specific range. There's two bu
 <para>
 
 </para>
+
+<!-- ##### SECTION Stability_Level ##### -->
+
 
 <!-- ##### ENUM HildonNumberEditorErrorType ##### -->
 <para>
@@ -67,18 +68,4 @@ HildonNumberEditor is used to set a number from a specific range. There's two bu
 @editor: 
 @value: 
 
-
-<!-- ##### SIGNAL HildonNumberEditor::range-error ##### -->
-<para>
-
-</para>
-
-@hildonnumbereditor: the object which received the signal.
-@arg1: 
-@Returns: 
-
-<!-- ##### ARG HildonNumberEditor:value ##### -->
-<para>
-
-</para>
 

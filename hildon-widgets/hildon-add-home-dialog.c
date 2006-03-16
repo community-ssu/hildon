@@ -135,14 +135,14 @@ GType hildon_add_home_dialog_get_type(void)
 
 /**
  * hildon_add_home_dialog_new:
- * @parent: Parent window for the dialog.
- * @name: Name to show in the entry (or label, if @new_name is not NULL)
- * @new_name: Name to show in the new name entry. If this is not NULL
+ * @parent: parent window for the dialog
+ * @name: name to show in the entry (or label, if @new_name is not NULL)
+ * @new_name: name to show in the new name entry. If this is not NULL
  * the widget acts as a RenameShortcutDialog.
  *
  * Creates a new Add to Home dialog or Rename Shortcut dialog.
  *
- * Returns the new dialog.
+ * Returns: the new dialog.
  */
 GtkWidget *hildon_add_home_dialog_new(GtkWindow * parent,
                                       const gchar * name,
@@ -226,11 +226,9 @@ GtkWidget *hildon_add_home_dialog_new(GtkWindow * parent,
 
 /**
  * hildon_add_home_dialog_get_name:
- * @dialog: The dialog.
+ * @dialog: the dialog
  *
- * Returns the name the user has entered in the entry.
- *
- * Returns a string the user has entered.
+ * Returns: the string the user has entered in the entry
  */
 const gchar *hildon_add_home_dialog_get_name(HildonAddHomeDialog * dialog)
 {

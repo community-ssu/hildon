@@ -22,6 +22,19 @@
  *
  */
 
+/**
+ * SECTION:hildon-file-handling-note
+ * @short_description: Displaying the notification when a move 
+ * operation is in progress. 
+ * @see_also: #HildonFileHandlingNote
+ * 
+ * This is the notification displayed when a move operation is in
+ * progress.  The notification uses a progress bar to indicate the
+ * progress of the operation. For operation containing multiple items, a
+ * separe progress bar is shown for each item. The notification has a
+ * single button, which allows users to stop the move operation.
+ */
+
 #include "hildon-note.h"
 #include "hildon-file-handling-note.h"
 #include <stdio.h>
@@ -123,12 +136,13 @@ static void hildon_file_handling_note_finalize(GObject * obj_self)
 /**
  * hildon_file_handling_note_set_counter_and_name:
  * @note: the #HildonFileHandlingNote widget
- * @current: Current item
- * @maximum: Maximum value for counter
- * @name: Filename
+ * @current: progress, current item being processed
+ * @maximum: maximum value for counter (number of items)
+ * @name: filename
  *
  * This function sets current counter value, maximum
  * counter value and filename for dialog 
+ *
  * DEPRECATED: use hildon-note instead of hildon-file-handling-note.
  */
 void hildon_file_handling_note_set_counter_and_name(HildonFileHandlingNote
@@ -190,9 +204,9 @@ void hildon_file_handling_note_set_counter_and_name(HildonFileHandlingNote
 /**
  * hildon_file_handling_note_set_name:
  * @note: the @HildonFileHandlingNote widget
- * @name: Filename
+ * @name: filename
  *
- * This function sets filename for dialog
+ * This function sets the filename for dialog
  * DEPRECATED: use hildon-note instead of hildon-file-handling-note.
  */
 void hildon_file_handling_note_set_name(HildonFileHandlingNote * note,
@@ -241,7 +255,7 @@ void hildon_file_handling_note_set_fraction(HildonFileHandlingNote * note,
  * This function creates new dialog
  * which is "moving" type.
  *
- * Return value: a new #HildonFileHandlingNote.
+ * Returns: a new #HildonFileHandlingNote
  * DEPRECATED: use hildon-note instead of hildon-file-handling-note.
  */
 GtkWidget *hildon_file_handling_note_new_moving(GtkWindow * parent)
@@ -273,7 +287,7 @@ GtkWidget *hildon_file_handling_note_new_moving(GtkWindow * parent)
  * This function creates new dialog
  * which is "deleting" type.
  *
- * Return value: a new #HildonFileHandlingNote.
+ * Returns: a new #HildonFileHandlingNote
  * DEPRECATED: use hildon-note instead of hildon-file-handling-note.
  */
 GtkWidget *hildon_file_handling_note_new_deleting(GtkWindow * parent)
@@ -305,7 +319,7 @@ GtkWidget *hildon_file_handling_note_new_deleting(GtkWindow * parent)
  * This function creates new dialog
  * which is "opening" type
  *
- * Return value: a new #HildonFileHandlingNote.
+ * Returns: a new #HildonFileHandlingNote
  * DEPRECATED: use hildon-note instead of hildon-file-handling-note.
  */
 GtkWidget *hildon_file_handling_note_new_opening(GtkWindow * parent)
@@ -337,7 +351,7 @@ GtkWidget *hildon_file_handling_note_new_opening(GtkWindow * parent)
  * This function creates new dialog
  * which is "saving" type.
  *
- * Return value: a new #HildonFileHandlingNote.
+ * Returns: a new #HildonFileHandlingNote
  * DEPRECATED: use hildon-note instead of hildon-file-handling-note.
  */
 GtkWidget *hildon_file_handling_note_new_saving(GtkWindow * parent)

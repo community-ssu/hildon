@@ -22,12 +22,25 @@
  *
  */
 
-/*
- * @file hildon-grid.c
+/**
+ * SECTION:hildon-grid
+ * @short_description: Being used where ever a number of single tap
+ * activatable items need to be presented (e.g. Control Panel applets)
+ * @see_also: #HildonGridItem
  *
- * This file contains the implementation of HildonGrid. HildonGrid is used
- * in views like Home and Control Panel which have single-tap activated
- * items.
+ * HildonGrid is a set of application-defineable items that are presented in a
+ * table. There are two modes for the form of the table; large icon mode
+ * and small icon mode.
+ *
+ * In large icon mode, the Grid View items are presented with a large
+ * icon and a label under it. In small icon mode, the items are
+ * presented with a small icon and a label on the right side of the
+ * icon.
+ *
+ * The label has a solid background as wide as the maximum text width.
+ * This allows the text to have focus as well as be legible when
+ * displayed upon a black or dark background image. Long names are
+ * truncated with an ellipsis ("...") appended.
  */
 
 /*
@@ -58,7 +71,6 @@
 #include "hildon-marshalers.h"
 #include <hildon-widgets/hildon-grid.h>
 #include <hildon-widgets/hildon-grid-item.h>
-#include <hildon-widgets/hildon-app.h>
 
 #include <libintl.h>
 #define _(String) dgettext(PACKAGE, String)
@@ -423,9 +435,7 @@ hildon_grid_set_empty_label(HildonGrid * grid, const gchar * empty_label)
  * _hildon_grid_get_empty_label:
  * @grid:   #HildonGrid
  *
- * Returns empty label. Label must not be modified nor freed.
- *
- * Return value: Label
+ * Returns: empty label. Label must not be modified nor freed.
  */
 static const gchar *
 hildon_grid_get_empty_label(HildonGrid * grid)
@@ -437,7 +447,7 @@ hildon_grid_get_empty_label(HildonGrid * grid)
 /*
  * hildon_grid_set_num_columns:
  * @grid:       #HildonGrid
- * @columsn:    Number of columns
+ * @columns:    Number of columns
  *
  * Sets number of columns.
  */
@@ -697,7 +707,7 @@ static void hildon_grid_init(HildonGrid * grid)
  *
  * Creates a new #HildonGrid.
  *
- * Return value: A new #HildonGrid
+ * Returns: a new #HildonGrid
  */
 GtkWidget *hildon_grid_new(void)
 {
@@ -1092,8 +1102,8 @@ hildon_grid_size_allocate(GtkWidget * widget, GtkAllocation * allocation)
 
 /**
  * hildon_grid_add:
- * @container:  Container (#HildonGrid) to add HildonGridItem into.
- * @widget:     #GtkWidget (#HildonGridItem) to add.
+ * @container:  container (#HildonGrid) to add HildonGridItem into
+ * @widget:     #GtkWidget (#HildonGridItem) to add
  *
  * Adds a new HildonGridItem into HildonGrid.
  */
@@ -1158,8 +1168,8 @@ static void hildon_grid_add(GtkContainer * container, GtkWidget * widget)
 
 /**
  * hildon_grid_remove:
- * @container:  Container (#HildonGrid) to remove #HildonGridItem from.
- * @widget:     Widget (#HildonGridItem) to be removed.
+ * @container:  container (#HildonGrid) to remove #HildonGridItem from
+ * @widget:     widget (#HildonGridItem) to be removed
  *
  * Removes HildonGridItem from HildonGrid.
  */
@@ -2045,7 +2055,7 @@ static gint get_child_index(HildonGridPrivate * priv, GtkWidget * child)
  * @grid:   #HildonGrid
  * @item:   #HildonGridItem
  *
- * Emits a signal to tell HildonGridItem was actiavated.
+ * Sends a signal to indicate that this HildonGridItem is activated.
  */
 void hildon_grid_activate_child(HildonGrid * grid, HildonGridItem * item)
 {
@@ -2059,7 +2069,7 @@ void hildon_grid_activate_child(HildonGrid * grid, HildonGridItem * item)
 /**
  * hildon_grid_set_style:
  * @grid:       #HildonGrid
- * @style_name: Style name
+ * @style_name: style name
  *
  * Sets style. Setting style sets widget size, spacing, label position,
  * number of columns, and icon size.
@@ -2093,7 +2103,7 @@ void hildon_grid_set_style(HildonGrid * grid, const gchar * style_name)
  *
  * Returns the name of style currently used in HildonGrid.
  *
- * Return value: Style name
+ * Returns: style name
  */
 const gchar *hildon_grid_get_style(HildonGrid * grid)
 {
@@ -2106,8 +2116,8 @@ const gchar *hildon_grid_get_style(HildonGrid * grid)
  * get_style_properties:
  * @grid:   #HildonGrid
  *
- * Gets widget size and other stuff from gtkrc. If some stuff changed, let
- * children know this, too.
+ * Gets widget size and other properties from gtkrc. If some properties
+ * have changed, notify children of this, too.
  */
 static void get_style_properties(HildonGrid * grid)
 {
@@ -2196,9 +2206,7 @@ void hildon_grid_set_scrollbar_pos(HildonGrid * grid, gint scrollbar_pos)
  * hildon_grid_get_scrollbar_pos:
  * @grid:   #HildonGrid
  *
- * Returns position of scrollbar (in pixels).
- *
- * Return value: Scrollbar position
+ * Returns: position of scrollbar (in pixels).
  */
 gint hildon_grid_get_scrollbar_pos(HildonGrid * grid)
 {

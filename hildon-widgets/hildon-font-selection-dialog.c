@@ -22,6 +22,15 @@
  *
  */
 
+/**
+ * SECTION:hildon-font-selection-dialog
+ * @short_description: A widget used to allow users to select a font 
+ * with certain properties
+ *
+ * Font selection can be made using this widget. Users can select font name, 
+ * size, style, etc. Users can also preview text in the selected font.
+ */
+ 
 #include <stdlib.h>
 #include <string.h>
 
@@ -1574,13 +1583,13 @@ toggle_clicked(GtkButton *button, gpointer unused)
 
 /**
  * hildon_font_selection_dialog_new:
- * @parent: the parent window.
- * @title: the title of font selection dialog.
+ * @parent: the parent window
+ * @title: the title of font selection dialog
  *
  * If NULL is passed for title, then default title
  * "Font" will be used.
  *
- * Return value: a new #HildonFontSelectionDialog.
+ * Returns: a new #HildonFontSelectionDialog
  */
 GtkWidget *
 hildon_font_selection_dialog_new(GtkWindow * parent,
@@ -1602,12 +1611,12 @@ hildon_font_selection_dialog_new(GtkWindow * parent,
 
 /**
  * hildon_font_selection_dialog_get_preview_text:
- * @fsd: the font selection dialog.
+ * @fsd: the font selection dialog
  *
  * Gets the text in preview dialog, which does not include the 
  * reference text. The returned string must be freed by the user.
  *
- * Returns: a string pointer.
+ * Returns: a string pointer
  */
 gchar *
 hildon_font_selection_dialog_get_preview_text(HildonFontSelectionDialog * fsd)
@@ -1621,8 +1630,8 @@ hildon_font_selection_dialog_get_preview_text(HildonFontSelectionDialog * fsd)
 
 /**
  * hildon_font_selection_dialog_set_preview_text:
- * @fsd: the font selection dialog.
- * @text: the text to be set to the preview dialog.
+ * @fsd: the font selection dialog
+ * @text: the text to be displayed in the preview dialog
  *
  * The default preview text is
  * "The quick brown fox jumped over the lazy dogs"
@@ -1645,17 +1654,17 @@ hildon_font_selection_dialog_set_preview_text(HildonFontSelectionDialog *
 
 /**
  * hildon_font_selection_dialog_get_text_tag:
- * @fsd: the font selection dialog.
+ * @fsd: the font selection dialog
  *
  * Get the #GtkTextTag for selections. This function
- * is deprecated function. The best way to use
+ * is deprecated. The best way to use
  * the text tags is to reuse them as much as possible.
- * The recommended way is to get the properties of font
- * selection dialog on GTK_RESPONSE_OK, according to
- * these property use the tags that you have pre-created.
+ * The recommended way is to get the properties of the font
+ * selection dialog on GTK_RESPONSE_OK, and according to
+ * these properties use the tags that you have pre-created.
  * 
  * Returns: a #GtkTextTag having corresponding properties
- * set. 
+ * set 
  */ 
 GtkTextTag * 
 hildon_font_selection_dialog_get_text_tag (HildonFontSelectionDialog *fsd)
@@ -1783,15 +1792,14 @@ hildon_font_selection_dialog_get_text_tag (HildonFontSelectionDialog *fsd)
 
 /** 
  * hildon_font_selection_dialog_set_buffer:
- * @fsd: the font selection dialog.
+ * @fsd: the font selection dialog
  * @buffer: a #GtkTextBuffer containing the text to which the selections will 
  * be applied. Applying is responsibility of application.
  *
- * This is deprecated function. GtkTextBuffer is not enough
+ * This is deprecated. GtkTextBuffer is not enough
  * to get the attributes of currently selected text. Please 
  * inspect the attributes yourself, and set the properties of
  * font selection dialog to reflect your inspection.
- * 
  */
 void 
 hildon_font_selection_dialog_set_buffer (HildonFontSelectionDialog *fsd,
@@ -1835,12 +1843,12 @@ hildon_font_selection_dialog_set_buffer (HildonFontSelectionDialog *fsd,
 
 /**
  * hildon_font_selection_dialog_get_font:
- * @fsd: the font selection dialog.
+ * @fsd: the font selection dialog
  *
- * This is a deprecated function, @PangoAttrList needs
+ * This is deprecated. @PangoAttrList needs
  * starting index, and end index on construction.
  *
- * Return value: pointer to @PangoAttrList.
+ * Returns: pointer to @PangoAttrList
  */
 PangoAttrList
 *hildon_font_selection_dialog_get_font(HildonFontSelectionDialog * fsd)
@@ -1859,10 +1867,10 @@ PangoAttrList
 
 /**
  * hildon_font_selection_dialog_set_font:
- * @fsd: the font selection dialog.
- * @list: the pango attribute list.
+ * @fsd: the font selection dialog
+ * @list: the pango attribute list
  *
- * This is a deprecated function.
+ * This is a deprecated.
  * 
  * Sets the font to the dialog.
  */

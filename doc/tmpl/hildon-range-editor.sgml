@@ -2,12 +2,10 @@
 HildonRangeEditor
 
 <!-- ##### SECTION Short_Description ##### -->
-HildonRangeEditor is used to ask a value from a specific limits.
+
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
-HildonRangeEditor is used to ask a value from a specific limits.
-
 <informalexample>
 
 <programlisting>
@@ -22,6 +20,9 @@ HildonRangeEditor is used to ask a value from a specific limits.
 <para>
 
 </para>
+
+<!-- ##### SECTION Stability_Level ##### -->
+
 
 <!-- ##### MACRO HILDON_RANGE_EDITOR_TYPE ##### -->
 <para>
@@ -166,39 +167,4 @@ HildonRangeEditor is used to ask a value from a specific limits.
 @editor: 
 @Returns: 
 
-
-<!-- ##### ARG HildonRangeEditor:higher ##### -->
-<para>
-
-</para>
-
-<!-- ##### ARG HildonRangeEditor:lower ##### -->
-<para>
-
-</para>
-
-<!-- ##### ARG HildonRangeEditor:max ##### -->
-<para>
-
-</para>
-
-<!-- ##### ARG HildonRangeEditor:min ##### -->
-<para>
-
-</para>
-
-<!-- ##### ARG HildonRangeEditor:separator ##### -->
-<para>
-
-</para>
-
-<!-- ##### ARG HildonRangeEditor:hildon-range-editor-entry-alignment ##### -->
-<para>
-
-</para>
-
-<!-- ##### ARG HildonRangeEditor:hildon-range-editor-separator-padding ##### -->
-<para>
-
-</para>
 

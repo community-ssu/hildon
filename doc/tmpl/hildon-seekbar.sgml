@@ -2,12 +2,10 @@
 HildonSeekbar
 
 <!-- ##### SECTION Short_Description ##### -->
-HildonSeekbar is used to seek a place from a content. Can be used eg. to browse a mp3 track.
+
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
-HildonSeekbar is used to seek a place from a content. Can be used eg. to browse a mp3 track. 
-
 <informalexample>
 <programlisting>
 	GtkWidget *seekbar = hildon_seekbar_new();
@@ -41,6 +39,9 @@ static gint update_spin_button (GtkWidget *seek, GtkWidget *spin)
 <para>
 
 </para>
+
+<!-- ##### SECTION Stability_Level ##### -->
+
 
 <!-- ##### FUNCTION hildon_seekbar_new ##### -->
 <para>
@@ -105,19 +106,4 @@ static gint update_spin_button (GtkWidget *seek, GtkWidget *spin)
 @seekbar: 
 @Returns: 
 
-
-<!-- ##### ARG HildonSeekbar:fraction ##### -->
-<para>
-
-</para>
-
-<!-- ##### ARG HildonSeekbar:position ##### -->
-<para>
-
-</para>
-
-<!-- ##### ARG HildonSeekbar:total-time ##### -->
-<para>
-
-</para>
 

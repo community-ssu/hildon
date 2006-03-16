@@ -2,18 +2,15 @@
 HildonColorSelector
 
 <!-- ##### SECTION Short_Description ##### -->
-A widget for selecting a color.
+
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
-#HildonColorSelector allows a selection of a color. #HildonColorSelector
-consists of a control that displays the default palette of 16 colors and
-a control that can be opened to select a custom color from a 16M color
-palette.
+
 </para>
 
 <para>
-Here's a simple example for using a color selector.
+Here is an example for using a color selector.
 
 <informalexample>
 <programlisting>
@@ -43,6 +40,9 @@ gtk_widget_destroy( selector );
 <para>
 
 </para>
+
+<!-- ##### SECTION Stability_Level ##### -->
+
 
 <!-- ##### STRUCT HildonColorSelectorPriv ##### -->
 <para>

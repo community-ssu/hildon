@@ -2,26 +2,11 @@
 HildonGrid
 
 <!-- ##### SECTION Short_Description ##### -->
-#HildonGrid is intended to be used where ever a number of single tap
-activatable items need to be presented (e.g. Control Panel applets).
+
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
-HildonGrid is a set of application-defineable items that are presented in a
-table. The form of this table is selected from two modes; large icon mode and
-small icon mode.
 
-In large icon mode, the Grid View items are presented with a large icon and a
-label underneath it. In small icon mode, the items are presented with a small
-icon and a label on the right side of the icon.
-
-The label of an item is displayed within a band of colour displayed as a
-background colour as wide as the maximum text width. This allows the text to
-have focus as well as be legible when displayed upon a black or dark background
-image. Long names are truncated with an ellipsis ("...") appended.
-</para>
-
-<para>
 <informalexample>
 Example:
 <programlisting>
@@ -376,6 +361,9 @@ set_icon_size (GtkMenuItem *item, gpointer data)
 #HildonGridItem
 </para>
 
+<!-- ##### SECTION Stability_Level ##### -->
+
+
 <!-- ##### FUNCTION hildon_grid_new ##### -->
 <para>
 
@@ -428,93 +416,4 @@ set_icon_size (GtkMenuItem *item, gpointer data)
 @grid: 
 @item: 
 
-
-<!-- ##### SIGNAL HildonGrid::activate-child ##### -->
-<para>
-
-</para>
-
-@hildongrid: the object which received the signal.
-@arg1: 
-
-<!-- ##### SIGNAL HildonGrid::popup-context-menu ##### -->
-<para>
-
-</para>
-
-@hildongrid: the object which received the signal.
-@arg1: 
-@arg2: 
-@arg3: 
-@Returns: 
-
-<!-- ##### ARG HildonGrid:empty-label ##### -->
-<para>
-
-</para>
-
-<!-- ##### ARG HildonGrid:scrollbar-position ##### -->
-<para>
-
-</para>
-
-<!-- ##### ARG HildonGrid:style ##### -->
-<para>
-
-</para>
-
-<!-- ##### ARG HildonGrid:emblem-size ##### -->
-<para>
-
-</para>
-
-<!-- ##### ARG HildonGrid:icon-size ##### -->
-<para>
-
-</para>
-
-<!-- ##### ARG HildonGrid:item-height ##### -->
-<para>
-
-</para>
-
-<!-- ##### ARG HildonGrid:item-hspacing ##### -->
-<para>
-
-</para>
-
-<!-- ##### ARG HildonGrid:item-vspacing ##### -->
-<para>
-
-</para>
-
-<!-- ##### ARG HildonGrid:item-width ##### -->
-<para>
-
-</para>
-
-<!-- ##### ARG HildonGrid:label-height ##### -->
-<para>
-
-</para>
-
-<!-- ##### ARG HildonGrid:label-hspacing ##### -->
-<para>
-
-</para>
-
-<!-- ##### ARG HildonGrid:label-pos ##### -->
-<para>
-
-</para>
-
-<!-- ##### ARG HildonGrid:label-vspacing ##### -->
-<para>
-
-</para>
-
-<!-- ##### ARG HildonGrid:n-columns ##### -->
-<para>
-
-</para>
 

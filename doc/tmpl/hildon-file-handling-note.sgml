@@ -2,16 +2,10 @@
 HildonFileHandlingNote
 
 <!-- ##### SECTION Short_Description ##### -->
-Notification presented when a move operation is in progress.
+
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
-
-Notification presented when a move operation is in progress.
-The notification uses a progress bar to indicate the progress of the operation.
-For operation containing multiple items, a separator progress bar is shown
-for each item. The notification has single button, which allowes to stop
-the action.
 
 <informalexample>
 <programlisting>
@@ -36,6 +30,9 @@ gtk_widget_destroy( GTK_WIDGET( file_note ));
 <para>
 
 </para>
+
+<!-- ##### SECTION Stability_Level ##### -->
+
 
 <!-- ##### FUNCTION hildon_file_handling_note_new_moving ##### -->
 <para>

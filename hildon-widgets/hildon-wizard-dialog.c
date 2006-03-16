@@ -22,6 +22,19 @@
  *
  */
 
+/**
+ * SECTION:hildon-wizard-dialog
+ * @short_description: A widget to create a guided installation
+ * process wizard
+ *
+ * #HildonWizardDialog is a widget to create a guided installation
+ * process. The dialog has four standard buttons, previous, next,
+ * finish, cancel, and contains several pages with optional icons.
+ * Response buttons are dimmed/undimmed automatically and the standard
+ * icon is shown/hidden in response to page navigation. The notebook
+ * widget provided by users contains the actual wizard pages.
+ */
+
 #include <gtk/gtkdialog.h>
 #include <gtk/gtknotebook.h>
 #include <gtk/gtkimage.h>
@@ -487,13 +500,13 @@ hildon_wizard_dialog_page_change (HildonWizardDialog *wizard_dialog,
 
 /**
  * hildon_wizard_dialog_new:
- * @parent: A #GtkWindow
- * @wizard_name: The name of dialog
- * @notebook: The notebook to be shown on the dialog
+ * @parent: a #GtkWindow
+ * @wizard_name: the name of dialog
+ * @notebook: the notebook to be shown on the dialog
  *
- * Creates a new #HildonWizardDialog
+ * Creates a new #HildonWizardDialog.
  *
- * Return value: A new HildonWizardDialog
+ * Returns: a new #HildonWizardDialog
  */
 GtkWidget *hildon_wizard_dialog_new(GtkWindow * parent,
                                     const char *wizard_name,

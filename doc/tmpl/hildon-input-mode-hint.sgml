@@ -25,11 +25,21 @@ g_object_set(G_OBJECT(entry), "autocap", FALSE, NULL);
 
 </para>
 
+<!-- ##### SECTION Stability_Level ##### -->
+
+
 <!-- ##### MACRO HILDON_INPUT_MODE_HINT ##### -->
 <para>
 
 Use this to set the input mode in text widget. Note that this affects
 only input methods layout.
+
+</para>
+
+
+
+<!-- ##### MACRO HILDON_AUTOCAP ##### -->
+<para>
 
 </para>
 

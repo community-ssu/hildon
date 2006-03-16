@@ -2,15 +2,14 @@
 HildonAppView
 
 <!-- ##### SECTION Short_Description ##### -->
-A widget which present one view of an application.
+
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
-A widget which present one view of an application.
-Application can have many different views and the appview helps to organize.
-It has automatic fullscreen and menu handling. It also helps to handle components
-like a toolbar.
 
+</para>
+
+<para>
 <informalexample>
 <programlisting>
 

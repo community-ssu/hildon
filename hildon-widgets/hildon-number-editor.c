@@ -22,11 +22,13 @@
  *
  */
 
-/*
- * @file hildon-number-editor.c
+/**
+ * SECTION:hildon-number-editor
+ * @short_description: A widget used to enter a number within a pre-defined range
  *
- * This file contains the implementation of Hildon Number Editor
- *
+ * HildonNumberEditor is used to enter a number from a specific range. 
+ * There are two buttons to scroll the value in number field. 
+ * Manual input is also possible.
  */
 
 #include <gdk/gdkkeysyms.h>
@@ -804,12 +806,12 @@ hildon_number_editor_error_handler(HildonNumberEditor *editor,
 
 /**
  * hildon_number_editor_new:
- * @min: Minimum accepted value
- * @max: Maximum accepted value
+ * @min: minimum accepted value
+ * @max: maximum accepted value
  * 
  * Creates new number editor
  *
- * Return value: a new #HildonNumberEditor widget.
+ * Returns: a new #HildonNumberEditor widget
  */
 GtkWidget *
 hildon_number_editor_new (gint min, gint max)
@@ -826,8 +828,8 @@ hildon_number_editor_new (gint min, gint max)
 /**
  * hildon_number_editor_set_range:
  * @editor: a #HildonNumberEditor widget
- * @min: Minimum accepted value
- * @max: Maximum accepted value
+ * @min: minimum accepted value
+ * @max: maximum accepted value
  *
  * Sets accepted number range for editor
  */
@@ -861,7 +863,7 @@ hildon_number_editor_set_range (HildonNumberEditor *editor, gint min, gint max)
  * hildon_number_editor_get_value:
  * @editor: pointer to #HildonNumberEditor
  *
- * Return value: Current NumberEditor value
+ * Returns: current NumberEditor value
  */
 gint
 hildon_number_editor_get_value (HildonNumberEditor *editor)

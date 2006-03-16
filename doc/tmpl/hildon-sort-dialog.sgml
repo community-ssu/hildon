@@ -2,16 +2,16 @@
 HildonSortDialog
 
 <!-- ##### SECTION Short_Description ##### -->
-A widget for defining sorting order of items.
+
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
-Sort Dialog is used to define the order in which items are shown in a list.
+
 </para>
 
 <para>
 <informalexample>
-Example:
+Here is an example for using HildonSortDialog.
 <programlisting>
 	HildonSortDialog *sort_dialog = HILDON_SORT_DIALOG(
 			hildon_sort_dialog_new( parent ));
@@ -72,6 +72,9 @@ Example:
 <para>
 
 </para>
+
+<!-- ##### SECTION Stability_Level ##### -->
+
 
 <!-- ##### FUNCTION hildon_sort_dialog_new ##### -->
 <para>

@@ -22,6 +22,16 @@
  *
  */
 
+/**
+ * SECTION:hildon-appview
+ * @short_description: A widget which present one view of an application
+ * @see_also: #HildonApp
+ *
+ * #HildonAppView is a widget which presents one view of an application.
+ * Application can have many different views and the appview helps to organize.
+ * It has automatic fullscreen and menu handling. It also helps to handle 
+ * components like a toolbar.
+ */
 
 #include <memory.h>
 #include <string.h>
@@ -1024,12 +1034,12 @@ static void hildon_appview_menupopupfuncfull( GtkMenu *menu, gint *x, gint *y,
 
 /**
  * hildon_appview_new: 
- * @title: The application view title of the new @HildonAppView.
+ * @title:the application view title of the new @HildonAppView
  * 
  * Use this function to create a new application view. The title will 
  * be set only if two-part-title is enabled on the @HildonApp.
  * 
- * Return value: A @HildonAppView.
+ * Returns: A #HildonAppView.
  **/
 GtkWidget *hildon_appview_new(const gchar * title)
 {
@@ -1041,11 +1051,11 @@ GtkWidget *hildon_appview_new(const gchar * title)
 
 /**
  * hildon_appview_add_with_scrollbar
- * @self : A @HildonAppView
- * @child : A @GtkWidget
+ * @self : a @HildonAppView
+ * @child : a @GtkWidget
  *
  * Adds the @child to the @self(HildonAppView) and creates a vertical 
- * scrollbar to it. Similar as adding first a @GtkScrolledWindow 
+ * scrollbar to it. Similar as adding first a #GtkScrolledWindow 
  * and then the @child to it.
  */
 void hildon_appview_add_with_scrollbar(HildonAppView * self,
@@ -1078,12 +1088,12 @@ void hildon_appview_add_with_scrollbar(HildonAppView * self,
 
 /**
  * hildon_appview_get_title:
- * @self : A @HildonAppView
+ * @self : a #HildonAppView
  *
  * Gets the title of given #HildonAppView.
  *
- * Return value: The title of the application view.
- **/
+ * Returns: the title of the application view
+ */
 const gchar *hildon_appview_get_title(HildonAppView * self)
 {
     g_return_val_if_fail(self && HILDON_IS_APPVIEW(self), "");
@@ -1092,13 +1102,13 @@ const gchar *hildon_appview_get_title(HildonAppView * self)
 
 /**
  * hildon_appview_set_title:
- * @self : A @HildonAppView
- * @newname : The new title of the application view.
+ * @self : a #HildonAppView
+ * @newname : the new title of the application view.
  * 
  * Sets an title of an application view. The title is visible only if
- * two-part-title is enabled on the @HildonApp.
+ * two-part-title is enabled on the #HildonApp.
  * 
- **/
+ */
 void hildon_appview_set_title(HildonAppView * self, const gchar * newname)
 {
     gchar *oldtitle;
@@ -1117,8 +1127,8 @@ void hildon_appview_set_title(HildonAppView * self, const gchar * newname)
 
 /**
  * hildon_appview_set_toolbar:
- * @self: A #HildonAppView
- * @toolbar: A #GtkToolbar
+ * @self: a #HildonAppView
+ * @toolbar: a #GtkToolbar
  *
  * Sets the #GtkToolbar to given #HildonAppView. This is, however, not a
  * recommended way to set your toolbars. When you have multi toolbars, calling
@@ -1127,7 +1137,7 @@ void hildon_appview_set_title(HildonAppView * self, const gchar * newname)
  * is responsible to pack his toolbars in the #GtkVBox, and #HildonAppView will
  * take care of putting them at the right place.
  * 
- **/
+ */
 #ifndef HILDON_DISABLE_DEPRECATED
 void hildon_appview_set_toolbar(HildonAppView * self, GtkToolbar * toolbar)
 {
@@ -1155,14 +1165,14 @@ void hildon_appview_set_toolbar(HildonAppView * self, GtkToolbar * toolbar)
 #endif
 /**
  * hildon_appview_get_toolbar:
- * @self: A #HildonAppView
+ * @self: a #HildonAppView
  *
  * This function will only 
  * return the last widget that has been packed into the #GtkVBox in the public
  * structure. Note this does not, however, mean that it is the bottom most
  * toolbar.
  * 
- * Return value: The #GtkToolbar assigned to this application view. 
+ * Return value: the #GtkToolbar assigned to this application view. 
  **/
 #ifndef HILDON_DISABLE_DEPRECATED
 GtkToolbar *hildon_appview_get_toolbar(HildonAppView * self)
@@ -1178,12 +1188,12 @@ GtkToolbar *hildon_appview_get_toolbar(HildonAppView * self)
 #endif
 /**
  * hildon_appview_set_fullscreen:
- * @self: A @HildonAppView
- * @fullscreen: The new state of fullscreen mode. TRUE means fullscreen
+ * @self: a #HildonAppView
+ * @fullscreen: the new state of fullscreen mode. TRUE means fullscreen
  * will be set. FALSE the opposite.
  * 
  * Set the fullscreen state of given #HildonAppView class.
- **/
+ */
 void hildon_appview_set_fullscreen(HildonAppView * self,
                                    gboolean fullscreen)
 {
@@ -1194,12 +1204,12 @@ void hildon_appview_set_fullscreen(HildonAppView * self,
 
 /**
  * hildon_appview_get_fullscreen:
- * @self: A @HildonAppView
+ * @self: a #HildonAppView
  *
  * Gets the current state of fullscreen mode.
  * 
- * Return value: The current state of fullscreen mode.
- **/
+ * Returns: the current state of fullscreen mode
+ */
 gboolean hildon_appview_get_fullscreen(HildonAppView * self)
 {
     g_return_val_if_fail(self && HILDON_IS_APPVIEW(self), FALSE);
@@ -1208,14 +1218,14 @@ gboolean hildon_appview_get_fullscreen(HildonAppView * self)
 
 /**
  * hildon_appview_get_fullscreen_key_allowed:
- * @self: A @HildonAppView
+ * @self: a #HildonAppView
  *
  * Check if fullscreening with a shortcut is allowed for given
  * #HildonAppView.
  * 
- * Return value: Wheter it's possible to swith fullscreen on/off with
- *               a shortcut key.
- **/
+ * Returns: wheter it's possible to swith fullscreen on/off with
+ *               a shortcut key
+ */
 gboolean hildon_appview_get_fullscreen_key_allowed(HildonAppView * self)
 {
     g_return_val_if_fail(self && HILDON_IS_APPVIEW(self), FALSE);
@@ -1224,13 +1234,13 @@ gboolean hildon_appview_get_fullscreen_key_allowed(HildonAppView * self)
 
 /**
  * hildon_appview_set_fullscreen_key_allowed:
- * @self: A @HildonAppView
- * @allow: Wheter it's possible to swith fullscreen on/off with
- *               a shortcut key.
+ * @self: a #HildonAppView
+ * @allow: wheter it's possible to swith fullscreen on/off with
+ *               a shortcut key
  *
  * Sets given #HildonAppView whether to allow toggling fullscreen mode
  * with a shortcut key.
- **/
+ */
 void hildon_appview_set_fullscreen_key_allowed(HildonAppView * self,
                                                gboolean allow)
 {
@@ -1244,8 +1254,8 @@ void hildon_appview_set_fullscreen_key_allowed(HildonAppView * self,
  * 
  * Gets the #GtMenu assigned to the #HildonAppview.
  *
- * Return value: The #GtkMenu assigned to this application view.
- **/
+ * Returns: the #GtkMenu assigned to this application view
+ */
 GtkMenu *hildon_appview_get_menu(HildonAppView * self)
 {
     g_return_val_if_fail(self && HILDON_IS_APPVIEW(self), NULL);
@@ -1284,7 +1294,7 @@ GtkMenu *hildon_appview_get_menu(HildonAppView * self)
 
 /**
  * _hildon_appview_toggle_menu:
- * @self : A @HildonAppView
+ * @self : a #HildonAppView
  * @button_event_time :
  *
  * This function should be only called from @HildonApp.
@@ -1332,10 +1342,10 @@ void _hildon_appview_toggle_menu(HildonAppView * self,
 
 /**
  * _hildon_appview_menu_visible
- * @self :  A @HildonAppView
+ * @self:  a #HildonAppView
  * 
  * Checks whether the titlebar menu is currently visible
- * Return value : TRUE if the menu is visible, FALSE if not.
+ * Returns: TRUE if the menu is visible, FALSE if not
  */
 
 gboolean _hildon_appview_menu_visible(HildonAppView * self)
@@ -1347,13 +1357,13 @@ gboolean _hildon_appview_menu_visible(HildonAppView * self)
 
 /**
  * hildon_appview_set_connected_adjustment
- * @self : A @HildonAppView
- * @adjustment : A new #GtkAdjustment set to reach to increase
- *   / decrease hardware keys or NULL to unset.
+ * @self :  #HildonAppView
+ * @adjustment : a new #GtkAdjustment set to reach to increase
+ *   / decrease hardware keys or NULL to unset
  * 
  * Sets a #GtkAdjustment which will change when increase/decrease buttons
  * are pressed.
- **/
+ */
 void hildon_appview_set_connected_adjustment (HildonAppView * self,
 					      GtkAdjustment * adjustment)
 {
@@ -1373,14 +1383,14 @@ void hildon_appview_set_connected_adjustment (HildonAppView * self,
 
 /**
  * hildon_appview_get_connected_adjustment
- * @self : A @HildonAppView
+ * @self : a #HildonAppView
  * 
- * Retrieves the @GtkAdjustment which is connected to this application view
+ * Retrieves the #GtkAdjustment which is connected to this application view
  * and is changed with increase / decrease hardware buttons.
  *
- * Return value: Currently connectd #GtkAdjustment assigned to this
- *               application view or NULL if it's not set.
- **/
+ * Returns: currently connectd #GtkAdjustment assigned to this
+ *               application view or NULL if it's not set
+ */
 GtkAdjustment * hildon_appview_get_connected_adjustment (HildonAppView * self)
 {
     g_return_val_if_fail (HILDON_IS_APPVIEW (self), NULL);
@@ -1391,12 +1401,12 @@ GtkAdjustment * hildon_appview_get_connected_adjustment (HildonAppView * self)
 
 /**
  * hildon_appview_set_menu_ui
- * @self : A @HildonAppView
- * @ui_string : A @GtkUIManager ui description string
+ * @self : a #HildonAppView
+ * @ui_string : a #GtkUIManager ui description string
  *
  * Sets the ui description (xml) from which the UIManager creates menus
  * (see @GtkUIManager for details on how to use it)
- **/
+ */
 void hildon_appview_set_menu_ui(HildonAppView *self, const gchar *ui_string)
 {
   g_return_if_fail (HILDON_IS_APPVIEW (self));
@@ -1428,14 +1438,13 @@ void hildon_appview_set_menu_ui(HildonAppView *self, const gchar *ui_string)
 
 /**
  * hildon_appview_get_menu_ui
- * @self : A @HildonAppView
+ * @self : a #HildonAppView
  *
  * Sets the ui description (xml) from which the UIManager creates menus
- * (see @GtkUIManager for details on how to use it)
+ * (see #GtkUIManager for details on how to use it)
  *
- * Return value: Currently set ui description
- * 
- **/
+ * Returns: currently set ui description
+ */
 const gchar *hildon_appview_get_menu_ui(HildonAppView *self)
 {
   g_return_val_if_fail (HILDON_IS_APPVIEW (self), NULL);

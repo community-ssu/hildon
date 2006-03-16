@@ -22,6 +22,16 @@
  *
  */
 
+/**
+ * SECTION:hildon-insert-object-dialog
+ * @short_description: A dialog that enables the user to embed an object 
+ * into rich text
+ *
+ * #HildonInsertObjectDialog is a dialog that enables the user to insert a
+ * new or existing object into a Multi-line (Rich Text) Editor as an
+ * embedded object.
+ */ 
+
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif
@@ -385,11 +395,11 @@ GType hildon_insert_object_dialog_get_type(void)
 
 /**
  * hildon_insert_object_dialog_new:
- * @parent: the parent window of the dialog.
+ * @parent: the parent window of the dialog
  *
  * Creates a new #HildonInsertObjectDialog widget.
  *
- * Return value: the newly created #HildonInsertObjectDialog
+ * Returns: the newly created #HildonInsertObjectDialog
  */
 GtkWidget *hildon_insert_object_dialog_new(GtkWindow * parent)
 {
@@ -403,11 +413,12 @@ GtkWidget *hildon_insert_object_dialog_new(GtkWindow * parent)
 
 /**
  * hildon_insert_object_dialog_get_name:
- * @dialog: the dialog.
+ * @dialog: the dialog
  *
- * Gets the text in name field.
+ * Gets the text in name field of the file dialog. 
+ * This specifies the object to be inserted.
  *
- * Return value: a pointer to the name string.
+ * Returns: a pointer to the name string
  */
 const gchar *hildon_insert_object_dialog_get_name(HildonInsertObjectDialog
                                                   * dialog)
@@ -420,11 +431,11 @@ const gchar *hildon_insert_object_dialog_get_name(HildonInsertObjectDialog
 
 /**
  * hildon_insert_object_dialog_get_mime_type:
- * @dialog: the dialog.
+ * @dialog: the dialog
  *
  * Gets the mime type selected in the combobox.
  *
- * Return value: a pointer to the mime type string.
+ * Returns: a pointer to the mime type string, must not be freed
  */
 const gchar
     *hildon_insert_object_dialog_get_mime_type(HildonInsertObjectDialog *

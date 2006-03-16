@@ -22,6 +22,17 @@
  *
  */
 
+/**
+ * SECTION:hildon-scroll-area
+ * @short_description: A helper to create Maemo specific views,
+ * which are using scrollable area
+ *
+ * #GtkScrollArea combines a large widget that needs scrolling (like a
+ * text editor or a tree view) and other widgets that wouldn't fit one
+ * the screen normally without scrolling (like entries, toolbars etc.)
+ * into one scrollable area.
+ */
+
 #include "hildon-scroll-area.h"
 #include <gtk/gtkscrolledwindow.h>
 #include <gtk/gtkfixed.h>
@@ -64,11 +75,10 @@ static void hildon_scroll_area_fixed_allocate (GtkWidget *widget,
 /**
  * hildon_scroll_area_new:
  * @sw: #GtkWidget - #GtkScrolledWindow
- * @child: #GtkWidget - Child to be place inside the sw
+ * @child: #GtkWidget - child to be place inside the sw
  *
- * This is not a widget. It's a helper function to provide
- * hildon specified scrolling for applications.
- * Puts and connects the @child to the @sw.
+ * This is not a widget. It's a helper function to create
+ * hildon-specific scrolling methods.
  * A common situation where the scroll area should be used
  * might be following.  A view containing @GtkTreeView based widget,
  * (or any similar widget which has built-in @GtkScrolledWindow support)

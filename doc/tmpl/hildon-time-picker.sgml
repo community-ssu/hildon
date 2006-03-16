@@ -2,15 +2,10 @@
 HildonTimePicker
 
 <!-- ##### SECTION Short_Description ##### -->
-#HildonTimePicker is a dialog popup widget which lets the user set a time.
+
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
-#HildonTimePicker is a dialog popup widget which lets the user set a time.
-using up/down arrows on hours and minutes. There are two arrows for minutes,
-so that minutes can be added also in 10min steps.
-
-The following code shows how the widget is used.
 
 <informalexample>
 <programlisting>
@@ -44,6 +39,9 @@ gtk_widget_destroy( picker );
 <para>
 #HildonTimeEditor
 </para>
+
+<!-- ##### SECTION Stability_Level ##### -->
+
 
 <!-- ##### STRUCT HildonTimePickerPrivate ##### -->
 <para>
@@ -79,19 +77,4 @@ gtk_widget_destroy( picker );
 @hours: 
 @minutes: 
 
-
-<!-- ##### ARG HildonTimePicker:minutes ##### -->
-<para>
-
-</para>
-
-<!-- ##### ARG HildonTimePicker:arrow-height ##### -->
-<para>
-
-</para>
-
-<!-- ##### ARG HildonTimePicker:arrow-width ##### -->
-<para>
-
-</para>
 

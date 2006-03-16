@@ -22,13 +22,14 @@
  *
  */
 
-/*
- * @file hildon-volumebar.c
+/**
+ * SECTION:hildon-volumebar
+ * @short_description: Base class for widgets that display a volume bar
+ * @see_also: #HildonHVolumebar, #HildonVVolumebar
  *
- * This file contains the implementation of the Hildon Volumebar.
- * It is a base class for Hildon Vertical Volumebar and for
- * Hildon Horizontal Volumebar classes.
- *
+ * #HildonVolumebar is a base class for widgets that display a volume bar that
+ * allows increasing or decreasing volume within a predefined range, and muting
+ * the volume when users click the mute icon.
  */
 
 #include <gtk/gtkwindow.h>
@@ -317,9 +318,9 @@ hildon_volumebar_get_property(GObject * object,
 
 /**
  * hildon_volumebar_level_change:
- * @self: a HildonVolumebar widget.
+ * @self: a #HildonVolumebar widget
  *
- * Emits "level_changed" signal to the given volumebar. This function
+ * Emits "level_changed" signal to the given volume bar. This function
  * is mainly used by derived classes.
  */
 void 
@@ -331,11 +332,11 @@ hildon_volumebar_level_change(HildonVolumebar * self)
 
 /**
  * hildon_volumebar_set_level:
- * @self: volumebar to change level on
+ * @self: volume bar to change level on
  * @level: new level
  *
- * Sets new volumelevel for this #HildonVolumebar.
- **/
+ * Sets new volume level for this #HildonVolumebar.
+ */
 void 
 hildon_volumebar_set_level(HildonVolumebar * self, gdouble level)
 {
@@ -350,12 +351,12 @@ hildon_volumebar_set_level(HildonVolumebar * self, gdouble level)
 
 /**
  * hildon_volumebar_get_level:
- * @self: volumebar to query level on
+ * @self: volume bar to query level on
  *
- * Gets the volumelevel of this #HildonVolumebar.
+ * Gets the volume level of this #HildonVolumebar.
  *
- * Return value: Volume level or -1 on error.
- **/
+ * Returns: volume level or -1 on error
+ */
 gdouble 
 hildon_volumebar_get_level(HildonVolumebar * self)
 {
@@ -370,12 +371,11 @@ hildon_volumebar_get_level(HildonVolumebar * self)
 
 /**
  * hildon_volumebar_set_mute:
- * @self: volumebar to work on
+ * @self: volume bar to work on
  * @mute: mute ON/OFF
  *
  * Sets mute status for this #HildonVolumebar.
- *
- **/
+ */
 void 
 hildon_volumebar_set_mute(HildonVolumebar * self, gboolean mute)
 {
@@ -422,12 +422,12 @@ hildon_volumebar_set_mute(HildonVolumebar * self, gboolean mute)
 
 /**
  * hildon_volumebar_get_mute:
- * @self: volumebar to query mute status
+ * @self: volume bar to query mute status
  *
  * Gets mute status of this #HildonVolumebar (ON/OFF).
  *
- * Return value: Mute status as #gboolean value.
- **/
+ * Returns: Mute status as #gboolean value.
+ */
 gboolean 
 hildon_volumebar_get_mute(HildonVolumebar * self)
 {
@@ -442,18 +442,18 @@ hildon_volumebar_get_mute(HildonVolumebar * self)
 
 /**
  * hildon_volumebar_get_adjustment
- * @self : A #HildonVolumebar
+ * @self : a #HildonVolumebar
  * 
- * Gets the GtkAdjustment used in volumebar. This can be handy
+ * Gets the GtkAdjustment used in volume bar. This can be handy
  * to give to hildon_appview_set_connected_adjustment which
  * will allow changing the volume with increase / decrease
  * hardware buttons.
  *
- * This is a temporary solution until volumebar is restructured to
+ * This is a temporary solution until volume bar is restructured to
  * be a child class of GtkRange.
  * 
- * Return value: A @GtkAdjustment used by volumebar.
- **/
+ * Returns: a #GtkAdjustment used by volume bar.
+ */
 GtkAdjustment * 
 hildon_volumebar_get_adjustment (HildonVolumebar * self)
 {

@@ -22,21 +22,15 @@
  *
  */
 
-/*
- * @file hildon-time-picker.c
+/**
+ * SECTION:hildon-time-picker
+ * @short_description: A dialog popup widget which lets the user set the time
+ * @see_also: #HildonTimeEditor
  * 
- * This file implements the HildonTimePicker widget. This widget
- * is used with HildonTimeEditor widget to set time.
- *
- */
-
-/* HILDON DOC
- * @shortdesc: TimePicker is a widget for setting a time.
- * @longdesc: The TimePicker contains two fields for setting the
- * time. Arrow buttons can be used to increment and decrement time. If
- * specified in systems locale setting AM/PM button is displayed.
- * 
- * @seealso: #HildonTimeEditor
+ * #HildonTimePicker is a dialog popup widget which lets the user set the time,
+ * using up/down arrows on hours and minutes. There are two arrows for minutes,
+ * so that minutes can be added also in 10 min increments.This widget is mainly 
+ * used as a part of #HildonTimeEditor implementation.
  */
 
 #include "hildon-time-picker.h"
@@ -865,16 +859,16 @@ hildon_time_picker_change_time( HildonTimePicker *picker, guint minutes )
 
 /**
  * hildon_time_picker_new:
- * @parent: parent window.
+ * @parent: parent window
  *
- * Hildon Time Picker shows time picker dialog. Close button is placed
- * in dialog's action area and time picker is placed in dialogs vbox.
- * Actual time picker consists two #GtkLabel fields one for hour and
- * one for minutes, arrow buttons and an AM/PM button. A : is placed
+ * #HildonTimePicker shows time picker dialog. The close button is placed
+ * in the dialog's action area and time picker is placed in dialogs vbox.
+ * The actual time picker consists of two #GtkLabel fields - one for hours 
+ * and one for minutes - and an AM/PM button. A colon (:) is placed
  * between hour and minute fields.
  *
- * Return value: pointer to a new #HildonTimePicker widget.
- **/
+ * Returns: pointer to a new #HildonTimePicker widget.
+ */
 GtkWidget *hildon_time_picker_new( GtkWindow *parent )
 {
   GtkWidget *widget = g_object_new( HILDON_TYPE_TIME_PICKER,
@@ -888,12 +882,12 @@ GtkWidget *hildon_time_picker_new( GtkWindow *parent )
 
 /**
  * hildon_time_picker_set_time:
- * @picker: the #HildonTimePicker widget.
+ * @picker: the #HildonTimePicker widget
  * @hours: hours
  * @minutes: minutes
  *
  * Sets the time of the #HildonTimePicker widget.
- **/
+ */
 void hildon_time_picker_set_time( HildonTimePicker *picker,
                                   guint hours, guint minutes )
 {
@@ -903,12 +897,12 @@ void hildon_time_picker_set_time( HildonTimePicker *picker,
 
 /**
  * hildon_time_picker_get_time:
- * @picker: the #HildonTimePicker widget.
+ * @picker: the #HildonTimePicker widget
  * @hours: hours
  * @minutes: minutes
  *
  * Gets the time of the #HildonTimePicker widget.
- **/
+ */
 void hildon_time_picker_get_time( HildonTimePicker *picker,
                                   guint *hours, guint *minutes )
 {

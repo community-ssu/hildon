@@ -22,16 +22,15 @@
  *
  */
 
-/* HILDON DOC
- * @shortdesc: DateEditor is a widget for setting, getting and showing a
- * date.
- * @longdesc: The date editor consists of a GtkLabel that shows the current
- * date in localized form and an icon. Clicking on either the label or the
- * icon opens the #HildonCalendarPopup used for selecting the date.
- * Similarly, if the editor has the focus, and space or enter key is
- * pressed, the #HildonCalendarPopup will open. 
+/**
+ * SECTION:hildon-date-editor
+ * @short_description: A widget which queries a date from user or opens
+ * a HildonCalendarPopup
+ * @see_also: #HildonCalendarPopup, #HildonTimeEditor
  * 
- * @seealso: #HildonTimeEditor, #HildonCalendarPopup
+ * HildonDateEditor is a widget with three entry fields (day, month,
+ * year) and an icon (eventbox): clicking on the icon opens up a
+ * HildonCalendarPopup.
  */
 
 #include <glib.h>
@@ -667,11 +666,11 @@ static void hildon_date_editor_destroy(GtkObject * self)
 /**
  * hildon_date_editor_new:
  *
- * Creates a new time editor. The current system date
+ * Creates a new date editor. The current system date
  * is shown in the editor.
  *
- * Return value: Pointer to a new @HildonDateEditor widget.
- **/
+ * Returns: pointer to a new @HildonDateEditor widget.
+ */
 GtkWidget *hildon_date_editor_new(void)
 {
     return GTK_WIDGET(g_object_new(HILDON_DATE_EDITOR_TYPE, NULL));
@@ -685,7 +684,7 @@ GtkWidget *hildon_date_editor_new(void)
  * @day: day
  *
  * Sets the date shown in the editor. 
- **/
+ */
 void hildon_date_editor_set_date(HildonDateEditor * editor,
                                  guint year, guint month, guint day)
 {
@@ -752,9 +751,9 @@ void hildon_date_editor_set_date(HildonDateEditor * editor,
  * @month: month
  * @day: day
  *
- * Returns the year, month, and day currently on the
+ * Returns: the year, month, and day currently on the
  * date editor.
- **/
+ */
 void hildon_date_editor_get_date(HildonDateEditor * date,
                                  guint * year, guint * month, guint * day)
 {
@@ -1265,8 +1264,8 @@ static void hildon_date_editor_size_allocate(GtkWidget * widget,
  *
  * Sets the year shown in the editor. 
  *
- * Return: Returns TRUE if the year is valid.
- **/
+ * Returns: TRUE if the year is valid
+ */
 gboolean hildon_date_editor_set_year(HildonDateEditor *editor, guint year)
 {
   HildonDateEditorPrivate *priv;
@@ -1302,8 +1301,8 @@ gboolean hildon_date_editor_set_year(HildonDateEditor *editor, guint year)
  *
  * Sets the month shown in the editor. 
  *
- * Return: Returns TRUE if the month is valid.
- **/
+ * Returns: TRUE if the month is valid
+ */
 gboolean hildon_date_editor_set_month(HildonDateEditor *editor, guint month)
 {
   HildonDateEditorPrivate *priv;
@@ -1340,8 +1339,8 @@ gboolean hildon_date_editor_set_month(HildonDateEditor *editor, guint month)
  *
  * Sets the day shown in the editor. 
  *
- * Return: Returns TRUE if the day is valid.
- **/
+ * Returns: TRUE if the day is valid
+ */
 gboolean hildon_date_editor_set_day(HildonDateEditor *editor, guint day)
 {
   HildonDateEditorPrivate *priv;
@@ -1376,10 +1375,8 @@ gboolean hildon_date_editor_set_day(HildonDateEditor *editor, guint day)
  * hildon_date_editor_get_year:
  * @editor: the @HildonDateEditor widget
  *
- * Gets the year shown in the editor. 
- *
- * Return: Returns the current year shown in the editor.
- **/
+ * Returns: the current year shown in the editor.
+ */
 guint hildon_date_editor_get_year(HildonDateEditor *editor)
 {
   HildonDateEditorPrivate *priv;
@@ -1394,8 +1391,8 @@ guint hildon_date_editor_get_year(HildonDateEditor *editor)
  *
  * Gets the month shown in the editor. 
  *
- * Return: Returns the current month shown in the editor.
- **/
+ * Returns: the current month shown in the editor.
+ */
 
 guint hildon_date_editor_get_month(HildonDateEditor *editor)
 {
@@ -1411,8 +1408,8 @@ guint hildon_date_editor_get_month(HildonDateEditor *editor)
  *
  * Gets the day shown in the editor. 
  *
- * Return: Returns the current day shown in the editor.
- **/
+ * Returns: the current day shown in the editor
+ */
 
 guint hildon_date_editor_get_day(HildonDateEditor *editor)
 {

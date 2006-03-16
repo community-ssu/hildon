@@ -22,10 +22,14 @@
  *
  */
 
-/*
- * @file hildon-hvolumebar.c
- *
- * This file contains API implementation for Hildon horizontal volumebar.
+/**
+ * SECTION:hildon-hvolumebar
+ * @short_description: A widget that displays a horizontal volume bar
+ * @see_also: #HildonVVolumebar, #HildonVolumebar
+ * 
+ * The #HildonHVolumebar widget displays a horizontal volume bar that allows
+ * increasing or decreasing volume within a pre-defined range, and includes 
+ * a mute icon which users can click to mute the sound.
  */
 
 
@@ -141,7 +145,7 @@ static void hildon_hvolumebar_init(HildonHVolumebar * hvolumebar)
  *
  * Creates a new #HildonHVolumebar widget.
  *
- * Returns: a new #HildonHVolumebar.
+ * Returns: a new #HildonHVolumebar
  */
 GtkWidget *hildon_hvolumebar_new(void)
 {

@@ -2,16 +2,10 @@
 HildonWizardDialog
 
 <!-- ##### SECTION Short_Description ##### -->
-#HildonWizardDialog is a widget to create eg. a guided installation
-process.
+
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
-#HildonWizardDialog is a widget to create eg. a guided installation
-process. The dialog has four buttons to be used. It's parameters are
-the dialogs parent, the wizard dialog name, which is a part of title.
-Last parameter is a #GtkNotebook, which contains the content of wizard.
-This content is created by the application developer.
 
 <informalexample>
 <programlisting>
@@ -33,6 +27,9 @@ switching the page either forward or backward in the notebook.
 <para>
 
 </para>
+
+<!-- ##### SECTION Stability_Level ##### -->
+
 
 <!-- ##### STRUCT HildonWizardDialogPrivate ##### -->
 <para>

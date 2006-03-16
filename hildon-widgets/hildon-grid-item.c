@@ -22,13 +22,15 @@
  *
  */
 
-/*
- * @file hildon-grid-item.c
+/**
+ * SECTION:hildon-grid-item
+ * @short_description: Creating grid items used by #HildonGrid
+ * @see_also: #HildonGrid
  *
- * This file contains the implementation of HildonGridItem.
- * HildonGridItem is an item mainly used in HildonGrid. It has an icon,
- * emblem and a label. 
- *
+ * HildonGridItem is used to create grid items used by #HildonGrid.  The
+ * grid item consists of an icon and a label. Based on the displaying
+ * mode employed by #HildonGrid, the label is justified to the right or
+ * the bottom.
  */
 
 /*
@@ -282,11 +284,11 @@ hildon_grid_item_init(HildonGridItem *item)
 
 /**
  * hildon_grid_item_new:
- * @icon_basename:  Icon base name
+ * @icon_basename:  icon base name
  *
  * Creates a new #HildonGridItem.
  *
- * Return value: A new #HildonGridItem
+ * Returns: a new #HildonGridItem
  */
 GtkWidget *
 hildon_grid_item_new(const gchar *icon_basename)
@@ -314,12 +316,12 @@ hildon_grid_item_new(const gchar *icon_basename)
 
 /**
  * hildon_grid_item_new_with_label:
- * @icon_basename:  Icon base name
- * @label:          Text label for icon
+ * @icon_basename:  icon base name
+ * @label:          text label for icon
  *
- * Creates a new #HildonGridItem.
+ * Creates a new #HildonGridItem with a specified label for the icon.
  *
- * Return value: A new #HildonGridItem
+ * Returns: a new #HildonGridItem
  */
 GtkWidget *
 hildon_grid_item_new_with_label(const gchar *icon_basename,
@@ -900,7 +902,7 @@ static int hildon_time_get_font_width(GtkWidget * widget)
 /**
  * hildon_grid_item_set_emblem_type:
  * @item:               #HildonGridItem
- * @emblem_basename:    Emblem's basename
+ * @emblem_basename:    emblem's basename
  *
  * Sets item emblem type.
  */
@@ -929,9 +931,7 @@ hildon_grid_item_set_emblem_type(HildonGridItem *item,
  * hildon_grid_item_get_emblem_type:
  * @item:   #HildonGridItem
  *
- * Returns emblem's basename. Must not be changed or freed.
- *
- * Return value: Emblem's basename
+ * Returns: emblem's basename. Must not be changed or freed.
  */
 const gchar *
 hildon_grid_item_get_emblem_type(HildonGridItem *item)

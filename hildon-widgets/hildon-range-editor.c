@@ -22,18 +22,13 @@
  *
  */
 
-/*
- * @file hildon-range-editor.c
- * 
- * This file implements the HildonRangeEditor widget.
+/**
+ * SECTION:hildon-range-editor
+ * @short_description: A widget is used to ask bounds of a range
  *
- */
-
-/* HILDON DOC
- * @desc: Range Editor is used to define the range of some attribute. Accepted
- * number type is integer and '-' character is also acceptable. Range can
- * be used in application area and in dialog.  
- * 
+ * HidlonRangeEditor allows entering a pair of integers, e.g. the lower
+ * and higher bounds of a range. A minimum and maximum can also be set
+ * for the bounds.
  */
 
 #include <gtk/gtkbox.h>
@@ -760,9 +755,11 @@ static void hildon_range_editor_refresh_widths(HildonRangeEditorPrivate *priv)
 
 /**
  * hildon_range_editor_get_type:
- * @Returns : GType of #HildonRangeEditor.
- *
+ * 
  * Initializes, and returns the type of a hildon range editor.
+ * 
+ * @Returns : GType of #HildonRangeEditor
+ * 
  */
 GType
 hildon_range_editor_get_type (void)
@@ -795,8 +792,8 @@ hildon_range_editor_get_type (void)
  *
  * HildonRangeEditor contains two GtkEntrys that accept numbers and minus. 
  *
- * Return value: pointer to a new @HildonRangeEditor widget.
- **/
+ * Returns: pointer to a new @HildonRangeEditor widget
+ */
 GtkWidget *
 hildon_range_editor_new (void)
 {
@@ -806,14 +803,14 @@ hildon_range_editor_new (void)
 
 /**
  * hildon_range_editor_new_with_separator:
- * @separator: A string that is shown between the numbers.
+ * @separator: a string that is shown between the numbers
  *
- * HildonRangeEditor contains two @GtkEntrys that accept numbers. 
- * @separator is displayed between two entrys.
+ * HildonRangeEditor contains two Gtk entries that accept numbers. 
+ * A separator is displayed between two entries. 
  * CHECKME: Use '-' as a separator in the case of null separator?
- *
- * Return value: pointer to a new @HildonRangeEditor widget.
- **/
+ * 
+ * Returns: pointer to a new @HildonRangeEditor widget
+ */
 GtkWidget *
 hildon_range_editor_new_with_separator (const gchar *separator)
 {
@@ -824,14 +821,14 @@ hildon_range_editor_new_with_separator (const gchar *separator)
 
 /**
  * hildon_range_editor_set_range:
- * @editor: the #HildonRangeEditor widget.
- * @start: range's start value. 
- * @end: range's end value.
+ * @editor: the #HildonRangeEditor widget
+ * @start: range's start value 
+ * @end: range's end value
  *
  * Sets a range to the editor. (The current value)
  *
  * Sets the range of the @HildonRangeEditor widget.
- **/
+ */
 void
 hildon_range_editor_set_range (HildonRangeEditor *editor, gint start, gint end)
 {
@@ -845,12 +842,12 @@ hildon_range_editor_set_range (HildonRangeEditor *editor, gint start, gint end)
 
 /**
  * hildon_range_editor_get_range:
- * @editor: the #HildonRangeEditor widget.
- * @start: ranges start value.
- * @end: ranges end value.
+ * @editor: the #HildonRangeEditor widget
+ * @start: ranges start value
+ * @end: ranges end value
  *
  * Gets the range of the @HildonRangeEditor widget.
- **/
+ */
 void
 hildon_range_editor_get_range (HildonRangeEditor *editor, gint *start,
                                gint *end)
@@ -867,12 +864,12 @@ hildon_range_editor_get_range (HildonRangeEditor *editor, gint *start,
 
 /**
  * hildon_range_editor_set_limits:
- * @editor: the #HildonRangeEditor widget.
- * @start: minimum acceptable value (default: no limit).
- * @end: maximum accecptable value (default: no limit).
+ * @editor: the #HildonRangeEditor widget
+ * @start: minimum acceptable value (default: no limit)
+ * @end:   maximum acceptable value (default: no limit)
  *
  * Sets the range of the @HildonRangeEditor widget.
- **/
+ */
 void
 hildon_range_editor_set_limits (HildonRangeEditor *editor, gint start,
                                 gint end)

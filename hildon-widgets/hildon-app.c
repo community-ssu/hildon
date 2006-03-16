@@ -22,11 +22,13 @@
  *
  */
 
-/*
- * @file hildon-app.c
+/**
+ * SECTION:hildon-app
+ * @short_description: A base widget to present application
+ * @see_also: #HildonAppView
  *
- * This file implements the HildonApp widget
- *
+ * #HildonApp is the base for any hildon application.
+ * It controls basic looks and functionality of an application, like a title.
  */
 
 #include <gdk/gdk.h>
@@ -145,9 +147,10 @@ static gpointer find_view(HildonApp *self, unsigned long view_id);
 /* FIXME: Zoom level is deprecated, should be removed */
 /**
  * hildon_zoom_level_get_type:
- * @Returns : GType of #HildonZoomLevel
  *
  * Initialises, and returns the type of a hildon zoom level
+ * 
+ * Returns: GType of #HildonZoomLevel
  */
 
 GType
@@ -975,8 +978,8 @@ hildon_app_init (HildonApp *self)
  *
  * Creates a new #HildonApp
  *
- * Return value: Pointer to a new @HildonApp structure.
- **/
+ * Returns: pointer to a new #HildonApp structure
+ */
 GtkWidget *
 hildon_app_new (void)
 {
@@ -985,12 +988,12 @@ hildon_app_new (void)
 
 /**
  * hildon_app_new_with_appview:
- * @appview : A @HildonAppView
+ * @appview : a #HildonAppView
  * 
  * Creates an app, and sets it's initial appview.
  * 
- * Return value: Pointer to a new @HildonApp structure.
- **/
+ * Returns: pointer to a new #HildonApp structure
+ */
 GtkWidget *
 hildon_app_new_with_appview (HildonAppView *appview)
 {
@@ -1007,14 +1010,14 @@ hildon_app_new_with_appview (HildonAppView *appview)
 
 /**
  * hildon_app_get_appview:
- * @self : A @HildonApp
+ * @self : a #HildonApp
  *
  * Gets the currently shown appview.
  * 
- * Return value: The currently shown appview in this HildonApp.
- *               If no appview is currently set for this HildonApp,
- *               returns NULL.
- **/
+ * Returns: the currently shown appview in this HildonApp.
+ *          If no appview is currently set for this HildonApp,
+ *          returns NULL.
+ */
 HildonAppView *
 hildon_app_get_appview (HildonApp *self)
 {
@@ -1032,8 +1035,8 @@ hildon_app_get_appview (HildonApp *self)
 
 /**
  * hildon_app_set_appview:
- * @self : A @HildonApp
- * @appview : A @HildonAppView.
+ * @self : a #HildonApp
+ * @appview : a #HildonAppView
  * 
  * Sets (switches to) appview.
  */
@@ -1111,11 +1114,11 @@ hildon_app_set_appview (HildonApp *app, HildonAppView *view)
 
 /**
  * hildon_app_set_title:
- * @self : A @HildonApp
- * @newtitle : The new title assigned to the application.
+ * @self : a #HildonApp
+ * @newtitle : the new title assigned to the application
  *
  * Sets title of the application.
- **/
+ */
 void
 hildon_app_set_title (HildonApp *self, const gchar *newtitle)
 {
@@ -1143,13 +1146,13 @@ hildon_app_set_title (HildonApp *self, const gchar *newtitle)
 
 /**
  * hildon_app_get_title:
- * @self : A @HildonApp
+ * @self : a #HildonApp
  *
  * Gets the title of the application.
  *
- * Return value: The title currently assigned to the application. This
- *  value is not to be freed or modified by the calling application.
- **/
+ * Returns: the title currently assigned to the application. This
+ *  value is not to be freed or modified by the calling application
+ */
 const gchar *
 hildon_app_get_title (HildonApp *self)
 {
@@ -1163,13 +1166,13 @@ hildon_app_get_title (HildonApp *self)
 /* FIXME: Zoom is deprecated, remove */
 /**
  * hildon_app_set_zoom:
- * @self : A @HildonApp
- * @newzoom: The zoom level of type @HildonZoomLevel to be assigned to an
- *  application.
+ * @self : a #HildonApp
+ * @newzoom: the zoom level of type #HildonZoomLevel to be assigned to an
+ *  application
  *
  * Sets the zoom level. Warning! This function is deprecated and
  * should not be used. It's lecacy stuff from ancient specs.
- **/
+ */
 void
 hildon_app_set_zoom (HildonApp *self, HildonZoomLevel newzoom)
 {
@@ -1196,14 +1199,14 @@ hildon_app_set_zoom (HildonApp *self, HildonZoomLevel newzoom)
 
 /**
  * hildon_app_get_zoom:
- * @self : A @HildonApp
+ * @self : a #HildonApp
  *
  * Gets the zoom level. Warning! This function is deprecated and
  * should not be used. It's lecacy stuff from ancient specifications.
  *
- * Return value: Returns the zoom level of the Hildon application. The
- *  returned zoom level is of type @HildonZoomLevel.
- **/
+ * Returns: the zoom level of the Hildon application. The
+ *  returned zoom level is of type #HildonZoomLevel.
+ */
 HildonZoomLevel
 hildon_app_get_zoom (HildonApp *self)
 {
@@ -1216,14 +1219,14 @@ hildon_app_get_zoom (HildonApp *self)
 
 /**
  * hildon_app_get_default_font:
- * @self : A @HildonApp
+ * @self : a #HildonApp
  *
  * Gets default font. Warning! This function is deprecated and should
  * not be used. It's legacy stuff from ancient version of specification.
  *
- * Return value: Pointer to PangoFontDescription for the default,
- *  normal size font.
- **/
+ * Returns: pointer to PangoFontDescription for the default,
+ *  normal size font
+ */
 PangoFontDescription *
 hildon_app_get_default_font (HildonApp *self)
 {
@@ -1252,15 +1255,15 @@ hildon_app_get_default_font (HildonApp *self)
 
 /**
  * hildon_app_get_zoom_font:
- * @self : A @HildonApp
+ * @self : a #HildonApp
  *
  * Gets the description of the default font. Warning! This function
  * is deprecated and should not be used. It's legacy stuff from
  * ancient specs.
  * 
- * Return value: Pointer to PangoFontDescription for the default,
- *  normal size font.
- **/
+ * Returns: pointer to PangoFontDescription for the default,
+ *  normal size font
+ */
 PangoFontDescription *
 hildon_app_get_zoom_font (HildonApp *self)
 {
@@ -1311,10 +1314,10 @@ hildon_app_get_zoom_font (HildonApp *self)
 
 /**
  * hildon_app_set_two_part_title:
- * @self : A @HildonApp
- * @istwoparttitle : A gboolean indicating wheter to activate
+ * @self : a #HildonApp
+ * @istwoparttitle : a gboolean indicating wheter to activate
  *  a title that has both the application title and application
- *  view title separated by a triangle.
+ *  view title separated by a triangle
  * 
  * Sets the two part title.
  */
@@ -1334,13 +1337,13 @@ hildon_app_set_two_part_title (HildonApp *self, gboolean istwoparttitle)
 
 /**
  * hildon_app_get_two_part_title:
- * @self : A @HildonApp
+ * @self : a #HildonApp
  *
  * Gets the 'twopart' represention of the title inside #HildonApp.
  * 
- * Return value: A boolean indicating wheter title shown has both
+ * Returns: a boolean indicating wheter title shown has both
  *  application, and application view title separated by a triangle.
- **/
+ */
 gboolean
 hildon_app_get_two_part_title (HildonApp *self)
 {
@@ -1910,11 +1913,11 @@ hildon_app_real_switch_to (HildonApp *self)
 
 /**
  * hildon_app_set_autoregistration
- * @self : a @HildonApp
- * @auto_reg : Whether the (app)view autoregistration should be active
+ * @self : a #HildonApp
+ * @auto_reg : whether the (app)view autoregistration should be active
  *
  * Controls the autoregistration/unregistration of (app)views.
- **/
+ */
 
 void hildon_app_set_autoregistration(HildonApp *self, gboolean auto_reg)
 {
@@ -1928,8 +1931,8 @@ void hildon_app_set_autoregistration(HildonApp *self, gboolean auto_reg)
 
 /**
  * hildon_app_register_view:
- * @self : a @HildonApp
- * @view_ptr : Pointer to the view instance to be registered
+ * @self : a #HildonApp
+ * @view_ptr : pointer to the view instance to be registered
  *
  * Registers a new view. For appviews, this can be done automatically
  * if autoregistration is set.
@@ -1965,13 +1968,13 @@ void hildon_app_register_view(HildonApp *self, gpointer view_ptr)
 
 /**
  * hildon_app_register_view_with_id:
- * @self : a @HildonApp
- * @view_ptr : Pointer to the view instance to be registered
- * @view_id : The ID of the view
+ * @self : a #HildonApp
+ * @view_ptr : pointer to the view instance to be registered
+ * @view_id : the ID of the view
  * 
  * Registers a new view. Allows the application to specify any ID.
  * 
- * Return value: TRUE if the view registration succeeded, FALSE otherwise.
+ * Returns: TRUE if the view registration succeeded, FALSE otherwise.
  *          The probable cause of failure is that view with that ID
  *          already existed.
  */
@@ -2021,8 +2024,8 @@ gboolean hildon_app_register_view_with_id(HildonApp *self,
 
 /**
  * hildon_app_unregister_view:
- * @self : A @HildonApp
- * @view_ptr : Pointer to the view instance to be unregistered
+ * @self : a #HildonApp
+ * @view_ptr : pointer to the view instance to be unregistered
  *
  * Unregisters a view from HildonApp. Done usually when a view is
  * destroyed. For appviews, this is can be automatically
@@ -2060,8 +2063,8 @@ void hildon_app_unregister_view(HildonApp *self, gpointer view_ptr)
 
 /**
  * hildon_app_unregister_view_with_id:
- * @self : A @HildonApp
- * @view_id : The ID of the view that should be unregistered
+ * @self : a #HildonApp
+ * @view_id : the ID of the view that should be unregistered
  * 
  * Unregisters a view with specified ID, if it exists.
  */
@@ -2099,8 +2102,8 @@ void hildon_app_unregister_view_with_id(HildonApp *self,
 
 /**
  * hildon_app_notify_view_changed:
- * @self : A @HildonApp
- * @view_ptr : Pointer to the view that is switched to
+ * @self : a #HildonApp
+ * @view_ptr : pointer to the view that is switched to
  * 
  * Updates the X property that contains the currently active view
  */
@@ -2129,10 +2132,10 @@ void hildon_app_notify_view_changed(HildonApp *self, gpointer view_ptr)
 
 /**
  * hildon_app_find_view_id:
- * @self : a @HildonApp
- * @view_ptr : Pointer to the view whose ID we want to acquire
+ * @self : a #HildonApp
+ * @view_ptr : pointer to the view whose ID we want to acquire
  * 
- * Return value: The ID of the view, or 0 if not found.
+ * Returns: the ID of the view, or 0 if not found
  *
  * Allows mapping of view pointer to its view ID. If NULL is passed
  * as the view pointer, returns the ID of the current view.
@@ -2162,8 +2165,8 @@ unsigned long hildon_app_find_view_id(HildonApp *self, gpointer view_ptr)
 
 /**
  * hildon_app_set_killable:
- * @self : A @HildonApp
- * @killability : Truth value indicating whether the app can be killed
+ * @self : a #HildonApp
+ * @killability : truth value indicating whether the app can be killed
  *                       
  * Updates information about whether the application can be killed or not by
  * Task Navigator (i.e. whether its statesave is up to date)
@@ -2194,7 +2197,7 @@ void hildon_app_set_killable(HildonApp *self, gboolean killability)
  * If @uim is NULL, unsets the current ui manager.
  * The @HildonApp holds a reference to the ui manager until
  * the @HildonApp is destroyed or unset.
- **/
+ */
 void hildon_app_set_ui_manager(HildonApp *self, GtkUIManager *uim)
 {
     HildonAppPrivate *priv;
@@ -2227,9 +2230,9 @@ void hildon_app_set_ui_manager(HildonApp *self, GtkUIManager *uim)
  * 
  * Gets the #GtkUIManager assigned to the #HildonApp.
  *
- * Return value: The #GtkUIManager assigned to this application
- * or null if no manager is assigned.
- **/
+ * Returns: the #GtkUIManager assigned to this application
+ * or null if no manager is assigned
+ */
 GtkUIManager *hildon_app_get_ui_manager(HildonApp *self)
 {
     HildonAppPrivate *priv;

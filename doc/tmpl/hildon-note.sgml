@@ -2,14 +2,10 @@
 HildonNote
 
 <!-- ##### SECTION Short_Description ##### -->
-A widget to ask confirmation from the user.
+
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
-Notes are used to have a confirmation (Ok/Cancel/etc.) from the user.
-A simple note contains an information text and an Ok-button to be pressed.
-Additional features can be e.g. progressbars or animations.
-
 <informalexample>
 <programlisting>
 
@@ -31,6 +27,9 @@ else
 <para>
 
 </para>
+
+<!-- ##### SECTION Stability_Level ##### -->
+
 
 <!-- ##### ENUM HildonNoteType ##### -->
 <para>
@@ -166,26 +165,6 @@ else
 
 </para>
 
-@Returns: 
+@Returns: GType
 
-
-<!-- ##### ARG HildonNote:description ##### -->
-<para>
-
-</para>
-
-<!-- ##### ARG HildonNote:icon ##### -->
-<para>
-
-</para>
-
-<!-- ##### ARG HildonNote:note-type ##### -->
-<para>
-
-</para>
-
-<!-- ##### ARG HildonNote:progressbar ##### -->
-<para>
-
-</para>
 

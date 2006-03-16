@@ -2,15 +2,11 @@
 HildonTelephoneEditor
 
 <!-- ##### SECTION Short_Description ##### -->
-A widget which allows a user to enter a telephone number
+
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
-A Single Line Editor widget which allows user to enter a telephone number. There are two modes to choose from (corce/free format). Coerce format has three fields which are placed horizontally. Fields are country code, area code and number. When nothing is inputted to the fields assisting text is displayed in a field. Tapping on the field highlights the field and allows user to input numbers.
-</para>
 
-<para>
-The widget is used where a user should enter a phone number. Free format should be used wherever possible as it enables the user to enter the phone number in the format she likes in addition to entering DTMF strings as a part of the phone number. The format can not be changed at runtime.
 </para>
 
 <para>
@@ -26,6 +22,9 @@ The widget is used where a user should enter a phone number. Free format should 
 <para>
 
 </para>
+
+<!-- ##### SECTION Stability_Level ##### -->
+
 
 <!-- ##### MACRO HILDON_TELEPHONE_EDITOR_TYPE ##### -->
 <para>
@@ -164,34 +163,4 @@ The widget is used where a user should enter a phone number. Free format should 
 @hte: 
 @number: 
 
-
-<!-- ##### ARG HildonTelephoneEditor:area ##### -->
-<para>
-
-</para>
-
-<!-- ##### ARG HildonTelephoneEditor:country ##### -->
-<para>
-
-</para>
-
-<!-- ##### ARG HildonTelephoneEditor:number ##### -->
-<para>
-
-</para>
-
-<!-- ##### ARG HildonTelephoneEditor:set-format ##### -->
-<para>
-
-</para>
-
-<!-- ##### ARG HildonTelephoneEditor:show-border ##### -->
-<para>
-
-</para>
-
-<!-- ##### ARG HildonTelephoneEditor:show-plus ##### -->
-<para>
-
-</para>
 

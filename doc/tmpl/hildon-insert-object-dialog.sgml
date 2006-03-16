@@ -2,17 +2,15 @@
 HildonInsertObjectDialog
 
 <!-- ##### SECTION Short_Description ##### -->
-A dialog that enables the user to embed an object into rich text.
+
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
-#HildonInsertObjectDialog is a dialog that enables the user to insert a
-new or existing object into a Multi-line (Rich Text) Editor as an
-embedded object.
+
 </para>
 
 <para>
-Here's a simple example for using #HildonInsertObjectDialog:
+Here is an example for using #HildonInsertObjectDialog:
 
 <informalexample>
 <programlisting>
@@ -47,6 +45,9 @@ Here's a simple example for using #HildonInsertObjectDialog:
 <para>
 
 </para>
+
+<!-- ##### SECTION Stability_Level ##### -->
+
 
 <!-- ##### MACRO HILDON_RESPONSE_INSERT_EXISTING ##### -->
 <para>

@@ -22,13 +22,16 @@
  *
  */
 
-/*
- * @file hildon-color-selector.c
- *
- * This file contains the implementation of Hildon Color Selector
- * widget containing the base color and custom color palette selector 
- * and popup for selecting different colors based on RGB values.
+/**
+ * SECTION:hildon-color-selector
+ * @short_description: A widget for selecting a color
+ * @see_also: #HildonColorButton, #HildonColorPopup
+ * 
+ * #HildonColorSelector allows selection of a color from a standard
+ * 16-color palette or a palette of 8 user-customizable colors.
+ * The user-customizable colors can be modified through HildonColorPopup.
  */
+
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -231,12 +234,13 @@ hildon_color_selector_class_init(HildonColorSelectorClass * selector_class)
 
 /**
  * hildon_color_selector_new:
- * @parent:  The parent window. The X window ID of the parent window
- *           has to be the same as the X window ID of the application.
- * @returns: new #HildonColorSelector.
+ * @parent:  the parent window. The X window ID of the parent window
+ *           has to be the same as the X window ID of the application
  *
  * Creates a new #HildonColorSelector dialog with 3x8 layout of 
- * Windows base colors and 'OK', 'More..' and 'Cancel' buttons.
+ * base colors and 'OK', 'More..' and 'Cancel' buttons.
+ *
+ * Returns: new #HildonColorSelector
  **/
 GtkWidget *hildon_color_selector_new(GtkWindow * parent)
 {
@@ -517,9 +521,7 @@ hildon_color_selector_expose(GtkWidget * widget,
  * hildon_color_selector_get_color:
  * @selector: a #HildonColorSelector
  * 
- * Gets the currently selected base color as #GdkColor.
- * 
- * Returns: The currently selected #GdkColor. The returned pointer must 
+ * Returns: the currently selected #GdkColor. The returned pointer must 
  * not be freed.
  */
 G_CONST_RETURN GdkColor *hildon_color_selector_get_color(HildonColorSelector * selector)
@@ -531,10 +533,10 @@ G_CONST_RETURN GdkColor *hildon_color_selector_get_color(HildonColorSelector * s
 /**
  * hildon_color_selector_set_color:
  * @selector: #HildonColorSelector
- * @color: #Gdkcolor to set.
+ * @color: #Gdkcolor to set
  * 
- * Select the color specified. Does nothing if the color does not 
- * exists among the standard colors.
+ * Selects the color specified. Does nothing if the color does not 
+ * exist among the standard colors.
  */
 void hildon_color_selector_set_color(HildonColorSelector * selector,
                                      GdkColor * color)

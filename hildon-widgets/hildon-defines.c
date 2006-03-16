@@ -22,6 +22,12 @@
  *
  */
 
+/**
+ * SECTION:hildon-defines
+ * @short_description: Not a widget, just a helper
+ *
+ */
+
 #include <gtk/gtk.h>
 #include "hildon-defines.h"
 

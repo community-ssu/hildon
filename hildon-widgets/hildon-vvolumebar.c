@@ -23,11 +23,13 @@
  */
 
 /*
- * @file hildon-vvolumebar.c
+ * SECTION:hildon-vvolumebar
+ * @short_description: A widget that displays a vertical volume bar
+ * @see_also: #HildonVolumebar, #HildonHVolumebar
  *
- * This file contains the implementation of HildonVVolumebar.
- * This widget is a subclass of HildonVolumebar and implements
- * horizontal version of Volumebar.
+ * #HildonVVolumebar is a subclass of #HildonVolumebar.  It displays a
+ * vertical volume bar that allows increasing or decreasing volume
+ * within a predefined range, and muting when users click the mute icon.
  */
 
 #ifdef HAVE_CONFIG_H
@@ -126,7 +128,7 @@ static void hildon_vvolumebar_init(HildonVVolumebar * vvolumebar)
  *
  * Creates a new #HildonVVolumebar widget.
  *
- * Returns: a new #HildonVVolumebar.
+ * Returns: a new #HildonVVolumebar
  */
 GtkWidget *hildon_vvolumebar_new(void)
 {

@@ -2,15 +2,10 @@
 HildonTimeEditor
 
 <!-- ##### SECTION Short_Description ##### -->
-#HildonTimeEditor is a simple widget with entries for hours and minutes and a 
-pm/am indicator as well as a button which pops up a #HildonTimePicker dialog
-window.
+
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
-#HildonTimeEditor is a simple widget with entries for hours and minutes and a 
-pm/am indicator as well as a button which pops up a #HildonTimePicker dialog
-window.
 
 <informalexample>
 <programlisting>
@@ -31,6 +26,9 @@ hildon_time_editor_get_time( editor, &amp;h, &amp;m, &amp;s );
 <para>
 
 </para>
+
+<!-- ##### SECTION Stability_Level ##### -->
+
 
 <!-- ##### FUNCTION hildon_time_editor_new ##### -->
 <para>
@@ -189,29 +187,4 @@ hildon_time_editor_get_time( editor, &amp;h, &amp;m, &amp;s );
 @editor: 
 @Returns: 
 
-
-<!-- ##### ARG HildonTimeEditor:duration-max ##### -->
-<para>
-
-</para>
-
-<!-- ##### ARG HildonTimeEditor:duration-min ##### -->
-<para>
-
-</para>
-
-<!-- ##### ARG HildonTimeEditor:duration-mode ##### -->
-<para>
-
-</para>
-
-<!-- ##### ARG HildonTimeEditor:show-seconds ##### -->
-<para>
-
-</para>
-
-<!-- ##### ARG HildonTimeEditor:ticks ##### -->
-<para>
-
-</para>
 

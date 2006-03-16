@@ -22,23 +22,17 @@
  *
  */
 
-/* HILDON DOC
- * @shortdesc: TimeEditor is a widget for setting, getting and showing a
- * time.
- * @longdesc: The Time Editor widget is used to enter the system time
- * (hours and minutes) in the Date/Time system plugin. It is a composite
- * widget consisting of two GtkEntry widgets that are placed next to each
- * other. The leftmost GtkEntry is used to enter the hours, and it accepts
- * the values 0--23, while the rightmost GtkEntry accepts values 0--59
- * and is used to set the minutes. Between the two GtkEntries there
- * is a label displaying a colon.
- * </para><para>
- * From the usability point of view, the GtkSpinbutton widget would
- * have been a better choice than the GtkEntry widgets, but it uses
- * floating point operations and is thus not acceptable in this
- * project.
- *
- * @seealso: #HildonDateEditor
+/**
+ * SECTION:hildon-time-editor
+ * @short_description: A widget used to enter time or duration in hours, minutes,
+ * and optional seconds
+ * @see_also: #HildonTimePicker
+ * 
+ * HildonTimeEditor is used to edit time or duration. Time mode is
+ * restricted to normal 24 hour cycle, but Duration mode can select any
+ * amount of time up to 99 hours.  It consists of entries for hours,
+ * minutes and seconds, and pm/am indicator as well as a button which
+ * popups a #HildonTimePicker dialog.
  */
 
 #ifdef HAVE_CONFIG_H
@@ -623,8 +617,8 @@ static void hildon_time_editor_get_property (GObject    *object,
  *
  * This function creates a new time editor. 
  *
- * Return value: pointer to a new #HildonTimeEditor widget.
- **/
+ * Returns: pointer to a new #HildonTimeEditor widget
+ */
 
 GtkWidget *hildon_time_editor_new(void)
 {
@@ -661,14 +655,13 @@ static void ticks_to_time (guint ticks,
 
 /**
  * hildon_time_editor_set_ticks:
- * @self: the @HildonTimeEditor widget.
- * @ticks: The duration to set, in seconds.
+ * @editor: the #HildonTimeEditor widget
+ * @ticks: the duration to set, in seconds
  *
  * Sets the current duration in seconds. This means seconds from
  * midnight, if not in duration mode. In case of any errors, it tries
  * to fix it.
- * 
- **/
+ */
 
 void hildon_time_editor_set_ticks (HildonTimeEditor * editor,
                                    guint ticks)
@@ -750,13 +743,13 @@ hildon_time_editor_set_to_current_time (HildonTimeEditor * editor)
 
 /**
  * hildon_time_editor_get_ticks:
- * @self: the @HildonTimeEditor widget.
+ * @editor: the #HildonTimeEditor widget
  *
  * This function returns the current duration, in seconds.
  * This means seconds from midnight, if not in duration mode.
  * 
- * Return value: Current duration in seconds. 
- **/
+ * Returns: current duration in seconds 
+ */
  
 guint hildon_time_editor_get_ticks (HildonTimeEditor * editor)
 {
@@ -772,12 +765,11 @@ guint hildon_time_editor_get_ticks (HildonTimeEditor * editor)
 
 /**
  * hildon_time_editor_set_show_seconds:
- * @editor: The #HildonTimeEditor.
- * @enable: Enable or disable showing of seconds.
+ * @editor: the #HildonTimeEditor
+ * @show_seconds: enable or disable showing of seconds
  *
  * This function shows or hides the seconds field.
- *
- **/
+ */
 
 void hildon_time_editor_set_show_seconds (HildonTimeEditor * editor,
                                         gboolean show_seconds)
@@ -806,13 +798,13 @@ void hildon_time_editor_set_show_seconds (HildonTimeEditor * editor,
 
 /**
  * hildon_time_editor_get_show_seconds:
- * @self: the @HildonTimeEditor widget.
+ * @editor: the #HildonTimeEditor widget
  *
  * This function returns a boolean indicating the visibility of
- * seconds in the @HildonTimeEditor
+ * seconds in the #HildonTimeEditor
  *
- * Return value: TRUE if the seconds are visible. 
- **/
+ * Returns: TRUE if the seconds are visible 
+ */
 
 gboolean hildon_time_editor_get_show_seconds (HildonTimeEditor * editor)
 {
@@ -826,13 +818,12 @@ gboolean hildon_time_editor_get_show_seconds (HildonTimeEditor * editor)
 
 /**
  * hildon_time_editor_set_duration_mode:
- * @editor: The #HildonTimeEditor.
- * @enable: Enable or disable duration editor mode
+ * @editor: the #HildonTimeEditor
+ * @duration_mode: enable or disable duration editor mode
  *
  * This function sets the duration editor mode in which the maximum hours
- * is 99 and the #HildonTimePicker is disabled.
- *
- **/
+ * is 99.
+ */
  
 void hildon_time_editor_set_duration_mode (HildonTimeEditor * editor,
                                          gboolean duration_mode)
@@ -878,13 +869,13 @@ void hildon_time_editor_set_duration_mode (HildonTimeEditor * editor,
 
 /**
  * hildon_time_editor_get_duration_mode:
- * @self: the @HildonTimeEditor widget.
+ * @editor: the #HildonTimeEditor widget
  *
- * This function returns a boolean indicating whether the @HildonTimeEditor
+ * This function returns a boolean indicating whether the #HildonTimeEditor
  * is in the duration mode.
  * 
- * Return value: TRUE if the @HildonTimeEditor is in duration mode. 
- **/
+ * Returns: TRUE if the #HildonTimeEditor is in duration mode 
+ */
 
 gboolean hildon_time_editor_get_duration_mode (HildonTimeEditor * editor)
 {
@@ -898,12 +889,12 @@ gboolean hildon_time_editor_get_duration_mode (HildonTimeEditor * editor)
 
 /**
  * hildon_time_editor_set_duration_min:
- * @self: the @HildonTimeEditor widget.
- * @duration_min: Mimimum allowed duration.
+ * @editor: the #HildonTimeEditor widget
+ * @duration_min: mimimum allowed duration
  *
  * Sets the minimum allowed duration for the duration mode.
  * Note: Has no effect in time mode
- **/
+ */
 
 void hildon_time_editor_set_duration_min (HildonTimeEditor * editor,
                                           guint duration_min)
@@ -931,13 +922,13 @@ void hildon_time_editor_set_duration_min (HildonTimeEditor * editor,
 
 /**
  * hildon_time_editor_get_duration_min:
- * @self: the @HildonTimeEditor widget.
+ * @editor: the #HildonTimeEditor widget
  *
- * This function returns the smallest duration the @HildonTimeEditor
+ * This function returns the smallest duration the #HildonTimeEditor
  * allows in the duration mode.
  * 
- * Return value: Mimimum allowed duration in seconds. 
- **/
+ * Returns: minimum allowed duration in seconds 
+ */
  
 guint hildon_time_editor_get_duration_min (HildonTimeEditor * editor)
 {
@@ -955,13 +946,12 @@ guint hildon_time_editor_get_duration_min (HildonTimeEditor * editor)
 
 /**
  * hildon_time_editor_set_duration_max:
- * @self: the @HildonTimeEditor widget.
- * @duration_min: Maximum allowed duration in seconds.
+ * @editor: the #HildonTimeEditor widget
+ * @duration_max: maximum allowed duration in seconds
  *
  * Sets the maximum allowed duration in seconds for the duration mode.
  * Note: Has no effect in time mode
- * 
- **/
+ */
  
 void hildon_time_editor_set_duration_max (HildonTimeEditor * editor,
                                           guint duration_max)
@@ -989,13 +979,13 @@ void hildon_time_editor_set_duration_max (HildonTimeEditor * editor,
 
 /**
  * hildon_time_editor_get_duration_max:
- * @self: the @HildonTimeEditor widget.
+ * @editor: the #HildonTimeEditor widget
  *
- * This function returns the longest duration the @HildonTimeEditor
+ * This function returns the longest duration the #HildonTimeEditor
  * allows in the duration mode.
  * 
- * Return value: Maximum allowed duration in seconds. 
- **/
+ * Returns: maximum allowed duration in seconds 
+ */
  
 guint hildon_time_editor_get_duration_max (HildonTimeEditor * editor)
 {
@@ -1014,7 +1004,7 @@ guint hildon_time_editor_get_duration_max (HildonTimeEditor * editor)
 
 /**
  * hildon_time_editor_set_time:
- * @editor: the @HildonTimeEditor widget.
+ * @editor: the #HildonTimeEditor widget
  * @hours: hours
  * @minutes: minutes
  * @seconds: seconds
@@ -1022,8 +1012,7 @@ guint hildon_time_editor_get_duration_max (HildonTimeEditor * editor)
  * This function sets the time on an existing time editor. If the
  * time specified by the arguments is invalid, it's fixed.
  * The time is assumed to be in 24h format.
- *  
- **/
+ */
 
 void hildon_time_editor_set_time(HildonTimeEditor * editor, guint hours,
                                  guint minutes, guint seconds)
@@ -1035,14 +1024,14 @@ void hildon_time_editor_set_time(HildonTimeEditor * editor, guint hours,
 
 /**
  * hildon_time_editor_get_time:
- * @editor: the @HildonTimeEditor widget.
+ * @editor: the #HildonTimeEditor widget
  * @hours: hours
  * @minutes: minutes
  * @seconds: seconds
  *
- * Gets the time of the @HildonTimeEditor widget. The time returned is
+ * Gets the time of the #HildonTimeEditor widget. The time returned is
  * always in 24h format.
- **/
+ */
 
 void hildon_time_editor_get_time(HildonTimeEditor * editor,
                                  guint * hours,
@@ -1060,12 +1049,12 @@ void hildon_time_editor_get_time(HildonTimeEditor * editor,
 
 /**
  * hildon_time_editor_set_duration_range:
- * @editor: the @HildonTimeEditor widget.
+ * @editor: the #HildonTimeEditor widget
  * @min_seconds: minimum allowed time in seconds
  * @max_seconds: maximum allowed time in seconds
  *
- * Sets the duration editor time range of the @HildonTimeEditor widget.
- **/
+ * Sets the duration editor time range of the #HildonTimeEditor widget.
+ */
 
 void hildon_time_editor_set_duration_range(HildonTimeEditor * editor,
                                            guint min_seconds,
@@ -1098,12 +1087,12 @@ void hildon_time_editor_set_duration_range(HildonTimeEditor * editor,
 
 /**
  * hildon_time_editor_get_duration_range:
- * @editor: the @HildonTimeEditor widget.
+ * @editor: the #HildonTimeEditor widget
  * @min_seconds: pointer to guint
  * @max_seconds: pointer to guint
  *
- * Gets the duration editor time range of the @HildonTimeEditor widget.
- **/
+ * Gets the duration editor time range of the #HildonTimeEditor widget.
+ */
 
 void hildon_time_editor_get_duration_range(HildonTimeEditor * editor,
                                            guint * min_seconds,
@@ -1659,12 +1648,12 @@ gboolean hildon_time_editor_get_show_hours(HildonTimeEditor *editor)
 
 /**
  * hildon_time_editor_show_seconds:
- * @editor: The #HildonTimeEditor.
- * @enable: Enable or disable showing of seconds.
+ * @editor: the #HildonTimeEditor
+ * @enable: enable or disable showing of seconds
  *
- * This function is deprecated, use @hildon_time_editor_set_show_seconds instead.
- *
- **/
+ * This function is deprecated, 
+ * use #hildon_time_editor_set_show_seconds instead.
+ */
 void hildon_time_editor_show_seconds(HildonTimeEditor * editor,
                                      gboolean enable)
 {
@@ -1672,12 +1661,12 @@ void hildon_time_editor_show_seconds(HildonTimeEditor * editor,
 }
 /**
  * hildon_time_editor_enable_duration_mode:
- * @editor: The #HildonTimeEditor.
- * @enable: Enable or disable duration editor mode
+ * @editor: the #HildonTimeEditor
+ * @enable: enable or disable duration editor mode
  *
- * This function is deprecated, use @hildon_time_editor_set_duration_mode instead.
- *
- **/
+ * This function is deprecated, 
+ * use #hildon_time_editor_set_duration_mode instead.
+ */
 void hildon_time_editor_enable_duration_mode(HildonTimeEditor * editor,
                                              gboolean enable)
 {

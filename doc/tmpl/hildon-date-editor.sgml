@@ -2,16 +2,10 @@
 HildonDateEditor
 
 <!-- ##### SECTION Short_Description ##### -->
-HildonDateEditor is a simple widget with three entry field (day, month,
-year) and a icon (eventbox) the clicking of which opens up a
-HildonCalendarPopup.
+
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
-HildonDateEditor is a simple widget with three entry field (day, month,
-year) and a icon (eventbox) the clicking of which opens up a
-HildonCalendarPopup.
-
 <informalexample>
 <programlisting>
 gint y, m, d;
@@ -28,6 +22,9 @@ hildon_date_editor_get_date(date_editor, &amp;y, &amp;m, &amp;d);
 <para>
 
 </para>
+
+<!-- ##### SECTION Stability_Level ##### -->
+
 
 <!-- ##### MACRO HILDON_DATE_EDITOR_TYPE ##### -->
 <para>
@@ -138,38 +135,4 @@ hildon_date_editor_get_date(date_editor, &amp;y, &amp;m, &amp;d);
 @editor: 
 @Returns: 
 
-
-<!-- ##### SIGNAL HildonDateEditor::date-error ##### -->
-<para>
-
-</para>
-
-@hildondateeditor: the object which received the signal.
-@arg1: 
-@Returns: 
-
-<!-- ##### ARG HildonDateEditor:day ##### -->
-<para>
-
-</para>
-
-<!-- ##### ARG HildonDateEditor:max-year ##### -->
-<para>
-
-</para>
-
-<!-- ##### ARG HildonDateEditor:min-year ##### -->
-<para>
-
-</para>
-
-<!-- ##### ARG HildonDateEditor:month ##### -->
-<para>
-
-</para>
-
-<!-- ##### ARG HildonDateEditor:year ##### -->
-<para>
-
-</para>
 

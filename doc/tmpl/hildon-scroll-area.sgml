@@ -2,16 +2,10 @@
 hildon-scroll-area
 
 <!-- ##### SECTION Short_Description ##### -->
-@GtkScrollArea is a helper to create Maemo specific views,
-which are using scrollable area.
+
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
-When application developer needs a view which contains multiple
-components, from which some has built-in @GtkScrolledWindow handling.
-(eg. @GtkTreeView) These widgets creates a problem which can be seen as
-unfunctional scrolling. @GtkScrollArea creates an area which handles
-these scrolling problems.
 
 <informalexample>
 <programlisting>
@@ -48,6 +42,9 @@ notice that the treeview is not working as well as it should
 <para>
 
 </para>
+
+<!-- ##### SECTION Stability_Level ##### -->
+
 
 <!-- ##### FUNCTION hildon_scroll_area_new ##### -->
 <para>

@@ -192,6 +192,9 @@ void _testCaptionControl(GtkWidget *parent, gchar **help)
 
 </para>
 
+<!-- ##### SECTION Stability_Level ##### -->
+
+
 <!-- ##### ENUM HildonCaptionStatus ##### -->
 <para>
 

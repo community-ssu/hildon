@@ -22,6 +22,17 @@
  *
  */
 
+/**
+ * SECTION:hildon-caption
+ * @short_description: A single-child container widget that precedes the 
+ * contained widget with a field label and an optional icon
+ *
+ * #HildonCaption is a single-child container widget that precedes the 
+ * contained widget with a field label and an optional icon. It allows 
+ * grouping of several controls together. When a captioned widget has focus, 
+ * both widget and caption label are displayed with active focus. 
+ */
+
 #include <gtk/gtkhbox.h>
 #include <gtk/gtklabel.h>
 #include <gtk/gtkimage.h>
@@ -141,9 +152,10 @@ hildon_caption_status_get_type (void)
 
 /**
  * hildon_caption_get_type:
- * @Returns : GType of #HildonCaption.
  *
  * Initialises, and returns the type of a hildon caption.
+ *
+ * @Returns: GType of #HildonCaption
  */
 GType hildon_caption_get_type (void)
 {
@@ -739,12 +751,12 @@ static void hildon_caption_forall( GtkContainer *container,
 
 /**
  * hildon_caption_set_sizegroup:
- * @caption : A #HildonCaption
- * @new_group : A #GtkSizeGroup
+ * @caption : a #HildonCaption
+ * @new_group : a #GtkSizeGroup
  *
  * Sets a #GtkSizeGroup of a given captioned control.
  *
- * Deprecated: Use g_object_set, property &quot;size_group&quot;. 
+ * Deprecated: use g_object_set, property "size_group" 
  */
 void hildon_caption_set_sizegroup( const HildonCaption *self,
                                    GtkSizeGroup *group )
@@ -754,12 +766,13 @@ void hildon_caption_set_sizegroup( const HildonCaption *self,
 
 /**
  * hildon_caption_get_sizegroup:
- * @caption : A #HildonCaption
- * @Returns : A #GtkSizeGroup
+ * @caption : a #HildonCaption
  *
  * Query given captioned control for the #GtkSizeGroup assigned to it.
  *
- * Deprecated: Use g_object_get, property &quot;size_group&quot;. 
+ * @Returns : a #GtkSizeGroup
+ * 
+ * Deprecated: Use g_object_get, property "size_group". 
  */
 GtkSizeGroup *hildon_caption_get_sizegroup( const HildonCaption *self )
 {
@@ -771,22 +784,23 @@ GtkSizeGroup *hildon_caption_get_sizegroup( const HildonCaption *self )
 
 /**
  * hildon_caption_new:
- * @group : a #GtkSizeGroup for controlling the size of related captions.
- *          Can be NULL.
+ * @group : a #GtkSizeGroup for controlling the size of related captions,
+ *          Can be NULL
  * @value : the caption text to accompany the text entry.  The widget makes
  *          a copy of this text.
  * @control : the control that is to be captioned
  * @icon : an icon to accompany the label - can be NULL in which case no
  *         icon is displayed
  * @flag : indicates whether this captioned control is mandatory or
- *         optional.
- * @returns : A #GtkWidget pointer of Caption
- * 
+ *         optional
+ *         
  * Creates a new instance of hildon_caption widget, with a specific
  * control and image.
  * Note: Clicking on a focused caption will trigger the activate signal.
  * The default behaviour for the caption's activate signal is to call	 
  * gtk_widget_activate on it's control.
+ * 
+ * @Returns : a #GtkWidget pointer of Caption
  */
 GtkWidget *hildon_caption_new( GtkSizeGroup *group, const gchar *value,
                                GtkWidget *control, GtkWidget *icon,
@@ -809,11 +823,11 @@ GtkWidget *hildon_caption_new( GtkSizeGroup *group, const gchar *value,
 
 /**
  * hildon_caption_is_mandatory:
- * @caption : A #HildonCaption
- * @returns : is this captioned control a mandatory one?
+ * @caption : a #HildonCaption
  * 
  * Query #HildonCaption whether this captioned control is a mandatory one.
  *
+ * @Returns : is this captioned control a mandatory one?
  */
 
 gboolean hildon_caption_is_mandatory( const HildonCaption *caption )
@@ -827,12 +841,10 @@ gboolean hildon_caption_is_mandatory( const HildonCaption *caption )
 
 /**
  * hildon_caption_set_status:
- * @caption : A #HildonCaption
+ * @caption : a #HildonCaption
  * @flag : one of the values from #HildonCaptionStatus
  *
  * Sets #HildonCaption status.
- *
-
  */
 
 void hildon_caption_set_status( HildonCaption *caption,
@@ -845,11 +857,11 @@ void hildon_caption_set_status( HildonCaption *caption,
 
 /**
  * hildon_caption_get_status:
- * @caption : A #HildonCaption
- * @returns : one of the values from #HildonCaptionStatus
+ * @caption : a #HildonCaption
  *
  * Gets #HildonCaption status.
  *
+ * @Returns : one of the values from #HildonCaptionStatus
  */
 
 HildonCaptionStatus hildon_caption_get_status( const HildonCaption *caption )
@@ -863,12 +875,11 @@ HildonCaptionStatus hildon_caption_get_status( const HildonCaption *caption )
 
 /**
  * hildon_caption_set_icon_image:
- * @caption : A #HildonCaption
+ * @caption : a #HildonCaption
  * @icon : the #GtkImage to use as the icon. 
  *         calls gtk_widget_show on the icon if !GTK_WIDGET_VISIBLE(icon)
  *
  * Sets the icon to be used by this hildon_caption widget.
- *
  */
 
 void hildon_caption_set_icon_image( HildonCaption *caption, GtkWidget *icon )
@@ -880,12 +891,12 @@ void hildon_caption_set_icon_image( HildonCaption *caption, GtkWidget *icon )
 
 /**
  * hildon_caption_get_icon_image:
- * @caption : A #HildonCaption
- * @returns : the #GtkImage that is being used as the icon by the
- *            hildon_caption, or NULL if no icon is in use.
+ * @caption : a #HildonCaption
  *
  * Gets icon of #HildonCaption
  *
+ * @Returns : the #GtkImage that is being used as the icon by the
+ *            hildon_caption, or NULL if no icon is in use
  */
 
 GtkWidget *hildon_caption_get_icon_image( const HildonCaption *caption )
@@ -899,13 +910,12 @@ GtkWidget *hildon_caption_get_icon_image( const HildonCaption *caption )
 
 /**
  * hildon_caption_set_label:
- * @caption : A #HildonCaption
+ * @caption : a #HildonCaption
  * @label : the text to use
  *
  * Sets the label text that appears before the control.  
  * Separator character is added to the end of the label string. By default
  * the separator is ":".
- *
  */
 
 void hildon_caption_set_label( HildonCaption *caption, const gchar *label )
@@ -917,13 +927,13 @@ void hildon_caption_set_label( HildonCaption *caption, const gchar *label )
 
 /**
  * hildon_caption_get_label:
- * @caption : A #HildonCaption
- * @returns : the text currently being used as the label of the caption
- * control. The string is owned by the label and the caller should never free or
- * modify this value.
+ * @caption : a #HildonCaption
  *
  * Gets label of #HildonCaption
- *
+ * 
+ * @Returns : the text currently being used as the label of the caption
+ *  control. The string is owned by the label and the caller should never 
+ *  free or modify this value.
  */
 
 gchar *hildon_caption_get_label( const HildonCaption *caption )
@@ -937,14 +947,12 @@ gchar *hildon_caption_get_label( const HildonCaption *caption )
 
 /**
  * hildon_caption_set_separator:
- * @caption : A #HildonCaption
+ * @caption : a #HildonCaption
  * @separator : the separator to use
  *
  * Sets the separator character that appears after the label.  
  * The default seaparator character is ":"
  * separately.
- *
-
  */
 
 void hildon_caption_set_separator( HildonCaption *caption, 
@@ -957,13 +965,13 @@ void hildon_caption_set_separator( HildonCaption *caption,
 
 /**
  * hildon_caption_get_separator:
- * @caption : A #HildonCaption
- * @returns : the text currently being used as the separator of the caption
- * control. The string is owned by the caption control and the caller should
- * never free or modify this value.
+ * @caption : a #HildonCaption
  *
  * Gets separator string of #HildonCaption
  *
+ * @Returns : the text currently being used as the separator of the caption
+ *  control. The string is owned by the caption control and the caller should
+ *  never free or modify this value.   
  */
 
 gchar *hildon_caption_get_separator( const HildonCaption *caption )
@@ -978,11 +986,12 @@ gchar *hildon_caption_get_separator( const HildonCaption *caption )
 
 /**
  * hildon_caption_get_control:
- * @caption : A #HildonCaption
- * @returns : A #GtkWidget
+ * @caption : a #HildonCaption
  *
  * Gets caption's control.
- *
+ * 
+ * @Returns : a #GtkWidget
+ *  
  * Deprecated: use gtk_bin_get_child instead
  */
 GtkWidget *hildon_caption_get_control( const HildonCaption *caption )
@@ -1009,7 +1018,7 @@ static void hildon_caption_activate( GtkWidget *widget )
 
 /**
  * hildon_caption_set_child_expand:
- * @caption : A #HildonCaption
+ * @caption : a #HildonCaption
  * @expand : gboolean to determine is the child expandable
  *
  * Sets child expandability.
@@ -1041,10 +1050,11 @@ void hildon_caption_set_child_expand( HildonCaption *caption, gboolean expand )
 
 /**
  * hildon_caption_get_child_expand:
- * @caption : A #HildonCaption
- * @returns : Wheter the child is expandable or not.
+ * @caption : a #HildonCaption
  *
  * Gets childs expandability.
+ *
+ * @Returns : wheter the child is expandable or not.
  */
 gboolean hildon_caption_get_child_expand( const HildonCaption *caption )
 {
@@ -1056,8 +1066,8 @@ gboolean hildon_caption_get_child_expand( const HildonCaption *caption )
 
 /**
  * hildon_caption_set_control: 
- * @caption : A #HildonCaption
- * @control : The control to use. Control should not be NULL.
+ * @caption : a #HildonCaption
+ * @control : the control to use. Control should not be NULL.
  *
  * Sets the control of the caption. 
  * The old control will be destroyed, unless the caller has added a
@@ -1065,7 +1075,7 @@ gboolean hildon_caption_get_child_expand( const HildonCaption *caption )
  * Function unparents the old control (if there is one) and adds the new
  * control.
  *
- * Deprecated: Use gtk_container_add. 
+ * Deprecated: use gtk_container_add 
  */
 void hildon_caption_set_control( HildonCaption *caption, GtkWidget *control )
 {
@@ -1123,8 +1133,8 @@ hildon_caption_set_label_text( HildonCaptionPrivate *priv )
 
 /**
  * hildon_caption_set_label_alignment:
- * @caption: a #HildonCaption widget.
- * @alignment: new vertical alignment.
+ * @caption: a #HildonCaption widget
+ * @alignment: new vertical alignment
  *
  * Sets the vertical alignment to be used for the
  * text part of the caption. Applications need to
@@ -1147,11 +1157,11 @@ void hildon_caption_set_label_alignment(HildonCaption *caption,
 
 /**
  * hildon_caption_get_label_alignment:
- * @caption: a #HildonCaption widget.
+ * @caption: a #HildonCaption widget
  *
  * Gets current vertical alignment for the text part.
  *
- * Returns: vertical alignment.
+ * Returns: vertical alignment
  */
 gfloat hildon_caption_get_label_alignment(HildonCaption *caption)
 {

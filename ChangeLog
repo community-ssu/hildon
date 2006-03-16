@@ -1,3 +1,11 @@
+006-03-16  Luc Pionchon  <luc.pionchon@nokia.com>
+
+	* doc/tmpl/*
+	* hildon-widgets/*
+	moved widget descriptions to respective source file (*.c)
+	+ minor doc updates
+
+
 006-03-15  Luc Pionchon  <luc.pionchon@nokia.com>
 
         Cleanup color button

@@ -22,6 +22,21 @@
  *
  */
 
+/**
+ * SECTION:hildon-find-toolbar
+ * @short_description: A special toolbar to be used with HildonAppView
+ * @see_also: #HildonAppView
+ *
+ * HildonFindToolbar is a predefined toolbar for text searching purpose. 
+ * It contains a GtkListStore which has the text items that the user has 
+ * searched. But once the application is terminated, or HildonFindToolbar 
+ * is trashed. Programmer is responsible for getting the GtkListStore through 
+ * property "list", if he/she wants to use the information in the future.
+ * And through the same property, programmer is able to set the GtkListStore. 
+ * Note, once the search button is pressed, string in the GtkComboxEntry is 
+ * automatically added to the existing model, unless it is empty.
+ */    
+
 #include "hildon-find-toolbar.h"
 #include "hildon-defines.h"
 #include <gdk/gdkkeysyms.h>
@@ -584,11 +599,12 @@ hildon_find_toolbar_init(HildonFindToolbar *self)
 /**
  * hildon_find_toolbar_new:
  * @label: label for the find_toolbar, NULL to set the label to 
- *         default "Find".
+ *         default "Find"
  * 
  * Returns a new HildonFindToolbar.
  *
- **/
+ * Returns: a new HildonFindToolbar
+ */
 
 GtkWidget *
 hildon_find_toolbar_new(const gchar *label)
@@ -605,14 +621,15 @@ hildon_find_toolbar_new(const gchar *label)
 /**
  * hildon_find_toolbar_new_with_model
  * @label: label for the find_toolbar, NULL to set the label to 
- *         default "Find".
- * @model: A @GtkListStore.
- * @column: Indicating which column the search histry list will 
- *          retreive string from.
+ *         default "Find"
+ * @model: a @GtkListStore
+ * @column: indicating which column the search histry list will 
+ *          retreive string from
  * 
  * Returns a new HildonFindToolbar, with a model.
  *
- **/
+ * Returns: a new #HildonFindToolbar
+ */
 GtkWidget *
 hildon_find_toolbar_new_with_model(const gchar *label,
 				   GtkListStore *model,
@@ -629,11 +646,11 @@ hildon_find_toolbar_new_with_model(const gchar *label,
 
 /**
  * hildon_find_toolbar_highlight_entry
- * @HildonFindToolbar: Find Toolbar whose entry is to be highlighted.
+ * @ftb: find Toolbar whose entry is to be highlighted
  * @get_focus: if user passes TRUE to this value, then the text in
  * the entry will not only get highlighted, but also get focused.
  * 
- * */
+ */
 void
 hildon_find_toolbar_highlight_entry(HildonFindToolbar *ftb,
                                     gboolean get_focus)

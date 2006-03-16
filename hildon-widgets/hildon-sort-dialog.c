@@ -22,14 +22,13 @@
  *
  */
 
-/* 
- * @file hildon-sort-dialog.c
+/** 
+ * SECTION:hildon-sort-dialog
+ * @short_description: A widget for defining the sorting order of items
  * 
- * This file contains API for Hildon Sort dialog.
- * @desc: The sort dialog is used to define the order in which item are 
- * shown in a list. Choice lists always display the current value when 
- * the dialog is opened. 
- *
+ * HildonSortDialog is used to define an order (ascending/descending)
+ * and a field by which items are sorted in a list. The combo boxes
+ * display the current value when the dialog is opened.
  */
 
 #ifdef HAVE_CONFIG_H
@@ -178,8 +177,8 @@ static void hildon_sort_dialog_init(HildonSortDialog * dialog)
  * Returns GType for HildonSortDialog as produced by 
  * g_type_register_static().
  *
- * Return value: HildonSortDialog type
- **/
+ * Returns: HildonSortDialog type
+ */
 GType hildon_sort_dialog_get_type()
 {
     static GType dialog_type = 0;
@@ -206,11 +205,11 @@ GType hildon_sort_dialog_get_type()
 
 /**
  * hildon_sort_dialog_new:
- * @parent: Widget to be transient for, or NULL if none.
+ * @parent: widget to be transient for, or NULL if none
  *
- * HildonSortDialog contains two #HildonCaption:s with combo boxes. 
+ * HildonSortDialog contains two HildonCaptions with combo boxes. 
  *
- * Return value: pointer to a new @HildonSortDialog widget.
+ * Returns: pointer to a new @HildonSortDialog widget
  */
 GtkWidget *hildon_sort_dialog_new(GtkWindow * parent)
 {
@@ -224,11 +223,11 @@ GtkWidget *hildon_sort_dialog_new(GtkWindow * parent)
 
 /**
  * hildon_sort_dialog_get_sort_key:
- * @dialog: the #HildonSortDialog widget.
+ * @dialog: the #HildonSortDialog widget
  *
  * Gets index to currently active sort key.
  * 
- * Return value: An integer which is the index value of the "Sort by" 
+ * Returns: an integer which is the index value of the "Sort by" 
  * field 
  */
 gint hildon_sort_dialog_get_sort_key(HildonSortDialog * dialog)
@@ -247,11 +246,11 @@ gint hildon_sort_dialog_get_sort_key(HildonSortDialog * dialog)
 
 /**
  * hildon_sort_dialog_get_sort_order:
- * @dialog: the #HildonSortDialog widget.
+ * @dialog: the #HildonSortDialog widget
  *
  * Gets current sorting order from "Sort order" field.
  *
- * Return value: current sorting order as #GtkSortType.
+ * Returns: current sorting order as #GtkSortType
  */
 GtkSortType hildon_sort_dialog_get_sort_order(HildonSortDialog * dialog)
 {
@@ -268,8 +267,8 @@ GtkSortType hildon_sort_dialog_get_sort_order(HildonSortDialog * dialog)
 
 /**
  * hildon_sort_dialog_set_sort_key:
- * @dialog: the #HildonSortDialog widget.
- * @key: Combo box's index value.
+ * @dialog: the #HildonSortDialog widget
+ * @key: combo box's index value
  *
  * Sets the index value of the #HildonSortDialog widget.
  */
@@ -289,8 +288,8 @@ void hildon_sort_dialog_set_sort_key(HildonSortDialog * dialog, gint key)
 
 /**
  * hildon_sort_dialog_set_sort_order:
- * @dialog: the #HildonSortDialog widget.
- * @order: Combo box's index value.
+ * @dialog: the #HildonSortDialog widget
+ * @order: combo box's index value
  *
  * Sets the index value of the #HildonSortDialog widget.
  */
@@ -312,14 +311,14 @@ hildon_sort_dialog_set_sort_order(HildonSortDialog * dialog,
 
 /**
  * hildon_sort_dialog_add_sort_key:
- * @dialog: the #HildonSortDialog widget.
- * @sort_key: Combo box's index value
+ * @dialog: the #HildonSortDialog widget
+ * @sort_key: combo box's index value
  *
  * Adds a new sort key and returns the respective index in
  * sort key combobox.
  *
- * Return value: An integer which is the index of the added combo box's
- * item.
+ * Returns: an integer which is the index of the added combo box's
+ * item
  */
 gint
 hildon_sort_dialog_add_sort_key(HildonSortDialog * dialog,

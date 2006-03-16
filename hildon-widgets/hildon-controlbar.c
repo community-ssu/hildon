@@ -22,12 +22,16 @@
  *
  */
 
-/*
- * @file hildon-caption-control.c
+/**
+ * SECTION:hildon-controlbar
+ * @short_description: A widget that allows increasing or decreasing
+ * a value within a pre-defined range
  *
- * This file contains the implementation of Hildon Caption Control
- *
+ * #HildonControlbar is a horizontally positioned range widget that is
+ * visually divided into blocks and supports setting a minimum and
+ * maximum value for the range.
  */
+
 
 #include <math.h>
 #include <gdk/gdk.h>
@@ -331,8 +335,8 @@ hildon_controlbar_value_changed( GtkAdjustment *adj, GtkRange *range )
  * 
  * Creates a new #HildonControlbar widget.
  *
- * Return value: A #GtkWidget pointer of newly created #HildonControlbar
- * widget.
+ * Returns: a #GtkWidget pointer of newly created control bar
+ * widget
  */
 GtkWidget *hildon_controlbar_new(void)
 {
@@ -363,11 +367,10 @@ hildon_controlbar_size_request(GtkWidget * self, GtkRequisition * req)
 
 /**
  * hildon_controlbar_set_value:
- * @self: Pointer to #HildonControlbar
- * @value: Value in range of >= 0 && < G_MAX_INT
+ * @self: pointer to #HildonControlbar
+ * @value: value in range of >= 0 && < G_MAX_INT
  *
- * This method will change #HildonControlbar current value
- * to the given value.
+ * Change the current value of the control bar to the specified value.
  */
 void hildon_controlbar_set_value(HildonControlbar * self, gint value)
 {
@@ -390,11 +393,9 @@ void hildon_controlbar_set_value(HildonControlbar * self, gint value)
 
 /**
  * hildon_controlbar_get_value:
- * @self: Pointer to #HildonControlbar
+ * @self: pointer to #HildonControlbar
  *
- * Accessor method for getting controlbars current value
- *
- * Return value: Current value as gint.
+ * Returns: current value as gint
  */
 gint hildon_controlbar_get_value(HildonControlbar * self)
 {
@@ -407,16 +408,14 @@ gint hildon_controlbar_get_value(HildonControlbar * self)
 
 /**
  * hildon_controlbar_set_max:
- * @self: Pointer to #HildonControlbar
- * @max: Maximum value to set. The value needs to be
- * in range of > 0 && <= G_MAX_INT.
- * If the new maximum is smaller than current value,
- * the value will be adjusted so that
- * it equals the new maximum.
+ * @self: pointer to #HildonControlbar
+ * @max: maximum value to set. The value needs to be greater than 0.
  *
- * Accessor method for setting #HildonControlbar maximum to the
- * given value.
- **/
+ * Set the control bar's maximum to the given value.
+ * 
+ * If the new maximum is smaller than current value, the value will be
+ * adjusted so that it equals the new maximum.
+ */
 void hildon_controlbar_set_max(HildonControlbar * self, gint max)
 {
     GtkAdjustment *adj;
@@ -437,16 +436,15 @@ void hildon_controlbar_set_max(HildonControlbar * self, gint max)
 
 /**
  * hildon_controlbar_set_min:
- * @self: Pointer to #HildonControlbar
- * @min: Minimum value to set. The value needs to be
- * in range of => 0 && <= G_MAX_INT.
- * If the new minimum is smaller than current value,
- * the value will be adjusted so that
- * it equals the new minimum.
+ * @self: pointer to #HildonControlbar
+ * @min: minimum value to set. The value needs to be greater than or
+ * equal to 0.
  *
- * Accessor method for setting #HildonControlbar minimum to the
- * given value.
- **/
+ * Set the control bar's minimum to the given value.
+ *
+ * If the new minimum is smaller than current value, the value will be
+ * adjusted so that it equals the new minimum.
+ */
 void hildon_controlbar_set_min(HildonControlbar * self, gint min)
 {
     GtkAdjustment *adj;
@@ -466,21 +464,19 @@ void hildon_controlbar_set_min(HildonControlbar * self, gint min)
 
 /**
  * hildon_controlbar_set_range:
- * @self: Pointer to #HildonControlbar
- * @max: Maximum value to set. The value needs to be
- * in range of > 0 && <= G_MAX_INT.
- * @min: Minimum value to set. The value needs to be
- * in range of => 0 && <= G_MAX_INT.
- * If the new maximum is smaller than current value,
- * the value will be adjusted so that
- * it equals the new maximum.
- * If the new minimum is smaller than current value,
- * the value will be adjusted so that
- * it equals the new minimum.
+ * @self: pointer to #HildonControlbar
+ * @max: maximum value to set. The value needs to be greater than 0.
+ * @min: Minimum value to set. The value needs to be greater than or
+ * equal to 0.
  *
- * Accessor method for setting #HildonControlbar maximum to the
- * given value.
- **/
+ * Set the controlbars range to the given value
+ * 
+ * If the new maximum is smaller than current value, the value will be
+ * adjusted so that it equals the new maximum.
+ *
+ * If the new minimum is smaller than current value, the value will be
+ * adjusted so that it equals the new minimum.
+ */
 void hildon_controlbar_set_range(HildonControlbar * self, gint min,
                                  gint max)
 {
@@ -497,11 +493,9 @@ void hildon_controlbar_set_range(HildonControlbar * self, gint min,
 
 /**
  * hildon_controlbar_get_max:
- * @self: A pointer to #HildonControlbar
+ * @self: a pointer to #HildonControlbar
  *
- * Accessor method for getting controlbars current maximum value
- *
- * Return value: Maximum value as gint
+ * Returns: maximum value of control bar
  */
 gint hildon_controlbar_get_max(HildonControlbar * self)
 {
@@ -514,11 +508,9 @@ gint hildon_controlbar_get_max(HildonControlbar * self)
 
 /**
  * hildon_controlbar_get_min:
- * @self: A pointer to #HildonControlbar
+ * @self: a pointer to #HildonControlbar
  *
- * Accessor method for getting controlbars current minimum value
- *
- * Return value: Minimum value as gint
+ * Returns: minimum value of controlbar
  */
 gint hildon_controlbar_get_min(HildonControlbar * self)
 {

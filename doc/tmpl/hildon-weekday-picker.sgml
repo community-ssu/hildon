@@ -2,15 +2,11 @@
 HildonWeekdayPicker
 
 <!-- ##### SECTION Short_Description ##### -->
-A widget for selecting weekday(s)
+
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
-Weekday picker supports non-mutually exclusive selection of days of the week. Selected days of the week are shown with a pushed-in effect.
-</para>
 
-<para>
-Weekday picker is used where users are required to pick days on which a certain event should take place, for example, which days a Calendar event should be repeated on. It is used in Calendar in the Repeat dialog, in Tasks in the Repeat dialog and in the Email set-up wizard.
 </para>
 
 <para>
@@ -33,6 +29,9 @@ Example function calls:
 <para>
 
 </para>
+
+<!-- ##### SECTION Stability_Level ##### -->
+
 
 <!-- ##### MACRO HILDON_WEEKDAY_PICKER_TYPE ##### -->
 <para>
@@ -100,12 +99,4 @@ Example function calls:
 @day: 
 @Returns: 
 
-
-<!-- ##### SIGNAL HildonWeekdayPicker::selection-changed ##### -->
-<para>
-
-</para>
-
-@hildonweekdaypicker: the object which received the signal.
-@arg1: 
 

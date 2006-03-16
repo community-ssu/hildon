@@ -22,12 +22,14 @@
  *
  */
 
-/*
- *  @file hildon-dialoghelp.c
- *
- *  This file provides API for the help dialog with
- *  the optional icon.
- *
+/**
+ * SECTION:hildon-dialoghelp
+ * @short_description: A helper which contains a button in a normal dialog to 
+ * open a help if required
+ * 
+ * #HildonDialoghelp is a helper that provides an API for enabling or
+ * disabling a help button in the titlebar area of normal dialogs that
+ * are derived from GtkDialog. 
  */
 
 #include <stdlib.h>
@@ -68,14 +70,14 @@ handle_xevent(GdkXEvent * xevent, GdkEvent * event, gpointer dialog)
  * gtk_dialog_help_enable:
  * @dialog: The dialog for which help is to be enabled.
  *
- * Enables context help button for given dialog. The signal "help" can be
- * connected to handler by normal gtk methods. Note that this function
+ * Enables context help button for a given dialog. The signal "help" can be
+ * connected to handler by normal GTK methods. Note that this function
  * has to be called before the dialog is shown.
  *
  * The "help" signal itself has no other parameters than the dialog where
  * it is connected to, ie.:
  * void user_function(GtkDialog *dialog, gpointer user_data);
- **/
+ */
 void gtk_dialog_help_enable(GtkDialog * dialog)
 {
     GdkWindow *window;
@@ -133,6 +135,7 @@ void gtk_dialog_help_enable(GtkDialog * dialog)
     /* Add a callback function as event filter */ 
     gdk_window_add_filter(window, handle_xevent, dialog);
 }
+
 
 /**
  * gtk_dialog_help_disable:

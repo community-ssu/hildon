@@ -22,12 +22,17 @@
  *
  */
 
-/*
- * @file hildon-color-popup.c
+/**
+ * SECTION:hildon-color-popup
+ * @short_description: A popup dialog for editing a color and showing the 
+ * edited result
+ * @see_also: #HildonColorButton, #HildonColorSelector
  *
- * This file contains the implementation of Hildon Color Selector Popup
- * widget containing the custom color palette selector popup for selecting 
- * different colors based on RGB values.
+ * #HildonColorPopup is only used inside #HildonColorButton. It is a
+ * popup dialog for editing a color. The color can be changed using
+ * three control bars that are used to adjust the red, green and blue
+ * color channels. The display is updated in real time when the bars are
+ * moved.
  */
 
 #ifdef HAVE_CONFIG_H
@@ -65,9 +70,9 @@ hildon_popup_palette_expose (GtkWidget * widget,
                              gpointer data);
 /**
  * hildon_color_popup_new:
- * @parent: the parent window of the dialog.
- * @initial_color: a #GdkColor with the initial values to be used.
- * @popup_data: a #HildonColorPopup.
+ * @parent: the parent window of the dialog
+ * @initial_color: a #GdkColor with the initial values to be used
+ * @popup_data: a #HildonColorPopup
  *
  * This function creates a new popup dialog with three controlbars
  * (red, green, blue) and a drawing area with the current color.
@@ -75,7 +80,7 @@ hildon_popup_palette_expose (GtkWidget * widget,
  * Used as normal GtkDialog (run with gtk_dialog_run() and read 
  * stardard responses (GTK_RESPONSE_OK, GTK_RESPONSE_CANCEL). 
  *
- * Returns: the newly created popup dialog. 
+ * Returns: the newly created popup dialog 
  */
 
 GtkWidget *
@@ -182,13 +187,11 @@ hildon_color_popup_new(GtkWindow *parent, const GdkColor *initial_color,
 
 /**
  * hildon_color_popup_set_color_from_sliders:
- * @color: a pointer to #GdkColor to which the new values will be put.
- * @popup_data: a #HildonColorPopup.
+ * @color: a pointer to #GdkColor to which the new values will be put
+ * @popup_data: a #HildonColorPopup
  *
- * This function sets the values of the given #GdkColor to the values
- * in the sliders of controlbars.
- * 
- * Returns: void. 
+ * Sets the values in the given #GdkColor to the values of the
+ * controlbars.
  */
 
 void

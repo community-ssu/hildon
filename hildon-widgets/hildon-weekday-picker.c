@@ -22,6 +22,21 @@
  *
  */
 
+/**
+ * SECTION:hildon-weekday-picker
+ * @short_description: A widget for picking days on which a certain event 
+ * should take place
+ * @see_also: #HildonWeekdayPicker 
+ *
+ * #HildonWeekdayPicker supports non-mutually exclusive selection of days of 
+ * the week. Selected days of the week are shown with a pushed-in effect.
+ * 
+ * #HildonWeekdayPicker is used where users are required to pick days on which 
+ * a certain event should take place, for example, which days a Calendar event 
+ * should be repeated on. It is used in Calendar in the Repeat dialog, in Tasks 
+ * in the Repeat dialog and in the Email set-up wizard.
+ */  
+ 
  /* GDate numbers days from 1 to 7 and G_DATE_MONDAY is 1st day. However
     according to locale settings first day is sunday. To get around this
     problem, we addjust GDate days numbering to be same as locale
@@ -202,7 +217,7 @@ hildon_weekday_picker_init(HildonWeekdayPicker * picker)
  *
  * Creates a new #HildonWeekdayPicker.
  *
- * Return value: Pointer to a new @HildonWeekdayPicker widget.
+ * Returns: pointer to a new #HildonWeekdayPicker widget.
  */
 GtkWidget *hildon_weekday_picker_new(void)
 {
@@ -354,10 +369,10 @@ button_toggle(GtkToggleButton * button, gpointer wpicker)
 
 /**
  * hildon_weekday_picker_set_day:
- * @picker: the @HildonWeekdayPicker widget
- * @day: Day to be set active
+ * @picker: the #HildonWeekdayPicker widget
+ * @day: day to be set active
  *
- * Set specified weekday active.
+ * Sets specified weekday active.
  */
 void 
 hildon_weekday_picker_set_day(HildonWeekdayPicker * picker,
@@ -376,10 +391,10 @@ hildon_weekday_picker_set_day(HildonWeekdayPicker * picker,
 
 /**
  * hildon_weekday_picker_unset_day:
- * @picker: the @HildonWeekdayPicker widget
- * @day: Day to be set inactive 
+ * @picker: the #HildonWeekdayPicker widget
+ * @day: day to be set inactive 
  *
- * Set specified weekday inactive.
+ * Sets specified weekday inactive.
  */
 void 
 hildon_weekday_picker_unset_day(HildonWeekdayPicker * picker,
@@ -398,10 +413,10 @@ hildon_weekday_picker_unset_day(HildonWeekdayPicker * picker,
 
 /**
  * hildon_weekday_picker_toggle_day:
- * @picker: the @HildonWeekdayPicker widget
- * @day: Day to be toggled
+ * @picker: the #HildonWeekdayPicker widget
+ * @day: day to be toggled
  *
- * Toggle current status of the specified weekday.
+ * Toggles current status of the specified weekday.
  */
 void 
 hildon_weekday_picker_toggle_day(HildonWeekdayPicker * picker,
@@ -422,9 +437,9 @@ hildon_weekday_picker_toggle_day(HildonWeekdayPicker * picker,
 
 /**
  * hildon_weekday_picker_set_all:
- * @picker: the @HildonWeekdayPicker widget
+ * @picker: the #HildonWeekdayPicker widget
  *
- * Set all weekdays active.
+ * Sets all weekdays active.
  */
 void 
 hildon_weekday_picker_set_all(HildonWeekdayPicker * picker)
@@ -443,9 +458,9 @@ hildon_weekday_picker_set_all(HildonWeekdayPicker * picker)
 
 /**
  * hildon_weekday_picker_unset_all:
- * @picker: the @HildonWeekdayPicker widget
+ * @picker: the #HildonWeekdayPicker widget
  *
- * Set all weekdays inactive.
+ * Sets all weekdays inactive.
  */
 void 
 hildon_weekday_picker_unset_all(HildonWeekdayPicker * picker)
@@ -464,12 +479,12 @@ hildon_weekday_picker_unset_all(HildonWeekdayPicker * picker)
 
 /**
  * hildon_weekday_picker_isset_day:
- * @picker: the @HildonWeekdayPicker widget
- * @day: Day to be checked.
+ * @picker: the #HildonWeekdayPicker widget
+ * @day: day to be checked.
  *
- * Check if the specified weekday is set active.
+ * Checks if the specified weekday is set active.
  *
- * Return value: TRUE if the day is set, FALSE is day is not set.
+ * Returns: TRUE if the day is set, FALSE if the day is not set
  */
 gboolean 
 hildon_weekday_picker_isset_day(HildonWeekdayPicker * picker,

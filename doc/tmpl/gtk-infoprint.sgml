@@ -30,6 +30,9 @@ a progressbar or with an animation.
 
 </para>
 
+<!-- ##### SECTION Stability_Level ##### -->
+
+
 <!-- ##### FUNCTION gtk_infoprint_with_icon_stock ##### -->
 <para>
 
@@ -38,6 +41,16 @@ a progressbar or with an animation.
 @parent: 
 @text: 
 @stock_id: 
+
+
+<!-- ##### FUNCTION gtk_infoprint_with_icon_name ##### -->
+<para>
+
+</para>
+
+@parent: 
+@text: 
+@icon_name: 
 
 
 <!-- ##### FUNCTION gtk_infoprint_with_icon_name ##### -->
@@ -65,6 +78,16 @@ a progressbar or with an animation.
 
 </para>
 
+
+
+<!-- ##### FUNCTION gtk_confirmation_banner_with_icon_name ##### -->
+<para>
+
+</para>
+
+@parent: 
+@text: 
+@icon_name: 
 
 
 <!-- ##### FUNCTION gtk_confirmation_banner_with_icon_name ##### -->

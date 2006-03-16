@@ -2,15 +2,10 @@
 HildonColorButton
 
 <!-- ##### SECTION Short_Description ##### -->
-HildonColorButton is a widget to open HildonColorSelector.
+
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
-HildonColorButton is a widget to open HildonColorSelector.
-The color field in the button shows the selected color.
-The current color is set as a property to the button.
-The property name is "color" and it's type is GtkColor.
-
 <informalexample>
 <programlisting>
 HildonColorButton *cbutton;
@@ -26,6 +21,9 @@ gtk_object_get( GTK_OBJECT(cbutton), "color", color );
 <para>
 
 </para>
+
+<!-- ##### SECTION Stability_Level ##### -->
+
 
 <!-- ##### STRUCT HildonColorButtonPrivate ##### -->
 <para>

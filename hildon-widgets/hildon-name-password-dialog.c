@@ -22,6 +22,18 @@
  *
  */
 
+/**
+ * SECTION:hildon-name-password-dialog
+ * @short_description: A widget which allows a user to enter an username
+ * and a password
+ * @see_also: #HildonGetPasswordDialog, #HildonSetPasswordDialog
+ *
+ * #HildonNamePasswordDialog is used to enter a username and password
+ * when accessing a password protected function. The widget performs no
+ * input checking and is used only for retrieving a user name and a
+ * password. 
+ */
+
 #include <glib.h>
 #include <gtk/gtk.h>
 #include <errno.h>
@@ -265,12 +277,12 @@ GType hildon_name_password_dialog_get_type(void)
 
 /**
  * hildon_name_password_dialog_new:
- * @parent: the parent window of the dialog.
+ * @parent: the parent window of the dialog
  *
  * Creates a new #HildonNamePasswordDialog widget with Ok and Close
  * buttons.
  *
- * Return value: the newly created #HildonNamePasswordDialog
+ * Returns: the newly created #HildonNamePasswordDialog
  */
 GtkWidget *hildon_name_password_dialog_new(GtkWindow * parent)
 {
@@ -284,16 +296,14 @@ GtkWidget *hildon_name_password_dialog_new(GtkWindow * parent)
 
 /**
  * hildon_name_password_dialog_new_with_default:
- * @parent: the parent window of the dialog.
- * @name: default name, nul-terminated string, if you want
- * to leave it unset, pass a NULL pointer.
- * @password: default password, nul-terminated string, 
- * if you want to leave it unset, pass a NULL pointer.
+ * @parent: the parent window of the dialog
+ * @name: default name, NULL if unset
+ * @password: default password, NULL if unset
  * 
  * Same as #hildon_name_password_dialog_new, but with a 
  * default name and password.
  *
- * Return value: the newly created #HildonNamePasswordDialog
+ * Returns: the newly created #HildonNamePasswordDialog
  */
 GtkWidget *hildon_name_password_dialog_new_with_default
                                           (GtkWindow   * parent,
@@ -312,11 +322,11 @@ GtkWidget *hildon_name_password_dialog_new_with_default
 
 /**
  * hildon_name_password_dialog_get_name:
- * @dialog: the dialog.
+ * @dialog: the dialog
  *
  * Gets the text that's in the name entry.
  *
- * Return value: a pointer to the name string.
+ * Returns: a pointer to the name string.
  */
 const gchar *hildon_name_password_dialog_get_name(HildonNamePasswordDialog
                                                   * dialog)
@@ -332,11 +342,11 @@ const gchar *hildon_name_password_dialog_get_name(HildonNamePasswordDialog
 
 /**
  * hildon_name_password_dialog_get_password:
- * @dialog: the dialog.
+ * @dialog: the dialog
  * 
  * Gets the text that's in the password entry.
  * 
- * Return value: a pointer to the password string.
+ * Returns: a pointer to the password string
  */
 const gchar *hildon_name_password_dialog_get_password(HildonNamePasswordDialog
                                                       * dialog)
@@ -353,7 +363,7 @@ const gchar *hildon_name_password_dialog_get_password(HildonNamePasswordDialog
 /**
  * hildon_name_password_dialog_set_domain(GtkWidget *dialog, 
  * @dialog: the dialog
- * @domain: the domain or some other descriptive text to be set.
+ * @domain: the domain or some other descriptive text to be set
  * 
  * sets the optional descriptive text
  */

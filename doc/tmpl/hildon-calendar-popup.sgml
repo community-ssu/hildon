@@ -2,19 +2,10 @@
 HildonCalendarPopup
 
 <!-- ##### SECTION Short_Description ##### -->
-#HildonCalendarPopup is a dialog which contains a GtkCalendar.
+
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
-#HildonCalendarPopup is a dialog which contains a GtkCalendar.
-It also contains arrow buttons for changing month/year. The
-earliest possible date is 1/1/1980 and the latest date 31/12/2100.
-If navigating with keyboard to a date that is not in the current
-month the calendar moves to the corresponding month. If the new
-date would be unallowed then an information banner will be shown.
-
-The usage of CalendarPopup is shown in the following code. This function
-should be connect to eg. button-press-event.
 <informalexample>
 <programlisting>
 ...
@@ -47,6 +38,9 @@ should be connect to eg. button-press-event.
 <para>
 #GtkCalendar
 </para>
+
+<!-- ##### SECTION Stability_Level ##### -->
+
 
 <!-- ##### MACRO HILDON_CALENDAR_POPUP_TYPE ##### -->
 <para>

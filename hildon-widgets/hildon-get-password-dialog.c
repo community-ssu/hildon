@@ -22,6 +22,16 @@
  *
  */
 
+/**
+ * SECTION:hildon-get-password-dialog
+ * @short_description: A widget used to get a password
+ * @see_also: #HildonSetPasswordDialog
+ * 
+ * HildonGetPasswordDialog prompts the user for a password.  It allows
+ * inputting password, with an optional configurable label eg. for
+ * showing the domain. The maximum length of the password can be set.
+ */
+
 #include <glib.h>
 
 #include <errno.h>
@@ -341,8 +351,8 @@ create_contents(HildonGetPasswordDialog *dialog)
  * Returns GType for HildonGetPasswordDialog as produced by
  * g_type_register_static().
  *
- * Return value: HildonGetPasswordDialog type
- **/
+ * Returns: HildonGetPasswordDialog type
+ */
 GType hildon_get_password_dialog_get_type(void)
 {
     static GType dialog_type = 0;
@@ -371,12 +381,14 @@ GType hildon_get_password_dialog_get_type(void)
  * hildon_get_password_dialog_new:
  * @parent: parent window; can be NULL
  * @get_old_password_title: FALSE creates a new get password dialog and
- *                     TRUE creates a new get old password dialog 
+ *                     TRUE creates a new get old password dialog. That is,
+ *                     if the password to be obtained is the old password, 
+ *                     this parameter is specified TRUE.  
  * 
  * Construct a new HildonGetPasswordDialog.
  *
- * Return value: a new #GtkWidget of type HildonGetPasswordDialog
- **/
+ * Returns: a new #GtkWidget of type HildonGetPasswordDialog
+ */
 GtkWidget *hildon_get_password_dialog_new(GtkWindow * parent,
                                           gboolean get_old_password_title)
 {
@@ -392,17 +404,20 @@ GtkWidget *hildon_get_password_dialog_new(GtkWindow * parent,
 }
 
 /**
- * hildon_get_password_dialog_new:
+ * hildon_get_password_dialog_new_with_default:
  * @parent: parent window; can be NULL
- * @password: a default password to be shown in password field.
+ * @password: a default password to be shown in password field
  * @get_old_password_title: FALSE creates a new get password dialog and
- *                     TRUE creates a new get old password dialog 
+ *                     TRUE creates a new get old password dialog.That is,
+ *                     if the password to be obtained is the old password,
+ *                     this parameter is specified TRUE.
+ *                        
  * 
  * Same as #hildon_get_password_dialog_new but with a default password
  * in password field.
  *
- * Return value: a new #GtkWidget of type HildonGetPasswordDialog
- **/
+ * Returns: a new #GtkWidget of type HildonGetPasswordDialog
+ */
 GtkWidget *hildon_get_password_dialog_new_with_default (GtkWindow * parent,
 							const gchar *password,
                                                gboolean get_old_password_title)
@@ -422,9 +437,9 @@ GtkWidget *hildon_get_password_dialog_new_with_default (GtkWindow * parent,
  * 
  * Gets the currently inputted password.
  *
- * Return value: current password ( if the dialog is successfully 
+ * Returns: current password ( if the dialog is successfully 
  * accepted with 'OK'  )
- **/
+ */
 const gchar
     *hildon_get_password_dialog_get_password(HildonGetPasswordDialog *
                                              dialog)
@@ -449,9 +464,9 @@ const gchar
 /**
  * hildon_get_password_dialog_set_domain(GtkWidget *dialog, 
  * @dialog: the dialog
- * @domain: the domain or some other descriptive text to be set.
+ * @domain: the domain or some other descriptive text to be set
  * 
- * sets the optional descriptive text
+ * Sets the optional descriptive text.
  */
 
 void hildon_get_password_dialog_set_domain(HildonGetPasswordDialog *dialog, 
@@ -469,9 +484,9 @@ void hildon_get_password_dialog_set_domain(HildonGetPasswordDialog *dialog,
 /**
  * hildon_get_password_dialog_set_title:
  * @dialog: the dialog
- * @new_title: the text to be set as the dialog title.
+ * @new_title: the text to be set as the dialog title
  * 
- * sets the dialog title
+ * Sets the dialog title.
  *
  * DEPRECATED! use gtk_window_set_title instead.
  */
@@ -489,9 +504,9 @@ void hildon_get_password_dialog_set_title(HildonGetPasswordDialog *dialog,
 /**
  * hildon_get_password_dialog_set_caption:
  * @dialog: the dialog
- * @new_caption: the text to be set as the caption label.
+ * @new_caption: the text to be set as the caption label
  * 
- * sets the password entry field's neigbouring label.
+ * Sets the password entry field's neigbouring label.
  */
 
 void hildon_get_password_dialog_set_caption(HildonGetPasswordDialog *dialog,
@@ -513,7 +528,8 @@ void hildon_get_password_dialog_set_caption(HildonGetPasswordDialog *dialog,
  * hildon_get_password_dialog_set_max_characters:
  * @dialog: the dialog
  * @max_characters: the maximum number of characters the password dialog
- * accepts.
+ * accepts
+ * @new_caption: the text to be set as the caption label
  * 
  * sets the maximum number of characters allowed as the password
  */

@@ -22,11 +22,16 @@
  *
  */
 
-/* 
- * @file hildon-seekbar.c
+/**
+ * SECTION:hildon-seekbar
+ * @short_description: A widget used to identify a place from a content
  *
- * This file contains the API implementation for Hildon Seekbar widget.
- * Based on seekbar.gob rev 1.10
+ * HildonSeekbar allows seeking in media with a range widget.  It
+ * supports for setting or getting the length (total time) of the media,
+ * the position within it and the fraction (maximum position in a
+ * stream/the amount currently downloaded).  The position is clamped
+ * between zero and the total time, or zero and the fraction in case of
+ * a stream.
  */
 
 #ifdef HAVE_CONFIG_H
@@ -290,7 +295,7 @@ hildon_seekbar_get_property(GObject * object, guint prop_id,
  *
  * Create a new #HildonSeekbar widget.
  * 
- * Return value: A #GtkWidget pointer of #HildonSeekbar widget.
+ * Returns: a #GtkWidget pointer of #HildonSeekbar widget
  */
 GtkWidget *hildon_seekbar_new(void)
 {
@@ -299,12 +304,10 @@ GtkWidget *hildon_seekbar_new(void)
 
 /**
  * hildon_seekbar_get_total_time:
- * @seekbar: Pointer to #HildonSeekbar widget.
+ * @seekbar: pointer to #HildonSeekbar widget
  *
- * Get total playing time of stream in seconds.
- *
- * Returns: Total time as gint.
- **/
+ * Returns: total playing time of media in seconds.
+ */
 gint hildon_seekbar_get_total_time(HildonSeekbar *seekbar)
 {
     GtkWidget *widget;
@@ -316,12 +319,11 @@ gint hildon_seekbar_get_total_time(HildonSeekbar *seekbar)
 
 /**
  * hildon_seekbar_set_total_time:
- * @seekbar: Pointer to #HildonSeekbar widget.
- * @time: Time within range of > 0 && < G_MAXINT
+ * @seekbar: pointer to #HildonSeekbar widget
+ * @time: integer greater than zero
  *
- * Set total playing time of stream in seconds.
- *
- **/
+ * Set total playing time of media in seconds.
+ */
 void hildon_seekbar_set_total_time(HildonSeekbar *seekbar, gint time)
 {
     GtkAdjustment *adj;
@@ -373,12 +375,12 @@ void hildon_seekbar_set_total_time(HildonSeekbar *seekbar, gint time)
 
 /**
  * hildon_seekbar_get_fraction:
- * @seekbar: Pointer to #HildonSeekbar widget.
+ * @seekbar: pointer to #HildonSeekbar widget
  *
- * Get current fraction related to the progress indicator.
+ * Get current fraction value of the rage.
  *
- * Returns: Current fraction.
- **/
+ * Returns: current fraction
+ */
 guint hildon_seekbar_get_fraction( HildonSeekbar *seekbar )
 {
   g_return_val_if_fail( HILDON_IS_SEEKBAR( seekbar ), 0 );
@@ -388,12 +390,12 @@ guint hildon_seekbar_get_fraction( HildonSeekbar *seekbar )
 
 /**
  * hildon_seekbar_set_fraction:
- * @seekbar: Pointer to #HildonSeekbar widget.
- * @fraction: The new position of the progress indicator.
+ * @seekbar: pointer to #HildonSeekbar widget
+ * @fraction: the new position of the progress indicator
  *
- * Set current fraction value related to the progress indicator.
+ * Set current fraction value of the range.
  * It should be between the minimal and maximal values of the range in seekbar.
- **/
+ */
 void hildon_seekbar_set_fraction( HildonSeekbar *seekbar, guint fraction )
 {
   GtkRange *range = NULL;
@@ -421,12 +423,12 @@ void hildon_seekbar_set_fraction( HildonSeekbar *seekbar, guint fraction )
 
 /**
  * hildon_seekbar_get_position:
- * @seekbar: Pointer to #HildonSeekbar widget.
+ * @seekbar: pointer to #HildonSeekbar widget
  *
  * Get current position in stream in seconds.
  *
- * Returns: Current position in stream in seconds.
- **/
+ * Returns: current position in stream in seconds
+ */
 gint hildon_seekbar_get_position(HildonSeekbar *seekbar)
 {
   g_return_val_if_fail(HILDON_IS_SEEKBAR(seekbar), 0);
@@ -437,11 +439,11 @@ gint hildon_seekbar_get_position(HildonSeekbar *seekbar)
 
 /**
  * hildon_seekbar_set_position:
- * @seekbar: Pointer to #HildonSeekbar widget.
- * @time: Time within range of >= 0 && < G_MAXINT
+ * @seekbar: pointer to #HildonSeekbar widget
+ * @time: time within range of >= 0 && < G_MAXINT
  *
  * Set current position in stream in seconds.
- **/
+ */
 void hildon_seekbar_set_position(HildonSeekbar *seekbar, gint time)
 {
     GtkRange *range;

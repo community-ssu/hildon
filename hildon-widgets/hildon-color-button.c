@@ -22,6 +22,16 @@
  *
  */
 
+/**
+ * SECTION:hildon-color-button
+ * @short_description: A widget to open HildonColorSelector
+ * @see_also: #HildonColorSelector, #HildonColorPopup
+ *
+ * HildonColorButton is a widget to open a HildonColorSelector.
+ * The selected color is shown in the button.
+ * The selected color is a property of the button.
+ * The property name is "color" and its type is GtkColor.
+ */
 #include <config.h>
 
 #include <gtk/gtkbutton.h>
@@ -370,13 +380,13 @@ hildon_color_button_get_property(GObject *object, guint param_id,
 /**
  * hildon_color_button_new:
  *
- * Creates a new color button. This returns a widget in the form of
- * a small button containing a swatch representing the current selected 
- * color. When the button is clicked, a color-selection dialog will open, 
- * allowing the user to select a color. The swatch will be updated to reflect 
- * the new color when the user finishes.
+ * Creates a new color button. This returns a widget in the form of a
+ * small button containing a swatch representing the selected color.
+ * When the button is clicked, a color-selection dialog will open,
+ * allowing the user to select a color. The swatch will be updated to
+ * reflect the new color when the user finishes.
  *
- * Return value: a new color button.
+ * Returns: a new color button
  */
 GtkWidget *
 hildon_color_button_new(void)
@@ -386,11 +396,11 @@ hildon_color_button_new(void)
 
 /**
  * hildon_color_button_new_with_color:
- * @color: A #GdkColor to set the current color with.
+ * @color: a #GdkColor for the initial color
  *
- * Creates a new color button. 
+ * Creates a new color button with @color as the initial color. 
  *
- * Return value: a new color button.
+ * Returns: a new color button
  */
 GtkWidget *
 hildon_color_button_new_with_color(const GdkColor *color)
@@ -400,10 +410,10 @@ hildon_color_button_new_with_color(const GdkColor *color)
 
 /**
  * hildon_color_button_set_color:
- * @button: A #HildonColorButton
- * @color: A color to be set
+ * @button: a #HildonColorButton
+ * @color: a color to be set
  *
- * Sets a color to the button.
+ * Sets the color selected by the button.
  */
 void
 hildon_color_button_set_color( HildonColorButton *button, GdkColor *color )
@@ -413,11 +423,9 @@ hildon_color_button_set_color( HildonColorButton *button, GdkColor *color )
 
 /**
  * hildon_color_button_get_color:
- * @button: A #HildonColorButton
+ * @button: a #HildonColorButton
  *
- * Gets a color from the button.
- *
- * Return value: The color set to a current button.
+ * Returns: the color selected by the button
  */
 GdkColor *
 hildon_color_button_get_color( HildonColorButton *button )

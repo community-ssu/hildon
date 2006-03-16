@@ -2,13 +2,10 @@
 HildonGridItem
 
 <!-- ##### SECTION Short_Description ##### -->
-#HildonGridItem is indeded to be used with #HildonGrid.
+
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
-#HildonGridItem is an uninteractive widget representing item on #HildonGrid.
-Each item has an icon and a label. Depending on current style, icon can be
-either above or to the left of the label.
 
 </para>
 
@@ -46,6 +43,9 @@ create_basic_icons (HildonGrid *grid)
 <para>
 #HildonGrid
 </para>
+
+<!-- ##### SECTION Stability_Level ##### -->
+
 
 <!-- ##### ENUM HildonGridPositionType ##### -->
 <para>

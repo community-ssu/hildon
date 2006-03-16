@@ -2,19 +2,20 @@
 HildonVolumebar
 
 <!-- ##### SECTION Short_Description ##### -->
-Base class for widgets that display a volume bar.
+
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
-#HildonVolumebar is a base class for widgets that display a volume bar that
-allows increasing or decreasing volume within a pre-defined range, and muting
-the volume by clicking on a specific mute icon.
+
 </para>
 
 <!-- ##### SECTION See_Also ##### -->
 <para>
 #HildonHVolumebar,#HildonVVolumebar
 </para>
+
+<!-- ##### SECTION Stability_Level ##### -->
+
 
 <!-- ##### FUNCTION hildon_volumebar_set_level ##### -->
 <para>
@@ -68,38 +69,4 @@ the volume by clicking on a specific mute icon.
 @self: 
 @Returns: 
 
-
-<!-- ##### SIGNAL HildonVolumebar::level-changed ##### -->
-<para>
-
-</para>
-
-@hildonvolumebar: the object which received the signal.
-
-<!-- ##### SIGNAL HildonVolumebar::mute-toggled ##### -->
-<para>
-
-</para>
-
-@hildonvolumebar: the object which received the signal.
-
-<!-- ##### ARG HildonVolumebar:can-focus ##### -->
-<para>
-
-</para>
-
-<!-- ##### ARG HildonVolumebar:has-mute ##### -->
-<para>
-
-</para>
-
-<!-- ##### ARG HildonVolumebar:level ##### -->
-<para>
-
-</para>
-
-<!-- ##### ARG HildonVolumebar:mute ##### -->
-<para>
-
-</para>
 

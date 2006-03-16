@@ -22,10 +22,14 @@
  *
  */
 
-/* 
- * @file hildon-note.c
+/**
+ * SECTION:hildon-note
+ * @short_description: A widget to ask confirmation from the user
  *
- * This file contains API for confirmation, information and cancel notes. 
+ * Notes are used to for confirmation (OK/Cancel/etc.) from the user.
+ * A simple note contains an information text and an OK button to be
+ * pressed.  Additional features such as progress bars or animation can
+ * also be included. 
  */
 
 #ifdef HAVE_CONFIG_H
@@ -449,14 +453,15 @@ hildon_note_rebuild(HildonNote *note)
 
 /**
  * hildon_note_new_confirmation_add_buttons:
- * @parent: The parent window. The X window ID of the parent window
+ * @parent: the parent window. The X window ID of the parent window
  *   has to be the same as the X window ID of the application. This is
  *   important so that the window manager could handle the windows
  *   correctly.
- *   In GTK the X window ID can be checked with
+ *   In GTK the X window ID can be checked using
  *   GDK_WINDOW_XID(GTK_WIDGET(parent)->window).
- * @description: The message to confirm.
- * @Varargs: Arguments pairs for new buttons(label and return value). 
+ *
+ * @description: the message to confirm
+ * @Varargs: arguments pairs for new buttons(label and return value). 
  *   Terminate the list with %NULL value.
  * 
  * Create a new confirmation note with custom buttons. Confirmation
@@ -465,7 +470,7 @@ hildon_note_rebuild(HildonNote *note)
  * default ok/cancel buttons are not appended but you have to provide
  * all of the buttons.
  *
- * Return value: A #GtkWidget pointer of the note.
+ * Returns: A #GtkWidget pointer of the note
  */
 
 /* FIXME: This doc seems to be wrong, the two buttons aren't added so it
@@ -513,17 +518,17 @@ GtkWidget *hildon_note_new_confirmation_add_buttons(GtkWindow * parent,
 
 /**
  * hildon_note_new_confirmation:
- * @parent: The parent window. The X window ID of the parent window
+ * @parent: the parent window. The X window ID of the parent window
  *   has to be the same as the X window ID of the application. This is
  *   important so that the window manager could handle the windows
- *   correctly. In GTK the X window ID can be checked with
+ *   correctly. In GTK the X window ID can be checked using
  *   GDK_WINDOW_XID(GTK_WIDGET(parent)->window).
- * @description: The message to confirm.
+ * @description: the message to confirm
  * 
- * Create a new confirmation note. Confirmation note has a text, 
- * two buttons and an default confirmation icon.
+ * Create a new confirmation note. Confirmation note has text (description)
+ * that you specify, two buttons and a default confirmation stock icon.
  *
- * Return value: A #GtkWidget pointer of the note.
+ * Returns: a #GtkWidget pointer of the note
  */
 GtkWidget *hildon_note_new_confirmation(GtkWindow * parent,
                                         const gchar * description)
@@ -535,21 +540,21 @@ GtkWidget *hildon_note_new_confirmation(GtkWindow * parent,
 
 /**
  * hildon_note_new_confirmation_with_icon_stock:
- * @parent: The parent window. The X window ID of the parent window
+ * @parent: the parent window. The X window ID of the parent window
  *   has to be the same as the X window ID of the application. This is
  *   important so that the window manager could handle the windows
- *   correctly. In GTK the X window ID can be checked with
+ *   correctly. In GTK the X window ID can be checked using
  *   GDK_WINDOW_XID(GTK_WIDGET(parent)->window).
- * @description: The message to confirm.
- * @stock_id: Icon to be displayed. If NULL, default icon is used.
+ * @description: the message to confirm
+ * @stock_id: icon to be displayed. If NULL, default icon is used.
  * 
- * Create a new confirmation note. Confirmation note has a text, 
- * two buttons and an icon.
+ * Create a new confirmation note. Confirmation note has text (description) 
+ * that you specify, two buttons and an icon.
  *
  * Note! This function is deprecated and broken, and really should not
  *       be used by anyone!
  *
- * Return value: A #GtkWidget pointer of the note.
+ * Returns: a #GtkWidget pointer of the note
  */
 GtkWidget *hildon_note_new_confirmation_with_icon_stock(GtkWindow * parent,
                                                         const gchar *
@@ -575,18 +580,18 @@ GtkWidget *hildon_note_new_confirmation_with_icon_stock(GtkWindow * parent,
 
 /**
  * hildon_note_new_confirmation_with_icon_name:
- * @parent: The parent window. The X window ID of the parent window
+ * @parent: the parent window. The X window ID of the parent window
  *   has to be the same as the X window ID of the application. This is
  *   important so that the window manager could handle the windows
- *   correctly. In GTK the X window ID can be checked with
+ *   correctly. In GTK the X window ID can be checked using
  *   GDK_WINDOW_XID(GTK_WIDGET(parent)->window).
- * @description: The message to confirm.
- * @icon_name: Icon to be displayed. If NULL, default icon is used.
+ * @description: the message to confirm
+ * @icon_name: icon to be displayed. If NULL, default icon is used.
  * 
- * Create a new confirmation note. Confirmation note has a text, 
- * two buttons and an icon.
+ * Create a new confirmation note. Confirmation note has text(description) 
+ * that you specify, two buttons and an icon.
  *
- * Return value: A #GtkWidget pointer of the note.
+ * Returns: a #GtkWidget pointer of the note
  */
 GtkWidget *hildon_note_new_confirmation_with_icon_name(GtkWindow * parent,
                                                         const gchar *
@@ -611,17 +616,17 @@ GtkWidget *hildon_note_new_confirmation_with_icon_name(GtkWindow * parent,
 
 /**
  * hildon_note_new_information:
- * @parent: The parent window. The X window ID of the parent window
+ * @parent: the parent window. The X window ID of the parent window
  *   has to be the same as the X window ID of the application. This is
  *   important so that the window manager could handle the windows
- *   correctly. In GTK the X window ID can be checked with
+ *   correctly. In GTK the X window ID can be checked using
  *   GDK_WINDOW_XID(GTK_WIDGET(parent)->window).
- * @description: The message to confirm.
+ * @description: the message to confirm
  * 
- * Create a new information note. Information note has a text,
- * 'OK' labeled button and an icon.
+ * Create a new information note. Information note has a text(description) 
+ * that you specify, an OK button and an icon.
  * 
- * Return value: A #GtkWidget pointer of the note.
+ * Returns: a #GtkWidget pointer of the note
  */
 GtkWidget *hildon_note_new_information(GtkWindow * parent,
                                        const gchar * description)
@@ -632,22 +637,22 @@ GtkWidget *hildon_note_new_information(GtkWindow * parent,
 
 /**
  * hildon_note_new_information_with_icon_stock:
- * @parent: The parent window. The X window ID of the parent window
+ * @parent: the parent window. The X window ID of the parent window
  *   has to be the same as the X window ID of the application. This is
  *   important so that the window manager could handle the windows
- *   correctly. In GTK the X window ID can be checked with
+ *   correctly. In GTK the X window ID can be checked using
  *   GDK_WINDOW_XID(GTK_WIDGET(parent)->window).
- * @description: The message to confirm.
- * @stock_id: Icon to be displayed. If NULL, default icon is used.
+ * @description: the message to confirm
+ * @stock_id: icon to be displayed. If NULL, default icon is used.
  * 
- * Create a new information note. Information note has a text,
- * 'OK' labeled button and an icon.
+ * Create a new information note. Information note has text(description) 
+ * that you specify, an OK button and a default stock note icon.
  * 
  * Note! This function is broken and deprecated and should not be
  *       used by anybody. Since the platform doesn't use stock icons, 
  *       use #hildon_note_new_information_with_icon_name instead.
  *
- * Return value: A #GtkWidget pointer of the note.
+ * Returns: a #GtkWidget pointer of the note
  */
 GtkWidget *hildon_note_new_information_with_icon_stock(GtkWindow * parent,
                                                        const gchar *
@@ -672,18 +677,18 @@ GtkWidget *hildon_note_new_information_with_icon_stock(GtkWindow * parent,
 
 /**
  * hildon_note_new_information_with_icon_name:
- * @parent: The parent window. The X window ID of the parent window
+ * @parent: the parent window. The X window ID of the parent window
  *   has to be the same as the X window ID of the application. This is
  *   important so that the window manager could handle the windows
- *   correctly. In GTK the X window ID can be checked with
+ *   correctly. In GTK the X window ID can be checked using
  *   GDK_WINDOW_XID(GTK_WIDGET(parent)->window).
- * @description: The message to confirm.
- * @icon_name: Icon to be displayed. If NULL, default icon is used.
+ * @description: the message to confirm
+ * @icon_name: icon to be displayed. If NULL, default icon is used.
  * 
- * Create a new information note. Information note has a text,
- * 'OK' labeled button and an icon.
+ * Create a new information note. Information note has text(description) 
+ * that you specify, an OK button and an icon.
  * 
- * Return value: A #GtkWidget pointer of the note.
+ * Returns: a #GtkWidget pointer of the note
  */
 GtkWidget *hildon_note_new_information_with_icon_name(GtkWindow * parent,
                                                        const gchar *
@@ -708,14 +713,22 @@ GtkWidget *hildon_note_new_information_with_icon_name(GtkWindow * parent,
 
 /**
  * hildon_note_new_information_with_icon_theme:
- * @parent: The parent window. 
- * @description: The message to confirm.
- * @icon: #GtkIconTheme icon to be displayed.
+ * @parent: the parent window. The X window ID of the parent window
+ *   has to be the same as the X window ID of the application. This is
+ *   important so that the window manager could handle the windows
+ *   correctly. In GTK the X window ID can be checked using
+ *   GDK_WINDOW_XID(GTK_WIDGET(parent)->window).
+ *
+ * @description: the message to confirm
+ * @icon: #GtkIconTheme icon to be displayed
  * 
  * This function is deprecated. Use 
  * #hildon_note_new_information_with_icon_name instead.
  *
- * Return value: A #GtkWidget pointer of the note. 
+ * Create a new information note. Information note has text(description) 
+ * that you specify, an OK button and an icon.
+ *
+ * Returns: a #GtkWidget pointer of the note. 
  */
 GtkWidget *hildon_note_new_information_with_icon_theme(GtkWindow *parent,
                                                        const gchar *description,
@@ -726,21 +739,21 @@ GtkWidget *hildon_note_new_information_with_icon_theme(GtkWindow *parent,
 
 /**
  * hildon_note_new_cancel_with_progress_bar:
- * @parent: The parent window. The X window ID of the parent window
+ * @parent: the parent window. The X window ID of the parent window
  *   has to be the same as the X window ID of the application. This is
  *   important so that the window manager could handle the windows
- *   correctly. In GTK the X window ID can be checked with
+ *   correctly. In GTK the X window ID can be checked using
  *   GDK_WINDOW_XID(GTK_WIDGET(parent)->window).
- * @description: The action to cancel.
- * @progressbar: A pointer to #GtkProgressBar to be filled with the
+ * @description: the action to cancel
+ * @progressbar: a pointer to #GtkProgressBar to be filled with the
  *   progressbar assigned to this note. Use this to set the fraction of
  *   progressbar done. This parameter can be %NULL as well, in which
  *   case plain text cancel note appears.
  *
- * Create a new cancel note with a progress bar. The note has a text,
- * 'Cancel' labeled button and a progress bar.
+ * Create a new cancel note with a progress bar. Cancel note has 
+ * text(description) that you specify, a Cancel button and a progress bar.
  *
- * Return value: A #GtkDialog. Use this to get rid of this note when you
+ * Returns: a #GtkDialog. Use this to get rid of this note when you
  *   no longer need it.
  */
 GtkWidget *hildon_note_new_cancel_with_progress_bar(GtkWindow * parent,
@@ -768,11 +781,11 @@ GtkWidget *hildon_note_new_cancel_with_progress_bar(GtkWindow * parent,
 
 /**
  * hildon_note_set_button_text:
- * @note: A #HildonNote
- * @text: Sets the button text and if there is two buttons in dialog, 
+ * @note: a #HildonNote
+ * @text: sets the button text and if there is two buttons in dialog, 
  *   the button texts will be &lt;text&gt;, "Cancel".  
  *
- * Sets the button text to be used by this hildon_note widget.
+ * Sets the button text to be used by the hildon_note widget.
  */
 void hildon_note_set_button_text(HildonNote * note, const gchar * text)
 {
@@ -792,9 +805,9 @@ void hildon_note_set_button_text(HildonNote * note, const gchar * text)
 
 /**
  * hildon_note_set_button_texts:
- * @note: A #HildonNote
- * @textOk: the new text of the default OK button.
- * @textCancel: the new text of the default cancel button. 
+ * @note: a #HildonNote
+ * @textOk: the new text of the default OK button
+ * @textCancel: the new text of the default cancel button 
  *
  * Sets the button texts to be used by this hildon_note widget.
  */

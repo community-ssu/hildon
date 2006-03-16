@@ -228,7 +228,6 @@ HildonSearch
 </para>
 
 
-<!-- ##### ARG HildonFileDetailsDialog:model ##### -->
 <para>
 
 </para>
@@ -241,6 +240,30 @@ HildonSearch
 
 
 <!-- ##### STRUCT HildonFileDetailsDialogPrivate ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### ARG HildonFileDetailsDialog:additional-tab ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### ARG HildonFileDetailsDialog:additional-tab-label ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### ARG HildonFileDetailsDialog:model ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### ARG HildonFileDetailsDialog:show-tabs ##### -->
 <para>
 
 </para>

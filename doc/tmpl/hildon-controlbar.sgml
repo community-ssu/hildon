@@ -2,18 +2,15 @@
 HildonControlbar
 
 <!-- ##### SECTION Short_Description ##### -->
-A widget that allows increasing or decreasing a value within a pre-defined
-range.
+
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
-#HildonControlbar is a horizontally positioned widget that allows increasing
-or decreasing a value within a pre-defined range. The amount of steps in a
-#HildonControlbar can be changed.
+
 </para>
 
 <para>
-Here's a simple example that creates a control bar and initializes it.
+Here is an example that creates a control bar and initializes it.
 
 <informalexample>
 <programlisting>
@@ -28,6 +25,9 @@ hildon_controlbar_set_value( HILDON_CONTROLBAR(cbar), 6 );
 <para>
 
 </para>
+
+<!-- ##### SECTION Stability_Level ##### -->
+
 
 <!-- ##### FUNCTION hildon_controlbar_new ##### -->
 <para>
@@ -100,32 +100,4 @@ hildon_controlbar_set_value( HILDON_CONTROLBAR(cbar), 6 );
 @min: 
 @max: 
 
-
-<!-- ##### SIGNAL HildonControlbar::end-reached ##### -->
-<para>
-
-</para>
-
-@hildoncontrolbar: the object which received the signal.
-@arg1: 
-
-<!-- ##### ARG HildonControlbar:max ##### -->
-<para>
-
-</para>
-
-<!-- ##### ARG HildonControlbar:min ##### -->
-<para>
-
-</para>
-
-<!-- ##### ARG HildonControlbar:value ##### -->
-<para>
-
-</para>
-
-<!-- ##### ARG HildonControlbar:inner-border-width ##### -->
-<para>
-
-</para>
 

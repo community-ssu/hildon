@@ -22,23 +22,22 @@
  *
  */
 
-/*
- * @file hildon-telephone-editor.c
- * 
- * This file implements the HildonTelephoneEditor widget.
- */
-
-/*
- * TODO:
- * - update hildon doc
+/**
+ * SECTION:hildon-telephone-editor.c
+ * @short_description: A widget which allows users to enter telephone numbers 
  *
- */
-
-/* HILDON DOC
- * @shortdesc: 
- * @longdesc: 
+ * A single-line editor which allows user to enter a telephone number. 
+ * There are two modes to choose from (coerce/free format). 
+ * Coerce format has three fields which are placed horizontally. 
+ * The fields are: country code, area code and number. When nothing is 
+ * entered in the fields, assisting text is displayed. Tapping on the 
+ * field highlights the field and allows users to input numbers.
  *
- * @seealso: 
+ * The widget is used where a user should enter a phone number. Free format 
+ * should be used wherever possible as it enables the user to enter the 
+ * phone number in the format she likes. Free format also supports DTMF 
+ * strings as a part of the phone number. The format can not be changed 
+ * at runtime.  
  */
 
 #ifdef HAVE_CONFIG_H
@@ -318,7 +317,7 @@ hildon_telephone_editor_init(HildonTelephoneEditor * editor)
 
 /**
  * hildon_telephone_editor_new:
- * @format: Format of the editor.
+ * @format: format of the editor
  *
  * Creates a new #HildonTelephoneEditor. The editor can be in a free
  * format where the user can type in country code, area code and the
@@ -327,7 +326,7 @@ hildon_telephone_editor_init(HildonTelephoneEditor * editor)
  * digits. See #HildonTelephoneEditorFormat for the different coerse
  * formats.
  * 
- * Return value: New #HildonTelephoneEditor.
+ * Returns: new #HildonTelephoneEditor
  */
 GtkWidget *
 hildon_telephone_editor_new(HildonTelephoneEditorFormat format)
@@ -345,15 +344,15 @@ hildon_telephone_editor_new(HildonTelephoneEditorFormat format)
 
 /**
  * hildon_telephone_editor_new_with_strings:
- * @format: Format of the editor.
- * @country: Default text for the country field.
- * @area: Default text for the area field.
- * @number: Default text for the number field.
+ * @format: format of the editor
+ * @country: default text for the country field
+ * @area: default text for the area field
+ * @number: default text for the number field
  *
  * Creates a new #HildonTelephoneEditor. See hildon_telephone_editor_new
  * for details.
  * 
- * Return value: New #HildonTelephoneEditor.
+ * Returns: new #HildonTelephoneEditor
  */
 GtkWidget *
 hildon_telephone_editor_new_with_strings(HildonTelephoneEditorFormat
@@ -1040,20 +1039,18 @@ hildon_telephone_editor_entry_keypress(GtkWidget * widget,
 
 /**
  * hildon_telephone_editor_set_editable:
- * @hte: #HildonTelephoneEditor.
- * @country: Set the editable status of the country field in coarce format.
- * @area: Set the editable status of the area field in coarce format.
- * @number: Set the editable status of the number field in coarce format.
+ * @hte: #HildonTelephoneEditor
+ * @country: set the editable status of the country field in coarce format
+ * @area: set the editable status of the area field in coarce format
+ * @number: set the editable status of the number field in coarce format
  * 
  * Specify wheter the fields in coerse format are editable or
  * not. This function is ignored if the editor is in free mode. The
  * number or area and number parameters are ignored if the editor is
  * in HILDON_TELEPHONE_EDITOR_FORMAT_COERCE_AREA or
  * HILDON_TELEPHONE_EDITOR_FORMAT_COERCE_COUNTRY formats,
- * respectively.
- * 
- * 
- **/
+ * respectively. 
+ */
 void 
 hildon_telephone_editor_set_editable(HildonTelephoneEditor * editor,
                                           gboolean country,
@@ -1084,18 +1081,17 @@ hildon_telephone_editor_set_editable(HildonTelephoneEditor * editor,
 
 /**
  * hildon_telephone_editor_set_widths:
- * @hte: #HildonTelephoneEditor.
- * @country: Width (characters) of the country field in coarce mode.
- * @area: Width (characters) of the area field in coarce mode.
- * @number: Width (characters) of the number field in coarce mode.
+ * @hte: #HildonTelephoneEditor
+ * @country: width (characters) of the country field in coarce mode
+ * @area: width (characters) of the area field in coarce mode
+ * @number: width (characters) of the number field in coarce mode
  *
- * Set widths of the fields in coerse format. Country and area parameters
+ * Set widths of the fields in coecse format. Country and area parameters
  * are ignored, if the editor is in free mode. The number or area and number
  * parameters are ignored if the editor is in
  * HILDON_TELEPHONE_EDITOR_FORMAT_COERCE_AREA or
  * HILDON_TELEPHONE_EDITOR_FORMAT_COERCE_COUNTRY mode, respectively.
- * 
- **/
+ */
 void 
 hildon_telephone_editor_set_widths(HildonTelephoneEditor * editor,
                                         guint country,
@@ -1126,13 +1122,11 @@ hildon_telephone_editor_set_widths(HildonTelephoneEditor * editor,
 
 /**
  * hildon_telephone_editor_set_show_plus:
- * @hte: #HildonTelephoneEditor.
- * @show: Show the plus sign.
+ * @hte: #HildonTelephoneEditor
+ * @show: show the plus sign
  *
- * Show or hide the plus sign in front of coerce format's country field.
- *
- * 
- **/
+ * Show or hide the plus sign in front of coerce format's country field. 
+ */
 void 
 hildon_telephone_editor_set_show_plus(HildonTelephoneEditor * editor,
                                            gboolean show)
@@ -1160,14 +1154,13 @@ hildon_telephone_editor_set_show_plus(HildonTelephoneEditor * editor,
 
 /**
  * hildon_telephone_editor_get_show_plus:
- * @hte: #HildonTelephoneEditor.
+ * @hte: #HildonTelephoneEditor
  *
  * Get the visibility status of the plus sign in
  * front of coerce format's country field.
  *
- * Return value: gboolean.
- * 
- **/
+ * Returns: gboolean
+ */
 gboolean 
 hildon_telephone_editor_get_show_plus(HildonTelephoneEditor *
                                                editor)
@@ -1184,13 +1177,11 @@ hildon_telephone_editor_get_show_plus(HildonTelephoneEditor *
 
 /**
  * hildon_telephone_editor_set_show_border:
- * @hte: #HildonTelephoneEditor.
- * @show: Show the border.
+ * @hte: #HildonTelephoneEditor
+ * @show: show the border
  *
  * Show or hide the border around the widget
- *
- * 
- **/
+ */
 void 
 hildon_telephone_editor_set_show_border(HildonTelephoneEditor *
                                              editor, gboolean show)
@@ -1212,13 +1203,12 @@ hildon_telephone_editor_set_show_border(HildonTelephoneEditor *
 
 /**
  * hildon_telephone_editor_get_show_border:
- * @hte: #HildonTelephoneEditor.
+ * @hte: #HildonTelephoneEditor
  *
  * Get the visibility status of the border around the widget.
  *
- * Return value: gboolean.
- * 
- **/
+ * Returns: gboolean
+ */
 gboolean
 hildon_telephone_editor_get_show_border(HildonTelephoneEditor * editor)
 {
@@ -1231,14 +1221,14 @@ hildon_telephone_editor_get_show_border(HildonTelephoneEditor * editor)
 
 /**
  * hildon_telephone_editor_get_country:
- * @hte: #HildonTelephoneEditor.
+ * @hte: #HildonTelephoneEditor
  *
  * Get text in the country field in coarse format. This function must
  * not be called if in free mode.
  *
- * Return value: pointer to the text in the country field. It must not
+ * Returns: pointer to the text in the country field. It must not
  * be changed or freed.
- **/
+ */
 const gchar *
 hildon_telephone_editor_get_country(HildonTelephoneEditor *
                                                  editor)
@@ -1256,12 +1246,12 @@ hildon_telephone_editor_get_country(HildonTelephoneEditor *
 
 /**
  * hildon_telephone_editor_set_country:
- * @hte: #HildonTelephoneEditor.
- * @country: text to be set in country field.
+ * @hte: #HildonTelephoneEditor
+ * @country: text to be set in country field
  *
  * Set text in the country field in coarse format. This function must
  * not be called if in free mode.
- **/
+ */
 void 
 hildon_telephone_editor_set_country(HildonTelephoneEditor * editor,
                                          const gchar * country)
@@ -1299,15 +1289,15 @@ hildon_telephone_editor_set_country(HildonTelephoneEditor * editor,
 
 /**
  * hildon_telephone_editor_get_area:
- * @hte: #HildonTelephoneEditor.
+ * @hte: #HildonTelephoneEditor
  *
  * Get text in the area field in coarse format. This function must not
  * be called if in free mode or in
  * HILDON_TELEPHONE_EDITOR_FORMAT_COERCE_COUNTRY mode.
  *
- * Return value: pointer to the text in the area field. It must not be
+ * Returns: pointer to the text in the area field. It must not be
  * changed or freed.
- **/
+ */
 const gchar *
 hildon_telephone_editor_get_area(HildonTelephoneEditor *
                                               editor)
@@ -1327,13 +1317,13 @@ hildon_telephone_editor_get_area(HildonTelephoneEditor *
 
 /**
  * hildon_telephone_editor_set_area:
- * @hte: #HildonTelephoneEditor.
- * @area: text to be set in area field.
+ * @hte: #HildonTelephoneEditor
+ * @area: text to be set in area field
  *
  * Set text in the area field in coarse format. This function must not
  * be called if in free mode or in
  * HILDON_TELEPHONE_EDITOR_FORMAT_COERCE_COUNTRY mode.
- **/
+ */
 void
 hildon_telephone_editor_set_area(HildonTelephoneEditor * editor,
                                       const gchar * area)
@@ -1371,17 +1361,17 @@ hildon_telephone_editor_set_area(HildonTelephoneEditor * editor,
 
 /**
  * hildon_telephone_editor_get_number:
- * @hte: #HildonTelephoneEditor.
+ * @hte: #HildonTelephoneEditor
  *
- * Get text in the number field in all formats. If in free mode this
- * functions returns the whole phone number and if in coarce mode only
- * the number field's is returned. This function must not be called if
+ * Get text in the number field in all formats. In free mode, this
+ * functions returns the whole phone number. In coarce mode, it returns
+ * only the number field. This function must not be called if
  * the editor is in HILDON_TELEPHONE_EDITOR_FORMAT_COERCE_AREA or
  * HILDON_TELEPHONE_EDITOR_FORMAT_COERCE_COUNTRY modes.
  *
- * Return value: pointer to text in the number field. It must not be
+ * Returns: pointer to text in the number field. It must not be
  * changed or freed.
- **/
+ */
 const gchar *
 hildon_telephone_editor_get_number(HildonTelephoneEditor *
                                                 editor)
@@ -1395,15 +1385,15 @@ hildon_telephone_editor_get_number(HildonTelephoneEditor *
 
 /**
  * hildon_telephone_editor_set_number:
- * @hte: #HildonTelephoneEditor.
- * @number: text to be set to number field.
+ * @hte: #HildonTelephoneEditor
+ * @number: text to be set to number field
  *
- * Set text in the number field in all formats. If in free mode this
- * functions sets the whole phone number and if in coerce mode only
- * the number field's is set. This function must not be called if
+ * Set text in the number field in all formats. In free mode this
+ * functions sets the whole phone number. In coerce mode, it sets
+ * only the number field. This function must not be called if
  * the editor is in HILDON_TELEPHONE_EDITOR_FORMAT_COERSE_AREA or
  * HILDON_TELEPHONE_EDITOR_FORMAT_COERCE_COUNTRY modes.
- **/
+ */
 void 
 hildon_telephone_editor_set_number(HildonTelephoneEditor * editor,
                                         const gchar * number)

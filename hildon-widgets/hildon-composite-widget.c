@@ -21,6 +21,7 @@
  * 02110-1301 USA
  *
  */
+
 #include <gtk/gtkwidget.h>
 #include <gtk/gtkwindow.h>
 #include "hildon-composite-widget.h"
