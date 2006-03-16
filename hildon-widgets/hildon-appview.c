@@ -183,8 +183,9 @@ struct _HildonAppViewPrivate {
 
     guint fullscreen : 1;
     guint fullscreenshortcutallowed : 1;
-    /* For future expansion. We might use the below variables for disabling keyrepeat
-     * if we need it someday. */
+
+    /* For future expansion.
+     * We might use the below variables for disabling keyrepeat if we need it someday. */
     guint increase_button_pressed_down : 1;
     guint decrease_button_pressed_down : 1;
     gint visible_toolbars;
@@ -217,9 +218,9 @@ static void hildon_appview_signal_marshal(GClosure * closure,
     }
 
     callback =
-  /* This is a compilation workaround for gcc > 3.3 since glib is buggy */ 
+  /* FIXME: This is a compilation workaround for gcc > 3.3 since glib is buggy */ 
   /* see http://bugzilla.gnome.org/show_bug.cgi?id=310175 */
-           
+
 #ifdef __GNUC__
   __extension__
 #endif
@@ -1119,11 +1120,12 @@ void hildon_appview_set_title(HildonAppView * self, const gchar * newname)
  * @self: A #HildonAppView
  * @toolbar: A #GtkToolbar
  *
- * Sets the #GtkToolbar to given #HildonAppView. This is, however, not a recommned way to
- * set your toolbars. When you have multi toolbars, calling this function more than once will just
- * replace the bottom most toolbar. There is a #GtkVBox in #HildonAppView's public structure, the programmer
- * is responsible to pack his toolbars in the #GtkVBox, and #HildonAppView will take care of put them at the
- * right place.
+ * Sets the #GtkToolbar to given #HildonAppView. This is, however, not a
+ * recommended way to set your toolbars. When you have multi toolbars, calling
+ * this function more than once will just replace the bottom most toolbar.
+ * There is a #GtkVBox in #HildonAppView's public structure, the programmer
+ * is responsible to pack his toolbars in the #GtkVBox, and #HildonAppView will
+ * take care of putting them at the right place.
  * 
  **/
 #ifndef HILDON_DISABLE_DEPRECATED
@@ -1156,8 +1158,9 @@ void hildon_appview_set_toolbar(HildonAppView * self, GtkToolbar * toolbar)
  * @self: A #HildonAppView
  *
  * This function will only 
- * return the last widget that has been packed into the #GtkVBox in the public structure. Note
- * this does not, however, mean that it is the bottom most toolbar.
+ * return the last widget that has been packed into the #GtkVBox in the public
+ * structure. Note this does not, however, mean that it is the bottom most
+ * toolbar.
  * 
  * Return value: The #GtkToolbar assigned to this application view. 
  **/
