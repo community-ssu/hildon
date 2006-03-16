@@ -30,6 +30,7 @@
  *
  */
 
+#include <stdlib.h>
 #include <gdk/gdkx.h>
 #include "hildon-dialoghelp.h"
 
