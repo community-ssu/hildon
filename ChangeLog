@@ -65,6 +65,55 @@
 	  - don't assume that a window was realized when added to 
 	    the program
 
+
+2006-03-01  Luc Pionchon  <luc.pionchon@nokia.com>
+
+	Cleanup get-password dialog:
+	
+	* hildon-widgets/hildon-get-password-dialog.[ch]
+
+	(HildonGetPasswordDialogPrivate): gboolean get_old added
+
+	(hildon_get_password_set_property): fixed broken 'numbers-only'
+	and 'max-characters' cases; 'get-old' property added
+
+	(hildon_get_password_get_property): added support for reading
+	'numbers-only' properties; added missing break to 'domain' case.
+	added 'get-old' property
+
+	(hildon_get_password_dialog_class_init): 'domain' and
+	'numbers-only' properties are now readable; 'get-old' property
+	added
+
+	(hildon_get_password_dialog_init, create_contents): everything
+	that depends on the type of the dialog (i.e. 'get-old' property)
+	is now done in create_contents after properties are initialized;
+	fixed leaking group variable
+
+	(hildon_get_password_dialog_get_type): empty function argument
+	list replaced with void keyword
+
+	(hildon_get_password_dialog_new): moved setting the labels of the
+	get password dialog to init where it should be done; 'get-old'
+	property set upon construction to achieve this
+
+	(hildon_get_password_dialog_new_with_default): password argument
+	declared const
+
+	(hildon_get_password_dialog_get_password): type check added
+	(hildon_get_password_dialog_set_domain): type check added; domain
+	argument declared const; duplicate function declaration removed
+
+	(hildon_get_password_dialog_set_title): type check added;
+	new_title argument declared const
+
+	(hildon_get_password_dialog_set_caption): type check added;
+	new_caption argument declared const
+
+	(hildon_get_password_dialog_set_max_characters): broken type check fixed
+	(_invalid_input): gpointer data argument renamed unused
+
+
 2006-02-28  Luc Pionchon  <luc.pionchon@nokia.com>
 
 	(*_get_type): declared G_GNUC_CONST

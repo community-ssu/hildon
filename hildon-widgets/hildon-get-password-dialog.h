@@ -76,17 +76,17 @@ GtkWidget *hildon_get_password_dialog_new(GtkWindow * parent,
                                           gboolean get_old_password_title);
 
 GtkWidget *hildon_get_password_dialog_new_with_default(GtkWindow *parent,
-					               gchar *password,
+					               const gchar *password,
 						       gboolean get_old_password_title);
 
 void hildon_get_password_dialog_set_domain(HildonGetPasswordDialog *dialog, 
-					   gchar *domain);
+					   const gchar *domain);
 
 void hildon_get_password_dialog_set_title(HildonGetPasswordDialog *dialog,
-					  gchar *new_title);
+					  const gchar *new_title);
 
 void hildon_get_password_dialog_set_caption(HildonGetPasswordDialog *dialog,
-						  gchar *new_caption);
+						  const gchar *new_caption);
 
 
 void hildon_get_password_dialog_set_max_characters(HildonGetPasswordDialog *dialog,
