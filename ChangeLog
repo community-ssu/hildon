@@ -1,3 +1,38 @@
+006-03-15  Luc Pionchon  <luc.pionchon@nokia.com>
+
+        Cleanup color button
+
+	* hildon-widgets/hildon-color-button.c: 
+	- removed unused #include
+	- removed unused gettext macro
+
+	(COLOR_FIELD_WIDTH) : renamed to COLOR_FILLED_WIDTH
+	(COLOR_FIELD_HEIGHT): renamed to COLOR_FILLED_HEIGHT
+	+ value updated to match specifications
+	
+	(struct _HildonColorButtonPrivate):
+	removed 'drawing_area' and 'pixbuf' members (unused)
+
+	(hildon_color_button_init):	
+	use drawing_area directly, update COLOR_FILLED_ macro names
+
+	(hildon_color_button_unrealize): new function.
+	(hildon_color_button_class_init): register unrealize function	
+	(hildon_color_button_finalize): free allocated GC in unrealize
+	handler instead of in finalize.
+	
+	(hildon_color_button_recolor_pixbuf): removed. (use
+	gdk_draw_rectangle() instead)
+	(hildon_color_button_draw_pixbuf_borders): likewise
+	
+	(hildon_color_field_expose_event): use gdk_draw_rectangle() to
+	draw the button
+	(hildon_color_button_set_property): queue the drawing - instead of
+	calling recolor_pixbuf
+
+	(hildon_color_button_clicked): renamed variable 'csd' to 'cs_dialog'
+
+
 2006-03-15  Luc Pionchon  <luc.pionchon@nokia.com>
 
         More cleanup for range editor,
