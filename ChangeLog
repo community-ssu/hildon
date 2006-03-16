@@ -1,5 +1,35 @@
 2006-03-15  Luc Pionchon  <luc.pionchon@nokia.com>
 
+	Major cleanup for time editor
+
+	* hildon-widgets/hildon-time-editor.c
+	- removed unused #includes.
+	- Removed useless g_return_if_fail(editor) calls
+	(HILDON_IS_TIME_EDITOR does this check as well for us).
+	
+	(hildon_time_editor_add_style):         removed, obsolete.
+	(hildon_time_editor_mnemonic_activate): removed, obsolete
+	(hildon_time_editor_get_max_values):    removed, obsolete.
+	
+	(validated_conversion): New helper function
+
+	(hildon_time_editor_entry_changed): New function, now the widget
+	interactively validates the inputted contents (not requiring focus
+	move).
+
+	(ticks_to_time): rewritten, using less arithmetic operations.
+	(hildon_time_editor_validate):          rewritten
+	(hildon_time_editor_set_ticks):         rewritten
+	(hildon_time_editor_set_duration_mode): rewritten
+	(hildon_time_editor_entry_keypress):    rewritten
+
+	* hildon-widgets/hildon-time-editor.[ch]
+	(hildon_time_editor_set_show_hours)
+	(hildon_time_editor_get_show_hours) new functions to show/hide hours
+
+	
+2006-03-15  Luc Pionchon  <luc.pionchon@nokia.com>
+
 	Cleanup number editor
 	
 	* hildon-widgets/hildon-number-editor.c: 

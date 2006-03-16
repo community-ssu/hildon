@@ -80,6 +80,10 @@ void hildon_time_editor_set_show_seconds (HildonTimeEditor * editor,
                                           gboolean show_seconds);
 gboolean hildon_time_editor_get_show_seconds (HildonTimeEditor * editor);
 
+void hildon_time_editor_set_show_hours(HildonTimeEditor *editor,
+                                          gboolean show_hours);
+gboolean hildon_time_editor_get_show_hours(HildonTimeEditor *editor);
+
 void hildon_time_editor_set_duration_mode (HildonTimeEditor * editor,
                                            gboolean duration_mode);
 gboolean hildon_time_editor_get_duration_mode (HildonTimeEditor * editor);
