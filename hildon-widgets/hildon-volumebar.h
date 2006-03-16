@@ -24,17 +24,11 @@
 #ifndef __HILDON_VOLUMEBAR_H__
 #define __HILDON_VOLUMEBAR_H__
 
-#include <glib.h>
-#include <glib-object.h>
 #include <gtk/gtkcontainer.h>
-/*#include <gtk/gtkframe.h>*/
-#include <gtk/gtktogglebutton.h>
-#include <gtk/gtkbox.h>
-#include <gtk/gtkhbox.h>
-#include <gtk/gtkvbox.h>
 #include <gtk/gtkadjustment.h>
 
 G_BEGIN_DECLS
+
 #define HILDON_TYPE_VOLUMEBAR ( hildon_volumebar_get_type() )
 #define HILDON_VOLUMEBAR(obj) (GTK_CHECK_CAST (obj,\
         HILDON_TYPE_VOLUMEBAR, HildonVolumebar))
@@ -44,7 +38,8 @@ G_BEGIN_DECLS
         HILDON_TYPE_VOLUMEBAR))
 #define HILDON_IS_VOLUMEBAR_CLASS(klass) \
         (GTK_CHECK_CLASS_TYPE ((klass), HILDON_TYPE_VOLUMEBAR))
-typedef struct _HildonVolumebar HildonVolumebar;
+
+typedef struct _HildonVolumebar      HildonVolumebar;
 typedef struct _HildonVolumebarClass HildonVolumebarClass;
 
 struct _HildonVolumebar {
@@ -54,19 +49,26 @@ struct _HildonVolumebar {
 struct _HildonVolumebarClass {
     GtkContainerClass parent_class;
 
-    /* signal */
-    void (*mute_toggled) (HildonVolumebar * self);
+    /* signals */
+    void (*mute_toggled)  (HildonVolumebar * self);
     void (*level_changed) (HildonVolumebar * self);
 };
 
-GType hildon_volumebar_get_type(void) G_GNUC_CONST;
 
-void hildon_volumebar_set_level(HildonVolumebar * self, gdouble level);
-double hildon_volumebar_get_level(HildonVolumebar * self);
-void hildon_volumebar_set_mute(HildonVolumebar * self, gboolean mute);
-gboolean hildon_volumebar_get_mute(HildonVolumebar * self);
-void hildon_volumebar_level_change(HildonVolumebar * self);
-GtkAdjustment * hildon_volumebar_get_adjustment (HildonVolumebar * self);
+GType           hildon_volumebar_get_type       (void) G_GNUC_CONST;
+
+double          hildon_volumebar_get_level      (HildonVolumebar *self);
+void            hildon_volumebar_set_level      (HildonVolumebar *self,
+                                                 gdouble          level);
+
+gboolean        hildon_volumebar_get_mute       (HildonVolumebar *self);
+void            hildon_volumebar_set_mute       (HildonVolumebar *self,
+                                                 gboolean         mute);
+
+void            hildon_volumebar_level_change   (HildonVolumebar *self);
+
+GtkAdjustment * hildon_volumebar_get_adjustment (HildonVolumebar *self);
+
 
 G_END_DECLS
-#endif
+#endif /* __HILDON_VOLUMEBAR_H__ */

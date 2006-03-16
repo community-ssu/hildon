@@ -22,17 +22,13 @@
  *
  */
 
-#ifndef HILDON_HVOLUMEBAR_H
-#define HILDON_HVOLUMEBAR_H
+#ifndef __HILDON_HVOLUMEBAR_H__
+#define __HILDON_HVOLUMEBAR_H__
 
-#include <glib.h>
-#include <glib-object.h>
-#include <gtk/gtkalignment.h>
-#include <gtk/gtkframe.h>
-#include <gtk/gtktogglebutton.h>
 #include <hildon-widgets/hildon-volumebar.h>
 
 G_BEGIN_DECLS
+
 #define HILDON_TYPE_HVOLUMEBAR ( hildon_hvolumebar_get_type() )
 #define HILDON_HVOLUMEBAR(obj) (GTK_CHECK_CAST (obj,\
         HILDON_TYPE_HVOLUMEBAR, HildonHVolumebar))
@@ -42,6 +38,7 @@ G_BEGIN_DECLS
         HILDON_TYPE_HVOLUMEBAR))
 #define HILDON_IS_HVOLUMEBAR_CLASS(klass) (GTK_CHECK_CLASS_TYPE ((klass),\
         HILDON_TYPE_HVOLUMEBAR))
+
 typedef struct _HildonHVolumebar HildonHVolumebar;
 typedef struct _HildonHVolumebarClass HildonHVolumebarClass;
 
@@ -58,4 +55,4 @@ GType hildon_hvolumebar_get_type(void) G_GNUC_CONST;
 GtkWidget *hildon_hvolumebar_new(void);
 
 G_END_DECLS
-#endif /* HILDON_HVOLUMEBAR */
+#endif /* __HILDON_HVOLUMEBAR_H__ */

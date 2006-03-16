@@ -67,6 +67,66 @@
 
 
 2006-03-02  Luc Pionchon  <luc.pionchon@nokia.com>
+	
+        Cleanup volume bars,
+
+	* hildon-widgets/hildon-volumebar.h: removed unused #include
+	+ coding style cleanup
+
+	* hildon-widgets/hildon-volumebar.c
+	(_hildon_volumebar_mute_toggled): new function. Sends mute-toggled
+	signal to widget.
+	(hildon_child_forall): use g_assert instead of g_return_if_fail
+
+	* hildon-widgets/hildon-volumebar-range.h: removed unused #include
+	+ coding style cleanup
+
+	* hildon-widgets/hildon-volumebar-private.h:
+	added missing #include.
+	added _hildon_volumebar_mute_toggled.
+	(struct _HildonVolumebarPrivate): removed 'orientation' field (unused)
+
+
+	
+	* hildon-widgets/hildon-vvolumebar.h: removed unused #include
+	+ coding style cleanup
+
+	* hildon-widgets/hildon-vvolumebar.c
+	(hildon_vvolumebar_size_request)
+	(hildon_vvolumebar_size_allocate)
+	(hildon_vvolumebar_expose): use g_assert instead of g_return_if_fail
+
+	* hildon-widgets/hildon-vvolumebar.c (hildon_vvolumebar_mute): removed (unused).
+	
+	* hildon-widgets/hildon-vvolumebar.c: removed unused #include
+	(vvolumebar_class_init): renamed to hildon_vvolumebar_class_init
+	(vvolumebar_init): renamed to hildon_vvolumebar_init
+	(hildon_vvolumebar_init): removed unused 'orientation'
+	initialisation. Use _hildon_volumebar_mute_toggled instead of
+	removed hildon_vvolumebar_mute.
+
+
+	
+	* hildon-widgets/hildon-hvolumebar.h: removed unused #include
+	
+	* hildon-widgets/hildon-hvolumebar.c (hvolumebar_class_init):
+	renamed to hildon_hvolumebar_class_init
+
+	* hildon-widgets/hildon-hvolumebar.c (hvolumebar_init): renamed to
+	hildon_hvolumebar_init
+
+	* hildon-widgets/hildon-hvolumebar.c (hildon_hvolumebar_mute):
+	removed (unused).
+
+	* hildon-widgets/hildon-hvolumebar.c (hildon_hvolumebar_init):
+	removed unused 'orientation' initialisation.
+
+	* hildon-widgets/hildon-hvolumebar.c (hildon_hvolumebar_init): use
+	_hildon_volumebar_mute_toggled instead of removed
+	hildon_hvolumebar_mute.
+
+
+2006-03-02  Luc Pionchon  <luc.pionchon@nokia.com>
 
         More cleanup,
 

@@ -217,8 +217,8 @@ hildon_child_forall(GtkContainer * container,
 {
     HildonVolumebarPrivate *priv;
 
-    g_return_if_fail(HILDON_IS_VOLUMEBAR(container));
-    g_return_if_fail(callback != NULL);
+    g_assert(HILDON_IS_VOLUMEBAR(container));
+    g_assert(callback != NULL);
 
     priv = HILDON_VOLUMEBAR_GET_PRIVATE(container);
 
@@ -469,6 +469,9 @@ hildon_volumebar_get_adjustment (HildonVolumebar * self)
 static void
 mute_toggled (HildonVolumebar *self)
 {
+  /* This looks like no-op, but it still does something meaningfull!
+     set_mute also updates the ui to match new state that
+     is already reported by get_mute */
   hildon_volumebar_set_mute (self, hildon_volumebar_get_mute(self));
 }
 
@@ -488,4 +491,13 @@ hildon_volumebar_key_press (GtkWidget * widget,
     }
 
     return GTK_WIDGET_CLASS(parent_class)->key_press_event(widget, event);
+}
+
+/* Sends mute-toggled signal to widget, used as a callback in derived classes
+   Just keep this "protected" in order to avoid introducing new API. */
+void
+_hildon_volumebar_mute_toggled(HildonVolumebar * self)
+{
+    g_return_if_fail(HILDON_IS_VOLUMEBAR(self));
+    g_signal_emit_by_name(self, "mute_toggled");
 }

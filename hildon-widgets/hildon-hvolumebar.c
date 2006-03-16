@@ -61,10 +61,8 @@
 #define TOOL_VERTICAL_MUTE_GAP ((TOOL_DEFAULT_BAR_HEIGHT - TOOL_DEFAULT_TBUTTON_HEIGHT) / 2)
 
 static HildonVolumebarClass *parent_class;
-static void hvolumebar_class_init(HildonHVolumebarClass * klass);
-static void hvolumebar_init(HildonHVolumebar * hvolumebar);
-static void
-hildon_hvolumebar_mute(GtkWidget * widget, HildonHVolumebar * self);
+static void hildon_hvolumebar_class_init(HildonHVolumebarClass * klass);
+static void hildon_hvolumebar_init(HildonHVolumebar * hvolumebar);
 
 static gboolean hildon_hvolumebar_expose(GtkWidget * widget,
                                          GdkEventExpose * event);
@@ -84,12 +82,12 @@ GType hildon_hvolumebar_get_type(void)
             sizeof(HildonHVolumebarClass),
             NULL,       /* base_init */
             NULL,       /* base_finalize */
-            (GClassInitFunc) hvolumebar_class_init,     /* class_init */
+            (GClassInitFunc) hildon_hvolumebar_class_init,     /* class_init */
             NULL,       /* class_finalize */
             NULL,       /* class_data */
             sizeof(HildonHVolumebar),
             0,
-            (GInstanceInitFunc) hvolumebar_init,
+            (GInstanceInitFunc) hildon_hvolumebar_init,
         };
         type = g_type_register_static(HILDON_TYPE_VOLUMEBAR,
                                       "HildonHVolumebar", &info, 0);
@@ -98,7 +96,7 @@ GType hildon_hvolumebar_get_type(void)
 }
 
 
-static void hvolumebar_class_init(HildonHVolumebarClass * klass)
+static void hildon_hvolumebar_class_init(HildonHVolumebarClass * klass)
 {
     GtkWidgetClass *volumebar_class = GTK_WIDGET_CLASS(klass);
 
@@ -111,13 +109,12 @@ static void hvolumebar_class_init(HildonHVolumebarClass * klass)
 }
 
 
-static void hvolumebar_init(HildonHVolumebar * hvolumebar)
+static void hildon_hvolumebar_init(HildonHVolumebar * hvolumebar)
 {
     HildonVolumebarPrivate *priv;
 
     priv = HILDON_VOLUMEBAR_GET_PRIVATE(hvolumebar);
 
-    priv->orientation = GTK_ORIENTATION_HORIZONTAL;
     priv->volumebar =
         HILDON_VOLUMEBAR_RANGE(hildon_volumebar_range_new
                                (GTK_ORIENTATION_HORIZONTAL));
@@ -133,8 +130,8 @@ static void hvolumebar_init(HildonHVolumebar * hvolumebar)
     g_signal_connect_swapped(G_OBJECT(priv->volumebar), "value-changed",
                              G_CALLBACK(hildon_volumebar_level_change),
                              hvolumebar);
-    g_signal_connect(G_OBJECT(priv->tbutton), "toggled",
-                     G_CALLBACK(hildon_hvolumebar_mute), hvolumebar);
+    g_signal_connect_swapped(priv->tbutton, "toggled",
+        G_CALLBACK(_hildon_volumebar_mute_toggled), hvolumebar);
 
     gtk_widget_show(GTK_WIDGET(priv->volumebar));
 }
@@ -156,7 +153,7 @@ static void hildon_hvolumebar_map(GtkWidget * widget)
     HildonVolumebarPrivate *priv;
     GtkWidget *parent;
 
-    g_return_if_fail(HILDON_IS_HVOLUMEBAR(widget));
+    g_assert(HILDON_IS_HVOLUMEBAR(widget));
 
     priv = HILDON_VOLUMEBAR_GET_PRIVATE(widget);
     parent = gtk_widget_get_ancestor(GTK_WIDGET(widget), GTK_TYPE_TOOLBAR);
@@ -173,7 +170,7 @@ static gboolean hildon_hvolumebar_expose(GtkWidget * widget,
 {
     HildonVolumebarPrivate *priv;
 
-    g_return_val_if_fail(HILDON_IS_HVOLUMEBAR(widget), FALSE);
+    g_assert(HILDON_IS_HVOLUMEBAR(widget));
 
     priv = HILDON_VOLUMEBAR_GET_PRIVATE(HILDON_VOLUMEBAR(widget));
 
@@ -200,7 +197,7 @@ hildon_hvolumebar_size_request(GtkWidget * widget,
 {
     HildonVolumebarPrivate *priv;
 
-    g_return_if_fail(HILDON_IS_HVOLUMEBAR(widget));
+    g_assert(HILDON_IS_HVOLUMEBAR(widget));
 
     priv = HILDON_VOLUMEBAR_GET_PRIVATE(HILDON_VOLUMEBAR(widget));
 
@@ -220,7 +217,7 @@ hildon_hvolumebar_size_allocate(GtkWidget * widget,
     HildonVolumebarPrivate *priv;
     GtkAllocation button_allocation, range_allocation;
 
-    g_return_if_fail(HILDON_IS_HVOLUMEBAR(widget));
+    g_assert(HILDON_IS_HVOLUMEBAR(widget));
 
     priv = HILDON_VOLUMEBAR_GET_PRIVATE(widget);
     
@@ -326,10 +323,4 @@ hildon_hvolumebar_size_allocate(GtkWidget * widget,
         gtk_widget_size_allocate(GTK_WIDGET(priv->volumebar),
                                  &range_allocation);
     }
-}
-
-static void
-hildon_hvolumebar_mute(GtkWidget * widget, HildonHVolumebar * self)
-{
-    g_signal_emit_by_name(GTK_WIDGET(self), "mute_toggled");
 }

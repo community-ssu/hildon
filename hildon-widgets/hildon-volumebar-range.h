@@ -22,14 +22,13 @@
  *
  */
 
-#ifndef HILDON_VOLUMEBAR_RANGE_H
-#define HILDON_VOLUMEBAR_RANGE_H
+#ifndef __HILDON_VOLUMEBAR_RANGE_H__
+#define __HILDON_VOLUMEBAR_RANGE_H__
 
-#include <glib.h>
-#include <glib-object.h>
 #include <gtk/gtkscale.h>
 
 G_BEGIN_DECLS
+
 #define HILDON_VOLUMEBAR_RANGE_TYPE ( hildon_volumebar_range_get_type() )
 #define HILDON_VOLUMEBAR_RANGE(obj) (GTK_CHECK_CAST (obj,\
         HILDON_VOLUMEBAR_RANGE_TYPE, HildonVolumebarRange))
@@ -51,12 +50,13 @@ struct _HildonVolumebarRangeClass {
     GtkScaleClass parent_class;
 };
 
-GType hildon_volumebar_range_get_type(void) G_GNUC_CONST;
-GtkWidget *hildon_volumebar_range_new(GtkOrientation orientation);
-gdouble hildon_volumebar_range_get_level(HildonVolumebarRange * self);
-void hildon_volumebar_range_set_level(HildonVolumebarRange * self,
-                                      gdouble level);
+GType       hildon_volumebar_range_get_type  (void) G_GNUC_CONST;
+GtkWidget * hildon_volumebar_range_new       (GtkOrientation orientation);
+gdouble     hildon_volumebar_range_get_level (HildonVolumebarRange *self);
+void        hildon_volumebar_range_set_level (HildonVolumebarRange *self,
+                                              gdouble               level);
 
 
 G_END_DECLS
-#endif
+
+#endif /* __HILDON_VOLUMEBAR_RANGE_H__ */
