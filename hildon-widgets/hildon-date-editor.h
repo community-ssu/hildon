@@ -53,7 +53,7 @@ typedef struct _HildonDateEditorClass HildonDateEditorClass;
 
 typedef enum
 {
-  MAX_DAY,
+  MAX_DAY = 1,
   MAX_MONTH,
   MAX_YEAR,
   MIN_DAY,
