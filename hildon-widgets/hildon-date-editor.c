@@ -629,8 +629,8 @@ static void hildon_child_forall(GtkContainer * container,
     HildonDateEditor *editor;
     HildonDateEditorPrivate *priv;
 
-    g_return_if_fail(container);
-    g_return_if_fail(callback);
+    g_assert(container);
+    g_assert(callback);
 
     editor = HILDON_DATE_EDITOR(container);
     priv = HILDON_DATE_EDITOR_GET_PRIVATE(editor);
@@ -915,8 +915,8 @@ hildon_date_editor_entry_validate(GtkWidget *widget, gpointer data)
     const gchar *text;        
     gint error_code = 0;
 
-    g_return_if_fail(HILDON_IS_DATE_EDITOR(data));
-    g_return_if_fail(GTK_IS_ENTRY(widget));
+    g_assert(HILDON_IS_DATE_EDITOR(data));
+    g_assert(GTK_IS_ENTRY(widget));
 
     ed = HILDON_DATE_EDITOR(data);
     priv = HILDON_DATE_EDITOR_GET_PRIVATE(ed);
