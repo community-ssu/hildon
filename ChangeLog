@@ -1,5 +1,13 @@
 2006-03-15  Luc Pionchon  <luc.pionchon@nokia.com>
 
+	* hildon-widgets/hildon-caption.c
+	(hildon_caption_expose): use g_assert instead of g_return_val_if_fail
+	(hildon_caption_size_allocate): likewise.
+	(hildon_caption_forall): likewise.
+
+
+2006-03-15  Luc Pionchon  <luc.pionchon@nokia.com>
+
 	Cleanup Find toolbar,
 	
 	* hildon-widgets/hildon-find-toolbar.[ch]

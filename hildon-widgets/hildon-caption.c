@@ -71,12 +71,11 @@ enum
   CHILD_PROP_EXPAND
 };
 
-static void hildon_caption_class_init( HildonCaptionClass *caption_class );
-static void hildon_caption_init( HildonCaption *caption );
-static void hildon_caption_size_request( GtkWidget *widget,
-                                         GtkRequisition *requisition );
-static void hildon_caption_size_allocate( GtkWidget *widget,
-                                          GtkAllocation *allocation );
+static void hildon_caption_class_init   ( HildonCaptionClass *caption_class );
+static void hildon_caption_init         ( HildonCaption *caption );
+static void hildon_caption_size_request ( GtkWidget *widget, GtkRequisition *requisition );
+static void hildon_caption_size_allocate( GtkWidget *widget, GtkAllocation *allocation );
+
 static void hildon_caption_forall( GtkContainer *container,
                                    gboolean include_internals,
                                    GtkCallback callback, gpointer data );
@@ -185,15 +184,19 @@ static void hildon_caption_class_init( HildonCaptionClass *caption_class )
   /* Override virtual functions */
   gobject_class->get_property = hildon_caption_get_property;
   gobject_class->set_property = hildon_caption_set_property;
+
   caption_class->activate = hildon_caption_activate;
+
   GTK_OBJECT_CLASS(caption_class)->destroy = hildon_caption_destroy;
-  container_class->forall = hildon_caption_forall;
+
+  container_class->forall             = hildon_caption_forall;
   container_class->set_child_property = hildon_caption_set_child_property;
   container_class->get_child_property = hildon_caption_get_child_property;
-  widget_class->expose_event = hildon_caption_expose;
-  widget_class->hierarchy_changed = hildon_caption_hierarchy_changed;
-  widget_class->size_request = hildon_caption_size_request;
-  widget_class->size_allocate = hildon_caption_size_allocate;
+
+  widget_class->expose_event       = hildon_caption_expose;
+  widget_class->hierarchy_changed  = hildon_caption_hierarchy_changed;
+  widget_class->size_request       = hildon_caption_size_request;
+  widget_class->size_allocate      = hildon_caption_size_allocate;
   widget_class->button_press_event = hildon_caption_button_press;
 
   /* Create new signals and properties */
@@ -304,9 +307,8 @@ static void hildon_caption_destroy( GtkObject *self )
 }
 
 /* Parent, eventbox will run allocate also for the child which may be
- * owning a window too. This window is then moved and resized and we do not
- * want to do that -> It causes flickering.
- * And just because we also want to
+ * owning a window too. This window is then moved and resized
+ * and we do not want to do that (it causes flickering).
  */
 static gboolean hildon_caption_expose( GtkWidget *widget,
                                        GdkEventExpose *event )
@@ -316,7 +318,7 @@ static gboolean hildon_caption_expose( GtkWidget *widget,
   GtkAllocation alloc;
   gfloat align;
 
-  g_return_val_if_fail( HILDON_IS_CAPTION(widget), TRUE );
+  g_assert( HILDON_IS_CAPTION(widget) );
   priv = HILDON_CAPTION_GET_PRIVATE(widget);
 
   if( !GTK_WIDGET_DRAWABLE(widget) )
@@ -658,7 +660,7 @@ static void hildon_caption_size_allocate( GtkWidget *widget,
   GtkRequisition req;
   GtkWidget *child = NULL;
   HildonCaptionPrivate *priv = NULL;
-  g_return_if_fail( HILDON_IS_CAPTION(widget) );
+  g_assert( HILDON_IS_CAPTION(widget) );
   priv = HILDON_CAPTION_GET_PRIVATE(widget);
 
   /* Position the caption to its allocated location */
@@ -719,8 +721,8 @@ static void hildon_caption_forall( GtkContainer *container,
 {
   HildonCaptionPrivate *priv = NULL;
 
-  g_return_if_fail( HILDON_IS_CAPTION(container) );
-  g_return_if_fail( callback != NULL );
+  g_assert( HILDON_IS_CAPTION(container) );
+  g_assert( callback != NULL );
 
   priv = HILDON_CAPTION_GET_PRIVATE(container);
 
