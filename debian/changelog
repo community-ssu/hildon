@@ -1,3 +1,9 @@
+hildon-libs (0.12.3-2) unstable; urgency=low
+
+  * debian/hildon-libs-dev.docs: refers to correct doc folder (gtk-doc/)
+
+ -- Luc Pionchon <luc.pionchon@nokia.com>  Thu, 16 Mar 2006 15:16:21 +0200
+
 hildon-libs (0.12.3-1) unstable; urgency=low
 
   * hildon-widgets/hildon-window.c: propagate key-press event to the
