@@ -1,5 +1,42 @@
 2006-03-15  Luc Pionchon  <luc.pionchon@nokia.com>
 
+        More cleanup for range editor,
+	
+	* hildon-widgets/hildon-range-editor.[ch]
+	- removed useless includes
+	(hildon_range_editor_new_with_separator): set char parameter 'const'
+
+	* hildon-widgets/hildon-range-editor.c
+	- removed useless includes
+	- rewritten a lot of functions because code was inefficient.  
+	- removed useless g_return_if_fail calls from various functions.  
+
+	(hildon_range_editor_init): Romoved unneeded casts, added composite names.
+	(hildon_range_editor_entry_keypress):  rewritten
+	(hildon_range_editor_entry_focus_out): rewritten
+	(hildon_range_editor_refresh_widths): New function
+	(hildon_range_editor_set_range): Make sure that the values are in
+	correct order
+	(hildon_range_editor_set_lower):  rewritten.
+	(hildon_range_editor_set_higher): rewritten.
+	(hildon_range_editor_set_min):    rewritten.
+	(hildon_range_editor_set_max):    rewritten.
+
+	(hildon_range_editor_entry_validate): New validator function
+	(hildon_range_editor_entry_changed): New signal handler for
+	"changed" for entries, this will now validate whenever entry changes.
+
+	(hildon_range_editor_entry_focus_out): Added g_assert for
+	editor. Removed call to hildon_range_editor_apply_current_range().
+	Added call to the new function hildon_range_editor_entry_validate()
+	for validation.
+	
+	(hildon_range_editor_init): connected
+	hildon_range_editor_entry_changed to "changed" for entries.
+
+
+2006-03-15  Luc Pionchon  <luc.pionchon@nokia.com>
+
 	Major cleanup for time editor
 
 	* hildon-widgets/hildon-time-editor.c

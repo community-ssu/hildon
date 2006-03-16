@@ -25,11 +25,7 @@
 #ifndef HILDON_RANGE_EDITOR_H
 #define HILDON_RANGE_EDITOR_H
 
-#include <glib.h>
-#include <glib-object.h>
 #include <gtk/gtkcontainer.h>
-#include <gtk/gtkhbox.h>
-
 
 G_BEGIN_DECLS
 /**
@@ -65,7 +61,7 @@ struct _HildonRangeEditorClass {
 
 GType hildon_range_editor_get_type(void) G_GNUC_CONST;
 
-GtkWidget *hildon_range_editor_new_with_separator(gchar * separator);
+GtkWidget *hildon_range_editor_new_with_separator(const gchar * separator);
 GtkWidget *hildon_range_editor_new(void);
 
 void hildon_range_editor_set_range(HildonRangeEditor * editor,
