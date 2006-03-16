@@ -67,8 +67,8 @@ struct _HildonFindToolbarClass
 };
 
 GType		hildon_find_toolbar_get_type		(void) G_GNUC_CONST;
-GtkWidget*	hildon_find_toolbar_new			(gchar *label);
-GtkWidget*	hildon_find_toolbar_new_with_model	(gchar *label,
+GtkWidget*	hildon_find_toolbar_new			(const gchar *label);
+GtkWidget*	hildon_find_toolbar_new_with_model	(const gchar *label,
 							 GtkListStore*
 							 model,
 							 gint column);
