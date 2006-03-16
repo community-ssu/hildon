@@ -86,9 +86,6 @@ hildon_color_popup_new(GtkWindow *parent, const GdkColor *initial_color,
   GtkTable *layout;
   GtkWidget *area;
   GtkWidget *l_red, *l_green, *l_blue;
-  GdkColor  *current_color;
-
-  current_color = initial_color;
 
   /* Create control bars for HildonColorPopup */
   popup_data->ctrlbar_red   = hildon_controlbar_new (); 
@@ -141,11 +138,11 @@ hildon_color_popup_new(GtkWindow *parent, const GdkColor *initial_color,
 
   /* Give the initial values for each control bar */
   hildon_controlbar_set_value (HILDON_CONTROLBAR(popup_data->ctrlbar_red),   
-                                 (current_color->red >> 11)&0x1F);
+                                 (initial_color->red >> 11)&0x1F);
   hildon_controlbar_set_value (HILDON_CONTROLBAR(popup_data->ctrlbar_green),
-                                 (current_color->green >> 11)&0x1F);
+                                 (initial_color->green >> 11)&0x1F);
   hildon_controlbar_set_value (HILDON_CONTROLBAR(popup_data->ctrlbar_blue),
-                                 (current_color->blue >> 11)&0x1F);
+                                 (initial_color->blue >> 11)&0x1F);
 
   /* Register controlbar callbacks */
   g_signal_connect_swapped(popup_data->ctrlbar_red, "value-changed",
@@ -170,7 +167,8 @@ hildon_color_popup_new(GtkWindow *parent, const GdkColor *initial_color,
                                        GTK_RESPONSE_CANCEL,
                                        NULL);
 
-  gtk_dialog_set_default_response(GTK_DIALOG(popup), GTK_RESPONSE_OK);
+  /* Select-key shouldn't do anything unless dialog's button is focused */
+  gtk_dialog_set_default_response(GTK_DIALOG(popup), GTK_RESPONSE_NONE);
 
   /* Add layout table to the Vbox of the popup dialog */
   gtk_box_pack_start (GTK_BOX(GTK_DIALOG(popup)->vbox), 

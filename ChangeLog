@@ -1,5 +1,12 @@
 2006-03-13  Luc Pionchon  <luc.pionchon@nokia.com>
 
+	* hildon-widgets/hildon-color-popup.c (hildon_color_popup_new):
+	removed current_color; use initial_color directly.
+	Disabled select-hardkey from activating to OK-button by default. 
+
+
+2006-03-13  Luc Pionchon  <luc.pionchon@nokia.com>
+
 	* hildon-widgets/hildon-date-editor.c
 	(hildon_date_editor_keypress): removed the unnecessary check for
 	the position of the cursor in the text-field which was hindering
