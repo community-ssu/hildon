@@ -990,10 +990,20 @@ hildon_date_editor_entry_validate(GtkWidget *widget, gpointer data)
            d = 1;
         }
         else if (d > max_days) {
-           /* Report range error or invalid date */
-           error_code = d > 31 ? MAX_DAY : INVALID_DATE;
-           d = max_days;
-           widget = priv->d_entry; /* Note! Change param to point day entry */
+           if (d > 31) {         
+               error_code = MAX_DAY;
+               d = max_days;
+           }
+           else {                /* the date does not exist (is invalid) */
+               error_code = INVALID_DATE;
+               /* check what was changed and restore previous value */
+               if ( widget == priv->y_entry )
+                   y = priv->year;
+               else if ( widget == priv->m_entry )
+                   m = priv->month;
+               else
+                   d = priv->day;
+           }
         }
 
         if (error_code != NO_ERROR)
