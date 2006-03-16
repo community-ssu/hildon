@@ -884,7 +884,7 @@ hildon_font_selection_dialog_finalize(GObject * object)
   HildonFontSelectionDialogPrivate *priv;
   HildonFontSelectionDialog *fontsel;
 
-  g_return_if_fail(HILDON_IS_FONT_SELECTION_DIALOG(object));
+  g_assert(HILDON_IS_FONT_SELECTION_DIALOG(object));
   fontsel = HILDON_FONT_SELECTION_DIALOG(object);
 
   priv = HILDON_FONT_SELECTION_DIALOG_GET_PRIVATE(fontsel);
@@ -1645,7 +1645,6 @@ hildon_font_selection_dialog_set_preview_text(HildonFontSelectionDialog *
  * Returns: a #GtkTextTag having corresponding properties
  * set. 
  */ 
-#ifndef HILDON_DISABLE_DEPRECATED
 GtkTextTag * 
 hildon_font_selection_dialog_get_text_tag (HildonFontSelectionDialog *fsd)
 {
@@ -1769,7 +1768,6 @@ hildon_font_selection_dialog_get_text_tag (HildonFontSelectionDialog *fsd)
   
   return tag;
 }
-#endif
 
 /** 
  * hildon_font_selection_dialog_set_buffer:
@@ -1783,7 +1781,6 @@ hildon_font_selection_dialog_get_text_tag (HildonFontSelectionDialog *fsd)
  * font selection dialog to reflect your inspection.
  * 
  */
-#ifndef HILDON_DISABLE_DEPRECATED
 void 
 hildon_font_selection_dialog_set_buffer (HildonFontSelectionDialog *fsd,
 					 GtkTextBuffer *buffer)
@@ -1823,7 +1820,6 @@ hildon_font_selection_dialog_set_buffer (HildonFontSelectionDialog *fsd,
   settings_apply(&settings);
   settings_destroy(&settings);
 }
-#endif
 
 /**
  * hildon_font_selection_dialog_get_font:
@@ -1834,7 +1830,6 @@ hildon_font_selection_dialog_set_buffer (HildonFontSelectionDialog *fsd,
  *
  * Return value: pointer to @PangoAttrList.
  */
-#ifndef HILDON_DISABLE_DEPRECATED
 PangoAttrList
 *hildon_font_selection_dialog_get_font(HildonFontSelectionDialog * fsd)
 {
@@ -1849,7 +1844,6 @@ PangoAttrList
   return hildon_font_selection_dialog_create_attrlist(fsd, 
 				0, strlen(priv->preview_text));
 }
-#endif
 
 /**
  * hildon_font_selection_dialog_set_font:
@@ -1860,7 +1854,6 @@ PangoAttrList
  * 
  * Sets the font to the dialog.
  */
-#ifndef HILDON_DISABLE_DEPRECATED
 void 
 hildon_font_selection_dialog_set_font(HildonFontSelectionDialog * fsd,
 				      PangoAttrList * list)
@@ -1889,4 +1882,3 @@ hildon_font_selection_dialog_set_font(HildonFontSelectionDialog * fsd,
   settings_apply(&settings);
   settings_destroy(&settings);
 }
-#endif

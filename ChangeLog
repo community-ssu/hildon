@@ -68,6 +68,24 @@
 
 2006-03-01  Luc Pionchon  <luc.pionchon@nokia.com>
 
+        Cleanup font selection dialog,
+
+	* hildon-widgets/hildon-font-selection-dialog.h: use G_BEGIN_DECLS
+        + coding style cleanup
+
+	* hildon-widgets/hildon-font-selection-dialog.c
+	(hildon_font_selection_dialog_finalize): use g_return_if_fail
+	instead of g_assert.
+
+	* hildon-widgets/hildon-font-selection-dialog.c
+	(hildon_font_selection_dialog_get_text_tag)
+	(hildon_font_selection_dialog_set_buffer)
+	(hildon_font_selection_dialog_get_font)
+	(hildon_font_selection_dialog_set_font): Removed deprecation #ifdef.
+
+
+2006-03-01  Luc Pionchon  <luc.pionchon@nokia.com>
+
 	Cleanup range editor,
 	
 	* hildon-widgets/hildon-range-editor.c
@@ -92,7 +110,7 @@
 	(hildon_range_editor_forall): use g_return_if_fail instead of
 	g_assert
 
-	* hildon-widgets/hildon-range-editor.c
+	* hildon-widgets/hildon-range-editor.cvn
 	(hildon_range_editor_mnemonic_activate): removed. (unused)
 
 

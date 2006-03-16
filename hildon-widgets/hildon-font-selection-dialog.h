@@ -27,9 +27,7 @@
 #include <gtk/gtkdialog.h>
 #include <gtk/gtktextbuffer.h>
 
-#ifdef __cplusplus
-extern "C" {
-#endif /* __cplusplus */
+G_BEGIN_DECLS
 
 #define HILDON_TYPE_FONT_SELECTION_DIALOG \
         (hildon_font_selection_dialog_get_type ())
@@ -51,9 +49,8 @@ extern "C" {
          HILDON_TYPE_FONT_SELECTION_DIALOG,\
          HildonFontSelectionDialogClass))
 
-typedef struct _HildonFontSelectionDialog HildonFontSelectionDialog;
-typedef struct _HildonFontSelectionDialogClass
- HildonFontSelectionDialogClass;
+typedef struct _HildonFontSelectionDialog      HildonFontSelectionDialog;
+typedef struct _HildonFontSelectionDialogClass HildonFontSelectionDialogClass;
 
 struct _HildonFontSelectionDialog
 {
@@ -72,36 +69,32 @@ struct _HildonFontSelectionDialogClass
 };
 
 #ifndef HILDON_DISABLE_DEPRECATED
-PangoAttrList* 
-hildon_font_selection_dialog_get_font(HildonFontSelectionDialog *
-                                            fsd);
-void hildon_font_selection_dialog_set_font(HildonFontSelectionDialog *
-                                           fsd, PangoAttrList * list);
+PangoAttrList* hildon_font_selection_dialog_get_font(HildonFontSelectionDialog *fsd);
+
+void           hildon_font_selection_dialog_set_font(HildonFontSelectionDialog *fsd,
+                                                     PangoAttrList             *list);
 #endif
 
 
-GType   hildon_font_selection_dialog_get_type          (void) G_GNUC_CONST;
+GType      hildon_font_selection_dialog_get_type       (void) G_GNUC_CONST;
 
-GtkWidget*
-        hildon_font_selection_dialog_new               (GtkWindow * parent,
-							const gchar * title);
+GtkWidget* hildon_font_selection_dialog_new            (GtkWindow   *parent,
+							const gchar *title);
 
 
 #ifndef HILDON_DISABLE_DEPRECATED
 void    hildon_font_selection_dialog_set_buffer        (HildonFontSelectionDialog *fsd, 
 							GtkTextBuffer *buffer);
 
-GtkTextTag *
-        hildon_font_selection_dialog_get_text_tag      (HildonFontSelectionDialog *fsd);
-
+GtkTextTag* hildon_font_selection_dialog_get_text_tag  (HildonFontSelectionDialog *fsd);
 #endif
-	
-gchar*  hildon_font_selection_dialog_get_preview_text  (HildonFontSelectionDialog * fsd);
 
-void    hildon_font_selection_dialog_set_preview_text  (HildonFontSelectionDialog * fsd, 
+	
+gchar*  hildon_font_selection_dialog_get_preview_text  (HildonFontSelectionDialog *fsd);
+
+void    hildon_font_selection_dialog_set_preview_text  (HildonFontSelectionDialog *fsd, 
 							const gchar * text);
 
-#ifdef __cplusplus
-}
-#endif /* __cplusplus */
-#endif /* __HILDON_FONTSEL_H__ */
+G_END_DECLS
+
+#endif /* __HILDON_FONT_SELECTION_DIALOG_H__ */
