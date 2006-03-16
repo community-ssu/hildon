@@ -1,5 +1,52 @@
 2006-03-15  Luc Pionchon  <luc.pionchon@nokia.com>
 
+	* hildon-widgets/hildon-time-picker.c:
+	reorganized how the widgets are stored to reduce code
+	(HildonTimePickerWidgetGroup): new struct
+	(struct _HildonTimePickerPrivate): added member 'widgets' as an array of HildonTimePickerWidgetGroup
+	(hildon_time_picker_init)
+	(hildon_time_picker_arrow_press)
+	(hildon_time_picker_event_box_key_press)
+	(hildon_time_picker_change_time)
+	(hildon_time_picker_map)
+	(hildon_time_picker_event_box_key_release): use new widget organization
+        
+
+	(hildon_time_picker_init): return value from nl_timeinfo() is
+	valid only until it's called again, so g_strdup() the value when
+	storing it.
+
+	(MINS_IN_1H, MINS_IN_24H, MINS_IN_12H): defines hardcoded values
+	(HILDON_TIME_PICKER_LABEL_X_PADDING) 
+	(HILDON_TIME_PICKER_LABEL_Y_PADDING): defines hardcoded values
+	(hildon_time_picker_set_time):
+	(hildon_time_picker_get_time):
+	(hildon_time_picker_ampm_release): used the new defines
+
+	(struct _HildonTimePickerPrivate)
+	(hildon_time_picker_init) 
+	(hildon_time_picker_event_box_key_press) 
+	(hildon_time_picker_change_time): 
+	- c12h     renamed to show_ampm,
+	- ampo_pos renamed to ampm_left.
+
+	(hildon_time_picker_timeout): renamed to
+	hildon_time_picker_key_repeat_timeout(), 
+	and renamed parameter to 'hildon_time_picker'
+
+	(hildon_time_picker_event_box_press): renamed to
+	hildon_time_picker_event_box_button_press()
+
+	(hildon_time_picker_finalize): Added finalizer to make sure the
+	key repeat timeout handler gets removed.
+
+	(hildon_time_picker_arrow_press): Placed multipliers into
+	button_multipliers[] array to avoid multiple if/then/else
+	blocks.
+
+
+2006-03-15  Luc Pionchon  <luc.pionchon@nokia.com>
+
 	* hildon-lgpl/hildon-find-toolbar.c (hildon_find_toolbar_filter):
 	calculates correctly which items will be visible. Fixes N#16991.
 
