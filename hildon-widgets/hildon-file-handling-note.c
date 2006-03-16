@@ -54,7 +54,6 @@ struct _HildonFileHandlingNotePrivate {
     guint note_type;
 };
 
-#ifndef HILDON_DISABLE_DEPRECATED
 
 static HildonNote *parent_class;
 
@@ -363,4 +362,3 @@ GtkWidget *hildon_file_handling_note_new_saving(GtkWindow * parent)
     return GTK_WIDGET(file_note);
 }
 
-#endif /* HILDON_DISABLE_DEPRECATED */

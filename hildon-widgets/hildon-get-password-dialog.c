@@ -466,7 +466,6 @@ void hildon_get_password_dialog_set_domain(HildonGetPasswordDialog *dialog,
   
 }
 
-#ifndef HILDON_DISABLE_DEPRECATED
 /**
  * hildon_get_password_dialog_set_title:
  * @dialog: the dialog
@@ -486,7 +485,6 @@ void hildon_get_password_dialog_set_title(HildonGetPasswordDialog *dialog,
   gtk_window_set_title(GTK_WINDOW(dialog), 
 		       new_title);
 }
-#endif /* HILDON_DISABLE_DEPRECATED */
 
 /**
  * hildon_get_password_dialog_set_caption:
