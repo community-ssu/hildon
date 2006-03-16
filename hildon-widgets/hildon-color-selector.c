@@ -51,8 +51,7 @@
 /* Color amounts */
 #define HILDON_BASE_COLOR_NUM             16
 #define HILDON_CUSTOM_COLOR_NUM            8
-#define HILDON_TOTAL_COLOR_NUM \
-  (HILDON_BASE_COLOR_NUM + HILDON_CUSTOM_COLOR_NUM)
+#define HILDON_TOTAL_COLOR_NUM (HILDON_BASE_COLOR_NUM + HILDON_CUSTOM_COLOR_NUM)
 #define BLACKIND                           0
 #define GREYIND                            6
 #define WHITEIND                           9
@@ -68,7 +67,7 @@
 #define HILDON_COLOR_CONTROLBAR_MIN        0 
 #define HILDON_COLOR_LABELS_LEFT_PAD      35
 #define HILDON_COLOR_PALETTE_POS_PAD      45
-#define HILDON_COLOR_BAR_WIDTH 449
+#define HILDON_COLOR_BAR_WIDTH           449
 
 /* gconf definitions */
 #define HILDON_COLOR_GCONF_PATH  "/system/osso/af/color_selector"
@@ -106,43 +105,42 @@ static void
 hildon_color_selector_init (HildonColorSelector * selector);
 
 static gboolean
-hildon_color_selector_expose (GtkWidget * widget,
-                              GdkEventExpose * event, 
-                              gpointer data);
+hildon_color_selector_expose  (GtkWidget      * widget,
+                               GdkEventExpose * event, 
+                               gpointer         data);
 
-static gboolean 
-key_pressed (GtkWidget * widget, 
-             GdkEventKey * event);
+static gboolean key_pressed   (GtkWidget      * widget,
+                               GdkEventKey    * event);
 
-static gboolean 
-color_pressed (GtkWidget * widget, 
-               GdkEventButton * event, 
-               gpointer user_data);
+static gboolean color_pressed (GtkWidget      * widget,
+                               GdkEventButton * event,
+                               gpointer         user_data);
 
-static void
-select_color (HildonColorSelector * selector, 
-              int event_x, 
-              int event_y,
-              gboolean motion);
+static void     select_color  (HildonColorSelector * selector,
+                               int      event_x,
+                               int      event_y,
+                               gboolean motion);
 
-static gboolean
-color_moved (GtkWidget * widget, 
-             GdkEventMotion * event, 
-             gpointer data);
+static gboolean color_moved   (GtkWidget      * widget,
+                               GdkEventMotion * event,
+                               gpointer         data);
 
 static void
-modify_button_clicked (GtkWidget * button,
-                       HildonColorSelector * selector);
+modify_button_clicked         (GtkWidget           * button,
+                               HildonColorSelector * selector);
+
+static void modify_selected(HildonColorSelector * colselector);
 
 static void
-modify_selected(HildonColorSelector * colselector);
-
+hildon_color_selector_set_property(GObject      *object,
+                                   guint         param_id,
+                                   const GValue *value,
+                                   GParamSpec   *pspec);
 static void
-hildon_color_selector_set_property(GObject *object, guint param_id,
-                    					   const GValue *value, GParamSpec *pspec);
-static void
-hildon_color_selector_get_property(GObject *object, guint param_id,
-                       				   GValue *value, GParamSpec *pspec);
+hildon_color_selector_get_property(GObject    *object,
+                                   guint       param_id,
+                                   GValue     *value,
+                                   GParamSpec *pspec);
 
 GType
 hildon_color_selector_get_type(void)
@@ -154,15 +152,16 @@ hildon_color_selector_get_type(void)
         static const GTypeInfo selector_info = 
             {
                 sizeof(HildonColorSelectorClass),
-                NULL,       /* base_init */
-                NULL,       /* base_finalize */
+                NULL,       /* base_init      */
+                NULL,       /* base_finalize  */
                 (GClassInitFunc) hildon_color_selector_class_init,
                 NULL,       /* class_finalize */
-                NULL,       /* class_data */
+                NULL,       /* class_data     */
                 sizeof(HildonColorSelector),
-                0,  /* n_preallocs */
+                0,          /* n_preallocs    */
                 (GInstanceInitFunc) hildon_color_selector_init,
             };
+
         selector_type = g_type_register_static(GTK_TYPE_DIALOG,
                                                "HildonColorSelector",
                                                &selector_info, 0);
@@ -210,10 +209,10 @@ hildon_color_selector_class_init(HildonColorSelectorClass * selector_class)
      */
     g_object_class_install_property (gobject_class, PROP_COLOR,
 	    g_param_spec_boxed ("color",
-		"Current Color",
-		"The selected color",
-		GDK_TYPE_COLOR,
-		G_PARAM_READWRITE));
+                "Current Color",
+                "The selected color",
+                GDK_TYPE_COLOR,
+                G_PARAM_READWRITE));
 }
 
 
@@ -549,7 +548,7 @@ static gboolean key_pressed(GtkWidget * widget,
     HildonColorSelector *selector;
     gint index;
 
-    g_return_val_if_fail(widget, FALSE);
+    g_assert(widget);
 
     selector = HILDON_COLOR_SELECTOR(widget);
     index = selector->priv->index;
