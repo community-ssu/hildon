@@ -55,8 +55,6 @@
 #define OFF_BIT 0x02
 #define REFERENCE_LINE "Reference: " /*localized string?*/
 
-/* FIXME change pointers named 'data' to a more meaningful name */
-
 /*
  * These are what we use as the standard font sizes, for the size list.
  */
@@ -152,9 +150,9 @@ typedef struct
 
 static gboolean
               hildon_font_selection_dialog_preview_key_press
-	                                     (GtkWidget * widget,
-					      GdkEventKey * event,
-					      gpointer data);
+                                            (GtkWidget * widget,
+                                             GdkEventKey * event,
+                                             gpointer unused);
 
 /*Some tools from gtk_font_selection*/
 static int    cmp_families                   (const void *a, const void *b);
@@ -198,7 +196,7 @@ static void   hildon_font_selection_dialog_construct_notebook
 					     
 static void   color_modified_cb              (HildonColorButton *button,
 					      GParamSpec *pspec,
-					      gpointer data);
+					      gpointer fsd_priv);
 
 static void   check_tags                     (gpointer data,
 					      gpointer user_data);
@@ -230,7 +228,7 @@ static void   add_preview_text_attr          (PangoAttrList *list,
 					      guint len);
 
 static void   toggle_clicked                 (GtkButton *button, 
-					      gpointer data);
+					      gpointer unused);
 	
 					     
 					     
@@ -793,11 +791,6 @@ hildon_font_selection_dialog_construct_notebook (HildonFontSelectionDialog
   gtk_box_pack_start(GTK_BOX(font_color_box),
 		     priv->font_color_button, FALSE, FALSE, 0);
   
-  /*dummy widget for packing purpose only*/
-  /* FIXME why do we need this? */
-  gtk_box_pack_start(GTK_BOX(font_color_box), gtk_label_new(""),
-		     TRUE, TRUE, 0);
-  
   caption_control =
     hildon_caption_new(group, _("ecdg_fi_font_color_selector"),
 		       font_color_box,
@@ -873,10 +866,12 @@ hildon_font_selection_dialog_construct_notebook (HildonFontSelectionDialog
 }
 
 static void 
-color_modified_cb(HildonColorButton *button, GParamSpec *pspec, gpointer data)
+color_modified_cb(HildonColorButton *button, 
+                  GParamSpec *pspec, 
+                  gpointer fsd_priv)
 {
   HildonFontSelectionDialogPrivate *priv = 
-    (HildonFontSelectionDialogPrivate *) data;
+          (HildonFontSelectionDialogPrivate *) fsd_priv;
 
   priv->color_set = TRUE;
 }
@@ -910,17 +905,17 @@ cmp_families(const void *a, const void *b)
   return g_utf8_collate(a_name, b_name);
 }
 
-/* FIXME this function should be removed, the dialog doesn't need this 
- * binding of esc key */
+/* Exits the preview dialog with GTK_RESPONSE_CANCEL if Esc key
+ * was pressed */
 static gboolean
-hildon_font_selection_dialog_preview_key_press(GtkWidget * widget,
-					       GdkEventKey * event,
-					       gpointer data)
+hildon_font_selection_dialog_preview_key_press(GtkWidget   * widget,
+                                               GdkEventKey * event,
+                                               gpointer      unused)
 {
-  g_return_val_if_fail(widget, FALSE);
-  g_return_val_if_fail(event, FALSE);
-
-  if (event->keyval == GDK_Escape) 
+  g_assert(widget);
+  g_assert(event);
+  
+  if (event->keyval == GDK_Escape)
     {
       gtk_dialog_response(GTK_DIALOG(widget), GTK_RESPONSE_CANCEL);
       return TRUE;
@@ -1087,13 +1082,13 @@ hildon_font_selection_dialog_show_preview(HildonFontSelectionDialog *
   gtk_container_add(GTK_CONTAINER(GTK_DIALOG(preview_dialog)->vbox),
 		    preview_label);
 
+  
   /* set keypress handler (ESC hardkey) */
-  /* FIXME this is useless and should be removed */
   g_signal_connect(G_OBJECT(preview_dialog), "key-press-event",
-		   G_CALLBACK
-		   (hildon_font_selection_dialog_preview_key_press),
-		   NULL);
-
+                  G_CALLBACK(hildon_font_selection_dialog_preview_key_press),
+                  NULL);
+  
+  
   /*Set the font*/
   list = hildon_font_selection_dialog_create_attrlist(fontsel, 
 				strlen(REFERENCE_LINE),
@@ -1558,7 +1553,7 @@ settings_destroy(HildonFontSelectionDialogSettings *settings)
 }
 
 static void
-toggle_clicked(GtkButton *button, gpointer data)
+toggle_clicked(GtkButton *button, gpointer unused)
 {
   GtkToggleButton *t_b = GTK_TOGGLE_BUTTON(button);
 
@@ -1633,16 +1628,16 @@ void
 hildon_font_selection_dialog_set_preview_text(HildonFontSelectionDialog *
 					      fsd, const gchar * text)
 {
-  /* FIXME add propper checking here (g_return_if_fail), also
-   * for text*/
-  if (HILDON_IS_FONT_SELECTION_DIALOG(fsd)) ;
-    {
-      HildonFontSelectionDialogPrivate *priv =
-	HILDON_FONT_SELECTION_DIALOG_GET_PRIVATE(fsd);
-      g_free(priv->preview_text);
-      priv->preview_text = g_strdup(text);
-      g_object_notify (G_OBJECT (fsd), "preview-text");
-    }
+   HildonFontSelectionDialogPrivate *priv = NULL;
+   
+   g_return_if_fail(HILDON_IS_FONT_SELECTION_DIALOG(fsd));
+   g_return_if_fail(text);
+  
+   priv = HILDON_FONT_SELECTION_DIALOG_GET_PRIVATE(fsd);
+   
+   g_free(priv->preview_text);
+   priv->preview_text = g_strdup(text);
+   g_object_notify (G_OBJECT (fsd), "preview-text");
 }
 
 /**

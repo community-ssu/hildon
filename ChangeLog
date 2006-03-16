@@ -54,6 +54,26 @@
 
 2006-03-03  Luc Pionchon  <luc.pionchon@nokia.com>
 
+	Cleanup font selection dialog
+	
+	* hildon-widgets/hildon-font-selection-dialog.c
+
+	(hildon_font_selection_dialog_construct_notebook): removed dummy
+	label
+
+	(color_modified_cb): renamed argument 'data' to 'fsd_priv'
+
+	(hildon_font_selection_dialog_preview_key_press): Renamed argument
+	'data' to 'unused'. Replaced g_return_val_if_fail with g_assert.
+
+	(toggle_clicked): renamed argument 'data' to 'unused'
+
+	(hildon_font_selection_dialog_set_preview_text): added proper
+	argument checking
+
+
+2006-03-03  Luc Pionchon  <luc.pionchon@nokia.com>
+
 	* hildon-widgets/hildon-system-sound.c (hildon_play_system_sound):
 	removed console messages.
 
