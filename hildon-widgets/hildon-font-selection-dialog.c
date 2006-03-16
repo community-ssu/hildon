@@ -1075,7 +1075,10 @@ hildon_font_selection_dialog_show_preview(HildonFontSelectionDialog *
 				NULL);
 
   str = g_strconcat(REFERENCE_LINE, priv->preview_text, 0);
+
   preview_label = gtk_label_new(str);
+  gtk_label_set_line_wrap(GTK_LABEL(preview_label), TRUE);
+
   g_free(str);
   str = NULL;
 
