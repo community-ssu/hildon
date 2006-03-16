@@ -60,7 +60,7 @@ struct _HildonAppClass {
     GtkWindowClass parent_class;
     void (*topmost_status_acquire) (HildonApp *self);
     void (*topmost_status_lose) (HildonApp *self);
-    void (*switch_to) (HildonApp *self);
+    void (*switch_to) (HildonApp *self); /* FIXME: Possible browser hack?? */
     void (*im_close) (HildonApp *self);
     void (*clipboard_copy) (HildonApp *self, GtkWidget *widget);
     void (*clipboard_cut) (HildonApp *self, GtkWidget *widget);
