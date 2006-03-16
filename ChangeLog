@@ -66,6 +66,89 @@
 	    the program
 
 
+2006-03-03  Luc Pionchon  <luc.pionchon@nokia.com>
+
+	Cleanup time editor,
+	
+	* hildon-widgets/hildon-time-editor.c
+	(HILDON_TIME_EDITOR_GET_PRIVATE): moved up in the file.
+	(ENTRY_BORDER, ICON_WIDTH, ICON_HEIGHT): removed hardcoded pixel sizes.
+	(HILDON_TIME_EDITOR_TIME_LOWER_VALUE): removed (unused)
+	(HILDON_TIME_EDITOR_TIME_UPPER_VALUE): removed (unused)
+
+	(struct _HildonTimeEditorPrivate):
+	- h_entry, m_entry, s_entry replaced by entries[],
+	                            allows to remove a lot of code.
+	- label  renamed to hm_label
+	- label2 renamed to sec_label
+	- ampm   renamed to ampm_label
+	- show_s renamed to show_seconds
+	- removed fields: icon, valid_value, validated
+
+	+ moved up in the file.
+
+	(enum HildonValidation): removed unused field 'VALIDATION_ERROR'
+
+	(ENTRY_HOURS, ENTRY_MINS, ENTRY_SECS): added (enum)
+
+	(set_widget_allocation): removed
+	(hildon_time_editor_entry_changed): removed
+
+	(hildon_time_editor_forall): use g_asserts instead of g_return_if_fails
+
+	(hildon_time_editor_forall): removed unnecessary code
+	(hildon_time_editor_destroy): likewise. 
+
+	(hildon_time_editor_class_init): use MIN_DURATION and MAX_DURATION
+
+	(hildon_time_editor_tap_and_hold_setup): loop on 'entries[]'
+
+	(hildon_time_editor_set_to_current_time): new function. (factorise code)
+	(hildon_time_editor_init): loop on 'entries[]' (simplifies the code),
+	                           use new variable names,
+	                           use hildon_time_editor_set_to_current_time
+	
+	(hildon_time_editor_mnemonic_activate): uses 'entries[]'
+	(hildon_time_editor_set_ticks): use g_assert instead of
+	                                g_return_if_fails, use
+	                                'entries[]', removed dead code
+
+	(hildon_time_editor_set_show_seconds): use 'entries[]' and new variable names
+	(hildon_time_editor_validate): use 'entries[]', removed dead code
+	(hildon_time_editor_get_max_values): use 'entries[]'
+
+
+	(hildon_time_editor_get_show_seconds): use new variable names
+	(hildon_time_editor_set_duration_mode): likewise.
+
+	(hildon_time_editor_check_locale): do not g_strdup (fix memory leak)
+
+	(hildon_time_editor_ampm_clicked): use g_asserts instead of g_return_if_fails
+	                                   removed dead code
+	(hildon_time_editor_icon_clicked): use g_asserts instead of g_return_if_fails
+
+	(hildon_time_editor_size_request): cleaned up, removed hardcoded sizes.
+
+	(set_widget_allocation): removed (unused)
+	(hildon_time_editor_entry_changed): removed (unused)
+
+	(IS_VALID_KEYPRESS): new macro
+	(hildon_time_editor_entry_keypress): use g_asserts instead of g_return_if_fails
+	                                     deleate dead/unnecessary code
+	                                     use 'entries[]'
+                                             use IS_VALID_KEYPRESS
+
+	(hildon_time_editor_validate_duration): use g_asserts instead of g_return_if_fails
+
+	(hildon_time_editor_validate_time): removed 'editor' parameter (unused)
+
+	(hildon_time_editor_size_allocate): cleanup
+	(convert_to_12h): cleanup code style
+
+	(hildon_time_editor_show_seconds): removed deprecation flag
+	(hildon_time_editor_enable_duration_mode): likewise.
+
+
 2006-03-02  Luc Pionchon  <luc.pionchon@nokia.com>
 	
         Cleanup volume bars,
