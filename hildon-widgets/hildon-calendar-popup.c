@@ -45,7 +45,7 @@
 #include <time.h>
 #include <libintl.h>
 #include <hildon-widgets/hildon-calendar-popup.h>
-#include <hildon-widgets/gtk-infoprint.h> /* FIXME: broken include ? */
+#include <hildon-widgets/gtk-infoprint.h> /* FIXME: use GtkInfoprint instead of gtk-infoprint (deprecated). */
 
 #define _(String) dgettext(PACKAGE, String)
 
@@ -416,8 +416,8 @@ hildon_calendar_allow_exit(GtkWidget * self, gpointer data)
     HildonCalendarPopup *cal;
     HildonCalendarPopupPrivate *priv;
 
-    g_return_if_fail (GTK_IS_WIDGET (self));
-    g_return_if_fail (HILDON_IS_CALENDAR_POPUP (data)); 
+    g_assert(GTK_IS_WIDGET (self));
+    g_assert(HILDON_IS_CALENDAR_POPUP (data)); 
     
     cal = HILDON_CALENDAR_POPUP(data);
     priv = HILDON_CALENDAR_POPUP_GET_PRIVATE(cal);

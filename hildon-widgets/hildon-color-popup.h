@@ -29,12 +29,24 @@
 #include <gtk/gtkwindow.h>
 #include <gtk/gtkdialog.h>
 
+G_BEGIN_DECLS
+
 typedef struct
 {
-	  GtkWidget *ctrlbar_red, *ctrlbar_green, *ctrlbar_blue;
+  GtkWidget *ctrlbar_red;
+  GtkWidget *ctrlbar_green;
+  GtkWidget *ctrlbar_blue;
+
 } HildonColorPopup;
 
-GtkWidget *hildon_color_popup_new(GtkWindow * parent, GdkColor *initial_color, HildonColorPopup *popupdata);
+GtkWidget *hildon_color_popup_new(GtkWindow        *parent,
+                                  const GdkColor   *initial_color,
+                                  HildonColorPopup *popupdata);
 
-void hildon_color_popup_set_color_from_sliders(GdkColor *color, HildonColorPopup *popupdata);
-#endif
+void       hildon_color_popup_set_color_from_sliders(GdkColor *color,
+                                                     HildonColorPopup *popupdata);
+
+
+G_END_DECLS
+
+#endif /* __HILDON_COLOR_POPUP_H__ */

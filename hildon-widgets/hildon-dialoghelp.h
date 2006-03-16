@@ -25,17 +25,13 @@
 #ifndef __HILDON_DIALOG_HELP_H__
 #define __HILDON_DIALOG_HELP_H__
 
-#ifdef __cplusplus
-extern "C" {
-#endif /* __cplusplus */
-
-/*#include <gtk/gtk.h>*/
 #include <gtk/gtkdialog.h>
 
-void gtk_dialog_help_enable(GtkDialog * dialog);
-void gtk_dialog_help_disable(GtkDialog * dialog);
+G_BEGIN_DECLS
 
-#ifdef __cplusplus
-}
-#endif /* __cplusplus */
-#endif /* __DIALOG_HELP_H__ */
+void gtk_dialog_help_enable  (GtkDialog * dialog);
+void gtk_dialog_help_disable (GtkDialog * dialog);
+
+G_END_DECLS
+
+#endif /* __HILDON_DIALOG_HELP_H__ */

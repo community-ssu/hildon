@@ -230,7 +230,7 @@ GtkWidget *hildon_color_selector_new(GtkWindow * parent)
 {
     GtkWidget *dialog = g_object_new(HILDON_TYPE_COLOR_SELECTOR, NULL);
 
-    g_assert(dialog);
+    g_return_val_if_fail(dialog, NULL);
 
     if (parent) 
     {
@@ -640,7 +640,7 @@ select_color(HildonColorSelector * selector, int event_x, int event_y,
 {
     gint x, y;
 
-    g_return_if_fail(HILDON_IS_COLOR_SELECTOR(selector));
+    g_assert(HILDON_IS_COLOR_SELECTOR(selector));
 
     /* Get the selection coordinates */ 
     x = ( (event_x - HILDON_COLOR_SELECTOR_BOX_BORDER) /

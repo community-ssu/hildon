@@ -66,6 +66,27 @@
 	    the program
 
 
+2006-03-02  Luc Pionchon  <luc.pionchon@nokia.com>
+
+        More cleanup,
+
+	* hildon-widgets/hildon-dialoghelp.h: use G_BEGIN_DECLS +
+        coding style cleanup
+
+	* hildon-widgets/hildon-color-popup.h: likewise.
+
+	* hildon-widgets/hildon-color-popup.[ch] (hildon_color_popup_new):
+        use const parameter
+
+	* hildon-widgets/hildon-color-selector.c
+	(hildon_color_selector_new): use g_return_val_if_fail instead of
+	g_assert.
+	(select_color): use g_assert instead of g_return_if_fail
+
+	* hildon-widgets/hildon-calendar-popup.c
+	(hildon_calendar_allow_exit): use g_assert instead of g_return_if_fail.
+
+
 2006-03-01  Luc Pionchon  <luc.pionchon@nokia.com>
 
         Cleanup font selection dialog,

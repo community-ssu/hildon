@@ -79,7 +79,7 @@ hildon_popup_palette_expose (GtkWidget * widget,
  */
 
 GtkWidget *
-hildon_color_popup_new(GtkWindow *parent, GdkColor *initial_color, 
+hildon_color_popup_new(GtkWindow *parent, const GdkColor *initial_color, 
 		HildonColorPopup *popup_data)
 {
   GtkWidget *popup;
