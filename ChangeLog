@@ -68,6 +68,59 @@
 
 2006-03-01  Luc Pionchon  <luc.pionchon@nokia.com>
 
+        Cleanup date editor,
+
+	* hildon-widgets/hildon-date-editor.c
+
+	(BUTTON_SPACING): removed. Use HILDON_MARGIN_DEFAULT
+	(MAX_DATE_LEN):	removed. Specify buffer lenght in code.
+
+	(hildon_date_editor_get_font_width): removed (legacy static
+	function), use gtk_entry_set_width_chars instead.
+	
+	(hildon_date_editor_mnemonic_activate): removed mnemonic
+	activation handler, since it's no more used by HildonCaption.
+
+	
+	- Removed some meaningless code (if (somewidget != NULL)) from
+	size allocate.
+	
+	- HEAVILY modified key_press, completely removed if/grab_focus
+	spaghetti by gtk_widget_child_focus
+
+	- Removed input validation from keypress (that would not work
+	anyway, since our input method do not generate presses).  => This
+	allows to change default return value to FALSE and remove all cases
+	that just returned FALSE for some keys.
+	
+	- Merged all *_entry_changed callbacks to use the same
+	function. Again using gtk_widget_child_focus, but now with return
+	value as well to detect last field.
+
+	- Changed that calendar button is no more implemented through
+	changing widget hierarchy (old implementation caused critical
+	issues when you used both stylus and hardkeys at the same time to
+	popup. => finalize method no longer contained anything => removed
+
+	- Locale type is no longer needed after initial setup.
+
+	- Changed idle_popup to popup_calendar_dialog. Idle was a legacy
+	hack from the days of background dimming (it was important to
+	process background updates before the dimming was done).
+
+	- Changed the field order/delimeters to be correcly derived form
+	the locale.
+
+	- Rewrote validation function, combined it with validation done in
+	focus_out (since both are now called at the same time).
+
+	- Changed set_date function to set all components at one go
+	without doing any validation there between (before setting each
+	component).
+
+
+
+2006-03-01  Luc Pionchon  <luc.pionchon@nokia.com>
 	
 	Cleanup set-password dialog
 	

@@ -36,13 +36,11 @@
 
 #include <glib.h>
 #include <gtk/gtk.h>
-#include <gtk/gtkmarshal.h>
 #include <gdk/gdkkeysyms.h>
 #include <time.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include <langinfo.h>
 
 #include <hildon-widgets/hildon-date-editor.h>
 #include <hildon-widgets/hildon-calendar-popup.h>
@@ -59,10 +57,8 @@
 #include<libintl.h>
 #define _(string) dgettext(PACKAGE, string)
 
-#define MAX_DATE_LEN 256
 #define ENTRY_BORDERS 11
 #define DATE_EDITOR_HEIGHT 30
-#define BUTTON_SPACING 6
 
 #define DAY_ENTRY_WIDTH 2
 #define MONTH_ENTRY_WIDTH 2
@@ -78,8 +74,6 @@
 static GtkContainerClass *parent_class;
 
 typedef struct _HildonDateEditorPrivate HildonDateEditorPrivate;
-
-static int hildon_date_editor_get_font_width(GtkWidget * widget);
 
 static void
 hildon_date_editor_class_init(HildonDateEditorClass * editor_class);
@@ -105,16 +99,10 @@ static gboolean
 hildon_date_editor_keyrelease(GtkWidget * widget, GdkEventKey * event,
                               gpointer data);
 static void
-hildon_date_editor_entry_validate(GtkEditable *widget, gpointer data);
+hildon_date_editor_entry_validate(GtkWidget *widget, gpointer data);
 
 static void
-hildon_date_editor_d_entry_changed(GtkEditable *widget, gpointer data);
-
-static void
-hildon_date_editor_m_entry_changed(GtkEditable *widget, gpointer data);
-
-static void
-hildon_date_editor_y_entry_changed(GtkEditable *widget, gpointer data);
+hildon_date_editor_entry_changed(GtkEditable *widget, gpointer data);
 
 static gboolean
 hildon_date_editor_entry_focus_out(GtkWidget * widget, GdkEventFocus * event,
@@ -130,10 +118,6 @@ static void hildon_date_editor_get_property( GObject *object, guint param_id,
                                          GValue *value, GParamSpec *pspec );
 static void hildon_date_editor_set_property (GObject *object, guint param_id,
                                        const GValue *value, GParamSpec *pspec);
-
-static gboolean
-hildon_date_editor_mnemonic_activate(GtkWidget *widget, gboolean group_cycling);
-
 static void
 hildon_child_forall(GtkContainer * container,
                     gboolean include_internals,
@@ -148,11 +132,6 @@ hildon_date_editor_size_allocate(GtkWidget * widget,
 static void
 hildon_date_editor_size_request(GtkWidget * widget,
                                 GtkRequisition * requisition);
-
-static guint
-hildon_date_editor_check_locale_settings(HildonDateEditor * editor);
-
-static void hildon_date_editor_finalize(GObject * object);
 
 static gboolean
 _hildon_date_editor_entry_select_all(GtkWidget *widget);
@@ -173,14 +152,7 @@ struct _HildonDateEditorPrivate {
     guint month;  /* current month in the entry */
     guint day;    /* current day   in the entry */
 
-    guint y_orig;       /* roll back value for year (if entry has illegal value) */
-    guint m_orig;       /* roll back value for month */
-    guint d_orig;       /* roll back value for day */
-
-    gint button_press;  /* wheter to show pressed image */
-
-    gboolean editor_pressed; /* user activated picker using return */
-    gboolean valid_value;    /* FIXME: XXX This is always true, not used */
+    gboolean calendar_icon_pressed;
 
     GtkWidget *frame;             /* borders around the date */
     GtkWidget *d_event_box_image; /* icon */
@@ -190,23 +162,13 @@ struct _HildonDateEditorPrivate {
     GtkWidget *m_entry; /* GtkEntry for month */
     GtkWidget *y_entry; /* GtkEntry for year */
 
-    GtkWidget *dm_delim;  /* Delimeter between day and month entries */
-    GtkWidget *my_delim;  /* Delimeter between month and year entries */
-
-    GtkWidget *d_image; /* normal icon image */
-    GtkWidget *d_image_pressed; /* icon while button held down */
-    guint locale_type; /* Locale used (day, month, year order) */
+    GList *delims;      /* List of delimeters between the fields (and possible at the ends) */
+    GtkWidget *calendar_icon;
 
     gboolean skip_validation; /* don't validate date at all */
 
     gint min_year; /* minimum year allowed */
     gint max_year; /* maximum year allowed */
-};
-
-enum {
-    MONTH_DAY_YEAR,
-    DAY_MONTH_YEAR,
-    YEAR_MONTH_DAY
 };
 
 enum {
@@ -253,14 +215,12 @@ hildon_date_editor_class_init(HildonDateEditorClass * editor_class)
 
     gobject_class->set_property = hildon_date_editor_set_property;
     gobject_class->get_property = hildon_date_editor_get_property;
-    widget_class->mnemonic_activate = hildon_date_editor_mnemonic_activate;
     widget_class->size_request = hildon_date_editor_size_request;
     widget_class->size_allocate = hildon_date_editor_size_allocate;
     widget_class->focus = hildon_composite_widget_focus;
 
     container_class->forall = hildon_child_forall;
     GTK_OBJECT_CLASS(editor_class)->destroy = hildon_date_editor_destroy;
-    gobject_class->finalize = hildon_date_editor_finalize;
 
     editor_class->date_error = hildon_date_editor_date_error; 
     
@@ -339,11 +299,104 @@ hildon_date_editor_class_init(HildonDateEditorClass * editor_class)
                                    G_PARAM_READWRITE) );
 }
 
+/* Forces setting of the icon to certain state. Used initially
+   and from the actual setter function */
+static void
+real_set_calendar_icon_state(HildonDateEditorPrivate *priv, 
+    gboolean pressed)
+{
+    gtk_image_set_from_icon_name(GTK_IMAGE(priv->calendar_icon),
+        pressed ? "qgn_widg_datedit_pr" : "qgn_widg_datedit",
+        HILDON_ICON_SIZE_WIDG);
+
+    priv->calendar_icon_pressed = pressed;
+}
+
+/* Sets the icon to given state (normal/pressed). Returns
+   info if the state actually changed. */
+static gboolean 
+hildon_date_editor_set_calendar_icon_state(HildonDateEditor *editor,
+    gboolean pressed)
+{
+    HildonDateEditorPrivate *priv;
+
+    g_assert(HILDON_IS_DATE_EDITOR(editor));
+
+    priv = HILDON_DATE_EDITOR_GET_PRIVATE(editor);
+    if (pressed != priv->calendar_icon_pressed) {
+        real_set_calendar_icon_state(priv, pressed);
+        return TRUE;
+    }
+
+    return FALSE;
+}
+
+/* Packing day, month and year entries depend on locale settings
+   We find out the order and all separators by converting a known
+   date to default format and inspecting the result string */
+static void apply_locale_field_order(HildonDateEditorPrivate *priv)
+{
+    GDate locale_test_date;
+    GtkWidget *delim;
+    gchar buffer[256];
+    gchar *iter, *delim_text;
+
+    g_date_set_dmy(&locale_test_date, 1, 2, 1970);
+    (void) g_date_strftime(buffer, sizeof(buffer), "%x", &locale_test_date);    
+    iter = buffer;
+
+    while (*iter)
+    {
+       gchar *endp;
+       unsigned long value;
+
+       /* Try to convert the current location into number. */
+       value = strtoul(iter, &endp, 10);
+
+       /* If the conversion didn't progress or the detected value was
+          unknown (we used a fixed date, you remember), we treat 
+          current position as a literal */
+       switch (value)
+       {
+         case 1:
+            gtk_box_pack_start(GTK_BOX(priv->d_box_date),
+                priv->d_entry, FALSE, FALSE, 0);
+            break;
+         case 2:
+            gtk_box_pack_start(GTK_BOX(priv->d_box_date),
+                priv->m_entry, FALSE, FALSE, 0);
+            break;
+         case 70:   /* %x format uses only 2 numbers for some locales */
+         case 1970:
+            gtk_box_pack_start(GTK_BOX(priv->d_box_date),
+                priv->y_entry, FALSE, FALSE, 0);
+            break;
+         default:
+            /* All non-number characters starting from current position 
+               form the delimeter */
+            for (endp = iter; *endp; endp++)
+                if (g_ascii_isdigit(*endp))
+                    break;
+
+            /* Now endp points one place past the delimeter text */
+            delim_text = g_strndup(iter, endp - iter);
+            delim = gtk_label_new(delim_text);
+            gtk_box_pack_start(GTK_BOX(priv->d_box_date),
+                           delim, FALSE, FALSE, 0);
+            priv->delims = g_list_append(priv->delims, delim);
+            g_free(delim_text);
+
+            break;
+       };
+
+       iter = endp;
+    }
+}
+
 static void hildon_date_editor_init(HildonDateEditor * editor)
 {
     HildonDateEditorPrivate *priv;
     GDate cur_date;
-    guint locale_type;
 
     priv = HILDON_DATE_EDITOR_GET_PRIVATE(editor);
 
@@ -361,12 +414,6 @@ static void hildon_date_editor_init(HildonDateEditor * editor)
     priv->min_year = DEFAULT_MIN_YEAR;
     priv->max_year = DEFAULT_MAX_YEAR;
 
-    priv->y_orig = 0;
-    priv->m_orig = 0;
-    priv->d_orig = 0;
-    priv->button_press = FALSE;
-    priv->valid_value = TRUE;
-
     /* make widgets */
     priv->frame = gtk_frame_new(NULL);
     gtk_container_set_border_width(GTK_CONTAINER(priv->frame), 0);
@@ -374,7 +421,6 @@ static void hildon_date_editor_init(HildonDateEditor * editor)
     priv->d_entry = gtk_entry_new();
     priv->m_entry = gtk_entry_new();
     priv->y_entry = gtk_entry_new();
-    priv->editor_pressed = FALSE;
 
     g_object_set (G_OBJECT(priv->d_entry), "input-mode", 
                   HILDON_INPUT_MODE_HINT_NUMERIC, NULL);
@@ -396,80 +442,35 @@ static void hildon_date_editor_init(HildonDateEditor * editor)
     gtk_entry_set_has_frame(GTK_ENTRY(priv->m_entry), FALSE);
     gtk_entry_set_has_frame(GTK_ENTRY(priv->y_entry), FALSE);
 
-    priv->dm_delim = gtk_label_new(_("Ecdg_ti_date_editor_separator"));
-    priv->my_delim = gtk_label_new(_("Ecdg_ti_date_editor_separator"));
+    gtk_widget_set_composite_name(priv->d_entry, "day_entry");
+    gtk_widget_set_composite_name(priv->m_entry, "month_entry");
+    gtk_widget_set_composite_name(priv->y_entry, "year_entry");
 
     priv->d_box_date = gtk_hbox_new(FALSE, 0);
 
     priv->d_event_box_image = gtk_event_box_new();
+    priv->calendar_icon = gtk_image_new();
+    real_set_calendar_icon_state(priv, FALSE);
 
-    priv->d_image = gtk_image_new_from_icon_name("qgn_widg_datedit",
-                                                 HILDON_ICON_SIZE_WIDG);
-    priv->d_image_pressed = gtk_image_new_from_icon_name("qgn_widg_datedit_pr",
-                                                         HILDON_ICON_SIZE_WIDG);
-    g_object_ref(G_OBJECT(priv->d_image));
-    g_object_ref(G_OBJECT(priv->d_image_pressed));
-    gtk_object_sink(GTK_OBJECT(priv->d_image));
-    gtk_object_sink(GTK_OBJECT(priv->d_image_pressed));
-    /* packing */
-    /* Packing day, month and year entries depend on locale settings */
-    priv->locale_type = locale_type =
-        hildon_date_editor_check_locale_settings(editor);
-
-    if (locale_type == DAY_MONTH_YEAR)
-        gtk_box_pack_start(GTK_BOX(priv->d_box_date),
-                           priv->d_entry, FALSE, FALSE, 0);
-    else if (locale_type == MONTH_DAY_YEAR)
-        gtk_box_pack_start(GTK_BOX(priv->d_box_date),
-                           priv->m_entry, FALSE, FALSE, 0);
-    else
-        gtk_box_pack_start(GTK_BOX(priv->d_box_date),
-                           priv->y_entry, FALSE, FALSE, 0);
-    gtk_box_pack_start(GTK_BOX(priv->d_box_date),
-                       priv->dm_delim, FALSE, FALSE, 0);
-    if (locale_type == DAY_MONTH_YEAR)
-        gtk_box_pack_start(GTK_BOX(priv->d_box_date),
-                           priv->m_entry, FALSE, FALSE, 0);
-    else if (locale_type == MONTH_DAY_YEAR)
-        gtk_box_pack_start(GTK_BOX(priv->d_box_date),
-                           priv->d_entry, FALSE, FALSE, 0);
-    else
-        gtk_box_pack_start(GTK_BOX(priv->d_box_date),
-                           priv->m_entry, FALSE, FALSE, 0);
-    gtk_box_pack_start(GTK_BOX(priv->d_box_date),
-                       priv->my_delim, FALSE, FALSE, 0);
-    if (locale_type == DAY_MONTH_YEAR)
-        gtk_box_pack_start(GTK_BOX(priv->d_box_date),
-                           priv->y_entry, FALSE, FALSE, 0);
-    else if (locale_type == MONTH_DAY_YEAR)
-        gtk_box_pack_start(GTK_BOX(priv->d_box_date),
-                           priv->y_entry, FALSE, FALSE, 0);
-    else
-        gtk_box_pack_start(GTK_BOX(priv->d_box_date),
-                           priv->d_entry, FALSE, FALSE, 0);
+    apply_locale_field_order(priv);
 
     gtk_container_add(GTK_CONTAINER(priv->frame), priv->d_box_date);
-    gtk_container_add(GTK_CONTAINER(priv->d_event_box_image), priv->d_image);
+    gtk_container_add(GTK_CONTAINER(priv->d_event_box_image), priv->calendar_icon);
 
     gtk_widget_set_parent(priv->frame, GTK_WIDGET(editor));
     gtk_widget_set_parent(priv->d_event_box_image, GTK_WIDGET(editor));
     gtk_widget_show_all(priv->frame);
     gtk_widget_show_all(priv->d_event_box_image);
-
-
     
     /* image signal connects */
     g_signal_connect(GTK_OBJECT(priv->d_event_box_image), "button_press_event",
                      G_CALLBACK(hildon_date_editor_icon_press), editor);
-
     g_signal_connect(GTK_OBJECT(priv->d_event_box_image),
                      "button_release_event",
                      G_CALLBACK(hildon_date_editor_released), editor);
-
     g_signal_connect(GTK_OBJECT(priv->d_event_box_image), "key-press-event",
                      G_CALLBACK(hildon_date_editor_keypress), editor);
-
-    g_signal_connect(GTK_OBJECT(priv->d_image), "key-press-event",
+    g_signal_connect(GTK_OBJECT(priv->calendar_icon), "key-press-event",
                      G_CALLBACK(hildon_date_editor_keypress), editor);
 
 
@@ -522,13 +523,13 @@ static void hildon_date_editor_init(HildonDateEditor * editor)
     hildon_date_editor_set_date(editor, priv->year, priv->month, priv->day);
 
     g_signal_connect(GTK_OBJECT(priv->d_entry), "changed",
-                     G_CALLBACK(hildon_date_editor_d_entry_changed), editor);
+                     G_CALLBACK(hildon_date_editor_entry_changed), editor);
 
     g_signal_connect(GTK_OBJECT(priv->m_entry), "changed",
-                     G_CALLBACK(hildon_date_editor_m_entry_changed), editor);
+                     G_CALLBACK(hildon_date_editor_entry_changed), editor);
 
     g_signal_connect(GTK_OBJECT(priv->y_entry), "changed",
-                     G_CALLBACK(hildon_date_editor_y_entry_changed), editor);
+                     G_CALLBACK(hildon_date_editor_entry_changed), editor);
 
     gtk_widget_pop_composite_child();
 }
@@ -620,51 +621,6 @@ static void hildon_date_editor_get_property( GObject *object, guint param_id,
   }
 }
 
-/* FIXME: Mnemonics aren't used */
-static gboolean
-hildon_date_editor_mnemonic_activate(GtkWidget *widget, gboolean group_cycling)
-
-{
-  GtkWidget *entry;
-  HildonDateEditorPrivate *priv = HILDON_DATE_EDITOR_GET_PRIVATE(widget);
-
-  /* Set focus to first entry */
-  if( priv->locale_type == MONTH_DAY_YEAR )
-    entry = priv->m_entry;
-  else
-    entry = priv->d_entry;
-
-  gtk_widget_grab_focus( entry );
-  g_idle_add((GSourceFunc)_hildon_date_editor_entry_select_all, entry);
-  return TRUE;
-}
-
-static void hildon_date_editor_finalize(GObject * object)
-{
-    HildonDateEditorPrivate *priv = HILDON_DATE_EDITOR_GET_PRIVATE(object);
-
-    g_object_unref(G_OBJECT(priv->d_image));
-    g_object_unref(G_OBJECT(priv->d_image_pressed));
-    if( G_OBJECT_CLASS(parent_class)->finalize )
-      G_OBJECT_CLASS(parent_class)->finalize(object);
-}
-
-/* Extract day, month, year order from date format string */
-static guint
-hildon_date_editor_check_locale_settings(HildonDateEditor * editor)
-{
-    gchar *dfmt;
-
-    dfmt = nl_langinfo(D_FMT);
-
-    if (!strncmp(dfmt, "%d", 2))
-        return DAY_MONTH_YEAR;
-    else if (!strncmp(dfmt, "%m", 2))
-        return MONTH_DAY_YEAR;
-    else
-        return YEAR_MONTH_DAY;
-}
-
 static void hildon_child_forall(GtkContainer * container,
                                 gboolean include_internals,
                                 GtkCallback callback,
@@ -699,6 +655,10 @@ static void hildon_date_editor_destroy(GtkObject * self)
         gtk_widget_unparent(priv->d_event_box_image);
         priv->d_event_box_image = NULL;
     }
+    if (priv->delims) {
+        g_list_free(priv->delims);
+        priv->delims = NULL;
+    }
 
     if (GTK_OBJECT_CLASS(parent_class)->destroy)
         GTK_OBJECT_CLASS(parent_class)->destroy(self);
@@ -726,15 +686,63 @@ GtkWidget *hildon_date_editor_new(void)
  *
  * Sets the date shown in the editor. 
  **/
-void hildon_date_editor_set_date(HildonDateEditor * date,
+void hildon_date_editor_set_date(HildonDateEditor * editor,
                                  guint year, guint month, guint day)
 {
-    g_return_if_fail(date);
-    g_return_if_fail(HILDON_IS_DATE_EDITOR(date));
+    HildonDateEditorPrivate *priv;
 
-    hildon_date_editor_set_year(date, year);
-    hildon_date_editor_set_month(date, month);
-    hildon_date_editor_set_day(date, day);
+    g_return_if_fail(HILDON_IS_DATE_EDITOR(editor));
+
+    /* This function cannot be implemented by calling
+       component setters, since applying the individual
+       values one by one can make the date temporarily
+       invalid (depending on what the previous values were), 
+       which in turn causes that the desired date
+       is not set (even though it's valid). We must set all the
+       components at one go and not try to do any validation etc
+       there in between. */
+
+    g_return_if_fail(HILDON_IS_DATE_EDITOR(editor));
+    priv = HILDON_DATE_EDITOR_GET_PRIVATE(editor);
+
+    if (g_date_valid_dmy(day, month, year))
+    {
+        GDate date;
+        gchar buffer[256];
+        
+        priv->year = year;
+        priv->month = month;
+        priv->day = day;
+        
+        g_date_set_dmy(&date, day, month, year);
+
+        /* We apply the new values, but do not want automatic focus move
+           etc to take place */
+        g_snprintf(buffer, sizeof(buffer), "%04d", year);
+        g_signal_handlers_block_by_func(priv->y_entry, 
+            (gpointer) hildon_date_editor_entry_changed, editor);
+        gtk_entry_set_text(GTK_ENTRY(priv->y_entry), buffer);
+        g_signal_handlers_unblock_by_func(priv->y_entry, 
+            (gpointer) hildon_date_editor_entry_changed, editor);
+
+        g_date_strftime(buffer, sizeof(buffer), "%m", &date);
+        g_signal_handlers_block_by_func(priv->m_entry, 
+            (gpointer) hildon_date_editor_entry_changed, editor);
+        gtk_entry_set_text(GTK_ENTRY(priv->m_entry), buffer);
+        g_signal_handlers_unblock_by_func(priv->m_entry, 
+            (gpointer) hildon_date_editor_entry_changed, editor);
+
+        g_date_strftime(buffer, sizeof(buffer), "%d", &date);
+        g_signal_handlers_block_by_func(priv->d_entry, 
+            (gpointer) hildon_date_editor_entry_changed, editor);
+        gtk_entry_set_text(GTK_ENTRY(priv->d_entry), buffer);
+        g_signal_handlers_unblock_by_func(priv->d_entry, 
+            (gpointer) hildon_date_editor_entry_changed, editor);
+  
+        g_object_notify(G_OBJECT(editor), "year");
+        g_object_notify(G_OBJECT(editor), "month");
+        g_object_notify(G_OBJECT(editor), "day");
+    }
 }
 
 /**
@@ -752,7 +760,6 @@ void hildon_date_editor_get_date(HildonDateEditor * date,
 {
     HildonDateEditorPrivate *priv;
 
-    g_return_if_fail(date);
     g_return_if_fail(HILDON_IS_DATE_EDITOR(date));
     g_return_if_fail(year);
     g_return_if_fail(month);
@@ -760,7 +767,32 @@ void hildon_date_editor_get_date(HildonDateEditor * date,
 
     priv = HILDON_DATE_EDITOR_GET_PRIVATE(date);
 
-    /* FIXME: XXX This should use the commented out values, really */
+    /* FIXME: The role of priv->{day,month,year} members vs. entry contents
+              is unclear. They do not neccesarily match and still the texts are
+              used as return values and members for some internal validation!!
+              At least a partly reason is to allow empty text to become
+              0 return value, while members are restricted to valid ranges?!
+              However, if we change the current way, we are likely to break 
+              some applications  if they rely on some specific way how this 
+              widget currently handles empty values and temporarily invalid values.
+
+              The key issue is this: What should the _get methods return while
+              user is editing a field and the result is incomplete. The
+              partial result? The last good result? If we return partial result
+              we also need a way to inform if the date is not valid. Current
+              implementation is some kind of hybrid of these two...
+
+              for example:
+                 hildon_date_editor_set_day(editor, hildon_date_editor_get_day(editor));
+
+              easily fails, since set_day tries to force validity while get_day
+              doesn't do that.
+
+              Proposal: Always return the same values that are shown in the
+                        fields. We add a separate flag (Or use GDate) to 
+                        indicate if the current date is valid. This would allow 
+                        setters to make the date invalid as well.
+    */
     *year = /*priv->year;*/
       (guint) atoi(gtk_entry_get_text(GTK_ENTRY(priv->y_entry)));
     *month = /*priv->month;*/
@@ -773,25 +805,13 @@ static gboolean hildon_date_editor_icon_press(GtkWidget * widget,
                                               GdkEventButton * event,
                                               gpointer data)
 {
-    HildonDateEditor *ed;
-    HildonDateEditorPrivate *priv;
+    g_assert(GTK_IS_WIDGET(widget));
+    g_assert(event != NULL);
+    g_assert(HILDON_IS_DATE_EDITOR(data));
 
-    g_return_val_if_fail(widget, FALSE);
-    g_return_val_if_fail(event, FALSE);
-    g_return_val_if_fail(data, FALSE);
+    if (event->button == 1)
+       hildon_date_editor_set_calendar_icon_state(HILDON_DATE_EDITOR(data), TRUE);
 
-    ed = HILDON_DATE_EDITOR(data);
-    priv = HILDON_DATE_EDITOR_GET_PRIVATE(ed);
-
-    if (event->button == 1 && !priv->button_press) {
-	/* Show pressed image */
-        gtk_container_remove(GTK_CONTAINER(priv->d_event_box_image),
-                             priv->d_image);
-        gtk_container_add(GTK_CONTAINER(priv->d_event_box_image),
-                          priv->d_image_pressed);
-        gtk_widget_show_all(priv->d_event_box_image);
-        priv->button_press = TRUE;
-    }
     return FALSE;
 }
 
@@ -805,13 +825,13 @@ static gboolean hildon_date_editor_entry_released(GtkWidget * widget,
     ed = HILDON_DATE_EDITOR(data);
     priv = HILDON_DATE_EDITOR_GET_PRIVATE(ed);
 
-    if (priv->valid_value && event->button == 1) {
+    if (event->button == 1) {
         /* We might not get focus because of invalid values in entries */
         if (GTK_WIDGET_HAS_FOCUS(widget))
 			g_idle_add((GSourceFunc)
 					_hildon_date_editor_entry_select_all, GTK_ENTRY(widget));
-    } else
-        priv->valid_value = TRUE;
+    }
+
     return FALSE;
 }
 
@@ -829,18 +849,13 @@ static gboolean hildon_date_editor_entry_focusin(GtkWidget * widget,
 }
 
 
-/* This handler is called from mainloop
-   after button exposes are processed */
-static gboolean idle_popup(gpointer data)
+static void popup_calendar_dialog(HildonDateEditor *ed)
 {
     guint y = 0, m = 0, d = 0;
-    HildonDateEditor *ed;
     GtkWidget *popup;
     GtkWidget *parent;
     guint result;
     GValue val = {0, };
-
-    ed = HILDON_DATE_EDITOR(data);
 
     hildon_date_editor_get_date(ed, &y, &m, &d);
 
@@ -849,9 +864,9 @@ static gboolean idle_popup(gpointer data)
 
     g_value_init(&val, G_TYPE_INT);
     /* Set max/min year in calendar popup to date editor values */
-    g_object_get_property(G_OBJECT(data), "min-year", &val);
+    g_object_get_property(G_OBJECT(ed), "min-year", &val);
     g_object_set_property(G_OBJECT(popup), "min-year", &val);
-    g_object_get_property(G_OBJECT(data), "max-year", &val);
+    g_object_get_property(G_OBJECT(ed), "max-year", &val);
     g_object_set_property(G_OBJECT(popup), "max-year", &val);
 
     /* Pop up calendar */
@@ -865,8 +880,6 @@ static gboolean idle_popup(gpointer data)
     }
 
     gtk_widget_destroy(popup);
-
-    return FALSE;
 }
 
 /* button released */
@@ -875,204 +888,150 @@ static gboolean hildon_date_editor_released(GtkWidget * widget,
                                             gpointer data)
 {
     HildonDateEditor *ed;
-    HildonDateEditorPrivate *priv;
 
-    g_return_val_if_fail(widget, FALSE);
-    g_return_val_if_fail(event, FALSE);
-    g_return_val_if_fail(data, FALSE);
+    g_assert(GTK_IS_WIDGET(widget));
+    g_assert(event != NULL);
+    g_assert(HILDON_IS_DATE_EDITOR(data));
 
     ed = HILDON_DATE_EDITOR(data);
-    priv = HILDON_DATE_EDITOR_GET_PRIVATE(ed);
 
-    if (!priv->button_press)
-        return FALSE;
-
-    /* change the icon image back to normal */
-    gtk_container_remove(GTK_CONTAINER(priv->d_event_box_image),
-                         priv->d_image_pressed);
-    gtk_container_add(GTK_CONTAINER(priv->d_event_box_image),
-                      priv->d_image);
-    gtk_widget_show_all(priv->d_event_box_image);
-
-    /* Wait until exposes are ready */
-    g_idle_add(idle_popup, ed);
-
-    priv->button_press = FALSE;
+    if (hildon_date_editor_set_calendar_icon_state(ed, FALSE))
+        popup_calendar_dialog(ed);
 
     return FALSE;
 }
 
+/* This is called whenever some editor filed loses the focus and
+   when the all of the fields are filled. 
+   Earlier this was called whenever an entry changed */
+/* FIXME: Validation on focus_out is broken by concept */
 static void
-hildon_date_editor_entry_validate(GtkEditable *widget, gpointer data)
+hildon_date_editor_entry_validate(GtkWidget *widget, gpointer data)
 {
     HildonDateEditor *ed;
     HildonDateEditorPrivate *priv;
+    gint d, m, y, max_days;
+    gboolean r;  /* temp return values for signals */
+    const gchar *text;        
+    gint error_code = 0;
 
-    gint d, m, y;
-    gboolean r; /* temp return values for signals */
-
-    g_return_if_fail(data);
-    g_return_if_fail(widget);
+    g_return_if_fail(HILDON_IS_DATE_EDITOR(data));
+    g_return_if_fail(GTK_IS_ENTRY(widget));
 
     ed = HILDON_DATE_EDITOR(data);
     priv = HILDON_DATE_EDITOR_GET_PRIVATE(ed);
 
-    /*if the field is empty, we skip the checking*/
-    if(gtk_entry_get_text(GTK_ENTRY(widget)) == NULL || 
-            *gtk_entry_get_text(GTK_ENTRY(widget)) == '\0')
-        return;
+    if (priv->skip_validation)
+       return;
 
-    if(!priv->skip_validation) {
-        d = atoi(gtk_entry_get_text(GTK_ENTRY(priv->d_entry)));
-        m = atoi(gtk_entry_get_text(GTK_ENTRY(priv->m_entry)));
-        y = atoi(gtk_entry_get_text(GTK_ENTRY(priv->y_entry)));
+    /*check if the calling entry is empty*/
+    text = gtk_entry_get_text(GTK_ENTRY(widget));
+    if(text == NULL || text[0] == 0)
+    {
+      if (widget == priv->d_entry)
+         g_signal_emit(ed, date_editor_signals[DATE_ERROR], 0, EMPTY_DAY, &r);
+      else if(widget == priv->m_entry)
+         g_signal_emit(ed, date_editor_signals[DATE_ERROR], 0, EMPTY_MONTH, &r);
+      else
+         g_signal_emit(ed, date_editor_signals[DATE_ERROR], 0, EMPTY_YEAR, &r);
 
+      return;
+    }
+
+    /* Ok, we now check validity. Some fields can be empty */
+    text = gtk_entry_get_text(GTK_ENTRY(priv->d_entry));
+    if (text == NULL || text[0] == 0) return;
+    d = atoi(text);
+    text = gtk_entry_get_text(GTK_ENTRY(priv->m_entry));
+    if (text == NULL || text[0] == 0) return;
+    m = atoi(text);
+    text = gtk_entry_get_text(GTK_ENTRY(priv->y_entry));
+    if (text == NULL || text[0] == 0) return;
+    y = atoi(text);
+
+    /* Did it actually change? */
+    if (d != priv->day || m != priv->month || y != priv->year)
+    {
         /* We could/should use hildon_date_editor_set_year and such functions
          * to set the date, instead of use gtk_entry_set_text, and then change
-	 * the priv member but hildon_date_editor_set_year and such functions
-	 * check if the date is valid, we do want to do date validation check
-	 * here according to spec */
+    	 * the priv member but hildon_date_editor_set_year and such functions
+    	 * check if the date is valid, we do want to do date validation check
+    	 * here according to spec */
 
-	/* Validate day */
-        if(GTK_WIDGET(widget) == priv->d_entry)
-        {
-            if(d > 0 && d < 32) {
-                priv->day = d;
-                return;
+    	/* Validate month */
+        if(widget == priv->m_entry) {
+            if(m < 1) {
+                error_code = MIN_MONTH;
+                m = 1;
             }
-            else if(d < 1) {
-                g_signal_emit(ed, date_editor_signals[DATE_ERROR], 0, 
-                        MIN_DAY, &r);
-                gtk_entry_set_text(GTK_ENTRY(priv->d_entry), "01");
-                priv->day = priv->d_orig = 1;
+            else if (m > 12) {
+                error_code = MAX_MONTH;
+                m = 12;
             }
-            else {
-                g_signal_emit(ed, date_editor_signals[DATE_ERROR], 0, 
-                        MAX_DAY, &r);
-                gtk_entry_set_text(GTK_ENTRY(priv->d_entry), "31");
-                priv->day = priv->d_orig = 31;
-            }
-            g_idle_add ((GSourceFunc)
-                    _hildon_date_editor_entry_select_all, 
-                    priv->d_entry);
-	    /* Set focus back to invalid entry */
-            gtk_widget_grab_focus(priv->d_entry);
-            return;
         }
 
-	/* Validate month */
-        if(GTK_WIDGET(widget) == priv->m_entry)
-        {
-            if(m > 0 && m < 13)
-            {
-                priv->month = m;
-                return;
+    	/* Validate year */
+        if(widget == priv->y_entry) {
+            if (y < priv->min_year) {
+                error_code = MIN_YEAR;
+                y = priv->min_year;
             }
-            else if(m < 1)
-            {
-                g_signal_emit(ed, date_editor_signals[DATE_ERROR], 0, 
-                        MIN_MONTH, &r);
-                gtk_entry_set_text(GTK_ENTRY(priv->m_entry), "01");
-                priv->month = priv->m_orig = 1;
+            else if (y > priv->max_year) {
+                error_code = MAX_YEAR;
+                y = priv->max_year;
+            }
+        }
 
-            }
-            else
-            {
-                g_signal_emit(ed, date_editor_signals[DATE_ERROR], 0, 
-                        MAX_MONTH, &r);
-                gtk_entry_set_text(GTK_ENTRY(priv->m_entry), "12");
-                priv->month = priv->m_orig = 12;
-            }
+    	/* Validate day. We have to do this in every case, since
+           changing month or year can make the day number to be invalid */
+        max_days = g_date_get_days_in_month(m,y);
+        if(d < 1) {
+           error_code = MIN_DAY;
+           d = 1;           
+        }
+        else if (d > max_days) {
+           /* Report range error or invalid date */
+           error_code = d > 31 ? MAX_DAY : INVALID_DATE;
+           d = max_days;
+           widget = priv->d_entry; /* Note! Change param to point day entry */
+        }
+
+        if (error_code != 0)
+        {
+            g_signal_emit(ed, date_editor_signals[DATE_ERROR], 0, error_code, &r);
 
             g_idle_add ((GSourceFunc) 
                     _hildon_date_editor_entry_select_all, 
-                    priv->m_entry);
-	    /* Set focus back to invalid entry */
-            gtk_widget_grab_focus(priv->m_entry);
-            return;
-        }
+                    widget);
 
-	/* Validate year */
-        if(GTK_WIDGET(widget) == priv->y_entry)
-        {
-            if(y >= priv->min_year && y <= priv->max_year) {
-                priv->year = y;
-                return;
-            }
-            else if (y < priv->min_year) {
-                char year[5];
-
-                g_signal_emit(ed, date_editor_signals[DATE_ERROR], 0, 
-                              MIN_YEAR, &r);
-                sprintf(year, "%04d", priv->min_year);
-                gtk_entry_set_text(GTK_ENTRY(priv->y_entry), year);
-                priv->year = priv->y_orig = priv->min_year;
-            }
-            /* y > priv->max_year */
-            else {
-                char year[5];
-
-                g_signal_emit(ed, date_editor_signals[DATE_ERROR], 0, 
-                              MAX_YEAR, &r);
-                sprintf(year, "%04d", priv->max_year);
-                gtk_entry_set_text(GTK_ENTRY(priv->y_entry), year);
-                priv->year = priv->y_orig = priv->max_year;
-            }
-            g_idle_add ((GSourceFunc) 
-                    _hildon_date_editor_entry_select_all, 
-                    priv->y_entry);
-	    /* Set focus back to invalid entry */
-            gtk_widget_grab_focus(priv->y_entry);
-            return;
+    	    /* Set focus back to invalid entry */
+            gtk_widget_grab_focus(widget);
         }
     }
+
+    /* Fix and reformat the date after error signal is processed. 
+       reformatting can be needed even in a such case that numerical
+       values of the date components are the same as earlier. */
+    hildon_date_editor_set_date(ed, y, m, d);
 }
 
+/* When entry becomes full, we move the focus to the next field.
+   If we are on the last field, the whole contents are validated. */
 static void
-hildon_date_editor_d_entry_changed(GtkEditable *ed, gpointer data)
+hildon_date_editor_entry_changed(GtkEditable *ed, gpointer data)
 {
-  HildonDateEditorPrivate *priv = HILDON_DATE_EDITOR_GET_PRIVATE(data);
+  GtkEntry *entry;
+
+  g_assert(GTK_IS_ENTRY(ed));
+  g_assert(HILDON_IS_DATE_EDITOR(data));
+
+  entry = GTK_ENTRY(ed);
 
   /* If day entry is full, move to next entry or validate */
-  if (strlen(gtk_entry_get_text(GTK_ENTRY(ed))) == DAY_ENTRY_WIDTH)
+  if (g_utf8_strlen(gtk_entry_get_text(entry), -1) == gtk_entry_get_max_length(entry))
     {
-      if (priv->locale_type == DAY_MONTH_YEAR)
-        gtk_widget_grab_focus(priv->m_entry);
-      else if (priv->locale_type == MONTH_DAY_YEAR)
-        gtk_widget_grab_focus(priv->y_entry);
-      else
-        hildon_date_editor_entry_validate(ed, data);
-    }
-}
-
-static void
-hildon_date_editor_m_entry_changed(GtkEditable *ed, gpointer data)
-{
-  HildonDateEditorPrivate *priv = HILDON_DATE_EDITOR_GET_PRIVATE(data);
-
-  /* If month entry is full, move to next entry */
-  if (strlen(gtk_entry_get_text(GTK_ENTRY(ed))) == MONTH_ENTRY_WIDTH)
-    {
-      if (priv->locale_type == DAY_MONTH_YEAR)
-        gtk_widget_grab_focus(priv->y_entry);
-      else if (priv->locale_type == MONTH_DAY_YEAR ||
-               priv->locale_type == YEAR_MONTH_DAY)
-        gtk_widget_grab_focus(priv->d_entry);
-    }
-}
-
-static void
-hildon_date_editor_y_entry_changed(GtkEditable *ed, gpointer data)
-{
-  HildonDateEditorPrivate *priv = HILDON_DATE_EDITOR_GET_PRIVATE(data);
-
-  /* If year entry is full, move to next entry or validate */
-  if (strlen(gtk_entry_get_text(GTK_ENTRY(ed))) == YEAR_ENTRY_WIDTH)
-    {
-      if (priv->locale_type == YEAR_MONTH_DAY)
-        gtk_widget_grab_focus(priv->m_entry);
-      else
-        hildon_date_editor_entry_validate(ed, data);
+      if (!gtk_widget_child_focus(GTK_WIDGET(data), GTK_DIR_RIGHT))
+        hildon_date_editor_entry_validate(GTK_WIDGET(entry), data);
     }
 }
 
@@ -1091,15 +1050,9 @@ static gboolean hildon_date_editor_keyrelease(GtkWidget * widget,
 
     if (event->keyval == GDK_KP_Enter || event->keyval == GDK_Return ||
         event->keyval == GDK_ISO_Enter) {
-        if (priv->editor_pressed) {
-            /* Show normal icon instead of pressed */
-            gtk_container_remove(GTK_CONTAINER(priv->d_event_box_image),
-                                 priv->d_image_pressed);
-            gtk_container_add(GTK_CONTAINER(priv->d_event_box_image),
-                              priv->d_image);
-            gtk_widget_show_all(priv->d_event_box_image);
-            g_idle_add(idle_popup, ed);
-            priv->editor_pressed = FALSE;
+        if (hildon_date_editor_set_calendar_icon_state(ed, FALSE))
+        {
+            popup_calendar_dialog(ed);
             return TRUE;
         }
     } else if (event->keyval == GDK_Escape)
@@ -1113,324 +1066,61 @@ static gboolean hildon_date_editor_keypress(GtkWidget * widget,
                                             GdkEventKey * event,
                                             gpointer data)
 {
-
     HildonDateEditor *ed;
     HildonDateEditorPrivate *priv;
     gint pos;
 
-    g_return_val_if_fail(data, FALSE);
-    g_return_val_if_fail(widget, FALSE);
+    g_assert(HILDON_IS_DATE_EDITOR(data));
+    g_assert(GTK_IS_ENTRY(widget));
 
     ed = HILDON_DATE_EDITOR(data);
     priv = HILDON_DATE_EDITOR_GET_PRIVATE(ed);
     pos = gtk_editable_get_position(GTK_EDITABLE(widget));
-
-    if (event->keyval == GDK_Return || event->keyval == GDK_ISO_Enter) {
-        if (!priv->editor_pressed) {
-            /* Show pressed icon */
-            gtk_container_remove(GTK_CONTAINER(priv->d_event_box_image),
-                                 priv->d_image);
-            gtk_container_add(GTK_CONTAINER(priv->d_event_box_image),
-                              priv->d_image_pressed);
-            gtk_widget_show_all(priv->d_event_box_image);
-            priv->editor_pressed = TRUE;
-            return TRUE;
-        }
-        return FALSE;
-    }
-
-    if  (event->keyval == GDK_KP_Enter)
-	    return FALSE;
 	
-
-    
-    /* We don't want wrap */
-    if (event->keyval == GDK_KP_Left || event->keyval == GDK_Left)
-        if (pos == 0) {
-            if (priv->locale_type == DAY_MONTH_YEAR) {
-                if (widget == priv->d_entry)
-                    return TRUE;
-            } else {
-                if (widget == priv->m_entry)
-                    return TRUE;
-            }
-        }
-
-    if (event->keyval == GDK_KP_Right || event->keyval == GDK_Right)
-        if (widget == priv->y_entry
-            && pos >= strlen(GTK_ENTRY(widget)->text))
-            return TRUE;
-
     switch (event->keyval) {
     case GDK_Left:
-        /* left on day entry */
-        if (widget == priv->d_entry) {
-            gint pos =
-                gtk_editable_get_position(GTK_EDITABLE(priv->d_entry));
-            if (pos == 0) {
-                /* Switch to previous entry */
-                gtk_editable_select_region(GTK_EDITABLE(priv->d_entry), 0,
-                                           0);
-                if (priv->locale_type == DAY_MONTH_YEAR) {
-                    gtk_widget_grab_focus(priv->y_entry);
-                    gtk_editable_set_position(GTK_EDITABLE(priv->y_entry),
-                                              -1);
-                } else {
-                    gtk_widget_grab_focus(priv->m_entry);
-                    gtk_editable_set_position(GTK_EDITABLE(priv->m_entry),
-                                              -1);
-                }
-                return TRUE;
-            }
+        /* User tries to navigate left. If we are on the start of the
+           entry, we try to do that. Otherwise entry moves cursor by one place */
+        if (pos == 0)
+        {
+            /* We do not want to wrap around etc, so we ignore the return value */
+            (void) gtk_widget_child_focus(GTK_WIDGET(data), GTK_DIR_LEFT);
+            return TRUE;
         }
-        /* left on month entry */
-        else if (widget == priv->m_entry) {
-            gint pos =
-                gtk_editable_get_position(GTK_EDITABLE(priv->m_entry));
-
-            if (pos == 0) {
-                /* Switch to previous entry */
-                gtk_editable_select_region(GTK_EDITABLE(priv->m_entry), 0,
-                                           0);
-                if (priv->locale_type == DAY_MONTH_YEAR) {
-                    gtk_widget_grab_focus(priv->d_entry);
-                    gtk_editable_set_position(GTK_EDITABLE(priv->d_entry),
-                                              -1);
-                } else {
-                    gtk_widget_grab_focus(priv->y_entry);
-                }
-                gtk_editable_set_position(GTK_EDITABLE(priv->y_entry), -1);
-                return TRUE;
-            }
-        }
-        /* left on year entry */
-        else if (widget == priv->y_entry) {
-            gint pos =
-                gtk_editable_get_position(GTK_EDITABLE(priv->y_entry));
-
-            if (pos == 0) {
-                /* Switch to previous entry */
-                gtk_editable_select_region(GTK_EDITABLE(priv->y_entry), 0,
-                                           0);
-                if (priv->locale_type == DAY_MONTH_YEAR) {
-                    gtk_widget_grab_focus(priv->m_entry);
-                    gtk_editable_set_position(GTK_EDITABLE(priv->m_entry),
-                                              -1);
-                } else {
-                    gtk_widget_grab_focus(priv->d_entry);
-                    gtk_editable_set_position(GTK_EDITABLE(priv->d_entry),
-                                              -1);
-                }
-                return TRUE;
-            }
-        }
-        return FALSE;
+        break;
 
     case GDK_Right:
-        /* right on day entry */
-        if (widget == priv->d_entry) {
-            gint pos =
-                gtk_editable_get_position(GTK_EDITABLE(priv->d_entry));
-            gint len = gtk_entry_get_max_length(GTK_ENTRY(priv->d_entry));
-            gint chars =
-                g_utf8_strlen(gtk_entry_get_text(GTK_ENTRY(priv->d_entry)),
-                              len);
-
-            if ((pos == len) || (pos > chars)) {
-                /* Switch to next entry */
-                gtk_editable_select_region(GTK_EDITABLE(priv->d_entry), 0, 0);
-                if (priv->locale_type == DAY_MONTH_YEAR) {
-                    gtk_widget_grab_focus(priv->m_entry);
-                    gtk_editable_set_position(GTK_EDITABLE(priv->m_entry), 0);
-                } else {
-                    gtk_widget_grab_focus(priv->y_entry);
-                    gtk_editable_set_position(GTK_EDITABLE(priv->y_entry), 0);
-                }
-                return TRUE;
-            }
+        /* User tries to navigate right. If we are on the end of the
+           entry, we try to do that. Otherwise entry moves cursor by one place */
+        if (pos >= g_utf8_strlen(gtk_entry_get_text(GTK_ENTRY(widget)), -1)) 
+        {
+           (void) gtk_widget_child_focus(GTK_WIDGET(data), GTK_DIR_RIGHT);
+           return TRUE;
         }
-        /* right on month entry */
-        else if (widget == priv->m_entry) {
-            gint pos =
-                gtk_editable_get_position(GTK_EDITABLE(priv->m_entry));
-            gint len = gtk_entry_get_max_length(GTK_ENTRY(priv->m_entry));
-            gint chars =
-                g_utf8_strlen(gtk_entry_get_text(GTK_ENTRY(priv->m_entry)),
-                              len);
+        break;
 
-            if ((pos == len) || (pos > chars)) {
-                /* Switch to next entry */
-                gtk_editable_select_region(GTK_EDITABLE(priv->m_entry), 0,
-                                           0);
-                if (priv->locale_type == DAY_MONTH_YEAR) {
-                    gtk_widget_grab_focus(priv->y_entry);
-                    gtk_editable_set_position(GTK_EDITABLE(priv->y_entry),
-                                              0);
-                } else {
-                    gtk_widget_grab_focus(priv->d_entry);
-                    gtk_editable_set_position(GTK_EDITABLE(priv->d_entry),
-                                              0);
-                }
-                return TRUE;
-            }
-        }
-        /* right on year entry */
-        else if (widget == priv->y_entry) {
-            gint pos =
-                gtk_editable_get_position(GTK_EDITABLE(priv->y_entry));
-            gint len = gtk_entry_get_max_length(GTK_ENTRY(priv->y_entry));
-            gint chars =
-                g_utf8_strlen(gtk_entry_get_text(GTK_ENTRY(priv->y_entry)),
-                              len);
-
-            if ((pos == len) || (pos > chars)) {
-                /* Switch to next entry */
-                gtk_editable_select_region(GTK_EDITABLE(priv->y_entry), 0,
-                                           0);
-                if (priv->locale_type == DAY_MONTH_YEAR) {
-                    gtk_widget_grab_focus(priv->d_entry);
-                    gtk_editable_set_position(GTK_EDITABLE(priv->d_entry),
-                                              0);
-                } else {
-                    gtk_widget_grab_focus(priv->y_entry);
-                    gtk_editable_set_position(GTK_EDITABLE(priv->y_entry),
-                                              0);
-                }
-                return TRUE;
-            }
-        }
-        return FALSE;
-
-        /* all digit keys */
-    case GDK_0:
-    case GDK_1:
-    case GDK_2:
-    case GDK_3:
-    case GDK_4:
-    case GDK_5:
-    case GDK_6:
-    case GDK_7:
-    case GDK_8:
-    case GDK_9:
-      {
-        if ((widget == priv->d_entry) || (widget == priv->m_entry) ||
-            (widget == priv->y_entry)) {
-            GtkWidgetClass *cl = GTK_WIDGET_GET_CLASS(widget);
-
-            cl->key_press_event(widget, event);
-        } else
-            return TRUE;
-      }
-      return TRUE;
-
-        /* accepts these as is */
-    case GDK_Tab:
-    case GDK_Shift_L:
-    case GDK_Shift_R:
-    case GDK_BackSpace:
-    case GDK_Delete:
-    case GDK_Up:
-    case GDK_Down:
-        return FALSE;
+    case GDK_Return:
+    case GDK_ISO_Enter:
+        /* Ignore return value, since we want to handle event at all times.
+           otherwise vkb would popup when the keyrepeat starts. */
+        (void) hildon_date_editor_set_calendar_icon_state(ed, TRUE);
+        return TRUE;
 
     case GDK_Escape:
         priv->skip_validation = TRUE;
-        return FALSE;
-
-        /* select date */
+        break;
     default:
-        return TRUE;
+        break;
     }
+
+    return FALSE;
 }
 
 static gboolean hildon_date_editor_entry_focus_out(GtkWidget * widget,
                                              GdkEventFocus * event,
                                              gpointer data)
 {
-  HildonDateEditor *ed;
-  HildonDateEditorPrivate *priv;
-  gint d, m, y;
-  gboolean r; /*for the sake of signal emission*/
-  GDate gd;
-
-  ed = HILDON_DATE_EDITOR(data);
-  priv = HILDON_DATE_EDITOR_GET_PRIVATE(ed);
-
-  if (priv->skip_validation)
-    return FALSE;
-
-  /*check if the calling entry is empty*/
-  if(gtk_entry_get_text(GTK_ENTRY(widget)) == NULL ||
-     *(gtk_entry_get_text(GTK_ENTRY(widget))) == '\0')
-    {
-      if(widget == priv->d_entry)
-	g_signal_emit(ed, date_editor_signals[DATE_ERROR], 0, 
-		      EMPTY_DAY, &r);
-      else if(widget == priv->m_entry)
-	g_signal_emit(ed, date_editor_signals[DATE_ERROR], 0, 
-		      EMPTY_MONTH, &r);
-      else
-	g_signal_emit(ed, date_editor_signals[DATE_ERROR], 0, 
-		      EMPTY_YEAR, &r);
-
-      return FALSE;
-    }
-
-  /* The first "validation" */
-  hildon_date_editor_entry_validate(GTK_EDITABLE(widget), ed);
-
-  /*date validation starts */
-  d = atoi(gtk_entry_get_text(GTK_ENTRY(priv->d_entry)));
-  m = atoi(gtk_entry_get_text(GTK_ENTRY(priv->m_entry)));
-  y = atoi(gtk_entry_get_text(GTK_ENTRY(priv->y_entry)));
-
-  /* The only reason why a date is not valid is because that 
-   * some months don't have 31st 30th or even 29th (since we 
-   * have done max and min range checking for each field), for 
-   * now we will only fix day field, if trying to fix day
-   * field fails to make the date valid, we will set the 
-   * date to be current date, if any value is 0, that means
-   * this entry is empty, therefore skip validation */
-   
-  if(d != 0 && m != 0 && y != 0 && !g_date_valid_dmy(d, m, y))
-    {
-      gint new_d;
-      gint max_d;
-      gchar day_str[3];
-      
-      g_signal_emit(ed, date_editor_signals[DATE_ERROR], 0, 
-		    INVALID_DATE, &r);
-      
-      max_d = g_date_get_days_in_month(m,y);
-	
-      /* Clamp to max day */
-      if(priv->d_orig <= max_d && priv->d_orig > 0)
-	new_d = priv->d_orig;
-      else
-	new_d = priv->d_orig = max_d;
-      
-      if(g_date_valid_dmy(new_d, m, y))
-	{
-	  d = priv->day = new_d;
-	  sprintf(day_str, "%02d", new_d);
-	  gtk_entry_set_text(GTK_ENTRY(priv->d_entry), day_str);
-	}
-      else
-	{
-	  g_date_clear(&gd, 1);
-	  g_date_set_time(&gd, time(NULL));
-	  d = g_date_get_year(&gd);
-	  m = g_date_get_month(&gd);
-	  y = g_date_get_day(&gd);
-	}
-      
-      /* Set focus back to day entry */
-      gtk_widget_grab_focus(priv->d_entry);
-      g_idle_add((GSourceFunc)
-		 _hildon_date_editor_entry_select_all, priv->d_entry);
-    }
-  /*make sure to have 0 in front single digits*/
-  hildon_date_editor_set_date(ed, (guint) y, (guint) m, (guint) d);
+  hildon_date_editor_entry_validate(widget, data);
   return FALSE;
 }
 
@@ -1483,37 +1173,25 @@ static void hildon_date_editor_size_request(GtkWidget * widget,
 {
     HildonDateEditor *ed;
     HildonDateEditorPrivate *priv;
-    GtkRequisition d_req, m_req, y_req, f_req, img_req;
+    GtkRequisition f_req, img_req;
 
-    g_return_if_fail(widget);
-    g_return_if_fail(requisition);
+    g_assert(GTK_IS_WIDGET(widget));
+    g_assert(requisition != NULL);
 
     ed = HILDON_DATE_EDITOR(widget);
     priv = HILDON_DATE_EDITOR_GET_PRIVATE(ed);
 
-    /* call size request for entries */
-    gtk_widget_size_request(priv->d_entry, &d_req);
-    gtk_widget_size_request(priv->m_entry, &m_req);
-    gtk_widget_size_request(priv->y_entry, &y_req);
-
-    /* set entry widths to width_of_digit * 2 + border */
-    d_req.width = (hildon_date_editor_get_font_width(priv->d_entry) << 1)
-        + ENTRY_BORDERS;
-    m_req.width = (hildon_date_editor_get_font_width(priv->m_entry) << 1)
-        + ENTRY_BORDERS;
-    y_req.width = (hildon_date_editor_get_font_width(priv->y_entry) << 2)
-        + ENTRY_BORDERS;
-
-    gtk_widget_set_size_request(priv->d_entry, d_req.width, d_req.height);
-    gtk_widget_set_size_request(priv->m_entry, m_req.width, m_req.height);
-    gtk_widget_set_size_request(priv->y_entry, y_req.width, y_req.height);
-
-
+    /* Our own children affect our size */
     gtk_widget_size_request(priv->frame, &f_req);
     gtk_widget_size_request(priv->d_event_box_image, &img_req);
 
     /* calculate our size */
-    requisition->width = f_req.width + img_req.width + BUTTON_SPACING;
+    requisition->width = f_req.width + img_req.width + HILDON_MARGIN_DEFAULT;
+
+    /* FIXME: Fixed size is bad! We should use the maximum of our children, but
+              doing so would break current pixel specifications, since
+              the text entry by itself is already 30px tall + then frame takes
+              something */
     requisition->height = DATE_EDITOR_HEIGHT;
 }
 
@@ -1525,9 +1203,10 @@ static void hildon_date_editor_size_allocate(GtkWidget * widget,
     GtkAllocation f_alloc, img_alloc;
     GtkRequisition req;
     GtkRequisition max_req;
+    GList *iter;
 
-    g_return_if_fail(widget);
-    g_return_if_fail(allocation);
+    g_assert(GTK_IS_WIDGET(widget));
+    g_assert(allocation != NULL);
 
     ed = HILDON_DATE_EDITOR(widget);
     priv = HILDON_DATE_EDITOR_GET_PRIVATE(ed);
@@ -1545,7 +1224,6 @@ static void hildon_date_editor_size_allocate(GtkWidget * widget,
             MAX(allocation->width - max_req.width, 0) / 2;
 
     /* allocate frame */
-    if (priv->frame)
         if (GTK_WIDGET_VISIBLE(priv->frame)) {
             gtk_widget_get_child_requisition(priv->frame, &req);
 
@@ -1555,44 +1233,32 @@ static void hildon_date_editor_size_allocate(GtkWidget * widget,
         }
 
     /* allocate icon */
-    if (priv->d_event_box_image)
         if (GTK_WIDGET_VISIBLE(priv->d_event_box_image)) {
             gtk_widget_get_child_requisition(priv->d_event_box_image,
                                              &req);
 
-            img_alloc.x += f_alloc.width + BUTTON_SPACING;
+            img_alloc.x += f_alloc.width + HILDON_MARGIN_DEFAULT;
             img_alloc.width = req.width;
             img_alloc.height = max_req.height;
             gtk_widget_size_allocate(priv->d_event_box_image, &img_alloc);
         }
 
-    /* Allocate delimiters between entries */
-    priv->dm_delim->allocation.height = max_req.height; 
-    priv->my_delim->allocation.height = max_req.height; 
-    priv->my_delim->allocation.y = priv->d_entry->allocation.y-5;
-    priv->dm_delim->allocation.y = priv->d_entry->allocation.y-5;
-    gtk_widget_size_allocate(priv->dm_delim, &priv->dm_delim->allocation);
-    gtk_widget_size_allocate(priv->my_delim, &priv->my_delim->allocation);
-}
+    /* FIXME: We really should not alloc delimeters by hand (since they
+              are not our own children, but we need to force to appear 
+              higher. This ugly hack is needed to compensate the forced
+              height in size_request. */
+    for (iter = priv->delims; iter; iter = iter->next)
+    {
+        GtkWidget *delim;
+        GtkAllocation alloc;
 
-/* calculate approximate width of a digit */
-static int hildon_date_editor_get_font_width(GtkWidget * widget)
-{
-    PangoContext *context;
-    PangoFontMetrics *metrics;
-    gint digit_width;
+        delim = GTK_WIDGET(iter->data);
+        alloc = delim->allocation;
+        alloc.height = max_req.height; 
+        alloc.y = priv->d_entry->allocation.y-4;
 
-    context = gtk_widget_get_pango_context(widget);
-    metrics = pango_context_get_metrics(context, widget->style->font_desc,
-                                        pango_context_get_language
-                                        (context));
-
-    digit_width = pango_font_metrics_get_approximate_digit_width(metrics);
-    digit_width = PANGO_PIXELS(digit_width);
-
-    pango_font_metrics_unref(metrics);
-
-    return digit_width;
+        gtk_widget_size_allocate(delim, &alloc);
+    }
 }
 
 /**
@@ -1612,11 +1278,18 @@ gboolean hildon_date_editor_set_year(HildonDateEditor *editor, guint year)
 
   if (g_date_valid_dmy(priv->day, priv->month, year))
   {
-    gchar str[MAX_DATE_LEN + 1];
+    gchar buffer[256];
     priv->year = year;
 
-    sprintf(str, "%04d", year);
-    gtk_entry_set_text(GTK_ENTRY(priv->y_entry), str);
+    g_snprintf(buffer, sizeof(buffer), "%04d", year);
+
+    /* We apply the new day, but do not want automatic focus move
+       etc to take place */
+    g_signal_handlers_block_by_func(priv->y_entry, 
+        (gpointer) hildon_date_editor_entry_changed, editor);
+    gtk_entry_set_text(GTK_ENTRY(priv->y_entry), buffer);
+    g_signal_handlers_unblock_by_func(priv->y_entry, 
+        (gpointer) hildon_date_editor_entry_changed, editor);
 
     g_object_notify(G_OBJECT(editor), "year");
     return TRUE;
@@ -1643,12 +1316,19 @@ gboolean hildon_date_editor_set_month(HildonDateEditor *editor, guint month)
   if (g_date_valid_dmy(priv->day, month, priv->year))
   {
     GDate date;
-    gchar str[MAX_DATE_LEN + 1];
+    gchar buffer[256];
+
     priv->month = month;
     g_date_set_dmy(&date, priv->day, month, priv->year);
+    g_date_strftime(buffer, sizeof(buffer), "%m", &date);
 
-    g_date_strftime(str, MAX_DATE_LEN, "%m", &date);
-    gtk_entry_set_text(GTK_ENTRY(priv->m_entry), str);
+    /* We apply the new day, but do not want automatic focus move
+       etc to take place */
+    g_signal_handlers_block_by_func(priv->m_entry, 
+        (gpointer) hildon_date_editor_entry_changed, editor);
+    gtk_entry_set_text(GTK_ENTRY(priv->m_entry), buffer);
+    g_signal_handlers_unblock_by_func(priv->m_entry, 
+        (gpointer) hildon_date_editor_entry_changed, editor);
 
     g_object_notify(G_OBJECT(editor), "month");
     return TRUE;
@@ -1675,12 +1355,19 @@ gboolean hildon_date_editor_set_day(HildonDateEditor *editor, guint day)
   if (g_date_valid_dmy(day, priv->month, priv->year))
   {
     GDate date;
-    gchar str[MAX_DATE_LEN + 1];
+    gchar buffer[256];
+
     priv->day = day;
     g_date_set_dmy(&date, day, priv->month, priv->year);
+    g_date_strftime(buffer, sizeof(buffer), "%d", &date);
 
-    g_date_strftime(str, MAX_DATE_LEN, "%d", &date);
-    gtk_entry_set_text(GTK_ENTRY(priv->d_entry), str);
+    /* We apply the new day, but do not want automatic focus move
+       etc to take place */
+    g_signal_handlers_block_by_func(priv->d_entry, 
+        (gpointer) hildon_date_editor_entry_changed, editor);
+    gtk_entry_set_text(GTK_ENTRY(priv->d_entry), buffer);
+    g_signal_handlers_unblock_by_func(priv->d_entry, 
+        (gpointer) hildon_date_editor_entry_changed, editor);
 
     g_object_notify(G_OBJECT(editor), "day");
     return TRUE;
@@ -1701,7 +1388,6 @@ guint hildon_date_editor_get_year(HildonDateEditor *editor)
   HildonDateEditorPrivate *priv;
   g_return_val_if_fail( HILDON_IS_DATE_EDITOR(editor), 0 );
   priv = HILDON_DATE_EDITOR_GET_PRIVATE(editor);
-  /*change to have the content in the entry*/
   return (guint) atoi(gtk_entry_get_text(GTK_ENTRY(priv->y_entry)));
 }
 
