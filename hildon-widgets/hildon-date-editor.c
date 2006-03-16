@@ -987,7 +987,7 @@ hildon_date_editor_entry_validate(GtkWidget *widget, gpointer data)
         max_days = g_date_get_days_in_month(m,y);
         if(d < 1) {
            error_code = MIN_DAY;
-           d = 1;           
+           d = 1;
         }
         else if (d > max_days) {
            /* Report range error or invalid date */
@@ -1079,26 +1079,13 @@ static gboolean hildon_date_editor_keypress(GtkWidget * widget,
 	
     switch (event->keyval) {
     case GDK_Left:
-        /* User tries to navigate left. If we are on the start of the
-           entry, we try to do that. Otherwise entry moves cursor by one place */
-        if (pos == 0)
-        {
-            /* We do not want to wrap around etc, so we ignore the return value */
-            (void) gtk_widget_child_focus(GTK_WIDGET(data), GTK_DIR_LEFT);
-            return TRUE;
-        }
+        (void) gtk_widget_child_focus(GTK_WIDGET(data), GTK_DIR_LEFT);
+        return TRUE;
         break;
-
     case GDK_Right:
-        /* User tries to navigate right. If we are on the end of the
-           entry, we try to do that. Otherwise entry moves cursor by one place */
-        if (pos >= g_utf8_strlen(gtk_entry_get_text(GTK_ENTRY(widget)), -1)) 
-        {
-           (void) gtk_widget_child_focus(GTK_WIDGET(data), GTK_DIR_RIGHT);
-           return TRUE;
-        }
+        (void) gtk_widget_child_focus(GTK_WIDGET(data), GTK_DIR_RIGHT);
+        return TRUE;
         break;
-
     case GDK_Return:
     case GDK_ISO_Enter:
         /* Ignore return value, since we want to handle event at all times.
