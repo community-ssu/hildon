@@ -8,6 +8,7 @@
 	* hildon-widgets/hildon-volumebar-range.c
 	* hildon-widgets/hildon-vvolumebar.c: Fix erroneous gtk-doc comment
 	blocks.
+	(hildon_controlbar_get_type): likewise.
 
 2006-03-13  Tommi Komulainen  <tommi.komulainen@nokia.com>
 

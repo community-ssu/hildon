@@ -100,6 +100,11 @@ static void hildon_controlbar_get_property( GObject *object, guint param_id,
 static void
 hildon_controlbar_value_changed( GtkAdjustment *adj, GtkRange *range );
 
+/*
+ * Purpose of this function is to prevent Up and Down keys from 
+ * changing the widget's value (like Left and Right). Instead they 
+ * are used for changing focus to other widgtes.
+ */
 static gboolean
 hildon_controlbar_change_value( GtkRange *range, GtkScrollType scroll,
                                 gdouble new_value, gpointer data );
