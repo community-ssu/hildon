@@ -68,6 +68,18 @@
 
 2006-03-03  Luc Pionchon  <luc.pionchon@nokia.com>
 
+	Cleanup weekday picker,
+
+	* hildon-widgets/hildon-weekday-picker.c
+	(_): removed unused gettext macro
+	(button_toggle): use meaningful parameter name
+	(hildon_weekday_picker_forall): use g_asserts instead of g_return_if_fail
+	(hildon_weekday_picker_size_allocate): likewise.
+	(button_toggle): likewise.
+
+	
+2006-03-03  Luc Pionchon  <luc.pionchon@nokia.com>
+
 	Cleanup time editor,
 	
 	* hildon-widgets/hildon-time-editor.c

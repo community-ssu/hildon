@@ -46,8 +46,6 @@
 #include "hildon-weekday-picker.h"
 #include "hildon-composite-widget.h"
 
-#define _(string) dgettext(PACKAGE, string)
-
 #define HILDON_WEEKDAY_PICKER_GET_PRIVATE(obj) \
     (G_TYPE_INSTANCE_GET_PRIVATE ((obj), \
      HILDON_WEEKDAY_PICKER_TYPE, HildonWeekdayPickerPrivate));
@@ -74,7 +72,7 @@ static void
 hildon_weekday_picker_destroy(GtkObject * self);
 
 static void
-button_toggle(GtkToggleButton * togglebutton, gpointer data);
+button_toggle(GtkToggleButton * togglebutton, gpointer wpicker);
 
 struct _HildonWeekdayPickerPrivate {
     GtkWidget *buttons[8];           /* weekday buttons in show order */
@@ -220,8 +218,8 @@ hildon_weekday_picker_forall(GtkContainer * container,
     HildonWeekdayPickerPrivate *priv;
     gint i;
 
-    g_return_if_fail(container);
-    g_return_if_fail(callback);
+    g_assert(container);
+    g_assert(callback);
 
     picker = HILDON_WEEKDAY_PICKER(container);
     priv = HILDON_WEEKDAY_PICKER_GET_PRIVATE(picker);
@@ -298,8 +296,8 @@ hildon_weekday_picker_size_allocate(GtkWidget * widget,
     guint sval;
     GtkTextDirection direction;
 
-    g_return_if_fail(widget);
-    g_return_if_fail(allocation);
+    g_assert(widget);
+    g_assert(allocation);
 
     /* Check orientation */
     direction = gtk_widget_get_direction(widget);
@@ -333,16 +331,16 @@ hildon_weekday_picker_size_allocate(GtkWidget * widget,
 }
 
 static void
-button_toggle(GtkToggleButton * button, gpointer data)
+button_toggle(GtkToggleButton * button, gpointer wpicker)
 {
     HildonWeekdayPicker *picker;
     HildonWeekdayPickerPrivate *priv;
     gint i;
 
-    g_return_if_fail(button);
-    g_return_if_fail(data);
+    g_assert(button);
+    g_assert(wpicker);
 
-    picker = HILDON_WEEKDAY_PICKER(data);
+    picker = HILDON_WEEKDAY_PICKER(wpicker);
     priv = HILDON_WEEKDAY_PICKER_GET_PRIVATE(picker);
 
     for (i = 1; i <= 7; ++i) {
