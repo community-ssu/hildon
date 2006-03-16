@@ -1,5 +1,14 @@
 2006-03-15  Luc Pionchon  <luc.pionchon@nokia.com>
 
+	* hildon-widgets/hildon-appview.c: 
+	(hildon_appview_init):   indented comments properly
+	(paint_toolbar):         indented comments properly
+	(hildon_appview_expose): indented code properly
+	(hildon_appview_toolbar_toggle_request): removed dead code
+
+
+2006-03-15  Luc Pionchon  <luc.pionchon@nokia.com>
+
 	* hildon-widgets/hildon-caption.c
 	(hildon_caption_expose): use g_assert instead of g_return_val_if_fail
 	(hildon_caption_size_allocate): likewise.

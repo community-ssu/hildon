@@ -590,16 +590,18 @@ static void paint_toolbar(GtkWidget *widget, GtkBox *box,
     g_list_foreach(box->children, find_findtoolbar, 
 		   (gpointer) &findtoolbar);
     if(findtoolbar != NULL){
-        gint pass_bundle[2];/* an array for convient data passing
-                              the first member contains the y allocation
-	         	                  of the find toolbar, and the second allocation
-			                        contains the index(how many toolbars are above
-			                        find toolbar) */
+        gint pass_bundle[2];
+        
+        /* an array for convient data passing
+         * the first member contains the y allocation
+         * of the find toolbar, and the second allocation
+         * contains the index(how many toolbars are above
+         * find toolbar) */
         pass_bundle[0] = findtoolbar->allocation.y;
         pass_bundle[1] = ftb_index;
 
-        /* computes how many toolbars are above the find toolbar, and the value is
-         * stored in pass_bundle[1] */
+        /* computes how many toolbars are above the find toolbar, and the
+         * value is stored in pass_bundle[1] */
         g_list_foreach(box->children, find_findtoolbar_index,
 		       (gpointer) pass_bundle);
         ftb_index = pass_bundle[1];
@@ -698,91 +700,90 @@ static void paint_toolbar(GtkWidget *widget, GtkBox *box,
 static gboolean hildon_appview_expose(GtkWidget * widget,
                                       GdkEventExpose * event)
 {
-   gint toolbar_num = 0;
-   GtkBox *box = GTK_BOX(HILDON_APPVIEW(widget)->vbox);
+    gint toolbar_num = 0;
+    GtkBox *box = GTK_BOX(HILDON_APPVIEW(widget)->vbox);
 
-  if(GTK_WIDGET_VISIBLE(box) && box->children != NULL)
-  {
-    HildonAppViewPrivate *priv = HILDON_APPVIEW_GET_PRIVATE(widget);
-
-    /* Iterate through all the children of the vbox of the HildonAppView.
-     * The visible_toolbar function increments toolbar_num if the toolbar
-     * is visible. After this loop, toobar_num will contain the number
-     * of the visible toolbars. */
-    g_list_foreach(box->children, visible_toolbar, 
-                   (gpointer) &toolbar_num);
-    
-    if( priv->visible_toolbars != toolbar_num)
+    if(GTK_WIDGET_VISIBLE(box) && box->children != NULL)
     {
-     /* If the code reaches this block, it means that a toolbar as been added
-      * or removed since last time the view was drawn. Let's then compute the
-      * new height of the toolbars areas */
-     gint y_pos = 0;
-     /* the height difference */
-     gint change = (priv->visible_toolbars - toolbar_num) *
-                   (TOOLBAR_HEIGHT+TOOLBAR_MIDDLE+TOOLBAR_UP);
-     if( change < 0 )
-       change = TOOLBAR_MIDDLE + TOOLBAR_UP;
-     /* the new y-coordinate for the toolbars area */
-     y_pos = HILDON_APPVIEW(widget)->vbox->allocation.y - change;
-       
-     gtk_widget_queue_draw_area(widget, 0, y_pos, widget->allocation.width,
-                 change + HILDON_APPVIEW(widget)->vbox->allocation.height +
-                 TOOLBAR_DOWN);
-     priv->visible_toolbars = toolbar_num;
+        HildonAppViewPrivate *priv = HILDON_APPVIEW_GET_PRIVATE(widget);
+
+        /* Iterate through all the children of the vbox of the HildonAppView.
+         * The visible_toolbar function increments toolbar_num if the toolbar
+         * is visible. After this loop, toobar_num will contain the number
+         * of the visible toolbars. */
+        g_list_foreach(box->children, visible_toolbar, 
+                (gpointer) &toolbar_num);
+
+        if( priv->visible_toolbars != toolbar_num)
+        {
+            /* If the code reaches this block, it means that a toolbar as 
+             * been added or removed since last time the view was drawn.
+             * Let's then compute the new height of the toolbars areas */
+            gint y_pos = 0;
+            /* the height difference */
+            gint change = (priv->visible_toolbars - toolbar_num) *
+                (TOOLBAR_HEIGHT+TOOLBAR_MIDDLE+TOOLBAR_UP);
+            if( change < 0 )
+                change = TOOLBAR_MIDDLE + TOOLBAR_UP;
+            /* the new y-coordinate for the toolbars area */
+            y_pos = HILDON_APPVIEW(widget)->vbox->allocation.y - change;
+
+            gtk_widget_queue_draw_area(widget, 0, y_pos, widget->allocation.width,
+                    change + HILDON_APPVIEW(widget)->vbox->allocation.height +
+                    TOOLBAR_DOWN);
+            priv->visible_toolbars = toolbar_num;
+        }
     }
-  }
 
 
-   if (HILDON_APPVIEW(widget)->priv->fullscreen)
-   {
-	   if (toolbar_num > 0)
-	     paint_toolbar(widget, box, event, TRUE);
-   }
-   else
-   {
-	   gint appview_height_decrement = 0;
-	   if (toolbar_num > 0)
-     {
-	     appview_height_decrement = toolbar_num * TOOLBAR_HEIGHT +
-	                                 (toolbar_num - 1) * TOOLBAR_MIDDLE 
-                                   + TOOLBAR_UP + TOOLBAR_DOWN;
-	    
-       paint_toolbar(widget, box, event, FALSE);
-	   }
-     else
-     {
-	     appview_height_decrement = MARGIN_APPVIEW_BOTTOM;
+    if (HILDON_APPVIEW(widget)->priv->fullscreen)
+    {
+        if (toolbar_num > 0)
+            paint_toolbar(widget, box, event, TRUE);
+    }
+    else
+    {
+        gint appview_height_decrement = 0;
+        if (toolbar_num > 0)
+        {
+            appview_height_decrement = toolbar_num * TOOLBAR_HEIGHT +
+                (toolbar_num - 1) * TOOLBAR_MIDDLE 
+                + TOOLBAR_UP + TOOLBAR_DOWN;
 
-	     gtk_paint_box(widget->style, widget->window,
-		                 GTK_WIDGET_STATE(widget), GTK_SHADOW_OUT,
-		                 &event->area, widget, "bottom-border",
-		                 widget->allocation.x,
-                     widget->allocation.y +
-                     (widget->allocation.height - MARGIN_APPVIEW_BOTTOM),
-                     widget->allocation.width, MARGIN_APPVIEW_BOTTOM);
-	    }
-  gtk_paint_box( widget->style, widget->window,
-                 GTK_WIDGET_STATE(widget), GTK_SHADOW_OUT, 
-                 &event->area,
-                 widget, "left-border", widget->allocation.x,
-                 widget->allocation.y, MARGIN_APPVIEW_LEFT,
-                 widget->allocation.height - appview_height_decrement );
-  gtk_paint_box( widget->style, widget->window,
-                 GTK_WIDGET_STATE(widget), GTK_SHADOW_OUT, 
-                 &event->area,
-                 widget, "right-border",
-                 (widget->allocation.x +
+            paint_toolbar(widget, box, event, FALSE);
+        }
+        else
+        {
+            appview_height_decrement = MARGIN_APPVIEW_BOTTOM;
+
+            gtk_paint_box(widget->style, widget->window,
+                    GTK_WIDGET_STATE(widget), GTK_SHADOW_OUT,
+                    &event->area, widget, "bottom-border",
+                    widget->allocation.x,
+                    widget->allocation.y +
+                    (widget->allocation.height - MARGIN_APPVIEW_BOTTOM),
+                    widget->allocation.width, MARGIN_APPVIEW_BOTTOM);
+        }
+        gtk_paint_box( widget->style, widget->window,
+                GTK_WIDGET_STATE(widget), GTK_SHADOW_OUT, 
+                &event->area,
+                widget, "left-border", widget->allocation.x,
+                widget->allocation.y, MARGIN_APPVIEW_LEFT,
+                widget->allocation.height - appview_height_decrement );
+        gtk_paint_box( widget->style, widget->window,
+                GTK_WIDGET_STATE(widget), GTK_SHADOW_OUT, 
+                &event->area,
+                widget, "right-border",
+                (widget->allocation.x +
                  widget->allocation.width) -
-                 MARGIN_APPVIEW_RIGHT, widget->allocation.y,
-                 MARGIN_APPVIEW_RIGHT,
-                 widget->allocation.height - appview_height_decrement );
-  }
+                MARGIN_APPVIEW_RIGHT, widget->allocation.y,
+                MARGIN_APPVIEW_RIGHT,
+                widget->allocation.height - appview_height_decrement );
+    }
 
-  GTK_WIDGET_CLASS(parent_class)->expose_event(widget, event);
+    GTK_WIDGET_CLASS(parent_class)->expose_event(widget, event);
 
-  return FALSE;
-
+    return FALSE;
 }
 
 /*
@@ -932,13 +933,6 @@ static void hildon_appview_destroy(GtkObject *obj)
 /*******************/
 /*   Signals       */
 /*******************/
-
-/*
-static void hildon_appview_toolbar_toggle_request( HildonAppView *self )
-{
-
-}
-*/
 
 /*Signal - When is changed to this appview, this is called*/
 static void hildon_appview_switched_to(HildonAppView * self)
