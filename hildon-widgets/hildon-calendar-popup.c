@@ -25,9 +25,7 @@
 /* HILDON DOC
  * @shortdesc: CalendarPopup allows choosing a date from a popup calendar.
  * @longdesc: The Calendar popup is a dialog that contains a GtkCalendar 
- * widget. The pop-up is cancelled by
- * pressing the ESC
- * key.
+ * widget. The pop-up is cancelled by pressing the ESC key.
  * </para><para>
  * 
  * @seealso: #HildonDateEditor, #HildonTimeEditor
@@ -45,7 +43,6 @@
 #include <time.h>
 #include <libintl.h>
 #include <hildon-widgets/hildon-calendar-popup.h>
-#include <hildon-widgets/gtk-infoprint.h> /* FIXME: use GtkInfoprint instead of gtk-infoprint (deprecated). */
 
 #define _(String) dgettext(PACKAGE, String)
 
@@ -65,15 +62,10 @@ hildon_calendar_popup_class_init(HildonCalendarPopupClass * cal_class);
 
 static void hildon_calendar_popup_init(HildonCalendarPopup * cal);
 
-static gboolean hildon_calendar_day_selected(GtkWidget * widget,
-                                             gpointer data);
-
-static void hildon_calendar_allow_exit(GtkWidget * self, gpointer data);
-
-static gboolean hildon_calendar_deny_exit(GtkWidget * self);
+static void hildon_calendar_selected_date(GtkWidget * self, gpointer cal_popup);
 
 static gboolean hildon_key_pressed(GtkWidget * widget, GdkEventKey * event,
-                                   gpointer data);
+                                   gpointer cal_popup);
 
 static void hildon_calendar_popup_set_property(GObject * object, guint property_id,
                                     const GValue * value, GParamSpec * pspec);
@@ -91,8 +83,6 @@ enum {
 
 struct _HildonCalendarPopupPrivate {
     GtkWidget *cal;
-    gboolean can_exit; /* FIXME this variable is not necessary 
-                          and shuold be removed*/
 };
 
 GType hildon_calendar_popup_get_type(void)
@@ -166,8 +156,6 @@ GtkWidget *hildon_calendar_popup_new(GtkWindow * parent, guint year,
  *
  * This function activates a new date on the calendar popup.
  **/
-
-
 void
 hildon_calendar_popup_set_date(HildonCalendarPopup * cal,
                                guint year, guint month, guint day)
@@ -196,7 +184,6 @@ hildon_calendar_popup_set_date(HildonCalendarPopup * cal,
  * This function is used to get the currently selected year, month,
  * and day. 
  **/
-
 void
 hildon_calendar_popup_get_date(HildonCalendarPopup * cal,
                                guint * year, guint * month, guint * day)
@@ -285,7 +272,6 @@ static void hildon_calendar_popup_init(HildonCalendarPopup * cal)
         set_domain = 0;
     }
 
-    priv->can_exit = FALSE;
     priv->cal = gtk_calendar_new();
 
     /* dialog options and packing */
@@ -302,90 +288,51 @@ static void hildon_calendar_popup_init(HildonCalendarPopup * cal)
     gtk_widget_show(priv->cal);
 
     /* Connect signals */
-    g_signal_connect(G_OBJECT(priv->cal), "day-selected",
-                     G_CALLBACK(hildon_calendar_day_selected), cal);
-
     g_signal_connect(G_OBJECT(priv->cal), "key-press-event",
                      G_CALLBACK(hildon_key_pressed), cal);
-    g_signal_connect_swapped(G_OBJECT(priv->cal), "button-release-event",
-                             G_CALLBACK(hildon_calendar_deny_exit), cal);
-    g_signal_connect_swapped(G_OBJECT(priv->cal), "month-changed",
-                             G_CALLBACK(hildon_calendar_deny_exit), cal);
-    g_signal_connect_swapped(G_OBJECT(priv->cal), "button-press-event",
-                             G_CALLBACK(hildon_calendar_deny_exit), cal);
 
     g_signal_connect(G_OBJECT(priv->cal), "selected_date",
-                     G_CALLBACK(hildon_calendar_allow_exit), cal);
+                     G_CALLBACK(hildon_calendar_selected_date), cal);
 
     /* set decorations, needs realizing first*/
     gtk_widget_realize(GTK_WIDGET(cal));
     gdk_window_set_decorations(GTK_WIDGET(cal)->window, GDK_DECOR_BORDER);
-    /*FIXME grabbing focus is useless here*/
-    gtk_widget_grab_focus(priv->cal);
+
 }
 
-/* FIXME this function is useless and should be removed.
- * Signal handler for day-selected signal from GtkCalendar. 
- * Closes the dialog when the signal is received and accepts the 
- * selected date.
- */
-static gboolean
-hildon_calendar_day_selected(GtkWidget * widget, gpointer data)
-{
-    HildonCalendarPopup *cal;
-    HildonCalendarPopupPrivate *priv;
-
-    cal = HILDON_CALENDAR_POPUP(data);
-    priv = HILDON_CALENDAR_POPUP_GET_PRIVATE(cal);
-
-    if (priv->can_exit) {
-        gtk_dialog_response(GTK_DIALOG(data), GTK_RESPONSE_ACCEPT);
-        return TRUE;
-    }
-    return FALSE;
-}
 
 /*
  * Signal handler for key-press-event. Closes the dialog for some
  * special keys.
  */
 static gboolean
-hildon_key_pressed(GtkWidget * widget, GdkEventKey * event, gpointer data)
+hildon_key_pressed(GtkWidget * widget, GdkEventKey * event, gpointer cal_popup)
 {
-    HildonCalendarPopup *cal;
-    HildonCalendarPopupPrivate *priv;
+    g_assert(HILDON_IS_CALENDAR_POPUP(cal_popup));
 
-    g_return_val_if_fail(data, FALSE);
-
-    cal = HILDON_CALENDAR_POPUP(data);
-    priv = HILDON_CALENDAR_POPUP_GET_PRIVATE(cal);
-
-    /* Handle Return key press as OK response */ 
-    if (event->keyval == GDK_Return) {
-        priv->can_exit = TRUE;
-        gtk_dialog_response(GTK_DIALOG(cal), GTK_RESPONSE_OK);
+    /* Handle Return key press as OK response */
+    if (event->keyval == GDK_Return)
+    {
+        gtk_dialog_response(GTK_DIALOG(cal_popup), GTK_RESPONSE_OK);
         return TRUE;
     }
 
-    /* Handle Esc and F1-8 key press as CANCEL response */
-    if ((event->keyval == GDK_Escape) || (event->keyval == GDK_F1) ||
-        (event->keyval == GDK_F2) || (event->keyval == GDK_F3) ||
-        (event->keyval == GDK_F4) || (event->keyval == GDK_F5) ||
-        (event->keyval == GDK_F6) || (event->keyval == GDK_F7) ||
-        (event->keyval == GDK_F8)) {
-        gtk_dialog_response(GTK_DIALOG(cal), GTK_RESPONSE_CANCEL);
+    /* Handle Esc key press as CANCEL response */
+    if ((event->keyval == GDK_Escape))
+    {
+        gtk_dialog_response(GTK_DIALOG(cal_popup), GTK_RESPONSE_CANCEL);
         return TRUE;
     }
 
     return FALSE;
 }
 
+
 /*
  * Validates the given date or initializes it with the current date
  */
 static void
-init_dmy(guint year, guint month, guint day, guint * d, guint * m,
-         guint * y)
+init_dmy(guint year, guint month, guint day, guint *d, guint *m, guint *y)
 {
     GDate date;
 
@@ -407,38 +354,19 @@ init_dmy(guint year, guint month, guint day, guint * d, guint * m,
 }
 
 /*
- * Exits the dialog when selected_date signal is emmited.
- * FIXME change name to better reflect the functionality
+ * Exits the dialog when "selected_date" signal is emmited. The
+ * "selected_date" signal is a Hildon addition to GtkCalendar and is
+ * emitted on button-release.
  */
 static void
-hildon_calendar_allow_exit(GtkWidget * self, gpointer data)
+hildon_calendar_selected_date(GtkWidget * self, gpointer cal_popup)
 {
-    HildonCalendarPopup *cal;
-    HildonCalendarPopupPrivate *priv;
-
     g_assert(GTK_IS_WIDGET (self));
-    g_assert(HILDON_IS_CALENDAR_POPUP (data)); 
-    
-    cal = HILDON_CALENDAR_POPUP(data);
-    priv = HILDON_CALENDAR_POPUP_GET_PRIVATE(cal);
-  
-    gtk_dialog_response(GTK_DIALOG(cal), GTK_RESPONSE_OK);
+    g_assert(HILDON_IS_CALENDAR_POPUP (cal_popup));
+ 
+    gtk_dialog_response(GTK_DIALOG(cal_popup), GTK_RESPONSE_OK);
 }
 
-/* FIXME this function is useless and should be 
- * removed, along with can_exit flag
- */
-static gboolean hildon_calendar_deny_exit(GtkWidget * self)
-{
-    HildonCalendarPopup *cal;
-    HildonCalendarPopupPrivate *priv;
-
-    cal = HILDON_CALENDAR_POPUP(self);
-    priv = HILDON_CALENDAR_POPUP_GET_PRIVATE(cal);
-
-    priv->can_exit = FALSE;
-    return FALSE;
-}
 
 static void hildon_calendar_popup_set_property(GObject * object, guint property_id,
                                     const GValue * value, GParamSpec * pspec)
@@ -473,7 +401,6 @@ static void hildon_calendar_popup_get_property(GObject * object, guint property_
 {
     HildonCalendarPopupPrivate *priv = 
 	HILDON_CALENDAR_POPUP_GET_PRIVATE(HILDON_CALENDAR_POPUP (object));
-    gint day, month, year;
 
     switch (property_id) {
     case PROP_DAY:

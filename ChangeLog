@@ -1,3 +1,31 @@
+2006-03-13  Luc Pionchon  <luc.pionchon@nokia.com>
+
+	Cleanup calendar popup,
+
+	* hildon-widgets/hildon-calendar-popup.c: 
+	- updated 'longdesc' comment.
+	- removed gtk-infoprint.h from included headers (unused).
+
+	(struct HildonCalendarPopupPrivate): removed member
+	'can_exit' (useless).
+	(hildon_calendar_day_selected): removed (useless).
+	(hildon_calendar_allow_exit): likewise.
+	(hildon_calendar_deny_exit): likewise.
+
+	(hildon_calendar_selected_date): new function. replaces
+	hildon_calendar_allow_exit()
+
+	(hildon_calendar_popup_init):
+	- Removed initialization for 'can_exit'. 
+	- Removed connection to removed useless functions.
+	- Connect "selected_date" to hildon_calendar_selected_date().
+	- Do not grab the focus (useless)
+
+	(hildon_key_pressed): just handle ESC and Return keys.
+
+	(hildon_calendar_popup_get_property): removed unused variables.
+
+
 2006-03-13  Tommi Komulainen  <tommi.komulainen@nokia.com>
 
 	* hildon-widgets/hildon-caption.c
