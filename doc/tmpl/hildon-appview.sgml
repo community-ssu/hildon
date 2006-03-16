@@ -222,27 +222,6 @@ toggling from fullscreen hardware key, use #hildon_appview_set_fullscreen_key_al
 
 @hildonappview: the object which received the signal.
 
-<!-- ##### SIGNAL HildonAppView::toolbar-changed ##### -->
-<para>
-This is not a valid signal to listen to. Since HildonAppView supports
- multi-toolbar, and packing of these toolbars is in the hand of the
- programmers. Please access the public member GtkVBox in HildonAppView
- to set/get your toolbars.
-
-</para>
-
-@hildonappview: the object which received the signal.
-
-<!-- ##### SIGNAL HildonAppView::toolbar-toggle-request ##### -->
-<para>
-This is not a valid signal to listen to. Since HildonAppView supports
- multi-toolbar, and showing/hiding of the these toolbars is required from
- the programmers.
-
-</para>
-
-@hildonappview: the object which received the signal.
-
 <!-- ##### ARG HildonAppView:connected-adjustment ##### -->
 <para>
 
