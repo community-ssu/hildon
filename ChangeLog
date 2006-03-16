@@ -68,6 +68,15 @@
 
 2006-03-03  Luc Pionchon  <luc.pionchon@nokia.com>
 
+	* hildon-widgets/hildon-controlbar.c
+	(hildon_controlbar_change_value): commented function.
+
+	* hildon-widgets/hildon-wizard-dialog.c
+	(hildon_wizard_dialog_get_property): likewise.
+
+
+2006-03-03  Luc Pionchon  <luc.pionchon@nokia.com>
+
 	Cleanup weekday picker,
 
 	* hildon-widgets/hildon-weekday-picker.c

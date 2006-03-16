@@ -290,7 +290,10 @@ hildon_wizard_dialog_set_property(GObject * object, guint property_id,
     }
 }
 
-
+/*
+ * Creates the title of the dialog taking into account the current 
+ * page of the notebook.
+ */
 static void
 hildon_wizard_dialog_get_property(GObject * object, guint property_id,
                                   GValue * value, GParamSpec * pspec)
