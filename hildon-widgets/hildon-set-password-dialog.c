@@ -58,7 +58,7 @@
 #include <stdio.h>
 
 #include <hildon-widgets/hildon-caption.h>
-#include <hildon-widgets/gtk-infoprint.h> /* FIXME: broken include? */
+#include <hildon-widgets/gtk-infoprint.h>
 #include <hildon-widgets/hildon-set-password-dialog.h>
 #include <hildon-widgets/hildon-note.h>
 #include <hildon-widgets/hildon-defines.h>
@@ -80,20 +80,14 @@ hildon_set_password_dialog_class_init(HildonSetPasswordDialogClass *
                                       class);
 static void hildon_set_password_dialog_init(HildonSetPasswordDialog *
                                             dialog);
-static void hildon_checbox_toggled(GtkWidget * widget, gpointer data);
+static void hildon_checkbox_toggled(GtkWidget * widget, gpointer dialog);
 
 static void
-hildon_set_password_response_change(GtkDialog * d, gint arg1,
-                                    GtkWindow * parent);
+hildon_set_password_response_change(GtkDialog * d, gint arg1, gpointer unused);
 static void
-hildon_set_password_response_set(GtkDialog * d, gint arg1,
-                                 GtkWindow * parent);
+hildon_set_password_response_set(GtkDialog * d, gint arg1, gpointer unused);
 
-static GObject *
-hildon_set_password_dialog_constructor(GType type,
-                                       guint n_construct_properties,
-                                       GObjectConstructParam *
-                                       construct_properties);
+static void create_contents(HildonSetPasswordDialog *dialog);
 static void hildon_set_password_set_property(GObject * object,
                                              guint prop_id,
                                              const GValue * value,
@@ -151,8 +145,11 @@ hildon_set_password_set_property(GObject * object,
         gtk_entry_set_text(GTK_ENTRY(priv->pwd1stEntry), g_value_get_string(value));
         break;
     case PROP_HILDON_PASSWORD_DIALOG:
-        /* FIXME: UI is not updated to reflect the new state */
+        /* Note this is a G_PARAM_CONSTRUCT_ONLY type property */
         priv->protection = g_value_get_boolean(value);
+
+	/* We now have the necessary information to populate the dialog */
+	create_contents(dialog);
         break;
     default:
         G_OBJECT_WARN_INVALID_PROPERTY_ID(object, prop_id, pspec);
@@ -161,29 +158,25 @@ hildon_set_password_set_property(GObject * object,
 }
 
 static void
-hildon_set_password_get_property(GObject * object,
-                                 guint prop_id,
-                                 GValue * value, GParamSpec * pspec)
+hildon_set_password_get_property(GObject    * object,
+                                 guint        prop_id,
+                                 GValue     * value,
+                                 GParamSpec * pspec)
 {
-    HildonSetPasswordDialog *dialog = HILDON_SET_PASSWORD_DIALOG(object);
-    HildonSetPasswordDialogPrivate *priv;
-    const gchar *string;
+    HildonSetPasswordDialogPrivate *priv = NULL;
 
-    /* Access private structure */
-    priv = HILDON_SET_PASSWORD_DIALOG_GET_PRIVATE(dialog);
+    priv = HILDON_SET_PASSWORD_DIALOG_GET_PRIVATE(object);
     
     switch (prop_id) {
     case PROP_DOMAIN:
-        string = gtk_label_get_text(priv->domainLabel);
-        g_value_set_string(value, string);
-        /* FIXME: break missing */
+        g_value_set_string(value, gtk_label_get_text(priv->domainLabel));
+	break;
     case PROP_PASSWORD:
-        string = gtk_entry_get_text(GTK_ENTRY(priv->pwd1stEntry));
-        g_value_set_string(value, string);
+        g_value_set_string(value,
+			   gtk_entry_get_text(GTK_ENTRY(priv->pwd1stEntry)));
         break;
     case PROP_HILDON_PASSWORD_DIALOG:
-        /* FIXME: Set the value to itself, i.e. do nothing */
-        g_value_set_boolean(value, g_value_get_boolean(value));
+        g_value_set_boolean(value, priv->protection);
         break;
     default:
         G_OBJECT_WARN_INVALID_PROPERTY_ID(object, prop_id, pspec);
@@ -191,24 +184,14 @@ hildon_set_password_get_property(GObject * object,
     }
 }
 
-static GObject *
-hildon_set_password_dialog_constructor(GType type,
-                                       guint n_construct_properties,
-                                       GObjectConstructParam *
-                                       construct_properties)
+
+static void
+create_contents(HildonSetPasswordDialog *dialog)
 {
-    GObject *dialog;
-    GObjectClass *parent_class;
-    HildonSetPasswordDialogPrivate *priv;
+    HildonSetPasswordDialogPrivate *priv = NULL;
+
     GtkSizeGroup *group;
 
-    /* Chain to parent constructor */
-    parent_class = G_OBJECT_CLASS(g_type_class_peek_parent
-                                  (g_type_class_peek(type)));
-    dialog = parent_class->constructor(type, n_construct_properties,
-                                       construct_properties);
-
-    gtk_window_set_modal(GTK_WINDOW(dialog), TRUE);
     priv = HILDON_SET_PASSWORD_DIALOG_GET_PRIVATE(dialog);
     priv->checkbox = NULL;
 
@@ -222,7 +205,6 @@ hildon_set_password_dialog_constructor(GType type,
     gtk_box_pack_start(GTK_BOX(GTK_DIALOG(dialog)->vbox),
 		       GTK_WIDGET(priv->domainLabel), FALSE, FALSE, 0);
     gtk_widget_show(GTK_WIDGET(priv->domainLabel));
-
 
     if (priv->protection == TRUE) {
         /* Use Change Password Dialog strings */
@@ -239,17 +221,26 @@ hildon_set_password_dialog_constructor(GType type,
 	   NULL, HILDON_CAPTION_OPTIONAL);
 	hildon_caption_set_separator(HILDON_CAPTION(priv->checkboxCaption), "");
         gtk_signal_connect(GTK_OBJECT(priv->checkbox), "toggled",
-                           G_CALLBACK(hildon_checbox_toggled), dialog);
+                           G_CALLBACK(hildon_checkbox_toggled), dialog);
         gtk_box_pack_start(GTK_BOX(GTK_DIALOG(dialog)->vbox),
                            priv->checkboxCaption, TRUE, TRUE, 0);
         gtk_widget_show(priv->checkboxCaption);
         gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(priv->checkbox),
                                      TRUE);
 
+	/* Setup appropriate response handler */
+        g_signal_connect(G_OBJECT(dialog), "response",
+                         G_CALLBACK(hildon_set_password_response_change),
+                         NULL);
     } else {
         /* Use Set Password Dialog strings */
         priv->pwd1stCaption_string = _(HILDON_SET_PASSWORD_DIALOG_PASSWORD);
         priv->pwd2ndCaption_string = _(HILDON_SET_PASSWORD_DIALOG_VERIFY_PASSWORD);
+
+	/* Setup appropriate response handler */
+        g_signal_connect(G_OBJECT(dialog), "response",
+                         G_CALLBACK(hildon_set_password_response_set),
+                         NULL);
     }
 
     /* Create the password field */
@@ -296,22 +287,16 @@ hildon_set_password_dialog_constructor(GType type,
 			     : HILDON_SET_PASSWORD_DIALOG_CANCEL),
        GTK_RESPONSE_CANCEL);
     
-    /*    gtk_window_resize(GTK_WINDOW(dialog), 370, 110); */
-    /*    remove now, pixel perfection can address these majik thingys */
-
     gtk_widget_show(priv->okButton);
     gtk_widget_show(priv->cancelButton);
 
-    /* FIXME: Do not leak size group */
-
-    return dialog;
+    /* Ensure group is freed when all its contents have been removed */
+    g_object_unref(group);
 }
 
 static void
 hildon_set_password_dialog_class_init(HildonSetPasswordDialogClass * class)
 {
-
-
     GObjectClass *object_class = G_OBJECT_CLASS(class);
 
     parent_class = g_type_class_peek_parent(class);
@@ -319,7 +304,6 @@ hildon_set_password_dialog_class_init(HildonSetPasswordDialogClass * class)
     /* Override virtual methods */
     object_class->set_property = hildon_set_password_set_property;
     object_class->get_property = hildon_set_password_get_property;
-    object_class->constructor = hildon_set_password_dialog_constructor;
 
     /* Install new properties */
     g_object_class_install_property(object_class, 
@@ -352,24 +336,21 @@ hildon_set_password_dialog_class_init(HildonSetPasswordDialogClass * class)
                              sizeof(HildonSetPasswordDialogPrivate));
 }
 
-/* FIXME: More code from constructor should be moved here.
-          {get,set}_property currently contain weirdnesses that
-          happen because the needed widgets are not created yet. */
 static void
 hildon_set_password_dialog_init(HildonSetPasswordDialog * dialog)
 {
-    HildonSetPasswordDialogPrivate *priv;
+    /* Most of the initializations are done in create_contents()
+       after the 'modify_protection' property has been set */
 
-    priv = HILDON_SET_PASSWORD_DIALOG_GET_PRIVATE(dialog);
-
-    priv->protection = FALSE;
+    gtk_window_set_modal(GTK_WINDOW(dialog), TRUE);
 }
+
 
 /* We come here when response button is clicked and dialog 
    is used to change existing password. */
 static void
 hildon_set_password_response_change(GtkDialog * dialog, gint arg1,
-                                    GtkWindow * parent)
+                                    gpointer unused)
 {
     GtkEntry *pwd1stEntry;
     GtkEntry *pwd2ndEntry;
@@ -394,18 +375,18 @@ hildon_set_password_response_change(GtkDialog * dialog, gint arg1,
       /* Is the checkbox marked, so password protection is still in use? */  
       if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(priv->checkbox))){
     /* Yes, Something is given as password as well? */
-	if(strcmp(text1, "" ) != 0){
-	  if(strcmp (text1, text2) == 0){
+	if (text1[0] != '\0') {
+	  if (strcmp (text1, text2) == 0) {
 	    /* Passwords match, so accept change password */
 	    priv->protection = TRUE;
-	  } else if(strcmp(text2, "" ) == 0){
+	  } else if (text2[0] == '\0') {
 	    /* Second field is empty, so show error, but don't clear fields */
 	    g_signal_stop_emission_by_name(G_OBJECT(dialog),
 					   "response");
 	    gtk_infoprint (NULL,
 			   _(HILDON_SET_PASSWORD_DIALOG_MISMATCH));
 	    gtk_widget_grab_focus(GTK_WIDGET(pwd2ndEntry));
-	  } else{
+	  } else {
 	    /* Error: Passwords don't match, so start over */
 	    g_signal_stop_emission_by_name(G_OBJECT(dialog),
 					   "response");
@@ -418,7 +399,7 @@ hildon_set_password_response_change(GtkDialog * dialog, gint arg1,
 	} else {
 	  /* No, the password is empty */
 	  g_signal_stop_emission_by_name(G_OBJECT(dialog), "response");
-	  if (strcmp(text2, "") == 0) {
+	  if (text2[0] == '\0') {
 	    /* Error: Both fields are empty */
 	    gtk_infoprint (NULL, _(HILDON_SET_PASSWORD_DIALOG_EMPTY));
 	  } else {
@@ -429,9 +410,9 @@ hildon_set_password_response_change(GtkDialog * dialog, gint arg1,
 	  }
 	  gtk_widget_grab_focus(GTK_WIDGET(pwd1stEntry));
 	}
-      } else{
-	/* No, user wants to remove password protection. 
-       Confirm remove password protection */
+      } else {
+        /* No, user wants to remove password protection. 
+           Confirm remove password protection */
 	note = HILDON_NOTE(hildon_note_new_confirmation
 			   (GTK_WINDOW(dialog),
 			    _(HILDON_SET_PASSWORD_DIALOG_REMOVE_PROTECTION
@@ -442,7 +423,7 @@ hildon_set_password_response_change(GtkDialog * dialog, gint arg1,
 	   _(HILDON_REMOVE_PROTECTION_CONFIRMATION_REMOVE), 
 	   _(HILDON_REMOVE_PROTECTION_CONFIRMATION_CANCEL));
 	
-    /* Display confirmation note */
+        /* Display confirmation note */
 	i = gtk_dialog_run(GTK_DIALOG(note));
 	
 	gtk_widget_destroy(GTK_WIDGET(note));
@@ -467,7 +448,7 @@ hildon_set_password_response_change(GtkDialog * dialog, gint arg1,
    is used to set new password. */
 static void
 hildon_set_password_response_set(GtkDialog * dialog, gint arg1,
-                                 GtkWindow * parent)
+                                 gpointer unused)
 {
     GtkEntry *pwd1stEntry;
     GtkEntry *pwd2ndEntry;
@@ -488,11 +469,11 @@ hildon_set_password_response_set(GtkDialog * dialog, gint arg1,
 
     if (arg1 == GTK_RESPONSE_OK) {
         /* User provided something for password? */
-        if (strcmp (text1, "") != 0) {
+        if (text1[0] != '\0') {
             if (strcmp (text1, text2) == 0) {
 	        /* Passwords match, so accept set password */
                 priv->protection = TRUE;
-            } else if (strcmp (text2, "") == 0) {
+            } else if (text2[0] == '\0') {
                 /* Second field is empty, so show error,
                    but don't clear the fields */
                 g_signal_stop_emission_by_name(G_OBJECT(dialog), "response");
@@ -503,13 +484,13 @@ hildon_set_password_response_set(GtkDialog * dialog, gint arg1,
                 g_signal_stop_emission_by_name(G_OBJECT(dialog), "response");
 	        gtk_entry_set_text(pwd1stEntry, "");
 		gtk_entry_set_text(pwd2ndEntry, "");
-	        gtk_infoprint (NULL, _(HILDON_SET_PASSWORD_DIALOG_MISMATCH ));
+	        gtk_infoprint (NULL, _(HILDON_SET_PASSWORD_DIALOG_MISMATCH));
                 gtk_widget_grab_focus(GTK_WIDGET(priv->pwd1stEntry));
 	    }
         } else {
           /* First field is empty */
           g_signal_stop_emission_by_name(G_OBJECT(dialog), "response");
-	  if (strcmp(text2, "") == 0) {
+	  if (text2[0] == '\0') {
 	    /* Error: Both fields are empty */
 	    gtk_infoprint (NULL, _(HILDON_SET_PASSWORD_DIALOG_EMPTY));
 	  } else {
@@ -526,23 +507,17 @@ hildon_set_password_response_set(GtkDialog * dialog, gint arg1,
     }    	  
 }
 
-static void hildon_checbox_toggled(GtkWidget * widget, gpointer data)
+static void hildon_checkbox_toggled(GtkWidget * widget, gpointer dialog)
 {
-    HildonSetPasswordDialog *dialog;
-    HildonSetPasswordDialogPrivate *priv;
-
-    dialog = HILDON_SET_PASSWORD_DIALOG(data);
-    priv = HILDON_SET_PASSWORD_DIALOG_GET_PRIVATE(dialog);
+    HildonSetPasswordDialogPrivate *priv =
+      HILDON_SET_PASSWORD_DIALOG_GET_PRIVATE(dialog);
+    gboolean active;
 
     /* If the user enabled/disabled the password protection feature
        we enable/disable password entries accordingly */
-    if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(widget))) {
-        gtk_widget_set_sensitive(GTK_WIDGET(priv->pwd1stEntry), TRUE);
-        gtk_widget_set_sensitive(GTK_WIDGET(priv->pwd2ndEntry), TRUE);
-    } else {
-        gtk_widget_set_sensitive(GTK_WIDGET(priv->pwd1stEntry), FALSE);
-        gtk_widget_set_sensitive(GTK_WIDGET(priv->pwd2ndEntry), FALSE);
-    }
+    active = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(widget));
+    gtk_widget_set_sensitive(GTK_WIDGET(priv->pwd1stEntry), active);
+    gtk_widget_set_sensitive(GTK_WIDGET(priv->pwd2ndEntry), active);
 }
 
 /* Public functions */
@@ -555,7 +530,7 @@ static void hildon_checbox_toggled(GtkWidget * widget, gpointer data)
  *
  * Return value: HildonSetPasswordDialog type
  **/
-GType hildon_set_password_dialog_get_type()
+GType hildon_set_password_dialog_get_type(void)
 {
     static GType dialog_type = 0;
 
@@ -593,26 +568,8 @@ GType hildon_set_password_dialog_get_type()
 GtkWidget *hildon_set_password_dialog_new(GtkWindow * parent,
                                           gboolean modify_protection)
 {
-    GtkWidget *dialog = g_object_new
-        (HILDON_TYPE_SET_PASSWORD_DIALOG, "modify_protection",
-         modify_protection, NULL);
-
-    /* Different types of password dialogs use different callbacks */
-    /* FIXME: Why this is done here and not in init/constructor?? */
-    if (modify_protection == TRUE) {
-        g_signal_connect(G_OBJECT(dialog), "response",
-                         G_CALLBACK(hildon_set_password_response_change),
-                         parent);
-    } else {
-        g_signal_connect(G_OBJECT(dialog), "response",
-                         G_CALLBACK(hildon_set_password_response_set),
-                         parent);
-    }
-    if (parent != NULL) {
-        gtk_window_set_transient_for(GTK_WINDOW(dialog), parent);
-    }
-
-    return dialog;
+    return hildon_set_password_dialog_new_with_default(parent, "",
+						       modify_protection);
 }
 
 /**
@@ -630,18 +587,17 @@ GtkWidget *hildon_set_password_dialog_new(GtkWindow * parent,
 
 GtkWidget *hildon_set_password_dialog_new_with_default
                                          (GtkWindow *parent,
-					  gchar *password,
+					  const gchar *password,
                                           gboolean modify_protection)
 {
-    GtkWidget *dialog;
+    GtkWidget *dialog = g_object_new(HILDON_TYPE_SET_PASSWORD_DIALOG,
+				     "modify_protection", modify_protection,
+				     "password", password, NULL);
 
-    /* FIXME: Change the simpler generator function to call more
-              complex one, so we can avoid additional g_object_set */
-    dialog = hildon_set_password_dialog_new(parent, 
-					    modify_protection);
-    if(password != NULL)
-        g_object_set(G_OBJECT(dialog), "password", password, NULL);
-    
+    if (parent != NULL) {
+        gtk_window_set_transient_for(GTK_WINDOW(dialog), parent);
+    }
+   
     return dialog;
 }
 
@@ -660,6 +616,8 @@ const gchar
                                              dialog)
 {
     HildonSetPasswordDialogPrivate *priv;
+
+    g_return_val_if_fail(HILDON_IS_SET_PASSWORD_DIALOG(dialog), NULL);
 
     priv = HILDON_SET_PASSWORD_DIALOG_GET_PRIVATE(dialog);
 
@@ -680,6 +638,8 @@ hildon_set_password_dialog_get_protected(HildonSetPasswordDialog * dialog)
 {
     HildonSetPasswordDialogPrivate *priv;
 
+    g_return_val_if_fail(HILDON_IS_SET_PASSWORD_DIALOG(dialog), FALSE);
+
     priv = HILDON_SET_PASSWORD_DIALOG_GET_PRIVATE(dialog);
 
     return priv->protection;
@@ -694,9 +654,12 @@ hildon_set_password_dialog_get_protected(HildonSetPasswordDialog * dialog)
  */
 
 void hildon_set_password_dialog_set_domain(HildonSetPasswordDialog *dialog, 
-                                                gchar *domain)
+					   const gchar *domain)
 {
-  HildonSetPasswordDialogPrivate *priv =
-    HILDON_SET_PASSWORD_DIALOG_GET_PRIVATE(dialog);
+  HildonSetPasswordDialogPrivate *priv = NULL;
+
+  g_return_if_fail(HILDON_IS_SET_PASSWORD_DIALOG(dialog));
+
+  priv = HILDON_SET_PASSWORD_DIALOG_GET_PRIVATE(dialog);
   gtk_label_set_text(priv->domainLabel, domain);  
 }

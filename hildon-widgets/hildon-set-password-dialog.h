@@ -97,7 +97,7 @@ GtkWidget *hildon_set_password_dialog_new(GtkWindow * parent,
 
 GtkWidget *hildon_set_password_dialog_new_with_default
                                          (GtkWindow *parent,
-					  gchar *password,
+					  const gchar *password,
                                           gboolean modify_protection);
 
 GType hildon_set_password_dialog_get_type(void) G_GNUC_CONST;
@@ -110,7 +110,7 @@ gboolean hildon_set_password_dialog_get_protected(HildonSetPasswordDialog *
                                                   dialog);
 
 void hildon_set_password_dialog_set_domain(HildonSetPasswordDialog *dialog,
-					   gchar *domain);
+					   const gchar *domain);
 
 G_END_DECLS
 #endif /* HILDON_SET_PASSWORD_DIALOG_H */

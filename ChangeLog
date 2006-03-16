@@ -68,6 +68,54 @@
 
 2006-03-01  Luc Pionchon  <luc.pionchon@nokia.com>
 
+	
+	Cleanup set-password dialog
+	
+	* hildon-widgets/hildon-set-password-dialog.[ch]
+	(hildon_set_password_dialog_set_domain): gchar * param is const
+	(hildon_set_password_dialog_new_with_default): likewise.
+
+	* hildon-widgets/hildon-set-password-dialog.c
+
+	(hildon_set_password_set_property): setting 'modify-protection'
+	now creates the UI
+
+	(hildon_set_password_get_property): fixed broken 'domain' (missing
+	break statement!) and 'modify-protection' (was a null operation)
+	properties; code simplified.
+
+	(hildon_set_password_dialog_constructor),
+	(create_contents),
+	(hildon_set_password_dialog_class_init),
+	(hildon_set_password_dialog_init):
+	hildon_set_password_dialog_constructor removed as weird and
+	obsolete and replaced with new function create_contents; fixed
+	leaking group variable; removed some unused, outdated code that
+	was already commented out.
+
+	(hildon_set_password_response_change),
+	(hildon_set_password_response_set): GtkWindow *parent arguments
+	changed to gpointer unused; cleaned up unnecessary strcmp's
+
+	(hildon_checkbox_toggled): fixed typo in function name (checbox ->
+	checkbox). gpointer renamed to be more descriptive; Code simplified  
+
+	(hildon_set_password_dialog_get_type): empty function argument
+	list replaced with void keyword.
+
+	(hildon_set_password_dialog_new),
+	(hildon_set_password_dialow_new_with_default): simplified by
+	having the simpler constructor call the more complex one, not vice
+	versa; moved callback connects to create_contents since they
+	depend on the status of 'modify-protection' property
+
+	(hildon_set_password_dialog_get_password): type check added
+	(hildon_set_password_dialog_get_protected): likewise
+	(hildon_set_password_dialog_set_domain): likewise
+	
+	
+2006-03-01  Luc Pionchon  <luc.pionchon@nokia.com>
+
         Cleanup name-password dialog:
 	
 	* hildon-widgets/hildon-name-password-dialog.[ch]
