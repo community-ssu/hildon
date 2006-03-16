@@ -22,6 +22,8 @@
  *
  */
 
+/* FIXME: should be moved to hildon-fm (file handling, depends on gnome-vfs) */
+
 /**
  * SECTION:hildon-insert-object-dialog
  * @short_description: A dialog that enables the user to embed an object 
@@ -30,6 +32,9 @@
  * #HildonInsertObjectDialog is a dialog that enables the user to insert a
  * new or existing object into a Multi-line (Rich Text) Editor as an
  * embedded object.
+ *
+ * FIXME: deprecated widget. Shall not be used anywhere.
+ * 
  */ 
 
 #ifdef HAVE_CONFIG_H
