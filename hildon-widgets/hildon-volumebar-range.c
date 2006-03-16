@@ -142,8 +142,6 @@ hildon_volumebar_range_init(HildonVolumebarRange * volumerange)
   /* stepper_a = "less", stepper_d = "more" */
   GTK_RANGE(volumerange)->has_stepper_a = TRUE;
   GTK_RANGE(volumerange)->has_stepper_d = TRUE;
-  
-  return;
 }
 
 static void
@@ -230,31 +228,25 @@ hildon_volumebar_range_new(GtkOrientation orientation)
 gdouble 
 hildon_volumebar_range_get_level(HildonVolumebarRange * self)
 {
-    g_return_val_if_fail(self, -1.0);
-    return GTK_RANGE (self)->adjustment->value;
+    g_return_val_if_fail(HILDON_IS_VOLUMEBAR_RANGE(self), -1.0);
+
+    return gtk_adjustment_get_value(gtk_range_get_adjustment(GTK_RANGE(self)));
 }
 
 void 
 hildon_volumebar_range_set_level(HildonVolumebarRange * self,
 				 gdouble level)
 {
-    gdouble newlevel;
-    g_return_if_fail(self);
-   
-    /* Although the range can clamp by itself, we do the clamping
-     * here to prevent sending value-changed signal when someone
-     * unsuccessfully tries to set level to illegal value. */
-    newlevel = CLAMP (level, GTK_RANGE (self)->adjustment->lower,
-		      GTK_RANGE (self)->adjustment->upper);
+    GtkAdjustment *adjustment;
 
-    /* Check that value is actually changed. Note that it's not safe to
+    g_return_if_fail(HILDON_IS_VOLUMEBAR_RANGE(self));
+
+    adjustment = gtk_range_get_adjustment(GTK_RANGE(self));
+
+    /* Check that value has actually changed. Note that it's not safe to
      * just compare if floats are equivalent or not */
-    if (ABS(GTK_RANGE (self)->adjustment->value - newlevel) > CHANGE_THRESHOLD) {
-        /* This might be a bit faster because this skips
-	 * gtkadjustment's own clamping and check if value has
-	 * indeed changed. */
-        GTK_RANGE (self)->adjustment->value = newlevel;
-        gtk_adjustment_value_changed(GTK_RANGE (self)->adjustment);
+    if (ABS(gtk_adjustment_get_value(adjustment) - level) > CHANGE_THRESHOLD) {
+      gtk_adjustment_set_value(adjustment, level);
     }
 }
 
@@ -265,7 +257,11 @@ hildon_volumebar_range_button_press_event(GtkWidget * widget,
 {
     gboolean result = FALSE;
 
-    /* FIXME: Ugly hack to trick GtkRange event handler */
+    /* FIXME: By default, clicking left mouse button on GtkRange moves the
+       slider by one step towards the click location. However, we want stylus
+       taps to move the slider to the position of the tap, which by default
+       is the middle button behaviour. To avoid breaking default GtkRange
+       behaviour, this has been implemented by faking a middle button press. */
     event->button = (event->button == 1) ? 2 : event->button;
     if (GTK_WIDGET_CLASS(parent_class)->button_press_event) {
         result =
@@ -275,14 +271,18 @@ hildon_volumebar_range_button_press_event(GtkWidget * widget,
     return result;
 }
 
-static gint 
+static gint
 hildon_volumebar_range_button_release_event(GtkWidget * widget,
 					    GdkEventButton *
 					    event)
 {
     gboolean result = FALSE;
 
-    /* FIXME: Ugly hack to trick GtkRange event handler */
+    /* FIXME: By default, clicking left mouse button on GtkRange moves the
+       slider by one step towards the click location. However, we want stylus
+       taps to move the slider to the position of the tap, which by default
+       is the middle button behaviour. To avoid breaking default GtkRange
+       behaviour, this has been implemented by faking a middle button press. */
     event->button = event->button == 1 ? 2 : event->button;
     if (GTK_WIDGET_CLASS(parent_class)->button_release_event) {
         result =

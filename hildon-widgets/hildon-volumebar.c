@@ -114,9 +114,10 @@ hildon_volumebar_get_type(void)
 static void 
 hildon_volumebar_class_init(HildonVolumebarClass *volumebar_class)
 {
-    GtkContainerClass *container_class =
-        GTK_CONTAINER_CLASS(volumebar_class);
-    GObjectClass *object_class = G_OBJECT_CLASS(volumebar_class);
+    GObjectClass      *gobject_class   = G_OBJECT_CLASS  (volumebar_class);
+    GtkObjectClass    *object_class    = GTK_OBJECT_CLASS(volumebar_class);
+    GtkWidgetClass    *widget_class    = GTK_WIDGET_CLASS(volumebar_class);
+    GtkContainerClass *container_class = GTK_CONTAINER_CLASS(volumebar_class);
 
     parent_class = g_type_class_peek_parent(volumebar_class);
 
@@ -127,8 +128,8 @@ hildon_volumebar_class_init(HildonVolumebarClass *volumebar_class)
        override forall method */
     volumebar_class->mute_toggled = mute_toggled;
     container_class->forall = hildon_child_forall;
-    GTK_WIDGET_CLASS(volumebar_class)->key_press_event = hildon_volumebar_key_press;
-    GTK_OBJECT_CLASS(volumebar_class)->destroy = hildon_volumebar_destroy;
+    widget_class->key_press_event = hildon_volumebar_key_press;
+    object_class->destroy = hildon_volumebar_destroy;
 
     signals[MUTE_TOGGLED_SIGNAL] = g_signal_new("mute_toggled",
                                                 G_OBJECT_CLASS_TYPE
@@ -153,11 +154,11 @@ hildon_volumebar_class_init(HildonVolumebarClass *volumebar_class)
                                                  gtk_marshal_VOID__VOID,
                                                  G_TYPE_NONE, 0);
     
-    object_class->set_property = hildon_volumebar_set_property;
-    object_class->get_property = hildon_volumebar_get_property; 
+    gobject_class->set_property = hildon_volumebar_set_property;
+    gobject_class->get_property = hildon_volumebar_get_property; 
 
     /*This kind of property could be usefull in the gtkcontainer*/
-    g_object_class_install_property(object_class,
+    g_object_class_install_property(gobject_class,
                                     PROP_HILDON_FOCUSABLE, 
                                     g_param_spec_boolean("can-focus",
                                     "The widget focusablility",
@@ -165,7 +166,7 @@ hildon_volumebar_class_init(HildonVolumebarClass *volumebar_class)
                                     TRUE,
                                     G_PARAM_CONSTRUCT | G_PARAM_READWRITE));
 
-    g_object_class_install_property(object_class,
+    g_object_class_install_property(gobject_class,
                                     PROP_HILDON_HAS_MUTE, 
                                     g_param_spec_boolean("has_mute",
                                     "Show/Hide the mute button",
@@ -173,7 +174,7 @@ hildon_volumebar_class_init(HildonVolumebarClass *volumebar_class)
                                     TRUE,
                                     G_PARAM_CONSTRUCT | G_PARAM_READWRITE));
 
-    g_object_class_install_property(object_class,
+    g_object_class_install_property(gobject_class,
 				    PROP_HILDON_LEVEL,
 				    g_param_spec_double("level",
 							"Level",
@@ -183,15 +184,13 @@ hildon_volumebar_class_init(HildonVolumebarClass *volumebar_class)
 							50.0,
 							G_PARAM_READWRITE));
 
-    g_object_class_install_property(object_class,
+    g_object_class_install_property(gobject_class,
 				    PROP_HILDON_MUTE,
 				    g_param_spec_boolean("mute",
 							 "Mute",
 							 "Whether volume is muted",
 							 FALSE,
 							 G_PARAM_READWRITE));
-				    
-
 }
 
 static void 
@@ -216,13 +215,12 @@ hildon_child_forall(GtkContainer * container,
                     gboolean include_internals,
                     GtkCallback callback, gpointer callback_data)
 {
-    HildonVolumebar *vbar;
     HildonVolumebarPrivate *priv;
 
-    vbar = HILDON_VOLUMEBAR(container);
-    priv = HILDON_VOLUMEBAR_GET_PRIVATE(vbar);
-
+    g_return_if_fail(HILDON_IS_VOLUMEBAR(container));
     g_return_if_fail(callback != NULL);
+
+    priv = HILDON_VOLUMEBAR_GET_PRIVATE(container);
 
     /* No external children */
     if (!include_internals)
@@ -259,10 +257,9 @@ hildon_volumebar_set_property(GObject * object,
                               const GValue * value, 
                               GParamSpec * pspec)
 {  
-    HildonVolumebar *vbar = HILDON_VOLUMEBAR(object);
     HildonVolumebarPrivate *priv;
 
-    priv = HILDON_VOLUMEBAR_GET_PRIVATE(vbar)
+    priv = HILDON_VOLUMEBAR_GET_PRIVATE(object);
 
     switch (prop_id) {
     case PROP_HILDON_HAS_MUTE:
@@ -344,7 +341,7 @@ hildon_volumebar_set_level(HildonVolumebar * self, gdouble level)
 {
     HildonVolumebarPrivate *priv;
 
-    g_return_if_fail(self);
+    g_return_if_fail(HILDON_IS_VOLUMEBAR(self));
 
     priv = HILDON_VOLUMEBAR_GET_PRIVATE(self);
    
@@ -364,7 +361,7 @@ hildon_volumebar_get_level(HildonVolumebar * self)
 {
     HildonVolumebarPrivate *priv;
 
-    g_return_val_if_fail(self, -1);
+    g_return_val_if_fail(HILDON_IS_VOLUMEBAR(self), -1);
 
     priv = HILDON_VOLUMEBAR_GET_PRIVATE(self);
 
@@ -385,7 +382,7 @@ hildon_volumebar_set_mute(HildonVolumebar * self, gboolean mute)
     HildonVolumebarPrivate *priv;
     gboolean focusable = TRUE;
     
-    g_return_if_fail(self);
+    g_return_if_fail(HILDON_IS_VOLUMEBAR(self));
 
     priv = HILDON_VOLUMEBAR_GET_PRIVATE(self);
 
@@ -436,7 +433,7 @@ hildon_volumebar_get_mute(HildonVolumebar * self)
 {
     HildonVolumebarPrivate *priv;
 
-    g_return_val_if_fail(self, TRUE);
+    g_return_val_if_fail(HILDON_IS_VOLUMEBAR(self), TRUE);
 
     priv = HILDON_VOLUMEBAR_GET_PRIVATE(self);
 
@@ -462,7 +459,7 @@ hildon_volumebar_get_adjustment (HildonVolumebar * self)
 {
     HildonVolumebarPrivate *priv;
 
-    g_return_val_if_fail(self, NULL);
+    g_return_val_if_fail(HILDON_IS_VOLUMEBAR(self), NULL);
 
     priv = HILDON_VOLUMEBAR_GET_PRIVATE(self);
 
@@ -481,9 +478,6 @@ hildon_volumebar_key_press (GtkWidget * widget,
 {
     HildonVolumebarPrivate *priv;
     
-    g_return_val_if_fail(widget, FALSE);
-    g_return_val_if_fail(event, FALSE);
-
     priv = HILDON_VOLUMEBAR_GET_PRIVATE(widget);
 
     /* Enter key toggles mute button (unless it is hidden) */

@@ -54,7 +54,7 @@ struct _HildonVVolumebarClass {
     HildonVolumebarClass parent_class;
 };
 
-GType hildon_vvolumebar_get_type(void);
+GType hildon_vvolumebar_get_type(void) G_GNUC_CONST;
 GtkWidget *hildon_vvolumebar_new(void);
 
 G_END_DECLS

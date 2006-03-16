@@ -59,7 +59,7 @@ struct _HildonVolumebarClass {
     void (*level_changed) (HildonVolumebar * self);
 };
 
-GType hildon_volumebar_get_type(void);
+GType hildon_volumebar_get_type(void) G_GNUC_CONST;
 
 void hildon_volumebar_set_level(HildonVolumebar * self, gdouble level);
 double hildon_volumebar_get_level(HildonVolumebar * self);

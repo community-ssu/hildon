@@ -99,22 +99,19 @@ static void vvolumebar_class_init(HildonVVolumebarClass * klass)
 
 static void vvolumebar_init(HildonVVolumebar * vvolumebar)
 {
-    HildonVolumebar *v_ptr = HILDON_VOLUMEBAR(vvolumebar);
     HildonVolumebarPrivate *priv;
 
     priv = HILDON_VOLUMEBAR_GET_PRIVATE(vvolumebar);
 
-    priv->ownorientation = GTK_ORIENTATION_VERTICAL;
     priv->orientation = GTK_ORIENTATION_VERTICAL;
-
     priv->volumebar =
         HILDON_VOLUMEBAR_RANGE(hildon_volumebar_range_new
                                (GTK_ORIENTATION_VERTICAL));
 
     GTK_WIDGET_UNSET_FLAGS(GTK_WIDGET(vvolumebar), GTK_CAN_FOCUS);
 
-    gtk_widget_set_parent(GTK_WIDGET(priv->tbutton), GTK_WIDGET(v_ptr));
-    gtk_widget_set_parent(GTK_WIDGET(priv->volumebar), GTK_WIDGET(v_ptr));
+    gtk_widget_set_parent(GTK_WIDGET(priv->tbutton), GTK_WIDGET(vvolumebar));
+    gtk_widget_set_parent(GTK_WIDGET(priv->volumebar), GTK_WIDGET(vvolumebar));
 
     gtk_scale_set_draw_value(GTK_SCALE(priv->volumebar), FALSE);
 
@@ -135,7 +132,7 @@ static void vvolumebar_init(HildonVVolumebar * vvolumebar)
  *
  * Returns: a new #HildonVVolumebar.
  */
-GtkWidget *hildon_vvolumebar_new()
+GtkWidget *hildon_vvolumebar_new(void)
 {
     return GTK_WIDGET(g_object_new(HILDON_TYPE_VVOLUMEBAR, NULL));
 }
@@ -144,6 +141,9 @@ static gboolean hildon_vvolumebar_expose(GtkWidget * widget,
                                          GdkEventExpose * event)
 {
     HildonVolumebarPrivate *priv;
+
+    g_return_val_if_fail(HILDON_IS_VVOLUMEBAR(widget), FALSE);
+
     priv = HILDON_VOLUMEBAR_GET_PRIVATE(HILDON_VOLUMEBAR(widget));
     
     if (GTK_WIDGET_DRAWABLE(widget)) {
@@ -167,6 +167,8 @@ static void
 hildon_vvolumebar_size_request(GtkWidget * widget,
                                GtkRequisition * requisition)
 {
+    g_return_if_fail(HILDON_IS_VVOLUMEBAR(widget));
+
     requisition->height = MINIMUM_BAR_HEIGHT;
     requisition->width = DEFAULT_BAR_WIDTH;
 }
@@ -175,13 +177,13 @@ static void
 hildon_vvolumebar_size_allocate(GtkWidget * widget,
                                 GtkAllocation * allocation)
 {
-    HildonVolumebar *vbar;
     HildonVolumebarPrivate *priv;
 
     GtkAllocation range_allocation, button_allocation;
 
-    vbar = HILDON_VOLUMEBAR(widget);
-    priv = HILDON_VOLUMEBAR_GET_PRIVATE(vbar);
+    g_return_if_fail(HILDON_IS_VVOLUMEBAR(widget));
+
+    priv = HILDON_VOLUMEBAR_GET_PRIVATE(widget);
 
     /* Center the widget horizontally */
     if (allocation->width > DEFAULT_BAR_WIDTH) {

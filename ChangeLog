@@ -67,6 +67,73 @@
 
 2006-02-28  Luc Pionchon  <luc.pionchon@nokia.com>
 
+        Volume bars cleanup
+	
+	* hildon-widgets/hildon-volumebar.c
+	(hildon_volumebar_class_init): object class casts cleaned up
+	(hildon_child_forall): removed unnecessary variable vbar; type check added
+	(hildon_volumebar_set_property): removed unnecessary variable vbar
+	(hildon_volumebar_set_level): type check added
+	(hildon_volumebar_get_level): type check added
+	(hildon_volumebar_set_mute): type check added
+	(hildon_volumebar_get_mute): type check added
+	(hildon_volumebar_get_adjustment): type check added
+	(hildon_volumebar_key_press): removed unnecessary g_return_if_fail
+
+	* hildon-widgets/hildon-volumebar.h
+	(hildon_volumebar_get_type): declared G_GNUC_CONST
+
+	* hildon-widgets/hildon-volumebar-private.h:
+	- G_BEGIN_DECLS/G_END_DECLS added
+	- ownorientation removed from private struct
+
+	* hildon-widgets/hildon-volumebar-range.c
+	(hildon_volumebar_range_init): vacuous return statement removed
+
+	(hildon_volumebar_range_set_level): removed unnecessary clamping
+	kludge that violated object oriented principles only to provide an
+	extremely minor, unnecessary optimization; type check added
+
+	(hildon_volumebar_range_get_level): now accesses adjustment value
+	with appropriate functions instead of reading it directly from the
+	struct, which is bad OOP; type check added
+
+	(hildon_volumebar_range_button_press_event): Added more descriptive comments
+	(hildon_volumebar_range_button_release_event): Added more descriptive comments
+
+	* hildon-widgets/hildon-volumebar-range.h
+	(hildon_volumebar_range_get_type): declared G_GNUC_CONST
+
+	* hildon-widgets/hildon-hvolumebar.c
+	(hvolumebar_init): priv->ownorientation and v_ptr removed;
+	completely removed the gtk_widget_show() call that was already
+	commented out
+
+	(hildon_hvolumebar_new): empty function parameter list replaced
+	with void keyword
+
+	(hildon_hvolumebar_map): vbar variable removed; type check added
+	(hildon_hvolumebar_expose): type check added
+	(hildon_hvolumebar_size_request): type check added
+	(hildon_hvolumebar_size_allocate): vbar variable removed; type check added
+
+	* hildon-widgets/hildon-hvolumebar.h
+	(hildon_hvolumebar_get_type): declared G_GNUC_CONST
+
+	* hildon-widgets/hildon-vvolumebar.c
+	(vvolumebar_init): priv->ownorientation and v_ptr removed
+	(hildon_vvolumebar_new): empty function parameter list replaced with void keyword
+
+	(hildon_vvolumebar_expose): type check added
+	(hildon_vvolumebar_size_request): type check added
+	(hildon_vvolumebar_size_allocate): vbar variable removed; type check added
+
+	* hildon-widgets/hildon-vvolumebar.h
+	(hildon_vvolumebar_get_type): declared G_GNUC_CONST 
+
+
+2006-02-28  Luc Pionchon  <luc.pionchon@nokia.com>
+
 	* hildon-widgets/hildon-weekday-picker.c
 	(_HildonWeekdayPickerPrivate): Removed members: dayorder, days,
 	last_index; added day_order_buttons

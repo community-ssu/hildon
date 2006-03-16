@@ -51,7 +51,7 @@ struct _HildonVolumebarRangeClass {
     GtkScaleClass parent_class;
 };
 
-GType hildon_volumebar_range_get_type(void);
+GType hildon_volumebar_range_get_type(void) G_GNUC_CONST;
 GtkWidget *hildon_volumebar_range_new(GtkOrientation orientation);
 gdouble hildon_volumebar_range_get_level(HildonVolumebarRange * self);
 void hildon_volumebar_range_set_level(HildonVolumebarRange * self,

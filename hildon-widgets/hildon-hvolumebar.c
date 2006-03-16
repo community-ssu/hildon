@@ -113,22 +113,19 @@ static void hvolumebar_class_init(HildonHVolumebarClass * klass)
 
 static void hvolumebar_init(HildonHVolumebar * hvolumebar)
 {
-    HildonVolumebar *v_ptr = HILDON_VOLUMEBAR(hvolumebar);
     HildonVolumebarPrivate *priv;
 
     priv = HILDON_VOLUMEBAR_GET_PRIVATE(hvolumebar);
 
-    priv->ownorientation = GTK_ORIENTATION_HORIZONTAL;
     priv->orientation = GTK_ORIENTATION_HORIZONTAL;
-
     priv->volumebar =
         HILDON_VOLUMEBAR_RANGE(hildon_volumebar_range_new
                                (GTK_ORIENTATION_HORIZONTAL));
 
     GTK_WIDGET_UNSET_FLAGS(GTK_WIDGET(hvolumebar), GTK_CAN_FOCUS);
 
-    gtk_widget_set_parent(GTK_WIDGET(priv->tbutton), GTK_WIDGET(v_ptr));
-    gtk_widget_set_parent(GTK_WIDGET(priv->volumebar), GTK_WIDGET(v_ptr));
+    gtk_widget_set_parent(GTK_WIDGET(priv->tbutton), GTK_WIDGET(hvolumebar));
+    gtk_widget_set_parent(GTK_WIDGET(priv->volumebar), GTK_WIDGET(hvolumebar));
 
     gtk_scale_set_draw_value(GTK_SCALE(priv->volumebar), FALSE);
 
@@ -139,7 +136,6 @@ static void hvolumebar_init(HildonHVolumebar * hvolumebar)
     g_signal_connect(G_OBJECT(priv->tbutton), "toggled",
                      G_CALLBACK(hildon_hvolumebar_mute), hvolumebar);
 
-    /*gtk_widget_show(GTK_WIDGET(priv->tbutton));*/
     gtk_widget_show(GTK_WIDGET(priv->volumebar));
 }
 
@@ -150,20 +146,19 @@ static void hvolumebar_init(HildonHVolumebar * hvolumebar)
  *
  * Returns: a new #HildonHVolumebar.
  */
-GtkWidget *hildon_hvolumebar_new()
+GtkWidget *hildon_hvolumebar_new(void)
 {
     return GTK_WIDGET(g_object_new(HILDON_TYPE_HVOLUMEBAR, NULL));
 }
 
 static void hildon_hvolumebar_map(GtkWidget * widget)
 {
-    HildonVolumebar *vbar;
     HildonVolumebarPrivate *priv;
     GtkWidget *parent;
 
-    vbar = HILDON_VOLUMEBAR(widget);
-    priv = HILDON_VOLUMEBAR_GET_PRIVATE(vbar);
+    g_return_if_fail(HILDON_IS_HVOLUMEBAR(widget));
 
+    priv = HILDON_VOLUMEBAR_GET_PRIVATE(widget);
     parent = gtk_widget_get_ancestor(GTK_WIDGET(widget), GTK_TYPE_TOOLBAR);
 
     /* Check if the volumebar is in a toolbar */
@@ -177,8 +172,11 @@ static gboolean hildon_hvolumebar_expose(GtkWidget * widget,
                                          GdkEventExpose * event)
 {
     HildonVolumebarPrivate *priv;
+
+    g_return_val_if_fail(HILDON_IS_HVOLUMEBAR(widget), FALSE);
+
     priv = HILDON_VOLUMEBAR_GET_PRIVATE(HILDON_VOLUMEBAR(widget));
-    
+
     if (GTK_WIDGET_DRAWABLE(widget)) {
         /* Paint background */
         gtk_paint_box(widget->style, widget->window,
@@ -202,6 +200,8 @@ hildon_hvolumebar_size_request(GtkWidget * widget,
 {
     HildonVolumebarPrivate *priv;
 
+    g_return_if_fail(HILDON_IS_HVOLUMEBAR(widget));
+
     priv = HILDON_VOLUMEBAR_GET_PRIVATE(HILDON_VOLUMEBAR(widget));
 
     /* Volumebar has different dimensions in toolbar */
@@ -217,12 +217,12 @@ static void
 hildon_hvolumebar_size_allocate(GtkWidget * widget,
                                 GtkAllocation * allocation)
 {
-    HildonVolumebar *vbar;
     HildonVolumebarPrivate *priv;
     GtkAllocation button_allocation, range_allocation;
 
-    vbar = HILDON_VOLUMEBAR(widget);
-    priv = HILDON_VOLUMEBAR_GET_PRIVATE(vbar);
+    g_return_if_fail(HILDON_IS_HVOLUMEBAR(widget));
+
+    priv = HILDON_VOLUMEBAR_GET_PRIVATE(widget);
     
     button_allocation.x = 0;
     button_allocation.width = 0;
