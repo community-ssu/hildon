@@ -94,7 +94,12 @@ typedef enum {
 GType hildon_zoom_level_get_type (void);
 #endif /* deprecated */
 
-/* You should use the correct ones from hildon-defines.h */
+
+/* You should use the correct ones from hildon-defines.h 
+ *
+ * FIXME: These should be removed when API changes are allowed, 
+ * they are not used in hildon code anymore (but might be in external). 
+ */ 
 #define HILDON_MENU_KEY         GDK_F4
 #define HILDON_HOME_KEY         GDK_F5
 #define HILDON_TOOLBAR_KEY      GDK_T
