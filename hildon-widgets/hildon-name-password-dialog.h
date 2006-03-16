@@ -68,8 +68,8 @@ GType hildon_name_password_dialog_get_type(void) G_GNUC_CONST;
 GtkWidget *hildon_name_password_dialog_new(GtkWindow * parent);
 
 GtkWidget *hildon_name_password_dialog_new_with_default(GtkWindow *parent,
-							gchar *name,
-							gchar *pass);
+							const gchar *name,
+							const gchar *pass);
 
 
 const gchar *hildon_name_password_dialog_get_name(HildonNamePasswordDialog 
@@ -79,7 +79,7 @@ const gchar *hildon_name_password_dialog_get_password(HildonNamePasswordDialog
                                                       * dialog);
 
 void hildon_name_password_dialog_set_domain(HildonNamePasswordDialog *dialog, 
-                                                gchar *domain);
+					    const gchar *domain);
 
 G_END_DECLS
 #endif

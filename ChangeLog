@@ -68,6 +68,35 @@
 
 2006-03-01  Luc Pionchon  <luc.pionchon@nokia.com>
 
+        Cleanup name-password dialog:
+	
+	* hildon-widgets/hildon-name-password-dialog.[ch]
+
+	(HildonNamePasswordDialogPrivate): nameEntry and passwordEntry
+	types changed from *HildonCaption to *GtkEntry
+
+	(hildon_name_password_dialog_set_property): layout fixes;
+	duplicated code replaced with calls to relevant public functions
+
+	(hildon_name_password_dialog_get_property): layout fixes;
+	duplicated code replaced with calls to relevant public functions
+
+	(hildon_name_password_dialog_init): fixed leaking group variable;
+        reworked to have captions as local variables and captioned entries
+        in the private struct
+
+	(hildon_name_password_dialog_new_with_default): name and password
+	arguments declared const
+
+	(hildon_name_password_dialog_get_name): type check added + cleanup
+	(hildon_name_password_dialog_get_password): likewise.
+
+	(hildon_name_password_dialog_set_domain): domain argument declared
+	const; type check added + cleanup
+
+
+2006-03-01  Luc Pionchon  <luc.pionchon@nokia.com>
+
 	Cleanup get-password dialog:
 	
 	* hildon-widgets/hildon-get-password-dialog.[ch]
