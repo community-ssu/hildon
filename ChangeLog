@@ -68,6 +68,27 @@
 
 2006-03-01  Luc Pionchon  <luc.pionchon@nokia.com>
 
+        Cleanup Seekbar,
+	
+	* hildon-widgets/hildon-seekbar.c
+
+	(_): Removed dgettext macro definition.
+	
+	(HildonSeekbarPrivate): Removed 'label' and 'draw_value'. (unused).
+
+	(hildon_seekbar_finalize): removed. not needed.
+	(hildon_seekbar_class_init): Removed hildon_seekbar_finalize.
+	
+	(hildon_seekbar_size_request): indent cleanup.
+
+	(hildon_seekbar_size_allocate): simplified function.
+
+	(hildon_seekbar_button_press_event): Removed unused variables.
+	(hildon_seekbar_button_release_event): likewise.
+
+
+2006-03-01  Luc Pionchon  <luc.pionchon@nokia.com>
+
         Cleanup date editor,
 
 	* hildon-widgets/hildon-date-editor.c

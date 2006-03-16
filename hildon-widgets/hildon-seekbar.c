@@ -46,8 +46,6 @@
 
 #include "hildon-seekbar.h"
 
-#define _(String) dgettext(PACKAGE, String)
-
 #define HILDON_SEEKBAR_GET_PRIVATE(obj) \
         (G_TYPE_INSTANCE_GET_PRIVATE ((obj), \
          HILDON_TYPE_SEEKBAR, HildonSeekbarPrivate));
@@ -60,7 +58,6 @@ static GtkScaleClass *parent_class = NULL;
 /* Init functions */
 static void hildon_seekbar_class_init(HildonSeekbarClass * seekbar_class);
 static void hildon_seekbar_init(HildonSeekbar * seekbar);
-static void hildon_seekbar_finalize(GObject * self);
 
 /* property functions */
 static void hildon_seekbar_set_property(GObject * object, guint prop_id,
@@ -111,6 +108,11 @@ static gboolean hildon_seekbar_keypress(GtkWidget * widget,
  * add one for safety */
 #define MAX_ROUND_DIGITS 3
 
+/*
+ * FIXME HildonSeekbar introduced major changes in GtkRange mostly related 
+ * to stream_indicator. These changes should be minimized.
+ */
+
 /* Property indices */
 enum {
     PROP_TOTAL_TIME = 1,
@@ -120,11 +122,7 @@ enum {
 
 /* private variables */
 struct _HildonSeekbarPrivate {
-    GtkWidget *label; /* FIXME: XXX This is unused */
-    gboolean draw_value; /* FIXME: XXX This is unused */
-
     gboolean is_toolbar; /* TRUE if this widget is inside a toolbar */
-
     guint fraction; /* This is the amount of time that has progressed from
                        the beginning. It should be an integer between the
                        minimum and maximum values of the corresponding
@@ -179,7 +177,6 @@ static void hildon_seekbar_class_init(HildonSeekbarClass * seekbar_class)
 
     object_class->set_property = hildon_seekbar_set_property;
     object_class->get_property = hildon_seekbar_get_property;
-    object_class->finalize = hildon_seekbar_finalize;
 
     g_object_class_install_property(object_class, PROP_TOTAL_TIME,
         g_param_spec_double("total_time",
@@ -228,20 +225,11 @@ static void hildon_seekbar_init(HildonSeekbar * seekbar)
     gtk_scale_set_draw_value (GTK_SCALE (seekbar), FALSE);
 }
 
-/* FIXME: XXX This isn't necessary */
-static void hildon_seekbar_finalize( GObject *obj_self )	
-{	
-    HildonSeekbar *self;	
-    HildonSeekbarPrivate *priv;	
-
-    self = HILDON_SEEKBAR ( obj_self );	
-    priv = HILDON_SEEKBAR_GET_PRIVATE (self);	
-
-    if( G_OBJECT_CLASS( parent_class )->finalize )	
-        G_OBJECT_CLASS( parent_class )->finalize( obj_self );	
-}
-
-
+/*
+ * Purpose of this function is to prevent Up and Down keys from
+ * changing the widget's value (like Left and Right). Instead they
+ * are used for changing focus to other widgtes.
+ */
 static gboolean hildon_seekbar_keypress(GtkWidget * widget,
                                         GdkEventKey * event)
 {
@@ -483,15 +471,14 @@ void hildon_seekbar_set_position(HildonSeekbar *seekbar, gint time)
 static void hildon_seekbar_size_request(GtkWidget * widget,
                                         GtkRequisition * req)
 {
-    HildonSeekbar *self = NULL;
+    HildonSeekbar        *self = NULL;
     HildonSeekbarPrivate *priv = NULL;
     GtkWidget *parent = NULL;
 
     self = HILDON_SEEKBAR(widget);
-    priv = HILDON_SEEKBAR_GET_PRIVATE(self)
+    priv = HILDON_SEEKBAR_GET_PRIVATE(self);
 
-    parent =
-        gtk_widget_get_ancestor(GTK_WIDGET(self), GTK_TYPE_TOOLBAR);
+    parent = gtk_widget_get_ancestor(GTK_WIDGET(self), GTK_TYPE_TOOLBAR);
 
     priv->is_toolbar = parent ? TRUE : FALSE;
 
@@ -511,36 +498,33 @@ static void hildon_seekbar_size_allocate(GtkWidget * widget,
 
     priv = HILDON_SEEKBAR_GET_PRIVATE(HILDON_SEEKBAR(widget));
 
-    /* Center vertically */
     if (priv->is_toolbar == TRUE)
       {
-        if (allocation->height > TOOL_DEFAULT_HEIGHT) {
+        /* Center vertically */
+        if (allocation->height > TOOL_DEFAULT_HEIGHT)
+          {
             allocation->y +=
 	      (allocation->height - TOOL_DEFAULT_HEIGHT) / 2;
             allocation->height = TOOL_DEFAULT_HEIGHT;
           }
-      }
-    else
-      {
-        if (allocation->height > DEFAULT_HEIGHT) {
-            allocation->y +=
-	      (allocation->height - DEFAULT_HEIGHT) / 2;
-            allocation->height = DEFAULT_HEIGHT;
-          }
-      }
-
-    /* Add space for border */
-    if (priv->is_toolbar == TRUE)
-      {
+        /* Add space for border */
         allocation->x += TOOL_EXTRA_SIDE_BORDER;
         allocation->width -= 2 * TOOL_EXTRA_SIDE_BORDER;
       }
     else
       {
+        /* Center vertically */
+        if (allocation->height > DEFAULT_HEIGHT)
+          {
+            allocation->y += (allocation->height - DEFAULT_HEIGHT) / 2;
+            allocation->height = DEFAULT_HEIGHT;
+          }
+
+        /* Add space for border */
         allocation->x += EXTRA_SIDE_BORDER;
         allocation->width -= 2 * EXTRA_SIDE_BORDER;
       }
-   
+
     if (GTK_WIDGET_CLASS(parent_class)->size_allocate)
         GTK_WIDGET_CLASS(parent_class)->size_allocate(widget, allocation);
 }
@@ -572,20 +556,19 @@ static gboolean hildon_seekbar_expose(GtkWidget * widget,
     return FALSE;
 }
 
+/*
+ * Event handler for button press. Changes button1 to button2.
+ */
 static gboolean
 hildon_seekbar_button_press_event(GtkWidget * widget,
                                   GdkEventButton * event)
 {
-    HildonSeekbar *self;
-    HildonSeekbarPrivate *priv;
-
     gint result = FALSE;
 
-    self = HILDON_SEEKBAR(widget);
-    priv = HILDON_SEEKBAR_GET_PRIVATE(self);
-
-    /* hack, translate first mouse button to second? */
-    event->button = event->button == 1 ? 2 : event->button;
+    /* We change here the button id because we want to use button2
+     * functionality for button1: jump to mouse position
+     * instead of slowly incrementing to it */
+    event->button = (event->button == 1) ? 2 : event->button;
 
     /* call the parent handler */
     if (GTK_WIDGET_CLASS(parent_class)->button_press_event)
@@ -594,24 +577,23 @@ hildon_seekbar_button_press_event(GtkWidget * widget,
 
     return result;
 }
-
+/*
+ * Event handler for button release. Changes button1 to button2.
+ */
 static gboolean
 hildon_seekbar_button_release_event(GtkWidget * widget,
                                     GdkEventButton * event)
 {
-    HildonSeekbar *self;
-    HildonSeekbarPrivate *priv;
     gboolean result = FALSE;
 
-    self = HILDON_SEEKBAR(widget);
-    priv = HILDON_SEEKBAR_GET_PRIVATE(self);
-
+    /* We change here the button id because we want to use button2
+     * functionality for button1: jump to mouse position
+     * instead of slowly incrementing to it */
     event->button = event->button == 1 ? 2 : event->button;
 
     /* call the parent handler */
     if (GTK_WIDGET_CLASS(parent_class)->button_release_event)
-        result =
-            GTK_WIDGET_CLASS(parent_class)->button_release_event(widget,
-                                                                 event);
+        result = GTK_WIDGET_CLASS(parent_class)->button_release_event(widget,
+                                                                      event);
     return result;
 }
