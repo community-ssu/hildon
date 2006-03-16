@@ -94,8 +94,6 @@ static gboolean hildon_caption_expose( GtkWidget *widget,
                                        GdkEventExpose *event );
 static void hildon_caption_destroy( GtkObject *self );
 static gboolean hildon_caption_button_press( GtkWidget *widget, GdkEventButton *event );
-static void
-hildon_caption_set_focus_child( GtkContainer *container, GtkWidget *child );
 
 static void
 hildon_caption_set_label_text( HildonCaptionPrivate *priv );
@@ -110,7 +108,6 @@ static void hildon_caption_get_child_property (GtkContainer    *container,
 					       guint            property_id,
 					       GValue          *value,
 					       GParamSpec      *pspec);
-static void get_first_focusable_child ( GtkWidget *widget, gpointer data );
 
 struct _HildonCaptionPrivate
 {
@@ -123,13 +120,12 @@ struct _HildonCaptionPrivate
   gchar *text;
   gchar *separator;
   guint is_focused : 1;
-  guint activate_block : 1;
   guint expand : 1;
   HildonCaptionStatus status;
 };
 
-/* Register optional/manatory type enumeration */
-G_CONST_RETURN GType
+/* Register optional/mandatory type enumeration */
+GType
 hildon_caption_status_get_type (void)
 {
   static GType etype = 0;
@@ -150,7 +146,7 @@ hildon_caption_status_get_type (void)
  *
  * Initialises, and returns the type of a hildon caption.
  */
-G_CONST_RETURN GType hildon_caption_get_type( void )
+GType hildon_caption_get_type (void)
 {
   static GType caption_type = 0;
 
@@ -192,7 +188,6 @@ static void hildon_caption_class_init( HildonCaptionClass *caption_class )
   caption_class->activate = hildon_caption_activate;
   GTK_OBJECT_CLASS(caption_class)->destroy = hildon_caption_destroy;
   container_class->forall = hildon_caption_forall;
-  container_class->set_focus_child = hildon_caption_set_focus_child;
   container_class->set_child_property = hildon_caption_set_child_property;
   container_class->get_child_property = hildon_caption_get_child_property;
   widget_class->expose_event = hildon_caption_expose;
@@ -365,10 +360,7 @@ static void hildon_caption_set_property( GObject *object, guint param_id,
   switch( param_id ) 
   {
     case PROP_LABEL:
-
-      /* FIXME: This property setter is badly written. 
-                  * It does strange if (value)
-                  * it calls queue_resize without reason? */
+      /* Free old label string */
       if( priv->text )
       {
         g_free( priv->text );
@@ -376,12 +368,8 @@ static void hildon_caption_set_property( GObject *object, guint param_id,
       }
 
       /* Update label */
-      if( value )
-      {
-        priv->text = g_strdup( g_value_get_string(value) );
-        hildon_caption_set_label_text( priv );
-      }
-      gtk_widget_queue_resize( GTK_WIDGET(object) );
+      priv->text = g_strdup( g_value_get_string(value) );
+      hildon_caption_set_label_text( priv );
       break;
       
     case PROP_ICON:
@@ -433,9 +421,6 @@ static void hildon_caption_set_property( GObject *object, guint param_id,
           gtk_container_remove( GTK_CONTAINER(priv->caption_area),
                                 priv->mandatory_icon );
           priv->mandatory_icon = NULL;
-
-          /* FIXME: calls queue_draw without reason? */
-          gtk_widget_queue_draw( GTK_WIDGET(object) );
         }
       }
       break;
@@ -462,15 +447,8 @@ static void hildon_caption_set_property( GObject *object, guint param_id,
         priv->separator = NULL;
       }
 
-      /* FIXME: Value cannot be NULL */
-      if( value )
-      {
-        priv->separator = g_strdup( g_value_get_string(value) );
-        hildon_caption_set_label_text( priv );
-      }
-
-      /* FIXME: Do we really need to explicitly call this? */          
-      gtk_widget_queue_resize( GTK_WIDGET(object) );
+      priv->separator = g_strdup( g_value_get_string(value) );
+      hildon_caption_set_label_text( priv );
       break;
 
     default:
@@ -550,53 +528,22 @@ static gboolean hildon_caption_button_press( GtkWidget *widget,
 					     GdkEventButton *event )
 {
   HildonCaptionPrivate *priv = HILDON_CAPTION_GET_PRIVATE(widget);
+  GtkWidget *child = GTK_BIN(widget)->child;
 
   /* If child can take focus, we simply grab focus to it */
-  if (GTK_WIDGET_CAN_FOCUS(GTK_BIN(widget)->child) &&
-      GTK_WIDGET_IS_SENSITIVE(GTK_BIN(widget)->child))
+  if ((GTK_WIDGET_CAN_FOCUS(child) || GTK_IS_CONTAINER(child)) &&
+      GTK_WIDGET_IS_SENSITIVE(child))
   {
     priv->is_focused = TRUE;
     gtk_widget_grab_focus( GTK_BIN(widget)->child );
-  }
-  /* Containers usually do not accept focus, but can contain focusable widgets */
-  else if ( GTK_IS_CONTAINER(GTK_BIN(widget)->child) )
-  {
-    GtkWidget *cwid= NULL;
-
-    /* go through the children of the container for the first focusable children */
-    /* FIXME: Can we somehow avoid this unintuitive looping. Something like 
-              gtk_widget_child_focus ?? */
-    gtk_container_forall (GTK_CONTAINER(GTK_BIN(widget)->child), (GtkCallback) get_first_focusable_child, &cwid );
-    if (cwid)
-    {
-       priv->is_focused = TRUE;
-       gtk_widget_grab_focus( GTK_WIDGET(cwid) );
-    }
   }
 
   return FALSE;
 }
 
-static void get_first_focusable_child ( GtkWidget *widget, gpointer data )
-{
-  GtkWidget **child = (GtkWidget**)data;
-
-  /* if a first child has already been found then do nothing */
-  if (*child) return;
-
-  if (GTK_WIDGET_CAN_FOCUS (widget) &&
-      GTK_WIDGET_IS_SENSITIVE (widget))
-    *child = widget;  
-  else if (GTK_IS_CONTAINER(widget)) /* if the child is a container itself then go through them also /including/ internals */  
-  {
-     gtk_container_forall (GTK_CONTAINER(widget), get_first_focusable_child, child);
-  }
-}
-
 static void hildon_caption_init( HildonCaption *caption )
 {
   HildonCaptionPrivate *priv = NULL;
-  g_return_if_fail( HILDON_IS_CAPTION(caption) );
 
   /* Initialize startup state */
   priv = HILDON_CAPTION_GET_PRIVATE(caption);
@@ -607,7 +554,6 @@ static void hildon_caption_init( HildonCaption *caption )
 
   priv->separator = g_strdup(_("Ecdg_ti_caption_separator"));
 
-  /* FIXME: We probably should use gtk_widget_set_composite_name as well */
   gtk_widget_push_composite_child();
   
   /* Create caption text */
@@ -632,23 +578,15 @@ static void hildon_caption_init( HildonCaption *caption )
 static void hildon_caption_set_focus( GtkWindow *window, GtkWidget *widget,
                                       GtkWidget *caption )
 {
-  GtkWidget *win = GTK_WIDGET(window);
-  GtkWidget *tmp = widget;
   HildonCaptionPrivate *priv = HILDON_CAPTION_GET_PRIVATE(caption);
 
   /* Try to find caption among the ancestors of widget */
-  /* FIXME: gtk_widget_get_ancestor */
-  while( GTK_IS_WIDGET(tmp) && win != tmp )
-  {  
-    if( tmp == caption )
+  if (gtk_widget_is_ancestor(widget, caption))
     {
-      /* Caption found, so it is now considered focused */
       priv->is_focused = TRUE;
       gtk_widget_queue_draw( caption );
       return;
     }
-    tmp = gtk_widget_get_parent( tmp );
-  }
 
   if( priv->is_focused == TRUE )
   {
@@ -656,19 +594,6 @@ static void hildon_caption_set_focus( GtkWindow *window, GtkWidget *widget,
     priv->is_focused = FALSE;
     gtk_widget_queue_draw( caption );
   }
-}
-
-/* FIXME: Is this function really needed at all? */
-static void
-hildon_caption_set_focus_child( GtkContainer *container, GtkWidget *child )
-{
-  GtkWidget *parent = gtk_widget_get_parent( GTK_WIDGET(container) );
-  
-  GTK_CONTAINER_CLASS(parent_class)->set_focus_child( container, child );
-
-  if( parent && child != container->focus_child )
-    gtk_container_set_focus_child( GTK_CONTAINER(parent),
-                                   GTK_WIDGET(container) );
 }
 
 /* We need to connect/disconnect signal handlers to toplevel window
@@ -680,7 +605,6 @@ static void hildon_caption_hierarchy_changed( GtkWidget *widget,
   GtkWidget *current_ancestor;
   HildonCaptionPrivate *priv;
 
-  g_return_if_fail( HILDON_IS_CAPTION(widget) );
   priv = HILDON_CAPTION_GET_PRIVATE(widget);
 
   if( GTK_WIDGET_CLASS(parent_class)->hierarchy_changed )
@@ -719,7 +643,6 @@ static void hildon_caption_size_request( GtkWidget *widget,
   if( GTK_WIDGET_CLASS(parent_class)->size_request )
     GTK_WIDGET_CLASS(parent_class)->size_request( widget, requisition );
 
-  /* Perform some useless calculations so that we can ignore the results <3 */
   requisition->width += req.width + HILDON_CAPTION_SPACING * 3;
 
   if( (req.height + (2 * widget->style->ythickness)) > requisition->height )
@@ -795,7 +718,10 @@ static void hildon_caption_forall( GtkContainer *container,
                                    GtkCallback callback, gpointer data )
 {
   HildonCaptionPrivate *priv = NULL;
+
   g_return_if_fail( HILDON_IS_CAPTION(container) );
+  g_return_if_fail( callback != NULL );
+
   priv = HILDON_CAPTION_GET_PRIVATE(container);
 
   /* Execute callback for the child widgets */
@@ -818,13 +744,12 @@ static void hildon_caption_forall( GtkContainer *container,
  *
  * Deprecated: Use g_object_set, property &quot;size_group&quot;. 
  */
-#ifndef HILDON_DISABLE_DEPRECATED
 void hildon_caption_set_sizegroup( const HildonCaption *self,
                                    GtkSizeGroup *group )
 {
   g_object_set( G_OBJECT(self), "size_group", group, NULL );
 }
-#endif
+
 /**
  * hildon_caption_get_sizegroup:
  * @caption : A #HildonCaption
@@ -834,7 +759,6 @@ void hildon_caption_set_sizegroup( const HildonCaption *self,
  *
  * Deprecated: Use g_object_get, property &quot;size_group&quot;. 
  */
-#ifndef HILDON_DISABLE_DEPRECATED
 GtkSizeGroup *hildon_caption_get_sizegroup( const HildonCaption *self )
 {
   HildonCaptionPrivate *priv;
@@ -842,7 +766,7 @@ GtkSizeGroup *hildon_caption_get_sizegroup( const HildonCaption *self )
   priv = HILDON_CAPTION_GET_PRIVATE(self);
   return priv->group;
 }
-#endif
+
 /**
  * hildon_caption_new:
  * @group : a #GtkSizeGroup for controlling the size of related captions.
@@ -912,6 +836,8 @@ gboolean hildon_caption_is_mandatory( const HildonCaption *caption )
 void hildon_caption_set_status( HildonCaption *caption,
                                 HildonCaptionStatus flag )
 {
+  g_return_if_fail( HILDON_IS_CAPTION(caption) );
+
   g_object_set( G_OBJECT(caption), "status", flag, NULL );
 }
 
@@ -945,6 +871,8 @@ HildonCaptionStatus hildon_caption_get_status( const HildonCaption *caption )
 
 void hildon_caption_set_icon_image( HildonCaption *caption, GtkWidget *icon )
 {
+  g_return_if_fail( HILDON_IS_CAPTION(caption) );
+
   g_object_set( G_OBJECT(caption), "icon", icon, NULL );
 }
 
@@ -980,6 +908,8 @@ GtkWidget *hildon_caption_get_icon_image( const HildonCaption *caption )
 
 void hildon_caption_set_label( HildonCaption *caption, const gchar *label )
 {
+  g_return_if_fail( HILDON_IS_CAPTION(caption) );
+
   g_object_set( G_OBJECT(caption), "label", label, NULL );
 }
 
@@ -1018,6 +948,8 @@ gchar *hildon_caption_get_label( const HildonCaption *caption )
 void hildon_caption_set_separator( HildonCaption *caption, 
                                    const gchar *separator )
 {
+  g_return_if_fail( HILDON_IS_CAPTION(caption) );
+
   g_object_set( G_OBJECT(caption), "separator", separator, NULL );
 }
 
@@ -1051,37 +983,26 @@ gchar *hildon_caption_get_separator( const HildonCaption *caption )
  *
  * Deprecated: use gtk_bin_get_child instead
  */
-#ifndef HILDON_DISABLE_DEPRECATED
 GtkWidget *hildon_caption_get_control( const HildonCaption *caption )
 {
   g_return_val_if_fail( HILDON_IS_CAPTION(caption), NULL );
   return GTK_BIN(caption)->child;
 }
-#endif
+
 /*activates the child control
  *We have this signal so that if needed an application can 
  *know when we've been activated (useful for captions with
  *multiple children
  */
+/* FIXME: There never are multiple children. Possibly activate
+   signal could be removed entirely? (does anyone use it?) */
 static void hildon_caption_activate( GtkWidget *widget )
 {
   HildonCaptionPrivate *priv;
   GtkWidget *child = GTK_BIN(widget)->child;
   priv = HILDON_CAPTION_GET_PRIVATE(widget);
 
-  /* FIXME: This seems to be related to some functionality 
-            that is already removed? */
-  if( priv->activate_block )
-  {
-    priv->is_focused = FALSE;
-    return;
-  }
-
-  if( child )
-  {
-    priv->activate_block = TRUE;
-    gtk_widget_grab_focus( child );
-  }
+  gtk_widget_grab_focus( child );
 }
 
 /**
@@ -1123,7 +1044,7 @@ void hildon_caption_set_child_expand( HildonCaption *caption, gboolean expand )
  *
  * Gets childs expandability.
  */
-gboolean hildon_caption_get_child_expand( HildonCaption *caption )
+gboolean hildon_caption_get_child_expand( const HildonCaption *caption )
 {
   HildonCaptionPrivate *priv = NULL;
   g_return_val_if_fail( HILDON_IS_CAPTION(caption), FALSE );
@@ -1144,7 +1065,6 @@ gboolean hildon_caption_get_child_expand( HildonCaption *caption )
  *
  * Deprecated: Use gtk_container_add. 
  */
-#ifndef HILDON_DISABLE_DEPRECATED
 void hildon_caption_set_control( HildonCaption *caption, GtkWidget *control )
 {
   GtkWidget *child = NULL;
@@ -1162,23 +1082,19 @@ void hildon_caption_set_control( HildonCaption *caption, GtkWidget *control )
   else
     child = NULL;
 }
-#endif
 
 static void
 hildon_caption_set_label_text( HildonCaptionPrivate *priv )
 {
   gchar *tmp = NULL;
-  g_return_if_fail ( priv != NULL );
+  g_assert ( priv != NULL );
 
   if ( priv->text )
   {
     if( priv->separator )
     {
       /* Don't duplicate the separator, if the string already contains one */
-      /* FIXME: The separator was taken from translations originally, it's not
-                safe to assume that to be a certain constant. */
-      if( !strcmp( priv->separator, ":" ) &&
-          priv->text [strlen ( priv->text ) - 1] == ':')
+      if (g_str_has_suffix(priv->text, priv->separator))
       {
         gtk_label_set_text( GTK_LABEL( priv->label ), priv->text );
       }

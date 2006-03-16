@@ -58,7 +58,7 @@ typedef enum {
 
 #define HILDON_TYPE_CAPTION_STATUS (hildon_caption_status_get_type ())
 
-G_CONST_RETURN GType hildon_caption_status_get_type (void);
+GType hildon_caption_status_get_type (void) G_GNUC_CONST;
 
 /**
  * HildonCaption:
@@ -82,7 +82,7 @@ struct _HildonCaptionClass
 };
 
 
-G_CONST_RETURN GType hildon_caption_get_type( void );
+GType hildon_caption_get_type (void) G_GNUC_CONST;
 
 GtkWidget *hildon_caption_new( GtkSizeGroup *group, const gchar *value,
                                GtkWidget *control, GtkWidget *icon,
@@ -125,7 +125,7 @@ void hildon_caption_set_control( HildonCaption *caption, GtkWidget *control );
 #endif
 
 void hildon_caption_set_child_expand( HildonCaption *caption, gboolean expand );
-gboolean hildon_caption_get_child_expand( HildonCaption *caption );
+gboolean hildon_caption_get_child_expand( const HildonCaption *caption );
 
 G_END_DECLS
 #endif /* __HILDON_CAPTION_H__ */

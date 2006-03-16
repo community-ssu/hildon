@@ -1,5 +1,40 @@
 2006-03-14  Luc Pionchon  <luc.pionchon@nokia.com>
 
+	Cleanup Caption widget,
+	
+	* hildon-lgpl/hildon-caption.[ch]
+	(hildon_caption_status_get_type, hildon_caption_get_type):
+	G_CONST_RETURN removed, G_GNUC_CONST added
+
+	* hildon-widgets/hildon-caption.c
+
+	(struct _HildonCaptionPrivate): removed 'activate_block' member; not used anymore.
+
+	(hildon_caption_set_property): removed useless code.
+	(hildon_caption_button_press): simplified greatly by removing the
+	unnecessary recursion to locate the first focusable child of a
+	container - simple gtk_widget_grab_focus achieves the same
+	(get_first_focusable_child): removed (not used anymore)
+	
+	(hildon_caption_set_focus): uses gtk_widget_is_ancestor instead of reinventing it
+
+	(hildon_caption_set_focus_child): removed (not used anymore)
+	(hildon_caption_class_init): remove ref to hildon_caption_set_focus_child()
+
+	(hildon_caption_hierarchy_changed): type check added
+	(hildon_caption_forall): callback null check added
+	(hildon_caption_set_status): type check added
+	(hildon_caption_set_icon_image): type check added
+	(hildon_caption_activate): activate_block kludge removed as outdated
+	(hildon_caption_get_child_expand): argument declared const
+	(hildon_caption_set_label_text): g_return_if_fail changed to
+	g_assert since this is not a public function;
+	Duplicate separator check now uses correct localized separator
+	instead of assuming ':'
+
+	
+2006-03-14  Luc Pionchon  <luc.pionchon@nokia.com>
+
 	Cleanup AppView,
 	
 	* hildon-lgpl/hildon-appview-c:
