@@ -1188,7 +1188,7 @@ hildon_font_selection_dialog_show_available_sizes
     }
 }
 
-/* This function is called only from deprecated API */
+/* WARNING: This function is called only from deprecated API */
 static
 void check_tags(gpointer data, gpointer user_data)
 {
@@ -1306,7 +1306,7 @@ void check_tags(gpointer data, gpointer user_data)
     }
 }
 
-/* This function is called only from deprecated API */
+/* WARNING: This function is called only from deprecated API */
 static
 void check_attrs(gpointer data, gpointer user_data)
 {
@@ -1426,7 +1426,7 @@ void check_attrs(gpointer data, gpointer user_data)
   pango_attribute_destroy(attr);
 }
 
-/* This function is called only from deprecated API */
+/* WARNING: This function is called only from deprecated API */
 static void
 settings_init(HildonFontSelectionDialogSettings *settings,
 	      HildonFontSelectionDialog  *fsd)
@@ -1443,7 +1443,7 @@ settings_init(HildonFontSelectionDialogSettings *settings,
   settings->position = -1;
 }
 
-/* This function is called only from deprecated API */
+/* WARNING: This function is called only from deprecated API */
 static void
 bit_mask_toggle(gint mask, GtkToggleButton *button,
 		GObject *object, const gchar *prop,
@@ -1467,7 +1467,7 @@ bit_mask_toggle(gint mask, GtkToggleButton *button,
   g_object_notify(object, prop_set);
 }
 
-/* This function is called only from deprecated API */
+/* WARNING: This function is called only from deprecated API */
 static void
 combo_active(gint active, GtkComboBox *box, 
 	     GObject *object, const gchar *prop, const gchar *prop_set)
@@ -1487,7 +1487,7 @@ combo_active(gint active, GtkComboBox *box,
   g_object_notify(object, prop_set);
 }
 
-/* This function is called only from deprecated API */
+/* WARNING: This function is called only from deprecated API */
 static void
 settings_apply(HildonFontSelectionDialogSettings *settings)
 {
