@@ -38,12 +38,8 @@
 
 #include <stdio.h>
 #include <libintl.h>
-
 #include <gtk/gtkcombobox.h>
 #include <gtk/gtkbox.h>
-#include <gdk/gdkkeysyms.h>
-#include <glib-object.h>
-
 #include <hildon-widgets/hildon-caption.h>
 #include "hildon-sort-dialog.h"
 
@@ -75,25 +71,14 @@ enum {
 
 /* private data */
 struct _HildonSortDialogPrivate {
-    /* Tab one */
-    GtkWidget *combo1;
-    GtkWidget *caption1;
+    /* Sort category widgets */
+    GtkWidget *combo_key;
+    GtkWidget *caption_key;
 
-    /* Tab two */
-    GtkWidget *combo2;
-    GtkWidget *caption2;
+    /* Sort order widgets */
+    GtkWidget *combo_order;
+    GtkWidget *caption_order;
 
-    /* OK/Cancel buttons */
-    GtkWidget *okButton;
-    GtkWidget *cancelButton;
-
-    /* Index value for sort_by */
-    gint sort_by_value;
-
-    /* Index value for sort_order */
-    gint sort_order_type;
-
-    gboolean index_first;
     /* Index value counter */
     gint index_counter;
 };
@@ -138,7 +123,6 @@ static void hildon_sort_dialog_init(HildonSortDialog * dialog)
 
     priv = HILDON_SORT_DIALOG_GET_PRIVATE(dialog);
 
-    priv->index_first = TRUE;
     priv->index_counter = 0;
 
     group = GTK_SIZE_GROUP(gtk_size_group_new(GTK_SIZE_GROUP_HORIZONTAL));
@@ -148,40 +132,42 @@ static void hildon_sort_dialog_init(HildonSortDialog * dialog)
     gtk_window_set_title(GTK_WINDOW(dialog), _("ckdg_ti_sort"));
 
     /* Tab one */
-    priv->combo1 = gtk_combo_box_new_text();
-    priv->caption1 = hildon_caption_new(group, _("ckdg_fi_sort_field"), priv->combo1,
+    priv->combo_key = gtk_combo_box_new_text();
+    priv->caption_key = hildon_caption_new(group, _("ckdg_fi_sort_field"), priv->combo_key,
                                         NULL, HILDON_CAPTION_OPTIONAL);
-    hildon_caption_set_separator(HILDON_CAPTION(priv->caption1), "");
+    hildon_caption_set_separator(HILDON_CAPTION(priv->caption_key), "");
     gtk_box_pack_start(GTK_BOX(GTK_DIALOG(dialog)->vbox),
-                       priv->caption1, FALSE, FALSE, 0);
+                       priv->caption_key, FALSE, FALSE, 0);
 
     /* Tab two */
-    priv->combo2 = gtk_combo_box_new_text();
-    gtk_combo_box_append_text(GTK_COMBO_BOX(priv->combo2),
+    priv->combo_order = gtk_combo_box_new_text();
+    gtk_combo_box_append_text(GTK_COMBO_BOX(priv->combo_order),
                               _("ckdg_va_sort_ascending"));
-    gtk_combo_box_append_text(GTK_COMBO_BOX(priv->combo2),
+    gtk_combo_box_append_text(GTK_COMBO_BOX(priv->combo_order),
                               _("ckdg_va_sort_descending"));
 
-    priv->caption2 = hildon_caption_new(group, _("ckdg_fi_sort_order"),
-                                        priv->combo2,
+    priv->caption_order = hildon_caption_new(group, _("ckdg_fi_sort_order"),
+                                        priv->combo_order,
                                         NULL, HILDON_CAPTION_OPTIONAL);
-    hildon_caption_set_separator(HILDON_CAPTION(priv->caption2), "");
+    hildon_caption_set_separator(HILDON_CAPTION(priv->caption_order), "");
     gtk_box_pack_start(GTK_BOX(GTK_DIALOG(dialog)->vbox),
-                       priv->caption2, FALSE, FALSE, 0);
+                       priv->caption_order, FALSE, FALSE, 0);
 
-    gtk_combo_box_set_active(GTK_COMBO_BOX(priv->combo1), 0);
-    gtk_combo_box_set_active(GTK_COMBO_BOX(priv->combo2), 0);
+    gtk_combo_box_set_active(GTK_COMBO_BOX(priv->combo_key), 0);
+    gtk_combo_box_set_active(GTK_COMBO_BOX(priv->combo_order), 0);
 
     /* Create the OK/CANCEL buttons */
-    priv->okButton = gtk_dialog_add_button(GTK_DIALOG(dialog),
+    (void) gtk_dialog_add_button(GTK_DIALOG(dialog),
                                            _("ckdg_bd_sort_dialog_ok"),
                                            GTK_RESPONSE_OK);
-    priv->cancelButton = gtk_dialog_add_button(GTK_DIALOG(dialog),
+    (void) gtk_dialog_add_button(GTK_DIALOG(dialog),
                                                _("ckdg_bd_sort_dialog_cancel"),
                                                GTK_RESPONSE_CANCEL);
-
+    /* FIXME: Hardcoded sizes are bad */
     gtk_window_resize(GTK_WINDOW(dialog), 370, 100);
     gtk_widget_show_all(GTK_DIALOG(dialog)->vbox);
+
+    g_object_unref(group); /* Captions now own their references to sizegroup */
 }
 
 /* Public functions */
@@ -254,10 +240,9 @@ gint hildon_sort_dialog_get_sort_key(HildonSortDialog * dialog)
 
     priv = HILDON_SORT_DIALOG_GET_PRIVATE(dialog);
     
-    combo_key = gtk_bin_get_child(GTK_BIN(priv->caption1));
-    priv->sort_by_value =
-        gtk_combo_box_get_active(GTK_COMBO_BOX(combo_key));
-    return priv->sort_by_value;
+    combo_key = gtk_bin_get_child(GTK_BIN(priv->caption_key));
+        
+    return gtk_combo_box_get_active(GTK_COMBO_BOX(combo_key));
 }
 
 /**
@@ -270,16 +255,15 @@ gint hildon_sort_dialog_get_sort_key(HildonSortDialog * dialog)
  */
 GtkSortType hildon_sort_dialog_get_sort_order(HildonSortDialog * dialog)
 {
-    GtkWidget *combo_key;
+    GtkWidget *combo_order;
     HildonSortDialogPrivate *priv;
 
     g_return_val_if_fail(HILDON_IS_SORT_DIALOG(dialog), 0);
 
     priv = HILDON_SORT_DIALOG_GET_PRIVATE(dialog);
-    combo_key = gtk_bin_get_child(GTK_BIN(priv->caption2));
-    priv->sort_order_type =
-        gtk_combo_box_get_active(GTK_COMBO_BOX(combo_key));
-    return priv->sort_order_type;
+    combo_order = gtk_bin_get_child(GTK_BIN(priv->caption_order));
+        
+    return gtk_combo_box_get_active(GTK_COMBO_BOX(combo_order));
 }
 
 /**
@@ -297,7 +281,7 @@ void hildon_sort_dialog_set_sort_key(HildonSortDialog * dialog, gint key)
     g_return_if_fail(HILDON_IS_SORT_DIALOG(dialog));
 
     priv = HILDON_SORT_DIALOG_GET_PRIVATE(dialog);
-    combo_key = gtk_bin_get_child(GTK_BIN(priv->caption1));
+    combo_key = gtk_bin_get_child(GTK_BIN(priv->caption_key));
     gtk_combo_box_set_active(GTK_COMBO_BOX(combo_key), key);
 
     g_object_notify (G_OBJECT (dialog), "sort-key");
@@ -320,7 +304,7 @@ hildon_sort_dialog_set_sort_order(HildonSortDialog * dialog,
     g_return_if_fail(HILDON_IS_SORT_DIALOG(dialog));
 
     priv = HILDON_SORT_DIALOG_GET_PRIVATE(dialog);
-    combo_order = gtk_bin_get_child(GTK_BIN(priv->caption2));
+    combo_order = gtk_bin_get_child(GTK_BIN(priv->caption_order));
     gtk_combo_box_set_active(GTK_COMBO_BOX(combo_order), order);
 
     g_object_notify (G_OBJECT (dialog), "sort-order");
@@ -346,15 +330,9 @@ hildon_sort_dialog_add_sort_key(HildonSortDialog * dialog,
     g_return_val_if_fail(HILDON_IS_SORT_DIALOG(dialog), -1);
 
     priv = HILDON_SORT_DIALOG_GET_PRIVATE(dialog);
-    gtk_combo_box_append_text(GTK_COMBO_BOX(priv->combo1), sort_key);
+    gtk_combo_box_append_text(GTK_COMBO_BOX(priv->combo_key), sort_key);
 
-    if (priv->index_first == TRUE) {
-        priv->index_first = FALSE;
-        return priv->index_counter;
-
-    } else {
-        return priv->index_counter += 1;
-    }
+    return priv->index_counter++;
 }
 
 static void

@@ -54,6 +54,26 @@
 
 2006-03-03  Luc Pionchon  <luc.pionchon@nokia.com>
 
+	* hildon-widgets/hildon-sort-dialog.c: removed unused #include
+	(struct _HildonSortDialogPrivate):
+	- removed okButton, cancelButton
+	- removed sort_by_value, sort_order_type
+	- removed index_first
+	- renamed combo1   to combo_key
+	- renamed caption1 to caption_key
+	- renamed combo2   to combo_order
+	- renamed caption2 to cpation_order
+
+	(hildon_sort_dialog_init): removed init of unused fields.
+	                           use new field names.
+	(hildon_sort_dialog_get_sort_key): likewise.
+	(hildon_sort_dialog_get_sort_order): likewise.
+	(hildon_sort_dialog_set_sort_key): likewise.
+	(hildon_sort_dialog_set_sort_order): likewise.
+	(hildon_sort_dialog_add_sort_key): likewise.
+	
+2006-03-03  Luc Pionchon  <luc.pionchon@nokia.com>
+
 	* hildon-widgets/hildon-date-editor.c
 	(hildon_child_forall): use g_assert instead of g_return_if_fail
 	(hildon_date_editor_entry_validate): likewise.
