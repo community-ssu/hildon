@@ -26,7 +26,6 @@
 
 #include <gtk/gtkdialog.h>
 #include <gtk/gtkprogressbar.h>
-#include <gtk/gtkicontheme.h>
 
 G_BEGIN_DECLS
 #define HILDON_TYPE_NOTE ( hildon_note_get_type() )
@@ -63,12 +62,13 @@ GtkWidget *hildon_note_new_confirmation(GtkWindow * parent,
 GtkWidget *hildon_note_new_confirmation_add_buttons(GtkWindow * parent,
                                                     const gchar *
                                                     description, ...);
-
+#ifndef HILDON_DISABLE_DEPRECATED
 GtkWidget *hildon_note_new_confirmation_with_icon_stock(GtkWindow * parent,
                                                         const gchar *
                                                         description,
                                                         const gchar *
                                                         stock_id);
+#endif /* HILDON_DISABLE_DEPRECATED */
 
 GtkWidget *hildon_note_new_confirmation_with_icon_name(GtkWindow * parent,
                                                         const gchar *
@@ -91,7 +91,7 @@ GtkWidget *hildon_note_new_information_with_icon_name(GtkWindow * parent,
                                                        description,
                                                        const gchar *
                                                        icon_name);
-
+#ifndef HILDON_DISABLE_DEPRECATED
 GtkWidget *hildon_note_new_information_with_icon_stock(GtkWindow * parent,
                                                        const gchar *
                                                        description,
@@ -103,6 +103,7 @@ GtkWidget *hildon_note_new_information_with_icon_theme(GtkWindow * parent,
                                                        description,
                                                        const gchar *
                                                        icon);
+#endif /* HILDON_DISABLE_DEPRECATED */
                                                        
 void hildon_note_set_button_text(HildonNote * note, const gchar * text);
 

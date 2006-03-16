@@ -68,6 +68,39 @@
 
 2006-03-01  Luc Pionchon  <luc.pionchon@nokia.com>
 
+	Cleanup hildon-note,
+	
+	* hildon-widgets/hildon-note.[ch]
+
+	(hildon_note_five_line_truncate): removed.
+	(hildon_note_one_line_truncate): removed.
+
+	(hildon_note_set_property): use _hildon_gtk_label_set_text_n_lines
+	instead of _{one|five}_line_truncate() functions.
+
+
+	(hildon_note_new_information_with_icon_theme): Deprecated. Turned
+	into wrapper of "hildon_note_new_information_with_icon_name".
+
+	(hildon_note_new_confirmation_with_icon_stock): Deprecated (broken)
+	(hildon_note_new_information_with_icon_stock): Deprecated (broken)
+	
+	- removed some unnessecary includes.
+
+	- Merged hildon_note_create & hildon_note_create_form and rewrote
+	the combination as hildon_note_rebuild
+
+	- Added missing g_return_* into public functions.
+
+	- Acquire real references to children which are packed/unpacked,
+	so we do not need to bother about refcounting while changing the
+	layout.
+	
+	
+2006-03-01  Luc Pionchon  <luc.pionchon@nokia.com>
+
+        More cleanup:
+	
 	* hildon-widgets/hildon-number-editor.c
 
 	(set_widget_allocation): use const parameter.
