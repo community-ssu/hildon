@@ -105,17 +105,20 @@ hildon_find_toolbar_filter(GtkTreeModel *model,
   const gint *indices;
   gint n;
   gint limit;
+  gint total;
 
+  total = gtk_tree_model_iter_n_children(model, NULL);
   g_object_get(self, "history_limit", &limit, NULL);
   path = gtk_tree_model_get_path(model, iter);
   indices = gtk_tree_path_get_indices (path);
 
-  /* List store has only one level. If this row's index number is larger
-     than history_limit, we want to filter it. */
+  /* set the row's index, list store has only one level */
   n = indices[0];
   gtk_tree_path_free(path);
   
-  if(n < limit)
+  /*if the row is among the latest "history_limit" additions of the 
+   * model, then we show it */
+  if( (total - limit <= n) && (n < total) )
     return TRUE;
   else
     return FALSE;
@@ -305,7 +308,7 @@ hildon_find_toolbar_history_append(HildonFindToolbar *self,
       /* Latest string is always the first one in list. If the string
          already exists, remove it so there are no duplicates in list. */
       if (hildon_find_toolbar_find_string(self, &iter, column, string))
-	gtk_list_store_remove(list, &iter);
+          gtk_list_store_remove(list, &iter);
     }
   else
     {
