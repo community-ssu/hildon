@@ -130,9 +130,8 @@ static void hildon_app_forall (GtkContainer *container, gboolean include_interna
 enum {
   PROP_0,
   PROP_SCROLL_CONTROL,
-#ifndef HILDON_DISABLE_DEPRECATED
+  /* FIXME: Zoom is deprecated, should be removed */
   PROP_ZOOM,
-#endif
   PROP_TWO_PART_TITLE,
   PROP_APP_TITLE,
   PROP_KILLABLE,
@@ -143,14 +142,15 @@ enum {
 
 static gpointer find_view(HildonApp *self, unsigned long view_id);
 
+/* FIXME: Zoom level is deprecated, should be removed */
 /**
  * hildon_zoom_level_get_type:
  * @Returns : GType of #HildonZoomLevel
  *
  * Initialises, and returns the type of a hildon zoom level
  */
-#ifndef HILDON_DISABLE_DEPRECATED
-G_CONST_RETURN GType
+
+GType
 hildon_zoom_level_get_type (void)
 {
   static GType etype = 0;
@@ -165,7 +165,6 @@ hildon_zoom_level_get_type (void)
   }
   return etype;
 }
-#endif
 
 GType hildon_app_get_type(void)
 {
@@ -202,7 +201,7 @@ static void hildon_app_apply_killable(HildonApp *self)
 				       "_HILDON_APP_KILLABLE", False);
     priv = HILDON_APP_GET_PRIVATE (self);
 
-    g_return_if_fail (HILDON_IS_APP (self) );
+    g_assert (HILDON_IS_APP (self) );
     g_assert(GTK_WIDGET_REALIZED(self));
 
     if (priv->killable)
@@ -237,6 +236,7 @@ static void hildon_app_apply_client_list(HildonApp *self)
   int loopctr = 0;
   Atom clientlist;
 
+  g_assert (HILDON_IS_APP (self) );
   g_assert(GTK_WIDGET_REALIZED(self));
 
   /* Get the client list handle */
@@ -277,6 +277,8 @@ static void hildon_app_realize(GtkWidget *widget)
     gint atom_count;
     Display *disp;
 
+    g_assert(widget != NULL);
+
     self = HILDON_APP(widget);
     priv = HILDON_APP_GET_PRIVATE(self);
 
@@ -297,8 +299,6 @@ static void hildon_app_realize(GtkWidget *widget)
     /* Install a key snooper for the Home button - so that it works everywhere */
     priv->key_snooper = gtk_key_snooper_install 
         ((GtkKeySnoopFunc) hildon_app_key_snooper, widget);
-
-    /* Enable custom button that is used for menu */
 
     /* Get the list of Atoms for the WM_PROTOCOLS property... */
     XGetWMProtocols(disp, GDK_WINDOW_XID(window), &old_atoms, &atom_count);
@@ -499,30 +499,30 @@ static void hildon_app_class_init (HildonAppClass *app_class)
 static void
 hildon_app_finalize (GObject *obj)
 {
-  HildonAppPrivate *priv = HILDON_APP_GET_PRIVATE (obj);
+  HildonAppPrivate *priv = NULL;
+  
+  g_assert (obj != NULL);
+
+  priv = HILDON_APP_GET_PRIVATE (obj);
 
   g_free (priv->title);
 
   if (G_OBJECT_CLASS(parent_class)->finalize)
     G_OBJECT_CLASS(parent_class)->finalize(obj);
 
-  /* This is legacy code, but cannot be removed 
+  /* FIXME: This is legacy code, but cannot be removed 
      without changing functionality */
   gtk_main_quit ();
 }
 
 /*
- * This function sets to 0 the GSource id for the escape_timeout
- * property. It is called by hildon_app_escape_timeout. We are basically
- * using the g_timeout_add (see hildon_app_key_press) to perform just
- * one call to hildon_app_escape_timout with a certain delay. Once
- * hildon_app_escape_timout is done with its job, we can remove the
- * GSource and set priv->escape_timeout to 0. See hildon_app_escape_timeout
- * for more information.
+ * Removes the long escape ("cancel" hw key) press timeout.
  */
 static void
 hildon_app_remove_timeout(HildonAppPrivate *priv)
 {
+  g_assert(priv != NULL);
+
   if (priv->escape_timeout > 0)
     {
       g_source_remove (priv->escape_timeout);
@@ -536,7 +536,11 @@ hildon_app_remove_timeout(HildonAppPrivate *priv)
 static void
 hildon_app_destroy (GtkObject *obj)
 {
-  HildonAppPrivate *priv = HILDON_APP_GET_PRIVATE (obj);
+  HildonAppPrivate *priv = NULL;
+
+  g_assert (obj != NULL);
+  
+  priv = HILDON_APP_GET_PRIVATE (obj);
 
   /* Just in case a GDK_Escape key was pressed shortly before the propagation
    * of this event, it is safer to remove the timeout that will generate a
@@ -570,9 +574,12 @@ hildon_app_destroy (GtkObject *obj)
 static void hildon_app_forall (GtkContainer *container, gboolean include_internals,
 			       GtkCallback callback, gpointer callback_data)
 {
-  HildonAppPrivate *priv = HILDON_APP_GET_PRIVATE (container);
+  HildonAppPrivate *priv = NULL;
 
+  g_return_if_fail (container != NULL);
   g_return_if_fail (callback != NULL);
+
+  priv = HILDON_APP_GET_PRIVATE (container);
 
   /* Note! we only have user added children, no internals */
   g_list_foreach (priv->children, (GFunc)callback, callback_data);
@@ -670,10 +677,14 @@ static void hildon_app_get_property(GObject * object, guint property_id,
  */
 static void hildon_app_add (GtkContainer *container, GtkWidget *child)
 {
-  HildonApp *app = HILDON_APP (container);
-  HildonAppPrivate *priv = HILDON_APP_GET_PRIVATE (app);
-
+  HildonApp        *app  = NULL;
+  HildonAppPrivate *priv = NULL;
+  
+  g_return_if_fail (container != NULL);
   g_return_if_fail (GTK_IS_WIDGET (child));
+
+  app  = HILDON_APP (container);
+  priv = HILDON_APP_GET_PRIVATE (app);
 
   /* Check if child is already added here */
   if (g_list_find (priv->children, child) != NULL)
@@ -692,8 +703,10 @@ static void hildon_app_add (GtkContainer *container, GtkWidget *child)
   /* FIXME: This is legacy stuff */
   if (gtk_widget_get_default_direction () !=
       gtk_widget_get_direction (GTK_WIDGET (child)))
-    gtk_widget_set_direction (GTK_WIDGET (child),
-			      gtk_widget_get_default_direction ());
+    {
+        gtk_widget_set_direction (GTK_WIDGET (child),
+      			      gtk_widget_get_default_direction ());
+    }
 
   if (HILDON_IS_APPVIEW (child))
     {
@@ -713,7 +726,8 @@ static void hildon_app_remove (GtkContainer *container, GtkWidget *child)
   GtkBin *bin;
   HildonApp *app;
 
-  g_return_if_fail (GTK_WIDGET (child));
+  g_return_if_fail (container != NULL);
+  g_return_if_fail (GTK_IS_WIDGET (child));
 
   priv = HILDON_APP_GET_PRIVATE (container);
   bin = GTK_BIN (container);
@@ -727,11 +741,10 @@ static void hildon_app_remove (GtkContainer *container, GtkWidget *child)
 
   if (HILDON_IS_APPVIEW (child))
     {
-  /* XXX: This is a compilation workaround for gcc > 3.3, since glib-2 API is buggy.
+  /* FIXME: This is a compilation workaround for gcc > 3.3, since glib-2 API is buggy.
    * see http://bugzilla.gnome.org/show_bug.cgi?id=310175 */
-#ifdef __GNUC__
-  __extension__
-#endif
+
+G_GNUC_EXTENSION
 
       g_signal_handlers_disconnect_by_func (G_OBJECT (child),
                                             (gpointer)hildon_app_construct_title, app);
@@ -752,18 +765,12 @@ static void hildon_app_remove (GtkContainer *container, GtkWidget *child)
 }
 
 
-/* - FIXME - This is an estimate, when ever some border is changed too much
-             This will break down.*/
-#define RIGHT_BORDER 31
-
 /*
- * This function is called in case of a GDK_ESCAPE key press. It does nothing
- * but map such key press to a newly created GTK_DELETE key press, which is
- * then sent to the GTK main loop. In the hildon_app_key_release function,
- * though, the hildon_app_remove_timeout is called if the GDK_Escape key is
- * released. This means that it's necessary to hold the GDK_Escape key for all
- * the time interval specified in the hildon_app_key_pressed function, in
- * order to get this funcion called.
+ * Long escape keypress handler.
+ * Long press of the escape key means "close this window", so we fake a delete-event
+ * for our GdkWindow to make it act the same as if the user had closed the window the
+ * usual way. This allows any application code to gracefully exit.
+ *
  * It returns FALSE in order to get called only once.
  */
 static gboolean
@@ -835,44 +842,88 @@ static GdkWindow *find_window (GdkWindow *window, gint by, gint co)
 }
 
 /*
- * This is the callback function that gets called in case of a button press
- * event. Such event has got x and y coordinates, so we will need to realize
- * which child-window the event has to be addressed to. 
+ * This is the callback function that gets called on a mouse button press
+ * event. If the press is happens in a "sensitive border" area in the right side of
+ * the window, the event is translated to the left edge of that border (which
+ * usually will contain a scrollbar).
  *
- * This functionality is used for right-hand side scrollbar remotecontrol.
+ * This functionality is used for right-hand side scroll control feature (dragging on the
+ * right edge of the window controls the rightmost scrollbar if present).
  */
 static gboolean
 hildon_app_button (GtkWidget *widget, GdkEventButton *event)
 {
-  HildonAppPrivate *priv;
-  priv = HILDON_APP_GET_PRIVATE (widget);
-  g_assert(GTK_WIDGET_REALIZED(widget));
+    HildonAppPrivate *priv = NULL;
 
-  /* If the press event comes to certain area at right side
-     of the window, modify the coordinates and send a new fake event */
-  if (priv->scroll_control &&
-      (event->x > widget->allocation.width - RIGHT_BORDER))
+    /* FIXME: This is an estimate, but the AppView does not expose the
+    width of it's borders so we default to something */
+    gint sensitive_border = 31;
+
+    if (!GTK_WIDGET_REALIZED(widget))
     {
-      GdkWindow *window = NULL;
-      gint co = widget->allocation.width - RIGHT_BORDER;
-
-      /* We now need to know in which window the _modified_ coordinates are */
-      if ((window = find_window (widget->window, event->y, co)))
-	{
-	  GdkEventButton nevent;
-
-	  if (window == widget->window)
-	    return FALSE;
-
-      /* Build a new event and associate the proper window to it */
-	  nevent = *event;
-	  nevent.x = 8;
-	  nevent.window = window;
-	  g_object_ref (nevent.window);
-	  gtk_main_do_event ((GdkEvent*)&nevent);
-	}
+        return FALSE;
     }
-  return FALSE;
+    
+    priv = HILDON_APP_GET_PRIVATE (widget);
+
+    if (!priv->scroll_control)
+    {
+        return FALSE;
+    }
+    
+    /* We can easily get the location of the vertical scrollbar and get the exact
+    * area for the scroll_control *if* the setup is such that the HildonAppview
+    * contains a GtkScrolledWindow, so we check for it before defaulting to
+    * the previous guess. More complex situations are not feasible to autodetect.
+    * Applications should provide the GtkAdjustment to be changed for this to work
+    * flawlessly.
+    */
+    if (HILDON_IS_APPVIEW(GTK_BIN(widget)->child))
+    {
+        GtkBin *avbin = GTK_BIN(GTK_BIN(widget)->child);
+        if (GTK_IS_SCROLLED_WINDOW(avbin->child))
+        {
+            GtkScrolledWindow *win;
+            win = GTK_SCROLLED_WINDOW(avbin->child);
+            
+            if (GTK_WIDGET_VISIBLE(win->vscrollbar))
+            {
+                /* Calculate the distance between the AppView's right border and
+                 * the scrollbars center
+                 */
+                sensitive_border = (GTK_WIDGET(avbin)->allocation.x +
+                                                GTK_WIDGET(avbin)->allocation.width) -
+                                                (win->vscrollbar->allocation.x +
+                                                 win->vscrollbar->allocation.width / 2);
+            }
+        }
+    }
+
+    /* If the press event comes to the sensitive area, we send a fake event to the
+     * area we think the scrollbar is in to make it think the button press happened on it
+     */
+    if (event->x > widget->allocation.width - sensitive_border)
+    {
+        GdkWindow *window = NULL;
+        gint co = widget->allocation.width - sensitive_border;
+
+        /* We now need to know in which window the _modified_ coordinates are */
+        if ((window = find_window (widget->window, event->y, co)))
+        {
+            GdkEventButton nevent;
+
+            if (window == widget->window)
+                return FALSE;
+
+            /* Build a new event and associate the proper window to it */
+            nevent = *event;
+            nevent.x = 8;
+            nevent.window = window;
+            g_object_ref (nevent.window);
+            gtk_main_do_event ((GdkEvent*)&nevent);
+        }
+    }
+    return FALSE;
 }
 
 /*
@@ -883,7 +934,6 @@ hildon_app_init (HildonApp *self)
 {
     HildonAppPrivate *priv;
 
-    /* Earlier textdomain was bound here. That was a dirty hack */
     priv = HILDON_APP_GET_PRIVATE(self);
 
     /* init private */
@@ -913,15 +963,6 @@ hildon_app_init (HildonApp *self)
        get it to work until a more satisfactory solution is found */
     gdk_window_add_filter(NULL, hildon_app_event_filter, self);
 
-    /* Forced geometry (720x420 min/max) was removed for following reasons:
-       - If window was not realized when widgets with subwindows were
-         added, those child windows were placed incorrectly (this happens
-         *only* when forced geometry is at least equal to available size).
-         This is some kind of gtk weirdness, but removing this step
-         from HildonApp is much easier than figuring out gtk problem.
-       - matchbox-window-manager still maximizes the window, no matter
-         what kind of geometry hints we set.
-    */
     gtk_widget_set_events (GTK_WIDGET(self), GDK_BUTTON_PRESS_MASK |
                            GDK_BUTTON_RELEASE_MASK |
                            GDK_POINTER_MOTION_MASK);
@@ -1119,8 +1160,7 @@ hildon_app_get_title (HildonApp *self)
     return priv->title;
 }
 
-#ifndef HILDON_DISABLE_DEPRECATED
-
+/* FIXME: Zoom is deprecated, remove */
 /**
  * hildon_app_set_zoom:
  * @self : A @HildonApp
@@ -1267,7 +1307,7 @@ hildon_app_get_zoom_font (HildonApp *self)
     return font_desc;
 }
 
-#endif /* disable deprecated */
+ /*  FIXME: Zoom is deprecated, remove the code above */
 
 /**
  * hildon_app_set_two_part_title:
@@ -1341,7 +1381,7 @@ hildon_app_switch_to_desktop (void)
 
 /*
  * Handles the key press of the Escape, Increase and Decrease keys. Other keys
- * are treaed by the parent GkWidgetClass.
+ * are handled by the parent GtkWidgetClass.
  */
 static gboolean
 hildon_app_key_press (GtkWidget *widget, GdkEventKey *keyevent)
@@ -1414,18 +1454,20 @@ hildon_app_key_release (GtkWidget *widget, GdkEventKey *keyevent)
       }
     else if (HILDON_KEYEVENT_IS_TOOLBAR_KEY (keyevent))
       {
-        /* FIXME: Unexpected parameter 0 */
         g_signal_emit_by_name(G_OBJECT(appview),
-                              "toolbar-toggle-request", 0);
+                              "toolbar-toggle-request");
       }
      else if (HILDON_KEYEVENT_IS_FULLSCREEN_KEY (keyevent))
        {
-         /* FIXME: Why not to use a similar pattern as above 
-                   "fullscreen-toggle-request" ? */
+         /* Emit the fullscreen_state_change directly, it'll save one step */
          if (hildon_appview_get_fullscreen_key_allowed (appview))
            {
-             hildon_appview_set_fullscreen (appview,
-               !(hildon_appview_get_fullscreen (appview)));
+              gboolean fullscreen;
+              
+              fullscreen = hildon_appview_get_fullscreen(appview);
+              g_signal_emit_by_name(G_OBJECT(appview),
+                          "fullscreen_state_change",
+                          fullscreen);
            }
        }
 
@@ -1812,15 +1854,11 @@ hildon_app_construct_title (HildonApp *self)
                             strlen(hildon_appview_get_title (appview)));
         concatenated_title = g_strjoin(TITLE_DELIMITER, priv->title,
             hildon_appview_get_title(appview), NULL);
+        /* priv->title should always be non-null, but check anyway */
       	if (concatenated_title != NULL)
         {
           gtk_window_set_title (GTK_WINDOW(self), concatenated_title);
           g_free(concatenated_title);
-        }
-        else
-        {
-          /* FIXME: This section is never executed */
-          gtk_window_set_title(GTK_WINDOW(self), priv->title);
         }
       }
   }    
@@ -1951,7 +1989,7 @@ gboolean hildon_app_register_view_with_id(HildonApp *self,
 
   priv = HILDON_APP_GET_PRIVATE (self);
   
-  list_ptr = g_slist_nth(priv->view_ids, 0);
+  list_ptr = priv->view_ids;
 
   /* Check that the view is not already registered */
   while (list_ptr)
@@ -1990,15 +2028,13 @@ gboolean hildon_app_register_view_with_id(HildonApp *self,
  * destroyed. For appviews, this is can be automatically
  * if autoregistration is set.
  */
-
-
 void hildon_app_unregister_view(HildonApp *self, gpointer view_ptr)
 {
-  HildonAppPrivate *priv;
+  HildonAppPrivate *priv = NULL;
   GSList *list_ptr = NULL;
 
-  /* FIXME: could this and the following function be combined some way? */
-  g_return_if_fail (HILDON_IS_APP (self) || view_ptr != NULL);
+  g_return_if_fail (HILDON_IS_APP (self));
+  g_return_if_fail (view_ptr != NULL);
   
   priv = HILDON_APP_GET_PRIVATE (self);
   
@@ -2040,7 +2076,7 @@ void hildon_app_unregister_view_with_id(HildonApp *self,
   priv = HILDON_APP_GET_PRIVATE (self);
   
   /* Search the view from the list */
-  list_ptr = priv->view_ids; /*g_slist_nth(priv->view_ids, 0);*/
+  list_ptr = priv->view_ids;
   
   while (list_ptr)
     { 
@@ -2068,11 +2104,10 @@ void hildon_app_unregister_view_with_id(HildonApp *self,
  * 
  * Updates the X property that contains the currently active view
  */
-
 void hildon_app_notify_view_changed(HildonApp *self, gpointer view_ptr)
 {
-  /* FIXME: This precondition should use && instead of || */
-  g_return_if_fail (HILDON_IS_APP (self) || view_ptr != NULL);
+  g_return_if_fail (HILDON_IS_APP (self));
+  g_return_if_fail (view_ptr != NULL);
 
   /* We need GdkWindow before we can send X messages */ 
   if (GTK_WIDGET_REALIZED(self))
@@ -2109,8 +2144,7 @@ unsigned long hildon_app_find_view_id(HildonApp *self, gpointer view_ptr)
 
   priv = HILDON_APP_GET_PRIVATE (self);
 
-  /* FIXME: It probably should be a precondition that view_ptr 
-            is given. Check preconditions with g_return_val_if_fail. */  
+  /* If no view is given, find the ID for the currently visible view */
   if (!view_ptr)
     view_ptr = GTK_BIN (self)->child;
   if (!view_ptr)
@@ -2209,7 +2243,7 @@ GtkUIManager *hildon_app_get_ui_manager(HildonApp *self)
 
 /*
  * Search for a view with the given id within HildonApp.
- * Returns a pointer to the found view. NULL in case of insuccess.
+ * Returns a pointer to the found view, or NULL if not found.
  */
 static gpointer find_view(HildonApp *self, unsigned long view_id)
 {

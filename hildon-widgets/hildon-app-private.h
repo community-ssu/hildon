@@ -26,6 +26,8 @@
 #ifndef HILDON_APP_PRIVATE_H
 #define HILDON_APP_PRIVATE_H
 
+G_BEGIN_DECLS
+
 enum {
     TOPMOST_STATUS_ACQUIRE,
     TOPMOST_STATUS_LOSE,
@@ -70,5 +72,7 @@ typedef struct {
   gpointer view_ptr;
   unsigned long view_id;
 } view_item;
+
+G_END_DECLS
 
 #endif /* HILDON_APP_PRIVATE_H */

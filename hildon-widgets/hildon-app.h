@@ -91,7 +91,7 @@ typedef enum {
 
 #define HILDON_TYPE_ZOOM_LEVEL (hildon_zoom_level_get_type ())
 
-G_CONST_RETURN GType hildon_zoom_level_get_type (void);
+GType hildon_zoom_level_get_type (void);
 #endif /* deprecated */
 
 /* You should use the correct ones from hildon-defines.h */
