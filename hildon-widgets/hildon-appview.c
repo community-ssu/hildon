@@ -206,7 +206,7 @@ static void hildon_appview_signal_marshal(GClosure * closure,
     register GCClosure *cc = (GCClosure *) closure;
     register gpointer data1, data2;
 
-    g_return_if_fail(n_param_values == 2);
+    g_assert(n_param_values == 2);
 
     if (G_CCLOSURE_SWAP_DATA(closure)) {
         data1 = closure->data;
@@ -409,8 +409,13 @@ static void hildon_appview_init(HildonAppView * self)
     /* the vbox is used to handle both the view's main body and how many
      * toolbars as the user wants */
 
-    /* FIXME: Where does this constant 10 come from */
-    self->vbox = gtk_vbox_new(TRUE, 10);
+    self->vbox = gtk_vbox_new(TRUE, TOOLBAR_MIDDLE);
+    /* TOOLBAR_MIDDLE is here properly used, as originally meant. In order to
+     * be free to use whatever distance between toolbars, it's crucial to mind
+     * that the relevant gtkrc file must contain the following border property
+     * for the "toolbar-frame-middle" property:  border = {24, 24, 5, 4}
+     */
+
     gtk_widget_set_parent(self->vbox, GTK_WIDGET(self));
     priv->menu = NULL;
     priv->visible_toolbars = 0;
@@ -432,7 +437,7 @@ static void hildon_appview_init(HildonAppView * self)
 static void hildon_appview_finalize(GObject * obj_self)
 {
     HildonAppView *self;
-    g_return_if_fail(HILDON_APPVIEW(obj_self));
+    g_assert(HILDON_APPVIEW(obj_self));
     self = HILDON_APPVIEW(obj_self);
 
     if (self->priv->menu_ui)
@@ -524,10 +529,10 @@ static void hildon_appview_get_property(GObject * object, guint property_id,
  * GtkBoxChild is visible, the function increments the gint. It is used
  * in a loop, to compute the number of visible toolbars.
  */
-static void visible_toolbar(gpointer data, gpointer user_data) 
+static void visible_toolbar(gpointer child, gpointer number_of_visible_toolbars) 
 {
-    if(GTK_WIDGET_VISIBLE(((GtkBoxChild *)data)->widget))
-      (*((gint *)user_data))++;
+    if(GTK_WIDGET_VISIBLE(((GtkBoxChild *)child)->widget))
+      (*((gint *)number_of_visible_toolbars))++;
 }
 
 /*
@@ -535,12 +540,12 @@ static void visible_toolbar(gpointer data, gpointer user_data)
  * above the find toolbar. It's called in a loop that iterates through
  * all the children of the GtkVBox of the HildonAppView.
  */
-static void find_findtoolbar_index(gpointer data, gpointer user_data)
+static void find_findtoolbar_index(gpointer child, gpointer number_of_visible_toolbars)
 {
-    gint *pass_bundle = (gint *)user_data;
+    gint *pass_bundle = (gint *)number_of_visible_toolbars;
     
-    if(((GtkBoxChild *)data)->widget->allocation.y < pass_bundle[0]
-       && GTK_WIDGET_VISIBLE(((GtkBoxChild *)data)->widget))
+    if(((GtkBoxChild *)child)->widget->allocation.y < pass_bundle[0]
+       && GTK_WIDGET_VISIBLE(((GtkBoxChild *)child)->widget))
         pass_bundle[1]++;
 }
 
@@ -549,11 +554,11 @@ static void find_findtoolbar_index(gpointer data, gpointer user_data)
  * and a pointer to a GtkWidget as the second one, which will be addressed to
  * the find toolbar widget, if it is contained in the given GtkBoxChild.
  */
-static void find_findtoolbar(gpointer data, gpointer user_data)
+static void find_findtoolbar(gpointer child, gpointer widget)
 {
-    if(HILDON_IS_FIND_TOOLBAR(((GtkBoxChild *)data)->widget)
-       && GTK_WIDGET_VISIBLE(((GtkBoxChild *)data)->widget))
-        (*((GtkWidget **)user_data)) = ((GtkBoxChild *)data)->widget;
+    if(HILDON_IS_FIND_TOOLBAR(((GtkBoxChild *)child)->widget)
+       && GTK_WIDGET_VISIBLE(((GtkBoxChild *)child)->widget))
+        (*((GtkWidget **)widget)) = ((GtkBoxChild *)child)->widget;
 }
 
 /*
@@ -648,7 +653,7 @@ static void paint_toolbar(GtkWidget *widget, GtkBox *box,
 		  count * TOOLBAR_MIDDLE,
 		  widget->allocation.width,
 		  TOOLBAR_MIDDLE);
-	
+
 	if(findtoolbar != NULL && count + 1 == ftb_index){
             sprintf(toolbar_mode, "findtoolbar%s", 
 	            fullscreen ? "-fullscreen" : "");
@@ -887,7 +892,7 @@ static void hildon_appview_forall(GtkContainer * container,
 {
     HildonAppView *self = HILDON_APPVIEW(container);
 
-    g_return_if_fail(callback != NULL);
+    g_assert(callback != NULL);
 
     GTK_CONTAINER_CLASS(parent_class)->forall(container, include_internals,
                                               callback, callback_data);
@@ -940,7 +945,7 @@ static void hildon_appview_switched_to(HildonAppView * self)
 {
     GtkWidget *parent;
 
-    g_return_if_fail(self && HILDON_IS_APPVIEW(self));
+    g_assert(self && HILDON_IS_APPVIEW(self));
 
     parent = gtk_widget_get_parent(GTK_WIDGET(self));
     hildon_appview_set_fullscreen( self, self->priv->fullscreen );
@@ -953,7 +958,7 @@ static void hildon_appview_real_fullscreen_state_change(HildonAppView *
                                                         fullscreen)
 {
     HildonAppViewPrivate *priv;
-    g_return_if_fail(self && HILDON_IS_APPVIEW(self));
+    g_assert(self && HILDON_IS_APPVIEW(self));
     priv = self->priv;
 
     /* Ensure that state is really changed */
@@ -1061,10 +1066,8 @@ void hildon_appview_add_with_scrollbar(HildonAppView * self,
                                    GTK_POLICY_AUTOMATIC);
     gtk_scrolled_window_set_shadow_type(scrolledw, GTK_SHADOW_NONE);
 
-    /* FIXME: child doesn't need to be a viewport in order it can
-              be packed into scrolled window. It just needs to support
-              setting adjustments. */
-    if (GTK_IS_VIEWPORT(child))
+    /* Check whether child widget supports adjustments */
+    if (GTK_WIDGET_GET_CLASS (child)->set_scroll_adjustments_signal)
         gtk_container_add(GTK_CONTAINER(scrolledw), child);
     else
     {
@@ -1406,10 +1409,10 @@ void hildon_appview_set_menu_ui(HildonAppView *self, const gchar *ui_string)
         g_free (self->priv->menu_ui);
       
       self->priv->menu_ui = g_strdup (ui_string);
-      
+
       /* FIXME: We should update the menu here, preferrably by a
        * hildon_app_ensure_menu_update() which re-installs the menu ui
-       * and calls gtk_ui_manager_ensure_update() 
+       * and calls gtk_ui_manager_ensure_update()
        */
     }
   else
