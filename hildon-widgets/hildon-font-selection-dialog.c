@@ -55,6 +55,8 @@
 #define OFF_BIT 0x02
 #define REFERENCE_LINE "Reference: " /*localized string?*/
 
+/* FIXME change pointers named 'data' to a more meaningful name */
+
 /*
  * These are what we use as the standard font sizes, for the size list.
  */
@@ -792,6 +794,7 @@ hildon_font_selection_dialog_construct_notebook (HildonFontSelectionDialog
 		     priv->font_color_button, FALSE, FALSE, 0);
   
   /*dummy widget for packing purpose only*/
+  /* FIXME why do we need this? */
   gtk_box_pack_start(GTK_BOX(font_color_box), gtk_label_new(""),
 		     TRUE, TRUE, 0);
   
@@ -907,6 +910,8 @@ cmp_families(const void *a, const void *b)
   return g_utf8_collate(a_name, b_name);
 }
 
+/* FIXME this function should be removed, the dialog doesn't need this 
+ * binding of esc key */
 static gboolean
 hildon_font_selection_dialog_preview_key_press(GtkWidget * widget,
 					       GdkEventKey * event,
@@ -1083,6 +1088,7 @@ hildon_font_selection_dialog_show_preview(HildonFontSelectionDialog *
 		    preview_label);
 
   /* set keypress handler (ESC hardkey) */
+  /* FIXME this is useless and should be removed */
   g_signal_connect(G_OBJECT(preview_dialog), "key-press-event",
 		   G_CALLBACK
 		   (hildon_font_selection_dialog_preview_key_press),
@@ -1184,6 +1190,7 @@ hildon_font_selection_dialog_show_available_sizes
     }
 }
 
+/* This function is called only from deprecated API */
 static
 void check_tags(gpointer data, gpointer user_data)
 {
@@ -1301,6 +1308,7 @@ void check_tags(gpointer data, gpointer user_data)
     }
 }
 
+/* This function is called only from deprecated API */
 static
 void check_attrs(gpointer data, gpointer user_data)
 {
@@ -1420,6 +1428,7 @@ void check_attrs(gpointer data, gpointer user_data)
   pango_attribute_destroy(attr);
 }
 
+/* This function is called only from deprecated API */
 static void
 settings_init(HildonFontSelectionDialogSettings *settings,
 	      HildonFontSelectionDialog  *fsd)
@@ -1436,6 +1445,7 @@ settings_init(HildonFontSelectionDialogSettings *settings,
   settings->position = -1;
 }
 
+/* This function is called only from deprecated API */
 static void
 bit_mask_toggle(gint mask, GtkToggleButton *button,
 		GObject *object, const gchar *prop,
@@ -1459,6 +1469,7 @@ bit_mask_toggle(gint mask, GtkToggleButton *button,
   g_object_notify(object, prop_set);
 }
 
+/* This function is called only from deprecated API */
 static void
 combo_active(gint active, GtkComboBox *box, 
 	     GObject *object, const gchar *prop, const gchar *prop_set)
@@ -1478,6 +1489,7 @@ combo_active(gint active, GtkComboBox *box,
   g_object_notify(object, prop_set);
 }
 
+/* This function is called only from deprecated API */
 static void
 settings_apply(HildonFontSelectionDialogSettings *settings)
 {
@@ -1621,6 +1633,8 @@ void
 hildon_font_selection_dialog_set_preview_text(HildonFontSelectionDialog *
 					      fsd, const gchar * text)
 {
+  /* FIXME add propper checking here (g_return_if_fail), also
+   * for text*/
   if (HILDON_IS_FONT_SELECTION_DIALOG(fsd)) ;
     {
       HildonFontSelectionDialogPrivate *priv =
