@@ -1025,7 +1025,8 @@ static void hildon_appview_menupopupfuncfull( GtkMenu *menu, gint *x, gint *y,
  * hildon_appview_new: 
  * @title: The application view title of the new @HildonAppView.
  * 
- * Use this function to create a new application view.
+ * Use this function to create a new application view. The title will 
+ * be set only if two-part-title is enabled on the @HildonApp.
  * 
  * Return value: A @HildonAppView.
  **/
@@ -1042,9 +1043,9 @@ GtkWidget *hildon_appview_new(const gchar * title)
  * @self : A @HildonAppView
  * @child : A @GtkWidget
  *
- * Adds the @child to the @self(HildonAppView) and creates a scrollbar
- * to it. Similar as adding first a @GtkScrolledWindow and then the
- * @child to it.
+ * Adds the @child to the @self(HildonAppView) and creates a vertical 
+ * scrollbar to it. Similar as adding first a @GtkScrolledWindow 
+ * and then the @child to it.
  */
 void hildon_appview_add_with_scrollbar(HildonAppView * self,
                                        GtkWidget * child)
@@ -1094,7 +1095,7 @@ const gchar *hildon_appview_get_title(HildonAppView * self)
  * @newname : The new title of the application view.
  * 
  * Sets an title of an application view. The title is visible only if
- * twoparttitle is enabled on the @HildonApp
+ * two-part-title is enabled on the @HildonApp.
  * 
  **/
 void hildon_appview_set_title(HildonAppView * self, const gchar * newname)
