@@ -72,17 +72,13 @@ hildon_weekday_picker_forall(GtkContainer * container,
                              GtkCallback callback, gpointer callback_data);
 static void
 hildon_weekday_picker_destroy(GtkObject * self);
-static gboolean
-hildon_weekday_picker_mnemonic_activate(GtkWidget *widget,
-                                        gboolean group_cycling);
+
 static void
 button_toggle(GtkToggleButton * togglebutton, gpointer data);
 
 struct _HildonWeekdayPickerPrivate {
-    guint dayorder[8];  /* Lookup table for weekdays */
-    GtkWidget *buttons[8];      /* weekday buttons */
-    guint days;
-    guint last_index;
+    GtkWidget *buttons[8];           /* weekday buttons in show order */
+    GtkWidget *day_order_buttons[8]; /* weekday buttons in glib day order */
 };
 
 enum {
@@ -128,7 +124,6 @@ hildon_weekday_picker_class_init(HildonWeekdayPickerClass * picker_class)
                              sizeof(HildonWeekdayPickerPrivate));
 
     /* Override virtual methods */
-    widget_class->mnemonic_activate = hildon_weekday_picker_mnemonic_activate;
     widget_class->size_request = hildon_weekday_picker_size_request;
     widget_class->size_allocate = hildon_weekday_picker_size_allocate;
     widget_class->focus = hildon_composite_widget_focus;
@@ -154,34 +149,38 @@ hildon_weekday_picker_init(HildonWeekdayPicker * picker)
 {
     HildonWeekdayPickerPrivate *priv;
     gint i, day;
-    const gchar *wdays[8];
+    /* weekday indexes to be used with nl_langinfo. These are shifted
+     * by one for glib compability */
+    int wdays[] = {
+	-1,        /* 0 = invalid date */
+	ABDAY_2,   /* 1 = monday    in glib */
+	ABDAY_3,   /* 2 = tuesday   in glib */
+	ABDAY_4,   /* 3 = wednesday in glib */
+	ABDAY_5,   /* 4 = thursday  in glib */
+	ABDAY_6,   /* 5 = friday    in glib */
+	ABDAY_7,   /* 6 = saturday  in glib */
+	ABDAY_1 }; /* 7 = sunday    in glib */
     GtkSizeGroup *sgroup;
 
     sgroup = gtk_size_group_new(GTK_SIZE_GROUP_BOTH);
 
-    /* NOTE: we query locales with "first_weekday" parameter, but this
-       seems to be broken on some installations. e.g. on my system I
-       receive "1" (Sunday) to be first day of the week on "fi_FI"
-       locale, when it should be "2" (Monday). */
-
     /* Check our first weekday */
-    day = *nl_langinfo(_NL_TIME_FIRST_WEEKDAY);
-
-    /* Use localized short names for weekdays */
-    wdays[1] = nl_langinfo(ABDAY_1);
-    wdays[2] = nl_langinfo(ABDAY_2);
-    wdays[3] = nl_langinfo(ABDAY_3);
-    wdays[4] = nl_langinfo(ABDAY_4);
-    wdays[5] = nl_langinfo(ABDAY_5);
-    wdays[6] = nl_langinfo(ABDAY_6);
-    wdays[7] = nl_langinfo(ABDAY_7);
+    day = *nl_langinfo(_NL_TIME_FIRST_WEEKDAY); 
 
     priv = HILDON_WEEKDAY_PICKER_GET_PRIVATE(picker);
+    
+    /* Shift the days by one. This is done because GDateWeekday 
+     * starts with Monday(1) and langinfo's first day is Sunday */
+    day--;
+    if (day < 1)
+        day = 7;
 
     /* Initialize and pack day buttons */
     for (i = 1; i <= 7; i++) {
-        priv->buttons[i] = gtk_toggle_button_new_with_label(wdays[day]);
-        priv->dayorder[i] = day++;
+        priv->buttons[i] = 
+	    gtk_toggle_button_new_with_label(nl_langinfo(wdays[day]));
+	priv->day_order_buttons[day] = priv->buttons[i];
+        day++;
 
         if (day > 7)
             day = 1;
@@ -189,7 +188,6 @@ hildon_weekday_picker_init(HildonWeekdayPicker * picker)
         g_signal_connect(GTK_WIDGET(priv->buttons[i]),
                          "toggled", G_CALLBACK(button_toggle), picker);
 
-        priv->last_index = i;
         gtk_size_group_add_widget(sgroup, priv->buttons[i]);
 
         gtk_widget_set_parent(priv->buttons[i], GTK_WIDGET(picker));
@@ -198,7 +196,7 @@ hildon_weekday_picker_init(HildonWeekdayPicker * picker)
 
     GTK_WIDGET_SET_FLAGS(picker, GTK_NO_WINDOW);
 
-    /* FIXME: Do not leak sizegroup */
+    g_object_unref( sgroup );
 }
 
 /**
@@ -211,16 +209,6 @@ hildon_weekday_picker_init(HildonWeekdayPicker * picker)
 GtkWidget *hildon_weekday_picker_new(void)
 {
     return g_object_new(HILDON_WEEKDAY_PICKER_TYPE, NULL);
-}
-
-/* FIXME: mnemonic actionvation is no longer used by hildon libraries */
-static gboolean
-hildon_weekday_picker_mnemonic_activate(GtkWidget *widget,
-                                        gboolean group_cycling)
-{
-  HildonWeekdayPickerPrivate *priv = HILDON_WEEKDAY_PICKER_GET_PRIVATE(widget);
-  gtk_widget_grab_focus(priv->buttons[1]);
-  return TRUE;
 }
 
 static void 
@@ -344,14 +332,12 @@ hildon_weekday_picker_size_allocate(GtkWidget * widget,
     }
 }
 
-/* FIXME: rewrite this */
 static void
 button_toggle(GtkToggleButton * button, gpointer data)
 {
     HildonWeekdayPicker *picker;
     HildonWeekdayPickerPrivate *priv;
     gint i;
-    static guint wdays[] = { 1, 2, 4, 8, 16, 32, 64, 128 };
 
     g_return_if_fail(button);
     g_return_if_fail(data);
@@ -359,12 +345,10 @@ button_toggle(GtkToggleButton * button, gpointer data)
     picker = HILDON_WEEKDAY_PICKER(data);
     priv = HILDON_WEEKDAY_PICKER_GET_PRIVATE(picker);
 
-    /* FIXME: this is just copy paste from several other places */
     for (i = 1; i <= 7; ++i) {
-        if (GTK_WIDGET(button) == priv->buttons[i]) {
-            priv->days ^= wdays[i];
-            g_signal_emit (GTK_WIDGET(picker), signals[SELECTION_CHANGED_SIGNAL],
-                   0, priv->dayorder[i]);
+        if (GTK_WIDGET(button) == priv->day_order_buttons[i]) {
+            g_signal_emit (GTK_WIDGET(picker), 
+			   signals[SELECTION_CHANGED_SIGNAL], 0, i);
             break;
         }
     }
@@ -379,33 +363,17 @@ button_toggle(GtkToggleButton * button, gpointer data)
  */
 void 
 hildon_weekday_picker_set_day(HildonWeekdayPicker * picker,
-                                   GDateWeekday day)
+			      GDateWeekday day)
 {
     HildonWeekdayPickerPrivate *priv;
-    static guint wdays[] = { 1, 2, 4, 8, 16, 32, 64, 128 };
-    guint i;
 
     g_return_if_fail(picker);
-    g_return_if_fail(day >= 1 && day <= 7);
+    g_return_if_fail(g_date_valid_weekday(day));
 
     priv = HILDON_WEEKDAY_PICKER_GET_PRIVATE(picker);
 
-    /* Adjust between GDate and locale (shift one day),
-       FIXME: would be more elegant to use GDate as internal representation */
-    if (day == G_DATE_SUNDAY)
-        day = G_DATE_MONDAY;
-    else
-        day++;
-
-    /* FIXME: this is just copy paste from several other places
-              the above also! */
-    for (i = 1; i <= 7; i++) {
-        if (priv->dayorder[i] == day) {
-            if (!(priv->days & wdays[i]))
-                gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON
-                                             (priv->buttons[i]), TRUE);
-        }
-    }
+    gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON
+				 (priv->day_order_buttons[day]), TRUE);
 }
 
 /**
@@ -417,33 +385,17 @@ hildon_weekday_picker_set_day(HildonWeekdayPicker * picker,
  */
 void 
 hildon_weekday_picker_unset_day(HildonWeekdayPicker * picker,
-                                     GDateWeekday day)
+				GDateWeekday day)
 {
     HildonWeekdayPickerPrivate *priv;
-    static guint wdays[] = { 1, 2, 4, 8, 16, 32, 64, 128 };
-    guint i;
 
     g_return_if_fail(picker);
-    g_return_if_fail(day >= 1 && day <= 7);
+    g_return_if_fail(g_date_valid_weekday(day));
 
     priv = HILDON_WEEKDAY_PICKER_GET_PRIVATE(picker);
 
-    /* Adjust between GDate and locale (shift one day),
-       FIXME: would be more elegant to use GDate as internal representation */
-    if (day == G_DATE_SUNDAY)
-        day = G_DATE_MONDAY;
-    else
-        day++;
-
-    /* FIXME: this is just copy paste from several other places
-              the above also! */
-    for (i = 1; i <= 7; i++) {
-        if (priv->dayorder[i] == day) {
-            if (priv->days & wdays[i])
-                gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON
-                                             (priv->buttons[i]), FALSE);
-        }
-    }
+    gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON
+				 (priv->day_order_buttons[day]), FALSE);
 }
 
 /**
@@ -455,35 +407,19 @@ hildon_weekday_picker_unset_day(HildonWeekdayPicker * picker,
  */
 void 
 hildon_weekday_picker_toggle_day(HildonWeekdayPicker * picker,
-                                      GDateWeekday day)
+				 GDateWeekday day)
 {
     HildonWeekdayPickerPrivate *priv;
-    guint i;
-    gboolean is_active;
    
     g_return_if_fail(picker);
-    g_return_if_fail(day >= 1 && day <= 7);
+    g_return_if_fail(g_date_valid_weekday(day));
 
     priv = HILDON_WEEKDAY_PICKER_GET_PRIVATE(picker);
 
-    /* Adjust between GDate and locale (shift one day),
-       FIXME: would be more elegant to use GDate as internal representation */
-    if (day == G_DATE_SUNDAY)
-        day = G_DATE_MONDAY;
-    else
-        day++;
-
-    /* FIXME: this is just copy paste from several other places
-              the above also! */
-    for (i = 1; i <= 7; i++) {
-        if (priv->dayorder[i] == day) {
-            is_active = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON
-					(priv->buttons[i]));
-            gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON
-                                         (priv->buttons[i]),
-                                         is_active ? FALSE : TRUE);
-        }
-    }
+    gtk_toggle_button_set_active(
+	GTK_TOGGLE_BUTTON(priv->day_order_buttons[day]), 
+	!gtk_toggle_button_get_active(
+	    GTK_TOGGLE_BUTTON(priv->day_order_buttons[day])));
 }
 
 /**
@@ -497,18 +433,14 @@ hildon_weekday_picker_set_all(HildonWeekdayPicker * picker)
 {
     HildonWeekdayPickerPrivate *priv;
     gint i;
-    static guint wdays[] = { 1, 2, 4, 8, 16, 32, 64, 128 };
 
     g_return_if_fail(picker);
 
     priv = HILDON_WEEKDAY_PICKER_GET_PRIVATE(picker);
 
-    /* FIXME: this is just copy paste from several other places */
-    for (i = 1; i <= 7; i++) {
-        if (!(priv->days & wdays[i]))
-            gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON
-                                         (priv->buttons[i]), TRUE);
-    }
+    for (i = 1; i <= 7; i++)
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(priv->buttons[i]), 
+				     TRUE);
 }
 
 /**
@@ -522,18 +454,14 @@ hildon_weekday_picker_unset_all(HildonWeekdayPicker * picker)
 {
     HildonWeekdayPickerPrivate *priv;
     gint i;
-    static guint wdays[] = { 1, 2, 4, 8, 16, 32, 64, 128 };
 
     g_return_if_fail(picker);
 
     priv = HILDON_WEEKDAY_PICKER_GET_PRIVATE(picker);
 
-    /* FIXME: this is just copy paste from several other places */
-    for (i = 1; i <= 7; i++) {
-        if (priv->days & wdays[i])
-            gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON
-                                         (priv->buttons[i]), FALSE);
-    }
+    for (i = 1; i <= 7; i++)
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(priv->buttons[i]),
+				     FALSE);
 }
 
 /**
@@ -547,31 +475,15 @@ hildon_weekday_picker_unset_all(HildonWeekdayPicker * picker)
  */
 gboolean 
 hildon_weekday_picker_isset_day(HildonWeekdayPicker * picker,
-                                         GDateWeekday day)
+				GDateWeekday day)
 {
     HildonWeekdayPickerPrivate *priv;
-    guint i;
 
     g_return_val_if_fail(picker, FALSE);
-    g_return_val_if_fail(day >= 1 && day <= 7, FALSE);
+    g_return_val_if_fail(g_date_valid_weekday(day), FALSE);
 
     priv = HILDON_WEEKDAY_PICKER_GET_PRIVATE(picker);
 
-    /* Adjust between GDate and locale (shift one day),
-       FIXME: would be more elegant to use GDate as internal representation */
-    if (day == G_DATE_SUNDAY)
-        day = G_DATE_MONDAY;
-    else
-        day++;
-
-    /* FIXME: this is just copy paste from several other places
-              the above also! */
-    for (i = 1; i <= 7; i++) {
-        if ( priv->dayorder[i] == day && 
-             gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON
-                                         (priv->buttons[i]))) {
-             return TRUE;
-        }
-    }
-    return FALSE;
+    return gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(
+					    priv->day_order_buttons[day]));
 }

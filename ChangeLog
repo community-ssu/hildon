@@ -65,6 +65,34 @@
 	  - don't assume that a window was realized when added to 
 	    the program
 
+2006-02-28  Luc Pionchon  <luc.pionchon@nokia.com>
+
+	* hildon-widgets/hildon-weekday-picker.c
+	(_HildonWeekdayPickerPrivate): Removed members: dayorder, days,
+	last_index; added day_order_buttons
+	
+	(hildon_weekday_picker_mnemonic_activate): removed.
+	                                 mnemonics are no longer used.
+	
+	(hildon_weekday_picker_class_init): Removed mnemonic_activate
+	function. Rewritten creation of buttons. Unref'ed size group.
+	
+	(button_toggle): Removed bit mask checking, simplified function
+	
+	(hildon_weekday_picker_set_day):
+	(hildon_weekday_picker_unset_day): Removed bit mask checking, date
+                                           adjustment, unecessary for loop
+	
+	(hildon_weekday_picker_toggle_day): Removed date adjustment and
+	unecessary for loop. Simplified button toggling
+
+	(hildon_weekday_picker_set_all):
+	(hildon_weekday_picker_unset_all): Removed bit mask checking and
+	                                   simplified for loop
+
+	(hildon_weekday_picker_isset_day): Removed date adjustment and
+                                           unecessary for loop;
+
 2006-02-21  Luc Pionchon  <luc.pionchon@nokia.com>
 
         Added hildon-banner, as a clean replacement for gtk-infoprint
