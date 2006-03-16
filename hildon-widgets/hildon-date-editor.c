@@ -629,7 +629,7 @@ static void hildon_child_forall(GtkContainer * container,
     HildonDateEditor *editor;
     HildonDateEditorPrivate *priv;
 
-    g_assert(container);
+    g_assert(HILDON_IS_DATE_EDITOR(container));
     g_assert(callback);
 
     editor = HILDON_DATE_EDITOR(container);
@@ -1255,7 +1255,7 @@ static void hildon_date_editor_size_allocate(GtkWidget * widget,
         delim = GTK_WIDGET(iter->data);
         alloc = delim->allocation;
         alloc.height = max_req.height; 
-        alloc.y = priv->d_entry->allocation.y-4;
+        alloc.y = priv->d_entry->allocation.y - 2;
 
         gtk_widget_size_allocate(delim, &alloc);
     }
