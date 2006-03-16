@@ -122,14 +122,14 @@ hildon_range_editor_released (GtkEditable *editable, GdkEventButton *event,
 static gboolean
 hildon_range_editor_press (GtkEditable *editable, GdkEventButton *event,
                            HildonRangeEditor *editor);
-static gboolean
-hildon_range_editor_mnemonic_activate (GtkWidget *widget,
-                                       gboolean group_cycling);
 
 static void hildon_range_editor_set_property( GObject *object, guint param_id,
                                        const GValue *value, GParamSpec *pspec );
 static void hildon_range_editor_get_property( GObject *object, guint param_id,
                                          GValue *value, GParamSpec *pspec );
+
+static gboolean 
+is_valid_keyvalue_for_entry_keypress( GdkEventKey *event);
 
 /* Private struct */
 struct _HildonRangeEditorPrivate
@@ -162,8 +162,6 @@ hildon_range_editor_class_init  (HildonRangeEditorClass *editor_class)
     gobject_class->get_property = hildon_range_editor_get_property;
     widget_class->size_request = hildon_range_editor_size_request;
     widget_class->size_allocate = hildon_range_editor_size_allocate;
-
-    widget_class->mnemonic_activate = hildon_range_editor_mnemonic_activate;
 
     container_class->forall = hildon_range_editor_forall;
     GTK_OBJECT_CLASS(editor_class)->destroy = hildon_range_editor_destroy;
@@ -436,16 +434,6 @@ hildon_range_editor_press (GtkEditable *editable, GdkEventButton *event,
   return FALSE;
 }
 
-/* FIXME: XXX Mnemonics aren't used */
-static gboolean
-hildon_range_editor_mnemonic_activate (GtkWidget *widget,
-                                       gboolean group_cycling)
-{
-  HildonRangeEditorPrivate *priv = HILDON_RANGE_EDITOR_GET_PRIVATE(widget);
-  gtk_widget_grab_focus( priv->start_entry );
-  return TRUE;
-}
-
 static void
 hildon_range_editor_forall (GtkContainer *container,
                             gboolean include_internals,
@@ -453,8 +441,8 @@ hildon_range_editor_forall (GtkContainer *container,
 {
     HildonRangeEditorPrivate *priv;
 
-    g_return_if_fail(container);
-    g_return_if_fail(callback);
+    g_assert(container);
+    g_assert(callback);
 
     priv = HILDON_RANGE_EDITOR_GET_PRIVATE(container);
 
@@ -632,22 +620,47 @@ hildon_range_editor_entry_keypress(GtkWidget *widget, GdkEventKey *event,
         gtk_editable_select_region(GTK_EDITABLE(wdgt), -1, 0);
       }
     }
-    else if ((event->keyval >= GDK_0    && event->keyval <= GDK_9)    ||
-             (event->keyval >= GDK_KP_0 && event->keyval <= GDK_KP_9) ||
-             (event->keyval == GDK_minus || event->keyval == GDK_KP_Subtract) ||
-             event->keyval == GDK_Up        ||
-             event->keyval == GDK_Down      ||
-             event->keyval == GDK_Right     ||
-             event->keyval == GDK_KP_Right  ||
-             event->keyval == GDK_Left      ||
-             event->keyval == GDK_KP_Left   ||
-             event->keyval == GDK_BackSpace ||
-             event->keyval == GDK_Delete)
-    {
+    else if (is_valid_keyvalue_for_entry_keypress(event))
       return FALSE;
-    }
+
     return TRUE;
 }
+
+static gboolean
+is_valid_keyvalue_for_entry_keypress( GdkEventKey *event )
+{
+    static const guint valid_special_keyvals[10] = {
+      GDK_minus,
+      GDK_Up,
+      GDK_Down,
+      GDK_Left,
+      GDK_Right, 
+      GDK_KP_Subtract,
+      GDK_KP_Left,
+      GDK_KP_Right,
+      GDK_BackSpace,
+      GDK_Delete
+    };
+
+    guint index; 
+
+    /* Check for valid number keys */
+    if (GDK_0 <= event->keyval && event->keyval <= GDK_9)
+      return TRUE;
+
+    if (GDK_KP_0 <= event->keyval && event->keyval <= GDK_KP_9)
+      return TRUE;
+
+    /* Check for valid special key values */
+    for (index = 0; index < 10; index++)
+      {
+	if (event->keyval == valid_special_keyvals[index])
+	  return TRUE;
+      }
+
+    return FALSE;
+}
+
 
 /* Public functions */
 

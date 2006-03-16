@@ -68,6 +68,36 @@
 
 2006-03-01  Luc Pionchon  <luc.pionchon@nokia.com>
 
+	Cleanup range editor,
+	
+	* hildon-widgets/hildon-range-editor.c
+	(hildon_range_editor_calss_init):Removed
+	widget_calss->mnemonic_activate init
+
+	* hildon-widgets/hildon-range-editor.c
+	(hildon_range_editor_mnemonic_activate): Removed static function
+	hildon_range_mnemonic_activate and FIXME. It is useless even
+	through it is overriding function for
+	GtkWidgetClass->mnemonic_activate. The activation and keyboard
+	focus will be realized based on different applications.
+
+	* hildon-widgets/hildon-range-editor.c
+	(is_valid_keyvalue_for_entry_keypress): new function.
+
+	* hildon-widgets/hildon-range-editor.c
+	(hildon_range_editor_entry_keypress): uses
+	is_valid_keyvalue_for_entry_keypress
+	
+	* hildon-widgets/hildon-range-editor.c
+	(hildon_range_editor_forall): use g_return_if_fail instead of
+	g_assert
+
+	* hildon-widgets/hildon-range-editor.c
+	(hildon_range_editor_mnemonic_activate): removed. (unused)
+
+
+2006-03-01  Luc Pionchon  <luc.pionchon@nokia.com>
+
 	Cleanup hildon-note,
 	
 	* hildon-widgets/hildon-note.[ch]
