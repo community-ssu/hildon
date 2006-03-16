@@ -56,35 +56,44 @@
 #define GREYIND                            6
 #define WHITEIND                           9
 
+#define SELECTION_BORDER_COLOR_NAME        "ImageBorderColor"
+#define FOCUS_BORDER_COLOR                 "#8080FF"
+#define FOCUS_BORDER_WIDTH                 2
+
 /* Pixel sizes */
-#define HILDON_COLOR_SELECTOR_BOX_W       27
-#define HILDON_COLOR_SELECTOR_BOX_H       27
-#define HILDON_COLOR_SELECTOR_BOX_BORDER   2
-#define HILDON_COLOR_SELECTOR_COLS         8
-#define HILDON_COLOR_SELECTOR_ROWS         3
-#define HILDON_COLOR_PALETTE_SIZE        120
-#define HILDON_COLOR_CONTROLBAR_MAX       31
-#define HILDON_COLOR_CONTROLBAR_MIN        0 
-#define HILDON_COLOR_LABELS_LEFT_PAD      35
-#define HILDON_COLOR_PALETTE_POS_PAD      45
-#define HILDON_COLOR_BAR_WIDTH           449
+#define HILDON_COLOR_SELECTOR_BOX_W           26
+#define HILDON_COLOR_SELECTOR_BOX_H           26
+#define HILDON_COLOR_SELECTOR_BORDER_WIDTH     1
+#define HILDON_COLOR_SELECTOR_PADDING_WIDTH    1
+
+#define HILDON_COLOR_SELECTOR_BOX_FULL_WIDTH    \
+      ( HILDON_COLOR_SELECTOR_BOX_W             \
+      + HILDON_COLOR_SELECTOR_BORDER_WIDTH  * 2 \
+      + HILDON_COLOR_SELECTOR_PADDING_WIDTH * 2 )
+
+#define HILDON_COLOR_SELECTOR_BOX_FULL_HEIGHT   \
+      ( HILDON_COLOR_SELECTOR_BOX_H             \
+      + HILDON_COLOR_SELECTOR_BORDER_WIDTH  * 2 \
+      + HILDON_COLOR_SELECTOR_PADDING_WIDTH * 2 )
+
+#define HILDON_COLOR_SELECTOR_COLS             8
+#define HILDON_COLOR_SELECTOR_ROWS             3
 
 /* gconf definitions */
 #define HILDON_COLOR_GCONF_PATH  "/system/osso/af/color_selector"
 #define HILDON_COLOR_GCONF_KEYS  "/system/osso/af/color_selector/custom_colors"
-/*
- * Pointer parent class 
- */
+
+/* Pointer parent class */
 static GtkDialogClass *parent_class;
 
 struct _HildonColorSelectorPriv 
 {
     GConfClient *client;
-    GtkWidget *drawing_area;
-    GtkWidget *modify_button;
-    gint index;
-    guint notify_id;
-
+    GtkWidget   *drawing_area;
+    GtkWidget   *modify_button;
+    gint         selected_index;
+    gint         focused_index;
+    guint        notify_id;
     /* one extra place for the modified base color */
     GdkColor color[HILDON_TOTAL_COLOR_NUM + 1];
 };
@@ -116,6 +125,10 @@ static gboolean color_pressed (GtkWidget      * widget,
                                GdkEventButton * event,
                                gpointer         user_data);
 
+static void     select_color_index (HildonColorSelector *selector,
+                                    gint                 idx,
+                                    gboolean             motion);
+
 static void     select_color  (HildonColorSelector * selector,
                                int      event_x,
                                int      event_y,
@@ -129,7 +142,7 @@ static void
 modify_button_clicked         (GtkWidget           * button,
                                HildonColorSelector * selector);
 
-static void modify_selected(HildonColorSelector * colselector);
+static void modify_focused(HildonColorSelector * colselector);
 
 static void
 hildon_color_selector_set_property(GObject      *object,
@@ -245,7 +258,7 @@ hildon_color_selector_set_custom_colors(
   GConfValue *value)
 {
   GSList *list;
-  int i;
+  gint i;
 
   g_assert(HILDON_IS_COLOR_SELECTOR(selector));
 
@@ -335,7 +348,8 @@ hildon_color_selector_init(HildonColorSelector * selector)
 
     /* ************************************  */
 
-    selector->priv->index = GREYIND;
+    selector->priv->selected_index = GREYIND;
+    selector->priv->focused_index  = GREYIND;
     
     /* init base colors for color boxes */
     for (i = 0; i < HILDON_BASE_COLOR_NUM; ++i) 
@@ -356,16 +370,12 @@ hildon_color_selector_init(HildonColorSelector * selector)
     gtk_widget_add_events (selector->priv->drawing_area,
                           GDK_BUTTON_PRESS_MASK | GDK_POINTER_MOTION_MASK);
 
-    /* Arrange size of the drawing area */ 
+    /* Arrange size of the drawing area. */
     gtk_widget_set_size_request (selector->priv->drawing_area,
-                                 (HILDON_COLOR_SELECTOR_BOX_W *
-                                  HILDON_COLOR_SELECTOR_COLS) +
-                                 (HILDON_COLOR_SELECTOR_BOX_BORDER *
-                                  2*HILDON_COLOR_SELECTOR_COLS),
-                                 (HILDON_COLOR_SELECTOR_BOX_H *
-                                  HILDON_COLOR_SELECTOR_ROWS) +
-                                 HILDON_COLOR_SELECTOR_BOX_BORDER *
-                                 2 * HILDON_COLOR_SELECTOR_ROWS);
+                                 (HILDON_COLOR_SELECTOR_COLS *
+                                  HILDON_COLOR_SELECTOR_BOX_FULL_WIDTH),
+                                 (HILDON_COLOR_SELECTOR_ROWS *
+                                  HILDON_COLOR_SELECTOR_BOX_FULL_HEIGHT));
 
     gtk_box_pack_start (GTK_BOX(GTK_DIALOG(selector)->vbox), 
                        hbox, FALSE, FALSE, 0);
@@ -410,8 +420,8 @@ hildon_color_selector_expose(GtkWidget * widget,
 {
     HildonColorSelector *selector;
     GdkColor color;
-    GdkGC *gc;
-    gint x, y;
+    GdkGC *gc, *gc_focus;
+    gint x, y, idx;
 
     g_return_val_if_fail (GTK_IS_WIDGET(widget), FALSE);
     g_return_val_if_fail (event, FALSE);
@@ -423,57 +433,83 @@ hildon_color_selector_expose(GtkWidget * widget,
     selector = HILDON_COLOR_SELECTOR(data);
     gc = gdk_gc_new (widget->window); 
 
+    gc_focus = gdk_gc_new(widget->window);
+    gdk_gc_set_line_attributes(gc_focus, FOCUS_BORDER_WIDTH,
+                               GDK_LINE_SOLID, GDK_CAP_BUTT,
+                               GDK_JOIN_MITER);
+
     /* draw the color boxes and a focus for one of them */
-    for (x = 0; x < HILDON_COLOR_SELECTOR_COLS; ++x) 
+    for (y = 0, idx = 0; y < HILDON_COLOR_SELECTOR_ROWS; ++y)
     {
-        for (y = 0; y < HILDON_COLOR_SELECTOR_ROWS; ++y) 
+      for (x = 0; x < HILDON_COLOR_SELECTOR_COLS; ++x, ++idx)
         {
-            color.pixel = color.red = color.green = color.blue = 0;
-            gdk_gc_set_rgb_fg_color(gc, &color);
+            gint xpos = x * HILDON_COLOR_SELECTOR_BOX_FULL_WIDTH;
+            gint ypos = y * HILDON_COLOR_SELECTOR_BOX_FULL_HEIGHT;
 
-            /* focus around the selected color box */
-            if ( (y * HILDON_COLOR_SELECTOR_COLS + x) ==
-                 selector->priv->index) 
-            {
-                /* focus box */
-                gdk_draw_rectangle(widget->window, gc, TRUE,
-                                   (HILDON_COLOR_SELECTOR_BOX_BORDER * 2 +
-                                    HILDON_COLOR_SELECTOR_BOX_W) * x,
-                                   (HILDON_COLOR_SELECTOR_BOX_BORDER * 2 +
-                                    HILDON_COLOR_SELECTOR_BOX_H) * y,
-                                   HILDON_COLOR_SELECTOR_BOX_W +
-                                   HILDON_COLOR_SELECTOR_BOX_BORDER * 2,
-                                   HILDON_COLOR_SELECTOR_BOX_H +
-                                   HILDON_COLOR_SELECTOR_BOX_BORDER * 2); 
-            }
-            
             /* frames on color box */
-            gdk_draw_rectangle(widget->window, gc, FALSE,
-                               (HILDON_COLOR_SELECTOR_BOX_BORDER * 2 +
-                                HILDON_COLOR_SELECTOR_BOX_W) * x + 1,
-                               (HILDON_COLOR_SELECTOR_BOX_BORDER * 2 +
-                                HILDON_COLOR_SELECTOR_BOX_H) * y + 1,
-                               HILDON_COLOR_SELECTOR_BOX_W + 1,
-                               HILDON_COLOR_SELECTOR_BOX_H + 1);
+            gdk_draw_rectangle(widget->window, widget->style->black_gc, FALSE,
+                               xpos + HILDON_COLOR_SELECTOR_PADDING_WIDTH,
+                               ypos + HILDON_COLOR_SELECTOR_PADDING_WIDTH,
+                               HILDON_COLOR_SELECTOR_BOX_W +
+                               HILDON_COLOR_SELECTOR_PADDING_WIDTH,
+                               HILDON_COLOR_SELECTOR_BOX_H +
+                               HILDON_COLOR_SELECTOR_PADDING_WIDTH);
             
-            gdk_gc_set_rgb_fg_color(gc, 
-              &(selector->priv->color[y * HILDON_COLOR_SELECTOR_COLS + x]));
-
             /* color box */
+            gdk_gc_set_rgb_fg_color(gc, &(selector->priv->color[idx]));
             gdk_draw_rectangle(widget->window, gc,
                                TRUE,    /* filled */
-                               HILDON_COLOR_SELECTOR_BOX_BORDER +
-                               (HILDON_COLOR_SELECTOR_BOX_BORDER * 2 +
-                                HILDON_COLOR_SELECTOR_BOX_W) * x,
-                               HILDON_COLOR_SELECTOR_BOX_BORDER +
-                               (HILDON_COLOR_SELECTOR_BOX_BORDER * 2 +
-                                HILDON_COLOR_SELECTOR_BOX_H) * y,
+                               xpos + HILDON_COLOR_SELECTOR_PADDING_WIDTH +
+                               HILDON_COLOR_SELECTOR_BORDER_WIDTH,
+                               ypos + HILDON_COLOR_SELECTOR_PADDING_WIDTH +
+                               HILDON_COLOR_SELECTOR_BORDER_WIDTH,
                                HILDON_COLOR_SELECTOR_BOX_W,
                                HILDON_COLOR_SELECTOR_BOX_H);
+
+            /* focus around the selected and focused color box */
+            if (idx == selector->priv->selected_index)
+            {
+                /* selected color box */
+                if (!gtk_style_lookup_logical_color(widget->style,
+                                    SELECTION_BORDER_COLOR_NAME, &color))
+                {
+                    /* set default color if color looking up fails */
+                    color.red = color.green = color.blue = 0;
+                }
+
+                gdk_gc_set_rgb_fg_color(gc_focus, &color);
+                gdk_draw_rectangle(widget->window, gc_focus, FALSE,
+                                   xpos + 1-(FOCUS_BORDER_WIDTH % 2),
+                                   ypos + 1-(FOCUS_BORDER_WIDTH % 2),
+                                   HILDON_COLOR_SELECTOR_BOX_W +
+                                   HILDON_COLOR_SELECTOR_BORDER_WIDTH * 2 +
+                                   (FOCUS_BORDER_WIDTH % 2),
+                                   HILDON_COLOR_SELECTOR_BOX_H +
+                                   HILDON_COLOR_SELECTOR_BORDER_WIDTH * 2 +
+                                   (FOCUS_BORDER_WIDTH % 2));
+            }
+            else if (idx == selector->priv->focused_index)
+            {
+                /* focused color box.
+                   There's only zero or one so allocate GC in here. */
+                gdk_color_parse(FOCUS_BORDER_COLOR, &color);
+
+                gdk_gc_set_rgb_fg_color(gc_focus, &color);
+                gdk_draw_rectangle(widget->window, gc_focus, FALSE,
+                                   xpos + 1-(FOCUS_BORDER_WIDTH % 2),
+                                   ypos + 1-(FOCUS_BORDER_WIDTH % 2),
+                                   HILDON_COLOR_SELECTOR_BOX_W +
+                                   HILDON_COLOR_SELECTOR_BORDER_WIDTH * 2 +
+                                   (FOCUS_BORDER_WIDTH % 2),
+                                   HILDON_COLOR_SELECTOR_BOX_H +
+                                   HILDON_COLOR_SELECTOR_BORDER_WIDTH * 2 +
+                                   (FOCUS_BORDER_WIDTH % 2));
+            }
         }
     }
 
     g_object_unref(gc);
+    g_object_unref(gc_focus);
     return TRUE;
 }
 
@@ -489,7 +525,7 @@ hildon_color_selector_expose(GtkWidget * widget,
 G_CONST_RETURN GdkColor *hildon_color_selector_get_color(HildonColorSelector * selector)
 {
     g_return_val_if_fail(HILDON_IS_COLOR_SELECTOR(selector), NULL);    
-    return &(selector->priv->color[selector->priv->index]);
+    return &(selector->priv->color[selector->priv->selected_index]);
 }
 
 /**
@@ -517,13 +553,14 @@ void hildon_color_selector_set_color(HildonColorSelector * selector,
             selector->priv->color[i].green == color->green &&
             selector->priv->color[i].blue  == color->blue) 
         {
-            selector->priv->index = i;
+            selector->priv->selected_index = i;
+            selector->priv->focused_index  = i;
 
             /* The modify button is active if the color index is bigger than
              * the number of base colours.
              */
             gtk_widget_set_sensitive(selector->priv->modify_button,
-                                     selector->priv->index >= HILDON_BASE_COLOR_NUM);
+                                     selector->priv->focused_index >= HILDON_BASE_COLOR_NUM);
             gtk_widget_queue_draw(selector->priv->drawing_area);
             break;
         }
@@ -551,7 +588,7 @@ static gboolean key_pressed(GtkWidget * widget,
     g_assert(widget);
 
     selector = HILDON_COLOR_SELECTOR(widget);
-    index = selector->priv->index;
+    index = selector->priv->focused_index;
 
     /* if dialog buttons has the focus */
     if (GTK_WIDGET_HAS_FOCUS(selector->priv->drawing_area) == FALSE)
@@ -606,27 +643,27 @@ static gboolean key_pressed(GtkWidget * widget,
     case GDK_KP_Enter:
     case GDK_Return:
         if (index < HILDON_BASE_COLOR_NUM)
-            return GTK_WIDGET_CLASS(parent_class)->key_press_event(widget, event);
-
-        modify_selected(selector);
+            select_color_index(selector, selector->priv->focused_index, FALSE);
+        else
+            modify_focused(selector);
     default:
         return GTK_WIDGET_CLASS(parent_class)->key_press_event(widget, event);
     }
 
     if (index < (HILDON_BASE_COLOR_NUM + HILDON_CUSTOM_COLOR_NUM)) 
     {
-        selector->priv->index = index;
+        selector->priv->focused_index = index;
     } 
     else 
     {
-        selector->priv->index = 
+        selector->priv->focused_index =
             HILDON_BASE_COLOR_NUM + HILDON_CUSTOM_COLOR_NUM - 1;
     }
     /* The modify button is active if the color index is bigger than
      * the number of base colours.
      */
     gtk_widget_set_sensitive(selector->priv->modify_button,
-                             selector->priv->index >= HILDON_BASE_COLOR_NUM);
+                             selector->priv->focused_index >= HILDON_BASE_COLOR_NUM);
 
     gtk_widget_queue_draw(selector->priv->drawing_area);
     
@@ -634,7 +671,23 @@ static gboolean key_pressed(GtkWidget * widget,
 }
 
 static void
-select_color(HildonColorSelector * selector, int event_x, int event_y,
+select_color_index(HildonColorSelector * selector, gint idx, gboolean motion)
+{
+    /* If a custom colour is selected, open a popup to modify the colour */ 
+    if (!motion &&
+        selector->priv->focused_index >= HILDON_BASE_COLOR_NUM &&
+        selector->priv->focused_index == idx)
+        modify_focused(selector);
+
+    selector->priv->focused_index = selector->priv->selected_index = idx;
+    gtk_widget_set_sensitive(selector->priv->modify_button,
+                             selector->priv->focused_index >= HILDON_BASE_COLOR_NUM);
+    
+    gtk_widget_queue_draw(selector->priv->drawing_area);
+}
+
+static void
+select_color(HildonColorSelector * selector, gint event_x, gint event_y,
              gboolean motion)
 {
     gint x, y;
@@ -642,15 +695,8 @@ select_color(HildonColorSelector * selector, int event_x, int event_y,
     g_assert(HILDON_IS_COLOR_SELECTOR(selector));
 
     /* Get the selection coordinates */ 
-    x = ( (event_x - HILDON_COLOR_SELECTOR_BOX_BORDER) /
-          (HILDON_COLOR_SELECTOR_BOX_BORDER * 2 +
-           HILDON_COLOR_SELECTOR_BOX_W)
-        );
-    y = ( (event_y -
-           HILDON_COLOR_SELECTOR_BOX_BORDER) /
-          (HILDON_COLOR_SELECTOR_BOX_BORDER * 2 +
-           HILDON_COLOR_SELECTOR_BOX_H)
-        );
+    x = event_x / HILDON_COLOR_SELECTOR_BOX_FULL_WIDTH;
+    y = event_y / HILDON_COLOR_SELECTOR_BOX_FULL_HEIGHT;
 
     /* Get the row and column numbers for the selected color */ 
     if (x > (HILDON_COLOR_SELECTOR_COLS + HILDON_CUSTOM_COLOR_NUM - 1)) 
@@ -670,17 +716,7 @@ select_color(HildonColorSelector * selector, int event_x, int event_y,
         y = 0;
     }
 
-    /* If a custom colour is selected, open a popup to modify the colour */ 
-    if (!motion &&
-        selector->priv->index >= HILDON_BASE_COLOR_NUM &&
-        selector->priv->index == (x + y * HILDON_COLOR_SELECTOR_COLS))
-        modify_selected(selector);
-
-    selector->priv->index = (x + y * HILDON_COLOR_SELECTOR_COLS);
-    gtk_widget_set_sensitive(selector->priv->modify_button,
-                             selector->priv->index >= HILDON_BASE_COLOR_NUM);
-    
-    gtk_widget_queue_draw(selector->priv->drawing_area);
+    select_color_index(selector, (x + y * HILDON_COLOR_SELECTOR_COLS), motion);
 }
 
 static gboolean
@@ -698,11 +734,11 @@ color_moved(GtkWidget * widget, GdkEventMotion * event, gpointer data)
 static void
 modify_button_clicked(GtkWidget * button, HildonColorSelector * selector)
 {
-    modify_selected (selector);
+    modify_focused (selector);
 }
 
 static void
-modify_selected(HildonColorSelector * colselector)
+modify_focused(HildonColorSelector * colselector)
 {
     HildonColorPopup popupdata;
     GtkWidget *popup;
@@ -716,20 +752,19 @@ modify_selected(HildonColorSelector * colselector)
       GdkColor *color;
 
       /* We cannot modify a base color */
-      if (colselector->priv->index < HILDON_BASE_COLOR_NUM)
+      if (colselector->priv->focused_index < HILDON_BASE_COLOR_NUM)
       {
         colselector->priv->color[HILDON_TOTAL_COLOR_NUM] = 
-          colselector->priv->color[colselector->priv->index];
-        colselector->priv->index = HILDON_TOTAL_COLOR_NUM;
+          colselector->priv->color[colselector->priv->focused_index];
+        colselector->priv->focused_index = HILDON_TOTAL_COLOR_NUM;
       }
 
-      color = hildon_color_selector_get_color(colselector);
-
-      /* Get the current color value */
+      /* Update the focused color with the color selected in color popup */
+      color = &(colselector->priv->color[colselector->priv->focused_index]);
       hildon_color_popup_set_color_from_sliders(color, &popupdata);
 
       /* If we modified a base color we just accept the dialog */      
-      if( colselector->priv->index >=  HILDON_TOTAL_COLOR_NUM)
+      if( colselector->priv->focused_index >=  HILDON_TOTAL_COLOR_NUM)
       {          
         gtk_dialog_response(GTK_DIALOG(colselector), GTK_RESPONSE_OK); 
       }
@@ -737,7 +772,7 @@ modify_selected(HildonColorSelector * colselector)
       {
         GConfValue *value;
         GSList * list;
-        int i;  
+        gint i;  
 
         value = gconf_value_new(GCONF_VALUE_LIST);
         gconf_value_set_list_type(value, GCONF_VALUE_STRING);

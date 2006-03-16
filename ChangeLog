@@ -1,3 +1,29 @@
+2006-03-14  Luc Pionchon  <luc.pionchon@nokia.com>
+
+	* hildon-widgets/hildon-color-selector.c: Removed unused defines.
+
+	* hildon-widgets/hildon-color-selector.c
+	(struct _HildonColorSelectorPriv): split 'index' into 'selected_index' and 'focus_index'
+	(hildon_color_selector_expose)
+	(hildon_color_selector_get_color)
+	(hildon_color_selector_set_color)
+	(key_pressed)
+	(select_color)	
+	(modify_focused): Separate selected color and focused color.
+	Focused color now draws a different colored border around it.
+	Renamed modify_selected() to modify_focused().
+
+	* hildon-widgets/hildon-color-selector.c
+	(hildon_color_selector_expose)
+	(select_color): Changed the logic in how the box positions are
+	calculated. The old logic was wrong, but just happened to work
+	with those specific values.
+
+	* hildon-widgets/hildon-color-selector.c
+	(hildon_color_selector_expose): Draw the selected-border using
+	ImageBorderColor color instead of hardcoded black.
+
+
 2006-03-13  Luc Pionchon  <luc.pionchon@nokia.com>
 
 	* hildon-widgets/hildon-color-popup.c (hildon_color_popup_new):
