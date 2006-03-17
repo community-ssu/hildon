@@ -1,3 +1,9 @@
+hildon-libs (0.12.4-1) unstable; urgency=low
+
+  * major code cleanup
+
+ -- Luc Pionchon <luc.pionchon@nokia.com>  Fri, 17 Mar 2006 18:49:10 +0200
+
 hildon-libs (0.12.3-2) unstable; urgency=low
 
   * debian/hildon-libs-dev.docs: refers to correct doc folder (gtk-doc/)
