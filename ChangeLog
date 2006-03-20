@@ -1,5 +1,10 @@
 2006-03-20  Johan Bilien  <johan.bilien@nokia.com>
 
+	* hildon-widgets/hildon-grid.c: added missing include hildon-app.h for
+	  HILDON_IS_APP
+
+2006-03-20  Johan Bilien  <johan.bilien@nokia.com>
+
 	    Cleanup wizard dialog
 	* hildon-widgets/hildon-wizard-dialog.c
 	  (HildonWizardDialogPrivate?): Removed the previous_button and

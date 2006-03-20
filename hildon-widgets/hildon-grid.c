@@ -69,6 +69,7 @@
 
 #include "hildon-grid-item-private.h"
 #include "hildon-marshalers.h"
+#include "hildon-app.h"
 #include <hildon-widgets/hildon-grid.h>
 #include <hildon-widgets/hildon-grid-item.h>
 
