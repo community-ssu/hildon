@@ -1,3 +1,30 @@
+2006-03-20  Johan Bilien  <johan.bilien@nokia.com>
+
+	    Cleanup wizard dialog
+	* hildon-widgets/hildon-wizard-dialog.c
+	  (HildonWizardDialogPrivate?): Removed the previous_button and
+	  next_button members of the structure (they are no longer needed).
+	  (hildon_wizard_dialog_response): This new private function handles the
+	  'response' signal and replaces the funtion direction_button_clicked()
+	  in taking care of notebook page changes and button dimming. Much of the
+	  old code in direction_button_clicked() was rewritten and simplified.
+	  (hildon_wizard_dialog_init): 'previous' and 'next' buttons are now added
+	  to the dialog as response buttons. This enables the
+	  usage of GtkDialog? API for setting their sensitiveness
+	  (dimming/undimming). Connected hildon_wizard_dialog_response to
+	  "resonse" signal. Removed useless title creation because it depends
+	  on the notebook which is not yet created.
+	  (hildon_wizard_dialog_set_property): Minor indentation and comments
+	  changes.
+	  (hildon_wizard_dialog_create_title): Removed useless else-if statement.
+	* hildon-widgets/hildon-wizard-dialog.h
+	  (hildon_wizard_dialog_get_type): added G_GNUC_CONST at end of declaration 
+
+	* hildon-widgets/hildon-wizard-dialog.{c,h}: Reverted the patch
+	  adding the page_change signal, as the application can now
+	  track the response signal instead.
+
+
 2006-03-17  Luc Pionchon  <luc.pionchon@nokia.com>
 
 	* configure.ac: 0.12.4
