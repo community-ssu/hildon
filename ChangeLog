@@ -1,3 +1,7 @@
+2006-03-21  Luc Pionchon  <luc.pionchon@nokia.com>
+
+	* configure.ac: 0.12.5
+
 2006-03-21  Tommi Komulainen  <tommi.komulainen@nokia.com>
 	
 	* doc/hildon-libs-docs.sgml: Move HildonWizardDialog in Dialogs
