@@ -241,16 +241,16 @@ hildon_time_picker_class_init( HildonTimePickerClass *klass )
 
   gtk_widget_class_install_style_property( widget_class,
 				                               g_param_spec_uint("arrow-width",
-                                         _("Arrow width"),
-                                         _("Increase/decrease arrows width."),
+                                         "Arrow width",
+                                         "Increase/decrease arrows width.",
                                          0, G_MAXUINT,
                                          DEFAULT_ARROW_WIDTH,
                                          G_PARAM_READABLE) );
 
   gtk_widget_class_install_style_property( widget_class,
 				                               g_param_spec_uint("arrow-height",
-                                         _("Arrow height"),
-                                         _("Increase/decrease arrows height."),
+                                         "Arrow height",
+                                         "Increase/decrease arrows height.",
                                          0, G_MAXUINT,
                                          DEFAULT_ARROW_HEIGHT,
                                          G_PARAM_READABLE) );
@@ -389,7 +389,7 @@ static void hildon_time_picker_init( HildonTimePicker *picker )
   }
 
   /* Label between hour and minutes */
-  colon_label = gtk_label_new(_("Ecdg_ti_time_picker_separator"));
+  colon_label = gtk_label_new(_("ecdg_ti_time_picker_separator"));
   gtk_table_attach(table, colon_label, 2, 3, 1, 2,
                    GTK_SHRINK, GTK_SHRINK, 6, 0); /* FIXME: magic */
   gtk_widget_set_name(colon_label, "osso-LargeFont" );

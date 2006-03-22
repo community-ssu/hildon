@@ -781,14 +781,14 @@ hildon_number_editor_error_handler(HildonNumberEditor *editor,
   switch (type)
     {
     case MAXIMUM_VALUE_EXCEED:
-      err_msg = g_strdup_printf(_("Ckct_ib_maximum_value"), max, max);
+      err_msg = g_strdup_printf(_("ckct_ib_maximum_value"), max, max);
       break;
     case MINIMUM_VALUE_EXCEED:
-      err_msg = g_strdup_printf(_("Ckct_ib_minimum_value"), min, min);
+      err_msg = g_strdup_printf(_("ckct_ib_minimum_value"), min, min);
       break;
     case ERRONEOUS_VALUE:
       err_msg =
-	g_strdup_printf(_("Ckct_ib_set_a_value_within_range"), min, max);
+	g_strdup_printf(_("ckct_ib_set_a_value_within_range"), min, max);
       break;
     }
   

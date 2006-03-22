@@ -275,7 +275,7 @@ static void hildon_caption_class_init( HildonCaptionClass *caption_class )
   g_object_class_install_property( gobject_class, PROP_SEPARATOR,
                                    g_param_spec_string("separator",
                                    "Current separator", "Current separator",
-                                   _("Ecdg_ti_caption_separator"),
+                                   _("ecdg_ti_caption_separator"),
                                    G_PARAM_READABLE | G_PARAM_WRITABLE) );
 
   /* Create child properties. These are related to
@@ -566,7 +566,7 @@ static void hildon_caption_init( HildonCaption *caption )
   priv->group = NULL;
   priv->is_focused = FALSE;
 
-  priv->separator = g_strdup(_("Ecdg_ti_caption_separator"));
+  priv->separator = g_strdup(_("ecdg_ti_caption_separator"));
 
   gtk_widget_push_composite_child();
   

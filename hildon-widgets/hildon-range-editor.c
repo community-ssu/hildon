@@ -237,7 +237,7 @@ hildon_range_editor_class_init  (HildonRangeEditorClass *editor_class)
                                    g_param_spec_string("separator",
                                    "Separator",
                                     "Separator string to separate entries",
-                                   _("Ckct_wi_range_separator"),
+                                   _("ckct_wi_range_separator"),
                                    G_PARAM_CONSTRUCT | 
                                    G_PARAM_READABLE | G_PARAM_WRITABLE) );
 }
@@ -258,7 +258,7 @@ hildon_range_editor_init (HildonRangeEditor *editor)
     
     priv->start_entry = gtk_entry_new();
     priv->end_entry = gtk_entry_new();
-    priv->label = gtk_label_new(_("Ckct_wi_range_separator"));
+    priv->label = gtk_label_new(_("ckct_wi_range_separator"));
     priv->bp = FALSE;
 
     /* Get values from gtkrc (or use defaults) */
@@ -450,13 +450,13 @@ hildon_range_editor_entry_validate(HildonRangeEditor *editor,
             {
                 error = TRUE;
                 fixup = max;
-                g_snprintf(buffer, sizeof(buffer), _("Ckct_ib_maximum_value"), max);
+                g_snprintf(buffer, sizeof(buffer), _("ckct_ib_maximum_value"), max);
             }
             else if (value < min && (min < 0 || (min >= 0 && value < 0)))
             {
                 error = TRUE;
                 fixup = min;
-                g_snprintf(buffer, sizeof(buffer), _("Ckct_ib_minimum_value"), min);
+                g_snprintf(buffer, sizeof(buffer), _("ckct_ib_minimum_value"), min);
             }
         }
         else
@@ -464,12 +464,12 @@ hildon_range_editor_entry_validate(HildonRangeEditor *editor,
             if (value > max) {
                 error = TRUE;
                 fixup = max;
-                g_snprintf(buffer, sizeof(buffer), _("Ckct_ib_maximum_value"), max);
+                g_snprintf(buffer, sizeof(buffer), _("ckct_ib_maximum_value"), max);
             }
             else if (value < min) {
                 error = TRUE;
                 fixup = min;
-                g_snprintf(buffer, sizeof(buffer), _("Ckct_ib_minimum_value"), min);
+                g_snprintf(buffer, sizeof(buffer), _("ckct_ib_minimum_value"), min);
             }
         }
 
@@ -485,12 +485,12 @@ hildon_range_editor_entry_validate(HildonRangeEditor *editor,
          minimum bound is negative */
       else if (!allow_intermediate || strcmp(text, "-") != 0 || min >= 0) {
         error = TRUE;
-        g_snprintf(buffer, sizeof(buffer), _("Ckct_ib_set_a_value_within_range"), min, max);
+        g_snprintf(buffer, sizeof(buffer), _("ckct_ib_set_a_value_within_range"), min, max);
       }
 	}
     else if (!allow_intermediate) {
         error = TRUE;
-        g_snprintf(buffer, sizeof(buffer), _("Ckct_ib_set_a_value_within_range"), min, max);
+        g_snprintf(buffer, sizeof(buffer), _("ckct_ib_set_a_value_within_range"), min, max);
     }
 
     if (error)

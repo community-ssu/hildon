@@ -425,7 +425,7 @@ hildon_find_toolbar_class_init(HildonFindToolbarClass *klass)
 				  g_param_spec_string("label", 
 				  "Label", "Displayed name for"
 				  " find-toolbar",
-                                  _("Ecdg_ti_find_toolbar_label"),
+                                  _("ecdg_ti_find_toolbar_label"),
 				  G_PARAM_READWRITE |
 				  G_PARAM_CONSTRUCT));
   
@@ -536,7 +536,7 @@ hildon_find_toolbar_init(HildonFindToolbar *self)
 					   HildonFindToolbarPrivate);
 
   /* Create the label */
-  self->priv->label = gtk_label_new(_("Ecdg_ti_find_toolbar_label"));
+  self->priv->label = gtk_label_new(_("ecdg_ti_find_toolbar_label"));
   
   gtk_misc_set_padding (GTK_MISC(self->priv->label), FIND_LABEL_XPADDING,
                         FIND_LABEL_YPADDING);

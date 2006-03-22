@@ -1129,33 +1129,33 @@ hildon_date_editor_date_error(HildonDateEditor *editor,
   switch(type)
     {
     case MAX_DAY:
-      gtk_infoprintf(NULL, _("Ckct_ib_maximum_value"), 31);
+      gtk_infoprintf(NULL, _("ckct_ib_maximum_value"), 31);
       break;
     case MAX_MONTH:
-      gtk_infoprintf(NULL, _("Ckct_ib_maximum_value"), 12);
+      gtk_infoprintf(NULL, _("ckct_ib_maximum_value"), 12);
       break;
     case MAX_YEAR:
-      gtk_infoprintf(NULL, _("Ckct_ib_maximum_value"), priv->max_year);
+      gtk_infoprintf(NULL, _("ckct_ib_maximum_value"), priv->max_year);
       break;
     case MIN_DAY:
     case MIN_MONTH:
-      gtk_infoprintf(NULL, _("Ckct_ib_minimum_value"), 1);
+      gtk_infoprintf(NULL, _("ckct_ib_minimum_value"), 1);
       break;
     case MIN_YEAR:
-      gtk_infoprintf(NULL, _("Ckct_ib_minimum_value"), priv->min_year);
+      gtk_infoprintf(NULL, _("ckct_ib_minimum_value"), priv->min_year);
       break;
     case EMPTY_DAY:
-      gtk_infoprintf(NULL, _("Ckct_ib_set_a_value_within_range"), 1, 31);
+      gtk_infoprintf(NULL, _("ckct_ib_set_a_value_within_range"), 1, 31);
       break;
     case EMPTY_MONTH:
-      gtk_infoprintf(NULL, _("Ckct_ib_set_a_value_within_range"), 1, 12);
+      gtk_infoprintf(NULL, _("ckct_ib_set_a_value_within_range"), 1, 12);
       break;
     case EMPTY_YEAR:
-      gtk_infoprintf(NULL, _("Ckct_ib_set_a_value_within_range"),
+      gtk_infoprintf(NULL, _("ckct_ib_set_a_value_within_range"),
                      priv->min_year, priv->max_year);
       break;
     case INVALID_DATE:
-      gtk_infoprint(NULL, _("Ckct_ib_date_does_not_exist"));
+      gtk_infoprint(NULL, _("ckct_ib_date_does_not_exist"));
       break;
    default:
       /*default error message ?*/

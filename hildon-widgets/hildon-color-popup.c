@@ -111,9 +111,9 @@ hildon_color_popup_new(GtkWindow *parent, const GdkColor *initial_color,
                                HILDON_COLOR_BAR_WIDTH, -1); 
 
   /* Create labels for three kinds of color */
-  l_red = gtk_label_new( _("Ecdg_fi_5bit_colour_selector_red"));
-  l_green = gtk_label_new(_("Ecdg_fi_5bit_colour_selector_green"));
-  l_blue = gtk_label_new(_("Ecdg_fi_5bit_colour_selector_blue"));
+  l_red   = gtk_label_new(_("ecdg_fi_5bit_colour_selector_red"));
+  l_green = gtk_label_new(_("ecdg_fi_5bit_colour_selector_green"));
+  l_blue  = gtk_label_new(_("ecdg_fi_5bit_colour_selector_blue"));
   
   /* Position the labels to start about the same label as the controlbars */
   gtk_misc_set_alignment(GTK_MISC(l_red), 0.08f, 0.5f);
@@ -168,7 +168,7 @@ hildon_color_popup_new(GtkWindow *parent, const GdkColor *initial_color,
                                        GTK_DIALOG_DESTROY_WITH_PARENT |
                                        GTK_DIALOG_NO_SEPARATOR,
                                        _("ecdg_bd_5bit_colour_selector_ok"), GTK_RESPONSE_OK,
-                                       _("Ecdg_bd_5bit_colour_selector_cancel"),
+                                       _("ecdg_bd_5bit_colour_selector_cancel"),
                                        GTK_RESPONSE_CANCEL,
                                        NULL);
 

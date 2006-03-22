@@ -445,8 +445,8 @@ static void hildon_time_editor_init(HildonTimeEditor * editor)
     priv->duration_mode  = FALSE;
     priv->iconbutton     = gtk_button_new();
     priv->ampm_label     = gtk_label_new(NULL);
-    priv->hm_label       = gtk_label_new(_("Ecdg_ti_time_editor_separator"));
-    priv->sec_label      = gtk_label_new(_("Ecdg_ti_time_editor_separator"));
+    priv->hm_label       = gtk_label_new(_("ecdg_ti_time_editor_separator"));
+    priv->sec_label      = gtk_label_new(_("ecdg_ti_time_editor_separator"));
     priv->frame          = gtk_frame_new(NULL);
     priv->eventbox       = gtk_event_box_new();
 
@@ -1174,12 +1174,12 @@ static gint validated_conversion(HildonTimeEditorPrivate *priv,
         if (tail[0] == 0)
         {    
             if (value > max) {
-                g_string_printf(error_string, _("Ckct_ib_maximum_value"), max);
+                g_string_printf(error_string, _("ckct_ib_maximum_value"), max);
                 priv->error_widget = field;
                 return max;
 		    }
             if (value < min && !allow_intermediate) {
-                g_string_printf(error_string, _("Ckct_ib_minimum_value"), min);
+                g_string_printf(error_string, _("ckct_ib_minimum_value"), min);
                 priv->error_widget = field;
                 return min;
             }
@@ -1193,7 +1193,7 @@ static gint validated_conversion(HildonTimeEditorPrivate *priv,
                        cannot validate either... */
 
     /* Empty field and not allowed intermediated OR failed conversion */
-    g_string_printf(error_string, _("Ckct_ib_set_a_value_within_range"), min, max);
+    g_string_printf(error_string, _("ckct_ib_set_a_value_within_range"), min, max);
     priv->error_widget = field;
     return -1;
 }
@@ -1250,7 +1250,7 @@ hildon_time_editor_real_validate(HildonTimeEditor *editor,
         if (ticks < priv->duration_min && !allow_intermediate)
         {
             g_string_printf(error_string,
-                _("Ckct_ib_min_allowed_duration_hts"), 
+                _("ckct_ib_min_allowed_duration_hts"), 
                 min_hours, min_minutes, min_seconds);
             hildon_time_editor_set_ticks (editor, priv->duration_min);
             priv->error_widget = priv->show_hours ? priv->entries[ENTRY_HOURS] : priv->entries[ENTRY_MINS];
@@ -1259,7 +1259,7 @@ hildon_time_editor_real_validate(HildonTimeEditor *editor,
         else if (ticks > priv->duration_max)
         {
             g_string_printf(error_string,
-                _("Ckct_ib_max_allowed_duration_hts"), 
+                _("ckct_ib_max_allowed_duration_hts"), 
                 max_hours, max_minutes, max_seconds);
             hildon_time_editor_set_ticks (editor, priv->duration_max);
             priv->error_widget = priv->show_hours ? priv->entries[ENTRY_HOURS] : priv->entries[ENTRY_MINS];

@@ -1,3 +1,38 @@
+2006-03-22  Luc Pionchon  <luc.pionchon@nokia.com>
+
+
+	Fixed i18n issues:
+
+
+	Updated logical id to lower case: Ckct_ -> ckct_
+	* hildon-widgets/hildon-date-editor.c (hildon_date_editor_date_error): 
+	* hildon-widgets/hildon-number-editor.c (hildon_number_editor_error_handler): 
+	* hildon-widgets/hildon-range-editor.c (hildon_range_editor_class_init) 
+	(hildon_range_editor_init, hildon_range_editor_entry_validate) 
+	(hildon_range_editor_entry_validate): 
+	* hildon-widgets/hildon-time-editor.c (validated_conversion) 
+	(validated_conversion, hildon_time_editor_real_validate): 
+	* hildon-widgets/hildon-grid.c (hildon_grid_class_init) 
+	(hildon_grid_init): 
+
+
+	Updated logical id to lower case: Ecdg_ -> ecdg_
+	* hildon-widgets/hildon-time-editor.c (hildon_time_editor_init): 
+	* hildon-widgets/hildon-time-picker.c (hildon_time_picker_init): 
+	* hildon-widgets/hildon-calendar-popup.c (hildon_calendar_popup_init): 
+	* hildon-widgets/hildon-color-popup.c (hildon_color_popup_new) 
+	* hildon-widgets/hildon-wizard-dialog.c (hildon_wizard_dialog_init) 
+	(hildon_wizard_dialog_create_title): 
+	* hildon-widgets/hildon-find-toolbar.c (hildon_find_toolbar_class_init): 
+	(hildon_find_toolbar_init): 
+	* hildon-widgets/hildon-note.c (hildon_note_rebuild) 
+	(hildon_note_rebuild, hildon_note_set_button_text): 
+
+
+	Removed i18n support for property description,
+	* hildon-widgets/hildon-time-picker.c (hildon_time_picker_class_init):
+
+
 2006-03-21  Luc Pionchon  <luc.pionchon@nokia.com>
 
 	* configure.ac: 0.12.5

@@ -287,7 +287,7 @@ static void hildon_calendar_popup_init(HildonCalendarPopup * cal)
     gtk_box_pack_start(GTK_BOX(GTK_DIALOG(cal)->vbox), priv->cal,
                        TRUE, TRUE, 0);
     gtk_dialog_set_has_separator(GTK_DIALOG(cal), FALSE);
-    gtk_dialog_add_button(GTK_DIALOG(cal), _("Ecdg_bd_calendar_popout_done"),
+    gtk_dialog_add_button(GTK_DIALOG(cal), _("ecdg_bd_calendar_popout_done"),
                             GTK_RESPONSE_OK);
     gtk_widget_show(priv->cal);
 

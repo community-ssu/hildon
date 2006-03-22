@@ -210,10 +210,10 @@ static void hildon_wizard_dialog_init(HildonWizardDialog * wizard_dialog)
     gtk_box_pack_start(GTK_BOX(vbox),GTK_WIDGET(priv->image), FALSE, FALSE, 0);
 
     /* Add response buttons: cancel, previous, next, finish */
-    gtk_dialog_add_button(dialog, _("Ecdg_bd_wizard_cancel"),   HILDON_WIZARD_DIALOG_CANCEL);
-    gtk_dialog_add_button(dialog, _("Ecdg_bd_wizard_previous"), HILDON_WIZARD_DIALOG_PREVIOUS);
-    gtk_dialog_add_button(dialog, _("Ecdg_bd_wizard_next"),     HILDON_WIZARD_DIALOG_NEXT);
-    gtk_dialog_add_button(dialog, _("Ecdg_bd_wizard_finish"),   HILDON_WIZARD_DIALOG_FINISH);
+    gtk_dialog_add_button(dialog, _("ecdg_bd_wizard_cancel"),   HILDON_WIZARD_DIALOG_CANCEL);
+    gtk_dialog_add_button(dialog, _("ecdg_bd_wizard_previous"), HILDON_WIZARD_DIALOG_PREVIOUS);
+    gtk_dialog_add_button(dialog, _("ecdg_bd_wizard_next"),     HILDON_WIZARD_DIALOG_NEXT);
+    gtk_dialog_add_button(dialog, _("ecdg_bd_wizard_finish"),   HILDON_WIZARD_DIALOG_FINISH);
 
     /* Set initial button states: previous and finish buttons are disabled */
     hildon_wizard_dialog_buttons_sensitive(wizard_dialog, FALSE, FALSE, TRUE);
@@ -311,12 +311,12 @@ hildon_wizard_dialog_create_title(HildonWizardDialog * wizard_dialog)
 
     /* the welcome title on the initial page */
     if (current == 0) {
-        str = g_strdup_printf(_("Ecdg_ti_wizard_welcome"), 
+        str = g_strdup_printf(_("ecdg_ti_wizard_welcome"), 
                               priv->wizard_name, pages);
     } else {
         const gchar *steps = gtk_notebook_get_tab_label_text(notebook,
             gtk_notebook_get_nth_page(notebook, current));
-        str = g_strdup_printf(_("Ecdg_ti_wizard_step"), 
+        str = g_strdup_printf(_("ecdg_ti_wizard_step"), 
                               priv->wizard_name, current + 1, pages, steps);
     }
 
