@@ -123,7 +123,7 @@ extern const HildonIconSizes *hildoniconsizes;
 #define HILDON_MARGIN_TRIPLE 18
 
 #define HILDON_HARDKEY_UP         GDK_Up
-#define HILDON_HARDKEY_LEFT       GKD_Left
+#define HILDON_HARDKEY_LEFT       GDK_Left
 #define HILDON_HARDKEY_RIGHT      GDK_Right
 #define HILDON_HARDKEY_DOWN       GDK_Down
 #define HILDON_HARDKEY_SELECT     GDK_Return

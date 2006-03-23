@@ -1,3 +1,9 @@
+2006-03-23  Luc Pionchon  <luc.pionchon@nokia.com>
+
+	* hildon-widgets/hildon-defines.h (HILDON_HARDKEY_LEFT):
+	fixed typo GKD_Left -> GDK_Left
+
+
 2006-03-22  Luc Pionchon  <luc.pionchon@nokia.com>
 
 
