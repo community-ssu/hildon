@@ -1,3 +1,9 @@
+hildon-libs (0.12.6-1) unstable; urgency=low
+
+  * fix logical ids
+
+ -- Luc Pionchon <luc.pionchon@nokia.com>  Fri, 24 Mar 2006 11:52:40 +0200
+
 hildon-libs (0.12.5-1) unstable; urgency=high
 
   * fix critical: missing macro definition in hildon-grid.c (missing #include)
