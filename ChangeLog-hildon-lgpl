@@ -1,3 +1,19 @@
+*****************************************************************
+*****************************************************************
+*****************************************************************
+
+NOTE:
+
+   This is the ChangeLog from hildon-lgpl package.
+   hildon-lgpl is now obsolete package.
+   All widgets from hildon-lgpl are moved to hildon-libs.
+
+
+*****************************************************************
+*****************************************************************
+*****************************************************************
+
+
 2006-02-21  Luc Pionchon  <luc.pionchon@nokia.com>
 
 	* configure.ac: 0.12.1
@@ -38,7 +54,7 @@
 	* configure.ac (AC_OUTPUT): removed all except .pc file 
 	* hildon-lgpl.pc.in (Requires): requires hildon-libs 0.12.0
 	
-	* hildon-lgpl/gtk-infoprint.c: moved to hildon-lgpl.
+	* hildon-lgpl/gtk-infoprint.c: moved to hildon-libs.
 	* hildon-lgpl/gtk-infoprint.h: likewise.
 	* hildon-lgpl/hildon-app-private.h: likewise.
 	* hildon-lgpl/hildon-app.c: likewise.
