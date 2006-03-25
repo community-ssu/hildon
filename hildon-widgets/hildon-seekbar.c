@@ -570,7 +570,7 @@ hildon_seekbar_button_press_event(GtkWidget * widget,
     /* We change here the button id because we want to use button2
      * functionality for button1: jump to mouse position
      * instead of slowly incrementing to it */
-    event->button = (event->button == 1) ? 2 : event->button;
+    if (event->button == 1) event->button = 2;
 
     /* call the parent handler */
     if (GTK_WIDGET_CLASS(parent_class)->button_press_event)
