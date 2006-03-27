@@ -36,6 +36,9 @@
 #include "hildon-defines.h"
 
 G_BEGIN_DECLS
+
+#define HILDON_WINDOW_LONG_PRESS_TIME 1500 /* in ms */
+
 #define HILDON_TYPE_WINDOW ( hildon_window_get_type() )
 #define HILDON_WINDOW(obj) \
     (GTK_CHECK_CAST (obj, HILDON_TYPE_WINDOW, HildonWindow))

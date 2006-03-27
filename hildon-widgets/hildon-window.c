@@ -134,6 +134,9 @@ static gboolean
 hildon_window_key_press_event (GtkWidget         *widget,
                                GdkEventKey       *event);
 static gboolean
+hildon_window_key_release_event (GtkWidget       *widget, 
+                                 GdkEventKey     *event);
+static gboolean
 hildon_window_window_state_event (GtkWidget *widget, 
                                   GdkEventWindowState *event,
                                   gpointer null);
@@ -149,6 +152,9 @@ hildon_window_is_topmost_notify (GObject *self,
 
 static void
 hildon_window_toggle_menu (HildonWindow * self);
+
+static gboolean
+hildon_window_escape_timeout (gpointer data);
 
 static void get_client_area(GtkWidget * widget,
                             GtkAllocation * allocation);
@@ -194,9 +200,7 @@ struct _HildonWindowPrivate
 
     guint fullscreen : 1;
     guint is_topmost: 1;
-    /* For future expansion. We might use the below variables
-     * for disabling keyrepeat
-     * if we need it someday. */
+    guint escape_timeout;
     gint visible_toolbars;
 
     HildonProgram *program;
@@ -250,6 +254,7 @@ hildon_window_class_init (HildonWindowClass * window_class)
     widget_class->realize = hildon_window_realize;
     widget_class->unrealize = hildon_window_unrealize;
     widget_class->key_press_event = hildon_window_key_press_event;
+    widget_class->key_release_event = hildon_window_key_release_event;
     
     /* now the object stuff */
     object_class->finalize = hildon_window_finalize;
@@ -300,6 +305,7 @@ hildon_window_init (HildonWindow * self)
     priv->is_topmost = FALSE;
     priv->borders = NULL;
     priv->toolbar_borders = NULL;
+    priv->escape_timeout = 0;
 
     priv->fullscreen = FALSE;
    
@@ -398,6 +404,9 @@ hildon_window_realize (GtkWidget *widget)
    /* Update the topmost status */
    active_window = hildon_window_get_active_window();
    hildon_window_update_topmost (HILDON_WINDOW (widget), active_window);
+
+   /* Update the window title */
+   hildon_window_update_title(HILDON_WINDOW (widget));
 
 }
 
@@ -1012,11 +1021,42 @@ hildon_window_key_press_event (GtkWidget *widget, GdkEventKey *event)
     {
         case HILDON_HARDKEY_MENU:
             hildon_window_toggle_menu (HILDON_WINDOW (widget));
-            return TRUE;
+            break;
+        case HILDON_HARDKEY_ESC:
+            if (!priv->escape_timeout)
+            {
+                priv->escape_timeout = g_timeout_add 
+                    (HILDON_WINDOW_LONG_PRESS_TIME,
+                     hildon_window_escape_timeout, widget);
+            }
             break;
     }
 
     return GTK_WIDGET_CLASS (parent_class)->key_press_event (widget, event);
+
+}
+
+static gboolean
+hildon_window_key_release_event (GtkWidget *widget, GdkEventKey *event)
+{
+    HildonWindowPrivate *priv;
+
+    g_return_val_if_fail (HILDON_IS_WINDOW (widget),FALSE);
+
+    priv = HILDON_WINDOW (widget)->priv;
+
+    switch (event->keyval)
+    {
+        case HILDON_HARDKEY_ESC:
+            if (priv->escape_timeout)
+            {
+                g_source_remove (priv->escape_timeout);
+                priv->escape_timeout = 0;
+            }
+            break;
+    }
+
+    return GTK_WIDGET_CLASS (parent_class)->key_release_event (widget, event);
 
 }
 
@@ -1201,8 +1241,6 @@ hildon_window_take_common_toolbar (HildonWindow *self)
         GtkWidget *common_toolbar =  
            GTK_WIDGET (hildon_program_get_common_toolbar (self->priv->program));
 
-        fprintf( stderr, "Got common toolbar\n");
-
         if (common_toolbar && common_toolbar->parent != self->priv->vbox)
         {
             g_object_ref (common_toolbar);
@@ -1360,6 +1398,30 @@ hildon_window_toggle_menu (HildonWindow * self)
         gtk_menu_shell_select_first (GTK_MENU_SHELL (menu_to_use), TRUE);
     }
 
+}
+
+/*
+ * If the ESC key was not released when the timeout expires,
+ * close the window
+ */
+static gboolean
+hildon_window_escape_timeout (gpointer data)
+{
+    HildonWindowPrivate *priv;
+    GdkEvent *event;
+
+    priv = HILDON_WINDOW(data)->priv;
+
+    /* Send fake event, simulation a situation that user
+       pressed 'x' from the corner */
+    event = gdk_event_new(GDK_DELETE);
+    ((GdkEventAny *)event)->window = GTK_WIDGET(data)->window;
+    gtk_main_do_event(event);
+    gdk_event_free(event);
+
+    priv->escape_timeout = 0;
+
+    return FALSE;
 }
 
 
