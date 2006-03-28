@@ -1,5 +1,9 @@
 2006-03-28  Luc Pionchon  <luc.pionchon@nokia.com>
 
+	* po/en_GB.po: update
+
+2006-03-28  Luc Pionchon  <luc.pionchon@nokia.com>
+
 	* hildon-widgets/hildon-add-home-dialog.c
 	(hildon_add_home_dialog_init): removed i18n support (deprecated
 	widget. Hinder logical ID processing)

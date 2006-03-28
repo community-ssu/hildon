@@ -1,546 +1,474 @@
-# English (GB) translation of hildon-libs
-# Copyright (C) 2005 Nokia Corporation
+# Copyright (C) 2006 Nokia Corporation.
 # This file is distributed under the same license as the hildon-libs package
 #
-
 msgid ""
 msgstr ""
-"Project-Id-Version: hildon-libs 0.1\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-02-15 16:15+0200\n"
-"PO-Revision-Date: 2005-03-13 12:00+0200\n"
-"Last-Translator: \n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"Project-Id-Version: hildon-libs 4.0\n"
+"Report-Msgid-Bugs-To: rami.abbad@nokia.com\n"
+"POT-Creation-Date: 2006.03.20 15:34+0200\n"
+"PO-Revision-Date: 2006.03.20 15:34+0200\n"
+"Last-Translator:\n"
+"Language-Team: en_GB\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
 
-#: ../hildon-widgets/hildon-add-home-dialog.c:78
-msgid "addtoHome_button_ok"
-msgstr "OK"
-
-#: ../hildon-widgets/hildon-add-home-dialog.c:81
-msgid "addtoHome_button_cancel"
-msgstr "Cancel"
-
-#: ../hildon-widgets/hildon-add-home-dialog.c:150
-msgid "ckdg_ti_rename_link"
-msgstr "Rename shortcut"
-
-#: ../hildon-widgets/hildon-add-home-dialog.c:153
-msgid "addtoHome_dialog_title"
-msgstr "Add to Home"
-
-#: ../hildon-widgets/hildon-add-home-dialog.c:159
-msgid "ckdg_ib_link_exists"
-msgstr "Shortcut name already in use"
-
-#: ../hildon-widgets/hildon-add-home-dialog.c:176
-msgid "addtoHome_editor_caption"
-msgstr "Name"
-
-#: ../hildon-widgets/hildon-add-home-dialog.c:186
-msgid "ckdg_fi_rename_name"
-msgstr "Name:"
-
-#: ../hildon-widgets/hildon-calendar-popup.c:217
-msgid "Ecdg_bd_calendar_popout_done"
-msgstr "Done"
-
-
+# Title for default palette
 msgid "ecdg_ti_colour_selector"
-msgstr "Colour Selector"
+msgstr "Colour selector"
 
-#: ../hildon-widgets/hildon-color-selector.c:341
-#: ../hildon-widgets/hildon-color-selector.c:688
+# Confirmation button for default palette
 msgid "ecdg_bd_colour_selector_ok"
 msgstr "OK"
 
-#: ../hildon-widgets/hildon-color-selector.c:345
-#: ../hildon-widgets/hildon-color-selector.c:689
+# Cancel button for default palette
 msgid "ecdg_bd_colour_selector_cancel"
 msgstr "Cancel"
 
-msgid "ecdg_bd_colour_selector_modify" 	 
+# 5-bit palette opening button
+msgid "ecdg_bd_colour_selector_modify"
 msgstr "Modify"
 
-msgid "ecdg_bd_5bit_colour_selector_ok"
-msgstr "OK"
-
-#: ../hildon-widgets/hildon-color-selector.c:343
+# Title for 5-bit palette
 msgid "ecdg_ti_5bit_colour_selector"
 msgstr "Modify colour"
 
-msgid "Ecdg_bd_5bit_colour_selector_cancel"
+# Confirmation button for 5-bit palette
+msgid "ecdg_bd_5bit_colour_selector_ok"
+msgstr "OK"
+
+# Cancel button for 5-bit palette
+msgid "ecdg_bd_5bit_colour_selector_cancel"
 msgstr "Cancel"
 
-msgid "Ecdg_fi_5bit_colour_selector_red"
+# R indicator text for 5-bit palette
+msgid "ecdg_fi_5bit_colour_selector_red"
 msgstr "Red"
 
-msgid "Ecdg_fi_5bit_colour_selector_green"
+# G indicator text for 5-bit palette
+msgid "ecdg_fi_5bit_colour_selector_green"
 msgstr "Green"
 
-msgid "Ecdg_fi_5bit_colour_selector_blue"
+# B indicator text for 5-bit palette
+msgid "ecdg_fi_5bit_colour_selector_blue"
 msgstr "Blue"
 
+# Confirmation button for pop-up
+msgid "ecdg_bd_calendar_popout_done"
+msgstr "Done"
 
-
-#: ../hildon-widgets/hildon-note.c:37
-#: ../hildon-widgets/hildon-note.c:445
-msgid "Ecdg_bd_information_note_ok"
-msgstr "OK"
-
-#: ../hildon-widgets/hildon-note.c:431
-msgid "Ecdg_bd_confirmation_note_ok"
-msgstr "OK"
-
-#: ../hildon-widgets/hildon-note.c:436
-msgid "Ecdg_bd_confirmation_note_cancel"
-msgstr "Cancel"
-
-#: ../hildon-widgets/hildon-note.c:475
-msgid "Ecdg_bd_cancel_note_cancel"
-msgstr "Cancel"
-
-#: ../hildon-widgets/hildon-file-details-dialog.c:183
-msgid "sfil_ti_notebook_file"
-msgstr "File"
-
-#:
-msgid "sfil_fi_properties_device_prompt"
-msgstr "Device:"
-
-#: ../hildon-widgets/hildon-file-details-dialog.c:198
-msgid "sfil_fi_properties_location_prompt"
-msgstr "Location:"
-
-#: ../hildon-widgets/hildon-file-details-dialog.c:202
-msgid "ckdg_fi_properties_name_prompt"
-msgstr "Name:"
-
-#: ../hildon-widgets/hildon-file-details-dialog.c:206
-msgid "ckdg_fi_properties_type_prompt"
-msgstr "Type:"
-
-#: ../hildon-widgets/hildon-file-details-dialog.c:210
-msgid "ckdg_fi_properties_size_prompt"
-msgstr "Size:"
-
-#: ../hildon-widgets/hildon-file-details-dialog.c:214
-msgid "ckdg_fi_properties_date_prompt"
-msgstr "Date:"
-
-#: ../hildon-widgets/hildon-file-details-dialog.c:218
-msgid "ckdg_fi_properties_time_prompt"
-msgstr "Time:"
-
-#: ../hildon-widgets/hildon-file-details-dialog.c:222
-msgid "ckdg_fi_properties_read_only"
-msgstr "Read-only:"
-
-#: ../hildon-widgets/hildon-file-details-dialog.c:236
-msgid "sfil_ti_notebook_common"
-msgstr "Common"
-
-#: ../hildon-widgets/hildon-file-details-dialog.c:242
-msgid "sfil_bd_filetype_details_dialog_ok"
-msgstr "OK"
-
-#:
-msgid "sfil_bd_filetype_details_dialog_cancel"
-msgstr "Cancel"
-
-#: ../hildon-widgets/hildon-file-details-dialog.c:280
-msgid "sfil_ia_filetype_no_details"
-msgstr "(no details)"
-
-#: ../hildon-widgets/hildon-file-details-dialog.c:381
-#: ../hildon-widgets/hildon-file-details-dialog.c:411
-msgid "sfil_ti_file_details"
-msgstr "Details"
-
-#: ../hildon-widgets/hildon-file-details-dialog.c:466
-msgid "ckdg_va_properties_size_bytes"
-msgstr "%d B"
-
-#: ../hildon-widgets/hildon-file-details-dialog.c:469
-msgid "ckdg_va_properties_size_kb"
-msgstr "%d kB"
-
-# hildon-file-handling-note.c 	 
-msgid "sfil_nw_moving_file" 	 
-msgstr "Moving\n%s" 	 
-  	 
-msgid "sfil_bd_moving_file" 	 
-msgstr "Cancel" 	 
-  	 
-msgid "docm_nw_moving_files" 	 
-msgstr "Moving %d/%d\n%s" 	 
-  	 
-msgid "docm_bd_moving_files" 	 
-msgstr "Stop" 	 
-  	 
-msgid "docm_nw_saving_file" 	 
-msgstr "Saving\n%s" 	 
-  	 
-msgid "docm_bd_saving_file" 	 
-msgstr "Cancel" 	 
-  	 
-msgid "docm_nw_saving_files" 	 
-msgstr "Saving %d/%d\n%s" 	 
-  	 
-msgid "docm_bd_saving_files" 	 
-msgstr "Stop" 	 
-  	 
-msgid "docm_nw_opening_file" 	 
-msgstr "Opening\n%s" 	 
-  	 
-msgid "docm_bd_opening_file" 	 
-msgstr "Cancel" 	 
-  	 
-msgid "docm_nw_opening_files" 	 
-msgstr "Opening %d/%d\n%s" 	 
-  	 
-msgid "docm_bd_opening_files" 	 
-msgstr "Stop" 	 
-  	 
-msgid "docm_nw_deleting_file" 	 
-msgstr "Deleting\n%s" 	 
-  	 
-msgid "docm_bd_deleting_file" 	 
-msgstr "Cancel" 	 
-  	 
-msgid "docm_nw_deleting_files" 	 
-msgstr "Deleting %d/%d\n%s" 	 
-  	 
-msgid "docm_bd_deleting_files" 	 
-msgstr "Stop"
-
-#: ../hildon-widgets/hildon-time-picker.c:487
+# Close button for Time Picker
 msgid "ecdg_bd_time_picker_close"
 msgstr "Close"
 
-#: ../hildon-widgets/hildon-font-selection-dialog.c:228
-msgid "ecdg_fi_font_font"
-msgstr "Font face"
+# Separator character for time string
+msgid "ecdg_ti_time_picker_separator"
+msgstr ":"
 
-#: ../hildon-widgets/hildon-font-selection-dialog.c:238
-msgid "ecdg_fi_font_size"
-msgstr "Font size"
+# Shown when there are no items in the list.
+msgid "ckct_wi_grid_no_items"
+msgstr "No items"
 
-#: ../hildon-widgets/hildon-font-selection-dialog.c:270
-msgid "ecdg_fi_font_color_selector"
-msgstr "Colour"
+# Shown when there are no icons for the items in the list.
+msgid "ckct_wi_grid_no_icons"
+msgstr "No icons"
 
-#: ../hildon-widgets/hildon-font-selection-dialog.c:280
-msgid "ecdg_fi_font_bold"
-msgstr "Bold"
-
-#: ../hildon-widgets/hildon-font-selection-dialog.c:291
-msgid "ecdg_fi_font_italic"
-msgstr "Italic"
-
-#: ../hildon-widgets/hildon-font-selection-dialog.c:301
-msgid "ecdg_fi_font_underline"
-msgstr "Underline"
-
-#: ../hildon-widgets/hildon-font-selection-dialog.c:315
-msgid "ecdg_fi_font_strikethrough"
-msgstr "Strikethrough"
-
-#: ../hildon-widgets/hildon-font-selection-dialog.c:324
-msgid "ecdg_fi_font_special"
-msgstr "Positioning"
-
-#: ../hildon-widgets/hildon-font-selection-dialog.c:335
-msgid "ecdg_ti_font_dialog_style"
-msgstr "Style"
-
-#: ../hildon-widgets/hildon-font-selection-dialog.c:337
-msgid "ecdg_ti_font_dialog_format"
-msgstr "Formatting"
-
-#: ../hildon-widgets/hildon-font-selection-dialog.c:339
-msgid "ecdg_ti_font_dialog_other"
-msgstr "Other"
-
-#: ../hildon-widgets/hildon-font-selection-dialog.c:346
-msgid "ecdg_bd_font_dialog_ok"
-msgstr "OK"
-
-#: ../hildon-widgets/hildon-font-selection-dialog.c:349
-msgid "ecdg_bd_font_dialog_preview"
-msgstr "Preview"
-
-#: ../hildon-widgets/hildon-font-selection-dialog.c:352
-msgid "ecdg_bd_font_dialog_cancel"
-msgstr "Cancel"
-
-#: ../hildon-widgets/hildon-font-selection-dialog.c:356
-msgid "ecdg_fi_preview_font_preview_text"
-msgstr "The quick brown fox jumped over the lazy dogs"
-
-#: ../hildon-widgets/hildon-font-selection-dialog.c:383
-msgid "ecdg_ti_preview_font"
-msgstr "Preview"
-
-#: ../hildon-widgets/hildon-font-selection-dialog.c:407
-msgid "ecdg_ti_font"
-msgstr "Font"
-
-#: ../hildon-widgets/hildon-font-selection-dialog.c:840
-msgid "ecdg_va_font_printpos_1"
-msgstr "Normal"
-
-#: ../hildon-widgets/hildon-font-selection-dialog.c:842
-msgid "ecdg_va_font_printpos_2"
-msgstr "Superscript"
-
-#: ../hildon-widgets/hildon-font-selection-dialog.c:844
-msgid "ecdg_va_font_printpos_3"
-msgstr "Subscript"
-
-msgid "ecdg_va_font_size_trailer"
-msgstr "pt"
-
-#: ../hildon-widgets/hildon-insert-object-dialog.c:127
-msgid "ckdg_ti_insert_insert_objec"
-msgstr "Insert object"
-
-#: ../hildon-widgets/hildon-insert-object-dialog.c:134
-msgid "ckdg_bd_insert_new"
-msgstr "Insert new"
-
-#: ../hildon-widgets/hildon-insert-object-dialog.c:139
-msgid "ckdg_bd_insert_existing"
-msgstr "Insert existing"
-
-#: ../hildon-widgets/hildon-insert-object-dialog.c:144
-msgid "ckdg_bd_insert_cancel"
-msgstr "Cancel"
-
-#: ../hildon-widgets/hildon-number-editor.c:367
-#, c-format
-msgid "Ckct_ib_maximum_value"
-msgstr "Maximum value is %d"
-
-#: ../hildon-widgets/hildon-number-editor.c:372
-#, c-format
-msgid "Ckct_ib_minimum_value"
-msgstr "Minimum value is %d"
-
-#: ../hildon-widgets/hildon-number-editor.c:378
-#, c-format
-msgid "Ckct_ib_set_a_value_within_range"
+# The notification informs the user of the minimum and maximum values acceptable for the field.
+msgid "ckct_ib_set_a_value_within_range"
 msgstr "Value must be between %d and %d"
 
-#: ../hildon-widgets/hildon-sort-dialog.c:94
-msgid "ckdg_ti_sort"
-msgstr "Sort"
+# Displayed if the user tries to enter too large a value to a number-based field, such as Integer Field or Date Field.
+msgid "ckct_ib_maximum_value"
+msgstr "Maximum value is %d"
 
-#: ../hildon-widgets/hildon-sort-dialog.c:98
-msgid "ckdg_fi_sort_field"
-msgstr "Sort by:"
+# Displayed if the user tries to enter too small a value to a number-based field, such as Integer Field or Date Field.
+msgid "ckct_ib_minimum_value"
+msgstr "Minimum value is %d"
 
-#: ../hildon-widgets/hildon-sort-dialog.c:107
-msgid "ckdg_va_sort_ascending"
-msgstr "Ascending"
+# Separator text string
+msgid "ckct_wi_range_separator"
+msgstr "–"
 
-#: ../hildon-widgets/hildon-sort-dialog.c:109
-msgid "ckdg_va_sort_descending"
-msgstr "Descending"
+# Separator character for time string
+msgid "ecdg_ti_time_editor_separator"
+msgstr ":"
 
-#: ../hildon-widgets/hildon-sort-dialog.c:111
-msgid "ckdg_fi_sort_order"
-msgstr "Order:"
+# Displayed if the user attempts to enter a duration that is smaller than the minimum value of a Date Editor widget.
+msgid "ckct_ib_min_allowed_duration_hts"
+msgstr "Minimum allowed duration is %02d:%02d:%02d"
 
-#: ../hildon-widgets/hildon-sort-dialog.c:123
-msgid "ckdg_bd_sort_dialog_ok"
-msgstr "OK"
+# Displayed if the user attempts to enter a duration that is larger than the maximum value of a Date Editor widget.
+msgid "ckct_ib_max_allowed_duration_hts"
+msgstr "Maximum allowed duration is %02d:%02d:%02d"
 
-#: ../hildon-widgets/hildon-sort-dialog.c:126
-msgid "ckdg_bd_sort_dialog_cancel"
-msgstr "Cancel"
+# Displayed if the user attempts to enter a duration that is smaller than the minimum value of a Date Editor widget.
+msgid "ckct_ib_min_allowed_duration_ddd"
+msgstr "Minimum allowed duration is %02d:%02d:%02d"
 
-#, c-format
-msgid "Ecdg_ti_wizard_welcome"
+# Displayed if the user attempts to enter a duration that is larger than the maximum value of a Date Editor widget.
+msgid "ckct_ib_max_allowed_duration_ddd"
+msgstr "Maximum allowed duration is %02d:%02d:%02d"
+
+# Displayed if the user attempts to enter a duration that is smaller than the minimum value of a Date Editor widget.
+msgid "ckct_ib_min_allowed_duration_d"
+msgstr "Minimum allowed duration is %d"
+
+# Displayed if the user attempts to enter a duration that is larger than the maximum value of a Date Editor widget.
+msgid "ckct_ib_max_allowed_duration_d"
+msgstr "Maximum allowed duration is %d"
+
+# Separator character for time string
+msgid "ecdg_ti_duration_editor_separator"
+msgstr ":"
+
+# Displayed when the user enters a date where the values of the fields of the Date Field are all within their value range, but the combination does not exist as a date, e.g. 31.02.2002. Focus is returned to the first date fieldlet (i.e. day number in UK date format) and characters in the field are highlighted. Field contents are reset to the nearest valid value to what the user input.
+msgid "ckct_ib_date_does_not_exist"
+msgstr "Invalid date"
+
+# Separator character for date string
+msgid "ecdg_ti_date_editor_separator"
+msgstr "/"
+
+# Text string for the "Find" label
+msgid "ecdg_ti_find_toolbar_label"
+msgstr "Find"
+
+# Information banner for empty field
+msgid "ckct_ib_find_enter_the_text"
+msgstr "Enter the text to be found"
+
+# No matches found
+msgid "ckct_ib_find_no_matches"
+msgstr "No matches found"
+
+# Search completed
+msgid "ckct_ib_find_search_complete"
+msgstr "Search complete"
+
+# Separator character
+msgid "ecdg_ti_caption_separator"
+msgstr ":"
+
+# Default title text for wizard's welcome screen, where %s is the name of the wizard and %d the number of total steps
+msgid "ecdg_ti_wizard_welcome"
 msgstr "%s step 1/%d: Welcome"
 
-#, c-format
-msgid "Ecdg_ti_wizard_step"
+# Default descriptive text string for wizard's welcome screen, where first %s is the name of the wizard and second the summary.
+msgid "ecdg_fi_wizard_description"
+msgstr ""
+"%s wizard allows you to %s.\n"
+"\n"
+"Tap 'Next' to continue."
+
+# Default title text for wizard steps, where first %s is the name of the wizard and second %s the name of step.
+msgid "ecdg_ti_wizard_step"
 msgstr "%s step %d/%d: %s"
 
-#: ../hildon-widgets/hildon-wizard-dialog.c:139
-msgid "Ecdg_bd_wizard_cancel"
-msgstr "Cancel"
-
-#: ../hildon-widgets/hildon-wizard-dialog.c:141
-msgid "Ecdg_bd_wizard_previous"
-msgstr "Previous"
-
-#: ../hildon-widgets/hildon-wizard-dialog.c:143
-msgid "Ecdg_bd_wizard_next"
+# Next button
+msgid "ecdg_bd_wizard_next"
 msgstr "Next"
 
-#: ../hildon-widgets/hildon-wizard-dialog.c:145
-msgid "Ecdg_bd_wizard_finish"
+# Previous button
+msgid "ecdg_bd_wizard_previous"
+msgstr "Previous"
+
+# Cancel button
+msgid "ecdg_bd_wizard_cancel"
+msgstr "Cancel"
+
+# Finish button
+msgid "ecdg_bd_wizard_finish"
 msgstr "Finish"
 
-#: ../hildon-widgets/hildon-get-password-dialog.h
-msgid "ecdg_ti_get_old_password"
-msgstr "Current password"
+# Default title text for GtkAboutDialog
+msgid "ecdg_ti_aboutdialog_title"
+msgstr "About application"
 
-#: ../hildon-widgets/hildon-get-password-dialog.h
-msgid "ecdg_fi_get_old_pwd_enter_pwd"
-msgstr "Password:"
+# Text for the closing button
+msgid "ecdg_bd_aboutdialog_close"
+msgstr "Close"
 
-#: ../hildon-widgets/hildon-get-password-dialog.h
-msgid "ecdg_bd_get_old_password_dialog_ok"
+# Default confirmation button label
+msgid "ecdg_bd_information_note_ok"
 msgstr "OK"
 
-#: ../hildon-widgets/hildon-get-password-dialog.h
-msgid "ecdg_bd_get_old_password_dialog_cancel"
-msgstr "Cancel"
-
-#: ../hildon-widgets/hildon-get-password-dialog.h
-msgid "ecdg_ti_verify_password"
-msgstr "Password needed"
-
-#: ../hildon-widgets/hildon-get-password-dialog.h
-msgid "ecdg_fi_verify_pwd_enter_pwd"
-msgstr "Password:"
-
-#: ../hildon-widgets/hildon-get-password-dialog.h
-msgid "ecdg_bd_verify_password_dialog_ok"
+# Default confirmation button label
+msgid "ecdg_bd_confirmation_note_ok"
 msgstr "OK"
 
-#: ../hildon-widgets/hildon-get-password-dialog.h
-msgid "ecdg_bd_verify_password_dialog_cancel"
+# Default cancel button label
+msgid "ecdg_bd_confirmation_note_cancel"
 msgstr "Cancel"
 
-#: ../hildon-widgets/hildon-name-password-dialog.h
-msgid "frw_ti_get_user_name_and_pwd"
-msgstr "User name and password"
+# Default cancel button label
+msgid "ecdg_bd_cancel_note_cancel"
+msgstr "Cancel"
 
-#: ../hildon-widgets/hildon-name-password-dialog.h
-msgid "frw_ti_get_user_name_and_pwd_enter_user_name"
-msgstr "User name:"
-
-#: ../hildon-widgets/hildon-name-password-dialog.h
-msgid "frw_ti_get_user_name_and_pwd_enter_pwd"
-msgstr "Password:"
-
-#: ../hildon-widgets/hildon-name-password-dialog.h
-msgid "frw_bd_get_user_name_and_pwd_ok"
+# Default confirmation button label
+msgid "ecdg_bd_system_note_ok"
 msgstr "OK"
 
-#: ../hildon-widgets/hildon-name-password-dialog.h
-msgid "frw_bd_get_user_name_and_pwd_cancel"
-msgstr "Cancel"
-
-#: ../hildon-widgets/hildon-set-password-dialog.h
+#  Title for the "Set Password" dialog
 msgid "ecdg_ti_set_password"
 msgstr "Set password"
 
-#: ../hildon-widgets/hildon-set-password-dialog.h
+# Secret Editor field in "Set Password" dialog for the new password
 msgid "ecdg_fi_set_passwd_enter_pwd"
 msgstr "New password:"
 
-#: ../hildon-widgets/hildon-set-password-dialog.h
+#  Secret Editor field in "Set Password" dialog to verify the new password
 msgid "ecdg_fi_set_passwd_confirm"
 msgstr "Verify password:"
 
-#: ../hildon-widgets/hildon-set-password-dialog.h
+#  "Set password" dialog ok button.
 msgid "ecdg_bd_set_password_dialog_ok"
 msgstr "OK"
 
-#: ../hildon-widgets/hildon-set-password-dialog.h
+#  "Set password" dialog cancel button.
 msgid "ecdg_bd_set_password_dialog_cancel"
 msgstr "Cancel"
 
-#: ../hildon-widgets/hildon-set-password-dialog.h
+#  Title text in "Change Password" dialog
 msgid "ckdg_ti_dialog_c_passwd_change_password"
 msgstr "Change password"
 
-#: ../hildon-widgets/hildon-set-password-dialog.h
-msgid "ckdg_fi_dialog_c_passwd_pwd_protect"
-msgstr "Password protected:"
-
-#: ../hildon-widgets/hildon-set-password-dialog.h
-msgid "ckdg_fi_dialog_c_passwd_new_pwd"
-msgstr "New password:"
-
-#: ../hildon-widgets/hildon-set-password-dialog.h
-msgid "ckdg_fi_dialog_c_passwd_ver_pwd"
-msgstr "Verify new password:"
-
-#: ../hildon-widgets/hildon-set-password-dialog.h
+# "Change password" dialog ok button.
 msgid "ckdg_bd_change_password_dialog_ok"
 msgstr "OK"
 
-#: ../hildon-widgets/hildon-set-password-dialog.h
+#  "Change password" dialog cancel button.
 msgid "ckdg_bd_change_password_dialog_cancel"
 msgstr "Cancel"
 
-#: ../hildon-widgets/hildon-set-password-dialog.h
-msgid "ecdg_ib_passwords_do_not_match"
-msgstr "Passwords do not match"
+#  "Password Protected" field in "Change Password" dialog
+msgid "ckdg_fi_dialog_c_passwd_pwd_protect"
+msgstr "Password protected:"
 
-#: ../hildon-widgets/hildon-set-password-dialog.h
-msgid "ecdg_ib_password_is_empty"
-msgstr "Enter a password"
+#  "New password" field in "Change Password" dialog
+msgid "ckdg_fi_dialog_c_passwd_new_pwd"
+msgstr "New password:"
 
-#: ../hildon-widgets/hildon-set-password-dialog.h
-msgid "ckdg_nc_dialog_c_passwd_remove_pwd"
-msgstr "Remove password protection?"
+#  Verify password - field in Change Password - dialog
+msgid "ckdg_fi_dialog_c_passwd_ver_pwd"
+msgstr "Verify password:"
 
-#: ../hildon-widgets/hildon-set-password-dialog.h
-msgid "ckdg_bd_dialog_c_passwd_remove_button"
-msgstr "Remove"
+#  Title for "get password" dialog
+msgid "ecdg_ti_verify_password"
+msgstr "Password needed"
 
-#: ../hildon-widgets/hildon-set-password-dialog.h
-msgid "ckdg_bd_dialog_c_passwd_cancel_button"
+# "get password" dialog ok button
+msgid "ecdg_bd_verify_password_dialog_ok"
+msgstr "OK"
+
+#  "get password" dialog cancel button
+msgid "ecdg_bd_verify_password_dialog_cancel"
 msgstr "Cancel"
 
-msgid "Ckct_ib_min_allowed_duration_hts"
-msgstr "Minimum allowed duration is %02d:%02d:%02d"
+#  Secret Editor field in "Get Password" dialog for the password
+msgid "ecdg_fi_verify_pwd_enter_pwd"
+msgstr "Password:"
 
-msgid "Ckct_ib_max_allowed_duration_hts"
-msgstr "Maximum allowed duration is %02d:%02d:%02d"
+#  Title for "Get Old Password" dialog
+msgid "ecdg_ti_get_old_password"
+msgstr "Current password"
 
-msgid "Ckct_wi_range_separator"
-msgstr "-"
+# Secret Editor field in "Get Old Password" dialog
+msgid "ecdg_fi_get_old_pwd_enter_pwd"
+msgstr "Password:"
 
-msgid "Ecdg_ti_date_editor_separator"
-msgstr "/"
+#  "Get old password" dialog ok button.
+msgid "ecdg_bd_get_old_password_dialog_ok"
+msgstr "OK"
 
-msgid "Ckct_ib_date_does_not_exist"
-msgstr "Date does not exist"
+#  "Get old password" dialog cancel button.
+msgid "ecdg_bd_get_old_password_dialog_cancel"
+msgstr "Cancel"
 
-msgid "Ecdg_ti_time_editor_separator"
-msgstr ":"
+#  Title for "get user name and password" dialog
+msgid "frw_ti_get_user_name_and_pwd"
+msgstr "Password needed"
 
-msgid "Ecdg_ti_time_picker_separator"
-msgstr ":"
+# " get user name and password" dialog ok button
+msgid "frw_bd_get_user_name_and_pwd_ok"
+msgstr "OK"
 
-msgid "Ckct_wi_grid_no_items"
-msgstr "No items"
+#  " get user name and password"  dialog cancel button
+msgid "frw_bd_get_user_name_and_pwd_cancel"
+msgstr "Cancel"
 
-# determines the first day of the week (0 for Sunday, 1 for Monday etc.)
-msgid "week_start"
-msgstr "0"
+#  Secret Editor field in " get user name and password"  dialog for the password
+msgid "frw_ti_get_user_name_and_pwd_enter_pwd"
+msgstr "Password:"
 
-#: ../hildon-widgets/hildon-app.c:650
-msgid "ckct_ib_min_zoom_level_reached"
-msgstr "Maximum zoom level reached"
+#  Editor field in " get user name and password"  dialog for the user name
+msgid "frw_ti_get_user_name_and_pwd_enter_user_name"
+msgstr "User name"
 
-#: ../hildon-widgets/hildon-app.c:654
-msgid "ckct_ib_max_zoom_level_reached"
-msgstr "Minimum zoom level reached"
+#  Title for sort dialog
+msgid "ckdg_ti_sort"
+msgstr "Sort"
 
-msgid "Ecdg_ti_find_toolbar_label"
-msgstr "Find"
+# Sort dialog OK button.
+msgid "ckdg_bd_sort_dialog_ok"
+msgstr "OK"
 
-msgid "Ecdg_ti_caption_separator"
-msgstr ":"
+#  Sort dialog cancel button.
+msgid "ckdg_bd_sort_dialog_cancel"
+msgstr "Cancel"
+
+#  Label text for sort field choice list in Sort dialog
+msgid "ckdg_fi_sort_field"
+msgstr "Sort by:"
+
+#  Label text for sort order choice list in Sort dialog
+msgid "ckdg_fi_sort_order"
+msgstr "Order:"
+
+#  Field text for sort field "date" in Sort dialog
+msgid "ckdg_va_sort_date"
+msgstr "Date"
+
+#  Field text for sort field "name" in Sort dialog
+msgid "ckdg_va_sort_name"
+msgstr "Name"
+
+#  Field text for sort field "size" in Sort dialog
+msgid "ckdg_va_sort_size"
+msgstr "Size"
+
+#  Field text for sort field "size" in Sort dialog
+msgid "ckdg_va_sort_ascending"
+msgstr "Ascending"
+
+#  Field text for sort field "size" in Sort dialog
+msgid "ckdg_va_sort_descending"
+msgstr "Descending"
+
+#  Title for "Font" dialog
+msgid "ecdg_ti_font"
+msgstr "Font"
+
+#  Style - Page on Font dialog
+msgid "ecdg_ti_font_dialog_style"
+msgstr "Style"
+
+#  OK - button in Font - dialog
+msgid "ecdg_bd_font_dialog_ok"
+msgstr "OK"
+
+#  Cancel - button in Font - dialog
+msgid "ecdg_bd_font_dialog_cancel"
+msgstr "Cancel"
+
+#  Preview button in "Font" dialog
+msgid "ecdg_bd_font_dialog_preview"
+msgstr "Preview"
+
+#  Choice List in Font - dialog
+msgid "ecdg_fi_font_font"
+msgstr "Font face:"
+
+#  Choice List in Font - dialog
+msgid "ecdg_fi_font_size"
+msgstr "Font size:"
+
+#  Trailer text for Choicelist in Font - dialog
+msgid "ecdg_va_font_size_trailer"
+msgstr " pt."
+
+#  Colour Selector in Font - dialog
+msgid "ecdg_fi_font_colour_selector"
+msgstr "Colour:"
+
+#  Formatting - Page on Font dialog
+msgid "ecdg_ti_font_dialog_format"
+msgstr "Formatting"
+
+#  Choicelist in Font - dialog
+msgid "ecdg_fi_font_bold"
+msgstr "Bold:"
+
+#  Choicelist in Font - dialog
+msgid "ecdg_fi_font_italic"
+msgstr "Italic:"
+
+#  Choicelist in Font - dialog
+msgid "ecdg_fi_font_underline"
+msgstr "Underline:"
+
+#  Other - Page on Font dialog
+msgid "ecdg_ti_font_dialog_other"
+msgstr "Other"
+
+#  Choice list item in Font - dialog
+msgid "ecdg_va_font_printpos_1"
+msgstr "Normal"
+
+#  Choice list item in Font - dialog
+msgid "ecdg_va_font_printpos_2"
+msgstr "Superscript"
+
+#  Choice list item in Font - dialog
+msgid "ecdg_va_font_printpos_3"
+msgstr "Subscript"
+
+#  Choicelist in Font - dialog
+msgid "ecdg_fi_font_strikethrough"
+msgstr "Strikethrough:"
+
+#  Choicelist in Font - dialog
+msgid "ecdg_fi_font_special"
+msgstr "Positioning:"
+
+# Title for "Preview" dialog
+msgid "ecdg_ti_preview_font"
+msgstr "Preview"
+
+# Preview string for "Preview" dialog
+msgid "ecdg_fi_preview_font_preview_text"
+msgstr "The quick brown fox jumped over the lazy dogs"
+
+# OK button for "Preview" dialog
+msgid "ecgd_bd_preview_font_ok"
+msgstr "OK"
+
+# Reference text string for sub- and superscripted textst
+msgid "ecdg_fi_preview_font_preview_reference"
+msgstr "Reference: "
+
+# Title for Lock Code Dialog
+msgid "secu_application_title"
+msgstr "Enter lock code"
+
+# "Enter lock code" dialog ok button
+msgid "secu_enter_lock_code_dialog_ok"
+msgstr "OK"
+
+# "Enter lock code" dialog Cancel button
+msgid "secu_enter_lock_code_dialog_cancel"
+msgstr "Cancel"
+
+# "Enter lock code" information banner device locked
+msgid "secu_info_locked"
+msgstr "Device locked"
+
+# "Enter lock code" information banner Enter  lock code to lock the device
+msgid "secu_info_enterlock"
+msgstr "Enter lock code to lock device"
+
+# Confirmation note text
+msgid "secu_info_closedevice"
+msgstr "Switch off device?"
+
+# Information banner when entering correct lock code
+msgid "secu_info_codeaccepted"
+msgstr "Code accepted"
+
+# Information banner when entering incorrect lock code
+msgid "secu_info_incorrectcode"
+msgstr "Incorrect code"
+
+# Information banner when canceling enter lock code dialog (when locking device first time)
+msgid "secu_info_notlocked"
+msgstr "Device not locked"
