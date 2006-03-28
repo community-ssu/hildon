@@ -93,10 +93,10 @@ static void hildon_add_home_dialog_init(HildonAddHomeDialog * dialog)
     priv->isrename = FALSE;
 
     priv->okButton = gtk_dialog_add_button(GTK_DIALOG(dialog),
-                                           _("addtoHome_button_ok"),
+                                           "addtoHome_button_ok",
                                            GTK_RESPONSE_OK);
     priv->cancelButton = gtk_dialog_add_button(GTK_DIALOG(dialog),
-                                               _("addtoHome_button_cancel"),
+                                               "addtoHome_button_cancel",
                                                GTK_RESPONSE_CANCEL);
 
     gtk_window_resize(GTK_WINDOW(dialog),
@@ -168,7 +168,7 @@ GtkWidget *hildon_add_home_dialog_new(GtkWindow * parent,
         gtk_window_set_title(GTK_WINDOW(dialog), _("ckdg_ti_rename_link"));
     } else {
         priv->isrename = FALSE;
-        gtk_window_set_title(GTK_WINDOW(dialog), _("addtoHome_dialog_title"));
+        gtk_window_set_title(GTK_WINDOW(dialog), "addtoHome_dialog_title");
     }
 
     /* add description text */
@@ -191,7 +191,7 @@ GtkWidget *hildon_add_home_dialog_new(GtkWindow * parent,
         gtk_entry_set_text(GTK_ENTRY(priv->name_entry),
                            (name) ? name : "");
     }
-    caption = hildon_caption_new(size_group, _("addtoHome_editor_caption"),
+    caption = hildon_caption_new(size_group, "addtoHome_editor_caption",
                                  priv->name_entry, NULL,
                                  HILDON_CAPTION_OPTIONAL);
     gtk_box_pack_start(GTK_BOX(GTK_DIALOG(dialog)->vbox), caption,

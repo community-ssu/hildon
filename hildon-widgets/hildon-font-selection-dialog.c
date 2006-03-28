@@ -801,7 +801,7 @@ hildon_font_selection_dialog_construct_notebook (HildonFontSelectionDialog
 		     priv->font_color_button, FALSE, FALSE, 0);
   
   caption_control =
-    hildon_caption_new(group, _("ecdg_fi_font_color_selector"),
+    hildon_caption_new(group, _("ecdg_fi_font_colour_selector"),
 		       font_color_box,
 		       NULL, HILDON_CAPTION_OPTIONAL);
   

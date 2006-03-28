@@ -187,30 +187,30 @@ hildon_insert_object_dialog_init(HildonInsertObjectDialog * dialog)
     dialog->priv = HILDON_INSERT_OBJECT_DIALOG_GET_PRIVATE(dialog);
     gtk_dialog_set_has_separator(GTK_DIALOG(dialog), FALSE);
 
-    gtk_window_set_title(GTK_WINDOW(dialog), _("ckdg_ti_insert_insert_objec"));
+    gtk_window_set_title(GTK_WINDOW(dialog), "ckdg_ti_insert_insert_objec");
 
     dialog->priv->group =
         GTK_SIZE_GROUP(gtk_size_group_new(GTK_SIZE_GROUP_HORIZONTAL));
 
     dialog->priv->insertBtn =
         GTK_BUTTON(gtk_dialog_add_button(GTK_DIALOG(dialog),
-                                         _("ckdg_bd_insert_new"),
+                                         "ckdg_bd_insert_new",
                                          GTK_RESPONSE_OK));
 
     dialog->priv->existingBtn =
         GTK_BUTTON(gtk_dialog_add_button
-                   (GTK_DIALOG(dialog), _("ckdg_bd_insert_existing"),
+                   (GTK_DIALOG(dialog), "ckdg_bd_insert_existing",
                     HILDON_RESPONSE_INSERT_EXISTING));
 
     dialog->priv->cancelBtn =
         GTK_BUTTON(gtk_dialog_add_button(GTK_DIALOG(dialog),
-                                         _("ckdg_bd_insert_cancel"),
+                                         "ckdg_bd_insert_cancel",
                                          GTK_RESPONSE_CANCEL));
 
     dialog->priv->label = GTK_LABEL(gtk_label_new(NULL));
     dialog->priv->locationCap =
         HILDON_CAPTION(hildon_caption_new(dialog->priv->group,
-                                          _("Location"),
+                                          "Location",
                                           GTK_WIDGET(dialog->priv->label),
                                           NULL, HILDON_CAPTION_OPTIONAL));
     gtk_box_pack_start(GTK_BOX(GTK_DIALOG(dialog)->vbox),
@@ -220,7 +220,7 @@ hildon_insert_object_dialog_init(HildonInsertObjectDialog * dialog)
     dialog->priv->entry = GTK_ENTRY(gtk_entry_new());
     dialog->priv->entryCap =
         HILDON_CAPTION(hildon_caption_new(dialog->priv->group,
-                                          _("Name"),
+                                          "Name",
                                           GTK_WIDGET(dialog->priv->entry),
                                           NULL, HILDON_CAPTION_OPTIONAL));
 
@@ -232,7 +232,7 @@ hildon_insert_object_dialog_init(HildonInsertObjectDialog * dialog)
 
     dialog->priv->comboCap =
         HILDON_CAPTION(hildon_caption_new(dialog->priv->group,
-                                          _("Mime type"),
+                                          "Mime type",
                                           GTK_WIDGET(dialog->priv->combo),
                                           NULL, HILDON_CAPTION_OPTIONAL));
 

@@ -1,3 +1,20 @@
+2006-03-28  Luc Pionchon  <luc.pionchon@nokia.com>
+
+	* hildon-widgets/hildon-add-home-dialog.c
+	(hildon_add_home_dialog_init): removed i18n support (deprecated
+	widget. Hinder logical ID processing)
+	(hildon_add_home_dialog_new): likewise.
+
+	* hildon-widgets/hildon-insert-object-dialog.c
+	(hildon_insert_object_dialog_init): likewise.
+
+
+2006-03-28  Luc Pionchon  <luc.pionchon@nokia.com>
+
+	* hildon-widgets/hildon-font-selection-dialog.c
+	(hildon_font_selection_dialog_construct_notebook): logical ID typo
+	
+
 2006-03-27  Johan Bilien  <johan.bilien@nokia.com>
 
 	* hildon-widgets/hildon-window.[ch]:
