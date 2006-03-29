@@ -59,10 +59,9 @@
 #define _(String) dgettext(PACKAGE, String)
 
 #define SUPERSCRIPT_RISE 3333
-#define SUBSCRIPT_LOW -3333
-#define ON_BIT 0x01
+#define SUBSCRIPT_LOW   -3333
+#define ON_BIT  0x01
 #define OFF_BIT 0x02
-#define REFERENCE_LINE "Reference: " /*localized string?*/
 
 /*
  * These are what we use as the standard font sizes, for the size list.
@@ -1083,7 +1082,8 @@ hildon_font_selection_dialog_show_preview(HildonFontSelectionDialog *
 				GTK_RESPONSE_ACCEPT,
 				NULL);
 
-  str = g_strconcat(REFERENCE_LINE, priv->preview_text, 0);
+  str = g_strconcat(_("ecdg_fi_preview_font_preview_reference"),
+                    priv->preview_text, 0);
 
   preview_label = gtk_label_new(str);
   gtk_label_set_line_wrap(GTK_LABEL(preview_label), TRUE);
@@ -1103,7 +1103,7 @@ hildon_font_selection_dialog_show_preview(HildonFontSelectionDialog *
   
   /*Set the font*/
   list = hildon_font_selection_dialog_create_attrlist(fontsel, 
-				strlen(REFERENCE_LINE),
+				strlen(_("ecdg_fi_preview_font_preview_reference")),
 				strlen(priv->preview_text));
 
   g_object_get(G_OBJECT(fontsel), "family", &str, "family-set",
@@ -1113,7 +1113,7 @@ hildon_font_selection_dialog_show_preview(HildonFontSelectionDialog *
   if(family_set)
     {
       attr = pango_attr_family_new(str);
-      add_preview_text_attr(list, attr, 0, strlen(REFERENCE_LINE));
+      add_preview_text_attr(list, attr, 0, strlen(_("ecdg_fi_preview_font_preview_reference")));
     }
   g_free(str);
   
@@ -1121,7 +1121,7 @@ hildon_font_selection_dialog_show_preview(HildonFontSelectionDialog *
   if(size_set)
     {
       attr = pango_attr_size_new(size * PANGO_SCALE);
-      add_preview_text_attr(list, attr, 0, strlen(REFERENCE_LINE));
+      add_preview_text_attr(list, attr, 0, strlen(_("ecdg_fi_preview_font_preview_reference")));
     }
   
   gtk_label_set_attributes(GTK_LABEL(preview_label), list);

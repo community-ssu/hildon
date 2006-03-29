@@ -1,3 +1,14 @@
+2006-03-29  Luc Pionchon  <luc.pionchon@nokia.com>
+
+	Fixes N#20917
+	* hildon-widgets/hildon-font-selection-dialog.c
+	(REFERENCE_LINE): removed
+	(hildon_font_selection_dialog_show_preview): added l10n support
+	for the reference string (use to differentiate sub/super script in
+	font preview)
+	(hildon_font_selection_dialog_show_preview): likewise
+
+
 2006-03-28  Luc Pionchon  <luc.pionchon@nokia.com>
 
 	* po/en_GB.po: update
