@@ -1,3 +1,7 @@
+2006-03-30  Luc Pionchon  <luc.pionchon@nokia.com>
+
+	* configure.ac: 0.12.7
+
 2006-03-29  Luc Pionchon  <luc.pionchon@nokia.com>
 
 	Fixes N#20917
@@ -52,7 +56,7 @@
 2006-03-23  Luc Pionchon  <luc.pionchon@nokia.com>
 
 	* hildon-widgets/hildon-defines.h (HILDON_HARDKEY_LEFT):
-	fixed typo GKD_Left -> GDK_Left
+	fixed typo GKD_Left -> GDK_Left, N#24042
 
 
 2006-03-22  Luc Pionchon  <luc.pionchon@nokia.com>
