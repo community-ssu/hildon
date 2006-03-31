@@ -1,6 +1,6 @@
 hildon-libs (0.12.7-2) unstable; urgency=low
 
-* debian/control: removed -l10n-english dependency (does not exist (yet))
+   * debian/control: removed -l10n-english dependency (does not exist (yet))
 
  -- Natalia Dobrovolskaya <natalia.dobrovolskaya@nokia.com>  Fri, 31 Mar 2006 14:22:00 +0300
 
