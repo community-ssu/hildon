@@ -16,7 +16,7 @@ Section: libs
 Architecture: any
 Conflicts: hildon-lgpl0 (<< 0.12)
 Replaces: hildon-lgpl0 (<< 0.12)
-Depends: ${shlibs:Depends}, ${misc:Depends}, osso-sounds-ui, libosso-gnomevfs2-0, osso-esd, libgconf2-6, hildon-libs-l10n-english | hildon-libs-l10n-mr0 | hildon-libs-l10n-mr
+Depends: ${shlibs:Depends}, ${misc:Depends}, osso-sounds-ui, libosso-gnomevfs2-0, osso-esd, libgconf2-6, hildon-libs-l10n-mr0 | hildon-libs-l10n-mr
 Description: Hildon libraries
 
 Package: hildon-libs0-dbg
