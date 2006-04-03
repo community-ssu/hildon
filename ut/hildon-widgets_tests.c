@@ -50,6 +50,7 @@
 #include <hildon-widgets/hildon-grid.h>
 #include <hildon-widgets/hildon-time-editor.h>
 #include <hildon-widgets/hildon-name-password-dialog.h>
+#include <hildon-widgets/hildon-caption.h>
 #include <outo.h>
 
 /* Icon which must exist (HildonGridItem). */
@@ -337,6 +338,9 @@ int test39b(void);
 #ifndef HILDON_DISABLE_DEPRECATED
 int test41a(void);
 #endif
+
+int test42 (void);
+
 /* this has to be like this (not static). outo
    calls for this! */
 testcase *get_tests(void);
@@ -2913,6 +2917,20 @@ int test39b()
    return 1;
 }
 
+int test42 ()
+{
+  GtkWidget *entry, *caption;
+
+  entry = gtk_entry_new ();
+  caption = hildon_caption_new (NULL /* group */,
+				"caption text",
+				GTK_WIDGET(entry), NULL,
+				HILDON_CAPTION_OPTIONAL /* flag */);
+
+  g_assert (caption);
+  return 1;
+}
+
 testcase tcases[] =
 {
     {*test1a, "hildon_controlbar_new", EXPECT_OK},
@@ -3135,7 +3153,9 @@ testcase tcases[] =
     {*test39b, "namepassword dialog get_password", EXPECT_OK},
 /*    {*test38a, "gtk_confirmation_banner (sometext)", EXPECT_OK},
     {*test38a, "gtk_confirmation_banner (NULL)", EXPECT_OK},*/
-   
+
+    { test42, "hildon_caption_new", EXPECT_OK },
+
     {0} /*REMEMBER THE TERMINATING NULL*/
 };
 

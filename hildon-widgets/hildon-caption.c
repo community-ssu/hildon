@@ -586,6 +586,8 @@ static void hildon_caption_init( HildonCaption *caption )
 
   gtk_widget_pop_composite_child();
 
+  hildon_caption_set_child_expand( caption, TRUE );
+
   gtk_widget_show_all( priv->caption_area );
 }
 
@@ -803,20 +805,15 @@ GtkSizeGroup *hildon_caption_get_sizegroup( const HildonCaption *self )
  * @Returns : a #GtkWidget pointer of Caption
  */
 GtkWidget *hildon_caption_new( GtkSizeGroup *group, const gchar *value,
-                               GtkWidget *control, GtkWidget *icon,
+                               GtkWidget *child, GtkWidget *icon,
                                HildonCaptionStatus flag)
 {
   GtkWidget *widget;
-  g_return_val_if_fail( GTK_IS_WIDGET(control), NULL );
+  g_return_val_if_fail( GTK_IS_WIDGET(child), NULL );
   
   widget = g_object_new( HILDON_TYPE_CAPTION, "label", value,
-			"size_group", group, "icon", icon, "status", flag,
+			"child" /* From GtkContainer */, child, "size_group", group, "icon", icon, "status", flag,
                         NULL );
-
-  /* Pack the captioned widget */
-  hildon_caption_set_child_expand( HILDON_CAPTION(widget), TRUE );
-  gtk_container_add( GTK_CONTAINER(widget), control );
-
 
   return widget;
 }
