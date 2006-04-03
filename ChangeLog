@@ -1,3 +1,21 @@
+2006-04-03  Marius Vollmer  <marius.vollmer@nokia.com>
+
+	* ut/hildon-widgets_tests.c: Disabled unimplemented testcases:
+	test20a, test20b, test20c, test20d, test36a, test36b, test36c,
+	test36d.
+
+	From Murray Cumming.
+	
+ 	* hildon-lgpl/hildon-caption.c:
+	(hildon_caption_init): Do the hildon_caption_set_child_expand()
+	here.
+	(hildon_caption_new): Use the child property from GtkContainer
+	instead of calling gtk_container_add(), because _new() functions
+	should just use g_object_new(), so that language-bindings can do
+	the same.
+
+	* ut/hildon-widgets_tests.c: Added test42 for hildon_caption_new. 
+
 2006-03-30  Luc Pionchon  <luc.pionchon@nokia.com>
 
 	* configure.ac: 0.12.7
