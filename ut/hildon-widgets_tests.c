@@ -167,11 +167,13 @@ int test19c(void);
 int test19d(void);
 int test19e(void);
 
+#if 0
 /* find object dialog */
 int test20a(void);
 int test20b(void);
 int test20c(void);
 int test20d(void);
+#endif
 
 /* find object options dialog */
 /*int test21a(void);
@@ -314,10 +316,13 @@ int test35e(void);
 int test35f(void);
 int test35g(void);
 int test35h(void);
+
+#if 0
 int test36a(void);
 int test36b(void);
 int test36c(void);
 int test36d(void);
+#endif
 
 /* New infoprint/banner functionalities. */
 int test37a(void);
@@ -2997,10 +3002,12 @@ testcase tcases[] =
     {*test19c, "htp_editor_set/get_number: inv", EXPECT_OK},
     {*test19d, "htp_editor_set_number: null", EXPECT_ASSERT},
     {*test19e, "htp_editor_get_number: null", EXPECT_ASSERT},
+#if 0
     {*test20a, "hildon_find_object: new", EXPECT_OK},
     {*test20b, "hildon_find_object: with_options", EXPECT_OK},
     {*test20c, "hildon_find_object: get_text", EXPECT_OK},
     {*test20d, "hildon_find_object: get_label", EXPECT_OK},
+#endif
     /*{*test21a, "hildon_find_options: new", EXPECT_OK},
     {*test21b, "hildon_find_options: hide_loc", EXPECT_OK},
     {*test21c, "hildon_find_options: hide_find_in", EXPECT_OK},
@@ -3116,10 +3123,12 @@ testcase tcases[] =
     {*test35f, "hildon_time_editor_enable_duration_mode (TRUE, FALSE", EXPECT_OK},
     {*test35g, "hildon_time_editor_set/get_time with foo value check", EXPECT_ASSERT},
     {*test35h, "hildon_time_editor_set/get_duration_range with foo value check", EXPECT_ASSERT},
+#if 0
     {*test36a, "hildon_find_replace_dialog_new", EXPECT_OK},
     {*test36b, "hildon_find_replace_dialog_new_with_options", EXPECT_OK},
     {*test36c, "hildon_find_replace_dialog_get_text", EXPECT_OK},
     {*test36d, "hildon_find_replace_dialog_get_new_text", EXPECT_OK},
+#endif
     {*test37a, "gtk_infoprint_temporarily_disable_wrap", EXPECT_OK},
     {*test37b, "gtk_banner_temporarily_disable_wrap", EXPECT_OK},
     {*test39a, "namepassword dialog get_name", EXPECT_OK},
