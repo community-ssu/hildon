@@ -380,21 +380,21 @@ GType hildon_get_password_dialog_get_type(void)
 /**
  * hildon_get_password_dialog_new:
  * @parent: parent window; can be NULL
- * @get_old_password_title: FALSE creates a new get password dialog and
- *                     TRUE creates a new get old password dialog. That is,
- *                     if the password to be obtained is the old password, 
- *                     this parameter is specified TRUE.  
+ * @get_old: FALSE creates a new get password dialog and
+ *           TRUE creates a new get old password dialog. That is,
+ *           if the password to be obtained is the old password, 
+ *           this parameter is specified TRUE.  
  * 
  * Construct a new HildonGetPasswordDialog.
  *
  * Returns: a new #GtkWidget of type HildonGetPasswordDialog
  */
 GtkWidget *hildon_get_password_dialog_new(GtkWindow * parent,
-                                          gboolean get_old_password_title)
+                                          gboolean get_old)
 {
     HildonGetPasswordDialog *dialog = g_object_new
         (HILDON_TYPE_GET_PASSWORD_DIALOG,
-         "get-old", get_old_password_title, NULL);
+         "get-old", get_old, NULL);
 
     if (parent != NULL) {
         gtk_window_set_transient_for(GTK_WINDOW(dialog), parent);
@@ -407,10 +407,10 @@ GtkWidget *hildon_get_password_dialog_new(GtkWindow * parent,
  * hildon_get_password_dialog_new_with_default:
  * @parent: parent window; can be NULL
  * @password: a default password to be shown in password field
- * @get_old_password_title: FALSE creates a new get password dialog and
- *                     TRUE creates a new get old password dialog.That is,
- *                     if the password to be obtained is the old password,
- *                     this parameter is specified TRUE.
+ * @get_old: FALSE creates a new get password dialog and
+ *           TRUE creates a new get old password dialog.That is,
+ *           if the password to be obtained is the old password,
+ *           this parameter is specified TRUE.
  *                        
  * 
  * Same as #hildon_get_password_dialog_new but with a default password
@@ -420,11 +420,11 @@ GtkWidget *hildon_get_password_dialog_new(GtkWindow * parent,
  */
 GtkWidget *hildon_get_password_dialog_new_with_default (GtkWindow * parent,
 							const gchar *password,
-                                               gboolean get_old_password_title)
+                                               gboolean get_old)
 {
     GtkWidget *dialog;
 
-    dialog = hildon_get_password_dialog_new(parent, get_old_password_title);
+    dialog = hildon_get_password_dialog_new(parent, get_old);
     if(password != NULL)
         g_object_set(G_OBJECT(dialog), "password", password, NULL);
 

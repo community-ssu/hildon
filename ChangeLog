@@ -1,3 +1,13 @@
+2006-04-04  Marius Vollmer  <marius.vollmer@nokia.com>
+
+	* hildon-widgets/hildon-get-password-dialog.h,
+	hildon-widgets/hildon-get-password-dialog.c
+	(hildon_get_password_dialog_new,
+	hildon_get_password_dialog_new_with_default): Renamed
+	get_old_password_title parameter to "get_old" to correspond with
+	the property name.  This helps the C++ bindings.
+	* ut/hildon-widgets_tests.c (test43, test44): New.
+
 2006-04-03  Marius Vollmer  <marius.vollmer@nokia.com>
 
 	* ut/hildon-widgets_tests.c: Disabled unimplemented testcases:

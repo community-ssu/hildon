@@ -72,11 +72,11 @@ struct _HildonGetPasswordDialogClass {
 GType      hildon_get_password_dialog_get_type(void) G_GNUC_CONST;
 
 GtkWidget *hildon_get_password_dialog_new              (GtkWindow   *parent,
-                                                        gboolean     get_old_password_title);
+                                                        gboolean     get_old);
 
 GtkWidget *hildon_get_password_dialog_new_with_default (GtkWindow   *parent,
 					                const gchar *password,
-						        gboolean     get_old_password_title);
+						        gboolean     get_old);
 
 void       hildon_get_password_dialog_set_domain       (HildonGetPasswordDialog *dialog, 
 					                const gchar             *domain);

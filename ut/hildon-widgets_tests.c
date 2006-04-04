@@ -340,6 +340,8 @@ int test41a(void);
 #endif
 
 int test42 (void);
+int test43 (void);
+int test44 (void);
 
 /* this has to be like this (not static). outo
    calls for this! */
@@ -2931,6 +2933,34 @@ int test42 ()
   return 1;
 }
 
+int test43 ()
+{
+  GtkWidget *dialog;
+
+  dialog = hildon_get_password_dialog_new (NULL, TRUE);
+  g_assert (dialog);
+
+  dialog = hildon_get_password_dialog_new (NULL, FALSE);
+  g_assert (dialog);
+
+  return 1;
+}
+
+int test44 ()
+{
+  GtkWidget *dialog;
+
+  dialog = hildon_get_password_dialog_new_with_default (NULL, "seekrit",
+							TRUE);
+  g_assert (dialog);
+
+  dialog = hildon_get_password_dialog_new_with_default (NULL, "seekrit",
+							FALSE);
+  g_assert (dialog);
+
+  return 1;
+}
+
 testcase tcases[] =
 {
     {*test1a, "hildon_controlbar_new", EXPECT_OK},
@@ -3155,6 +3185,8 @@ testcase tcases[] =
     {*test38a, "gtk_confirmation_banner (NULL)", EXPECT_OK},*/
 
     { test42, "hildon_caption_new", EXPECT_OK },
+    { test43, "hildon_get_password_dialog_new", EXPECT_OK },
+    { test44, "hildon_get_password_dialog_new_with_default", EXPECT_OK },
 
     {0} /*REMEMBER THE TERMINATING NULL*/
 };
