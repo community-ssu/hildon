@@ -1,3 +1,16 @@
+2006-04-06  Johan Bilien  <johan.bilien@nokia.com>
+
+	* hildon-widgets/hildon-window.c:
+	  - Fixed a bug that made window fullscreen state tracking fail
+	  - Apply correct theming to menus so that they get placed
+	    correctly (Fixes N#24325)
+	  - Redraw the window borders if the size of the toolbar vbox changes
+	  - Reset the program to NULL in hildon_window_destroy
+	  - Stop the ESC key-press timeout when the window loses the focus
+	  - Small cleanups
+	* hildon-widgets/hildon-program.c:
+	  - Reset the common toolbar to NULL when the program is finalised
+
 2006-04-04  Marius Vollmer  <marius.vollmer@nokia.com>
 
 	* hildon-widgets/hildon-get-password-dialog.h,

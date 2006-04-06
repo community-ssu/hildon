@@ -45,6 +45,7 @@
 #include <gtk/gtkentry.h>
 #include <gtk/gtktextview.h>
 #include <gtk/gtkscrolledwindow.h>
+#include <gtk/gtkmain.h>
 #include <gdk/gdkkeysyms.h>
 #include <gdk/gdk.h>
 
@@ -150,16 +151,24 @@ hildon_window_is_topmost_notify (GObject *self,
                                  GParamSpec *property_spec,
                                  gpointer null);
 
+static gboolean 
+hildon_window_vbox_expose_event (GtkWidget *vbox,
+                                 GdkEventExpose *event,
+                                 gpointer window);
+
 static void
 hildon_window_toggle_menu (HildonWindow * self);
 
 static gboolean
 hildon_window_escape_timeout (gpointer data);
 
-static void get_client_area(GtkWidget * widget,
-                            GtkAllocation * allocation);
-static GdkFilterReturn hildon_window_event_filter( GdkXEvent *xevent, GdkEvent *event, gpointer data );
-static GdkFilterReturn hildon_window_root_window_event_filter( GdkXEvent *xevent, GdkEvent *event, gpointer data );
+static GdkFilterReturn
+hildon_window_event_filter (GdkXEvent *xevent, GdkEvent *event, gpointer data );
+
+static GdkFilterReturn
+hildon_window_root_window_event_filter (GdkXEvent *xevent, 
+                                        GdkEvent *event, 
+                                        gpointer data );
 
 static void
 hildon_window_get_borders (HildonWindow *window);
@@ -198,10 +207,11 @@ struct _HildonWindowPrivate
 
     GtkAllocation allocation;
 
-    guint fullscreen : 1;
-    guint is_topmost: 1;
+    guint fullscreen;
+    guint is_topmost;
     guint escape_timeout;
     gint visible_toolbars;
+    gint previous_vbox_y;
 
     HildonProgram *program;
 };
@@ -313,6 +323,11 @@ hildon_window_init (HildonWindow * self)
     gtk_widget_set_events (GTK_WIDGET(self), GDK_BUTTON_PRESS_MASK |
              GDK_BUTTON_RELEASE_MASK | GDK_POINTER_MOTION_MASK);
 
+    /* Handle the drawing of the vbox (add the pixmap borders) */
+    g_signal_connect (G_OBJECT (self->priv->vbox), "expose-event",
+                      G_CALLBACK (hildon_window_vbox_expose_event),
+                      self);
+
     /* Used to keep track of fullscreen / unfullscreen */
     g_signal_connect (G_OBJECT (self), "window_state_event",
             G_CALLBACK (hildon_window_window_state_event), self);
@@ -337,18 +352,11 @@ hildon_window_finalize (GObject * obj_self)
     HildonWindow *self;
     g_return_if_fail (HILDON_WINDOW (obj_self));
     self = HILDON_WINDOW (obj_self);
-
-    if (self->priv->program)
-    {
-        hildon_program_remove_window (self->priv->program, self);
-    }
     
-    gdk_window_remove_filter (gdk_get_default_root_window(), 
-                              hildon_window_root_window_event_filter,
-                              obj_self);
 
     if (G_OBJECT_CLASS (parent_class)->finalize)
         G_OBJECT_CLASS (parent_class)->finalize (obj_self);
+
 }
 
 static void
@@ -384,10 +392,6 @@ hildon_window_realize (GtkWidget *widget)
 
     XFree(old_atoms);
     g_free(new_atoms);
-
-   gdk_window_set_events (widget->window, 
-           gdk_window_get_events (widget->window) | GDK_SUBSTRUCTURE_MASK);
-
        
    /* rely on GDK to set the window group to its default */
    gdk_window_set_group (widget->window, NULL);
@@ -477,10 +481,10 @@ hildon_window_get_borders (HildonWindow *window)
 }
 
 static void
-shown_children(gpointer data, gpointer user_data)
+visible_toolbars (gpointer data, gpointer user_data)
 {
     if (GTK_WIDGET_VISIBLE (GTK_WIDGET (((GtkBoxChild *)data)->widget)))
-        *((gboolean *)user_data) = TRUE;
+        (*((gint *)user_data)) ++;
 }
 
 static gboolean
@@ -492,8 +496,7 @@ hildon_window_expose (GtkWidget * widget, GdkEventExpose * event)
     GtkBorder *b = HILDON_WINDOW(widget)->priv->borders;
     GtkBorder *tb = HILDON_WINDOW(widget)->priv->toolbar_borders;
     gint tb_height = 0;
-    gint height_decrement = 0;
-    gboolean draw_toolbar = FALSE;
+    gint currently_visible_toolbars = 0;
 
     if (!priv->borders)
     {
@@ -502,25 +505,55 @@ hildon_window_expose (GtkWidget * widget, GdkEventExpose * event)
 
     tb_height = bx->allocation.height + tb->top + tb->bottom;
 
-    g_list_foreach (box->children, shown_children, &draw_toolbar);
+    g_list_foreach (box->children, visible_toolbars, 
+            &currently_visible_toolbars);
 
-    if (HILDON_WINDOW (widget)->priv->fullscreen)
+    if (priv->previous_vbox_y != priv->vbox->allocation.y)
     {
-        if(draw_toolbar)
-        {
-            paint_toolbar (widget, box, event, TRUE);
-        }
+        gint draw_from_y = priv->previous_vbox_y < priv->vbox->allocation.y?
+            priv->previous_vbox_y - tb->top:
+            priv->vbox->allocation.y - tb->top;
+        
+        gtk_widget_queue_draw_area (widget, 0, draw_from_y, 
+                widget->allocation.width,
+                widget->allocation.height - draw_from_y);
+        
+        priv->previous_vbox_y = priv->vbox->allocation.y;
     }
-    else
+
+    if (!HILDON_WINDOW (widget)->priv->fullscreen)
     {
-        if (draw_toolbar)
+
+        /* Draw the left and right window border */
+        gint side_borders_height = widget->allocation.height - b->top;
+
+        if (currently_visible_toolbars)
+            side_borders_height -= tb_height;
+        else
+            side_borders_height -= b->bottom;
+        
+        if (b->left > 0)
         {
-            paint_toolbar (widget, box, event, FALSE);
-            height_decrement = tb_height;
+            gtk_paint_box (widget->style, widget->window,
+                    GTK_WIDGET_STATE(widget), GTK_SHADOW_OUT,
+                    &event->area, widget, "left-border",
+                    widget->allocation.x, widget->allocation.y +
+                    b->top, b->left, side_borders_height);
         } 
-        else if (b->bottom > 0)
+
+        if (b->right > 0)
         {
-            height_decrement = b->bottom;
+            gtk_paint_box (widget->style, widget->window,
+                    GTK_WIDGET_STATE(widget), GTK_SHADOW_OUT,
+                    &event->area, widget, "right-border",
+                    widget->allocation.x + widget->allocation.width -
+                    b->right, widget->allocation.y + b->top,
+                    b->right, side_borders_height);
+        }
+
+        /* If no toolbar, draw the bottom window border */
+        if (!currently_visible_toolbars &&b->bottom > 0)
+        {
             gtk_paint_box (widget->style, widget->window,
                     GTK_WIDGET_STATE(widget), GTK_SHADOW_OUT,
                     &event->area, widget, "bottom-border",
@@ -529,34 +562,17 @@ hildon_window_expose (GtkWidget * widget, GdkEventExpose * event)
                     widget->allocation.width, b->bottom);
         }
 
+        /* Draw the top border */
         if (b->top > 0)
         {
-            height_decrement += b->top;
             gtk_paint_box (widget->style, widget->window,
                     GTK_WIDGET_STATE(widget), GTK_SHADOW_OUT,
                     &event->area, widget, "top-border",
                     widget->allocation.x, widget->allocation.y,
                     widget->allocation.width, b->top);
         } 
-        if (b->left > 0)
-        {
-            gtk_paint_box (widget->style, widget->window,
-                    GTK_WIDGET_STATE(widget), GTK_SHADOW_OUT,
-                    &event->area, widget, "left-border",
-                    widget->allocation.x, widget->allocation.y +
-                    b->top, b->left, widget->allocation.height -
-                    height_decrement);
-        } 
-        if (b->right > 0)
-        {
-            gtk_paint_box (widget->style, widget->window,
-                    GTK_WIDGET_STATE(widget), GTK_SHADOW_OUT,
-                    &event->area, widget, "right-border",
-                    widget->allocation.x + widget->allocation.width -
-                    b->right, widget->allocation.y + b->top,
-                    b->right, widget->allocation.height -
-                    height_decrement);
-        }
+
+
     }
 
     /* don't draw the window stuff as it overwrites our borders with a blank
@@ -714,7 +730,7 @@ hildon_window_destroy (GtkObject *obj)
 
     while (menu_list)
     {
-        if (menu_list->data)
+        if (GTK_IS_MENU(menu_list->data))
         {
             if (GTK_WIDGET_VISIBLE (GTK_WIDGET (menu_list->data)))
             {
@@ -725,6 +741,17 @@ hildon_window_destroy (GtkObject *obj)
         }
         menu_list = menu_list->next;
     }
+    
+    if (self->priv->program)
+    {
+        hildon_program_remove_window (self->priv->program, self);
+    }
+    
+    gdk_window_remove_filter (gdk_get_default_root_window(), 
+                              hildon_window_root_window_event_filter,
+                              obj);
+    
+    gtk_widget_set_events (GTK_WIDGET(obj), 0);
 
     GTK_OBJECT_CLASS (parent_class)->destroy (obj);
 }
@@ -740,6 +767,46 @@ hildon_window_is_topmost_notify (GObject *self,
     {
         hildon_window_take_common_toolbar (window);
     }
+
+    else
+    {
+        /* If the window lost focus while the user started to press
+         * the ESC key, we won't get the release event. We need to
+         * stop the timeout*/
+        if (window->priv->escape_timeout)
+        {
+            g_source_remove (window->priv->escape_timeout);
+            window->priv->escape_timeout = 0;
+        }
+    }
+}
+
+
+static gboolean 
+hildon_window_vbox_expose_event (GtkWidget *vbox,
+                                 GdkEventExpose *event,
+                                 gpointer window)
+{
+    HildonWindowPrivate *priv = HILDON_WINDOW (window)->priv;
+
+    hildon_window_get_borders (HILDON_WINDOW(window));
+
+    event->area.x -= priv->toolbar_borders->left;
+    event->area.y -= priv->toolbar_borders->top;
+    event->area.width += (priv->toolbar_borders->left + 
+                          priv->toolbar_borders->right);
+    event->area.height += (priv->toolbar_borders->top + 
+                           priv->toolbar_borders->bottom);
+
+    paint_toolbar (GTK_WIDGET (window), GTK_BOX (vbox), event, priv->fullscreen);
+    
+    GTK_WIDGET_CLASS (G_TYPE_INSTANCE_GET_CLASS (vbox, GTK_TYPE_VBOX, GtkVBox))
+            ->expose_event (vbox, event);
+    
+    event->area = GTK_WIDGET(window)->allocation;
+
+
+    return TRUE;
 }
 
 /* Utilities */
@@ -1093,37 +1160,25 @@ hildon_window_title_notify (GObject *gobject,
 /*     General     */
 /*******************/
 
-/* TODO: Clean those ... */
-
-/*
- * queries a window for the root window coordinates and size of its
- * client area (i.e. minus the title borders etc.
- */
-static void
-get_client_area (GtkWidget * widget, GtkAllocation * allocation)
-{
-    GdkWindow *window = widget->window;
-    
-    if (window)
-        gdk_window_get_origin (window, &allocation->x, &allocation->y);
-    else
-        memset (allocation, 0, sizeof(GtkAllocation));
-}
-
 /*The menu popuping needs a menu popup-function*/
 static void
 hildon_window_menupopupfunc (GtkMenu *menu, gint *x, gint *y,
                              gboolean *push_in, GtkWidget *widget)
 {
-    GtkAllocation client_area = { 0, 0, 0, 0 };
-
-    get_client_area (GTK_WIDGET (widget), &client_area);
+    gint window_x = 0;
+    gint window_y = 0;
+    GdkWindow *window = GTK_WIDGET(widget)->window;
+    
+    if (window)
+    {
+        gdk_window_get_origin (window, &window_x, &window_y);
+    }
 
     gtk_widget_style_get (GTK_WIDGET (menu), "horizontal-offset", x,
             "vertical-offset", y, NULL);
 
-    *x += client_area.x;
-    *y += client_area.y;
+    *x += window_x;
+    *y += window_y;
   
 }
 
@@ -1188,6 +1243,8 @@ hildon_window_unset_program (HildonWindow *self)
         gdk_window_add_filter (gdk_get_default_root_window (),
                 hildon_window_root_window_event_filter, self );
     }
+
+    self->priv->program = NULL;
 }
 
 /*
@@ -1381,19 +1438,25 @@ hildon_window_toggle_menu (HildonWindow * self)
 
     if (gtk_container_get_children (GTK_CONTAINER (menu_to_use)) != NULL)
     {
+        /* Apply right theming */
+        gtk_widget_set_name (GTK_WIDGET (menu_to_use),
+                "menu_force_with_corners");
+        
         if (self->priv->fullscreen) 
         {
             gtk_menu_popup (menu_to_use, NULL, NULL,
                            (GtkMenuPositionFunc)
                            hildon_window_menupopupfuncfull,
-                           self, 0, 0);
+                           self, 0, 
+                           gtk_get_current_event_time ());
         }
         else
         {
             gtk_menu_popup (menu_to_use, NULL, NULL,
                            (GtkMenuPositionFunc)
                            hildon_window_menupopupfunc,
-                           self, 0, 0);
+                           self, 0, 
+                           gtk_get_current_event_time ());
         }
         gtk_menu_shell_select_first (GTK_MENU_SHELL (menu_to_use), TRUE);
     }
@@ -1567,7 +1630,7 @@ hildon_window_set_menu (HildonWindow *self, GtkMenu *menu)
 
     self->priv->menu = GTK_WIDGET (menu);
     gtk_widget_set_name (GTK_WIDGET (self->priv->menu),
-            "menu_force_with_corners");
+                         "menu_force_with_corners");
     gtk_widget_show_all (self->priv->menu);
 
     gtk_menu_attach_to_widget (menu, GTK_WIDGET (self), &detach_menu_func);
@@ -1586,3 +1649,4 @@ hildon_window_get_is_topmost(HildonWindow *self){
     
     return self->priv->is_topmost;
 }
+
