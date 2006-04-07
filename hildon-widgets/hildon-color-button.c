@@ -219,8 +219,8 @@ hildon_color_field_expose_event(GtkWidget *widget, GdkEventExpose *event,
             TRUE,
             event->area.x + (INNER_BORDER_THICKNESS + OUTER_BORDER_THICKNESS),
             event->area.y + (INNER_BORDER_THICKNESS + OUTER_BORDER_THICKNESS),
-            event->area.height - ((INNER_BORDER_THICKNESS + OUTER_BORDER_THICKNESS)*2),
-            event->area.width  - ((INNER_BORDER_THICKNESS + OUTER_BORDER_THICKNESS)*2));
+            event->area.width  - ((INNER_BORDER_THICKNESS + OUTER_BORDER_THICKNESS)*2),
+            event->area.height - ((INNER_BORDER_THICKNESS + OUTER_BORDER_THICKNESS)*2));
 
     return FALSE;
 }

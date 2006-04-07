@@ -1,3 +1,9 @@
+2006-04-07  Luc Pionchon  <luc.pionchon@nokia.com>
+
+	* hildon-widgets/hildon-color-button.c
+	(hildon_color_field_expose_event): correct parameter order.
+
+
 2006-04-07  Johan Bilien  <johan.bilien@nokia.com>
 
 	* hildon-widgets/hildon-window.c:
