@@ -3,7 +3,8 @@ hildon-libs (0.12.8-1) unstable; urgency=low
   * fixes N#24339 - Information banners do not resize
   * fixes N#26033 - Periodic applications slowdown
   * fixes N#24325 - The menu location is wrong in HildonWindow
-  * fixes N#24339 - Information banners do not resize
+  * fixes N#14117 - Infoprints cannot display glyphs for HW keys
+
   * improved code for bindings
   * hildon-banner: add pango support
 
