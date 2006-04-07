@@ -1,3 +1,14 @@
+hildon-libs (0.12.8-1) unstable; urgency=low
+
+  * fixes N#24339 - Information banners do not resize
+  * fixes N#26033 - Periodic applications slowdown
+  * fixes N#24325 - The menu location is wrong in HildonWindow
+  * fixes N#24339 - Information banners do not resize
+  * improved code for bindings
+  * hildon-banner: add pango support
+
+ -- Luc Pionchon <luc.pionchon@nokia.com>  Fri,  7 Apr 2006 21:15:28 +0300
+
 hildon-libs (0.12.7-2) unstable; urgency=low
 
    * debian/control: removed -l10n-english dependency (does not exist (yet))
