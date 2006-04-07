@@ -179,13 +179,13 @@ void gtk_infoprint_temporarily_disable_wrap(void)
  * the text to one line and the font is emphasized.
  *
  * This function is deprecated and should not be used.
- * Use #hildon_banner_show_confirmation instead.
+ * Use #hildon_banner_show_information instead.
  */
 void
 gtk_confirmation_banner(GtkWindow * parent, const gchar * text,
                         const gchar * stock_id)
 {
-   hildon_banner_show_confirmation((GtkWidget *) parent, NULL, text);
+   hildon_banner_show_information((GtkWidget *) parent, NULL, text);
 }
 
 /**
@@ -207,13 +207,13 @@ gtk_confirmation_banner(GtkWindow * parent, const gchar * text,
  * the text to one line and the font is emphasized.
  *
  * This function is deprecated and should not be used.
- * Use #hildon_banner_show_confirmation instead.
+ * Use #hildon_banner_show_information instead.
  */
 void
 gtk_confirmation_banner_with_icon_name(GtkWindow * parent, const gchar * text,
                         const gchar * icon_name)
 {
-   hildon_banner_show_confirmation((GtkWidget *) parent, icon_name, text);
+   hildon_banner_show_information((GtkWidget *) parent, icon_name, text);
 }
 
 /**

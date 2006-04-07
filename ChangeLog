@@ -1,3 +1,44 @@
+2006-04-07  Tomas Junnonen  <tomas.junnonen@nokia.com>
+
+ 	- Added support for Pango markup
+	  Added   hildon_banner_show_information_with_markup
+ 	- Removed hildon_banner_show_confirmation
+ 	- Re-position the banner when its content changes
+ 	- Banner now doesn't truncate strings nor insert linebreaks
+	- fixes N#24339 - Information banners do not resize
+
+	* hildon-widgets/hildon-banner.[ch]
+	(hildon_banner_show_information_with_markup): new function. Adds
+	pango markup support for information banners.
+	
+	(hildon_banner_show_confirmation): removed. 'confirmation' was
+	used only for the taask navigator (at most). It should use
+	_show_information_with_markup with appropriate markup.
+	
+	(hildon_banner_set_markup): new function. 
+
+	(hildon_banner_check_position): new function. Factor code from
+	hildon_banner_realize(), and update position calculation.
+
+	(struct _HildonBannerPrivate): removed max_lines.
+	Uses as much lines as needed.
+
+	(hildon_banner_init): set banner label to wrap lines.
+	
+	(hildon_banner_set_text): do not truncate. Update banner's position.
+
+	(hildon_banner_set_markup): new function.
+	                            Set banner's text with Pango markup.
+
+	(_hildon_gtk_label_set_text_n_lines): marked as deprecated.
+
+
+	* hildon-widgets/gtk-infoprint.c
+	(gtk_confirmation_banner): use hildon_banner_show_information
+	instead of _show_confirmation.
+	(gtk_confirmation_banner_with_icon_name): likewise.
+
+
 2006-04-07  Luc Pionchon  <luc.pionchon@nokia.com>
 
 	* hildon-widgets/hildon-color-button.c

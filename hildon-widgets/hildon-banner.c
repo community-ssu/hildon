@@ -32,7 +32,7 @@
 #include "hildon-defines.h"
 #include "hildon-banner.h"
 
-#define HILDON_BANNER_WINDOW_X            15
+#define HILDON_BANNER_WINDOW_X            30
 #define HILDON_BANNER_WINDOW_Y            73
 #define HILDON_BANNER_WINDOW_FULLSCREEN_Y 20
 #define HILDON_BANNER_PROGRESS_WIDTH      104
@@ -52,7 +52,6 @@ struct _HildonBannerPrivate
 {
    GtkWidget *main_item, *label, *layout;
    guint timeout_id;
-   gint max_lines;  
    gboolean is_timed; 
 };
 
@@ -383,10 +382,26 @@ static gboolean hildon_banner_map_event(GtkWidget *widget, GdkEventAny *event)
    return result;
 }  
 
-static void hildon_banner_realize(GtkWidget *widget)
+static void hildon_banner_check_position(GtkWidget *widget)
 {
    gint x, y;
+   GtkRequisition req;
 
+   gtk_widget_size_request(widget, &req);
+   if (req.width == 0)
+   {
+     return;
+   }
+
+   x = gdk_screen_width() - HILDON_BANNER_WINDOW_X - req.width;
+   y = check_fullscreen_state(get_current_app_window()) ? 
+         HILDON_BANNER_WINDOW_FULLSCREEN_Y : HILDON_BANNER_WINDOW_Y;
+
+   gtk_window_move(GTK_WINDOW(widget), x, y);
+}
+
+static void hildon_banner_realize(GtkWidget *widget)
+{
    /* We let the parent to init widget->window before we need it */
    if (GTK_WIDGET_CLASS(hildon_banner_parent_class)->realize)
       GTK_WIDGET_CLASS(hildon_banner_parent_class)->realize(widget);
@@ -394,11 +409,7 @@ static void hildon_banner_realize(GtkWidget *widget)
    /* We use special hint to turn the banner into information notification. */
    gdk_window_set_type_hint(widget->window, GDK_WINDOW_TYPE_HINT_MESSAGE);
 
-   /* Placing the window outside screen is a special matchbox feature */
-   x = gdk_screen_width() + HILDON_BANNER_WINDOW_X;
-   y = check_fullscreen_state(get_current_app_window()) ? 
-         HILDON_BANNER_WINDOW_FULLSCREEN_Y : HILDON_BANNER_WINDOW_Y;
-   gtk_window_move(GTK_WINDOW(widget), x, y);
+   hildon_banner_check_position(widget);
 }
 
 static void hildon_banner_class_init(HildonBannerClass *klass)
@@ -445,11 +456,11 @@ static void hildon_banner_init(HildonBanner *self)
    self->priv = priv = G_TYPE_INSTANCE_GET_PRIVATE(self, 
                                                    HILDON_TYPE_BANNER,
                                                    HildonBannerPrivate);
-   priv->max_lines = 1;
 
    /* Initialize the common layout inside banner */
    self->priv->layout = gtk_hbox_new(FALSE, HILDON_MARGIN_DEFAULT);
    priv->label = g_object_new(GTK_TYPE_LABEL, NULL);
+   gtk_label_set_line_wrap(GTK_LABEL(priv->label), TRUE);
    gtk_container_set_border_width(GTK_CONTAINER(self->priv->layout), HILDON_MARGIN_DEFAULT);
    gtk_container_add(GTK_CONTAINER(self), self->priv->layout);
    gtk_box_pack_start(GTK_BOX(self->priv->layout), priv->label, TRUE, TRUE, 0);
@@ -540,7 +551,6 @@ void hildon_banner_show_information(GtkWidget *widget,
       "pixel-size", HILDON_ICON_PIXEL_SIZE_NOTE, 
       "icon-name", icon_name ? icon_name : HILDON_BANNER_DEFAULT_ICON,
       NULL);
-   banner->priv->max_lines = 3;
    hildon_banner_set_text(banner, text);
    hildon_banner_bind_label_style(banner, NULL);
 
@@ -549,45 +559,35 @@ void hildon_banner_show_information(GtkWidget *widget,
 }
 
 /**
- * hildon_banner_show_confirmation:
+ * hildon_banner_show_information_with_markup:
  * @widget: the #GtkWidget that wants to display banner
  * @icon_name: the name of icon to use. Can be %NULL for default icon.
- * @text: Text to display
+ * @markup: a markup string to display (see <link linkend="PangoMarkupFormat">Pango markup format</link>)
  *
- * This function creates and displays a confirmation banner.
- * This is very similar to #hildon_banner_show_information, with
- * two exceptions. 1) confirmation banners use emphasized font and
- * 2) confirmation banners can only contain one line of text.
- * 
- * Confirmation banners are usually displayed in response to hardware
- * events that do not provide other kind of information. Thus it's
- * important that all of them will be shown without the risk of beign
- * replaced by other notifications that may come. All confirmation
- * banners are meant to be queued and displayed one at a time. This
- * queue facility is implemented by task navigator application.
- *
- * Applications that want to display confirmation banners should call
- * task navigator for that service. This function exists only for
- * task navigator to implement it.
+ * This function creates and displays an information banner that
+ * automatically goes away after certain time period. For each window
+ * in your application there can only be one timed banner, so if you
+ * spawn a new banner before the earlier one has timed out, the
+ * previous one will be replaced.
  */
-void hildon_banner_show_confirmation(GtkWidget *widget, 
-   const gchar *icon_name, const gchar *text)
+void hildon_banner_show_information_with_markup(GtkWidget *widget, 
+   const gchar *icon_name, const gchar *markup)
 {
    HildonBanner *banner;
 
    g_return_if_fail(widget == NULL || GTK_IS_WIDGET(widget));
    g_return_if_fail(icon_name == NULL || icon_name[0] != 0);
-   g_return_if_fail(text != NULL);
+   g_return_if_fail(markup != NULL);
 
    /* Prepare banner */
    banner = hildon_banner_get_instance_for_widget(widget, TRUE);
+
    hildon_banner_ensure_child(banner, NULL, 0, GTK_TYPE_IMAGE, 
       "pixel-size", HILDON_ICON_PIXEL_SIZE_NOTE, 
       "icon-name", icon_name ? icon_name : HILDON_BANNER_DEFAULT_ICON,
       NULL);
-   banner->priv->max_lines = 1;
-   hildon_banner_set_text(banner, text);
-   hildon_banner_bind_label_style(banner, "hildon-banner-label");
+   hildon_banner_set_markup(banner, markup);
+   hildon_banner_bind_label_style(banner, NULL);
 
    /* Show the banner, since caller cannot do that */
    gtk_widget_show_all(GTK_WIDGET(banner));
@@ -653,7 +653,6 @@ GtkWidget *hildon_banner_show_animation(GtkWidget *widget,
    banner = hildon_banner_get_instance_for_widget(widget, FALSE);
    hildon_banner_ensure_child(banner, image_widget, 0,
       GTK_TYPE_IMAGE, NULL);
-   banner->priv->max_lines = 1;
    hildon_banner_set_text(banner, text);
    hildon_banner_bind_label_style(banner, NULL);
 
@@ -690,7 +689,6 @@ GtkWidget *hildon_banner_show_progress(GtkWidget *widget,
    hildon_banner_ensure_child(banner, (GtkWidget *) bar, -1, GTK_TYPE_PROGRESS_BAR, NULL);
    gtk_widget_set_size_request(banner->priv->main_item,
       HILDON_BANNER_PROGRESS_WIDTH, -1);
-   banner->priv->max_lines = 1;
    hildon_banner_set_text(banner, text);
    hildon_banner_bind_label_style(banner, NULL);
 
@@ -705,18 +703,53 @@ GtkWidget *hildon_banner_show_progress(GtkWidget *widget,
  * @self: a #HildonBanner widget
  * @text: a new text to display in banner
  *
- * Sets the text that is displayed in the banner. Some banner types
- * support multiline text, in which case the text is automatically
- * wrapped into several lines.
+ * Sets the text that is displayed in the banner.
  */
 void hildon_banner_set_text(HildonBanner *self, const gchar *text)
 {
    GtkLabel *label;
+   GtkRequisition req;
 
    g_return_if_fail(HILDON_IS_BANNER(self));
 
    label = GTK_LABEL(self->priv->label);
-   _hildon_gtk_label_set_text_n_lines(label, text, self->priv->max_lines); 
+   gtk_label_set_text(label, text);
+
+   /* A re-used window may be too large, shrink to the requisition size */
+   gtk_widget_size_request(GTK_WIDGET(self), &req);
+   if (req.width != 0)
+   {
+     gtk_window_resize(GTK_WINDOW(self), req.width, req.height);
+   }
+
+   hildon_banner_check_position(GTK_WIDGET(self));
+}
+
+/**
+ * hildon_banner_set_markup:
+ * @self: a #HildonBanner widget
+ * @markup: a new text with Pango markup to display in the banner
+ *
+ * Sets the text with markup that is displayed in the banner.
+ */
+void hildon_banner_set_markup(HildonBanner *self, const gchar *markup)
+{
+   GtkLabel *label;
+   GtkRequisition req;
+
+   g_return_if_fail(HILDON_IS_BANNER(self));
+
+   label = GTK_LABEL(self->priv->label);
+   gtk_label_set_markup(label, markup);
+
+   /* A re-used window may be too large, shrink to the requisition size */
+   gtk_widget_size_request(GTK_WIDGET(self), &req);
+   if (req.width != 0)
+   {
+     gtk_window_resize(GTK_WINDOW(self), req.width, req.height);
+   }
+
+   hildon_banner_check_position(GTK_WIDGET(self));
 }
 
 /**
@@ -735,7 +768,6 @@ void hildon_banner_set_fraction(HildonBanner *self, gdouble fraction)
    gtk_progress_bar_set_fraction(GTK_PROGRESS_BAR(self->priv->main_item), fraction);
 }
 
-
 /* Forces the wrapping of text into several lines and ellipsizes the rest. 
    Similar to combination of gtk_label_set_wrap and pango ellipzation. 
    We cannot just use those directly, since ellipzation always wins wrapping.
@@ -751,6 +783,10 @@ void hildon_banner_set_fraction(HildonBanner *self, gdouble fraction)
           Lenth of the text is under applications' responsibility.
           Widget does not have to enforce this.
 */
+
+/**
+ * This function is deprecated and should not be used.
+ */
 void _hildon_gtk_label_set_text_n_lines(GtkLabel *label, const gchar *text, gint max_lines)
 {
    PangoLayout *layout;

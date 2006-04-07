@@ -57,9 +57,9 @@ void       hildon_banner_show_information  (GtkWidget   *widget,
                                             const gchar *icon_name,
                                             const gchar *text);
 
-void       hildon_banner_show_confirmation (GtkWidget   *widget, 
-                                            const gchar *icon_name,
-                                            const gchar *text);
+void       hildon_banner_show_information_with_markup (GtkWidget   *widget, 
+                                                       const gchar *icon_name,
+                                                       const gchar *markup);
 
 GtkWidget *hildon_banner_show_animation    (GtkWidget   *widget, 
                                             const gchar *animation_name,
@@ -71,6 +71,9 @@ GtkWidget *hildon_banner_show_progress     (GtkWidget      *widget,
 
 void       hildon_banner_set_text          (HildonBanner   *self,
                                             const gchar    *text);
+
+void       hildon_banner_set_markup        (HildonBanner   *self,
+                                            const gchar    *markup);
 
 void       hildon_banner_set_fraction      (HildonBanner   *self,
                                             gdouble         fraction);
