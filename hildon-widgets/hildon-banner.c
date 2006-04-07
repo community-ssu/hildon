@@ -535,6 +535,8 @@ static HildonBanner *hildon_banner_get_instance_for_widget(GtkWidget *widget, gb
  * in your application there can only be one timed banner, so if you
  * spawn a new banner before the earlier one has timed out, the
  * previous one will be replaced.
+ *
+ * Since: 0.12.2
  */
 void hildon_banner_show_information(GtkWidget *widget, 
    const gchar *icon_name, const gchar *text)
@@ -569,6 +571,8 @@ void hildon_banner_show_information(GtkWidget *widget,
  * in your application there can only be one timed banner, so if you
  * spawn a new banner before the earlier one has timed out, the
  * previous one will be replaced.
+ *
+ * Since: 0.12.2
  */
 void hildon_banner_show_information_with_markup(GtkWidget *widget, 
    const gchar *icon_name, const gchar *markup)
@@ -618,6 +622,8 @@ void hildon_banner_show_information_with_markup(GtkWidget *widget,
  * 
  * Returns: a #HildonBanner widget. You must call #gtk_widget_destroy
  *          once you are ready with the banner.
+ *
+ * Since: 0.12.2
  */
 GtkWidget *hildon_banner_show_animation(GtkWidget *widget, 
    const gchar *animation_name, const gchar *text)
@@ -674,6 +680,8 @@ GtkWidget *hildon_banner_show_animation(GtkWidget *widget,
  * 
  * Returns: a #HildonBanner widget. You must call #gtk_widget_destroy
  *          once you are ready with the banner.
+ *
+ * Since: 0.12.2
  */
 GtkWidget *hildon_banner_show_progress(GtkWidget *widget, 
    GtkProgressBar *bar, const gchar *text)
@@ -704,6 +712,8 @@ GtkWidget *hildon_banner_show_progress(GtkWidget *widget,
  * @text: a new text to display in banner
  *
  * Sets the text that is displayed in the banner.
+ *
+ * Since: 0.12.2
  */
 void hildon_banner_set_text(HildonBanner *self, const gchar *text)
 {
@@ -731,6 +741,8 @@ void hildon_banner_set_text(HildonBanner *self, const gchar *text)
  * @markup: a new text with Pango markup to display in the banner
  *
  * Sets the text with markup that is displayed in the banner.
+ *
+ * Since: 0.12.2
  */
 void hildon_banner_set_markup(HildonBanner *self, const gchar *markup)
 {
@@ -760,6 +772,8 @@ void hildon_banner_set_markup(HildonBanner *self, const gchar *markup)
  * The fraction is the completion of progressbar, 
  * the scale is from 0.0 to 1.0.
  * Sets the amount of fraction the progressbar has.
+ *
+ * Since: 0.12.2
  */
 void hildon_banner_set_fraction(HildonBanner *self, gdouble fraction)
 {
