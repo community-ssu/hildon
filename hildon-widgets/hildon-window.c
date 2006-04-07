@@ -726,7 +726,7 @@ hildon_window_destroy (GtkObject *obj)
         
     }
 
-    menu_list = gtk_menu_get_for_attach_widget (GTK_WIDGET (obj));
+    menu_list = g_list_copy (gtk_menu_get_for_attach_widget (GTK_WIDGET (obj)));
 
     while (menu_list)
     {
@@ -741,6 +741,8 @@ hildon_window_destroy (GtkObject *obj)
         }
         menu_list = menu_list->next;
     }
+
+    g_list_free (menu_list);
     
     if (self->priv->program)
     {

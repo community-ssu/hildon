@@ -114,6 +114,7 @@ hildon_program_init (HildonProgram *self)
     priv->is_topmost = FALSE;
     priv->window_group = GDK_WINDOW_XID (gdk_display_get_default_group
                                   (gdk_display_get_default()));
+    priv->common_toolbar = NULL;
     priv->name = NULL;
 }
 
