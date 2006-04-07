@@ -572,7 +572,7 @@ void hildon_banner_show_information(GtkWidget *widget,
  * spawn a new banner before the earlier one has timed out, the
  * previous one will be replaced.
  *
- * Since: 0.12.2
+ * Since: 0.12.8
  */
 void hildon_banner_show_information_with_markup(GtkWidget *widget, 
    const gchar *icon_name, const gchar *markup)
@@ -742,7 +742,7 @@ void hildon_banner_set_text(HildonBanner *self, const gchar *text)
  *
  * Sets the text with markup that is displayed in the banner.
  *
- * Since: 0.12.2
+ * Since: 0.12.8
  */
 void hildon_banner_set_markup(HildonBanner *self, const gchar *markup)
 {
@@ -782,6 +782,15 @@ void hildon_banner_set_fraction(HildonBanner *self, gdouble fraction)
    gtk_progress_bar_set_fraction(GTK_PROGRESS_BAR(self->priv->main_item), fraction);
 }
 
+
+
+
+
+/**
+ * This function is deprecated and should not be used.
+ */
+void _hildon_gtk_label_set_text_n_lines(GtkLabel *label, const gchar *text, gint max_lines)
+{
 /* Forces the wrapping of text into several lines and ellipsizes the rest. 
    Similar to combination of gtk_label_set_wrap and pango ellipzation. 
    We cannot just use those directly, since ellipzation always wins wrapping.
@@ -797,12 +806,6 @@ void hildon_banner_set_fraction(HildonBanner *self, gdouble fraction)
           Lenth of the text is under applications' responsibility.
           Widget does not have to enforce this.
 */
-
-/**
- * This function is deprecated and should not be used.
- */
-void _hildon_gtk_label_set_text_n_lines(GtkLabel *label, const gchar *text, gint max_lines)
-{
    PangoLayout *layout;
    PangoLayoutLine *line;
    GtkRequisition req;
