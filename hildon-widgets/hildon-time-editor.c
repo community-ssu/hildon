@@ -118,6 +118,9 @@ struct _HildonTimeEditorPrivate {
     gchar     *am_symbol;
     gchar     *pm_symbol;
 
+    gchar     *hm_sep_symbol;        /* hours/minutes separator      */
+    gchar     *ms_sep_symbol;        /* minutes/seconds separator    */
+
     GtkWidget *eventbox;             /* hold entries                 */
     GtkWidget *iconbutton;           /* button for icon              */
 
@@ -445,8 +448,8 @@ static void hildon_time_editor_init(HildonTimeEditor * editor)
     priv->duration_mode  = FALSE;
     priv->iconbutton     = gtk_button_new();
     priv->ampm_label     = gtk_label_new(NULL);
-    priv->hm_label       = gtk_label_new(_("ecdg_ti_time_editor_separator"));
-    priv->sec_label      = gtk_label_new(_("ecdg_ti_time_editor_separator"));
+    priv->hm_label       = gtk_label_new(NULL);
+    priv->sec_label      = gtk_label_new(NULL);
     priv->frame          = gtk_frame_new(NULL);
     priv->eventbox       = gtk_event_box_new();
 
@@ -516,7 +519,7 @@ static void hildon_time_editor_init(HildonTimeEditor * editor)
     gtk_widget_show_all(priv->frame);
     gtk_widget_show_all(priv->iconbutton);
 
-    /* Update AM/PM settings from locale */
+    /* Update AM/PM and time separators settings from locale */
     if (!hildon_time_editor_check_locale(editor)) {
         /* Using 12h clock */
         priv->clock_24h = FALSE;
@@ -524,6 +527,10 @@ static void hildon_time_editor_init(HildonTimeEditor * editor)
         gtk_widget_hide(priv->eventbox);
     }
 
+    /* Set time separators labels */
+    gtk_label_set_label(GTK_LABEL(priv->hm_label),  priv->hm_sep_symbol); /* priv-> set by ..._chech_locale()*/
+    gtk_label_set_label(GTK_LABEL(priv->sec_label), priv->ms_sep_symbol);
+ 
     if (!priv->show_seconds) {
         gtk_widget_hide(priv->sec_label);
         gtk_widget_hide(priv->entries[ENTRY_SECS]);
@@ -632,11 +639,50 @@ static void hildon_time_editor_finalize(GObject * obj_self)
     g_free(priv->am_symbol);
     g_free(priv->pm_symbol);
 
+    if (priv->hm_sep_symbol)
+      g_free(priv->hm_sep_symbol);
+
+    if (priv->ms_sep_symbol)
+      g_free(priv->ms_sep_symbol);
+
     if (priv->highlight_idle)
         g_source_remove(priv->highlight_idle);
 
     if (G_OBJECT_CLASS(parent_class)->finalize)
         G_OBJECT_CLASS(parent_class)->finalize(obj_self);
+}
+
+/**
+ * Gets hour-minute separator and minute-second separator 
+ * from current locale
+ */
+static void get_time_separators(HildonTimeEditorPrivate *priv)
+{
+    gchar buffer[256];
+    GDate locale_test_date;
+    gchar *iter, *endp;
+
+    /* Get localized time string */
+    g_date_set_dmy(&locale_test_date, 1, 2, 1970);
+    (void) g_date_strftime(buffer, sizeof(buffer), "%X", &locale_test_date);
+   
+    /* Find h-m separator */
+    iter = buffer;
+    while (*iter && g_ascii_isdigit(*iter)) iter++;
+    
+    /* Extract h-m separator*/
+    endp = iter;
+    while (*endp && !g_ascii_isdigit(*endp)) endp++;
+    priv->hm_sep_symbol = g_strndup(iter, endp - iter);
+      
+    /* Find m-s separator */
+    iter = endp;
+    while (*iter && g_ascii_isdigit(*iter)) iter++;
+    
+    /* Extract m-s separator*/
+    endp = iter;
+    while (*endp && !g_ascii_isdigit(*endp)) endp++;
+    priv->ms_sep_symbol = g_strndup(iter, endp - iter);
 }
 
 /* Convert ticks to H:M:S. Ticks = seconds since 00:00:00. */
@@ -1114,6 +1160,9 @@ static gboolean hildon_time_editor_check_locale(HildonTimeEditor * editor)
 
     priv = HILDON_TIME_EDITOR_GET_PRIVATE(editor);
 
+    /* Update time separator symbols */
+    get_time_separators(priv);
+ 
     /* Get AM/PM symbols. We want to show them in lowercase. */
     priv->am_symbol = g_ascii_strdown(nl_langinfo(AM_STR), -1);
     priv->pm_symbol = g_ascii_strdown(nl_langinfo(PM_STR), -1);

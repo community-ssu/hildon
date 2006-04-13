@@ -1,6 +1,17 @@
 2006-04-13  Luc Pionchon  <luc.pionchon@nokia.com>
 
-	Removed icon for mandatory fields.
+	Fetch hours/minutes/seconds separators from current locale (IMP-8)
+
+	* hildon-widgets/hildon-time-editor.c
+	(struct _HildonTimeEditorPrivate): added 'hm_sep_symbol' and 'ms_sep_symbol'
+	(hildon_time_editor_init): do not get separator labels from i18n, but from locale
+	(hildon_time_editor_finalize): free separator symbols
+	(get_time_separators): new function. Get time separators from locale.
+	(hildon_time_editor_check_locale): call get_time_separators.
+
+2006-04-13  Luc Pionchon  <luc.pionchon@nokia.com>
+
+	Removed icon for mandatory fields (IMP-3).
 	Note: the logic and API to specify mandatory fields is preserved.
 
 	* hildon-widgets/hildon-caption.c (HILDON_CAPTION_MANDATORY_ICON): removed.
