@@ -1,3 +1,14 @@
+2006-04-13  Luc Pionchon  <luc.pionchon@nokia.com>
+
+	Removed icon for mandatory fields.
+	Note: the logic and API to specify mandatory fields is preserved.
+
+	* hildon-widgets/hildon-caption.c (HILDON_CAPTION_MANDATORY_ICON): removed.
+	(struct _HildonCaptionPrivate): removed 'mandatory_icon' field.
+	(hildon_caption_set_property): case PROP_STATUS, removed related code.
+	(hildon_caption_set_label_alignment): removed related code.
+
+
 2006-04-07  Luc Pionchon  <luc.pionchon@nokia.com>
 
 	* configure.ac: 0.12.8

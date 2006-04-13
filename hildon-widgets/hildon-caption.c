@@ -54,7 +54,6 @@
 #include <libintl.h>
 #define _(String) dgettext(PACKAGE, String)
 
-#define HILDON_CAPTION_MANDATORY_ICON "qgn_list_gene_mandat_field"
 #define HILDON_CAPTION_SPACING 6
 
 #define HILDON_CAPTION_GET_PRIVATE(obj) \
@@ -122,7 +121,6 @@ static void hildon_caption_get_child_property (GtkContainer    *container,
 struct _HildonCaptionPrivate
 {
   GtkWidget *caption_area;
-  GtkWidget *mandatory_icon;
   GtkWidget *label;
   GtkWidget *icon;
   GtkWidget *icon_align; /* Arbitrary icon widgets do not support alignment */
@@ -402,41 +400,6 @@ static void hildon_caption_set_property( GObject *object, guint param_id,
 
     case PROP_STATUS:
       priv->status = g_value_get_enum( value );
-
-      /* For mandatory fields we display a special icon */
-      if( priv->status == HILDON_CAPTION_MANDATORY )
-      {
-        if( !priv->mandatory_icon )
-        {
-          gfloat align;
-
-          /* Create mandatory icon */
-          priv->mandatory_icon = gtk_image_new_from_icon_name(
-                                                HILDON_CAPTION_MANDATORY_ICON,
-                                                HILDON_ICON_SIZE_NOTE );
-
-          align = hildon_caption_get_label_alignment(HILDON_CAPTION(object));
-          g_object_set(priv->mandatory_icon, "yalign", align, NULL);
-
-          /* Pack and show mandatory icon */
-          if( priv->mandatory_icon )
-          {
-            gtk_box_pack_end( GTK_BOX(priv->caption_area),
-                                priv->mandatory_icon, FALSE, FALSE, 0 );
-            gtk_widget_show_all( priv->caption_area );
-          }
-        }
-      }
-      else
-      {
-        if( priv->mandatory_icon )
-        {
-          /* Remove mandatory icon */
-          gtk_container_remove( GTK_CONTAINER(priv->caption_area),
-                                priv->mandatory_icon );
-          priv->mandatory_icon = NULL;
-        }
-      }
       break;
 
     case PROP_SIZE_GROUP:
@@ -1148,8 +1111,6 @@ void hildon_caption_set_label_alignment(HildonCaption *caption,
   g_object_set(priv->label, "yalign", alignment, NULL);
   g_object_set(priv->icon_align, "yalign", alignment, NULL);
 
-  if (priv->mandatory_icon)
-    g_object_set(priv->mandatory_icon, "yalign", alignment, NULL);
 }
 
 /**
