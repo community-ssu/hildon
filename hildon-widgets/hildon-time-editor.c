@@ -226,8 +226,8 @@ static void hildon_time_editor_set_to_current_time (HildonTimeEditor * editor);
  * Utility functions
  */
  
-static void convert_to_12h (guint *h, guint *m, guint *s, gboolean *am);
-static void convert_to_24h (guint *h, guint *m, guint *s, gboolean  am);
+static void convert_to_12h (guint *h, gboolean *am);
+static void convert_to_24h (guint *h, gboolean  am);
 
 static void ticks_to_time (guint  ticks,
                            guint *hours,
@@ -751,7 +751,7 @@ void hildon_time_editor_set_ticks (HildonTimeEditor * editor,
     if (!priv->clock_24h && !priv->duration_mode)
       {
         /* Convert 24h H:M:S values to 12h mode, and update AM/PM state */
-        convert_to_12h (&h, &m, &s, &priv->am);
+        convert_to_12h (&h, &priv->am);
       }
 
     /* Set H:M:S values to entries. We  do not want to invoke validation
@@ -1327,7 +1327,7 @@ hildon_time_editor_real_validate(HildonTimeEditor *editor,
         }
     }
     else if (!priv->clock_24h)
-        convert_to_24h (&h, &m, &s, priv->am);
+        convert_to_24h (&h, priv->am);
 
     /* The only case when we do not want to refresh the
        time display, is when the user is editing a value 
@@ -1658,7 +1658,7 @@ static gboolean hildon_time_editor_entry_keypress(GtkWidget * widget,
  */
 
 static void
-convert_to_12h (guint *h, guint *m, guint *s, gboolean *am)
+convert_to_12h (guint *h, gboolean *am)
 {
   g_assert(0 <= *h && *h < 24);
 
@@ -1674,7 +1674,7 @@ convert_to_12h (guint *h, guint *m, guint *s, gboolean *am)
 }
 
 static void
-convert_to_24h (guint *h, guint *m, guint *s, gboolean am)
+convert_to_24h (guint *h, gboolean am)
 {
   if (*h == 12 && am) /* 12 midnight - 12:59 AM  subtract 12 hours  */
     {
