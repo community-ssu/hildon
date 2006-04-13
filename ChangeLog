@@ -5,6 +5,10 @@
 
 2006-04-13  Luc Pionchon  <luc.pionchon@nokia.com>
 
+	* configure.ac: 0.12.9
+
+2006-04-13  Luc Pionchon  <luc.pionchon@nokia.com>
+
 	* hildon-widgets/hildon-color-button.c
 	(INNER_BORDER_THICKNESS, COLOR_BUTTON_WIDTH, COLOR_BUTTON_HEIGHT):
 	updated dimensions.
@@ -49,6 +53,7 @@
 2006-04-13  Luc Pionchon  <luc.pionchon@nokia.com>
 
 	Fetch hours/minutes/seconds separators from current locale (IMP-8)
+	N#19061
 
 	* hildon-widgets/hildon-time-editor.c
 	(struct _HildonTimeEditorPrivate): added 'hm_sep_symbol' and 'ms_sep_symbol'
