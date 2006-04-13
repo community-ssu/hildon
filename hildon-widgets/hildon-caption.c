@@ -133,6 +133,9 @@ struct _HildonCaptionPrivate
 };
 
 /* Register optional/mandatory type enumeration */
+/* FIXME: mandatory icon was removed. The mandatory/optional logic
+   remains, it should most probably be removed as well. This imply APi
+   change, especially hildon_caption_new() */
 GType
 hildon_caption_status_get_type (void)
 {
