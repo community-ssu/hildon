@@ -1,5 +1,14 @@
 2006-04-13  Luc Pionchon  <luc.pionchon@nokia.com>
 
+	Hildon grid, set items to be focus-and-activate instead of single
+	tap activation (IMP-14)	
+	
+	* hildon-widgets/hildon-grid.c (hildon_grid_button_pressed): do not set focus.
+	* hildon-widgets/hildon-grid.c (hildon_grid_button_released): activate selected item.
+
+
+2006-04-13  Luc Pionchon  <luc.pionchon@nokia.com>
+
 	Fetch hours/minutes/seconds separators from current locale (IMP-8)
 
 	* hildon-widgets/hildon-time-editor.c

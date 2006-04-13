@@ -1661,8 +1661,6 @@ hildon_grid_button_pressed(GtkWidget * widget,
     if (!GTK_WIDGET_IS_SENSITIVE(child))
         return FALSE;
 
-    set_focus(grid, child, TRUE);
-
     priv->click_x = event->x;
     priv->click_y = event->y;
 
@@ -1687,6 +1685,7 @@ hildon_grid_button_released(GtkWidget * widget,
     HildonGridPrivate *priv;
     GtkWidget *child;
     int child_no;
+    gboolean already_selected;
 
     grid = HILDON_GRID(widget);
     priv = HILDON_GRID_GET_PRIVATE(grid);
@@ -1712,9 +1711,16 @@ hildon_grid_button_released(GtkWidget * widget,
         && abs(priv->click_y - event->y) >= DRAG_SENSITIVITY) {
         return FALSE;
     }
+
+    /* Check if this element was already selected */
+    already_selected = (priv->focus_index == child_no);
+
     set_focus(grid, child, TRUE);
     priv->last_button_event = event->type;
-    hildon_grid_activate_child(grid, HILDON_GRID_ITEM(child));
+
+    /* If this is not the first click in this element, activate it */
+    if (already_selected)
+      hildon_grid_activate_child(grid, HILDON_GRID_ITEM(child));
 
     return FALSE;
 }
