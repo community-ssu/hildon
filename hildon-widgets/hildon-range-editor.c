@@ -61,7 +61,7 @@
 
 #define HILDON_RANGE_EDITOR_GET_PRIVATE(obj) \
  (G_TYPE_INSTANCE_GET_PRIVATE ((obj), \
- HILDON_RANGE_EDITOR_TYPE, HildonRangeEditorPrivate));
+ HILDON_TYPE_RANGE_EDITOR, HildonRangeEditorPrivate));
 
 typedef struct _HildonRangeEditorPrivate HildonRangeEditorPrivate;
 
@@ -797,7 +797,7 @@ hildon_range_editor_get_type (void)
 GtkWidget *
 hildon_range_editor_new (void)
 {
-    return GTK_WIDGET(g_object_new(HILDON_RANGE_EDITOR_TYPE, NULL));
+    return GTK_WIDGET(g_object_new(HILDON_TYPE_RANGE_EDITOR, NULL));
 }
 
 
@@ -814,7 +814,7 @@ hildon_range_editor_new (void)
 GtkWidget *
 hildon_range_editor_new_with_separator (const gchar *separator)
 {
-    return GTK_WIDGET (g_object_new (HILDON_RANGE_EDITOR_TYPE,
+    return GTK_WIDGET (g_object_new (HILDON_TYPE_RANGE_EDITOR,
                                      "separator", separator, NULL));
 }
 

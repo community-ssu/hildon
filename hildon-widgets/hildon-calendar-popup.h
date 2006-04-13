@@ -29,19 +29,27 @@
 
 G_BEGIN_DECLS
 /**
- * HILDON_CALENDAR_POPUP_TYPE:
+ * HILDON_TYPE_CALENDAR_POPUP:
  *
  * Macro for getting type of calendar popup.
+ * Since: 0.12.10
  */
-#define HILDON_CALENDAR_POPUP_TYPE ( hildon_calendar_popup_get_type() )
+#define HILDON_TYPE_CALENDAR_POPUP ( hildon_calendar_popup_get_type() )
+
+/**
+ * HILDON_CALENDAR_POPUP_TYPE:
+ * Deprecated: use HILDON_TYPE_CALENDAR_POPUP instead
+ */
+#define HILDON_CALENDAR_POPUP_TYPE HILDON_TYPE_CALENDAR_POPUP
+
 #define HILDON_CALENDAR_POPUP(obj) (GTK_CHECK_CAST (obj,\
-  HILDON_CALENDAR_POPUP_TYPE, HildonCalendarPopup))
+  HILDON_TYPE_CALENDAR_POPUP, HildonCalendarPopup))
 #define HILDON_CALENDAR_POPUP_CLASS(klass) (GTK_CHECK_CLASS_CAST ((klass),\
-  HILDON_CALENDAR_POPUP_TYPE, HildonCalendarPopupClass))
+  HILDON_TYPE_CALENDAR_POPUP, HildonCalendarPopupClass))
 #define HILDON_IS_CALENDAR_POPUP(obj) (GTK_CHECK_TYPE (obj,\
-  HILDON_CALENDAR_POPUP_TYPE))
+  HILDON_TYPE_CALENDAR_POPUP))
 #define HILDON_IS_CALENDAR_POPUP_CLASS(klass) \
-  (GTK_CHECK_CLASS_TYPE ((klass), HILDON_CALENDAR_POPUP_TYPE))
+  (GTK_CHECK_CLASS_TYPE ((klass), HILDON_TYPE_CALENDAR_POPUP))
 
 /**
  * HildonCalendarPopup:

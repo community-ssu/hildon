@@ -29,22 +29,29 @@
 
 G_BEGIN_DECLS
 /**
- * HILDON_WEEKDAY_PICKER_TYPE:
+ * HILDON_TYPE_WEEKDAY_PICKER:
  *
  * Macro for getting type of weekday picker.
+ * Since: 0.12.10
  */
-#define HILDON_WEEKDAY_PICKER_TYPE \
-        ( hildon_weekday_picker_get_type() )
+#define HILDON_TYPE_WEEKDAY_PICKER ( hildon_weekday_picker_get_type() )
+
+/**
+ * HILDON_WEEKDAY_PICKER_TYPE:
+ * Deprecated: use HILDON_TYPE_WEEKDAY_PICKER instead.
+ */
+#define HILDON_WEEKDAY_PICKER_TYPE HILDON_TYPE_WEEKDAY_PICKER
+
 #define HILDON_WEEKDAY_PICKER(obj) \
-        (GTK_CHECK_CAST (obj, HILDON_WEEKDAY_PICKER_TYPE, \
+        (GTK_CHECK_CAST (obj, HILDON_TYPE_WEEKDAY_PICKER, \
          HildonWeekdayPicker))
 #define HILDON_WEEKDAY_PICKER_CLASS(klass) \
         (GTK_CHECK_CLASS_CAST ((klass), \
-         HILDON_WEEKDAY_PICKER_TYPE, HildonWeekdayPickerClass))
+         HILDON_TYPE_WEEKDAY_PICKER, HildonWeekdayPickerClass))
 #define HILDON_IS_WEEKDAY_PICKER(obj) \
-        (GTK_CHECK_TYPE (obj, HILDON_WEEKDAY_PICKER_TYPE))
+        (GTK_CHECK_TYPE (obj, HILDON_TYPE_WEEKDAY_PICKER))
 #define HILDON_IS_WEEKDAY_PICKER_CLASS(klass) \
-        (GTK_CHECK_CLASS_TYPE ((klass), HILDON_WEEKDAY_PICKER_TYPE))
+        (GTK_CHECK_CLASS_TYPE ((klass), HILDON_TYPE_WEEKDAY_PICKER))
 /**
  * HildonWeekdayPicker:
  *

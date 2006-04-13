@@ -68,7 +68,7 @@
 
 #define HILDON_DATE_EDITOR_GET_PRIVATE(obj) \
         (G_TYPE_INSTANCE_GET_PRIVATE((obj),\
-        HILDON_DATE_EDITOR_TYPE, HildonDateEditorPrivate));
+        HILDON_TYPE_DATE_EDITOR, HildonDateEditorPrivate));
 
 static GtkContainerClass *parent_class;
 
@@ -673,7 +673,7 @@ static void hildon_date_editor_destroy(GtkObject * self)
  */
 GtkWidget *hildon_date_editor_new(void)
 {
-    return GTK_WIDGET(g_object_new(HILDON_DATE_EDITOR_TYPE, NULL));
+    return GTK_WIDGET(g_object_new(HILDON_TYPE_DATE_EDITOR, NULL));
 }
 
 /**

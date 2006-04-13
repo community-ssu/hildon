@@ -212,7 +212,7 @@ hildon_volumebar_range_new(GtkOrientation orientation)
 					      VOLUMEBAR_RANGE_PAGE_INCREMENT_VALUE,
 					      VOLUMEBAR_RANGE_PAGE_SIZE_VALUE));
     HildonVolumebarRange *self =
-        g_object_new(HILDON_VOLUMEBAR_RANGE_TYPE,
+        g_object_new(HILDON_TYPE_VOLUMEBAR_RANGE,
 		     "adjustment", adjustment,
 		     NULL);
 

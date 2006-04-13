@@ -63,7 +63,7 @@
 
 #define HILDON_WEEKDAY_PICKER_GET_PRIVATE(obj) \
     (G_TYPE_INSTANCE_GET_PRIVATE ((obj), \
-     HILDON_WEEKDAY_PICKER_TYPE, HildonWeekdayPickerPrivate));
+     HILDON_TYPE_WEEKDAY_PICKER, HildonWeekdayPickerPrivate));
 
 static GtkContainerClass *parent_class;
 
@@ -221,7 +221,7 @@ hildon_weekday_picker_init(HildonWeekdayPicker * picker)
  */
 GtkWidget *hildon_weekday_picker_new(void)
 {
-    return g_object_new(HILDON_WEEKDAY_PICKER_TYPE, NULL);
+    return g_object_new(HILDON_TYPE_WEEKDAY_PICKER, NULL);
 }
 
 static void 

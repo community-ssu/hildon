@@ -29,19 +29,28 @@
 
 G_BEGIN_DECLS
 /**
- * HILDON_DATE_EDITOR_TYPE:
+ * HILDON_TYPE_DATE_EDITOR:
  *
  * Macro for getting type of date editor.
+ * Since: 0.12.10
  */
-#define HILDON_DATE_EDITOR_TYPE ( hildon_date_editor_get_type() )
+#define HILDON_TYPE_DATE_EDITOR ( hildon_date_editor_get_type() )
+
+
+/**
+ * HILDON_DATE_EDITOR_TYPE:
+ * Deprectaed: use HILDON_TYPE_DATE_EDITOR instead
+ */
+#define HILDON_DATE_EDITOR_TYPE HILDON_TYPE_DATE_EDITOR
+
 #define HILDON_DATE_EDITOR(obj) (GTK_CHECK_CAST (obj,\
-  HILDON_DATE_EDITOR_TYPE, HildonDateEditor))
+  HILDON_TYPE_DATE_EDITOR, HildonDateEditor))
 #define HILDON_DATE_EDITOR_CLASS(klass) (GTK_CHECK_CLASS_CAST ((klass),\
-  HILDON_DATE_EDITOR_TYPE, HildonDateEditorClass))
+  HILDON_TYPE_DATE_EDITOR, HildonDateEditorClass))
 #define HILDON_IS_DATE_EDITOR(obj) (GTK_CHECK_TYPE (obj,\
-  HILDON_DATE_EDITOR_TYPE))
+  HILDON_TYPE_DATE_EDITOR))
 #define HILDON_IS_DATE_EDITOR_CLASS(klass) (GTK_CHECK_CLASS_TYPE ((klass),\
-  HILDON_DATE_EDITOR_TYPE))
+  HILDON_TYPE_DATE_EDITOR))
 
 /**
  * HildonDateEditor:

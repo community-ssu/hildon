@@ -29,17 +29,32 @@
 
 G_BEGIN_DECLS
 
-#define HILDON_VOLUMEBAR_RANGE_TYPE ( hildon_volumebar_range_get_type() )
+/**
+ * HILDON_VOLUMEBAR_RANGE_TYPE
+ *
+ * Macro for getting type of volumebar range.
+ * Since: 0.12.10
+ */
+#define HILDON_TYPE_VOLUMEBAR_RANGE ( hildon_volumebar_range_get_type() )
+
+/**
+ * HILDON_VOLUMEBAR_RANGE_TYPE
+ * Deprectated: use HILDON_VOLUMEBAR_RANGE_TYPE instead
+ */
+#define HILDON_VOLUMEBAR_RANGE_TYPE HILDON_TYPE_VOLUMEBAR_RANGE
+
+
 #define HILDON_VOLUMEBAR_RANGE(obj) (GTK_CHECK_CAST (obj,\
-        HILDON_VOLUMEBAR_RANGE_TYPE, HildonVolumebarRange))
+        HILDON_TYPE_VOLUMEBAR_RANGE, HildonVolumebarRange))
 #define HILDON_VOLUMEBAR_RANGE_CLASS(klass) \
         (GTK_CHECK_CLASS_CAST ((klass),\
-        HILDON_VOLUMEBAR_RANGE_TYPE, HildonVolumebarRangeClass))
+        HILDON_TYPE_VOLUMEBAR_RANGE, HildonVolumebarRangeClass))
 #define HILDON_IS_VOLUMEBAR_RANGE(obj) (GTK_CHECK_TYPE (obj,\
-        HILDON_VOLUMEBAR_RANGE_TYPE))
+        HILDON_TYPE_VOLUMEBAR_RANGE))
 #define HILDON_IS_VOLUMEBAR_RANGE_CLASS(klass) \
-        (GTK_CHECK_CLASS_TYPE ((klass), HILDON_VOLUMEBAR_RANGE_TYPE))
-typedef struct _HildonVolumebarRange HildonVolumebarRange;
+        (GTK_CHECK_CLASS_TYPE ((klass), HILDON_TYPE_VOLUMEBAR_RANGE))
+
+typedef struct _HildonVolumebarRange      HildonVolumebarRange;
 typedef struct _HildonVolumebarRangeClass HildonVolumebarRangeClass;
 
 struct _HildonVolumebarRange {

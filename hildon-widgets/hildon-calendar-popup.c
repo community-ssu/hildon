@@ -53,7 +53,7 @@
 
 #define HILDON_CALENDAR_POPUP_GET_PRIVATE(obj) \
         (G_TYPE_INSTANCE_GET_PRIVATE\
-        ((obj), HILDON_CALENDAR_POPUP_TYPE, HildonCalendarPopupPrivate));
+        ((obj), HILDON_TYPE_CALENDAR_POPUP, HildonCalendarPopupPrivate));
 
 static GtkDialog *parent_class;
 
@@ -137,8 +137,7 @@ GtkWidget *hildon_calendar_popup_new(GtkWindow * parent, guint year,
     init_dmy(year, month, day, &dtmp, &mtmp, &ytmp);
 
     /* Create new HildonCalendarPopup */
-    cal = HILDON_CALENDAR_POPUP(g_object_new(HILDON_CALENDAR_POPUP_TYPE,
-                                             NULL));
+    cal = HILDON_CALENDAR_POPUP(g_object_new(HILDON_TYPE_CALENDAR_POPUP, NULL));
     priv = HILDON_CALENDAR_POPUP_GET_PRIVATE(cal);
 
     if (parent) {

@@ -29,19 +29,27 @@
 
 G_BEGIN_DECLS
 /**
- * HILDON_RANGE_EDITOR_TYPE
+ * HILDON_TYPE_RANGE_EDITOR
  *
  * Macro for getting type of range editor.
+ * Since: 0.12.10
  */
-#define HILDON_RANGE_EDITOR_TYPE (hildon_range_editor_get_type())
+#define HILDON_TYPE_RANGE_EDITOR (hildon_range_editor_get_type())
+
+/**
+ * HILDON_RANGE_EDITOR_TYPE
+ * Deprectated: use HILDON_TYPE_RANGE_EDITOR instead
+ */
+#define HILDON_RANGE_EDITOR_TYPE HILDON_TYPE_RANGE_EDITOR
+
 #define HILDON_RANGE_EDITOR(obj) \
-        (GTK_CHECK_CAST (obj, HILDON_RANGE_EDITOR_TYPE, HildonRangeEditor))
+        (GTK_CHECK_CAST (obj, HILDON_TYPE_RANGE_EDITOR, HildonRangeEditor))
 #define HILDON_RANGE_EDITOR_CLASS(klass) (GTK_CHECK_CLASS_CAST ((klass),\
-         HILDON_RANGE_EDITOR_TYPE, HildonRangeEditorClass))
+         HILDON_TYPE_RANGE_EDITOR, HildonRangeEditorClass))
 #define HILDON_IS_RANGE_EDITOR(obj) \
-        (GTK_CHECK_TYPE (obj, HILDON_RANGE_EDITOR_TYPE))
+        (GTK_CHECK_TYPE (obj, HILDON_TYPE_RANGE_EDITOR))
 #define HILDON_IS_RANGE_EDITOR_CLASS(klass) \
-        (GTK_CHECK_CLASS_TYPE ((klass), HILDON_RANGE_EDITOR_TYPE))
+        (GTK_CHECK_CLASS_TYPE ((klass), HILDON_TYPE_RANGE_EDITOR))
 /**
  * HildonRangeEditor:
  *
