@@ -38,6 +38,8 @@
 #include <gtk/gtkalignment.h>
 #include <gtk/gtkdrawingarea.h>
 #include <gtk/gtksignal.h>
+#include <gdk/gdkkeysyms.h>
+#include <hildon-widgets/hildon-defines.h>
 
 #include "hildon-color-button.h"
 #include "hildon-color-selector.h"
@@ -95,6 +97,10 @@ static void
 hildon_color_button_unrealize(GtkWidget *widget);
 static void
 hildon_color_button_clicked(GtkButton *button);
+static gboolean
+hildon_color_button_key_released(GtkWidget * button, 
+				 GdkEventKey * event,
+				 gpointer data);
 static gint
 hildon_color_field_expose_event(GtkWidget *widget, GdkEventExpose *event,
                                 HildonColorButton *cb);
@@ -253,9 +259,14 @@ hildon_color_button_init(HildonColorButton *cb)
   g_signal_connect(drawing_area, "expose-event",
                    G_CALLBACK(hildon_color_field_expose_event), cb);
 
+  g_signal_connect(G_OBJECT(cb), "key-release-event",
+		   G_CALLBACK(hildon_color_button_key_released), cb);
+  
   /* packing */
   gtk_container_add(GTK_CONTAINER(align), drawing_area);
   gtk_container_add(GTK_CONTAINER(cb), align);
+
+  gtk_widget_add_events(GTK_WIDGET(cb), GDK_KEY_RELEASE_MASK);
   
   gtk_widget_show_all(align);
   
@@ -338,6 +349,19 @@ hildon_color_button_clicked(GtkButton *button)
             &(cb->priv->color) );
   }
   gtk_widget_hide(GTK_WIDGET(cs_dialog));
+}
+
+/* Popup a color selector dialog on hardkey Select release */
+static gboolean
+hildon_color_button_key_released(GtkWidget * button, 
+				 GdkEventKey * event,
+				 gpointer data)
+{
+  g_return_val_if_fail (HILDON_IS_COLOR_BUTTON(button), FALSE);
+
+  if (event->keyval == HILDON_HARDKEY_SELECT)
+    hildon_color_button_clicked(GTK_BUTTON(button));
+  return TRUE;
 }
 
 /* Set_property function for HildonColorButtonClass initialization */

@@ -1,5 +1,15 @@
 2006-04-13  Luc Pionchon  <luc.pionchon@nokia.com>
 
+	Pops up the color selector on 'selecte' hardkey (IMP-15)
+	
+	* hildon-widgets/hildon-color-button.c
+	(hildon_color_button_init): connect "key-release-event"
+	(hildon_color_button_key_released): new function.
+	Pops up the color selector on 'select' hardkey release
+
+
+2006-04-13  Luc Pionchon  <luc.pionchon@nokia.com>
+
 	Hildon grid, set items to be focus-and-activate instead of single
 	tap activation (IMP-14)	
 	
