@@ -49,8 +49,8 @@
 #define BACKSPACE_ICON    "qgn_calculator_backspace"
 
 #define _(String) dgettext(PACKAGE, String)
-#define DEVICELOCK_OK     _("secu_Enter_lock_code_dialog_ok")
-#define DEVICELOCK_CANCEL _("secu_Enter_lock_code_dialog_cancel")
+#define DEVICELOCK_OK     _("secu_enter_lock_code_dialog_ok")
+#define DEVICELOCK_CANCEL _("secu_enter_lock_code_dialog_cancel")
 #define DEVICELOCK_TITLE  _("secu_application_title")
 
 

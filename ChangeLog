@@ -1,3 +1,8 @@
+2006-04-13  Johan Bilien  <johan.bilien@nokia.com>
+
+	* hildon-widgets/hildon-code-dialog.c: Fixed L10n logical ids
+	  for Ok and Cancel buttons.
+
 2006-04-13  Luc Pionchon  <luc.pionchon@nokia.com>
 
 	* hildon-widgets/hildon-color-button.c
