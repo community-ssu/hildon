@@ -48,9 +48,10 @@
               ((obj), HILDON_TYPE_COLOR_BUTTON, HildonColorButtonPrivate))
 
 #define COLOR_FILLED_HEIGHT 22
-#define COLOR_FILLED_WIDTH 22
-#define COLOR_BUTTON_WIDTH 48
-#define COLOR_BUTTON_HEIGHT 40
+#define COLOR_FILLED_WIDTH  22
+
+#define COLOR_BUTTON_WIDTH  52
+#define COLOR_BUTTON_HEIGHT 48
 
 /* the outer border color */
 #define OUTER_BORDER_RED   0
@@ -62,7 +63,7 @@
 #define INNER_BORDER_RED   65535
 #define INNER_BORDER_BLUE  65535
 #define INNER_BORDER_GREEN 65535
-#define INNER_BORDER_THICKNESS 1
+#define INNER_BORDER_THICKNESS 2
 
 struct _HildonColorButtonPrivate 
 {
