@@ -234,6 +234,12 @@ static void ticks_to_time (guint  ticks,
                            guint *minutes,
                            guint *seconds);
 
+static void
+hildon_time_editor_inserted_text  (GtkEditable * editable,
+                                   gchar * new_text,
+                                   gint new_text_length,
+                                   gint * position,
+                                   gpointer user_data);
 
 GType hildon_time_editor_get_type(void)
 {
@@ -493,6 +499,11 @@ static void hildon_time_editor_init(HildonTimeEditor * editor)
                        G_CALLBACK(hildon_time_editor_entry_keypress), editor);
       g_signal_connect(priv->entries[i], "changed",
                        G_CALLBACK(hildon_time_editor_entry_changed), editor);
+    
+      /* inserted signal sets time */
+      g_signal_connect_after (G_OBJECT(priv->entries[i]), "insert_text",
+			      G_CALLBACK (hildon_time_editor_inserted_text), 
+			      editor);
     }
     
     /* clicked signal for am/pm label */
@@ -1374,6 +1385,42 @@ hildon_time_editor_validate (HildonTimeEditor *editor, gboolean allow_intermedia
             priv->highlight_idle = g_idle_add(highlight_callback, editor);
     }
     g_string_free(error_message, TRUE);
+}
+
+/* on inserted text, if entry has two digits, jumps to the next field. */
+static void
+hildon_time_editor_inserted_text  (GtkEditable * editable,
+                                   gchar * new_text,
+                                   gint new_text_length,
+                                   gint * position,
+                                   gpointer user_data) 
+{
+  HildonTimeEditor *editor;
+  GtkEntry *entry;
+  gchar *value;
+  
+  entry = GTK_ENTRY(editable);
+  editor = HILDON_TIME_EDITOR(user_data);
+  
+  value = (gchar *) gtk_entry_get_text(entry);
+  
+  if (strlen(value) == 2)
+    {
+      HildonTimeEditorPrivate *priv;
+      
+      priv = HILDON_TIME_EDITOR_GET_PRIVATE(editor);
+      
+      if (GTK_WIDGET(editable) == priv->entries[ENTRY_HOURS]) 
+	{
+          gtk_widget_grab_focus(priv->entries[ENTRY_MINS]);
+          *position = -1;
+        }
+      else if (GTK_WIDGET(editable) == priv->entries[ENTRY_MINS]) 
+        {
+          gtk_widget_grab_focus(priv->entries[ENTRY_SECS]);
+	  *position = -1;
+        }
+    }   
 }
 
 static gboolean hildon_time_editor_entry_focusout(GtkWidget * widget,

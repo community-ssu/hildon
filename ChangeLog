@@ -1,6 +1,16 @@
 2006-04-13  Luc Pionchon  <luc.pionchon@nokia.com>
 
-	Pops up the color selector on 'selecte' hardkey (IMP-15)
+	Automatic focus movement for HildonTimeEditor (IMP-13)
+
+	* hildon-widgets/hildon-time-editor.c
+	(hildon_time_editor_init): connect after signal "insert_text"
+	(hildon_time_editor_inserted_text): new function.
+	On inserted text, if entry has two digits, jumps to the next field.
+
+
+2006-04-13  Luc Pionchon  <luc.pionchon@nokia.com>
+
+	Pops up the color selector on 'select' hardkey (IMP-15)
 	
 	* hildon-widgets/hildon-color-button.c
 	(hildon_color_button_init): connect "key-release-event"
