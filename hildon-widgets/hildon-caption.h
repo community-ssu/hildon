@@ -51,7 +51,8 @@ G_BEGIN_DECLS
  *
  * Keys to set the #HildonCaption to be optional or mandatory.
  */
-typedef enum {
+typedef enum /*< skip >*/
+{
     HILDON_CAPTION_OPTIONAL = 0,
     HILDON_CAPTION_MANDATORY
 } HildonCaptionStatus;
@@ -78,7 +79,7 @@ struct _HildonCaption
 struct _HildonCaptionClass
 {
   GtkEventBoxClass parent_class;
-  void (*activate) (GtkWidget *widget);
+  void (*activate) (HildonCaption *widget);
 };
 
 

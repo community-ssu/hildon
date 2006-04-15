@@ -48,6 +48,7 @@
 #include <hildon-widgets/hildon-input-mode-hint.h>
 #include "hildon-composite-widget.h"
 #include "hildon-marshalers.h"
+#include "hildon-libs-enum-types.h"
 
 #ifdef HAVE_CONFIG_H
 #include<config.h>
@@ -229,8 +230,8 @@ hildon_date_editor_class_init(HildonDateEditorClass * editor_class)
                 G_SIGNAL_RUN_LAST,
                 G_STRUCT_OFFSET(HildonDateEditorClass, date_error),
                 g_signal_accumulator_true_handled, NULL,
-		_hildon_marshal_BOOLEAN__INT,
-                G_TYPE_BOOLEAN, 1, G_TYPE_INT);
+		_hildon_marshal_BOOLEAN__ENUM,
+                G_TYPE_BOOLEAN, 1, HILDON_TYPE_DATE_EDITOR_ERROR_TYPE);
 
   /**
    * HildonDateEditor:year:

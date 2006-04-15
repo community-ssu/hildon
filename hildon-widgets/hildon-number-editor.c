@@ -44,6 +44,7 @@
 #include "hildon-composite-widget.h"
 #include <hildon-widgets/hildon-input-mode-hint.h>
 #include <hildon-widgets/hildon-defines.h>
+#include "hildon-libs-enum-types.h"
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -126,7 +127,7 @@ static void
 hildon_number_editor_finalize (GObject *self);
 
 static gboolean
-hildon_number_editor_error_handler(HildonNumberEditor *editor,
+hildon_number_editor_range_error(HildonNumberEditor *editor,
 				   HildonNumberEditorErrorType type);
 
 static gboolean
@@ -221,7 +222,7 @@ hildon_number_editor_class_init(HildonNumberEditorClass * editor_class)
     widget_class->size_allocate = hildon_number_editor_size_allocate;
     widget_class->focus = hildon_composite_widget_focus;
 
-    editor_class->error_handler = hildon_number_editor_error_handler;
+    editor_class->range_error = hildon_number_editor_range_error;
 
     /* Because we derived our widget from GtkContainer, we should override 
        forall method */
@@ -242,10 +243,10 @@ hildon_number_editor_class_init(HildonNumberEditorClass * editor_class)
     HildonNumberEditor_signal[RANGE_ERROR] =
       g_signal_new("range_error", HILDON_TYPE_NUMBER_EDITOR,
 		   G_SIGNAL_RUN_LAST, G_STRUCT_OFFSET
-		   (HildonNumberEditorClass, error_handler),
+		   (HildonNumberEditorClass, range_error),
 		   g_signal_accumulator_true_handled, NULL,
-		   _hildon_marshal_BOOLEAN__INT,
-		   G_TYPE_BOOLEAN, 1, G_TYPE_INT);
+		   _hildon_marshal_BOOLEAN__ENUM,
+		   G_TYPE_BOOLEAN, 1, HILDON_TYPE_NUMBER_EDITOR_ERROR_TYPE);
 }
 
 static void
@@ -765,7 +766,7 @@ hildon_number_editor_entry_keypress (GtkWidget *widget, GdkEventKey *event,
 }
 
 static gboolean
-hildon_number_editor_error_handler(HildonNumberEditor *editor,
+hildon_number_editor_range_error(HildonNumberEditor *editor,
 				   HildonNumberEditorErrorType type)
 {
 

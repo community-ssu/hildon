@@ -405,8 +405,7 @@ static void hildon_app_class_init (HildonAppClass *app_class)
 		   G_SIGNAL_RUN_FIRST,
 		   G_STRUCT_OFFSET(HildonAppClass, switch_to),
 		   NULL, NULL,
-		   g_cclosure_marshal_VOID__POINTER, G_TYPE_NONE, 1,
-		   G_TYPE_POINTER);
+		   g_cclosure_marshal_VOID__VOID, G_TYPE_NONE, 0);
 		   
     app_signals[IM_CLOSE] =
       g_signal_new("im_close",
@@ -422,24 +421,24 @@ static void hildon_app_class_init (HildonAppClass *app_class)
 		   G_SIGNAL_RUN_FIRST,
 		   G_STRUCT_OFFSET(HildonAppClass, clipboard_copy),
 		   NULL, NULL,
-		   g_cclosure_marshal_VOID__POINTER, G_TYPE_NONE, 1,
-		   G_TYPE_POINTER);
+		   g_cclosure_marshal_VOID__OBJECT, G_TYPE_NONE, 1,
+		   GTK_TYPE_WIDGET);
     app_signals[CLIPBOARD_CUT] =
       g_signal_new("clipboard_cut",
 		   G_OBJECT_CLASS_TYPE(object_class),
 		   G_SIGNAL_RUN_FIRST,
 		   G_STRUCT_OFFSET(HildonAppClass, clipboard_cut),
 		   NULL, NULL,
-		   g_cclosure_marshal_VOID__POINTER, G_TYPE_NONE, 1,
-		   G_TYPE_POINTER);
+		   g_cclosure_marshal_VOID__OBJECT, G_TYPE_NONE, 1,
+		   GTK_TYPE_WIDGET);
     app_signals[CLIPBOARD_PASTE] =
       g_signal_new("clipboard_paste",
 		   G_OBJECT_CLASS_TYPE(object_class),
 		   G_SIGNAL_RUN_FIRST,
 		   G_STRUCT_OFFSET(HildonAppClass, clipboard_paste),
 		   NULL, NULL,
-		   g_cclosure_marshal_VOID__POINTER, G_TYPE_NONE, 1,
-		   G_TYPE_POINTER);
+		   g_cclosure_marshal_VOID__OBJECT, G_TYPE_NONE, 1,
+		   GTK_TYPE_WIDGET);
 
     /* properties */
     g_object_class_install_property(object_class, PROP_SCROLL_CONTROL,

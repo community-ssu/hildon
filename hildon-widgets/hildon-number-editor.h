@@ -59,7 +59,7 @@ struct _HildonNumberEditorClass
 {
   GtkContainerClass parent_class;
   
-  gboolean	(*error_handler)	(HildonNumberEditor *editor, 
+  gboolean	(*range_error)	(HildonNumberEditor *editor, 
 					 HildonNumberEditorErrorType type); 
 };
 

@@ -1,3 +1,59 @@
+2006-04-15  Marius Vollmer  <marius.vollmer@nokia.com>
+
+	From Murray Cummings (M#185 M#283), with slight changes:
+
+	* configure.ac: Add a --rebuilds option, defaulting to yes, so we
+	can disable the regeneration of hildon-libs-enum-types.[h|c], also
+	based on the gnome-vfs build.
+
+	* hildon-widgets/Makefile.am: Use glib-mkenums to generate
+	hildon-libs-enum-types.[h|c], and build them, based on the
+	gnome-vfs build. This adds GTypes for the enums, needed for
+	accurate signal registration, needed by bindings.
+
+	* hildon-widgets/hildon-number-editor.h: Rename the error_handler
+	default signal handler to range_error, so it has the same name as
+	the signal, as expected by bindings.
+
+	* hildon-widgets/hildon-marshalers.list: Change to the now-used
+	marshallers.
+
+	* hildon-widgets/hildon-note.h (HildonNodeType): Marked as 'skip'.
+	since hildon_note_type_get_type is defined manually and
+	glib-mkenums should ignore this enum.
+
+	* hildon-widgets/hildon-app.h (HildonZoomLevel): Likewise.
+	* hildon-widgets/hildon-caption.h (HildonCaptionStatus): Likewise.
+
+	Correct the signal registration for:
+	
+	* hildon-widgets/hildon-app.c 
+	(hildon_app_class_init):
+	"switch_to",
+	"clipboard_copy",
+	"clipboard_cut",
+	"clipboard_paste"
+
+	* hildon-widgets/hildon-date-editor.c
+	(hildon_date_editor_class_init):
+	"date_error"
+
+	* hildon-widgets/hildon-find-toolbar.c
+	(hildon_find_toolbar_class_init):
+	"search", 
+	"close",
+	"invalid_input", 
+	"history_append signals"
+
+	* hildon-widgets/hildon-grid.c
+	(hildon_grid_class_init):
+	"popup_context_menu"
+
+	* hildon-widgets/hildon-number-editor.c
+	(hildon_number_editor_class_init):
+	"range_error".
+
+
 2006-04-13  Luc Pionchon  <luc.pionchon@nokia.com>
 
 	M#90 - Use standard GLib macro names.

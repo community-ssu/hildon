@@ -1,4 +1,4 @@
-#include "hildon-marshalers.h"
+#include <hildon-widgets/hildon-marshalers.h>
 
 #include	<glib-object.h>
 
@@ -48,19 +48,19 @@
 #endif /* !G_ENABLE_DEBUG */
 
 
-/* BOOLEAN:INT (hildon-marshalers.list:26) */
+/* BOOLEAN:ENUM (hildon-marshalers.list:26) */
 void
-_hildon_marshal_BOOLEAN__INT (GClosure     *closure,
-                              GValue       *return_value,
-                              guint         n_param_values,
-                              const GValue *param_values,
-                              gpointer      invocation_hint,
-                              gpointer      marshal_data)
+_hildon_marshal_BOOLEAN__ENUM (GClosure     *closure,
+                               GValue       *return_value,
+                               guint         n_param_values,
+                               const GValue *param_values,
+                               gpointer      invocation_hint,
+                               gpointer      marshal_data)
 {
-  typedef gboolean (*GMarshalFunc_BOOLEAN__INT) (gpointer     data1,
-                                                 gint         arg_1,
-                                                 gpointer     data2);
-  register GMarshalFunc_BOOLEAN__INT callback;
+  typedef gboolean (*GMarshalFunc_BOOLEAN__ENUM) (gpointer     data1,
+                                                  gint         arg_1,
+                                                  gpointer     data2);
+  register GMarshalFunc_BOOLEAN__ENUM callback;
   register GCClosure *cc = (GCClosure*) closure;
   register gpointer data1, data2;
   gboolean v_return;
@@ -78,10 +78,10 @@ _hildon_marshal_BOOLEAN__INT (GClosure     *closure,
       data1 = g_value_peek_pointer (param_values + 0);
       data2 = closure->data;
     }
-  callback = (GMarshalFunc_BOOLEAN__INT) (marshal_data ? marshal_data : cc->callback);
+  callback = (GMarshalFunc_BOOLEAN__ENUM) (marshal_data ? marshal_data : cc->callback);
 
   v_return = callback (data1,
-                       g_marshal_value_peek_int (param_values + 1),
+                       g_marshal_value_peek_enum (param_values + 1),
                        data2);
 
   g_value_set_boolean (return_value, v_return);
@@ -129,4 +129,6 @@ _hildon_marshal_BOOLEAN__INT_INT_INT (GClosure     *closure,
 
   g_value_set_boolean (return_value, v_return);
 }
+
+/* VOID:OBJECT (hildon-marshalers.list:28) */
 

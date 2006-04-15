@@ -83,7 +83,8 @@ struct _HildonAppClass {
  * This enum is deprecated and should not be used. It's just
  * lecagy stuff from ancient specs.
  */
-typedef enum {
+typedef enum /*< skip >*/
+{
     HILDON_ZOOM_SMALL = 1,
     HILDON_ZOOM_MEDIUM = 2,
     HILDON_ZOOM_LARGE = 3

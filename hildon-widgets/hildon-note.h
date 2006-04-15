@@ -39,7 +39,7 @@ G_BEGIN_DECLS
 typedef struct _HildonNote HildonNote;
 typedef struct _HildonNoteClass HildonNoteClass;
 
-typedef enum
+typedef enum /*< skip >*/
 {
     HILDON_NOTE_CONFIRMATION_TYPE = 0,
     HILDON_NOTE_CONFIRMATION_BUTTON_TYPE,

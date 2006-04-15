@@ -115,12 +115,14 @@ PACKAGE_STRING = @PACKAGE_STRING@
 PACKAGE_TARNAME = @PACKAGE_TARNAME@
 PACKAGE_VERSION = @PACKAGE_VERSION@
 PATH_SEPARATOR = @PATH_SEPARATOR@
+PERL = @PERL@
 PKG_CONFIG = @PKG_CONFIG@
 POFILES = @POFILES@
 POSUB = @POSUB@
 PO_IN_DATADIR_FALSE = @PO_IN_DATADIR_FALSE@
 PO_IN_DATADIR_TRUE = @PO_IN_DATADIR_TRUE@
 RANLIB = @RANLIB@
+REBUILD = @REBUILD@
 SET_MAKE = @SET_MAKE@
 SHELL = @SHELL@
 STRIP = @STRIP@
@@ -276,7 +278,9 @@ libhildonwidgets_la_SOURCES = \
 	hildon-program.c \
 	hildon-program.h \
 	hildon-code-dialog.c \
-	hildon-code-dialog.h
+	hildon-code-dialog.h \
+	$(hildonlibs_built_headers) \
+	$(hildonlibs_built_cfiles)
 
 
 hildonwidgetsincludeinstdir = $(includedir)/hildon-widgets
@@ -326,6 +330,13 @@ hildonwidgetsincludeinst_DATA = \
 	hildon-window-private.h \
 	hildon-code-dialog.h
 
+
+headers_to_scan_for_enums = $(hildonwidgetsincludeinst_DATA)
+
+# Generate the enums source code, with glib-mkenums:
+# This is based on the same Makefile.am stuff in pango:
+hildonlibs_built_headers = hildon-libs-enum-types.h
+hildonlibs_built_cfiles = hildon-libs-enum-types.c
 subdir = hildon-widgets
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
@@ -334,6 +345,8 @@ CONFIG_CLEAN_FILES =
 LTLIBRARIES = $(lib_LTLIBRARIES)
 
 libhildonwidgets_la_DEPENDENCIES =
+am__objects_1 =
+am__objects_2 = hildon-libs-enum-types.lo
 am_libhildonwidgets_la_OBJECTS = hildon-marshalers.lo \
 	hildon-composite-widget.lo hildon-controlbar.lo \
 	hildon-seekbar.lo hildon-color-selector.lo hildon-note.lo \
@@ -352,7 +365,8 @@ am_libhildonwidgets_la_OBJECTS = hildon-marshalers.lo \
 	hildon-color-button.lo hildon-system-sound.lo hildon-app.lo \
 	hildon-defines.lo hildon-appview.lo hildon-find-toolbar.lo \
 	gtk-infoprint.lo hildon-banner.lo hildon-caption.lo \
-	hildon-window.lo hildon-program.lo hildon-code-dialog.lo
+	hildon-window.lo hildon-program.lo hildon-code-dialog.lo \
+	$(am__objects_1) $(am__objects_2)
 libhildonwidgets_la_OBJECTS = $(am_libhildonwidgets_la_OBJECTS)
 
 DEFAULT_INCLUDES =  -I. -I$(srcdir) -I$(top_builddir)
@@ -382,6 +396,7 @@ am__depfiles_maybe = depfiles
 @AMDEP_TRUE@	./$(DEPDIR)/hildon-grid.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/hildon-hvolumebar.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/hildon-insert-object-dialog.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/hildon-libs-enum-types.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/hildon-marshalers.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/hildon-name-password-dialog.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/hildon-note.Plo \
@@ -485,6 +500,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/hildon-grid.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/hildon-hvolumebar.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/hildon-insert-object-dialog.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/hildon-libs-enum-types.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/hildon-marshalers.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/hildon-name-password-dialog.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/hildon-note.Plo@am__quote@
@@ -752,9 +768,39 @@ hildon-marshalers.h: hildon-marshalers.list
 			hildon-marshalers.list >hildon-marshalers.h
 
 hildon-marshalers.c: hildon-marshalers.list hildon-marshalers.h
-	echo '#include "hildon-marshalers.h"' >hildon-marshalers.c
+	echo '#include <hildon-widgets/hildon-marshalers.h>' >hildon-marshalers.c
 	glib-genmarshal --prefix _hildon_marshal --body \
 			hildon-marshalers.list >>hildon-marshalers.c
+
+# Don't build the library until we have built the header that it needs:
+$(OBJECTS) $(libhildonwidgets_la_OBJECTS): $(hildonlibs_built_headers)
+
+hildon-libs-enum-types.h: @REBUILD@ $(headers_to_scan_for_enums) Makefile
+	(cd $(srcdir) && glib-mkenums \
+			--fhead "#ifndef __HILDON_LIBS_ENUM_TYPES_H__\n#define __HILDON_LIBS_ENUM_TYPES_H__\n\n#include <glib-object.h>\n\nG_BEGIN_DECLS\n" \
+			--fprod "/* enumerations from \"@filename@\" */\n" \
+			--vhead "GType @enum_name@_get_type (void);\n#define HILDON_TYPE_@ENUMSHORT@ (@enum_name@_get_type())\n" 	\
+			--ftail "G_END_DECLS\n\n#endif /* __HILDON_LIBS_ENUM_TYPES_H__ */" \
+		$(headers_to_scan_for_enums)) > $@
+
+#This would be shorter if there was a hildon-libs.h file:
+hildon-libs-enum-types.c: @REBUILD@ $(headers_to_scan_for_enums) Makefile
+	(cd $(srcdir) && glib-mkenums \
+			--fhead "#include <hildon-widgets/hildon-app.h>\n" \
+			--fhead "#include <hildon-widgets/hildon-input-mode-hint.h>\n" \
+			--fhead "#include <hildon-widgets/hildon-caption.h>\n" \
+			--fhead "#include <hildon-widgets/hildon-date-editor.h>\n" \
+			--fhead "#include <hildon-widgets/hildon-number-editor.h>\n" \
+			--fhead "#include <hildon-widgets/hildon-telephone-editor.h>\n" \
+			--fhead "#include <hildon-widgets/hildon-note.h>\n" \
+			--fhead "#include <hildon-widgets/hildon-grid.h>\n" \
+			--fhead '#include "hildon-libs-enum-types.h"\n' \
+			--fhead "#include <glib-object.h>" \
+		      	--fprod "\n/* enumerations from \"@filename@\" */" \
+			--vhead "GType\n@enum_name@_get_type (void)\n{\n  static GType etype = 0;\n  if (etype == 0) {\n    static const G@Type@Value values[] = {" 	\
+			--vprod "      { @VALUENAME@, \"@VALUENAME@\", \"@valuenick@\" }," \
+			--vtail "      { 0, NULL, NULL }\n    };\n    etype = g_@type@_register_static (\"@EnumName@\", values);\n  }\n  return etype;\n}\n" \
+		$(headers_to_scan_for_enums)) > $@
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
 .NOEXPORT:
