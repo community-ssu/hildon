@@ -19,7 +19,7 @@ CFLAGS="$CFLAGS -std=c99 -Wall -pedantic -Wmissing-prototypes -Wmissing-declarat
 # See http://bugzilla.gnome.org/show_bug.cgi?id=310175 and
 # http://bugzilla.gnome.org/show_bug.cgi?id=310216
 
-GTK_VERSION=2.6.4
+GTK_VERSION=2.6.10
 
 PKG_CHECK_MODULES(GTK, gtk+-2.0)
 AC_SUBST(GTK_LIBS)
