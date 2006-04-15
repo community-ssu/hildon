@@ -783,7 +783,7 @@ hildon-libs-enum-types.h: @REBUILD@ $(headers_to_scan_for_enums) Makefile
 			--ftail "G_END_DECLS\n\n#endif /* __HILDON_LIBS_ENUM_TYPES_H__ */" \
 		$(headers_to_scan_for_enums)) > $@
 
-#This would be shorter if there was a hildon-libs.h file:
+#FIXME: This would be shorter if there was a hildon-libs.h file:
 hildon-libs-enum-types.c: @REBUILD@ $(headers_to_scan_for_enums) Makefile
 	(cd $(srcdir) && glib-mkenums \
 			--fhead "#include <hildon-widgets/hildon-app.h>\n" \
