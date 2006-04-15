@@ -1623,9 +1623,9 @@ static gboolean hildon_time_editor_entry_keypress(GtkWidget * widget,
                the time picker icon was clicked. Before opening the time picker
                the fields are first validated and fixed. */
             hildon_time_editor_validate (editor, FALSE);
-            _gtk_button_set_depressed(GTK_BUTTON(priv->iconbutton), TRUE);
+            hildon_gtk_button_set_depressed(GTK_BUTTON(priv->iconbutton), TRUE);
             hildon_time_editor_icon_clicked(widget, data);
-            _gtk_button_set_depressed(GTK_BUTTON(priv->iconbutton), FALSE);
+            hildon_gtk_button_set_depressed(GTK_BUTTON(priv->iconbutton), FALSE);
             return TRUE;
 
         case GDK_Left:

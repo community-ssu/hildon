@@ -1,3 +1,12 @@
+2006-04-15  Luc Pionchon  <luc.pionchon@nokia.com>
+
+	* hildon-widgets/hildon-time-editor.c
+	(hildon_time_editor_entry_keypress):
+	use hildon_gtk_widget_set_logical_font, provided by osso-GTK,
+	since 2.6.10-1.osso4,
+	instead of GTK private symbol _gtk_widget_set_logical_font
+
+
 2006-04-15  Marius Vollmer  <marius.vollmer@nokia.com>
 
 	From Murray Cummings (M#185 M#283), with slight changes:
