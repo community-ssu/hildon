@@ -1,3 +1,10 @@
+2006-04-16  Luc Pionchon  <luc.pionchon@nokia.com>
+
+	* hildon-widgets/hildon-time-editor.c
+	(hildon_time_editor_set_show_hours) 
+	(hildon_time_editor_get_show_hours): added gtk-doc tag 'Since:'
+
+
 2006-04-15  Luc Pionchon  <luc.pionchon@nokia.com>
 
 	* hildon-widgets/hildon-time-editor.c
