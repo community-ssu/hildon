@@ -39,7 +39,8 @@ G_BEGIN_DECLS
 
 /**
  * HILDON_DATE_EDITOR_TYPE:
- * Deprectaed: use HILDON_TYPE_DATE_EDITOR instead
+ *
+ * Deprecated: use #HILDON_TYPE_DATE_EDITOR instead
  */
 #define HILDON_DATE_EDITOR_TYPE HILDON_TYPE_DATE_EDITOR
 

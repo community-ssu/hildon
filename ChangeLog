@@ -1,3 +1,19 @@
+2006-04-17  Luc Pionchon  <luc.pionchon@nokia.com>
+
+	Minor changes for gtk-doc
+	* hildon-note.c
+	* hildon-weekday-picker.h
+	* hildon-name-password-dialog.c
+	* hildon-calendar-popup.h
+	* hildon-range-editor.h
+	* hildon-volumebar-range.h
+	* hildon-banner.c
+	* hildon-app.c
+	* hildon-time-editor.c
+	* gtk-infoprint.c
+	* hildon-date-editor.h
+
+
 2006-04-16  Luc Pionchon  <luc.pionchon@nokia.com>
 
 	* hildon-widgets/hildon-time-editor.c

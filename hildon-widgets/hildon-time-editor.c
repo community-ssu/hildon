@@ -663,8 +663,7 @@ static void hildon_time_editor_finalize(GObject * obj_self)
         G_OBJECT_CLASS(parent_class)->finalize(obj_self);
 }
 
-/**
- * Gets hour-minute separator and minute-second separator 
+/* Gets hour-minute separator and minute-second separator 
  * from current locale
  */
 static void get_time_separators(HildonTimeEditorPrivate *priv)

@@ -305,10 +305,9 @@ GtkWidget *hildon_name_password_dialog_new(GtkWindow * parent)
  *
  * Returns: the newly created #HildonNamePasswordDialog
  */
-GtkWidget *hildon_name_password_dialog_new_with_default
-                                          (GtkWindow   * parent,
-					   const gchar * name,
-					   const gchar * password)
+GtkWidget *hildon_name_password_dialog_new_with_default(GtkWindow   *parent,
+					                const gchar *name,
+					                const gchar *password)
 {
     GtkWidget *self = hildon_name_password_dialog_new(parent);
 

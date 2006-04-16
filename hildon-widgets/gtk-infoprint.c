@@ -22,6 +22,13 @@
  *
  */
 
+/**
+ * SECTION:gtk-infoprint
+ * @short_description: deprecated widget. Use #HildonBanner instead
+ *
+ * This widget is deprectaed. Use #HildonBanner instead
+ */
+
 #include "gtk-infoprint.h"
 #include "hildon-banner.h"
 
@@ -61,8 +68,7 @@ static GtkWidget *find_banner_for_parent(GtkWindow *parent)
  * Normally you should use your application window
  * or dialog as a transient parent and avoid passing %NULL.
  *
- * This function is deprecated and should not be used.
- * Use #hildon_banner_show_information instead.
+ * Deprecated: Use #hildon_banner_show_information instead.
  */
 void gtk_infoprint(GtkWindow * parent, const gchar * text)
 {
@@ -83,8 +89,7 @@ void gtk_infoprint(GtkWindow * parent, const gchar * text)
  * Normally you should use your application window
  * or dialog as a transient parent and avoid passing %NULL.
  *
- * This function is deprecated and should not be used.
- * Use #hildon_banner_show_information instead.
+ * Deprecated: Use #hildon_banner_show_information instead.
  */
 void
 gtk_infoprint_with_icon_stock(GtkWindow * parent,
@@ -107,8 +112,7 @@ gtk_infoprint_with_icon_stock(GtkWindow * parent,
  * Normally you should use your application window
  * or dialog as a transient parent and avoid passing %NULL.
  *
- * This function is deprecated and should not be used.
- * Use #hildon_banner_show_information instead.
+ * Deprecated: Use #hildon_banner_show_information instead.
  */
 void
 gtk_infoprint_with_icon_name(GtkWindow * parent,
@@ -130,8 +134,7 @@ gtk_infoprint_with_icon_name(GtkWindow * parent,
  * This version of infoprint allow you to make printf-like formatting
  * easily.
  *
- * This function is deprecated and should not be used.
- * Use #hildon_banner_show_information instead.
+ * Deprecated: Use #hildon_banner_show_information instead.
  */
 void gtk_infoprintf(GtkWindow * parent, const gchar * format, ...)
 {
@@ -153,8 +156,9 @@ void gtk_infoprintf(GtkWindow * parent, const gchar * format, ...)
  * Will disable wrapping for the next shown infoprint. This only
  * affects next infoprint shown in this application.
  *
- * This function is deprecated and should not be used.
  * Currently it does nothing.
+ *
+ * Deprecated: 
  */
 void gtk_infoprint_temporarily_disable_wrap(void)
 {
@@ -178,8 +182,7 @@ void gtk_infoprint_temporarily_disable_wrap(void)
  * gtk_infoprint_with_icon_stock except in always restricts
  * the text to one line and the font is emphasized.
  *
- * This function is deprecated and should not be used.
- * Use #hildon_banner_show_information instead.
+ * Deprecated: Use #hildon_banner_show_information instead.
  */
 void
 gtk_confirmation_banner(GtkWindow * parent, const gchar * text,
@@ -206,8 +209,7 @@ gtk_confirmation_banner(GtkWindow * parent, const gchar * text,
  * gtk_infoprint_with_icon_name except in always restricts
  * the text to one line and the font is emphasized.
  *
- * This function is deprecated and should not be used.
- * Use #hildon_banner_show_information instead.
+ * Deprecated: Use #hildon_banner_show_information instead.
  */
 void
 gtk_confirmation_banner_with_icon_name(GtkWindow * parent, const gchar * text,
@@ -224,8 +226,7 @@ gtk_confirmation_banner_with_icon_name(GtkWindow * parent, const gchar * text,
  * The @text is the text shown in banner.
  * Creates a new banner with the animation.
  *
- * This function is deprecated and should not be used.
- * Use #hildon_banner_show_animation instead.
+ * Deprecated: Use #hildon_banner_show_animation instead.
  */
 void gtk_banner_show_animation(GtkWindow * parent, const gchar * text)
 {
@@ -240,8 +241,7 @@ void gtk_banner_show_animation(GtkWindow * parent, const gchar * text)
  * The @text is the text shown in banner.
  * Creates a new banner with the progressbar.
  *
- * This function is deprecated and should not be used.
- * Use #hildon_banner_show_progress instead.
+ * Deprecated: Use #hildon_banner_show_progress instead.
  */
 void gtk_banner_show_bar(GtkWindow * parent, const gchar * text)
 {
@@ -256,8 +256,7 @@ void gtk_banner_show_bar(GtkWindow * parent, const gchar * text)
  * The @text is the text shown in banner.
  * Sets the banner text.
  *
- * This function is deprecated and should not be used.
- * Use #hildon_banner_set_text instead.
+ * Deprecated: Use #hildon_banner_set_text instead.
  */
 void gtk_banner_set_text(GtkWindow * parent, const gchar * text)
 {
@@ -279,8 +278,7 @@ void gtk_banner_set_text(GtkWindow * parent, const gchar * text)
  * the scale is from 0.0 to 1.0.
  * Sets the amount of fraction the progressbar has.
  *
- * This function is deprecated and should not be used.
- * Use #hildon_banner_set_fraction instead.
+ * Deprecated: Use #hildon_banner_set_fraction instead.
  */
 void gtk_banner_set_fraction(GtkWindow * parent, gdouble fraction)
 {
@@ -299,7 +297,7 @@ void gtk_banner_set_fraction(GtkWindow * parent, gdouble fraction)
  *
  * Destroys the banner
  *
- * This function is deprecated and should not be used.
+ * Deprecated:
  */
 void gtk_banner_close(GtkWindow * parent)
 {
@@ -318,8 +316,9 @@ void gtk_banner_close(GtkWindow * parent)
  * Will disable wrapping for the next shown banner. This only
  * affects next banner shown in this application.
  *
- * This function is deprecated and should not be used.
  * Currently it does nothing.
+ *
+ * Deprecated:
  **/
 void gtk_banner_temporarily_disable_wrap(void)
 {

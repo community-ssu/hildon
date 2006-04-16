@@ -24,11 +24,13 @@
 
 /**
  * SECTION:hildon-app
- * @short_description: A base widget to present application
+ * @short_description: A base widget to present application. Deprecated, use #HildonProgram instead.
  * @see_also: #HildonAppView
  *
  * #HildonApp is the base for any hildon application.
  * It controls basic looks and functionality of an application, like a title.
+ *
+ * This widget is deprecated use #HildonProgram instead.
  */
 
 #include <gdk/gdk.h>
@@ -2062,8 +2064,8 @@ void hildon_app_unregister_view(HildonApp *self, gpointer view_ptr)
 
 /**
  * hildon_app_unregister_view_with_id:
- * @self : a #HildonApp
- * @view_id : the ID of the view that should be unregistered
+ * @self: a #HildonApp
+ * @view_id: the ID of the view that should be unregistered
  * 
  * Unregisters a view with specified ID, if it exists.
  */

@@ -459,7 +459,6 @@ hildon_note_rebuild(HildonNote *note)
  *   correctly.
  *   In GTK the X window ID can be checked using
  *   GDK_WINDOW_XID(GTK_WIDGET(parent)->window).
- *
  * @description: the message to confirm
  * @Varargs: arguments pairs for new buttons(label and return value). 
  *   Terminate the list with %NULL value.
@@ -470,15 +469,15 @@ hildon_note_rebuild(HildonNote *note)
  * default ok/cancel buttons are not appended but you have to provide
  * all of the buttons.
  *
+ * FIXME: This doc seems to be wrong, the two buttons aren't added so
+ * it would only contain the "additional" buttons? However, changing
+ * this would break those applications that rely on current behaviour.
+ *
  * Returns: A #GtkWidget pointer of the note
  */
-
-/* FIXME: This doc seems to be wrong, the two buttons aren't added so it
- * would only contain the "additional" buttons? However, changing this would
-   break those applications that rely on current behaviour. */
-GtkWidget *hildon_note_new_confirmation_add_buttons(GtkWindow * parent,
-                                                    const gchar *
-                                                    description, ...)
+GtkWidget *hildon_note_new_confirmation_add_buttons(GtkWindow   *parent,
+                                                    const gchar *description,
+						    ...)
 {
     va_list args;
     char *message;
@@ -718,7 +717,6 @@ GtkWidget *hildon_note_new_information_with_icon_name(GtkWindow * parent,
  *   important so that the window manager could handle the windows
  *   correctly. In GTK the X window ID can be checked using
  *   GDK_WINDOW_XID(GTK_WIDGET(parent)->window).
- *
  * @description: the message to confirm
  * @icon: #GtkIconTheme icon to be displayed
  * 

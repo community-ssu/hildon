@@ -787,7 +787,7 @@ void hildon_banner_set_fraction(HildonBanner *self, gdouble fraction)
 
 
 /**
- * This function is deprecated and should not be used.
+ * Deprecated: really, do NOT use.
  */
 void _hildon_gtk_label_set_text_n_lines(GtkLabel *label, const gchar *text, gint max_lines)
 {
