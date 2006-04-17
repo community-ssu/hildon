@@ -1692,7 +1692,7 @@ convert_to_24h (guint *h, gboolean am)
  *
  * This function shows or hides the hours field.
  *
- * Since: 0.12.4-1
+ * Since: 0.12.4
  **/
 void hildon_time_editor_set_show_hours(HildonTimeEditor * editor,
                                        gboolean show_hours)
