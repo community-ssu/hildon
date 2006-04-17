@@ -1,5 +1,8 @@
 hildon-libs (0.12.9-1+svn-1) unstable; urgency=low
 
+  * debian/rules: ./configure call, put one argument per line for clarity.
+  * debian/rules: call ./autogen.sh to create ./configure
+
   * N#22557 - Private symbols from gtk+ are not to be used
   * debian/control: N#22557, updated dependency to GTK+ (needs 2.6.10-1.osso4)
 	

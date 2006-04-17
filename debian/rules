@@ -6,6 +6,7 @@
 # Uncomment this to turn on verbose mode.
 #export DH_VERBOSE=1
 
+SOURCE_DIR=$(CURDIR)
 
 # These are used for cross-compiling and for saving the configure script
 # from having to guess our platform (since we know it already)
@@ -33,11 +34,21 @@ major=2
 #major=`ls src/.libs/lib*.so.* | \
 # awk '{if (match($$0,/\.so\.[0-9]+$$/)) print substr($$0,RSTART+4)}'`
 
-config.status: configure
+config.status: $(SOURCE_DIR)/configure
 	dh_testdir
-	# Add here commands to configure the package.
-	CFLAGS="$(CFLAGS)" ./configure --host=$(DEB_HOST_GNU_TYPE) --build=$(DEB_BUILD_GNU_TYPE) --prefix=/usr --mandir=\$${prefix}/share/man --infodir=\$${prefix}/share/info --with-doc-dir=\$${prefix}/share/doc --disable-dependency-tracking --disable-gtk-doc
+#	Add here commands to configure the package.
+	CFLAGS="$(CFLAGS)" ./configure              \
+               --host=$(DEB_HOST_GNU_TYPE)          \
+               --build=$(DEB_BUILD_GNU_TYPE)        \
+               --prefix=/usr                        \
+               --mandir=\$${prefix}/share/man       \
+               --infodir=\$${prefix}/share/info     \
+               --with-doc-dir=\$${prefix}/share/doc \
+               --disable-dependency-tracking        \
+               --disable-gtk-doc
 
+$(SOURCE_DIR)/configure:
+	AUTOGEN_SUBDIR_MODE=1 $(SOURCE_DIR)/autogen.sh
 
 build: build-stamp
 build-stamp:  config.status
