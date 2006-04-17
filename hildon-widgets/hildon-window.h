@@ -48,14 +48,15 @@ G_BEGIN_DECLS
 #define HILDON_IS_WINDOW(obj) (GTK_CHECK_TYPE (obj, HILDON_TYPE_WINDOW))
 #define HILDON_IS_WINDOW_CLASS(klass) \
     (GTK_CHECK_CLASS_TYPE ((klass), HILDON_TYPE_WINDOW))
-typedef struct _HildonWindow HildonWindow;
+
+typedef struct _HildonWindow      HildonWindow;
 typedef struct _HildonWindowClass HildonWindowClass;
 
 /**
  * HildonWindowPrivate:
  *
- * This structure contains just internal data. It should not
- * be accessed directly.
+ * This structure contains just internal data.
+ * It should not be accessed directly.
  */
 typedef struct _HildonWindowPrivate HildonWindowPrivate;
 
@@ -80,18 +81,24 @@ struct _HildonWindowClass
 
 
 GType       hildon_window_get_type          (void);
+
 GtkWidget * hildon_window_new               (void);
-void        hildon_window_add_with_scrollbar(HildonWindow * self,
-                                             GtkWidget * child);
-GtkMenu *   hildon_window_get_menu          (HildonWindow * self);
-void        hildon_window_set_menu          (HildonWindow * self,
-                                             GtkMenu *menu);
+
+void        hildon_window_add_with_scrollbar(HildonWindow *self,
+                                             GtkWidget    *child);
+
+GtkMenu *   hildon_window_get_menu          (HildonWindow *self);
+void        hildon_window_set_menu          (HildonWindow *self,
+                                             GtkMenu      *menu);
+
 void        hildon_window_add_toolbar       (HildonWindow *self,
-                                             GtkToolbar *toolbar);
+                                             GtkToolbar   *toolbar);
+
 void        hildon_window_remove_toolbar    (HildonWindow *self,
-                                             GtkToolbar *toolbar);
+                                             GtkToolbar   *toolbar);
 
 gboolean    hildon_window_get_is_topmost    (HildonWindow *self);
+
 
 G_END_DECLS
 #endif /* HILDON_WINDOW_H */
