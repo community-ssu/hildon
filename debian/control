@@ -8,7 +8,7 @@ Standards-Version: 3.6.0
 Package: hildon-libs-dev
 Section: devel
 Architecture: any
-Depends: hildon-libs0 (= ${Source-Version}), libgtk2.0-dev (>= 2:2.6.4-1.osso6), libosso-gnomevfs2-dev, osso-esd-dev, libmatchbox-dev, libgconf2-dev
+Depends: hildon-libs0 (= ${Source-Version}), libgtk2.0-dev (>= 2:2.6.10-1.osso4), libosso-gnomevfs2-dev, osso-esd-dev, libmatchbox-dev, libgconf2-dev
 Description: Hildon libraries development files
 
 Package: hildon-libs0
