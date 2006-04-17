@@ -50,21 +50,19 @@ config.status: $(SOURCE_DIR)/configure
 $(SOURCE_DIR)/configure:
 	AUTOGEN_SUBDIR_MODE=1 NOCONFIGURE=yes $(SOURCE_DIR)/autogen.sh
 
+
 build: build-stamp
 build-stamp:  config.status
 	dh_testdir
-
-	# Add here commands to compile the package.
+#	Add here commands to compile the package.
 	$(MAKE)
-
 	touch build-stamp
 
 clean:
 	dh_testdir
 	dh_testroot
 	rm -f build-stamp 
-
-	# Add here commands to clean up after the build process.
+#	Add here commands to clean up after the build process.
 	-$(MAKE) distclean
 ifneq "$(wildcard /usr/share/misc/config.sub)" ""
 	cp -f /usr/share/misc/config.sub config.sub
@@ -72,9 +70,8 @@ endif
 ifneq "$(wildcard /usr/share/misc/config.guess)" ""
 	cp -f /usr/share/misc/config.guess config.guess
 endif
-
-
 	dh_clean 
+
 
 install: build
 	dh_testdir
@@ -82,11 +79,11 @@ install: build
 	dh_clean -k 
 	dh_installdirs
 
-	# Add here commands to install the package into debian/build
+#	Add here commands to install the package into debian/build
 	$(MAKE) install DESTDIR=$(CURDIR)/debian/build
 	rm -f $(CURDIR)/debian/build/usr/lib/outo/*.*a
 
-	# for the -dbg package
+#	for the -dbg package
 	-rm -rf $(CURDIR)/debian/build/usr/lib/debug
 	-mkdir -p $(CURDIR)/debian/build/usr/lib/debug
 	-cp -vd $(CURDIR)/debian/build/usr/lib/lib*.so* $(CURDIR)/debian/build/usr/lib/debug
@@ -108,22 +105,11 @@ binary-arch: build install
 	    echo "oh nooooooo, no gtk-doc :(";    \
 	fi
 	dh_install --sourcedir=debian/build -v
-#	dh_installmenu
-#	dh_installdebconf	
-#	dh_installlogrotate
-#	dh_installemacsen
-#	dh_installpam
-#	dh_installmime
-#	dh_installinit
-#	dh_installcron
-#	dh_installinfo
 	dh_installman
 	dh_link
 	dh_strip --dbg-package="hildon-libs0-dbg"
 	dh_compress
 	dh_fixperms
-#	dh_perl
-#	dh_python
 	dh_makeshlibs -V
 	dh_installdeb
 	dh_shlibdeps
