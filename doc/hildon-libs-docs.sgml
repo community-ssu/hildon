@@ -93,4 +93,19 @@
   <index role="deprecated">
     <title>Index of deprecated symbols</title>
   </index>
+
+  <!-- New symbols index -->
+  <index role="0.12.2">
+    <title>Index of new symbols in 0.12.2 </title>
+  </index>  
+  <index role="0.12.4">
+    <title>Index of new symbols in 0.12.4 </title>
+  </index>  
+  <index role="0.12.8">
+    <title>Index of new symbols in 0.12.8 </title>
+  </index>  
+  <index role="0.12.10">
+    <title>Index of new symbols in 0.12.10</title>
+  </index>  
+
 </book>
