@@ -44,7 +44,11 @@ GTKDOC_LIBS = $(GTK_LIBS) ../hildon-widgets/libhildonwidgets.la
 MKDB_OPTIONS=--sgml-mode --output-format=xml
 
 # Extra SGML files that are included by $(DOC_MAIN_SGML_FILE).
-content_files =
+content_files= \
+	version.xml
+
+version.xml: ../configure.ac
+	@echo $(VERSION) > version.xml
 
 # Images to copy into HTML directory.
 HTML_IMAGES =
@@ -53,3 +57,5 @@ HTML_IMAGES =
 FIXXREF_OPTIONS=
 
 include $(top_srcdir)/gtk-doc.make
+
+

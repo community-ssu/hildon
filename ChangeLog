@@ -1,5 +1,12 @@
 2006-04-17  Luc Pionchon  <luc.pionchon@nokia.com>
 
+	* doc/Makefile.am (version.xml): generates version.xml
+	* doc/hildon-libs-docs.sgml: added &version; entity, and display
+	the version number in the doc title.
+
+
+2006-04-17  Luc Pionchon  <luc.pionchon@nokia.com>
+
 	Minor changes for gtk-doc
 	* hildon-note.c
 	* hildon-weekday-picker.h
