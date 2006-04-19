@@ -101,7 +101,7 @@ GtkToolbar *hildon_appview_get_toolbar(HildonAppView * self);
 void hildon_appview_set_title(HildonAppView * self, const gchar * newname);
 const gchar *hildon_appview_get_title(HildonAppView * self);
 
-void _hildon_appview_toggle_menu(HildonAppView * self,
+gboolean _hildon_appview_toggle_menu(HildonAppView * self,
                                  Time button_event_time);
 gboolean _hildon_appview_menu_visible(HildonAppView * self);
 

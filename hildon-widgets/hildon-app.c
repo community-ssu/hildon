@@ -1513,10 +1513,12 @@ hildon_app_key_snooper (GtkWidget *widget, GdkEventKey *keyevent, HildonApp *app
 	    if ( keyevent->type == GDK_KEY_PRESS ) {
             /* Toggle menu on press, avoid key repeat */
 		    if ( priv->lastmenuclick == 0 ){
-			    _hildon_appview_toggle_menu(appview,
-					    gtk_get_current_event_time());
-			    
 			    priv->lastmenuclick = 1;
+			    if (_hildon_appview_toggle_menu(appview,
+					    gtk_get_current_event_time()))
+                {
+                    return TRUE;
+                }
 		    }
 	    } else if ( keyevent->type == GDK_KEY_RELEASE ) {
             /* We got release, so next press is really a new press, 

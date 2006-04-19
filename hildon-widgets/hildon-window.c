@@ -156,7 +156,7 @@ hildon_window_vbox_expose_event (GtkWidget *vbox,
                                  GdkEventExpose *event,
                                  gpointer window);
 
-static void
+static gboolean
 hildon_window_toggle_menu (HildonWindow * self);
 
 static gboolean
@@ -1091,7 +1091,8 @@ hildon_window_key_press_event (GtkWidget *widget, GdkEventKey *event)
     switch (event->keyval)
     {
         case HILDON_HARDKEY_MENU:
-            hildon_window_toggle_menu (HILDON_WINDOW (widget));
+            if (hildon_window_toggle_menu (HILDON_WINDOW (widget)))
+                return TRUE;
             break;
         case HILDON_HARDKEY_ESC:
             if (!priv->escape_timeout)
@@ -1395,8 +1396,10 @@ detach_menu_func (GtkWidget *attach_widget, GtkMenu *menu)
 }
 /*
  * Toggles the display of the HildonWindow menu.
+ * Returns whether or not something was done (whether or not we had a menu
+ * to toggle)
  */
-static void
+static gboolean
 hildon_window_toggle_menu (HildonWindow * self)
 {
     GtkMenu *menu_to_use = NULL;
@@ -1429,7 +1432,7 @@ hildon_window_toggle_menu (HildonWindow * self)
 
     if (!menu_to_use)
     {
-        return;
+        return FALSE;
     }
     
 
@@ -1437,7 +1440,7 @@ hildon_window_toggle_menu (HildonWindow * self)
     {
         gtk_menu_popdown (menu_to_use);
         gtk_menu_shell_deactivate (GTK_MENU_SHELL (menu_to_use));
-        return;
+        return TRUE;
     }
 
     if (gtk_container_get_children (GTK_CONTAINER (menu_to_use)) != NULL)
@@ -1465,6 +1468,7 @@ hildon_window_toggle_menu (HildonWindow * self)
         gtk_menu_shell_select_first (GTK_MENU_SHELL (menu_to_use), TRUE);
     }
 
+    return TRUE;
 }
 
 /*

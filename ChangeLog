@@ -1,3 +1,16 @@
+2006-04-19  Johan Bilien  <johan.bilien@nokia.com>
+
+	N#22909	
+	* hildon-widgets/hildon-window.c:
+	  - hildon_window_toggle_menu now returns whether or not something was
+	    done
+	  - hildon_window_key_press_event(): when handling the menu hard key,
+	    return TRUE if we actually handled it
+	* hildon-widgets/hildon-appview.c: _hildon_appview_toggle_menu()
+	  now returns if something was done
+	* hildon-widgets/hildon-app.c: hildon_app_key_snooper(): return TRUE
+	  if we actually handled the menu hard key.
+
 2006-04-19  Tapani Palli <tapani.palli@nokia.com>
 
 	* applied thumb flag for compilation

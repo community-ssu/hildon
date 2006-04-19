@@ -1299,21 +1299,24 @@ GtkMenu *hildon_appview_get_menu(HildonAppView * self)
  *
  * This function should be only called from @HildonApp.
  * Should be renamed to popup menu. Just the first parameter is used.
+ * 
+ * Returns: Whether or not something was done (whether or not we had
+ * a menu)
  */
-void _hildon_appview_toggle_menu(HildonAppView * self,
+gboolean _hildon_appview_toggle_menu(HildonAppView * self,
                                  Time button_event_time)
 {
     GList *children;
 
-    g_return_if_fail(self && HILDON_IS_APPVIEW(self));
+    g_return_val_if_fail(self && HILDON_IS_APPVIEW(self), FALSE);
 
     if (!self->priv->menu)
-        return;
+        return FALSE;
 
     if (GTK_WIDGET_VISIBLE(self->priv->menu)) {
         gtk_menu_popdown(GTK_MENU(self->priv->menu));
         gtk_menu_shell_deactivate(GTK_MENU_SHELL(self->priv->menu));
-        return;
+        return TRUE;
     }
 
     /* Avoid opening an empty menu */
@@ -1336,7 +1339,9 @@ void _hildon_appview_toggle_menu(HildonAppView * self,
                            self, 0, button_event_time);
         }
         gtk_menu_shell_select_first(GTK_MENU_SHELL(menu), TRUE);
+        return TRUE;
     }
+    return FALSE;
 
 }
 
