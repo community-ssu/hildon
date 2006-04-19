@@ -1,4 +1,4 @@
-SUBDIRS = hildon-widgets timer ut doc 
+SUBDIRS = hildon-widgets timer doc 
 EXTRA_DIST = \
 	debian/changelog \
 	debian/control \

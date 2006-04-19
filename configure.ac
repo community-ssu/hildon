@@ -11,8 +11,10 @@ AC_PROG_AWK
 AC_PROG_LIBTOOL
 
 AC_HEADER_STDC
-PKG_CHECK_MODULES(OUTO, outo >= 0.1.1)
-AC_SUBST(OUTO_CFLAGS)
+
+
+#PKG_CHECK_MODULES(OUTO, outo >= 0.1.1)
+#AC_SUBST(OUTO_CFLAGS)
 
 CFLAGS="$CFLAGS -std=c99 -Wall -pedantic -Wmissing-prototypes -Wmissing-declarations"
 # -Werror disabled due to the flaw in glib-2.0

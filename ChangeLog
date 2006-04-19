@@ -1,3 +1,8 @@
+2006-04-19  Johan Bilien  <johan.bilien@nokia.com>
+
+	* hildon-widgets/hildon-window.c: Fixed a bug in child size allocation
+	  in fullscreen.
+
 2006-04-19  Luc Pionchon  <luc.pionchon@nokia.com>
 
 	* configure.ac: 0.12.10
