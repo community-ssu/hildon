@@ -1343,6 +1343,8 @@ static gboolean highlight_callback(gpointer data)
     HildonTimeEditorPrivate *priv;
     GtkWidget *widget;
 
+    GDK_THREADS_ENTER ();
+    
     g_assert(HILDON_IS_TIME_EDITOR(data));
 
     priv = HILDON_TIME_EDITOR_GET_PRIVATE(data);
@@ -1357,6 +1359,8 @@ static gboolean highlight_callback(gpointer data)
     gtk_editable_select_region(GTK_EDITABLE(widget), 0, -1);
     gtk_widget_grab_focus(widget);
 
+    GDK_THREADS_LEAVE ();
+    
     return FALSE;
 }
 

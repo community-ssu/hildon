@@ -1424,6 +1424,8 @@ guint hildon_date_editor_get_day(HildonDateEditor *editor)
 static gboolean
 _hildon_date_editor_entry_select_all (GtkWidget *widget)
 {
+	GDK_THREADS_ENTER ();
 	gtk_editable_select_region(GTK_EDITABLE(widget), 0, -1);
+	GDK_THREADS_LEAVE ();
 	return FALSE;
 }

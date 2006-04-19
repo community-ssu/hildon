@@ -783,7 +783,9 @@ hildon_app_escape_timeout(gpointer app)
 	HildonAppPrivate *priv;
 	GdkEvent *event;
 
-  g_assert(GTK_WIDGET_REALIZED(app));
+	GDK_THREADS_ENTER ();
+
+	g_assert(GTK_WIDGET_REALIZED(app));
 
 	priv = HILDON_APP_GET_PRIVATE(app);
 
@@ -796,6 +798,8 @@ hildon_app_escape_timeout(gpointer app)
 
 	priv->escape_timeout = 0;
 
+	GDK_THREADS_LEAVE ();
+	
 	return FALSE;	
 }
 

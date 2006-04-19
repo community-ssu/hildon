@@ -1,5 +1,16 @@
 2006-04-19 Tapani Palli <tapani.palli@nokia.com>
 
+	* thread safety (N#24348), fixed timeout and idle callbacks :
+	hildon-widgets/hildon-window.c : hildon_window_escape_timeout()
+	hildon-widgets/hildon-time-picker.c : hildon_time_picker_key_repeat_timeout()
+	hildon-widgets/hildon-number-editor.c : do_mouse_timeout(),hildon_number_editor_select_all()
+	hildon-widgets/hildon-banner.c : hildon_banner_timeout()
+	hildon-widgets/hildon-app.c : hildon_app_escape_timeout()
+	hildon-widgets/hildon-time-editor.c : highlight_callback()
+	hildon-widgets/hildon-date-editor.c : _hildon_date_editor_entry_select_all()
+
+2006-04-19 Tapani Palli <tapani.palli@nokia.com>
+
 	* hildon-widgets/hildon-app.c (hildon_app_key_release): send
 	correct state for fullscreen, fixes N#26611
 

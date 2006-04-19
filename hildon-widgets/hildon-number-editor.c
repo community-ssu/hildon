@@ -492,11 +492,15 @@ do_mouse_timeout (HildonNumberEditor *editor)
 {
     HildonNumberEditorPrivate *priv;
 
+    GDK_THREADS_ENTER ();
+    
     g_assert(HILDON_IS_NUMBER_EDITOR(editor));
 
     /* Update value based on button held */
     priv = HILDON_NUMBER_EDITOR_GET_PRIVATE(editor);
     change_numbers(editor, priv->button_type);
+
+    GDK_THREADS_LEAVE ();
 
     return TRUE;
 }
@@ -913,8 +917,10 @@ hildon_number_editor_set_value (HildonNumberEditor *editor, gint value)
 static gboolean
 hildon_number_editor_select_all (HildonNumberEditorPrivate *priv)
 {   
+    GDK_THREADS_ENTER ();
     gtk_editable_select_region(GTK_EDITABLE(priv->num_entry), 0, -1);
     priv->select_all_idle_id = 0;
+    GDK_THREADS_LEAVE ();
     return FALSE;
 } 
 

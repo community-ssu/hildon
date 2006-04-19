@@ -778,10 +778,13 @@ hildon_time_picker_event_box_key_release( GtkWidget *widget, GdkEventKey *event,
 static gboolean
 hildon_time_picker_key_repeat_timeout( gpointer tpicker )
 {
-  HildonTimePicker *picker = HILDON_TIME_PICKER(tpicker);
+  HildonTimePicker *picker;
   HildonTimePickerPrivate *priv = NULL;
   gint newval = 0;
 
+  GDK_THREADS_ENTER ();
+
+  picker = HILDON_TIME_PICKER(tpicker);
   g_assert(picker != NULL);
 
   priv = picker->priv;
@@ -801,9 +804,12 @@ hildon_time_picker_key_repeat_timeout( gpointer tpicker )
                                    hildon_time_picker_key_repeat_timeout,
                                    picker);
     priv->start_key_repeat = FALSE;
+
+    GDK_THREADS_LEAVE ();
     return FALSE;
   }
 
+  GDK_THREADS_LEAVE ();
   return TRUE;
 }
 

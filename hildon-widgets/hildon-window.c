@@ -1481,6 +1481,8 @@ hildon_window_escape_timeout (gpointer data)
     HildonWindowPrivate *priv;
     GdkEvent *event;
 
+    GDK_THREADS_ENTER ();
+    
     priv = HILDON_WINDOW(data)->priv;
 
     /* Send fake event, simulation a situation that user
@@ -1492,6 +1494,8 @@ hildon_window_escape_timeout (gpointer data)
 
     priv->escape_timeout = 0;
 
+    GDK_THREADS_LEAVE ();
+    
     return FALSE;
 }
 

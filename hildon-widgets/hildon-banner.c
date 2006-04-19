@@ -163,6 +163,8 @@ static gboolean hildon_banner_timeout(gpointer data)
    GdkEvent *event;
    gboolean continue_timeout = FALSE;
 
+   GDK_THREADS_ENTER ();
+   
    g_assert(HILDON_IS_BANNER(data));
 
    widget = GTK_WIDGET(data);
@@ -186,6 +188,8 @@ static gboolean hildon_banner_timeout(gpointer data)
 
    g_object_unref(widget);
 
+   GDK_THREADS_LEAVE ();
+   
    return continue_timeout;
 }
 
