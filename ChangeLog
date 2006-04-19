@@ -1,7 +1,7 @@
 2006-04-19 Tapani Palli <tapani.palli@nokia.com>
 
-	* applied fix for sending correct state for fullscreen (hildon-app.c),
-	fixes N#26611
+	* hildon-widgets/hildon-app.c (hildon_app_key_release): send
+	correct state for fullscreen, fixes N#26611
 
 2006-04-19  Johan Bilien  <johan.bilien@nokia.com>
 
@@ -15,10 +15,6 @@
 	  now returns if something was done
 	* hildon-widgets/hildon-app.c: hildon_app_key_snooper(): return TRUE
 	  if we actually handled the menu hard key.
-
-2006-04-19  Tapani Palli <tapani.palli@nokia.com>
-
-	* applied thumb flag for compilation, fixes N#26660
 
 2006-04-19  Johan Bilien  <johan.bilien@nokia.com>
 
