@@ -1,3 +1,8 @@
+2006-04-19  Luc Pionchon  <luc.pionchon@nokia.com>
+
+	* configure.ac: 0.12.10
+
+
 2006-04-17  Luc Pionchon  <luc.pionchon@nokia.com>
 
 	* doc/hildon-libs-docs.sgml: added index for new symbols.
@@ -35,11 +40,12 @@
 
 2006-04-15  Luc Pionchon  <luc.pionchon@nokia.com>
 
+	N#22557
 	* hildon-widgets/hildon-time-editor.c
-	(hildon_time_editor_entry_keypress):
-	use hildon_gtk_widget_set_logical_font, provided by osso-GTK,
-	since 2.6.10-1.osso4,
-	instead of GTK private symbol _gtk_widget_set_logical_font
+	(hildon_time_editor_entry_keypress): use
+	hildon_gtk_button_set_depressed, provided by osso-GTK, since
+	2.6.10-1.osso4, instead of GTK private symbol
+	_gtk_button_set_depressed
 
 
 2006-04-15  Marius Vollmer  <marius.vollmer@nokia.com>

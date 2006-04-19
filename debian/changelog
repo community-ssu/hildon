@@ -1,12 +1,18 @@
-hildon-libs (0.12.9-1+svn-1) unstable; urgency=low
+hildon-libs (0.12.10-1) unstable; urgency=low
 
   * debian/rules: tell ./autogen.sh to not launch ./configure 
   * debian/rules: install docs only if ENABLE_GTK_DOC is set
   * debian/rules: ./configure call, put one argument per line for clarity.
   * debian/rules: call ./autogen.sh to create ./configure
 
-  * N#22557 - Private symbols from gtk+ are not to be used
+  * removed autotools generated files from repository
+
+  * fixes N#22557 - Private symbols from gtk+ are not to be used
   * debian/control: N#22557, updated dependency to GTK+ (needs 2.6.10-1.osso4)
+  * fixes - logical strings in CodeDialog OK/Cancel buttons
+  * fixes M#90 - Use standard GLib macro names.
+  * fixes M#185 - improvements for bindings
+  * fixes M#283 - improvements for bindings
 	
  -- Luc Pionchon <luc.pionchon@nokia.com>  Sat, 15 Apr 2006 19:16:38 +0300
 
