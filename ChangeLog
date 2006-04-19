@@ -1,3 +1,7 @@
+2006-04-19 Tapani Palli <tapani.palli@nokia.com>
+
+	* applied fix for sending correct state for fullscreen (hildon-app.c)
+
 2006-04-19  Johan Bilien  <johan.bilien@nokia.com>
 
 	N#22909	

@@ -1471,7 +1471,7 @@ hildon_app_key_release (GtkWidget *widget, GdkEventKey *keyevent)
               fullscreen = hildon_appview_get_fullscreen(appview);
               g_signal_emit_by_name(G_OBJECT(appview),
                           "fullscreen_state_change",
-                          fullscreen);
+                          !fullscreen);
            }
        }
 
