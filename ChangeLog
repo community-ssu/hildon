@@ -1,6 +1,7 @@
 2006-04-19 Tapani Palli <tapani.palli@nokia.com>
 
-	* applied fix for sending correct state for fullscreen (hildon-app.c)
+	* applied fix for sending correct state for fullscreen (hildon-app.c),
+	fixes N#26611
 
 2006-04-19  Johan Bilien  <johan.bilien@nokia.com>
 
@@ -17,7 +18,7 @@
 
 2006-04-19  Tapani Palli <tapani.palli@nokia.com>
 
-	* applied thumb flag for compilation
+	* applied thumb flag for compilation, fixes N#26660
 
 2006-04-19  Johan Bilien  <johan.bilien@nokia.com>
 
