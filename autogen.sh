@@ -2,7 +2,7 @@
 
 set -x
 libtoolize --automake
-gtkdocizes --copy
+gtkdocize --copy
 aclocal-1.7 || aclocal
 autoconf
 autoheader
