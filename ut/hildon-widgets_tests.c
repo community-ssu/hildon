@@ -342,6 +342,7 @@ int test41a(void);
 int test42 (void);
 int test43 (void);
 int test44 (void);
+int test45 (void);
 
 /* this has to be like this (not static). outo
    calls for this! */
@@ -2961,6 +2962,18 @@ int test44 ()
   return 1;
 }
 
+int test45 ()
+{
+  GtkWidget *dialog;
+
+  dialog = hildon_calendar_popup_new (NULL, 1973, 5, 11);
+
+  g_assert (dialog);
+
+  return 1;
+}
+
+
 testcase tcases[] =
 {
     {*test1a, "hildon_controlbar_new", EXPECT_OK},
@@ -3187,6 +3200,7 @@ testcase tcases[] =
     { test42, "hildon_caption_new", EXPECT_OK },
     { test43, "hildon_get_password_dialog_new", EXPECT_OK },
     { test44, "hildon_get_password_dialog_new_with_default", EXPECT_OK },
+    { test45, "hildon_calendor_popup_new", EXPECT_OK },
 
     {0} /*REMEMBER THE TERMINATING NULL*/
 };

@@ -131,22 +131,15 @@ GtkWidget *hildon_calendar_popup_new(GtkWindow * parent, guint year,
                                      guint month, guint day)
 {
     HildonCalendarPopup *cal = NULL;
-    HildonCalendarPopupPrivate *priv;
-    guint dtmp, mtmp, ytmp;
-
-    init_dmy(year, month, day, &dtmp, &mtmp, &ytmp);
 
     /* Create new HildonCalendarPopup */
-    cal = HILDON_CALENDAR_POPUP(g_object_new(HILDON_TYPE_CALENDAR_POPUP, NULL));
-    priv = HILDON_CALENDAR_POPUP_GET_PRIVATE(cal);
+    cal = HILDON_CALENDAR_POPUP(g_object_new(HILDON_TYPE_CALENDAR_POPUP,
+                                             "year", year, "month", month, "day", day,
+					     NULL));
 
     if (parent) {
         gtk_window_set_transient_for(GTK_WINDOW(cal), parent);
     }
-
-    /* Select day, month, year */
-    gtk_calendar_select_month(GTK_CALENDAR(priv->cal), mtmp - 1, ytmp);
-    gtk_calendar_select_day(GTK_CALENDAR(priv->cal), dtmp);
 
     return GTK_WIDGET(cal);
 }
@@ -164,18 +157,23 @@ void
 hildon_calendar_popup_set_date(HildonCalendarPopup * cal,
                                guint year, guint month, guint day)
 {
+    guint dtmp, mtmp, ytmp = 0;
     HildonCalendarPopupPrivate *priv;
 
     g_return_if_fail(HILDON_IS_CALENDAR_POPUP(cal));
 
     priv = HILDON_CALENDAR_POPUP_GET_PRIVATE(cal);
 
+    /* Choose current date if the date is invalid: 
+     */
+    init_dmy(year, month, day, &dtmp, &mtmp, &ytmp);
+
     /* Remove all visual markers */
     gtk_calendar_clear_marks(GTK_CALENDAR(priv->cal));
 
     /* Set a new date */
-    gtk_calendar_select_month(GTK_CALENDAR(priv->cal), month - 1, year);
-    gtk_calendar_select_day(GTK_CALENDAR(priv->cal), day);
+    gtk_calendar_select_month(GTK_CALENDAR(priv->cal), mtmp - 1, ytmp);
+    gtk_calendar_select_day(GTK_CALENDAR(priv->cal), dtmp);
 }
 
 /**
@@ -374,19 +372,38 @@ hildon_calendar_selected_date(GtkWidget * self, gpointer cal_popup)
 static void hildon_calendar_popup_set_property(GObject * object, guint property_id,
                                     const GValue * value, GParamSpec * pspec)
 {
+    HildonCalendarPopup *popup = HILDON_CALENDAR_POPUP (object);
     HildonCalendarPopupPrivate *priv = 
 	HILDON_CALENDAR_POPUP_GET_PRIVATE(HILDON_CALENDAR_POPUP (object));
 
     switch (property_id) {
     case PROP_DAY:
-        g_object_set_property(G_OBJECT(priv->cal), pspec->name, value);
+    {
+        guint year, month, day = 0;
+        hildon_calendar_popup_get_date(popup, &year, &month, &day);
+
+        /*Verifies that the date is valid: */
+        hildon_calendar_popup_set_date(popup, year, month, g_value_get_int(value));
         break;
+    }
     case PROP_MONTH:
-        g_object_set_property(G_OBJECT(priv->cal), pspec->name, value);
+    {
+        guint year, month, day = 0;
+        hildon_calendar_popup_get_date(popup, &year, &month, &day);
+
+        /*Verifies that the date is valid: */
+        hildon_calendar_popup_set_date(popup, year, g_value_get_int(value), day);
         break;
+    }
     case PROP_YEAR:
-        g_object_set_property(G_OBJECT(priv->cal), pspec->name, value);
+    {
+        guint year, month, day = 0;
+        hildon_calendar_popup_get_date(popup, &year, &month, &day);
+
+        /*Verifies that the date is valid: */
+        hildon_calendar_popup_set_date(popup, g_value_get_int(value), month, day);
         break;
+    }
     case PROP_MIN_YEAR:
         g_object_set_property(G_OBJECT(priv->cal), "min-year", value);
         break;

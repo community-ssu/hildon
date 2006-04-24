@@ -1,3 +1,17 @@
+2006-04-24  Marius Vollmer  <marius.vollmer@nokia.com>
+
+        From Murray Cumming  <murrayc@murrayc.com>.
+
+	* hildon-widgets/hildon-calendar-popup.c:
+	(hildon_calendar_popup_new): Use only g_object_new(), passing 
+	it properties, so that language bindings can do the same.
+	(hildon_calendar_popup_set_date): Veryify the date here, 
+	instead of only in the _new() function.
+	(hildon_calendar_popup_set_property): Use get/set_date() to 
+	verify the new date and to select it.
+	(hildon_calendar_popup_get_property): Remove unused variables.
+	* ut/hildon-widgets_tests.c (test45): New.
+	
 2006-04-21  Luc Pionchon  <luc.pionchon@nokia.com>
 
 	* configure.ac: 0.12.11
