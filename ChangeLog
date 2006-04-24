@@ -1,6 +1,6 @@
 2006-04-24  Marius Vollmer  <marius.vollmer@nokia.com>
 
-        From Murray Cumming  <murrayc@murrayc.com>.
+        From Murray Cumming  <murrayc@murrayc.com>, M#183.
 
 	* hildon-widgets/hildon-calendar-popup.c:
 	(hildon_calendar_popup_new): Use only g_object_new(), passing 
