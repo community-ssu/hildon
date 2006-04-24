@@ -11,7 +11,23 @@
 	verify the new date and to select it.
 	(hildon_calendar_popup_get_property): Remove unused variables.
 	* ut/hildon-widgets_tests.c (test45): New.
-	
+
+	* hildon-widgets/hildon-add-home-dialog.c:
+	(hildon_add_home_dialog_new): Move code into
+	hildon_add_home_dialog_init(),
+	hildon_add_home_dialog_set_old_name(), and
+	hildon_add_home_dialog_set_new_name().  Supply parameters as
+	properties values to g_object_new() instead, so that language
+	bindings can do the same.
+	(hildon_add_home_dialog_class_init): Added name and new_name
+	properties.
+	(hildon_add_home_dialog_init): Create always-needed widgets.
+	(hildon_add_home_dialog_get_property),
+	(hildon_add_home_dialog_set_property): Get/Set the name and
+	new_name properties, recreating widgets if necessary, using new
+	static helper function.
+	* ut/hildon-widgets_tests.c (test46): New.
+
 2006-04-21  Luc Pionchon  <luc.pionchon@nokia.com>
 
 	* configure.ac: 0.12.11

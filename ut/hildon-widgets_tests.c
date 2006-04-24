@@ -343,6 +343,7 @@ int test42 (void);
 int test43 (void);
 int test44 (void);
 int test45 (void);
+int test46 (void);
 
 /* this has to be like this (not static). outo
    calls for this! */
@@ -2973,6 +2974,21 @@ int test45 ()
   return 1;
 }
 
+int test46 ()
+{
+  GtkWidget *dialog;
+
+  dialog = hildon_add_home_dialog_new (NULL, "oldname", "newname");
+
+  g_assert (dialog);
+
+  dialog = hildon_add_home_dialog_new (NULL, "oldname", NULL);
+
+  g_assert (dialog);
+
+  return 1;
+}
+
 
 testcase tcases[] =
 {
@@ -3201,6 +3217,7 @@ testcase tcases[] =
     { test43, "hildon_get_password_dialog_new", EXPECT_OK },
     { test44, "hildon_get_password_dialog_new_with_default", EXPECT_OK },
     { test45, "hildon_calendor_popup_new", EXPECT_OK },
+    { test46, "hildon_add_home_dialog_new", EXPECT_OK },
 
     {0} /*REMEMBER THE TERMINATING NULL*/
 };
@@ -3214,5 +3231,3 @@ testcase* get_tests()
     g_log_set_always_fatal (G_LOG_LEVEL_ERROR | G_LOG_LEVEL_CRITICAL | G_LOG_LEVEL_WARNING);
     return tcases;
 }
-
-
