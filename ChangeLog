@@ -28,6 +28,26 @@
 	static helper function.
 	* ut/hildon-widgets_tests.c (test46): New.
 
+	* hildon-widgets/hildon-grid-item.c
+	(hildon_grid_item_set_property), (hildon_grid_item_get_property),
+	(hildon_grid_item_class_init): Add icon-basename property.
+	(hildon_grid_item_new, hildon_grid_item_new_with_label): Move code
+	from here to hildon_grid_item_init(), so we can just call
+	g_object_new().
+	(hildon_grid_item_set_label): Convert NULL label to empty string.
+	Bug fix: don't cast the label widget to a string and compare it
+	against the new label text, use gtk_label_get_label instead.
+	Expect priv->label to always be non-NULL.
+	(update_icon): Don't pass NULL icon name to
+	gtk_icon_theme_load_icon, use default icon instead in that case.
+	* hildon-widgets/hildon-grid-item.h: Make
+	_hildon_grid_item_set_label into public
+	hildon_grid_item_set_label(), so that language bindings can use
+	it.
+	* ut/hildon-widgets_tests.c (VALID_ICON): Use existing icon.
+	(test33a2, test33b4, test33b4): Expect them to succeed now that a
+	HildonGridItem can handle NULL icons.
+	
 2006-04-21  Luc Pionchon  <luc.pionchon@nokia.com>
 
 	* configure.ac: 0.12.11

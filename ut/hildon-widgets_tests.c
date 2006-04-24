@@ -54,7 +54,7 @@
 #include <outo.h>
 
 /* Icon which must exist (HildonGridItem). */
-#define VALID_ICON  "Help"
+#define VALID_ICON  "qgn_list_gene_default_app"
 
 /*prototypes to keep the compiler happy*/
 testcase *get_tests(void);
@@ -3148,11 +3148,11 @@ testcase tcases[] =
     {*test32a, "hildon_rename_dialog: ok", EXPECT_OK},
     {*test32b, "hildon_rename_dialog: NULL(ok)", EXPECT_OK},
     {*test33a1, "grid_item_new (\"foo\")", EXPECT_OK},
-    {*test33a2, "grid_item_new (NULL)", EXPECT_ASSERT},
+    {*test33a2, "grid_item_new (NULL)", EXPECT_OK},
     {*test33b1, "grid_item_new_label (\"foo\", \"bar\")", EXPECT_OK},
     {*test33b2, "grid_item_new_label (\"foo\", NULL)", EXPECT_OK},
-    {*test33b3, "grid_item_new_label (NULL, \"bar\")", EXPECT_ASSERT},
-    {*test33b4, "grid_item_new_label (NULL, NULL)", EXPECT_ASSERT},
+    {*test33b3, "grid_item_new_label (NULL, \"bar\")", EXPECT_OK},
+    {*test33b4, "grid_item_new_label (NULL, NULL)", EXPECT_OK},
     {*test33c1, "grid_item_set_emblem (foo, \"bar\")", EXPECT_OK},
     {*test33c2, "grid_item_set_emblem (foo, NULL)", EXPECT_OK},
     {*test33c3, "grid_item_set_emblem (NULL, \"bar\")", EXPECT_ASSERT},

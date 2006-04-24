@@ -108,7 +108,8 @@ struct _HildonGridItemPrivate {
 
 enum{
     PROP_NONE = 0,
-    PROP_EMBLEM_TYPE
+    PROP_EMBLEM_TYPE,
+    PROP_ICON_BASENAME
 };
 
 /* Prototypes. */
@@ -162,6 +163,14 @@ hildon_grid_item_set_property(GObject * object,
   case PROP_EMBLEM_TYPE:
     hildon_grid_item_set_emblem_type(item, g_value_get_string(value));
     break;
+  case PROP_ICON_BASENAME:
+    if(priv->icon_basename)
+      g_free(priv->icon_basename);
+
+    priv->icon_basename = g_strdup(g_value_get_string(value));
+    update_icon(item);
+
+    break;
   default:
     G_OBJECT_WARN_INVALID_PROPERTY_ID(object, prop_id, pspec);
     break;
@@ -183,6 +192,9 @@ hildon_grid_item_get_property(GObject * object,
     case PROP_EMBLEM_TYPE:
       string = hildon_grid_item_get_emblem_type(item);
       g_value_set_string(value, string);
+      break;
+    case PROP_ICON_BASENAME:
+      g_value_set_string(value, priv->icon_basename);
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID(object, prop_id, pspec);
@@ -251,6 +263,15 @@ hildon_grid_item_class_init(HildonGridItemClass *klass)
 			    "The emblem's basename",
 			    NULL,
 			    G_PARAM_WRITABLE));
+
+    g_object_class_install_property 
+      (gobject_class, 
+       PROP_ICON_BASENAME, 
+       g_param_spec_string ("icon-basename",
+          "Icon Basename",
+          "The icon's basename",
+          NULL,
+          G_PARAM_WRITABLE));
   
 }
 
@@ -280,6 +301,18 @@ hildon_grid_item_init(HildonGridItem *item)
     priv->pending_icon_width = priv->icon_width = 64;
     priv->pending_icon_height = priv->icon_height = 54;
     priv->pending_label_height = priv->label_height = 30;
+
+
+    GTK_WIDGET_SET_FLAGS(GTK_WIDGET(item), GTK_CAN_FOCUS);
+
+    priv->label = gtk_label_new(NULL);
+    gtk_widget_set_name(priv->label, "hildon-grid-item-label");
+    gtk_widget_set_parent(priv->label, GTK_WIDGET(item));
+
+    update_icon(item);
+    set_label_justify(item);
+
+    gtk_widget_show(priv->label);
 }
 
 /**
@@ -294,22 +327,8 @@ GtkWidget *
 hildon_grid_item_new(const gchar *icon_basename)
 {
     HildonGridItem *item;
-    HildonGridItemPrivate *priv;
 
-    item = g_object_new(HILDON_TYPE_GRID_ITEM, NULL);
-    GTK_WIDGET_SET_FLAGS(GTK_WIDGET(item), GTK_CAN_FOCUS);
-
-    priv = HILDON_GRID_ITEM_GET_PRIVATE(item);
-    priv->icon_basename = g_strdup(icon_basename);
-
-    priv->label = gtk_label_new("");
-    gtk_widget_set_parent(priv->label, GTK_WIDGET(item));
-    gtk_widget_set_name(priv->label, "hildon-grid-item-label");
-
-    update_icon(item);
-    set_label_justify(item);
-
-    gtk_widget_show(priv->label);
+    item = g_object_new(HILDON_TYPE_GRID_ITEM, "icon-basename", icon_basename, NULL);
 
     return GTK_WIDGET(item);
 }
@@ -328,23 +347,10 @@ hildon_grid_item_new_with_label(const gchar *icon_basename,
                                 const gchar *label)
 {
     HildonGridItem *item;
-    HildonGridItemPrivate *priv;
 
+    item = g_object_new(HILDON_TYPE_GRID_ITEM,  "icon-basename", icon_basename, NULL);
 
-    item = g_object_new(HILDON_TYPE_GRID_ITEM, NULL);
-    GTK_WIDGET_SET_FLAGS(GTK_WIDGET(item), GTK_CAN_FOCUS);
-
-    priv = HILDON_GRID_ITEM_GET_PRIVATE(item);
-    priv->icon_basename = g_strdup(icon_basename);
-
-    priv->label = gtk_label_new(label != NULL ? label : "");
-    gtk_widget_set_name(priv->label, "hildon-grid-item-label");
-    gtk_widget_set_parent(priv->label, GTK_WIDGET(item));
-
-    update_icon(item);
-    set_label_justify(item);
-
-    gtk_widget_show(priv->label);
+    hildon_grid_item_set_label(item, label);
 
     return GTK_WIDGET(item);
 }
@@ -369,16 +375,22 @@ update_icon(HildonGridItem *item)
 
     icon_theme = gtk_icon_theme_get_default();
 
-    /* Load icon. Fall to default it loading fails. */
-    error = NULL;
-    icon = gtk_icon_theme_load_icon(icon_theme,
-                                    priv->icon_basename,
-                                    priv->icon_size, 0, &error);
-    if (icon == NULL) {
-        g_warning("Couldn't load icon \"%s\": %s", priv->icon_basename,
-                  error->message);
-        g_error_free(error);
+    /* Load icon. Fall to default if loading fails. */
+    icon = NULL;
+    if (priv->icon_basename)
+      {
+	error = NULL;
+	icon = gtk_icon_theme_load_icon(icon_theme,
+					priv->icon_basename,
+					priv->icon_size, 0, &error);
+	if (icon == NULL) {
+	  g_warning("Couldn't load icon \"%s\": %s", priv->icon_basename,
+		    error->message);
+	  g_error_free(error);
+	}
+      }
 
+    if (icon == NULL) {
         error = NULL;
         icon = gtk_icon_theme_load_icon(icon_theme,
                                         DEFAULT_ICON_BASENAME,
@@ -449,18 +461,18 @@ update_icon(HildonGridItem *item)
 }
 
 void
-_hildon_grid_item_set_label(HildonGridItem *item, const gchar *label)
+hildon_grid_item_set_label(HildonGridItem *item, const gchar *label)
 {
     HildonGridItemPrivate *priv;
 
     g_return_if_fail(HILDON_IS_GRID_ITEM(item));
 
+    if (label == NULL)
+      label = "";
+
     priv = HILDON_GRID_ITEM_GET_PRIVATE(item);
-    if ((priv->label == NULL && label == NULL) ||
-        (priv->label != NULL && label != NULL &&
-         strcmp((char *) priv->label, (char *) label) == 0)) {
-        return;
-    }
+    if (strcmp (gtk_label_get_label (GTK_LABEL (priv->label)), label) == 0)
+      return;
     gtk_label_set_label(GTK_LABEL(priv->label), label);
 }
 

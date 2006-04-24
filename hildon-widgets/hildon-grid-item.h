@@ -85,6 +85,7 @@ GtkWidget *hildon_grid_item_new_with_label(const gchar * icon_basename,
 void hildon_grid_item_set_emblem_type(HildonGridItem * item,
                                       const gchar * emblem_basename);
 const gchar *hildon_grid_item_get_emblem_type(HildonGridItem * item);
+void hildon_grid_item_set_label(HildonGridItem *item, const gchar *label);
 
 
 G_END_DECLS
