@@ -56,6 +56,6 @@ HTML_IMAGES =
 # Extra options to supply to gtkdoc-fixref.
 FIXXREF_OPTIONS=
 
-include $(top_srcdir)/gtk-doc.make
+-include $(top_srcdir)/gtk-doc.make
 
 

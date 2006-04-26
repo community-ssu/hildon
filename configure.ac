@@ -54,7 +54,8 @@ AM_GLIB_GNU_GETTEXT
 ##################################################
 # Check for gtk-doc.
 ##################################################
-GTK_DOC_CHECK([1.0])
+#ifdef(GTK_DOC_CHECK, GTK_DOC_CHECK([1.0]))
+#GTK_DOC_CHECK([1.0])
 
 AC_CHECK_PROG(DOXYGEN_FOUND, doxygen, yes, no)
 AM_CONDITIONAL(HAVE_DOXYGEN, [test "$DOXYGEN_FOUND" = "yes"])
@@ -84,9 +85,20 @@ AC_SUBST(REBUILD)
 
 AC_OUTPUT(Makefile \
 	hildon-widgets/Makefile \
-        timer/Makefile \
+	timer/Makefile \
 	ut/Makefile \
 	po/Makefile \
 	po/porules.mk \
 	doc/Makefile \
 	hildon-libs.pc)
+
+
+echo "
+######################################
+Configuration:
+
+- Compiler...........: ${CC}
+- gtk-doc support....: ${enable_gtk_doc}
+
+######################################
+"

@@ -1,3 +1,13 @@
+2006-04-25  Luc Pionchon  <luc.pionchon@nokia.com>
+
+	* doc/Makefile.am: use "-include" for gtk-doc.make (ignore
+	included Makefile if missing).
+
+	* configure.ac: temporarily disable GTK_DOC_CHECK (problem in
+	integration environement)
+
+	* configure.ac: print configuration summary after processing
+
 2006-04-24  Marius Vollmer  <marius.vollmer@nokia.com>
 
         From Murray Cumming  <murrayc@murrayc.com>, M#183.
