@@ -1173,9 +1173,9 @@ static gboolean hildon_time_editor_check_locale(HildonTimeEditor * editor)
     /* Update time separator symbols */
     get_time_separators(priv);
  
-    /* Get AM/PM symbols. We want to show them in lowercase. */
-    priv->am_symbol = g_ascii_strdown(nl_langinfo(AM_STR), -1);
-    priv->pm_symbol = g_ascii_strdown(nl_langinfo(PM_STR), -1);
+    /* Get AM/PM symbols. */
+    priv->am_symbol = g_strdup(nl_langinfo(AM_STR));
+    priv->pm_symbol = g_strdup(nl_langinfo(PM_STR));
 
     if (priv->am_symbol[0] == '\0')
         return TRUE;
