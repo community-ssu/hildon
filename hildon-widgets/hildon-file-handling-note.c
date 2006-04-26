@@ -54,7 +54,8 @@
 #define OPENING_TYPE 2
 #define SAVING_TYPE 3
 
-#define _(String) dgettext(PACKAGE, String)
+/*#define _(String) dgettext(PACKAGE, String)*/
+#define _(String) dgettext("hildon-fm", String) /* FIXME: this file should be moved to hildon-fm */
 
 #define HILDON_FILE_HANDLING_NOTE_GET_PRIVATE(obj)\
         (G_TYPE_INSTANCE_GET_PRIVATE ((obj), \
