@@ -1,3 +1,10 @@
+2006-04-26  Luc Pionchon  <luc.pionchon@nokia.com>
+
+	* configure.ac: 0.12.12
+
+	* Makefile.am (clean-all): brutal target to cleanup the
+	folder. Will do this properly later.
+
 2006-04-25  Luc Pionchon  <luc.pionchon@nokia.com>
 
 	* doc/Makefile.am: use "-include" for gtk-doc.make (ignore
