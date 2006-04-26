@@ -1,5 +1,16 @@
 2006-04-26  Luc Pionchon  <luc.pionchon@nokia.com>
 
+	* hildon-widgets/hildon-set-password-dialog.c
+	(c_): new macro, calls dgettext on "hildon-common-strings" domain.
+	(hildon_set_password_response_set): use c_ for common strings
+	(hildon_set_password_response_change): likewise.
+	Fixes N#27749
+
+	* hildon-widgets/hildon-set-password-dialog.h: indent cleanup
+
+
+2006-04-26  Luc Pionchon  <luc.pionchon@nokia.com>
+
 	* hildon-widgets/hildon-file-handling-note.c (gettext macro): use
 	"hildon-fm" as textual domain. Fixes N#27702
 
