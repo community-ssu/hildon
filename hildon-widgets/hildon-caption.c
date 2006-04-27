@@ -562,6 +562,12 @@ static void hildon_caption_set_focus( GtkWindow *window, GtkWidget *widget,
 {
   HildonCaptionPrivate *priv = HILDON_CAPTION_GET_PRIVATE(caption);
 
+  /* check if ancestor gone */
+  if (!widget)
+  {
+    return;
+  }
+  
   /* Try to find caption among the ancestors of widget */
   if (gtk_widget_is_ancestor(widget, caption))
     {

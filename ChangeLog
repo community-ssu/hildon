@@ -1,3 +1,8 @@
+2006-04-27 Tapani Palli <tapani.palli@nokia.com>
+
+	* hildon-widgets/hildon-caption.c : check if ancestor
+	(still) exists in set-focus handler, fixes N#25501
+
 2006-04-27  Luc Pionchon  <luc.pionchon@nokia.com>
 
 	* hildon-widgets/hildon-time-editor.c
