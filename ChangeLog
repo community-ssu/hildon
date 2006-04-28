@@ -1,5 +1,13 @@
 2006-04-28  Johan Bilien  <johan.bilien@nokia.com>
 
+	* hildon-widgets/hildon-window.c:
+	  - forgot to reinitialize convenience pointers to borders after they
+	    are reinitialised
+	  - replaced a g_return_if_fail with a g_return_val_if_fail now
+	    that toggle_menu returns a g_boolean
+
+2006-04-28  Johan Bilien  <johan.bilien@nokia.com>
+
 	N#28176
 	* hildon-widgets/hildon-window.c: Free the borders structure
 	  when the window is destroyed.

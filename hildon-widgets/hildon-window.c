@@ -506,6 +506,8 @@ hildon_window_expose (GtkWidget * widget, GdkEventExpose * event)
     if (!priv->borders)
     {
         hildon_window_get_borders (HILDON_WINDOW (widget));
+        b = HILDON_WINDOW(widget)->priv->borders;
+        tb = HILDON_WINDOW(widget)->priv->toolbar_borders;
     }
 
     tb_height = bx->allocation.height + tb->top + tb->bottom;
@@ -643,6 +645,8 @@ hildon_window_size_allocate (GtkWidget * widget, GtkAllocation * allocation)
     if (!priv->borders)
     {
         hildon_window_get_borders (HILDON_WINDOW (widget));
+        b = HILDON_WINDOW (widget)->priv->borders;
+        tb = HILDON_WINDOW (widget)->priv->toolbar_borders;
     }
     
     widget->allocation = *allocation;
@@ -1415,7 +1419,7 @@ hildon_window_toggle_menu (HildonWindow * self)
 {
     GtkMenu *menu_to_use = NULL;
     
-    g_return_if_fail (self && HILDON_IS_WINDOW (self));
+    g_return_val_if_fail (self && HILDON_IS_WINDOW (self), FALSE);
 
     /* Select which menu to use, Window specific has highest priority,
      * then program specific */
