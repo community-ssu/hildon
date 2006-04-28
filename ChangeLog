@@ -1,3 +1,9 @@
+2006-04-28  Johan Bilien  <johan.bilien@nokia.com>
+
+	N#28176
+	* hildon-widgets/hildon-window.c: Free the borders structure
+	  when the window is destroyed.
+
 2006-04-27 Tapani Palli <tapani.palli@nokia.com>
 
 	* hildon-widgets/hildon-caption.c : check if ancestor

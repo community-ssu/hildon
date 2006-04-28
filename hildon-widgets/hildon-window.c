@@ -352,7 +352,9 @@ hildon_window_finalize (GObject * obj_self)
     HildonWindow *self;
     g_return_if_fail (HILDON_WINDOW (obj_self));
     self = HILDON_WINDOW (obj_self);
-    
+
+    g_free (self->priv->borders);
+    g_free (self->priv->toolbar_borders);
 
     if (G_OBJECT_CLASS (parent_class)->finalize)
         G_OBJECT_CLASS (parent_class)->finalize (obj_self);
@@ -463,6 +465,9 @@ hildon_window_get_property (GObject * object, guint property_id,
 static void
 hildon_window_get_borders (HildonWindow *window)
 {
+
+    g_free (window->priv->borders);
+    g_free (window->priv->toolbar_borders);
 
     gtk_widget_style_get (GTK_WIDGET (window), "borders",&window->priv->borders,
                           "toolbar-borders", &window->priv->toolbar_borders,
@@ -1379,14 +1384,20 @@ hildon_window_update_title (HildonWindow *window)
 
     if (application_name && application_name[0])
     {
-        gchar *title = NULL;
         const gchar *old_title = gtk_window_get_title (GTK_WINDOW (window));
 
-        title = g_strjoin (TITLE_SEPARATOR, application_name, old_title, NULL);
+        if (old_title && old_title[0])
+        {
+            gchar *title = NULL;
+            
+            title = g_strjoin (TITLE_SEPARATOR, application_name,
+                    old_title, NULL);
+           
+            gdk_window_set_title (GTK_WIDGET (window)->window, title);
+            
+            g_free (title);
+        }
 
-        gdk_window_set_title (GTK_WIDGET (window)->window, title);
-
-        g_free (title);
     }
 }
 
