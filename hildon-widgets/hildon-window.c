@@ -139,17 +139,14 @@ hildon_window_key_release_event (GtkWidget       *widget,
                                  GdkEventKey     *event);
 static gboolean
 hildon_window_window_state_event (GtkWidget *widget, 
-                                  GdkEventWindowState *event,
-                                  gpointer null);
+                                  GdkEventWindowState *event);
 
-static void 
-hildon_window_title_notify (GObject *gobject,
-                            GParamSpec *arg1,
-                            gpointer user_data);
+
 static void
-hildon_window_is_topmost_notify (GObject *self,
-                                 GParamSpec *property_spec,
-                                 gpointer null);
+hildon_window_notify (GObject *gobject, GParamSpec *param);
+
+static void
+hildon_window_is_topmost_notify (HildonWindow *window);
 
 static gboolean 
 hildon_window_vbox_expose_event (GtkWidget *vbox,
@@ -255,6 +252,7 @@ hildon_window_class_init (HildonWindowClass * window_class)
 
     object_class->set_property = hildon_window_set_property;
     object_class->get_property = hildon_window_get_property;
+    object_class->notify = hildon_window_notify;
 
     /* Set the widgets virtual functions */
     widget_class->size_allocate = hildon_window_size_allocate;
@@ -265,6 +263,7 @@ hildon_window_class_init (HildonWindowClass * window_class)
     widget_class->unrealize = hildon_window_unrealize;
     widget_class->key_press_event = hildon_window_key_press_event;
     widget_class->key_release_event = hildon_window_key_release_event;
+    widget_class->window_state_event = hildon_window_window_state_event;
     
     /* now the object stuff */
     object_class->finalize = hildon_window_finalize;
@@ -308,7 +307,7 @@ hildon_window_init (HildonWindow * self)
 {
     HildonWindowPrivate *priv = self->priv = HILDON_WINDOW_GET_PRIVATE(self);
 
-    self->priv->vbox = gtk_vbox_new (TRUE, 10);
+    self->priv->vbox = gtk_vbox_new (TRUE, TOOLBAR_MIDDLE);
     gtk_widget_set_parent (self->priv->vbox, GTK_WIDGET(self));
     priv->menu = NULL;
     priv->visible_toolbars = 0;
@@ -320,23 +319,11 @@ hildon_window_init (HildonWindow * self)
     priv->fullscreen = FALSE;
    
     priv->program = NULL;
-    gtk_widget_set_events (GTK_WIDGET(self), GDK_BUTTON_PRESS_MASK |
-             GDK_BUTTON_RELEASE_MASK | GDK_POINTER_MOTION_MASK);
 
     /* Handle the drawing of the vbox (add the pixmap borders) */
     g_signal_connect (G_OBJECT (self->priv->vbox), "expose-event",
                       G_CALLBACK (hildon_window_vbox_expose_event),
                       self);
-
-    /* Used to keep track of fullscreen / unfullscreen */
-    g_signal_connect (G_OBJECT (self), "window_state_event",
-            G_CALLBACK (hildon_window_window_state_event), self);
-    
-    g_signal_connect (G_OBJECT (self), "notify::title",
-            G_CALLBACK (hildon_window_title_notify), self);
-    
-    g_signal_connect (G_OBJECT (self), "notify::is-topmost",
-            G_CALLBACK (hildon_window_is_topmost_notify), self);
     
     /* We need to track the root window _MB_CURRENT_APP_WINDOW property */
     gdk_window_set_events (gdk_get_default_root_window (),
@@ -517,6 +504,8 @@ hildon_window_expose (GtkWidget * widget, GdkEventExpose * event)
 
     if (priv->previous_vbox_y != priv->vbox->allocation.y)
     {
+        /* The size of the VBox has changed, we need to redraw part
+         * of the window borders */
         gint draw_from_y = priv->previous_vbox_y < priv->vbox->allocation.y?
             priv->previous_vbox_y - tb->top:
             priv->vbox->allocation.y - tb->top;
@@ -559,7 +548,7 @@ hildon_window_expose (GtkWidget * widget, GdkEventExpose * event)
         }
 
         /* If no toolbar, draw the bottom window border */
-        if (!currently_visible_toolbars &&b->bottom > 0)
+        if (!currently_visible_toolbars && b->bottom > 0)
         {
             gtk_paint_box (widget->style, widget->window,
                     GTK_WIDGET_STATE(widget), GTK_SHADOW_OUT,
@@ -651,7 +640,7 @@ hildon_window_size_allocate (GtkWidget * widget, GtkAllocation * allocation)
     
     widget->allocation = *allocation;
 
-    gtk_widget_size_request (box, &req);
+    gtk_widget_get_child_requisition (box, &req);
 
     box_alloc.width = allocation->width - tb->left - tb->right;
     box_alloc.height = ( (req.height < allocation->height) ?
@@ -660,7 +649,8 @@ hildon_window_size_allocate (GtkWidget * widget, GtkAllocation * allocation)
     box_alloc.y = allocation->y + allocation->height - box_alloc.height - tb->bottom;
 
 
-    if (bin->child != NULL && GTK_IS_WIDGET (bin->child))
+    if (bin->child != NULL && GTK_IS_WIDGET (bin->child)
+                           && GTK_WIDGET_VISIBLE (bin->child))
     {
         alloc.x += border_width;
         alloc.y += border_width;
@@ -769,30 +759,6 @@ hildon_window_destroy (GtkObject *obj)
     GTK_OBJECT_CLASS (parent_class)->destroy (obj);
 }
 
-static void
-hildon_window_is_topmost_notify (GObject *self,
-                                 GParamSpec *property_spec,
-                                 gpointer null)
-{
-    HildonWindow *window = HILDON_WINDOW (self);
-
-    if (window->priv->is_topmost)
-    {
-        hildon_window_take_common_toolbar (window);
-    }
-
-    else
-    {
-        /* If the window lost focus while the user started to press
-         * the ESC key, we won't get the release event. We need to
-         * stop the timeout*/
-        if (window->priv->escape_timeout)
-        {
-            g_source_remove (window->priv->escape_timeout);
-            window->priv->escape_timeout = 0;
-        }
-    }
-}
 
 
 static gboolean 
@@ -811,7 +777,8 @@ hildon_window_vbox_expose_event (GtkWidget *vbox,
     event->area.height += (priv->toolbar_borders->top + 
                            priv->toolbar_borders->bottom);
 
-    paint_toolbar (GTK_WIDGET (window), GTK_BOX (vbox), event, priv->fullscreen);
+    paint_toolbar (GTK_WIDGET (window), GTK_BOX (vbox),
+            event, priv->fullscreen);
     
     GTK_WIDGET_CLASS (G_TYPE_INSTANCE_GET_CLASS (vbox, GTK_TYPE_VBOX, GtkVBox))
             ->expose_event (vbox, event);
@@ -820,6 +787,25 @@ hildon_window_vbox_expose_event (GtkWidget *vbox,
 
 
     return TRUE;
+}
+
+static void
+hildon_window_notify (GObject *gobject, GParamSpec *param)
+{
+    HildonWindow *window = HILDON_WINDOW (gobject);
+    
+    if (strcmp (param->name, "title") == 0)
+    {
+
+        hildon_window_update_title (window);
+    }
+    else if (strcmp (param->name, "is-topmost"))
+    {
+        hildon_window_is_topmost_notify (window);
+    }
+
+    if (G_OBJECT_CLASS(parent_class)->notify)
+        G_OBJECT_CLASS(parent_class)->notify (gobject, param);
 }
 
 /* Utilities */
@@ -1147,8 +1133,7 @@ hildon_window_key_release_event (GtkWidget *widget, GdkEventKey *event)
  */
 static gboolean
 hildon_window_window_state_event (GtkWidget *widget, 
-                                  GdkEventWindowState *event,
-                                  gpointer null)
+                                  GdkEventWindowState *event)
 {
     if (event->changed_mask & GDK_WINDOW_STATE_FULLSCREEN)
     {
@@ -1156,7 +1141,16 @@ hildon_window_window_state_event (GtkWidget *widget,
             event->new_window_state & GDK_WINDOW_STATE_FULLSCREEN;
     }
 
-    return FALSE;
+    if (GTK_WIDGET_CLASS (parent_class)->window_state_event)
+    {
+        return GTK_WIDGET_CLASS (parent_class)->window_state_event (
+                widget,
+                event);
+    }
+    else
+    {
+        return FALSE;
+    }
 }
 
 static void 
@@ -1212,6 +1206,31 @@ hildon_window_menupopupfuncfull ( GtkMenu *menu, gint *x, gint *y,
 /********************/
 /* Private methods  */
 /********************/
+
+
+/*
+ * Takes the common toolbar when we acquire the top-most status
+ */
+static void
+hildon_window_is_topmost_notify (HildonWindow *window)
+{
+    if (window->priv->is_topmost)
+    {
+        hildon_window_take_common_toolbar (window);
+    }
+
+    else
+    {
+        /* If the window lost focus while the user started to press
+         * the ESC key, we won't get the release event. We need to
+         * stop the timeout*/
+        if (window->priv->escape_timeout)
+        {
+            g_source_remove (window->priv->escape_timeout);
+            window->priv->escape_timeout = 0;
+        }
+    }
+}
 
 /*
  * Sets the program to which the window belongs. This should only be called
