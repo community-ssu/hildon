@@ -587,7 +587,8 @@ static HildonBanner *hildon_banner_get_instance_for_widget(GtkWidget *widget, gb
  * Since: 0.12.2
  */
 void hildon_banner_show_information(GtkWidget *widget, 
-   const gchar *icon_name, const gchar *text)
+                                    const gchar *icon_name,
+                                    const gchar *text)
 {
    HildonBanner *banner;
 
