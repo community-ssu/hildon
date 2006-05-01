@@ -53,17 +53,17 @@ struct _HildonBannerClass
 
 GType      hildon_banner_get_type          (void) G_GNUC_CONST;
 
-void       hildon_banner_show_information  (GtkWidget   *widget, 
-                                            const gchar *icon_name,
-                                            const gchar *text);
+void       hildon_banner_show_information  (GtkWidget      *widget, 
+                                            const gchar    *icon_name,
+                                            const gchar    *text);
 
 void       hildon_banner_show_information_with_markup (GtkWidget   *widget, 
                                                        const gchar *icon_name,
                                                        const gchar *markup);
 
-GtkWidget *hildon_banner_show_animation    (GtkWidget   *widget, 
-                                            const gchar *animation_name,
-                                            const gchar *text);
+GtkWidget *hildon_banner_show_animation    (GtkWidget      *widget, 
+                                            const gchar    *animation_name,
+                                            const gchar    *text);
 
 GtkWidget *hildon_banner_show_progress     (GtkWidget      *widget, 
                                             GtkProgressBar *bar,

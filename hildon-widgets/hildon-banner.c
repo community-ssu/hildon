@@ -32,14 +32,20 @@
 #include "hildon-defines.h"
 #include "hildon-banner.h"
 
+/* position relative to the screen */
 #define HILDON_BANNER_WINDOW_X            30
 #define HILDON_BANNER_WINDOW_Y            73
 #define HILDON_BANNER_WINDOW_FULLSCREEN_Y 20
+
+/* max widths */
 #define HILDON_BANNER_PROGRESS_WIDTH      104
 #define HILDON_BANNER_LABEL_MAX_TIMED     375
 #define HILDON_BANNER_LABEL_MAX_PROGRESS  265
+
+/* default timeout */
 #define HILDON_BANNER_TIMEOUT             3000
 
+/* default icons */
 #define HILDON_BANNER_DEFAULT_ICON               "qgn_note_infoprint"
 #define HILDON_BANNER_DEFAULT_PROGRESS_ANIMATION "qgn_indi_pball_a"
 
@@ -50,7 +56,9 @@ enum {
 
 struct _HildonBannerPrivate
 {
-   GtkWidget *main_item, *label, *layout;
+   GtkWidget *main_item;
+   GtkWidget *label;
+   GtkWidget *layout;
    guint timeout_id;
    gboolean is_timed; 
 };
@@ -147,8 +155,8 @@ static GQuark hildon_banner_timed_quark(void)
 }
 
 /* Set the label name to make the correct rc-style attached into it */
-static void hildon_banner_bind_label_style(HildonBanner *self, 
-   const gchar *name)
+static void hildon_banner_bind_label_style(HildonBanner *self,
+                                           const gchar  *name)
 {
    GtkWidget *label = self->priv->label;
 
@@ -230,13 +238,13 @@ static void hildon_banner_set_property(GObject      *object,
 
          /* Timed and progress notifications have different
             pixel size values for text */
-         geom.max_width = priv->is_timed ? 
-            HILDON_BANNER_LABEL_MAX_TIMED : HILDON_BANNER_LABEL_MAX_PROGRESS;
-
+         geom.max_width = priv->is_timed ? HILDON_BANNER_LABEL_MAX_TIMED
+                                         : HILDON_BANNER_LABEL_MAX_PROGRESS;
          geom.max_height = -1;
          gtk_window_set_geometry_hints(GTK_WINDOW(object), 
                                        priv->label, &geom, GDK_HINT_MAX_SIZE);
          break;
+
       case PROP_PARENT_WINDOW:
          window = g_value_get_object(value);         
 
@@ -246,14 +254,17 @@ static void hildon_banner_set_property(GObject      *object,
             gtk_window_set_destroy_with_parent(GTK_WINDOW(object), TRUE);
 
          break;
+
       default:
          G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
          break;
   }
 }
 
-static void hildon_banner_get_property(GObject *object,
-   guint prop_id, GValue *value, GParamSpec *pspec)
+static void hildon_banner_get_property(GObject    *object,
+                                       guint       prop_id,
+                                       GValue     *value,
+                                       GParamSpec *pspec)
 {
    HildonBanner *self = HILDON_BANNER(object);
 
@@ -262,9 +273,11 @@ static void hildon_banner_get_property(GObject *object,
       case PROP_IS_TIMED:
          g_value_set_boolean(value, self->priv->is_timed);
          break;
+
       case PROP_PARENT_WINDOW:
          g_value_set_object(value, gtk_window_get_transient_for(GTK_WINDOW(object)));
          break;
+
       default:
          G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
          break;
@@ -307,7 +320,7 @@ static GObject *hildon_banner_real_get_instance(GObject *window, gboolean timed)
       if (window) 
          return g_object_get_qdata(window, hildon_banner_timed_quark());
 
-      /* System notification instance is strored into global pointer */
+      /* System notification instance is stored into global pointer */
       return (GObject *) global_timed_banner;
    }
 
@@ -318,7 +331,8 @@ static GObject *hildon_banner_real_get_instance(GObject *window, gboolean timed)
 /* By overriding constructor we force timed banners to be
    singletons for each window */
 static GObject* hildon_banner_constructor (GType type,
-   guint n_construct_params, GObjectConstructParam *construct_params)
+                                           guint n_construct_params,
+                                           GObjectConstructParam *construct_params)
 {
    GObject *banner, *window = NULL;
    gboolean timed = FALSE;
@@ -463,11 +477,14 @@ static void hildon_banner_init(HildonBanner *self)
 
    /* Initialize the common layout inside banner */
    self->priv->layout = gtk_hbox_new(FALSE, HILDON_MARGIN_DEFAULT);
+
    priv->label = g_object_new(GTK_TYPE_LABEL, NULL);
    gtk_label_set_line_wrap(GTK_LABEL(priv->label), TRUE);
+
    gtk_container_set_border_width(GTK_CONTAINER(self->priv->layout), HILDON_MARGIN_DEFAULT);
    gtk_container_add(GTK_CONTAINER(self), self->priv->layout);
    gtk_box_pack_start(GTK_BOX(self->priv->layout), priv->label, TRUE, TRUE, 0);
+
    gtk_window_set_accept_focus(GTK_WINDOW(self), FALSE);
 }
 
