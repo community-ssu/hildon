@@ -104,6 +104,7 @@ enum
 	PROP_SHOW_HOURS
 };
 
+/* Indices for h/m/s entries in priv->entries */
 enum {
   ENTRY_HOURS,
   ENTRY_MINS,

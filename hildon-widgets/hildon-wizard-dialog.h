@@ -45,6 +45,7 @@ typedef struct _HildonWizardDialogClass HildonWizardDialogClass;
 typedef struct _HildonWizardDialogPrivate HildonWizardDialogPrivate;
 
 
+/* button response IDs */
 enum {
     HILDON_WIZARD_DIALOG_CANCEL,
     HILDON_WIZARD_DIALOG_PREVIOUS,

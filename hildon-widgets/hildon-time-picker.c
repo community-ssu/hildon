@@ -68,6 +68,8 @@
 #define HILDON_TIME_PICKER_LABEL_X_PADDING 0
 #define HILDON_TIME_PICKER_LABEL_Y_PADDING 1
 
+
+/* Indices for grouped labels in priv->widgets */
 enum
 {
   WIDGET_GROUP_HOURS,
@@ -78,6 +80,7 @@ enum
   WIDGET_GROUP_COUNT
 };
 
+/* Indices for up/down buttons in group->buttons */
 enum
 {
   BUTTON_UP,

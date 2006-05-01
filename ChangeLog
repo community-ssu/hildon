@@ -1,5 +1,13 @@
 2006-05-01  Luc Pionchon  <luc.pionchon@nokia.com>
 
+	* hildon-libs/hildon-widgets/hildon-time-editor.c
+	* hildon-libs/hildon-widgets/hildon-time-picker.c
+	* hildon-libs/hildon-widgets/hildon-wizard-dialog.h
+	added comments to anonymous enums
+
+
+2006-05-01  Luc Pionchon  <luc.pionchon@nokia.com>
+
 	Hildon banner truncations,
 	* hildon-widgets/hildon-banner.c
 	(force_to_wrap_truncated): new function. Force to wrap truncated
