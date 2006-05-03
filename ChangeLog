@@ -1,3 +1,12 @@
+2006-05-03  Luc Pionchon  <luc.pionchon@nokia.com>
+
+	* hildon-widgets/hildon-font-selection-dialog.c:
+	(is_internal_font): new function. Tells if a font family is internal.
+	(filter_out_internal_fonts): new function. Filters out inernal fonts.
+	(hildon_font_selection_dialog_show_available_fonts): call filter_out_internal_fonts
+	Fixes N#21854
+
+
 2006-05-01  Luc Pionchon  <luc.pionchon@nokia.com>
 
 	* hildon-libs/hildon-widgets/hildon-time-editor.c

@@ -290,7 +290,7 @@ hildon_font_selection_dialog_get_property (GObject      *object,
 	g_value_set_string(value, 
 			   pango_font_family_get_name(priv->families[i]));
       else
-	g_value_set_string(value, "Nokia Sans");
+	g_value_set_string(value, "Sans");
       break;
       
     case PROP_FAMILY_SET:
@@ -587,7 +587,7 @@ hildon_font_selection_dialog_class_init(HildonFontSelectionDialogClass *
   g_object_class_install_property(gobject_class, PROP_FAMILY,
 				  g_param_spec_string("family",
 				  "Font family", "String defines"
-				  " the font family", "Nokia Sans",
+				  " the font family", "Sans",
 				  G_PARAM_READWRITE));
   
   g_object_class_install_property(gobject_class, PROP_FAMILY_SET,
@@ -1135,6 +1135,37 @@ hildon_font_selection_dialog_show_preview(HildonFontSelectionDialog *
   gtk_widget_destroy(preview_dialog);
 }
 
+
+static gboolean is_internal_font(const gchar * name){
+  return strcmp(name, "DeviceSymbols") == 0
+      || strcmp(name, "Nokia Smiley" ) == 0
+      || strcmp(name, "Nokia Sans"   ) == 0
+      || strcmp(name, "Nokia Sans Cn") == 0;
+}
+
+static void filter_out_internal_fonts(PangoFontFamily **families, int *n_families){
+  int i;
+  int n; /* counts valid fonts */
+  const gchar * name = NULL;
+
+  for(i = 0, n = 0; i < *n_families; i++){
+
+    name = pango_font_family_get_name(families[i]);
+        
+    if(!is_internal_font(name)){
+
+      if(i!=n){ /* there are filtered out families */
+	families[n] = families[i]; /* shift the current family */
+      }
+
+      n++; /* count one more valid */
+    }
+  }/* foreach font family */
+
+  *n_families = n;  
+}
+
+
 static void
 hildon_font_selection_dialog_show_available_fonts(HildonFontSelectionDialog 
 						  *fontsel)
@@ -1148,6 +1179,8 @@ hildon_font_selection_dialog_show_available_fonts(HildonFontSelectionDialog
   pango_context_list_families(gtk_widget_get_pango_context
 			      (GTK_WIDGET(fontsel)), &priv->families,
 			      &priv->n_families);
+
+  filter_out_internal_fonts(priv->families, &priv->n_families);
 
   qsort(priv->families, priv->n_families, sizeof(PangoFontFamily *),
 	cmp_families);
