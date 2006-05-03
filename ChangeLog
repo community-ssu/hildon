@@ -1,5 +1,17 @@
 2006-05-03  Luc Pionchon  <luc.pionchon@nokia.com>
 
+	N#27000 (additional fixes to patch from 2006-05-01)
+
+	* hildon-widgets/hildon-banner.c (force_to_wrap_truncated): do not
+	hardcode pixel scaling factor ("/1000"), use PANGO_PIXELS instead
+	which deals with rounding (and uses the right factor: 1024).
+	Thanks Michael Natterer <mitch@imendio.com>
+
+	Force label size also when width_text == width_max.
+
+
+2006-05-03  Luc Pionchon  <luc.pionchon@nokia.com>
+
 	* configure.ac: 0.12.13
 
 

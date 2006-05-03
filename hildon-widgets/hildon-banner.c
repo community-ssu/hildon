@@ -411,13 +411,13 @@ static void force_to_wrap_truncated(HildonBanner *banner){
   label = GTK_LABEL(banner->priv->label);
 
   layout = gtk_label_get_layout(label);
-  width_text  = pango_layout_get_width(layout)/1000;
+  width_text  = PANGO_PIXELS(pango_layout_get_width(layout));
   /* = width to which the lines of the PangoLayout should be wrapped */
 
   width_max = banner->priv->is_timed ? HILDON_BANNER_LABEL_MAX_TIMED
                                      : HILDON_BANNER_LABEL_MAX_PROGRESS;
 
-  if(width_text > width_max){
+  if(width_text >= width_max){
     /* explicitly request maximum size to force wrapping */
     gtk_widget_set_size_request (GTK_WIDGET(label), width_max, -1);
   }
