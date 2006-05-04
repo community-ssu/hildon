@@ -1,3 +1,12 @@
+2006-05-04  Luc Pionchon  <luc.pionchon@nokia.com>
+
+	gtk-doc config bits...
+	* autogen.sh: call aclocal first
+	* configure.ac: enable GTK_DOC_CHECK
+	* doc/Makefile.am: really "include". "-include" is not followed by
+	automake, as a result gtk-doc.make would not be processed.
+	
+
 2006-05-03  Luc Pionchon  <luc.pionchon@nokia.com>
 
 	N#27000 (additional fixes to patch from 2006-05-01)

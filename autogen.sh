@@ -1,9 +1,9 @@
 #!/bin/sh
 
 set -x
+aclocal-1.7 || aclocal
 libtoolize --automake
 gtkdocize --copy
-aclocal-1.7 || aclocal
 autoconf
 autoheader
 automake-1.7 --add-missing --foreign || automake --add-missing --foreign

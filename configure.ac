@@ -55,7 +55,7 @@ AM_GLIB_GNU_GETTEXT
 # Check for gtk-doc.
 ##################################################
 #ifdef(GTK_DOC_CHECK, GTK_DOC_CHECK([1.0]))
-#GTK_DOC_CHECK([1.0])
+GTK_DOC_CHECK([1.0])
 
 AC_CHECK_PROG(DOXYGEN_FOUND, doxygen, yes, no)
 AM_CONDITIONAL(HAVE_DOXYGEN, [test "$DOXYGEN_FOUND" = "yes"])
