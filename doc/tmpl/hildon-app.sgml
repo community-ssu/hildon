@@ -23,6 +23,9 @@ hildon_app_set_title( app, "This is a hello dude application" );
 
 </para>
 
+<!-- ##### SECTION Stability_Level ##### -->
+
+
 <!-- ##### ENUM HildonZoomLevel ##### -->
 <para>
 
@@ -31,125 +34,6 @@ hildon_app_set_title( app, "This is a hello dude application" );
 @HILDON_ZOOM_SMALL: 
 @HILDON_ZOOM_MEDIUM: 
 @HILDON_ZOOM_LARGE: 
-
-<!-- ##### MACRO HILDON_TYPE_ZOOM_LEVEL ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### MACRO HILDON_MENU_KEY ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### MACRO HILDON_HOME_KEY ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### MACRO HILDON_TOOLBAR_KEY ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### MACRO HILDON_FULLSCREEN_KEY ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### MACRO HILDON_INCREASE_KEY ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### MACRO HILDON_DECREASE_KEY ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### MACRO HILDON_TOOLBAR_MODIFIERS ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### MACRO HILDON_KEYEVENT_IS_MENU_KEY ##### -->
-<para>
-
-</para>
-
-@keyevent: 
-
-
-<!-- ##### MACRO HILDON_KEYEVENT_IS_HOME_KEY ##### -->
-<para>
-
-</para>
-
-@keyevent: 
-
-
-<!-- ##### MACRO HILDON_KEYEVENT_IS_TOOLBAR_KEY ##### -->
-<para>
-
-</para>
-
-@keyevent: 
-
-
-<!-- ##### MACRO HILDON_KEYEVENT_IS_FULLSCREEN_KEY ##### -->
-<para>
-
-</para>
-
-@keyevent: 
-
-
-<!-- ##### MACRO HILDON_KEYEVENT_IS_INCREASE_KEY ##### -->
-<para>
-
-</para>
-
-@keyevent: 
-
-
-<!-- ##### MACRO HILDON_KEYEVENT_IS_DECREASE_KEY ##### -->
-<para>
-
-</para>
-
-@keyevent: 
-
-
-<!-- ##### MACRO TRANSIENCY_MAXITER ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### FUNCTION hildon_app_get_type ##### -->
-<para>
-
-</para>
-
-@Returns: 
-
 
 <!-- ##### MACRO HILDON_TYPE_ZOOM_LEVEL ##### -->
 <para>
@@ -305,6 +189,78 @@ hildon_app_set_title( app, "This is a hello dude application" );
 @Returns: 
 
 
+<!-- ##### FUNCTION hildon_app_set_title ##### -->
+<para>
+
+</para>
+
+@self: 
+@newtitle: 
+
+
+<!-- ##### FUNCTION hildon_app_get_title ##### -->
+<para>
+
+</para>
+
+@self: 
+@Returns: 
+
+
+<!-- ##### FUNCTION hildon_app_set_zoom ##### -->
+<para>
+
+</para>
+
+@self: 
+@newzoom: 
+
+
+<!-- ##### FUNCTION hildon_app_get_zoom ##### -->
+<para>
+
+</para>
+
+@self: 
+@Returns: 
+
+
+<!-- ##### FUNCTION hildon_app_get_default_font ##### -->
+<para>
+
+</para>
+
+@self: 
+@Returns: 
+
+
+<!-- ##### FUNCTION hildon_app_get_zoom_font ##### -->
+<para>
+
+</para>
+
+@self: 
+@Returns: 
+
+
+<!-- ##### FUNCTION hildon_app_set_two_part_title ##### -->
+<para>
+
+</para>
+
+@self: 
+@istwoparttitle: 
+
+
+<!-- ##### FUNCTION hildon_app_get_two_part_title ##### -->
+<para>
+
+</para>
+
+@self: 
+@Returns: 
+
+
 <!-- ##### FUNCTION hildon_app_set_autoregistration ##### -->
 <para>
 
@@ -332,8 +288,6 @@ hildon_app_set_title( app, "This is a hello dude application" );
 @view_ptr: 
 @Param3: 
 @Returns: 
-<!-- # Unused Parameters # -->
-@view_id: 
 
 
 <!-- ##### FUNCTION hildon_app_unregister_view ##### -->
@@ -352,8 +306,6 @@ hildon_app_set_title( app, "This is a hello dude application" );
 
 @self: 
 @Param2: 
-<!-- # Unused Parameters # -->
-@view_id: 
 
 
 <!-- ##### FUNCTION hildon_app_find_view_id ##### -->
@@ -401,97 +353,4 @@ hildon_app_set_title( app, "This is a hello dude application" );
 @self: 
 @Returns: 
 
-
-<!-- ##### SIGNAL HildonApp::clipboard-copy ##### -->
-<para>
-
-</para>
-
-@hildonapp: the object which received the signal.
-@arg1: 
-
-<!-- ##### SIGNAL HildonApp::clipboard-cut ##### -->
-<para>
-
-</para>
-
-@hildonapp: the object which received the signal.
-@arg1: 
-
-<!-- ##### SIGNAL HildonApp::clipboard-paste ##### -->
-<para>
-
-</para>
-
-@hildonapp: the object which received the signal.
-@arg1: 
-
-<!-- ##### SIGNAL HildonApp::im-close ##### -->
-<para>
-
-</para>
-
-@hildonapp: the object which received the signal.
-
-<!-- ##### SIGNAL HildonApp::switch-to ##### -->
-<para>
-
-</para>
-
-@hildonapp: the object which received the signal.
-@arg1: 
-
-<!-- ##### SIGNAL HildonApp::topmost-status-acquire ##### -->
-<para>
-
-</para>
-
-@hildonapp: the object which received the signal.
-
-<!-- ##### SIGNAL HildonApp::topmost-status-lose ##### -->
-<para>
-
-</para>
-
-@hildonapp: the object which received the signal.
-
-<!-- ##### ARG HildonApp:app-title ##### -->
-<para>
-
-</para>
-
-<!-- ##### ARG HildonApp:appview ##### -->
-<para>
-
-</para>
-
-<!-- ##### ARG HildonApp:autoregistration ##### -->
-<para>
-
-</para>
-
-<!-- ##### ARG HildonApp:killable ##### -->
-<para>
-
-</para>
-
-<!-- ##### ARG HildonApp:scroll-control ##### -->
-<para>
-
-</para>
-
-<!-- ##### ARG HildonApp:two-part-title ##### -->
-<para>
-
-</para>
-
-<!-- ##### ARG HildonApp:ui-manager ##### -->
-<para>
-
-</para>
-
-<!-- ##### ARG HildonApp:zoom ##### -->
-<para>
-
-</para>
 

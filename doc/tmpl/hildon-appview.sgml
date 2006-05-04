@@ -36,6 +36,9 @@ toggling from fullscreen hardware key, use #hildon_appview_set_fullscreen_key_al
 
 </para>
 
+<!-- ##### SECTION Stability_Level ##### -->
+
+
 <!-- ##### STRUCT HildonAppViewPrivate ##### -->
 <para>
 
@@ -176,74 +179,4 @@ toggling from fullscreen hardware key, use #hildon_appview_set_fullscreen_key_al
 @self: 
 @Returns: 
 
-
-<!-- ##### SIGNAL HildonAppView::decrease-button-event ##### -->
-<para>
-
-</para>
-
-@hildonappview: the object which received the signal.
-@arg1: the Gdk key state.
-
-<!-- ##### SIGNAL HildonAppView::fullscreen-state-change ##### -->
-<para>
-
-</para>
-
-@hildonappview: the object which received the signal.
-@arg1: 
-
-<!-- ##### SIGNAL HildonAppView::increase-button-event ##### -->
-<para>
-
-</para>
-
-@hildonappview: the object which received the signal.
-@arg1: the Gdk key state.
-
-<!-- ##### SIGNAL HildonAppView::switched-from ##### -->
-<para>
-
-</para>
-
-@hildonappview: the object which received the signal.
-
-<!-- ##### SIGNAL HildonAppView::switched-to ##### -->
-<para>
-
-</para>
-
-@hildonappview: the object which received the signal.
-
-<!-- ##### SIGNAL HildonAppView::title-change ##### -->
-<para>
-
-</para>
-
-@hildonappview: the object which received the signal.
-
-<!-- ##### ARG HildonAppView:connected-adjustment ##### -->
-<para>
-
-</para>
-
-<!-- ##### ARG HildonAppView:fullscreen ##### -->
-<para>
-
-</para>
-
-<!-- ##### ARG HildonAppView:fullscreen-key-allowed ##### -->
-<para>
-
-</para>
-
-<!-- ##### ARG HildonAppView:menu-ui ##### -->
-<para>
-
-</para>
-
-<!-- ##### ARG HildonAppView:title ##### -->
-<para>
-
-</para>
 

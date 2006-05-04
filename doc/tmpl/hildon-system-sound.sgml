@@ -14,6 +14,9 @@ hildon-system-sound
 
 </para>
 
+<!-- ##### SECTION Stability_Level ##### -->
+
+
 <!-- ##### FUNCTION hildon_play_system_sound ##### -->
 <para>
 

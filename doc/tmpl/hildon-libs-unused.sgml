@@ -1,8 +1,6 @@
 <!-- ##### SECTION ./tmpl/hildon-file-details-dialog.sgml:Long_Description ##### -->
 <para>
-#HildonFileDetailsDialog is used to show details of a file.
-
-Here's a simple example that creates and opens a #HildonFileDetailsDialog.
+Here is an example that creates and opens a #HildonFileDetailsDialog.
 
 <informalexample>
 <programlisting>
@@ -23,7 +21,11 @@ Here's a simple example that creates and opens a #HildonFileDetailsDialog.
 
 
 <!-- ##### SECTION ./tmpl/hildon-file-details-dialog.sgml:Short_Description ##### -->
-#HildonFileDetailsDialog is used to show details of a file.
+
+
+
+<!-- ##### SECTION ./tmpl/hildon-file-details-dialog.sgml:Stability_Level ##### -->
+
 
 
 <!-- ##### SECTION ./tmpl/hildon-file-details-dialog.sgml:Title ##### -->
@@ -81,6 +83,10 @@ HildonFindObjectDialog
 
 
 
+<!-- ##### SECTION ./tmpl/hildon-grid-item-private.sgml:Stability_Level ##### -->
+
+
+
 <!-- ##### SECTION ./tmpl/hildon-grid-item-private.sgml:Title ##### -->
 hildon-grid-item-private
 
@@ -103,6 +109,10 @@ hildon-grid-item-private
 
 <!-- ##### SECTION ./tmpl/hildon-hwr-area.sgml:Title ##### -->
 HildonHWRArea
+
+
+<!-- ##### SECTION ./tmpl/hildon-libs-unused.sgml:Stability_Level ##### -->
+
 
 
 <!-- ##### SECTION ./tmpl/hildon-search.sgml:Long_Description ##### -->
@@ -152,7 +162,183 @@ HildonSearch
 </para>
 
 
+<!-- ##### SIGNAL HildonApp::clipboard-copy ##### -->
+<para>
+
+</para>
+
+@hildonapp: the object which received the signal.
+@arg1: 
+
+<!-- ##### SIGNAL HildonApp::clipboard-cut ##### -->
+<para>
+
+</para>
+
+@hildonapp: the object which received the signal.
+@arg1: 
+
+<!-- ##### SIGNAL HildonApp::clipboard-paste ##### -->
+<para>
+
+</para>
+
+@hildonapp: the object which received the signal.
+@arg1: 
+
+<!-- ##### SIGNAL HildonApp::im-close ##### -->
+<para>
+
+</para>
+
+@hildonapp: the object which received the signal.
+
+<!-- ##### SIGNAL HildonApp::switch-to ##### -->
+<para>
+
+</para>
+
+@hildonapp: the object which received the signal.
+@arg1: 
+
+<!-- ##### SIGNAL HildonApp::topmost-status-acquire ##### -->
+<para>
+
+</para>
+
+@hildonapp: the object which received the signal.
+
+<!-- ##### SIGNAL HildonApp::topmost-status-lose ##### -->
+<para>
+
+</para>
+
+@hildonapp: the object which received the signal.
+
+<!-- ##### ARG HildonApp:app-title ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### ARG HildonApp:appview ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### ARG HildonApp:autoregistration ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### ARG HildonApp:killable ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### ARG HildonApp:scroll-control ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### ARG HildonApp:two-part-title ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### ARG HildonApp:ui-manager ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### ARG HildonApp:zoom ##### -->
+<para>
+
+</para>
+
+
 <!-- ##### STRUCT HildonAppView ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SIGNAL HildonAppView::decrease-button-event ##### -->
+<para>
+
+</para>
+
+@hildonappview: the object which received the signal.
+@arg1: the Gdk key state.
+
+<!-- ##### SIGNAL HildonAppView::fullscreen-state-change ##### -->
+<para>
+
+</para>
+
+@hildonappview: the object which received the signal.
+@arg1: 
+
+<!-- ##### SIGNAL HildonAppView::increase-button-event ##### -->
+<para>
+
+</para>
+
+@hildonappview: the object which received the signal.
+@arg1: the Gdk key state.
+
+<!-- ##### SIGNAL HildonAppView::switched-from ##### -->
+<para>
+
+</para>
+
+@hildonappview: the object which received the signal.
+
+<!-- ##### SIGNAL HildonAppView::switched-to ##### -->
+<para>
+
+</para>
+
+@hildonappview: the object which received the signal.
+
+<!-- ##### SIGNAL HildonAppView::title-change ##### -->
+<para>
+
+</para>
+
+@hildonappview: the object which received the signal.
+
+<!-- ##### ARG HildonAppView:connected-adjustment ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### ARG HildonAppView:fullscreen ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### ARG HildonAppView:fullscreen-key-allowed ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### ARG HildonAppView:menu-ui ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### ARG HildonAppView:title ##### -->
 <para>
 
 </para>
@@ -164,7 +350,80 @@ HildonSearch
 </para>
 
 
+<!-- ##### ARG HildonCalendarPopup:day ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### ARG HildonCalendarPopup:max-year ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### ARG HildonCalendarPopup:min-year ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### ARG HildonCalendarPopup:month ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### ARG HildonCalendarPopup:year ##### -->
+<para>
+
+</para>
+
+
 <!-- ##### STRUCT HildonCaption ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SIGNAL HildonCaption::activate ##### -->
+<para>
+
+</para>
+
+@hildoncaption: the object which received the signal.
+
+<!-- ##### ARG HildonCaption:expand ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### ARG HildonCaption:icon ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### ARG HildonCaption:label ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### ARG HildonCaption:separator ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### ARG HildonCaption:size-group ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### ARG HildonCaption:status ##### -->
 <para>
 
 </para>
@@ -178,7 +437,19 @@ HildonSearch
 @button: 
 @priv: 
 
+<!-- ##### ARG HildonColorButton:color ##### -->
+<para>
+
+</para>
+
+
 <!-- ##### STRUCT HildonColorSelector ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### ARG HildonColorSelector:color ##### -->
 <para>
 
 </para>
@@ -228,6 +499,7 @@ HildonSearch
 </para>
 
 
+<!-- ##### ARG HildonFileDetailsDialog:model ##### -->
 <para>
 
 </para>
@@ -240,30 +512,6 @@ HildonSearch
 
 
 <!-- ##### STRUCT HildonFileDetailsDialogPrivate ##### -->
-<para>
-
-</para>
-
-
-<!-- ##### ARG HildonFileDetailsDialog:additional-tab ##### -->
-<para>
-
-</para>
-
-
-<!-- ##### ARG HildonFileDetailsDialog:additional-tab-label ##### -->
-<para>
-
-</para>
-
-
-<!-- ##### ARG HildonFileDetailsDialog:model ##### -->
-<para>
-
-</para>
-
-
-<!-- ##### ARG HildonFileDetailsDialog:show-tabs ##### -->
 <para>
 
 </para>
@@ -463,6 +711,12 @@ It is emitted everytime the search button is clicked, even the GtkComboboxEntry 
 </para>
 
 
+<!-- ##### ARG HildonGridItem:emblem-type ##### -->
+<para>
+
+</para>
+
+
 <!-- ##### STRUCT HildonHVolumebar ##### -->
 <para>
 
@@ -485,6 +739,18 @@ It is emitted everytime the search button is clicked, even the GtkComboboxEntry 
 
 
 <!-- ##### STRUCT HildonInsertObjectDialog ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### ARG HildonInsertObjectDialog:mime-type ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### ARG HildonInsertObjectDialog:name ##### -->
 <para>
 
 </para>
@@ -515,6 +781,18 @@ It is emitted everytime the search button is clicked, even the GtkComboboxEntry 
 
 
 <!-- ##### STRUCT HildonProgram ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### ARG HildonProgram:can-hibernate ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### ARG HildonProgram:is-topmost ##### -->
 <para>
 
 </para>
@@ -551,6 +829,18 @@ It is emitted everytime the search button is clicked, even the GtkComboboxEntry 
 
 
 <!-- ##### STRUCT HildonSortDialog ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### ARG HildonSortDialog:sort-key ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### ARG HildonSortDialog:sort-order ##### -->
 <para>
 
 </para>
@@ -616,6 +906,24 @@ It is emitted everytime the search button is clicked, even the GtkComboboxEntry 
 </para>
 
 
+<!-- ##### ARG HildonWindow:borders ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### ARG HildonWindow:is-topmost ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### ARG HildonWindow:toolbar-borders ##### -->
+<para>
+
+</para>
+
+
 <!-- ##### STRUCT HildonWizardDialog ##### -->
 <para>
 
@@ -624,8 +932,25 @@ It is emitted everytime the search button is clicked, even the GtkComboboxEntry 
 @parent: 
 @priv: 
 
-<!-- ##### SECTION Stability_Level ##### -->
+<!-- ##### SIGNAL HildonWizardDialog::page-change ##### -->
+<para>
 
+</para>
+
+@hildonwizarddialog: the object which received the signal.
+@arg1: 
+@Returns: 
+
+<!-- ##### ARG HildonWizardDialog:wizard-name ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### ARG HildonWizardDialog:wizard-notebook ##### -->
+<para>
+
+</para>
 
 
 <!-- ##### FUNCTION gtk_infoprint ##### -->
@@ -634,6 +959,15 @@ It is emitted everytime the search button is clicked, even the GtkComboboxEntry 
 </para>
 
 @parent: 
+@text: 
+
+<!-- ##### FUNCTION hildon_banner_show_confirmation ##### -->
+<para>
+
+</para>
+
+@widget: 
+@icon_name: 
 @text: 
 
 <!-- ##### FUNCTION hildon_file_chooser_dialog_new ##### -->
@@ -968,14 +1302,6 @@ It is emitted everytime the search button is clicked, even the GtkComboboxEntry 
 @fsd: 
 @color: 
 
-<!-- ##### FUNCTION hildon_get_password_dialog_get_password ##### -->
-<para>
-
-</para>
-
-@dialog: 
-@Returns: 
-
 <!-- ##### FUNCTION hildon_hwr_area_clear ##### -->
 <para>
 
@@ -1064,14 +1390,6 @@ It is emitted everytime the search button is clicked, even the GtkComboboxEntry 
 
 @search: 
 @stock_icon: 
-
-<!-- ##### FUNCTION hildon_set_password_dialog_get_password ##### -->
-<para>
-
-</para>
-
-@dialog: 
-@Returns: 
 
 <!-- ##### FUNCTION hildon_shorten_names_dialog_get_model ##### -->
 <para>

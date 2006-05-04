@@ -14,6 +14,9 @@ HildonAddHomeDialog
 
 </para>
 
+<!-- ##### SECTION Stability_Level ##### -->
+
+
 <!-- ##### FUNCTION hildon_add_home_dialog_new ##### -->
 <para>
 

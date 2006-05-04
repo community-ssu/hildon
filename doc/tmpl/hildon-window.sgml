@@ -62,6 +62,16 @@ gtk_window_set_icon (GTK_WINDOW (window), icon_pixbuf);
 
 </para>
 
+<!-- ##### SECTION Stability_Level ##### -->
+
+
+<!-- ##### MACRO HILDON_WINDOW_LONG_PRESS_TIME ##### -->
+<para>
+
+</para>
+
+
+
 <!-- ##### STRUCT HildonWindowPrivate ##### -->
 <para>
 
@@ -74,8 +84,6 @@ gtk_window_set_icon (GTK_WINDOW (window), icon_pixbuf);
 </para>
 
 @Returns: 
-<!-- # Unused Parameters # -->
-@title: 
 
 
 <!-- ##### FUNCTION hildon_window_add_with_scrollbar ##### -->
@@ -131,19 +139,4 @@ gtk_window_set_icon (GTK_WINDOW (window), icon_pixbuf);
 @self: 
 @Returns: 
 
-
-<!-- ##### ARG HildonWindow:is-topmost ##### -->
-<para>
-
-</para>
-
-<!-- ##### ARG HildonWindow:borders ##### -->
-<para>
-
-</para>
-
-<!-- ##### ARG HildonWindow:toolbar-borders ##### -->
-<para>
-
-</para>
 

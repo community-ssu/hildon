@@ -66,8 +66,3 @@ gtk_object_get( GTK_OBJECT(cbutton), "color", color );
 @color: 
 
 
-<!-- ##### ARG HildonColorButton:color ##### -->
-<para>
-
-</para>
-

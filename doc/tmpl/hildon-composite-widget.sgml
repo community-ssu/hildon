@@ -14,6 +14,9 @@ hildon-composite-widget
 
 </para>
 
+<!-- ##### SECTION Stability_Level ##### -->
+
+
 <!-- ##### FUNCTION hildon_composite_widget_focus ##### -->
 <para>
 

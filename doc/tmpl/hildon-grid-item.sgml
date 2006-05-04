@@ -100,8 +100,12 @@ create_basic_icons (HildonGrid *grid)
 @Returns: 
 
 
-<!-- ##### ARG HildonGridItem:emblem-type ##### -->
+<!-- ##### FUNCTION hildon_grid_item_set_label ##### -->
 <para>
 
 </para>
+
+@item: 
+@label: 
+
 

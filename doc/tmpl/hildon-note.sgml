@@ -137,8 +137,6 @@ else
 @description: 
 @icon: 
 @Returns: 
-<!-- # Unused Parameters # -->
-@stock_id: 
 
 
 <!-- ##### FUNCTION hildon_note_set_button_text ##### -->

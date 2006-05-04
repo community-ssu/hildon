@@ -131,13 +131,3 @@ Here is an example for using HildonSortDialog.
 @Returns: 
 
 
-<!-- ##### ARG HildonSortDialog:sort-key ##### -->
-<para>
-
-</para>
-
-<!-- ##### ARG HildonSortDialog:sort-order ##### -->
-<para>
-
-</para>
-

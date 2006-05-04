@@ -53,16 +53,6 @@ a progressbar or with an animation.
 @icon_name: 
 
 
-<!-- ##### FUNCTION gtk_infoprint_with_icon_name ##### -->
-<para>
-
-</para>
-
-@parent: 
-@text: 
-@icon_name: 
-
-
 <!-- ##### FUNCTION gtk_infoprintf ##### -->
 <para>
 
@@ -78,16 +68,6 @@ a progressbar or with an animation.
 
 </para>
 
-
-
-<!-- ##### FUNCTION gtk_confirmation_banner_with_icon_name ##### -->
-<para>
-
-</para>
-
-@parent: 
-@text: 
-@icon_name: 
 
 
 <!-- ##### FUNCTION gtk_confirmation_banner_with_icon_name ##### -->

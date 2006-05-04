@@ -14,6 +14,9 @@ hildon-defines
 
 </para>
 
+<!-- ##### SECTION Stability_Level ##### -->
+
+
 <!-- ##### FUNCTION hildon_icon_sizes_init ##### -->
 <para>
 

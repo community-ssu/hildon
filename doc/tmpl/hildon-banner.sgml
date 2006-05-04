@@ -14,6 +14,9 @@ HildonBanner
 
 </para>
 
+<!-- ##### SECTION Stability_Level ##### -->
+
+
 <!-- ##### STRUCT HildonBannerPrivate ##### -->
 <para>
 
@@ -30,14 +33,14 @@ HildonBanner
 @text: 
 
 
-<!-- ##### FUNCTION hildon_banner_show_confirmation ##### -->
+<!-- ##### FUNCTION hildon_banner_show_information_with_markup ##### -->
 <para>
 
 </para>
 
 @widget: 
 @icon_name: 
-@text: 
+@markup: 
 
 
 <!-- ##### FUNCTION hildon_banner_show_animation ##### -->
@@ -69,6 +72,15 @@ HildonBanner
 
 @self: 
 @text: 
+
+
+<!-- ##### FUNCTION hildon_banner_set_markup ##### -->
+<para>
+
+</para>
+
+@self: 
+@markup: 
 
 
 <!-- ##### FUNCTION hildon_banner_set_fraction ##### -->

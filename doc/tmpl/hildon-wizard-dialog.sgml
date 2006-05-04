@@ -48,22 +48,3 @@ switching the page either forward or backward in the notebook.
 @Returns: 
 
 
-<!-- ##### SIGNAL HildonWizardDialog::page-change ##### -->
-<para>
-
-</para>
-
-@hildonwizarddialog: the object which received the signal.
-@arg1: 
-@Returns: 
-
-<!-- ##### ARG HildonWizardDialog:wizard-name ##### -->
-<para>
-
-</para>
-
-<!-- ##### ARG HildonWizardDialog:wizard-notebook ##### -->
-<para>
-
-</para>
-

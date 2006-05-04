@@ -38,6 +38,7 @@ hildon_date_editor_get_date(date_editor, &amp;y, &amp;m, &amp;d);
 
 </para>
 
+@NO_ERROR: 
 @MAX_DAY: 
 @MAX_MONTH: 
 @MAX_YEAR: 

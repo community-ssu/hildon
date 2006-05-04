@@ -94,8 +94,6 @@ static gint update_spin_button (GtkWidget *seek, GtkWidget *spin)
 
 @seekbar: 
 @fraction: 
-<!-- # Unused Parameters # -->
-@fract: 
 
 
 <!-- ##### FUNCTION hildon_seekbar_get_fraction ##### -->

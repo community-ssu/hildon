@@ -1,0 +1,109 @@
+<!-- ##### SECTION Title ##### -->
+hildon-libs-enum-types
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+<!-- ##### SECTION Stability_Level ##### -->
+
+
+<!-- ##### FUNCTION hildon_date_editor_error_type_get_type ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### MACRO HILDON_TYPE_DATE_EDITOR_ERROR_TYPE ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION hildon_telephone_editor_format_get_type ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### MACRO HILDON_TYPE_TELEPHONE_EDITOR_FORMAT ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION hildon_number_editor_error_type_get_type ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### MACRO HILDON_TYPE_NUMBER_EDITOR_ERROR_TYPE ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION hildon_grid_position_type_get_type ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### MACRO HILDON_TYPE_GRID_POSITION_TYPE ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION hildon_grid_item_icon_size_type_get_type ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### MACRO HILDON_TYPE_GRID_ITEM_ICON_SIZE_TYPE ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION hildon_input_mode_hint_get_type ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### MACRO HILDON_TYPE_INPUT_MODE_HINT ##### -->
+<para>
+
+</para>
+
+
+

@@ -134,6 +134,24 @@ hildon_time_editor_get_time( editor, &amp;h, &amp;m, &amp;s );
 @Returns: 
 
 
+<!-- ##### FUNCTION hildon_time_editor_set_show_hours ##### -->
+<para>
+
+</para>
+
+@editor: 
+@show_hours: 
+
+
+<!-- ##### FUNCTION hildon_time_editor_get_show_hours ##### -->
+<para>
+
+</para>
+
+@editor: 
+@Returns: 
+
+
 <!-- ##### FUNCTION hildon_time_editor_set_duration_mode ##### -->
 <para>
 

@@ -77,8 +77,3 @@ gtk_widget_destroy( selector );
 @color: 
 
 
-<!-- ##### ARG HildonColorSelector:color ##### -->
-<para>
-
-</para>
-
