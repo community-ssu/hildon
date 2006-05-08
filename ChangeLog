@@ -1,3 +1,7 @@
+2006-05-08  Luc Pionchon  <luc.pionchon@nokia.com>
+
+	* configure.ac: 0.12.14
+
 2006-05-04  Luc Pionchon  <luc.pionchon@nokia.com>
 
 	gtk-doc config bits...
