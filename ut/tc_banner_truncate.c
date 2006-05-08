@@ -85,7 +85,7 @@ int main(int argc, char **argv)
   case -4: case 26161: TC_ANIM("Painel de Controle - carregando");           break;
   case -5: case 26203: TC_ANIM("Caricamento di Pannello di controllo");      break;
   case -6: case 27875: TC_ANIM("Instant messaging - loading");               break;
-
+  case -7: case 28760: TC_ANIM("Teach Handwriting- Loading");                break;
 
   /* word longer than max width */
   case 201: TC_INFO("mmmmmmmmmmmmmmmmmmmmmmmmmmmmm 1 2 3 4");  break;
