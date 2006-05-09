@@ -40,6 +40,7 @@ libhildonwidgets_la_SOURCES = \
 	hildon-date-editor.h \
 	hildon-time-editor.c \
 	hildon-time-editor.h \
+	hildon-private.h \
 	hildon-time-picker.c \
 	hildon-time-picker.h \
 	hildon-weekday-picker.c \

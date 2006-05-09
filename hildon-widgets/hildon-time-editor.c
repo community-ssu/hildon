@@ -58,6 +58,7 @@
 #include <hildon-widgets/hildon-time-picker.h>
 #include <hildon-widgets/hildon-banner.h>
 #include <hildon-widgets/hildon-input-mode-hint.h>
+#include <hildon-widgets/hildon-private.h>
 #include "hildon-composite-widget.h"
 
 #define _(String) dgettext(PACKAGE, String)
@@ -118,9 +119,6 @@ struct _HildonTimeEditorPrivate {
 
     gchar     *am_symbol;
     gchar     *pm_symbol;
-
-    gchar     *hm_sep_symbol;        /* hours/minutes separator      */
-    gchar     *ms_sep_symbol;        /* minutes/seconds separator    */
 
     GtkWidget *eventbox;             /* hold entries                 */
     GtkWidget *iconbutton;           /* button for icon              */
@@ -538,10 +536,6 @@ static void hildon_time_editor_init(HildonTimeEditor * editor)
     } else {
         gtk_widget_hide(priv->eventbox);
     }
-
-    /* Set time separators labels */
-    gtk_label_set_label(GTK_LABEL(priv->hm_label),  priv->hm_sep_symbol); /* priv-> set by ..._chech_locale()*/
-    gtk_label_set_label(GTK_LABEL(priv->sec_label), priv->ms_sep_symbol);
  
     if (!priv->show_seconds) {
         gtk_widget_hide(priv->sec_label);
@@ -651,12 +645,6 @@ static void hildon_time_editor_finalize(GObject * obj_self)
     g_free(priv->am_symbol);
     g_free(priv->pm_symbol);
 
-    if (priv->hm_sep_symbol)
-      g_free(priv->hm_sep_symbol);
-
-    if (priv->ms_sep_symbol)
-      g_free(priv->ms_sep_symbol);
-
     if (priv->highlight_idle)
         g_source_remove(priv->highlight_idle);
 
@@ -664,36 +652,58 @@ static void hildon_time_editor_finalize(GObject * obj_self)
         G_OBJECT_CLASS(parent_class)->finalize(obj_self);
 }
 
-/* Gets hour-minute separator and minute-second separator 
- * from current locale
+/**
+ * _hildon_time_editor_get_time_separators:
+ * @editor: the #HildonTimeEditor
+ * @hm_sep_label: the label that will show the hour:minutes separator
+ * @ms_sep_label: the label that will show the minutes:seconds separator
+ *
+ * Gets hour-minute separator and minute-second separator from current
+ * locale and sets then to the labels we set as parameters. Both
+ * parameters can be NULL if you just want to assing one separator.
+ *
  */
-static void get_time_separators(HildonTimeEditorPrivate *priv)
+void 
+_hildon_time_editor_get_time_separators(GtkLabel *hm_sep_label,
+                                        GtkLabel *ms_sep_label)
 {
     gchar buffer[256];
+    gchar *separator;
     GDate locale_test_date;
     gchar *iter, *endp;
 
     /* Get localized time string */
     g_date_set_dmy(&locale_test_date, 1, 2, 1970);
     (void) g_date_strftime(buffer, sizeof(buffer), "%X", &locale_test_date);
-   
-    /* Find h-m separator */
-    iter = buffer;
-    while (*iter && g_ascii_isdigit(*iter)) iter++;
+
+    if (hm_sep_label != NULL)
+      {
+        /* Find h-m separator */
+        iter = buffer;
+        while (*iter && g_ascii_isdigit(*iter)) iter++;
     
-    /* Extract h-m separator*/
-    endp = iter;
-    while (*endp && !g_ascii_isdigit(*endp)) endp++;
-    priv->hm_sep_symbol = g_strndup(iter, endp - iter);
-      
-    /* Find m-s separator */
-    iter = endp;
-    while (*iter && g_ascii_isdigit(*iter)) iter++;
+        /* Extract h-m separator*/
+        endp = iter;
+        while (*endp && !g_ascii_isdigit(*endp)) endp++;
+        separator = g_strndup(iter, endp - iter);
+        gtk_label_set_label(hm_sep_label, separator);
+        g_free(separator);
+      }
+
+    if (ms_sep_label != NULL)
+      {      
+        /* Find m-s separator */
+        iter = endp;
+        while (*iter && g_ascii_isdigit(*iter)) iter++;
     
-    /* Extract m-s separator*/
-    endp = iter;
-    while (*endp && !g_ascii_isdigit(*endp)) endp++;
-    priv->ms_sep_symbol = g_strndup(iter, endp - iter);
+        /* Extract m-s separator*/
+        endp = iter;
+        while (*endp && !g_ascii_isdigit(*endp)) endp++;
+        separator = g_strndup(iter, endp - iter);
+        gtk_label_set_label(ms_sep_label, separator);
+        g_free(separator);
+      }
+
 }
 
 /* Convert ticks to H:M:S. Ticks = seconds since 00:00:00. */
@@ -1172,7 +1182,7 @@ static gboolean hildon_time_editor_check_locale(HildonTimeEditor * editor)
     priv = HILDON_TIME_EDITOR_GET_PRIVATE(editor);
 
     /* Update time separator symbols */
-    get_time_separators(priv);
+    _hildon_time_editor_get_time_separators(GTK_LABEL(priv->hm_label), GTK_LABEL(priv->sec_label));
  
     /* Get AM/PM symbols. */
     priv->am_symbol = g_strdup(nl_langinfo(AM_STR));
