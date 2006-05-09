@@ -1,3 +1,12 @@
+2006-05-09  Marius Vollmer  <marius.vollmer@nokia.com>
+
+	* hildon-widgets/hildon-find-toolbar.c
+	(hildon_find_toolbar_class_init): Reverted change from 2006-04-15:
+	The "search", "close", "invalid_input", "history_append" signals
+	have always been correctly registered: you don't include the last
+	'user data' parameter in the list of argument types passed to
+	g_signal_new et al.  Thanks to Jorn from OpenedHand!
+
 2006-05-08  Luc Pionchon  <luc.pionchon@nokia.com>
 
 	* configure.ac: 0.12.14

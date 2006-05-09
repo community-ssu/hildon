@@ -477,8 +477,8 @@ hildon_find_toolbar_class_init(HildonFindToolbarClass *klass)
 			      "search", HILDON_TYPE_FIND_TOOLBAR,
 			      G_SIGNAL_RUN_LAST, G_STRUCT_OFFSET 
 			      (HildonFindToolbarClass, search),
-			      NULL, NULL, gtk_marshal_VOID__POINTER,
-			      G_TYPE_NONE, 1, G_TYPE_POINTER);
+			      NULL, NULL, gtk_marshal_VOID__VOID,
+			      G_TYPE_NONE, 0);
   
   /**
    * HildonFindToolbar::close:
@@ -491,8 +491,8 @@ hildon_find_toolbar_class_init(HildonFindToolbarClass *klass)
 			     "close", HILDON_TYPE_FIND_TOOLBAR,
 			     G_SIGNAL_RUN_LAST, G_STRUCT_OFFSET 
 			     (HildonFindToolbarClass, close),
-			     NULL, NULL, gtk_marshal_VOID__POINTER,
-			     G_TYPE_NONE, 1, G_TYPE_POINTER);
+			     NULL, NULL, gtk_marshal_VOID__VOID,
+			     G_TYPE_NONE, 0);
   
   /**
    * HildonFindToolbar::invalid-input:
@@ -506,8 +506,8 @@ hildon_find_toolbar_class_init(HildonFindToolbarClass *klass)
 			     "invalid_input", HILDON_TYPE_FIND_TOOLBAR,
 			     G_SIGNAL_RUN_LAST, G_STRUCT_OFFSET 
 			     (HildonFindToolbarClass, invalid_input),
-			     NULL, NULL, gtk_marshal_VOID__POINTER,
-			     G_TYPE_NONE, 1, G_TYPE_POINTER);
+			     NULL, NULL, gtk_marshal_VOID__VOID,
+			     G_TYPE_NONE, 0);
   
   /**
    * HildonFindToolbar::history-append:
@@ -521,8 +521,8 @@ hildon_find_toolbar_class_init(HildonFindToolbarClass *klass)
 			     G_SIGNAL_RUN_LAST, G_STRUCT_OFFSET 
 			     (HildonFindToolbarClass, history_append),
 			     g_signal_accumulator_true_handled, NULL, 
-			     gtk_marshal_BOOLEAN__POINTER,
-			     G_TYPE_BOOLEAN, 1, G_TYPE_POINTER);
+			     gtk_marshal_BOOLEAN__VOID,
+			     G_TYPE_BOOLEAN, 0);
 }
 
 static void
