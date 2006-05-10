@@ -772,7 +772,7 @@ void hildon_time_editor_set_ticks (HildonTimeEditor * editor,
       g_signal_handlers_block_by_func(priv->entries[i],
         (gpointer) hildon_time_editor_entry_changed, editor);
       g_signal_handlers_block_by_func(priv->entries[i],
-	(gpointer) hildon_time_editor_inserted_text, editor);
+	(gpointer) hildon_time_editor_entry_focusout, editor);
     }
 
     g_snprintf(str, sizeof(str), "%02u", h);
@@ -788,6 +788,8 @@ void hildon_time_editor_set_ticks (HildonTimeEditor * editor,
     {
       g_signal_handlers_unblock_by_func(priv->entries[i],
         (gpointer) hildon_time_editor_entry_changed, editor);
+      g_signal_handlers_unblock_by_func(priv->entries[i],
+	(gpointer) hildon_time_editor_entry_focusout, editor);
     }
 
     /* Update AM/PM label in case we're in 12h mode */

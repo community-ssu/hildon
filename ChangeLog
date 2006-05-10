@@ -1,5 +1,14 @@
 2006-05-10  Luc Pionchon  <luc.pionchon@nokia.com>
 
+	* hildon-widgets/hildon-time-editor.c:
+	(hildon_time_editor_set_ticks) removed block signal handler for
+	hildon_time_editor_inserted_text. Added block and unblock signal
+	handler for hildon_time_editor_entry_focusout.
+
+	NB#28027
+
+2006-05-10  Luc Pionchon  <luc.pionchon@nokia.com>
+
 	* hildon-widgets/hildon-caption.c:
 	(hildon_caption_size_allocate): add a margin to the start position
 	of the caption_area (HILDON_CAPTION_SPACING), leaving this way the
