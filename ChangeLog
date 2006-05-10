@@ -1,3 +1,12 @@
+2006-05-11  Luc Pionchon  <luc.pionchon@nokia.com>
+
+	* hildon-widgets/hildon-caption.c
+	(hildon_caption_set_label_alignment)
+	(hildon_caption_get_label_alignment): added gtk-doc "Since" marker
+
+	* doc/hildon-libs-docs.sgml: added index for 0.12.0 new symbols
+
+
 2006-05-10  Luc Pionchon  <luc.pionchon@nokia.com>
 
 	* hildon-widgets/hildon-time-editor.c:
@@ -590,7 +599,7 @@
 
 	From Murray Cumming.
 	
- 	* hildon-lgpl/hildon-caption.c:
+ 	* hildon-libs/hildon-caption.c:
 	(hildon_caption_init): Do the hildon_caption_set_child_expand()
 	here.
 	(hildon_caption_new): Use the child property from GtkContainer
@@ -945,7 +954,7 @@
 
 2006-03-15  Luc Pionchon  <luc.pionchon@nokia.com>
 
-	* hildon-lgpl/hildon-find-toolbar.c (hildon_find_toolbar_filter):
+	* hildon-libs/hildon-find-toolbar.c (hildon_find_toolbar_filter):
 	calculates correctly which items will be visible. Fixes N#16991.
 
 
@@ -1066,7 +1075,7 @@
 
 	Cleanup Caption widget,
 	
-	* hildon-lgpl/hildon-caption.[ch]
+	* hildon-libs/hildon-caption.[ch]
 	(hildon_caption_status_get_type, hildon_caption_get_type):
 	G_CONST_RETURN removed, G_GNUC_CONST added
 
@@ -1101,7 +1110,7 @@
 
 	Cleanup AppView,
 	
-	* hildon-lgpl/hildon-appview-c:
+	* hildon-libs/hildon-appview-c:
 	(hildon_app_view_init): Fixed a problem that prevented to set an
 	arbitrary value for TOOLBAR_MIDDLE (the distance, in pixel,
 	between toolbars). This fix involves a change in the default gtkrc

@@ -1114,6 +1114,8 @@ hildon_caption_set_label_text( HildonCaptionPrivate *priv )
  * Sets the vertical alignment to be used for the
  * text part of the caption. Applications need to
  * align the child control themselves.
+ *
+ * Since: 0.12.0
  */   
 void hildon_caption_set_label_alignment(HildonCaption *caption, 
                                         gfloat alignment)
@@ -1135,6 +1137,8 @@ void hildon_caption_set_label_alignment(HildonCaption *caption,
  * Gets current vertical alignment for the text part.
  *
  * Returns: vertical alignment
+ *
+ * Since: 0.12.0
  */
 gfloat hildon_caption_get_label_alignment(HildonCaption *caption)
 {
