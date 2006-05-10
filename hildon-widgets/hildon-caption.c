@@ -349,7 +349,8 @@ static gboolean hildon_caption_expose( GtkWidget *widget,
 
     alloc.width = priv->caption_area->allocation.width + HILDON_CAPTION_SPACING;
     alloc.height = MIN (req.height + (2 * widget->style->ythickness), priv->caption_area->allocation.height);
-    alloc.x = priv->caption_area->allocation.x;
+
+    alloc.x = priv->caption_area->allocation.x - HILDON_CAPTION_SPACING; /* - left margin */
     alloc.y = priv->caption_area->allocation.y + 
               MAX(((priv->caption_area->allocation.height - alloc.height) * align), 0);
 
@@ -646,6 +647,7 @@ static void hildon_caption_size_allocate( GtkWidget *widget,
   GtkRequisition req;
   GtkWidget *child = NULL;
   HildonCaptionPrivate *priv = NULL;
+
   g_assert( HILDON_IS_CAPTION(widget) );
   priv = HILDON_CAPTION_GET_PRIVATE(widget);
 
@@ -663,7 +665,7 @@ static void hildon_caption_size_allocate( GtkWidget *widget,
   gtk_widget_get_child_requisition( priv->caption_area, &req );
 
   allocA.height = allocB.height = allocation->height;
-  allocA.width = allocB.width = allocation->width;
+  allocA.width  = allocB.width  = allocation->width;
   allocA.x = allocB.x = allocB.y = allocA.y = 0;
   
   /* Center the captioned widget */
@@ -673,6 +675,9 @@ static void hildon_caption_size_allocate( GtkWidget *widget,
     allocB.width = req.width;
   }
 
+  /* Leave at least the space of the HILDON_CAPTION_SPACING in the left */
+  allocB.x = HILDON_CAPTION_SPACING;
+
   /* Leave room for the other drawable parts of the caption control */
   allocA.width -= req.width + HILDON_CAPTION_SPACING * 2;
 
@@ -681,7 +686,7 @@ static void hildon_caption_size_allocate( GtkWidget *widget,
   {
     GtkRequisition child_req;
     gtk_widget_get_child_requisition( child, &child_req );
-    allocA.width = MIN( allocA.width, child_req.width );
+    allocA.width  = MIN( allocA.width,  child_req.width  );
     allocA.height = MIN( allocA.height, child_req.height );
   }
 
@@ -698,6 +703,7 @@ static void hildon_caption_size_allocate( GtkWidget *widget,
 
   if (child && GTK_WIDGET_VISIBLE(child) )
     gtk_widget_size_allocate( child, &allocA );
+
   gtk_widget_size_allocate( priv->caption_area, &allocB );
 }
 

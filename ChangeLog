@@ -1,3 +1,16 @@
+2006-05-10  Luc Pionchon  <luc.pionchon@nokia.com>
+
+	* hildon-widgets/hildon-caption.c:
+	(hildon_caption_size_allocate): add a margin to the start position
+	of the caption_area (HILDON_CAPTION_SPACING), leaving this way the
+	space required to the left of the caption.
+
+	(hildon_caption_expose): allocation, subtract the left margin
+	which we have added to the children widgets when we paint the
+	selection box.
+       	
+	NB#28483
+
 3006-05-10 Tapani Palli <tapani.palli@nokia.com>
 
 	* hildon-widgets/hildon-time-editor.c:
