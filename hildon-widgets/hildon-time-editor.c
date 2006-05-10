@@ -771,6 +771,8 @@ void hildon_time_editor_set_ticks (HildonTimeEditor * editor,
     {
       g_signal_handlers_block_by_func(priv->entries[i],
         (gpointer) hildon_time_editor_entry_changed, editor);
+      g_signal_handlers_block_by_func(priv->entries[i],
+	(gpointer) hildon_time_editor_inserted_text, editor);
     }
 
     g_snprintf(str, sizeof(str), "%02u", h);
@@ -1429,7 +1431,8 @@ hildon_time_editor_inserted_text  (GtkEditable * editable,
           gtk_widget_grab_focus(priv->entries[ENTRY_MINS]);
           *position = -1;
         }
-      else if (GTK_WIDGET(editable) == priv->entries[ENTRY_MINS]) 
+      else if (GTK_WIDGET(editable) == priv->entries[ENTRY_MINS] &&
+	      GTK_WIDGET_VISIBLE (priv->entries[ENTRY_SECS])) 
         {
           gtk_widget_grab_focus(priv->entries[ENTRY_SECS]);
 	  *position = -1;
