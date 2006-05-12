@@ -36,7 +36,8 @@ G_BEGIN_DECLS
 #define HILDON_IS_NOTE(obj) (GTK_CHECK_TYPE (obj, HILDON_TYPE_NOTE))
 #define HILDON_IS_NOTE_CLASS(klass) \
   (GTK_CHECK_CLASS_TYPE ((klass), HILDON_TYPE_NOTE))
-typedef struct _HildonNote HildonNote;
+
+typedef struct _HildonNote      HildonNote;
 typedef struct _HildonNoteClass HildonNoteClass;
 
 typedef enum /*< skip >*/
