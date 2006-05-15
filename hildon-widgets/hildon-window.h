@@ -68,15 +68,23 @@ struct _HildonWindow
     HildonWindowPrivate *priv;
 };
 
+enum
+{
+  HILDON_WINDOW_CO_COPY,
+  HILDON_WINDOW_CO_CUT,
+  HILDON_WINDOW_CO_PASTE
+};
+
 struct _HildonWindowClass
 {
     GtkWindowClass parent_class;
 
+    /* opera hacks for clip board operation */
+    void (*clipboard_operation)(HildonWindow *hwindow, int operation);
     /* Padding for future extension */
     void (*_hildon_reserved1)(void);
     void (*_hildon_reserved2)(void);
     void (*_hildon_reserved3)(void);
-    void (*_hildon_reserved4)(void);
 };
 
 

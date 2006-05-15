@@ -299,7 +299,15 @@ hildon_window_class_init (HildonWindowClass * window_class)
                                          "Size of graphical toolbar borders",
                                           GTK_TYPE_BORDER,
                                           G_PARAM_READABLE));
-
+    
+    /* opera hack, install clip operation signal */
+    g_signal_new ("clipboard_operation",
+                  G_OBJECT_CLASS_TYPE (object_class),
+                  G_SIGNAL_RUN_FIRST,
+                  G_STRUCT_OFFSET (HildonWindowClass, clipboard_operation),
+                  NULL, NULL,
+                  g_cclosure_marshal_VOID__INT, G_TYPE_NONE, 1,
+                  GTK_TYPE_INT);
 }
 
 static void
@@ -575,6 +583,8 @@ hildon_window_expose (GtkWidget * widget, GdkEventExpose * event)
      * rectangle. Instead start with the drawing of the GtkBin */
     GTK_WIDGET_CLASS (g_type_class_peek_parent (parent_class))->
         expose_event (widget, event);
+    /*GTK_WIDGET_CLASS (parent_class))->
+        expose_event (widget, event);*/
 
     return FALSE;
 
@@ -647,6 +657,8 @@ hildon_window_size_allocate (GtkWidget * widget, GtkAllocation * allocation)
         req.height : allocation->height );
     box_alloc.x = allocation->x + tb->left;
     box_alloc.y = allocation->y + allocation->height - box_alloc.height - tb->bottom;
+
+    g_debug( "Box allocation is %i\n", box_alloc.height);
 
 
     if (bin->child != NULL && GTK_IS_WIDGET (bin->child)
@@ -1008,13 +1020,19 @@ hildon_window_get_active_window (void)
     return ret;
 }
 
+static int
+xclient_message_type_check (XClientMessageEvent *cm, const gchar *name)
+{
+    return cm->message_type == XInternAtom(GDK_DISPLAY(), name, FALSE);
+}
 
 /*****************/
 /* Event filters */
 /*****************/
 
 /*
- * Handle the window border custom button, which toggles the menu
+ * Handle the window border custom button, which toggles the menu,
+ * and the Hildon input method copy paste messages
  */
 static GdkFilterReturn
 hildon_window_event_filter (GdkXEvent *xevent, GdkEvent *event, gpointer data)
@@ -1024,12 +1042,29 @@ hildon_window_event_filter (GdkXEvent *xevent, GdkEvent *event, gpointer data)
     if (eventti->type == ClientMessage)
     {
         XClientMessageEvent *cm = xevent;
-        Atom mb_grab_transfer_atom = 
-            XInternAtom (GDK_DISPLAY(), "_MB_GRAB_TRANSFER", FALSE);
 
-        if (cm->message_type == mb_grab_transfer_atom)
+        if (xclient_message_type_check (cm, "_MB_GRAB_TRANSFER"))
         {
             hildon_window_toggle_menu (HILDON_WINDOW ( data ));
+            return GDK_FILTER_REMOVE;
+        }
+        /* opera hack clipboard client message */
+        else if (xclient_message_type_check (cm, "_HILDON_IM_CLIPBOARD_COPY"))
+        {
+            g_signal_emit_by_name(G_OBJECT(data), "clipboard_operation",
+                                  HILDON_WINDOW_CO_COPY);
+            return GDK_FILTER_REMOVE;
+        }
+        else if (xclient_message_type_check(cm, "_HILDON_IM_CLIPBOARD_CUT"))
+        {
+            g_signal_emit_by_name(G_OBJECT(data), "clipboard_operation",
+                                  HILDON_WINDOW_CO_CUT);
+            return GDK_FILTER_REMOVE;
+        }
+        else if (xclient_message_type_check(cm, "_HILDON_IM_CLIPBOARD_PASTE"))
+        {
+            g_signal_emit_by_name(G_OBJECT(data), "clipboard_operation",
+                                  HILDON_WINDOW_CO_PASTE);
             return GDK_FILTER_REMOVE;
         }
     }
