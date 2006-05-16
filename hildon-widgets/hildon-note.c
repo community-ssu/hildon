@@ -550,8 +550,7 @@ GtkWidget *hildon_note_new_confirmation(GtkWindow * parent,
  * Create a new confirmation note. Confirmation note has text (description) 
  * that you specify, two buttons and an icon.
  *
- * Note! This function is deprecated and broken, and really should not
- *       be used by anyone!
+ * Deprecated: this function is broken, and really should not be used by anyone!
  *
  * Returns: a #GtkWidget pointer of the note
  */

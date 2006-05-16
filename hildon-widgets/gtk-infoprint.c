@@ -26,7 +26,7 @@
  * SECTION:gtk-infoprint
  * @short_description: deprecated widget. Use #HildonBanner instead
  *
- * This widget is deprectaed. Use #HildonBanner instead
+ * This widget is deprecated. Use #HildonBanner instead
  */
 
 #include "gtk-infoprint.h"

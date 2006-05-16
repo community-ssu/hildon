@@ -689,7 +689,7 @@ GtkWidget *hildon_banner_show_animation(GtkWidget *widget,
 
    /* Find out which animation to use */
    theme = gtk_icon_theme_get_default();
-   info = gtk_icon_theme_lookup_icon(theme, animation_name ? 
+   info = gtk_icon_theme_lookup_icon(theme, animation_name ?   /* TODO: consider using: gtk_icon_theme_load_icon() */
             animation_name : HILDON_BANNER_DEFAULT_PROGRESS_ANIMATION,
             HILDON_ICON_SIZE_NOTE, 0);
 
