@@ -188,7 +188,12 @@ void
 gtk_confirmation_banner(GtkWindow * parent, const gchar * text,
                         const gchar * stock_id)
 {
-   hildon_banner_show_information((GtkWidget *) parent, NULL, text);
+  gchar *s;
+  s = g_strdup_printf("<b>%s</b>", text);
+
+  hildon_banner_show_information_with_markup((GtkWidget *) parent, NULL, s);
+
+  g_free(s);
 }
 
 /**

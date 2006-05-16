@@ -1,3 +1,9 @@
+2006-05-16  Luc Pionchon  <luc.pionchon@nokia.com>
+
+	* hildon-widgets/gtk-infoprint.c (gtk_confirmation_banner): added
+	bold markup for backward compatibility. NB#28370
+
+
 2006-05-15  Luc Pionchon  <luc.pionchon@nokia.com>
 
 	* configure.ac: 0.12.15
