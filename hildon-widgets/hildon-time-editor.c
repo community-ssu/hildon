@@ -771,8 +771,13 @@ void hildon_time_editor_set_ticks (HildonTimeEditor * editor,
     {
       g_signal_handlers_block_by_func(priv->entries[i],
         (gpointer) hildon_time_editor_entry_changed, editor);
+
+      g_signal_handlers_block_by_func(priv->entries[i],
+        (gpointer) hildon_time_editor_inserted_text, editor);
+      
       g_signal_handlers_block_by_func(priv->entries[i],
 	(gpointer) hildon_time_editor_entry_focusout, editor);
+
     }
 
     g_snprintf(str, sizeof(str), "%02u", h);
@@ -788,9 +793,14 @@ void hildon_time_editor_set_ticks (HildonTimeEditor * editor,
     {
       g_signal_handlers_unblock_by_func(priv->entries[i],
         (gpointer) hildon_time_editor_entry_changed, editor);
+
+      g_signal_handlers_unblock_by_func(priv->entries[i],
+        (gpointer) hildon_time_editor_inserted_text, editor);
+
       g_signal_handlers_unblock_by_func(priv->entries[i],
 	(gpointer) hildon_time_editor_entry_focusout, editor);
-    }
+
+   }
 
     /* Update AM/PM label in case we're in 12h mode */
     gtk_label_set_label(GTK_LABEL(priv->ampm_label),
@@ -1367,8 +1377,13 @@ static gboolean highlight_callback(gpointer data)
     priv->error_widget = NULL;
     priv->highlight_idle = 0;
 
+    if (!widget)
+    {
+      return FALSE;
+    }
+    
     g_assert(GTK_IS_ENTRY(widget));
-
+    
     /* Grabbing focus can cause re-validation, priv->error widget
        can be set to something else, including NULL */
     gtk_editable_select_region(GTK_EDITABLE(widget), 0, -1);
@@ -1416,10 +1431,10 @@ hildon_time_editor_inserted_text  (GtkEditable * editable,
   HildonTimeEditor *editor;
   GtkEntry *entry;
   gchar *value;
-  
+
   entry = GTK_ENTRY(editable);
   editor = HILDON_TIME_EDITOR(user_data);
-  
+ 
   value = (gchar *) gtk_entry_get_text(entry);
   
   if (strlen(value) == 2)

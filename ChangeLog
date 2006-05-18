@@ -1,3 +1,9 @@
+2006-05-18  Tapani Palli <tapani.palli@nokia.com>
+
+	* hildon-widgets/hildon-time-editor.c: block signal handler for
+	hildon_time_editor_inserted_text, null check for entry widget in
+	highlight_callback. Fixes NB#28679
+
 2006-05-16  Luc Pionchon  <luc.pionchon@nokia.com>
 
 	* hildon-widgets/gtk-infoprint.c (gtk_confirmation_banner): added
