@@ -21,7 +21,7 @@
 	  - Added clipboad_operation signal used by osso-browser to receive
 	    clipborad operations from hildon-input-method
 	  - Trigger this signal when we receive an clipboard X message
-	    from HIM.
+	    from HIM. related to NB#25502
 
 2006-05-11  Luc Pionchon  <luc.pionchon@nokia.com>
 
