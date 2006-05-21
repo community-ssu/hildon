@@ -46,7 +46,7 @@
 #include <libintl.h>
 #include <hildon-widgets/hildon-defines.h>
 #include <hildon-widgets/hildon-system-sound.h>
-#include <hildon-widgets/hildon-banner.h>
+#include <hildon-widgets/hildon-banner.h> /* for _hildon_gtk_label_set_text_n_lines */
 
 #include <stdio.h>
 #include <string.h>
