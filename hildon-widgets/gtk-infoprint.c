@@ -226,7 +226,12 @@ void
 gtk_confirmation_banner_with_icon_name(GtkWindow * parent, const gchar * text,
                         const gchar * icon_name)
 {
-   hildon_banner_show_information((GtkWidget *) parent, icon_name, text);
+  gchar *s;
+  s = g_strdup_printf("<b>%s</b>", text);
+
+  hildon_banner_show_information((GtkWidget *) parent, icon_name, s);
+
+  g_free(s);
 }
 
 /**

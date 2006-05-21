@@ -1,5 +1,12 @@
 2006-05-21  Luc Pionchon  <luc.pionchon@nokia.com>
 
+	* hildon-widgets/gtk-infoprint.c
+	(gtk_confirmation_banner_with_icon_name):
+	added bold markup for backward compatibility. NB#28370 (bis)
+
+
+2006-05-21  Luc Pionchon  <luc.pionchon@nokia.com>
+
 	* hildon-widgets/hildon-grid.c (get_child_index_by_coord): returns
 	if empty grid. NB#29883
 
