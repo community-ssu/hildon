@@ -39,14 +39,20 @@ static GtkWidget *find_banner_for_parent(GtkWindow *parent)
 {
    GList *toplevels, *iter;
    GtkWidget *result = NULL;
+   gboolean is_timed;
 
    toplevels = gtk_window_list_toplevels();
    for (iter = toplevels; iter; iter = iter->next)
       if (HILDON_IS_BANNER(iter->data) && 
           gtk_window_get_transient_for(GTK_WINDOW(iter->data)) == parent)
       {
-         result = iter->data;
-         break;
+         g_object_get(iter->data, "is-timed", &is_timed, NULL);
+
+         /* We do not want to touch timed infoprints */
+         if (!is_timed) {
+           result = iter->data;
+           break;
+         }
       }
 
    g_list_free(toplevels);
