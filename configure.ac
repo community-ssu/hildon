@@ -34,11 +34,6 @@ PKG_CHECK_MODULES(ESD, esound)
 AC_SUBST(ESD_LIBS)
 AC_SUBST(ESD_CFLAGS)
 
-# Needed to demonstrate how mime-types can be handled with gnome-vfs
-PKG_CHECK_MODULES(GNOME_VFS, gnome-vfs-2.0 >= 2.6 gnome-vfs-module-2.0 >= 2.6)
-AC_SUBST(GNOME_VFS_CFLAGS)
-AC_SUBST(GNOME_VFS_LIBS)
-
 PKG_CHECK_MODULES(GCONF, gconf-2.0 >= 2.6)
 AC_SUBST(GCONF_CFLAGS)
 AC_SUBST(GCONF_LIBS)

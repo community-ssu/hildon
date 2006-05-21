@@ -36,7 +36,7 @@ IGNORE_HFILES = \
 
 # CFLAGS and LDFLAGS for compiling scan program. Only needed if 
 # $(DOC_MODULE).types is non-empty.
-INCLUDES = $(GTK_CFLAGS) -I$(top_srcdir) $(GNOME_VFS_CFLAGS)
+INCLUDES = $(GTK_CFLAGS) -I$(top_srcdir)
 
 GTKDOC_LIBS = $(GTK_LIBS) ../hildon-widgets/libhildonwidgets.la 
 

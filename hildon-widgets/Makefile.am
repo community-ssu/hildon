@@ -1,4 +1,4 @@
-INCLUDES = $(GTK_CFLAGS) $(GNOME_VFS_CFLAGS) $(GCONF_CFLAGS) \
+INCLUDES = $(GTK_CFLAGS) $(GCONF_CFLAGS) \
 	   $(ESD_CFLAGS) $(LIBMB_CFLAGS) -DLOCALEDIR=\"$(localedir)\" -I$(srcdir)/..
 
 lib_LTLIBRARIES = libhildonwidgets.la
@@ -7,7 +7,7 @@ EXTRA_DIST = hildon-marshalers.list
 
 libhildonwidgets_la_LDFLAGS = -version-info 5:0:5
 
-libhildonwidgets_la_LIBADD = $(GTK_LIBS) $(GNOME_VFS_LIBS) $(GCONF_LIBS) \
+libhildonwidgets_la_LIBADD = $(GTK_LIBS) $(GCONF_LIBS) \
 			     $(ESD_LIBS) $(LIBMB_LIBS)
 
 libhildonwidgets_la_SOURCES = \
@@ -61,8 +61,6 @@ libhildonwidgets_la_SOURCES = \
 	hildon-add-home-dialog.h \
 	hildon-font-selection-dialog.c \
 	hildon-font-selection-dialog.h \
-	hildon-insert-object-dialog.c \
-	hildon-insert-object-dialog.h \
 	hildon-grid.c \
 	hildon-grid.h \
 	hildon-grid-item.c \
@@ -141,7 +139,6 @@ hildonwidgetsincludeinst_DATA = \
 	hildon-sort-dialog.h \
 	hildon-add-home-dialog.h \
 	hildon-font-selection-dialog.h \
-	hildon-insert-object-dialog.h \
 	hildon-grid.h \
 	hildon-grid-item.h \
 	hildon-file-handling-note.h \

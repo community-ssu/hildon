@@ -1,5 +1,24 @@
 2006-05-21  Luc Pionchon  <luc.pionchon@nokia.com>
 
+	Removed hildon-insert-object-dialog NB#8015
+
+	* hildon-widgets/hildon-insert-object-dialog.[ch]: removed
+	* doc/tmpl/hildon-insert-object-dialog.sgml: removed
+	* ut/hildon-widgets_tests.c (test27a, test27b, test27c): removed 
+	
+	* hildon-widgets/Makefile.am (hildonwidgetsincludeinst_DATA) 
+	* hildon-widgets/Makefile.am (libhildonwidgets_la_SOURCES)
+	* doc/hildon-libs-docs.sgml: 
+	* po/POTFILES.in: : removed reference
+	
+	* configure.ac: removed check for gnome-vfs
+	* hildon-widgets/Makefile.am: removed gnome-vfs flags
+	* doc/Makefile.am: likewise
+	* ut/Makefile.am: likewise
+
+
+2006-05-21  Luc Pionchon  <luc.pionchon@nokia.com>
+
 	* hildon-widgets/gtk-infoprint.c
 	(gtk_confirmation_banner_with_icon_name):
 	added bold markup for backward compatibility. NB#28370 (bis)

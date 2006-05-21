@@ -76,7 +76,6 @@
   <chapter>
     <title>Other</title>
     <!--
-    <xi:include href="xml/hildon-insert-object-dialog.xml"/>
     <xi:include href="xml/hildon-telephone-editor.xml"/>
     <xi:include href="xml/hildon-add-home-dialog.xml"/>
     -->

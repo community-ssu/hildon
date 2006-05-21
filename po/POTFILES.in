@@ -9,7 +9,6 @@ hildon-widgets/hildon-date-editor.c
 hildon-widgets/hildon-file-details-dialog.c
 hildon-widgets/hildon-file-handling-note.c
 hildon-widgets/hildon-font-selection-dialog.c
-hildon-widgets/hildon-insert-object-dialog.c
 hildon-widgets/hildon-note.c
 hildon-widgets/hildon-number-editor.c
 hildon-widgets/hildon-range-editor.c

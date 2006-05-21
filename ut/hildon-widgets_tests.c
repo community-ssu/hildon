@@ -41,7 +41,6 @@
 #include <hildon-widgets/hildon-hvolumebar.h>
 #include <hildon-widgets/hildon-vvolumebar.h>
 #include <hildon-widgets/hildon-font-selection-dialog.h>
-#include <hildon-widgets/hildon-insert-object-dialog.h>
 #include <hildon-widgets/hildon-number-editor.h>
 #include <hildon-widgets/hildon-color-selector.h>
 #include <hildon-widgets/hildon-file-handling-note.h>
@@ -2051,35 +2050,6 @@ int fsd_get_pretext(void)
 	assert( str!=NULL );
 	return 1;
 }
-/* insert object dialog: new */
-int test27a(void){
-  GtkWidget *dialog;
-  dialog = hildon_insert_object_dialog_new(NULL);
-  g_assert(dialog);
-  return 1;  
-}
-
-/* insert object dialog: get_name */
-int test27b(void){
-  const gchar *string;
-  GtkWidget *dialog;
-
-  dialog = hildon_insert_object_dialog_new(NULL);
-  string = hildon_insert_object_dialog_get_name(HILDON_INSERT_OBJECT_DIALOG(dialog));
-  g_assert(string);
-  return 1;
-}
-
-/* insert object dialog: get_mime_type */
-int test27c(void){
-  const gchar *string;
-  GtkWidget *dialog;
-
-  dialog = hildon_insert_object_dialog_new(NULL);
-  string = hildon_insert_object_dialog_get_mime_type(HILDON_INSERT_OBJECT_DIALOG(dialog));
-  g_assert(string);
-  return 1;
-}
 
 /* hildon_number_editor_new */
 int test28a(void){
@@ -3130,9 +3100,6 @@ testcase tcases[] =
 #endif
     {*fsd_set_pretext, "FontSelectionDialog Set preview text", EXPECT_OK},
     {*fsd_get_pretext, "FontSelectionDialog Get preview text", EXPECT_OK},
-    {*test27a, "hildon_insert_object: new", EXPECT_OK},
-    {*test27b, "hildon_insert_object: get_name", EXPECT_OK},
-    {*test27c, "hildon_insert_object: get_mime_type", EXPECT_ASSERT},
     {*test28a, "hildon_number_editor_new", EXPECT_OK},
     {*test28b, "hildon_number_editor_get_value", EXPECT_OK},
     {*test28c, "hildon_number_editor_set_range", EXPECT_OK},
