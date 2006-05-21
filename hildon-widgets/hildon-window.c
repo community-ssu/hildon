@@ -658,9 +658,6 @@ hildon_window_size_allocate (GtkWidget * widget, GtkAllocation * allocation)
     box_alloc.x = allocation->x + tb->left;
     box_alloc.y = allocation->y + allocation->height - box_alloc.height - tb->bottom;
 
-    g_debug( "Box allocation is %i\n", box_alloc.height);
-
-
     if (bin->child != NULL && GTK_IS_WIDGET (bin->child)
                            && GTK_WIDGET_VISIBLE (bin->child))
     {
@@ -676,13 +673,17 @@ hildon_window_size_allocate (GtkWidget * widget, GtkAllocation * allocation)
             alloc.y += b->top;
 
             alloc.height -= b->top;
-        }
 
-        if (box_alloc.height <= 0 && 
-                !(HILDON_WINDOW (widget)->priv->fullscreen))
-            alloc.height -= b->bottom;
+            if (box_alloc.height <= 0)
+                alloc.height -= b->bottom;
+            else
+                alloc.height -= (tb->top + tb->bottom);            
+        }
         else
-            alloc.height -= (tb->top + tb->bottom);
+        {
+            if (!(box_alloc.height <= 0))
+                alloc.height -= (tb->top + tb->bottom);              
+        }
 
         gtk_widget_size_allocate (bin->child, &alloc);
     }

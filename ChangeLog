@@ -1,3 +1,12 @@
+2006-05-15  Johan Bilien  <johan.bilien@nokia.com>
+	
+	* hildon-widgets/hildon-window.c:
+	(hildon_window_size_allocate): Now the window uses all the space
+	when its state is fullscreen, we avoid to subtract the top and
+	bottom borders if the window state is fullscreen.
+	
+	NB#28925
+
 2006-05-18  Tapani Palli <tapani.palli@nokia.com>
 
 	* hildon-widgets/hildon-time-editor.c: block signal handler for
