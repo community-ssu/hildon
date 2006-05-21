@@ -510,21 +510,6 @@ hildon_window_expose (GtkWidget * widget, GdkEventExpose * event)
     g_list_foreach (box->children, visible_toolbars, 
             &currently_visible_toolbars);
 
-    if (priv->previous_vbox_y != priv->vbox->allocation.y)
-    {
-        /* The size of the VBox has changed, we need to redraw part
-         * of the window borders */
-        gint draw_from_y = priv->previous_vbox_y < priv->vbox->allocation.y?
-            priv->previous_vbox_y - tb->top:
-            priv->vbox->allocation.y - tb->top;
-        
-        gtk_widget_queue_draw_area (widget, 0, draw_from_y, 
-                widget->allocation.width,
-                widget->allocation.height - draw_from_y);
-        
-        priv->previous_vbox_y = priv->vbox->allocation.y;
-    }
-
     if (!HILDON_WINDOW (widget)->priv->fullscreen)
     {
 
@@ -690,6 +675,22 @@ hildon_window_size_allocate (GtkWidget * widget, GtkAllocation * allocation)
 
 
     gtk_widget_size_allocate (box, &box_alloc);
+
+    if (priv->previous_vbox_y != box_alloc.y)
+    {
+        /* The size of the VBox has changed, we need to redraw part
+         * of the window borders */
+        gint draw_from_y = priv->previous_vbox_y < box_alloc.y?
+            priv->previous_vbox_y - tb->top:
+            box_alloc.y - tb->top;
+        
+        gtk_widget_queue_draw_area (widget, 0, draw_from_y, 
+                widget->allocation.width,
+                widget->allocation.height - draw_from_y);
+        
+        priv->previous_vbox_y = box_alloc.y;
+    }
+
 }
 
 static void
@@ -1666,11 +1667,6 @@ hildon_window_remove_toolbar (HildonWindow *self, GtkToolbar *toolbar)
     g_return_if_fail (self && HILDON_IS_WINDOW (self));
 
     gtk_container_remove (vbox, GTK_WIDGET(toolbar));
-    /* FIXME: As the toolbar border graphics go beyond the VBox, we
-     * need to trigger a manual redraw */
-    gtk_widget_queue_draw_area (GTK_WIDGET (self) , 0, 0, 
-                GTK_WIDGET(self)->allocation.width,
-                GTK_WIDGET(self)->allocation.height);
 }
 
 /**

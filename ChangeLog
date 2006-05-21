@@ -1,4 +1,19 @@
-2006-05-15  Johan Bilien  <johan.bilien@nokia.com>
+2006-05-21  Johan Bilien  <johan.bilien@nokia.com>
+
+	* hildon-widgets/hildon-window.c
+	(hildon_window_remove_toolbar)
+	(hildon_window_size_expose): Removed the
+	gtk_widget_queue_draw_area call from this functions, because
+	sometimes the event is not managed in the proper order.
+
+	(hildon_window_size_allocate): Added the
+	gtk_widget_queue_draw_area call in case the number of the toolbars
+	has changed, this way we insure an expose event for the proper
+	region will come after the change of the toolbars.
+
+	NB#26366
+
+2006-05-21  Johan Bilien  <johan.bilien@nokia.com>
 	
 	* hildon-widgets/hildon-window.c:
 	(hildon_window_size_allocate): Now the window uses all the space
