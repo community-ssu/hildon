@@ -1976,6 +1976,10 @@ get_child_index_by_coord(HildonGridPrivate * priv, gint x, gint y)
     int xgap, ygap;
     int t;
 
+    if (priv->item_width==0 || priv->item_height==0) {
+      return -1;
+    }
+
     xgap = x % priv->item_width;
     ygap = y % priv->item_height;
 
