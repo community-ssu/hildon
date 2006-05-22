@@ -1,3 +1,22 @@
+2006-05-22  Johan Bilien  <johan.bilien@nokia.com>
+
+	* hildon-widgets/hildon-window.c
+	(hildon_window_vbox_expose_event): This function has been
+	removed, now the window has the responsability of painting the
+	toolbar, because it has that space allocated.
+	(hildon_window_init): we do not have to connect the
+	hildon_window_vbox_expose_event function to the expose event of
+	the toolbar vbox anymore.
+	(hildon_window_expose): Added the call to paint_toolbar, as we can
+	see in the allocation function the toolbar decorators are
+	responsability of the window, and gdk was not sending the proper
+	events to the vbox because that space is not its responsability.
+	(hildon_window_remove_toolbar): We don't need a queue_draw here
+	because we have another call in the expose function when the size
+	of the container has been changed.
+
+	NB#29461
+
 2006-05-21  Luc Pionchon  <luc.pionchon@nokia.com>
 
 	Removed hildon-insert-object-dialog NB#8015

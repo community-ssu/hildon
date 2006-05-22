@@ -148,11 +148,6 @@ hildon_window_notify (GObject *gobject, GParamSpec *param);
 static void
 hildon_window_is_topmost_notify (HildonWindow *window);
 
-static gboolean 
-hildon_window_vbox_expose_event (GtkWidget *vbox,
-                                 GdkEventExpose *event,
-                                 gpointer window);
-
 static gboolean
 hildon_window_toggle_menu (HildonWindow * self);
 
@@ -327,11 +322,6 @@ hildon_window_init (HildonWindow * self)
     priv->fullscreen = FALSE;
    
     priv->program = NULL;
-
-    /* Handle the drawing of the vbox (add the pixmap borders) */
-    g_signal_connect (G_OBJECT (self->priv->vbox), "expose-event",
-                      G_CALLBACK (hildon_window_vbox_expose_event),
-                      self);
     
     /* We need to track the root window _MB_CURRENT_APP_WINDOW property */
     gdk_window_set_events (gdk_get_default_root_window (),
@@ -509,6 +499,9 @@ hildon_window_expose (GtkWidget * widget, GdkEventExpose * event)
 
     g_list_foreach (box->children, visible_toolbars, 
             &currently_visible_toolbars);
+
+    paint_toolbar (widget, box,
+                   event, priv->fullscreen);
 
     if (!HILDON_WINDOW (widget)->priv->fullscreen)
     {
@@ -773,35 +766,6 @@ hildon_window_destroy (GtkObject *obj)
     GTK_OBJECT_CLASS (parent_class)->destroy (obj);
 }
 
-
-
-static gboolean 
-hildon_window_vbox_expose_event (GtkWidget *vbox,
-                                 GdkEventExpose *event,
-                                 gpointer window)
-{
-    HildonWindowPrivate *priv = HILDON_WINDOW (window)->priv;
-
-    hildon_window_get_borders (HILDON_WINDOW(window));
-
-    event->area.x -= priv->toolbar_borders->left;
-    event->area.y -= priv->toolbar_borders->top;
-    event->area.width += (priv->toolbar_borders->left + 
-                          priv->toolbar_borders->right);
-    event->area.height += (priv->toolbar_borders->top + 
-                           priv->toolbar_borders->bottom);
-
-    paint_toolbar (GTK_WIDGET (window), GTK_BOX (vbox),
-            event, priv->fullscreen);
-    
-    GTK_WIDGET_CLASS (G_TYPE_INSTANCE_GET_CLASS (vbox, GTK_TYPE_VBOX, GtkVBox))
-            ->expose_event (vbox, event);
-    
-    event->area = GTK_WIDGET(window)->allocation;
-
-
-    return TRUE;
-}
 
 static void
 hildon_window_notify (GObject *gobject, GParamSpec *param)
