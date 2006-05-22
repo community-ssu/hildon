@@ -1,3 +1,7 @@
+2006-05-22  Luc Pionchon  <luc.pionchon@nokia.com>
+
+	* configure.ac: 0.12.16
+
 2006-05-22  Johan Bilien  <johan.bilien@nokia.com>
 
 	* hildon-widgets/hildon-window.c

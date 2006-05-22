@@ -1,11 +1,18 @@
-hildon-libs (0.12.15svn-1) unstable; urgency=low
+hildon-libs (0.12.16-1) unstable; urgency=low
 
   * debian/control: removed dependency on gnome-vfs (NB#8015)
 
+  * fixes NB#8015  - Hildonwidgets links hildonfm which takes unnecessary memory
+  * fixes NB#26366 - Enabling/Disabling the search operation is SLOW
+  * fixes NB#26546 - Convenience API gtk_banner_close closes infoprints as well.
+  * fixes NB#28370 - Text not emphasized in Confirmation note
+  * fixes NB#28679 - On opening "Date and time" dialog for the second time,Clock application closes.
+  * fixes NB#28925 - Un-filled space at Web's lower edge
+  * fixes NB#29461 - Chat toolbar skin problem with smiley popup
 
- -- Luc Pionchon <luc.pionchon@nokia.com>  Sun, 21 May 2006 21:36:44 +0300
+ -- Luc Pionchon <luc.pionchon@nokia.com>  Mon, 22 May 2006 21:03:36 +0300
 
-hildon-libs (0.12.15) unstable; urgency=low
+hildon-libs (0.12.15-1) unstable; urgency=low
 
   * fixes NB#28027 - HildonTImeEditor: "Maximum value is %d" infoprint not displayed.
   * fixes NB#28483 - Caption control missing margins
