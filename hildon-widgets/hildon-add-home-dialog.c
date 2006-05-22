@@ -175,7 +175,7 @@ static void hildon_add_home_dialog_init(HildonAddHomeDialog * dialog)
                            priv->desc_label, FALSE, FALSE, 0);
 
     /* We don't use the hildon_caption_new() C convenience function, because it demands a non-NULL child widget (via gtk_container_add()). */
-    priv->caption_name_entry = GTK_WIDGET( g_object_new( HILDON_TYPE_CAPTION, "size_group", priv->size_group, "label", _("addtoHome_editor_caption"), "status", HILDON_CAPTION_OPTIONAL, NULL) );
+    priv->caption_name_entry = GTK_WIDGET( g_object_new( HILDON_TYPE_CAPTION, "size_group", priv->size_group, "label", "addtoHome_editor_caption", "status", HILDON_CAPTION_OPTIONAL, NULL) );
     gtk_widget_show(priv->caption_name_entry);
     gtk_box_pack_start(GTK_BOX(GTK_DIALOG(dialog)->vbox), priv->caption_name_entry,
                        FALSE, FALSE, 0);
@@ -259,7 +259,7 @@ hildon_add_home_dialog_set_window_title (HildonAddHomeDialog * dialog)
     if (priv->isrename)
         gtk_window_set_title(GTK_WINDOW(dialog), _("ckdg_ti_rename_link"));
     else
-        gtk_window_set_title(GTK_WINDOW(dialog), _("addtoHome_dialog_title"));
+        gtk_window_set_title(GTK_WINDOW(dialog), "addtoHome_dialog_title");
 }
 
 
