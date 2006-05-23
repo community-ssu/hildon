@@ -229,7 +229,7 @@ gtk_confirmation_banner_with_icon_name(GtkWindow * parent, const gchar * text,
   gchar *s;
   s = g_strdup_printf("<b>%s</b>", text);
 
-  hildon_banner_show_information((GtkWidget *) parent, icon_name, s);
+  hildon_banner_show_information_with_markup((GtkWidget *) parent, icon_name, s);
 
   g_free(s);
 }

@@ -1,3 +1,9 @@
+hildon-libs (0.12.17-1) unstable; urgency=low
+
+  * fixes NB#28370 (markup was not processed...) - Text not emphasized in Confirmation note
+
+ -- Luc Pionchon <luc.pionchon@nokia.com>  Tue, 23 May 2006 19:10:46 +0300
+
 hildon-libs (0.12.16-1) unstable; urgency=low
 
   * debian/control: removed dependency on gnome-vfs (NB#8015)

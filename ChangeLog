@@ -1,3 +1,13 @@
+2006-05-23  Luc Pionchon  <luc.pionchon@nokia.com>
+
+	* configure.ac: 0.12.17
+
+2006-05-23  Luc Pionchon  <luc.pionchon@nokia.com>
+
+	* hildon-widgets/gtk-infoprint.c
+	(gtk_confirmation_banner_with_icon_name): wooops, use _with_markup
+	variant to process markup string. NB#28370 (ter)
+
 2006-05-22  Luc Pionchon  <luc.pionchon@nokia.com>
 
 	* configure.ac: 0.12.16
