@@ -237,8 +237,11 @@ static void hildon_banner_set_property(GObject      *object,
          priv->is_timed = g_value_get_boolean(value);
 
          /* Timed and progress notifications have different
-            pixel size values for text */
-         geom.max_width = priv->is_timed ? HILDON_BANNER_LABEL_MAX_TIMED
+            pixel size values for text. 
+            We force to use requisition size for timed banners 
+            in order to avoid resize problems when reusing the
+            window (see bug #24339) */
+         geom.max_width = priv->is_timed ? -1
                                          : HILDON_BANNER_LABEL_MAX_PROGRESS;
          geom.max_height = -1;
          gtk_window_set_geometry_hints(GTK_WINDOW(object), 
@@ -429,7 +432,7 @@ static void hildon_banner_check_position(GtkWidget *widget)
    gint x, y;
    GtkRequisition req;
 
-   force_to_wrap_truncated(widget); /* see N#27000 and G#329646 */
+   force_to_wrap_truncated(HILDON_BANNER(widget)); /* see N#27000 and G#329646 */
 
    gtk_widget_size_request(widget, &req);
 
@@ -767,19 +770,11 @@ GtkWidget *hildon_banner_show_progress(GtkWidget *widget,
 void hildon_banner_set_text(HildonBanner *self, const gchar *text)
 {
    GtkLabel *label;
-   GtkRequisition req;
 
    g_return_if_fail(HILDON_IS_BANNER(self));
 
    label = GTK_LABEL(self->priv->label);
    gtk_label_set_text(label, text);
-
-   /* A re-used window may be too large, shrink to the requisition size */
-   gtk_widget_size_request(GTK_WIDGET(self), &req);
-   if (req.width != 0)
-   {
-     gtk_window_resize(GTK_WINDOW(self), req.width, req.height);
-   }
 
    hildon_banner_check_position(GTK_WIDGET(self));
 }
@@ -796,19 +791,11 @@ void hildon_banner_set_text(HildonBanner *self, const gchar *text)
 void hildon_banner_set_markup(HildonBanner *self, const gchar *markup)
 {
    GtkLabel *label;
-   GtkRequisition req;
 
    g_return_if_fail(HILDON_IS_BANNER(self));
 
    label = GTK_LABEL(self->priv->label);
    gtk_label_set_markup(label, markup);
-
-   /* A re-used window may be too large, shrink to the requisition size */
-   gtk_widget_size_request(GTK_WIDGET(self), &req);
-   if (req.width != 0)
-   {
-     gtk_window_resize(GTK_WINDOW(self), req.width, req.height);
-   }
 
    hildon_banner_check_position(GTK_WIDGET(self));
 }

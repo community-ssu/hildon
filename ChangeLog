@@ -1,5 +1,25 @@
 2006-05-29  Luc Pionchon  <luc.pionchon@nokia.com>
 
+	* hildon-widgets/hildon-banner.c
+	(hildon_banner_set_property): Set max_width hint to -1 instead of
+	HILDON_BANNER_LABEL_MAX_TIMED when banner is timed to avoid. This
+	has been done to ensure that the size of the banner will be the
+	requisition size and avoid the size problem when reusing the
+	banner window. See NB#24339.
+
+	(hildon_banner_set_text): Removed useless gtk_window_resize after
+	changing the label text. The size requisition of the banner is
+	updated when the label text is modified, so there is no need to do
+	a resize of the window to the requisition size.
+	(hildon_banner_set_markup): Likewise.
+	
+	(hildon_banner_check_position): Added cast to widget argument in
+	call to force_to_wrap_truncated in order to avoid a compilation
+	warning.
+ 
+
+2006-05-29  Luc Pionchon  <luc.pionchon@nokia.com>
+
         Added time-error signal - NB#22155
 	
 	* hildon-widgets/hildon-time-editor.c:
