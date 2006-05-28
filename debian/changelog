@@ -1,8 +1,10 @@
-hildon-libs (0.12.17svn1-1) unstable; urgency=low
+hildon-libs (0.12.18-1) unstable; urgency=low
 
-  * pre-release...
+  * fixes NB#26383 - Menu key opens application menu while combo box menu is popped up
+  * fixes NB#24339 - GtkInfoprint: Information banners do not resize
+  * fixes NB#22155 - Blank info note is shown when time valuesare given negative...
 
- -- Luc Pionchon <luc.pionchon@nokia.com>  Fri, 26 May 2006 18:49:55 +0300
+ -- Luc Pionchon <luc.pionchon@nokia.com>  Mon, 29 May 2006 02:23:11 +0300
 
 hildon-libs (0.12.17-1) unstable; urgency=low
 
