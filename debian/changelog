@@ -1,3 +1,9 @@
+hildon-libs (0.12.17svn1-1) unstable; urgency=low
+
+  * pre-release...
+
+ -- Luc Pionchon <luc.pionchon@nokia.com>  Fri, 26 May 2006 18:49:55 +0300
+
 hildon-libs (0.12.17-1) unstable; urgency=low
 
   * fixes NB#28370 (markup was not processed...) - Text not emphasized in Confirmation note
