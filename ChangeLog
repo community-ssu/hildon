@@ -1,3 +1,21 @@
+2006-05-29  Luc Pionchon  <luc.pionchon@nokia.com>
+
+        Added time-error signal - NB#22155
+	
+	* hildon-widgets/hildon-time-editor.c:
+	(hildon_time_editor_class_init): added time-error signal
+	(validated_conversion): added 'error_code' output parameter.
+	(hildon_time_editor_real_validate): use 'error_code' and trigger
+	'time-error' signal when apprpriate.
+	(highlight_callback): avoid revalidation
+
+	* hildon-widgets/hildon-time-editor.h (HildonTimeEditorErrorType):
+	new enumerative type for error types
+	(_HildonTimeEditorClass): added time_error signal
+
+	* hildon-widgets/Makefile.am (hildon-libs-enum-types.c): added time-editor.h
+
+
 2006-05-23  Luc Pionchon  <luc.pionchon@nokia.com>
 
 	* configure.ac: 0.12.17

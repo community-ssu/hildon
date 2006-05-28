@@ -187,6 +187,7 @@ hildon-libs-enum-types.c: @REBUILD@ $(headers_to_scan_for_enums) Makefile
 			--fhead "#include <hildon-widgets/hildon-input-mode-hint.h>\n" \
 			--fhead "#include <hildon-widgets/hildon-caption.h>\n" \
 			--fhead "#include <hildon-widgets/hildon-date-editor.h>\n" \
+			--fhead "#include <hildon-widgets/hildon-time-editor.h>\n" \
 			--fhead "#include <hildon-widgets/hildon-number-editor.h>\n" \
 			--fhead "#include <hildon-widgets/hildon-telephone-editor.h>\n" \
 			--fhead "#include <hildon-widgets/hildon-note.h>\n" \

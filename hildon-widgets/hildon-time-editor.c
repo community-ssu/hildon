@@ -60,6 +60,8 @@
 #include <hildon-widgets/hildon-input-mode-hint.h>
 #include <hildon-widgets/hildon-private.h>
 #include "hildon-composite-widget.h"
+#include "hildon-marshalers.h"
+#include "hildon-libs-enum-types.h"
 
 #define _(String) dgettext(PACKAGE, String)
 
@@ -113,6 +115,25 @@ enum {
 
   ENTRY_COUNT
 };
+
+/* Signals */
+enum {
+  TIME_ERROR,
+  LAST_SIGNAL
+};
+
+/* Error codes categories */
+enum {
+  MAX_VALUE,
+  MIN_VALUE,
+  WITHIN_RANGE,
+  NUM_ERROR_CODES
+};
+
+static guint time_editor_signals[LAST_SIGNAL] = { 0 };
+static guint hour_errors[NUM_ERROR_CODES] = { MAX_HOURS, MIN_HOURS, EMPTY_HOURS  };
+static guint  min_errors[NUM_ERROR_CODES] = { MAX_MINS,  MIN_MINS,  EMPTY_MINS   };
+static guint  sec_errors[NUM_ERROR_CODES] = { MAX_SECS,  MIN_SECS,  EMPTY_SECS   };
 
 struct _HildonTimeEditorPrivate {
     guint      ticks;                /* Current duration in seconds  */
@@ -183,6 +204,9 @@ static gboolean hildon_time_editor_entry_focusout(GtkWidget     *widget,
 static gboolean hildon_time_editor_entry_focusin(GtkWidget      *widget,
                                                  GdkEventFocus  *event, 
                                                  gpointer        data);
+
+static gboolean hildon_time_editor_time_error(HildonTimeEditor *editor,
+					      HildonTimeEditorErrorType type);
 
 static gboolean hildon_time_editor_ampm_clicked(GtkWidget       *widget,
                                                 GdkEventButton  *event,
@@ -329,6 +353,17 @@ hildon_time_editor_class_init(HildonTimeEditorClass * editor_class)
     GTK_OBJECT_CLASS(editor_class)->destroy = hildon_time_editor_destroy;
 
     object_class->finalize = hildon_time_editor_finalize;
+
+    editor_class->time_error = hildon_time_editor_time_error; 
+    
+    time_editor_signals[TIME_ERROR] =
+        g_signal_new("time-error",
+		     G_OBJECT_CLASS_TYPE(object_class),
+		     G_SIGNAL_RUN_LAST,
+		     G_STRUCT_OFFSET(HildonTimeEditorClass, time_error),
+		     g_signal_accumulator_true_handled, NULL,
+		     _hildon_marshal_BOOLEAN__ENUM,
+		     G_TYPE_BOOLEAN, 1, HILDON_TYPE_TIME_EDITOR_ERROR_TYPE);
 
   /**
    * HildonTimeEditor:ticks:
@@ -1233,6 +1268,13 @@ static gboolean hildon_time_editor_entry_focusin(GtkWidget * widget,
     return FALSE;
 }
 
+static gboolean 
+hildon_time_editor_time_error(HildonTimeEditor *editor,
+			      HildonTimeEditorErrorType type)
+{
+  return TRUE;
+}
+
 /* Returns negative if we didn't get value,
  * and should stop further validation 
  */
@@ -1241,6 +1283,7 @@ static gint validated_conversion(HildonTimeEditorPrivate *priv,
                                  gint                     min,
                                  gint                     max,
                                  gboolean                 allow_intermediate,
+                                 guint                   *error_code,
                                  GString                 *error_string)
 {
     const gchar *text;
@@ -1260,11 +1303,13 @@ static gint validated_conversion(HildonTimeEditorPrivate *priv,
             if (value > max) {
                 g_string_printf(error_string, _("ckct_ib_maximum_value"), max);
                 priv->error_widget = field;
+                *error_code = MAX_VALUE;
                 return max;
 		    }
             if (value < min && !allow_intermediate) {
                 g_string_printf(error_string, _("ckct_ib_minimum_value"), min);
                 priv->error_widget = field;
+                *error_code = MIN_VALUE;
                 return min;
             }
 
@@ -1279,6 +1324,7 @@ static gint validated_conversion(HildonTimeEditorPrivate *priv,
     /* Empty field and not allowed intermediated OR failed conversion */
     g_string_printf(error_string, _("ckct_ib_set_a_value_within_range"), min, max);
     priv->error_widget = field;
+    *error_code = WITHIN_RANGE;
     return -1;
 }
 
@@ -1288,7 +1334,9 @@ hildon_time_editor_real_validate(HildonTimeEditor *editor,
 {
     HildonTimeEditorPrivate *priv;
     guint h, m, s, ticks;
+    guint error_code;
     guint max_hours, min_hours, max_minutes, min_minutes, max_seconds, min_seconds;
+    gboolean r;
 
     g_assert(HILDON_IS_TIME_EDITOR(editor));
 
@@ -1312,16 +1360,22 @@ hildon_time_editor_real_validate(HildonTimeEditor *editor,
     /* Get time components from fields and validate them... */
     if (priv->show_hours) {
         h = validated_conversion(priv, priv->entries[ENTRY_HOURS], min_hours, max_hours, 
-            allow_intermediate, error_string);
+            allow_intermediate, &error_code, error_string);
+	if (priv->error_widget == priv->entries[ENTRY_HOURS])
+	  g_signal_emit (editor, time_editor_signals [TIME_ERROR], 0, hour_errors[error_code], &r);
         if ((gint) h < 0) return;
     }
     else h = 0;
     m = validated_conversion(priv, priv->entries[ENTRY_MINS], MINUTES_MIN, MINUTES_MAX, 
-        allow_intermediate, error_string);
+        allow_intermediate, &error_code, error_string);
+    if (priv->error_widget == priv->entries[ENTRY_MINS])
+	  g_signal_emit (editor, time_editor_signals [TIME_ERROR], 0, min_errors[error_code], &r);
     if ((gint) m < 0) return;
     if (priv->show_seconds) {
         s = validated_conversion(priv, priv->entries[ENTRY_SECS], SECONDS_MIN, SECONDS_MAX, 
-            allow_intermediate, error_string);
+            allow_intermediate, &error_code, error_string);
+	if (priv->error_widget == priv->entries[ENTRY_SECS])
+	      g_signal_emit (editor, time_editor_signals [TIME_ERROR], 0, sec_errors[error_code], &r);
         if ((gint) s < 0) return;
     } 
     else s = 0;
@@ -1338,6 +1392,7 @@ hildon_time_editor_real_validate(HildonTimeEditor *editor,
                 min_hours, min_minutes, min_seconds);
             hildon_time_editor_set_ticks (editor, priv->duration_min);
             priv->error_widget = priv->show_hours ? priv->entries[ENTRY_HOURS] : priv->entries[ENTRY_MINS];
+	    g_signal_emit (editor, time_editor_signals[TIME_ERROR], 0, MIN_DUR, &r);
             return;
         }
         else if (ticks > priv->duration_max)
@@ -1347,6 +1402,7 @@ hildon_time_editor_real_validate(HildonTimeEditor *editor,
                 max_hours, max_minutes, max_seconds);
             hildon_time_editor_set_ticks (editor, priv->duration_max);
             priv->error_widget = priv->show_hours ? priv->entries[ENTRY_HOURS] : priv->entries[ENTRY_MINS];
+	    g_signal_emit (editor, time_editor_signals[TIME_ERROR], 0, MAX_DUR, &r);
             return;
         }
     }
@@ -1367,6 +1423,7 @@ static gboolean highlight_callback(gpointer data)
 {
     HildonTimeEditorPrivate *priv;
     GtkWidget *widget;
+    gint i;
 
     GDK_THREADS_ENTER ();
     
@@ -1383,11 +1440,19 @@ static gboolean highlight_callback(gpointer data)
     }
     
     g_assert(GTK_IS_ENTRY(widget));
-    
-    /* Grabbing focus can cause re-validation, priv->error widget
-       can be set to something else, including NULL */
+
+    /* Avoid revalidation because it will issue the date_error signal
+       twice when there is an empty field. We must block the signal
+       for all the entries because we do not know where the focus
+       comes from */
+    for (i = 0; i < ENTRY_COUNT; i++)
+      g_signal_handlers_block_by_func(priv->entries[i],
+				      (gpointer) hildon_time_editor_entry_focusout, data);
     gtk_editable_select_region(GTK_EDITABLE(widget), 0, -1);
     gtk_widget_grab_focus(widget);
+    for (i = 0; i < ENTRY_COUNT; i++)
+      g_signal_handlers_unblock_by_func(priv->entries[i],
+					(gpointer) hildon_time_editor_entry_focusout, data);
 
     GDK_THREADS_LEAVE ();
     
