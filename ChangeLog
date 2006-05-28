@@ -1,5 +1,15 @@
 2006-05-29  Luc Pionchon  <luc.pionchon@nokia.com>
 
+	* hildon-widgets/hildon-app.c
+	(hildon_app_key_snooper): Add code to control if there is a
+	combobox activated when the menu key is pressed and prevent the
+	menu drawing.
+
+	NB#26383
+
+
+2006-05-29  Luc Pionchon  <luc.pionchon@nokia.com>
+
 	* hildon-widgets/hildon-banner.c
 	(hildon_banner_set_property): Set max_width hint to -1 instead of
 	HILDON_BANNER_LABEL_MAX_TIMED when banner is timed to avoid. This

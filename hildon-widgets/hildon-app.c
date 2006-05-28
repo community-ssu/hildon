@@ -51,6 +51,8 @@
 #include <gtk/gtkuimanager.h>
 #include <gtk/gtkactiongroup.h>
 #include <gtk/gtkdialog.h>
+#include <gtk/gtktogglebutton.h>
+#include <gtk/gtkcombobox.h>
 
 #include <libintl.h>
 #include <string.h>
@@ -1501,10 +1503,28 @@ hildon_app_key_snooper (GtkWidget *widget, GdkEventKey *keyevent, HildonApp *app
     if ( HILDON_KEYEVENT_IS_MENU_KEY (keyevent) ) {
 	    HildonAppView *appview;
 	    HildonAppPrivate *priv;
-		  GtkWidget *toplevel;
-		  
+            GtkWidget *toplevel;
+            GtkWidget *focus = NULL;
+
       /* Don't act on modal dialogs */
       toplevel = gtk_widget_get_toplevel (widget);
+      focus = gtk_window_get_focus(GTK_WINDOW(app));
+
+      /* Don't act when comboboxes are active, if a togglebutton
+         (combobox) has the focus and it is active, we deactivate the
+         combobox and do nothing */ 
+      if (GTK_IS_TOGGLE_BUTTON (focus))
+        {
+          GtkWidget *parent = gtk_widget_get_parent (focus);
+          
+          if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (focus)) && 
+              GTK_IS_COMBO_BOX (parent)) 
+            {
+              gtk_combo_box_popdown (GTK_COMBO_BOX (parent));
+              return TRUE;
+            }
+        }
+
       if (GTK_IS_DIALOG (toplevel)
           && gtk_window_get_modal (GTK_WINDOW (toplevel)))
         {
