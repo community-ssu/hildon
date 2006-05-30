@@ -1,3 +1,7 @@
+2006-05-30  Luc Pionchon  <luc.pionchon@nokia.com>
+
+	* hildon-libs.pc.in (Description): updated description
+
 2006-05-29  Luc Pionchon  <luc.pionchon@nokia.com>
 
 	* configure.ac: 0.12.18

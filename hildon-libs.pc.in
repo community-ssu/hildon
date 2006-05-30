@@ -4,7 +4,7 @@ libdir=@libdir@
 includedir=@includedir@
 
 Name: hildon-libs
-Description: Teema Hildon framework and widget libraries
+Description: Hildon widgets library
 Requires: gtk+-2.0 >= @GTK_VERSION@
 Version: @VERSION@
 Libs: -L${libdir} -lhildonwidgets
