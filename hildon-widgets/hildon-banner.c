@@ -40,7 +40,7 @@
 /* max widths */
 #define HILDON_BANNER_PROGRESS_WIDTH      104
 #define HILDON_BANNER_LABEL_MAX_TIMED     375
-#define HILDON_BANNER_LABEL_MAX_PROGRESS  320 /*265*/
+#define HILDON_BANNER_LABEL_MAX_PROGRESS  375 /*265*/
 
 /* default timeout */
 #define HILDON_BANNER_TIMEOUT             3000

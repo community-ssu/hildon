@@ -1,3 +1,12 @@
+2006-05-31  Luc Pionchon  <luc.pionchon@nokia.com>
+
+	* hildon-widgets/hildon-banner.c
+	(HILDON_BANNER_LABEL_MAX_PROGRESS): increase even more 320 -> 375
+	to satisfy NB#31099. (actually info and anim banners should have
+	375 px width and only progress banners should have 265 px)
+
+	NB#31099 (workaround)
+
 2006-05-30  Luc Pionchon  <luc.pionchon@nokia.com>
 
 	* hildon-libs.pc.in (Description): updated description
