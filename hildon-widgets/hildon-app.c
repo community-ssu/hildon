@@ -1525,6 +1525,18 @@ hildon_app_key_snooper (GtkWidget *widget, GdkEventKey *keyevent, HildonApp *app
             }
         }
 
+      /* Don't act when a GtkWindow of a combobox is selected, this
+         can happen in some applications that change the properties of
+         the widget focus attribute, WARNING: we are using the name of
+         the hildon combobox widget to identify the window
+         (gtkcombobox.c, HILDON_COMBO_BOX_POPUP), if it changes we
+         must change this name */
+      if (GTK_IS_WINDOW (widget) && 
+          !g_ascii_strcasecmp("hildon-combobox-window", gtk_widget_get_name (widget)))
+        {
+          return TRUE;
+        }
+
       if (GTK_IS_DIALOG (toplevel)
           && gtk_window_get_modal (GTK_WINDOW (toplevel)))
         {

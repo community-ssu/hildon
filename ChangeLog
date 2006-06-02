@@ -1,5 +1,15 @@
 2006-06-02  Luc Pionchon  <luc.pionchon@nokia.com>
 
+	* hildon-widgets/hildon-app.c (hildon_app_key_snooper): Add code
+	to control if there is a combobox activated when the menu key is
+	pressed and stop the menu drawing, this is a new case that happens
+	when the application is avoiding the focus can go to the combobox.
+
+	NB#26383 (bis)
+
+
+2006-06-02  Luc Pionchon  <luc.pionchon@nokia.com>
+
 	* hildon-widgets/hildon-time-editor.c
 	(hildon_time_editor_validate): removed the assinment of the
 	error_widget, now just the highlight_callback can do it when it
