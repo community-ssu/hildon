@@ -1434,11 +1434,6 @@ static gboolean highlight_callback(gpointer data)
     priv->error_widget = NULL;
     priv->highlight_idle = 0;
 
-    if (!widget)
-    {
-      return FALSE;
-    }
-    
     g_assert(GTK_IS_ENTRY(widget));
 
     /* Avoid revalidation because it will issue the date_error signal
@@ -1455,7 +1450,7 @@ static gboolean highlight_callback(gpointer data)
 					(gpointer) hildon_time_editor_entry_focusout, data);
 
     GDK_THREADS_LEAVE ();
-    
+
     return FALSE;
 }
 
@@ -1470,19 +1465,24 @@ hildon_time_editor_validate (HildonTimeEditor *editor, gboolean allow_intermedia
     g_assert(HILDON_IS_TIME_EDITOR(editor));
 
     priv = HILDON_TIME_EDITOR_GET_PRIVATE(editor);
-    priv->error_widget = NULL;
 
-    error_message = g_string_new(NULL);
-    hildon_time_editor_real_validate(editor, 
-        allow_intermediate, error_message);
-
-    if (priv->error_widget) {
-        hildon_banner_show_information(priv->error_widget, NULL,
-                                       error_message->str);
-        if (priv->highlight_idle == 0)
+    /* if there is already an error we do nothing until it will be managed by the idle */
+    if (priv->highlight_idle == 0)
+      {
+        error_message = g_string_new(NULL);
+        hildon_time_editor_real_validate(editor, 
+                                         allow_intermediate, error_message);
+        
+        if (priv->error_widget) 
+          {
+            hildon_banner_show_information(priv->error_widget, NULL,
+                                           error_message->str);
+            
             priv->highlight_idle = g_idle_add(highlight_callback, editor);
-    }
-    g_string_free(error_message, TRUE);
+          }
+
+        g_string_free(error_message, TRUE);
+      }
 }
 
 /* on inserted text, if entry has two digits, jumps to the next field. */
@@ -1496,28 +1496,53 @@ hildon_time_editor_inserted_text  (GtkEditable * editable,
   HildonTimeEditor *editor;
   GtkEntry *entry;
   gchar *value;
+  HildonTimeEditorPrivate *priv;
 
   entry = GTK_ENTRY(editable);
   editor = HILDON_TIME_EDITOR(user_data);
- 
-  value = (gchar *) gtk_entry_get_text(entry);
-  
-  if (strlen(value) == 2)
+
+  priv = HILDON_TIME_EDITOR_GET_PRIVATE(editor);
+
+  /* if there is already an error we don't have to do anything */ 
+  if (!priv->error_widget)
     {
-      HildonTimeEditorPrivate *priv;
-      
-      priv = HILDON_TIME_EDITOR_GET_PRIVATE(editor);
-      
-      if (GTK_WIDGET(editable) == priv->entries[ENTRY_HOURS]) 
-	{
-          gtk_widget_grab_focus(priv->entries[ENTRY_MINS]);
-          *position = -1;
-        }
-      else if (GTK_WIDGET(editable) == priv->entries[ENTRY_MINS] &&
-	      GTK_WIDGET_VISIBLE (priv->entries[ENTRY_SECS])) 
+ 
+      value = (gchar *) gtk_entry_get_text(entry);
+  
+      if (strlen(value) == 2)
         {
-          gtk_widget_grab_focus(priv->entries[ENTRY_SECS]);
-	  *position = -1;
+          HildonTimeEditorPrivate *priv;
+      
+          priv = HILDON_TIME_EDITOR_GET_PRIVATE(editor);
+      
+          if (GTK_WIDGET(editable) == priv->entries[ENTRY_HOURS]) 
+            { 
+              /* we don't want a focusout signal with this grab_focus
+                 because the validation was already done during the
+                 changed signal */
+              g_signal_handlers_block_by_func(priv->entries[ENTRY_HOURS],
+                                              (gpointer) hildon_time_editor_entry_focusout, editor);
+              
+              gtk_widget_grab_focus(priv->entries[ENTRY_MINS]);
+              *position = -1;
+
+              g_signal_handlers_unblock_by_func(priv->entries[ENTRY_HOURS],
+                                                (gpointer) hildon_time_editor_entry_focusout, editor);
+              
+            }
+          else if (GTK_WIDGET(editable) == priv->entries[ENTRY_MINS] &&
+                   GTK_WIDGET_VISIBLE (priv->entries[ENTRY_SECS])) 
+            {
+              g_signal_handlers_block_by_func(priv->entries[ENTRY_MINS],
+                                              (gpointer) hildon_time_editor_entry_focusout, editor);
+
+              gtk_widget_grab_focus(priv->entries[ENTRY_SECS]);
+              *position = -1;
+
+              g_signal_handlers_unblock_by_func(priv->entries[ENTRY_MINS],
+                                                (gpointer) hildon_time_editor_entry_focusout, editor);
+              
+            }
         }
     }   
 }

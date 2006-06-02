@@ -1,3 +1,24 @@
+2006-06-02  Luc Pionchon  <luc.pionchon@nokia.com>
+
+	* hildon-widgets/hildon-time-editor.c
+	(hildon_time_editor_validate): removed the assinment of the
+	error_widget, now just the highlight_callback can do it when it
+	finished with it. Control that if we are already managing an error
+	we don't start working in other.
+
+	(hildon_time_editor_inserted_text): added a control to stop insert
+	handle if we are already managing an error, we have also blocked
+	the focusout event before que grab focus to avoid another
+	validation of the field.
+
+	NB#30955
+
+	* hildon-widgets/hildon-time-editor.c
+	(highlight_callback): Removed the return in the middle of the
+	function, now that situation is imposible. It was causing the
+	interlock.
+
+
 2006-05-31  Luc Pionchon  <luc.pionchon@nokia.com>
 
 	* hildon-widgets/hildon-banner.c
