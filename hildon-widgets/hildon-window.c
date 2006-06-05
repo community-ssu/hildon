@@ -1471,7 +1471,7 @@ hildon_window_toggle_menu (HildonWindow * self)
     }
     
 
-    if (GTK_WIDGET_VISIBLE (GTK_WIDGET (menu_to_use)))
+    if (GTK_WIDGET_MAPPED (GTK_WIDGET (menu_to_use)))
     {
         gtk_menu_popdown (menu_to_use);
         gtk_menu_shell_deactivate (GTK_MENU_SHELL (menu_to_use));
