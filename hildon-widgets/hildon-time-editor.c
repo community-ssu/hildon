@@ -1320,6 +1320,13 @@ static gint validated_conversion(HildonTimeEditorPrivate *priv,
     else if (allow_intermediate) 
         return -1;  /* Empty field while user is still editing. No error, but
                        cannot validate either... */
+    else /* Empty field: show error and set value to minimum allowed */
+      {
+        g_string_printf(error_string, _("ckct_ib_set_a_value_within_range"), min, max);
+        priv->error_widget = field;
+        *error_code = WITHIN_RANGE;
+        return min;
+      }
 
     /* Empty field and not allowed intermediated OR failed conversion */
     g_string_printf(error_string, _("ckct_ib_set_a_value_within_range"), min, max);

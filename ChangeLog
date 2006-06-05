@@ -1,5 +1,17 @@
 2006-06-05  Luc Pionchon  <luc.pionchon@nokia.com>
 
+	* hildon-widgets/hildon-time-editor.c
+	(validated_conversion): return the minimum allowed value for the
+	entry when the user types an empty text into an entry and moves
+	the focus, instead of returning -1. This change implies that the
+	minimum allowed value for the entry is set into the entry instead
+	of leaving it empty.
+
+	NB#30937
+
+
+2006-06-05  Luc Pionchon  <luc.pionchon@nokia.com>
+
 	* hildon-widgets/hildon-grid.c (hildon_grid_class_init): do not
 	use accumulator for "popup-context-menu"
 
