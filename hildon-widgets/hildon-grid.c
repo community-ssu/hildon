@@ -408,7 +408,7 @@ static void hildon_grid_class_init(HildonGridClass * klass)
                      G_OBJECT_CLASS_TYPE(gobject_class),
                      G_SIGNAL_RUN_LAST,
                      G_STRUCT_OFFSET(HildonGridClass, popup_context_menu),
-                     g_signal_accumulator_true_handled, NULL,
+                     NULL, NULL,
                      _hildon_marshal_VOID__OBJECT,
                      G_TYPE_NONE, 1, HILDON_TYPE_GRID_ITEM);
 }

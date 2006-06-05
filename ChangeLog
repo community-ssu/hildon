@@ -1,5 +1,13 @@
 2006-06-05  Luc Pionchon  <luc.pionchon@nokia.com>
 
+	* hildon-widgets/hildon-grid.c (hildon_grid_class_init): do not
+	use accumulator for "popup-context-menu"
+
+	NB#29888 / M#483
+
+
+2006-06-05  Luc Pionchon  <luc.pionchon@nokia.com>
+
 	* hildon-widgets/hildon-window.c
 	(hildon_window_toggle_menu): Changed the hide condition of the
 	menu, now we are using GTK_WIDGET_MAPPED instead of
