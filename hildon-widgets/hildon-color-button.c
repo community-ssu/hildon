@@ -99,9 +99,9 @@ hildon_color_button_unrealize(GtkWidget *widget);
 static void
 hildon_color_button_clicked(GtkButton *button);
 static gboolean
-hildon_color_button_key_released(GtkWidget * button, 
-				 GdkEventKey * event,
-				 gpointer data);
+hildon_color_button_key_pressed(GtkWidget * button, 
+                                GdkEventKey * event,
+                                gpointer data);
 static gint
 hildon_color_field_expose_event(GtkWidget *widget, GdkEventExpose *event,
                                 HildonColorButton *cb);
@@ -260,14 +260,13 @@ hildon_color_button_init(HildonColorButton *cb)
   g_signal_connect(drawing_area, "expose-event",
                    G_CALLBACK(hildon_color_field_expose_event), cb);
 
-  g_signal_connect(G_OBJECT(cb), "key-release-event",
-		   G_CALLBACK(hildon_color_button_key_released), cb);
+  /* Connect to callback function for key press event */
+  g_signal_connect(G_OBJECT(cb), "key-press-event",
+		   G_CALLBACK(hildon_color_button_key_pressed), cb);
   
   /* packing */
   gtk_container_add(GTK_CONTAINER(align), drawing_area);
   gtk_container_add(GTK_CONTAINER(cb), align);
-
-  gtk_widget_add_events(GTK_WIDGET(cb), GDK_KEY_RELEASE_MASK);
   
   gtk_widget_show_all(align);
   
@@ -352,9 +351,9 @@ hildon_color_button_clicked(GtkButton *button)
   gtk_widget_hide(GTK_WIDGET(cs_dialog));
 }
 
-/* Popup a color selector dialog on hardkey Select release */
+/* Popup a color selector dialog on hardkey Select press */
 static gboolean
-hildon_color_button_key_released(GtkWidget * button, 
+hildon_color_button_key_pressed(GtkWidget * button, 
 				 GdkEventKey * event,
 				 gpointer data)
 {

@@ -1,5 +1,17 @@
 2006-06-05  Luc Pionchon  <luc.pionchon@nokia.com>
 
+	* hildon-widgets/hildon-color-button.c
+	(hildon_color_button_init): Moved key handling from key release
+	event to key press event.
+
+	(hildon_color_button_key_released): Renamed  to   _key_pressed
+	(hildon_color_button_key_pressed) : new name from _key_released
+
+	NB#31604
+
+
+2006-06-05  Luc Pionchon  <luc.pionchon@nokia.com>
+
 	* hildon-widgets/hildon-time-editor.c
 	(validated_conversion): return the minimum allowed value for the
 	entry when the user types an empty text into an entry and moves
