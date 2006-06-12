@@ -422,7 +422,13 @@ static void force_to_wrap_truncated(HildonBanner *banner){
 
   if(width_text >= width_max){
     /* explicitly request maximum size to force wrapping */
-    gtk_widget_set_size_request (GTK_WIDGET(label), width_max, -1);
+    PangoRectangle logical;
+
+    pango_layout_set_width (layout, width_max * PANGO_SCALE);
+    pango_layout_get_extents (layout, NULL, &logical);
+
+    gtk_widget_set_size_request (GTK_WIDGET (label),
+                                 PANGO_PIXELS (logical.width), -1);
   }
 }
 
