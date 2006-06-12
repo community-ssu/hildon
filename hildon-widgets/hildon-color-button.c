@@ -360,8 +360,12 @@ hildon_color_button_key_pressed(GtkWidget * button,
   g_return_val_if_fail (HILDON_IS_COLOR_BUTTON(button), FALSE);
 
   if (event->keyval == HILDON_HARDKEY_SELECT)
+  {
     hildon_color_button_clicked(GTK_BUTTON(button));
-  return TRUE;
+    return TRUE;
+  }
+  
+  return FALSE;
 }
 
 /* Set_property function for HildonColorButtonClass initialization */

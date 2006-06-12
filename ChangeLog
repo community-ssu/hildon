@@ -1,5 +1,14 @@
 2006-06-12  Luc Pionchon  <luc.pionchon@nokia.com>
 
+	* hildon-widgets/hildon-color-button.c
+	(hildon_color_button_key_pressed):
+	return FALSE when no key was handled.
+
+	NB#32302
+
+
+2006-06-12  Luc Pionchon  <luc.pionchon@nokia.com>
+
 	* hildon-widgets/hildon-banner.c:
 	(force_to_wrap_truncated): Modified size request of the label
 	when it is wider than the maximum allowed, using the pango
