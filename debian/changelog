@@ -1,3 +1,10 @@
+hildon-libs (0.12.20-1) unstable; urgency=low
+
+  * fixes NB#32302 - Color button should not pretend handling all the hardware key event
+  * fixes NB#31256 - banner too large when wrap is forced
+
+ -- Luc Pionchon <luc.pionchon@nokia.com>  Mon, 12 Jun 2006 23:15:34 +0300
+
 hildon-libs (0.12.19-1) unstable; urgency=low
 
   * fixes NB#26383 (bis) - Menu key opens application menu while combo box menu is popped up
