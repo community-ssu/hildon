@@ -1,3 +1,10 @@
+hildon-libs (0.12.20-2) unstable; urgency=low
+
+  * fixes MB#624 - Rename HildonNumberEditor buttons so they can be themed
+    correctly.
+
+ -- Fernando Herrera <fernando.herrera-de-las-heras@nokia.com>  Tue, 18 Jul 2006 17:21:04 +0300
+
 hildon-libs (0.12.20-1) unstable; urgency=low
 
   * fixes NB#32302 - Color button should not pretend handling all the hardware key event
