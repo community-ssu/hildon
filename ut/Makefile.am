@@ -1,6 +1,6 @@
 outomodule_LTLIBRARIES = \
-	libhildonwidgets_unittests.la \
-	libhildonwidgets_clock_unittests.la
+			libhildonwidgets_unittests.la \
+			libhildonwidgets_clock_unittests.la
 
 INCLUDES = $(GTK_CFLAGS) -I$(top_srcdir)/hildon-widgets $(OUTO_CFLAGS)
 LDFLAGS = -module -avoid-version
