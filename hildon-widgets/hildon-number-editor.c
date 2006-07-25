@@ -336,8 +336,8 @@ hildon_number_editor_init (HildonNumberEditor *editor)
     priv->minus = gtk_button_new();
     priv->plus = gtk_button_new();
 
-    gtk_widget_set_name( priv->minus, "ne-minus-button" );
-    gtk_widget_set_name( priv->plus, "ne-plus-button" );
+    gtk_widget_set_name( priv->minus, "minus-button" );
+    gtk_widget_set_name( priv->plus, "plus-button" );
     gtk_widget_set_size_request( priv->minus, BUTTON_WIDTH, BUTTON_HEIGHT );
     gtk_widget_set_size_request( priv->plus, BUTTON_WIDTH, BUTTON_HEIGHT );
     gtk_entry_set_alignment (GTK_ENTRY(priv->num_entry), 1);

@@ -1,3 +1,8 @@
+2006-07-25  Fernando Herrera  <fernando.herrera-de-las-heras@nokia.com>
+
+	* hildon-widgets/hildon-number-editor.c: Revert previous patch here
+	until we get a new release of themes stuff.
+
 2006-07-25  Johan Bilien  <johan.bilien@nokia.com>
 
 	* hildon-widgets/hildon-window.c:
