@@ -1,3 +1,10 @@
+hildon-libs (0.12.21-1) unstable; urgency=low
+
+  * reverted MB#624 - Rename HildonNumberEditor buttons so they can be themed
+  * fixes NB#34340 - HildonWindow leaks
+
+ -- Fernando Herrera <fernando.herrera-de-las-heras@nokia.com>  Tue, 25 Jul 2006 16:44:04 +0300
+
 hildon-libs (0.12.20-2) unstable; urgency=low
 
   * fixes MB#624 - Rename HildonNumberEditor buttons so they can be themed

@@ -1,5 +1,9 @@
 2006-07-25  Fernando Herrera  <fernando.herrera-de-las-heras@nokia.com>
 
+	* configure.ac: 0.12.21
+
+2006-07-25  Fernando Herrera  <fernando.herrera-de-las-heras@nokia.com>
+
 	* hildon-widgets/hildon-number-editor.c: Revert previous patch here
 	until we get a new release of themes stuff.
 
