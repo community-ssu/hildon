@@ -1438,6 +1438,7 @@ static gboolean
 hildon_window_toggle_menu (HildonWindow * self)
 {
     GtkMenu *menu_to_use = NULL;
+    GList *menu_children = NULL;
     
     g_return_val_if_fail (self && HILDON_IS_WINDOW (self), FALSE);
 
@@ -1478,8 +1479,13 @@ hildon_window_toggle_menu (HildonWindow * self)
         return TRUE;
     }
 
-    if (gtk_container_get_children (GTK_CONTAINER (menu_to_use)) != NULL)
+    /* Check if the menu has items */
+    menu_children = gtk_container_get_children (GTK_CONTAINER (menu_to_use));
+
+    if (menu_children)
     {
+        g_list_free (menu_children);
+
         /* Apply right theming */
         gtk_widget_set_name (GTK_WIDGET (menu_to_use),
                 "menu_force_with_corners");
@@ -1501,9 +1507,11 @@ hildon_window_toggle_menu (HildonWindow * self)
                            gtk_get_current_event_time ());
         }
         gtk_menu_shell_select_first (GTK_MENU_SHELL (menu_to_use), TRUE);
+        return TRUE;
     }
 
-    return TRUE;
+    return FALSE;
+
 }
 
 /*

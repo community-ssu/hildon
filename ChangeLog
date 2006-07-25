@@ -1,3 +1,12 @@
+2006-07-25  Johan Bilien  <johan.bilien@nokia.com>
+
+	* hildon-widgets/hildon-window.c:
+	(hildon_window_toggle_menu): free the GList returned by
+	gtk_container_get_children
+
+	NB#34340
+
+
 2006-07-18  Fernando Herrera  <fernando.herrera-de-las-heras@nokia.com>
 
 	* hildon-widgets/hildon-number-editor.c: 
