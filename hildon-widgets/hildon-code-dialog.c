@@ -25,7 +25,7 @@
 
 #include "hildon-code-dialog.h"
 #include "hildon-defines.h"
-#include "gtk-infoprint.h"
+#include "hildon-banner.h"
 
 #include <gdk/gdkkeysyms.h>
 
@@ -48,10 +48,13 @@
 #define WIDTH  (60-HILDON_MARGIN_DEFAULT)
 #define BACKSPACE_ICON    "qgn_calculator_backspace"
 
-#define _(String) dgettext(PACKAGE, String)
-#define DEVICELOCK_OK     _("secu_enter_lock_code_dialog_ok")
-#define DEVICELOCK_CANCEL _("secu_enter_lock_code_dialog_cancel")
-#define DEVICELOCK_TITLE  _("secu_application_title")
+#define _(String)  dgettext(PACKAGE, String)
+#define c_(String) dgettext("hildon-common-strings", String)
+#define DEVICELOCK_OK               _("secu_enter_lock_code_dialog_ok")
+#define DEVICELOCK_CANCEL           _("secu_enter_lock_code_dialog_cancel")
+#define DEVICELOCK_TITLE            _("secu_application_title")
+#define DEVICELOCK_MAX_CHAR_REACHED c_("ckdg_ib_maximum_characters_reached")
+        
 
 
 #define MAX_PINCODE_LEN   (10)
@@ -353,7 +356,9 @@ static void hildon_code_dialog_insert_text (GtkEditable *editable,
 
     if (length == MAX_PINCODE_LEN)
     {
-        gtk_infoprint(NULL, "ckdg_ib_maximum_characters_reached");
+        hildon_banner_show_information (dialog,
+                                        NULL,
+                                        DEVICELOCK_MAX_CHAR_REACHED);
     }
 
     else if (!length)

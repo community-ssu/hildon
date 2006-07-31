@@ -1,3 +1,12 @@
+2006-07-31  Johan Bilien  <johan.bilien@nokia.com>
+
+	* hildon-widgets/hildon-code-dialog.c
+	(hildon_code_dialog_insert_text):
+	- Use hildon_banner_show_info instead of deprecated gtk_info_print
+	- Localize the string in the applet
+
+	NB#36309
+
 2006-07-25  Fernando Herrera  <fernando.herrera-de-las-heras@nokia.com>
 
 	* configure.ac: 0.12.21
