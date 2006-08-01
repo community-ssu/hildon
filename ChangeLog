@@ -1,3 +1,8 @@
+2006-08-01  Luc Pionchon  <luc.pionchon@nokia.com>
+
+	* configure.ac: 0.12.22
+
+
 2006-07-31  Johan Bilien  <johan.bilien@nokia.com>
 
 	* hildon-widgets/hildon-code-dialog.c
@@ -14,7 +19,7 @@
 2006-07-25  Fernando Herrera  <fernando.herrera-de-las-heras@nokia.com>
 
 	* hildon-widgets/hildon-number-editor.c: Revert previous patch here
-	until we get a new release of themes stuff.
+	until we get a new release of themes stuff. (M#624)
 
 2006-07-25  Johan Bilien  <johan.bilien@nokia.com>
 
@@ -30,7 +35,7 @@
 	* hildon-widgets/hildon-number-editor.c: 
 	renamed {plus,minus}-button widgets to ne-{plus,minus}-button in
 	order to do the theming without depending on the HildonNumberEditor
-	widget name. Fixes maemo #624
+	widget name. Fixes maemo M#624
 
 2006-06-13  Luc Pionchon  <luc.pionchon@nokia.com>
 

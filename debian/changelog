@@ -1,3 +1,9 @@
+hildon-libs (0.12.22-1) unstable; urgency=low
+
+  * fixes NB#36309 - HildonCodeDialog uses untranslated string
+
+ -- Luc Pionchon <luc.pionchon@nokia.com>  Tue,  1 Aug 2006 14:06:45 +0300
+
 hildon-libs (0.12.21-1) unstable; urgency=low
 
   * reverted MB#624 - Rename HildonNumberEditor buttons so they can be themed
