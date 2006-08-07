@@ -309,6 +309,24 @@ hildon_program_root_window_event_filter (GdkXEvent *xevent,
 }
     
 
+/**
+ * hildon_program_common_toolbar_topmost_window:
+ * @window: A @HildonWindow to be informed about its new common toolbar
+ * @data: Not used, it is here just to respect the API
+ *
+ * Checks if the window is the topmost window of the program and in
+ * that case forces the window to take the common toolbar.
+ **/
+static void
+hildon_program_common_toolbar_topmost_window (gpointer window, gpointer data)
+{
+    if (HILDON_IS_WINDOW (window) && 
+            hildon_window_get_is_topmost (HILDON_WINDOW (window)))
+    {
+        hildon_window_take_common_toolbar (HILDON_WINDOW (window));
+    }
+}
+
 /* Public methods */
 
 /**
@@ -545,7 +563,8 @@ hildon_program_set_common_toolbar (HildonProgram *self, GtkToolbar *toolbar)
     {
         if (priv->common_toolbar->parent)
         {
-            gtk_widget_unparent(priv->common_toolbar->parent);
+            gtk_container_remove (GTK_CONTAINER (priv->common_toolbar->parent), 
+                                  priv->common_toolbar);
         }
         
         g_object_unref (priv->common_toolbar);
@@ -558,6 +577,14 @@ hildon_program_set_common_toolbar (HildonProgram *self, GtkToolbar *toolbar)
         g_object_ref (priv->common_toolbar);
         gtk_object_sink (GTK_OBJECT (priv->common_toolbar) );
     }
+
+    /* if the program is the topmost we have to update the common
+       toolbar right now for the topmost window */
+    if (priv->is_topmost)
+      {
+        g_slist_foreach (priv->windows, 
+                         (GFunc) hildon_program_common_toolbar_topmost_window, NULL);
+      }
 }
 
 /**

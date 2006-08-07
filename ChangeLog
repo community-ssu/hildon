@@ -1,3 +1,19 @@
+2006-08-07  Johan Bilien  <johan.bilien@nokia.com>
+
+	* hildon-widgets/hildon-program.c
+	(hildon_program_common_toolbar_topmost_window): Added this
+	function, it is an internal function created to notify the topmost
+	window of the topmost program that it has a new common toolbar, it
+	is supposed to be used inside a foreach call.
+	(hildon_program_set_common_toolbar): Added a foreach call in case
+	the program is the topmost in order to notify the topmost window
+	it should take the common toolbar. Fixed a problem with unparent
+	call it causes the vbox disappears in some cases, now we are using
+	container_remove.
+
+	NB#22808
+
+
 2006-08-01  Luc Pionchon  <luc.pionchon@nokia.com>
 
 	* configure.ac: 0.12.22
