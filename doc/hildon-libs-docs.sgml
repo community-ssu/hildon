@@ -26,6 +26,7 @@
   <chapter>
     <title>Selectors</title>
     <xi:include href="xml/hildon-color-button.xml"/>
+    <xi:include href="xml/hildon-color-chooser-dialog.xml"/>
     <xi:include href="xml/hildon-color-selector.xml"/>
     <xi:include href="xml/hildon-color-popup.xml"/>
     <xi:include href="xml/hildon-controlbar.xml"/>
@@ -84,6 +85,7 @@
     <xi:include href="xml/hildon-system-sound.xml"/>
     <xi:include href="xml/hildon-input-mode-hint.xml"/>
     <xi:include href="xml/hildon-defines.xml"/>
+    <xi:include href="xml/hildon-plugin-widget.xml"/>
   </chapter>
 
   <index>

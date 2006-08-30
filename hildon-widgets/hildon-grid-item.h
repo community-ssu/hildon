@@ -1,14 +1,14 @@
 /*
  * This file is part of hildon-libs
  *
- * Copyright (C) 2005 Nokia Corporation.
+ * Copyright (C) 2005, 2006 Nokia Corporation.
  *
- * Contact: Luc Pionchon <luc.pionchon@nokia.com>
+ * Contact: Michael Dominic Kostrzewa <michael.kostrzewa@nokia.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public License
- * as published by the Free Software Foundation; either version 2.1 of
- * the License, or (at your option) any later version.
+ * as published by the Free Software Foundation; version 2.1 of
+ * the License.
  *
  * This library is distributed in the hope that it will be useful, but
  * WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -30,8 +30,8 @@
  * emblem and a label.
  */
 
-#ifndef HILDON_GRID_ITEM_H_
-#define HILDON_GRID_ITEM_H_
+#ifndef __HILDON_GRID_ITEM_H__
+#define __HILDON_GRID_ITEM_H__
 
 #include <gtk/gtkcontainer.h>
 #include <gtk/gtkitem.h>
@@ -89,4 +89,4 @@ void hildon_grid_item_set_label(HildonGridItem *item, const gchar *label);
 
 
 G_END_DECLS
-#endif /* ifndef HILDON_GRID_ITEM_H_ */
+#endif /* __HILDON_GRID_ITEM_H__ */

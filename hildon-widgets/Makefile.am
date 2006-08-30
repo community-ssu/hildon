@@ -3,6 +3,9 @@ INCLUDES = $(GTK_CFLAGS) $(GCONF_CFLAGS) \
 
 lib_LTLIBRARIES = libhildonwidgets.la
 
+MAINTAINERCLEANFILES = \
+	Makefile.in hildon-libs-enum-types.c hildon-libs-enum-types.h 
+
 EXTRA_DIST = hildon-marshalers.list
 
 libhildonwidgets_la_LDFLAGS = -version-info 5:0:5
@@ -103,6 +106,14 @@ libhildonwidgets_la_SOURCES = \
 	hildon-program.h \
 	hildon-code-dialog.c \
 	hildon-code-dialog.h \
+	hildon-plugin-widget.c \
+	hildon-plugin-widget.h \
+	hildon-color-chooser.c \
+	hildon-color-chooser.h \
+	hildon-color-chooser-dialog.c \
+	hildon-color-chooser-dialog.h \
+	hildon-color-chooser-button.c \
+	hildon-color-chooser-button.h \
 	$(hildonlibs_built_headers) \
 	$(hildonlibs_built_cfiles)
 
@@ -160,7 +171,11 @@ hildonwidgetsincludeinst_DATA = \
 	hildon-window.h \
 	hildon-program.h \
 	hildon-window-private.h \
-	hildon-code-dialog.h
+	hildon-code-dialog.h \
+	hildon-plugin-widget.h \
+	hildon-color-chooser.h \
+	hildon-color-chooser-dialog.h \
+	hildon-color-chooser-button.h
 
 headers_to_scan_for_enums = $(hildonwidgetsincludeinst_DATA)
  

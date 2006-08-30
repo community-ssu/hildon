@@ -1,14 +1,14 @@
 /*
  * This file is part of hildon-libs
  *
- * Copyright (C) 2005 Nokia Corporation.
+ * Copyright (C) 2005, 2006 Nokia Corporation.
  *
- * Contact: Luc Pionchon <luc.pionchon@nokia.com>
+ * Contact: Michael Dominic Kostrzewa <michael.kostrzewa@nokia.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public License
- * as published by the Free Software Foundation; either version 2.1 of
- * the License, or (at your option) any later version.
+ * as published by the Free Software Foundation; version 2.1 of
+ * the License.
  *
  * This library is distributed in the hope that it will be useful, but
  * WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -24,10 +24,10 @@
 
 /**
  * SECTION:hildon-color-button
- * @short_description: A widget to open HildonColorSelector
- * @see_also: #HildonColorSelector, #HildonColorPopup
+ * @short_description: A widget to open HildonColorChooserDialog
+ * @see_also: #HildonColorChooserDialog, #HildonColorPopup
  *
- * HildonColorButton is a widget to open a HildonColorSelector.
+ * HildonColorButton is a widget to open a HildonColorChooserDialog.
  * The selected color is shown in the button.
  * The selected color is a property of the button.
  * The property name is "color" and its type is GtkColor.
@@ -42,7 +42,7 @@
 #include <hildon-widgets/hildon-defines.h>
 
 #include "hildon-color-button.h"
-#include "hildon-color-selector.h"
+#include "hildon-color-chooser-dialog.h"
 
 #define HILDON_COLOR_BUTTON_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE\
               ((obj), HILDON_TYPE_COLOR_BUTTON, HildonColorButtonPrivate))
@@ -324,27 +324,26 @@ static void
 hildon_color_button_clicked(GtkButton *button)
 {
   HildonColorButton *cb = HILDON_COLOR_BUTTON(button);
-  HildonColorSelector *cs_dialog = HILDON_COLOR_SELECTOR(cb->priv->dialog);
-
+  HildonColorChooserDialog *cs_dialog = HILDON_COLOR_CHOOSER_DIALOG(cb->priv->dialog);
+  
   /* Popup the color selector dialog */
   if (!cs_dialog)
   {
     /* The dialog hasn't been created yet, do it. */
     GtkWidget *parent = gtk_widget_get_toplevel(GTK_WIDGET(cb));
-    cb->priv->dialog = hildon_color_selector_new(GTK_WINDOW(parent));
-    cs_dialog = HILDON_COLOR_SELECTOR(cb->priv->dialog);
-    
+    cb->priv->dialog = hildon_color_chooser_dialog_new(GTK_WINDOW(parent));
+    cs_dialog = HILDON_COLOR_CHOOSER_DIALOG(cb->priv->dialog);
     if (parent)
       gtk_window_set_transient_for(GTK_WINDOW(cs_dialog), GTK_WINDOW(parent));
   }
-  
+
   /* Set the initial color for the color selector dialog */
-  hildon_color_selector_set_color(cs_dialog, &cb->priv->color);
-  
+  hildon_color_chooser_dialog_set_color(cs_dialog, &cb->priv->color);
+ 
   /* Update the color for color button if selection was made */
   if (gtk_dialog_run(GTK_DIALOG(cs_dialog)) == GTK_RESPONSE_OK)
   {
-    cb->priv->color = *hildon_color_selector_get_color(cs_dialog);
+    hildon_color_chooser_dialog_get_color(cs_dialog, &cb->priv->color);
     hildon_color_button_set_color( HILDON_COLOR_BUTTON( button ), 
             &(cb->priv->color) );
   }

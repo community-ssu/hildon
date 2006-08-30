@@ -1,7 +1,7 @@
 Source: hildon-libs
 Section: x11
 Priority: optional
-Maintainer: Luc Pionchon <luc.pionchon@nokia.com>
+Maintainer: Michael Dominic Kostrzewa <michael.kostrzewa@nokia.com>
 Build-Depends: debhelper (>= 4.0.0), pkg-config, libgtk2.0-dev (>= 2:2.6.10-1.osso4), osso-esd-dev, libmatchbox-dev (>= 1.3-2), libxi-dev, libxt-dev, libpng12-dev, libgconf2-dev, gtk-doc-tools
 Standards-Version: 3.6.0
 
@@ -16,7 +16,7 @@ Section: libs
 Architecture: any
 Conflicts: hildon-lgpl0 (<< 0.12)
 Replaces: hildon-lgpl0 (<< 0.12)
-Depends: ${shlibs:Depends}, ${misc:Depends}, osso-sounds-ui, osso-esd, libgconf2-6, hildon-libs-l10n-mr0 | hildon-libs-l10n-mr
+Depends: ${shlibs:Depends}, ${misc:Depends}, osso-sounds-ui, hildon-libs-l10n-mr0 | hildon-libs-l10n-mr
 Description: Hildon libraries
 
 Package: hildon-libs0-dbg

@@ -5,6 +5,8 @@ lib_LIBRARIES = libtimer.a
 
 EXTRA_DIST = 
 
+MAINTAINERCLEANFILES = Makefile.in
+
 libtimer_a_SOURCES = timer.h timer.c
 
 timerincludeinstdir=$(includedir)/hildon-lgpl/timer

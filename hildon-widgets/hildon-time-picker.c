@@ -1,14 +1,14 @@
 /*
  * This file is part of hildon-libs
  *
- * Copyright (C) 2005 Nokia Corporation.
+ * Copyright (C) 2005, 2006 Nokia Corporation.
  *
- * Contact: Luc Pionchon <luc.pionchon@nokia.com>
+ * Contact: Michael Dominic Kostrzewa <michael.kostrzewa@nokia.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public License
- * as published by the Free Software Foundation; either version 2.1 of
- * the License, or (at your option) any later version.
+ * as published by the Free Software Foundation; version 2.1 of
+ * the License.
  *
  * This library is distributed in the hope that it will be useful, but
  * WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -192,6 +192,8 @@ hildon_time_picker_event_box_button_press( GtkWidget *widget,  GdkEventKey *even
 static void
 hildon_time_picker_map( GtkWidget *widget );
 
+static void
+frame_size_request (GtkWidget *widget, GtkRequisition *requistion);
 
 GType hildon_time_picker_get_type( void )
 {
@@ -262,6 +264,16 @@ hildon_time_picker_class_init( HildonTimePickerClass *klass )
   g_type_class_add_private( klass, sizeof(HildonTimePickerPrivate) );
 }
 
+/* Okay, this is really bad. We make the requisition of the frames a bit larger 
+ * so that it doesn't "change" when digits are changed (see #37489). It's a 
+ * really bad solution to a problem, but the whole layout of the time picker is 
+ * on crack anyways */
+static void frame_size_request (GtkWidget *widget, GtkRequisition *requistion)
+{
+  int framed = requistion->width / 10;
+  requistion->width = (framed + 1) * 10;
+}
+
 static void hildon_time_picker_init( HildonTimePicker *picker )
 {
   HildonTimePickerPrivate *priv = HILDON_TIME_PICKER_GET_PRIVATE(picker);
@@ -322,7 +334,9 @@ static void hildon_time_picker_init( HildonTimePicker *picker )
     if (i != WIDGET_GROUP_AMPM)
     {
       gtk_table_attach(table, group->frame, table_column, table_column + 1,
-                       1, 2, GTK_SHRINK, GTK_SHRINK, 0, 0);
+                       1, 2, GTK_EXPAND, GTK_EXPAND, 0, 0);
+
+
     }
     /* FIXME: is it needed to force it to 0 here? */
     gtk_container_set_border_width(GTK_CONTAINER(group->frame), 0);
@@ -354,6 +368,10 @@ static void hildon_time_picker_init( HildonTimePicker *picker )
 
     /* Create label inside eventbox */
     group->label = GTK_LABEL(gtk_label_new(NULL));
+    g_signal_connect(group->frame, "size-request",
+                     G_CALLBACK(frame_size_request),
+                     NULL);
+    gtk_misc_set_alignment (GTK_MISC (group->label), 0.5, 0.5);
     gtk_container_add(GTK_CONTAINER(group->eventbox), GTK_WIDGET(group->label));
 
     if (i != WIDGET_GROUP_AMPM)
@@ -409,18 +427,6 @@ static void hildon_time_picker_init( HildonTimePicker *picker )
 
   gtk_table_set_row_spacing( table, 0, 6 );
   gtk_table_set_row_spacing( table, 1, 6 );
-
-  /* Put minute labels and buttons into same size group, so they each have
-     the exact same horizontal width. */
-  size_group = gtk_size_group_new( GTK_SIZE_GROUP_HORIZONTAL );
-  for (i = WIDGET_GROUP_10_MINUTES; i < WIDGET_GROUP_1_MINUTES; i++)
-  {
-    gtk_size_group_add_widget(size_group, priv->widgets[i].frame);
-    gtk_size_group_add_widget(size_group, priv->widgets[i].buttons[BUTTON_UP]);
-    gtk_size_group_add_widget(size_group,
-                              priv->widgets[i].buttons[BUTTON_DOWN]);
-  }
-  g_object_unref( size_group ); /* Added widgets hold references */
 
   if (priv->show_ampm)
   {

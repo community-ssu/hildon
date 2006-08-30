@@ -1,6 +1,6 @@
 
-#ifndef ___hildon_marshal_MARSHAL_H__
-#define ___hildon_marshal_MARSHAL_H__
+#ifndef ___HILDON_MARSHALERS_H__
+#define ___HILDON_MARSHALERS_H__
 
 #include	<glib-object.h>
 
@@ -27,5 +27,5 @@ extern void _hildon_marshal_BOOLEAN__INT_INT_INT (GClosure     *closure,
 
 G_END_DECLS
 
-#endif /* ___hildon_marshal_MARSHAL_H__ */
+#endif /* __HILDON_MARSHALERS_H__ */
 

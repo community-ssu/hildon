@@ -1,3 +1,5 @@
+MAINTAINERCLEANFILES = Makefile.in
+
 outomodule_LTLIBRARIES = \
 			libhildonwidgets_unittests.la \
 			libhildonwidgets_clock_unittests.la

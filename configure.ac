@@ -1,5 +1,5 @@
 AC_INIT(Makefile.am)
-AM_INIT_AUTOMAKE(hildon-libs, 0.12.22)
+AM_INIT_AUTOMAKE(hildon-libs, 0.14.0)
 AM_CONFIG_HEADER(config.h)
 
 AC_CANONICAL_HOST
@@ -80,6 +80,7 @@ AC_SUBST(REBUILD)
 
 AC_OUTPUT(Makefile \
 	hildon-widgets/Makefile \
+	hildon-widgets-plugins/Makefile \
 	timer/Makefile \
 	ut/Makefile \
 	po/Makefile \

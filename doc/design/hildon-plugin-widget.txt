@@ -1,0 +1,141 @@
+PURPOSE OF EXISTANCE
+
+  The API is made to provide very simple layer to load widgets that are
+inherited from some other widget type (and therefore providing it's interface)
+from plugins. Primary goal is simplicity.
+
+  The API is to prevent of duplication of same piece of code which is needed
+by some sort of plugin-based-widget implementation. Originally meant to be
+used in widgets _new () function, but also eases custom type loading in some
+other parts of API.
+
+
+WHAT IT PROVIDES
+
+  The API layer is thin and simple. It provides functions to open module
+containing plugin-based widget code, creating instance of this type loaded
+from module and to unload the module (and destruct the data). The module
+should not be unloaded as long as instances of loaded type exist.
+
+  The module loading (and "object" (really a structure) creation) also
+provides possibility to choose for a specific implementation, or to use the
+default one. See next section for details. The created struct is a pointer to
+HildonPluginWidgetInfo, which is private structs which acts similar way to
+module handle: after deinitializing it, you cannot use functions within the
+module (in this particular case, you cannot use instances of type within the
+module).
+
+
+MODEL OVERVIEW
+
+  Short explanation by example situation: we have widget called HildonA which
+is abstract widget having some widget specific interface and we want to
+implement the widget inside a plugin, so we could have variance in actual
+implementation (for example theming/configuration alternatives).
+
+  First, we create abstract widget and decide whatking of interface it should
+have. Next we create public ocnstructor for the widget. At this point, we
+don't use typical g_type_create_instance () or alternative function for our
+type, but we have (commonly global) HildonPluginWidgetInfo structure which is
+typically initialized on first time needed by using the interface to load the
+default module, and then hold the module handle (there is no absolute need to
+unload the module) and each time _new () function is called, create instance
+by the function within the API and return it.
+
+  The module loading function needs to know parent type of widget which is
+contained in the module, for our example the parent type would be type of
+HildonA. Also if requesting specific module it should know it's nickname, but
+abstract types shouldn't request for specific module.
+
+  The actual widget will be implemented within module. The module is shared
+object containing a function called 'export_type', which should return needed
+GType for the type contained withing the module. The module is also expected
+to properly implement interface of parent type.
+
+  The module lookup function looks up modules from the widget plugin directory
+which is built-time defined where "/usr/lib/hildon-widgets/" is the fallback
+directory. The name of plugin file is <decapitalizedtypename>_<nickname>.so
+and the nickname is plugins nickname passed to module loading function. If
+nothing is passed as nickname (the default is beign used), the nickname will
+be looked up from GtkSettings, variable name is <TypeName>-plugin. If that is
+not defined, nickname "default" will be used.
+
+  The GtkSettings definition allows flexibility from system configuration
+point of view. To set up proper installation, widget developer should have
+some rather simple implementation of the widget as default fallback, or at
+least provide some implementation and symlink "default" nicknamed .so file to
+it. If nothing is defined at the GtkSettings, the flexibility is in system
+installation: it's rather trivial to replace one minor file. If someone else
+wants to make alternative implementation for the widget, (s)he can just add
+another implementation to the dir and by for example gtkrc modification use
+the specific implementation for some specific theme.
+
+  This also allows one important thing from platform implementation point of
+view: by using abstract widgets which provide guaranteed functionality, you
+are guaranteed to have proper systems look & feel for the widget as long as
+the system is proper installation. The proper installation in this case means
+that the abstract widget is supported and there is at least proper .so default
+file installed into plugin dir (and the theme shouldn't specify anything which
+would break this). The system configuration has the change to provide the
+proper widget implementation without touching the library code.
+
+  The plugin implementor basically needs just to implement function called
+'export_type' which returns proper GType. The proper GType in this case means
+that the type should be proper GType in the means that it doesn't break up the
+type system AND that all interfaces of ancestors are implemented, in other
+words all functions defined in class hierarchy should be implemented within
+the class hierarchy or in the plugin, usually abstract parent-defined
+functions aren't implemented there so they should be implemented within the
+module.
+
+
+POSSIBLE ERRORS
+
+  There are several things that can go wrong. If the module is unloaded and
+instances of module-implemented type exist, using these instances will most
+probably cause segmentation fault (the usual unloaded-module-access behavior).
+Another problem is that the module opening function can return NULL, the
+application should be aware of that this could happen (however this happens
+only because module opening functions have failed), if this happened when
+requesting specific implementation, the requester code should try again, this
+time requesting default one.
+
+
+OTHER ALTERNATIVES FOR PLUGGABLE WIDGETS
+
+  How system basically works is that there is abstract widget class for some
+widget and widgets can be loaded through hildon-plugin-widget API (althrough
+nothing prevents custom loading). This means there can be multiple
+implementations of the abstract widget. Probably most major alternative would
+be having pluggable type widget (instead of abstract type loaded from plugin)
+which would be more consistent with GType system (for example would implement
+the GTypeModule interface).
+
+  The idea of later is that we would have some plugin type system which would
+get the type from plugin automatically by the GTypeModule implementation. This
+removes need of extra interface (hildon-plugin-widget in this case).
+
+  There is two major adventages in both:
+    * Abstract type: Easy[1] to have multiple different child types.
+    * Modular type: Fits better to the type hierarchy without introducing any
+     new things to the type hierarchy.
+
+  The adventage of abstract type in the case of Hildon libraries is relevant,
+the practical example is HSV based color chooser dialog. There is HSV based
+color chooser dialog which has child widget, a color chooser, which is also
+plugin based. Now if there would be only the default type for plugin based
+widgets, this could mean that inside HSV color chooser dialog would be some
+other color chooser widget than the HSV based one. With the abstract widget
+type and inheritance-within plugins the HSV color chooser dialog can
+explicitly request for a HSV based color chooser.
+
+
+COMMENTS
+
+[1] easy in the sense not doing any kludges to break the uniformness of
+  architecture
+
+
+SEE ALSO
+
+ * abstract_vs_modular_plugin_widgets.dia (or .png)

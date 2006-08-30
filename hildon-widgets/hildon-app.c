@@ -1,14 +1,14 @@
 /*
  * This file is part of hildon-libs
  *
- * Copyright (C) 2005 Nokia Corporation.
+ * Copyright (C) 2005, 2006 Nokia Corporation.
  *
- * Contact: Luc Pionchon <luc.pionchon@nokia.com>
+ * Contact: Michael Dominic Kostrzewa <michael.kostrzewa@nokia.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public License
- * as published by the Free Software Foundation; either version 2.1 of
- * the License, or (at your option) any later version.
+ * as published by the Free Software Foundation; version 2.1 of
+ * the License.
  *
  * This library is distributed in the hope that it will be useful, but
  * WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -85,8 +85,6 @@ static guint app_signals[HILDON_APP_LAST_SIGNAL] = { 0 };
 
 typedef struct _HildonAppPrivate HildonAppPrivate;
 
-static void
-hildon_app_switch_to_desktop (void);
 static gboolean
 hildon_app_key_press (GtkWidget *widget, GdkEventKey *keyevent);
 static gboolean
@@ -338,7 +336,7 @@ static void hildon_app_unrealize(GtkWidget *widget)
 
   if (priv->key_snooper)
   {
-    /* removing the snooper that handles MENU and HOME key presses */
+    /* removing the snooper that handles MENU key presses */
     gtk_key_snooper_remove(priv->key_snooper);
     priv->key_snooper = 0;
   }
@@ -1366,30 +1364,6 @@ hildon_app_get_two_part_title (HildonApp *self)
 
 
 /*
- * Generates and sends an event of type _NET_SHOWING_DESKTOP to the XServer,
- * which will be then caught by the window Manager.
- */
-static void
-hildon_app_switch_to_desktop (void)
-{
-
-    XEvent ev;
-    Atom showing_desktop = XInternAtom(GDK_DISPLAY(),
-                                  "_NET_SHOWING_DESKTOP", False);
-    memset(&ev, 0, sizeof(ev));
-    ev.xclient.type = ClientMessage;
-    gdk_error_trap_push();
-    ev.xclient.window = GDK_ROOT_WINDOW();
-    ev.xclient.message_type = showing_desktop;
-    ev.xclient.format = 32;
-    ev.xclient.data.l[0] = 1;
-    gdk_error_trap_push();
-    XSendEvent(GDK_DISPLAY(), GDK_ROOT_WINDOW(), False,
-               SubstructureRedirectMask, &ev);
-    gdk_error_trap_pop();
-}
-
-/*
  * Handles the key press of the Escape, Increase and Decrease keys. Other keys
  * are handled by the parent GtkWidgetClass.
  */
@@ -1489,7 +1463,7 @@ hildon_app_key_release (GtkWidget *widget, GdkEventKey *keyevent)
 }
 
 /*
- * Handles the MENU and HOME key presses.
+ * Handles the MENU key presses.
  */
 static gboolean
 hildon_app_key_snooper (GtkWidget *widget, GdkEventKey *keyevent, HildonApp *app)
@@ -1572,15 +1546,6 @@ hildon_app_key_snooper (GtkWidget *widget, GdkEventKey *keyevent, HildonApp *app
                closes all existing menus that might be open */
 	    return FALSE;
     }
-    
-    /* Home key handling is done here. */
-    if ((keyevent->type == GDK_KEY_RELEASE) &&
-        HILDON_KEYEVENT_IS_HOME_KEY (keyevent))
-      {
-	hildon_app_switch_to_desktop();
-
-        return TRUE;
-      }
 
     return FALSE;
 }

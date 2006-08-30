@@ -1,3 +1,445 @@
+2006-08-30  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
+	[Merging 0.13.1 => TRUNK]
+
+	* ./: Merging the experimental color selector branch. Fixes: #NB37010,
+	#NB38559, #33217, #NB37172.   
+	Maintainer change:
+	Michael Dominic Kostrzewa
+	<michael.kostrzewa@nokia.com>
+
+	* configure.ac: Bumping the version number to 0.14.0.
+
+2006-08-30  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
+	[0.13.1 branch]
+
+	* ./: Cosmetics.
+
+2006-08-30  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
+	[0.13.1 branch]
+
+	* AUTHORS: Adding an AUTHORS file with maintainer/contact information.
+
+	* debian/control:
+	* debian/copyright:
+	* hildon-widgets-plugins/hildon-color-chooser-dialog-hsv.c:
+	* hildon-widgets-plugins/hildon-color-chooser-hsv.c:
+	* hildon-widgets/gtk-infoprint.c:
+	* hildon-widgets/gtk-infoprint.h:
+	* hildon-widgets/hildon-add-home-dialog.c:
+	* hildon-widgets/hildon-add-home-dialog.h:
+	* hildon-widgets/hildon-app-private.h:
+	* hildon-widgets/hildon-app.c:
+	* hildon-widgets/hildon-app.h:
+	* hildon-widgets/hildon-appview.c:
+	* hildon-widgets/hildon-appview.h:
+	* hildon-widgets/hildon-banner.c:
+	* hildon-widgets/hildon-banner.h:
+	* hildon-widgets/hildon-calendar-popup.c:
+	* hildon-widgets/hildon-calendar-popup.h:
+	* hildon-widgets/hildon-caption.c:
+	* hildon-widgets/hildon-caption.h:
+	* hildon-widgets/hildon-code-dialog.c:
+	* hildon-widgets/hildon-code-dialog.h:
+	* hildon-widgets/hildon-color-button.c:
+	* hildon-widgets/hildon-color-button.h:
+	* hildon-widgets/hildon-color-chooser-button.c:
+	* hildon-widgets/hildon-color-chooser-button.h:
+	* hildon-widgets/hildon-color-chooser-dialog.c:
+	* hildon-widgets/hildon-color-chooser-dialog.h:
+	* hildon-widgets/hildon-color-chooser.c:
+	* hildon-widgets/hildon-color-chooser.h:
+	* hildon-widgets/hildon-color-popup.c:
+	* hildon-widgets/hildon-color-popup.h:
+	* hildon-widgets/hildon-color-selector.c:
+	* hildon-widgets/hildon-color-selector.h:
+	* hildon-widgets/hildon-composite-widget.c:
+	* hildon-widgets/hildon-composite-widget.h:
+	* hildon-widgets/hildon-controlbar.c:
+	* hildon-widgets/hildon-controlbar.h:
+	* hildon-widgets/hildon-date-editor.c:
+	* hildon-widgets/hildon-date-editor.h:
+	* hildon-widgets/hildon-defines.c:
+	* hildon-widgets/hildon-defines.h:
+	* hildon-widgets/hildon-dialoghelp.c:
+	* hildon-widgets/hildon-dialoghelp.h:
+	* hildon-widgets/hildon-file-handling-note.c:
+	* hildon-widgets/hildon-file-handling-note.h:
+	* hildon-widgets/hildon-find-toolbar.c:
+	* hildon-widgets/hildon-find-toolbar.h:
+	* hildon-widgets/hildon-font-selection-dialog.c:
+	* hildon-widgets/hildon-font-selection-dialog.h:
+	* hildon-widgets/hildon-get-password-dialog.c:
+	* hildon-widgets/hildon-get-password-dialog.h:
+	* hildon-widgets/hildon-grid-item-private.h:
+	* hildon-widgets/hildon-grid-item.c:
+	* hildon-widgets/hildon-grid-item.h:
+	* hildon-widgets/hildon-grid.c:
+	* hildon-widgets/hildon-grid.h:
+	* hildon-widgets/hildon-hvolumebar.c:
+	* hildon-widgets/hildon-hvolumebar.h:
+	* hildon-widgets/hildon-input-mode-hint.h:
+	* hildon-widgets/hildon-name-password-dialog.c:
+	* hildon-widgets/hildon-name-password-dialog.h:
+	* hildon-widgets/hildon-note.c:
+	* hildon-widgets/hildon-note.h:
+	* hildon-widgets/hildon-number-editor.c:
+	* hildon-widgets/hildon-number-editor.h:
+	* hildon-widgets/hildon-plugin-widget.c:
+	* hildon-widgets/hildon-plugin-widget.h:
+	* hildon-widgets/hildon-private.h:
+	* hildon-widgets/hildon-program.c:
+	* hildon-widgets/hildon-program.h:
+	* hildon-widgets/hildon-range-editor.c:
+	* hildon-widgets/hildon-range-editor.h:
+	* hildon-widgets/hildon-scroll-area.c:
+	* hildon-widgets/hildon-scroll-area.h:
+	* hildon-widgets/hildon-seekbar.c:
+	* hildon-widgets/hildon-seekbar.h:
+	* hildon-widgets/hildon-set-password-dialog.c:
+	* hildon-widgets/hildon-set-password-dialog.h:
+	* hildon-widgets/hildon-sort-dialog.c:
+	* hildon-widgets/hildon-sort-dialog.h:
+	* hildon-widgets/hildon-system-sound.c:
+	* hildon-widgets/hildon-system-sound.h:
+	* hildon-widgets/hildon-telephone-editor.c:
+	* hildon-widgets/hildon-telephone-editor.h:
+	* hildon-widgets/hildon-time-editor.c:
+	* hildon-widgets/hildon-time-editor.h:
+	* hildon-widgets/hildon-time-picker.c:
+	* hildon-widgets/hildon-time-picker.h:
+	* hildon-widgets/hildon-volumebar-private.h:
+	* hildon-widgets/hildon-volumebar-range.c:
+	* hildon-widgets/hildon-volumebar-range.h:
+	* hildon-widgets/hildon-volumebar.c:
+	* hildon-widgets/hildon-volumebar.h:
+	* hildon-widgets/hildon-vvolumebar.c:
+	* hildon-widgets/hildon-vvolumebar.h:
+	* hildon-widgets/hildon-weekday-picker.c:
+	* hildon-widgets/hildon-weekday-picker.h:
+	* hildon-widgets/hildon-window-private.h:
+	* hildon-widgets/hildon-window.c:
+	* hildon-widgets/hildon-window.h:
+	* hildon-widgets/hildon-wizard-dialog.c:
+	* hildon-widgets/hildon-wizard-dialog.h:
+	* timer/timer.c:
+	* timer/timer.h:
+	* ut/hildon-clock-widgets_tests.c:
+	* ut/hildon-widgets_tests.c:
+	* ut/tc_banner_truncate.c: Adding myself as the contact
+	person/maintainer. FIxing copyright notices to include 2006 as new things 
+	were added this year.
+
+2006-08-30  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
+	[0.13.1 branch]
+
+	* hildon-widgets/hildon-app.h:
+	* hildon-widgets/hildon-defines.h: Undoing the Johan's new
+	key-handling changes from 2006-08-10. That requires a fix at a
+	different level, waiting for Daniel Stone. 
+
+2006-08-30  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
+	[0.13.1 branch]
+
+	* debian==/changelog: Adding some missing entries about bugs being
+	fixed.
+
+	* debian/copyright: Adding information about the license version of
+	the package.
+
+2006-08-29  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
+	[0.13.1 branch]
+
+	* hildon-widgets/hildon-window.c: Properly ref the attached menus,
+	allow NULL to be passed to the attach function to remove the existing
+	menu. Fixes NB#32845. 
+
+2006-08-29  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
+	[0.13.1 branch]
+
+	* debian/control: Removing unnecessary manual dependencies, fixes
+	NB#34225. 
+
+2006-08-29  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
+	[0.13.1 branch]
+
+	* hildon-widgets-plugins/Makefile.am:
+	* hildon-widgets-plugins/hildon-color-chooser-dialog_hsv.c:
+	* hildon-widgets-plugins/hildon-color-chooser_hsv.c:
+	* hildon-widgets-plugins/hildoncolorchooser_hsv.c:
+	* hildon-widgets-plugins/hildoncolorchooserdialog_hsv.c: Removing
+	left overs from the old color selector code, making the file names
+	more sane.
+
+2006-08-29  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
+	[0.13.1 branch]
+
+	* hildon-widgets-plugins/hildon-color-chooser-dialog_hsv.c:
+	* hildon-widgets-plugins/hildon-color-chooser_hsv.c:
+	* hildon-widgets-plugins/hildoncolorchooser_hsv.c:
+	* hildon-widgets/gtk-infoprint.c:
+	* hildon-widgets/gtk-infoprint.h:
+	* hildon-widgets/hildon-add-home-dialog.c:
+	* hildon-widgets/hildon-add-home-dialog.h:
+	* hildon-widgets/hildon-app-private.h:
+	* hildon-widgets/hildon-app.c:
+	* hildon-widgets/hildon-app.h:
+	* hildon-widgets/hildon-appview.c:
+	* hildon-widgets/hildon-appview.h:
+	* hildon-widgets/hildon-banner.c:
+	* hildon-widgets/hildon-banner.h:
+	* hildon-widgets/hildon-calendar-popup.c:
+	* hildon-widgets/hildon-calendar-popup.h:
+	* hildon-widgets/hildon-caption.c:
+	* hildon-widgets/hildon-caption.h:
+	* hildon-widgets/hildon-code-dialog.c:
+	* hildon-widgets/hildon-code-dialog.h:
+	* hildon-widgets/hildon-color-button.c:
+	* hildon-widgets/hildon-color-button.h:
+	* hildon-widgets/hildon-color-chooser-button.c:
+	* hildon-widgets/hildon-color-chooser-button.h:
+	* hildon-widgets/hildon-color-chooser-dialog.c:
+	* hildon-widgets/hildon-color-chooser-dialog.h:
+	* hildon-widgets/hildon-color-chooser.h:
+	* hildon-widgets/hildon-color-popup.c:
+	* hildon-widgets/hildon-color-popup.h:
+	* hildon-widgets/hildon-color-selector.c:
+	* hildon-widgets/hildon-color-selector.h:
+	* hildon-widgets/hildon-composite-widget.c:
+	* hildon-widgets/hildon-composite-widget.h:
+	* hildon-widgets/hildon-controlbar.c:
+	* hildon-widgets/hildon-controlbar.h:
+	* hildon-widgets/hildon-date-editor.c:
+	* hildon-widgets/hildon-date-editor.h:
+	* hildon-widgets/hildon-defines.c:
+	* hildon-widgets/hildon-defines.h:
+	* hildon-widgets/hildon-dialoghelp.c:
+	* hildon-widgets/hildon-dialoghelp.h:
+	* hildon-widgets/hildon-file-handling-note.c:
+	* hildon-widgets/hildon-file-handling-note.h:
+	* hildon-widgets/hildon-find-toolbar.c:
+	* hildon-widgets/hildon-find-toolbar.h:
+	* hildon-widgets/hildon-font-selection-dialog.c:
+	* hildon-widgets/hildon-font-selection-dialog.h:
+	* hildon-widgets/hildon-get-password-dialog.c:
+	* hildon-widgets/hildon-get-password-dialog.h:
+	* hildon-widgets/hildon-grid-item-private.h:
+	* hildon-widgets/hildon-grid-item.c:
+	* hildon-widgets/hildon-grid-item.h:
+	* hildon-widgets/hildon-grid.c:
+	* hildon-widgets/hildon-grid.h:
+	* hildon-widgets/hildon-hvolumebar.c:
+	* hildon-widgets/hildon-hvolumebar.h:
+	* hildon-widgets/hildon-input-mode-hint.h:
+	* hildon-widgets/hildon-name-password-dialog.c:
+	* hildon-widgets/hildon-name-password-dialog.h:
+	* hildon-widgets/hildon-note.c:
+	* hildon-widgets/hildon-note.h:
+	* hildon-widgets/hildon-number-editor.c:
+	* hildon-widgets/hildon-number-editor.h:
+	* hildon-widgets/hildon-plugin-widget.c:
+	* hildon-widgets/hildon-private.h:
+	* hildon-widgets/hildon-program.c:
+	* hildon-widgets/hildon-program.h:
+	* hildon-widgets/hildon-range-editor.c:
+	* hildon-widgets/hildon-range-editor.h:
+	* hildon-widgets/hildon-scroll-area.c:
+	* hildon-widgets/hildon-scroll-area.h:
+	* hildon-widgets/hildon-seekbar.c:
+	* hildon-widgets/hildon-seekbar.h:
+	* hildon-widgets/hildon-set-password-dialog.c:
+	* hildon-widgets/hildon-set-password-dialog.h:
+	* hildon-widgets/hildon-sort-dialog.c:
+	* hildon-widgets/hildon-sort-dialog.h:
+	* hildon-widgets/hildon-system-sound.c:
+	* hildon-widgets/hildon-system-sound.h:
+	* hildon-widgets/hildon-telephone-editor.c:
+	* hildon-widgets/hildon-telephone-editor.h:
+	* hildon-widgets/hildon-time-editor.c:
+	* hildon-widgets/hildon-time-editor.h:
+	* hildon-widgets/hildon-time-picker.c:
+	* hildon-widgets/hildon-time-picker.h:
+	* hildon-widgets/hildon-volumebar-private.h:
+	* hildon-widgets/hildon-volumebar-range.c:
+	* hildon-widgets/hildon-volumebar-range.h:
+	* hildon-widgets/hildon-volumebar.c:
+	* hildon-widgets/hildon-volumebar.h:
+	* hildon-widgets/hildon-vvolumebar.c:
+	* hildon-widgets/hildon-vvolumebar.h:
+	* hildon-widgets/hildon-weekday-picker.c:
+	* hildon-widgets/hildon-weekday-picker.h:
+	* hildon-widgets/hildon-window-private.h:
+	* hildon-widgets/hildon-window.c:
+	* hildon-widgets/hildon-window.h:
+	* hildon-widgets/hildon-wizard-dialog.c:
+	* hildon-widgets/hildon-wizard-dialog.h:
+	* timer/timer.c:
+	* timer/timer.h:
+	* ut/hildon-clock-widgets_tests.c:
+	* ut/hildon-widgets_tests.c:
+	* ut/tc_banner_truncate.c: Fixing the license banners (adding them
+	if missing, correcting "... version 2 or any later version" to "version
+	2."
+
+2006-08-29  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
+	[0.13.1 branch]
+
+	* hildon-widgets/hildon-window.c: Put extra ref on the GdkWindow 
+	before emitting the signal so that we don't lose it in event free
+	function. Fixes NB#38996.  
+
+2006-08-28  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
+	[0.13.1 branch]
+
+	* configure.ac: Bumping the version number to 0.13.1.6.
+
+	* hildon-widgets-plugins/Makefile.am: Adding the proper symlinks for
+	default plugin targets during installation. Fixes a crasher bug in the
+	selector.
+
+	* hildon-widgets/hildon-color-button.c:
+	* hildon-widgets/hildon-color-chooser-dialog.c:
+	* hildon-widgets/hildon-plugin-widget.c: Adding some basic sanity checks.
+
+2006-08-24  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
+	[0.13.1 branch]
+
+	* ./: Merging with the 0.13.1-1_pluged-in-color-selector branch.
+
+2006-08-24  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
+	[0.13.1 branch]
+
+	* hildon-widgets/hildon-number-editor.c: When a range error occurs,
+	set the correct value before calling the range-error signal, so that
+	the widget consumer has a chance to actually adjust the value to it's
+	liking in the signal. Fixes NB#33260.
+
+2006-08-24  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
+	[0.13.1 branch]
+
+	* hildon-widgets/hildon-wizard-dialog.c: Fixing a small compilation
+	whoops.
+
+2006-08-24  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
+	[0.13.1 branch]
+
+	* hildon-widgets/hildon-time-picker.c: Fixing 
+	NB#37489.
+
+2006-08-23  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
+	[0.13.1 branch]
+
+	* hildon-widgets/hildon-wizard-dialog.c:
+	* hildon-widgets/hildon-wizard-dialog.h: Cleaning up, fixing some
+	bugs.
+
+2006-08-22  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
+	[0.13.1 branch]
+
+	* hildon-widgets/hildon-add-home-dialog.h:
+	* hildon-widgets/hildon-app.h:
+	* hildon-widgets/hildon-appview.h:
+	* hildon-widgets/hildon-calendar-popup.h:
+	* hildon-widgets/hildon-code-dialog.h:
+	* hildon-widgets/hildon-color-button.h:
+	* hildon-widgets/hildon-color-selector.h:
+	* hildon-widgets/hildon-controlbar.h:
+	* hildon-widgets/hildon-date-editor.h:
+	* hildon-widgets/hildon-file-handling-note.h:
+	* hildon-widgets/hildon-find-toolbar.h:
+	* hildon-widgets/hildon-grid-item-private.h:
+	* hildon-widgets/hildon-grid-item.h:
+	* hildon-widgets/hildon-grid.h:
+	* hildon-widgets/hildon-input-mode-hint.h:
+	* hildon-widgets/hildon-marshalers.h:
+	* hildon-widgets/hildon-name-password-dialog.h:
+	* hildon-widgets/hildon-private.h:
+	* hildon-widgets/hildon-program.h:
+	* hildon-widgets/hildon-range-editor.h:
+	* hildon-widgets/hildon-scroll-area.h:
+	* hildon-widgets/hildon-seekbar.h:
+	* hildon-widgets/hildon-sort-dialog.h:
+	* hildon-widgets/hildon-telephone-editor.h:
+	* hildon-widgets/hildon-time-picker.h:
+	* hildon-widgets/hildon-weekday-picker.h:
+	* hildon-widgets/hildon-window-private.h:
+	* hildon-widgets/hildon-window.h:
+	* hildon-widgets/hildon-wizard-dialog.h:
+	* timer/timer.h: Just cosmetic cleanups in defines for consistency.
+
+	* COPYING: Removing the executable bit from the text file. 
+
+2006-08-22  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
+	[0.13.1 branch]
+
+	* Makefile.am:
+	* doc/Makefile.am:
+	* hildon-widgets-plugins/Makefile.am:
+	* hildon-widgets/Makefile.am:
+	* po/Makefile.am:
+	* timer/Makefile.am:
+	* ut/Makefile.am: Fixing the build system so that `make
+	maintainer-clean` can be used safely.
+
+2006-08-22  Kuisma Salonen  <kuisma.salonen@nokia.com>
+
+	[0.13.1 branch]
+
+	* hildon-widgets-plugins/hildoncolorchooser_hsv.c:
+	Grayscale dimming re-enabled.
+
+2006-08-16  Johan Bilien  <johan.bilien@nokia.com>
+
+	[0.13.1 branch]
+
+	* hildon-widgets/hildon-app.c:
+	(hildon_app_switch_to_desktop): Removed unused function
+	(hildon_app_key_snooper): Removed handling of the Home hardware key
+
+	NB#35076
+
+	* configure.ac: 0.13.1.4
+
+2006-08-11  Fernando Herrera  <fernando.herrera-de-las-heras@nokia.com>
+
+	[0.13.1 branch]
+
+	* hildon-widgets/hildon-plugin-widget.c
+	(ascii_decapitalize_without_dashes): Fixed.
+
+2006-08-10  Johan Bilien  <johan.bilien@nokia.com>
+
+	[0.13.1 branch]
+
+	* hildon-widgets/hildon-{app.h,defines.h}:
+	switched HILDON_MENU_KEY to now match GDK_F10
+	WARNING: This breaks compatibility with IT-2006
+
+	* configure.ac: 0.13.1.3
+
+2006-08-08  Luc Pionchon  <luc.pionchon@nokia.com>
+
+	[0.13.1 branch]
+
+	* configure.ac: 0.13.1.2
+
 2006-08-07  Johan Bilien  <johan.bilien@nokia.com>
 
 	* hildon-widgets/hildon-program.c
@@ -13,11 +455,9 @@
 
 	NB#22808
 
-
 2006-08-01  Luc Pionchon  <luc.pionchon@nokia.com>
 
 	* configure.ac: 0.12.22
-
 
 2006-07-31  Johan Bilien  <johan.bilien@nokia.com>
 
@@ -27,6 +467,48 @@
 	- Localize the string in the applet
 
 	NB#36309
+
+2006-07-26  Kuisma Salonen  <kuisma.salonen@nokia.com>
+
+	[0.13.1 branch]
+
+	Added plugged-in color chooser,
+	
+	-- Plugin infrastructure:
+
+	* hildon-widgets/hildon-plugin-widget.[ch]: API to help loading
+	widgets from plugins.
+
+	* hildon-widgets-plugins/: directory containing widget
+	implementations which are going to be built into separate shared
+	object files (plugins)
+
+	* hildon-widgets-plugins/Makefile.am: automake file for the plugins.
+
+	* doc/design/abstract_vs_modular_plugin_widgets.dia:
+	* doc/design/hildon-plugin-widget.txt: design doc
+
+
+	-- ColorChooser plugin:
+
+	* hildon-widgets-plugins/hildoncolorchooser_hsv.c: Implementation of a
+	HildonColorChooser, HSV based one.
+
+	* hildon-widgets-plugins/hildoncolorchooserdialog_hsv.c: HSV based
+	implementation of color chooser dialog.
+
+
+	-- Uses the plugin infrastructure:
+	
+	* hildon-widgets/hildon-color-chooser.[ch] : An abstract class for
+	color chooser widget. The _new function utilizes plugin widget
+	helper functions to initialize the widget.
+
+	* hildon-widgets/hildon-color-chooser-dialog.[ch] : Same as color
+	chooser, but a dialog widget to choose a color.
+
+	* hildon-widgets/hildon-color-button.c: HildonColorButton uses now
+	HildonColorChooserDialog instead of HildonColorSelector.
 
 2006-07-25  Fernando Herrera  <fernando.herrera-de-las-heras@nokia.com>
 
@@ -45,7 +527,6 @@
 
 	NB#34340
 
-
 2006-07-18  Fernando Herrera  <fernando.herrera-de-las-heras@nokia.com>
 
 	* hildon-widgets/hildon-number-editor.c: 
@@ -55,8 +536,19 @@
 
 2006-06-13  Luc Pionchon  <luc.pionchon@nokia.com>
 
-	* configure.ac: 0.12.20
+	[0.13.1 branch]
 
+	* configure.ac: 0.13.1.1
+
+2006-06-13  Luc Pionchon  <luc.pionchon@nokia.com>
+
+	[0.13.1 branch]
+
+	* added experimental plugged-in color selector
+
+2006-06-13  Luc Pionchon  <luc.pionchon@nokia.com>
+
+	* configure.ac: 0.12.20
 
 2006-06-12  Luc Pionchon  <luc.pionchon@nokia.com>
 
@@ -65,7 +557,6 @@
 	return FALSE when no key was handled.
 
 	NB#32302
-
 
 2006-06-12  Luc Pionchon  <luc.pionchon@nokia.com>
 
@@ -76,11 +567,9 @@
 
 	NB#31256
 
-
 2006-06-05  Luc Pionchon  <luc.pionchon@nokia.com>
 
 	* configure.ac: 0.12.19
-
 
 2006-06-05  Luc Pionchon  <luc.pionchon@nokia.com>
 
@@ -93,7 +582,6 @@
 
 	NB#31604
 
-
 2006-06-05  Luc Pionchon  <luc.pionchon@nokia.com>
 
 	* hildon-widgets/hildon-time-editor.c
@@ -105,14 +593,12 @@
 
 	NB#30937
 
-
 2006-06-05  Luc Pionchon  <luc.pionchon@nokia.com>
 
 	* hildon-widgets/hildon-grid.c (hildon_grid_class_init): do not
 	use accumulator for "popup-context-menu"
 
 	NB#29888 / M#483
-
 
 2006-06-05  Luc Pionchon  <luc.pionchon@nokia.com>
 
@@ -124,7 +610,6 @@
 
 	NB#28836
 
-
 2006-06-02  Luc Pionchon  <luc.pionchon@nokia.com>
 
 	* hildon-widgets/hildon-app.c (hildon_app_key_snooper): Add code
@@ -133,7 +618,6 @@
 	when the application is avoiding the focus can go to the combobox.
 
 	NB#26383 (bis)
-
 
 2006-06-02  Luc Pionchon  <luc.pionchon@nokia.com>
 
@@ -155,7 +639,6 @@
 	function, now that situation is imposible. It was causing the
 	interlock.
 
-
 2006-05-31  Luc Pionchon  <luc.pionchon@nokia.com>
 
 	* hildon-widgets/hildon-banner.c
@@ -164,6 +647,12 @@
 	375 px width and only progress banners should have 265 px)
 
 	NB#31099 (workaround)
+
+2006-05-30  Luc Pionchon  <luc.pionchon@nokia.com>
+
+	[0.13.1 branch]
+
+	* configure.ac: 0.13.1 unstable branch
 
 2006-05-30  Luc Pionchon  <luc.pionchon@nokia.com>
 
@@ -181,7 +670,6 @@
 	menu drawing.
 
 	NB#26383
-
 
 2006-05-29  Luc Pionchon  <luc.pionchon@nokia.com>
 
@@ -201,11 +689,10 @@
 	(hildon_banner_check_position): Added cast to widget argument in
 	call to force_to_wrap_truncated in order to avoid a compilation
 	warning.
- 
 
 2006-05-29  Luc Pionchon  <luc.pionchon@nokia.com>
 
-        Added time-error signal - NB#22155
+	Added time-error signal - NB#22155
 	
 	* hildon-widgets/hildon-time-editor.c:
 	(hildon_time_editor_class_init): added time-error signal
@@ -219,7 +706,6 @@
 	(_HildonTimeEditorClass): added time_error signal
 
 	* hildon-widgets/Makefile.am (hildon-libs-enum-types.c): added time-editor.h
-
 
 2006-05-23  Luc Pionchon  <luc.pionchon@nokia.com>
 
@@ -272,25 +758,21 @@
 	* doc/Makefile.am: likewise
 	* ut/Makefile.am: likewise
 
-
 2006-05-21  Luc Pionchon  <luc.pionchon@nokia.com>
 
 	* hildon-widgets/gtk-infoprint.c
 	(gtk_confirmation_banner_with_icon_name):
 	added bold markup for backward compatibility. NB#28370 (bis)
 
-
 2006-05-21  Luc Pionchon  <luc.pionchon@nokia.com>
 
 	* hildon-widgets/hildon-grid.c (get_child_index_by_coord): returns
 	if empty grid. NB#29883
 
-
 2006-05-21  Luc Pionchon  <luc.pionchon@nokia.com>
 
 	* hildon-widgets/gtk-intoprint.c (find_banner_for_parent): Added
 	check for "is-timed" property. NB#26546
-
 
 2006-05-21  Johan Bilien  <johan.bilien@nokia.com>
 
@@ -327,11 +809,9 @@
 	* hildon-widgets/gtk-infoprint.c (gtk_confirmation_banner): added
 	bold markup for backward compatibility. NB#28370
 
-
 2006-05-15  Luc Pionchon  <luc.pionchon@nokia.com>
 
 	* configure.ac: 0.12.15
-
 
 2006-05-15  Johan Bilien  <johan.bilien@nokia.com>
 
@@ -348,7 +828,6 @@
 	(hildon_caption_get_label_alignment): added gtk-doc "Since" marker
 
 	* doc/hildon-libs-docs.sgml: added index for 0.12.0 new symbols
-
 
 2006-05-10  Luc Pionchon  <luc.pionchon@nokia.com>
 
@@ -369,7 +848,7 @@
 	(hildon_caption_expose): allocation, subtract the left margin
 	which we have added to the children widgets when we paint the
 	selection box.
-       	
+
 	NB#28483
 
 3006-05-10 Tapani Palli <tapani.palli@nokia.com>
@@ -409,7 +888,6 @@
 
 	N#28654
 
-
 2006-05-09  Marius Vollmer  <marius.vollmer@nokia.com>
 
 	* hildon-widgets/hildon-find-toolbar.c
@@ -433,7 +911,6 @@
 	* doc/Makefile.am: really "include". "-include" is not followed by
 	automake, as a result gtk-doc.make would not be processed.
 	
-
 2006-05-03  Luc Pionchon  <luc.pionchon@nokia.com>
 
 	N#27000 (additional fixes to patch from 2006-05-01)
@@ -445,11 +922,9 @@
 
 	Force label size also when width_text == width_max.
 
-
 2006-05-03  Luc Pionchon  <luc.pionchon@nokia.com>
 
 	* configure.ac: 0.12.13
-
 
 2006-05-03  Luc Pionchon  <luc.pionchon@nokia.com>
 
@@ -459,14 +934,12 @@
 	(hildon_font_selection_dialog_show_available_fonts): call filter_out_internal_fonts
 	Fixes N#21854
 
-
 2006-05-01  Luc Pionchon  <luc.pionchon@nokia.com>
 
 	* hildon-libs/hildon-widgets/hildon-time-editor.c
 	* hildon-libs/hildon-widgets/hildon-time-picker.c
-	* hildon-libs/hildon-widgets/hildon-wizard-dialog.h
+	* hildon-libs/hildon-widgets/hildon-wizard-dialog.h:
 	added comments to anonymous enums
-
 
 2006-05-01  Luc Pionchon  <luc.pionchon@nokia.com>
 
@@ -483,11 +956,9 @@
 
 	* ut/tc_banner_truncate.c: new file. Test cases for banner truncations.
 
-
 2006-05-01  Luc Pionchon  <luc.pionchon@nokia.com>
 
 	* hildon-widgets/hildon-banner.[ch]: code cleanup.
-
 
 2006-04-29  Johan Bilien  <johan.bilien@nokia.com>
 
@@ -525,7 +996,6 @@
 	AM/PM symbols. Use the string as it is given by the locale. Makes
 	it coherent with hildon time picker. Fixes N#27963
 
-
 2006-04-26  Luc Pionchon  <luc.pionchon@nokia.com>
 
 	* hildon-widgets/hildon-set-password-dialog.c
@@ -535,7 +1005,6 @@
 	Fixes N#27749
 
 	* hildon-widgets/hildon-set-password-dialog.h: indent cleanup
-
 
 2006-04-26  Luc Pionchon  <luc.pionchon@nokia.com>
 
@@ -561,7 +1030,7 @@
 
 2006-04-24  Marius Vollmer  <marius.vollmer@nokia.com>
 
-        From Murray Cumming  <murrayc@murrayc.com>, M#183.
+	From Murray Cumming  <murrayc@murrayc.com>, M#183.
 
 	* hildon-widgets/hildon-calendar-popup.c:
 	(hildon_calendar_popup_new): Use only g_object_new(), passing 
@@ -613,7 +1082,6 @@
 
 	* configure.ac: 0.12.11
 
-
 2006-04-19 Tapani Palli <tapani.palli@nokia.com>
 
 	* thread safety (N#24348), fixed timeout and idle callbacks :
@@ -656,14 +1124,12 @@
 2006-04-17  Luc Pionchon  <luc.pionchon@nokia.com>
 
 	* doc/hildon-libs-docs.sgml: added index for new symbols.
-
 	
 2006-04-17  Luc Pionchon  <luc.pionchon@nokia.com>
 
 	* doc/Makefile.am (version.xml): generates version.xml
 	* doc/hildon-libs-docs.sgml: added &version; entity, and display
 	the version number in the doc title.
-	
 
 2006-04-17  Luc Pionchon  <luc.pionchon@nokia.com>
 
@@ -680,13 +1146,11 @@
 	* gtk-infoprint.c
 	* hildon-date-editor.h
 
-
 2006-04-16  Luc Pionchon  <luc.pionchon@nokia.com>
 
 	* hildon-widgets/hildon-time-editor.c
 	(hildon_time_editor_set_show_hours) 
 	(hildon_time_editor_get_show_hours): added gtk-doc tag 'Since:'
-
 
 2006-04-15  Luc Pionchon  <luc.pionchon@nokia.com>
 
@@ -696,7 +1160,6 @@
 	hildon_gtk_button_set_depressed, provided by osso-GTK, since
 	2.6.10-1.osso4, instead of GTK private symbol
 	_gtk_button_set_depressed
-
 
 2006-04-15  Marius Vollmer  <marius.vollmer@nokia.com>
 
@@ -753,7 +1216,6 @@
 	(hildon_number_editor_class_init):
 	"range_error".
 
-
 2006-04-13  Luc Pionchon  <luc.pionchon@nokia.com>
 
 	M#90 - Use standard GLib macro names.
@@ -772,7 +1234,6 @@
 	* hildon-widgets/hildon-range-editor.c: 
 	* hildon-widgets/hildon-volumebar-range.c: 
 	* hildon-widgets/hildon-weekday-picker.c:
-
 
 2006-04-13  Johan Bilien  <johan.bilien@nokia.com>
 
@@ -795,7 +1256,6 @@
 	* hildon-widgets/hildon-time-editor.c
 	(convert_to_12h): removed m and s paramters (useless)
 	(convert_to_24h): likewise.
-
 	
 2006-04-13  Luc Pionchon  <luc.pionchon@nokia.com>
 
@@ -806,7 +1266,6 @@
 	(hildon_time_editor_inserted_text): new function.
 	On inserted text, if entry has two digits, jumps to the next field.
 
-
 2006-04-13  Luc Pionchon  <luc.pionchon@nokia.com>
 
 	Pops up the color selector on 'select' hardkey (IMP-15)
@@ -815,7 +1274,6 @@
 	(hildon_color_button_init): connect "key-release-event"
 	(hildon_color_button_key_released): new function.
 	Pops up the color selector on 'select' hardkey release
-
 
 2006-04-13  Luc Pionchon  <luc.pionchon@nokia.com>
 
@@ -860,11 +1318,11 @@
 
 2006-04-07  Tomas Junnonen  <tomas.junnonen@nokia.com>
 
- 	- Added support for Pango markup
+	- Added support for Pango markup
 	  Added   hildon_banner_show_information_with_markup
- 	- Removed hildon_banner_show_confirmation
- 	- Re-position the banner when its content changes
- 	- Banner now doesn't truncate strings nor insert linebreaks
+	- Removed hildon_banner_show_confirmation
+	- Re-position the banner when its content changes
+	- Banner now doesn't truncate strings nor insert linebreaks
 	- fixes N#24339 - Information banners do not resize
 
 	* hildon-widgets/hildon-banner.[ch]
@@ -2151,7 +2609,7 @@
 	
 2006-03-01  Luc Pionchon  <luc.pionchon@nokia.com>
 
-        Cleanup name-password dialog:
+	Cleanup name-password dialog:
 	
 	* hildon-widgets/hildon-name-password-dialog.[ch]
 
@@ -2165,8 +2623,8 @@
 	duplicated code replaced with calls to relevant public functions
 
 	(hildon_name_password_dialog_init): fixed leaking group variable;
-        reworked to have captions as local variables and captioned entries
-        in the private struct
+	reworked to have captions as local variables and captioned entries
+	in the private struct
 
 	(hildon_name_password_dialog_new_with_default): name and password
 	arguments declared const
@@ -2176,7 +2634,6 @@
 
 	(hildon_name_password_dialog_set_domain): domain argument declared
 	const; type check added + cleanup
-
 
 2006-03-01  Luc Pionchon  <luc.pionchon@nokia.com>
 
@@ -2225,7 +2682,6 @@
 	(hildon_get_password_dialog_set_max_characters): broken type check fixed
 	(_invalid_input): gpointer data argument renamed unused
 
-
 2006-02-28  Luc Pionchon  <luc.pionchon@nokia.com>
 
 	(*_get_type): declared G_GNUC_CONST
@@ -2248,7 +2704,7 @@
 
 2006-02-28  Luc Pionchon  <luc.pionchon@nokia.com>
 
-        Volume bars cleanup
+	Volume bars cleanup
 	
 	* hildon-widgets/hildon-volumebar.c
 	(hildon_volumebar_class_init): object class casts cleaned up
@@ -2312,38 +2768,37 @@
 	* hildon-widgets/hildon-vvolumebar.h
 	(hildon_vvolumebar_get_type): declared G_GNUC_CONST 
 
-
 2006-02-28  Luc Pionchon  <luc.pionchon@nokia.com>
 
 	* hildon-widgets/hildon-weekday-picker.c
 	(_HildonWeekdayPickerPrivate): Removed members: dayorder, days,
 	last_index; added day_order_buttons
 	
-	(hildon_weekday_picker_mnemonic_activate): removed.
-	                                 mnemonics are no longer used.
+	* (hildon_weekday_picker_mnemonic_activate): removed.
+	mnemonics are no longer used.
 	
-	(hildon_weekday_picker_class_init): Removed mnemonic_activate
+	* (hildon_weekday_picker_class_init): Removed mnemonic_activate
 	function. Rewritten creation of buttons. Unref'ed size group.
 	
-	(button_toggle): Removed bit mask checking, simplified function
+	* (button_toggle): Removed bit mask checking, simplified function
 	
-	(hildon_weekday_picker_set_day):
-	(hildon_weekday_picker_unset_day): Removed bit mask checking, date
-                                           adjustment, unecessary for loop
+	* (hildon_weekday_picker_set_day):
+	* (hildon_weekday_picker_unset_day): Removed bit mask checking, date
+	adjustment, unecessary for loop
 	
-	(hildon_weekday_picker_toggle_day): Removed date adjustment and
+	* (hildon_weekday_picker_toggle_day): Removed date adjustment and
 	unecessary for loop. Simplified button toggling
 
-	(hildon_weekday_picker_set_all):
-	(hildon_weekday_picker_unset_all): Removed bit mask checking and
-	                                   simplified for loop
+	* (hildon_weekday_picker_set_all):
+	* (hildon_weekday_picker_unset_all): Removed bit mask checking and
+	simplified for loop
 
 	(hildon_weekday_picker_isset_day): Removed date adjustment and
-                                           unecessary for loop;
+	unecessary for loop;
 
 2006-02-21  Luc Pionchon  <luc.pionchon@nokia.com>
 
-        Added hildon-banner, as a clean replacement for gtk-infoprint
+	Added hildon-banner, as a clean replacement for gtk-infoprint
 	* hildon-widgets/hildon-banner.[ch]: implementation and header	
 	* hildon-widgets/Makefile.am: reference new files
 	* hildon-widgets/gtk-infoprint.c: removed implementation, now just
@@ -2446,8 +2901,6 @@
 
 	* configure.ac: do not depend anymore on hildon-lgpl nor
 	hildon-fm, check for libmb, added Makefile output for timer/
-
-
 	
 2006-01-18  Luc Pionchon  <luc.pionchon@nokia.com>
 
@@ -2487,7 +2940,7 @@
 
 2006-01-11  Luc Pionchon  <luc.pionchon@nokia.com>
 
-        N#21063 hildon_note_new_confirmation_add_buttons has misleading docs
+	N#21063 hildon_note_new_confirmation_add_buttons has misleading docs
 	* hildon-widgets/hildon-note.c: 
 	(hildon_note_new_confirmation_add_buttons): updated doc
 	(hildon_note_set_button_texts): likewise.
@@ -2558,7 +3011,6 @@
 	
 2005-11-18  Luc Pionchon  <luc.pionchon@nokia.com>
 
-
 	Gazpacho support, added the following properties:
 	
 	* hildon-widgets/hildon-insert-object-dialog.c: "name", "mimetype"
@@ -2573,10 +3025,9 @@
 
 	* hildon-widgets/hildon-color-button.c: minor cleanup
 
-
 2005-11-18  Luc Pionchon  <luc.pionchon@nokia.com>
 
-        Started new development
+	Started new development
 	(branche for maintenance continues with versions 0.9.x)
 
 2005-11-03  Luc Pionchon  <luc.pionchon@nokia.com>
@@ -2586,9 +3037,9 @@
 2005-10-31  Luc Pionchon  <luc.pionchon@nokia.com>
 
 	same fix for,
-        N#19283 Control panel - The values entered are not saved.
+	N#19283 Control panel - The values entered are not saved.
 	N#19648 Hildon Date Editor widget detects values too high
-        (note: complete fix include also fixes in GTk+)
+	(note: complete fix include also fixes in GTk+)
 
 	* hildon-widgets/hildon-calendar-popup.c
 	(hildon_calendar_popup_set_property),
@@ -2619,7 +3070,7 @@
 
 2005-10-12  Luc Pionchon  <luc.pionchon@nokia.com>
 
-        N#19140 System alerts still audible despite being turned off
+	N#19140 System alerts still audible despite being turned off
 	
 	* hildon-widgets/hildon-note.c (sound_handling): 
 
@@ -2629,10 +3080,10 @@
 	hildon_play_system_sound.
 	(hildon_note_init): Signal handler id is changed to be in private
 	structure, not in global variable.
-  	
+
 	* hildon-note.c: Removed unused defines etc.
 
-        * Makefile.am: Appended new files to build rules.
+	* Makefile.am: Appended new files to build rules.
 
 2005-10-05  Luc Pionchon  <luc.pionchon@nokia.com>
 
@@ -2686,7 +3137,6 @@
 	* hildon-widgets/hildon-grid.c
 	(hildon_grid_class_init, hildon_grid_init): Replaced default empty
 	label by logical name "Ckct_wi_grid_no_items"
-
 
 2005-08-31  Luc Pionchon  <luc.pionchon@nokia.com>
 

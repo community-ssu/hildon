@@ -5,6 +5,8 @@
 # suit your project. See the GTK+ Makefiles in gtk+/docs/reference for examples
 # of using the various options.
 
+MAINTAINERCLEANFILES = Makefile.in
+
 # The name of the module, e.g. 'glib'.
 DOC_MODULE=hildon-libs
 

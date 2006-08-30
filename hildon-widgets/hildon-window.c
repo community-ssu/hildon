@@ -3,12 +3,12 @@
  *
  * Copyright (C) 2006 Nokia Corporation.
  *
- * Contact: Luc Pionchon <luc.pionchon@nokia.com>
+ * Contact: Michael Dominic Kostrzewa <michael.kostrzewa@nokia.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public License
- * as published by the Free Software Foundation; either version 2.1 of
- * the License, or (at your option) any later version.
+ * as published by the Free Software Foundation; version 2.1 of
+ * the License.
  *
  * This library is distributed in the hope that it will be useful, but
  * WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -1531,8 +1531,10 @@ hildon_window_escape_timeout (gpointer data)
     /* Send fake event, simulation a situation that user
        pressed 'x' from the corner */
     event = gdk_event_new(GDK_DELETE);
-    ((GdkEventAny *)event)->window = GTK_WIDGET(data)->window;
+    ((GdkEventAny *)event)->window = GDK_WINDOW (g_object_ref (GTK_WIDGET(data)->window));
     gtk_main_do_event(event);
+
+    /* That unrefs the window, so we're reffing it above */
     gdk_event_free(event);
 
     priv->escape_timeout = 0;
@@ -1665,25 +1667,27 @@ hildon_window_get_menu (HildonWindow * self)
  * 
  * Sets the menu to be used for this window. This menu overrides
  * a program-wide menu that may have been set with
- * hildon_program_set_common_menu.
+ * hildon_program_set_common_menu. Pass NULL to remove the current
+ * menu.
  **/ 
 void
 hildon_window_set_menu (HildonWindow *self, GtkMenu *menu)
 {
-    g_return_if_fail (self && HILDON_IS_WINDOW (self) && 
-            menu && GTK_IS_MENU (menu));
+    g_return_if_fail (HILDON_IS_WINDOW (self));
 
-    if (self->priv->menu)
-    {
+    if (self->priv->menu != NULL) {
+        gtk_menu_detach (GTK_MENU (self->priv->menu));
         g_object_unref (self->priv->menu);
     }
 
-    self->priv->menu = GTK_WIDGET (menu);
-    gtk_widget_set_name (GTK_WIDGET (self->priv->menu),
-                         "menu_force_with_corners");
-    gtk_widget_show_all (self->priv->menu);
+    self->priv->menu = (menu != NULL) ? GTK_WIDGET (menu) : NULL;
+    if (self->priv->menu != NULL) {
+        gtk_widget_set_name (self->priv->menu, "menu_force_with_corners");
+        gtk_menu_attach_to_widget (GTK_MENU (self->priv->menu), GTK_WIDGET (self), &detach_menu_func);
+        g_object_ref (GTK_MENU (self->priv->menu));
+    }
 
-    gtk_menu_attach_to_widget (menu, GTK_WIDGET (self), &detach_menu_func);
+    gtk_widget_show_all (GTK_WIDGET (self));
 }
 
 /**

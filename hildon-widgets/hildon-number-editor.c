@@ -1,14 +1,14 @@
 /*
  * This file is part of hildon-libs
  *
- * Copyright (C) 2005 Nokia Corporation.
+ * Copyright (C) 2005, 2006 Nokia Corporation.
  *
- * Contact: Luc Pionchon <luc.pionchon@nokia.com>
+ * Contact: Michael Dominic Kostrzewa <michael.kostrzewa@nokia.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public License
- * as published by the Free Software Foundation; either version 2.1 of
- * the License, or (at your option) any later version.
+ * as published by the Free Software Foundation; version 2.1 of
+ * the License.
  *
  * This library is distributed in the hope that it will be useful, but
  * WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -613,10 +613,10 @@ hildon_number_editor_validate_value(HildonNumberEditor *editor, gboolean allow_i
     {
         /* If entry is empty and intermediate forms are nor allowed, 
            emit error signal */
-        g_signal_emit(editor, HildonNumberEditor_signal[RANGE_ERROR], 
-		      0, error_code, &r);
         /* Change to default value */
         hildon_number_editor_set_value(editor, fixup_value);
+        g_signal_emit(editor, HildonNumberEditor_signal[RANGE_ERROR], 
+		                  0, error_code, &r);
         add_select_all_idle(priv);
     }
 }

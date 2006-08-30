@@ -1,0 +1,48 @@
+<!-- ##### SECTION Title ##### -->
+HildonColorChooser
+
+<!-- ##### SECTION Short_Description ##### -->
+A widget to choose a color. Relies on pluggable widget framework, which means
+the API won't guarantee whatkind of dialog will be shown as it depends on
+theming.
+
+On proper installations the widget API should provide platform look-and-feel
+compatible widget capable of choosing a color.
+
+<!-- ##### SECTION Long_Description ##### -->
+
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+<!-- ##### SECTION Stability_Level ##### -->
+
+
+<!-- ##### FUNCTION hildon_color_chooser_new ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### FUNCTION hildon_color_chooser_get_color ##### -->
+<para>
+
+</para>
+
+@chooser: 
+@color: 
+
+
+<!-- ##### FUNCTION hildon_color_chooser_set_color ##### -->
+<para>
+
+</para>
+
+@chooser: 
+@color: 
+
+

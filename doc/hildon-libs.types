@@ -31,6 +31,9 @@
 #include <hildon-widgets/hildon-weekday-picker.h>
 #include <hildon-widgets/hildon-window.h>
 #include <hildon-widgets/hildon-wizard-dialog.h>
+#include <hildon-widgets/hildon-color-chooser.h>
+#include <hildon-widgets/hildon-color-chooser-dialog.h>
+#include <hildon-widgets/hildon-plugin-widget.h>
 
 hildon_add_home_dialog_get_type
 hildon_app_get_type
@@ -66,3 +69,5 @@ hildon_vvolumebar_get_type
 hildon_weekday_picker_get_type
 hildon_window_get_type
 hildon_wizard_dialog_get_type
+hildon_color_chooser_get_type
+hildon_color_chooser_dialog_get_type
