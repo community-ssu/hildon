@@ -10,6 +10,7 @@ hildon-libs (0.14.0) unstable; urgency=low
   * fixes NB#37467 - Hildon name password dialog with autocapitalization
   * fixes NB#34613 - 'Cancel' and 'Finish' in wrong order in Wizard widget
   * fixes NB#26114 - hildon_gtk_widget_set_logical_* leak signals
+  * fixes NB#38565 - Text weirdly centered in the information banner
 
   * Merging the new color selector branch (0.13.1) with the main trunk code.
   * Maintainer change: Michael Dominic Kostrzewa <michael.kostrzewa@nokia.com>

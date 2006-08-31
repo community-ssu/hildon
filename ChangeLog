@@ -1,5 +1,10 @@
 2006-08-31  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
+	* changelog: Adding one more bug fix from the mergedown. Fixes
+	#NB38565.
+
+2006-08-31  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
 	* debian/changelog: 
 	* hildon-widgets/hildon-defines.c: Disconnect the signal before
 	attaching a new one -- prevents signals from being emitted two times,
