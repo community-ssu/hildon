@@ -1,6 +1,13 @@
 2006-08-31  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
-	* debian/control:
+	* debian/changelog:
+	* hildon-widgets/hildon-wizard-dialog.c: Changing the orded of the
+	buttons in the wizard dialog to be: finish, previous, next, cancel.
+	Fixes #NB34613.
+
+2006-08-31  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
+	* debian/changelog:
 	* hildon-widgets/hildon-name-password-dialog.c: Applying a patch by
 	Fernando to fix the autocaptialization for username/password entries.
 	Fixes #NB37467.

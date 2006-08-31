@@ -229,11 +229,11 @@ init (HildonWizardDialog *wizard_dialog)
     gtk_box_pack_start_defaults (GTK_BOX (priv->box), GTK_WIDGET (vbox));
     gtk_box_pack_start (GTK_BOX (vbox), GTK_WIDGET (priv->image), FALSE, FALSE, 0);
 
-    /* Add response buttons: cancel, previous, next, finish */
-    gtk_dialog_add_button (dialog, _("ecdg_bd_wizard_cancel"), HILDON_WIZARD_DIALOG_CANCEL);
+    /* Add response buttons: finish, previous, next, cancel */
+    gtk_dialog_add_button (dialog, _("ecdg_bd_wizard_finish"), HILDON_WIZARD_DIALOG_FINISH);
     gtk_dialog_add_button (dialog, _("ecdg_bd_wizard_previous"), HILDON_WIZARD_DIALOG_PREVIOUS);
     gtk_dialog_add_button (dialog, _("ecdg_bd_wizard_next"), HILDON_WIZARD_DIALOG_NEXT);
-    gtk_dialog_add_button (dialog, _("ecdg_bd_wizard_finish"), HILDON_WIZARD_DIALOG_FINISH);
+    gtk_dialog_add_button (dialog, _("ecdg_bd_wizard_cancel"), HILDON_WIZARD_DIALOG_CANCEL);
 
     /* Set initial button states: previous and finish buttons are disabled */
     make_buttons_sensitive (wizard_dialog, FALSE, FALSE, TRUE);
