@@ -1,5 +1,12 @@
 2006-08-31  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
+	* debian/changelog: 
+	* hildon-widgets/hildon-defines.c: Disconnect the signal before
+	attaching a new one -- prevents signals from being emitted two times,
+	fixes a memory leak. Fixes #NB26114.
+
+2006-08-31  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
 	* debian/changelog:
 	* hildon-widgets/hildon-wizard-dialog.c: Changing the orded of the
 	buttons in the wizard dialog to be: finish, previous, next, cancel.
@@ -17,7 +24,7 @@
 	[Merging 0.13.1 => TRUNK]
 
 	* ./: Merging the experimental color selector branch. Fixes: #NB37010,
-	#NB38559, #33217, #NB37172.   
+	#NB38559, #NB33217, #NB37172.   
 	Maintainer change:
 	Michael Dominic Kostrzewa
 	<michael.kostrzewa@nokia.com>

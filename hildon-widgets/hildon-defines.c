@@ -168,7 +168,8 @@ static void hildon_logical_data_free (HildonLogicalData *ld)
  * 
  * This function assigns a defined logical font to the @widget and all its child widgets.
  * It also connects to the "style_set" signal which will retrieve & assign the new font for the given logical name each time the theme is changed.
- * The returned signal id can be used to disconnect the signal.
+ * The returned signal id can be used to disconnect the signal. 
+ * The previous signal (obtained by calling this function) is disconnected automatically and should not be used. 
  * 
  * Return value : The signal id that is triggered every time theme is changed. 0 if font set failed.
  **/
@@ -187,15 +188,16 @@ gulong hildon_gtk_widget_set_logical_font (GtkWidget *widget, const gchar *logic
   ld->logicalcolorstring = NULL;
   ld->logicalfontstring = g_strdup(logicalfontname);
 
+  /* Disconnects the previously connected signals. That calls the closure notify
+   * and effectively disposes the allocated data (hildon_logical_data_free) */
+  g_signal_handlers_disconnect_matched (G_OBJECT (widget), G_SIGNAL_MATCH_FUNC, 
+                                        0, NULL, NULL, 
+                                        G_CALLBACK (hildon_change_style_recursive_from_ld), NULL);
+
   /* Change the font now */
   hildon_change_style_recursive_from_ld (widget, NULL, ld);
 
-  /* Connect to "style_set" so that the font gets changed whenever theme changes.
-
-     FIXME: if this function is called multiple times, the old signal
-     handler should be disconnected. However since signal ID is
-     returned, this probably can't be done without breaking backwards
-     compatibility. */
+  /* Connect to "style_set" so that the font gets changed whenever theme changes. */
   signum = g_signal_connect_data (G_OBJECT (widget), "style_set",
                                   G_CALLBACK (hildon_change_style_recursive_from_ld),
                                   ld, (GClosureNotify) hildon_logical_data_free, 0);
@@ -213,6 +215,7 @@ gulong hildon_gtk_widget_set_logical_font (GtkWidget *widget, const gchar *logic
  * This function assigns a defined logical color to the @widget and all it's child widgets.
  * It also connects to the "style_set" signal which will retrieve & assign the new color for the given logical name each time the theme is changed.
  * The returned signal id can be used to disconnect the signal.
+ * The previous signal (obtained by calling this function) is disconnected automatically and should not be used. 
  * 
  * Example : If the style you want to modify is bg[NORMAL] then set rcflags to GTK_RC_BG and state to GTK_STATE_NORMAL.
  * 
@@ -233,12 +236,17 @@ gulong hildon_gtk_widget_set_logical_color (GtkWidget *widget, GtkRcFlags rcflag
   ld->state = state;
   ld->logicalcolorstring = g_strdup(logicalcolorname);
   ld->logicalfontstring = NULL;
+
+  /* Disconnects the previously connected signals. That calls the closure notify
+   * and effectively disposes the allocated data (hildon_logical_data_free) */
+  g_signal_handlers_disconnect_matched (G_OBJECT (widget), G_SIGNAL_MATCH_FUNC, 
+                                        0, NULL, NULL, 
+                                        G_CALLBACK (hildon_change_style_recursive_from_ld), NULL);
   
   /* Change the colors now */
   hildon_change_style_recursive_from_ld (widget, NULL, ld);
 
-  /* Connect to "style_set" so that the colors gets changed whenever theme
-     changes. FIXME: same as above */
+  /* Connect to "style_set" so that the colors gets changed whenever theme */
   signum = g_signal_connect_data (G_OBJECT (widget), "style_set",
                                   G_CALLBACK (hildon_change_style_recursive_from_ld),
                                   ld, (GClosureNotify) hildon_logical_data_free, 0);
