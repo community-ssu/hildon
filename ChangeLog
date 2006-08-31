@@ -1,3 +1,10 @@
+2006-08-31  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
+	* debian/control:
+	* hildon-widgets/hildon-name-password-dialog.c: Applying a patch by
+	Fernando to fix the autocaptialization for username/password entries.
+	Fixes #NB37467.
+
 2006-08-30  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
 	[Merging 0.13.1 => TRUNK]
