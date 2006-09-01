@@ -1,4 +1,4 @@
-hildon-libs (0.14.0) unstable; urgency=low
+hildon-libs (0.14.0-1) unstable; urgency=low
 
   * fixes NB#38996 - HildonApp/HildonWindow: _escape_timeout() ref.count issue
   * fixes NB#37010 - Time pickers in Set alarm and Date and time dialogs
