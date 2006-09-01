@@ -6,7 +6,6 @@ hildon-widgets/hildon-calendar-popup.c
 hildon-widgets/hildon-color-popup.c
 hildon-widgets/hildon-color-selector.c
 hildon-widgets/hildon-date-editor.c
-hildon-widgets/hildon-file-details-dialog.c
 hildon-widgets/hildon-file-handling-note.c
 hildon-widgets/hildon-font-selection-dialog.c
 hildon-widgets/hildon-note.c
@@ -16,3 +15,8 @@ hildon-widgets/hildon-sort-dialog.c
 hildon-widgets/hildon-time-editor.c
 hildon-widgets/hildon-time-picker.c
 hildon-widgets/hildon-wizard-dialog.c
+hildon-widgets-plugins/hildon-color-chooser-dialog-hsv.c
+hildon-widgets/hildon-app.c
+hildon-widgets/hildon-caption.c
+hildon-widgets/hildon-find-toolbar.c
+hildon-widgets/hildon-grid.c

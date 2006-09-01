@@ -1,3 +1,8 @@
+2006-09-01  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
+	* po/POTFILES.in:
+	* po/en_GB.po: Rebuilding & updating the PO files. 
+
 2006-08-31  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
 	* changelog: Adding one more bug fix from the mergedown. Fixes
