@@ -11,6 +11,12 @@ hildon-libs (0.14.0) unstable; urgency=low
   * fixes NB#34613 - 'Cancel' and 'Finish' in wrong order in Wizard widget
   * fixes NB#26114 - hildon_gtk_widget_set_logical_* leak signals
   * fixes NB#38565 - Text weirdly centered in the information banner
+  * fixes NB#16830 - In feed details dialog horizontal alignment is incorrect
+  * fixes NB#38487 - Focus not set properly when invalid data is entered in a time editor
+  * fixes NB#36938 - UP/Down arrow keys do not move the focus to the previous/next widget in date and time editors
+  * fixes NB#34642 - Placeholder appears in place of spaces in file save dialog for file names
+  * fixes NB#32772 - Labels are partially hidden in Hildon Grid view in large Icons mode
+  * fixes NB#38598 - Information banners do not resize
 
   * Merging the new color selector branch (0.13.1) with the main trunk code.
   * Maintainer change: Michael Dominic Kostrzewa <michael.kostrzewa@nokia.com>

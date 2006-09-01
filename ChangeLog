@@ -1,3 +1,13 @@
+
+2006-09-01  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
+	* debian/changelog: Adding info about bugs fixed: #NB16830, #NB38487,
+	#NB36938, #NB34642, #NB32772, #NB38598.
+
+	* doc/design/abstract_vs_modular_plugin_widgets.dia:
+	* doc/design/abstract_vs_modular_plugin_widgets.png: Adding the
+	missing design schemes. 
+
 2006-09-01  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
 	* po/POTFILES.in:
