@@ -556,7 +556,7 @@ static void hildon_banner_ensure_child(HildonBanner *self,
       /* Use user provided widget or create a new one */
       self->priv->main_item = widget = user_widget ? 
          user_widget : GTK_WIDGET(g_object_new_valist(type, first_property, args));
-      gtk_box_pack_start(GTK_BOX(self->priv->layout), widget, FALSE, TRUE, 0);
+      gtk_box_pack_start(GTK_BOX(self->priv->layout), widget, TRUE, TRUE, 0);
    }
 
    /* We make sure that the widget exists in desired position. Different
@@ -610,6 +610,7 @@ void hildon_banner_show_information(GtkWidget *widget,
    hildon_banner_ensure_child(banner, NULL, 0, GTK_TYPE_IMAGE, 
       "pixel-size", HILDON_ICON_PIXEL_SIZE_NOTE, 
       "icon-name", icon_name ? icon_name : HILDON_BANNER_DEFAULT_ICON,
+      "yalign", 0.0, 
       NULL);
    hildon_banner_set_text(banner, text);
    hildon_banner_bind_label_style(banner, NULL);
@@ -647,6 +648,7 @@ void hildon_banner_show_information_with_markup(GtkWidget *widget,
    hildon_banner_ensure_child(banner, NULL, 0, GTK_TYPE_IMAGE, 
       "pixel-size", HILDON_ICON_PIXEL_SIZE_NOTE, 
       "icon-name", icon_name ? icon_name : HILDON_BANNER_DEFAULT_ICON,
+      "yalign", 0.0, 
       NULL);
    hildon_banner_set_markup(banner, markup);
    hildon_banner_bind_label_style(banner, NULL);
@@ -716,7 +718,7 @@ GtkWidget *hildon_banner_show_animation(GtkWidget *widget,
    /* Prepare banner */
    banner = hildon_banner_get_instance_for_widget(widget, FALSE);
    hildon_banner_ensure_child(banner, image_widget, 0,
-      GTK_TYPE_IMAGE, NULL);
+      GTK_TYPE_IMAGE, "yalign", 0.0, NULL);
    hildon_banner_set_text(banner, text);
    hildon_banner_bind_label_style(banner, NULL);
 
