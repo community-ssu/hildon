@@ -127,7 +127,7 @@ enum
 };
 
 
-static gint button_multipliers[WIDGET_GROUP_COUNT][2] =
+static const gint button_multipliers[WIDGET_GROUP_COUNT][2] =
 {
   { MINS_IN_1H, -MINS_IN_1H },
   { 10, -10 },

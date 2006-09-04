@@ -1,5 +1,11 @@
 2006-09-04  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
+	* hildon-widgets/hildon-color-selector.c:
+	* hildon-widgets/hildon-time-picker.c: Applying a small patch by
+	Tamminen Eero to save some bytes of ram. Fixes #NB22965.
+
+2006-09-04  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
 	* hildon-widgets/hildon-font-selection-dialog.c: Excluding some more
 	hardcoded fonts from the font selection dialog. We need a flexible API
 	to do that in future, but currently introducing it wouldn't be

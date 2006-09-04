@@ -314,7 +314,7 @@ hildon_color_selector_init(HildonColorSelector * selector)
     GConfValue *value;
 
     /* 16 standard Windows colors */
-    static char *base_colours[HILDON_BASE_COLOR_NUM] = {
+    const char base_colours[][HILDON_BASE_COLOR_NUM] = {
         "#000000", "#FFFFFF", "#FF0000", "#660000", "#0000FF", "#000066",
         "#FF33FF", "#660066", "#33CC33", "#006600", "#FFCC00", "#CC9900",
         "#999999", "#666666", "#00CCCC", "#006666"
