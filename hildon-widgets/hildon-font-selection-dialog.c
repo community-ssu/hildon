@@ -1139,6 +1139,9 @@ hildon_font_selection_dialog_show_preview(HildonFontSelectionDialog *
 static gboolean is_internal_font(const gchar * name){
   return strcmp(name, "DeviceSymbols") == 0
       || strcmp(name, "Nokia Smiley" ) == 0
+      || strcmp(name, "NewCourier" ) == 0
+      || strcmp(name, "NewTimes" ) == 0
+      || strcmp(name, "SwissA" ) == 0
       || strcmp(name, "Nokia Sans"   ) == 0
       || strcmp(name, "Nokia Sans Cn") == 0;
 }
