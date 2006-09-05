@@ -96,7 +96,8 @@ enum
   PROP_STRIKETHROUGH_SET,
   PROP_POSITION,
   PROP_POSITION_SET,
-  PROP_PREVIEW_TEXT
+  PROP_PREVIEW_TEXT,
+  PROP_FONT_SCALING
 };
 
 typedef struct
@@ -131,6 +132,11 @@ struct _HildonFontSelectionDialogPrivate
    * when we change the color setting*/
   
   gboolean color_set;
+
+  /* font_scaling is the scaling factor applied to font
+   * scale in the preview dialog */
+
+  gdouble font_scaling;
   gulong color_modified_signal_handler;
 };
 
@@ -385,7 +391,11 @@ hildon_font_selection_dialog_get_property (GObject      *object,
       else
 	g_value_set_int(value, 0);
       break;
-      
+    
+    case PROP_FONT_SCALING:
+	g_value_set_double(value, priv->font_scaling);
+      break;
+  
     case PROP_POSITION_SET:
       i = gtk_combo_box_get_active(GTK_COMBO_BOX(priv->cbx_positioning));
       if(i >= 0 && i < 3)
@@ -552,6 +562,10 @@ hildon_font_selection_dialog_set_property (GObject         *object,
       else
 	gtk_combo_box_set_active(GTK_COMBO_BOX(priv->cbx_positioning), 0);
       break;
+
+    case PROP_FONT_SCALING:
+      priv->font_scaling = g_value_get_double(value);
+      break;
       
     case PROP_POSITION_SET:
       b = g_value_get_boolean(value);
@@ -687,6 +701,13 @@ hildon_font_selection_dialog_class_init(HildonFontSelectionDialogClass *
 				   "Font position super or subscript",
 				   -1, 1, 0,
 				   G_PARAM_READWRITE));
+
+  g_object_class_install_property(gobject_class, PROP_FONT_SCALING,
+				   g_param_spec_double ("font-scaling",
+				   "Font scaling",
+				   "Font scaling for the preview dialog",
+				   0, 10, 1,
+				   G_PARAM_READWRITE));
   
   g_object_class_install_property(gobject_class, PROP_POSITION_SET,
 				  g_param_spec_boolean ("position-set",
@@ -793,6 +814,7 @@ hildon_font_selection_dialog_construct_notebook (HildonFontSelectionDialog
   font_color_box = gtk_hbox_new(FALSE, 0);
   priv->font_color_button = hildon_color_button_new();
   priv->color_set = FALSE;
+  priv->font_scaling = 1.0;
   priv->color_modified_signal_handler = 
     g_signal_connect(G_OBJECT(priv->font_color_button), "notify::color",
 		     G_CALLBACK(color_modified_cb), (gpointer) priv);
@@ -953,6 +975,7 @@ hildon_font_selection_dialog_create_attrlist(HildonFontSelectionDialog *
 	   strikethrough, strikethrough_set, position_set;
   GdkColor *color = NULL;
   gchar *family = NULL;
+  gdouble font_scaling = 1.0;
 
   list = pango_attr_list_new();
  
@@ -965,7 +988,9 @@ hildon_font_selection_dialog_create_attrlist(HildonFontSelectionDialog *
 	       "underline", &underline, "underline-set", &underline_set,
 	       "strikethrough", &strikethrough, "strikethrough-set", 
 	       &strikethrough_set, "position", &position, 
-	       "position-set", &position_set, NULL);
+	       "position-set", &position_set, 
+               "font-scaling", &font_scaling,
+               NULL);
 
   /*family*/
   if(family_set)
@@ -1054,7 +1079,14 @@ hildon_font_selection_dialog_create_attrlist(HildonFontSelectionDialog *
 
       add_preview_text_attr(list, attr, start_index, len);
     }
-  
+
+  /*font scaling for preview*/
+  if(font_scaling)
+    {
+      attr = pango_attr_scale_new(font_scaling);
+      add_preview_text_attr(list, attr, 0, len + start_index);
+    }
+   
   return list;
 }
 

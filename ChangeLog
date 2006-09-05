@@ -1,3 +1,11 @@
+2006-09-05  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
+	* hildon-widgets/hildon-font-selection-dialog.c: Adding a
+	"font-scaling" property that allows to customize the output of the
+	Preview dialog during font selection. By default font-scaling equals
+	1.0 = no change. Applications/clients should apply here the
+	font-scaling they use for user-output/visualization. Fixes #NB19001.
+
 2006-09-05  Tomas Junnonen  <tomas.junnonen@nokia.com>
 
 	* src/hildon-widgets/hildon-find-toolbar.c: Start search on "activate"
