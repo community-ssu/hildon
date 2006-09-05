@@ -1,3 +1,8 @@
+2006-09-05  Tomas Junnonen  <tomas.junnonen@nokia.com>
+
+	* src/hildon-widgets/hildon-find-toolbar.c: Start search on "activate"
+	entry signal instead of only KP_Enter. 
+
 2006-09-04  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
 	* hildon-widgets/hildon-banner.c: Aling the stock images to 0.0

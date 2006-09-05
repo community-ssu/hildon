@@ -386,25 +386,15 @@ hildon_find_toolbar_emit_invalid_input(GtkEntry *entry,
     g_signal_emit_by_name(self, "invalid_input", NULL);
 }
 
-static gboolean
-hildon_find_toolbar_entry_key_press (GtkWidget *widget,
-                                    GdkEventKey *event,
+static void
+hildon_find_toolbar_entry_activate (GtkWidget *widget,
                                     gpointer user_data)
 {
   GtkWidget *find_toolbar = GTK_WIDGET(user_data);
-  
-  /* on enter we emit search and history_append signals and keep
-   * focus by returning true */
-  if (event->keyval == GDK_KP_Enter)
-    {
-      gboolean rb;  
-      g_signal_emit_by_name(find_toolbar, "search", NULL);
-      g_signal_emit_by_name(find_toolbar, "history_append", &rb, NULL);
+  gboolean rb;  
 
-      return TRUE;
-    }
-
-  return FALSE;      
+  g_signal_emit_by_name(find_toolbar, "search", NULL);
+  g_signal_emit_by_name(find_toolbar, "history_append", &rb, NULL);
 }
 
 static void
@@ -559,8 +549,8 @@ hildon_find_toolbar_init(HildonFindToolbar *self)
   gtk_widget_show_all(GTK_WIDGET(entry_combo_box_container));
   gtk_toolbar_insert (GTK_TOOLBAR(self), entry_combo_box_container, -1);
   g_signal_connect(hildon_find_toolbar_get_entry(self->priv),
-                    "key-press-event",
-                    G_CALLBACK(hildon_find_toolbar_entry_key_press), self);
+                    "activate",
+                    G_CALLBACK(hildon_find_toolbar_entry_activate), self);
 
   /* Find button */
   self->priv->find_button = gtk_tool_button_new (
