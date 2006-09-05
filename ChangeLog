@@ -1,5 +1,10 @@
 2006-09-05  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
+	* hildon-widgets/hildon-note.c: Fixing the behaviour of
+	hildon_note_new_confirmation_with_icon_stock. Fixes #NB22825.
+
+2006-09-05  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
 	* hildon-widgets/hildon-font-selection-dialog.c: Adding a
 	"font-scaling" property that allows to customize the output of the
 	Preview dialog during font selection. By default font-scaling equals

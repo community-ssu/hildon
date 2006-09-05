@@ -104,7 +104,8 @@ enum {
     PROP_HILDON_NOTE_TYPE,
     PROP_HILDON_NOTE_DESCRIPTION,
     PROP_HILDON_NOTE_ICON,
-    PROP_HILDON_NOTE_PROGRESSBAR
+    PROP_HILDON_NOTE_PROGRESSBAR,
+    PROP_HILDON_NOTE_STOCK_ICON
 };
 
 static void
@@ -134,6 +135,10 @@ hildon_note_set_property(GObject * object,
         break;
     case PROP_HILDON_NOTE_ICON:
         gtk_image_set_from_icon_name(GTK_IMAGE(priv->icon), 
+            g_value_get_string(value), HILDON_ICON_SIZE_BIG_NOTE);
+        break;
+    case PROP_HILDON_NOTE_STOCK_ICON:
+        gtk_image_set_from_stock(GTK_IMAGE(priv->icon), 
             g_value_get_string(value), HILDON_ICON_SIZE_BIG_NOTE);
         break;
     case PROP_HILDON_NOTE_PROGRESSBAR:
@@ -178,6 +183,9 @@ hildon_note_get_property(GObject * object,
         break;
     case PROP_HILDON_NOTE_ICON:
         g_object_get_property(G_OBJECT(priv->icon), "icon-name", value);
+        break;
+    case PROP_HILDON_NOTE_STOCK_ICON:
+        g_object_get_property(G_OBJECT(priv->icon), "stock", value);
         break;
     case PROP_HILDON_NOTE_PROGRESSBAR:
         g_value_set_object(value, priv->progressbar);
@@ -276,6 +284,19 @@ static void hildon_note_class_init(HildonNoteClass * class)
         g_param_spec_string("icon",
                             "note icon",
                             "The name of the icon that appears in the note dialog",
+                            "",
+                            G_PARAM_READWRITE));
+
+   /**
+   * HildonNote:stock-icon:
+   *
+   * Stock icon for note.
+   */
+    g_object_class_install_property(object_class,
+        PROP_HILDON_NOTE_STOCK_ICON,
+        g_param_spec_string("stock-icon",
+                            "Stock note icon",
+                            "The stock name of the icon that appears in the note dialog",
                             "",
                             G_PARAM_READWRITE));
 
@@ -560,14 +581,10 @@ GtkWidget *hildon_note_new_confirmation_with_icon_stock(GtkWindow * parent,
                                                         const gchar *
                                                         stock_id)
 {
-    /* FIXME: This function is broken. We cannot detect if the "icon"
-              means icon name or stock-id, since the type is the same
-              as in the following function. Anyway, since we really
-              do not support stock icons properly, this is a minor issue. */
     GtkWidget *dialog = g_object_new(HILDON_TYPE_NOTE,
                                      "note_type",
                                      HILDON_NOTE_CONFIRMATION_TYPE,
-                                     "description", description, "icon",
+                                     "description", description, "stock-icon",
                                      stock_id, NULL);
 
     if (parent != NULL)
