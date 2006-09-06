@@ -61,6 +61,15 @@ static void hildon_sort_dialog_set_property(GObject * object,
 static void hildon_sort_dialog_get_property(GObject * object,
                                      guint prop_id,
                                      GValue * value, GParamSpec * pspec);
+static void reconstruct_combo (HildonSortDialog * dialog, 
+                                     gboolean remove, 
+                                     gboolean reversed);
+static gint hildon_sort_dialog_add_sort_key_with_sorting(HildonSortDialog * dialog, 
+                                     const gchar * sort_key, 
+                                     gboolean sorting);
+static void sort_key_changed(GtkWidget * widget, 
+                             HildonSortDialog * dialog);
+static void hildon_sort_dialog_finalize(GObject * object);
 
 enum {
     PROP_0,
@@ -80,9 +89,31 @@ struct _HildonSortDialogPrivate {
 
     /* Index value counter */
     gint index_counter;
+
+    /* If the current order displayed is reversed */
+    gboolean reversed;
+
+    /* An array for each key representing if a key should be reverse-sorted */
+    gboolean *key_reversed;
 };
 
 /* Private functions */
+
+static void sort_key_changed(GtkWidget * widget, HildonSortDialog * dialog)
+{
+    g_return_if_fail(HILDON_IS_SORT_DIALOG(dialog));
+
+    HildonSortDialogPrivate *priv = HILDON_SORT_DIALOG_GET_PRIVATE(dialog);
+
+    gint index = gtk_combo_box_get_active(GTK_COMBO_BOX(widget));
+
+    if (priv->key_reversed [index] != priv->reversed) {
+        reconstruct_combo (dialog, TRUE, priv->key_reversed [index]);
+        gtk_combo_box_set_active(GTK_COMBO_BOX(priv->combo_order), 0);
+    }
+
+    priv->reversed = priv->key_reversed [index];
+}
 
 /*
  * Initialises the sort dialog class.
@@ -95,6 +126,7 @@ static void hildon_sort_dialog_class_init(HildonSortDialogClass * class)
     
     gobject_class->set_property = hildon_sort_dialog_set_property;
     gobject_class->get_property = hildon_sort_dialog_get_property;
+    gobject_class->finalize = (gpointer) hildon_sort_dialog_finalize;
     
     g_object_class_install_property(gobject_class, PROP_SORT_KEY,
         g_param_spec_int("sort-key",
@@ -113,6 +145,50 @@ static void hildon_sort_dialog_class_init(HildonSortDialogClass * class)
 			 G_PARAM_READWRITE));
 }
 
+static gint hildon_sort_dialog_add_sort_key_with_sorting(HildonSortDialog * dialog, const gchar * sort_key, gboolean sorting)
+{
+    HildonSortDialogPrivate *priv;
+
+    g_return_val_if_fail(HILDON_IS_SORT_DIALOG(dialog), -1);
+
+    priv = HILDON_SORT_DIALOG_GET_PRIVATE(dialog);
+    gboolean *new_array = g_malloc (sizeof (gboolean) * (priv->index_counter + 1));
+
+    /* Rewrite the old values */
+    int i = 0;
+    for (i = 0; i < priv->index_counter; i++) 
+        new_array [i] = priv->key_reversed [i];
+
+    new_array [priv->index_counter] = sorting;
+    gtk_combo_box_append_text(GTK_COMBO_BOX(priv->combo_key), sort_key);
+
+    /* Free the old one and reassign */
+    if (priv->key_reversed != NULL)
+        g_free (priv->key_reversed);
+    priv->key_reversed = new_array;
+
+    return priv->index_counter++;
+}
+
+static void reconstruct_combo (HildonSortDialog * dialog, gboolean remove, gboolean reversed)
+{
+    HildonSortDialogPrivate *priv;
+    priv = HILDON_SORT_DIALOG_GET_PRIVATE(dialog);
+
+    if (remove) {
+        gtk_combo_box_remove_text(GTK_COMBO_BOX(priv->combo_order), 1);
+        gtk_combo_box_remove_text(GTK_COMBO_BOX(priv->combo_order), 0);
+    }
+
+    if (reversed) {
+        gtk_combo_box_append_text(GTK_COMBO_BOX(priv->combo_order), _("ckdg_va_sort_descending"));
+        gtk_combo_box_append_text(GTK_COMBO_BOX(priv->combo_order), _("ckdg_va_sort_ascending"));
+    } else {
+        gtk_combo_box_append_text(GTK_COMBO_BOX(priv->combo_order), _("ckdg_va_sort_ascending"));
+        gtk_combo_box_append_text(GTK_COMBO_BOX(priv->combo_order), _("ckdg_va_sort_descending"));
+    }
+}
+
 static void hildon_sort_dialog_init(HildonSortDialog * dialog)
 {
     HildonSortDialogPrivate *priv;
@@ -123,6 +199,8 @@ static void hildon_sort_dialog_init(HildonSortDialog * dialog)
     priv = HILDON_SORT_DIALOG_GET_PRIVATE(dialog);
 
     priv->index_counter = 0;
+    priv->reversed = FALSE;
+    priv->key_reversed = NULL;
 
     group = GTK_SIZE_GROUP(gtk_size_group_new(GTK_SIZE_GROUP_HORIZONTAL));
 
@@ -140,11 +218,8 @@ static void hildon_sort_dialog_init(HildonSortDialog * dialog)
 
     /* Tab two */
     priv->combo_order = gtk_combo_box_new_text();
-    gtk_combo_box_append_text(GTK_COMBO_BOX(priv->combo_order),
-                              _("ckdg_va_sort_ascending"));
-    gtk_combo_box_append_text(GTK_COMBO_BOX(priv->combo_order),
-                              _("ckdg_va_sort_descending"));
-
+    reconstruct_combo (dialog, FALSE, FALSE);
+    
     priv->caption_order = hildon_caption_new(group, _("ckdg_fi_sort_order"),
                                         priv->combo_order,
                                         NULL, HILDON_CAPTION_OPTIONAL);
@@ -154,6 +229,7 @@ static void hildon_sort_dialog_init(HildonSortDialog * dialog)
 
     gtk_combo_box_set_active(GTK_COMBO_BOX(priv->combo_key), 0);
     gtk_combo_box_set_active(GTK_COMBO_BOX(priv->combo_order), 0);
+    g_signal_connect (G_OBJECT (priv->combo_key), "changed", (gpointer) sort_key_changed, dialog);
 
     /* Create the OK/CANCEL buttons */
     (void) gtk_dialog_add_button(GTK_DIALOG(dialog),
@@ -240,7 +316,7 @@ gint hildon_sort_dialog_get_sort_key(HildonSortDialog * dialog)
     priv = HILDON_SORT_DIALOG_GET_PRIVATE(dialog);
     
     combo_key = gtk_bin_get_child(GTK_BIN(priv->caption_key));
-        
+
     return gtk_combo_box_get_active(GTK_COMBO_BOX(combo_key));
 }
 
@@ -261,8 +337,13 @@ GtkSortType hildon_sort_dialog_get_sort_order(HildonSortDialog * dialog)
 
     priv = HILDON_SORT_DIALOG_GET_PRIVATE(dialog);
     combo_order = gtk_bin_get_child(GTK_BIN(priv->caption_order));
-        
-    return gtk_combo_box_get_active(GTK_COMBO_BOX(combo_order));
+
+    gint sort_order = gtk_combo_box_get_active(GTK_COMBO_BOX(combo_order));
+
+    if (priv->reversed)
+        return (sort_order == 0) ? 1 : 0;
+    else
+        return sort_order;
 }
 
 /**
@@ -304,6 +385,10 @@ hildon_sort_dialog_set_sort_order(HildonSortDialog * dialog,
 
     priv = HILDON_SORT_DIALOG_GET_PRIVATE(dialog);
     combo_order = gtk_bin_get_child(GTK_BIN(priv->caption_order));
+    
+    if (priv->reversed) 
+        order = (order == 0) ? 1 : 0;
+    
     gtk_combo_box_set_active(GTK_COMBO_BOX(combo_order), order);
 
     g_object_notify (G_OBJECT (dialog), "sort-order");
@@ -324,14 +409,27 @@ gint
 hildon_sort_dialog_add_sort_key(HildonSortDialog * dialog,
                                 const gchar * sort_key)
 {
-    HildonSortDialogPrivate *priv;
+    return hildon_sort_dialog_add_sort_key_with_sorting (dialog, sort_key, FALSE);
+}
 
-    g_return_val_if_fail(HILDON_IS_SORT_DIALOG(dialog), -1);
-
-    priv = HILDON_SORT_DIALOG_GET_PRIVATE(dialog);
-    gtk_combo_box_append_text(GTK_COMBO_BOX(priv->combo_key), sort_key);
-
-    return priv->index_counter++;
+/**
+ * hildon_sort_dialog_add_sort_key_reversed:
+ * @dialog: the #HildonSortDialog widget
+ * @sort_key: combo box's index value
+ *
+ * Adds a new sort key and returns the respective index in
+ * sort key combobox. The default sort order for this key is reversed (Descending first).
+ *
+ * Returns: an integer which is the index of the added combo box's
+ * item
+ *
+ * Since: 0.14.1
+ */
+gint
+hildon_sort_dialog_add_sort_key_reversed(HildonSortDialog * dialog,
+                                const gchar * sort_key)
+{
+    return hildon_sort_dialog_add_sort_key_with_sorting (dialog, sort_key, TRUE);
 }
 
 static void
@@ -376,4 +474,22 @@ hildon_sort_dialog_get_property(GObject * object,
         break;
     }
 }
+
+static void 
+hildon_sort_dialog_finalize(GObject * object)
+{
+    HildonSortDialogPrivate *priv;
+    HildonSortDialog *dialog;
+
+    g_return_if_fail (HILDON_IS_SORT_DIALOG (object));
+    dialog = HILDON_SORT_DIALOG(object);
+
+    priv = HILDON_SORT_DIALOG_GET_PRIVATE(dialog);
+    if (priv != NULL && priv->key_reversed != NULL)
+        g_free(priv->key_reversed);
+
+    if (G_OBJECT_CLASS(parent_class)->finalize)
+        G_OBJECT_CLASS(parent_class)->finalize(object);
+}
+
 

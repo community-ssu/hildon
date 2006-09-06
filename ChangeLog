@@ -1,3 +1,9 @@
+2006-09-06  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
+	* hildon-widgets/hildon-sort-dialog.c: Adding a function to add
+	reversed sort keys. Reversed sort keys present Descending/Ascending
+	selection instead of Ascending/Descending default. Fixes #NB32544. 
+
 2006-09-05  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
 	* hildon-widgets/hildon-note.c: Fixing the behaviour of
