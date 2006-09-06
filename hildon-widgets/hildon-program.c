@@ -250,26 +250,28 @@ hildon_program_update_top_most (HildonProgram *program)
     
     active_window = hildon_window_get_active_window();
 
-    wm_hints = XGetWMHints (GDK_DISPLAY (), active_window);
-
-    if (wm_hints)
+    if (active_window)
     {
+      wm_hints = XGetWMHints (GDK_DISPLAY (), active_window);
 
-        if (wm_hints->window_group == priv->window_group)
-        {
-            if (!priv->is_topmost)
-            {
-                priv->is_topmost = TRUE;
-                g_object_notify (G_OBJECT (program), "is-topmost");
-            }
-        }
-        else if (priv->is_topmost)
-        {
+      if (wm_hints)
+      {
+
+          if (wm_hints->window_group == priv->window_group)
+          {
+              if (!priv->is_topmost)
+              {
+                  priv->is_topmost = TRUE;
+                  g_object_notify (G_OBJECT (program), "is-topmost");
+              }
+          }
+          else if (priv->is_topmost)
+          {
             priv->is_topmost = FALSE;
             g_object_notify (G_OBJECT (program), "is-topmost");
-        }
-
-        XFree (wm_hints);
+          }
+      }
+      XFree (wm_hints);
     }
 
     /* Check each window if it was is_topmost */

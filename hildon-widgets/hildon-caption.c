@@ -515,8 +515,18 @@ static gboolean hildon_caption_button_press( GtkWidget *widget,
   if ((GTK_WIDGET_CAN_FOCUS(child) || GTK_IS_CONTAINER(child)) &&
       GTK_WIDGET_IS_SENSITIVE(child))
   {
-    priv->is_focused = TRUE;
-    gtk_widget_grab_focus( GTK_BIN(widget)->child );
+    /* Only if container can be focusable we must set is_focused to TRUE */ 
+    if (GTK_IS_CONTAINER(child))
+    {
+      if (gtk_widget_child_focus (child,
+				  GTK_DIR_TAB_FORWARD))
+	priv->is_focused = TRUE;
+    }
+    else
+    {
+      priv->is_focused = TRUE;
+      gtk_widget_grab_focus (GTK_BIN (widget)->child);
+    }
   }
 
   return FALSE;

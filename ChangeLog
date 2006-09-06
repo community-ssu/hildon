@@ -1,5 +1,18 @@
 2006-09-06  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
+	* hildon-widgets/hildon-app.h:
+	* hildon-widgets/hildon-defines.h: Applying Johan's new key mapping
+	patch back again. WARNING: This breaks compatibility with IT-2006.
+
+	* hildon-widgets/hildon-caption.c: Add specific behaviour for
+	containers when press button event occurs. Fixes #NB36843.
+
+	* hildon-widgets/hildon-program.c:
+	* hildon-widgets/hildon-window.c: Adding a patch to fix occassional
+	BadWindow X errors. Fixes #NB39679.
+
+2006-09-06  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
 	* hildon-widgets/hildon-sort-dialog.c: Adding a function to add
 	reversed sort keys. Reversed sort keys present Descending/Ascending
 	selection instead of Ascending/Descending default. Fixes #NB32544. 

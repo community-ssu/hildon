@@ -975,7 +975,7 @@ hildon_window_get_active_window (void)
     {
         if (win.win != NULL)
             XFree (win.char_pointer);
-        return GDK_FILTER_CONTINUE;
+        return None;
     }
 
     ret = win.win[0];

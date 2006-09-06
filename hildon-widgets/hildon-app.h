@@ -101,13 +101,13 @@ GType hildon_zoom_level_get_type (void);
  * FIXME: These should be removed when API changes are allowed, 
  * they are not used in hildon code anymore (but might be in external). 
  */ 
-#define HILDON_MENU_KEY         GDK_F4
 #define HILDON_HOME_KEY         GDK_F5
 #define HILDON_TOOLBAR_KEY      GDK_T
 #define HILDON_FULLSCREEN_KEY   GDK_F6
 #define HILDON_INCREASE_KEY     GDK_F7
 #define HILDON_DECREASE_KEY     GDK_F8
 #define HILDON_TOOLBAR_MODIFIERS (GDK_SHIFT_MASK | GDK_CONTROL_MASK)
+#define HILDON_MENU_KEY         GDK_F10
 
 #define HILDON_KEYEVENT_IS_MENU_KEY(keyevent) (keyevent->keyval == HILDON_MENU_KEY)
 #define HILDON_KEYEVENT_IS_HOME_KEY(keyevent) (keyevent->keyval == HILDON_HOME_KEY)
