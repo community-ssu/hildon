@@ -346,7 +346,12 @@ hildon_color_button_clicked(GtkButton *button)
     hildon_color_chooser_dialog_get_color(cs_dialog, &cb->priv->color);
     hildon_color_button_set_color( HILDON_COLOR_BUTTON( button ), 
             &(cb->priv->color) );
+  } else 
+  {
+          // FIXME: Fixes 39778, but I think the bug lies elsewhere
+          gtk_widget_queue_draw (GTK_WIDGET (button)); 
   }
+
   gtk_widget_hide(GTK_WIDGET(cs_dialog));
 }
 

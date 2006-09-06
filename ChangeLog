@@ -1,4 +1,10 @@
 2006-09-06  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
+	* hildon-widgets/hildon-color-button.c: Redraw the button if cancel
+	was pressed in the color selection dialog. Fixes #NB39778 but I think
+	the real cause of the bug lies at a different level.
+
+2006-09-06  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 	
 	[0.14.1 release]
 
