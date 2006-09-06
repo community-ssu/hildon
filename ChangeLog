@@ -1,4 +1,13 @@
 2006-09-06  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+	
+	[0.14.1 release]
+
+	* configure.ac: Version bump. Display version string during configure
+	stage.
+
+	* debian/changelog: Adding release details.
+
+2006-09-06  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
 	* hildon-widgets/hildon-font-selection-dialog.c: Adding a comment
 	about the new property introduced. Once we have property documentation

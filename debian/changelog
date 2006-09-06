@@ -1,3 +1,26 @@
+hildon-libs (0.14.1-1) unstable; urgency=low
+
+  * fixes NB#33451 - Drop down arrow missing in all drop down boxes
+  * fixes NB#30530 - List of fonts in Font selection -dialog doesn't follow the spec
+  * fixes NB#22965 - Trivial improvements to some static hildonwidgets arrays
+  * fixes NB#31168 - Icon not appearing at the start of text in a infoprint with long text.
+  * fixes NB#34122 - Find toolbar widget does not work with HW keyboards
+  * fixes NB#19001 - Notes font format preview dialog text size doesn't correlate to the Notes text size
+  * fixes NB#33775 - Vertical Scroll Bar is not in proper position
+  * fixes NB#22825 - Hildon Note: The api hildon_note_new_confirmation_with_icon_stock() does not display the stock icon
+  * fixes NB#32544 - Sort dialog : incorrect sort order for date
+  * fixes NB#36843 - Can get selection around labels for location, device, and read only in details dialog
+  * fixes NB#39679 - HildonProgram/Window gets BadWindow errors
+
+  * Bringing back the new key mapping by Johan (removed in 0.14.0). That
+    breaks IT 2006 compatibility
+  * Removing the outo-based unit tests from the build system
+  * Adding new property (font-scaling) to font selection dialog
+  * Adding new function to sort dialog to add sort keys with reverse default order
+    (ie. date)
+
+ -- Michael Dominic Kostrzewa <michael.kostrzewa@nokia.com>  Wed, 6 Sep 2006 16:00:00 +0300
+
 hildon-libs (0.14.0-1) unstable; urgency=low
 
   * fixes NB#38996 - HildonApp/HildonWindow: _escape_timeout() ref.count issue
