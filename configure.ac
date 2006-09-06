@@ -56,10 +56,11 @@ AC_CHECK_PROG(DOXYGEN_FOUND, doxygen, yes, no)
 AM_CONDITIONAL(HAVE_DOXYGEN, [test "$DOXYGEN_FOUND" = "yes"])
 
 localedir=${datadir}/locale
-outomoduledir=${libdir}/outo
+#outomoduledir=${libdir}/outo
 
 AC_SUBST(localedir)
-AC_SUBST(outomoduledir)
+
+#AC_SUBST(outomoduledir)
 
 
 # Disable rebuild of glib-mkenum -generated source code:
@@ -82,7 +83,6 @@ AC_OUTPUT(Makefile \
 	hildon-widgets/Makefile \
 	hildon-widgets-plugins/Makefile \
 	timer/Makefile \
-	ut/Makefile \
 	po/Makefile \
 	po/porules.mk \
 	doc/Makefile \

@@ -1,5 +1,12 @@
 2006-09-06  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
+	* Makefile.am:
+	* configure.ac: Removing the unit tests (ut/outo) from the build
+	system. They're introducing an additionall dependency and need to be
+	fixed/arranged differently anyways. 
+
+2006-09-06  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
 	* hildon-widgets/hildon-app.h:
 	* hildon-widgets/hildon-defines.h: Applying Johan's new key mapping
 	patch back again. WARNING: This breaks compatibility with IT-2006.
