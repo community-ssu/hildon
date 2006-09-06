@@ -702,6 +702,9 @@ hildon_font_selection_dialog_class_init(HildonFontSelectionDialogClass *
 				   -1, 1, 0,
 				   G_PARAM_READWRITE));
 
+  /* FIXME This was introduced in 0.14.1. We don't have documentation for 
+   * properties anyways, but once it's there it needs to be marked as 
+   * Since: 0.14.1 */
   g_object_class_install_property(gobject_class, PROP_FONT_SCALING,
 				   g_param_spec_double ("font-scaling",
 				   "Font scaling",

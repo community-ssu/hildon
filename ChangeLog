@@ -1,5 +1,11 @@
 2006-09-06  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
+	* hildon-widgets/hildon-font-selection-dialog.c: Adding a comment
+	about the new property introduced. Once we have property documentation
+	we need to mark it with a "Since: 0.14.1" keyword ("font-scaling").
+
+2006-09-06  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
 	* Makefile.am:
 	* configure.ac: Removing the unit tests (ut/outo) from the build
 	system. They're introducing an additionall dependency and need to be
