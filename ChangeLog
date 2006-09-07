@@ -1,5 +1,17 @@
 2006-09-07  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
+	[0.14.1-2 release]
+
+	* debian/changelog: Bumping version numbers.
+
+2006-09-07  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
+	* hildon-widgets/hildon-app.h:
+	* hildon-widgets/hildon-defines.h: Once again reverting the Johan's
+	patch for new key handling.
+
+2006-09-07  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
 	* hildon-widgets/hildon-find-toolbar.c: Move focus to the parent
 	widget when the toolbar is closed. Fixes #NB34193.
 
@@ -23,7 +35,7 @@
 
 2006-09-06  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 	
-	[0.14.1 release]
+	[0.14.1-1 release]
 
 	* configure.ac: Version bump. Display version string during configure
 	stage.
@@ -104,7 +116,7 @@
 
 2006-09-01  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
-	[0.14.0 release]
+	[0.14.0-1 release]
 
 2006-09-01  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
