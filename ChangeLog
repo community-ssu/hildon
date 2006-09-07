@@ -1,5 +1,10 @@
 2006-09-07  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
+	* hildon-widgets/hildon-find-toolbar.c: Move focus to the parent
+	widget when the toolbar is closed. Fixes #NB34193.
+
+2006-09-07  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
 	* hildon-widgets/hildon-defines.c: Fixing the recursive call in
 	_set_recursive_from_ld. The container for_each call was missing a
 	parameter and effectively passing NULL as data. So amateurish. Fixes

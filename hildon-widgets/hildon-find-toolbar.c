@@ -373,6 +373,8 @@ hildon_find_toolbar_emit_search(GtkButton *button, gpointer self)
 static void
 hildon_find_toolbar_emit_close(GtkButton *button, gpointer self)
 {
+  GtkWidget *parent = gtk_widget_get_parent (GTK_WIDGET (self));
+  gtk_widget_grab_focus (parent);
   /* Clicked close button */
   g_signal_emit_by_name(self, "close", NULL);
 }
