@@ -89,8 +89,11 @@ struct _HildonLogicalData
 static void hildon_change_style_recursive_from_ld (GtkWidget *widget, GtkStyle *prev_style, HildonLogicalData *ld)
 {
   /* Change the style for child widgets */
-  if (GTK_IS_CONTAINER (widget))
-    gtk_container_forall (GTK_CONTAINER (widget), (GtkCallback) (hildon_change_style_recursive_from_ld), ld);
+  if (GTK_IS_CONTAINER (widget)) {
+    GSList *iterator = gtk_container_get_children (GTK_CONTAINER (widget));
+    for (iterator; iterator; iterator = g_list_next (iterator))
+      hildon_change_style_recursive_from_ld (iterator->data, prev_style, ld);
+  }
 
   /* gtk_widget_modify_*() emit "style_set" signals, so if we got here from
      "style_set" signal, we need to block this function from being called
@@ -108,7 +111,7 @@ static void hildon_change_style_recursive_from_ld (GtkWidget *widget, GtkStyle *
 				   0, NULL,
 				   (gpointer) hildon_change_style_recursive_from_ld,
 				   NULL);
-   
+  
   if (ld->logicalcolorstring != NULL)
     {
       /* Changing logical color */
@@ -229,7 +232,7 @@ gulong hildon_gtk_widget_set_logical_color (GtkWidget *widget, GtkRcFlags rcflag
   
   g_return_val_if_fail (GTK_IS_WIDGET (widget), 0);
   g_return_val_if_fail (logicalcolorname != NULL, 0);
-  
+ 
   ld = g_malloc (sizeof (HildonLogicalData));
 
   ld->rcflags = rcflags;
