@@ -1,3 +1,9 @@
+2006-09-08  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
+	* hildon-widgets/hildon-window.c: Call the
+	hildon_window_is_topmost_notify before firing the g-object
+	notification signal. Fixes #NB39202.
+
 2006-09-07  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
 	[0.14.1-2 release]

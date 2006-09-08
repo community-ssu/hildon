@@ -1368,6 +1368,7 @@ hildon_window_update_topmost (HildonWindow *self, Window window_id)
         if (!self->priv->is_topmost)
         {
             self->priv->is_topmost = TRUE;
+            hildon_window_is_topmost_notify (self);
             g_object_notify (G_OBJECT (self), "is-topmost");
         }
     }
@@ -1382,6 +1383,7 @@ hildon_window_update_topmost (HildonWindow *self, Window window_id)
             gtk_im_context_focus_out (GTK_TEXT_VIEW (focus)->im_context);
             
         self->priv->is_topmost = FALSE;
+        hildon_window_is_topmost_notify (self);
         g_object_notify (G_OBJECT (self), "is-topmost");
 
     }
