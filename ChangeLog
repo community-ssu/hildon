@@ -1,3 +1,8 @@
+2006-09-11  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
+	* hildon-widgets/hildon-time-editor.c: Do an extra validity check when
+	switching to another field. Fixes #NB40054.
+
 2006-09-08  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
 	* hildon-widgets/hildon-window.c: Call the

@@ -1518,37 +1518,20 @@ hildon_time_editor_inserted_text  (GtkEditable * editable,
   
       if (strlen(value) == 2)
         {
-          HildonTimeEditorPrivate *priv;
-      
-          priv = HILDON_TIME_EDITOR_GET_PRIVATE(editor);
-      
           if (GTK_WIDGET(editable) == priv->entries[ENTRY_HOURS]) 
-            { 
-              /* we don't want a focusout signal with this grab_focus
-                 because the validation was already done during the
-                 changed signal */
-              g_signal_handlers_block_by_func(priv->entries[ENTRY_HOURS],
-                                              (gpointer) hildon_time_editor_entry_focusout, editor);
-              
+            {
+              /* We already checked the input in changed signal, but 
+               * now we will re-check it again in focus-out we 
+               * intermediate flag set to FALSE */
               gtk_widget_grab_focus(priv->entries[ENTRY_MINS]);
               *position = -1;
-
-              g_signal_handlers_unblock_by_func(priv->entries[ENTRY_HOURS],
-                                                (gpointer) hildon_time_editor_entry_focusout, editor);
-              
             }
           else if (GTK_WIDGET(editable) == priv->entries[ENTRY_MINS] &&
                    GTK_WIDGET_VISIBLE (priv->entries[ENTRY_SECS])) 
             {
-              g_signal_handlers_block_by_func(priv->entries[ENTRY_MINS],
-                                              (gpointer) hildon_time_editor_entry_focusout, editor);
-
+              /* See above */
               gtk_widget_grab_focus(priv->entries[ENTRY_SECS]);
               *position = -1;
-
-              g_signal_handlers_unblock_by_func(priv->entries[ENTRY_MINS],
-                                                (gpointer) hildon_time_editor_entry_focusout, editor);
-              
             }
         }
     }   
