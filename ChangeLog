@@ -1,5 +1,13 @@
 2006-09-11  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
+	[0.14.2-1 release]
+
+	* configure.ac:
+	* debian/changelog: Bumping version numbers, adding details about the
+	fixes. 
+
+2006-09-11  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
 	* hildon-widgets/hildon-time-editor.c: Do an extra validity check when
 	switching to another field. Fixes #NB40054.
 

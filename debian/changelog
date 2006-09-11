@@ -1,3 +1,24 @@
+hildon-libs (0.14.2-1) unstable; urgency=low
+
+  * fixes NB#39778 - Showing black line in color icon if cancel color dialog box. 
+  * fixes NB#39764 - Application crashed after some sequnce of operation.
+  * fixes NB#39765 - Application crashed after some sequence of operation.
+  * fixes NB#39757 - User can able to open clock Menu over setting dialog.
+  * fixes NB#39714 - Hildon header doesn't include needed file (gdkkeysyms.h)
+  * fixes NB#39181 - Inet status bar should show an "informational menu element"
+  * fixes NB#34193 - Tapping on the close button of the findtoolbar does not close the VKB.
+  * fixes NB#33829 - WLAN IAP settings - Security method is not shown as 'Choice list' in UI
+  * fixes NB#39202 - Application tool bar does not appear in new browser window
+  * fixes NB#40054 - No infobanner is shown when "00" is entered in the hour or minutes field of the time editor.
+  * fixes NB#21151 - Hildon Date Editor repairs out of range number to an illegal date.
+  * fixes NB#35834 - Focus in date and time field and fieldlets.
+  * fixes NB#33820 - Mnemonics and accelarators are not hidden when the H/W KB is detached.
+
+  * Changing the top-level notification mechanism in hildon-window to work with new 
+    matchbox. Doesn't brake prev matchbox compatibility.
+
+ -- Michael Dominic Kostrzewa <michael.kostrzewa@nokia.com>  Mon, 11 Sep 2006 15:00:00 +0300
+
 hildon-libs (0.14.1-2) unstable; urgency=low
 
   * Removing the new menu key mapping once again
