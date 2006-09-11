@@ -1583,13 +1583,20 @@ hildon_time_editor_icon_clicked(GtkWidget * widget, gpointer data)
     GtkWidget *picker;
     GtkWidget *parent;
     guint h, m, s, result;
+    HildonTimeEditorPrivate *priv;
 
     g_assert(HILDON_IS_TIME_EDITOR(data));
 
     editor = HILDON_TIME_EDITOR(data);
+    priv = HILDON_TIME_EDITOR_GET_PRIVATE(editor);
 
     /* icon is passive in duration editor mode */
     if (hildon_time_editor_get_duration_mode(editor))
+        return FALSE;
+
+    /* Validate and do not launch if broken */
+    hildon_time_editor_validate(HILDON_TIME_EDITOR(data), FALSE);
+    if (priv->error_widget != NULL)
         return FALSE;
 
     /* Launch HildonTimePicker dialog */

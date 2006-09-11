@@ -1,5 +1,11 @@
 2006-09-11  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
+	* hildon-widgets/hildon-time-editor.c: When user clicked the clock
+	button, before launching the time picker try to validate the entered
+	values. Fixes #NB40055.
+
+2006-09-11  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
 	[0.14.2-1 release]
 
 	* configure.ac:
