@@ -1,7 +1,7 @@
 /*
  * This file is part of hildon-libs
  *
- * Copyright (C) 2005, 2006 Nokia Corporation.
+ * Copyright (C) 2005, 2006 Nokia Corporation, all rights reserved.
  *
  * Contact: Michael Dominic Kostrzewa <michael.kostrzewa@nokia.com>
  *   Fixes: Michael Dominic Kostrzewa <michael.kostrzewa@nokia.com>
@@ -9,7 +9,7 @@
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public License
  * as published by the Free Software Foundation; version 2.1 of
- * the License.
+ * the License or any later version.
  *
  * This library is distributed in the hope that it will be useful, but
  * WITHOUT ANY WARRANTY; without even the implied warranty of

@@ -1,4 +1,4 @@
-# Copyright (C) 2006 Nokia Corporation.
+# Copyright (C) 2006 Nokia Corporation, all rights reserved.
 # This file is distributed under the same license as the hildon-libs package
 #
 msgid ""
