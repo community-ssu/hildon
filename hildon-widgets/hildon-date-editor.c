@@ -29,7 +29,7 @@
  * @see_also: #HildonCalendarPopup, #HildonTimeEditor
  * 
  * HildonDateEditor is a widget with three entry fields (day, month,
- * year) and an icon (eventbox): clicking on the icon opens up a
+ * year) and an icon (button): clicking on the icon opens up a
  * HildonCalendarPopup.
  */
 
@@ -81,14 +81,14 @@ hildon_date_editor_class_init(HildonDateEditorClass * editor_class);
 static void hildon_date_editor_init(HildonDateEditor * editor);
 
 static gboolean
-hildon_date_editor_icon_press(GtkWidget * widget, GdkEventButton * event,
+hildon_date_editor_icon_press(GtkWidget * widget, 
                               gpointer data);
 
 static gboolean
 hildon_date_editor_entry_released(GtkWidget * widget,
                                   GdkEventButton * event, gpointer data);
 static gboolean
-hildon_date_editor_released(GtkWidget * widget, GdkEventButton * event,
+hildon_date_editor_released(GtkWidget * widget, 
                             gpointer data);
 
 static gboolean
@@ -98,6 +98,8 @@ hildon_date_editor_keypress(GtkWidget * widget, GdkEventKey * event,
 static gboolean
 hildon_date_editor_keyrelease(GtkWidget * widget, GdkEventKey * event,
                               gpointer data);
+static gboolean
+hildon_date_editor_clicked(GtkWidget * widget, gpointer data);
 static void
 hildon_date_editor_entry_validate(GtkWidget *widget, gpointer data);
 
@@ -155,7 +157,7 @@ struct _HildonDateEditorPrivate {
     gboolean calendar_icon_pressed;
 
     GtkWidget *frame;             /* borders around the date */
-    GtkWidget *d_event_box_image; /* icon */
+    GtkWidget *d_button_image; /* icon */
     GtkWidget *d_box_date;        /* hbox for date */
 
     GtkWidget *d_entry; /* GtkEntry for day */
@@ -448,31 +450,32 @@ static void hildon_date_editor_init(HildonDateEditor * editor)
 
     priv->d_box_date = gtk_hbox_new(FALSE, 0);
 
-    priv->d_event_box_image = gtk_event_box_new();
+    priv->d_button_image = gtk_button_new();
     priv->calendar_icon = gtk_image_new();
     real_set_calendar_icon_state(priv, FALSE);
+    GTK_WIDGET_UNSET_FLAGS(priv->d_button_image, GTK_CAN_FOCUS | GTK_CAN_DEFAULT);
 
     apply_locale_field_order(priv);
 
     gtk_container_add(GTK_CONTAINER(priv->frame), priv->d_box_date);
-    gtk_container_add(GTK_CONTAINER(priv->d_event_box_image), priv->calendar_icon);
+    gtk_container_add(GTK_CONTAINER(priv->d_button_image), priv->calendar_icon);
+    gtk_button_set_relief(GTK_BUTTON(priv->d_button_image), GTK_RELIEF_NONE);
+    gtk_button_set_focus_on_click(GTK_BUTTON(priv->d_button_image), FALSE);
 
     gtk_widget_set_parent(priv->frame, GTK_WIDGET(editor));
-    gtk_widget_set_parent(priv->d_event_box_image, GTK_WIDGET(editor));
+    gtk_widget_set_parent(priv->d_button_image, GTK_WIDGET(editor));
     gtk_widget_show_all(priv->frame);
-    gtk_widget_show_all(priv->d_event_box_image);
+    gtk_widget_show_all(priv->d_button_image);
     
-    /* image signal connects */
-    g_signal_connect(GTK_OBJECT(priv->d_event_box_image), "button_press_event",
+    /* image button signal connects */
+    g_signal_connect(GTK_OBJECT(priv->d_button_image), "pressed",
                      G_CALLBACK(hildon_date_editor_icon_press), editor);
-    g_signal_connect(GTK_OBJECT(priv->d_event_box_image),
-                     "button_release_event",
+    g_signal_connect(GTK_OBJECT(priv->d_button_image), "released",
                      G_CALLBACK(hildon_date_editor_released), editor);
-    g_signal_connect(GTK_OBJECT(priv->d_event_box_image), "key-press-event",
+    g_signal_connect(GTK_OBJECT(priv->d_button_image), "clicked",
+                     G_CALLBACK(hildon_date_editor_clicked), editor);
+    g_signal_connect(GTK_OBJECT(priv->d_button_image), "key_press_event",
                      G_CALLBACK(hildon_date_editor_keypress), editor);
-    g_signal_connect(GTK_OBJECT(priv->calendar_icon), "key-press-event",
-                     G_CALLBACK(hildon_date_editor_keypress), editor);
-
 
     /* entry signal connects */
     g_signal_connect(GTK_OBJECT(priv->d_entry), "button_release_event",
@@ -637,7 +640,7 @@ static void hildon_child_forall(GtkContainer * container,
 
     if (include_internals) {
         (*callback) (priv->frame, callback_data);
-        (*callback) (priv->d_event_box_image, callback_data);
+        (*callback) (priv->d_button_image, callback_data);
     }
 }
 
@@ -651,9 +654,9 @@ static void hildon_date_editor_destroy(GtkObject * self)
         gtk_widget_unparent(priv->frame);
         priv->frame = NULL;
     }
-    if (priv->d_event_box_image) {
-        gtk_widget_unparent(priv->d_event_box_image);
-        priv->d_event_box_image = NULL;
+    if (priv->d_button_image) {
+        gtk_widget_unparent(priv->d_button_image);
+        priv->d_button_image = NULL;
     }
     if (priv->delims) {
         g_list_free(priv->delims);
@@ -801,22 +804,20 @@ void hildon_date_editor_get_date(HildonDateEditor * date,
       (guint) atoi(gtk_entry_get_text(GTK_ENTRY(priv->d_entry)));
 }
 
+/* icon button press event */
 static gboolean hildon_date_editor_icon_press(GtkWidget * widget,
-                                              GdkEventButton * event,
                                               gpointer data)
 {
     g_assert(GTK_IS_WIDGET(widget));
-    g_assert(event != NULL);
     g_assert(HILDON_IS_DATE_EDITOR(data));
 
-    if (event->button == 1)
-       hildon_date_editor_set_calendar_icon_state(HILDON_DATE_EDITOR(data), TRUE);
+    hildon_date_editor_set_calendar_icon_state(HILDON_DATE_EDITOR(data), TRUE);
 
     return FALSE;
 }
 
 static gboolean hildon_date_editor_entry_released(GtkWidget * widget,
-                                                  GdkEventButton * event,
+						  GdkEventButton * event,
                                                   gpointer data)
 {
     HildonDateEditor *ed;
@@ -884,19 +885,35 @@ static void popup_calendar_dialog(HildonDateEditor *ed)
 
 /* button released */
 static gboolean hildon_date_editor_released(GtkWidget * widget,
-                                            GdkEventButton * event,
                                             gpointer data)
 {
     HildonDateEditor *ed;
 
     g_assert(GTK_IS_WIDGET(widget));
-    g_assert(event != NULL);
     g_assert(HILDON_IS_DATE_EDITOR(data));
 
     ed = HILDON_DATE_EDITOR(data);
 
-    if (hildon_date_editor_set_calendar_icon_state(ed, FALSE))
-        popup_calendar_dialog(ed);
+    /* restores the icon state. The clicked cycle raises the dialog */
+    hildon_date_editor_set_calendar_icon_state(ed, FALSE);
+
+    return FALSE;
+}
+
+/* button released */
+static gboolean hildon_date_editor_clicked(GtkWidget * widget,
+					   gpointer data)
+{
+    HildonDateEditor *ed;
+
+    g_assert(GTK_IS_WIDGET(widget));
+    g_assert(HILDON_IS_DATE_EDITOR(data));
+
+    ed = HILDON_DATE_EDITOR(data);
+
+    /* restores the non-clicked button state and raises the dialog */
+    hildon_date_editor_set_calendar_icon_state(ed, FALSE);
+    popup_calendar_dialog(ed);
 
     return FALSE;
 }
@@ -1180,7 +1197,7 @@ static void hildon_date_editor_size_request(GtkWidget * widget,
 
     /* Our own children affect our size */
     gtk_widget_size_request(priv->frame, &f_req);
-    gtk_widget_size_request(priv->d_event_box_image, &img_req);
+    gtk_widget_size_request(priv->d_button_image, &img_req);
 
     /* calculate our size */
     requisition->width = f_req.width + img_req.width + HILDON_MARGIN_DEFAULT;
@@ -1230,14 +1247,14 @@ static void hildon_date_editor_size_allocate(GtkWidget * widget,
         }
 
     /* allocate icon */
-        if (GTK_WIDGET_VISIBLE(priv->d_event_box_image)) {
-            gtk_widget_get_child_requisition(priv->d_event_box_image,
+        if (GTK_WIDGET_VISIBLE(priv->d_button_image)) {
+            gtk_widget_get_child_requisition(priv->d_button_image,
                                              &req);
 
             img_alloc.x += f_alloc.width + HILDON_MARGIN_DEFAULT;
             img_alloc.width = req.width;
             img_alloc.height = max_req.height;
-            gtk_widget_size_allocate(priv->d_event_box_image, &img_alloc);
+            gtk_widget_size_allocate(priv->d_button_image, &img_alloc);
         }
 
     /* FIXME: We really should not alloc delimeters by hand (since they

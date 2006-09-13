@@ -1,3 +1,13 @@
+2006-09-13  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
+	[Merging the atk-branch fixes]
+
+	* hildon-widgets/hildon-date-editor.c: Use button instead of event
+	box for the calendar icon.
+
+	* hildon-widgets/hildon-time-editor.c: Use button instead of the label
+	for the am/pm switcher. Fixes #NB25602, #NB24411.
+
 2006-09-12  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
 	* debian/copyright:

@@ -40,7 +40,6 @@
 #endif
 
 #include <gtk/gtkhbox.h>
-#include <gtk/gtkeventbox.h>
 #include <gtk/gtkentry.h>
 #include <gtk/gtkbutton.h>
 #include <gtk/gtklabel.h>
@@ -141,7 +140,6 @@ struct _HildonTimeEditorPrivate {
     gchar     *am_symbol;
     gchar     *pm_symbol;
 
-    GtkWidget *eventbox;             /* hold entries                 */
     GtkWidget *iconbutton;           /* button for icon              */
 
     GtkWidget *frame;                /* frame around the entries     */
@@ -151,6 +149,7 @@ struct _HildonTimeEditorPrivate {
     GtkWidget *ampm_label;           /* label for showing am or pm   */
 
     GtkWidget *error_widget;         /* field to highlight in idle   */
+  GtkWidget *ampm_button;            /* am/pm change button */
 
 
     gboolean   duration_mode;        /* In HildonDurationEditor mode */
@@ -209,7 +208,6 @@ static gboolean hildon_time_editor_time_error(HildonTimeEditor *editor,
 					      HildonTimeEditorErrorType type);
 
 static gboolean hildon_time_editor_ampm_clicked(GtkWidget       *widget,
-                                                GdkEventButton  *event,
                                                 gpointer         data);
 
 static gboolean hildon_time_editor_icon_clicked(GtkWidget       *widget,
@@ -457,7 +455,7 @@ void hildon_time_editor_tap_and_hold_setup(GtkWidget * widget,
       gtk_widget_tap_and_hold_setup(priv->entries[i], menu, func,
                                     GTK_TAP_AND_HOLD_NO_SIGNALS);
     }
-    gtk_widget_tap_and_hold_setup(priv->eventbox, menu, func,
+    gtk_widget_tap_and_hold_setup(priv->ampm_button, menu, func,
                                   GTK_TAP_AND_HOLD_NO_SIGNALS);
     gtk_widget_tap_and_hold_setup(priv->iconbutton, menu, func,
                                   GTK_TAP_AND_HOLD_NONE);
@@ -491,7 +489,7 @@ static void hildon_time_editor_init(HildonTimeEditor * editor)
     priv->hm_label       = gtk_label_new(NULL);
     priv->sec_label      = gtk_label_new(NULL);
     priv->frame          = gtk_frame_new(NULL);
-    priv->eventbox       = gtk_event_box_new();
+    priv->ampm_button    = gtk_button_new();
 
     icon = gtk_image_new_from_icon_name(ICON_NAME, HILDON_ICON_SIZE_WIDG);
     hbox = gtk_hbox_new(FALSE, 0);
@@ -499,12 +497,12 @@ static void hildon_time_editor_init(HildonTimeEditor * editor)
     GTK_WIDGET_SET_FLAGS(editor, GTK_NO_WINDOW);
     GTK_WIDGET_UNSET_FLAGS(priv->iconbutton, GTK_CAN_FOCUS | GTK_CAN_DEFAULT);
     
-    gtk_event_box_set_visible_window(GTK_EVENT_BOX(priv->eventbox), FALSE);
-
     gtk_container_set_border_width(GTK_CONTAINER(priv->frame), 0);
 
     gtk_container_add(GTK_CONTAINER(priv->iconbutton), icon);
-    gtk_container_add(GTK_CONTAINER(priv->eventbox), priv->ampm_label);
+    gtk_container_add(GTK_CONTAINER(priv->ampm_button), priv->ampm_label);
+    gtk_button_set_relief(GTK_BUTTON(priv->ampm_button), GTK_RELIEF_NONE);
+    gtk_button_set_focus_on_click(GTK_BUTTON(priv->ampm_button), FALSE);
 
     /* Create hour, minute and second entries */
     for (i = 0; i < ENTRY_COUNT; i++)
@@ -541,7 +539,7 @@ static void hildon_time_editor_init(HildonTimeEditor * editor)
     }
     
     /* clicked signal for am/pm label */
-    g_signal_connect(G_OBJECT(priv->eventbox), "button_press_event",
+    g_signal_connect(G_OBJECT(priv->ampm_button), "clicked",
                      G_CALLBACK(hildon_time_editor_ampm_clicked), editor);
 
     /* clicked signal for icon */
@@ -555,7 +553,8 @@ static void hildon_time_editor_init(HildonTimeEditor * editor)
     gtk_box_pack_start(GTK_BOX(hbox), priv->entries[ENTRY_MINS],  FALSE, FALSE, 0);
     gtk_box_pack_start(GTK_BOX(hbox), priv->sec_label,            FALSE, FALSE, 0);
     gtk_box_pack_start(GTK_BOX(hbox), priv->entries[ENTRY_SECS],  FALSE, FALSE, 0);
-    gtk_box_pack_start(GTK_BOX(hbox), priv->eventbox,             FALSE, FALSE, 0);
+    gtk_box_pack_start(GTK_BOX(hbox), priv->ampm_button,          FALSE, FALSE, 0);
+    gtk_misc_set_padding(GTK_MISC(priv->ampm_label), 0, 0);
 
     gtk_container_add(GTK_CONTAINER(priv->frame), hbox);
 
@@ -569,7 +568,7 @@ static void hildon_time_editor_init(HildonTimeEditor * editor)
         /* Using 12h clock */
         priv->clock_24h = FALSE;
     } else {
-        gtk_widget_hide(priv->eventbox);
+        gtk_widget_hide(priv->ampm_button);
     }
  
     if (!priv->show_seconds) {
@@ -705,7 +704,7 @@ _hildon_time_editor_get_time_separators(GtkLabel *hm_sep_label,
     gchar buffer[256];
     gchar *separator;
     GDate locale_test_date;
-    gchar *iter, *endp;
+    gchar *iter, *endp = NULL;
 
     /* Get localized time string */
     g_date_set_dmy(&locale_test_date, 1, 2, 1970);
@@ -961,7 +960,7 @@ void hildon_time_editor_set_duration_mode (HildonTimeEditor * editor,
             /* There's no AM/PM label or time picker icon in duration mode.
                Make sure they're hidden. */
             gtk_widget_hide(GTK_WIDGET(priv->ampm_label));
-            gtk_widget_hide(GTK_WIDGET(priv->eventbox));
+            gtk_widget_hide(GTK_WIDGET(priv->ampm_button));
             gtk_widget_hide(GTK_WIDGET(priv->iconbutton));
             /* Duration mode has seconds by default. */
             hildon_time_editor_set_show_seconds(editor, TRUE);
@@ -970,7 +969,7 @@ void hildon_time_editor_set_duration_mode (HildonTimeEditor * editor,
             if (!priv->clock_24h)
                 gtk_widget_show(GTK_WIDGET(priv->ampm_label));
 
-            gtk_widget_show(GTK_WIDGET(priv->eventbox));
+            gtk_widget_show(GTK_WIDGET(priv->ampm_button));
             gtk_widget_show(GTK_WIDGET(priv->iconbutton));        
 
         	/* Reset the ticks to current time. Anything set in duration mode
@@ -1551,7 +1550,7 @@ static gboolean hildon_time_editor_entry_focusout(GtkWidget * widget,
 
 static gboolean
 hildon_time_editor_ampm_clicked(GtkWidget * widget,
-                                GdkEventButton * event, gpointer data)
+                                gpointer data)
 {
     HildonTimeEditor *editor;
     HildonTimeEditorPrivate *priv;
