@@ -25,6 +25,8 @@
 #include <gtk/gtkwidget.h>
 #include <gtk/gtkwindow.h>
 #include "hildon-composite-widget.h"
+#include "hildon-date-editor.h"
+#include "hildon-time-editor.h"
 
 /* This function is a private function of hildon-libs. It hadles focus 
  * changing for composite hildon widgets: HildonDateEditor, 
@@ -50,11 +52,28 @@ hildon_composite_widget_focus (GtkWidget *widget, GtkDirectionType direction)
     return TRUE;
 
   if (!gtk_widget_is_ancestor (focus_widget, widget))
-    /* Containers grab_focus grabs the focus to the correct widget */
-    gtk_widget_grab_focus (widget);
+    {
+      gtk_widget_grab_focus (widget);
+    }
   else
-    return GTK_WIDGET_CLASS (g_type_class_peek_parent (
-                     GTK_WIDGET_GET_CLASS(widget)))->focus (widget, direction);
+    {
+      /* Containers grab_focus grabs the focus to the correct widget */
+      switch (direction) {
+      case GTK_DIR_UP:
+      case GTK_DIR_DOWN:
+        if (HILDON_IS_DATE_EDITOR(widget) || HILDON_IS_TIME_EDITOR(widget))
+          return FALSE;
+        else
+          return GTK_WIDGET_CLASS (g_type_class_peek_parent
+                                   (GTK_WIDGET_GET_CLASS(widget)))->focus (widget, direction);
+        break;
+
+      default:
+        return GTK_WIDGET_CLASS (g_type_class_peek_parent
+                                 (GTK_WIDGET_GET_CLASS(widget)))->focus (widget, direction);
+        break;
+      }
+    }
 
   return TRUE;
 }

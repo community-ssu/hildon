@@ -1,5 +1,12 @@
 2006-09-14  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
+	* hildon-widgets/hildon-composite-widget.c: Changed the focus
+	handler -- with hildon-time-editor and hildon-date-editor, if we
+	are moving up or down, with the focus inside the widget, we return
+	false to force moving to the next widget outside. Fixes #NB36938.
+
+2006-09-14  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
 	* hildon-widgets/hildon-defines.c: Ensure the style before setting the
 	logical color. Fixes #NB40041.
 
