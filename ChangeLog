@@ -1,5 +1,10 @@
 2006-09-14  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
+	* hildon-widgets/hildon-defines.c: Ensure the style before setting the
+	logical color. Fixes #NB40041.
+
+2006-09-14  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
 	* hildon-widgets/hildon-date-editor.c: Bring focus to date after the
 	date has been choosen in the calendar popup.
 
