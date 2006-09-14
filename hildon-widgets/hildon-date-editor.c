@@ -878,6 +878,7 @@ static void popup_calendar_dialog(HildonDateEditor *ed)
         hildon_calendar_popup_get_date(HILDON_CALENDAR_POPUP(popup), &y,
                                        &m, &d);
         hildon_date_editor_set_date(ed, y, m, d);
+        gtk_widget_grab_focus (GTK_WIDGET (ed));
     }
 
     gtk_widget_destroy(popup);

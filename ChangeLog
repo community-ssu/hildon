@@ -1,3 +1,11 @@
+2006-09-14  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
+	* hildon-widgets/hildon-date-editor.c: Bring focus to date after the
+	date has been choosen in the calendar popup.
+
+	* hildon-widgets/hildon-time-editor.c: Bring focus to time after 
+	time has been choosen in the time picker. Fixes #NB39565.
+
 2006-09-13  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
 	[Merging the atk-branch fixes]
