@@ -1,3 +1,22 @@
+hildon-libs (0.14.3-1) unstable; urgency=low
+
+  * fixes NB#40055 - Modified time in time editor is not updated in the time picker.
+  * fixes NB#25602 - Accessibility unable to toggle am/pm in hildon time editor.
+  * fixes NB#24411 - Icon in Hildon date editor is not exposed to accessibility framework. 
+  * fixes NB#40566 - HildonWindow's hildon_window_set_menu calls gtk_widget_show_all to itself.
+  * fixes NB#35945 - Cannot move the focus to am/pm in the time field in 'Set Alarm' dialog using right HW button.
+  * fixes NB#37659 - Submenus in ongoing chat need two clicks to open.
+  * fixes NB#36440 - Unnecessary focus when toggling between AM and PM.
+  * fixes NB#39565 - Focus is not going to time field.
+  * fixes NB#40041 - Button's ("AC" and "C") color is not as per spec.
+  * fixes NB#36938 - UP/Down arrow keys do not move the focus to the previous/next widget in date and time editors.
+  * fixes NB#39612 - Unable to modify single digit in Date field directly.
+  * fixes MB#624 - HildonNumberEditor fails to display images if gtk_widget_set_name() is used.
+  
+  * Fixing the copyright headers to match the requirements.
+
+ -- Michael Dominic Kostrzewa <michael.kostrzewa@nokia.com>  Fri, 15 Sep 2006 14:00:00 +0300
+
 hildon-libs (0.14.2-1) unstable; urgency=low
 
   * fixes NB#39778 - Showing black line in color icon if cancel color dialog box. 

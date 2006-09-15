@@ -1,5 +1,13 @@
 2006-09-15  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
+	[0.14.3-1 release]
+
+	* configure.ac:
+	* debian/changelog: Bumping version numbers, adding info about the
+	fixes.
+
+2006-09-15  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
 	* hildon-widgets/hildon-window.c: When a new menu is being attached to
 	the window, call show on the menu itself, not the whole window. Fixes
 	#NB40566.
