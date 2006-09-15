@@ -85,9 +85,6 @@ hildon_date_editor_icon_press(GtkWidget * widget,
                               gpointer data);
 
 static gboolean
-hildon_date_editor_entry_released(GtkWidget * widget,
-                                  GdkEventButton * event, gpointer data);
-static gboolean
 hildon_date_editor_released(GtkWidget * widget, 
                             gpointer data);
 
@@ -477,21 +474,12 @@ static void hildon_date_editor_init(HildonDateEditor * editor)
     g_signal_connect(GTK_OBJECT(priv->d_button_image), "key_press_event",
                      G_CALLBACK(hildon_date_editor_keypress), editor);
 
-    /* entry signal connects */
-    g_signal_connect(GTK_OBJECT(priv->d_entry), "button_release_event",
-                     G_CALLBACK(hildon_date_editor_entry_released), editor);
-    
+    /* entry signal connects */    
     g_signal_connect(GTK_OBJECT(priv->d_entry), "focus-in-event",
                      G_CALLBACK(hildon_date_editor_entry_focusin), editor);
 
-    g_signal_connect(GTK_OBJECT(priv->m_entry), "button_release_event",
-                     G_CALLBACK(hildon_date_editor_entry_released), editor);
-
     g_signal_connect(GTK_OBJECT(priv->m_entry), "focus-in-event",
                      G_CALLBACK(hildon_date_editor_entry_focusin), editor);
-
-    g_signal_connect(GTK_OBJECT(priv->y_entry), "button_release_event",
-                     G_CALLBACK(hildon_date_editor_entry_released), editor);
 
     g_signal_connect(GTK_OBJECT(priv->y_entry), "focus-in-event",
                      G_CALLBACK(hildon_date_editor_entry_focusin), editor);
@@ -816,35 +804,12 @@ static gboolean hildon_date_editor_icon_press(GtkWidget * widget,
     return FALSE;
 }
 
-static gboolean hildon_date_editor_entry_released(GtkWidget * widget,
-						  GdkEventButton * event,
-                                                  gpointer data)
-{
-    HildonDateEditor *ed;
-    HildonDateEditorPrivate *priv;
-
-    ed = HILDON_DATE_EDITOR(data);
-    priv = HILDON_DATE_EDITOR_GET_PRIVATE(ed);
-
-    if (event->button == 1) {
-        /* We might not get focus because of invalid values in entries */
-        if (GTK_WIDGET_HAS_FOCUS(widget))
-			g_idle_add((GSourceFunc)
-					_hildon_date_editor_entry_select_all, GTK_ENTRY(widget));
-    }
-
-    return FALSE;
-}
-
 static gboolean hildon_date_editor_entry_focusin(GtkWidget * widget,
                                                  GdkEventFocus * event,
                                                  gpointer data)
 {
-    if (!GTK_ENTRY(widget)->button)
-    {
-		g_idle_add((GSourceFunc)
-				_hildon_date_editor_entry_select_all, GTK_ENTRY(widget));
-    }
+    g_idle_add((GSourceFunc)
+               _hildon_date_editor_entry_select_all, GTK_ENTRY(widget));
 
     return FALSE;
 }

@@ -1,5 +1,19 @@
 2006-09-14  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
+	* hildon-widgets/hildon-date-editor.c:
+	(hildon_date_editor_entry_released): Removed this function in order
+	to avoid the selection of the entry with the second click.
+	(hildon_date_editor_entry_focusin): Removed the test, now we want
+	to select the entry using the callback in all the situations. 
+	Fixes #NB39612. 
+	
+	* hildon-widgets/hildon-number-editor.c: renamed {plus,minus}-button
+	widgets to ne-{plus,minus}-button in order to do the theming without
+	depending on the HildonNumberEditor widget name. Fixes #MB624. Will
+	work with new theme config.
+	
+2006-09-14  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
 	* hildon-widgets/hildon-composite-widget.c: Changed the focus
 	handler -- with hildon-time-editor and hildon-date-editor, if we
 	are moving up or down, with the focus inside the widget, we return
