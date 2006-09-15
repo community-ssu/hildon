@@ -1687,9 +1687,8 @@ hildon_window_set_menu (HildonWindow *self, GtkMenu *menu)
         gtk_widget_set_name (self->priv->menu, "menu_force_with_corners");
         gtk_menu_attach_to_widget (GTK_MENU (self->priv->menu), GTK_WIDGET (self), &detach_menu_func);
         g_object_ref (GTK_MENU (self->priv->menu));
+        gtk_widget_show_all (GTK_WIDGET (self->priv->menu));
     }
-
-    gtk_widget_show_all (GTK_WIDGET (self));
 }
 
 /**
