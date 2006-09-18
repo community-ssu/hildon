@@ -20,8 +20,8 @@ Depends: ${shlibs:Depends}, ${misc:Depends}, osso-sounds-ui, hildon-libs-l10n-mr
 Description: Hildon libraries
 
 Package: hildon-libs0-dbg
-Section: libs
+Section: libdevel
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, osso-sounds-ui, osso-esd
-Description: Hildon libraries (with debug info)
+Depends: hildon-libs0 (= ${Source-Version})
+Description: Debug symbols for hildon libraries
 
