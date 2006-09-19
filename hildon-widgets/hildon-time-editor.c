@@ -149,7 +149,7 @@ struct _HildonTimeEditorPrivate {
     GtkWidget *ampm_label;           /* label for showing am or pm   */
 
     GtkWidget *error_widget;         /* field to highlight in idle   */
-  GtkWidget *ampm_button;            /* am/pm change button */
+    GtkWidget *ampm_button;          /* am/pm change button */
 
 
     gboolean   duration_mode;        /* In HildonDurationEditor mode */
@@ -1270,6 +1270,7 @@ static gint validated_conversion(HildonTimeEditorPrivate *priv,
                                  GtkWidget               *field,
                                  gint                     min,
                                  gint                     max,
+                                 gint                     def_value,
                                  gboolean                 allow_intermediate,
                                  guint                   *error_code,
                                  GString                 *error_string)
@@ -1313,7 +1314,7 @@ static gint validated_conversion(HildonTimeEditorPrivate *priv,
         g_string_printf(error_string, _("ckct_ib_set_a_value_within_range"), min, max);
         priv->error_widget = field;
         *error_code = WITHIN_RANGE;
-        return min;
+        return def_value;
       }
 
     /* Empty field and not allowed intermediated OR failed conversion */
@@ -1330,7 +1331,9 @@ hildon_time_editor_real_validate(HildonTimeEditor *editor,
     HildonTimeEditorPrivate *priv;
     guint h, m, s, ticks;
     guint error_code;
-    guint max_hours, min_hours, max_minutes, min_minutes, max_seconds, min_seconds;
+    guint max_hours, min_hours, def_hours;
+    guint max_minutes, min_minutes, def_minutes;
+    guint max_seconds, min_seconds, def_seconds;
     gboolean r;
 
     g_assert(HILDON_IS_TIME_EDITOR(editor));
@@ -1352,22 +1355,24 @@ hildon_time_editor_real_validate(HildonTimeEditor *editor,
         }
     }
 
+    hildon_time_editor_get_time(editor, &def_hours, &def_minutes, &def_seconds);
+
     /* Get time components from fields and validate them... */
     if (priv->show_hours) {
-        h = validated_conversion(priv, priv->entries[ENTRY_HOURS], min_hours, max_hours, 
+        h = validated_conversion(priv, priv->entries[ENTRY_HOURS], min_hours, max_hours, def_hours,
             allow_intermediate, &error_code, error_string);
 	if (priv->error_widget == priv->entries[ENTRY_HOURS])
 	  g_signal_emit (editor, time_editor_signals [TIME_ERROR], 0, hour_errors[error_code], &r);
         if ((gint) h < 0) return;
     }
     else h = 0;
-    m = validated_conversion(priv, priv->entries[ENTRY_MINS], MINUTES_MIN, MINUTES_MAX, 
+    m = validated_conversion(priv, priv->entries[ENTRY_MINS], MINUTES_MIN, MINUTES_MAX, def_minutes,
         allow_intermediate, &error_code, error_string);
     if (priv->error_widget == priv->entries[ENTRY_MINS])
 	  g_signal_emit (editor, time_editor_signals [TIME_ERROR], 0, min_errors[error_code], &r);
     if ((gint) m < 0) return;
     if (priv->show_seconds) {
-        s = validated_conversion(priv, priv->entries[ENTRY_SECS], SECONDS_MIN, SECONDS_MAX, 
+        s = validated_conversion(priv, priv->entries[ENTRY_SECS], SECONDS_MIN, SECONDS_MAX, def_seconds,
             allow_intermediate, &error_code, error_string);
 	if (priv->error_widget == priv->entries[ENTRY_SECS])
 	      g_signal_emit (editor, time_editor_signals [TIME_ERROR], 0, sec_errors[error_code], &r);

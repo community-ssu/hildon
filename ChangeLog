@@ -1,5 +1,13 @@
 2006-09-19  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
+	* hildon-widgets/hildon-time-editor.c:
+	(validated_conversion): Added default parameter -- if the field is
+	empty, sets this value.
+	(hildon_time_editor_real_validate): Gets current values to pass it
+	as the default values to forward validation. Fixes #NB39048.
+
+2006-09-19  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
 	* hildon-widgets/hildon-caption.c: Do not draw the focus border when
 	the label has no text set. Fixes #NB40649. 
 	Also fixing some memory leaks in properties setting.
