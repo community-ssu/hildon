@@ -384,7 +384,7 @@ static void hildon_caption_set_property( GObject *object, guint param_id,
       }
 
       /* Update label */
-      priv->text = g_value_get_string(value);
+      priv->text = g_value_dup_string(value);
       hildon_caption_set_label_text( priv );
       break;
       
@@ -428,7 +428,7 @@ static void hildon_caption_set_property( GObject *object, guint param_id,
         priv->separator = NULL;
       }
 
-      priv->separator = g_value_get_string(value);
+      priv->separator = g_value_dup_string(value);
       hildon_caption_set_label_text( priv );
       break;
 

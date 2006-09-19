@@ -1,5 +1,13 @@
 2006-09-19  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
+	* hildon-widgets-plugins/hildon-color-chooser-dialog-hsv.c:
+	Replacing a custom hex -> color with a stock gdk func. 
+
+	* hildon-widgets/hildon-caption.c:
+	Ups... a momentary lapse of reason.
+
+2006-09-19  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
 	* hildon-widgets/hildon-time-editor.c:
 	(validated_conversion): Added default parameter -- if the field is
 	empty, sets this value.
