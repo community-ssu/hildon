@@ -1,5 +1,20 @@
 2006-09-19  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
+	* hildon-widgets/hildon-time-editor.c:
+	(hildon_time_editor_entry_clicked): This function has been
+	removed. It is not needed any more.
+	(_hildon_time_editor_entry_select_all): Added in order to perform
+	the whole text selection into the entry with an idle call.
+	(hildon_time_editor_entry_focusin): Modified to just add the
+	function above to the idle queue.
+	Fixes #NB40665.
+
+	* hildon-widgets/hildon-caption.c (hildon_caption_button_press):
+	Added condition to return when the widget has already the focus.
+	Fixes #NB31086.	
+
+2006-09-19  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
 	* hildon-widgets/hildon-color-button.c: Draw insensitive grid over the
 	color button widget if the widget is insensitive. Fixes #NB40329. 
 

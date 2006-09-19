@@ -213,10 +213,6 @@ static gboolean hildon_time_editor_ampm_clicked(GtkWidget       *widget,
 static gboolean hildon_time_editor_icon_clicked(GtkWidget       *widget,
                                                 gpointer         data);
 
-static gboolean hildon_time_editor_entry_clicked(GtkWidget      *widget,
-                                                 GdkEventButton *event,
-                                                 gpointer        data);
-
 static void     hildon_time_editor_size_request(GtkWidget       *widget,
                                                 GtkRequisition  *requisition);
 
@@ -242,6 +238,10 @@ static void
 hildon_time_editor_validate (HildonTimeEditor *editor, gboolean allow_intermediate);
 
 static void hildon_time_editor_set_to_current_time (HildonTimeEditor * editor);
+
+static gboolean
+_hildon_time_editor_entry_select_all(GtkWidget *widget);
+
 
 /***
  * Utility functions
@@ -520,9 +520,6 @@ static void hildon_time_editor_init(HildonTimeEditor * editor)
       gtk_entry_set_max_length  (GTK_ENTRY(priv->entries[i]), 2);
       gtk_entry_set_width_chars (GTK_ENTRY(priv->entries[i]), 2);
 
-      /* Connect signals */
-      g_signal_connect(priv->entries[i], "button-release-event",
-                       G_CALLBACK(hildon_time_editor_entry_clicked), editor);
       g_signal_connect(priv->entries[i], "focus-in-event",
                        G_CALLBACK(hildon_time_editor_entry_focusin), editor);
       g_signal_connect(priv->entries[i], "focus-out-event",
@@ -1253,16 +1250,8 @@ static gboolean hildon_time_editor_entry_focusin(GtkWidget * widget,
                                                  GdkEventFocus * event, 
                                                  gpointer data)
 {
-    /* If we were trying to move away from a field with invalid value,
-       we get moved back to it. Here we want to select the text in the field.
-       The !button check checks that the entry wasn't focused with a mouse
-       click.
-
-       The selection happens temporarily if we got here with left/right
-       keys, but it gets immediately unselected within same call due to some
-       inner entry/clipboard magic. */
-    if (!GTK_ENTRY(widget)->button)
-        gtk_editable_select_region(GTK_EDITABLE(widget), 0, 2);
+    g_idle_add((GSourceFunc) _hildon_time_editor_entry_select_all,
+               GTK_ENTRY(widget));
 
     return FALSE;
 }
@@ -1622,28 +1611,6 @@ hildon_time_editor_icon_clicked(GtkWidget * widget, gpointer data)
     return FALSE;
 }
 
-static gboolean hildon_time_editor_entry_clicked(GtkWidget * widget,
-                                                 GdkEventButton * event,
-                                                 gpointer data)
-{
-    HildonTimeEditor *editor;
-    HildonTimeEditorPrivate *priv;
-
-    editor = HILDON_TIME_EDITOR (data);
-    priv = HILDON_TIME_EDITOR_GET_PRIVATE (editor);
-
-    /* If the focus has been grabbed back before the "clicked"
-     * signal gets processed, don't highlight the text.
-     * This happens when input in one H:M:S field is invalid and we're
-     * trying to move to another field. The focus moves back to the invalid
-     * field.
-     */
-    if (gtk_widget_is_focus (widget))
-        gtk_editable_select_region(GTK_EDITABLE(widget), 0, 2);
-
-    return FALSE;
-}
-
 static void hildon_time_editor_size_request(GtkWidget * widget,
                                             GtkRequisition * requisition)
 {
@@ -1891,4 +1858,14 @@ void hildon_time_editor_enable_duration_mode(HildonTimeEditor * editor,
                                              gboolean enable)
 {
     hildon_time_editor_set_duration_mode (editor, enable);
+}
+
+/* Idle callback */
+static gboolean
+_hildon_time_editor_entry_select_all (GtkWidget *widget)
+{
+	GDK_THREADS_ENTER ();
+	gtk_editable_select_region(GTK_EDITABLE(widget), 0, -1);
+	GDK_THREADS_LEAVE ();
+	return FALSE;
 }

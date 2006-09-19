@@ -511,6 +511,10 @@ static gboolean hildon_caption_button_press( GtkWidget *widget,
   HildonCaptionPrivate *priv = HILDON_CAPTION_GET_PRIVATE(widget);
   GtkWidget *child = GTK_BIN(widget)->child;
 
+  /* nothing to do */
+  if (priv->is_focused == TRUE)
+    return;
+
   /* If child can take focus, we simply grab focus to it */
   if ((GTK_WIDGET_CAN_FOCUS(child) || GTK_IS_CONTAINER(child)) &&
       GTK_WIDGET_IS_SENSITIVE(child))
