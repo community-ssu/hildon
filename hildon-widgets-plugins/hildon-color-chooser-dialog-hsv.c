@@ -1007,8 +1007,8 @@ static void hildon_color_chooser_dialog_hsv_set_color_num(HildonColorChooserDial
 
 static void hildon_color_chooser_dialog_hsv_ascii_hex_to_color(gchar *s, GdkColor *color)
 {
-  g_return_if_fail (s != NULL, NULL);
-  g_return_if_fail (color != NULL, NULL);
+  g_return_if_fail (s != NULL);
+  g_return_if_fail (color != NULL);
 
   if (s[0] != '#') {
     gchar *s_copy = g_strdup_printf ("#%s", s);

@@ -1,5 +1,10 @@
 2006-09-19  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
+	* hildon-widgets-plugins/hildon-color-chooser-dialog-hsv.c: Agh...
+	correcting silly mistake.  
+
+2006-09-19  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
 	* hildon-widgets-plugins/hildon-color-chooser-dialog-hsv.c:
 	Replacing a custom hex -> color with a stock gdk func. 
 
