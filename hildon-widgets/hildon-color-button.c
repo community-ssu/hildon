@@ -110,6 +110,10 @@ static gboolean
 hildon_color_button_mnemonic_activate( GtkWidget *widget,
                                        gboolean group_cycling );
 
+static void
+draw_grid (GdkDrawable *drawable, GdkGC *gc, 
+           int x, int y, 
+           gint w, gint h);
 
 static gpointer parent_class = NULL;
 
@@ -177,6 +181,21 @@ hildon_color_button_class_init(HildonColorButtonClass *klass)
   g_type_class_add_private (gobject_class, sizeof (HildonColorButtonPrivate));
 }
 
+/* Draw a dotted grid over the specified area to make it look 
+ * insensitive. Actually, we should generate that pixbuf once and 
+ * just render it over later... */
+static void
+draw_grid (GdkDrawable *drawable, GdkGC *gc, 
+           int x, int y,
+           gint w, gint h)
+{
+  int currentx;
+  int currenty;
+  for (currenty = y; currenty <= h; currenty++)
+      for (currentx = ((currenty % 2 == 0) ? x : x + 1); currentx <= w; currentx += 2)
+        gdk_draw_point (drawable, gc, currentx, currenty);
+}
+
 /* Handle exposure events for the color picker's drawing area */
 static gint
 hildon_color_field_expose_event(GtkWidget *widget, GdkEventExpose *event,
@@ -200,34 +219,42 @@ hildon_color_field_expose_event(GtkWidget *widget, GdkEventExpose *event,
     gdk_gc_set_rgb_fg_color(cb->priv->gc, &outer_border);
     /* draw the outer border as a filled rectangle */
     gdk_draw_rectangle(widget->window,
-            cb->priv->gc,
-            TRUE,
-            event->area.x,
-            event->area.y,
-            event->area.width,
-            event->area.height);
+                       (GTK_WIDGET_IS_SENSITIVE (widget)) ?  cb->priv->gc : widget->style->bg_gc [GTK_STATE_INSENSITIVE],
+                       TRUE,
+                       event->area.x, 
+                       event->area.y,
+                       event->area.width,
+                       event->area.height);
 
     /* serve the inner border color to the Graphic Context */
     gdk_gc_set_rgb_fg_color(cb->priv->gc, &inner_border);
     /* draw the inner border as a filled rectangle */
     gdk_draw_rectangle(widget->window,
-            cb->priv->gc,
-            TRUE,
-            event->area.x + OUTER_BORDER_THICKNESS,
-            event->area.y + OUTER_BORDER_THICKNESS,
-            event->area.width  - (OUTER_BORDER_THICKNESS*2),
-            event->area.height - (OUTER_BORDER_THICKNESS*2));
+                       cb->priv->gc,
+                       TRUE,
+                       event->area.x + OUTER_BORDER_THICKNESS,
+                       event->area.y + OUTER_BORDER_THICKNESS,
+                       event->area.width  - (OUTER_BORDER_THICKNESS*2),
+                       event->area.height - (OUTER_BORDER_THICKNESS*2));
 
     /* serve the actual color to the Graphic Context */
     gdk_gc_set_rgb_fg_color(cb->priv->gc, &cb->priv->color);
     /* draw the actual rectangle */
     gdk_draw_rectangle(widget->window,
-            cb->priv->gc,
-            TRUE,
-            event->area.x + (INNER_BORDER_THICKNESS + OUTER_BORDER_THICKNESS),
-            event->area.y + (INNER_BORDER_THICKNESS + OUTER_BORDER_THICKNESS),
-            event->area.width  - ((INNER_BORDER_THICKNESS + OUTER_BORDER_THICKNESS)*2),
-            event->area.height - ((INNER_BORDER_THICKNESS + OUTER_BORDER_THICKNESS)*2));
+                       cb->priv->gc,
+                       TRUE,
+                       event->area.x + (INNER_BORDER_THICKNESS + OUTER_BORDER_THICKNESS),
+                       event->area.y + (INNER_BORDER_THICKNESS + OUTER_BORDER_THICKNESS),
+                       event->area.width  - ((INNER_BORDER_THICKNESS + OUTER_BORDER_THICKNESS)*2),
+                       event->area.height - ((INNER_BORDER_THICKNESS + OUTER_BORDER_THICKNESS)*2));
+
+    if (! GTK_WIDGET_IS_SENSITIVE (widget)) {
+            draw_grid (GDK_DRAWABLE (widget->window), widget->style->bg_gc [GTK_STATE_INSENSITIVE], 
+                       event->area.x + (INNER_BORDER_THICKNESS + OUTER_BORDER_THICKNESS),
+                       event->area.y + (INNER_BORDER_THICKNESS + OUTER_BORDER_THICKNESS),
+                       event->area.width  - ((INNER_BORDER_THICKNESS + OUTER_BORDER_THICKNESS)*2) + 2,
+                       event->area.height - ((INNER_BORDER_THICKNESS + OUTER_BORDER_THICKNESS)*2) + 2);
+    }
 
     return FALSE;
 }
