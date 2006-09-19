@@ -341,7 +341,7 @@ static gboolean hildon_caption_expose( GtkWidget *widget,
 
   /* If our child control is focused, we draw nice looking focus
      graphics for the caption */  
-  if ( priv->is_focused )
+  if ( priv->is_focused && priv->text )
   {
     /* Determine focus box dimensions */
     gtk_widget_get_child_requisition( priv->caption_area, &req );
@@ -384,7 +384,7 @@ static void hildon_caption_set_property( GObject *object, guint param_id,
       }
 
       /* Update label */
-      priv->text = g_strdup( g_value_get_string(value) );
+      priv->text = g_value_get_string(value);
       hildon_caption_set_label_text( priv );
       break;
       
@@ -428,7 +428,7 @@ static void hildon_caption_set_property( GObject *object, guint param_id,
         priv->separator = NULL;
       }
 
-      priv->separator = g_strdup( g_value_get_string(value) );
+      priv->separator = g_value_get_string(value);
       hildon_caption_set_label_text( priv );
       break;
 
@@ -546,6 +546,7 @@ static void hildon_caption_init( HildonCaption *caption )
   priv->icon = NULL;
   priv->group = NULL;
   priv->is_focused = FALSE;
+  priv->text = NULL;
 
   priv->separator = g_strdup(_("ecdg_ti_caption_separator"));
 

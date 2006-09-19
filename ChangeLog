@@ -1,5 +1,11 @@
 2006-09-19  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
+	* hildon-widgets/hildon-caption.c: Do not draw the focus border when
+	the label has no text set. Fixes #NB40649. 
+	Also fixing some memory leaks in properties setting.
+
+2006-09-19  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
 	* hildon-widgets/hildon-time-editor.c:
 	(hildon_time_editor_entry_clicked): This function has been
 	removed. It is not needed any more.
