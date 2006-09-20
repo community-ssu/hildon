@@ -1,5 +1,13 @@
 2006-09-19  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
+	* hildon-widgets/hildon-date-editor.c:
+	(hildon_date_editor_keypress): On left or right key pressed, it
+	first takes in consideration the current cursor position inside
+	the entries. If it's in an edge, focus moves to the widget on the
+	right or left. Fixes #NB40770.
+
+2006-09-19  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
 	* hildon-widgets-plugins/hildon-color-chooser-dialog-hsv.c: Agh...
 	correcting silly mistake.  
 

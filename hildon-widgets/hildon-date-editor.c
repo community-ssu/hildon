@@ -1069,15 +1069,19 @@ static gboolean hildon_date_editor_keypress(GtkWidget * widget,
     ed = HILDON_DATE_EDITOR(data);
     priv = HILDON_DATE_EDITOR_GET_PRIVATE(ed);
     pos = gtk_editable_get_position(GTK_EDITABLE(widget));
-	
+
     switch (event->keyval) {
     case GDK_Left:
-        (void) gtk_widget_child_focus(GTK_WIDGET(data), GTK_DIR_LEFT);
-        return TRUE;
+        if (pos == 0) {
+          (void) gtk_widget_child_focus(GTK_WIDGET(data), GTK_DIR_LEFT);
+          return TRUE;
+        }
         break;
     case GDK_Right:
-        (void) gtk_widget_child_focus(GTK_WIDGET(data), GTK_DIR_RIGHT);
-        return TRUE;
+        if (pos >= g_utf8_strlen(gtk_entry_get_text(GTK_ENTRY(widget)), -1)) {
+          (void) gtk_widget_child_focus(GTK_WIDGET(data), GTK_DIR_RIGHT);
+          return TRUE;
+        }
         break;
     case GDK_Return:
     case GDK_ISO_Enter:
