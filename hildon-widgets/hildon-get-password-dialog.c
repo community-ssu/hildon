@@ -118,12 +118,12 @@ hildon_get_password_set_property(GObject * object,
     break;
   case PROP_PASSWORD:
     gtk_entry_set_text(GTK_ENTRY
-		       (gtk_bin_get_child(GTK_BIN(priv->passwordEntry))),
+		       (hildon_caption_get_control (priv->passwordEntry)),
 		       g_value_get_string(value));
     break;
   case PROP_NUMBERS_ONLY:
     /* Set input mode for the password entry */
-    g_object_set(G_OBJECT(gtk_bin_get_child(GTK_BIN(priv->passwordEntry))),
+    g_object_set(G_OBJECT(hildon_caption_get_control(priv->passwordEntry)),
 		 "input-mode",
 		 (g_value_get_boolean(value)
 		  ? HILDON_INPUT_MODE_HINT_NUMERIC
@@ -166,13 +166,13 @@ hildon_get_password_get_property(GObject * object,
       g_value_set_string(value, string);
       break;
     case PROP_PASSWORD:
-      string = gtk_entry_get_text(GTK_ENTRY(priv->passwordEntry));
+      string = gtk_entry_get_text(GTK_ENTRY (hildon_caption_get_control(priv->passwordEntry)));
       g_value_set_string(value, string);
       break;
     case PROP_NUMBERS_ONLY:
       /* This property is set if and only if the input mode
 	 of the password entry has been set to numeric only */
-      g_object_get(G_OBJECT(gtk_bin_get_child(GTK_BIN(priv->passwordEntry))),
+      g_object_get(G_OBJECT(hildon_caption_get_control(priv->passwordEntry)),
 		   "input-mode", &input_mode);
       g_value_set_boolean(value,
 			  (input_mode == HILDON_INPUT_MODE_HINT_NUMERIC));
@@ -321,6 +321,7 @@ create_contents(HildonGetPasswordDialog *dialog)
 
     /* Create password text entry */
     control = gtk_entry_new();
+    g_object_set (control, "hildon-input-mode", HILDON_GTK_INPUT_MODE_FULL, NULL);
     gtk_entry_set_visibility(GTK_ENTRY(control), FALSE);
     priv->passwordEntry = HILDON_CAPTION
       (hildon_caption_new(group,
@@ -453,9 +454,7 @@ const gchar
     priv = HILDON_GET_PASSWORD_DIALOG_GET_PRIVATE(dialog);
 
     /* Retrieve the password entry widget */
-    entry1 = GTK_ENTRY(gtk_bin_get_child(GTK_BIN(
-                       priv->passwordEntry)));
-
+    entry1 = GTK_ENTRY (hildon_caption_get_control(priv->passwordEntry));
     text1 = GTK_ENTRY(entry1)->text;
 
     return text1;

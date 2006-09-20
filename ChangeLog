@@ -1,3 +1,11 @@
+2006-09-20  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
+	* hildon-widgets/hildon-get-password-dialog.c: Fixing the way input
+	method is set. Fixes #NB37467. 
+
+	* hildon-widgets/hildon-name-password-dialog.c: Fixing the way the
+	password entry is being accessed. Fixes #MB767.
+
 2006-09-19  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
 	* hildon-widgets/hildon-date-editor.c:

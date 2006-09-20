@@ -233,7 +233,7 @@ hildon_name_password_dialog_init(HildonNamePasswordDialog * dialog)
 
     /* Setup password entry */
     priv->passwordEntry = GTK_ENTRY(gtk_entry_new());
-    g_object_set (priv->passwordEntry, "hildon-input-mode", HILDON_GTK_INPUT_MODE_FULL);
+    g_object_set (priv->passwordEntry, "hildon-input-mode", HILDON_GTK_INPUT_MODE_FULL, NULL);
     gtk_entry_set_visibility(GTK_ENTRY(priv->passwordEntry), FALSE);
     caption =
       HILDON_CAPTION(hildon_caption_new(group,
