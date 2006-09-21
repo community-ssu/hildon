@@ -1,3 +1,10 @@
+2006-09-21  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
+	* hildon-widgets-plugins/hildon-color-chooser-dialog-hsv.c: Reverting
+	the hex -> color func (hsv not supported by the parse function). 
+	Fixing a bug where last character is not appended to the color ->
+	ascii conversion. Fixes #NB40061.
+
 2006-09-20  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
 	* hildon-widgets/hildon-get-password-dialog.c: Fixing the way input

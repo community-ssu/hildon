@@ -1007,21 +1007,28 @@ static void hildon_color_chooser_dialog_hsv_set_color_num(HildonColorChooserDial
 
 static void hildon_color_chooser_dialog_hsv_ascii_hex_to_color(gchar *s, GdkColor *color)
 {
-  g_return_if_fail (s != NULL);
-  g_return_if_fail (color != NULL);
+  int vals[12], i;
 
-  if (s[0] != '#') {
-    gchar *s_copy = g_strdup_printf ("#%s", s);
-    gdk_color_parse (s_copy, color);
-    g_free (s_copy);
-  } else {
-    gdk_color_parse (s, color);
+
+  for(i = 0; i < 12; i++) {
+    if(s[i] >= '0' && s[i] <= '9') {
+      vals[i] = s[i] - 0x30;
+    } else if(s[i] >= 'a' && s[i] <= 'f') {
+      vals[i] = s[i] - 0x57;
+    } else {
+      vals[i] = 0;
+    }
   }
+
+
+  color->red   = (vals[0] << 12) | (vals[1] <<  8) | (vals[2 ] <<  4) | (vals[3 ]      );
+  color->green = (vals[4] << 12) | (vals[5] <<  8) | (vals[6 ] <<  4) | (vals[7 ]      );
+  color->blue  = (vals[8] << 12) | (vals[9] <<  8) | (vals[10] <<  4) | (vals[11]      );
 }
 
 static void hildon_color_chooser_dialog_hsv_color_to_ascii_hex(gchar *s, GdkColor *color)
 {
-  g_snprintf(s, 12, "%x%x%x%x%x%x%x%x%x%x%x%x",
+  g_snprintf(s, 13, "%x%x%x%x%x%x%x%x%x%x%x%x",
              (color->red >> 12) & 0xf, (color->red >>  8) & 0xf,
              (color->red >>  4) & 0xf, (color->red      ) & 0xf,
              (color->green >> 12) & 0xf, (color->green >>  8) & 0xf,
