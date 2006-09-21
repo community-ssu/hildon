@@ -573,7 +573,7 @@ hildon_number_editor_validate_value(HildonNumberEditor *editor, gboolean allow_i
                   negative and value is positive.
                 * If inputted value is below minimum and minimum
                   is negative or minumum positive and value
-                  negative.
+                  negative or zero.
                In all other cases situation can be fixed just by
                adding new numbers to the string.
              */
@@ -582,7 +582,7 @@ hildon_number_editor_validate_value(HildonNumberEditor *editor, gboolean allow_i
                 error_code = MAXIMUM_VALUE_EXCEED;
                 fixup_value = priv->end;
             }
-            else if (value < priv->start && (priv->start < 0 || (priv->start >= 0 && value < 0)))
+            else if (value < priv->start && (priv->start < 0 || (priv->start >= 0 && value <= 0)))
             {
                 error_code = MINIMUM_VALUE_EXCEED;
                 fixup_value = priv->start;
