@@ -1106,6 +1106,16 @@ hildon_font_selection_dialog_show_preview(HildonFontSelectionDialog *
   GtkWidget *preview_dialog;
   GtkWidget *preview_label;
   gchar *str = NULL;
+  gboolean position_set = FALSE;
+  gint position = 0;
+  gboolean show_ref = FALSE;
+
+  g_object_get(G_OBJECT(fontsel), "position-set", &position_set, NULL);
+  if (position_set) {
+    g_object_get(G_OBJECT(fontsel), "position", &position, NULL);
+    if (position == 1 || position == -1)
+      show_ref = TRUE;
+  }
   
   /*Preview dialog init*/
   preview_dialog=
@@ -1117,8 +1127,8 @@ hildon_font_selection_dialog_show_preview(HildonFontSelectionDialog *
 				GTK_RESPONSE_ACCEPT,
 				NULL);
 
-  str = g_strconcat(_("ecdg_fi_preview_font_preview_reference"),
-                    priv->preview_text, 0);
+  str = (show_ref) ? g_strconcat(_("ecdg_fi_preview_font_preview_reference"), priv->preview_text, 0) :
+                     g_strdup (priv->preview_text);
 
   preview_label = gtk_label_new(str);
   gtk_label_set_line_wrap(GTK_LABEL(preview_label), TRUE);
@@ -1137,9 +1147,12 @@ hildon_font_selection_dialog_show_preview(HildonFontSelectionDialog *
   
   
   /*Set the font*/
-  list = hildon_font_selection_dialog_create_attrlist(fontsel, 
-				strlen(_("ecdg_fi_preview_font_preview_reference")),
-				strlen(priv->preview_text));
+  list = (show_ref) ? hildon_font_selection_dialog_create_attrlist(fontsel, 
+      strlen(_("ecdg_fi_preview_font_preview_reference")),
+      strlen(priv->preview_text)) :
+      hildon_font_selection_dialog_create_attrlist(fontsel, 
+      0,
+      strlen(priv->preview_text));
 
   g_object_get(G_OBJECT(fontsel), "family", &str, "family-set",
 	       &family_set, "size", &size, "size-set", &size_set,

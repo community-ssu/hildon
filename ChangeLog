@@ -1,5 +1,11 @@
 2006-09-21  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
+	* hildon-widgets/hildon-font-selection-dialog.c: Do not put the
+	"reference" text in the font preview dialog if the super/subscript
+	setting has not been selected. Fixes #NB40999.
+
+2006-09-21  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
 	* hildon-widgets/hildon-number-editor.c:
 	(hildon_number_editor_validate_value): Modified the condition
 	for checking if the inputted value is 0 when range minimun is
