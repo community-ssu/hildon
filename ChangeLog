@@ -1,3 +1,9 @@
+2006-09-21  Fernando Herrera  <fernando.herrera-de-las-heras@nokia.com>
+
+	* hildon-widgets/hildon-get-password-dialog.c:
+	(hildon_get_password_get_property): Fix "numbers-only" getter.
+	Fix #MB769
+
 2006-09-21  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
 	* hildon-widgets-plugins/hildon-color-chooser-dialog-hsv.c: Reverting

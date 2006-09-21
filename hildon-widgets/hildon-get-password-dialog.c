@@ -173,7 +173,7 @@ hildon_get_password_get_property(GObject * object,
       /* This property is set if and only if the input mode
 	 of the password entry has been set to numeric only */
       g_object_get(G_OBJECT(hildon_caption_get_control(priv->passwordEntry)),
-		   "input-mode", &input_mode);
+		   "input-mode", &input_mode, NULL);
       g_value_set_boolean(value,
 			  (input_mode == HILDON_INPUT_MODE_HINT_NUMERIC));
       break;
