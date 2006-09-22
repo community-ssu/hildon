@@ -395,6 +395,9 @@ hildon_find_toolbar_entry_activate (GtkWidget *widget,
   GtkWidget *find_toolbar = GTK_WIDGET(user_data);
   gboolean rb;  
 
+  /* NB#40936 stop focus from moving to next widget */
+  g_signal_stop_emission_by_name (widget, "activate");
+
   g_signal_emit_by_name(find_toolbar, "search", NULL);
   g_signal_emit_by_name(find_toolbar, "history_append", &rb, NULL);
 }
