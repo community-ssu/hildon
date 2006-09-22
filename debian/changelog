@@ -1,3 +1,26 @@
+hildon-libs (0.14.4-1) unstable; urgency=low
+
+  * fixes NB#39946 - Focus is not coming always when tap on date
+  * fixes NB#40633 - Incorrect hour value is shown upon relaunching the date and time applet
+  * fixes NB#40329 - converting HTML editor to plain editor still retains the color format icon in the toolbar without dimming
+  * fixes NB#40665 - Time editor focus behaviour
+  * fixes NB#31086 - Tapping outside selects date and time in dialog box
+  * fixes NB#40649 - Empty label on the left side of 'Remember password' checkbox on 'Authentication' dialog
+  * fixes NB#39048 - Value must be between %d and %d info banner is displayed, but old value is not restored
+  * fixes NB#40770 - Hard keys and focus in date editor
+  * fixes NB#37467 - Hildon name password dialog with autocapitalization
+  * fixes MB#767 - HildonGetPasswordDialog 'password' property
+  * fixes NB#40061 - Custom added colors are shown in different boxes when launced from different applications
+  * fixes NB#30734 - "Page number must be between %1 and %d info is not coming for boundary value
+  * fixes NB#40928 - Unable to move the cursor within the fields of the date editor using hardkeys
+  * fixes MB#772 - HildonNamePasswordDialog's name property conflict with GtkWidget's name property
+  * fixes NB#40999 - Unnecessary string in Font preview dialog
+  * fixes MB#40057 - The left and top borders are missing for the colour selector palette
+  * fixes NB#40936 - Pressing return in an entry focuses next widget
+  * fixes NB#6214 - Signal "insensitive_press" doesn't work for all widgets
+
+ -- Michael Dominic Kostrzewa <michael.kostrzewa@nokia.com>  Fri, 22 Sep 2006 18:00:00 +0300
+
 hildon-libs (0.14.3-1) unstable; urgency=low
 
   * fixes NB#40055 - Modified time in time editor is not updated in the time picker.
