@@ -1,3 +1,17 @@
+2006-09-22  Tommi Komulainen  <tommi.komulainen@nokia.com>
+
+	* hildon-widgets/hildon-volumebar.h (HildonVolumebarPrivate)
+	* hildon-widgets/hildon-volumebar.c (hildon_volumebar_size_allocate,
+	hildon_volumebar_realize, hildon_volumebar_unrealize,
+	hildon_volumebar_map, hildon_volumebar_unmap,
+	hildon_volumebar_notify, hildon_volumebar_class_init): Add a
+	input-only event window to catch button-press events anywhere in the
+	widget when the widget is insensitive. NB#6214
+
+	* hildon-widgets/hildon-hvolumebar.c (hildon_hvolumebar_size_allocate): 
+	* hildon-widgets/hildon-vvolumebar.c (hildon_vvolumebar_size_allocate): 
+	Chain to parent so that the event window is properly resized.
+
 2006-09-22  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
 	* hildon-widgets-plugins/hildon-color-chooser-dialog-hsv.c:

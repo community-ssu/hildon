@@ -38,6 +38,7 @@ struct _HildonVolumebarPrivate {
   HildonVolumebarRange *volumebar;
   GtkToggleButton      *tbutton;
   gboolean              is_toolbar; /* is inside toolbar (for horizontal volumebar) */
+  GdkWindow            *event_window; /* input-only window to catch insensitive presses */
 };
 
 void _hildon_volumebar_mute_toggled(HildonVolumebar * self);

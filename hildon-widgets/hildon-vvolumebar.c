@@ -190,7 +190,7 @@ hildon_vvolumebar_size_allocate(GtkWidget * widget,
         allocation->width = DEFAULT_BAR_WIDTH;
     }
 
-    widget->allocation = *allocation;
+    GTK_WIDGET_CLASS(parent_class)->size_allocate(widget, allocation);
 
     if (priv->volumebar && GTK_WIDGET_VISIBLE(priv->volumebar)) {
         /* Allocate space for the slider */

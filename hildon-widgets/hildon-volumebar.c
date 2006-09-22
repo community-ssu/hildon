@@ -70,6 +70,14 @@ static gboolean
 hildon_volumebar_key_press(GtkWidget * widget,
                            GdkEventKey * event);
 
+static void hildon_volumebar_size_allocate (GtkWidget *widget,
+					    GtkAllocation *allocation);
+static void hildon_volumebar_realize (GtkWidget *widget);
+static void hildon_volumebar_unrealize (GtkWidget *widget);
+static void hildon_volumebar_map (GtkWidget *widget);
+static void hildon_volumebar_unmap (GtkWidget *widget);
+static void hildon_volumebar_notify (GObject *self, GParamSpec *param);
+
 
 enum 
 {
@@ -129,6 +137,11 @@ hildon_volumebar_class_init(HildonVolumebarClass *volumebar_class)
        override forall method */
     volumebar_class->mute_toggled = mute_toggled;
     container_class->forall = hildon_child_forall;
+    widget_class->size_allocate = hildon_volumebar_size_allocate;
+    widget_class->realize = hildon_volumebar_realize;
+    widget_class->unrealize = hildon_volumebar_unrealize;
+    widget_class->map = hildon_volumebar_map;
+    widget_class->unmap = hildon_volumebar_unmap;
     widget_class->key_press_event = hildon_volumebar_key_press;
     object_class->destroy = hildon_volumebar_destroy;
 
@@ -155,6 +168,7 @@ hildon_volumebar_class_init(HildonVolumebarClass *volumebar_class)
                                                  gtk_marshal_VOID__VOID,
                                                  G_TYPE_NONE, 0);
     
+    gobject_class->notify = hildon_volumebar_notify;
     gobject_class->set_property = hildon_volumebar_set_property;
     gobject_class->get_property = hildon_volumebar_get_property; 
 
@@ -212,6 +226,90 @@ hildon_volumebar_init(HildonVolumebar * volumebar)
 }
 
 static void
+hildon_volumebar_size_allocate (GtkWidget *widget, GtkAllocation *allocation)
+{
+    HildonVolumebarPrivate *priv;
+
+    priv = HILDON_VOLUMEBAR_GET_PRIVATE(widget);
+
+    if (GTK_WIDGET_CLASS (parent_class)->size_allocate)
+	GTK_WIDGET_CLASS (parent_class)->size_allocate (widget, allocation);
+
+    if (GTK_WIDGET_REALIZED (widget))
+	gdk_window_move_resize (priv->event_window,
+				allocation->x, allocation->y,
+				allocation->width, allocation->height);
+}
+
+static void
+hildon_volumebar_realize (GtkWidget *widget)
+{
+    HildonVolumebarPrivate *priv;
+    GdkWindowAttr attributes;
+    gint attributes_mask;
+
+    priv = HILDON_VOLUMEBAR_GET_PRIVATE(widget);
+
+    GTK_WIDGET_CLASS(parent_class)->realize(widget);
+
+    attributes.window_type = GDK_WINDOW_CHILD;
+    attributes.x = widget->allocation.x;
+    attributes.y = widget->allocation.y;
+    attributes.width = widget->allocation.width;
+    attributes.height = widget->allocation.height;
+    attributes.wclass = GDK_INPUT_ONLY;
+    attributes.event_mask = GDK_BUTTON_PRESS_MASK;
+
+    attributes_mask = GDK_WA_X | GDK_WA_Y;
+
+    priv->event_window = gdk_window_new (widget->window,
+					 &attributes, attributes_mask);
+    gdk_window_set_user_data (priv->event_window, widget);
+}
+
+static void
+hildon_volumebar_unrealize (GtkWidget *widget)
+{
+    HildonVolumebarPrivate *priv;
+
+    priv = HILDON_VOLUMEBAR_GET_PRIVATE(widget);
+
+    if (priv->event_window) {
+	gdk_window_set_user_data (priv->event_window, NULL);
+	gdk_window_destroy (priv->event_window);
+	priv->event_window = NULL;
+    }
+
+    GTK_WIDGET_CLASS(parent_class)->unrealize(widget);
+}
+
+static void
+hildon_volumebar_map (GtkWidget *widget)
+{
+    HildonVolumebarPrivate *priv;
+
+    priv = HILDON_VOLUMEBAR_GET_PRIVATE(widget);
+
+    GTK_WIDGET_CLASS(parent_class)->map(widget);
+
+    /* the event window must be on top of all other widget windows, so show it
+     * last */
+    if (!GTK_WIDGET_SENSITIVE (widget))
+	gdk_window_show (priv->event_window);
+}
+
+static void hildon_volumebar_unmap (GtkWidget *widget)
+{
+    HildonVolumebarPrivate *priv;
+
+    priv = HILDON_VOLUMEBAR_GET_PRIVATE(widget);
+
+    gdk_window_hide (priv->event_window);
+
+    GTK_WIDGET_CLASS(parent_class)->unmap(widget);
+}
+
+static void
 hildon_child_forall(GtkContainer * container,
                     gboolean include_internals,
                     GtkCallback callback, gpointer callback_data)
@@ -230,6 +328,27 @@ hildon_child_forall(GtkContainer * container,
     /* Execute callback for both internals */
     (*callback) (GTK_WIDGET(priv->tbutton), callback_data);
     (*callback) (GTK_WIDGET(priv->volumebar), callback_data);
+}
+
+static void
+hildon_volumebar_notify (GObject *self, GParamSpec *param)
+{
+    HildonVolumebarPrivate *priv;
+
+    priv = HILDON_VOLUMEBAR_GET_PRIVATE(self);
+
+    if (GTK_WIDGET_MAPPED (self)) {
+	/* show/hide the event window on sensitivity change */
+	if (g_str_equal (param->name, "sensitive")) {
+	    if (GTK_WIDGET_SENSITIVE (self))
+		gdk_window_hide (priv->event_window);
+	    else
+		gdk_window_show (priv->event_window);
+	}
+    }
+
+    if (G_OBJECT_CLASS(parent_class)->notify)
+	G_OBJECT_CLASS(parent_class)->notify (self, param);
 }
 
 static void 

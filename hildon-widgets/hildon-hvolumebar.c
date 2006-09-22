@@ -238,7 +238,7 @@ hildon_hvolumebar_size_allocate(GtkWidget * widget,
         allocation->height = DEFAULT_BAR_HEIGHT;
     }
 
-    widget->allocation = *allocation;
+    GTK_WIDGET_CLASS(parent_class)->size_allocate(widget, allocation);
 
     if (priv->tbutton && GTK_WIDGET_VISIBLE(priv->tbutton)) {
 
