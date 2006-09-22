@@ -857,7 +857,6 @@ inline void inline_draw_hue_bar(GtkWidget *widget, int x, int y, int w, int h, i
     return;
   }
 
-
   buf = (unsigned char *)g_malloc(w*h*3);
 
   hvec = 65535/sh;
@@ -906,8 +905,7 @@ inline void inline_draw_hue_bar_dimmed(GtkWidget *widget, int x, int y, int w, i
     return;
   }
 
-
-  buf = (unsigned char *)g_malloc(w*h*3);
+  buf = (unsigned char *)g_malloc(w*h*4);
 
   hvec = 65535/sh;
   hcurr = hvec * (y - sy);
@@ -923,17 +921,17 @@ inline void inline_draw_hue_bar_dimmed(GtkWidget *widget, int x, int y, int w, i
       ptr[0] = avg;
       ptr[1] = avg;
       ptr[2] = avg;
-      ptr += 3;
+      ptr[3] = ((((i % 2) + j) % 2) == 0) ? 60 : 10;
+      ptr += 4;
     }
 
     hcurr += hvec;
   }
 
+  GdkPixbuf *pixbuf = gdk_pixbuf_new_from_data (buf, GDK_COLORSPACE_RGB, TRUE, 8, w, h, w * 4, g_free, buf);
 
-  gdk_draw_rgb_image(widget->parent->window, widget->style->fg_gc[0], x, y, w, h, GDK_RGB_DITHER_NONE, buf, w*3);
-
-
-  g_free(buf);
+  gdk_draw_pixbuf (widget->parent->window, widget->style->fg_gc [0], pixbuf, 0, 0, x, y, w, h, GDK_RGB_DITHER_NONE, 0, 0);
+  g_object_unref (pixbuf);
 }
 
 
@@ -1048,7 +1046,7 @@ inline void inline_draw_sv_plane_dimmed(HildonColorChooserHSV *sel, int x, int y
   }
 
 
-  buf = (unsigned char *)g_malloc(w*h*3);
+  buf = (unsigned char *)g_malloc(w*h*4);
 
   ptr = buf;
 
@@ -1088,10 +1086,11 @@ inline void inline_draw_sv_plane_dimmed(HildonColorChooserHSV *sel, int x, int y
       ptr[0] = avg;
       ptr[1] = avg;
       ptr[2] = avg;
+      ptr[3] = ((((i % 2) + j) % 2) == 0) ? 60 : 10;
       rgbtmp[0] += rgbx[0];
       rgbtmp[1] += rgbx[1];
       rgbtmp[2] += rgbx[2];
-      ptr += 3;
+      ptr += 4;
     }
 
     rgbx[0] += rgby[0];
@@ -1099,11 +1098,10 @@ inline void inline_draw_sv_plane_dimmed(HildonColorChooserHSV *sel, int x, int y
     rgbx[2] += rgby[2];
   }
 
+  GdkPixbuf *pixbuf = gdk_pixbuf_new_from_data (buf, GDK_COLORSPACE_RGB, TRUE, 8, w, h, w * 4, g_free, buf);
 
-  gdk_draw_rgb_image(widget->parent->window, widget->style->fg_gc[0], x, y, w, h, GDK_RGB_DITHER_NONE, buf, w*3);
-
-
-  g_free(buf);
+  gdk_draw_pixbuf (widget->parent->window, widget->style->fg_gc [0], pixbuf, 0, 0, x, y, w, h, GDK_RGB_DITHER_NONE, 0, 0);
+  g_object_unref (pixbuf);
 }
 
 

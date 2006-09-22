@@ -74,7 +74,7 @@ struct _HildonNamePasswordDialogPrivate {
 enum{
     PROP_NONE = 0,
     PROP_CONTENT,
-    PROP_NAME,
+    PROP_USERNAME,
     PROP_PASSWORD
 };
 
@@ -106,7 +106,7 @@ hildon_name_password_dialog_set_property(GObject * object,
       /* Set the password domain text */
       hildon_name_password_dialog_set_domain(dialog, g_value_get_string(value));
       break;
-    case PROP_NAME:
+    case PROP_USERNAME:
       /* Set the current username displayed in the dialog */
       gtk_entry_set_text(priv->nameEntry, g_value_get_string(value));
       break;
@@ -135,7 +135,7 @@ hildon_name_password_dialog_get_property(GObject * object,
     case PROP_CONTENT:
       g_value_set_string(value, gtk_label_get_text(priv->domainLabel));
       break;
-    case PROP_NAME:
+    case PROP_USERNAME:
       g_value_set_string(value, hildon_name_password_dialog_get_name(dialog));
       break;
     case PROP_PASSWORD:
@@ -168,9 +168,9 @@ hildon_name_password_dialog_class_init(HildonNamePasswordDialogClass *class)
 			    G_PARAM_READWRITE));
 
     g_object_class_install_property(object_class,
-                    PROP_NAME, 
-                    g_param_spec_string ("name",
-                            "Name",
+                    PROP_USERNAME, 
+                    g_param_spec_string ("username",
+                            "Username",
                             "Set content for name entry.",
                             "DEFAULT",
                             G_PARAM_READWRITE));
@@ -299,7 +299,7 @@ GtkWidget *hildon_name_password_dialog_new(GtkWindow * parent)
 /**
  * hildon_name_password_dialog_new_with_default:
  * @parent: the parent window of the dialog
- * @name: default name, NULL if unset
+ * @name: default username, NULL if unset
  * @password: default password, NULL if unset
  * 
  * Same as #hildon_name_password_dialog_new, but with a 
@@ -314,7 +314,7 @@ GtkWidget *hildon_name_password_dialog_new_with_default(GtkWindow   *parent,
     GtkWidget *self = hildon_name_password_dialog_new(parent);
 
     if(name != NULL)
-      g_object_set(G_OBJECT(self), "name", name, NULL);
+      g_object_set(G_OBJECT(self), "username", name, NULL);
     if(password != NULL)
       g_object_set(G_OBJECT(self), "password", password, NULL);
 

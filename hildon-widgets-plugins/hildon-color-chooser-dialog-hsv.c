@@ -831,12 +831,35 @@ static gboolean hildon_color_chooser_dialog_hsv_area_expose(GtkWidget *widget, G
     x = ((i % w) * (tot_w + spacing));
     y = ((i / w) * (tot_h + spacing));
 
-    if(brd) {
-      gtk_paint_box(gtk_widget_get_style(GTK_WIDGET(dialog)), widget->window, (i == num_selected) ? GTK_STATE_SELECTED : GTK_STATE_NORMAL,
-                    (i == num_selected) ? GTK_SHADOW_IN : GTK_SHADOW_OUT, &event->area, GTK_WIDGET(dialog), "color-radio", x, y, tot_w, tot_h);
-    }
+    gdk_draw_rectangle(widget->window,
+                       widget->style->black_gc,
+                       TRUE,
+                       (i == num_selected) ? x : x + 2,  
+                       (i == num_selected) ? y : y + 2,
+                       (i == num_selected) ? tot_w : tot_w - 4,
+                       (i == num_selected) ? tot_h : tot_h - 4);
 
-    gdk_draw_rectangle(widget->window, start_gc[i], TRUE, event->area.x, event->area.y, event->area.width, event->area.height);
+    gdk_draw_rectangle(widget->window,
+                       widget->style->white_gc,
+                       TRUE,
+                       x + 3,  
+                       y + 3,
+                       tot_w - 6,
+                       tot_h - 6);
+
+    gdk_draw_rectangle(widget->window,
+                       start_gc [i],
+                       TRUE,
+                       x + 3 + 1,  
+                       y + 3 + 1,
+                       tot_w - 6 - 2,
+                       tot_h - 6 - 2);
+
+//      gtk_paint_box(gtk_widget_get_style(GTK_WIDGET(dialog)), widget->window, (i == num_selected) ? GTK_STATE_SELECTED : GTK_STATE_NORMAL,
+//                    (i == num_selected) ? GTK_SHADOW_IN : GTK_SHADOW_OUT, &event->area, GTK_WIDGET(dialog), "color-radio", x, y, tot_w, tot_h);
+    //}
+
+    //gdk_draw_rectangle(widget->window, start_gc[i], TRUE, event->area.x, event->area.y, event->area.width, event->area.height);
   }
 
 

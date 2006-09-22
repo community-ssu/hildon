@@ -1,3 +1,14 @@
+2006-09-22  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
+	* hildon-widgets-plugins/hildon-color-chooser-dialog-hsv.c:
+	* hildon-widgets-plugins/hildon-color-chooser-hsv.c: Changing the name
+	in witch the borders afre being draw around color selectors. Fixes
+	NB#40057.
+	Making the dimmed color bar/plane look a bit nicer. 
+
+	* hildon-widgets/hildon-name-password-dialog.c: Changing the 'name'
+	property of the dialog to 'username'. Fixes #MB772. 
+
 2006-09-21  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
 	* hildon-widgets/hildon-font-selection-dialog.c: Do not put the
