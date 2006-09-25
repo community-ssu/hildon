@@ -238,6 +238,9 @@ init (HildonWizardDialog *wizard_dialog)
     /* Set initial button states: previous and finish buttons are disabled */
     make_buttons_sensitive (wizard_dialog, FALSE, FALSE, TRUE);
 
+    /* Show all the internal widgets */
+    gtk_widget_show_all (GTK_WIDGET (dialog->vbox));
+
     /* connect to dialog's response signal */
     g_signal_connect (G_OBJECT (dialog), "response",
             G_CALLBACK (response), NULL);
@@ -284,6 +287,10 @@ set_property (GObject      *object,
             gtk_notebook_set_show_tabs (priv->notebook, FALSE);
             gtk_notebook_set_show_border (priv->notebook, FALSE);
             gtk_box_pack_start_defaults (GTK_BOX( priv->box), GTK_WIDGET (priv->notebook));
+
+            /* Show the notebook so that a gtk_widget_show on the dialog is
+             * all that is required to display the dialog correctly */
+            gtk_widget_show (priv->notebook);
 
             /* Update dialog title to reflect current page stats etc */        
             if (priv->wizard_name)
