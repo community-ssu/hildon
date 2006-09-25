@@ -1,3 +1,8 @@
+2006-09-25  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
+	* hildon-widgets/hildon-number-editor.c: Applying a patch by Fernando
+	Herrera to fix the number editor notification signals. Fixes MB#625. 
+
 2006-09-22  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 	
 	[0.14.4-1 release]

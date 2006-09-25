@@ -522,6 +522,7 @@ change_numbers (HildonNumberEditor *editor, gint update)
        done in "changed" callback allows intermediate values */
     hildon_number_editor_real_set_value(priv, current_value + update);
     hildon_number_editor_validate_value(editor, FALSE);
+    g_object_notify (G_OBJECT(editor), "value");
 }
 
 static void
@@ -626,6 +627,7 @@ hildon_number_editor_entry_changed(GtkWidget *widget, gpointer data)
 {
     g_assert(HILDON_IS_NUMBER_EDITOR(data));
     hildon_number_editor_validate_value(HILDON_NUMBER_EDITOR(data), TRUE);
+    g_object_notify (G_OBJECT(data), "value");
 }
 
 static void
