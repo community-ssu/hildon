@@ -1271,7 +1271,7 @@ hildon_font_selection_dialog_show_available_sizes
 
   for (i = 0; i < G_N_ELEMENTS(font_sizes); i++) 
     {
-      size_str = g_strdup_printf ("%i %s",
+      size_str = g_strdup_printf ("%i%s",
 				  font_sizes[i],
 				  _("ecdg_va_font_size_trailer"));
 

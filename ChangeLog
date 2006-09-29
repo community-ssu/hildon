@@ -1,3 +1,8 @@
+2006-09-29  Tomas Junnonen  <tomas.junnonen@nokia.com>
+
+	* hildon-font-selection-dialog.c: Remove extra space in font size
+	string. Fixes NB#41291.
+
 2006-09-26  Iain Holmes  <iain@openedhand.com>
 
 	* hildon-wizard-dialog.c: Show all created widgets so that a
