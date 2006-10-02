@@ -250,6 +250,7 @@ static void hildon_color_chooser_dialog_hsv_init(HildonColorChooserDialogHSV *ob
 
   gtk_dialog_add_button(GTK_DIALOG(object), _("ecdg_bd_colour_selector_ok"), GTK_RESPONSE_OK);
   gtk_dialog_add_button(GTK_DIALOG(object), _("ecdg_bd_colour_selector_cancel"), GTK_RESPONSE_CANCEL);
+  gtk_dialog_set_default_response (GTK_DIALOG (object), GTK_RESPONSE_OK);
 
 
   g_signal_connect(G_OBJECT(object->chooser), "insensitive-press", G_CALLBACK(hildon_color_chooser_dialog_hsv_chooser_insensitive_press), object);
