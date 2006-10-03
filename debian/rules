@@ -90,9 +90,9 @@ install: build
 	rm -f $(CURDIR)/debian/build/usr/lib/outo/*.*a
 
 #	for the -dbg package
-	-rm -rf $(CURDIR)/debian/build/usr/lib/debug
-	-mkdir -p $(CURDIR)/debian/build/usr/lib/debug
-	-cp -vd $(CURDIR)/debian/build/usr/lib/lib*.so* $(CURDIR)/debian/build/usr/lib/debug
+	rm -rf $(CURDIR)/debian/build/usr/lib/debug
+#	-mkdir -p $(CURDIR)/debian/build/usr/lib/debug
+#	-cp -vd $(CURDIR)/debian/build/usr/lib/lib*.so* $(CURDIR)/debian/build/usr/lib/debug
 
 
 # Build architecture-independent files here.

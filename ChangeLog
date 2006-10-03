@@ -1,7 +1,12 @@
+2006-10-03  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
+	* debian/rules: Correcting debian debug package generation. Should
+	really fix NB#40532.
+
 2006-10-02  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
 	* hildon-widgets-plugins/hildon-color-chooser-dialog-hsv.c: Make ok
-	the default response for the dialog. Fixes NB#39910.
+	the default response for the dialog. Fixes NB#39909.
 
 2006-09-29  Tomas Junnonen  <tomas.junnonen@nokia.com>
 
