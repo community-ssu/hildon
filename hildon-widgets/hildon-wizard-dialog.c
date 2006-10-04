@@ -87,7 +87,8 @@ static void make_buttons_sensitive  (HildonWizardDialog *wizard_dialog,
 enum {
     PROP_ZERO,
     PROP_WIZARD_NAME,
-    PROP_WIZARD_NOTEBOOK
+    PROP_WIZARD_NOTEBOOK,
+    PROP_WIZARD_AUTOTITLE
 };
 
 struct _HildonWizardDialogPrivate {
@@ -95,6 +96,7 @@ struct _HildonWizardDialogPrivate {
     GtkNotebook *notebook;
     GtkBox      *box;
     GtkWidget   *image;
+    gboolean    autotitle;
 };
 
 
@@ -166,6 +168,22 @@ class_init (HildonWizardDialogClass *wizard_dialog_class)
              "GtkNotebook object to be used in the "
              "HildonWizardDialog",
              GTK_TYPE_NOTEBOOK, G_PARAM_READWRITE));
+
+    /**
+     * HildonWizardDialog:autotitle
+     *
+     * If the wizard should automatically try to change the window title when changing steps. 
+     * Set to FALSE if you'd like to override the default behaviour. 
+     *
+     * Since: 0.14.5 
+     */
+    g_object_class_install_property(object_class, PROP_WIZARD_AUTOTITLE,
+            g_param_spec_boolean 
+            ("autotitle",
+             "AutoTitle",
+             "If the wizard should autotitle itself",
+             TRUE, 
+             G_PARAM_READWRITE));
 }
 
 static void 
@@ -223,6 +241,7 @@ init (HildonWizardDialog *wizard_dialog)
     /* Default values for user provided properties */
     priv->notebook = NULL;
     priv->wizard_name = NULL;
+    priv->autotitle = TRUE;
 
     /* Build wizard layout */
     gtk_box_pack_start_defaults (GTK_BOX (dialog->vbox), GTK_WIDGET (priv->box));
@@ -256,6 +275,19 @@ set_property (GObject      *object,
 
     switch (property_id) {
 
+        case PROP_WIZARD_AUTOTITLE:
+
+            priv->autotitle = g_value_get_boolean (value);
+
+            if (priv->autotitle && 
+                priv->wizard_name && 
+                priv->notebook)
+                create_title (HILDON_WIZARD_DIALOG (object));
+            else if (priv->wizard_name)
+                gtk_window_set_title (GTK_WINDOW (object), priv->wizard_name);
+            
+            break;
+
         case PROP_WIZARD_NAME: 
 
             /* Set new wizard name. This name will appear in titlebar */
@@ -270,7 +302,7 @@ set_property (GObject      *object,
             /* We need notebook in order to create title, since page information
                is used in title generation */
             
-            if (priv->notebook)
+            if (priv->notebook && priv->autotitle)
                 create_title (HILDON_WIZARD_DIALOG (object));
     
             break;
@@ -293,7 +325,7 @@ set_property (GObject      *object,
             gtk_widget_show (priv->notebook);
 
             /* Update dialog title to reflect current page stats etc */        
-            if (priv->wizard_name)
+            if (priv->wizard_name && priv->autotitle)
                 create_title (HILDON_WIZARD_DIALOG (object));
             
             } break;
@@ -420,7 +452,8 @@ response (HildonWizardDialog   *wizard_dialog,
         gtk_widget_hide (GTK_WIDGET(priv->image));
 
     /* New page number may appear in the title, update it */
-    create_title (wizard_dialog);
+    if (priv->autotitle) 
+        create_title (wizard_dialog);
 }
 
 /**

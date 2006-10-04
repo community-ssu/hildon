@@ -1,3 +1,11 @@
+2006-10-04  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
+	* hildon-widgets/hildon-wizard-dialog.c: Adding an "autotitle"
+	property that controls the way wizard handles window titles. If set to
+	TRUE (default) the wizard will automatically update window title when
+	changing wizard pages. If set to FALSE, no title handling is being
+	done, and the title can be overriden by the application developer.
+
 2006-10-05  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
 	* hildon-widgets/hildon-time-editor.c
