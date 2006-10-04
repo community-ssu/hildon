@@ -1287,7 +1287,7 @@ static gint validated_conversion(HildonTimeEditorPrivate *priv,
         value = strtol(text, &tail, 10);
 
         /* Check if conversion succeeded */
-        if (tail[0] == 0)
+        if ((tail[0] == 0) && !(text[0] == '-'))
         {    
             if (value > max) {
                 g_string_printf(error_string, _("ckct_ib_maximum_value"), max);
@@ -1305,6 +1305,16 @@ static gint validated_conversion(HildonTimeEditorPrivate *priv,
             return value;
         }
         /* We'll handle failed conversions soon */
+	else
+	{
+	    if ((tail[0] == '-') || (text[0] == '-'))
+              {
+		g_string_printf(error_string, _("ckct_ib_minimum_value"), min);
+		priv->error_widget = field;
+		*error_code = MIN_VALUE;
+		return min;
+	      }
+	}
     }
     else if (allow_intermediate) 
         return -1;  /* Empty field while user is still editing. No error, but

@@ -1,3 +1,9 @@
+2006-10-05  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
+	* hildon-widgets/hildon-time-editor.c
+	(validated_conversion): Modifications to check the '-' 
+	input and change value to the default min. Fixes NB#40059.
+
 2006-10-04  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
 	* hildon-widgets/hildon-set-password-dialog.c: Turning off the
