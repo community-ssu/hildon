@@ -1,5 +1,13 @@
 2006-10-04  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
+	* hildon-widgets/hildon-caption.c:
+	* hildon-widgets/hildon-caption.h: Adding a new property:
+	"icon-position" and helper set/get routine methods.
+	This propery controls the align/position of the icon in the caption.
+	The icon can be aligned left or right. 
+
+2006-10-04  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
 	* hildon-widgets/hildon-wizard-dialog.c: Adding an "autotitle"
 	property that controls the way wizard handles window titles. If set to
 	TRUE (default) the wizard will automatically update window title when

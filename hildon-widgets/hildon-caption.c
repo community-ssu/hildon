@@ -72,7 +72,8 @@ enum
   PROP_ICON,
   PROP_STATUS,
   PROP_SEPARATOR,
-  PROP_SIZE_GROUP
+  PROP_SIZE_GROUP,
+  PROP_ICON_POSITION,
 };
 
 enum
@@ -130,6 +131,7 @@ struct _HildonCaptionPrivate
   guint is_focused : 1;
   guint expand : 1;
   HildonCaptionStatus status;
+  HildonCaptionIconPosition icon_position;
 };
 
 /* Register optional/mandatory type enumeration */
@@ -147,6 +149,21 @@ hildon_caption_status_get_type (void)
       { 0, NULL, NULL }
     };
     etype = g_enum_register_static ("HildonCaptionStatus", values);
+  }
+  return etype;
+}
+
+GType
+hildon_caption_icon_position_get_type (void)
+{
+  static GType etype = 0;
+  if (etype == 0) {
+    static const GEnumValue values[] = {
+      { HILDON_CAPTION_POSITION_LEFT, "HILDON_CAPTION_POSITION_LEFT", "left" },
+      { HILDON_CAPTION_POSITION_RIGHT, "HILDON_CAPTION_POSITION_RIGHT", "right" },
+      { 0, NULL, NULL }
+    };
+    etype = g_enum_register_static ("HildonCaptionIconPosition", values);
   }
   return etype;
 }
@@ -256,6 +273,21 @@ static void hildon_caption_class_init( HildonCaptionClass *caption_class )
 				   HILDON_TYPE_CAPTION_STATUS,
 				   HILDON_CAPTION_OPTIONAL,
 				   G_PARAM_READABLE | G_PARAM_WRITABLE) );
+  /**
+   * HildonCaption:icon-position:
+   *
+   * If the icon is positioned on the left or right side.
+   *
+   * Since: 0.14.5
+   */
+  g_object_class_install_property( gobject_class, PROP_ICON_POSITION,
+				   g_param_spec_enum("icon-position",
+				   "Icon position",
+				   "If the icon is on the left or right side",
+				   HILDON_TYPE_CAPTION_ICON_POSITION,
+				   HILDON_CAPTION_POSITION_RIGHT,
+				   G_PARAM_READABLE | G_PARAM_WRITABLE) );
+
   /**
    * HildonCaption:size_group:
    *
@@ -375,6 +407,13 @@ static void hildon_caption_set_property( GObject *object, guint param_id,
 
   switch( param_id ) 
   {
+    case PROP_ICON_POSITION:
+
+      hildon_caption_set_icon_position (HILDON_CAPTION (object), 
+                                        g_value_get_enum (value));
+
+      break;
+
     case PROP_LABEL:
       /* Free old label string */
       if( priv->text )
@@ -453,6 +492,9 @@ static void hildon_caption_get_property( GObject *object, guint param_id,
       break;
     case PROP_STATUS:
       g_value_set_enum( value, priv->status );
+      break;
+    case PROP_ICON_POSITION:
+      g_value_set_enum( value, priv->icon_position);
       break;
     case PROP_SIZE_GROUP:
       g_value_set_object( value, priv->group );
@@ -556,6 +598,7 @@ static void hildon_caption_init( HildonCaption *caption )
   priv->caption_area = gtk_hbox_new( FALSE, HILDON_CAPTION_SPACING ); 
   priv->label = gtk_label_new( NULL );
   priv->icon_align = gtk_alignment_new(0.5f, 0.5f, 0.0f, 0.0f);
+  priv->icon_position = HILDON_CAPTION_POSITION_RIGHT;
 
   /* We want to receive button presses for child widget activation */
   gtk_event_box_set_above_child( GTK_EVENT_BOX(caption), FALSE );
@@ -565,6 +608,7 @@ static void hildon_caption_init( HildonCaption *caption )
   gtk_box_pack_end( GTK_BOX(priv->caption_area), priv->icon_align, FALSE, FALSE, 0);
   gtk_box_pack_end( GTK_BOX(priv->caption_area), priv->label, FALSE, FALSE, 0 );
   gtk_widget_set_parent( priv->caption_area, GTK_WIDGET(caption) );
+
 
   gtk_widget_pop_composite_child();
 
@@ -827,6 +871,48 @@ gboolean hildon_caption_is_mandatory( const HildonCaption *caption )
   priv = HILDON_CAPTION_GET_PRIVATE(caption);
 
   return priv->status == HILDON_CAPTION_MANDATORY;
+}
+
+/**
+ * hildon_caption_set_icon_position:
+ * @caption : a #HildonCaption
+ * @pos : one of the values from #HildonCaptionIconPosition
+ *
+ * Sets #HildonCaption icon position.
+ *
+ * Since: 0.14.5
+ */
+
+void hildon_caption_set_icon_position( HildonCaption *caption,
+                               HildonCaptionIconPosition pos )
+{
+  g_return_if_fail (HILDON_IS_CAPTION (caption));
+  HildonCaptionPrivate *priv = HILDON_CAPTION_GET_PRIVATE(caption);
+
+  g_return_if_fail (priv->caption_area != NULL);
+  int order = (pos == HILDON_CAPTION_POSITION_LEFT) ? -1 : 0;
+  gtk_box_reorder_child (GTK_BOX (priv->caption_area), priv->icon_align, order);
+
+  priv->icon_position = pos;
+}
+
+/**
+ * hildon_caption_get_icon_position:
+ * @caption : a #HildonCaption
+ *
+ * Gets #HildonCaption icon position.
+ *
+ * @Returns : one of the values from #HildonCaptionIconPosition.
+ *
+ * Since: 0.14.5
+ */
+
+HildonCaptionIconPosition hildon_caption_get_icon_position( const HildonCaption *caption )
+{
+  g_return_if_fail (HILDON_IS_CAPTION (caption));
+  HildonCaptionPrivate *priv = HILDON_CAPTION_GET_PRIVATE(caption);
+
+  return priv->icon_position;
 }
 
 /**

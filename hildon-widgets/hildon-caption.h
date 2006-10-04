@@ -57,9 +57,28 @@ typedef enum /*< skip >*/
     HILDON_CAPTION_MANDATORY
 } HildonCaptionStatus;
 
+/**
+ * HildonCaptionIconPosition:
+ * @HILDON_CAPTION_POSITION_LEFT: Show the icon on the left side.
+ * @HILDON_CAPTION_POSITION_RIGHT: Show the icon on the right side.
+ *
+ * Keys to set the icon placement in #HildonCaption.
+ *
+ * Since: 0.14.5
+ */
+typedef enum /*< skip >*/
+{
+    HILDON_CAPTION_POSITION_LEFT = 0,
+    HILDON_CAPTION_POSITION_RIGHT
+} HildonCaptionIconPosition;
+
 #define HILDON_TYPE_CAPTION_STATUS (hildon_caption_status_get_type ())
 
+#define HILDON_TYPE_CAPTION_ICON_POSITION (hildon_caption_icon_position_get_type ())
+
 GType hildon_caption_status_get_type (void) G_GNUC_CONST;
+
+GType hildon_caption_icon_position_get_type (void) G_GNUC_CONST;
 
 /**
  * HildonCaption:
@@ -101,6 +120,11 @@ void hildon_caption_set_status( HildonCaption *caption,
                                HildonCaptionStatus flag );
 
 HildonCaptionStatus hildon_caption_get_status( const HildonCaption *caption );
+
+void hildon_caption_set_icon_position( HildonCaption *caption,
+                               HildonCaptionIconPosition pos );
+
+HildonCaptionIconPosition hildon_caption_get_icon_position( const HildonCaption *caption );
 
 void hildon_caption_set_icon_image( HildonCaption *caption, GtkWidget *icon );
 
