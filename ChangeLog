@@ -1,3 +1,8 @@
+2006-10-04  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
+	* hildon-widgets/hildon-set-password-dialog.c: Turning off the
+	auto-capitalization. Fixes NB#39585.
+
 2006-10-03  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
 	* debian/rules: Correcting debian debug package generation. Should

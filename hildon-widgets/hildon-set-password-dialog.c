@@ -243,6 +243,8 @@ create_contents(HildonSetPasswordDialog *dialog)
 
     /* Create the password field */
     priv->pwd1stEntry = gtk_entry_new();
+    g_object_set (priv->pwd1stEntry, "hildon-input-mode", HILDON_GTK_INPUT_MODE_FULL, NULL);
+    gtk_entry_set_visibility(GTK_ENTRY(priv->pwd1stEntry), FALSE);
     gtk_widget_show(priv->pwd1stEntry);
     priv->pwd1stCaption = hildon_caption_new(group,
                                         priv->pwd1stCaption_string,
