@@ -1,3 +1,9 @@
+2006-10-05  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
+	* common-rcfiles/gtk-2.0/ossomediaplayer: Changing the wizard dialog
+	enum to equal GTK_RESPONSE_CANCEL for automatic Escape key handling.
+	Fixes NB#41234.
+
 2006-10-04  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
 	* hildon-widgets/hildon-caption.c:
