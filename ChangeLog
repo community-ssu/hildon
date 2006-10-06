@@ -1,5 +1,9 @@
 2006-10-06  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
+	* debian/copyright: One more license fix. 
+
+2006-10-06  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
 	* hildon-widgets-plugins/hildon-color-chooser-dialog-hsv.c:
 	* hildon-widgets-plugins/hildon-color-chooser-hsv.c:
 	* hildon-widgets/gtk-infoprint.c:
