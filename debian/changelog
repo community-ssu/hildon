@@ -15,7 +15,7 @@ hildon-libs (0.14.5-1) unstable; urgency=low
   wants to override the default/existing behaviour. 
 
   * Adding an "icon-position" property to HildonCaption. Can be set to
-  OSITION_LEFT or HILDON_CAPTION_POSITION_RIGHT. Controls the
+  HILDON_CAPTION_POSITION_LEFT or HILDON_CAPTION_POSITION_RIGHT. Controls the
   position of the icon vs. label -- on the left or on the right side. Defaults
   to right, to not change existing behaviour. 
 
