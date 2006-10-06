@@ -1,4 +1,13 @@
 2006-10-06  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+	
+	[0.14.5-1 release]
+	
+	* configure.ac:
+	* debian/changelog: Update.
+
+	* debian/hildon-libs-dev.install: Removing redundant .la/.a files. 
+
+2006-10-06  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
 	* debian/copyright: One more license fix. 
 
