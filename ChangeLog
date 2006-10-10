@@ -1,4 +1,10 @@
 2006-10-06  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
+	* hildon-widgets/hildon-date-editor.c:
+	(hildon_date_editor_entry_validate): Set the stored date value 
+	when it's validated with some entry empty. Fixes NB#42504.
+
+2006-10-06  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 	
 	[0.14.5-1 release]
 	

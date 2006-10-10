@@ -918,6 +918,8 @@ hildon_date_editor_entry_validate(GtkWidget *widget, gpointer data)
       else
          g_signal_emit(ed, date_editor_signals[DATE_ERROR], 0, EMPTY_YEAR, &r);
 
+      /* restore empty entry to safe value */
+      hildon_date_editor_set_date (ed, priv->year, priv->month, priv->day);
       return;
     }
 
