@@ -1127,12 +1127,19 @@ hildon_font_selection_dialog_show_preview(HildonFontSelectionDialog *
 				GTK_RESPONSE_ACCEPT,
 				NULL);
 
+  /* FIXME: This is a slightly ugly hack to force the width of the window so that
+   * the whole text fits with various font sizes. It's being done in such a way, 
+   * because of some GtkLabel wrapping issues and other mysterious bugs related to 
+   * truncating ellipsizing. Needs a rethink in future. (MDK) */
+
+  gtk_window_set_default_size (GTK_WINDOW(preview_dialog), 500, -1);
+
   str = (show_ref) ? g_strconcat(_("ecdg_fi_preview_font_preview_reference"), priv->preview_text, 0) :
                      g_strdup (priv->preview_text);
 
   preview_label = gtk_label_new(str);
   gtk_label_set_line_wrap(GTK_LABEL(preview_label), TRUE);
-
+  
   g_free(str);
   str = NULL;
 
@@ -1178,6 +1185,7 @@ hildon_font_selection_dialog_show_preview(HildonFontSelectionDialog *
   /*And show the dialog*/
   gtk_window_set_transient_for(GTK_WINDOW(preview_dialog), 
 			       GTK_WINDOW(fontsel));
+
   gtk_widget_show_all(preview_dialog);
   gtk_dialog_run(GTK_DIALOG(preview_dialog));
   gtk_widget_destroy(preview_dialog);

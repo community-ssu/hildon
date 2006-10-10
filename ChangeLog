@@ -1,5 +1,12 @@
 2006-10-10  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
+	* hildon-widgets/hildon-font-selection-dialog.c: Forcing the dialog to
+	be more wide. A slightly ugly fix, but fixes NB#41501. Will be fixed
+	properly once we solve all the label truncating/wrapping/ellipsizing
+	issues. 
+
+2006-10-10  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
 	* hildon-widgets/hildon-date-editor.c: Remove the focus grab after
 	dialog execution. Fixes NB#42555.
 
