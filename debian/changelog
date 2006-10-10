@@ -8,7 +8,7 @@ hildon-libs (0.14.5-1) unstable; urgency=low
   * Fixes: NB#39585 - Hildon_set_password dialog has auto-capitalization active 
   * Fixes: NB#40059 - Assigning Invalid date in start-up wizard throwing Glib critical errors.
   * Fixes: NB#41234 - HildonWizardDialog doesn't not cancel when Escape is pressed
-  * Fixes: NB#40228 - Gagarin-Hildon libraries-0.14.0: License Issues 
+  * Fixes: NB#40228 - Hildon libraries-0.14.0: License Issues 
 
   * Adding an "autotitle" property to HildonWizardDialog that controls the way
   wizard handles it's title. Can be set to FALSE if the applciation developer
