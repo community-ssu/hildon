@@ -1,3 +1,8 @@
+2006-10-11  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
+	* hildon-widgets-plugins/hildon-color-chooser-hsv.c: Adding the border
+	around the color selector. Fixes #NB42007. 
+
 2006-10-10  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
 	* hildon-widgets/hildon-font-selection-dialog.c: Forcing the dialog to

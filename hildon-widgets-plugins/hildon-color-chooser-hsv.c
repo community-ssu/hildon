@@ -265,7 +265,6 @@ static void hildon_color_chooser_hsv_size_allocate(GtkWidget *widget, GtkAllocat
   sel->spa.height = alloc->height - outer.top - outer.bottom;
   sel->spa.width = alloc->width - outer.left - outer.right - inner.top - inner.bottom;
 
-
   if(GTK_WIDGET_REALIZED(widget)) {
     gdk_window_move_resize(sel->event_window, widget->allocation.x, widget->allocation.y, widget->allocation.width, widget->allocation.height);
   }
@@ -369,55 +368,22 @@ static gboolean hildon_color_chooser_hsv_expose(GtkWidget *widget, GdkEventExpos
 
 
   if(event->area.width || event->area.height) {
-    if(graphical_border.top) {
-      gtk_paint_box(gtk_widget_get_style(widget), widget->window, GTK_WIDGET_STATE(widget),
-                    GTK_SHADOW_NONE, &event->area, widget, "border-top",
-                    sel->hba.x - graphical_border.left, sel->hba.y - graphical_border.top,
-                    sel->hba.width + graphical_border.left + graphical_border.right,
-                    graphical_border.top);
-      gtk_paint_box(gtk_widget_get_style(widget), widget->window, GTK_WIDGET_STATE(widget),
-                    GTK_SHADOW_NONE, &event->area, widget, "border-top",
-                    sel->spa.x - graphical_border.left, sel->spa.y - graphical_border.top,
-                    sel->spa.width + graphical_border.left + graphical_border.right,
-                    graphical_border.top);
-    }
+    gdk_draw_rectangle(widget->window,
+                       widget->style->black_gc,
+                       FALSE,
+                       sel->hba.x - 2, 
+                       sel->hba.y - 2, 
+                       sel->hba.width + 3,
+                       sel->hba.height + 3);
 
-    if(graphical_border.bottom) {
-      gtk_paint_box(gtk_widget_get_style(widget), widget->window, GTK_WIDGET_STATE(widget),
-                    GTK_SHADOW_NONE, &event->area, widget, "border-bottom",
-                    sel->hba.x - graphical_border.left, sel->hba.y + sel->hba.height,
-                    sel->hba.width + graphical_border.left + graphical_border.right,
-                    graphical_border.bottom);
-      gtk_paint_box(gtk_widget_get_style(widget), widget->window, GTK_WIDGET_STATE(widget),
-                    GTK_SHADOW_NONE, &event->area, widget, "border-bottom",
-                    sel->spa.x - graphical_border.left, sel->spa.y + sel->spa.height,
-                    sel->spa.width + graphical_border.left + graphical_border.right,
-                    graphical_border.bottom);
-    }
-
-    if(graphical_border.left) {
-      gtk_paint_box(gtk_widget_get_style(widget), widget->window, GTK_WIDGET_STATE(widget),
-                    GTK_SHADOW_NONE, &event->area, widget, "border-left",
-                    sel->hba.x - graphical_border.left, sel->hba.y,
-                    graphical_border.left, sel->hba.height);
-      gtk_paint_box(gtk_widget_get_style(widget), widget->window, GTK_WIDGET_STATE(widget),
-                    GTK_SHADOW_NONE, &event->area, widget, "border-left",
-                    sel->spa.x - graphical_border.left, sel->spa.y,
-                    graphical_border.left, sel->spa.height);
-    }
-
-    if(graphical_border.right) {
-      gtk_paint_box(gtk_widget_get_style(widget), widget->window, GTK_WIDGET_STATE(widget),
-                    GTK_SHADOW_NONE, &event->area, widget, "border-right",
-                    sel->hba.x + sel->hba.width, sel->hba.y,
-                    graphical_border.right, sel->hba.height);
-      gtk_paint_box(gtk_widget_get_style(widget), widget->window, GTK_WIDGET_STATE(widget),
-                    GTK_SHADOW_NONE, &event->area, widget, "border-right",
-                    sel->spa.x + sel->spa.width, sel->spa.y,
-                    graphical_border.right, sel->spa.height);
-    }
+    gdk_draw_rectangle(widget->window,
+                       widget->style->black_gc,
+                       FALSE,
+                       sel->spa.x - 2, 
+                       sel->spa.y - 2, 
+                       sel->spa.width + 3,
+                       sel->spa.height + 3);
   }
-
 
   if(sel->expose_info.expose_queued) {
     if(GTK_WIDGET_SENSITIVE(widget)) {
