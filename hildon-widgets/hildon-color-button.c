@@ -221,10 +221,10 @@ hildon_color_field_expose_event(GtkWidget *widget, GdkEventExpose *event,
     gdk_draw_rectangle(widget->window,
                        (GTK_WIDGET_IS_SENSITIVE (widget)) ?  cb->priv->gc : widget->style->bg_gc [GTK_STATE_INSENSITIVE],
                        TRUE,
-                       event->area.x, 
-                       event->area.y,
-                       event->area.width,
-                       event->area.height);
+                       widget->allocation.x, 
+                       widget->allocation.y,
+                       widget->allocation.width,
+                       widget->allocation.height);
 
     /* serve the inner border color to the Graphic Context */
     gdk_gc_set_rgb_fg_color(cb->priv->gc, &inner_border);
@@ -232,10 +232,10 @@ hildon_color_field_expose_event(GtkWidget *widget, GdkEventExpose *event,
     gdk_draw_rectangle(widget->window,
                        cb->priv->gc,
                        TRUE,
-                       event->area.x + OUTER_BORDER_THICKNESS,
-                       event->area.y + OUTER_BORDER_THICKNESS,
-                       event->area.width  - (OUTER_BORDER_THICKNESS*2),
-                       event->area.height - (OUTER_BORDER_THICKNESS*2));
+                       widget->allocation.x + OUTER_BORDER_THICKNESS, 
+                       widget->allocation.y + OUTER_BORDER_THICKNESS,
+                       widget->allocation.width - (OUTER_BORDER_THICKNESS * 2),
+                       widget->allocation.height - (OUTER_BORDER_THICKNESS * 2));
 
     /* serve the actual color to the Graphic Context */
     gdk_gc_set_rgb_fg_color(cb->priv->gc, &cb->priv->color);
@@ -243,17 +243,17 @@ hildon_color_field_expose_event(GtkWidget *widget, GdkEventExpose *event,
     gdk_draw_rectangle(widget->window,
                        cb->priv->gc,
                        TRUE,
-                       event->area.x + (INNER_BORDER_THICKNESS + OUTER_BORDER_THICKNESS),
-                       event->area.y + (INNER_BORDER_THICKNESS + OUTER_BORDER_THICKNESS),
-                       event->area.width  - ((INNER_BORDER_THICKNESS + OUTER_BORDER_THICKNESS)*2),
-                       event->area.height - ((INNER_BORDER_THICKNESS + OUTER_BORDER_THICKNESS)*2));
+                       widget->allocation.x + (INNER_BORDER_THICKNESS + OUTER_BORDER_THICKNESS),
+                       widget->allocation.y + (INNER_BORDER_THICKNESS + OUTER_BORDER_THICKNESS),
+                       widget->allocation.width - ((INNER_BORDER_THICKNESS + OUTER_BORDER_THICKNESS)*2),
+                       widget->allocation.height - ((INNER_BORDER_THICKNESS + OUTER_BORDER_THICKNESS)*2));
 
     if (! GTK_WIDGET_IS_SENSITIVE (widget)) {
             draw_grid (GDK_DRAWABLE (widget->window), widget->style->bg_gc [GTK_STATE_INSENSITIVE], 
-                       event->area.x + (INNER_BORDER_THICKNESS + OUTER_BORDER_THICKNESS),
-                       event->area.y + (INNER_BORDER_THICKNESS + OUTER_BORDER_THICKNESS),
-                       event->area.width  - ((INNER_BORDER_THICKNESS + OUTER_BORDER_THICKNESS)*2) + 2,
-                       event->area.height - ((INNER_BORDER_THICKNESS + OUTER_BORDER_THICKNESS)*2) + 2);
+                       widget->allocation.x + (INNER_BORDER_THICKNESS + OUTER_BORDER_THICKNESS),
+                       widget->allocation.y + (INNER_BORDER_THICKNESS + OUTER_BORDER_THICKNESS),
+                       widget->allocation.width  - ((INNER_BORDER_THICKNESS + OUTER_BORDER_THICKNESS)*2) + 2,
+                       widget->allocation.height - ((INNER_BORDER_THICKNESS + OUTER_BORDER_THICKNESS)*2) + 2);
     }
 
     return FALSE;
@@ -373,11 +373,7 @@ hildon_color_button_clicked(GtkButton *button)
     hildon_color_chooser_dialog_get_color(cs_dialog, &cb->priv->color);
     hildon_color_button_set_color( HILDON_COLOR_BUTTON( button ), 
             &(cb->priv->color) );
-  } else 
-  {
-          // FIXME: Fixes 39778, but I think the bug lies elsewhere
-          gtk_widget_queue_draw (GTK_WIDGET (button)); 
-  }
+  } 
 
   gtk_widget_hide(GTK_WIDGET(cs_dialog));
 }

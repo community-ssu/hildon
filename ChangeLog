@@ -1,5 +1,11 @@
 2006-10-16  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
+	* hildon-widgets/hildon-color-button.c: Correctly fixing NB#39798 --
+	the expose event should draw it's bits according to widget's
+	allocation and not the expose area.
+
+2006-10-16  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
 	* hildon-widgets-plugins/hildon-color-chooser-hsv.c: Changing the way the
 	dimmed elements of the dialog are being drawn -- fixes NB#41498. 
 	Cache the pre-generated dimmed pixbuf to improve the performance. We could
