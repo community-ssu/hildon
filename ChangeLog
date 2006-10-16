@@ -1,5 +1,13 @@
 2006-10-16  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
+	* hildon-widgets/hildon-name-password-dialog.c: Fixing the
+	auto-capitalization issues in the name password dialog. Two things
+	accumulated here -- missing NULL in property set and the lack of
+	visibility re-set after input method hint setting (this should not be
+	needed BTW). Fixes NB#37467.
+
+2006-10-16  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
 	* hildon-widgets/hildon-color-button.c: Correctly fixing NB#39798 --
 	the expose event should draw it's bits according to widget's
 	allocation and not the expose area.
