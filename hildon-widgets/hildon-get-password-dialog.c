@@ -321,6 +321,8 @@ create_contents(HildonGetPasswordDialog *dialog)
 
     /* Create password text entry */
     control = gtk_entry_new();
+    gtk_entry_set_width_chars (GTK_ENTRY (control), 20);
+
     g_object_set (control, "hildon-input-mode", HILDON_GTK_INPUT_MODE_FULL, NULL);
     gtk_entry_set_visibility(GTK_ENTRY(control), FALSE);
     priv->passwordEntry = HILDON_CAPTION

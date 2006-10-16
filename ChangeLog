@@ -1,5 +1,10 @@
 2006-10-16  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
+	* hildon-widgets/hildon-get-password-dialog.c: Making the password
+	text entry 20 characters long. Fixes NB#39586. A workaround.
+
+2006-10-16  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
 	* hildon-widgets/hildon-name-password-dialog.c: Fixing the
 	auto-capitalization issues in the name password dialog. Two things
 	accumulated here -- missing NULL in property set and the lack of
