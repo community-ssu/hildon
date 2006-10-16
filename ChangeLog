@@ -1,3 +1,10 @@
+2006-10-16  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
+	* hildon-widgets-plugins/hildon-color-chooser-hsv.c: Changing the way the
+	dimmed elements of the dialog are being drawn -- fixes NB#41498. 
+	Cache the pre-generated dimmed pixbuf to improve the performance. We could
+	cache the actual hsv plane too in a similiar way.  
+
 2006-10-11  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
 	* hildon-widgets-plugins/hildon-color-chooser-hsv.c: Adding the border

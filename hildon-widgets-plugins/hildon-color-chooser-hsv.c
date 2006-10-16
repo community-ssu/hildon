@@ -50,6 +50,8 @@ typedef struct {
 
   GdkWindow *event_window;
 
+  GdkPixbuf *dimmed_plane;
+  GdkPixbuf *dimmed_bar;
 
   struct {
     unsigned short last_expose_hue;
@@ -86,7 +88,7 @@ static gchar crosshair[64] = { 0, 0, 0, 2, 2, 0, 0, 0,
 static void hildon_color_chooser_hsv_init(HildonColorChooserHSV *sel);
 static void hildon_color_chooser_hsv_class_init(HildonColorChooserHSVClass *klass);
 
-static void hildon_color_chooser_hsv_destroy(GtkObject *obj);
+static void hildon_color_chooser_hsv_dispose(HildonColorChooserHSV *sel);
 
 static void hildon_color_chooser_hsv_size_request(GtkWidget *widget, GtkRequisition *req);
 static void hildon_color_chooser_hsv_size_allocate(GtkWidget *widget, GtkAllocation *alloc);
@@ -176,12 +178,15 @@ static void hildon_color_chooser_hsv_init(HildonColorChooserHSV *sel)
 
   sel->expose_info.last_expose_hue = sel->currhue;
   sel->expose_info.expose_queued = 0;
+
+  sel->dimmed_plane = NULL;
+  sel->dimmed_bar = NULL;
 }
 
 static void hildon_color_chooser_hsv_class_init(HildonColorChooserHSVClass *klass)
 {
   GtkWidgetClass *widget_class = GTK_WIDGET_CLASS(klass);
-  GtkObjectClass *object_class = GTK_OBJECT_CLASS(klass);
+  GObjectClass *object_class = G_OBJECT_CLASS(klass);
 
   HildonColorChooserClass *selection_class = HILDON_COLOR_CHOOSER_CLASS(klass);
 
@@ -189,8 +194,7 @@ static void hildon_color_chooser_hsv_class_init(HildonColorChooserHSVClass *klas
   parent_class = g_type_class_peek_parent(klass);
 
 
-  object_class->destroy = hildon_color_chooser_hsv_destroy;
-
+  object_class->dispose = (gpointer) hildon_color_chooser_hsv_dispose;
 
   widget_class->size_request = hildon_color_chooser_hsv_size_request;
   widget_class->size_allocate = hildon_color_chooser_hsv_size_allocate;
@@ -225,11 +229,20 @@ static void hildon_color_chooser_hsv_class_init(HildonColorChooserHSVClass *klas
 }
 
 
-static void hildon_color_chooser_hsv_destroy(GtkObject *obj)
+static void hildon_color_chooser_hsv_dispose(HildonColorChooserHSV *sel)
 {
-  GTK_OBJECT_CLASS(parent_class)->destroy(obj);
-}
+  if (sel->dimmed_bar != NULL) {
+    g_object_unref (sel->dimmed_bar);
+    sel->dimmed_bar = NULL;
+  }
 
+  if (sel->dimmed_plane != NULL) {
+    g_object_unref (sel->dimmed_plane);
+    sel->dimmed_plane = NULL;
+  }
+
+  G_OBJECT_CLASS(parent_class)->dispose(sel);
+}
 
 static void hildon_color_chooser_hsv_size_request(GtkWidget *widget, GtkRequisition *req)
 {
@@ -862,42 +875,45 @@ inline void inline_draw_hue_bar(GtkWidget *widget, int x, int y, int w, int h, i
 
 inline void inline_draw_hue_bar_dimmed(GtkWidget *widget, int x, int y, int w, int h, int sy, int sh)
 {
-  unsigned short hvec, hcurr, avg;
-  unsigned char *buf, *ptr, tmp[3];
-  int i, j;
+   HildonColorChooserHSV *sel = HILDON_COLOR_CHOOSER_HSV(widget);
 
 
   if(w <= 0 || h <= 0) {
     return;
   }
 
-  buf = (unsigned char *)g_malloc(w*h*4);
+  /* We need to create (and cache) the pixbuf if we don't 
+   * have it yet */
+  if (sel->dimmed_bar == NULL) {
+    int i, j;
+    unsigned short hvec, hcurr, avg;
+    unsigned char *buf, *ptr, tmp[3];
+    buf = (unsigned char *)g_malloc(w*h*3);
 
-  hvec = 65535/sh;
-  hcurr = hvec * (y - sy);
+    hvec = 65535/sh;
+    hcurr = hvec * (y - sy);
 
-  ptr = buf;
+    ptr = buf;
 
 
-  for(i = 0; i < h; i++) {
-    intern_h2rgb8(hcurr, tmp);
+    for(i = 0; i < h; i++) {
+      intern_h2rgb8(hcurr, tmp);
 
-    for(j = 0; j < w; j++) {
-      avg = ((unsigned short)tmp[0]*3 + (unsigned short)tmp[1]*2 + (unsigned short)tmp[2])/6;
-      ptr[0] = avg;
-      ptr[1] = avg;
-      ptr[2] = avg;
-      ptr[3] = ((((i % 2) + j) % 2) == 0) ? 60 : 10;
-      ptr += 4;
+      for(j = 0; j < w; j++) {
+        avg = ((unsigned short)tmp[0]*3 + (unsigned short)tmp[1]*2 + (unsigned short)tmp[2])/6;
+        ptr[0] = ((((i % 2) + j) % 2) == 0) ? MIN ((avg * 0.7) + 180, 255) : MIN ((avg * 0.7) + 120, 255);
+        ptr[1] = ((((i % 2) + j) % 2) == 0) ? MIN ((avg * 0.7) + 180, 255) : MIN ((avg * 0.7) + 120, 255);
+        ptr[2] = ((((i % 2) + j) % 2) == 0) ? MIN ((avg * 0.7) + 180, 255) : MIN ((avg * 0.7) + 120, 255);
+        ptr += 3;
+      }
+
+      hcurr += hvec;
     }
 
-    hcurr += hvec;
+    sel->dimmed_bar = gdk_pixbuf_new_from_data (buf, GDK_COLORSPACE_RGB, FALSE, 8, w, h, w * 3, g_free, buf);
   }
 
-  GdkPixbuf *pixbuf = gdk_pixbuf_new_from_data (buf, GDK_COLORSPACE_RGB, TRUE, 8, w, h, w * 4, g_free, buf);
-
-  gdk_draw_pixbuf (widget->parent->window, widget->style->fg_gc [0], pixbuf, 0, 0, x, y, w, h, GDK_RGB_DITHER_NONE, 0, 0);
-  g_object_unref (pixbuf);
+  gdk_draw_pixbuf (widget->parent->window, widget->style->fg_gc [0], sel->dimmed_bar, 0, 0, x, y, w, h, GDK_RGB_DITHER_NONE, 0, 0);
 }
 
 
@@ -1000,74 +1016,72 @@ inline void inline_draw_sv_plane(HildonColorChooserHSV *sel, int x, int y, int w
 inline void inline_draw_sv_plane_dimmed(HildonColorChooserHSV *sel, int x, int y, int w, int h)
 {
   GtkWidget *widget = GTK_WIDGET(sel);
-  unsigned char *buf, *ptr;
-  unsigned long rgbx[3] = { 0x00ffffff, 0x00ffffff, 0x00ffffff }, rgbtmp[3];
-  unsigned long avg;
-  signed long rgby[3];
-  int tmp = sel->spa.width*sel->spa.height, i, j;
-
 
   if(w <= 0 || h <= 0) {
     return;
   }
 
+  /* We need to create (and cache) the pixbuf if we don't 
+   * have it yet */
+  if (sel->dimmed_plane == NULL) {
+    unsigned char *buf, *ptr;
+    unsigned long rgbx[3] = { 0x00ffffff, 0x00ffffff, 0x00ffffff }, rgbtmp[3];
+    unsigned long avg;
+    signed long rgby[3];
+    int tmp = sel->spa.width*sel->spa.height, i, j;
 
-  buf = (unsigned char *)g_malloc(w*h*4);
+    buf = (unsigned char *)g_malloc(w*h*3);
 
-  ptr = buf;
-
+    ptr = buf;
 
     /* possibe optimization: as we are drawing grayscale plane, there might
        be some simpler algorithm to do this*/
-  rgbtmp[0] = 0x00ffffff;
-  rgbtmp[1] = 0x00000000;
-  rgbtmp[2] = 0x00000000;
+    rgbtmp[0] = 0x00ffffff;
+    rgbtmp[1] = 0x00000000;
+    rgbtmp[2] = 0x00000000;
 
-  rgby[0] = rgbtmp[0] - rgbx[0];
-  rgby[1] = rgbtmp[1] - rgbx[1];
-  rgby[2] = rgbtmp[2] - rgbx[2];
+    rgby[0] = rgbtmp[0] - rgbx[0];
+    rgby[1] = rgbtmp[1] - rgbx[1];
+    rgby[2] = rgbtmp[2] - rgbx[2];
 
-  rgbx[0] /= sel->spa.width;
-  rgbx[1] /= sel->spa.width;
-  rgbx[2] /= sel->spa.width;
+    rgbx[0] /= sel->spa.width;
+    rgbx[1] /= sel->spa.width;
+    rgbx[2] /= sel->spa.width;
 
-  rgby[0] /= tmp;
-  rgby[1] /= tmp;
-  rgby[2] /= tmp;
+    rgby[0] /= tmp;
+    rgby[1] /= tmp;
+    rgby[2] /= tmp;
 
+    rgbx[0] += (y - sel->spa.y)*rgby[0];
+    rgbx[1] += (y - sel->spa.y)*rgby[1];
+    rgbx[2] += (y - sel->spa.y)*rgby[2];
 
-  rgbx[0] += (y - sel->spa.y)*rgby[0];
-  rgbx[1] += (y - sel->spa.y)*rgby[1];
-  rgbx[2] += (y - sel->spa.y)*rgby[2];
+    for(i = 0; i < h; i++) {
+      rgbtmp[0] = rgbx[0] * (x - sel->spa.x);
+      rgbtmp[1] = rgbx[1] * (x - sel->spa.x);
+      rgbtmp[2] = rgbx[2] * (x - sel->spa.x);
 
+      for(j = 0; j < w; j++) {
+        avg = (rgbtmp[0] + rgbtmp[1] + rgbtmp[2])/3;
+        avg >>= 16;
+        ptr[0] = ((((i % 2) + j) % 2) == 0) ? MIN ((avg * 0.7) + 180, 255) : MIN ((avg * 0.7) + 120, 255);
+        ptr[1] = ((((i % 2) + j) % 2) == 0) ? MIN ((avg * 0.7) + 180, 255) : MIN ((avg * 0.7) + 120, 255);
+        ptr[2] = ((((i % 2) + j) % 2) == 0) ? MIN ((avg * 0.7) + 180, 255) : MIN ((avg * 0.7) + 120, 255);
+        rgbtmp[0] += rgbx[0];
+        rgbtmp[1] += rgbx[1];
+        rgbtmp[2] += rgbx[2];
+        ptr += 3;
+      }
 
-  for(i = 0; i < h; i++) {
-    rgbtmp[0] = rgbx[0] * (x - sel->spa.x);
-    rgbtmp[1] = rgbx[1] * (x - sel->spa.x);
-    rgbtmp[2] = rgbx[2] * (x - sel->spa.x);
-
-    for(j = 0; j < w; j++) {
-      avg = (rgbtmp[0] + rgbtmp[1] + rgbtmp[2])/3;
-      avg >>= 16;
-      ptr[0] = avg;
-      ptr[1] = avg;
-      ptr[2] = avg;
-      ptr[3] = ((((i % 2) + j) % 2) == 0) ? 60 : 10;
-      rgbtmp[0] += rgbx[0];
-      rgbtmp[1] += rgbx[1];
-      rgbtmp[2] += rgbx[2];
-      ptr += 4;
+      rgbx[0] += rgby[0];
+      rgbx[1] += rgby[1];
+      rgbx[2] += rgby[2];
     }
-
-    rgbx[0] += rgby[0];
-    rgbx[1] += rgby[1];
-    rgbx[2] += rgby[2];
+  
+    sel->dimmed_plane = gdk_pixbuf_new_from_data (buf, GDK_COLORSPACE_RGB, FALSE, 8, w, h, w * 3, g_free, buf);
   }
 
-  GdkPixbuf *pixbuf = gdk_pixbuf_new_from_data (buf, GDK_COLORSPACE_RGB, TRUE, 8, w, h, w * 4, g_free, buf);
-
-  gdk_draw_pixbuf (widget->parent->window, widget->style->fg_gc [0], pixbuf, 0, 0, x, y, w, h, GDK_RGB_DITHER_NONE, 0, 0);
-  g_object_unref (pixbuf);
+  gdk_draw_pixbuf (widget->parent->window, widget->style->fg_gc [0], sel->dimmed_plane, 0, 0, x, y, w, h, GDK_RGB_DITHER_NONE, 0, 0);
 }
 
 
