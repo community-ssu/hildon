@@ -1,5 +1,10 @@
 2006-10-18  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
+	* hildon-widgets-plugins/hildon-color-chooser-hsv.c: Fixing the
+	clipping in the color selector. Fixes NB#43565.
+
+2006-10-18  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
 	* hildon-widgets/hildon-color-button.c: One more extra to actually fix
 	NB#39798.
 

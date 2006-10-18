@@ -926,7 +926,7 @@ inline void inline_draw_crosshair(unsigned char *buf, int x, int y, int w, int h
     for(j = 0; j < 8; j++) {
       sx = j + x; sy = i + y;
 
-      if(sx >= 0 && sx < w && sy >= 0 && sx < h) {
+      if(sx >= 0 && sx < w && sy >= 0 && sy < h) {
         if(crosshair[j + 8*i]) {
           if(crosshair[j + 8*i] & 0x1) {
             buf[(sx)*3+(sy)*w*3+0] = 255;
