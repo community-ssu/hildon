@@ -221,8 +221,8 @@ hildon_color_field_expose_event(GtkWidget *widget, GdkEventExpose *event,
     gdk_draw_rectangle(widget->window,
                        (GTK_WIDGET_IS_SENSITIVE (widget)) ?  cb->priv->gc : widget->style->bg_gc [GTK_STATE_INSENSITIVE],
                        TRUE,
-                       widget->allocation.x, 
-                       widget->allocation.y,
+                       0, 
+                       0,
                        widget->allocation.width,
                        widget->allocation.height);
 
@@ -232,8 +232,8 @@ hildon_color_field_expose_event(GtkWidget *widget, GdkEventExpose *event,
     gdk_draw_rectangle(widget->window,
                        cb->priv->gc,
                        TRUE,
-                       widget->allocation.x + OUTER_BORDER_THICKNESS, 
-                       widget->allocation.y + OUTER_BORDER_THICKNESS,
+                       OUTER_BORDER_THICKNESS, 
+                       OUTER_BORDER_THICKNESS,
                        widget->allocation.width - (OUTER_BORDER_THICKNESS * 2),
                        widget->allocation.height - (OUTER_BORDER_THICKNESS * 2));
 
@@ -243,15 +243,15 @@ hildon_color_field_expose_event(GtkWidget *widget, GdkEventExpose *event,
     gdk_draw_rectangle(widget->window,
                        cb->priv->gc,
                        TRUE,
-                       widget->allocation.x + (INNER_BORDER_THICKNESS + OUTER_BORDER_THICKNESS),
-                       widget->allocation.y + (INNER_BORDER_THICKNESS + OUTER_BORDER_THICKNESS),
+                       INNER_BORDER_THICKNESS + OUTER_BORDER_THICKNESS,
+                       INNER_BORDER_THICKNESS + OUTER_BORDER_THICKNESS,
                        widget->allocation.width - ((INNER_BORDER_THICKNESS + OUTER_BORDER_THICKNESS)*2),
                        widget->allocation.height - ((INNER_BORDER_THICKNESS + OUTER_BORDER_THICKNESS)*2));
 
     if (! GTK_WIDGET_IS_SENSITIVE (widget)) {
             draw_grid (GDK_DRAWABLE (widget->window), widget->style->bg_gc [GTK_STATE_INSENSITIVE], 
-                       widget->allocation.x + (INNER_BORDER_THICKNESS + OUTER_BORDER_THICKNESS),
-                       widget->allocation.y + (INNER_BORDER_THICKNESS + OUTER_BORDER_THICKNESS),
+                       INNER_BORDER_THICKNESS + OUTER_BORDER_THICKNESS,
+                       INNER_BORDER_THICKNESS + OUTER_BORDER_THICKNESS,
                        widget->allocation.width  - ((INNER_BORDER_THICKNESS + OUTER_BORDER_THICKNESS)*2) + 2,
                        widget->allocation.height - ((INNER_BORDER_THICKNESS + OUTER_BORDER_THICKNESS)*2) + 2);
     }

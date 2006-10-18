@@ -1,3 +1,8 @@
+2006-10-18  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
+	* hildon-widgets/hildon-color-button.c: One more extra to actually fix
+	NB#39798.
+
 2006-10-16  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
 	* hildon-widgets/hildon-get-password-dialog.c: Making the password
