@@ -1,5 +1,5 @@
 AC_INIT(Makefile.am)
-AM_INIT_AUTOMAKE(hildon-libs, 0.14.5)
+AM_INIT_AUTOMAKE(hildon-libs, 0.14.6)
 AM_CONFIG_HEADER(config.h)
 
 AC_CANONICAL_HOST

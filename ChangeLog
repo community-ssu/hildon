@@ -1,5 +1,12 @@
 2006-10-18  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
+	[0.14.6-1 release]
+
+	* configure.ac:
+	* debian/changelog: Updating.
+
+2006-10-18  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
 	* hildon-widgets-plugins/hildon-color-chooser-hsv.c: Fixing the
 	clipping in the color selector. Fixes NB#43565.
 

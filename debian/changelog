@@ -1,3 +1,17 @@
+hildon-libs (0.14.6-1) unstable; urgency=low
+
+  * Fixes: #NB42504 - Date input fields can be left empty in startup wizard
+  * Fixes: #NB42555 - Behaviour noted when opening and closing date editor
+  * Fixes: #NB41501 - Last line of text in preview dialog is not shown properly when bold and maximum font is selected
+  * Fixes: #NB42007 - Borders missing from the 'Color slider' and 'Color selection area'
+  * Fixes: #NB41498 - On tapping on the pre-defined colors the dimmed color palette changes to different shades.
+  * Fixes: #NB39798 - Showing black line in color icon if cancel Font dialog box.
+  * Fixes: #NB37467 - Hildon name password dialog with autocapitalization.
+  * Fixes: #NB39586 - Restore dialog "Password needed" is truncated in German.
+  * Fixes: #NB43565 - Color selector crashes when defining a color on the selector area
+
+ -- Michael Dominic Kostrzewa <michael.kostrzewa@nokia.com>  Fri, 18 Oct 2006 18:54:00 +0300
+
 hildon-libs (0.14.5-1) unstable; urgency=low
 
   * Fixes: MB#625 - HildonNumberEditor doesn't notify::changed properly
