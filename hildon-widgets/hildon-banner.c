@@ -410,6 +410,7 @@ static void force_to_wrap_truncated(HildonBanner *banner){
   GtkLabel *label;
   PangoLayout *layout;
   int width_text, width_max;
+  int width = -1;
 
   label = GTK_LABEL(banner->priv->label);
 
@@ -427,9 +428,12 @@ static void force_to_wrap_truncated(HildonBanner *banner){
     pango_layout_set_width (layout, width_max * PANGO_SCALE);
     pango_layout_get_extents (layout, NULL, &logical);
 
-    gtk_widget_set_size_request (GTK_WIDGET (label),
-                                 PANGO_PIXELS (logical.width), -1);
+    width = PANGO_PIXELS (logical.width);
   }
+
+  /* use fixed width when wrapping or natural one otherwise */
+  gtk_widget_set_size_request (GTK_WIDGET (label),
+			       width, -1);
 }
 
 

@@ -1,3 +1,9 @@
+2006-10-19  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
+	* hildon-widgets/hildon-banner.c:
+	(force_to_wrap_truncated): Set label size request to its natural 
+	size (it stands fixed after it's wrapped). Fixes NB#38598.
+
 2006-10-18  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
 	[0.14.6-1 release]
