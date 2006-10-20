@@ -52,7 +52,8 @@ typedef enum
   EMPTY_SECS,
   MIN_DUR,
   MAX_DUR,
-  INVALID_TIME
+  INVALID_TIME,
+  INVALID_CHAR
 } HildonTimeEditorErrorType;
 
 typedef struct _HildonTimeEditor      HildonTimeEditor;

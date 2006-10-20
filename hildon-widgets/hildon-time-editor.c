@@ -1710,6 +1710,7 @@ static gboolean hildon_time_editor_entry_keypress(GtkWidget * widget,
     HildonTimeEditor *editor;
     HildonTimeEditorPrivate *priv;
     gint cursor_pos;
+    gboolean r;
 
     g_assert(GTK_IS_ENTRY(widget));
     g_assert(event != NULL);
@@ -1718,6 +1719,14 @@ static gboolean hildon_time_editor_entry_keypress(GtkWidget * widget,
     editor = HILDON_TIME_EDITOR(data);
     priv = HILDON_TIME_EDITOR_GET_PRIVATE(editor);
     cursor_pos = gtk_editable_get_position(GTK_EDITABLE(widget));
+
+    /* Show error message in case the key pressed is not allowed 
+       (only digits and control characters are allowed )*/
+    if (!g_unichar_isdigit(event->keyval) && !(event->keyval & 0xF000)) {
+        g_signal_emit(editor, time_editor_signals[TIME_ERROR], 0, INVALID_CHAR, &r);
+        hildon_banner_show_information(widget, NULL, _("ckct_ib_illegal_character"));
+        return TRUE;
+    }
 
     switch (event->keyval)
     {

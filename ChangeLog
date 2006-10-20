@@ -1,3 +1,12 @@
+2006-10-20  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com>
+
+	* hildon-widgets/hildon-time-editor.c:
+	(hildon_time_editor_entry_keypress): Added check for not allowed keys.
+	Fixes NB#43926.
+
+	* hildon-widgets/hildon-time-editor.h:
+	Added INVALID_CHAR to HildonTimeEditorErrorType enumeration.
+
 2006-10-20  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
 	* hildon-widgets/hildon-find-toolbar.c: Do not grab focus but just
