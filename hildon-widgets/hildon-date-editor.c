@@ -1063,6 +1063,7 @@ static gboolean hildon_date_editor_keypress(GtkWidget * widget,
     HildonDateEditor *ed;
     HildonDateEditorPrivate *priv;
     gint pos;
+    gboolean r;
 
     g_assert(HILDON_IS_DATE_EDITOR(data));
     g_assert(GTK_IS_ENTRY(widget));
@@ -1070,6 +1071,13 @@ static gboolean hildon_date_editor_keypress(GtkWidget * widget,
     ed = HILDON_DATE_EDITOR(data);
     priv = HILDON_DATE_EDITOR_GET_PRIVATE(ed);
     pos = gtk_editable_get_position(GTK_EDITABLE(widget));
+
+    /* Show error message in case the key pressed is not allowed 
+       (only digits and control characters are allowed )*/
+    if (!g_unichar_isdigit(event->keyval) && !(event->keyval & 0xF000)) {
+        g_signal_emit(ed, date_editor_signals[DATE_ERROR], 0, INVALID_CHAR, &r);        
+        return TRUE;
+    }
 
     switch (event->keyval) {
     case GDK_Left:
@@ -1143,10 +1151,13 @@ hildon_date_editor_date_error(HildonDateEditor *editor,
       gtk_infoprintf(NULL, _("ckct_ib_set_a_value_within_range"),
                      priv->min_year, priv->max_year);
       break;
+    case INVALID_CHAR:
+      gtk_infoprint(NULL, _("ckct_ib_only_numbers_allowed"));
+      break;
     case INVALID_DATE:
       gtk_infoprint(NULL, _("ckct_ib_date_does_not_exist"));
       break;
-   default:
+    default:
       /*default error message ?*/
       break;
     }

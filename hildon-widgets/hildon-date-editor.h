@@ -73,7 +73,8 @@ typedef enum
   EMPTY_DAY,
   EMPTY_MONTH,
   EMPTY_YEAR,
-  INVALID_DATE
+  INVALID_DATE,
+  INVALID_CHAR
     
 }HildonDateEditorErrorType;
 
