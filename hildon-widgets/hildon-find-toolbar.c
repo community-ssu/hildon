@@ -373,8 +373,12 @@ hildon_find_toolbar_emit_search(GtkButton *button, gpointer self)
 static void
 hildon_find_toolbar_emit_close(GtkButton *button, gpointer self)
 {
-  GtkWidget *parent = gtk_widget_get_parent (GTK_WIDGET (self));
-  gtk_widget_grab_focus (parent);
+  HildonFindToolbarPrivate *priv = HILDON_FIND_TOOLBAR(self)->priv;
+  GtkWidget *entry = gtk_bin_get_child(GTK_BIN(priv->entry_combo_box));
+  if (GTK_WIDGET_HAS_FOCUS(entry))
+    {
+      hildon_gtk_im_context_hide(GTK_ENTRY(entry)->im_context);
+    }
   /* Clicked close button */
   g_signal_emit_by_name(self, "close", NULL);
 }

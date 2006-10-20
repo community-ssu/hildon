@@ -1,5 +1,11 @@
 2006-10-20  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
+	* hildon-widgets/hildon-find-toolbar.c: Do not grab focus but just
+	hide the IM context when the toolbar is being closed. Patch by Tomas
+	Ostman, fixes for good NB#34193. 
+
+2006-10-20  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
 	* hildon-widgets/hildon-date-editor.c: Changing the error infobanner
 	displayed to ckct_ib_illegal_character (when user presses non-numeric
 	character in the date editor).
