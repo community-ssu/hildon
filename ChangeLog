@@ -1,12 +1,18 @@
+2006-10-20  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
+	* hildon-widgets/hildon-date-editor.c: Changing the error infobanner
+	displayed to ckct_ib_illegal_character (when user presses non-numeric
+	character in the date editor).
+
 2006-10-19  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com>
 
-        * hildon-widgets/hildon-date-editor.c:
-        (hildon_date_editor_keypress): Added check for not allowed keys.
-        (hildon_date_editor_date_error): Added banner message for not
-        allowed keys.
+	* hildon-widgets/hildon-date-editor.c:
+	(hildon_date_editor_keypress): Added check for not allowed keys.
+	(hildon_date_editor_date_error): Added banner message for not
+	allowed keys. Fixes NB#41049.
 
-        * hildon-widgets/hildon-date-editor.h:
-        Added INVALID_CHAR to HildonDateEditorErrorType enumeration.
+	* hildon-widgets/hildon-date-editor.h:
+	Added INVALID_CHAR to HildonDateEditorErrorType enumeration.
 
 2006-10-19  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 

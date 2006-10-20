@@ -1152,7 +1152,7 @@ hildon_date_editor_date_error(HildonDateEditor *editor,
                      priv->min_year, priv->max_year);
       break;
     case INVALID_CHAR:
-      gtk_infoprint(NULL, _("ckct_ib_only_numbers_allowed"));
+      gtk_infoprint(NULL, _("ckct_ib_illegal_character"));
       break;
     case INVALID_DATE:
       gtk_infoprint(NULL, _("ckct_ib_date_does_not_exist"));
