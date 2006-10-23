@@ -60,10 +60,10 @@ struct _HildonFindToolbarClass
 {
   GtkToolbarClass parent_class;
 
-  void		(*search) 		(HildonFindToolbar *toolbar, gpointer data);
-  void 		(*close)		(HildonFindToolbar *toolbar, gpointer data);
-  void 		(*invalid_input)	(HildonFindToolbar *toolbar, gpointer data);
-  gboolean	(*history_append)	(HildonFindToolbar *tooblar, gpointer data);
+  void		(*search) 		(HildonFindToolbar *toolbar);
+  void 		(*close)		(HildonFindToolbar *toolbar);
+  void 		(*invalid_input)	(HildonFindToolbar *toolbar);
+  gboolean	(*history_append)	(HildonFindToolbar *tooblar);
 };
 
 GType		hildon_find_toolbar_get_type		(void) G_GNUC_CONST;
