@@ -1,3 +1,8 @@
+2006-10-23  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com>
+
+	* hildon-widgets/hildon-time-editor.c: Removing the extra focus grab,
+	missing patch from NB#42555.
+
 2006-10-20  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com>
 
 	* hildon-widgets/hildon-time-editor.c:

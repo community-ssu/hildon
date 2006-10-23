@@ -1616,7 +1616,6 @@ hildon_time_editor_icon_clicked(GtkWidget * widget, gpointer data)
         /* Use the selected time */
         hildon_time_picker_get_time(HILDON_TIME_PICKER(picker), &h, &m);
         hildon_time_editor_set_time(editor, h, m, 0);
-        gtk_widget_grab_focus (editor);
         break;
     default:
         break;
