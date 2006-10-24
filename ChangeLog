@@ -1,11 +1,23 @@
+2006-10-24  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
+	[0.14.7-1 release]
+
+	* configure.ac:
+	* debian/changelog: Updating. 
+
+	* hildon-widgets/hildon-time-editor.c: Adding a "skipper" variable
+	that prevents us from doing validations from within validations. When
+	skipper == TRUE vallidation step is being skipped. A workaround.
+	Fixes NB#44610.
+
 2006-10-24  Daniel Elstner  <daniel.kitta@gmail.com>
- 
+
 	* hildon-widgets/hildon-find-toolbar.h (search, close,
 	invalid_input, history_append): Remove the final user_data
- 	parameter from the signal prototypes.  The user_data pointer
- 	is a generic feature of GLib signal handling and not supposed
- 	to be declared explicitely. (MB#185)
- 
+	parameter from the signal prototypes.  The user_data pointer
+	is a generic feature of GLib signal handling and not supposed
+	to be declared explicitely. (MB#185)
+
 2006-10-23  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com>
 
 	* hildon-widgets/hildon-time-editor.c: Removing the extra focus grab,

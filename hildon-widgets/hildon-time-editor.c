@@ -164,6 +164,9 @@ struct _HildonTimeEditorPrivate {
     guint      duration_max;         /* duration editor ranges       */
 
     guint      highlight_idle;
+    gboolean   skipper;              /* FIXME (MDK): To prevent us from looping inside the validation events. 
+                                        When set to TRUE further validations (that can happen from-inside other validations)
+                                        are being skipped. Nasty hack to cope with a bad design. */
 };
 
 /***
@@ -490,6 +493,7 @@ static void hildon_time_editor_init(HildonTimeEditor * editor)
     priv->sec_label      = gtk_label_new(NULL);
     priv->frame          = gtk_frame_new(NULL);
     priv->ampm_button    = gtk_button_new();
+    priv->skipper        = FALSE;
 
     icon = gtk_image_new_from_icon_name(ICON_NAME, HILDON_ICON_SIZE_WIDG);
     hbox = gtk_hbox_new(FALSE, 0);
@@ -1435,16 +1439,16 @@ static gboolean highlight_callback(gpointer data)
     GtkWidget *widget;
     gint i;
 
+    g_assert(HILDON_IS_TIME_EDITOR(data));
+    priv = HILDON_TIME_EDITOR_GET_PRIVATE(data);
+ 
     GDK_THREADS_ENTER ();
     
-    g_assert(HILDON_IS_TIME_EDITOR(data));
-
-    priv = HILDON_TIME_EDITOR_GET_PRIVATE(data);
     widget = priv->error_widget;
     priv->error_widget = NULL;
-    priv->highlight_idle = 0;
 
-    g_assert(GTK_IS_ENTRY(widget));
+    if (GTK_IS_WIDGET(widget) == FALSE)
+            goto Done;
 
     /* Avoid revalidation because it will issue the date_error signal
        twice when there is an empty field. We must block the signal
@@ -1459,6 +1463,8 @@ static gboolean highlight_callback(gpointer data)
       g_signal_handlers_unblock_by_func(priv->entries[i],
 					(gpointer) hildon_time_editor_entry_focusout, data);
 
+Done:
+    priv->highlight_idle = 0;
     GDK_THREADS_LEAVE ();
 
     return FALSE;
@@ -1477,8 +1483,9 @@ hildon_time_editor_validate (HildonTimeEditor *editor, gboolean allow_intermedia
     priv = HILDON_TIME_EDITOR_GET_PRIVATE(editor);
 
     /* if there is already an error we do nothing until it will be managed by the idle */
-    if (priv->highlight_idle == 0)
+    if (priv->highlight_idle == 0 && priv->skipper == FALSE)
       {
+        priv->skipper = TRUE;
         error_message = g_string_new(NULL);
         hildon_time_editor_real_validate(editor, 
                                          allow_intermediate, error_message);
@@ -1487,10 +1494,11 @@ hildon_time_editor_validate (HildonTimeEditor *editor, gboolean allow_intermedia
           {
             hildon_banner_show_information(priv->error_widget, NULL,
                                            error_message->str);
-            
+           
             priv->highlight_idle = g_idle_add(highlight_callback, editor);
           }
 
+        priv->skipper = FALSE;
         g_string_free(error_message, TRUE);
       }
 }

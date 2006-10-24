@@ -1,3 +1,14 @@
+hildon-libs (0.14.7-1) unstable; urgency=low
+
+  * Fixes: #NB38598 - Information banners do not resize.
+  * Fixes: #NB41049 - Info banner is not displaying when characters entered in number fields.
+  * Fixes: #NB34193 - Tapping on the close button of the findtoolbar does not close the VKB.
+  * Fixes: #NB43926 - Info banner is not displaying when characters entered in time editor
+  * Fixes: #NB44610 - Applications crash with an internal error note if a value greater than maximum value is entered in the hour field of the Time editor.
+  * Fixes: #MB185 - Several signals wrongly registered, some enums not prepared for introspection
+
+ -- Michael Dominic Kostrzewa <michael.kostrzewa@nokia.com>  Tue, 24 Oct 2006 20:00:00 +0300
+
 hildon-libs (0.14.6-1) unstable; urgency=low
 
   * Fixes: #NB42504 - Date input fields can be left empty in startup wizard
