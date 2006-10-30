@@ -1,5 +1,10 @@
 2006-10-30  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
+	* hildon-widgets/hildon-font-selection-dialog.c: Making the preview
+	dialog wider when being font sizes are being used. Fixes NB#41501. 
+
+2006-10-30  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
 	* hildon-widgets/hildon-set-password-dialog.c: Removing
 	auto-capitalization from the entry used to verify the password. Fixes
 	NB#39585.
