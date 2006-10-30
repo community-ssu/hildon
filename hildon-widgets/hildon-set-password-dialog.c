@@ -258,6 +258,7 @@ create_contents(HildonSetPasswordDialog *dialog)
 
     /* Create the password verify field */
     priv->pwd2ndEntry = gtk_entry_new();
+    g_object_set (priv->pwd2ndEntry, "hildon-input-mode", HILDON_GTK_INPUT_MODE_FULL, NULL);
     gtk_widget_show(priv->pwd2ndEntry);
     priv->pwd2ndCaption = hildon_caption_new(group,
                                         priv->pwd2ndCaption_string,
