@@ -31,7 +31,7 @@
 #ifndef __HILDON_SCROLL_AREA_H__
 #define __HILDON_SCROLL_AREA_H__
 
-#include <gtk/gtkwidget.h>
+#include <gtk/gtk.h>
 
 G_BEGIN_DECLS
     GtkWidget * hildon_scroll_area_new(GtkWidget * sw, GtkWidget * child);

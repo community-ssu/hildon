@@ -72,6 +72,8 @@ static void hildon_scroll_area_fixed_allocate (GtkWidget *widget,
 					       GtkAllocation *allocation,
 					       HildonScrollArea *sc);
 
+static int calculate_size (GtkWidget *widget);
+
 /**
  * hildon_scroll_area_new:
  * @sw: #GtkWidget - #GtkScrolledWindow
@@ -150,16 +152,45 @@ static void hildon_scroll_area_fixed_allocate (GtkWidget *widget,
 			       MIN (sc->outadj->page_size, allocation->height));
 }
 
+
+static int calculate_size (GtkWidget *widget)
+{
+  int size = 0;
+
+  if (GTK_IS_TEXT_VIEW (widget))
+    return 0;
+
+  if (GTK_IS_CONTAINER (widget)) {
+    GList *children = gtk_container_get_children (GTK_CONTAINER (widget));
+    while (children != NULL) {
+      GtkWidget *wid = GTK_WIDGET (children->data);
+      gint sz = calculate_size (wid);
+      if ((GTK_WIDGET_VISIBLE (wid))) {
+        size += sz;
+      }
+
+      children = g_list_next (children);
+    }
+  } else { 
+    size = widget->allocation.height;
+  }
+
+  return size;
+}
+
 static void hildon_scroll_area_child_requisition (GtkWidget *widget,
 						  GtkRequisition *req,
 						  HildonScrollArea *sc)
 {
   /* Limit height to fixed height */
   gint new_req = MAX (req->height, sc->fixed->allocation.height);
+  new_req = MIN (sc->outadj->page_size - adjust_factor, new_req);
+  gint adjust_factor = calculate_size (sc->swouter) * 0.7;
+  adjust_factor = MAX (0, adjust_factor - sc->outadj->value);
+
   gtk_widget_set_size_request (sc->fixed, -1, req->height);
   /* Request inner scrolled window at most page size */
-  gtk_widget_set_size_request (sc->swinner, -1,
-			       MIN (sc->outadj->page_size, new_req));
+  gtk_widget_set_size_request (sc->swinner, -1, new_req);
 }
 
 static void hildon_scroll_area_outer_value_changed (GtkAdjustment *adjustment,

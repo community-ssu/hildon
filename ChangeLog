@@ -1,3 +1,10 @@
+2006-10-31  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
+	* hildon-widgets/hildon-scroll-area.c:
+	* hildon-widgets/hildon-scroll-area.h: When using a GtkTextView inside
+	the HildonScrollArea try to "compensete" the cursor position
+	scrolling. Fixes NB#20219.
+
 2006-10-30  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
 	* hildon-widgets/hildon-font-selection-dialog.c: Making the preview
