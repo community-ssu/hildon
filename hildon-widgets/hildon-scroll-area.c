@@ -184,9 +184,10 @@ static void hildon_scroll_area_child_requisition (GtkWidget *widget,
 {
   /* Limit height to fixed height */
   gint new_req = MAX (req->height, sc->fixed->allocation.height);
-  new_req = MIN (sc->outadj->page_size - adjust_factor, new_req);
   gint adjust_factor = calculate_size (sc->swouter) * 0.7;
+  
   adjust_factor = MAX (0, adjust_factor - sc->outadj->value);
+  new_req = MIN (sc->outadj->page_size - adjust_factor, new_req);
 
   gtk_widget_set_size_request (sc->fixed, -1, req->height);
   /* Request inner scrolled window at most page size */
