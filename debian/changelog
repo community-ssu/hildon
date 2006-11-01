@@ -2,7 +2,7 @@ hildon-libs (0.14.8-1) unstable; urgency=low
 
   * Fixes: NB#39585 - Hildon_set_password dialog has auto-capitalization active
   * Fixes: NB#41501 - Last line of text in preview dialog is not shown properly when bold and maximum font is selected
-  * Fixes: NB#20219 - Sputnik 2005 - Scrolling not smooth with HildonScrollArea
+  * Fixes: NB#20219 - Scrolling not smooth with HildonScrollArea
 
  -- Michael Dominic Kostrzewa <michael.kostrzewa@nokia.com>  Wed, 01 Nov 2006 10:58:00 +0300
 
