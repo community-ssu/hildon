@@ -97,7 +97,7 @@ hildon_date_editor_keyrelease(GtkWidget * widget, GdkEventKey * event,
                               gpointer data);
 static gboolean
 hildon_date_editor_clicked(GtkWidget * widget, gpointer data);
-static void
+static gint
 hildon_date_editor_entry_validate(GtkWidget *widget, gpointer data);
 
 static void
@@ -887,7 +887,7 @@ static gboolean hildon_date_editor_clicked(GtkWidget * widget,
    when the all of the fields are filled. 
    Earlier this was called whenever an entry changed */
 /* FIXME: Validation on focus_out is broken by concept */
-static void
+static gint
 hildon_date_editor_entry_validate(GtkWidget *widget, gpointer data)
 {
     HildonDateEditor *ed;
@@ -904,7 +904,7 @@ hildon_date_editor_entry_validate(GtkWidget *widget, gpointer data)
     priv = HILDON_DATE_EDITOR_GET_PRIVATE(ed);
 
     if (priv->skip_validation)
-       return;
+       return error_code;
 
     /*check if the calling entry is empty*/
     text = gtk_entry_get_text(GTK_ENTRY(widget));
@@ -919,18 +919,18 @@ hildon_date_editor_entry_validate(GtkWidget *widget, gpointer data)
 
       /* restore empty entry to safe value */
       hildon_date_editor_set_date (ed, priv->year, priv->month, priv->day);
-      return;
+      return error_code;
     }
 
     /* Ok, we now check validity. Some fields can be empty */
     text = gtk_entry_get_text(GTK_ENTRY(priv->d_entry));
-    if (text == NULL || text[0] == 0) return;
+    if (text == NULL || text[0] == 0) return error_code;
     d = atoi(text);
     text = gtk_entry_get_text(GTK_ENTRY(priv->m_entry));
-    if (text == NULL || text[0] == 0) return;
+    if (text == NULL || text[0] == 0) return error_code;
     m = atoi(text);
     text = gtk_entry_get_text(GTK_ENTRY(priv->y_entry));
-    if (text == NULL || text[0] == 0) return;
+    if (text == NULL || text[0] == 0) return error_code;
     y = atoi(text);
 
     /* Did it actually change? */
@@ -997,9 +997,6 @@ hildon_date_editor_entry_validate(GtkWidget *widget, gpointer data)
             g_idle_add ((GSourceFunc) 
                     _hildon_date_editor_entry_select_all, 
                     widget);
-
-    	    /* Set focus back to invalid entry */
-            gtk_widget_grab_focus(widget);
         }
     }
 
@@ -1007,6 +1004,7 @@ hildon_date_editor_entry_validate(GtkWidget *widget, gpointer data)
        reformatting can be needed even in a such case that numerical
        values of the date components are the same as earlier. */
     hildon_date_editor_set_date(ed, y, m, d);
+    return error_code;
 }
 
 /* When entry becomes full, we move the focus to the next field.
@@ -1015,6 +1013,8 @@ static void
 hildon_date_editor_entry_changed(GtkEditable *ed, gpointer data)
 {
   GtkEntry *entry;
+  gint error_code;
+  HildonDateEditorPrivate *priv;
 
   g_assert(GTK_IS_ENTRY(ed));
   g_assert(HILDON_IS_DATE_EDITOR(data));
@@ -1024,8 +1024,13 @@ hildon_date_editor_entry_changed(GtkEditable *ed, gpointer data)
   /* If day entry is full, move to next entry or validate */
   if (g_utf8_strlen(gtk_entry_get_text(entry), -1) == gtk_entry_get_max_length(entry))
     {
-      if (!gtk_widget_child_focus(GTK_WIDGET(data), GTK_DIR_RIGHT))
-        hildon_date_editor_entry_validate(GTK_WIDGET(entry), data);
+      error_code = hildon_date_editor_entry_validate(GTK_WIDGET(entry), data);
+      if (error_code == NO_ERROR)
+	{
+	  priv = HILDON_DATE_EDITOR_GET_PRIVATE(HILDON_DATE_EDITOR(data));
+	  priv->skip_validation = TRUE;
+	  gtk_widget_child_focus(GTK_WIDGET(data), GTK_DIR_RIGHT);
+	}
     }
 }
 
@@ -1113,7 +1118,17 @@ static gboolean hildon_date_editor_entry_focus_out(GtkWidget * widget,
                                              GdkEventFocus * event,
                                              gpointer data)
 {
+  HildonDateEditor *ed;
+  HildonDateEditorPrivate *priv;
+
+  g_assert(HILDON_IS_DATE_EDITOR(data));
+
+  ed = HILDON_DATE_EDITOR(data);
+  priv = HILDON_DATE_EDITOR_GET_PRIVATE(ed);
+
   hildon_date_editor_entry_validate(widget, data);
+  priv->skip_validation = FALSE;
+
   return FALSE;
 }
 
