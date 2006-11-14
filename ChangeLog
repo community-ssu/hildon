@@ -1,4 +1,8 @@
 2006-11-14  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+	
+	* ./: Moving pkgconfig file to pkgconfig/.
+
+2006-11-14  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
 	* ./: Removing plugins and doc temporarily from the build process.
 	Upgrading the autogen.sh and configure.ac.
