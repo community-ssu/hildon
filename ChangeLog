@@ -1,3 +1,7 @@
+2006-11-14  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com>
+
+	* ./: Removing the whole lot of deprecated components.  
+
 2006-11-14  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
 	* ./: Some basic fixed to make the source actually buildable. Removing

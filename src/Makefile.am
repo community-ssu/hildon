@@ -36,8 +36,6 @@ hildon-composite-widget.c \
 	hildon-hvolumebar.h \
 	hildon-vvolumebar.c \
 	hildon-vvolumebar.h \
-	hildon-dialoghelp.c \
-	hildon-dialoghelp.h \
 	hildon-calendar-popup.c \
 	hildon-calendar-popup.h \
 	hildon-date-editor.c \
@@ -49,8 +47,6 @@ hildon-composite-widget.c \
 	hildon-time-picker.h \
 	hildon-weekday-picker.c \
 	hildon-weekday-picker.h \
-	hildon-telephone-editor.c \
-	hildon-telephone-editor.h \
 	hildon-number-editor.c \
 	hildon-number-editor.h \
 	hildon-range-editor.c \
@@ -61,35 +57,18 @@ hildon-composite-widget.c \
 	hildon-set-password-dialog.h \
 	hildon-sort-dialog.c \
 	hildon-sort-dialog.h \
-	hildon-add-home-dialog.c \
-	hildon-add-home-dialog.h \
 	hildon-font-selection-dialog.c \
 	hildon-font-selection-dialog.h \
-	hildon-grid.c \
-	hildon-grid.h \
-	hildon-grid-item.c \
-	hildon-grid-item.h \
-	hildon-grid-item-private.h \
-	hildon-file-handling-note.c \
-	hildon-file-handling-note.h \
 	hildon-name-password-dialog.c \
 	hildon-name-password-dialog.h \
-	hildon-scroll-area.c \
-	hildon-scroll-area.h \
 	hildon-wizard-dialog.c \
 	hildon-wizard-dialog.h \
 	hildon-color-popup.c \
 	hildon-color-popup.h \
 	hildon-color-button.c \
 	hildon-color-button.h \
-	hildon-system-sound.c \
-	hildon-system-sound.h \
-	hildon-app.c \
-	hildon-app.h \
 	hildon-defines.c \
 	hildon-defines.h \
-	hildon-appview.c \
-	hildon-appview.h \
 	hildon-find-toolbar.c \
 	hildon-find-toolbar.h \
 	gtk-infoprint.c \
@@ -97,7 +76,6 @@ hildon-composite-widget.c \
 	hildon-banner.c \
 	hildon-banner.h \
 	hildon-input-mode-hint.h \
-	hildon-app-private.h \
 	hildon-caption.c \
 	hildon-caption.h \
 	hildon-window.c \
