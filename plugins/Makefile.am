@@ -3,8 +3,8 @@ MAINTAINERCLEANFILES = Makefile.in
 INCLUDES = $(GTK_CFLAGS) $(GCONF_CFLAGS) -DLOCALEDIR=\"$(localedir)\" \
 	   -I$(srcdir)/..
 
-LDFLAGS = -module -avoid-version
-LIBADD = -L$(srcdir)/../hildon-widgets/.libs -lhildonwidgets $(GTK_LIBS)
+#LDFLAGS = -module -avoid-version
+#LIBADD = -L$(srcdir)/../hildon-widgets/.libs -lhildonwidgets $(GTK_LIBS)
 
 pluginwidgetdir = $(libdir)/hildon-widgets
 pluginwidget_LTLIBRARIES = hildoncolorchooser_hsv.la \

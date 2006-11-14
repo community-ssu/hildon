@@ -1,5 +1,10 @@
 2006-11-14  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
+	* ./: Removing plugins and doc temporarily from the build process.
+	Upgrading the autogen.sh and configure.ac.
+
+2006-11-14  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
 	* ./: Removing the theme, ut and timer. 
 
 2006-11-14  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 

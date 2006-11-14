@@ -1,4 +1,4 @@
-SUBDIRS = src plugins doc po
+SUBDIRS = src po
 
 EXTRA_DIST = \
 	debian/changelog \

@@ -1,17 +1,21 @@
-AC_INIT(Makefile.am)
-AM_INIT_AUTOMAKE(hildon-libs, 0.14.8)
-AM_CONFIG_HEADER(config.h)
+AC_INIT([Hildon gtk widgets], [0.14.8], [michael.kostrzewa@nokia.com], [hildon-widgets])
+AC_CANONICAL_SYSTEM
 
-AC_CANONICAL_HOST
+AM_CONFIG_HEADER(config.h)
+AC_CONFIG_SRCDIR([src/hildon-window.h])
+AC_CONFIG_MACRO_DIR([m4])
+AM_MAINTAINER_MODE
+
+dnl set the libtool versioning
+AS_LIBTOOL(HILDON_WIDGETS, 0, 0, 0)
+AM_INIT_AUTOMAKE
 
 AC_PROG_CC
-AC_PROG_CPP
+AM_PROG_LIBTOOL
 AC_PROG_INSTALL
 AC_PROG_AWK
-AC_PROG_LIBTOOL
 
 AC_HEADER_STDC
-
 
 CFLAGS="$CFLAGS -std=c99 -Wall -pedantic -Wmissing-prototypes -Wmissing-declarations"
 # -Werror disabled due to the flaw in glib-2.0
@@ -47,10 +51,10 @@ AM_GLIB_GNU_GETTEXT
 # Check for gtk-doc.
 ##################################################
 #ifdef(GTK_DOC_CHECK, GTK_DOC_CHECK([1.0]))
-GTK_DOC_CHECK([1.0])
+#GTK_DOC_CHECK([1.0])
 
-AC_CHECK_PROG(DOXYGEN_FOUND, doxygen, yes, no)
-AM_CONDITIONAL(HAVE_DOXYGEN, [test "$DOXYGEN_FOUND" = "yes"])
+#AC_CHECK_PROG(DOXYGEN_FOUND, doxygen, yes, no)
+#AM_CONDITIONAL(HAVE_DOXYGEN, [test "$DOXYGEN_FOUND" = "yes"])
 
 localedir=${datadir}/locale
 
@@ -71,15 +75,11 @@ if test "x$enable_rebuilds" = "xyes" && \
 fi
 AC_SUBST(REBUILD)
 
+AC_CONFIG_FILES([Makefile src/Makefile  \
+                 po/Makefile po/porules.mk \
+                 hildon-libs.pc])
 
-AC_OUTPUT(Makefile \
-	src/Makefile \
-	plugins/Makefile \
-	po/Makefile \
-	po/porules.mk \
-	doc/Makefile \
-	hildon-libs.pc)
-
+AC_OUTPUT
 
 echo "
 ######################################
