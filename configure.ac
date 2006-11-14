@@ -13,9 +13,6 @@ AC_PROG_LIBTOOL
 AC_HEADER_STDC
 
 
-#PKG_CHECK_MODULES(OUTO, outo >= 0.1.1)
-#AC_SUBST(OUTO_CFLAGS)
-
 CFLAGS="$CFLAGS -std=c99 -Wall -pedantic -Wmissing-prototypes -Wmissing-declarations"
 # -Werror disabled due to the flaw in glib-2.0
 # See http://bugzilla.gnome.org/show_bug.cgi?id=310175 and
@@ -56,12 +53,8 @@ AC_CHECK_PROG(DOXYGEN_FOUND, doxygen, yes, no)
 AM_CONDITIONAL(HAVE_DOXYGEN, [test "$DOXYGEN_FOUND" = "yes"])
 
 localedir=${datadir}/locale
-#outomoduledir=${libdir}/outo
 
 AC_SUBST(localedir)
-
-#AC_SUBST(outomoduledir)
-
 
 # Disable rebuild of glib-mkenum -generated source code:
 AC_ARG_ENABLE(rebuilds, [  --disable-rebuilds      disable all source autogeneration rules],,enable_rebuilds=yes)
@@ -80,8 +73,8 @@ AC_SUBST(REBUILD)
 
 
 AC_OUTPUT(Makefile \
-	hildon-widgets/Makefile \
-	hildon-widgets-plugins/Makefile \
+	src/Makefile \
+	plugins/Makefile \
 	timer/Makefile \
 	po/Makefile \
 	po/porules.mk \

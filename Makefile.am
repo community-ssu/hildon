@@ -1,4 +1,5 @@
-SUBDIRS = hildon-widgets hildon-widgets-plugins timer doc po
+SUBDIRS = src plugins timer doc po
+
 EXTRA_DIST = \
 	debian/changelog \
 	debian/control \
