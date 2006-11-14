@@ -1,4 +1,10 @@
 2006-11-14  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
+	* configure.ac:
+	* pkgconfig/hildon-widgets.pc.in: Few more fixes for the pkgconfig
+	file.
+
+2006-11-14  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 	
 	* ./: Moving pkgconfig file to pkgconfig/.
 

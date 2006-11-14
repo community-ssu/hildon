@@ -77,7 +77,7 @@ AC_SUBST(REBUILD)
 
 AC_CONFIG_FILES([Makefile src/Makefile  \
                  po/Makefile po/porules.mk \
-                 hildon-libs.pc])
+		 pkgconfig/Makefile])
 
 AC_OUTPUT
 

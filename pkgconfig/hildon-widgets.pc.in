@@ -3,7 +3,7 @@ exec_prefix=@exec_prefix@
 libdir=@libdir@
 includedir=@includedir@
 
-Name: hildon-libs
+Name: hildon-widgets
 Description: Hildon widgets library
 Requires: gtk+-2.0 >= @GTK_VERSION@
 Version: @VERSION@
