@@ -1,5 +1,10 @@
 2006-11-14  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
+	* ./: Some basic fixed to make the source actually buildable. Removing
+	the marshallers from the build system for a little while. 
+
+2006-11-14  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
 	* configure.ac:
 	* pkgconfig/hildon-widgets.pc.in: Few more fixes for the pkgconfig
 	file.

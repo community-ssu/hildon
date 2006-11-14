@@ -52,12 +52,12 @@
 #include <langinfo.h>
 #include <libintl.h>
 
-#include <hildon-widgets/hildon-defines.h>
-#include <hildon-widgets/hildon-time-editor.h>
-#include <hildon-widgets/hildon-time-picker.h>
-#include <hildon-widgets/hildon-banner.h>
-#include <hildon-widgets/hildon-input-mode-hint.h>
-#include <hildon-widgets/hildon-private.h>
+#include "hildon-defines.h"
+#include "hildon-time-editor.h"
+#include "hildon-time-picker.h"
+#include "hildon-banner.h"
+#include "hildon-input-mode-hint.h"
+#include "hildon-private.h"
 #include "hildon-composite-widget.h"
 #include "hildon-marshalers.h"
 #include "hildon-libs-enum-types.h"

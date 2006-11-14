@@ -34,9 +34,9 @@
  */
 
 #include "hildon-time-picker.h"
-#include <hildon-widgets/hildon-defines.h>
-#include <hildon-widgets/hildon-private.h>
-#include <hildon-widgets/gtk-infoprint.h>
+#include "hildon-defines.h"
+#include "hildon-private.h"
+#include "gtk-infoprint.h"
 #include <gtk/gtk.h>
 #include <gdk/gdkkeysyms.h>
 #include <gdk/gdk.h>

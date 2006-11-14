@@ -24,8 +24,8 @@
 #ifndef __HILDON_VOLUMEBAR_PRIVATE__
 #define __HILDON_VOLUMEBAR_PRIVATE__
 
-#include <gtk/gtktogglebutton.h>
-#include <hildon-widgets/hildon-volumebar-range.h>
+#include <gtk/gtk.h>
+#include "hildon-volumebar-range.h"
 
 G_BEGIN_DECLS
 #define HILDON_VOLUMEBAR_GET_PRIVATE(obj) \

@@ -26,7 +26,7 @@
 #ifndef __HILDON_PRIVATE_H__
 #define __HILDON_PRIVATE_H__
 
-#include <gtk/gtklabel.h>
+#include <gtk/gtk.h>
 
 G_BEGIN_DECLS
 

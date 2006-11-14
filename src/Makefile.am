@@ -8,15 +8,16 @@ MAINTAINERCLEANFILES = \
 
 EXTRA_DIST = hildon-marshalers.list
 
-libhildonwidgets_la_LDFLAGS = -version-info 5:0:5
+# libhildonwidgets_la_LDFLAGS = -version-info 5:0:5
 
 libhildonwidgets_la_LIBADD = $(GTK_LIBS) $(GCONF_LIBS) \
 			     $(ESD_LIBS) $(LIBMB_LIBS)
 
+#	hildon-marshalers.c 
+#	hildon-marshalers.h 
+	
 libhildonwidgets_la_SOURCES = \
-	hildon-marshalers.c \
-	hildon-marshalers.h \
-	hildon-composite-widget.c \
+hildon-composite-widget.c \
 	hildon-composite-widget.h \
 	hildon-controlbar.c \
 	hildon-controlbar.h \
@@ -177,40 +178,40 @@ hildonwidgetsincludeinst_DATA = \
 	hildon-color-chooser-dialog.h \
 	hildon-color-chooser-button.h
 
-headers_to_scan_for_enums = $(hildonwidgetsincludeinst_DATA)
+# headers_to_scan_for_enums = $(hildonwidgetsincludeinst_DATA)
  
 # Generate the enums source code, with glib-mkenums:
 # This is based on the same Makefile.am stuff in pango:
-hildonlibs_built_headers = hildon-libs-enum-types.h
-hildonlibs_built_cfiles = hildon-libs-enum-types.c
+# hildonlibs_built_headers = hildon-libs-enum-types.h
+# hildonlibs_built_cfiles = hildon-libs-enum-types.c
  
 # Don't build the library until we have built the header that it needs:
-$(OBJECTS) $(libhildonwidgets_la_OBJECTS): $(hildonlibs_built_headers)
+# $(OBJECTS) $(libhildonwidgets_la_OBJECTS): $(hildonlibs_built_headers)
  
-hildon-libs-enum-types.h: @REBUILD@ $(headers_to_scan_for_enums) Makefile
-	(cd $(srcdir) && glib-mkenums \
-			--fhead "#ifndef __HILDON_LIBS_ENUM_TYPES_H__\n#define __HILDON_LIBS_ENUM_TYPES_H__\n\n#include <glib-object.h>\n\nG_BEGIN_DECLS\n" \
-			--fprod "/* enumerations from \"@filename@\" */\n" \
-			--vhead "GType @enum_name@_get_type (void);\n#define HILDON_TYPE_@ENUMSHORT@ (@enum_name@_get_type())\n" 	\
-			--ftail "G_END_DECLS\n\n#endif /* __HILDON_LIBS_ENUM_TYPES_H__ */" \
-		$(headers_to_scan_for_enums)) > $@
+# hildon-libs-enum-types.h: @REBUILD@ $(headers_to_scan_for_enums) Makefile
+# 	(cd $(srcdir) && glib-mkenums \
+#			--fhead "#ifndef __HILDON_LIBS_ENUM_TYPES_H__\n#define __HILDON_LIBS_ENUM_TYPES_H__\n\n#include <glib-object.h>\n\nG_BEGIN_DECLS\n" \
+#			--fprod "/* enumerations from \"@filename@\" */\n" \
+#			--vhead "GType @enum_name@_get_type (void);\n#define HILDON_TYPE_@ENUMSHORT@ (@enum_name@_get_type())\n" 	\
+#			--ftail "G_END_DECLS\n\n#endif /* __HILDON_LIBS_ENUM_TYPES_H__ */" \
+#		$(headers_to_scan_for_enums)) > $@
 
 #FIXME: This would be shorter if there was a hildon-libs.h file:
-hildon-libs-enum-types.c: @REBUILD@ $(headers_to_scan_for_enums) Makefile
-	(cd $(srcdir) && glib-mkenums \
-			--fhead "#include <hildon-widgets/hildon-app.h>\n" \
-			--fhead "#include <hildon-widgets/hildon-input-mode-hint.h>\n" \
-			--fhead "#include <hildon-widgets/hildon-caption.h>\n" \
-			--fhead "#include <hildon-widgets/hildon-date-editor.h>\n" \
-			--fhead "#include <hildon-widgets/hildon-time-editor.h>\n" \
-			--fhead "#include <hildon-widgets/hildon-number-editor.h>\n" \
-			--fhead "#include <hildon-widgets/hildon-telephone-editor.h>\n" \
-			--fhead "#include <hildon-widgets/hildon-note.h>\n" \
-			--fhead "#include <hildon-widgets/hildon-grid.h>\n" \
-			--fhead '#include "hildon-libs-enum-types.h"\n' \
-			--fhead "#include <glib-object.h>" \
-		      	--fprod "\n/* enumerations from \"@filename@\" */" \
-			--vhead "GType\n@enum_name@_get_type (void)\n{\n  static GType etype = 0;\n  if (etype == 0) {\n    static const G@Type@Value values[] = {" 	\
-			--vprod "      { @VALUENAME@, \"@VALUENAME@\", \"@valuenick@\" }," \
-			--vtail "      { 0, NULL, NULL }\n    };\n    etype = g_@type@_register_static (\"@EnumName@\", values);\n  }\n  return etype;\n}\n" \
-		$(headers_to_scan_for_enums)) > $@
+#hildon-libs-enum-types.c: @REBUILD@ $(headers_to_scan_for_enums) Makefile
+#	(cd $(srcdir) && glib-mkenums \
+#			--fhead "#include <hildon-widgets/hildon-app.h>\n" \
+#			--fhead "#include <hildon-widgets/hildon-input-mode-hint.h>\n" \
+#			--fhead "#include <hildon-widgets/hildon-caption.h>\n" \
+#			--fhead "#include <hildon-widgets/hildon-date-editor.h>\n" \
+#			--fhead "#include <hildon-widgets/hildon-time-editor.h>\n" \
+#			--fhead "#include <hildon-widgets/hildon-number-editor.h>\n" \
+#			--fhead "#include <hildon-widgets/hildon-telephone-editor.h>\n" \
+#			--fhead "#include <hildon-widgets/hildon-note.h>\n" \
+#			--fhead "#include <hildon-widgets/hildon-grid.h>\n" \
+#			--fhead '#include "hildon-libs-enum-types.h"\n' \
+#			--fhead "#include <glib-object.h>" \
+#		      	--fprod "\n/* enumerations from \"@filename@\" */" \
+#			--vhead "GType\n@enum_name@_get_type (void)\n{\n  static GType etype = 0;\n  if (etype == 0) {\n    static const G@Type@Value values[] = {" 	\
+#			--vprod "      { @VALUENAME@, \"@VALUENAME@\", \"@valuenick@\" }," \
+#			--vtail "      { 0, NULL, NULL }\n    };\n    etype = g_@type@_register_static (\"@EnumName@\", values);\n  }\n  return etype;\n}\n" \
+#		$(headers_to_scan_for_enums)) > $@

@@ -77,7 +77,8 @@ AC_SUBST(REBUILD)
 
 AC_CONFIG_FILES([Makefile src/Makefile  \
                  po/Makefile po/porules.mk \
-		 pkgconfig/Makefile])
+		 pkgconfig/Makefile \
+                 pkgconfig/hildon-widgets.pc])
 
 AC_OUTPUT
 
