@@ -1,4 +1,4 @@
-SUBDIRS = src plugins timer doc po
+SUBDIRS = src plugins doc po
 
 EXTRA_DIST = \
 	debian/changelog \

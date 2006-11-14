@@ -1,5 +1,9 @@
 2006-11-14  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
+	* ./: Removing the theme, ut and timer. 
+
+2006-11-14  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
 	* ./: hildon-widgets => src . hildon-widgets-plugins => plugins.
 	Changing dir names etc. 
 

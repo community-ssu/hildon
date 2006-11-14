@@ -75,7 +75,6 @@ AC_SUBST(REBUILD)
 AC_OUTPUT(Makefile \
 	src/Makefile \
 	plugins/Makefile \
-	timer/Makefile \
 	po/Makefile \
 	po/porules.mk \
 	doc/Makefile \
