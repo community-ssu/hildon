@@ -1,5 +1,11 @@
 2006-11-15  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
+	* src/Makefile.am:
+	* src/hildon-marshalers.c:
+	* src/hildon-marshalers.h: Fixing the marshalers rebuilding etc.
+
+2006-11-15  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
 	* ./: Making the source buildable again, fixing the mkenums thingy.
 
 2006-11-14  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com>

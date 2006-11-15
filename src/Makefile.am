@@ -3,7 +3,9 @@ INCLUDES 						= -DG_LOG_DOMAIN=\"hildon-widgets\" \
 
 MAINTAINERCLEANFILES 					= Makefile.in 			\
 							  hildon-enum-types.c 	\
-							  hildon-enum-types.h 
+							  hildon-enum-types.h	\
+							  hildon-marshalers.h 	\
+							  hildon-marshalers.c
 
 EXTRA_DIST 						= hildon-marshalers.list
 
@@ -57,7 +59,8 @@ libhildonwidgets_la_SOURCES 				= hildon-composite-widget.c \
 							  hildon-color-chooser.c \
 							  hildon-color-chooser-dialog.c \
 							  hildon-color-chooser-button.c \
-							  hildon-enum-types.c
+							  hildon-enum-types.c \
+							  hildon-marshalers.c
 
 libhildonwidgets_includedir				= $(includedir)/hildon-widgets
 
@@ -97,13 +100,13 @@ libhildonwidgets_include_HEADERS 			= hildon-controlbar.h \
 							  hildon-color-chooser.h \
 							  hildon-color-chooser-dialog.h \
 							  hildon-color-chooser-button.h \
-							  hildon-enum-types.h
-
+							  hildon-enum-types.h \
+							  hildon-marshalers.h
 
 # Don't build the library until we have built the header that it needs:
-$(OBJECTS) $(libhildonwidgets_la_OBJECTS): hildon-enum-types.h
+$(OBJECTS) $(libhildonwidgets_la_OBJECTS): 		  hildon-enum-types.h
 
-hildon-enum-types.h: @REBUILD@ $(libhildonwidgets_include_HEADERS) Makefile
+hildon-enum-types.h: 					  @REBUILD@ $(libhildonwidgets_include_HEADERS) Makefile
 	(cd $(srcdir) && glib-mkenums \
 			--fhead "#ifndef __HILDON_ENUM_TYPES_H__\n" 	\
 			--fhead "#define __HILDON_ENUM_TYPES_H__\n" 	\
@@ -117,7 +120,7 @@ hildon-enum-types.h: @REBUILD@ $(libhildonwidgets_include_HEADERS) Makefile
 			--ftail "\nG_END_DECLS\n\n#endif /* __HILDON_ENUM_TYPES_H__ */" \
 		$(libhildonwidgets_include_HEADERS)) > $@
 
-hildon-enum-types.c: @REBUILD@ $(libhildonwidgets_include_HEADERS) Makefile
+hildon-enum-types.c: 					  @REBUILD@ $(libhildonwidgets_include_HEADERS) Makefile
 	(cd $(srcdir) && glib-mkenums \
 			--fhead "#include \"hildon-widgets.h\"\n" \
 			--fhead "#include <glib-object.h>" \
@@ -127,24 +130,10 @@ hildon-enum-types.c: @REBUILD@ $(libhildonwidgets_include_HEADERS) Makefile
 			--vtail "      { 0, NULL, NULL }\n    };\n    etype = g_@type@_register_static (\"@EnumName@\", values);\n  }\n  return etype;\n}\n" \
 		$(libhildonwidgets_include_HEADERS)) > $@
 
-#hildon-marshalers.h: hildon-marshalers.list
-#	glib-genmarshal --prefix _hildon_marshal --header \
-#			hildon-marshalers.list >hildon-marshalers.h
-#
-#hildon-marshalers.c: hildon-marshalers.list hildon-marshalers.h
-#	echo '#include <hildon-widgets/hildon-marshalers.h>' >hildon-marshalers.c
-#	glib-genmarshal --prefix _hildon_marshal --body \
-#			hildon-marshalers.list >>hildon-marshalers.c
+hildon-marshalers.h: 					hildon-marshalers.list
+	glib-genmarshal --prefix _hildon_marshal --header hildon-marshalers.list >hildon-marshalers.h
 
-
- 
-# Generate the enums source code, with glib-mkenums:
-# This is based on the same Makefile.am stuff in pango:
-# hildonlibs_built_headers = hildon-libs-enum-types.h
-# hildonlibs_built_cfiles = hildon-libs-enum-types.c
- 
- 
-#	hildon-marshalers.c 
-#	hildon-marshalers.h 
-	
+hildon-marshalers.c: 					hildon-marshalers.list hildon-marshalers.h
+	echo '#include "hildon-marshalers.h"' >hildon-marshalers.c
+	glib-genmarshal --prefix _hildon_marshal --body hildon-marshalers.list >>hildon-marshalers.c
 
