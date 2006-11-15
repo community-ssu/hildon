@@ -196,24 +196,6 @@ hildon_note_get_property(GObject * object,
     }
 }
 
-GType hildon_note_type_get_type (void)
-{
-  static GType notetype = 0;
-  if (notetype == 0) {
-    static const GEnumValue values[] = {
-      { HILDON_NOTE_CONFIRMATION_TYPE,        "HILDON_NOTE_CONFIRMATION_TYPE",        "confirmation" },
-      { HILDON_NOTE_CONFIRMATION_BUTTON_TYPE, "HILDON_NOTE_CONFIRMATION_BUTTON_TYPE", "confirmation-button" },
-      { HILDON_NOTE_INFORMATION_TYPE,         "HILDON_NOTE_INFORMATION_TYPE",         "note-information" },
-      { HILDON_NOTE_INFORMATION_THEME_TYPE,   "HILDON_NOTE_INFORMATION_THEME_TYPE",   "note-information-theme" },
-      { HILDON_NOTE_PROGRESSBAR_TYPE,         "HILDON_NOTE_PROGRESSBAR_TYPE",         "note-progressbar" },
-      { 0, NULL, NULL }
-    };
-    notetype = g_enum_register_static ("HildonNoteType", values);
-  }
-  return notetype;
-}
-
-
 GType hildon_note_get_type()
 {
     static GType dialog_type = 0;

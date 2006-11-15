@@ -29,6 +29,7 @@
 #include <glib-object.h>
 #include <gtk/gtkeventbox.h>
 #include <gtk/gtksizegroup.h>
+#include "hildon-enum-types.h"
 
 G_BEGIN_DECLS
 
@@ -51,7 +52,7 @@ G_BEGIN_DECLS
  *
  * Keys to set the #HildonCaption to be optional or mandatory.
  */
-typedef enum /*< skip >*/
+typedef enum
 {
     HILDON_CAPTION_OPTIONAL = 0,
     HILDON_CAPTION_MANDATORY
@@ -66,19 +67,11 @@ typedef enum /*< skip >*/
  *
  * Since: 0.14.5
  */
-typedef enum /*< skip >*/
+typedef enum
 {
     HILDON_CAPTION_POSITION_LEFT = 0,
     HILDON_CAPTION_POSITION_RIGHT
 } HildonCaptionIconPosition;
-
-#define HILDON_TYPE_CAPTION_STATUS (hildon_caption_status_get_type ())
-
-#define HILDON_TYPE_CAPTION_ICON_POSITION (hildon_caption_icon_position_get_type ())
-
-GType hildon_caption_status_get_type (void) G_GNUC_CONST;
-
-GType hildon_caption_icon_position_get_type (void) G_GNUC_CONST;
 
 /**
  * HildonCaption:

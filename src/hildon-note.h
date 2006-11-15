@@ -40,7 +40,7 @@ G_BEGIN_DECLS
 typedef struct _HildonNote      HildonNote;
 typedef struct _HildonNoteClass HildonNoteClass;
 
-typedef enum /*< skip >*/
+typedef enum
 {
     HILDON_NOTE_CONFIRMATION_TYPE = 0,
     HILDON_NOTE_CONFIRMATION_BUTTON_TYPE,
@@ -112,7 +112,6 @@ void hildon_note_set_button_texts(HildonNote * note, const gchar * textOk,
 				 const gchar * textCancel);
 
 GType hildon_note_get_type(void) G_GNUC_CONST;
-GType hildon_note_type_get_type(void) G_GNUC_CONST;
 
 G_END_DECLS
 #endif /* __HILDON_NOTE_H__ */

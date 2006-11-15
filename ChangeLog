@@ -1,5 +1,14 @@
 2006-11-15  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
+	* src/hildon-caption.c:
+	* src/hildon-caption.h:
+	* src/hildon-note.c:
+	* src/hildon-note.h:
+	* src/hildon-window.h: Register all the unregistered enums as GEnums
+	to make it easier for the language bindings.
+
+2006-11-15  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
 	* src/Makefile.am:
 	* src/hildon-marshalers.c:
 	* src/hildon-marshalers.h: Fixing the marshalers rebuilding etc.

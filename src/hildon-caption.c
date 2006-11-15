@@ -134,40 +134,6 @@ struct _HildonCaptionPrivate
   HildonCaptionIconPosition icon_position;
 };
 
-/* Register optional/mandatory type enumeration */
-/* FIXME: mandatory icon was removed. The mandatory/optional logic
-   remains, it should most probably be removed as well. This imply APi
-   change, especially hildon_caption_new() */
-GType
-hildon_caption_status_get_type (void)
-{
-  static GType etype = 0;
-  if (etype == 0) {
-    static const GEnumValue values[] = {
-      { HILDON_CAPTION_OPTIONAL, "HILDON_CAPTION_OPTIONAL", "optional" },
-      { HILDON_CAPTION_MANDATORY, "HILDON_CAPTION_MANDATORY", "mandatory" },
-      { 0, NULL, NULL }
-    };
-    etype = g_enum_register_static ("HildonCaptionStatus", values);
-  }
-  return etype;
-}
-
-GType
-hildon_caption_icon_position_get_type (void)
-{
-  static GType etype = 0;
-  if (etype == 0) {
-    static const GEnumValue values[] = {
-      { HILDON_CAPTION_POSITION_LEFT, "HILDON_CAPTION_POSITION_LEFT", "left" },
-      { HILDON_CAPTION_POSITION_RIGHT, "HILDON_CAPTION_POSITION_RIGHT", "right" },
-      { 0, NULL, NULL }
-    };
-    etype = g_enum_register_static ("HildonCaptionIconPosition", values);
-  }
-  return etype;
-}
-
 /**
  * hildon_caption_get_type:
  *

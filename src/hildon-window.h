@@ -68,12 +68,12 @@ struct _HildonWindow
     HildonWindowPrivate *priv;
 };
 
-enum
+typedef enum
 {
   HILDON_WINDOW_CO_COPY,
   HILDON_WINDOW_CO_CUT,
   HILDON_WINDOW_CO_PASTE
-};
+} HildonWindowClipboardOperation;
 
 struct _HildonWindowClass
 {
