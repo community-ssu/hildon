@@ -60,7 +60,7 @@
 #include "hildon-private.h"
 #include "hildon-composite-widget.h"
 #include "hildon-marshalers.h"
-#include "hildon-libs-enum-types.h"
+#include "hildon-enum-types.h"
 
 #define _(String) dgettext(PACKAGE, String)
 

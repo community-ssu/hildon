@@ -48,7 +48,7 @@
 #include <hildon-widgets/hildon-input-mode-hint.h>
 #include "hildon-composite-widget.h"
 #include "hildon-marshalers.h"
-#include "hildon-libs-enum-types.h"
+#include "hildon-enum-types.h"
 
 #ifdef HAVE_CONFIG_H
 #include<config.h>

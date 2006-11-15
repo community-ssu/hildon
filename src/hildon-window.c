@@ -27,7 +27,6 @@
 #include <string.h>
 #include <strings.h>
 #include <stdio.h>
-#include "hildon-app.h"
 #include <hildon-window.h>
 #include "hildon-program.h"
 #include "hildon-window-private.h"

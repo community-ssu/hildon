@@ -27,7 +27,6 @@
 
 #include <gtk/gtkwindow.h>
 #include <gdk/gdkkeysyms.h>
-#include "hildon-appview.h"
 
 G_BEGIN_DECLS
 
