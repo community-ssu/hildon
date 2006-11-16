@@ -37,24 +37,22 @@ G_BEGIN_DECLS
 #define HILDON_IS_TIME_EDITOR(obj)         (GTK_CHECK_TYPE       (obj,     HILDON_TYPE_TIME_EDITOR))
 #define HILDON_IS_TIME_EDITOR_CLASS(klass) (GTK_CHECK_CLASS_TYPE ((klass), HILDON_TYPE_TIME_EDITOR))
 
-
-typedef enum
+typedef enum 
 {
-  NO_TIME_ERROR = -1,
-  MAX_HOURS,
-  MAX_MINS,
-  MAX_SECS,
-  MIN_HOURS,
-  MIN_MINS,
-  MIN_SECS,
-  EMPTY_HOURS,
-  EMPTY_MINS,
-  EMPTY_SECS,
-  MIN_DUR,
-  MAX_DUR,
-  INVALID_TIME,
-  INVALID_CHAR
-} HildonTimeEditorErrorType;
+  HILDON_DATE_TIME_ERROR_NO_VALUE,
+  HILDON_DATE_TIME_ERROR_MAX_HOURS,
+  HILDON_DATE_TIME_ERROR_MAX_MINS,
+  HILDON_DATE_TIME_ERROR_MAX_SECS,
+  HILDON_DATE_TIME_ERROR_MIN_HOURS,
+  HILDON_DATE_TIME_ERROR_MIN_MINS,
+  HILDON_DATE_TIME_ERROR_MIN_SECS,
+  HILDON_DATE_TIME_ERROR_EMPTY_HOURS,
+  HILDON_DATE_TIME_ERROR_EMPTY_MINS,
+  HILDON_DATE_TIME_ERROR_EMPTY_SECS,
+  HILDON_DATE_TIME_ERROR_MIN_DURATION,
+  HILDON_DATE_TIME_ERROR_MAX_DURATION,
+  HILDON_DATE_TIME_ERROR_INVALID_CHAR
+} HildonDateTimeEditorError;
 
 typedef struct _HildonTimeEditor      HildonTimeEditor;
 typedef struct _HildonTimeEditorClass HildonTimeEditorClass;
@@ -67,7 +65,7 @@ struct _HildonTimeEditorClass {
     GtkContainerClass parent_class;
 
     gboolean (*time_error) (HildonTimeEditor          *editor,
-                            HildonTimeEditorErrorType  type);
+                            HildonDateTimeEditorError type);
 };
 
 GType      hildon_time_editor_get_type(void) G_GNUC_CONST;

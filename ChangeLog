@@ -1,5 +1,11 @@
 2006-11-16  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
+	* src/hildon-time-editor.c:
+	* src/hildon-time-editor.h: Switching to a common DateTime editor
+	error type.
+
+2006-11-16  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
 	* src/hildon-calendar-popup.h:
 	* src/hildon-caption.c:
 	* src/hildon-caption.h:

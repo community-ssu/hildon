@@ -130,9 +130,9 @@ enum {
 };
 
 static guint time_editor_signals[LAST_SIGNAL] = { 0 };
-static guint hour_errors[NUM_ERROR_CODES] = { MAX_HOURS, MIN_HOURS, EMPTY_HOURS  };
-static guint  min_errors[NUM_ERROR_CODES] = { MAX_MINS,  MIN_MINS,  EMPTY_MINS   };
-static guint  sec_errors[NUM_ERROR_CODES] = { MAX_SECS,  MIN_SECS,  EMPTY_SECS   };
+static guint hour_errors[NUM_ERROR_CODES] = { HILDON_DATE_TIME_ERROR_MAX_HOURS, HILDON_DATE_TIME_ERROR_MIN_HOURS, HILDON_DATE_TIME_ERROR_EMPTY_HOURS  };
+static guint  min_errors[NUM_ERROR_CODES] = { HILDON_DATE_TIME_ERROR_MAX_MINS,  HILDON_DATE_TIME_ERROR_MIN_MINS,  HILDON_DATE_TIME_ERROR_EMPTY_MINS   };
+static guint  sec_errors[NUM_ERROR_CODES] = { HILDON_DATE_TIME_ERROR_MAX_SECS,  HILDON_DATE_TIME_ERROR_MIN_SECS,  HILDON_DATE_TIME_ERROR_EMPTY_SECS   };
 
 struct _HildonTimeEditorPrivate {
     guint      ticks;                /* Current duration in seconds  */
@@ -208,7 +208,7 @@ static gboolean hildon_time_editor_entry_focusin(GtkWidget      *widget,
                                                  gpointer        data);
 
 static gboolean hildon_time_editor_time_error(HildonTimeEditor *editor,
-					      HildonTimeEditorErrorType type);
+					      HildonDateTimeEditorError type);
 
 static gboolean hildon_time_editor_ampm_clicked(GtkWidget       *widget,
                                                 gpointer         data);
@@ -364,7 +364,7 @@ hildon_time_editor_class_init(HildonTimeEditorClass * editor_class)
 		     G_STRUCT_OFFSET(HildonTimeEditorClass, time_error),
 		     g_signal_accumulator_true_handled, NULL,
 		     _hildon_marshal_BOOLEAN__ENUM,
-		     G_TYPE_BOOLEAN, 1, HILDON_TYPE_TIME_EDITOR_ERROR_TYPE);
+		     G_TYPE_BOOLEAN, 1, HILDON_TYPE_DATE_TIME_EDITOR_ERROR);
 
   /**
    * HildonTimeEditor:ticks:
@@ -1262,7 +1262,7 @@ static gboolean hildon_time_editor_entry_focusin(GtkWidget * widget,
 
 static gboolean 
 hildon_time_editor_time_error(HildonTimeEditor *editor,
-			      HildonTimeEditorErrorType type)
+			      HildonDateTimeEditorError type)
 {
   return TRUE;
 }
@@ -1406,7 +1406,7 @@ hildon_time_editor_real_validate(HildonTimeEditor *editor,
                 min_hours, min_minutes, min_seconds);
             hildon_time_editor_set_ticks (editor, priv->duration_min);
             priv->error_widget = priv->show_hours ? priv->entries[ENTRY_HOURS] : priv->entries[ENTRY_MINS];
-	    g_signal_emit (editor, time_editor_signals[TIME_ERROR], 0, MIN_DUR, &r);
+	    g_signal_emit (editor, time_editor_signals[TIME_ERROR], 0, HILDON_DATE_TIME_ERROR_MIN_DURATION, &r);
             return;
         }
         else if (ticks > priv->duration_max)
@@ -1416,7 +1416,7 @@ hildon_time_editor_real_validate(HildonTimeEditor *editor,
                 max_hours, max_minutes, max_seconds);
             hildon_time_editor_set_ticks (editor, priv->duration_max);
             priv->error_widget = priv->show_hours ? priv->entries[ENTRY_HOURS] : priv->entries[ENTRY_MINS];
-	    g_signal_emit (editor, time_editor_signals[TIME_ERROR], 0, MAX_DUR, &r);
+	    g_signal_emit (editor, time_editor_signals[TIME_ERROR], 0, HILDON_DATE_TIME_ERROR_MAX_DURATION, &r);
             return;
         }
     }
@@ -1730,7 +1730,7 @@ static gboolean hildon_time_editor_entry_keypress(GtkWidget * widget,
     /* Show error message in case the key pressed is not allowed 
        (only digits and control characters are allowed )*/
     if (!g_unichar_isdigit(event->keyval) && !(event->keyval & 0xF000)) {
-        g_signal_emit(editor, time_editor_signals[TIME_ERROR], 0, INVALID_CHAR, &r);
+        g_signal_emit(editor, time_editor_signals[TIME_ERROR], 0, HILDON_DATE_TIME_ERROR_INVALID_CHAR, &r);
         hildon_banner_show_information(widget, NULL, _("ckct_ib_illegal_character"));
         return TRUE;
     }
