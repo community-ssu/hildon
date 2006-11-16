@@ -483,26 +483,6 @@ void hildon_get_password_dialog_set_domain(HildonGetPasswordDialog *dialog,
 }
 
 /**
- * hildon_get_password_dialog_set_title:
- * @dialog: the dialog
- * @new_title: the text to be set as the dialog title
- * 
- * Sets the dialog title.
- *
- * DEPRECATED! use gtk_window_set_title instead.
- */
-void hildon_get_password_dialog_set_title(HildonGetPasswordDialog *dialog,
-					  const gchar *new_title)
-
-{
-  /* FIXME: This method is completely useless, should be deprecated/removed */
-  g_return_if_fail (HILDON_IS_GET_PASSWORD_DIALOG(dialog));
-  g_return_if_fail (new_title !=NULL);
-  gtk_window_set_title(GTK_WINDOW(dialog), 
-		       new_title);
-}
-
-/**
  * hildon_get_password_dialog_set_caption:
  * @dialog: the dialog
  * @new_caption: the text to be set as the caption label

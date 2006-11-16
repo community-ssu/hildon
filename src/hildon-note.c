@@ -539,42 +539,6 @@ GtkWidget *hildon_note_new_confirmation(GtkWindow * parent,
         (parent, description, HILDON_NOTE_CONFIRMATION_ICON);
 }
 
-
-/**
- * hildon_note_new_confirmation_with_icon_stock:
- * @parent: the parent window. The X window ID of the parent window
- *   has to be the same as the X window ID of the application. This is
- *   important so that the window manager could handle the windows
- *   correctly. In GTK the X window ID can be checked using
- *   GDK_WINDOW_XID(GTK_WIDGET(parent)->window).
- * @description: the message to confirm
- * @stock_id: icon to be displayed. If NULL, default icon is used.
- * 
- * Create a new confirmation note. Confirmation note has text (description) 
- * that you specify, two buttons and an icon.
- *
- * Deprecated: this function is broken, and really should not be used by anyone!
- *
- * Returns: a #GtkWidget pointer of the note
- */
-GtkWidget *hildon_note_new_confirmation_with_icon_stock(GtkWindow * parent,
-                                                        const gchar *
-                                                        description,
-                                                        const gchar *
-                                                        stock_id)
-{
-    GtkWidget *dialog = g_object_new(HILDON_TYPE_NOTE,
-                                     "note_type",
-                                     HILDON_NOTE_CONFIRMATION_TYPE,
-                                     "description", description, "stock-icon",
-                                     stock_id, NULL);
-
-    if (parent != NULL)
-        gtk_window_set_transient_for(GTK_WINDOW(dialog), parent);
-
-    return dialog;
-}
-
 /**
  * hildon_note_new_confirmation_with_icon_name:
  * @parent: the parent window. The X window ID of the parent window
@@ -633,46 +597,6 @@ GtkWidget *hildon_note_new_information(GtkWindow * parent,
 }
 
 /**
- * hildon_note_new_information_with_icon_stock:
- * @parent: the parent window. The X window ID of the parent window
- *   has to be the same as the X window ID of the application. This is
- *   important so that the window manager could handle the windows
- *   correctly. In GTK the X window ID can be checked using
- *   GDK_WINDOW_XID(GTK_WIDGET(parent)->window).
- * @description: the message to confirm
- * @stock_id: icon to be displayed. If NULL, default icon is used.
- * 
- * Create a new information note. Information note has text(description) 
- * that you specify, an OK button and a default stock note icon.
- * 
- * Note! This function is broken and deprecated and should not be
- *       used by anybody. Since the platform doesn't use stock icons, 
- *       use #hildon_note_new_information_with_icon_name instead.
- *
- * Returns: a #GtkWidget pointer of the note
- */
-GtkWidget *hildon_note_new_information_with_icon_stock(GtkWindow * parent,
-                                                       const gchar *
-                                                       description,
-                                                       const gchar *
-                                                       stock_id)
-{
-    GtkWidget *dialog = NULL;
-
-    g_return_val_if_fail(parent == NULL || GTK_IS_WINDOW(parent), NULL);
-
-    dialog = g_object_new(HILDON_TYPE_NOTE,
-                                     "note_type",
-                                     HILDON_NOTE_INFORMATION_TYPE,
-                                     "description", description,
-                                     "icon", stock_id, NULL);
-    if (parent != NULL)
-        gtk_window_set_transient_for(GTK_WINDOW(dialog), parent);
-
-    return dialog;
-}
-
-/**
  * hildon_note_new_information_with_icon_name:
  * @parent: the parent window. The X window ID of the parent window
  *   has to be the same as the X window ID of the application. This is
@@ -706,31 +630,6 @@ GtkWidget *hildon_note_new_information_with_icon_name(GtkWindow * parent,
         gtk_window_set_transient_for(GTK_WINDOW(dialog), parent);
 
     return dialog;
-}
-
-/**
- * hildon_note_new_information_with_icon_theme:
- * @parent: the parent window. The X window ID of the parent window
- *   has to be the same as the X window ID of the application. This is
- *   important so that the window manager could handle the windows
- *   correctly. In GTK the X window ID can be checked using
- *   GDK_WINDOW_XID(GTK_WIDGET(parent)->window).
- * @description: the message to confirm
- * @icon: #GtkIconTheme icon to be displayed
- * 
- * This function is deprecated. Use 
- * #hildon_note_new_information_with_icon_name instead.
- *
- * Create a new information note. Information note has text(description) 
- * that you specify, an OK button and an icon.
- *
- * Returns: a #GtkWidget pointer of the note. 
- */
-GtkWidget *hildon_note_new_information_with_icon_theme(GtkWindow *parent,
-                                                       const gchar *description,
-                                                       const gchar *icon)
-{
-    return hildon_note_new_information_with_icon_name(parent, description, icon);
 }
 
 /**

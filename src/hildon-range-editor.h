@@ -36,13 +36,6 @@ G_BEGIN_DECLS
  */
 #define HILDON_TYPE_RANGE_EDITOR (hildon_range_editor_get_type())
 
-/**
- * HILDON_RANGE_EDITOR_TYPE
- *
- * Deprecated: use #HILDON_TYPE_RANGE_EDITOR instead
- */
-#define HILDON_RANGE_EDITOR_TYPE HILDON_TYPE_RANGE_EDITOR
-
 #define HILDON_RANGE_EDITOR(obj) \
         (GTK_CHECK_CAST (obj, HILDON_TYPE_RANGE_EDITOR, HildonRangeEditor))
 #define HILDON_RANGE_EDITOR_CLASS(klass) (GTK_CHECK_CLASS_CAST ((klass),\

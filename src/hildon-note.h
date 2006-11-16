@@ -63,20 +63,12 @@ GtkWidget *hildon_note_new_confirmation(GtkWindow * parent,
 GtkWidget *hildon_note_new_confirmation_add_buttons(GtkWindow * parent,
                                                     const gchar *
                                                     description, ...);
-#ifndef HILDON_DISABLE_DEPRECATED
-GtkWidget *hildon_note_new_confirmation_with_icon_stock(GtkWindow * parent,
-                                                        const gchar *
-                                                        description,
-                                                        const gchar *
-                                                        stock_id);
-#endif /* HILDON_DISABLE_DEPRECATED */
 
 GtkWidget *hildon_note_new_confirmation_with_icon_name(GtkWindow * parent,
                                                         const gchar *
                                                         description,
                                                         const gchar *
                                                         icon_name);
-
 
 GtkWidget *hildon_note_new_cancel_with_progress_bar(GtkWindow * parent,
                                                     const gchar *
@@ -92,19 +84,6 @@ GtkWidget *hildon_note_new_information_with_icon_name(GtkWindow * parent,
                                                        description,
                                                        const gchar *
                                                        icon_name);
-#ifndef HILDON_DISABLE_DEPRECATED
-GtkWidget *hildon_note_new_information_with_icon_stock(GtkWindow * parent,
-                                                       const gchar *
-                                                       description,
-                                                       const gchar *
-                                                       stock_id);
-                                                       
-GtkWidget *hildon_note_new_information_with_icon_theme(GtkWindow * parent,
-                                                       const gchar *
-                                                       description,
-                                                       const gchar *
-                                                       icon);
-#endif /* HILDON_DISABLE_DEPRECATED */
                                                        
 void hildon_note_set_button_text(HildonNote * note, const gchar * text);
 

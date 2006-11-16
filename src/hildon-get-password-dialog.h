@@ -89,11 +89,5 @@ void       hildon_get_password_dialog_set_max_characters(HildonGetPasswordDialog
 
 const gchar * hildon_get_password_dialog_get_password(HildonGetPasswordDialog * dialog);
 
-
-#ifndef HILDON_DISABLE_DEPRECATED
-void       hildon_get_password_dialog_set_title        (HildonGetPasswordDialog *dialog,
-					                const gchar             *new_title);
-#endif /* HILDON_DISABLE_DEPRECATED */
-
 G_END_DECLS
 #endif /* __HILDON_GET_PASSWORD_DIALOG_H__ */

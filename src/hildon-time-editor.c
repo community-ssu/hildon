@@ -1860,37 +1860,6 @@ gboolean hildon_time_editor_get_show_hours(HildonTimeEditor *editor)
     return priv->show_hours;
 }
 
-/***
- * Deprecated functions
- */
-
-/**
- * hildon_time_editor_show_seconds:
- * @editor: the #HildonTimeEditor
- * @enable: enable or disable showing of seconds
- *
- * This function is deprecated, 
- * use #hildon_time_editor_set_show_seconds instead.
- */
-void hildon_time_editor_show_seconds(HildonTimeEditor * editor,
-                                     gboolean enable)
-{
-    hildon_time_editor_set_show_seconds (editor, enable);
-}
-/**
- * hildon_time_editor_enable_duration_mode:
- * @editor: the #HildonTimeEditor
- * @enable: enable or disable duration editor mode
- *
- * This function is deprecated, 
- * use #hildon_time_editor_set_duration_mode instead.
- */
-void hildon_time_editor_enable_duration_mode(HildonTimeEditor * editor,
-                                             gboolean enable)
-{
-    hildon_time_editor_set_duration_mode (editor, enable);
-}
-
 /* Idle callback */
 static gboolean
 _hildon_time_editor_entry_select_all (GtkWidget *widget)

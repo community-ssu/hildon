@@ -68,28 +68,11 @@ struct _HildonFontSelectionDialogClass
     void (*_gtk_reserved4) (void);
 };
 
-#ifndef HILDON_DISABLE_DEPRECATED
-PangoAttrList* hildon_font_selection_dialog_get_font(HildonFontSelectionDialog *fsd);
-
-void           hildon_font_selection_dialog_set_font(HildonFontSelectionDialog *fsd,
-                                                     PangoAttrList             *list);
-#endif
-
-
 GType      hildon_font_selection_dialog_get_type       (void) G_GNUC_CONST;
 
 GtkWidget* hildon_font_selection_dialog_new            (GtkWindow   *parent,
 							const gchar *title);
 
-
-#ifndef HILDON_DISABLE_DEPRECATED
-void    hildon_font_selection_dialog_set_buffer        (HildonFontSelectionDialog *fsd, 
-							GtkTextBuffer *buffer);
-
-GtkTextTag* hildon_font_selection_dialog_get_text_tag  (HildonFontSelectionDialog *fsd);
-#endif
-
-	
 gchar*  hildon_font_selection_dialog_get_preview_text  (HildonFontSelectionDialog *fsd);
 
 void    hildon_font_selection_dialog_set_preview_text  (HildonFontSelectionDialog *fsd, 

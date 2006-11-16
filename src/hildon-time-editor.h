@@ -84,12 +84,6 @@ void       hildon_time_editor_get_time           (HildonTimeEditor * editor,
                                                   guint            * minutes,
                                                   guint            * seconds);
 
-#ifndef HILDON_DISABLE_DEPRECATED
-void       hildon_time_editor_show_seconds         (HildonTimeEditor * editor, gboolean enable);
-void       hildon_time_editor_enable_duration_mode (HildonTimeEditor * editor, gboolean enable);
-#endif /* HILDON_DISABLE_DEPRECATED */
-
-
 void       hildon_time_editor_set_duration_range (HildonTimeEditor * editor,
                                                   guint              min_seconds,
                                                   guint              max_seconds);
@@ -115,7 +109,6 @@ guint      hildon_time_editor_get_duration_min   (HildonTimeEditor * editor);
 
 void       hildon_time_editor_set_duration_max   (HildonTimeEditor * editor, guint    duration_max);
 guint      hildon_time_editor_get_duration_max   (HildonTimeEditor * editor);
-
 
 G_END_DECLS
 #endif /* __HILDON_TIME_EDITOR_H__ */

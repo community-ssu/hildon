@@ -39,11 +39,6 @@ typedef struct _HildonProgramClass HildonProgramClass;
 #define HILDON_IS_PROGRAM(obj) (G_TYPE_CHECK_INSTANCE_TYPE (obj, \
             HILDON_TYPE_PROGRAM))
 
-/* deprecated */
-#define hildon_program_new hildon_program_get_instance
-
-
-
 struct _HildonProgram
 {
     GObject parent;

@@ -1,3 +1,23 @@
+2006-11-16  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
+	* src/hildon-calendar-popup.h:
+	* src/hildon-caption.c:
+	* src/hildon-caption.h:
+	* src/hildon-date-editor.h:
+	* src/hildon-font-selection-dialog.c:
+	* src/hildon-font-selection-dialog.h:
+	* src/hildon-get-password-dialog.c:
+	* src/hildon-get-password-dialog.h:
+	* src/hildon-note.c:
+	* src/hildon-note.h:
+	* src/hildon-program.h:
+	* src/hildon-range-editor.h:
+	* src/hildon-time-editor.c:
+	* src/hildon-time-editor.h:
+	* src/hildon-volumebar-range.h:
+	* src/hildon-weekday-picker.h:
+	* src/hildon-wizard-dialog.h: Removing deprecated functions.
+
 2006-11-15  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
 	* src/hildon-caption.c:

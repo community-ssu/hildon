@@ -37,14 +37,6 @@ G_BEGIN_DECLS
  */
 #define HILDON_TYPE_VOLUMEBAR_RANGE ( hildon_volumebar_range_get_type() )
 
-/**
- * HILDON_VOLUMEBAR_RANGE_TYPE
- *
- * Deprecated: use #HILDON_VOLUMEBAR_RANGE_TYPE instead
- */
-#define HILDON_VOLUMEBAR_RANGE_TYPE HILDON_TYPE_VOLUMEBAR_RANGE
-
-
 #define HILDON_VOLUMEBAR_RANGE(obj) (GTK_CHECK_CAST (obj,\
         HILDON_TYPE_VOLUMEBAR_RANGE, HildonVolumebarRange))
 #define HILDON_VOLUMEBAR_RANGE_CLASS(klass) \

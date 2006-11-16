@@ -100,12 +100,11 @@ GType hildon_caption_get_type (void) G_GNUC_CONST;
 GtkWidget *hildon_caption_new( GtkSizeGroup *group, const gchar *value,
                                GtkWidget *control, GtkWidget *icon,
                                HildonCaptionStatus flag );
-#ifndef HILDON_DISABLE_DEPRECATED
-GtkSizeGroup *hildon_caption_get_sizegroup( const HildonCaption *caption );
 
-void hildon_caption_set_sizegroup( const HildonCaption *caption,
-                                   GtkSizeGroup *new_group );
-#endif
+GtkSizeGroup *hildon_caption_get_size_group( const HildonCaption *caption );
+
+void hildon_caption_set_size_group( const HildonCaption *caption,
+                                    GtkSizeGroup *new_group );
 
 gboolean hildon_caption_is_mandatory( const HildonCaption *caption );
 
@@ -135,12 +134,6 @@ gchar *hildon_caption_get_separator( const HildonCaption *caption );
 void hildon_caption_set_label_alignment(HildonCaption *caption, 
                                         gfloat alignment);
 gfloat hildon_caption_get_label_alignment(HildonCaption *caption);
-
-#ifndef HILDON_DISABLE_DEPRECATED
-GtkWidget *hildon_caption_get_control( const HildonCaption *caption );
-
-void hildon_caption_set_control( HildonCaption *caption, GtkWidget *control );
-#endif
 
 void hildon_caption_set_child_expand( HildonCaption *caption, gboolean expand );
 gboolean hildon_caption_get_child_expand( const HildonCaption *caption );

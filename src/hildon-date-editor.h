@@ -36,14 +36,6 @@ G_BEGIN_DECLS
  */
 #define HILDON_TYPE_DATE_EDITOR ( hildon_date_editor_get_type() )
 
-
-/**
- * HILDON_DATE_EDITOR_TYPE:
- *
- * Deprecated: use #HILDON_TYPE_DATE_EDITOR instead
- */
-#define HILDON_DATE_EDITOR_TYPE HILDON_TYPE_DATE_EDITOR
-
 #define HILDON_DATE_EDITOR(obj) (GTK_CHECK_CAST (obj,\
   HILDON_TYPE_DATE_EDITOR, HildonDateEditor))
 #define HILDON_DATE_EDITOR_CLASS(klass) (GTK_CHECK_CLASS_CAST ((klass),\

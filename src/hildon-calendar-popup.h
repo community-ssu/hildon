@@ -36,13 +36,6 @@ G_BEGIN_DECLS
  */
 #define HILDON_TYPE_CALENDAR_POPUP ( hildon_calendar_popup_get_type() )
 
-/**
- * HILDON_CALENDAR_POPUP_TYPE:
- *
- * Deprecated: use #HILDON_TYPE_CALENDAR_POPUP instead
- */
-#define HILDON_CALENDAR_POPUP_TYPE HILDON_TYPE_CALENDAR_POPUP
-
 #define HILDON_CALENDAR_POPUP(obj) (GTK_CHECK_CAST (obj,\
   HILDON_TYPE_CALENDAR_POPUP, HildonCalendarPopup))
 #define HILDON_CALENDAR_POPUP_CLASS(klass) (GTK_CHECK_CLASS_CAST ((klass),\
@@ -59,9 +52,6 @@ G_BEGIN_DECLS
  */
 typedef struct _HildonCalendarPopup HildonCalendarPopup;
 typedef struct _HildonCalendarPopupClass HildonCalendarPopupClass;
-
-/* Note: CalendarPopup is no longer derived from GtkWindow
-   but from GtkDialog */
 
 struct _HildonCalendarPopup {
     GtkDialog par;

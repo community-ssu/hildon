@@ -761,10 +761,9 @@ static void hildon_caption_forall( GtkContainer *container,
  *
  * Sets a #GtkSizeGroup of a given captioned control.
  *
- * Deprecated: use g_object_set, property :size-group
  */
-void hildon_caption_set_sizegroup( const HildonCaption *self,
-                                   GtkSizeGroup *group )
+void hildon_caption_set_size_group( const HildonCaption *self,
+                                    GtkSizeGroup *group )
 {
   g_object_set( G_OBJECT(self), "size_group", group, NULL );
 }
@@ -777,9 +776,8 @@ void hildon_caption_set_sizegroup( const HildonCaption *self,
  *
  * @Returns : a #GtkSizeGroup
  * 
- * Deprecated: Use g_object_get, property :size-group
  */
-GtkSizeGroup *hildon_caption_get_sizegroup( const HildonCaption *self )
+GtkSizeGroup *hildon_caption_get_size_group( const HildonCaption *self )
 {
   HildonCaptionPrivate *priv;
   g_return_val_if_fail( HILDON_IS_CAPTION (self), NULL );
@@ -1025,23 +1023,6 @@ gchar *hildon_caption_get_separator( const HildonCaption *caption )
   return priv->separator;
 }
 
-
-/**
- * hildon_caption_get_control:
- * @caption : a #HildonCaption
- *
- * Gets caption's control.
- * 
- * @Returns : a #GtkWidget
- *  
- * Deprecated: use gtk_bin_get_child instead
- */
-GtkWidget *hildon_caption_get_control( const HildonCaption *caption )
-{
-  g_return_val_if_fail( HILDON_IS_CAPTION(caption), NULL );
-  return GTK_BIN(caption)->child;
-}
-
 /*activates the child control
  *We have this signal so that if needed an application can 
  *know when we've been activated (useful for captions with
@@ -1104,37 +1085,6 @@ gboolean hildon_caption_get_child_expand( const HildonCaption *caption )
   g_return_val_if_fail( HILDON_IS_CAPTION(caption), FALSE );
   priv = HILDON_CAPTION_GET_PRIVATE(caption);
   return priv->expand;
-}
-
-/**
- * hildon_caption_set_control: 
- * @caption : a #HildonCaption
- * @control : the control to use. Control should not be NULL.
- *
- * Sets the control of the caption. 
- * The old control will be destroyed, unless the caller has added a
- * reference to it.
- * Function unparents the old control (if there is one) and adds the new
- * control.
- *
- * Deprecated: use gtk_container_add 
- */
-void hildon_caption_set_control( HildonCaption *caption, GtkWidget *control )
-{
-  GtkWidget *child = NULL;
-  g_return_if_fail( HILDON_IS_CAPTION(caption) );
-  child = GTK_BIN(caption)->child;
-
-  if( child )
-    gtk_container_remove( GTK_CONTAINER(caption), child );
-    
-  if( control )
-  {
-    gtk_container_add( GTK_CONTAINER(caption), control );
-    child = control;
-  }
-  else
-    child = NULL;
 }
 
 static void

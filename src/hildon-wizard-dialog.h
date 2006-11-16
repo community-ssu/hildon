@@ -54,12 +54,12 @@ typedef struct _HildonWizardDialogClass HildonWizardDialogClass;
 typedef struct _HildonWizardDialogPrivate HildonWizardDialogPrivate;
 
 /* button response IDs */
-enum {
+typedef enum {
     HILDON_WIZARD_DIALOG_CANCEL = GTK_RESPONSE_CANCEL,
     HILDON_WIZARD_DIALOG_PREVIOUS = 0,
     HILDON_WIZARD_DIALOG_NEXT,
     HILDON_WIZARD_DIALOG_FINISH
-};
+} HildonWizardDialogResponse;
 
 struct _HildonWizardDialog {
     GtkDialog                   parent;

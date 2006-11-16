@@ -36,13 +36,6 @@ G_BEGIN_DECLS
  */
 #define HILDON_TYPE_WEEKDAY_PICKER ( hildon_weekday_picker_get_type() )
 
-/**
- * HILDON_WEEKDAY_PICKER_TYPE:
- *
- * Deprecated: use #HILDON_TYPE_WEEKDAY_PICKER instead.
- */
-#define HILDON_WEEKDAY_PICKER_TYPE HILDON_TYPE_WEEKDAY_PICKER
-
 #define HILDON_WEEKDAY_PICKER(obj) \
         (GTK_CHECK_CAST (obj, HILDON_TYPE_WEEKDAY_PICKER, \
          HildonWeekdayPicker))
