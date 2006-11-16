@@ -1,5 +1,11 @@
 2006-11-16  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
+	* src/Makefile.am:
+	* src/gtk-infoprint.c:
+	* src/gtk-infoprint.h: Removing the infoprints for good.
+
+2006-11-16  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
 	* hildon-date-editor.c:
 	* hildon-date-editor.h:
 	* hildon-time-editor.h: Switching to a common DateTime editor error

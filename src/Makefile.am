@@ -49,7 +49,6 @@ libhildonwidgets_la_SOURCES 				= hildon-composite-widget.c \
 							  hildon-color-button.c \
 							  hildon-defines.c \
 							  hildon-find-toolbar.c \
-							  gtk-infoprint.c \
 							  hildon-banner.c \
 							  hildon-caption.c \
 							  hildon-window.c \
@@ -88,7 +87,6 @@ libhildonwidgets_include_HEADERS 			= hildon-controlbar.h \
 							  hildon-color-button.h \
 							  hildon-defines.h \
 							  hildon-find-toolbar.h \
-							  gtk-infoprint.h \
 							  hildon-banner.h \
 							  hildon-input-mode-hint.h \
 							  hildon-caption.h \
