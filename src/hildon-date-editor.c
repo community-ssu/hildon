@@ -49,6 +49,7 @@
 #include "hildon-composite-widget.h"
 #include "hildon-marshalers.h"
 #include "hildon-enum-types.h"
+#include "hildon-time-editor.h"
 
 #ifdef HAVE_CONFIG_H
 #include<config.h>
@@ -108,7 +109,7 @@ hildon_date_editor_entry_focus_out(GtkWidget * widget, GdkEventFocus * event,
                                    gpointer data);
 
 static gboolean hildon_date_editor_date_error(HildonDateEditor *editor, 
-					      HildonDateEditorErrorType type);
+					      HildonDateTimeEditorError type);
 
 static gboolean hildon_date_editor_entry_focusin(GtkWidget * widget,
                                                  GdkEventFocus * event,
@@ -230,7 +231,7 @@ hildon_date_editor_class_init(HildonDateEditorClass * editor_class)
                 G_STRUCT_OFFSET(HildonDateEditorClass, date_error),
                 g_signal_accumulator_true_handled, NULL,
 		_hildon_marshal_BOOLEAN__ENUM,
-                G_TYPE_BOOLEAN, 1, HILDON_TYPE_DATE_EDITOR_ERROR_TYPE);
+                G_TYPE_BOOLEAN, 1, HILDON_TYPE_DATE_TIME_EDITOR_ERROR);
 
   /**
    * HildonDateEditor:year:
@@ -911,11 +912,11 @@ hildon_date_editor_entry_validate(GtkWidget *widget, gpointer data)
     if(text == NULL || text[0] == 0)
     {
       if (widget == priv->d_entry)
-         g_signal_emit(ed, date_editor_signals[DATE_ERROR], 0, EMPTY_DAY, &r);
+         g_signal_emit(ed, date_editor_signals[DATE_ERROR], 0, HILDON_DATE_TIME_ERROR_EMPTY_DAY, &r);
       else if(widget == priv->m_entry)
-         g_signal_emit(ed, date_editor_signals[DATE_ERROR], 0, EMPTY_MONTH, &r);
+         g_signal_emit(ed, date_editor_signals[DATE_ERROR], 0, HILDON_DATE_TIME_ERROR_EMPTY_MONTH, &r);
       else
-         g_signal_emit(ed, date_editor_signals[DATE_ERROR], 0, EMPTY_YEAR, &r);
+         g_signal_emit(ed, date_editor_signals[DATE_ERROR], 0, HILDON_DATE_TIME_ERROR_EMPTY_YEAR, &r);
 
       /* restore empty entry to safe value */
       hildon_date_editor_set_date (ed, priv->year, priv->month, priv->day);
@@ -945,11 +946,11 @@ hildon_date_editor_entry_validate(GtkWidget *widget, gpointer data)
     	/* Validate month */
         if(widget == priv->m_entry) {
             if(m < 1) {
-                error_code = MIN_MONTH;
+                error_code = HILDON_DATE_TIME_ERROR_MIN_MONTH;
                 m = 1;
             }
             else if (m > 12) {
-                error_code = MAX_MONTH;
+                error_code = HILDON_DATE_TIME_ERROR_MAX_MONTH;
                 m = 12;
             }
         }
@@ -957,11 +958,11 @@ hildon_date_editor_entry_validate(GtkWidget *widget, gpointer data)
     	/* Validate year */
         if(widget == priv->y_entry) {
             if (y < priv->min_year) {
-                error_code = MIN_YEAR;
+                error_code = HILDON_DATE_TIME_ERROR_MIN_YEAR;
                 y = priv->min_year;
             }
             else if (y > priv->max_year) {
-                error_code = MAX_YEAR;
+                error_code =   HILDON_DATE_TIME_ERROR_MAX_YEAR;
                 y = priv->max_year;
             }
         }
@@ -970,16 +971,16 @@ hildon_date_editor_entry_validate(GtkWidget *widget, gpointer data)
            changing month or year can make the day number to be invalid */
         max_days = g_date_get_days_in_month(m,y);
         if(d < 1) {
-           error_code = MIN_DAY;
+           error_code = HILDON_DATE_TIME_ERROR_MIN_DAY;
            d = 1;
         }
         else if (d > max_days) {
            if (d > 31) {         
-               error_code = MAX_DAY;
+               error_code = HILDON_DATE_TIME_ERROR_MAX_DAY;
                d = max_days;
            }
            else {                /* the date does not exist (is invalid) */
-               error_code = INVALID_DATE;
+               error_code = HILDON_DATE_TIME_ERROR_INVALID_DATE;
                /* check what was changed and restore previous value */
                if ( widget == priv->y_entry )
                    y = priv->year;
@@ -1080,7 +1081,7 @@ static gboolean hildon_date_editor_keypress(GtkWidget * widget,
     /* Show error message in case the key pressed is not allowed 
        (only digits and control characters are allowed )*/
     if (!g_unichar_isdigit(event->keyval) && !(event->keyval & 0xF000)) {
-        g_signal_emit(ed, date_editor_signals[DATE_ERROR], 0, INVALID_CHAR, &r);        
+        g_signal_emit(ed, date_editor_signals[DATE_ERROR], 0, HILDON_DATE_TIME_ERROR_INVALID_CHAR, &r);        
         return TRUE;
     }
 
@@ -1134,42 +1135,42 @@ static gboolean hildon_date_editor_entry_focus_out(GtkWidget * widget,
 
 static gboolean 
 hildon_date_editor_date_error(HildonDateEditor *editor,
-			      HildonDateEditorErrorType type)
+			      HildonDateTimeEditorError type)
 {
   HildonDateEditorPrivate *priv = HILDON_DATE_EDITOR_GET_PRIVATE(editor);
 
   switch(type)
     {
-    case MAX_DAY:
+    case HILDON_DATE_TIME_ERROR_MAX_DAY:
       gtk_infoprintf(NULL, _("ckct_ib_maximum_value"), 31);
       break;
-    case MAX_MONTH:
+    case HILDON_DATE_TIME_ERROR_MAX_MONTH:
       gtk_infoprintf(NULL, _("ckct_ib_maximum_value"), 12);
       break;
-    case MAX_YEAR:
+    case HILDON_DATE_TIME_ERROR_MAX_YEAR:
       gtk_infoprintf(NULL, _("ckct_ib_maximum_value"), priv->max_year);
       break;
-    case MIN_DAY:
-    case MIN_MONTH:
+    case HILDON_DATE_TIME_ERROR_MIN_DAY:
+    case HILDON_DATE_TIME_ERROR_MIN_MONTH:
       gtk_infoprintf(NULL, _("ckct_ib_minimum_value"), 1);
       break;
-    case MIN_YEAR:
+    case HILDON_DATE_TIME_ERROR_MIN_YEAR:
       gtk_infoprintf(NULL, _("ckct_ib_minimum_value"), priv->min_year);
       break;
-    case EMPTY_DAY:
+    case HILDON_DATE_TIME_ERROR_EMPTY_DAY:
       gtk_infoprintf(NULL, _("ckct_ib_set_a_value_within_range"), 1, 31);
       break;
-    case EMPTY_MONTH:
+    case HILDON_DATE_TIME_ERROR_EMPTY_MONTH:
       gtk_infoprintf(NULL, _("ckct_ib_set_a_value_within_range"), 1, 12);
       break;
-    case EMPTY_YEAR:
+    case HILDON_DATE_TIME_ERROR_EMPTY_YEAR:
       gtk_infoprintf(NULL, _("ckct_ib_set_a_value_within_range"),
                      priv->min_year, priv->max_year);
       break;
-    case INVALID_CHAR:
+    case HILDON_DATE_TIME_ERROR_INVALID_CHAR:
       gtk_infoprint(NULL, _("ckct_ib_illegal_character"));
       break;
-    case INVALID_DATE:
+    case HILDON_DATE_TIME_ERROR_INVALID_DATE:
       gtk_infoprint(NULL, _("ckct_ib_date_does_not_exist"));
       break;
     default:

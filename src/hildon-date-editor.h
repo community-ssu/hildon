@@ -26,6 +26,7 @@
 #define __HILDON_DATE_EDITOR_H__
 
 #include <gtk/gtkcontainer.h>
+#include "hildon-time-editor.h"
 
 G_BEGIN_DECLS
 /**
@@ -53,23 +54,6 @@ G_BEGIN_DECLS
 typedef struct _HildonDateEditor HildonDateEditor;
 typedef struct _HildonDateEditorClass HildonDateEditorClass;
 
-typedef enum
-{
-  NO_ERROR = -1,
-  MAX_DAY,
-  MAX_MONTH,
-  MAX_YEAR,
-  MIN_DAY,
-  MIN_MONTH,
-  MIN_YEAR,
-  EMPTY_DAY,
-  EMPTY_MONTH,
-  EMPTY_YEAR,
-  INVALID_DATE,
-  INVALID_CHAR
-    
-}HildonDateEditorErrorType;
-
 struct _HildonDateEditor {
     GtkContainer par;
 };
@@ -78,7 +62,7 @@ struct _HildonDateEditorClass {
     GtkContainerClass parent_class;
 
     gboolean (*date_error) (HildonDateEditor *editor, 
-			    HildonDateEditorErrorType type);
+			    HildonDateTimeEditorError type);
 };
 
 GType hildon_date_editor_get_type(void) G_GNUC_CONST;
