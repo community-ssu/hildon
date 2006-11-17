@@ -90,9 +90,9 @@ static void hildon_change_style_recursive_from_ld (GtkWidget *widget, GtkStyle *
 {
   /* Change the style for child widgets */
   if (GTK_IS_CONTAINER (widget)) {
-    GSList *iterator = gtk_container_get_children (GTK_CONTAINER (widget));
-    for (iterator; iterator; iterator = g_list_next (iterator))
-      hildon_change_style_recursive_from_ld (iterator->data, prev_style, ld);
+    GList *iterator = gtk_container_get_children (GTK_CONTAINER (widget));
+    for (iterator = iterator; iterator != NULL; iterator = g_list_next (iterator))
+      hildon_change_style_recursive_from_ld (GTK_WIDGET (iterator->data), prev_style, ld);
   }
 
   /* gtk_widget_modify_*() emit "style_set" signals, so if we got here from
@@ -204,7 +204,7 @@ gulong hildon_gtk_widget_set_logical_font (GtkWidget *widget, const gchar *logic
   /* Disconnects the previously connected signals. That calls the closure notify
    * and effectively disposes the allocated data (hildon_logical_data_free) */
   g_signal_handlers_disconnect_matched (G_OBJECT (widget), G_SIGNAL_MATCH_FUNC, 
-                                        0, NULL, NULL, 
+                                        0, 0, NULL, 
                                         G_CALLBACK (hildon_change_style_recursive_from_ld), NULL);
 
   /* Change the font now */
@@ -253,7 +253,7 @@ gulong hildon_gtk_widget_set_logical_color (GtkWidget *widget, GtkRcFlags rcflag
   /* Disconnects the previously connected signals. That calls the closure notify
    * and effectively disposes the allocated data (hildon_logical_data_free) */
   g_signal_handlers_disconnect_matched (G_OBJECT (widget), G_SIGNAL_MATCH_FUNC, 
-                                        0, NULL, NULL, 
+                                        0, 0, NULL, 
                                         G_CALLBACK (hildon_change_style_recursive_from_ld), NULL);
   
   /* Change the colors now */

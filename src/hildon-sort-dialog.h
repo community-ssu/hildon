@@ -64,5 +64,12 @@ void hildon_sort_dialog_set_sort_order(HildonSortDialog * dialog,
 gint hildon_sort_dialog_add_sort_key(HildonSortDialog * dialog,
                                      const gchar * sort_key);
 
+gint hildon_sort_dialog_add_sort_key_with_sorting(HildonSortDialog * dialog, 
+                                     const gchar * sort_key, 
+                                     gboolean sorting);
+gint
+hildon_sort_dialog_add_sort_key_reversed(HildonSortDialog * dialog,
+                                const gchar * sort_key);
+
 G_END_DECLS
 #endif /* __HILDON_SORT_DIALOG_H__ */

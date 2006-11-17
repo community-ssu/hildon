@@ -358,7 +358,7 @@ hildon_color_button_clicked(GtkButton *button)
   {
     /* The dialog hasn't been created yet, do it. */
     GtkWidget *parent = gtk_widget_get_toplevel(GTK_WIDGET(cb));
-    cb->priv->dialog = hildon_color_chooser_dialog_new(GTK_WINDOW(parent));
+    cb->priv->dialog = hildon_color_chooser_dialog_new();
     cs_dialog = HILDON_COLOR_CHOOSER_DIALOG(cb->priv->dialog);
     if (parent)
       gtk_window_set_transient_for(GTK_WINDOW(cs_dialog), GTK_WINDOW(parent));

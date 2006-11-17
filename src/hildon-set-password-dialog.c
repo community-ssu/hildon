@@ -59,6 +59,7 @@
 #include <hildon-widgets/hildon-set-password-dialog.h>
 #include <hildon-widgets/hildon-note.h>
 #include <hildon-widgets/hildon-defines.h>
+#include "hildon-banner.h"
 
 #include <libintl.h>
 #define  _(String) dgettext(PACKAGE, String)
@@ -384,7 +385,7 @@ hildon_set_password_response_change(GtkDialog * dialog, gint arg1,
 	    /* Second field is empty, so show error, but don't clear fields */
 	    g_signal_stop_emission_by_name(G_OBJECT(dialog),
 					   "response");
-	    gtk_infoprint (NULL,
+	    hildon_banner_show_information (GTK_WIDGET (dialog), NULL,
 			   c_(HILDON_SET_PASSWORD_DIALOG_MISMATCH));
 	    gtk_widget_grab_focus(GTK_WIDGET(pwd2ndEntry));
 	  } else {
@@ -393,7 +394,7 @@ hildon_set_password_response_change(GtkDialog * dialog, gint arg1,
 					   "response");
 	    gtk_entry_set_text(pwd1stEntry, "");
 	    gtk_entry_set_text(pwd2ndEntry, "");
-	    gtk_infoprint (NULL,
+	    hildon_banner_show_information (GTK_WIDGET (dialog), NULL,
 			   c_(HILDON_SET_PASSWORD_DIALOG_MISMATCH));
 	    gtk_widget_grab_focus(GTK_WIDGET(pwd1stEntry));
 	  }
@@ -402,11 +403,11 @@ hildon_set_password_response_change(GtkDialog * dialog, gint arg1,
 	  g_signal_stop_emission_by_name(G_OBJECT(dialog), "response");
 	  if (text2[0] == '\0') {
 	    /* Error: Both fields are empty */
-	    gtk_infoprint (NULL, c_(HILDON_SET_PASSWORD_DIALOG_EMPTY));
+	    hildon_banner_show_information (GTK_WIDGET (dialog), NULL, c_(HILDON_SET_PASSWORD_DIALOG_EMPTY));
 	  } else {
 	    /* Error: Second field doesn't match
 	       the empty first field, so start over */
-	    gtk_infoprint (NULL, c_(HILDON_SET_PASSWORD_DIALOG_MISMATCH));
+	    hildon_banner_show_information (GTK_WIDGET (dialog), NULL, c_(HILDON_SET_PASSWORD_DIALOG_MISMATCH));
 	    gtk_entry_set_text(pwd2ndEntry, "");
 	  }
 	  gtk_widget_grab_focus(GTK_WIDGET(pwd1stEntry));
@@ -478,14 +479,14 @@ hildon_set_password_response_set(GtkDialog * dialog, gint arg1,
                 /* Second field is empty, so show error,
                    but don't clear the fields */
                 g_signal_stop_emission_by_name(G_OBJECT(dialog), "response");
-                gtk_infoprint (NULL, c_(HILDON_SET_PASSWORD_DIALOG_MISMATCH));
+                hildon_banner_show_information (GTK_WIDGET (dialog), NULL, c_(HILDON_SET_PASSWORD_DIALOG_MISMATCH));
                 gtk_widget_grab_focus (GTK_WIDGET (priv->pwd2ndEntry));
             } else {
                 /* Error: Passwords don't match, so start over */
                 g_signal_stop_emission_by_name(G_OBJECT(dialog), "response");
 	        gtk_entry_set_text(pwd1stEntry, "");
 		gtk_entry_set_text(pwd2ndEntry, "");
-	        gtk_infoprint (NULL, c_(HILDON_SET_PASSWORD_DIALOG_MISMATCH));
+	        hildon_banner_show_information (GTK_WIDGET (dialog), NULL, c_(HILDON_SET_PASSWORD_DIALOG_MISMATCH));
                 gtk_widget_grab_focus(GTK_WIDGET(priv->pwd1stEntry));
 	    }
         } else {
@@ -493,11 +494,11 @@ hildon_set_password_response_set(GtkDialog * dialog, gint arg1,
           g_signal_stop_emission_by_name(G_OBJECT(dialog), "response");
 	  if (text2[0] == '\0') {
 	    /* Error: Both fields are empty */
-	    gtk_infoprint (NULL, c_(HILDON_SET_PASSWORD_DIALOG_EMPTY));
+	    hildon_banner_show_information (GTK_WIDGET (dialog), NULL, c_(HILDON_SET_PASSWORD_DIALOG_EMPTY));
 	  } else {
 	    /* Error: Second field doesn't match
 	       the empty first field, so start over */
-	    gtk_infoprint (NULL, c_(HILDON_SET_PASSWORD_DIALOG_MISMATCH));
+	    hildon_banner_show_information (GTK_WIDGET (dialog), NULL, c_(HILDON_SET_PASSWORD_DIALOG_MISMATCH));
 	    gtk_entry_set_text(pwd2ndEntry, "");
 	  }
 	  gtk_widget_grab_focus(GTK_WIDGET(pwd1stEntry));

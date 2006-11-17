@@ -72,8 +72,8 @@ struct HildonColorChooserButtonClass_
 };
 
 
-GtkType hildon_color_chooser_button_get_type();
-GtkWidget *hildon_color_chooser_button_new();
+GtkType hildon_color_chooser_button_get_type(void);
+GtkWidget *hildon_color_chooser_button_new(void);
 
 void hildon_color_chooser_button_set_color(HildonColorChooserButton *button, GdkColor *color);
 void hildon_color_chooser_button_get_color(HildonColorChooserButton *button, GdkColor *color);

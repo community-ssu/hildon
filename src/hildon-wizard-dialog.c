@@ -322,7 +322,7 @@ set_property (GObject      *object,
 
             /* Show the notebook so that a gtk_widget_show on the dialog is
              * all that is required to display the dialog correctly */
-            gtk_widget_show (priv->notebook);
+            gtk_widget_show (GTK_WIDGET (priv->notebook));
 
             /* Update dialog title to reflect current page stats etc */        
             if (priv->wizard_name && priv->autotitle)

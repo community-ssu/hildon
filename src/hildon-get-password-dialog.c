@@ -42,11 +42,11 @@
 
 #include <gtk/gtk.h>
 
-#include "gtk-infoprint.h"
 #include "hildon-input-mode-hint.h"
 
 #include <hildon-widgets/hildon-caption.h>
 #include <hildon-widgets/hildon-get-password-dialog.h>
+#include "hildon-banner.h"
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -118,12 +118,12 @@ hildon_get_password_set_property(GObject * object,
     break;
   case PROP_PASSWORD:
     gtk_entry_set_text(GTK_ENTRY
-		       (hildon_caption_get_control (priv->passwordEntry)),
+		       (gtk_bin_get_child (GTK_BIN (priv->passwordEntry))),
 		       g_value_get_string(value));
     break;
   case PROP_NUMBERS_ONLY:
     /* Set input mode for the password entry */
-    g_object_set(G_OBJECT(hildon_caption_get_control(priv->passwordEntry)),
+    g_object_set(G_OBJECT(gtk_bin_get_child GTK_BIN ((priv->passwordEntry))),
 		 "input-mode",
 		 (g_value_get_boolean(value)
 		  ? HILDON_INPUT_MODE_HINT_NUMERIC
@@ -166,13 +166,13 @@ hildon_get_password_get_property(GObject * object,
       g_value_set_string(value, string);
       break;
     case PROP_PASSWORD:
-      string = gtk_entry_get_text(GTK_ENTRY (hildon_caption_get_control(priv->passwordEntry)));
+      string = gtk_entry_get_text(GTK_ENTRY (gtk_bin_get_child(GTK_BIN (priv->passwordEntry))));
       g_value_set_string(value, string);
       break;
     case PROP_NUMBERS_ONLY:
       /* This property is set if and only if the input mode
 	 of the password entry has been set to numeric only */
-      g_object_get(G_OBJECT(hildon_caption_get_control(priv->passwordEntry)),
+      g_object_get(G_OBJECT(gtk_bin_get_child(GTK_BIN (priv->passwordEntry))),
 		   "input-mode", &input_mode, NULL);
       g_value_set_boolean(value,
 			  (input_mode == HILDON_INPUT_MODE_HINT_NUMERIC));
@@ -183,7 +183,7 @@ hildon_get_password_get_property(GObject * object,
       break;
     case PROP_MAX_CHARS:
       max_length = gtk_entry_get_max_length(
-	      GTK_ENTRY (hildon_caption_get_control (priv->passwordEntry)));
+	      GTK_ENTRY (gtk_bin_get_child (GTK_BIN (priv->passwordEntry))));
       g_value_set_int(value, max_length);
       break;
     case PROP_GET_OLD:
@@ -456,7 +456,7 @@ const gchar
     priv = HILDON_GET_PASSWORD_DIALOG_GET_PRIVATE(dialog);
 
     /* Retrieve the password entry widget */
-    entry1 = GTK_ENTRY (hildon_caption_get_control(priv->passwordEntry));
+    entry1 = GTK_ENTRY (gtk_bin_get_child(GTK_BIN (priv->passwordEntry)));
     text1 = GTK_ENTRY(entry1)->text;
 
     return text1;
@@ -526,14 +526,14 @@ void hildon_get_password_dialog_set_max_characters (HildonGetPasswordDialog *dia
 
   /* Apply the given length to password entry */
   gtk_entry_set_max_length(GTK_ENTRY
-			   (hildon_caption_get_control
-			    (priv->passwordEntry)),
+			   (gtk_bin_get_child
+			    GTK_BIN ((priv->passwordEntry))),
 			   max_characters);
 
   /* Connect callback to show error banner if the limit is exceeded */
   g_signal_connect(GTK_ENTRY
-		   (hildon_caption_get_control
-		    (priv->passwordEntry)),
+		   (gtk_bin_get_child
+		    GTK_BIN ((priv->passwordEntry))),
 		   "invalid_input",
 		   G_CALLBACK(_invalid_input),
 		   NULL
@@ -544,6 +544,6 @@ static void _invalid_input(GtkWidget *widget, GtkInvalidInputType reason,
 			   gpointer unused) 
 {
   if (reason==GTK_INVALID_INPUT_MAX_CHARS_REACHED) {
-    gtk_infoprint(GTK_WINDOW(widget), _(HILDON_GET_PASSWORD_DIALOG_MAX_CHARS));
+    hildon_banner_show_information (widget, NULL, _(HILDON_GET_PASSWORD_DIALOG_MAX_CHARS));
   }
 }

@@ -140,7 +140,6 @@ static gboolean
 hildon_window_window_state_event (GtkWidget *widget, 
                                   GdkEventWindowState *event);
 
-
 static void
 hildon_window_notify (GObject *gobject, GParamSpec *param);
 
@@ -1153,6 +1152,7 @@ hildon_window_window_state_event (GtkWidget *widget,
     }
 }
 
+/*
 static void 
 hildon_window_title_notify (GObject *gobject,
                             GParamSpec *arg1,
@@ -1162,7 +1162,7 @@ hildon_window_title_notify (GObject *gobject,
 
     hildon_window_update_title (window);
 
-}
+}*/
 
 /*******************/
 /*     General     */

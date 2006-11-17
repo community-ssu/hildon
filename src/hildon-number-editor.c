@@ -45,6 +45,7 @@
 #include <hildon-widgets/hildon-input-mode-hint.h>
 #include <hildon-widgets/hildon-defines.h>
 #include "hildon-enum-types.h"
+#include "hildon-banner.h"
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -802,8 +803,8 @@ hildon_number_editor_range_error(HildonNumberEditor *editor,
   /* Infoprint error */
   if (err_msg)
     {
-      gtk_infoprint(GTK_WINDOW(gtk_widget_get_ancestor(GTK_WIDGET(editor),
-						       GTK_TYPE_WINDOW)), err_msg);
+      hildon_banner_show_information(GTK_WIDGET (GTK_WINDOW(gtk_widget_get_ancestor(GTK_WIDGET(editor),
+				     GTK_TYPE_WINDOW))), NULL, err_msg);
       g_free(err_msg);
     }
 

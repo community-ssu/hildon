@@ -181,7 +181,7 @@ static void hildon_caption_class_init( HildonCaptionClass *caption_class )
   gobject_class->get_property = hildon_caption_get_property;
   gobject_class->set_property = hildon_caption_set_property;
 
-  caption_class->activate = hildon_caption_activate;
+  caption_class->activate = (gpointer) hildon_caption_activate;
 
   GTK_OBJECT_CLASS(caption_class)->destroy = hildon_caption_destroy;
 
@@ -521,7 +521,7 @@ static gboolean hildon_caption_button_press( GtkWidget *widget,
 
   /* nothing to do */
   if (priv->is_focused == TRUE)
-    return;
+    return FALSE;
 
   /* If child can take focus, we simply grab focus to it */
   if ((GTK_WIDGET_CAN_FOCUS(child) || GTK_IS_CONTAINER(child)) &&
@@ -873,7 +873,7 @@ void hildon_caption_set_icon_position( HildonCaption *caption,
 
 HildonCaptionIconPosition hildon_caption_get_icon_position( const HildonCaption *caption )
 {
-  g_return_if_fail (HILDON_IS_CAPTION (caption));
+  g_return_val_if_fail (HILDON_IS_CAPTION (caption), 0);
   HildonCaptionPrivate *priv = HILDON_CAPTION_GET_PRIVATE(caption);
 
   return priv->icon_position;

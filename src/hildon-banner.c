@@ -623,6 +623,25 @@ void hildon_banner_show_information(GtkWidget *widget,
    gtk_widget_show_all(GTK_WIDGET(banner));
 }
 
+void       hildon_banner_show_informationf (GtkWidget      *widget, 
+                                            const gchar    *icon_name,
+                                            const gchar    *format, 
+                                            ...)
+{
+  g_return_if_fail (format != NULL);
+  
+  gchar *message;
+  va_list args;
+
+  va_start(args, format);
+  message = g_strdup_vprintf(format, args);
+  va_end(args);
+
+  hildon_banner_show_information (widget, icon_name, message);
+
+  g_free (message);
+}
+
 /**
  * hildon_banner_show_information_with_markup:
  * @widget: the #GtkWidget that wants to display banner

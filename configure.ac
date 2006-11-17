@@ -17,7 +17,8 @@ AC_PROG_AWK
 
 AC_HEADER_STDC
 
-CFLAGS="$CFLAGS -std=c99 -Wall -pedantic -Wmissing-prototypes -Wmissing-declarations"
+CFLAGS="$CFLAGS -Wall -Wmissing-prototypes -Wmissing-declarations -Werror -Wno-format"
+#CFLAGS="$CFLAGS -Wall -pedantic -Wmissing-prototypes -Wmissing-declarations -Werror -Wno-format"
 # -Werror disabled due to the flaw in glib-2.0
 # See http://bugzilla.gnome.org/show_bug.cgi?id=310175 and
 # http://bugzilla.gnome.org/show_bug.cgi?id=310216
@@ -75,9 +76,20 @@ if test "x$enable_rebuilds" = "xyes" && \
 fi
 AC_SUBST(REBUILD)
 
+# HILDON_WIDGETS__OBJ_*
+# default vars for the examples
+# includes all the low-level flags
+# FIXME Add esd and gconf flags
+HILDON_WIDGETS_OBJ_CFLAGS="\$(CFLAGS) \$(GTK_CFLAGS) -I\$(top_builddir)/src/"
+HILDON_WIDGETS_OBJ_LIBS="\$(top_builddir)/src/libhildonwidgets.la \$(GTK_LIBS)"
+AC_SUBST(HILDON_WIDGETS_OBJ_CFLAGS)
+AC_SUBST(HILDON_WIDGETS_OBJ_LIBS)
+
+
 AC_CONFIG_FILES([Makefile src/Makefile  \
                  po/Makefile po/porules.mk \
 		 pkgconfig/Makefile \
+                 examples/Makefile \
                  pkgconfig/hildon-widgets.pc])
 
 AC_OUTPUT

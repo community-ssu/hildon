@@ -55,7 +55,7 @@ static void hildon_color_chooser_dialog_init(HildonColorChooserDialog *object);
 static void hildon_color_chooser_dialog_class_init(HildonColorChooserDialogClass *klass);
 
 
-GtkType hildon_color_chooser_dialog_get_type ()
+GtkType hildon_color_chooser_dialog_get_type (void)
 {
   static GtkType chooser_type = 0;
 
@@ -124,7 +124,7 @@ static void hildon_color_chooser_dialog_class_init(HildonColorChooserDialogClass
  *
  * Returns: a new color chooser dialog
  */
-GtkWidget *hildon_color_chooser_dialog_new()
+GtkWidget *hildon_color_chooser_dialog_new(void)
 {
   if(!global_plugin) {
     global_plugin = hildon_plugin_info_initialize(HILDON_TYPE_COLOR_CHOOSER_DIALOG, NULL);

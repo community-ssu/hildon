@@ -25,7 +25,6 @@
 #ifndef ___HILDON_WIDGETS_H___
 #define ___HILDON_WIDGETS_H___
 
-#include "gtk-infoprint.h"
 #include "hildon-banner.h"
 #include "hildon-calendar-popup.h"
 #include "hildon-caption.h"

@@ -29,6 +29,7 @@ libhildonwidgets_la_SOURCES 				= hildon-composite-widget.c \
 							  hildon-color-selector.c \
 							  hildon-note.c \
 							  hildon-volumebar.c \
+							  hildon-sound.c \
 							  hildon-volumebar-range.c \
 							  hildon-hvolumebar.c \
 							  hildon-vvolumebar.c \
@@ -65,6 +66,7 @@ libhildonwidgets_includedir				= $(includedir)/hildon-widgets
 
 libhildonwidgets_include_HEADERS 			= hildon-controlbar.h \
 							  hildon-note.h \
+							  hildon-sound.h \
 							  hildon-seekbar.h \
 							  hildon-color-selector.h \
 							  hildon-volumebar.h \

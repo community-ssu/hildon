@@ -63,9 +63,9 @@ struct HildonColorChooserDialogClass_ {
 };
 
 
-GtkType hildon_color_chooser_dialog_get_type();
+GtkType hildon_color_chooser_dialog_get_type(void);
 
-GtkWidget *hildon_color_chooser_dialog_new();
+GtkWidget *hildon_color_chooser_dialog_new(void);
 
 void hildon_color_chooser_dialog_set_color(HildonColorChooserDialog *chooser, GdkColor *color);
 void hildon_color_chooser_dialog_get_color(HildonColorChooserDialog *chooser, GdkColor *color);

@@ -1,3 +1,41 @@
+2006-11-17  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
+	* Makefile.am:
+	* configure.ac:
+	* examples:
+	* examples/Makefile.am:
+	* examples/hildon-program:
+	* examples/hildon-window:
+	* examples/hildon-window/hildon-window-example.c:
+	* src/Makefile.am:
+	* src/hildon-banner.c:
+	* src/hildon-banner.h:
+	* src/hildon-caption.c:
+	* src/hildon-code-dialog.c:
+	* src/hildon-color-button.c:
+	* src/hildon-color-chooser-button.c:
+	* src/hildon-color-chooser-button.h:
+	* src/hildon-color-chooser-dialog.c:
+	* src/hildon-color-chooser-dialog.h:
+	* src/hildon-date-editor.c:
+	* src/hildon-defines.c:
+	* src/hildon-find-toolbar.c:
+	* src/hildon-font-selection-dialog.c:
+	* src/hildon-get-password-dialog.c:
+	* src/hildon-note.c:
+	* src/hildon-number-editor.c:
+	* src/hildon-range-editor.c:
+	* src/hildon-set-password-dialog.c:
+	* src/hildon-sort-dialog.c:
+	* src/hildon-sort-dialog.h:
+	* src/hildon-sound.c:
+	* src/hildon-sound.h:
+	* src/hildon-time-editor.h:
+	* src/hildon-time-picker.c:
+	* src/hildon-widgets.h:
+	* src/hildon-window.c:
+	* src/hildon-wizard-dialog.c: Making the stuff compile with -Werror. 
+
 2006-11-16  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
 	* src/Makefile.am:

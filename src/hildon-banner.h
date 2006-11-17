@@ -28,6 +28,7 @@
 #include <gtk/gtkwindow.h>
 #include <gtk/gtkprogressbar.h>
 #include <gtk/gtklabel.h>
+#include <gdk/gdkx.h>
 
 G_BEGIN_DECLS 
 
@@ -56,6 +57,11 @@ GType      hildon_banner_get_type          (void) G_GNUC_CONST;
 void       hildon_banner_show_information  (GtkWidget      *widget, 
                                             const gchar    *icon_name,
                                             const gchar    *text);
+
+void       hildon_banner_show_informationf (GtkWidget      *widget, 
+                                            const gchar    *icon_name,
+                                            const gchar    *format, 
+                                            ...);
 
 void       hildon_banner_show_information_with_markup (GtkWidget   *widget, 
                                                        const gchar *icon_name,

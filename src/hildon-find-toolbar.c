@@ -418,7 +418,7 @@ hildon_find_toolbar_class_init(HildonFindToolbarClass *klass)
   object_class->get_property = hildon_find_toolbar_get_property;
   object_class->set_property = hildon_find_toolbar_set_property;
 
-  klass->history_append = hildon_find_toolbar_history_append;
+  klass->history_append = (gpointer) hildon_find_toolbar_history_append;
   
   g_object_class_install_property(object_class, PROP_LABEL, 
 				  g_param_spec_string("label", 

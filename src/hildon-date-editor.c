@@ -50,6 +50,7 @@
 #include "hildon-marshalers.h"
 #include "hildon-enum-types.h"
 #include "hildon-time-editor.h"
+#include "hildon-banner.h"
 
 #ifdef HAVE_CONFIG_H
 #include<config.h>
@@ -222,7 +223,7 @@ hildon_date_editor_class_init(HildonDateEditorClass * editor_class)
     container_class->forall = hildon_child_forall;
     GTK_OBJECT_CLASS(editor_class)->destroy = hildon_date_editor_destroy;
 
-    editor_class->date_error = hildon_date_editor_date_error; 
+    editor_class->date_error = (gpointer) hildon_date_editor_date_error; 
     
     date_editor_signals[DATE_ERROR] =
         g_signal_new("date-error",
@@ -1142,36 +1143,36 @@ hildon_date_editor_date_error(HildonDateEditor *editor,
   switch(type)
     {
     case HILDON_DATE_TIME_ERROR_MAX_DAY:
-      gtk_infoprintf(NULL, _("ckct_ib_maximum_value"), 31);
+      hildon_banner_show_informationf(GTK_WIDGET (editor), NULL, _("ckct_ib_maximum_value"), 31);
       break;
     case HILDON_DATE_TIME_ERROR_MAX_MONTH:
-      gtk_infoprintf(NULL, _("ckct_ib_maximum_value"), 12);
+      hildon_banner_show_informationf(GTK_WIDGET (editor), NULL, _("ckct_ib_maximum_value"), 12);
       break;
     case HILDON_DATE_TIME_ERROR_MAX_YEAR:
-      gtk_infoprintf(NULL, _("ckct_ib_maximum_value"), priv->max_year);
+      hildon_banner_show_informationf(GTK_WIDGET (editor), NULL, _("ckct_ib_maximum_value"), priv->max_year);
       break;
     case HILDON_DATE_TIME_ERROR_MIN_DAY:
     case HILDON_DATE_TIME_ERROR_MIN_MONTH:
-      gtk_infoprintf(NULL, _("ckct_ib_minimum_value"), 1);
+      hildon_banner_show_informationf(GTK_WIDGET (editor), NULL, _("ckct_ib_minimum_value"), 1);
       break;
     case HILDON_DATE_TIME_ERROR_MIN_YEAR:
-      gtk_infoprintf(NULL, _("ckct_ib_minimum_value"), priv->min_year);
+      hildon_banner_show_informationf(GTK_WIDGET (editor), NULL, _("ckct_ib_minimum_value"), priv->min_year);
       break;
     case HILDON_DATE_TIME_ERROR_EMPTY_DAY:
-      gtk_infoprintf(NULL, _("ckct_ib_set_a_value_within_range"), 1, 31);
+      hildon_banner_show_informationf(GTK_WIDGET (editor), NULL, _("ckct_ib_set_a_value_within_range"), 1, 31);
       break;
     case HILDON_DATE_TIME_ERROR_EMPTY_MONTH:
-      gtk_infoprintf(NULL, _("ckct_ib_set_a_value_within_range"), 1, 12);
+      hildon_banner_show_informationf(GTK_WIDGET (editor), NULL, _("ckct_ib_set_a_value_within_range"), 1, 12);
       break;
     case HILDON_DATE_TIME_ERROR_EMPTY_YEAR:
-      gtk_infoprintf(NULL, _("ckct_ib_set_a_value_within_range"),
+      hildon_banner_show_informationf(GTK_WIDGET (editor), NULL, _("ckct_ib_set_a_value_within_range"),
                      priv->min_year, priv->max_year);
       break;
     case HILDON_DATE_TIME_ERROR_INVALID_CHAR:
-      gtk_infoprint(NULL, _("ckct_ib_illegal_character"));
+      hildon_banner_show_information(GTK_WIDGET (editor), NULL, _("ckct_ib_illegal_character"));
       break;
     case HILDON_DATE_TIME_ERROR_INVALID_DATE:
-      gtk_infoprint(NULL, _("ckct_ib_date_does_not_exist"));
+      hildon_banner_show_information(GTK_WIDGET (editor), NULL, _("ckct_ib_date_does_not_exist"));
       break;
     default:
       /*default error message ?*/

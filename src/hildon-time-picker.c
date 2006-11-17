@@ -36,7 +36,6 @@
 #include "hildon-time-picker.h"
 #include "hildon-defines.h"
 #include "hildon-private.h"
-#include "gtk-infoprint.h"
 #include <gtk/gtk.h>
 #include <gdk/gdkkeysyms.h>
 #include <gdk/gdk.h>
@@ -285,7 +284,6 @@ static void hildon_time_picker_init( HildonTimePicker *picker )
   const struct tm *local = NULL;
   time_t stamp;
   gint i = 0;
-  GtkSizeGroup *size_group;
 
   picker->priv = priv;
 

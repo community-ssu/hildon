@@ -40,7 +40,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <hildon-widgets/hildon-input-mode-hint.h>
-
+#include "hildon-banner.h"
 #include "hildon-range-editor.h"
 
 #ifdef HAVE_CONFIG_H
@@ -418,7 +418,7 @@ hildon_range_editor_entry_validate(HildonRangeEditor *editor,
         max = hildon_range_editor_get_max(editor);
     }
 
-    text = gtk_entry_get_text(edited_entry);
+    text = gtk_entry_get_text(GTK_ENTRY (edited_entry));
 
     if (text && text[0])
     { 

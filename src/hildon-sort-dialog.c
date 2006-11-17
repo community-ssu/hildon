@@ -64,9 +64,6 @@ static void hildon_sort_dialog_get_property(GObject * object,
 static void reconstruct_combo (HildonSortDialog * dialog, 
                                      gboolean remove, 
                                      gboolean reversed);
-static gint hildon_sort_dialog_add_sort_key_with_sorting(HildonSortDialog * dialog, 
-                                     const gchar * sort_key, 
-                                     gboolean sorting);
 static void sort_key_changed(GtkWidget * widget, 
                              HildonSortDialog * dialog);
 static void hildon_sort_dialog_finalize(GObject * object);
@@ -145,7 +142,7 @@ static void hildon_sort_dialog_class_init(HildonSortDialogClass * class)
 			 G_PARAM_READWRITE));
 }
 
-static gint hildon_sort_dialog_add_sort_key_with_sorting(HildonSortDialog * dialog, const gchar * sort_key, gboolean sorting)
+gint hildon_sort_dialog_add_sort_key_with_sorting(HildonSortDialog * dialog, const gchar * sort_key, gboolean sorting)
 {
     HildonSortDialogPrivate *priv;
 

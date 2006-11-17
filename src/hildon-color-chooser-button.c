@@ -71,7 +71,7 @@ static gboolean hildon_color_chooser_button_area_expose(GtkWidget *widget, GdkEv
 static void hildon_color_chooser_button_helper_get_style_info(HildonColorChooserButton *button);
 
 
-GtkType hildon_color_chooser_button_get_type ()
+GtkType hildon_color_chooser_button_get_type (void)
 {
   static GtkType button_type = 0;
 

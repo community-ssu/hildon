@@ -356,7 +356,7 @@ static void hildon_code_dialog_insert_text (GtkEditable *editable,
 
     if (length == MAX_PINCODE_LEN)
     {
-        hildon_banner_show_information (dialog,
+        hildon_banner_show_information (GTK_WIDGET (dialog),
                                         NULL,
                                         DEVICELOCK_MAX_CHAR_REACHED);
     }
