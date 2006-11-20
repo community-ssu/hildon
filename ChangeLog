@@ -1,5 +1,14 @@
 2006-11-20  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
+	* Makefile.am:
+	* configure.ac:
+	* m4/as-version.m4:
+	* pkgconfig/Makefile.am:
+	* pkgconfig/hildon-widgets.pc.in:
+	* src/Makefile.am: Changing the install dirs etc. 
+
+2006-11-20  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
 	* src/hildon-banner.c:
 	* src/hildon-calendar-popup.c:
 	* src/hildon-caption.c:

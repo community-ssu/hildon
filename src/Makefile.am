@@ -9,21 +9,21 @@ MAINTAINERCLEANFILES 					= Makefile.in 			\
 
 EXTRA_DIST 						= hildon-marshalers.list
 
-lib_LTLIBRARIES 					= libhildonwidgets.la
+lib_LTLIBRARIES 					= libhildon_@PACKAGE_VERSION_MAJOR@.la
 
-libhildonwidgets_la_LDFLAGS 				= $(HILDON_WIDGETS_LT_LDFLAGS)
+libhildon_@PACKAGE_VERSION_MAJOR@_la_LDFLAGS 		= $(HILDON_WIDGETS_LT_LDFLAGS)
 
-libhildonwidgets_la_LIBADD 				= $(GTK_LIBS) 			\
+libhildon_@PACKAGE_VERSION_MAJOR@_la_LIBADD 		= $(GTK_LIBS) 			\
 							  $(GCONF_LIBS) 		\
 							  $(ESD_LIBS)			\
 							  $(LIBMB_LIBS)
 
-libhildonwidgets_la_CFLAGS				= $(GTK_CFLAGS) 		\
+libhildon_@PACKAGE_VERSION_MAJOR@_la_CFLAGS		= $(GTK_CFLAGS) 		\
 							  $(GCONF_CFLAGS) 		\
 							  $(ESD_CFLAGS)			\
 							  $(LIBMB_CFLAGS)
 
-libhildonwidgets_la_SOURCES 				= hildon-composite-widget.c \
+libhildon_@PACKAGE_VERSION_MAJOR@_la_SOURCES 		= hildon-composite-widget.c \
 							  hildon-controlbar.c \
 							  hildon-seekbar.c \
 							  hildon-color-selector.c \
@@ -62,9 +62,9 @@ libhildonwidgets_la_SOURCES 				= hildon-composite-widget.c \
 							  hildon-enum-types.c \
 							  hildon-marshalers.c
 
-libhildonwidgets_includedir				= $(includedir)/hildon-widgets
+libhildon_@PACKAGE_VERSION_MAJOR@_includedir		= $(includedir)/$(PACKAGE)-$(PACKAGE_VERSION_MAJOR)
 
-libhildonwidgets_include_HEADERS 			= hildon-controlbar.h \
+libhildon_@PACKAGE_VERSION_MAJOR@_include_HEADERS 	= hildon-controlbar.h \
 							  hildon-note.h \
 							  hildon-sound.h \
 							  hildon-seekbar.h \
@@ -104,9 +104,9 @@ libhildonwidgets_include_HEADERS 			= hildon-controlbar.h \
 							  hildon-marshalers.h
 
 # Don't build the library until we have built the header that it needs:
-$(OBJECTS) $(libhildonwidgets_la_OBJECTS): 		  hildon-enum-types.h
+$(OBJECTS) $(libhildon_$(PACKAGE_VERSION_MAJOR)_la_OBJECTS): hildon-enum-types.h
 
-hildon-enum-types.h: 					  @REBUILD@ $(libhildonwidgets_include_HEADERS) Makefile
+hildon-enum-types.h: 					  @REBUILD@ $(libhildon1_include_HEADERS) Makefile
 	(cd $(srcdir) && glib-mkenums \
 			--fhead "#ifndef __HILDON_ENUM_TYPES_H__\n" 	\
 			--fhead "#define __HILDON_ENUM_TYPES_H__\n" 	\
@@ -118,9 +118,9 @@ hildon-enum-types.h: 					  @REBUILD@ $(libhildonwidgets_include_HEADERS) Makefi
 			--fprod "/* Enumerations from \"@filename@\" */\n" 	\
 			--vhead "GType @enum_name@_get_type (void);\n#define HILDON_TYPE_@ENUMSHORT@ (@enum_name@_get_type())\n" \
 			--ftail "\nG_END_DECLS\n\n#endif /* __HILDON_ENUM_TYPES_H__ */" \
-		$(libhildonwidgets_include_HEADERS)) > $@
+		$(libhildon_$(PACKAGE_VERSION_MAJOR)_include_HEADERS)) > $@
 
-hildon-enum-types.c: 					  @REBUILD@ $(libhildonwidgets_include_HEADERS) Makefile
+hildon-enum-types.c: 					  @REBUILD@ $(libhildon_$(PACKAGE_VERSION_MAJOR)_include_HEADERS) Makefile
 	(cd $(srcdir) && glib-mkenums \
 			--fhead "#include \"hildon-widgets.h\"\n" \
 			--fhead "#include <glib-object.h>" \
@@ -128,7 +128,7 @@ hildon-enum-types.c: 					  @REBUILD@ $(libhildonwidgets_include_HEADERS) Makefi
 			--vhead "GType\n@enum_name@_get_type (void)\n{\n  static GType etype = 0;\n  if (etype == 0) {\n    static const G@Type@Value values[] = {" 	\
 			--vprod "      { @VALUENAME@, \"@VALUENAME@\", \"@valuenick@\" }," \
 			--vtail "      { 0, NULL, NULL }\n    };\n    etype = g_@type@_register_static (\"@EnumName@\", values);\n  }\n  return etype;\n}\n" \
-		$(libhildonwidgets_include_HEADERS)) > $@
+		$(libhildon_$(PACKAGE_VERSION_MAJOR)_include_HEADERS)) > $@
 
 hildon-marshalers.h: 					hildon-marshalers.list
 	glib-genmarshal --prefix _hildon_marshal --header hildon-marshalers.list >hildon-marshalers.h

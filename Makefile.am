@@ -1,4 +1,4 @@
-SUBDIRS = src po pkgconfig examples
+SUBDIRS = src pkgconfig examples
 
 EXTRA_DIST = \
 	debian/changelog \

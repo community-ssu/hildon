@@ -1,4 +1,4 @@
-AC_INIT([Hildon gtk widgets], [0.14.8], [michael.kostrzewa@nokia.com], [hildon-widgets])
+AC_INIT([Hildon gtk widgets], [1.0.0], [michael.kostrzewa@nokia.com], [hildon])
 AC_CANONICAL_SYSTEM
 
 AM_CONFIG_HEADER(config.h)
@@ -6,7 +6,10 @@ AC_CONFIG_SRCDIR([src/hildon-window.h])
 AC_CONFIG_MACRO_DIR([m4])
 AM_MAINTAINER_MODE
 
-dnl set the libtool versioning
+# define PACKAGE_VERSION_* variables
+AS_VERSION
+
+# set the libtool versioning
 AS_LIBTOOL(HILDON_WIDGETS, 0, 0, 0)
 AM_INIT_AUTOMAKE
 
@@ -18,10 +21,7 @@ AC_PROG_AWK
 AC_HEADER_STDC
 
 CFLAGS="$CFLAGS -Wall -Wmissing-prototypes -Wmissing-declarations -Werror -Wno-format"
-#CFLAGS="$CFLAGS -Wall -pedantic -Wmissing-prototypes -Wmissing-declarations -Werror -Wno-format"
-# -Werror disabled due to the flaw in glib-2.0
-# See http://bugzilla.gnome.org/show_bug.cgi?id=310175 and
-# http://bugzilla.gnome.org/show_bug.cgi?id=310216
+# -Wno-format due to way translation string are done
 
 GTK_VERSION=2.6.10
 
@@ -81,16 +81,15 @@ AC_SUBST(REBUILD)
 # includes all the low-level flags
 # FIXME Add esd and gconf flags
 HILDON_WIDGETS_OBJ_CFLAGS="\$(CFLAGS) \$(GTK_CFLAGS) -I\$(top_builddir)/src/"
-HILDON_WIDGETS_OBJ_LIBS="\$(top_builddir)/src/libhildonwidgets.la \$(GTK_LIBS)"
+HILDON_WIDGETS_OBJ_LIBS="\$(top_builddir)/src/libhildon\$(PACKAGE_VERSION_MAJOR).la \$(GTK_LIBS)"
 AC_SUBST(HILDON_WIDGETS_OBJ_CFLAGS)
 AC_SUBST(HILDON_WIDGETS_OBJ_LIBS)
 
 
 AC_CONFIG_FILES([Makefile src/Makefile  \
-                 po/Makefile po/porules.mk \
-		 pkgconfig/Makefile \
+                 pkgconfig/Makefile \
                  examples/Makefile \
-                 pkgconfig/hildon-widgets.pc])
+                 pkgconfig/hildon.pc])
 
 AC_OUTPUT
 
@@ -101,6 +100,8 @@ Configuration:
 - Version............: ${VERSION}
 - Compiler...........: ${CC}
 - gtk-doc support....: ${enable_gtk_doc}
+- Api................: ${PACKAGE}-${PACKAGE_VERSION_MAJOR}
 
 ######################################
+
 "
