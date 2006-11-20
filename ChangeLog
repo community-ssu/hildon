@@ -1,6 +1,13 @@
 2006-11-20  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
 	* examples/Makefile.am:
+	* examples/hildon-caption:
+	* examples/hildon-caption/hildon-caption-example.c: Adding the example
+	for hildon-caption.
+
+2006-11-20  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
+	* examples/Makefile.am:
 	* examples/hildon-banner:
 	* examples/hildon-banner/hildon-banner-example.c: Adding a hildon-banner example. 
 	

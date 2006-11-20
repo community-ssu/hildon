@@ -1,6 +1,8 @@
 MAINTAINERCLEANFILES			= Makefile.in
 
-noinst_PROGRAMS				= hildon-window-example hildon-banner-example
+noinst_PROGRAMS				= hildon-window-example 	\
+					  hildon-banner-example		\
+					  hildon-caption-example
 
 # HIldon window
 hildon_window_example_LDADD		= $(HILDON_WIDGETS_OBJ_LIBS)
@@ -11,3 +13,8 @@ hildon_window_example_SOURCES		= hildon-window/hildon-window-example.c
 hildon_banner_example_LDADD		= $(HILDON_WIDGETS_OBJ_LIBS)
 hildon_banner_example_CFLAGS		= $(HILDON_WIDGETS_OBJ_CFLAGS)
 hildon_banner_example_SOURCES		= hildon-banner/hildon-banner-example.c
+
+# Hildon caption
+hildon_caption_example_LDADD		= $(HILDON_WIDGETS_OBJ_LIBS)
+hildon_caption_example_CFLAGS		= $(HILDON_WIDGETS_OBJ_CFLAGS)
+hildon_caption_example_SOURCES		= hildon-caption/hildon-caption-example.c
