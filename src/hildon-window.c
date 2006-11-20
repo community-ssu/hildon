@@ -22,15 +22,15 @@
  *
  */
 
-
+#include <config.h>
+#include "hildon-window.h"
 #include <memory.h>
 #include <string.h>
 #include <strings.h>
 #include <stdio.h>
-#include <hildon-window.h>
 #include "hildon-program.h"
 #include "hildon-window-private.h"
-#include <hildon-find-toolbar.h>
+#include "hildon-find-toolbar.h"
 
 #include <gtk/gtkmenu.h>
 #include <gtk/gtkimcontext.h>
@@ -47,15 +47,12 @@
 #include <gtk/gtkmain.h>
 #include <gdk/gdkkeysyms.h>
 #include <gdk/gdk.h>
-
-#include<gtk/gtkprivate.h>
-
+#include <gtk/gtkprivate.h>
 #include <X11/X.h>
 #include <X11/Xlib.h>
 #include <X11/Xatom.h>
-
-
 #include <libintl.h>
+
 #define _(String) gettext(String)
 
 /*The size of screen*/

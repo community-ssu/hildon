@@ -42,10 +42,8 @@
     problem, we addjust GDate days numbering to be same as locale
     numbering */
 
-#ifdef HAVE_CONFIG_H
 #include <config.h>
-#endif
-
+#include "hildon-weekday-picker.h"
 #include <stdio.h>
 #include <stdarg.h>
 #include <sys/types.h>
@@ -58,7 +56,6 @@
 #include <gtk/gtktogglebutton.h>
 #include <gtk/gtksizegroup.h>
 #include <gtk/gtkwindow.h>
-#include "hildon-weekday-picker.h"
 #include "hildon-composite-widget.h"
 
 #define HILDON_WEEKDAY_PICKER_GET_PRIVATE(obj) \

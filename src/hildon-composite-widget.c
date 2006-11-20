@@ -22,9 +22,10 @@
  *
  */
 
+#include <config.h>
+#include "hildon-composite-widget.h"
 #include <gtk/gtkwidget.h>
 #include <gtk/gtkwindow.h>
-#include "hildon-composite-widget.h"
 #include "hildon-date-editor.h"
 #include "hildon-time-editor.h"
 

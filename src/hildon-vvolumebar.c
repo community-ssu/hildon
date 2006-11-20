@@ -32,12 +32,9 @@
  * within a predefined range, and muting when users click the mute icon.
  */
 
-#ifdef HAVE_CONFIG_H
 #include <config.h>
-#endif
-
-#include <gtk/gtk.h>
 #include "hildon-vvolumebar.h"
+#include <gtk/gtk.h>
 #include "hildon-volumebar-range.h"
 #include "hildon-volumebar-private.h"
 

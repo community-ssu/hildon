@@ -31,17 +31,13 @@
  * display the current value when the dialog is opened.
  */
 
-#ifdef HAVE_CONFIG_H
 #include <config.h>
-#endif
-
+#include "hildon-sort-dialog.h"
 #include <stdio.h>
 #include <libintl.h>
 #include <gtk/gtkcombobox.h>
 #include <gtk/gtkbox.h>
-#include <hildon-widgets/hildon-caption.h>
-#include "hildon-sort-dialog.h"
-
+#include "hildon-caption.h"
 
 #define _(String) dgettext(PACKAGE, String)
 

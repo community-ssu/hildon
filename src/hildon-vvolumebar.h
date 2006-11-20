@@ -25,7 +25,7 @@
 #ifndef __HILDON_VVOLUMEBAR_H__
 #define __HILDON_VVOLUMEBAR_H__
 
-#include <hildon-widgets/hildon-volumebar.h>
+#include "hildon-volumebar.h"
 
 G_BEGIN_DECLS
 

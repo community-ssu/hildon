@@ -1,5 +1,54 @@
 2006-11-20  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
+	* src/hildon-banner.c:
+	* src/hildon-calendar-popup.c:
+	* src/hildon-caption.c:
+	* src/hildon-code-dialog.c:
+	* src/hildon-color-button.c:
+	* src/hildon-color-chooser-button.c:
+	* src/hildon-color-chooser-button.h:
+	* src/hildon-color-chooser-dialog.c:
+	* src/hildon-color-chooser-dialog.h:
+	* src/hildon-color-chooser.c:
+	* src/hildon-color-popup.c:
+	* src/hildon-color-selector.c:
+	* src/hildon-composite-widget.c:
+	* src/hildon-composite-widget.h:
+	* src/hildon-controlbar.c:
+	* src/hildon-date-editor.c:
+	* src/hildon-defines.c:
+	* src/hildon-find-toolbar.c:
+	* src/hildon-font-selection-dialog.c:
+	* src/hildon-get-password-dialog.c:
+	* src/hildon-hvolumebar.c:
+	* src/hildon-hvolumebar.h:
+	* src/hildon-name-password-dialog.c:
+	* src/hildon-note.c:
+	* src/hildon-number-editor.c:
+	* src/hildon-plugin-widget.c:
+	* src/hildon-plugin-widget.h:
+	* src/hildon-program.c:
+	* src/hildon-program.h:
+	* src/hildon-range-editor.c:
+	* src/hildon-seekbar.c:
+	* src/hildon-set-password-dialog.c:
+	* src/hildon-sort-dialog.c:
+	* src/hildon-sound.c:
+	* src/hildon-sound.h:
+	* src/hildon-time-editor.c:
+	* src/hildon-time-picker.c:
+	* src/hildon-volumebar-range.c:
+	* src/hildon-volumebar.c:
+	* src/hildon-vvolumebar.c:
+	* src/hildon-vvolumebar.h:
+	* src/hildon-weekday-picker.c:
+	* src/hildon-widgets.h:
+	* src/hildon-window.c:
+	* src/hildon-window.h:
+	* src/hildon-wizard-dialog.c: Fixing the include files.
+
+2006-11-20  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
 	* examples/Makefile.am:
 	* examples/hildon-caption:
 	* examples/hildon-caption/hildon-caption-example.c: Adding the example

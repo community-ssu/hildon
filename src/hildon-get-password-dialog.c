@@ -32,27 +32,20 @@
  * showing the domain. The maximum length of the password can be set.
  */
 
+#include <config.h>
+#include "hildon-get-password-dialog.h"
 #include <glib.h>
-
 #include <errno.h>
 #include <string.h>
 #include <strings.h>
 #include <unistd.h>
 #include <stdio.h>
-
 #include <gtk/gtk.h>
-
 #include "hildon-input-mode-hint.h"
-
-#include <hildon-widgets/hildon-caption.h>
-#include <hildon-widgets/hildon-get-password-dialog.h>
+#include "hildon-caption.h"
 #include "hildon-banner.h"
-
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif
-
 #include <libintl.h>
+
 #define _(String) dgettext(PACKAGE, String)
 
 static GtkDialogClass * parent_class;

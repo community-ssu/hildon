@@ -31,6 +31,8 @@
  * for the bounds.
  */
 
+#include <config.h>
+#include "hildon-range-editor.h"
 #include <gtk/gtkbox.h>
 #include <gtk/gtklabel.h>
 #include <gtk/gtksignal.h>
@@ -39,15 +41,10 @@
 #include <glib/gprintf.h>
 #include <string.h>
 #include <stdlib.h>
-#include <hildon-widgets/hildon-input-mode-hint.h>
+#include "hildon-input-mode-hint.h"
 #include "hildon-banner.h"
-#include "hildon-range-editor.h"
-
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif
-
 #include <libintl.h>
+
 #define _(string) dgettext(PACKAGE, string)
 
 /* Alignment in entry box ( 0 = left, 1 = right ) */

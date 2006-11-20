@@ -23,7 +23,6 @@
  *
  */
 
-
 /**
  * SECTION:hildon-color-chooser-dialog
  * @short_description: A dialog to choose a color.
@@ -31,19 +30,16 @@
  *
  * HildonColorChooserDialog is a widget widget to choose a color.
  */
-#include <gtk/gtk.h>
 
-
+#include <config.h>
 #include "hildon-color-chooser-dialog.h"
-
+#include <gtk/gtk.h>
 #include "hildon-plugin-widget.h"
-
 
 enum {
   COLOR_CHANGED,
   LAST_SIGNAL
 };
-
 
 static HildonPluginWidgetInfo *global_plugin = NULL;
 

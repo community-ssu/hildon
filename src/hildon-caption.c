@@ -33,6 +33,8 @@
  * both widget and caption label are displayed with active focus. 
  */
 
+#include <config.h>
+#include "hildon-caption.h"
 #include <gtk/gtkhbox.h>
 #include <gtk/gtklabel.h>
 #include <gtk/gtkimage.h>
@@ -45,13 +47,9 @@
 #include <gtk/gtkalignment.h>
 #include <stdio.h>
 #include <string.h>
-#include "hildon-caption.h"
 #include "hildon-defines.h"
-
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif
 #include <libintl.h>
+
 #define _(String) dgettext(PACKAGE, String)
 
 #define HILDON_CAPTION_SPACING 6

@@ -29,7 +29,6 @@
 
 
 #include <gdk/gdkcolor.h>
-
 #include <gtk/gtkdialog.h>
 
 

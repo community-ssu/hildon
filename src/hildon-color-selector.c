@@ -33,10 +33,8 @@
  */
 
 
-#ifdef HAVE_CONFIG_H
 #include <config.h>
-#endif
-
+#include "hildon-color-selector.h"
 #include <gtk/gtktable.h>
 #include <gtk/gtkhbox.h>
 #include <gtk/gtklabel.h>
@@ -44,11 +42,9 @@
 #include <gtk/gtkbutton.h>
 #include <gdk/gdkkeysyms.h>
 #include <gconf/gconf-client.h> 
-
-#include "hildon-color-selector.h"
 #include "hildon-color-popup.h"
-
 #include <libintl.h>
+
 #define _(String) dgettext(PACKAGE, String)
 
 /* Color amounts */

@@ -22,15 +22,15 @@
  *
  */
 
+#include <config.h>
+#include "hildon-banner.h"
 #include <gtk/gtkhbox.h>
 #include <gtk/gtkimage.h>
 #include <gtk/gtkicontheme.h>
 #include <string.h>
 #include <X11/X.h>
 #include <X11/Xatom.h>
-
 #include "hildon-defines.h"
-#include "hildon-banner.h"
 
 /* position relative to the screen */
 #define HILDON_BANNER_WINDOW_X            30

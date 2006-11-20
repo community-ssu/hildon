@@ -32,21 +32,16 @@
  * module which contains code for a widget.
  */
 
-
+#include <config.h>
+#include "hildon-plugin-widget.h"
 #include <stdio.h>
 #include <memory.h>
 #include <string.h>
-
 #include <gtk/gtk.h>
-
-
-#include "hildon-plugin-widget.h"
-
 
 #ifndef PLUGIN_DIR
 #define PLUGIN_DIR      "/usr/lib/hildon-widgets"
 #endif
-
 
 struct HildonPluginWidgetInfo_ {
   GType base_type;

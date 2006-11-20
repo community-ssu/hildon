@@ -32,16 +32,15 @@
  * The selected color is a property of the button.
  * The property name is "color" and its type is GtkColor.
  */
-#include <config.h>
 
+#include <config.h>
+#include "hildon-color-button.h"
 #include <gtk/gtkbutton.h>
 #include <gtk/gtkalignment.h>
 #include <gtk/gtkdrawingarea.h>
 #include <gtk/gtksignal.h>
 #include <gdk/gdkkeysyms.h>
-#include <hildon-widgets/hildon-defines.h>
-
-#include "hildon-color-button.h"
+#include "hildon-defines.h"
 #include "hildon-color-chooser-dialog.h"
 
 #define HILDON_COLOR_BUTTON_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE\

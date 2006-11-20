@@ -31,27 +31,21 @@
  * Manual input is also possible.
  */
 
+#include <config.h>
+#include "hildon-number-editor.h"
 #include <gdk/gdkkeysyms.h>
 #include <gtk/gtk.h>
-
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
-
-#include "hildon-number-editor.h"
 #include "hildon-marshalers.h"
-#include <hildon-widgets/gtk-infoprint.h>
 #include "hildon-composite-widget.h"
-#include <hildon-widgets/hildon-input-mode-hint.h>
-#include <hildon-widgets/hildon-defines.h>
+#include "hildon-input-mode-hint.h"
+#include "hildon-defines.h"
 #include "hildon-enum-types.h"
 #include "hildon-banner.h"
-
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif
-
 #include <libintl.h>
+
 #define _(String) dgettext(PACKAGE, String)
 
 /*Pixel spec defines*/

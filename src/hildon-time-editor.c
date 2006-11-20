@@ -35,25 +35,20 @@
  * popups a #HildonTimePicker dialog.
  */
 
-#ifdef HAVE_CONFIG_H
 #include <config.h>
-#endif
-
+#include "hildon-time-editor.h"
 #include <gtk/gtkhbox.h>
 #include <gtk/gtkentry.h>
 #include <gtk/gtkbutton.h>
 #include <gtk/gtklabel.h>
 #include <gtk/gtkframe.h>
 #include <gdk/gdkkeysyms.h>
-
 #include <string.h>
 #include <time.h>
 #include <stdlib.h>
 #include <langinfo.h>
 #include <libintl.h>
-
 #include "hildon-defines.h"
-#include "hildon-time-editor.h"
 #include "hildon-time-picker.h"
 #include "hildon-banner.h"
 #include "hildon-input-mode-hint.h"

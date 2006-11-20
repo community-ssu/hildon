@@ -39,15 +39,13 @@
 #ifndef __HILDON_COMPOSITE_WIDGET__
 #define __HILDON_COMPOSITE_WIDGET__
 
+#include <gtk/gtk.h>
 
 G_BEGIN_DECLS
 
-
 gboolean
 hildon_composite_widget_focus( GtkWidget *widget, GtkDirectionType direction );
-       
 
 G_END_DECLS
-
 
 #endif /*__HILDON_COMPOSITE_WIDGET__*/

@@ -36,9 +36,8 @@
  * entered date is invalid, an information message will be shown.
  */
 
-#ifdef HAVE_CONFIG_H
 #include <config.h>
-#endif
+#include "hildon-calendar-popup.h"
 
 #include <gtk/gtk.h>
 #include <gtk/gtkcalendar.h>
@@ -47,7 +46,6 @@
 #include <langinfo.h>
 #include <time.h>
 #include <libintl.h>
-#include <hildon-widgets/hildon-calendar-popup.h>
 
 #define _(String) dgettext(PACKAGE, String)
 

@@ -32,14 +32,14 @@
  * maximum value for the range.
  */
 
-
+#include <config.h>
+#include "hildon-controlbar.h"
 #include <math.h>
 #include <gdk/gdk.h>
 #include <gdk/gdkkeysyms.h>
 #include <gtk/gtk.h>
-#include "hildon-controlbar.h"
-
 #include <libintl.h>
+
 #define _(string) dgettext(PACKAGE, string)
 
 #define HILDON_CONTROLBAR_GET_PRIVATE(obj) \

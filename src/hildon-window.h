@@ -22,7 +22,6 @@
  *
  */
 
-
 #ifndef __HILDON_WINDOW_H__
 #define __HILDON_WINDOW_H__
 

@@ -36,6 +36,8 @@
  * widget provided by users contains the actual wizard pages.
  */
 
+#include <config.h>
+#include "hildon-wizard-dialog.h"
 #include <gtk/gtkdialog.h>
 #include <gtk/gtknotebook.h>
 #include <gtk/gtkimage.h>
@@ -43,15 +45,8 @@
 #include <gtk/gtkhbox.h>
 #include <gtk/gtkvbox.h>
 #include <gtk/gtkbutton.h>
-#include <hildon-widgets/hildon-defines.h>
-
-#include "hildon-wizard-dialog.h"
-
+#include "hildon-defines.h"
 #include <libintl.h>
-
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif
 
 #define _(String) dgettext(PACKAGE, String)
 

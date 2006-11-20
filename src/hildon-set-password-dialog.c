@@ -39,29 +39,22 @@
  * change a password that cannot be removed.
  */
 
-#ifdef HAVE_CONFIG_H
 #include <config.h>
-#endif
-
-
+#include "hildon-set-password-dialog.h"
 #include <gdk/gdkkeysyms.h>
 #include <gtk/gtk.h>
 #include <glib.h>
-
 #include <errno.h>
 #include <string.h>
 #include <strings.h>
 #include <unistd.h>
 #include <stdio.h>
-
-#include <hildon-widgets/hildon-caption.h>
-#include <hildon-widgets/gtk-infoprint.h>
-#include <hildon-widgets/hildon-set-password-dialog.h>
-#include <hildon-widgets/hildon-note.h>
-#include <hildon-widgets/hildon-defines.h>
+#include "hildon-caption.h"
+#include "hildon-note.h"
+#include "hildon-defines.h"
 #include "hildon-banner.h"
-
 #include <libintl.h>
+
 #define  _(String) dgettext(PACKAGE, String)
 #define c_(String) dgettext("hildon-common-strings", String)
 

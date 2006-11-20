@@ -32,10 +32,7 @@
  * also be included. 
  */
 
-#ifdef HAVE_CONFIG_H
 #include <config.h>
-#endif
-
 #include "hildon-note.h"
 #include <gtk/gtklabel.h>
 #include <gtk/gtkimage.h>
@@ -44,9 +41,9 @@
 #include <gtk/gtkvbox.h>
 #include <gtk/gtkbutton.h>
 #include <libintl.h>
-#include "hildon-widgets/hildon-defines.h"
-#include "hildon-widgets/hildon-system-sound.h"
-#include "hildon-banner.h" /* for _hildon_gtk_label_set_text_n_lines */
+#include "hildon-defines.h"
+#include "hildon-sound.h"
+#include "hildon-banner.h" 
 #include "hildon-enum-types.h"
 
 #include <stdio.h>

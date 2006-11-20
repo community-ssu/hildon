@@ -34,6 +34,8 @@
  * password. 
  */
 
+#include <config.h>
+#include "hildon-name-password-dialog.h"
 #include <glib.h>
 #include <gtk/gtk.h>
 #include <errno.h>
@@ -41,15 +43,9 @@
 #include <strings.h>
 #include <unistd.h>
 #include <stdio.h>
-
-#include <hildon-name-password-dialog.h>
-#include <hildon-widgets/hildon-caption.h>
-
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif
-
+#include "hildon-caption.h"
 #include <libintl.h>
+
 #define _(String) dgettext(PACKAGE, String)
 
 static GtkDialogClass *parent_class;

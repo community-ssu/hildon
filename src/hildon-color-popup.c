@@ -35,20 +35,17 @@
  * moved.
  */
 
-#ifdef HAVE_CONFIG_H
 #include <config.h>
-#endif
-
+#include "hildon-color-selector.h"
 #include <gtk/gtkbox.h>
 #include <gtk/gtktable.h>
 #include <gtk/gtklabel.h>
 #include <gtk/gtkdrawingarea.h>
 
-#include "hildon-color-selector.h"
 #include "hildon-color-popup.h"
 #include "hildon-controlbar.h"
-
 #include <libintl.h>
+
 #define _(String) dgettext(PACKAGE, String)
 
 /* Pixel sizes */

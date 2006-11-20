@@ -22,8 +22,8 @@
  *
  */
 
-#ifndef ___HILDON_WIDGETS_H___
-#define ___HILDON_WIDGETS_H___
+#ifndef __HILDON_WIDGETS_H__
+#define __HILDON_WIDGETS_H__
 
 #include "hildon-banner.h"
 #include "hildon-calendar-popup.h"

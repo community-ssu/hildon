@@ -37,10 +37,10 @@
  * automatically added to the existing model, unless it is empty.
  */    
 
+#include <config.h>
 #include "hildon-find-toolbar.h"
 #include "hildon-defines.h"
 #include <gdk/gdkkeysyms.h>
-
 #include <gtk/gtklabel.h>
 #include <gtk/gtkentry.h>
 #include <gtk/gtkbutton.h>
@@ -49,11 +49,8 @@
 #include <gtk/gtkcomboboxentry.h>
 #include <gtk/gtkseparatortoolitem.h>
 #include <string.h>
-
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif
 #include <libintl.h>
+
 #define _(String) dgettext(PACKAGE, String)
 
 /*same define as gtkentry.c as entry will further handle this*/

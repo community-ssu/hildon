@@ -33,6 +33,7 @@
  * used as a part of #HildonTimeEditor implementation.
  */
 
+#include <config.h>
 #include "hildon-time-picker.h"
 #include "hildon-defines.h"
 #include "hildon-private.h"
@@ -45,10 +46,6 @@
 #include <string.h>
 #include <langinfo.h>
 #include <libintl.h>
-
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif
 
 #define _(String) dgettext(PACKAGE, String)
 

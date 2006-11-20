@@ -31,13 +31,11 @@
  *
  * HildonColorChooser is a widget to choose a color.
  */
-#include <gtk/gtk.h>
 
-
+#include <config.h>
 #include "hildon-color-chooser.h"
-
+#include <gtk/gtk.h>
 #include "hildon-plugin-widget.h"
-
 
 enum {
   COLOR_CHANGED,

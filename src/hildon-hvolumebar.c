@@ -35,11 +35,12 @@
 
 /* Horizontal volumebar subclass */
 
-#include <gtk/gtktoolbar.h>
+#include <config.h>
 #include "hildon-hvolumebar.h"
 #include "hildon-volumebar.h"
 #include "hildon-volumebar-range.h"
 #include "hildon-volumebar-private.h"
+#include <gtk/gtktoolbar.h>
 
 /* Defines for normal version of HVolumebar */
 /* Toggle button */

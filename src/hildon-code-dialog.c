@@ -22,26 +22,20 @@
  *
  */
 
-
+#include <config.h>
 #include "hildon-code-dialog.h"
 #include "hildon-defines.h"
 #include "hildon-banner.h"
 
 #include <gdk/gdkkeysyms.h>
-
-#include<gtk/gtkbutton.h>
-#include<gtk/gtkentry.h>
-#include<gtk/gtkicontheme.h>
-#include<gtk/gtktable.h>
-#include<gtk/gtkvbox.h>
-#include<gtk/gtkbbox.h>
-#include<gtk/gtklabel.h>
-#include<gtk/gtkalignment.h>
-
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif
-
+#include <gtk/gtkbutton.h>
+#include <gtk/gtkentry.h>
+#include <gtk/gtkicontheme.h>
+#include <gtk/gtktable.h>
+#include <gtk/gtkvbox.h>
+#include <gtk/gtkbbox.h>
+#include <gtk/gtklabel.h>
+#include <gtk/gtkalignment.h>
 #include <libintl.h>
 
 #define HEIGHT (38-HILDON_MARGIN_DEFAULT)

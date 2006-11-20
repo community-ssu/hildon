@@ -30,10 +30,10 @@
  * Font selection can be made using this widget. Users can select font name, 
  * size, style, etc. Users can also preview text in the selected font.
  */
- 
+
+#include <config.h>
 #include <stdlib.h>
 #include <string.h>
-
 #include <gtk/gtkstock.h>
 #include <gtk/gtkcombobox.h>
 #include <gtk/gtktogglebutton.h>
@@ -45,17 +45,12 @@
 #include <gtk/gtk.h>
 #include <glib.h>
 #include <gdk/gdkkeysyms.h>
-
 #include "hildon-font-selection-dialog.h"
-#include <hildon-widgets/hildon-caption.h>
-#include <hildon-widgets/hildon-color-selector.h>
-#include <hildon-widgets/hildon-color-button.h>
-
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif
-
+#include "hildon-caption.h"
+#include "hildon-color-selector.h"
+#include "hildon-color-button.h"
 #include <libintl.h>
+
 #define _(String) dgettext(PACKAGE, String)
 
 #define SUPERSCRIPT_RISE 3333

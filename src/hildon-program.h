@@ -25,8 +25,8 @@
 #ifndef __HILDON_PROGRAM_H__
 #define __HILDON_PROGRAM_H__
 
-#include<glib-object.h>
-#include"hildon-window.h"
+#include <glib-object.h>
+#include "hildon-window.h"
 
 G_BEGIN_DECLS
 typedef struct _HildonProgram HildonProgram;

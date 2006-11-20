@@ -23,14 +23,9 @@
  *
  */
 
-
-#include <gtk/gtk.h>
-
-
+#include <config.h>
 #include "hildon-color-chooser-button.h"
-
 #include "hildon-color-chooser-dialog.h"
-
 
 enum {
   COLOR_CHANGED,

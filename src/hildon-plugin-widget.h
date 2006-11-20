@@ -27,11 +27,8 @@
 #ifndef __HILDON_PLUGIN_WIDGET_H__
 #define __HILDON_PLUGIN_WIDGET_H__
 
-
 #include <glib-object.h>
-
 #include <gtk/gtkwidget.h>
-
 
 /**
  * HildonPluginWidgetInfo:

@@ -33,6 +33,8 @@
  * HildonCalendarPopup.
  */
 
+#include <config.h>
+#include "hildon-date-editor.h"
 #include <glib.h>
 #include <gtk/gtk.h>
 #include <gdk/gdkkeysyms.h>
@@ -40,23 +42,16 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-
-#include <hildon-widgets/hildon-date-editor.h>
-#include <hildon-widgets/hildon-calendar-popup.h>
-#include <hildon-widgets/gtk-infoprint.h>
-#include <hildon-widgets/hildon-defines.h>
-#include <hildon-widgets/hildon-input-mode-hint.h>
+#include "hildon-calendar-popup.h"
+#include "hildon-defines.h"
+#include "hildon-input-mode-hint.h"
 #include "hildon-composite-widget.h"
 #include "hildon-marshalers.h"
 #include "hildon-enum-types.h"
 #include "hildon-time-editor.h"
 #include "hildon-banner.h"
+#include <libintl.h>
 
-#ifdef HAVE_CONFIG_H
-#include<config.h>
-#endif
-
-#include<libintl.h>
 #define _(string) dgettext(PACKAGE, string)
 
 #define ENTRY_BORDERS 11
@@ -897,7 +892,7 @@ hildon_date_editor_entry_validate(GtkWidget *widget, gpointer data)
     gint d, m, y, max_days;
     gboolean r;  /* temp return values for signals */
     const gchar *text;        
-    gint error_code = NO_ERROR;
+    gint error_code = HILDON_DATE_TIME_ERROR_NO_ERROR;
 
     g_assert(HILDON_IS_DATE_EDITOR(data));
     g_assert(GTK_IS_ENTRY(widget));
@@ -992,7 +987,7 @@ hildon_date_editor_entry_validate(GtkWidget *widget, gpointer data)
            }
         }
 
-        if (error_code != NO_ERROR)
+        if (error_code != HILDON_DATE_TIME_ERROR_NO_ERROR)
         {
             g_signal_emit(ed, date_editor_signals[DATE_ERROR], 0, error_code, &r);
 
@@ -1027,7 +1022,7 @@ hildon_date_editor_entry_changed(GtkEditable *ed, gpointer data)
   if (g_utf8_strlen(gtk_entry_get_text(entry), -1) == gtk_entry_get_max_length(entry))
     {
       error_code = hildon_date_editor_entry_validate(GTK_WIDGET(entry), data);
-      if (error_code == NO_ERROR)
+      if (error_code == HILDON_DATE_TIME_ERROR_NO_ERROR)
 	{
 	  priv = HILDON_DATE_EDITOR_GET_PRIVATE(HILDON_DATE_EDITOR(data));
 	  priv->skip_validation = TRUE;

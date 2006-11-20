@@ -34,22 +34,17 @@
  * a stream.
  */
 
-#ifdef HAVE_CONFIG_H
 #include <config.h>
-#endif
-
+#include "hildon-seekbar.h"
 #include <libintl.h>
 #include <stdio.h>
 #include <math.h>
-
 #include <gtk/gtklabel.h>
 #include <gtk/gtkframe.h>
 #include <gtk/gtkalignment.h>
 #include <gtk/gtkadjustment.h>
 #include <gtk/gtktoolbar.h>
 #include <gdk/gdkkeysyms.h>
-
-#include "hildon-seekbar.h"
 
 #define HILDON_SEEKBAR_GET_PRIVATE(obj) \
         (G_TYPE_INSTANCE_GET_PRIVATE ((obj), \

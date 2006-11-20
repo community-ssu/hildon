@@ -24,6 +24,8 @@
 #ifndef __HILDON_SOUND_H__
 #define __HILDON_SOUND_H__
 
+#include <glib.h>
+
 G_BEGIN_DECLS
 
 void hildon_play_system_sound(const gchar *sample);

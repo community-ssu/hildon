@@ -29,12 +29,10 @@
  *
  */
 
+#include <config.h>
 #include "hildon-program.h"
 #include "hildon-window-private.h"
-
-/*FIXME*/
 #include <X11/Xatom.h>
-
 
 #define HILDON_PROGRAM_GET_PRIVATE(obj) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((obj), HILDON_TYPE_PROGRAM, HildonProgramPriv));

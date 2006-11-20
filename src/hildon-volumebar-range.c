@@ -37,13 +37,10 @@
  * 
  */
 
-#ifdef HAVE_CONFIG_H
 #include <config.h>
-#endif
-
+#include "hildon-volumebar-range.h"
 #include <gtk/gtkrange.h>
 #include <gdk/gdkkeysyms.h>
-#include "hildon-volumebar-range.h"
 
 #define VOLUMEBAR_RANGE_INITIAL_VALUE 50.0
 #define VOLUMEBAR_RANGE_MINIMUM_VALUE 0.0
