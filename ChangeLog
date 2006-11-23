@@ -1,3 +1,14 @@
+2006-11-23  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
+	* configure.ac: Fixing the build problem of the examples (missing _)
+
+	* examples/Makefile.am:
+	* examples/hildon-weekday-picker:
+	* examples/hildon-weekday-picker/hildon-weekday-picker-example.c:
+	Adding a weekday picker example.
+
+	* src/Makefile.am: Fixing the problem mis-ordered build.
+
 2006-11-20  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
 	* Makefile.am:

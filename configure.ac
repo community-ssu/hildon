@@ -81,7 +81,7 @@ AC_SUBST(REBUILD)
 # includes all the low-level flags
 # FIXME Add esd and gconf flags
 HILDON_WIDGETS_OBJ_CFLAGS="\$(CFLAGS) \$(GTK_CFLAGS) -I\$(top_builddir)/src/"
-HILDON_WIDGETS_OBJ_LIBS="\$(top_builddir)/src/libhildon\$(PACKAGE_VERSION_MAJOR).la \$(GTK_LIBS)"
+HILDON_WIDGETS_OBJ_LIBS="\$(top_builddir)/src/libhildon_\$(PACKAGE_VERSION_MAJOR).la \$(GTK_LIBS)"
 AC_SUBST(HILDON_WIDGETS_OBJ_CFLAGS)
 AC_SUBST(HILDON_WIDGETS_OBJ_LIBS)
 

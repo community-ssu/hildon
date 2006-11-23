@@ -104,9 +104,9 @@ libhildon_@PACKAGE_VERSION_MAJOR@_include_HEADERS 	= hildon-controlbar.h \
 							  hildon-marshalers.h
 
 # Don't build the library until we have built the header that it needs:
-$(OBJECTS) $(libhildon_$(PACKAGE_VERSION_MAJOR)_la_OBJECTS): hildon-enum-types.h
+$(OBJECTS) $(libhildon_$(PACKAGE_VERSION_MAJOR)_la_OBJECTS): hildon-enum-types.h hildon-marshalers.c hildon-marshalers.h
 
-hildon-enum-types.h: 					  @REBUILD@ $(libhildon1_include_HEADERS) Makefile
+hildon-enum-types.h: 					  @REBUILD@ $(libhildon_$(PACKAGE_VERSION_MAJOR)_include_HEADERS) Makefile
 	(cd $(srcdir) && glib-mkenums \
 			--fhead "#ifndef __HILDON_ENUM_TYPES_H__\n" 	\
 			--fhead "#define __HILDON_ENUM_TYPES_H__\n" 	\
