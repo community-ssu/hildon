@@ -1,3 +1,10 @@
+2006-11-28  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
+	* examples/Makefile.am:
+	* examples/hildon-sort-dialog:
+	* examples/hildon-sort-dialog/hildon-sort-dialog-example.c: Adding the
+	example for HildonSortDialog. 
+
 2006-11-23  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
 	* configure.ac: Fixing the build problem of the examples (missing _)
