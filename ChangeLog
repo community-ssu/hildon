@@ -1,5 +1,10 @@
 2006-11-28  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
+	* autogen.sh: Updated autogen not to complain when launched without
+	parameters in NOCONFIGURE mode.
+
+2006-11-28  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
 	* examples/Makefile.am:
 	* examples/hildon-sort-dialog:
 	* examples/hildon-sort-dialog/hildon-sort-dialog-example.c: Adding the
