@@ -1,5 +1,13 @@
 2006-12-11  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
+	* src/hildon-window-private.h:
+	* src/hildon-window.c:
+	* src/hildon-window.h: Correcting the coding style. Correcting the
+	identing. Modyfying to use standard gobject set_private thingies.
+	Making the private API not exported to symbols.
+
+2006-12-11  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
 	* pkgconfig/hildon.pc.in:
 	* src/Makefile.am: Fixing the install directories.
 

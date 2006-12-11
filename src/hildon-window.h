@@ -22,59 +22,60 @@
  *
  */
 
-#ifndef __HILDON_WINDOW_H__
-#define __HILDON_WINDOW_H__
+#ifndef                                         __HILDON_WINDOW_H__
+#define                                         __HILDON_WINDOW_H__
 
-#include <glib.h>
-#include <glib-object.h>
-#include <gtk/gtkwindow.h>
-#include <gtk/gtkmenu.h>
-#include <gtk/gtktoolbar.h>
-#include <gdk/gdkx.h>
+#include                                        <glib.h>
+#include                                        <glib-object.h>
+#include                                        <gtk/gtkwindow.h>
+#include                                        <gtk/gtkmenu.h>
+#include                                        <gtk/gtktoolbar.h>
+#include                                        <gdk/gdkx.h>
 
-#include "hildon-defines.h"
+#include                                        "hildon-defines.h"
 
 G_BEGIN_DECLS
 
-#define HILDON_WINDOW_LONG_PRESS_TIME 1500 /* in ms */
+#define                                         HILDON_WINDOW_LONG_PRESS_TIME 1500 /* in ms */
 
-#define HILDON_TYPE_WINDOW ( hildon_window_get_type() )
-#define HILDON_WINDOW(obj) \
-    (GTK_CHECK_CAST (obj, HILDON_TYPE_WINDOW, HildonWindow))
-#define HILDON_WINDOW_CLASS(klass) \
-    (GTK_CHECK_CLASS_CAST ((klass),\
-     HILDON_TYPE_WINDOW, HildonWindowClass))
-#define HILDON_IS_WINDOW(obj) (GTK_CHECK_TYPE (obj, HILDON_TYPE_WINDOW))
-#define HILDON_IS_WINDOW_CLASS(klass) \
-    (GTK_CHECK_CLASS_TYPE ((klass), HILDON_TYPE_WINDOW))
+#define                                         HILDON_TYPE_WINDOW \
+                                                (hildon_window_get_type())
 
-typedef struct _HildonWindow      HildonWindow;
-typedef struct _HildonWindowClass HildonWindowClass;
+#define                                         HILDON_WINDOW(obj) \
+                                                (GTK_CHECK_CAST (obj, HILDON_TYPE_WINDOW, HildonWindow))
 
-/**
- * HildonWindowPrivate:
- *
- * This structure contains just internal data.
- * It should not be accessed directly.
- */
-typedef struct _HildonWindowPrivate HildonWindowPrivate;
+#define                                         HILDON_WINDOW_CLASS(klass) \
+                                                (GTK_CHECK_CLASS_CAST ((klass),\
+                                                HILDON_TYPE_WINDOW, HildonWindowClass))
 
-struct _HildonWindow
-{
-    GtkWindow parent;
+#define                                         HILDON_IS_WINDOW(obj) \
+                                                (GTK_CHECK_TYPE (obj, HILDON_TYPE_WINDOW))
 
-    /*private*/
-    HildonWindowPrivate *priv;
-};
+#define                                         HILDON_IS_WINDOW_CLASS(klass) \
+                                                (GTK_CHECK_CLASS_TYPE ((klass), HILDON_TYPE_WINDOW))
+
+#define                                         HILDON_WINDOW_GET_CLASS(obj) \
+                                                ((HildonWindowClass *) G_OBJECT_GET_CLASS(obj))
+
+typedef struct                                  _HildonWindow HildonWindow;
+
+typedef struct                                  _HildonWindowClass HildonWindowClass;
+
+typedef struct                                  _HildonWindowPrivate HildonWindowPrivate;
 
 typedef enum
 {
-  HILDON_WINDOW_CO_COPY,
-  HILDON_WINDOW_CO_CUT,
-  HILDON_WINDOW_CO_PASTE
-} HildonWindowClipboardOperation;
+    HILDON_WINDOW_CO_COPY,
+    HILDON_WINDOW_CO_CUT,
+    HILDON_WINDOW_CO_PASTE
+}                                               HildonWindowClipboardOperation;
 
-struct _HildonWindowClass
+struct                                          _HildonWindow
+{
+    GtkWindow parent;
+};
+
+struct                                          _HildonWindowClass
 {
     GtkWindowClass parent_class;
 
@@ -86,26 +87,34 @@ struct _HildonWindowClass
     void (*_hildon_reserved3)(void);
 };
 
+GType       
+hildon_window_get_type                          (void);
 
-GType       hildon_window_get_type          (void);
+GtkWidget*
+hildon_window_new                               (void);
 
-GtkWidget * hildon_window_new               (void);
+void        
+hildon_window_add_with_scrollbar                (HildonWindow *self,
+                                                 GtkWidget    *child);
 
-void        hildon_window_add_with_scrollbar(HildonWindow *self,
-                                             GtkWidget    *child);
+GtkMenu*    
+hildon_window_get_menu                          (HildonWindow *self);
 
-GtkMenu *   hildon_window_get_menu          (HildonWindow *self);
-void        hildon_window_set_menu          (HildonWindow *self,
-                                             GtkMenu      *menu);
+void        
+hildon_window_set_menu                          (HildonWindow *self,
+                                                 GtkMenu      *menu);
 
-void        hildon_window_add_toolbar       (HildonWindow *self,
-                                             GtkToolbar   *toolbar);
+void    
+hildon_window_add_toolbar                       (HildonWindow *self,
+                                                 GtkToolbar   *toolbar);
 
-void        hildon_window_remove_toolbar    (HildonWindow *self,
-                                             GtkToolbar   *toolbar);
+void        
+hildon_window_remove_toolbar                    (HildonWindow *self,
+                                                 GtkToolbar   *toolbar);
 
-gboolean    hildon_window_get_is_topmost    (HildonWindow *self);
-
+gboolean    
+hildon_window_get_is_topmost                    (HildonWindow *self);
 
 G_END_DECLS
-#endif /* __HILDON_WINDOW_H__ */
+
+#endif                                          /* __HILDON_WINDOW_H__ */

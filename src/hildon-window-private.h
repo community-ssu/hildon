@@ -22,33 +22,57 @@
  *
  */
 
-
-#ifndef __HILDON_WINDOW_PRIVATE_H__
-#define __HILDON_WINDOW_PRIVATE_H__
+#ifndef                                         __HILDON_WINDOW_PRIVATE_H__
+#define                                         __HILDON_WINDOW_PRIVATE_H__
 
 G_BEGIN_DECLS
 
-void
-hildon_window_set_program (HildonWindow *self, GObject *program);
+struct                                          _HildonWindowPrivate
+{
+    GtkWidget *menu;
+    GtkWidget *vbox;
 
-void
-hildon_window_unset_program (HildonWindow *self);
+    GtkBorder *borders;
+    GtkBorder *toolbar_borders;
 
-void 
-hildon_window_set_can_hibernate_property (HildonWindow *self, 
-                                          gpointer can_hibernate);
+    GtkAllocation allocation;
 
-void
-hildon_window_take_common_toolbar (HildonWindow *self);
+    guint fullscreen;
+    guint is_topmost;
+    guint escape_timeout;
+    gint visible_toolbars;
+    gint previous_vbox_y;
 
-void
-hildon_window_update_topmost (HildonWindow *self, Window window_id);
+    HildonProgram *program;
+};
 
-Window
-hildon_window_get_active_window (void);
+#define                                         HILDON_WINDOW_GET_PRIVATE(obj) \
+                                                (G_TYPE_INSTANCE_GET_PRIVATE ((obj),\
+                                                HILDON_TYPE_WINDOW, HildonWindowPrivate))
 
-void
-hildon_window_update_title (HildonWindow *window);
+void G_GNUC_INTERNAL
+hildon_window_set_program                       (HildonWindow *self, 
+                                                 GObject *program);
+
+void G_GNUC_INTERNAL
+hildon_window_unset_program                     (HildonWindow *self);
+
+void G_GNUC_INTERNAL
+hildon_window_set_can_hibernate_property        (HildonWindow *self, 
+                                                 gpointer can_hibernate);
+
+void G_GNUC_INTERNAL
+hildon_window_take_common_toolbar               (HildonWindow *self);
+
+void G_GNUC_INTERNAL
+hildon_window_update_topmost                    (HildonWindow *self, Window window_id);
+
+Window G_GNUC_INTERNAL
+hildon_window_get_active_window                 (void);
+
+void G_GNUC_INTERNAL
+hildon_window_update_title                      (HildonWindow *window);
 
 G_END_DECLS
-#endif /* __HILDON_WINDOW_PRIVATE_H__ */
+
+#endif                                          /* __HILDON_WINDOW_PRIVATE_H__ */
