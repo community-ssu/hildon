@@ -62,7 +62,7 @@ libhildon_@PACKAGE_VERSION_MAJOR@_la_SOURCES 		= hildon-composite-widget.c \
 							  hildon-enum-types.c \
 							  hildon-marshalers.c
 
-libhildon_@PACKAGE_VERSION_MAJOR@_includedir		= $(includedir)/$(PACKAGE)-$(PACKAGE_VERSION_MAJOR)
+libhildon_@PACKAGE_VERSION_MAJOR@_includedir		= $(includedir)/$(PACKAGE)-$(PACKAGE_VERSION_MAJOR)/$(PACKAGE)
 
 libhildon_@PACKAGE_VERSION_MAJOR@_include_HEADERS 	= hildon-controlbar.h \
 							  hildon-note.h \
