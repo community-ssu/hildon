@@ -1,3 +1,11 @@
+2006-12-12  Michael Dominic K.  <mdk@mdk.am> 
+
+	* TODO: 
+	* src/hildon-hvolumebar.c:
+	* src/hildon-hvolumebar.h: Cleaning up.
+
+	* src/hildon-vvolumebar.c: Defines fixes.
+
 2006-12-12  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
 	* TODO: Removing cleaned stuff.

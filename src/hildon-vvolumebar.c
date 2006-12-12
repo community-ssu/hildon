@@ -38,17 +38,23 @@
 #include                                        "hildon-volumebar-private.h"
 
 /* Volume bar */
-#define DEFAULT_BAR_WIDTH                       58
-#define MINIMUM_BAR_HEIGHT                      165
+#define                                         DEFAULT_BAR_WIDTH 58
+
+#define                                         MINIMUM_BAR_HEIGHT 165
 
 /* Toggle button */
-#define DEFAULT_VERTICAL_TBUTTON_WIDTH          26
-#define DEFAULT_VERTICAL_TBUTTON_HEIGHT         26
-#define DEFAULT_ENDING_SIZE                     20
+
+#define                                         DEFAULT_VERTICAL_TBUTTON_WIDTH 26
+
+#define                                         DEFAULT_VERTICAL_TBUTTON_HEIGHT 26
+
+#define                                         DEFAULT_ENDING_SIZE 20
 
 /* Gap to leave for mute button */
-#define HORIZONTAL_MUTE_GAP                     16
-#define VERTICAL_MUTE_GAP                       6
+
+#define                                         HORIZONTAL_MUTE_GAP 16
+
+#define                                         VERTICAL_MUTE_GAP 6
 
 static HildonVolumebarClass*                    parent_class;
 

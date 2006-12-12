@@ -22,37 +22,51 @@
  *
  */
 
-#ifndef __HILDON_HVOLUMEBAR_H__
-#define __HILDON_HVOLUMEBAR_H__
+#ifndef                                         __HILDON_HVOLUMEBAR_H__
+#define                                         __HILDON_HVOLUMEBAR_H__
 
-#include "hildon-volumebar.h"
+#include                                        "hildon-volumebar.h"
 
 G_BEGIN_DECLS
 
-#define HILDON_TYPE_HVOLUMEBAR ( hildon_hvolumebar_get_type() )
-#define HILDON_HVOLUMEBAR(obj) (GTK_CHECK_CAST (obj,\
-        HILDON_TYPE_HVOLUMEBAR, HildonHVolumebar))
-#define HILDON_HVOLUMEBAR_CLASS(klass) (GTK_CHECK_CLASS_CAST ((klass),\
-        HILDON_TYPE_HVOLUMEBAR, HildonHVolumebarClass))
-#define HILDON_IS_HVOLUMEBAR(obj) (GTK_CHECK_TYPE (obj,\
-        HILDON_TYPE_HVOLUMEBAR))
-#define HILDON_IS_HVOLUMEBAR_CLASS(klass) (GTK_CHECK_CLASS_TYPE ((klass),\
-        HILDON_TYPE_HVOLUMEBAR))
+#define                                         HILDON_TYPE_HVOLUMEBAR (hildon_hvolumebar_get_type())
 
-typedef struct _HildonHVolumebar HildonHVolumebar;
-typedef struct _HildonHVolumebarClass HildonHVolumebarClass;
+#define                                         HILDON_HVOLUMEBAR(obj) (GTK_CHECK_CAST (obj,\
+                                                HILDON_TYPE_HVOLUMEBAR, HildonHVolumebar))
 
-struct _HildonHVolumebar {
-    /* This is our parent class */
-    HildonVolumebar volumebar;
+#define                                         HILDON_HVOLUMEBAR_CLASS(klass) \
+                                                (GTK_CHECK_CLASS_CAST ((klass),\
+                                                HILDON_TYPE_HVOLUMEBAR, HildonHVolumebarClass))
+
+#define                                         HILDON_IS_HVOLUMEBAR(obj) (GTK_CHECK_TYPE (obj,\
+                                                HILDON_TYPE_HVOLUMEBAR))
+
+#define                                         HILDON_IS_HVOLUMEBAR_CLASS(klass) (GTK_CHECK_CLASS_TYPE ((klass),\
+                                                HILDON_TYPE_HVOLUMEBAR))
+
+#define                                         HILDON_HVOLUMEBAR_GET_CLASS(obj) \
+                                                ((HildonHVolumebarClass *) G_OBJECT_GET_CLASS(obj))
+
+typedef struct                                  _HildonHVolumebar HildonHVolumebar;
+
+typedef struct                                  _HildonHVolumebarClass HildonHVolumebarClass;
+
+struct                                          _HildonHVolumebar 
+{
+    HildonVolumebar parent;
 };
 
-struct _HildonHVolumebarClass {
+struct                                          _HildonHVolumebarClass 
+{
     HildonVolumebarClass parent_class;
 };
 
-GType hildon_hvolumebar_get_type(void) G_GNUC_CONST;
-GtkWidget *hildon_hvolumebar_new(void);
+GType G_GNUC_CONST 
+hildon_hvolumebar_get_type                      (void);
+
+GtkWidget*
+hildon_hvolumebar_new                           (void);
 
 G_END_DECLS
-#endif /* __HILDON_HVOLUMEBAR_H__ */
+
+#endif                                          /* __HILDON_HVOLUMEBAR_H__ */

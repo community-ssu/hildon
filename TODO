@@ -33,8 +33,6 @@
   hildon-font-selection-dialog.h
   hildon-get-password-dialog.c
   hildon-get-password-dialog.h
-  hildon-hvolumebar.c
-  hildon-hvolumebar.h
   hildon-input-mode-hint.h
   hildon-marshalers.list
   hildon-name-password-dialog.c
