@@ -62,13 +62,8 @@
   hildon-time-editor.h
   hildon-time-picker.c
   hildon-time-picker.h
-  hildon-volumebar-private.h
   hildon-volumebar-range.c
   hildon-volumebar-range.h
-  hildon-volumebar.c
-  hildon-volumebar.h
-  hildon-vvolumebar.c
-  hildon-vvolumebar.h
   hildon-weekday-picker.c
   hildon-weekday-picker.h
   hildon-widgets.h

@@ -49,7 +49,6 @@ G_BEGIN_DECLS
 #define                                         HILDON_VOLUMEBAR_GET_CLASS(obj) \
                                                 ((HildonVolumebarClass *) G_OBJECT_GET_CLASS(obj))
 
-
 typedef struct                                  _HildonVolumebar HildonVolumebar;
 
 typedef struct                                  _HildonVolumebarClass HildonVolumebarClass;

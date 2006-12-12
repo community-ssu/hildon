@@ -1,5 +1,14 @@
 2006-12-12  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
+	* TODO: Removing cleaned stuff.
+
+	* src/hildon-volumebar.h: Cosmetic.
+
+	* src/hildon-vvolumebar.c: 
+	* src/hildon-vvolumebar.h: Cleaning.
+
+2006-12-12  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
 	* TODO: Adding more TODO.
 
 	* src/hildon-volumebar-private.h:
