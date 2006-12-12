@@ -21,27 +21,35 @@
  * 02110-1301 USA
  *
  */
-#ifndef __HILDON_VOLUMEBAR_PRIVATE__
-#define __HILDON_VOLUMEBAR_PRIVATE__
 
-#include <gtk/gtk.h>
-#include "hildon-volumebar-range.h"
+#ifndef                                         __HILDON_VOLUMEBAR_PRIVATE__
+#define                                         __HILDON_VOLUMEBAR_PRIVATE__
+
+#include                                        <gtk/gtk.h>
+#include                                        "hildon-volumebar-range.h"
 
 G_BEGIN_DECLS
-#define HILDON_VOLUMEBAR_GET_PRIVATE(obj) \
-        (G_TYPE_INSTANCE_GET_PRIVATE ((obj), \
-	HILDON_TYPE_VOLUMEBAR, HildonVolumebarPrivate));
 
-typedef struct _HildonVolumebarPrivate HildonVolumebarPrivate;
+#define                                         HILDON_VOLUMEBAR_GET_PRIVATE(obj) \
+                                                (G_TYPE_INSTANCE_GET_PRIVATE ((obj), \
+	                                            HILDON_TYPE_VOLUMEBAR, HildonVolumebarPrivate));
 
-struct _HildonVolumebarPrivate {
+typedef struct                                  _HildonVolumebarPrivate HildonVolumebarPrivate;
+
+struct                                          _HildonVolumebarPrivate 
+{
   HildonVolumebarRange *volumebar;
-  GtkToggleButton      *tbutton;
-  gboolean              is_toolbar; /* is inside toolbar (for horizontal volumebar) */
-  GdkWindow            *event_window; /* input-only window to catch insensitive presses */
+  GtkToggleButton *tbutton;
+  gboolean is_toolbar; /* is inside toolbar (for horizontal volumebar) */
+  GdkWindow *event_window; /* input-only window to catch insensitive presses */
 };
 
-void _hildon_volumebar_mute_toggled(HildonVolumebar * self);
+void G_GNUC_INTERNAL
+hildon_volumebar_mute_toggled                   (HildonVolumebar * self);
+
+void G_GNUC_INTERNAL
+hildon_volumebar_level_change                   (HildonVolumebar *self);
 
 G_END_DECLS
-#endif /* __HILDON_VOLUMEBAR_PRIVATE__ */
+
+#endif                                          /* __HILDON_VOLUMEBAR_PRIVATE__ */

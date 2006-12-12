@@ -184,7 +184,7 @@ enum
     MAX_WIN_MESSAGES
 };
 
-GType 
+GType G_GNUC_CONST
 hildon_window_get_type                          (void)
 {
     static GType window_type = 0;
@@ -212,32 +212,30 @@ static void
 hildon_window_class_init                        (HildonWindowClass * window_class)
 {
     /* Get convenience variables */
-    GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (window_class);
-    GObjectClass *object_class = G_OBJECT_CLASS (window_class);
-    GtkContainerClass *container_class = GTK_CONTAINER_CLASS (window_class);
+    GtkWidgetClass *widget_class        = GTK_WIDGET_CLASS (window_class);
+    GObjectClass *object_class          = G_OBJECT_CLASS (window_class);
+    GtkContainerClass *container_class  = GTK_CONTAINER_CLASS (window_class);
 
     /* Set the global parent_class here */
     parent_class = g_type_class_peek_parent (window_class);
 
-    object_class->get_property = hildon_window_get_property;
-    object_class->notify = hildon_window_notify;
-
-    /* Set the widgets virtual functions */
-    widget_class->size_allocate = hildon_window_size_allocate;
-    widget_class->size_request = hildon_window_size_request;
-    widget_class->expose_event = hildon_window_expose;
-    widget_class->show_all = hildon_window_show_all;
-    widget_class->realize = hildon_window_realize;
-    widget_class->unrealize = hildon_window_unrealize;
-    widget_class->key_press_event = hildon_window_key_press_event;
-    widget_class->key_release_event = hildon_window_key_release_event;
-    widget_class->window_state_event = hildon_window_window_state_event;
+    object_class->get_property          = hildon_window_get_property;
+    object_class->notify                = hildon_window_notify;
+    widget_class->size_allocate         = hildon_window_size_allocate;
+    widget_class->size_request          = hildon_window_size_request;
+    widget_class->expose_event          = hildon_window_expose;
+    widget_class->show_all              = hildon_window_show_all;
+    widget_class->realize               = hildon_window_realize;
+    widget_class->unrealize             = hildon_window_unrealize;
+    widget_class->key_press_event       = hildon_window_key_press_event;
+    widget_class->key_release_event     = hildon_window_key_release_event;
+    widget_class->window_state_event    = hildon_window_window_state_event;
 
     /* now the object stuff */
-    object_class->finalize = hildon_window_finalize;
+    object_class->finalize              = hildon_window_finalize;
 
     /* To the container */
-    container_class->forall = hildon_window_forall;
+    container_class->forall             = hildon_window_forall;
 
     /* gtkobject stuff*/
     GTK_OBJECT_CLASS (window_class)->destroy = hildon_window_destroy; 

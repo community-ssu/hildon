@@ -61,8 +61,6 @@ typedef struct                                  _HildonWindow HildonWindow;
 
 typedef struct                                  _HildonWindowClass HildonWindowClass;
 
-typedef struct                                  _HildonWindowPrivate HildonWindowPrivate;
-
 typedef enum
 {
     HILDON_WINDOW_CO_COPY,
@@ -87,7 +85,7 @@ struct                                          _HildonWindowClass
     void (*_hildon_reserved3)(void);
 };
 
-GType       
+GType G_GNUC_CONST
 hildon_window_get_type                          (void);
 
 GtkWidget*

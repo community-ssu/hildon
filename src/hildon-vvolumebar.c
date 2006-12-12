@@ -115,7 +115,7 @@ static void hildon_vvolumebar_init(HildonVVolumebar * vvolumebar)
                              G_CALLBACK(hildon_volumebar_level_change),
                              vvolumebar);
     g_signal_connect_swapped(priv->tbutton, "toggled",
-        G_CALLBACK(_hildon_volumebar_mute_toggled), vvolumebar);
+        G_CALLBACK(hildon_volumebar_mute_toggled), vvolumebar);
 
     gtk_widget_show(GTK_WIDGET(priv->volumebar));
 }

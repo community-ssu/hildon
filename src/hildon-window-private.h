@@ -27,6 +27,8 @@
 
 G_BEGIN_DECLS
 
+typedef struct                                  _HildonWindowPrivate HildonWindowPrivate;
+
 struct                                          _HildonWindowPrivate
 {
     GtkWidget *menu;
@@ -65,7 +67,8 @@ void G_GNUC_INTERNAL
 hildon_window_take_common_toolbar               (HildonWindow *self);
 
 void G_GNUC_INTERNAL
-hildon_window_update_topmost                    (HildonWindow *self, Window window_id);
+hildon_window_update_topmost                    (HildonWindow *self, 
+                                                 Window window_id);
 
 Window G_GNUC_INTERNAL
 hildon_window_get_active_window                 (void);

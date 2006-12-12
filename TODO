@@ -78,4 +78,4 @@
 * Make the gtk doc build
 * Make the examples build optional
 * Remove the plugin API
-* 
+* HildonVolumebar signals should be a prt of the class 
