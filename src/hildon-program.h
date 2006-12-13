@@ -22,29 +22,44 @@
  *
  */
 
-#ifndef __HILDON_PROGRAM_H__
-#define __HILDON_PROGRAM_H__
+#ifndef                                         __HILDON_PROGRAM_H__
+#define                                         __HILDON_PROGRAM_H__
 
-#include <glib-object.h>
-#include "hildon-window.h"
+#include                                        <glib-object.h>
+#include                                        "hildon-window.h"
 
 G_BEGIN_DECLS
-typedef struct _HildonProgram HildonProgram;
-typedef struct _HildonProgramClass HildonProgramClass;
 
-#define HILDON_TYPE_PROGRAM (hildon_program_get_type())
-#define HILDON_PROGRAM(obj) (G_TYPE_CHECK_INSTANCE_CAST (obj, \
-            HILDON_TYPE_PROGRAM, \
-            HildonProgram))
-#define HILDON_IS_PROGRAM(obj) (G_TYPE_CHECK_INSTANCE_TYPE (obj, \
-            HILDON_TYPE_PROGRAM))
+typedef struct                                  _HildonProgram HildonProgram;
 
-struct _HildonProgram
+typedef struct                                  _HildonProgramClass HildonProgramClass;
+
+#define                                         HILDON_TYPE_PROGRAM \
+                                                (hildon_program_get_type())
+
+#define                                         HILDON_PROGRAM(obj) \
+                                                (G_TYPE_CHECK_INSTANCE_CAST ((obj), \
+                                                HILDON_TYPE_PROGRAM, HildonProgram))
+
+#define                                         HILDON_PROGRAM_CLASS(obj) \
+                                                (G_TYPE_CHECK_CLASS_CAST ((obj), \
+                                                HILDON_TYPE_PROGRAM, HildonProgramClass))
+
+#define                                         HILDON_IS_PROGRAM(obj) \
+                                                (G_TYPE_CHECK_INSTANCE_TYPE ((obj), HILDON_TYPE_PROGRAM))
+
+#define                                         HILDON_IS_PROGRAM_CLASS(klass) \
+                                                (G_CHECK_CLASS_TYPE ((klass), HILDON_TYPE_PROGRAM))
+
+#define                                         HILDON_PROGRAM_GET_CLASS(obj) \
+                                                ((HildonProgramClass *) G_OBJECT_GET_CLASS(obj))
+
+struct                                          _HildonProgram
 {
     GObject parent;
 };
 
-struct _HildonProgramClass
+struct                                          _HildonProgramClass
 {
     GObjectClass parent;
 
@@ -53,43 +68,46 @@ struct _HildonProgramClass
     void (*_hildon_reserved2)(void);
     void (*_hildon_reserved3)(void);
     void (*_hildon_reserved4)(void);
-
 };
 
 GType
-hildon_program_get_type (void);
+hildon_program_get_type                         (void);
 
-/* Public methods */
-
-HildonProgram *
-hildon_program_get_instance (void);
+HildonProgram*
+hildon_program_get_instance                     (void);
 
 void
-hildon_program_add_window (HildonProgram *self, HildonWindow *window);
+hildon_program_add_window                       (HildonProgram *self, 
+                                                 HildonWindow *window);
 
 void
-hildon_program_remove_window (HildonProgram *self, HildonWindow *window);
+hildon_program_remove_window                    (HildonProgram *self, 
+                                                 HildonWindow *window);
 
 void
-hildon_program_set_can_hibernate (HildonProgram *self, gboolean killable);
+hildon_program_set_can_hibernate                (HildonProgram *self, 
+                                                 gboolean killable);
 
 gboolean
-hildon_program_get_can_hibernate (HildonProgram *self);
+hildon_program_get_can_hibernate                (HildonProgram *self);
 
 void
-hildon_program_set_common_menu (HildonProgram *self, GtkMenu *menu);
+hildon_program_set_common_menu                  (HildonProgram *self, 
+                                                 GtkMenu *menu);
 
-GtkMenu *
-hildon_program_get_common_menu (HildonProgram *self);
+GtkMenu*
+hildon_program_get_common_menu                  (HildonProgram *self);
 
 void
-hildon_program_set_common_toolbar (HildonProgram *self, GtkToolbar *toolbar);
+hildon_program_set_common_toolbar               (HildonProgram *self, 
+                                                 GtkToolbar *toolbar);
 
-GtkToolbar *
-hildon_program_get_common_toolbar (HildonProgram *self);
+GtkToolbar*
+hildon_program_get_common_toolbar               (HildonProgram *self);
 
 gboolean
-hildon_program_get_is_topmost (HildonProgram *self);
+hildon_program_get_is_topmost                   (HildonProgram *self);
 
 G_END_DECLS
-#endif /* __HILDON_PROGRAM_H__ */
+
+#endif                                          /* __HILDON_PROGRAM_H__ */

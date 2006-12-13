@@ -1,4 +1,11 @@
-2006-12-12  Michael Dominic K.  <mdk@mdk.am> 
+2006-12-13  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
+	* TODO:
+	* src/hildon-program-private.h:
+	* src/hildon-program.c:
+	* src/hildon-program.h: Cleaning up HildonProgram.
+
+2006-12-12  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
 	* TODO: 
 	* src/hildon-hvolumebar.c:

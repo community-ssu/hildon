@@ -44,8 +44,6 @@
   hildon-plugin-widget.c
   hildon-plugin-widget.h
   hildon-private.h
-  hildon-program.c
-  hildon-program.h
   hildon-range-editor.c
   hildon-range-editor.h
   hildon-seekbar.c
@@ -72,3 +70,4 @@
 * Make the examples build optional
 * Remove the plugin API
 * HildonVolumebar signals should be a prt of the class 
+* Get rid of the old GTK_ macros in HildonWindow
