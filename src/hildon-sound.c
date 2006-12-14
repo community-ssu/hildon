@@ -28,13 +28,13 @@
  * 
  */
 
-#include <config.h>
-#include "hildon-sound.h"
-#include <gconf/gconf-client.h>
-#include <esd.h>
-#include <unistd.h>
+#include                                        "hildon-sound.h"
+#include                                        <gconf/gconf-client.h>
+#include                                        <esd.h>
+#include                                        <unistd.h>
 
-#define ALARM_GCONF_PATH "/apps/osso/sound/system_alert_volume"
+#define                                         ALARM_GCONF_PATH \
+                                                "/apps/osso/sound/system_alert_volume"
 
 /**
  * hildon_play_system_sound:
@@ -43,51 +43,52 @@
  * Plays the given sample using esd sound daemon.
  * Volume level is received from gconf. 
  */
-void hildon_play_system_sound(const gchar *sample)
+void 
+hildon_play_system_sound                        (const gchar *sample)
 {
-  GConfClient *client;
-  GConfValue *value;
-  gint volume, scale, sock, sample_id;
+    GConfClient *client;
+    GConfValue *value;
+    gint volume, scale, sock, sample_id;
 
-  client = gconf_client_get_default();
-  value = gconf_client_get(client, ALARM_GCONF_PATH, NULL);
+    client = gconf_client_get_default ();
+    value = gconf_client_get (client, ALARM_GCONF_PATH, NULL);
 
-  /* We want error cases to match full volume, not silence, so
-     we do not want to use gconf_client_get_int */
-  if (!value || value->type != GCONF_VALUE_INT)
-    volume = 2;
-  else
-    volume = gconf_value_get_int(value);
+    /* We want error cases to match full volume, not silence, so
+       we do not want to use gconf_client_get_int */
+    if (!value || value->type != GCONF_VALUE_INT)
+        volume = 2;
+    else
+        volume = gconf_value_get_int(value);
 
-  if (value)
-    gconf_value_free(value);
-  g_object_unref(client);
+    if (value)
+        gconf_value_free(value);
+    g_object_unref (client);
 
-  switch (volume)
-  {
-    case 0:
-      return;
-    case 1:
-      scale = 0x80;
-      break;
-    case 2:
-    default:
-      scale = 0xff;
-      break;
-  };
-    
-  sock = esd_open_sound(NULL);
-  if (sock <= 0)
-    return;
+    switch (volume)
+    {
+        case 0:
+            return;
+        case 1:
+            scale = 0x80;
+            break;
+        case 2:
+        default:
+            scale = 0xff;
+            break;
+    };
 
-  sample_id = esd_file_cache(sock, g_get_prgname(), sample);
-  if (sample_id < 0) {
-    close(sock);
-    return;
-  }
-  
-  esd_set_default_sample_pan(sock, sample_id, scale, scale);
-  esd_sample_play(sock, sample_id);
-  esd_sample_free(sock, sample_id);
-  close(sock);
+    sock = esd_open_sound (NULL);
+    if (sock <= 0)
+        return;
+
+    sample_id = esd_file_cache (sock, g_get_prgname(), sample);
+    if (sample_id < 0) {
+        close(sock);
+        return;
+    }
+
+    esd_set_default_sample_pan (sock, sample_id, scale, scale);
+    esd_sample_play(sock, sample_id);
+    esd_sample_free(sock, sample_id);
+    close (sock);
 }

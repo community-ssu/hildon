@@ -21,14 +21,17 @@
  * 02110-1301 USA
  *
  */
-#ifndef __HILDON_SOUND_H__
-#define __HILDON_SOUND_H__
 
-#include <glib.h>
+#ifndef                                         __HILDON_SOUND_H__
+#define                                         __HILDON_SOUND_H__
+
+#include                                        <glib.h>
 
 G_BEGIN_DECLS
 
-void hildon_play_system_sound(const gchar *sample);
+void 
+hildon_play_system_sound                        (const gchar *sample);
 
 G_END_DECLS
-#endif /* __HILDON_SYSTEM_SOUND_H__ */
+
+#endif                                          /* __HILDON_SOUND_H__ */

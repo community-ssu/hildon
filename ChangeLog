@@ -1,5 +1,10 @@
 2006-12-14  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
+	* src/hildon-sound.c:
+	* src/hildon-sound.h: Cleaning up.
+
+2006-12-14  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
 	* TODO: Removing. 
 
 	* src/hildon-volumebar-range.c:
