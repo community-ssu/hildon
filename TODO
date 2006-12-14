@@ -27,8 +27,6 @@
   hildon-date-editor.h
   hildon-defines.c
   hildon-defines.h
-  hildon-find-toolbar.c
-  hildon-find-toolbar.h
   hildon-font-selection-dialog.c
   hildon-font-selection-dialog.h
   hildon-get-password-dialog.c

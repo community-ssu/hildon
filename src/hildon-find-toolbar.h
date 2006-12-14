@@ -22,59 +22,73 @@
  *
  */
 
-#ifndef __HILDON_FIND_TOOLBAR_H__
-#define __HILDON_FIND_TOOLBAR_H__
+#ifndef                                         __HILDON_FIND_TOOLBAR_H__
+#define                                         __HILDON_FIND_TOOLBAR_H__
 
-#include <gtk/gtktoolbar.h>
-#include <gtk/gtkliststore.h>
+#include                                        <gtk/gtktoolbar.h>
+#include                                        <gtk/gtkliststore.h>
 
 G_BEGIN_DECLS
 
-#define HILDON_TYPE_FIND_TOOLBAR (hildon_find_toolbar_get_type())
-#define HILDON_FIND_TOOLBAR(object) \
-  (G_TYPE_CHECK_INSTANCE_CAST((object), HILDON_TYPE_FIND_TOOLBAR, \
-  HildonFindToolbar))
-#define HILDON_FIND_TOOLBARClass(klass) \
-  (G_TYPE_CHECK_CLASS_CAST((klass), HILDON_TYPE_FIND_TOOLBAR, \
-  HildonFindToolbarClass))
-#define HILDON_IS_FIND_TOOLBAR(object) \
-  (G_TYPE_CHECK_INSTANCE_TYPE((object), HILDON_TYPE_FIND_TOOLBAR))
-#define HILDON_IS_FIND_TOOLBAR_CLASS(klass) \
-  (G_TYPE_CHECK_CLASS_CAST((klass), HILDON_TYPE_FIND_TOOLBAR))
-#define HILDON_FIND_TOOLBAR_GET_CLASS(object) \
-  (G_TYPE_INSTANCE_GET_CLASS((object), HILDON_TYPE_FIND_TOOLBAR, \
-  HildonFindToolbarClass))
+#define                                         HILDON_TYPE_FIND_TOOLBAR (hildon_find_toolbar_get_type())
 
-typedef struct _HildonFindToolbar HildonFindToolbar;
-typedef struct _HildonFindToolbarClass HildonFindToolbarClass;
-typedef struct _HildonFindToolbarPrivate HildonFindToolbarPrivate;
+#define                                         HILDON_FIND_TOOLBAR(object) \
+                                                (G_TYPE_CHECK_INSTANCE_CAST((object), \
+                                                HILDON_TYPE_FIND_TOOLBAR, \
+                                                HildonFindToolbar))
+
+#define                                         HILDON_FIND_TOOLBAR_CLASS(klass) \
+                                                (G_TYPE_CHECK_CLASS_CAST((klass), HILDON_TYPE_FIND_TOOLBAR, \
+                                                HildonFindToolbarClass))
+
+#define                                         HILDON_IS_FIND_TOOLBAR(object) \
+                                                (G_TYPE_CHECK_INSTANCE_TYPE((object), \
+                                                HILDON_TYPE_FIND_TOOLBAR))
+
+#define                                         HILDON_IS_FIND_TOOLBAR_CLASS(klass) \
+                                                (G_TYPE_CHECK_CLASS_CAST((klass), \
+                                                HILDON_TYPE_FIND_TOOLBAR))
+
+#define                                         HILDON_FIND_TOOLBAR_GET_CLASS(object) \
+                                                (G_TYPE_INSTANCE_GET_CLASS((object), \
+                                                HILDON_TYPE_FIND_TOOLBAR, \
+                                                HildonFindToolbarClass))
+
+typedef struct                                  _HildonFindToolbar HildonFindToolbar;
+
+typedef struct                                  _HildonFindToolbarClass HildonFindToolbarClass;
 
 struct _HildonFindToolbar
 {
   GtkToolbar parent;
-  
-  HildonFindToolbarPrivate *priv;
 };
 
 struct _HildonFindToolbarClass
 {
   GtkToolbarClass parent_class;
 
-  void		(*search) 		(HildonFindToolbar *toolbar);
-  void 		(*close)		(HildonFindToolbar *toolbar);
-  void 		(*invalid_input)	(HildonFindToolbar *toolbar);
-  gboolean	(*history_append)	(HildonFindToolbar *tooblar);
+  void (*search) (HildonFindToolbar *toolbar);
+  void (*close) (HildonFindToolbar *toolbar);
+  void (*invalid_input) (HildonFindToolbar *toolbar);
+  gboolean (*history_append) (HildonFindToolbar *tooblar);
 };
 
-GType		hildon_find_toolbar_get_type		(void) G_GNUC_CONST;
-GtkWidget*	hildon_find_toolbar_new			(const gchar *label);
-GtkWidget*	hildon_find_toolbar_new_with_model	(const gchar *label,
-							 GtkListStore*
-							 model,
-							 gint column);
-void		hildon_find_toolbar_highlight_entry	(HildonFindToolbar *ftb,
-							 gboolean get_focus);
+GType G_GNUC_CONST
+hildon_find_toolbar_get_type                    (void);
+
+GtkWidget*      
+hildon_find_toolbar_new                         (const gchar *label);
+
+GtkWidget*      
+hildon_find_toolbar_new_with_model              (const gchar *label,
+                                                 GtkListStore* model,
+                                                 gint column);
+
+void 
+hildon_find_toolbar_highlight_entry             (HildonFindToolbar *ftb,
+                                                 gboolean get_focus);
 
 G_END_DECLS
 
-#endif /* __HILDON_FIND_TOOLBAR_H__ */
+#endif                                          /* __HILDON_FIND_TOOLBAR_H__ */
+

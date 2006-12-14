@@ -1,3 +1,10 @@
+2006-12-14  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
+	* TODO:
+	* src/hildon-find-toolbar-private.h:
+	* src/hildon-find-toolbar.c:
+	* src/hildon-find-toolbar.h: Cleaning up HildonFindToolbar.
+
 2006-12-13  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
 	* TODO:
