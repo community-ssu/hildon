@@ -1,5 +1,12 @@
 2006-12-14  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
+	* TODO: Removing. 
+
+	* src/hildon-volumebar-range.c:
+	* src/hildon-volumebar-range.h: Cleaning up HildonVolumebarRange.
+
+2006-12-14  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
 	* TODO:
 	* src/hildon-find-toolbar-private.h:
 	* src/hildon-find-toolbar.c:

@@ -37,80 +37,96 @@
  * 
  */
 
-#include <config.h>
-#include "hildon-volumebar-range.h"
-#include <gtk/gtkrange.h>
-#include <gdk/gdkkeysyms.h>
+#include                                        "hildon-volumebar-range.h"
+#include                                        <gtk/gtkrange.h>
+#include                                        <gdk/gdkkeysyms.h>
 
-#define VOLUMEBAR_RANGE_INITIAL_VALUE 50.0
-#define VOLUMEBAR_RANGE_MINIMUM_VALUE 0.0
-#define VOLUMEBAR_RANGE_MAXIMUM_VALUE 100.0
-#define VOLUMEBAR_RANGE_STEP_INCREMENT_VALUE 5.0
-#define VOLUMEBAR_RANGE_PAGE_INCREMENT_VALUE 5.0
-#define VOLUMEBAR_RANGE_PAGE_SIZE_VALUE 0.0
+#define                                         VOLUMEBAR_RANGE_INITIAL_VALUE 50.0
 
-#define CHANGE_THRESHOLD 0.001
+#define                                         VOLUMEBAR_RANGE_MINIMUM_VALUE 0.0
 
-static GtkScaleClass *parent_class;
+#define                                         VOLUMEBAR_RANGE_MAXIMUM_VALUE 100.0
 
-static void hildon_volumebar_range_class_init(HildonVolumebarRangeClass *  
-                                              volumerange_class);
-static void hildon_volumebar_range_init(HildonVolumebarRange *
-                                        volumerange);
-static void hildon_volumebar_range_set_property(GObject * object,
-						guint prop_id,
-						const GValue * value,
-						GParamSpec * pspec);
-static void hildon_volumebar_range_get_property(GObject * object,
-						guint prop_id,
-						GValue * value,
-						GParamSpec * pspec);
-static gint hildon_volumebar_range_button_press_event(GtkWidget * widget,
-                                                      GdkEventButton *
-                                                      event);
-static gint hildon_volumebar_range_button_release_event(GtkWidget * widget,
-                                                        GdkEventButton *
-                                                        event);
-static gboolean hildon_volumebar_range_keypress(GtkWidget * widget,
-                                                GdkEventKey * event);
+#define                                         VOLUMEBAR_RANGE_STEP_INCREMENT_VALUE 5.0
 
-enum {
-  PROP_NONE = 0,
+#define                                         VOLUMEBAR_RANGE_PAGE_INCREMENT_VALUE 5.0
+
+#define                                         VOLUMEBAR_RANGE_PAGE_SIZE_VALUE 0.0
+
+#define                                         CHANGE_THRESHOLD 0.001
+
+static GtkScaleClass*                           parent_class;
+
+static void 
+hildon_volumebar_range_class_init               (HildonVolumebarRangeClass*
+                                                 volumerange_class);
+
+static void 
+hildon_volumebar_range_init                     (HildonVolumebarRange*
+                                                 volumerange);
+
+static void 
+hildon_volumebar_range_set_property             (GObject *object,
+                                                 guint prop_id,
+                                                 const GValue *value,
+                                                 GParamSpec *pspec);
+
+static void 
+hildon_volumebar_range_get_property             (GObject *object,
+                                                 guint prop_id,
+                                                 GValue *value,
+                                                 GParamSpec *pspec);
+
+static gint 
+hildon_volumebar_range_button_press_event       (GtkWidget *widget,
+                                                 GdkEventButton *event);
+
+static gint 
+hildon_volumebar_range_button_release_event     (GtkWidget *widget,
+                                                 GdkEventButton *event);
+
+static gboolean
+hildon_volumebar_range_keypress                 (GtkWidget *widget,
+                                                 GdkEventKey *event);
+
+enum 
+{
+  PROP_0,
   PROP_LEVEL
 };
 
-GType 
-hildon_volumebar_range_get_type(void)
+GType G_GNUC_CONST
+hildon_volumebar_range_get_type                 (void)
 {
     static GType volumerange_type = 0;
 
     if (!volumerange_type) {
         static const GTypeInfo volumerange_info = {
-            sizeof(HildonVolumebarRangeClass),
+            sizeof (HildonVolumebarRangeClass),
             NULL,       /* base_init */
             NULL,       /* base_finalize */
             (GClassInitFunc) hildon_volumebar_range_class_init,
             NULL,       /* class_finalize */
             NULL,       /* class_data */
-            sizeof(HildonVolumebarRange),
+            sizeof (HildonVolumebarRange),
             0,  /* n_preallocs */
             (GInstanceInitFunc) hildon_volumebar_range_init,
         };
-        volumerange_type = g_type_register_static(GTK_TYPE_SCALE,
-                                                  "HildonVolumebarRange",
-                                                  &volumerange_info, 0);
+        volumerange_type = g_type_register_static (GTK_TYPE_SCALE,
+                "HildonVolumebarRange",
+                &volumerange_info, 0);
     }
+
     return volumerange_type;
 }
 
 static void 
-hildon_volumebar_range_class_init(HildonVolumebarRangeClass *
-				  volumerange_class)
+hildon_volumebar_range_class_init               (HildonVolumebarRangeClass *volumerange_class)
 {
-    GtkWidgetClass *widget_class = GTK_WIDGET_CLASS(volumerange_class);
-    GObjectClass *object_class = G_OBJECT_CLASS(volumerange_class);
+    GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (volumerange_class);
+    GObjectClass *object_class = G_OBJECT_CLASS (volumerange_class);
 
-    parent_class = g_type_class_peek_parent(volumerange_class);
+    parent_class = g_type_class_peek_parent (volumerange_class);
 
     widget_class->button_press_event =
         hildon_volumebar_range_button_press_event;
@@ -121,136 +137,140 @@ hildon_volumebar_range_class_init(HildonVolumebarRangeClass *
     object_class->set_property = hildon_volumebar_range_set_property;
     object_class->get_property = hildon_volumebar_range_get_property; 
 
-    g_object_class_install_property(object_class,
-				    PROP_LEVEL,
-				    g_param_spec_double("level",
-							"Level",
-							"Current volume level",
-							VOLUMEBAR_RANGE_MINIMUM_VALUE,
-							VOLUMEBAR_RANGE_MAXIMUM_VALUE,
-							VOLUMEBAR_RANGE_INITIAL_VALUE,
-							G_PARAM_READWRITE));
+    g_object_class_install_property (object_class,
+            PROP_LEVEL,
+            g_param_spec_double ("level",
+                "Level",
+                "Current volume level",
+                VOLUMEBAR_RANGE_MINIMUM_VALUE,
+                VOLUMEBAR_RANGE_MAXIMUM_VALUE,
+                VOLUMEBAR_RANGE_INITIAL_VALUE,
+                G_PARAM_READWRITE));
     return;
 }
 
 static void 
-hildon_volumebar_range_init(HildonVolumebarRange * volumerange)
+hildon_volumebar_range_init                     (HildonVolumebarRange *volumerange)
 {
-  /* stepper_a = "less", stepper_d = "more" */
-  GTK_RANGE(volumerange)->has_stepper_a = TRUE;
-  GTK_RANGE(volumerange)->has_stepper_d = TRUE;
+    /* stepper_a = "less", stepper_d = "more" */
+    GTK_RANGE (volumerange)->has_stepper_a = TRUE;
+    GTK_RANGE (volumerange)->has_stepper_d = TRUE;
 }
 
 static void
-hildon_volumebar_range_set_property(GObject * object,
-				    guint prop_id,
-				    const GValue * value,
-				    GParamSpec * pspec)
+hildon_volumebar_range_set_property             (GObject *object,
+                                                 guint prop_id,
+                                                 const GValue *value,
+                                                 GParamSpec *pspec)
 {
-    HildonVolumebarRange *range = HILDON_VOLUMEBAR_RANGE(object);
+    HildonVolumebarRange *range = HILDON_VOLUMEBAR_RANGE (object);
 
     switch (prop_id) {
-    case PROP_LEVEL:
-        hildon_volumebar_range_set_level(range, g_value_get_double(value));
-	break;
-    default:
-        G_OBJECT_WARN_INVALID_PROPERTY_ID(object, prop_id, pspec);
-	break;
+        case PROP_LEVEL:
+            hildon_volumebar_range_set_level (range, g_value_get_double (value));
+            break;
+
+        default:
+            G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+            break;
+
     }
 }
 
 static void
-hildon_volumebar_range_get_property(GObject * object,
-				    guint prop_id,
-				    GValue * value,
-				    GParamSpec * pspec)
+hildon_volumebar_range_get_property             (GObject *object,
+                                                 guint prop_id,
+                                                 GValue *value,
+                                                 GParamSpec *pspec)
 {
-    HildonVolumebarRange *range = HILDON_VOLUMEBAR_RANGE(object);
+    HildonVolumebarRange *range = HILDON_VOLUMEBAR_RANGE (object);
 
     switch (prop_id) {
-    case PROP_LEVEL:
-        g_value_set_double(value, hildon_volumebar_range_get_level(range));
-        break;
-    default:
-        G_OBJECT_WARN_INVALID_PROPERTY_ID(object, prop_id, pspec);
-	break;
+
+        case PROP_LEVEL:
+            g_value_set_double (value, hildon_volumebar_range_get_level(range));
+            break;
+
+        default:
+            G_OBJECT_WARN_INVALID_PROPERTY_ID(object, prop_id, pspec);
+            break;
     }
 }
 
-static
-gboolean hildon_volumebar_range_keypress(GtkWidget * widget,
-                                         GdkEventKey * event)
+static gboolean
+hildon_volumebar_range_keypress                 (GtkWidget *widget,
+                                                 GdkEventKey *event)
 {
     /* Accept arrow keys only if they match the orientation of the widget */
     if (GTK_RANGE (widget)->orientation == GTK_ORIENTATION_HORIZONTAL)
-      {
+    {
         if (event->keyval == GDK_Up || event->keyval == GDK_Down) {
-          return FALSE;
+            return FALSE;
         }
-      }
+    }
     else
-      {
+    {
         if (event->keyval == GDK_Left || event->keyval == GDK_Right) {
-          return FALSE;
+            return FALSE;
         }
-      }
+    }
 
-    return ((GTK_WIDGET_CLASS(parent_class)->key_press_event) (widget,
-                                                               event));
+    return ((GTK_WIDGET_CLASS (parent_class)->key_press_event) (widget,
+                event));
 }
 
-GtkWidget *
-hildon_volumebar_range_new(GtkOrientation orientation)
+GtkWidget*
+hildon_volumebar_range_new                      (GtkOrientation orientation)
 {
     GtkAdjustment * adjustment = GTK_ADJUSTMENT (gtk_adjustment_new (VOLUMEBAR_RANGE_INITIAL_VALUE,
-					      VOLUMEBAR_RANGE_MINIMUM_VALUE,
-					      VOLUMEBAR_RANGE_MAXIMUM_VALUE,
-					      VOLUMEBAR_RANGE_STEP_INCREMENT_VALUE,
-					      VOLUMEBAR_RANGE_PAGE_INCREMENT_VALUE,
-					      VOLUMEBAR_RANGE_PAGE_SIZE_VALUE));
+                VOLUMEBAR_RANGE_MINIMUM_VALUE,
+                VOLUMEBAR_RANGE_MAXIMUM_VALUE,
+                VOLUMEBAR_RANGE_STEP_INCREMENT_VALUE,
+                VOLUMEBAR_RANGE_PAGE_INCREMENT_VALUE,
+                VOLUMEBAR_RANGE_PAGE_SIZE_VALUE));
+
     HildonVolumebarRange *self =
         g_object_new(HILDON_TYPE_VOLUMEBAR_RANGE,
-		     "adjustment", adjustment,
-		     NULL);
+                "adjustment", adjustment,
+                NULL);
 
-    GTK_RANGE(self)->orientation = orientation;
+    GTK_RANGE (self)->orientation = orientation;
 
     /* Default vertical range is upside down for purposes of this widget */
-    gtk_range_set_inverted(GTK_RANGE(self),
-                           (orientation == GTK_ORIENTATION_VERTICAL));
+    gtk_range_set_inverted (GTK_RANGE (self),
+            (orientation == GTK_ORIENTATION_VERTICAL));
 
     return GTK_WIDGET(self);
 }
 
 gdouble 
-hildon_volumebar_range_get_level(HildonVolumebarRange * self)
+hildon_volumebar_range_get_level                (HildonVolumebarRange *self)
 {
-    g_return_val_if_fail(HILDON_IS_VOLUMEBAR_RANGE(self), -1.0);
+    g_return_val_if_fail (HILDON_IS_VOLUMEBAR_RANGE(self), -1.0);
 
-    return gtk_adjustment_get_value(gtk_range_get_adjustment(GTK_RANGE(self)));
+    return gtk_adjustment_get_value (gtk_range_get_adjustment(GTK_RANGE (self)));
 }
 
 void 
-hildon_volumebar_range_set_level(HildonVolumebarRange * self,
-				 gdouble level)
+hildon_volumebar_range_set_level                (HildonVolumebarRange * self,
+                                                 gdouble level)
 {
     GtkAdjustment *adjustment;
 
-    g_return_if_fail(HILDON_IS_VOLUMEBAR_RANGE(self));
+    g_return_if_fail (HILDON_IS_VOLUMEBAR_RANGE (self));
 
-    adjustment = gtk_range_get_adjustment(GTK_RANGE(self));
+    adjustment = gtk_range_get_adjustment (GTK_RANGE (self));
 
     /* Check that value has actually changed. Note that it's not safe to
      * just compare if floats are equivalent or not */
-    if (ABS(gtk_adjustment_get_value(adjustment) - level) > CHANGE_THRESHOLD) {
-      gtk_adjustment_set_value(adjustment, level);
+    if (ABS (gtk_adjustment_get_value (adjustment) - level) > CHANGE_THRESHOLD) {
+        gtk_adjustment_set_value(adjustment, level);
     }
 }
 
 static gint 
-hildon_volumebar_range_button_press_event(GtkWidget * widget,
-					  GdkEventButton *
-					  event)
+hildon_volumebar_range_button_press_event       (GtkWidget *widget,
+                                                 GdkEventButton *event)
 {
     gboolean result = FALSE;
 
@@ -259,19 +279,18 @@ hildon_volumebar_range_button_press_event(GtkWidget * widget,
        taps to move the slider to the position of the tap, which by default
        is the middle button behaviour. To avoid breaking default GtkRange
        behaviour, this has been implemented by faking a middle button press. */
+
     event->button = (event->button == 1) ? 2 : event->button;
-    if (GTK_WIDGET_CLASS(parent_class)->button_press_event) {
-        result =
-            GTK_WIDGET_CLASS(parent_class)->button_press_event(widget,
-                                                               event);
+    if (GTK_WIDGET_CLASS (parent_class)->button_press_event) {
+        result = GTK_WIDGET_CLASS (parent_class)->button_press_event(widget, event);
     }
+
     return result;
 }
 
 static gint
-hildon_volumebar_range_button_release_event(GtkWidget * widget,
-					    GdkEventButton *
-					    event)
+hildon_volumebar_range_button_release_event     (GtkWidget *widget,
+                                                 GdkEventButton *event)
 {
     gboolean result = FALSE;
 
@@ -280,11 +299,12 @@ hildon_volumebar_range_button_release_event(GtkWidget * widget,
        taps to move the slider to the position of the tap, which by default
        is the middle button behaviour. To avoid breaking default GtkRange
        behaviour, this has been implemented by faking a middle button press. */
+
     event->button = event->button == 1 ? 2 : event->button;
-    if (GTK_WIDGET_CLASS(parent_class)->button_release_event) {
-        result =
-            GTK_WIDGET_CLASS(parent_class)->button_release_event(widget,
-                                                                 event);
+    if (GTK_WIDGET_CLASS (parent_class)->button_release_event) {
+        result = GTK_WIDGET_CLASS(parent_class)->button_release_event(widget, event);
     }
+
     return result;
 }
+
