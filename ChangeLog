@@ -1,5 +1,11 @@
 2006-12-15  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
+	* src/hildon-controlbar-private.h:
+	* src/hildon-controlbar.c:
+	* src/hildon-controlbar.h: Cleaning up the HildonControlBar.
+
+2006-12-15  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
 	* src/hildon-range-editor-private.h:
 	* src/hildon-range-editor.c:
 	* src/hildon-range-editor.h: Cleaning up HildonRangeEditor.
