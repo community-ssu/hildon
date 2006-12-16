@@ -22,56 +22,66 @@
  *
  */
 
-#ifndef __HILDON_CALENDAR_POPUP_H__
-#define __HILDON_CALENDAR_POPUP_H__
+#ifndef                                         __HILDON_CALENDAR_POPUP_H__
+#define                                         __HILDON_CALENDAR_POPUP_H__
 
-#include <gtk/gtkdialog.h>
+#include                                        <gtk/gtkdialog.h>
 
 G_BEGIN_DECLS
-/**
- * HILDON_TYPE_CALENDAR_POPUP:
- *
- * Macro for getting type of calendar popup.
- * Since: 0.12.10
- */
-#define HILDON_TYPE_CALENDAR_POPUP ( hildon_calendar_popup_get_type() )
 
-#define HILDON_CALENDAR_POPUP(obj) (GTK_CHECK_CAST (obj,\
-  HILDON_TYPE_CALENDAR_POPUP, HildonCalendarPopup))
-#define HILDON_CALENDAR_POPUP_CLASS(klass) (GTK_CHECK_CLASS_CAST ((klass),\
-  HILDON_TYPE_CALENDAR_POPUP, HildonCalendarPopupClass))
-#define HILDON_IS_CALENDAR_POPUP(obj) (GTK_CHECK_TYPE (obj,\
-  HILDON_TYPE_CALENDAR_POPUP))
-#define HILDON_IS_CALENDAR_POPUP_CLASS(klass) \
-  (GTK_CHECK_CLASS_TYPE ((klass), HILDON_TYPE_CALENDAR_POPUP))
+typedef struct                                  _HildonCalendarPopup HildonCalendarPopup;
 
-/**
- * HildonCalendarPopup:
- *
- * Internal struct for calendar popup.
- */
-typedef struct _HildonCalendarPopup HildonCalendarPopup;
-typedef struct _HildonCalendarPopupClass HildonCalendarPopupClass;
+typedef struct                                  _HildonCalendarPopupClass HildonCalendarPopupClass;
 
-struct _HildonCalendarPopup {
-    GtkDialog par;
+#define                                         HILDON_TYPE_CALENDAR_POPUP \
+                                                (hildon_calendar_popup_get_type())
+
+#define                                         HILDON_CALENDAR_POPUP(obj) (GTK_CHECK_CAST (obj,\
+                                                HILDON_TYPE_CALENDAR_POPUP, HildonCalendarPopup))
+
+#define                                         HILDON_CALENDAR_POPUP_CLASS(klass) (GTK_CHECK_CLASS_CAST ((klass), \
+                                                HILDON_TYPE_CALENDAR_POPUP, HildonCalendarPopupClass))
+
+#define                                         HILDON_IS_CALENDAR_POPUP(obj) (GTK_CHECK_TYPE (obj,\
+                                                HILDON_TYPE_CALENDAR_POPUP))
+
+#define                                         HILDON_IS_CALENDAR_POPUP_CLASS(klass) \
+                                                (GTK_CHECK_CLASS_TYPE ((klass), HILDON_TYPE_CALENDAR_POPUP))
+
+#define                                         HILDON_CALENDAR_POPUP_GET_CLASS(obj) \
+                                                ((HildonCalendarPopupClass *) G_OBJECT_GET_CLASS(obj))
+
+struct                                          _HildonCalendarPopup 
+{
+    GtkDialog parent;
 };
 
-struct _HildonCalendarPopupClass {
+struct                                          _HildonCalendarPopupClass 
+{
     GtkDialogClass parent_class;
 };
 
-GType hildon_calendar_popup_get_type(void) G_GNUC_CONST;
+GType G_GNUC_CONST
+hildon_calendar_popup_get_type                  (void);
 
-GtkWidget *hildon_calendar_popup_new(GtkWindow * parent, guint year,
-                                     guint month, guint day);
+GtkWidget*
+hildon_calendar_popup_new                       (GtkWindow *parent, 
+                                                 guint year,
+                                                 guint month, 
+                                                 guint day);
 
-void hildon_calendar_popup_set_date(HildonCalendarPopup * cal,
-                                    guint year, guint month, guint day);
+void 
+hildon_calendar_popup_set_date                  (HildonCalendarPopup *cal,
+                                                 guint year, 
+                                                 guint month, 
+                                                 guint day);
 
-void hildon_calendar_popup_get_date(HildonCalendarPopup * cal,
-                                    guint * year, guint * month,
-                                    guint * day);
+void 
+hildon_calendar_popup_get_date                  (HildonCalendarPopup *cal,
+                                                 guint *year, 
+                                                 guint *month,
+                                                 guint *day);
 
 G_END_DECLS
-#endif /* __HILDON_CALENDAR_POPUP_H__ */
+
+#endif                                          /* __HILDON_CALENDAR_POPUP_H__ */
