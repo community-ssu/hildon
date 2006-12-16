@@ -1,5 +1,11 @@
 2006-12-16  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
+	* src/hildon-weekday-picker-private.h:
+	* src/hildon-weekday-picker.c:
+	* src/hildon-weekday-picker.h: Cleaning up the HildonWeekdayPicker.
+
+2006-12-16  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
 	* src/hildon-calendar-popup-private.h:
 	* src/hildon-calendar-popup.c:
 	* src/hildon-calendar-popup.h: Cleaning up the HildonCalendarPopup.
