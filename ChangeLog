@@ -1,3 +1,9 @@
+2006-12-18  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
+	* src/hildon-sort-dialog-private.h:
+	* src/hildon-sort-dialog.c:
+	* src/hildon-sort-dialog.h: Cleaning up the HildonSortDialog.
+
 2006-12-16  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
 	* src/hildon-weekday-picker-private.h:
