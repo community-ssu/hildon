@@ -1,5 +1,11 @@
 2006-12-18  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
+	* src/hildon-code-dialog-private.h:
+	* src/hildon-code-dialog.c:
+	* src/hildon-code-dialog.h: Cleaning up the HildonCodeDialog.
+
+2006-12-18  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
 	* src/hildon-caption-private.h:
 	* src/hildon-caption.c:
 	* src/hildon-caption.h: Cleaning up the HildonCaption.

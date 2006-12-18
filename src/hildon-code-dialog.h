@@ -22,35 +22,39 @@
  *
  */
 
-#ifndef __HILDON_CODE_DIALOG_H__
-#define __HILDON_CODE_DIALOG_H__
+#ifndef                                         __HILDON_CODE_DIALOG_H__
+#define                                         __HILDON_CODE_DIALOG_H__
 
-#include <gtk/gtkdialog.h>
+#include                                        <gtk/gtkdialog.h>
 
 G_BEGIN_DECLS
 
+#define                                         HILDON_TYPE_CODE_DIALOG \
+                                                (hildon_code_dialog_get_type())
 
-#define HILDON_TYPE_CODE_DIALOG ( hildon_code_dialog_get_type() )
-#define HILDON_CODE_DIALOG(obj) \
-    (GTK_CHECK_CAST (obj, HILDON_TYPE_CODE_DIALOG, HildonCodeDialog))
-#define HILDON_CODE_DIALOG_CLASS(klass) \
-    (GTK_CHECK_CLASS_CAST ((klass),\
-     HILDON_TYPE_CODE_DIALOG, HildonCodeDialogClass))
-#define HILDON_IS_CODE_DIALOG(obj) (GTK_CHECK_TYPE (obj, HILDON_TYPE_CODE_DIALOG))
-#define HILDON_IS_CODE_DIALOG_CLASS(klass) \
-    (GTK_CHECK_CLASS_TYPE ((klass), HILDON_TYPE_CODE_DIALOG))
+#define                                         HILDON_CODE_DIALOG(obj) \
+                                                (GTK_CHECK_CAST (obj, HILDON_TYPE_CODE_DIALOG, HildonCodeDialog))
 
+#define                                         HILDON_CODE_DIALOG_CLASS(klass) \
+                                                (GTK_CHECK_CLASS_CAST ((klass),\
+                                                HILDON_TYPE_CODE_DIALOG, HildonCodeDialogClass))
 
-typedef struct _HildonCodeDialogPrivate HildonCodeDialogPrivate;
-typedef struct _HildonCodeDialog HildonCodeDialog;
-typedef struct _HildonCodeDialogClass HildonCodeDialogClass;
+#define                                         HILDON_IS_CODE_DIALOG(obj) \
+                                                (GTK_CHECK_TYPE (obj, HILDON_TYPE_CODE_DIALOG))
 
+#define                                         HILDON_IS_CODE_DIALOG_CLASS(klass) \
+                                                (GTK_CHECK_CLASS_TYPE ((klass), HILDON_TYPE_CODE_DIALOG))
 
-struct _HildonCodeDialog
+#define                                         HILDON_CODE_DIALOG_GET_CLASS(obj) \
+                                                ((HildonCodeDialogClass *) G_OBJECT_GET_CLASS(obj))
+
+typedef struct                                  _HildonCodeDialog HildonCodeDialog;
+
+typedef struct                                  _HildonCodeDialogClass HildonCodeDialogClass;
+
+struct                                          _HildonCodeDialog
 {
     GtkDialog parent;
-
-    HildonCodeDialogPrivate *priv;
 };
 
 struct _HildonCodeDialogClass
@@ -58,14 +62,22 @@ struct _HildonCodeDialogClass
     GtkDialogClass parent_class;
 };
 
+GType G_GNUC_CONST
+hildon_code_dialog_get_type                     (void);
 
-GType hildon_code_dialog_get_type (void);
-GtkWidget *hildon_code_dialog_new(void);
-const gchar *hildon_code_dialog_get_code (HildonCodeDialog *dialog);
-void hildon_code_dialog_clear_code (HildonCodeDialog *dialog);
-void hildon_code_dialog_set_help_text (HildonCodeDialog *dialog,
-                                       const gchar *text);
+GtkWidget*
+hildon_code_dialog_new                          (void);
 
+const gchar*
+hildon_code_dialog_get_code                     (HildonCodeDialog *dialog);
+
+void 
+hildon_code_dialog_clear_code                   (HildonCodeDialog *dialog);
+
+void 
+hildon_code_dialog_set_help_text                (HildonCodeDialog *dialog,
+                                                 const gchar *text);
 
 G_END_DECLS
-#endif /* __HILDON_CODE_DIALOG_H__ */
+
+#endif                                          /* __HILDON_CODE_DIALOG_H__ */
