@@ -22,28 +22,35 @@
  *
  */
  
-#ifndef __HILDON_CAPTION_H__
-#define __HILDON_CAPTION_H__
+#ifndef                                         __HILDON_CAPTION_H__
+#define                                         __HILDON_CAPTION_H__
 
-#include <glib.h>
-#include <glib-object.h>
-#include <gtk/gtkeventbox.h>
-#include <gtk/gtksizegroup.h>
-#include "hildon-enum-types.h"
+#include                                        <glib.h>
+#include                                        <glib-object.h>
+#include                                        <gtk/gtkeventbox.h>
+#include                                        <gtk/gtksizegroup.h>
+#include                                        "hildon-enum-types.h"
 
 G_BEGIN_DECLS
 
+typedef struct                                  _HildonCaption HildonCaption;
 
-#define HILDON_TYPE_CAPTION ( hildon_caption_get_type() )
-#define HILDON_CAPTION(obj) \
-    (GTK_CHECK_CAST (obj, HILDON_TYPE_CAPTION, HildonCaption))
-#define HILDON_CAPTION_CLASS(klass) \
-    (GTK_CHECK_CLASS_CAST ((klass),\
-     HILDON_TYPE_CAPTION, HildonCaptionClass))
-#define HILDON_IS_CAPTION(obj) (GTK_CHECK_TYPE (obj, HILDON_TYPE_CAPTION))
-#define HILDON_IS_CAPTION_CLASS(klass) \
-    (GTK_CHECK_CLASS_TYPE ((klass), HILDON_TYPE_CAPTION))
+typedef struct                                  _HildonCaptionClass HildonCaptionClass;
 
+#define                                         HILDON_TYPE_CAPTION (hildon_caption_get_type())
+
+#define                                         HILDON_CAPTION(obj) \
+                                                (GTK_CHECK_CAST (obj, HILDON_TYPE_CAPTION, HildonCaption))
+
+#define                                         HILDON_CAPTION_CLASS(klass) \
+                                                (GTK_CHECK_CLASS_CAST ((klass),\
+                                                HILDON_TYPE_CAPTION, HildonCaptionClass))
+
+#define                                         HILDON_IS_CAPTION(obj) \
+                                                (GTK_CHECK_TYPE (obj, HILDON_TYPE_CAPTION))
+
+#define                                         HILDON_IS_CAPTION_CLASS(klass) \
+                                                (GTK_CHECK_CLASS_TYPE ((klass), HILDON_TYPE_CAPTION))
     
 /**
  * HildonCaptionStatus:
@@ -56,7 +63,7 @@ typedef enum
 {
     HILDON_CAPTION_OPTIONAL = 0,
     HILDON_CAPTION_MANDATORY
-} HildonCaptionStatus;
+}                                               HildonCaptionStatus;
 
 /**
  * HildonCaptionIconPosition:
@@ -71,72 +78,90 @@ typedef enum
 {
     HILDON_CAPTION_POSITION_LEFT = 0,
     HILDON_CAPTION_POSITION_RIGHT
-} HildonCaptionIconPosition;
-
-/**
- * HildonCaption:
- *
- * Contains only private data.
- */
-typedef struct _HildonCaption HildonCaption;
-typedef struct _HildonCaptionClass HildonCaptionClass;
+}                                               HildonCaptionIconPosition;
 
 
-struct _HildonCaption
+struct                                          _HildonCaption
 {
-  GtkEventBox event_box;
+    GtkEventBox parent;
 };
 
 
-struct _HildonCaptionClass
+struct                                          _HildonCaptionClass
 {
-  GtkEventBoxClass parent_class;
-  void (*activate) (HildonCaption *widget);
+    GtkEventBoxClass parent_class;
+    void (*activate) (HildonCaption *widget);
 };
 
+GType G_GNUC_CONST
+hildon_caption_get_type                         (void);
 
-GType hildon_caption_get_type (void) G_GNUC_CONST;
+GtkWidget* 
+hildon_caption_new                              (GtkSizeGroup *group, 
+                                                 const gchar *value,
+                                                 GtkWidget *control, 
+                                                 GtkWidget *icon,
+                                                 HildonCaptionStatus flag);
 
-GtkWidget *hildon_caption_new( GtkSizeGroup *group, const gchar *value,
-                               GtkWidget *control, GtkWidget *icon,
-                               HildonCaptionStatus flag );
+GtkSizeGroup*
+hildon_caption_get_size_group                   (const HildonCaption *caption);
 
-GtkSizeGroup *hildon_caption_get_size_group( const HildonCaption *caption );
+void 
+hildon_caption_set_size_group                   (const HildonCaption *caption,
+                                                 GtkSizeGroup *new_group );
 
-void hildon_caption_set_size_group( const HildonCaption *caption,
-                                    GtkSizeGroup *new_group );
+gboolean 
+hildon_caption_is_mandatory                     (const HildonCaption *caption);
 
-gboolean hildon_caption_is_mandatory( const HildonCaption *caption );
+void 
+hildon_caption_set_status                       (HildonCaption *caption,
+                                                 HildonCaptionStatus flag);
 
-void hildon_caption_set_status( HildonCaption *caption,
-                               HildonCaptionStatus flag );
+HildonCaptionStatus
+hildon_caption_get_status                       (const HildonCaption *caption);
 
-HildonCaptionStatus hildon_caption_get_status( const HildonCaption *caption );
+void 
+hildon_caption_set_icon_position                (HildonCaption *caption,
+                                                 HildonCaptionIconPosition pos );
 
-void hildon_caption_set_icon_position( HildonCaption *caption,
-                               HildonCaptionIconPosition pos );
+HildonCaptionIconPosition
+hildon_caption_get_icon_position                (const HildonCaption *caption);
 
-HildonCaptionIconPosition hildon_caption_get_icon_position( const HildonCaption *caption );
+void
+hildon_caption_set_icon_image                   (HildonCaption *caption, 
+                                                 GtkWidget *icon);
 
-void hildon_caption_set_icon_image( HildonCaption *caption, GtkWidget *icon );
+GtkWidget*
+hildon_caption_get_icon_image                   (const HildonCaption *caption);
 
-GtkWidget *hildon_caption_get_icon_image(const HildonCaption *caption);
+void
+hildon_caption_set_label                        (HildonCaption *caption, 
+                                                 const gchar *label );
 
-void hildon_caption_set_label( HildonCaption *caption, const gchar *label );
+gchar*
+hildon_caption_get_label                        (const HildonCaption *caption);
 
-gchar *hildon_caption_get_label( const HildonCaption *caption );
+void 
+hildon_caption_set_separator                    (HildonCaption *caption, 
+                                                 const gchar *separator);
 
-void hildon_caption_set_separator( HildonCaption *caption, 
-                                    const gchar *separator );
+gchar*
+hildon_caption_get_separator                    (const HildonCaption *caption);
 
-gchar *hildon_caption_get_separator( const HildonCaption *caption );
+void 
+hildon_caption_set_label_alignment              (HildonCaption *caption, 
+                                                 gfloat alignment);
 
-void hildon_caption_set_label_alignment(HildonCaption *caption, 
-                                        gfloat alignment);
-gfloat hildon_caption_get_label_alignment(HildonCaption *caption);
+gfloat 
+hildon_caption_get_label_alignment              (HildonCaption *caption);
 
-void hildon_caption_set_child_expand( HildonCaption *caption, gboolean expand );
-gboolean hildon_caption_get_child_expand( const HildonCaption *caption );
+void 
+hildon_caption_set_child_expand                 (HildonCaption *caption, 
+                                                 gboolean expand);
+
+gboolean 
+hildon_caption_get_child_expand                 (const HildonCaption *caption);
 
 G_END_DECLS
-#endif /* __HILDON_CAPTION_H__ */
+
+#endif                                          /* __HILDON_CAPTION_H__ */
