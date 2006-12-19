@@ -1,3 +1,9 @@
+2006-12-19  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
+	* src/hildon-number-editor-private.h:
+	* src/hildon-number-editor.c:
+	* src/hildon-number-editor.h: Cleaning up the HildonNumberEditor.
+
 2006-12-18  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
 	* src/hildon-code-dialog-private.h:

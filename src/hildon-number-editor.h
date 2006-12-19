@@ -22,60 +22,74 @@
  *
  */
 
-#ifndef __HILDON_NUMBER_EDITOR_H__
-#define __HILDON_NUMBER_EDITOR_H__
+#ifndef                                         __HILDON_NUMBER_EDITOR_H__
+#define                                         __HILDON_NUMBER_EDITOR_H__
 
-#include <gtk/gtkcontainer.h>
+#include                                        <gtk/gtkcontainer.h>
 
 G_BEGIN_DECLS
 
+#define                                         HILDON_TYPE_NUMBER_EDITOR \
+                                                (hildon_number_editor_get_type())
 
+#define                                         HILDON_NUMBER_EDITOR(obj) \
+                                                (GTK_CHECK_CAST (obj, HILDON_TYPE_NUMBER_EDITOR, HildonNumberEditor))
 
-#define HILDON_TYPE_NUMBER_EDITOR   ( hildon_number_editor_get_type() )
+#define                                         HILDON_NUMBER_EDITOR_CLASS(klass) \
+                                                (GTK_CHECK_CLASS_CAST ((klass), HILDON_TYPE_NUMBER_EDITOR, \
+                                                HildonNumberEditorClass))
 
-#define HILDON_NUMBER_EDITOR(obj)            (GTK_CHECK_CAST       (obj,     HILDON_TYPE_NUMBER_EDITOR, HildonNumberEditor))
-#define HILDON_NUMBER_EDITOR_CLASS(klass)    (GTK_CHECK_CLASS_CAST ((klass), HILDON_TYPE_NUMBER_EDITOR, HildonNumberEditorClass))
-#define HILDON_IS_NUMBER_EDITOR(obj)         (GTK_CHECK_TYPE       (obj,     HILDON_TYPE_NUMBER_EDITOR))
-#define HILDON_IS_NUMBER_EDITOR_CLASS(klass) (GTK_CHECK_CLASS_TYPE ((klass), HILDON_TYPE_NUMBER_EDITOR))
+#define                                         HILDON_IS_NUMBER_EDITOR(obj) \
+                                                (GTK_CHECK_TYPE (obj, HILDON_TYPE_NUMBER_EDITOR))
 
-typedef struct _HildonNumberEditor      HildonNumberEditor;
-typedef struct _HildonNumberEditorClass HildonNumberEditorClass;
+#define                                         HILDON_IS_NUMBER_EDITOR_CLASS(klass) \
+                                                (GTK_CHECK_CLASS_TYPE ((klass), HILDON_TYPE_NUMBER_EDITOR))
 
+#define                                         HILDON_NUMBER_EDITOR_GET_CLASS(obj) \
+                                                ((HildonNumberEditorClass *) G_OBJECT_GET_CLASS(obj))
 
-struct _HildonNumberEditor 
+typedef struct                                  _HildonNumberEditor HildonNumberEditor;
+
+typedef struct                                  _HildonNumberEditorClass HildonNumberEditorClass;
+
+struct                                          _HildonNumberEditor 
 {
-  GtkContainer parent;
+    GtkContainer parent;
 };
 
-
+/* FIXME Needs documentation */
 typedef enum
 {
-  MAXIMUM_VALUE_EXCEED,
-  MINIMUM_VALUE_EXCEED,
-  ERRONEOUS_VALUE
+    MAXIMUM_VALUE_EXCEED,
+    MINIMUM_VALUE_EXCEED,
+    ERRONEOUS_VALUE
+}                                               HildonNumberEditorErrorType;
 
-} HildonNumberEditorErrorType;
-
-
-struct _HildonNumberEditorClass 
+struct                                          _HildonNumberEditorClass 
 {
-  GtkContainerClass parent_class;
+    GtkContainerClass parent_class;
   
-  gboolean	(*range_error)	(HildonNumberEditor *editor, HildonNumberEditorErrorType type); 
+    gboolean  (*range_error)  (HildonNumberEditor *editor, HildonNumberEditorErrorType type); 
 };
 
+GType G_GNUC_CONST
+hildon_number_editor_get_type                   (void);
 
-GType 		hildon_number_editor_get_type	(void) G_GNUC_CONST;
+GtkWidget*  
+hildon_number_editor_new                        (gint min, gint max);
 
-GtkWidget*	hildon_number_editor_new	(gint min, gint max);
+void
+hildon_number_editor_set_range                  (HildonNumberEditor *editor, 
+                                                 gint min,
+                                                 gint max);
 
-void 		hildon_number_editor_set_range	(HildonNumberEditor *editor, 
-                                                 gint                min,
-                                                 gint                max);
+gint
+hildon_number_editor_get_value                  (HildonNumberEditor *editor);
 
-gint 		hildon_number_editor_get_value	(HildonNumberEditor *editor);
-void 		hildon_number_editor_set_value	(HildonNumberEditor *editor, gint value);
-
+void
+hildon_number_editor_set_value                  (HildonNumberEditor *editor, 
+                                                 gint value);
 
 G_END_DECLS
-#endif /* __HILDON_NUMBER_EDITOR_H__ */
+
+#endif                                          /* __HILDON_NUMBER_EDITOR_H__ */
