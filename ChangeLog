@@ -1,5 +1,13 @@
 2006-12-20  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
+	* src/hildon-seekbar.c: Fixing one missing include file.
+
+	* src/hildon-time-picker-private.h:
+	* src/hildon-time-picker.c:
+	* src/hildon-time-picker.h: Cleaning up the HildonTimePicker.
+
+2006-12-20  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
 	* src/hildon-seekbar-private.h:
 	* src/hildon-seekbar.c:
 	* src/hildon-seekbar.h: Cleaning up the HildonSeekbar.

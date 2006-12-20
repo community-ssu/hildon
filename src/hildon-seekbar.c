@@ -48,6 +48,7 @@
 #include                                        <gtk/gtkadjustment.h>
 #include                                        <gtk/gtktoolbar.h>
 #include                                        <gdk/gdkkeysyms.h>
+#include                                        "hildon-seekbar-private.h"
 
 static GtkScaleClass*                           parent_class = NULL;
 
