@@ -22,44 +22,76 @@
  *
  */
 
-#ifndef __HILDON_SEEKBAR_H__
-#define __HILDON_SEEKBAR_H__
+#ifndef                                         __HILDON_SEEKBAR_H__
+#define                                         __HILDON_SEEKBAR_H__
 
-#include <gtk/gtkscale.h>
+#include                                        <gtk/gtkscale.h>
 
 G_BEGIN_DECLS
-#define HILDON_TYPE_SEEKBAR ( hildon_seekbar_get_type() )
-#define HILDON_SEEKBAR(obj) (GTK_CHECK_CAST (obj,\
-        HILDON_TYPE_SEEKBAR, HildonSeekbar))
-#define HILDON_SEEKBAR_CLASS(klass) (GTK_CHECK_CLASS_CAST ((klass),\
-        HILDON_TYPE_SEEKBAR, HildonSeekbarClass))
-#define HILDON_IS_SEEKBAR(obj) (GTK_CHECK_TYPE (obj, HILDON_TYPE_SEEKBAR))
-#define HILDON_IS_SEEKBAR_CLASS(klass) (GTK_CHECK_CLASS_TYPE ((klass),\
-        HILDON_TYPE_SEEKBAR))
-/** 
- * HildonSeekbar:
- * 
- * Contains only private data.
- */
-typedef struct _HildonSeekbar HildonSeekbar;
-typedef struct _HildonSeekbarClass HildonSeekbarClass;
 
-struct _HildonSeekbar {
-    GtkScale scale;
+#define                                         HILDON_TYPE_SEEKBAR \
+                                                (hildon_seekbar_get_type())
+
+#define                                         HILDON_SEEKBAR(obj) \
+                                                (GTK_CHECK_CAST (obj,\
+                                                HILDON_TYPE_SEEKBAR, HildonSeekbar))
+
+#define                                         HILDON_SEEKBAR_CLASS(klass) \
+                                                (GTK_CHECK_CLASS_CAST ((klass),\
+                                                HILDON_TYPE_SEEKBAR, HildonSeekbarClass))
+
+#define                                         HILDON_IS_SEEKBAR(obj) \
+                                                (GTK_CHECK_TYPE (obj, HILDON_TYPE_SEEKBAR))
+
+#define                                         HILDON_IS_SEEKBAR_CLASS(klass) \
+                                                (GTK_CHECK_CLASS_TYPE ((klass),\
+                                                HILDON_TYPE_SEEKBAR))
+
+#define                                         HILDON_SEEKBAR_GET_CLASS(obj) \
+                                                ((HildonSeekBarClass *) G_OBJECT_GET_CLASS(obj))
+
+
+typedef struct                                  _HildonSeekbar HildonSeekbar;
+
+typedef struct                                  _HildonSeekbarClass HildonSeekbarClass;
+
+struct                                          _HildonSeekbar 
+{
+    GtkScale parent;
 };
 
-struct _HildonSeekbarClass {
+struct                                          _HildonSeekbarClass
+{
     GtkScaleClass parent_class;
 };
 
-GType hildon_seekbar_get_type(void) G_GNUC_CONST;
-GtkWidget *hildon_seekbar_new(void);
-gint hildon_seekbar_get_total_time(HildonSeekbar *seekbar);
-void hildon_seekbar_set_total_time(HildonSeekbar *seekbar, gint time);
-gint hildon_seekbar_get_position(HildonSeekbar *seekbar);
-void hildon_seekbar_set_position(HildonSeekbar *seekbar, gint time);
-void hildon_seekbar_set_fraction(HildonSeekbar *seekbar, guint fraction);
-guint hildon_seekbar_get_fraction(HildonSeekbar *seekbar);
+GType G_GNUC_CONST
+hildon_seekbar_get_type                         (void);
+
+GtkWidget*
+hildon_seekbar_new                              (void);
+
+gint
+hildon_seekbar_get_total_time                   (HildonSeekbar *seekbar);
+
+void
+hildon_seekbar_set_total_time                   (HildonSeekbar *seekbar, 
+                                                 gint time);
+
+gint
+hildon_seekbar_get_position                     (HildonSeekbar *seekbar);
+
+void 
+hildon_seekbar_set_position                     (HildonSeekbar *seekbar, 
+                                                 gint time);
+
+void 
+hildon_seekbar_set_fraction                     (HildonSeekbar *seekbar, 
+                                                 guint fraction);
+
+guint
+hildon_seekbar_get_fraction                     (HildonSeekbar *seekbar);
 
 G_END_DECLS
-#endif /* __HILDON_SEEKBAR_H__ */
+
+#endif                                          /* __HILDON_SEEKBAR_H__ */
