@@ -45,8 +45,6 @@
 #include "hildon-name-password-dialog.h"
 #include "hildon-note.h"
 #include "hildon-number-editor.h"
-#include "hildon-plugin-widget.h"
-#include "hildon-private.h"
 #include "hildon-program.h"
 #include "hildon-range-editor.h"
 #include "hildon-seekbar.h"

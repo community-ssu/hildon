@@ -39,7 +39,6 @@
 
 #include                                        "hildon-time-picker.h"
 #include                                        "hildon-defines.h"
-#include                                        "hildon-private.h"
 #include                                        <gtk/gtk.h>
 #include                                        <gdk/gdkkeysyms.h>
 #include                                        <gdk/gdk.h>
@@ -50,6 +49,7 @@
 #include                                        <langinfo.h>
 #include                                        <libintl.h>
 #include                                        "hildon-time-picker-private.h"
+#include                                        "hildon-time-editor.h"
 
 #define                                         _(String) \
                                                 dgettext(PACKAGE, String)
@@ -384,7 +384,7 @@ hildon_time_picker_init                         (HildonTimePicker *picker)
 
     /* Label between hour and minutes */
     colon_label = gtk_label_new (NULL);
-    _hildon_time_editor_get_time_separators (GTK_LABEL(colon_label), NULL);
+    hildon_time_editor_get_time_separators (GTK_LABEL(colon_label), NULL);
 
     gtk_table_attach (table, colon_label, 2, 3, 1, 2,
             GTK_SHRINK, GTK_SHRINK, 6, 0); /* FIXME: magic */
