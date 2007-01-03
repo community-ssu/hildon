@@ -1,5 +1,12 @@
 2007-01-03  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
+	* src/hildon-color-chooser-dialog.c:
+	* src/hildon-color-chooser-dialog.h:
+	* src/hildon-color-chooser.c:
+	* src/hildon-color-chooser.h: More color chooser stuff.
+
+2007-01-03  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
 	* plugins:
 	* plugins/Makefile.am:
 	* plugins/hildon-color-chooser-dialog-hsv.c:
