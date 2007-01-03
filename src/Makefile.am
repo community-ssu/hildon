@@ -55,7 +55,6 @@ libhildon_@PACKAGE_VERSION_MAJOR@_la_SOURCES 		= hildon-composite-widget.c \
 							  hildon-window.c \
 							  hildon-program.c \
 							  hildon-code-dialog.c \
-							  hildon-plugin-widget.c \
 							  hildon-enum-types.c \
 							  hildon-marshalers.c
 
@@ -93,7 +92,6 @@ libhildon_@PACKAGE_VERSION_MAJOR@_include_HEADERS 	= hildon-controlbar.h \
 							  hildon-program.h \
 							  hildon-window-private.h \
 							  hildon-code-dialog.h \
-							  hildon-plugin-widget.h \
 							  hildon-enum-types.h \
 							  hildon-marshalers.h
 

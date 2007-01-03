@@ -1,5 +1,15 @@
 2007-01-03  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
+	* plugins:
+	* plugins/Makefile.am:
+	* plugins/hildon-color-chooser-dialog-hsv.c:
+	* plugins/hildon-color-chooser-hsv.c:
+	* src/Makefile.am:
+	* src/hildon-plugin-widget.c:
+	* src/hildon-plugin-widget.h: Removing old plugin bits.
+
+2007-01-03  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
 	* src/Makefile.am:
 	* src/hildon-color-button-private.h:
 	* src/hildon-color-button.c:
