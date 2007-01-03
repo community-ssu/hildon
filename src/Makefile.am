@@ -26,7 +26,6 @@ libhildon_@PACKAGE_VERSION_MAJOR@_la_CFLAGS		= $(GTK_CFLAGS) 		\
 libhildon_@PACKAGE_VERSION_MAJOR@_la_SOURCES 		= hildon-composite-widget.c \
 							  hildon-controlbar.c \
 							  hildon-seekbar.c \
-							  hildon-color-selector.c \
 							  hildon-note.c \
 							  hildon-volumebar.c \
 							  hildon-sound.c \
@@ -46,8 +45,9 @@ libhildon_@PACKAGE_VERSION_MAJOR@_la_SOURCES 		= hildon-composite-widget.c \
 							  hildon-font-selection-dialog.c \
 							  hildon-name-password-dialog.c \
 							  hildon-wizard-dialog.c \
-							  hildon-color-popup.c \
+							  hildon-color-chooser.c \
 							  hildon-color-button.c \
+							  hildon-color-chooser-dialog.c \
 							  hildon-defines.c \
 							  hildon-find-toolbar.c \
 							  hildon-banner.c \
@@ -56,9 +56,6 @@ libhildon_@PACKAGE_VERSION_MAJOR@_la_SOURCES 		= hildon-composite-widget.c \
 							  hildon-program.c \
 							  hildon-code-dialog.c \
 							  hildon-plugin-widget.c \
-							  hildon-color-chooser.c \
-							  hildon-color-chooser-dialog.c \
-							  hildon-color-chooser-button.c \
 							  hildon-enum-types.c \
 							  hildon-marshalers.c
 
@@ -68,7 +65,6 @@ libhildon_@PACKAGE_VERSION_MAJOR@_include_HEADERS 	= hildon-controlbar.h \
 							  hildon-note.h \
 							  hildon-sound.h \
 							  hildon-seekbar.h \
-							  hildon-color-selector.h \
 							  hildon-volumebar.h \
 							  hildon-hvolumebar.h \
 							  hildon-vvolumebar.h \
@@ -85,8 +81,9 @@ libhildon_@PACKAGE_VERSION_MAJOR@_include_HEADERS 	= hildon-controlbar.h \
 							  hildon-font-selection-dialog.h \
 							  hildon-name-password-dialog.h \
 							  hildon-wizard-dialog.h \
-							  hildon-color-popup.h \
+							  hildon-color-chooser.h \
 							  hildon-color-button.h \
+							  hildon-color-chooser-dialog.h \
 							  hildon-defines.h \
 							  hildon-find-toolbar.h \
 							  hildon-banner.h \
@@ -97,9 +94,6 @@ libhildon_@PACKAGE_VERSION_MAJOR@_include_HEADERS 	= hildon-controlbar.h \
 							  hildon-window-private.h \
 							  hildon-code-dialog.h \
 							  hildon-plugin-widget.h \
-							  hildon-color-chooser.h \
-							  hildon-color-chooser-dialog.h \
-							  hildon-color-chooser-button.h \
 							  hildon-enum-types.h \
 							  hildon-marshalers.h
 

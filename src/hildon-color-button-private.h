@@ -22,31 +22,21 @@
  *
  */
 
-#ifndef __HILDON_COLOR_POPUP_H__
-#define __HILDON_COLOR_POPUP_H__
+#ifndef                                         __HILDON_COLOR_BUTTON_PRIVATE_H__
+#define                                         __HILDON_COLOR_BUTTON_PRIVATE_H__
 
-#include <gtk/gtkcontainer.h>
-#include <gtk/gtkwindow.h>
-#include <gtk/gtkdialog.h>
+typedef struct                                  _HildonColorButtonPrivate HildonColorButtonPrivate;
 
-G_BEGIN_DECLS
+#define                                         HILDON_COLOR_BUTTON_GET_PRIVATE(obj) \
+                                                (G_TYPE_INSTANCE_GET_PRIVATE ((obj),\
+                                                HILDON_TYPE_COLOR_BUTTON, HildonColorButtonPrivate));
 
-typedef struct
+struct                                          _HildonColorButtonPrivate
 {
-  GtkWidget *ctrlbar_red;
-  GtkWidget *ctrlbar_green;
-  GtkWidget *ctrlbar_blue;
+    GtkWidget *dialog;
 
-} HildonColorPopup;
+    GdkColor color;
+    GdkGC *gc;
+};
 
-GtkWidget *hildon_color_popup_new(GtkWindow        *parent,
-                                  const GdkColor   *initial_color,
-                                  HildonColorPopup *popupdata);
-
-void       hildon_color_popup_set_color_from_sliders(GdkColor *color,
-                                                     HildonColorPopup *popupdata);
-
-
-G_END_DECLS
-
-#endif /* __HILDON_COLOR_POPUP_H__ */
+#endif                                          /* __HILDON_COLOR_BUTTON_PRIVATE_H__ */

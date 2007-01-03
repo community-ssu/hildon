@@ -47,7 +47,6 @@
 #include <gdk/gdkkeysyms.h>
 #include "hildon-font-selection-dialog.h"
 #include "hildon-caption.h"
-#include "hildon-color-selector.h"
 #include "hildon-color-button.h"
 #include <libintl.h>
 
