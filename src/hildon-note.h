@@ -21,24 +21,34 @@
  * 02110-1301 USA
  *
  */
-#ifndef __HILDON_NOTE_H__
-#define __HILDON_NOTE_H__
 
-#include <gtk/gtkdialog.h>
-#include <gtk/gtkprogressbar.h>
+#ifndef                                         __HILDON_NOTE_H__
+#define                                         __HILDON_NOTE_H__
+
+#include                                        <gtk/gtkdialog.h>
+#include                                        <gtk/gtkprogressbar.h>
 
 G_BEGIN_DECLS
-#define HILDON_TYPE_NOTE ( hildon_note_get_type() )
-#define HILDON_NOTE(obj) \
-  (GTK_CHECK_CAST (obj, HILDON_TYPE_NOTE, HildonNote))
-#define HILDON_NOTE_CLASS(klass) \
-  (GTK_CHECK_CLASS_CAST ((klass), HILDON_TYPE_NOTE, HildonNoteClass))
-#define HILDON_IS_NOTE(obj) (GTK_CHECK_TYPE (obj, HILDON_TYPE_NOTE))
-#define HILDON_IS_NOTE_CLASS(klass) \
-  (GTK_CHECK_CLASS_TYPE ((klass), HILDON_TYPE_NOTE))
 
-typedef struct _HildonNote      HildonNote;
-typedef struct _HildonNoteClass HildonNoteClass;
+#define                                         HILDON_TYPE_NOTE \
+                                                (hildon_note_get_type())
+
+#define                                         HILDON_NOTE(obj) \
+                                                (GTK_CHECK_CAST (obj, HILDON_TYPE_NOTE, HildonNote))
+
+#define                                         HILDON_NOTE_CLASS(klass) \
+                                                (GTK_CHECK_CLASS_CAST ((klass), \
+                                                HILDON_TYPE_NOTE, HildonNoteClass))
+
+#define                                         HILDON_IS_NOTE(obj) \
+                                                (GTK_CHECK_TYPE (obj, HILDON_TYPE_NOTE))
+
+#define                                         HILDON_IS_NOTE_CLASS(klass) \
+                                                (GTK_CHECK_CLASS_TYPE ((klass), HILDON_TYPE_NOTE))
+
+typedef struct                                  _HildonNote HildonNote;
+
+typedef struct                                  _HildonNoteClass HildonNoteClass;
 
 typedef enum
 {
@@ -47,50 +57,58 @@ typedef enum
     HILDON_NOTE_INFORMATION_TYPE,
     HILDON_NOTE_INFORMATION_THEME_TYPE,
     HILDON_NOTE_PROGRESSBAR_TYPE
-} HildonNoteType;
+}                                               HildonNoteType;
 
-struct _HildonNote {
+struct                                          _HildonNote 
+{
     GtkDialog parent;
 };
 
-struct _HildonNoteClass {
+struct _HildonNoteClass 
+{
     GtkDialogClass parent_class;
 };
 
-GtkWidget *hildon_note_new_confirmation(GtkWindow * parent,
-                                        const gchar * description);
+GType G_GNUC_CONST
+hildon_note_get_type                            (void);
 
-GtkWidget *hildon_note_new_confirmation_add_buttons(GtkWindow * parent,
-                                                    const gchar *
-                                                    description, ...);
+GtkWidget*
+hildon_note_new_confirmation                    (GtkWindow *parent,
+                                                 const gchar *description);
 
-GtkWidget *hildon_note_new_confirmation_with_icon_name(GtkWindow * parent,
-                                                        const gchar *
-                                                        description,
-                                                        const gchar *
-                                                        icon_name);
+GtkWidget*
+hildon_note_new_confirmation_add_buttons        (GtkWindow *parent,
+                                                 const gchar *description, 
+                                                 ...);
 
-GtkWidget *hildon_note_new_cancel_with_progress_bar(GtkWindow * parent,
-                                                    const gchar *
-                                                    description,
-                                                    GtkProgressBar *
-                                                    progressbar);
+GtkWidget*
+hildon_note_new_confirmation_with_icon_name     (GtkWindow *parent,
+                                                 const gchar *description,
+                                                 const gchar *icon_name);
 
-GtkWidget *hildon_note_new_information(GtkWindow * parent,
-                                       const gchar * description);
+GtkWidget*
+hildon_note_new_cancel_with_progress_bar        (GtkWindow *parent,
+                                                 const gchar *description,
+                                                 GtkProgressBar *progressbar);
+
+GtkWidget*
+hildon_note_new_information                     (GtkWindow *parent,
+                                                 const gchar * description);
                                        
-GtkWidget *hildon_note_new_information_with_icon_name(GtkWindow * parent,
-                                                       const gchar *
-                                                       description,
-                                                       const gchar *
-                                                       icon_name);
+GtkWidget*
+hildon_note_new_information_with_icon_name      (GtkWindow *parent,
+                                                 const gchar *description,
+                                                 const gchar *icon_name);
                                                        
-void hildon_note_set_button_text(HildonNote * note, const gchar * text);
+void 
+hildon_note_set_button_text                     (HildonNote *note, 
+                                                 const gchar *text);
 
-void hildon_note_set_button_texts(HildonNote * note, const gchar * textOk,
-				 const gchar * textCancel);
-
-GType hildon_note_get_type(void) G_GNUC_CONST;
+void 
+hildon_note_set_button_texts                    (HildonNote *note, 
+                                                 const gchar *text_ok,
+                                                 const gchar *text_cancel);
 
 G_END_DECLS
-#endif /* __HILDON_NOTE_H__ */
+
+#endif                                          /* __HILDON_NOTE_H__ */

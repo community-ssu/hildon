@@ -1,5 +1,11 @@
 2007-01-04  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
+	* src/hildon-note.c:
+	* src/hildon-note.h:
+	* src/hildon-note-private.h: Cleaning up the HildonNote.
+
+2007-01-04  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
 	* src/hildon-date-editor-private.h:
 	* src/hildon-date-editor.c:
 	* src/hildon-date-editor.h: Cleaning up the date editor.
