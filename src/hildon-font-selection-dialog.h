@@ -21,63 +21,67 @@
  * 02110-1301 USA
  *
  */
-#ifndef __HILDON_FONT_SELECTION_DIALOG_H__
-#define __HILDON_FONT_SELECTION_DIALOG_H__
+#ifndef                                         __HILDON_FONT_SELECTION_DIALOG_H__
+#define                                         __HILDON_FONT_SELECTION_DIALOG_H__
 
-#include <gtk/gtkdialog.h>
-#include <gtk/gtktextbuffer.h>
+#include                                        <gtk/gtkdialog.h>
+#include                                        <gtk/gtktextbuffer.h>
 
 G_BEGIN_DECLS
 
-#define HILDON_TYPE_FONT_SELECTION_DIALOG \
-        (hildon_font_selection_dialog_get_type ())
-#define HILDON_FONT_SELECTION_DIALOG(obj) \
-        (G_TYPE_CHECK_INSTANCE_CAST ((obj),\
-         HILDON_TYPE_FONT_SELECTION_DIALOG, HildonFontSelectionDialog))
-#define HILDON_FONT_SELECTION_DIALOG_CLASS(klass) \
-        (G_TYPE_CHECK_CLASS_CAST ((klass),\
-         HILDON_TYPE_FONT_SELECTION_DIALOG,\
-         HildonFontSelectionDialogClass))
-#define HILDON_IS_FONT_SELECTION_DIALOG(obj) \
-        (G_TYPE_CHECK_INSTANCE_TYPE ((obj),\
-         HILDON_TYPE_FONT_SELECTION_DIALOG))
-#define HILDON_IS_FONT_SELECTION_DIALOG_CLASS(klass) \
-        (G_TYPE_CHECK_CLASS_TYPE ((klass),\
-         HILDON_TYPE_FONT_SELECTION_DIALOG))
-#define HILDON_FONT_SELECTION_DIALOG_GET_CLASS(obj) \
-        (G_TYPE_INSTANCE_GET_CLASS ((obj),\
-         HILDON_TYPE_FONT_SELECTION_DIALOG,\
-         HildonFontSelectionDialogClass))
+#define                                         HILDON_TYPE_FONT_SELECTION_DIALOG \
+                                                (hildon_font_selection_dialog_get_type ())
 
-typedef struct _HildonFontSelectionDialog      HildonFontSelectionDialog;
-typedef struct _HildonFontSelectionDialogClass HildonFontSelectionDialogClass;
+#define                                         HILDON_FONT_SELECTION_DIALOG(obj) \
+                                                (G_TYPE_CHECK_INSTANCE_CAST ((obj),\
+                                                HILDON_TYPE_FONT_SELECTION_DIALOG, HildonFontSelectionDialog))
 
-struct _HildonFontSelectionDialog
+#define                                         HILDON_FONT_SELECTION_DIALOG_CLASS(klass) \
+                                                (G_TYPE_CHECK_CLASS_CAST ((klass),\
+                                                HILDON_TYPE_FONT_SELECTION_DIALOG,\
+                                                HildonFontSelectionDialogClass))
+
+#define                                         HILDON_IS_FONT_SELECTION_DIALOG(obj) \
+                                                (G_TYPE_CHECK_INSTANCE_TYPE ((obj),\
+                                                HILDON_TYPE_FONT_SELECTION_DIALOG))
+
+#define                                         HILDON_IS_FONT_SELECTION_DIALOG_CLASS(klass) \
+                                                (G_TYPE_CHECK_CLASS_TYPE ((klass),\
+                                                HILDON_TYPE_FONT_SELECTION_DIALOG))
+
+#define                                         HILDON_FONT_SELECTION_DIALOG_GET_CLASS(obj) \
+                                                (G_TYPE_INSTANCE_GET_CLASS ((obj),\
+                                                HILDON_TYPE_FONT_SELECTION_DIALOG,\
+                                                HildonFontSelectionDialogClass))
+
+typedef struct                                  _HildonFontSelectionDialog HildonFontSelectionDialog;
+
+typedef struct                                  _HildonFontSelectionDialogClass HildonFontSelectionDialogClass;
+
+struct                                          _HildonFontSelectionDialog
 {
     GtkDialog parent;
 };
 
-struct _HildonFontSelectionDialogClass
+struct                                          _HildonFontSelectionDialogClass
 {
     GtkDialogClass parent_class;
-
-    /* Padding for future expansion */
-    void (*_gtk_reserved1) (void);
-    void (*_gtk_reserved2) (void);
-    void (*_gtk_reserved3) (void);
-    void (*_gtk_reserved4) (void);
 };
 
-GType      hildon_font_selection_dialog_get_type       (void) G_GNUC_CONST;
+GType G_GNUC_CONST
+hildon_font_selection_dialog_get_type           (void);
 
-GtkWidget* hildon_font_selection_dialog_new            (GtkWindow   *parent,
-							const gchar *title);
+GtkWidget* 
+hildon_font_selection_dialog_new                (GtkWindow *parent,
+                                                 const gchar *title);
 
-gchar*  hildon_font_selection_dialog_get_preview_text  (HildonFontSelectionDialog *fsd);
+gchar* 
+hildon_font_selection_dialog_get_preview_text   (HildonFontSelectionDialog *fsd);
 
-void    hildon_font_selection_dialog_set_preview_text  (HildonFontSelectionDialog *fsd, 
-							const gchar * text);
+void
+hildon_font_selection_dialog_set_preview_text   (HildonFontSelectionDialog *fsd, 
+                                                 const gchar * text);
 
 G_END_DECLS
 
-#endif /* __HILDON_FONT_SELECTION_DIALOG_H__ */
+#endif                                          /* __HILDON_FONT_SELECTION_DIALOG_H__ */
