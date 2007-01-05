@@ -43,7 +43,7 @@ libhildon_@PACKAGE_VERSION_MAJOR@_la_SOURCES 		= hildon-composite-widget.c \
 							  hildon-set-password-dialog.c \
 							  hildon-sort-dialog.c \
 							  hildon-font-selection-dialog.c \
-							  hildon-name-password-dialog.c \
+							  hildon-login-dialog.c \
 							  hildon-wizard-dialog.c \
 							  hildon-color-chooser.c \
 							  hildon-color-button.c \
@@ -78,7 +78,7 @@ libhildon_@PACKAGE_VERSION_MAJOR@_include_HEADERS 	= hildon-controlbar.h \
 							  hildon-set-password-dialog.h \
 							  hildon-sort-dialog.h \
 							  hildon-font-selection-dialog.h \
-							  hildon-name-password-dialog.h \
+							  hildon-login-dialog.h \
 							  hildon-wizard-dialog.h \
 							  hildon-color-chooser.h \
 							  hildon-color-button.h \

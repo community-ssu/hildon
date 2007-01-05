@@ -42,7 +42,7 @@
 #include "hildon-hvolumebar.h"
 #include "hildon-input-mode-hint.h"
 #include "hildon-marshalers.h"
-#include "hildon-name-password-dialog.h"
+#include "hildon-login-dialog.h"
 #include "hildon-note.h"
 #include "hildon-number-editor.h"
 #include "hildon-program.h"

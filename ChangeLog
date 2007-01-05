@@ -1,5 +1,14 @@
 2007-01-05  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
+	* src/hildon-login-dialog.c:
+	* src/hildon-login-dialog.h:
+	* src/Makefile.am:
+	* src/hildon-login-dialog-private.h:
+	* src/hildon-widgets.h: Cleaning up the HildonNamePassword dialog and
+	renaming it to HildonLoginDialog.
+
+2007-01-05  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
 	* src/hildon-banner.c: Introducing static protos, removing the
 	macrofied GType init, full the parent_class with proper value.
 
