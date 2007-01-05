@@ -1,5 +1,10 @@
 2007-01-05  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
+	* src/hildon-banner.c: Introducing static protos, removing the
+	macrofied GType init, full the parent_class with proper value.
+
+2007-01-05  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
 	* src/hildon-banner.c:
 	* src/hildon-banner.h:
 	* src/hildon-note.c:

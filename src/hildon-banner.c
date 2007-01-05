@@ -71,7 +71,115 @@ enum
 
 static GtkWidget*                               global_timed_banner = NULL;
 
-G_DEFINE_TYPE(HildonBanner, hildon_banner, GTK_TYPE_WINDOW)
+static Window 
+get_current_app_window                          (void);
+
+static gboolean 
+check_fullscreen_state                          (Window window);
+
+static GQuark 
+hildon_banner_timed_quark                       (void);
+
+static void 
+hildon_banner_bind_label_style                  (HildonBanner *self,
+                                                 const gchar *name);
+
+static gboolean 
+hildon_banner_timeout                           (gpointer data);
+
+static gboolean 
+hildon_banner_clear_timeout                     (HildonBanner *self);
+
+static void 
+hildon_banner_ensure_timeout                    (HildonBanner *self);
+
+static void 
+hildon_banner_set_property                      (GObject *object,
+                                                 guint prop_id,
+                                                 const GValue *value,
+                                                 GParamSpec *pspec);
+    
+static void 
+hildon_banner_get_property                      (GObject *object,
+                                                 guint prop_id,
+                                                 GValue *value,
+                                                 GParamSpec *pspec);
+
+static void
+hildon_banner_destroy                           (GtkObject *object);
+        
+static GObject*
+hildon_banner_real_get_instance                 (GObject *window, 
+                                                 gboolean timed);
+
+static GObject* 
+hildon_banner_constructor                       (GType type,
+                                                 guint n_construct_params,
+                                                 GObjectConstructParam *construct_params);
+
+static gboolean 
+hildon_banner_map_event                         (GtkWidget *widget, 
+                                                 GdkEventAny *event);
+
+static void 
+force_to_wrap_truncated                         (HildonBanner *banner);
+
+static void
+hildon_banner_check_position                    (GtkWidget *widget);
+
+static void
+hildon_banner_realize                           (GtkWidget *widget);
+
+static void 
+hildon_banner_class_init                        (HildonBannerClass *klass);
+
+static void 
+hildon_banner_init                              (HildonBanner *self);
+
+static void
+hildon_banner_ensure_child                      (HildonBanner *self, 
+                                                 GtkWidget *user_widget,
+                                                 guint pos,
+                                                 GType type,
+                                                 const gchar *first_property, 
+                                                 ...);
+
+static HildonBanner*
+hildon_banner_get_instance_for_widget           (GtkWidget *widget, 
+                                                 gboolean timed);
+
+static GtkWindowClass*                          parent_class = NULL;
+
+/**
+ * hildon_banner_get_type:
+ *
+ * Initialises, and returns the type of a hildon banner.
+ *
+ * @Returns: GType of #HildonBanner
+ */
+GType G_GNUC_CONST 
+hildon_banner_get_type                          (void)
+{
+    static GType banner_type = 0;
+
+    if (! banner_type)
+    {
+        static const GTypeInfo banner_info = {
+            sizeof (HildonBannerClass),
+            NULL,       /* base_init */
+            NULL,       /* base_finalize */
+            (GClassInitFunc) hildon_banner_class_init,
+            NULL,       /* class_finalize */
+            NULL,       /* class_data */
+            sizeof (HildonBanner),
+            0,  /* n_preallocs */
+            (GInstanceInitFunc) hildon_banner_init,
+        };
+        banner_type = g_type_register_static (GTK_TYPE_WINDOW,
+                "HildonBanner", &banner_info, 0 );
+    }
+    return banner_type;
+}
 
 /* copy/paste from old infoprint implementation: Use matchbox 
    properties to find the topmost application window */
@@ -334,8 +442,8 @@ hildon_banner_destroy                           (GtkObject *object)
 
     (void) hildon_banner_clear_timeout (self);
 
-    if (GTK_OBJECT_CLASS (hildon_banner_parent_class)->destroy)
-        GTK_OBJECT_CLASS (hildon_banner_parent_class)->destroy (object);
+    if (GTK_OBJECT_CLASS (parent_class)->destroy)
+        GTK_OBJECT_CLASS (parent_class)->destroy (object);
 }
 
 /* Search a previous banner instance */
@@ -384,7 +492,7 @@ hildon_banner_constructor                       (GType type,
     if (! banner)
     {
         /* We have to create a new banner */
-        banner = G_OBJECT_CLASS (hildon_banner_parent_class)->constructor (type, n_construct_params, construct_params);
+        banner = G_OBJECT_CLASS (parent_class)->constructor (type, n_construct_params, construct_params);
 
         /* Store the newly created singleton instance either into parent 
            window data or into global variables. */
@@ -424,8 +532,8 @@ hildon_banner_map_event                         (GtkWidget *widget,
 {
     gboolean result = FALSE;
 
-    if (GTK_WIDGET_CLASS (hildon_banner_parent_class)->map_event)
-        result = GTK_WIDGET_CLASS (hildon_banner_parent_class)->map_event (widget, event);
+    if (GTK_WIDGET_CLASS (parent_class)->map_event)
+        result = GTK_WIDGET_CLASS (parent_class)->map_event (widget, event);
 
     hildon_banner_ensure_timeout (HILDON_BANNER(widget));
 
@@ -495,8 +603,8 @@ static void
 hildon_banner_realize                           (GtkWidget *widget)
 {
     /* We let the parent to init widget->window before we need it */
-    if (GTK_WIDGET_CLASS (hildon_banner_parent_class)->realize)
-        GTK_WIDGET_CLASS (hildon_banner_parent_class)->realize (widget);
+    if (GTK_WIDGET_CLASS (parent_class)->realize)
+        GTK_WIDGET_CLASS (parent_class)->realize (widget);
 
     /* We use special hint to turn the banner into information notification. */
     gdk_window_set_type_hint (widget->window, GDK_WINDOW_TYPE_HINT_MESSAGE);
@@ -512,10 +620,11 @@ hildon_banner_class_init                        (HildonBannerClass *klass)
 
     object_class = G_OBJECT_CLASS (klass);
     widget_class = GTK_WIDGET_CLASS (klass);
+    parent_class = g_type_class_peek_parent (klass);
 
     /* Append private structure to class. This is more elegant than
        on g_new based approach */
-    g_type_class_add_private(klass, sizeof (HildonBannerPrivate));
+    g_type_class_add_private (klass, sizeof (HildonBannerPrivate));
 
     /* Override virtual methods */
     object_class->constructor = hildon_banner_constructor;
