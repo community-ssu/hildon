@@ -54,6 +54,7 @@ struct                                          _HildonColorChooserDialogPrivate
     GtkWidget *chooser;
 
     GdkColor *colors_custom, *colors_defined;
+    GdkColor color;
     GdkGC **gc_array;
 
     gint selected;

@@ -1,3 +1,14 @@
+2007-01-05  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
+	* src/hildon-banner.c:
+	* src/hildon-banner.h:
+	* src/hildon-note.c:
+	* src/hildon-banner-private.h: Cleaning up the HildonBanner.
+
+	* src/hildon-color-chooser-dialog-private.h:
+	* src/hildon-color-chooser-dialog.c:
+	* src/hildon-color-chooser-dialog.h: Fixing build.
+
 2007-01-04  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
 	* src/hildon-note.c:

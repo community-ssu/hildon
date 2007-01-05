@@ -1012,7 +1012,6 @@ static void
 hildon_color_chooser_dialog_set_color_num       (HildonColorChooserDialog *dialog, 
                                                  gint num)
 {
-    HildonColorChooserDialog *dia = HILDON_COLOR_CHOOSER_DIALOG(dialog);
     HildonColorChooserDialogPrivate *priv = HILDON_COLOR_CHOOSER_DIALOG_GET_PRIVATE (dialog);
 
     int tmp;
@@ -1032,7 +1031,7 @@ hildon_color_chooser_dialog_set_color_num       (HildonColorChooserDialog *dialo
     gtk_widget_queue_draw (priv->area_custom);
     gtk_widget_queue_draw (priv->area_defined);
 
-    dia->color = (num < tmp) ? priv->colors_defined[num] : priv->colors_custom[num - tmp];
+    priv->color = (num < tmp) ? priv->colors_defined[num] : priv->colors_custom[num - tmp];
 
     hildon_color_chooser_set_color (HILDON_COLOR_CHOOSER (priv->chooser), 
             (num < tmp) ? &priv->colors_defined[num] : &priv->colors_custom[num - tmp]);

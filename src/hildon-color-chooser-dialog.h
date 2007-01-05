@@ -53,8 +53,6 @@ typedef struct                                  _HildonColorChooserDialogClass H
 struct                                          _HildonColorChooserDialog
 {
     GtkDialog parent;
-
-    GdkColor color;
 };
 
 struct                                          _HildonColorChooserDialogClass 

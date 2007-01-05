@@ -22,54 +22,61 @@
  *
  */
 
-#include <config.h>
-#include "hildon-banner.h"
-#include <gtk/gtkhbox.h>
-#include <gtk/gtkimage.h>
-#include <gtk/gtkicontheme.h>
-#include <string.h>
-#include <X11/X.h>
-#include <X11/Xatom.h>
-#include "hildon-defines.h"
+#ifdef                                          HAVE_CONFIG_H
+#include                                        <config.h>
+#endif
+
+#include                                        "hildon-banner.h"
+#include                                        <gtk/gtkhbox.h>
+#include                                        <gtk/gtkimage.h>
+#include                                        <gtk/gtkicontheme.h>
+#include                                        <string.h>
+#include                                        <X11/X.h>
+#include                                        <X11/Xatom.h>
+#include                                        "hildon-defines.h"
+#include                                        "hildon-banner-private.h"
 
 /* position relative to the screen */
-#define HILDON_BANNER_WINDOW_X            30
-#define HILDON_BANNER_WINDOW_Y            73
-#define HILDON_BANNER_WINDOW_FULLSCREEN_Y 20
+
+#define                                         HILDON_BANNER_WINDOW_X 30
+
+#define                                         HILDON_BANNER_WINDOW_Y 73
+
+#define                                         HILDON_BANNER_WINDOW_FULLSCREEN_Y 20
 
 /* max widths */
-#define HILDON_BANNER_PROGRESS_WIDTH      104
-#define HILDON_BANNER_LABEL_MAX_TIMED     375
-#define HILDON_BANNER_LABEL_MAX_PROGRESS  375 /*265*/
+
+#define                                         HILDON_BANNER_PROGRESS_WIDTH 104
+
+#define                                         HILDON_BANNER_LABEL_MAX_TIMED 375
+
+#define                                         HILDON_BANNER_LABEL_MAX_PROGRESS 375 /*265*/
 
 /* default timeout */
-#define HILDON_BANNER_TIMEOUT             3000
+
+#define                                         HILDON_BANNER_TIMEOUT 3000
 
 /* default icons */
-#define HILDON_BANNER_DEFAULT_ICON               "qgn_note_infoprint"
-#define HILDON_BANNER_DEFAULT_PROGRESS_ANIMATION "qgn_indi_pball_a"
 
-enum {
-   PROP_PARENT_WINDOW = 1,
-   PROP_IS_TIMED
-};
+#define                                         HILDON_BANNER_DEFAULT_ICON "qgn_note_infoprint"
 
-struct _HildonBannerPrivate
+#define                                         HILDON_BANNER_DEFAULT_PROGRESS_ANIMATION "qgn_indi_pball_a"
+
+enum 
 {
-   GtkWidget *main_item;
-   GtkWidget *label;
-   GtkWidget *layout;
-   guint timeout_id;
-   gboolean is_timed; 
+    PROP_0,
+    PROP_PARENT_WINDOW, 
+    PROP_IS_TIMED
 };
 
-static GtkWidget *global_timed_banner = NULL;
+static GtkWidget*                               global_timed_banner = NULL;
 
 G_DEFINE_TYPE(HildonBanner, hildon_banner, GTK_TYPE_WINDOW)
 
 /* copy/paste from old infoprint implementation: Use matchbox 
    properties to find the topmost application window */
-static Window get_current_app_window(void)
+static Window 
+get_current_app_window                          (void)
 {
     unsigned long n;
     unsigned long extra;
@@ -81,509 +88,534 @@ static Window get_current_app_window(void)
     Window win_result = None;
     guchar *data_return = NULL;
 
-    status = XGetWindowProperty(GDK_DISPLAY(), GDK_ROOT_WINDOW(), 
-                                atom_current_app_window, 0L, 16L,
-                                0, XA_WINDOW, &realType, &format,
-                                &n, &extra, 
-                                &data_return);
+    status = XGetWindowProperty (GDK_DISPLAY(), GDK_ROOT_WINDOW (), 
+            atom_current_app_window, 0L, 16L,
+            0, XA_WINDOW, &realType, &format,
+            &n, &extra, 
+            &data_return);
 
-    if ( status == Success && realType == XA_WINDOW 
-         && format == 32 && n == 1 && data_return != NULL )
+    if (status == Success && realType == XA_WINDOW && format == 32 && n == 1 && data_return != NULL)
     {
         win_result = ((Window*) data_return)[0];
     } 
-        
-    if ( data_return ) 
-        XFree(data_return);    
-    
+
+    if (data_return) 
+        XFree (data_return);    
+
     return win_result;
 }
 
 /* Checks if a window is in fullscreen state or not. This
    information is needed when banners are positioned on screen.
    copy/paste from old infoprint implementation.  */
-static gboolean check_fullscreen_state( Window window )
+static gboolean 
+check_fullscreen_state                          (Window window)
 {
     unsigned long n;
     unsigned long extra;
     int format, status, i; 
     guchar *data_return = NULL;
-    
+
     Atom realType;
     Atom atom_window_state = gdk_x11_get_xatom_by_name ("_NET_WM_STATE");
     Atom atom_fullscreen   = gdk_x11_get_xatom_by_name ("_NET_WM_STATE_FULLSCREEN");
-    
-    if ( window == None )
+
+    if (window == None)
         return FALSE;
 
     /* in some cases XGetWindowProperty seems to generate BadWindow,
        so at the moment this function does not always work perfectly */
-    gdk_error_trap_push();
-    status = XGetWindowProperty(GDK_DISPLAY(), window,
-                                atom_window_state, 0L, 1000000L,
-                                0, XA_ATOM, &realType, &format,
-                                &n, &extra, &data_return);
-    gdk_flush();
-    if (gdk_error_trap_pop())
+    gdk_error_trap_push ();
+    status = XGetWindowProperty (GDK_DISPLAY (), window,
+            atom_window_state, 0L, 1000000L,
+            0, XA_ATOM, &realType, &format,
+            &n, &extra, &data_return);
+
+    gdk_flush ();
+
+    if (gdk_error_trap_pop ())
         return FALSE;
 
     if (status == Success && realType == XA_ATOM && format == 32 && n > 0)
     {
-        for(i=0; i < n; i++)
-            if ( ((Atom*)data_return)[i] && 
-                 ((Atom*)data_return)[i] == atom_fullscreen)
+        for (i=0; i < n; i++)
+            if  (((Atom*)data_return)[i] && ((Atom*)data_return)[i] == atom_fullscreen)
             {
-                if (data_return) XFree(data_return);
+                if (data_return) XFree (data_return);
                 return TRUE;
             }
     }
 
     if (data_return) 
-        XFree(data_return);
+        XFree (data_return);
 
     return FALSE;
 }
 
-static GQuark hildon_banner_timed_quark(void)
+static GQuark 
+hildon_banner_timed_quark                       (void)
 {
     static GQuark quark = 0;
 
     if (G_UNLIKELY(quark == 0))
-        quark = g_quark_from_static_string("hildon-banner-timed");
+        quark = g_quark_from_static_string ("hildon-banner-timed");
 
     return quark;
 }
 
 /* Set the label name to make the correct rc-style attached into it */
-static void hildon_banner_bind_label_style(HildonBanner *self,
-                                           const gchar  *name)
+static void 
+hildon_banner_bind_label_style                  (HildonBanner *self,
+                                                 const gchar *name)
 {
-   GtkWidget *label = self->priv->label;
+    HildonBannerPrivate *priv = HILDON_BANNER_GET_PRIVATE (self);
+    g_assert (priv);
 
-   /* Too bad that we cannot really reset the widget name */
-   gtk_widget_set_name(label, name ? name : g_type_name(GTK_WIDGET_TYPE(label)));
+    GtkWidget *label = priv->label;
+
+    /* Too bad that we cannot really reset the widget name */
+    gtk_widget_set_name (label, name ? name : g_type_name (GTK_WIDGET_TYPE (label)));
 }
 
 /* In timeout function we automatically destroy timed banners */
-static gboolean hildon_banner_timeout(gpointer data)
+static gboolean 
+hildon_banner_timeout                           (gpointer data)
 {
-   GtkWidget *widget;
-   GdkEvent *event;
-   gboolean continue_timeout = FALSE;
+    GtkWidget *widget;
+    GdkEvent *event;
+    gboolean continue_timeout = FALSE;
 
-   GDK_THREADS_ENTER ();
-   
-   g_assert(HILDON_IS_BANNER(data));
+    GDK_THREADS_ENTER ();
 
-   widget = GTK_WIDGET(data);
-   g_object_ref(widget);
+    g_assert (HILDON_IS_BANNER (data));
 
-   /* If the banner is currently visible (it normally should), 
-      we simulate clicking the close button of the window.
-      This allows applications to reuse the banner by prevent
-      closing it etc */
-   if (GTK_WIDGET_DRAWABLE(widget))
-   {
-      event = gdk_event_new (GDK_DELETE);
-      event->any.window = g_object_ref(widget->window);
-      event->any.send_event = FALSE;
-      continue_timeout = gtk_widget_event (widget, event);
-      gdk_event_free(event);
-   }
-   
-   if (!continue_timeout)
-      gtk_widget_destroy (widget);
+    widget = GTK_WIDGET (data);
+    g_object_ref (widget);
 
-   g_object_unref(widget);
+    /* If the banner is currently visible (it normally should), 
+       we simulate clicking the close button of the window.
+       This allows applications to reuse the banner by prevent
+       closing it etc */
+    if (GTK_WIDGET_DRAWABLE (widget))
+    {
+        event = gdk_event_new (GDK_DELETE);
+        event->any.window = g_object_ref (widget->window);
+        event->any.send_event = FALSE;
+        continue_timeout = gtk_widget_event (widget, event);
+        gdk_event_free (event);
+    }
 
-   GDK_THREADS_LEAVE ();
-   
-   return continue_timeout;
+    if (! continue_timeout)
+        gtk_widget_destroy (widget);
+
+    g_object_unref (widget);
+
+    GDK_THREADS_LEAVE ();
+
+    return continue_timeout;
 }
 
-static gboolean hildon_banner_clear_timeout(HildonBanner *self)
+static gboolean 
+hildon_banner_clear_timeout                     (HildonBanner *self)
 {
-   g_assert(HILDON_IS_BANNER(self));
+    HildonBannerPrivate *priv = HILDON_BANNER_GET_PRIVATE (self);
+    g_assert (priv);
 
-   if (self->priv->timeout_id != 0) {
-      g_source_remove(self->priv->timeout_id);
-      self->priv->timeout_id = 0;
-      return TRUE;
-   }
+    if (priv->timeout_id != 0) {
+        g_source_remove (priv->timeout_id);
+        priv->timeout_id = 0;
+        return TRUE;
+    }
 
-   return FALSE;
+    return FALSE;
 }
 
-static void hildon_banner_ensure_timeout(HildonBanner *self)
+static void 
+hildon_banner_ensure_timeout                    (HildonBanner *self)
 {
-   g_assert(HILDON_IS_BANNER(self));
+    HildonBannerPrivate *priv = HILDON_BANNER_GET_PRIVATE (self);
+    g_assert (priv);
 
-   if (self->priv->timeout_id == 0 && self->priv->is_timed)
-      self->priv->timeout_id = g_timeout_add(HILDON_BANNER_TIMEOUT, 
-         hildon_banner_timeout, self);
+    if (priv->timeout_id == 0 && priv->is_timed)
+        priv->timeout_id = g_timeout_add (HILDON_BANNER_TIMEOUT, 
+                hildon_banner_timeout, self);
 }
 
-static void hildon_banner_set_property(GObject      *object,
-                                       guint         prop_id,
-                                       const GValue *value,
-                                       GParamSpec   *pspec)
+static void 
+hildon_banner_set_property                      (GObject *object,
+                                                 guint prop_id,
+                                                 const GValue *value,
+                                                 GParamSpec *pspec)
 {
-   GtkWidget *window;
-   GdkGeometry geom;
-   HildonBannerPrivate *priv = HILDON_BANNER(object)->priv;
+    GtkWidget *window;
+    GdkGeometry geom;
+    HildonBannerPrivate *priv = HILDON_BANNER_GET_PRIVATE (object);
+    g_assert (priv);
 
-   switch (prop_id) {
-      case PROP_IS_TIMED:
-         priv->is_timed = g_value_get_boolean(value);
+    switch (prop_id) {
 
-         /* Timed and progress notifications have different
-            pixel size values for text. 
-            We force to use requisition size for timed banners 
-            in order to avoid resize problems when reusing the
-            window (see bug #24339) */
-         geom.max_width = priv->is_timed ? -1
-                                         : HILDON_BANNER_LABEL_MAX_PROGRESS;
-         geom.max_height = -1;
-         gtk_window_set_geometry_hints(GTK_WINDOW(object), 
-                                       priv->label, &geom, GDK_HINT_MAX_SIZE);
-         break;
+        case PROP_IS_TIMED:
+            priv->is_timed = g_value_get_boolean (value);
 
-      case PROP_PARENT_WINDOW:
-         window = g_value_get_object(value);         
+            /* Timed and progress notifications have different
+               pixel size values for text. 
+               We force to use requisition size for timed banners 
+               in order to avoid resize problems when reusing the
+               window (see bug #24339) */
+            geom.max_width = priv->is_timed ? -1
+                : HILDON_BANNER_LABEL_MAX_PROGRESS;
+            geom.max_height = -1;
+            gtk_window_set_geometry_hints (GTK_WINDOW (object), 
+                    priv->label, &geom, GDK_HINT_MAX_SIZE);
+            break;
 
-         gtk_window_set_transient_for(GTK_WINDOW(object), (GtkWindow *) window);
+        case PROP_PARENT_WINDOW:
+            window = g_value_get_object (value);         
 
-         if (window)
-            gtk_window_set_destroy_with_parent(GTK_WINDOW(object), TRUE);
+            gtk_window_set_transient_for (GTK_WINDOW (object), (GtkWindow *) window);
 
-         break;
+            if (window)
+                gtk_window_set_destroy_with_parent (GTK_WINDOW (object), TRUE);
 
-      default:
-         G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
-         break;
-  }
+            break;
+
+        default:
+            G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+            break;
+    }
 }
 
-static void hildon_banner_get_property(GObject    *object,
-                                       guint       prop_id,
-                                       GValue     *value,
-                                       GParamSpec *pspec)
+static void 
+hildon_banner_get_property                      (GObject *object,
+                                                 guint prop_id,
+                                                 GValue *value,
+                                                 GParamSpec *pspec)
 {
-   HildonBanner *self = HILDON_BANNER(object);
+    HildonBannerPrivate *priv = HILDON_BANNER_GET_PRIVATE (object);
+    g_assert (priv);
 
-   switch (prop_id)
-   {
-      case PROP_IS_TIMED:
-         g_value_set_boolean(value, self->priv->is_timed);
-         break;
+    switch (prop_id)
+    {
+        case PROP_IS_TIMED:
+            g_value_set_boolean (value, priv->is_timed);
+            break;
 
-      case PROP_PARENT_WINDOW:
-         g_value_set_object(value, gtk_window_get_transient_for(GTK_WINDOW(object)));
-         break;
+        case PROP_PARENT_WINDOW:
+            g_value_set_object (value, gtk_window_get_transient_for (GTK_WINDOW (object)));
+            break;
 
-      default:
-         G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
-         break;
-  }
+        default:
+            G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+            break;
+    }
 }
 
-static void hildon_banner_destroy(GtkObject *object)
+static void
+hildon_banner_destroy                           (GtkObject *object)
 {
-   HildonBanner *self;
-   GObject *parent_window;
+    HildonBannerPrivate *priv = HILDON_BANNER_GET_PRIVATE (object);
+    g_assert (priv);
 
-   g_assert(HILDON_IS_BANNER(object));
-   self = HILDON_BANNER(object);
+    HildonBanner *self;
+    GObject *parent_window;
 
-   /* Drop possible global pointer. That can hold reference to us */
-   if ((gpointer) object == (gpointer) global_timed_banner) {
-      global_timed_banner = NULL;
-      g_object_unref(object);
-   }
+    g_assert (HILDON_IS_BANNER (object));
+    self = HILDON_BANNER (object);
 
-   /* Remove the data from parent window for timed banners. Those hold reference */
-   if (self->priv->is_timed && 
-      (parent_window = (GObject *) gtk_window_get_transient_for(
-             GTK_WINDOW(object))) != NULL)
-      g_object_set_qdata(parent_window, hildon_banner_timed_quark(), NULL);
+    /* Drop possible global pointer. That can hold reference to us */
+    if ((gpointer) object == (gpointer) global_timed_banner) {
+        global_timed_banner = NULL;
+        g_object_unref (object);
+    }
 
-   (void) hildon_banner_clear_timeout(self);
+    /* Remove the data from parent window for timed banners. Those hold reference */
+    if (priv->is_timed && (parent_window = (GObject *) gtk_window_get_transient_for (GTK_WINDOW (object))) != NULL)
+        g_object_set_qdata (parent_window, hildon_banner_timed_quark (), NULL);
 
-   if (GTK_OBJECT_CLASS(hildon_banner_parent_class)->destroy)
-      GTK_OBJECT_CLASS(hildon_banner_parent_class)->destroy(object);
+    (void) hildon_banner_clear_timeout (self);
+
+    if (GTK_OBJECT_CLASS (hildon_banner_parent_class)->destroy)
+        GTK_OBJECT_CLASS (hildon_banner_parent_class)->destroy (object);
 }
 
 /* Search a previous banner instance */
-static GObject *hildon_banner_real_get_instance(GObject *window, gboolean timed)
+static GObject*
+hildon_banner_real_get_instance                 (GObject *window, 
+                                                 gboolean timed)
 {
-   g_assert(window == NULL || GTK_IS_WINDOW(window));
+    g_assert (GTK_IS_WINDOW (window));
 
-   if (timed) {
-      /* If we have a parent window, the previous instance is stored there */
-      if (window) 
-         return g_object_get_qdata(window, hildon_banner_timed_quark());
+    if (timed) {
+        /* If we have a parent window, the previous instance is stored there */
+        if (window) 
+            return g_object_get_qdata(window, hildon_banner_timed_quark ());
 
-      /* System notification instance is stored into global pointer */
-      return (GObject *) global_timed_banner;
-   }
+        /* System notification instance is stored into global pointer */
+        return (GObject *) global_timed_banner;
+    }
 
-   /* Non-timed banners are normal (non-singleton) objects */
-   return NULL;
+    /* Non-timed banners are normal (non-singleton) objects */
+    return NULL;
 }
 
 /* By overriding constructor we force timed banners to be
    singletons for each window */
-static GObject* hildon_banner_constructor (GType type,
-                                           guint n_construct_params,
-                                           GObjectConstructParam *construct_params)
+static GObject* 
+hildon_banner_constructor                       (GType type,
+                                                 guint n_construct_params,
+                                                 GObjectConstructParam *construct_params)
 {
-   GObject *banner, *window = NULL;
-   gboolean timed = FALSE;
-   guint i;
+    GObject *banner, *window = NULL;
+    gboolean timed = FALSE;
+    guint i;
 
-   /* Search banner type information from parameters in order
-      to locate the possible previous banner instance. */
-   for (i = 0; i < n_construct_params; i++)
-   {
-      if (strcmp(construct_params[i].pspec->name, "parent-window") == 0)
-         window = g_value_get_object(construct_params[i].value);       
-      else if (strcmp(construct_params[i].pspec->name, "is-timed") == 0)
-         timed = g_value_get_boolean(construct_params[i].value);
-   }
+    /* Search banner type information from parameters in order
+       to locate the possible previous banner instance. */
+    for (i = 0; i < n_construct_params; i++)
+    {
+        if (strcmp(construct_params[i].pspec->name, "parent-window") == 0)
+            window = g_value_get_object (construct_params[i].value);       
+        else if (strcmp(construct_params[i].pspec->name, "is-timed") == 0)
+            timed = g_value_get_boolean (construct_params[i].value);
+    }
 
-   /* Try to get a previous instance if such exists */
-   banner = hildon_banner_real_get_instance(window, timed);
-   if (!banner)
-   {
-      /* We have to create a new banner */
-      banner = G_OBJECT_CLASS(hildon_banner_parent_class)->constructor(
-                  type, n_construct_params, construct_params);
+    /* Try to get a previous instance if such exists */
+    banner = hildon_banner_real_get_instance (window, timed);
+    if (! banner)
+    {
+        /* We have to create a new banner */
+        banner = G_OBJECT_CLASS (hildon_banner_parent_class)->constructor (type, n_construct_params, construct_params);
 
-      /* Store the newly created singleton instance either into parent 
-         window data or into global variables. */
-      if (timed) {
-         if (window) {
-            g_object_set_qdata_full(G_OBJECT(window), hildon_banner_timed_quark(), 
-               g_object_ref(banner), g_object_unref); 
-         } else {
-            g_assert(global_timed_banner == NULL);
-            global_timed_banner = g_object_ref(banner);
-         }
-      }
-   }
-   else {
-      /* FIXME: This is a hack! We have to manually freeze
-         notifications. This is normally done by g_object_init, but we
-         are not going to call that. g_object_newv will otherwise give
-         a critical like this:
+        /* Store the newly created singleton instance either into parent 
+           window data or into global variables. */
+        if (timed) {
+            if (window) {
+                g_object_set_qdata_full (G_OBJECT (window), hildon_banner_timed_quark (), 
+                        g_object_ref (banner), g_object_unref); 
+            } else {
+                g_assert (global_timed_banner == NULL);
+                global_timed_banner = g_object_ref (banner);
+            }
+        }
+    }
+    else {
+        /* FIXME: This is a hack! We have to manually freeze
+           notifications. This is normally done by g_object_init, but we
+           are not going to call that. g_object_newv will otherwise give
+           a critical like this:
 
-            GLIB CRITICAL ** GLib-GObject - g_object_notify_queue_thaw: 
-            assertion `nqueue->freeze_count > 0' failed */
+           GLIB CRITICAL ** GLib-GObject - g_object_notify_queue_thaw: 
+           assertion `nqueue->freeze_count > 0' failed */
 
-      g_object_freeze_notify(banner);
-   }
+        g_object_freeze_notify (banner);
+    }
 
-   /* We restart possible timeouts for each new timed banner request */
-   if (timed && hildon_banner_clear_timeout(HILDON_BANNER(banner)))
-      hildon_banner_ensure_timeout(HILDON_BANNER(banner));
+    /* We restart possible timeouts for each new timed banner request */
+    if (timed && hildon_banner_clear_timeout (HILDON_BANNER (banner)))
+        hildon_banner_ensure_timeout (HILDON_BANNER(banner));
 
-   return banner;
+    return banner;
 }
 
 /* We start the timer for timed notifications after the window appears on screen */
-static gboolean hildon_banner_map_event(GtkWidget *widget, GdkEventAny *event)
+static gboolean 
+hildon_banner_map_event                         (GtkWidget *widget, 
+                                                 GdkEventAny *event)
 {
-   gboolean result = FALSE;
+    gboolean result = FALSE;
 
-   if (GTK_WIDGET_CLASS(hildon_banner_parent_class)->map_event)
-      result = GTK_WIDGET_CLASS(hildon_banner_parent_class)->map_event(widget, event);
+    if (GTK_WIDGET_CLASS (hildon_banner_parent_class)->map_event)
+        result = GTK_WIDGET_CLASS (hildon_banner_parent_class)->map_event (widget, event);
 
-   hildon_banner_ensure_timeout(HILDON_BANNER(widget));
+    hildon_banner_ensure_timeout (HILDON_BANNER(widget));
 
-   return result;
+    return result;
 }  
 
 
 /* force to wrap truncated label by setting explicit size request
  * see N#27000 and G#329646 */
-static void force_to_wrap_truncated(HildonBanner *banner){
-  GtkLabel *label;
-  PangoLayout *layout;
-  int width_text, width_max;
-  int width = -1;
+static void 
+force_to_wrap_truncated                         (HildonBanner *banner)
+{
+    GtkLabel *label;
+    PangoLayout *layout;
+    int width_text, width_max;
+    int width = -1;
+    HildonBannerPrivate *priv = HILDON_BANNER_GET_PRIVATE (banner);
 
-  label = GTK_LABEL(banner->priv->label);
+    g_assert (priv);
+    label = GTK_LABEL (priv->label);
 
-  layout = gtk_label_get_layout(label);
-  width_text  = PANGO_PIXELS(pango_layout_get_width(layout));
-  /* = width to which the lines of the PangoLayout should be wrapped */
+    layout = gtk_label_get_layout (label);
+    width_text  = PANGO_PIXELS(pango_layout_get_width (layout));
+    /* = width to which the lines of the PangoLayout should be wrapped */
 
-  width_max = banner->priv->is_timed ? HILDON_BANNER_LABEL_MAX_TIMED
-                                     : HILDON_BANNER_LABEL_MAX_PROGRESS;
+    width_max = priv->is_timed ? HILDON_BANNER_LABEL_MAX_TIMED
+        : HILDON_BANNER_LABEL_MAX_PROGRESS;
 
-  if(width_text >= width_max){
-    /* explicitly request maximum size to force wrapping */
-    PangoRectangle logical;
+    if (width_text >= width_max) {
+        /* explicitly request maximum size to force wrapping */
+        PangoRectangle logical;
 
-    pango_layout_set_width (layout, width_max * PANGO_SCALE);
-    pango_layout_get_extents (layout, NULL, &logical);
+        pango_layout_set_width (layout, width_max * PANGO_SCALE);
+        pango_layout_get_extents (layout, NULL, &logical);
 
-    width = PANGO_PIXELS (logical.width);
-  }
+        width = PANGO_PIXELS (logical.width);
+    }
 
-  /* use fixed width when wrapping or natural one otherwise */
-  gtk_widget_set_size_request (GTK_WIDGET (label),
-			       width, -1);
+    /* use fixed width when wrapping or natural one otherwise */
+    gtk_widget_set_size_request (GTK_WIDGET (label), width, -1);
 }
 
 
-static void hildon_banner_check_position(GtkWidget *widget)
+static void
+hildon_banner_check_position                    (GtkWidget *widget)
 {
-   gint x, y;
-   GtkRequisition req;
+    gint x, y;
+    GtkRequisition req;
 
-   force_to_wrap_truncated(HILDON_BANNER(widget)); /* see N#27000 and G#329646 */
+    force_to_wrap_truncated (HILDON_BANNER(widget)); /* see N#27000 and G#329646 */
 
-   gtk_widget_size_request(widget, &req);
+    gtk_widget_size_request (widget, &req);
 
-   if (req.width == 0)
-   {
-     return;
-   }
+    if (req.width == 0)
+    {
+        return;
+    }
 
-   x = gdk_screen_width() - HILDON_BANNER_WINDOW_X - req.width;
-   y = check_fullscreen_state(get_current_app_window()) ? 
-         HILDON_BANNER_WINDOW_FULLSCREEN_Y : HILDON_BANNER_WINDOW_Y;
+    x = gdk_screen_width() - HILDON_BANNER_WINDOW_X - req.width;
+    y = check_fullscreen_state (get_current_app_window ()) ? 
+        HILDON_BANNER_WINDOW_FULLSCREEN_Y : HILDON_BANNER_WINDOW_Y;
 
-   gtk_window_move(GTK_WINDOW(widget), x, y);
+    gtk_window_move (GTK_WINDOW (widget), x, y);
 }
 
-static void hildon_banner_realize(GtkWidget *widget)
+static void
+hildon_banner_realize                           (GtkWidget *widget)
 {
-   /* We let the parent to init widget->window before we need it */
-   if (GTK_WIDGET_CLASS(hildon_banner_parent_class)->realize)
-      GTK_WIDGET_CLASS(hildon_banner_parent_class)->realize(widget);
+    /* We let the parent to init widget->window before we need it */
+    if (GTK_WIDGET_CLASS (hildon_banner_parent_class)->realize)
+        GTK_WIDGET_CLASS (hildon_banner_parent_class)->realize (widget);
 
-   /* We use special hint to turn the banner into information notification. */
-   gdk_window_set_type_hint(widget->window, GDK_WINDOW_TYPE_HINT_MESSAGE);
+    /* We use special hint to turn the banner into information notification. */
+    gdk_window_set_type_hint (widget->window, GDK_WINDOW_TYPE_HINT_MESSAGE);
 
-   hildon_banner_check_position(widget);
+    hildon_banner_check_position (widget);
 }
 
-static void hildon_banner_class_init(HildonBannerClass *klass)
+static void 
+hildon_banner_class_init                        (HildonBannerClass *klass)
 {
-   GObjectClass *object_class;
-   GtkWidgetClass *widget_class;
+    GObjectClass *object_class;
+    GtkWidgetClass *widget_class;
 
-   object_class = G_OBJECT_CLASS(klass);
-   widget_class = GTK_WIDGET_CLASS(klass);
+    object_class = G_OBJECT_CLASS (klass);
+    widget_class = GTK_WIDGET_CLASS (klass);
 
-   /* Append private structure to class. This is more elegant than
-      on g_new based approach */
-   g_type_class_add_private(klass, sizeof(HildonBannerPrivate));
+    /* Append private structure to class. This is more elegant than
+       on g_new based approach */
+    g_type_class_add_private(klass, sizeof (HildonBannerPrivate));
 
-   /* Override virtual methods */
-   object_class->constructor = hildon_banner_constructor;
-   object_class->set_property = hildon_banner_set_property;
-   object_class->get_property = hildon_banner_get_property;
-   GTK_OBJECT_CLASS(klass)->destroy = hildon_banner_destroy;
-   widget_class->map_event = hildon_banner_map_event;
-   widget_class->realize = hildon_banner_realize;
+    /* Override virtual methods */
+    object_class->constructor = hildon_banner_constructor;
+    object_class->set_property = hildon_banner_set_property;
+    object_class->get_property = hildon_banner_get_property;
+    GTK_OBJECT_CLASS (klass)->destroy = hildon_banner_destroy;
+    widget_class->map_event = hildon_banner_map_event;
+    widget_class->realize = hildon_banner_realize;
 
-   /* Install properties.
-      We need construct properties for singleton purposes */
-   g_object_class_install_property(object_class, PROP_PARENT_WINDOW,
-      g_param_spec_object("parent-window",
-                          "Parent window",
-                          "The window for which the banner will be singleton",
-                          GTK_TYPE_WINDOW, G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY));
+    /* Install properties.
+       We need construct properties for singleton purposes */
+    g_object_class_install_property (object_class, PROP_PARENT_WINDOW,
+            g_param_spec_object ("parent-window",
+                "Parent window",
+                "The window for which the banner will be singleton",
+                GTK_TYPE_WINDOW, G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY));
 
-   g_object_class_install_property(object_class, PROP_IS_TIMED,
-      g_param_spec_boolean("is-timed",
-                           "Is timed",
-                           "Whether or not the notification goes away automatically "
-                           "after the specified time has passed",
-                           FALSE, G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY));
+    g_object_class_install_property (object_class, PROP_IS_TIMED,
+            g_param_spec_boolean ("is-timed",
+                "Is timed",
+                "Whether or not the notification goes away automatically "
+                "after the specified time has passed",
+                FALSE, G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY));
 }
 
-static void hildon_banner_init(HildonBanner *self)
+static void 
+hildon_banner_init                              (HildonBanner *self)
 {
-   HildonBannerPrivate *priv;
+    HildonBannerPrivate *priv = HILDON_BANNER_GET_PRIVATE (self);
+    g_assert (self);
 
-   /* Make private data available through cached pointer */
-   self->priv = priv = G_TYPE_INSTANCE_GET_PRIVATE(self, 
-                                                   HILDON_TYPE_BANNER,
-                                                   HildonBannerPrivate);
+    /* Initialize the common layout inside banner */
+    priv->layout = gtk_hbox_new (FALSE, HILDON_MARGIN_DEFAULT);
 
-   /* Initialize the common layout inside banner */
-   self->priv->layout = gtk_hbox_new(FALSE, HILDON_MARGIN_DEFAULT);
+    priv->label = g_object_new (GTK_TYPE_LABEL, NULL);
+    gtk_label_set_line_wrap (GTK_LABEL (priv->label), TRUE);
 
-   priv->label = g_object_new(GTK_TYPE_LABEL, NULL);
-   gtk_label_set_line_wrap(GTK_LABEL(priv->label), TRUE);
+    gtk_container_set_border_width (GTK_CONTAINER (priv->layout), HILDON_MARGIN_DEFAULT);
+    gtk_container_add (GTK_CONTAINER (self), priv->layout);
+    gtk_box_pack_start (GTK_BOX (priv->layout), priv->label, TRUE, TRUE, 0);
 
-   gtk_container_set_border_width(GTK_CONTAINER(self->priv->layout), HILDON_MARGIN_DEFAULT);
-   gtk_container_add(GTK_CONTAINER(self), self->priv->layout);
-   gtk_box_pack_start(GTK_BOX(self->priv->layout), priv->label, TRUE, TRUE, 0);
-
-   gtk_window_set_accept_focus(GTK_WINDOW(self), FALSE);
+    gtk_window_set_accept_focus (GTK_WINDOW (self), FALSE);
 }
 
 /* Makes sure that icon/progress item contains the desired type
    of item. If possible, tries to avoid creating a new widget but
    reuses the existing one */
-static void hildon_banner_ensure_child(HildonBanner *self, 
-                                       GtkWidget    *user_widget,
-                                       guint         pos,
-                                       GType         type,
-                                       const gchar  *first_property, ...)
+static void
+hildon_banner_ensure_child                      (HildonBanner *self, 
+                                                 GtkWidget *user_widget,
+                                                 guint pos,
+                                                 GType type,
+                                                 const gchar *first_property, 
+                                                 ...)
 {
-   GtkWidget *widget;
-   va_list args;
+    GtkWidget *widget;
+    va_list args;
+    HildonBannerPrivate *priv = HILDON_BANNER_GET_PRIVATE (self);
 
-   g_assert(HILDON_IS_BANNER(self));
-   g_assert(user_widget == NULL || GTK_IS_WIDGET(user_widget));
+    g_assert (HILDON_IS_BANNER (self));
+    g_assert (GTK_IS_WIDGET (user_widget));
+    g_assert (priv);
 
-   widget = self->priv->main_item;
-   va_start(args, first_property);
+    widget = priv->main_item;
+    va_start (args, first_property);
 
-   /* Reuse existing widget if possible */
-   if (!user_widget && G_TYPE_CHECK_INSTANCE_TYPE(widget, type))
-   {
-      g_object_set_valist(G_OBJECT(widget), first_property, args);
-   }
-   else
-   {
-      /* We have to abandon old content widget */
-      if (widget)
-         gtk_container_remove(GTK_CONTAINER(self->priv->layout), widget);
+    /* Reuse existing widget if possible */
+    if (! user_widget && G_TYPE_CHECK_INSTANCE_TYPE (widget, type))
+    {
+        g_object_set_valist (G_OBJECT (widget), first_property, args);
+    }
+    else
+    {
+        /* We have to abandon old content widget */
+        if (widget)
+            gtk_container_remove (GTK_CONTAINER (priv->layout), widget);
 
-      /* Use user provided widget or create a new one */
-      self->priv->main_item = widget = user_widget ? 
-         user_widget : GTK_WIDGET(g_object_new_valist(type, first_property, args));
-      gtk_box_pack_start(GTK_BOX(self->priv->layout), widget, TRUE, TRUE, 0);
-   }
+        /* Use user provided widget or create a new one */
+        priv->main_item = widget = user_widget ? 
+            user_widget : GTK_WIDGET (g_object_new_valist(type, first_property, args));
+        gtk_box_pack_start (GTK_BOX (priv->layout), widget, TRUE, TRUE, 0);
+    }
 
-   /* We make sure that the widget exists in desired position. Different
-      banners place this child widget to different places */
-   gtk_box_reorder_child(GTK_BOX(self->priv->layout), widget, pos);
-   va_end(args);
+    /* We make sure that the widget exists in desired position. Different
+       banners place this child widget to different places */
+    gtk_box_reorder_child (GTK_BOX (priv->layout), widget, pos);
+    va_end (args);
 }
 
 /* Creates a new banner instance or uses an existing one */
-static HildonBanner *hildon_banner_get_instance_for_widget(GtkWidget *widget, gboolean timed)
+static HildonBanner*
+hildon_banner_get_instance_for_widget           (GtkWidget *widget, 
+                                                 gboolean timed)
 {
-   GtkWidget *window;
+    GtkWidget *window;
 
-   g_return_val_if_fail(widget == NULL || GTK_IS_WIDGET(widget), NULL);
-   window = widget ? gtk_widget_get_ancestor(widget, GTK_TYPE_WINDOW) : NULL;
-   return g_object_new(HILDON_TYPE_BANNER, "parent-window", window, "is-timed", timed, NULL);
+    g_return_val_if_fail (GTK_IS_WIDGET (widget), NULL);
+    window = widget ? gtk_widget_get_ancestor (widget, GTK_TYPE_WINDOW) : NULL;
+    return g_object_new (HILDON_TYPE_BANNER, "parent-window", window, "is-timed", timed, NULL);
 }
-
-
-
-
-
-/* Public functions **************************************************************/
 
 /**
  * hildon_banner_show_information:
@@ -597,49 +629,51 @@ static HildonBanner *hildon_banner_get_instance_for_widget(GtkWidget *widget, gb
  * spawn a new banner before the earlier one has timed out, the
  * previous one will be replaced.
  *
- * Since: 0.12.2
  */
-void hildon_banner_show_information(GtkWidget *widget, 
-                                    const gchar *icon_name,
-                                    const gchar *text)
+void 
+hildon_banner_show_information                  (GtkWidget *widget, 
+                                                 const gchar *icon_name,
+                                                 const gchar *text)
 {
-   HildonBanner *banner;
+    HildonBanner *banner;
 
-   g_return_if_fail(widget == NULL || GTK_IS_WIDGET(widget));
-   g_return_if_fail(icon_name == NULL || icon_name[0] != 0);
-   g_return_if_fail(text != NULL);
+    g_return_if_fail (GTK_IS_WIDGET(widget));
+    g_return_if_fail (icon_name == NULL || icon_name[0] != 0);
+    g_return_if_fail (text != NULL);
 
-   /* Prepare banner */
-   banner = hildon_banner_get_instance_for_widget(widget, TRUE);
-   hildon_banner_ensure_child(banner, NULL, 0, GTK_TYPE_IMAGE, 
-      "pixel-size", HILDON_ICON_PIXEL_SIZE_NOTE, 
-      "icon-name", icon_name ? icon_name : HILDON_BANNER_DEFAULT_ICON,
-      "yalign", 0.0, 
-      NULL);
-   hildon_banner_set_text(banner, text);
-   hildon_banner_bind_label_style(banner, NULL);
+    /* Prepare banner */
+    banner = hildon_banner_get_instance_for_widget (widget, TRUE);
+    hildon_banner_ensure_child (banner, NULL, 0, GTK_TYPE_IMAGE, 
+            "pixel-size", HILDON_ICON_PIXEL_SIZE_NOTE, 
+            "icon-name", icon_name ? icon_name : HILDON_BANNER_DEFAULT_ICON,
+            "yalign", 0.0, 
+            NULL);
 
-   /* Show the banner, since caller cannot do that */
-   gtk_widget_show_all(GTK_WIDGET(banner));
+    hildon_banner_set_text (banner, text);
+    hildon_banner_bind_label_style (banner, NULL);
+
+    /* Show the banner, since caller cannot do that */
+    gtk_widget_show_all (GTK_WIDGET (banner));
 }
 
-void       hildon_banner_show_informationf (GtkWidget      *widget, 
-                                            const gchar    *icon_name,
-                                            const gchar    *format, 
-                                            ...)
+void       
+hildon_banner_show_informationf                 (GtkWidget *widget, 
+                                                 const gchar *icon_name,
+                                                 const gchar *format, 
+                                                 ...)
 {
-  g_return_if_fail (format != NULL);
-  
-  gchar *message;
-  va_list args;
+    g_return_if_fail (format != NULL);
 
-  va_start(args, format);
-  message = g_strdup_vprintf(format, args);
-  va_end(args);
+    gchar *message;
+    va_list args;
 
-  hildon_banner_show_information (widget, icon_name, message);
+    va_start (args, format);
+    message = g_strdup_vprintf (format, args);
+    va_end (args);
 
-  g_free (message);
+    hildon_banner_show_information (widget, icon_name, message);
+
+    g_free (message);
 }
 
 /**
@@ -654,30 +688,32 @@ void       hildon_banner_show_informationf (GtkWidget      *widget,
  * spawn a new banner before the earlier one has timed out, the
  * previous one will be replaced.
  *
- * Since: 0.12.8
  */
-void hildon_banner_show_information_with_markup(GtkWidget *widget, 
-   const gchar *icon_name, const gchar *markup)
+void 
+hildon_banner_show_information_with_markup      (GtkWidget *widget, 
+                                                 const gchar *icon_name, 
+                                                 const gchar *markup)
 {
-   HildonBanner *banner;
+    HildonBanner *banner;
 
-   g_return_if_fail(widget == NULL || GTK_IS_WIDGET(widget));
-   g_return_if_fail(icon_name == NULL || icon_name[0] != 0);
-   g_return_if_fail(markup != NULL);
+    g_return_if_fail (GTK_IS_WIDGET (widget));
+    g_return_if_fail (icon_name == NULL || icon_name[0] != 0);
+    g_return_if_fail (markup != NULL);
 
-   /* Prepare banner */
-   banner = hildon_banner_get_instance_for_widget(widget, TRUE);
+    /* Prepare banner */
+    banner = hildon_banner_get_instance_for_widget (widget, TRUE);
 
-   hildon_banner_ensure_child(banner, NULL, 0, GTK_TYPE_IMAGE, 
-      "pixel-size", HILDON_ICON_PIXEL_SIZE_NOTE, 
-      "icon-name", icon_name ? icon_name : HILDON_BANNER_DEFAULT_ICON,
-      "yalign", 0.0, 
-      NULL);
-   hildon_banner_set_markup(banner, markup);
-   hildon_banner_bind_label_style(banner, NULL);
+    hildon_banner_ensure_child (banner, NULL, 0, GTK_TYPE_IMAGE, 
+            "pixel-size", HILDON_ICON_PIXEL_SIZE_NOTE, 
+            "icon-name", icon_name ? icon_name : HILDON_BANNER_DEFAULT_ICON,
+            "yalign", 0.0, 
+            NULL);
 
-   /* Show the banner, since caller cannot do that */
-   gtk_widget_show_all(GTK_WIDGET(banner));
+    hildon_banner_set_markup (banner, markup);
+    hildon_banner_bind_label_style (banner, NULL);
+
+    /* Show the banner, since caller cannot do that */
+    gtk_widget_show_all (GTK_WIDGET (banner));
 }
 
 /**
@@ -706,49 +742,51 @@ void hildon_banner_show_information_with_markup(GtkWidget *widget,
  * Returns: a #HildonBanner widget. You must call #gtk_widget_destroy
  *          once you are ready with the banner.
  *
- * Since: 0.12.2
  */
-GtkWidget *hildon_banner_show_animation(GtkWidget *widget, 
-   const gchar *animation_name, const gchar *text)
+GtkWidget*
+hildon_banner_show_animation                    (GtkWidget *widget, 
+                                                 const gchar *animation_name, 
+                                                 const gchar *text)
 {
-   HildonBanner *banner;
-   GtkIconTheme *theme; 
-   GtkIconInfo *info;
-   GtkWidget *image_widget;
-   const gchar *filename;
+    HildonBanner *banner;
+    GtkIconTheme *theme; 
+    GtkIconInfo *info;
+    GtkWidget *image_widget;
+    const gchar *filename;
 
-   g_return_val_if_fail(widget == NULL || GTK_IS_WIDGET(widget), NULL);
-   g_return_val_if_fail(animation_name == NULL || animation_name[0] != 0, NULL);
-   g_return_val_if_fail(text != NULL, NULL);
+    g_return_val_if_fail (GTK_IS_WIDGET(widget), NULL);
+    g_return_val_if_fail (animation_name == NULL || animation_name[0] != 0, NULL);
+    g_return_val_if_fail (text != NULL, NULL);
 
-   /* Find out which animation to use */
-   theme = gtk_icon_theme_get_default();
-   info = gtk_icon_theme_lookup_icon(theme, animation_name ?   /* TODO: consider using: gtk_icon_theme_load_icon() */
+    /* Find out which animation to use */
+    theme = gtk_icon_theme_get_default ();
+    info = gtk_icon_theme_lookup_icon (theme, animation_name ?   /* FIXME: consider using: gtk_icon_theme_load_icon() */
             animation_name : HILDON_BANNER_DEFAULT_PROGRESS_ANIMATION,
             HILDON_ICON_SIZE_NOTE, 0);
 
-   /* Try to load animation. One could try to optimize this 
-      to avoid loading the default animation during each call */
-   if (info) {
-   	  filename = gtk_icon_info_get_filename(info);
-      image_widget = gtk_image_new_from_file(filename);
-      gtk_icon_info_free(info);
-   } else {
-      g_warning("icon theme lookup for icon failed!");
-      image_widget = NULL;
-   }
+    /* Try to load animation. One could try to optimize this 
+       to avoid loading the default animation during each call */
+    if (info) {
+        filename = gtk_icon_info_get_filename (info);
+        image_widget = gtk_image_new_from_file (filename);
+        gtk_icon_info_free (info);
+    } else {
+        g_warning ("Icon theme lookup for icon failed!");
+        image_widget = NULL;
+    }
 
-   /* Prepare banner */
-   banner = hildon_banner_get_instance_for_widget(widget, FALSE);
-   hildon_banner_ensure_child(banner, image_widget, 0,
-      GTK_TYPE_IMAGE, "yalign", 0.0, NULL);
-   hildon_banner_set_text(banner, text);
-   hildon_banner_bind_label_style(banner, NULL);
+    /* Prepare banner */
+    banner = hildon_banner_get_instance_for_widget (widget, FALSE);
+    hildon_banner_ensure_child (banner, image_widget, 0,
+            GTK_TYPE_IMAGE, "yalign", 0.0, NULL);
 
-   /* And show it */
-   gtk_widget_show_all(GTK_WIDGET(banner));
+    hildon_banner_set_text (banner, text);
+    hildon_banner_bind_label_style (banner, NULL);
 
-   return GTK_WIDGET(banner);
+    /* And show it */
+    gtk_widget_show_all (GTK_WIDGET (banner));
+
+    return (GtkWidget *) banner;
 }
 
 /**
@@ -764,29 +802,36 @@ GtkWidget *hildon_banner_show_animation(GtkWidget *widget,
  * Returns: a #HildonBanner widget. You must call #gtk_widget_destroy
  *          once you are ready with the banner.
  *
- * Since: 0.12.2
  */
-GtkWidget *hildon_banner_show_progress(GtkWidget *widget, 
-   GtkProgressBar *bar, const gchar *text)
+GtkWidget*
+hildon_banner_show_progress                     (GtkWidget *widget, 
+                                                 GtkProgressBar *bar, 
+                                                 const gchar *text)
 {
-   HildonBanner *banner;
+    HildonBanner *banner;
+    HildonBannerPrivate *priv;
 
-   g_return_val_if_fail(widget == NULL || GTK_IS_WIDGET(widget), NULL);
-   g_return_val_if_fail(bar == NULL || GTK_IS_PROGRESS_BAR(bar), NULL);
-   g_return_val_if_fail(text != NULL, NULL);
+    g_return_val_if_fail (GTK_IS_WIDGET(widget), NULL);
+    g_return_val_if_fail (bar == NULL || GTK_IS_PROGRESS_BAR(bar), NULL);
+    g_return_val_if_fail (text != NULL, NULL);
 
-   /* Prepare banner */
-   banner = hildon_banner_get_instance_for_widget(widget, FALSE);
-   hildon_banner_ensure_child(banner, (GtkWidget *) bar, -1, GTK_TYPE_PROGRESS_BAR, NULL);
-   gtk_widget_set_size_request(banner->priv->main_item,
-      HILDON_BANNER_PROGRESS_WIDTH, -1);
-   hildon_banner_set_text(banner, text);
-   hildon_banner_bind_label_style(banner, NULL);
+    priv = HILDON_BANNER_GET_PRIVATE (widget);
+    g_assert (priv);
 
-   /* Show the banner */
-   gtk_widget_show_all(GTK_WIDGET(banner));
+    /* Prepare banner */
+    banner = hildon_banner_get_instance_for_widget (widget, FALSE);
+    hildon_banner_ensure_child (banner, (GtkWidget *) bar, -1, GTK_TYPE_PROGRESS_BAR, NULL);
 
-   return GTK_WIDGET(banner);   
+    gtk_widget_set_size_request (priv->main_item,
+            HILDON_BANNER_PROGRESS_WIDTH, -1);
+
+    hildon_banner_set_text (banner, text);
+    hildon_banner_bind_label_style (banner, NULL);
+
+    /* Show the banner */
+    gtk_widget_show_all (GTK_WIDGET (banner));
+
+    return GTK_WIDGET (banner);   
 }
 
 /**
@@ -796,18 +841,23 @@ GtkWidget *hildon_banner_show_progress(GtkWidget *widget,
  *
  * Sets the text that is displayed in the banner.
  *
- * Since: 0.12.2
  */
-void hildon_banner_set_text(HildonBanner *self, const gchar *text)
+void 
+hildon_banner_set_text                          (HildonBanner *self, 
+                                                 const gchar *text)
 {
-   GtkLabel *label;
+    GtkLabel *label;
+    HildonBannerPrivate *priv;
 
-   g_return_if_fail(HILDON_IS_BANNER(self));
+    g_return_if_fail (HILDON_IS_BANNER (self));
 
-   label = GTK_LABEL(self->priv->label);
-   gtk_label_set_text(label, text);
+    priv = HILDON_BANNER_GET_PRIVATE (self);
+    g_assert (priv);
 
-   hildon_banner_check_position(GTK_WIDGET(self));
+    label = GTK_LABEL (priv->label);
+    gtk_label_set_text (label, text);
+
+    hildon_banner_check_position (GTK_WIDGET (self));
 }
 
 /**
@@ -819,16 +869,22 @@ void hildon_banner_set_text(HildonBanner *self, const gchar *text)
  *
  * Since: 0.12.8
  */
-void hildon_banner_set_markup(HildonBanner *self, const gchar *markup)
+void 
+hildon_banner_set_markup                        (HildonBanner *self, 
+                                                 const gchar *markup)
 {
-   GtkLabel *label;
+    GtkLabel *label;
+    HildonBannerPrivate *priv;
 
-   g_return_if_fail(HILDON_IS_BANNER(self));
+    g_return_if_fail (HILDON_IS_BANNER (self));
 
-   label = GTK_LABEL(self->priv->label);
-   gtk_label_set_markup(label, markup);
+    priv = HILDON_BANNER_GET_PRIVATE (self);
+    g_assert (priv);
 
-   hildon_banner_check_position(GTK_WIDGET(self));
+    label = GTK_LABEL (priv->label);
+    gtk_label_set_markup (label, markup);
+
+    hildon_banner_check_position (GTK_WIDGET(self));
 }
 
 /**
@@ -840,93 +896,99 @@ void hildon_banner_set_markup(HildonBanner *self, const gchar *markup)
  * the scale is from 0.0 to 1.0.
  * Sets the amount of fraction the progressbar has.
  *
- * Since: 0.12.2
  */
-void hildon_banner_set_fraction(HildonBanner *self, gdouble fraction)
+void 
+hildon_banner_set_fraction                      (HildonBanner *self, 
+                                                 gdouble fraction)
 {
-   g_return_if_fail(HILDON_IS_BANNER(self));
-   g_return_if_fail(GTK_IS_PROGRESS_BAR(self->priv->main_item));
-   gtk_progress_bar_set_fraction(GTK_PROGRESS_BAR(self->priv->main_item), fraction);
+    HildonBannerPrivate *priv;
+
+    g_return_if_fail (HILDON_IS_BANNER (self));
+    priv = HILDON_BANNER_GET_PRIVATE (self);
+    g_assert (priv);
+
+    g_return_if_fail (GTK_IS_PROGRESS_BAR (priv->main_item));
+    gtk_progress_bar_set_fraction (GTK_PROGRESS_BAR (priv->main_item), fraction);
 }
-
-
-
-
 
 /**
  * Deprecated: really, do NOT use.
  */
-void _hildon_gtk_label_set_text_n_lines(GtkLabel *label, const gchar *text, gint max_lines)
+void 
+hildon_gtk_label_set_text_n_lines               (GtkLabel *label, 
+                                                 const gchar *text, 
+                                                 gint max_lines)
 {
-/* Forces the wrapping of text into several lines and ellipsizes the rest. 
-   Similar to combination of gtk_label_set_wrap and pango ellipzation. 
-   We cannot just use those directly, since ellipzation always wins wrapping.
+    /* Forces the wrapping of text into several lines and ellipsizes the rest. 
+       Similar to combination of gtk_label_set_wrap and pango ellipzation. 
+       We cannot just use those directly, since ellipzation always wins wrapping.
 
-   This means that we have to:
+       This means that we have to:
      * First wrap the text
      * Insert forced linebreaks into text
      * Truncate the result
 
-   NOTE! This will not work with pango markup!
+     NOTE! This will not work with pango markup!
 
-   FIXME: luc: DO NOT TRUNCATE the text. Use as many lines as needed.
-          Lenth of the text is under applications' responsibility.
-          Widget does not have to enforce this.
-*/
-   PangoLayout *layout;
-   PangoLayoutLine *line;
-   GtkRequisition req;
-   GString *wrapped_text;
-   gchar *line_data;
-   gint lines, i;
+    FIXME: luc: DO NOT TRUNCATE the text. Use as many lines as needed.
+    Lenth of the text is under applications' responsibility.
+    Widget does not have to enforce this. */
 
-   g_return_if_fail(GTK_IS_LABEL(label));
-   g_return_if_fail(max_lines >= 1);
+    PangoLayout *layout;
+    PangoLayoutLine *line;
+    GtkRequisition req;
+    GString *wrapped_text;
+    gchar *line_data;
+    gint lines, i;
 
-   /* Setup the label to contain the new data */
-   gtk_label_set_text(label, text);
-   gtk_label_set_line_wrap(label, TRUE);
-   gtk_label_set_ellipsize(label, PANGO_ELLIPSIZE_NONE);
-   
-   /* We really want to recalculate the size, not use some old values */
-   gtk_widget_size_request(GTK_WIDGET(label), &req);
-   layout = gtk_label_get_layout(label);
-   lines = pango_layout_get_line_count(layout);
+    g_return_if_fail (GTK_IS_LABEL (label));
+    g_return_if_fail (max_lines >= 1);
 
-   /* Now collect the wrapped text. */
-   wrapped_text = g_string_new(NULL);
+    /* Setup the label to contain the new data */
+    gtk_label_set_text (label, text);
+    gtk_label_set_line_wrap (label, TRUE);
+    gtk_label_set_ellipsize (label, PANGO_ELLIPSIZE_NONE);
 
-   for (i = 0; i < lines; i++)
-   {
-      /* Append the next line into wrapping buffer, but 
-         avoid adding extra whitespaces at the end, since those
-         can cause other lines to be ellipsized as well. */
-      line = pango_layout_get_line(layout, i);
-      line_data = g_strndup(pango_layout_get_text(layout) + line->start_index, 
-         line->length);
-      g_strchomp(line_data);
-      g_string_append(wrapped_text, line_data);
+    /* We really want to recalculate the size, not use some old values */
+    gtk_widget_size_request (GTK_WIDGET (label), &req);
+    layout = gtk_label_get_layout (label);
+    lines = pango_layout_get_line_count (layout);
 
-      /* Append forced linebreaks, until we have the desired
-         amount of lines. After that we put the rest to the
-         last line to make ellipzation to happen */
-      if (i < lines - 1)
-      {
-         if (i < max_lines - 1)
-            g_string_append_c(wrapped_text, '\n');
-         else
-            g_string_append_c(wrapped_text, ' ');
-      }
+    /* Now collect the wrapped text. */
+    wrapped_text = g_string_new (NULL);
 
-      g_free(line_data);
-   }
+    for (i = 0; i < lines; i++)
+    {
+        /* Append the next line into wrapping buffer, but 
+           avoid adding extra whitespaces at the end, since those
+           can cause other lines to be ellipsized as well. */
+        line = pango_layout_get_line (layout, i);
+        line_data = g_strndup (pango_layout_get_text(layout) + line->start_index, 
+                line->length);
+        g_strchomp (line_data);
+        g_string_append (wrapped_text, line_data);
 
-   /* Now update the label to use wrapped text. Use builtin
-      ellipzation as well. */
-   gtk_widget_set_size_request(GTK_WIDGET(label), req.width, -1);
-   gtk_label_set_text(label, wrapped_text->str);
-   gtk_label_set_ellipsize(label, PANGO_ELLIPSIZE_END);
-   gtk_label_set_line_wrap(label, FALSE);
+        /* Append forced linebreaks, until we have the desired
+           amount of lines. After that we put the rest to the
+           last line to make ellipzation to happen */
+        if (i < lines - 1)
+        {
+            if (i < max_lines - 1)
+                g_string_append_c (wrapped_text, '\n');
+            else
+                g_string_append_c (wrapped_text, ' ');
+        }
 
-   g_string_free(wrapped_text, TRUE);
+        g_free(line_data);
+    }
+
+    /* Now update the label to use wrapped text. Use builtin
+       ellipzation as well. */
+    gtk_widget_set_size_request (GTK_WIDGET (label), req.width, -1);
+    gtk_label_set_text (label, wrapped_text->str);
+    gtk_label_set_ellipsize (label, PANGO_ELLIPSIZE_END);
+    gtk_label_set_line_wrap (label, FALSE);
+
+    g_string_free (wrapped_text, TRUE);
 }
+

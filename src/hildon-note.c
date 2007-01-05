@@ -134,7 +134,7 @@ hildon_note_set_property                        (GObject *object,
             g_free (priv->original_description);
             priv->original_description = g_value_dup_string (value);
 
-            _hildon_gtk_label_set_text_n_lines (GTK_LABEL (priv->label),
+            hildon_gtk_label_set_text_n_lines (GTK_LABEL (priv->label),
                     priv->original_description, 
                     priv->note_n == HILDON_NOTE_PROGRESSBAR_TYPE ? 1 : 5);
 
