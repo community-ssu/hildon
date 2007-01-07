@@ -1,3 +1,10 @@
+2007-01-07  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
+	* src/hildon-get-password-dialog-private.h:
+	* src/hildon-get-password-dialog.c:
+	* src/hildon-get-password-dialog.h: Cleaning up the
+	HildonGetPasswordDialogi.
+
 2007-01-05  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
 	* src/hildon-font-selection-dialog.c:
