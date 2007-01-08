@@ -71,7 +71,7 @@ typedef enum
     HILDON_DATE_TIME_ERROR_INVALID_CHAR,
     HILDON_DATE_TIME_ERROR_INVALID_DATE,
     HILDON_DATE_TIME_ERROR_INVALID_TIME
-}                                               HildonDateTimeEditorError;
+}                                               HildonDateTimeError;
 
 typedef struct                                  _HildonTimeEditor HildonTimeEditor;
 
@@ -87,7 +87,7 @@ struct                                          _HildonTimeEditorClass
     GtkContainerClass parent_class;
 
     gboolean (*time_error) (HildonTimeEditor *editor,
-                            HildonDateTimeEditorError type);
+                            HildonDateTimeError type);
 };
 
 GType G_GNUC_CONST

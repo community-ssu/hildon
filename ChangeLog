@@ -1,5 +1,12 @@
 2007-01-08  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
+	* src/hildon-date-editor.c:
+	* src/hildon-date-editor.h:
+	* src/hildon-time-editor.c:
+	* src/hildon-time-editor.h: Cleaning up the enum name.
+
+2007-01-08  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
 	* src/hildon-wizard-dialog-private.h:
 	* src/hildon-wizard-dialog.c:
 	* src/hildon-wizard-dialog.h: Cleaning up the HildonWizardDialog.

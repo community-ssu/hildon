@@ -63,7 +63,7 @@ struct                                          _HildonDateEditorClass
 {
     GtkContainerClass parent_class;
 
-    gboolean (*date_error) (HildonDateEditor *editor, HildonDateTimeEditorError type);
+    gboolean (*date_error) (HildonDateEditor *editor, HildonDateTimeError type);
 };
 
 GType G_GNUC_CONST

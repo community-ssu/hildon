@@ -116,7 +116,7 @@ hildon_date_editor_entry_focus_out              (GtkWidget *widget,
 
 static gboolean
 hildon_date_editor_date_error                   (HildonDateEditor *editor, 
-					                             HildonDateTimeEditorError type);
+					         HildonDateTimeError type);
 
 static gboolean 
 hildon_date_editor_entry_focus_in               (GtkWidget *widget,
@@ -227,7 +227,7 @@ hildon_date_editor_class_init                   (HildonDateEditorClass *editor_c
                 G_STRUCT_OFFSET (HildonDateEditorClass, date_error),
                 g_signal_accumulator_true_handled, NULL,
                 _hildon_marshal_BOOLEAN__ENUM,
-                G_TYPE_BOOLEAN, 1, HILDON_TYPE_DATE_TIME_EDITOR_ERROR);
+                G_TYPE_BOOLEAN, 1, HILDON_TYPE_DATE_TIME_ERROR);
 
     /**
      * HildonDateEditor:year:
@@ -1165,7 +1165,7 @@ hildon_date_editor_entry_focus_out              (GtkWidget *widget,
 
 static gboolean 
 hildon_date_editor_date_error                   (HildonDateEditor *editor,
-                                                 HildonDateTimeEditorError type)
+                                                 HildonDateTimeError type)
 {
     HildonDateEditorPrivate *priv = HILDON_DATE_EDITOR_GET_PRIVATE (editor);
     g_assert (priv);

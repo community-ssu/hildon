@@ -189,7 +189,7 @@ hildon_time_editor_entry_focus_in               (GtkWidget *widget,
 
 static gboolean
 hildon_time_editor_time_error                   (HildonTimeEditor *editor,
-                                                 HildonDateTimeEditorError type);
+                                                 HildonDateTimeError type);
 
 static gboolean 
 hildon_time_editor_ampm_clicked                 (GtkWidget *widget,
@@ -352,7 +352,7 @@ hildon_time_editor_class_init                   (HildonTimeEditorClass *editor_c
                 G_STRUCT_OFFSET (HildonTimeEditorClass, time_error),
                 g_signal_accumulator_true_handled, NULL,
                 _hildon_marshal_BOOLEAN__ENUM,
-                G_TYPE_BOOLEAN, 1, HILDON_TYPE_DATE_TIME_EDITOR_ERROR);
+                G_TYPE_BOOLEAN, 1, HILDON_TYPE_DATE_TIME_ERROR);
 
     /**
      * HildonTimeEditor:ticks:
@@ -1274,7 +1274,7 @@ hildon_time_editor_entry_focus_in               (GtkWidget *widget,
 
 static gboolean 
 hildon_time_editor_time_error                   (HildonTimeEditor *editor,
-                                                 HildonDateTimeEditorError type)
+                                                 HildonDateTimeError type)
 {
     return TRUE;
 }
