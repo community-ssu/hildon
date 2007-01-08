@@ -1,3 +1,9 @@
+2007-01-08  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
+	* src/hildon-wizard-dialog-private.h:
+	* src/hildon-wizard-dialog.c:
+	* src/hildon-wizard-dialog.h: Cleaning up the HildonWizardDialog.
+
 2007-01-07  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
 	* src/hildon-set-password-dialog-private.h:

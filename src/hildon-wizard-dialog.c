@@ -36,106 +36,109 @@
  * widget provided by users contains the actual wizard pages.
  */
 
-#include <config.h>
-#include "hildon-wizard-dialog.h"
-#include <gtk/gtkdialog.h>
-#include <gtk/gtknotebook.h>
-#include <gtk/gtkimage.h>
-#include <gtk/gtkbox.h>
-#include <gtk/gtkhbox.h>
-#include <gtk/gtkvbox.h>
-#include <gtk/gtkbutton.h>
-#include "hildon-defines.h"
-#include <libintl.h>
+#ifdef                                          HAVE_CONFIG_H
+#include                                        <config.h>
+#endif
 
-#define _(String) dgettext(PACKAGE, String)
+#include                                        "hildon-wizard-dialog.h"
+#include                                        <gtk/gtkdialog.h>
+#include                                        <gtk/gtknotebook.h>
+#include                                        <gtk/gtkimage.h>
+#include                                        <gtk/gtkbox.h>
+#include                                        <gtk/gtkhbox.h>
+#include                                        <gtk/gtkvbox.h>
+#include                                        <gtk/gtkbutton.h>
+#include                                        "hildon-defines.h"
+#include                                        <libintl.h>
+#include                                        "hildon-wizard-dialog-private.h"
 
-static GtkDialogClass *parent_class;
+#define                                         _(String) dgettext(PACKAGE, String)
 
-static void class_init              (HildonWizardDialogClass   *wizard_dialog_class);
+static GtkDialogClass*                          parent_class;
 
-static void init                    (HildonWizardDialog        *wizard_dialog);
+static void 
+hildon_wizard_dialog_class_init                 (HildonWizardDialogClass *wizard_dialog_class);
 
-static void create_title            (HildonWizardDialog        *wizard_dialog);
+static void 
+hildon_wizard_dialog_init                       (HildonWizardDialog *wizard_dialog);
 
-static void set_property            (GObject                   *object,
-                                     guint                     property_id,
-                                     const GValue              *value,
-                                     GParamSpec                *pspec);
+static void 
+create_title                                    (HildonWizardDialog *wizard_dialog);
 
-static void get_property            (GObject                   *object,
-                                     guint                     property_id,
-                                     GValue                    *value,
-                                     GParamSpec                *pspec);
+static void 
+hildon_wizard_dialog_set_property               (GObject *object,
+                                                 guint property_id,
+                                                 const GValue *value,
+                                                 GParamSpec *pspec);
 
-static void finalize                (GObject                   *object);
+static void 
+hildon_wizard_dialog_get_property               (GObject *object,
+                                                 guint property_id,
+                                                 GValue *value,
+                                                 GParamSpec *pspec);
 
-static void response                (HildonWizardDialog        *wizard, 
-                                     gint                      response_id,
-                                     gpointer                  unused);
+static void 
+finalize                                        (GObject *object);
 
-static void make_buttons_sensitive  (HildonWizardDialog *wizard_dialog,
-                                     gboolean           previous,
-                                     gboolean           finish,
-                                     gboolean next);
+static void 
+response                                        (HildonWizardDialog *wizard, 
+                                                 gint response_id,
+                                                 gpointer unused);
 
-enum {
-    PROP_ZERO,
-    PROP_WIZARD_NAME,
-    PROP_WIZARD_NOTEBOOK,
-    PROP_WIZARD_AUTOTITLE
+static void 
+make_buttons_sensitive                          (HildonWizardDialog *wizard_dialog,
+                                                 gboolean previous,
+                                                 gboolean finish,
+                                                 gboolean next);
+
+enum 
+{
+    PROP_0,
+    PROP_NAME,
+    PROP_NOTEBOOK,
+    PROP_AUTOTITLE
 };
 
-struct _HildonWizardDialogPrivate {
-    gchar       *wizard_name;
-    GtkNotebook *notebook;
-    GtkBox      *box;
-    GtkWidget   *image;
-    gboolean    autotitle;
-};
-
-
-GType
-hildon_wizard_dialog_get_type (void)
+GType G_GNUC_CONST
+hildon_wizard_dialog_get_type                   (void)
 {
     static GType wizard_dialog_type = 0;
 
-    if (!wizard_dialog_type) {
+    if (! wizard_dialog_type) {
 
         static const GTypeInfo wizard_dialog_info = {
             sizeof (HildonWizardDialogClass),
             NULL,       /* base_init      */
             NULL,       /* base_finalize  */
-            (GClassInitFunc) class_init,
+            (GClassInitFunc) hildon_wizard_dialog_class_init,
             NULL,       /* class_finalize */
             NULL,       /* class_data     */
             sizeof (HildonWizardDialog),
             0,          /* n_preallocs    */
-            (GInstanceInitFunc) init,
+            (GInstanceInitFunc) hildon_wizard_dialog_init,
         };
 
         wizard_dialog_type = g_type_register_static (GTK_TYPE_DIALOG,
-                                                     "HildonWizardDialog",
-                                                     &wizard_dialog_info,
-                                                     0);
+                "HildonWizardDialog",
+                &wizard_dialog_info,
+                0);
     }
 
     return wizard_dialog_type;
 }
 
 static void
-class_init (HildonWizardDialogClass *wizard_dialog_class)
+hildon_wizard_dialog_class_init                 (HildonWizardDialogClass *wizard_dialog_class)
 {
     GObjectClass *object_class = G_OBJECT_CLASS (wizard_dialog_class);
 
     parent_class = g_type_class_peek_parent (wizard_dialog_class);
 
-    g_type_class_add_private (wizard_dialog_class,
-                              sizeof(HildonWizardDialogPrivate));
+    g_type_class_add_private (wizard_dialog_class, sizeof (HildonWizardDialogPrivate));
 
     /* Override virtual methods */
-    object_class->set_property = set_property;
-    object_class->get_property = get_property;
+    object_class->set_property = hildon_wizard_dialog_set_property;
+    object_class->get_property = hildon_wizard_dialog_get_property;
     object_class->finalize     = finalize;
 
     /**
@@ -143,7 +146,7 @@ class_init (HildonWizardDialogClass *wizard_dialog_class)
      *
      * The name of the wizard.
      */
-    g_object_class_install_property (object_class, PROP_WIZARD_NAME,
+    g_object_class_install_property (object_class, PROP_NAME,
             g_param_spec_string 
             ("wizard-name",
              "Wizard Name",
@@ -156,7 +159,7 @@ class_init (HildonWizardDialogClass *wizard_dialog_class)
      *
      * The notebook object, which is used by the HildonWizardDialog.
      */
-    g_object_class_install_property(object_class, PROP_WIZARD_NOTEBOOK,
+    g_object_class_install_property (object_class, PROP_NOTEBOOK,
             g_param_spec_object 
             ("wizard-notebook",
              "Wizard Notebook",
@@ -172,7 +175,7 @@ class_init (HildonWizardDialogClass *wizard_dialog_class)
      *
      * Since: 0.14.5 
      */
-    g_object_class_install_property(object_class, PROP_WIZARD_AUTOTITLE,
+    g_object_class_install_property (object_class, PROP_AUTOTITLE,
             g_param_spec_boolean 
             ("autotitle",
              "AutoTitle",
@@ -182,56 +185,54 @@ class_init (HildonWizardDialogClass *wizard_dialog_class)
 }
 
 static void 
-finalize (GObject *object)
+finalize                                        (GObject *object)
 {
-    HildonWizardDialog *dialog = HILDON_WIZARD_DIALOG (object);
-    g_return_if_fail (dialog != NULL);
+    HildonWizardDialogPrivate *priv = HILDON_WIZARD_DIALOG_GET_PRIVATE (object);
 
-    if (dialog->priv->wizard_name != NULL)
-        g_free (HILDON_WIZARD_DIALOG (object)->priv->wizard_name);
-    
+    g_assert (priv);
+
+    if (priv->wizard_name != NULL)
+        g_free (priv->wizard_name);
+
     if (G_OBJECT_CLASS (parent_class)->finalize)
-        G_OBJECT_CLASS (parent_class)->finalize(object);
+        G_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
 /* Disable or enable the Previous, Next and Finish buttons */
 static void
-make_buttons_sensitive (HildonWizardDialog *wizard_dialog,
-                        gboolean previous,
-                        gboolean finish,
-                        gboolean next)
+make_buttons_sensitive                          (HildonWizardDialog *wizard_dialog,
+                                                 gboolean previous,
+                                                 gboolean finish,
+                                                 gboolean next)
 {
     gtk_dialog_set_response_sensitive (GTK_DIALOG (wizard_dialog),
-                                       HILDON_WIZARD_DIALOG_PREVIOUS,
-                                       previous);
+            HILDON_WIZARD_DIALOG_PREVIOUS,
+            previous);
 
     gtk_dialog_set_response_sensitive (GTK_DIALOG (wizard_dialog),
-                                       HILDON_WIZARD_DIALOG_FINISH,
-                                       finish);
+            HILDON_WIZARD_DIALOG_FINISH,
+            finish);
 
     gtk_dialog_set_response_sensitive (GTK_DIALOG (wizard_dialog),
-                                       HILDON_WIZARD_DIALOG_NEXT,
-                                       next);
+            HILDON_WIZARD_DIALOG_NEXT,
+            next);
 }
 
 static void 
-init (HildonWizardDialog *wizard_dialog)
+hildon_wizard_dialog_init                       (HildonWizardDialog *wizard_dialog)
 {
     /* Initialize private structure for faster member access */
-    HildonWizardDialogPrivate *priv =
-        G_TYPE_INSTANCE_GET_PRIVATE (wizard_dialog,
-                HILDON_TYPE_WIZARD_DIALOG,
-                HildonWizardDialogPrivate);
+    HildonWizardDialogPrivate *priv = HILDON_WIZARD_DIALOG_GET_PRIVATE (wizard_dialog);
+    g_assert (priv);
 
     GtkDialog *dialog = GTK_DIALOG (wizard_dialog);
 
     /* Init internal widgets */
     GtkWidget *vbox = gtk_vbox_new (FALSE, 0);
     gtk_dialog_set_has_separator (dialog, FALSE);
-    wizard_dialog->priv = priv;
+
     priv->box = GTK_BOX (gtk_hbox_new (FALSE, 0));
-    priv->image = gtk_image_new_from_icon_name ("qgn_widg_wizard",
-            HILDON_ICON_SIZE_WIDG_WIZARD);
+    priv->image = gtk_image_new_from_icon_name ("qgn_widg_wizard", HILDON_ICON_SIZE_WIDG_WIZARD);
 
     /* Default values for user provided properties */
     priv->notebook = NULL;
@@ -261,29 +262,29 @@ init (HildonWizardDialog *wizard_dialog)
 }
 
 static void
-set_property (GObject      *object, 
-              guint        property_id,
-              const GValue *value, 
-              GParamSpec   *pspec)
+hildon_wizard_dialog_set_property               (GObject *object, 
+                                                 guint property_id,
+                                                 const GValue *value, 
+                                                 GParamSpec *pspec)
 {
-    HildonWizardDialogPrivate *priv = HILDON_WIZARD_DIALOG(object)->priv;
+    HildonWizardDialogPrivate *priv = HILDON_WIZARD_DIALOG_GET_PRIVATE (object);
+    g_assert (priv);
 
     switch (property_id) {
 
-        case PROP_WIZARD_AUTOTITLE:
+        case PROP_AUTOTITLE:
 
             priv->autotitle = g_value_get_boolean (value);
 
             if (priv->autotitle && 
-                priv->wizard_name && 
-                priv->notebook)
+                    priv->wizard_name && 
+                    priv->notebook) 
                 create_title (HILDON_WIZARD_DIALOG (object));
             else if (priv->wizard_name)
                 gtk_window_set_title (GTK_WINDOW (object), priv->wizard_name);
-            
             break;
 
-        case PROP_WIZARD_NAME: 
+        case PROP_NAME: 
 
             /* Set new wizard name. This name will appear in titlebar */
             if (priv->wizard_name)
@@ -296,13 +297,12 @@ set_property (GObject      *object,
 
             /* We need notebook in order to create title, since page information
                is used in title generation */
-            
+
             if (priv->notebook && priv->autotitle)
                 create_title (HILDON_WIZARD_DIALOG (object));
-    
             break;
 
-        case PROP_WIZARD_NOTEBOOK: {
+        case PROP_NOTEBOOK: {
 
             GtkNotebook *book = GTK_NOTEBOOK (g_value_get_object (value));
             g_return_if_fail (book != NULL);
@@ -322,8 +322,8 @@ set_property (GObject      *object,
             /* Update dialog title to reflect current page stats etc */        
             if (priv->wizard_name && priv->autotitle)
                 create_title (HILDON_WIZARD_DIALOG (object));
-            
-            } break;
+
+        } break;
 
         default:
             G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
@@ -332,20 +332,21 @@ set_property (GObject      *object,
 }
 
 static void
-get_property (GObject      *object,
-              guint        property_id,
-              GValue       *value,
-              GParamSpec   *pspec)
+hildon_wizard_dialog_get_property               (GObject *object,
+                                                 guint property_id,
+                                                 GValue *value,
+                                                 GParamSpec *pspec)
 {
-    HildonWizardDialogPrivate *priv = HILDON_WIZARD_DIALOG (object)->priv;
+    HildonWizardDialogPrivate *priv = HILDON_WIZARD_DIALOG_GET_PRIVATE (object);
+    g_assert (priv);
 
     switch (property_id) {
 
-        case PROP_WIZARD_NAME:
+        case PROP_NAME:
             g_value_set_string (value, priv->wizard_name);
             break;
 
-        case PROP_WIZARD_NOTEBOOK:
+        case PROP_NOTEBOOK:
             g_value_set_object (value, priv->notebook);
             break;
 
@@ -355,19 +356,20 @@ get_property (GObject      *object,
     }
 }
 
-/*
- * Creates the title of the dialog taking into account the current 
- * page of the notebook.
- */
+/* Creates the title of the dialog taking into account the current 
+ * page of the notebook. */
 static void
-create_title (HildonWizardDialog *wizard_dialog)
+create_title                                    (HildonWizardDialog *wizard_dialog)
 {
     gint pages, current;
     gchar *str = NULL;
-    HildonWizardDialogPrivate *priv = wizard_dialog->priv;
-    GtkNotebook *notebook = priv->notebook;
+    HildonWizardDialogPrivate *priv = HILDON_WIZARD_DIALOG_GET_PRIVATE (wizard_dialog);
+    GtkNotebook *notebook;
 
-    if (!notebook)
+    g_assert (priv);
+    notebook = priv->notebook;
+
+    if (! notebook)
         return;
 
     /* Get page information, we'll need that when creating title */
@@ -393,27 +395,27 @@ create_title (HildonWizardDialog *wizard_dialog)
     g_free (str);
 }
 
-/*
- * Response signal handler. This function is needed because GtkDialog's 
+/* Response signal handler. This function is needed because GtkDialog's 
  * handler for this signal closes the dialog and we don't want that, we 
  * want to change pages and, dimm certain response buttons. Overriding the 
  * virtual function would not work because that would be called after the 
  * signal handler implemented by GtkDialog.
- * FIXME: There is a much saner way to do that [MDK]
- */
+ * FIXME: There is a much saner way to do that [MDK] */
 static void 
-response (HildonWizardDialog   *wizard_dialog,
-          gint                 response_id,
-          gpointer             unused)
+response                                        (HildonWizardDialog *wizard_dialog,
+                                                 gint response_id,
+                                                 gpointer unused)
 {
-    HildonWizardDialogPrivate *priv = wizard_dialog->priv;
+    HildonWizardDialogPrivate *priv = HILDON_WIZARD_DIALOG_GET_PRIVATE (wizard_dialog);
     GtkNotebook *notebook = priv->notebook;
     gint current = 0;
     gint last = gtk_notebook_get_n_pages (notebook) - 1;
     gboolean is_first, is_last;
-    
+
+    g_assert (priv);
+
     switch (response_id) {
-        
+
         case HILDON_WIZARD_DIALOG_PREVIOUS:
             gtk_notebook_prev_page (notebook); /* go to previous page */
             break;
@@ -431,12 +433,12 @@ response (HildonWizardDialog   *wizard_dialog,
     current = gtk_notebook_get_current_page (notebook);
     is_last = current == last;
     is_first = current == 0;
-    
+
     /* If first page, previous and finish are disabled, 
        if last page, next is disabled */
     make_buttons_sensitive (wizard_dialog,
             !is_first, !is_first, !is_last);
-    
+
     /* Don't let the dialog close */
     g_signal_stop_emission_by_name (wizard_dialog, "response");
 
@@ -462,9 +464,9 @@ response (HildonWizardDialog   *wizard_dialog,
  * Returns: a new #HildonWizardDialog
  */
 GtkWidget*
-hildon_wizard_dialog_new (GtkWindow   *parent,
-                          const char  *wizard_name,
-                          GtkNotebook *notebook)
+hildon_wizard_dialog_new                        (GtkWindow *parent,
+                                                 const char *wizard_name,
+                                                 GtkNotebook *notebook)
 {
     GtkWidget *widget;
 
@@ -480,3 +482,4 @@ hildon_wizard_dialog_new (GtkWindow   *parent,
 
     return widget;
 }
+
