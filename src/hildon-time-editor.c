@@ -1774,10 +1774,18 @@ hildon_time_editor_entry_keypress               (GtkWidget *widget,
             /* Return key popups up time picker dialog. Visually it looks as if
                the time picker icon was clicked. Before opening the time picker
                the fields are first validated and fixed. */
-            hildon_time_editor_validate (editor, FALSE);
-            hildon_gtk_button_set_depressed (GTK_BUTTON (priv->iconbutton), TRUE);
+
+            /* hildon_time_editor_validate (editor, FALSE);
+               hildon_gtk_button_set_depressed (GTK_BUTTON (priv->iconbutton), TRUE);
+               hildon_time_editor_icon_clicked (widget, data);
+               hildon_gtk_button_set_depressed (GTK_BUTTON (priv->iconbutton), FALSE); 
+
+               FIXME The above code used to be here before the consolidation that removed the 
+               _set_depressed crap. However, I think this code had NO EFFECT anyways, since
+               there is no expose event after the _set functions. So I'm just cutting it out. 
+               Another story would be to actually fix it... */
+                
             hildon_time_editor_icon_clicked (widget, data);
-            hildon_gtk_button_set_depressed (GTK_BUTTON (priv->iconbutton), FALSE);
             return TRUE;
 
         case GDK_Left:

@@ -453,7 +453,7 @@ hildon_number_editor_button_pressed             (GtkWidget *widget,
     g_assert (priv);
 
     settings = gtk_settings_get_default ();
-    g_object_get (settings, "gtk-initial-timeout", &timeout, NULL);
+    g_object_get (settings, "gtk-timeout-initial", &timeout, NULL);
 
     /* Save type of button pressed */
     if (GTK_BUTTON (widget) == GTK_BUTTON (priv->plus))
@@ -482,7 +482,7 @@ hildon_number_editor_start_timer                (HildonNumberEditor *editor)
 
     priv = HILDON_NUMBER_EDITOR_GET_PRIVATE (editor);
     settings = gtk_settings_get_default ();
-    g_object_get (settings, "gtk-update-timeout", &timeout, NULL);
+    g_object_get (settings, "gtk-timeout-update", &timeout, NULL);
 
     priv->button_event_id = g_timeout_add (timeout,
             (GSourceFunc) do_mouse_timeout,

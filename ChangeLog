@@ -1,3 +1,17 @@
+2007-01-10  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
+	* examples/Makefile.am:
+	* examples/hildon-controlbar:
+	* examples/hildon-controlbar/hildon-controlbar-example.c: Adding an
+	example for the HildonControlBar.
+
+	* src/hildon-banner.c: Fixing some refactoring bugs.
+
+	* src/hildon-defines.c:
+	* src/hildon-number-editor.c:
+	* src/hildon-time-editor.c:
+	* src/hildon-time-picker.c: Gtk 2.10 fixes.
+
 2007-01-08  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
 	* src/hildon-date-editor.c:

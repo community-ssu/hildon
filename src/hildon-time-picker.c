@@ -425,7 +425,7 @@ hildon_time_picker_init                         (HildonTimePicker *picker)
 
     /* Get button press repeater timeout from settings (in milliseconds) */
     settings = gtk_settings_get_default ();
-    g_object_get (settings, "gtk-update-timeout", &priv->key_repeat, NULL);
+    g_object_get (settings, "gtk-timeout-update", &priv->key_repeat, NULL);
 
     /* This dialog isn't modal */
     gtk_window_set_modal (GTK_WINDOW(dialog), FALSE);

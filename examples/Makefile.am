@@ -4,7 +4,8 @@ noinst_PROGRAMS				= hildon-window-example 	\
 					  hildon-banner-example		\
 					  hildon-caption-example	\
 					  hildon-weekday-picker-example \
-					  hildon-sort-dialog-example
+					  hildon-sort-dialog-example	\
+					  hildon-controlbar-example
 
 # HIldon window
 hildon_window_example_LDADD		= $(HILDON_WIDGETS_OBJ_LIBS)
@@ -30,3 +31,9 @@ hildon_weekday_picker_example_SOURCES	= hildon-weekday-picker/hildon-weekday-pic
 hildon_sort_dialog_example_LDADD	= $(HILDON_WIDGETS_OBJ_LIBS)
 hildon_sort_dialog_example_CFLAGS	= $(HILDON_WIDGETS_OBJ_CFLAGS)
 hildon_sort_dialog_example_SOURCES	= hildon-sort-dialog/hildon-sort-dialog-example.c
+
+# Hildon control bar
+hildon_controlbar_example_LDADD		= $(HILDON_WIDGETS_OBJ_LIBS)
+hildon_controlbar_example_CFLAGS	= $(HILDON_WIDGETS_OBJ_CFLAGS)
+hildon_controlbar_example_SOURCES	= hildon-controlbar/hildon-controlbar-example.c
+

@@ -685,7 +685,6 @@ hildon_banner_ensure_child                      (HildonBanner *self,
     HildonBannerPrivate *priv = HILDON_BANNER_GET_PRIVATE (self);
 
     g_assert (HILDON_IS_BANNER (self));
-    g_assert (GTK_IS_WIDGET (user_widget));
     g_assert (priv);
 
     widget = priv->main_item;
@@ -921,14 +920,14 @@ hildon_banner_show_progress                     (GtkWidget *widget,
     HildonBannerPrivate *priv;
 
     g_return_val_if_fail (GTK_IS_WIDGET(widget), NULL);
-    g_return_val_if_fail (bar == NULL || GTK_IS_PROGRESS_BAR(bar), NULL);
+    g_return_val_if_fail (bar == NULL || GTK_IS_PROGRESS_BAR (bar), NULL);
     g_return_val_if_fail (text != NULL, NULL);
 
-    priv = HILDON_BANNER_GET_PRIVATE (widget);
-    g_assert (priv);
 
     /* Prepare banner */
     banner = hildon_banner_get_instance_for_widget (widget, FALSE);
+    priv = HILDON_BANNER_GET_PRIVATE (banner);
+    g_assert (priv);
     hildon_banner_ensure_child (banner, (GtkWidget *) bar, -1, GTK_TYPE_PROGRESS_BAR, NULL);
 
     gtk_widget_set_size_request (priv->main_item,
