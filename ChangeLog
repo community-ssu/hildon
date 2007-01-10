@@ -1,6 +1,15 @@
 2007-01-10  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
 	* examples/Makefile.am:
+	* examples/hildon-note:
+	* examples/hildon-note/hildon-note-example.c: Example for hildon note.
+
+	* src/hildon-note.c:
+	* src/hildon-note.h: Fixing buggy code in new object creation.
+
+2007-01-10  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
+	* examples/Makefile.am:
 	* examples/hildon-controlbar:
 	* examples/hildon-controlbar/hildon-controlbar-example.c: Adding an
 	example for the HildonControlBar.

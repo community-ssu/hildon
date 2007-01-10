@@ -93,7 +93,7 @@ hildon_note_new_cancel_with_progress_bar        (GtkWindow *parent,
 
 GtkWidget*
 hildon_note_new_information                     (GtkWindow *parent,
-                                                 const gchar * description);
+                                                 const gchar *description);
                                        
 GtkWidget*
 hildon_note_new_information_with_icon_name      (GtkWindow *parent,

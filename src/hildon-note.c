@@ -523,7 +523,7 @@ hildon_note_new_confirmation_add_buttons        (GtkWindow *parent,
     char *message;
     int value;
 
-    g_return_val_if_fail (GTK_IS_WINDOW (parent), NULL);
+    g_return_val_if_fail (description != NULL, NULL);
 
     GtkWidget *conf_note =
         g_object_new (HILDON_TYPE_NOTE,
@@ -599,7 +599,7 @@ hildon_note_new_confirmation_with_icon_name     (GtkWindow *parent,
 {
     GtkWidget *dialog = NULL;
 
-    g_return_val_if_fail (GTK_IS_WINDOW (parent), NULL);
+    g_return_val_if_fail (description != NULL, NULL);
 
     dialog = g_object_new (HILDON_TYPE_NOTE,
             "note_type",
@@ -657,7 +657,8 @@ hildon_note_new_information_with_icon_name      (GtkWindow * parent,
 {
     GtkWidget *dialog = NULL;
 
-    g_return_val_if_fail (GTK_IS_WINDOW (parent), NULL);
+    g_return_val_if_fail (description != NULL, NULL);
+    g_return_val_if_fail (icon_name != NULL, NULL);
 
     dialog = g_object_new (HILDON_TYPE_NOTE,
             "note_type",
@@ -670,6 +671,8 @@ hildon_note_new_information_with_icon_name      (GtkWindow * parent,
 
     return dialog;
 }
+
+/* FIXME This documentation string LIES! */
 
 /**
  * hildon_note_new_cancel_with_progress_bar:
@@ -697,7 +700,7 @@ hildon_note_new_cancel_with_progress_bar        (GtkWindow *parent,
 {
     GtkWidget *dialog = NULL;
 
-    g_return_val_if_fail (GTK_IS_WINDOW (parent), NULL);
+    g_return_val_if_fail (description != NULL, NULL);
 
     dialog = g_object_new (HILDON_TYPE_NOTE,
             "note_type",
