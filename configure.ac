@@ -20,9 +20,6 @@ AC_PROG_AWK
 
 AC_HEADER_STDC
 
-CFLAGS="$CFLAGS -Wall -Wmissing-prototypes -Wmissing-declarations -Werror -Wno-format"
-# -Wno-format due to way translation string are done
-
 GTK_VERSION=2.6.10
 
 PKG_CHECK_MODULES(GTK, gtk+-2.0)
@@ -85,6 +82,49 @@ HILDON_WIDGETS_OBJ_LIBS="\$(top_builddir)/src/libhildon_\$(PACKAGE_VERSION_MAJOR
 AC_SUBST(HILDON_WIDGETS_OBJ_CFLAGS)
 AC_SUBST(HILDON_WIDGETS_OBJ_LIBS)
 
+# build examples (or not)
+AC_ARG_WITH(examples, 
+    AC_HELP_STRING([--with-examples], [Build the examples]),
+    [
+     case "${withval}" in
+         yes) BUILD_EXAMPLES=yes ;;
+         no)  BUILD_EXAMPLES=no ;;
+         *)   AC_MSG_ERROR(bad value ${withval} for --with-examples) ;;
+     esac],
+     [BUILD_EXAMPLES=no])
+
+AM_CONDITIONAL(BUILD_EXAMPLES, test "x$BUILD_EXAMPLES" = "xyes")
+
+# just print out our status
+if test x$BUILD_EXAMPLES = xyes; then
+    AC_MSG_NOTICE(Will locally build example programs)
+else
+    AC_MSG_NOTICE(Will not build examples )
+fi
+
+# build with assertion checks (or not)
+AC_ARG_WITH(asserts, 
+    AC_HELP_STRING([--with-asserts], [Build with the assertion checks]),
+    [
+     case "${withval}" in
+         yes) BUILD_WITH_ASSERTS=yes ;;
+         no)  BUILD_WITH_ASSERTS=no ;;
+         *)   AC_MSG_ERROR(bad value ${withval} for --with-asserts) ;;
+     esac],
+     [BUILD_WITH_ASSERTS=no])
+
+# just print out our status
+if test x$BUILD_WITH_ASSERTS = xyes; then
+    AC_MSG_NOTICE(Will build with assertion checks)
+    ASSERT_CFLAGS=""
+else
+    AC_MSG_NOTICE(Will not build with assertion checks)
+    ASSERT_CFLAGS="-DG_DISABLE_ASSERT"
+fi
+
+CFLAGS="$CFLAGS ${ASSERT_CFLAGS} -Wall -Wmissing-prototypes -Wmissing-declarations -Werror -Wno-format"
+# -Wno-format due to way translation string are done
+
 
 AC_CONFIG_FILES([Makefile src/Makefile  \
                  pkgconfig/Makefile \
@@ -101,6 +141,8 @@ Configuration:
 - Compiler...........: ${CC}
 - gtk-doc support....: ${enable_gtk_doc}
 - Api................: ${PACKAGE}-${PACKAGE_VERSION_MAJOR}
+- Build examples.....: ${BUILD_EXAMPLES}
+- Build with asserts.: ${BUILD_WITH_ASSERTS}
 
 ######################################
 

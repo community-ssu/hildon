@@ -1,5 +1,6 @@
 MAINTAINERCLEANFILES			= Makefile.in
 
+if BUILD_EXAMPLES
 noinst_PROGRAMS				= hildon-window-example 	\
 					  hildon-banner-example		\
 					  hildon-caption-example	\
@@ -43,3 +44,4 @@ hildon_note_example_LDADD		= $(HILDON_WIDGETS_OBJ_LIBS)
 hildon_note_example_CFLAGS		= $(HILDON_WIDGETS_OBJ_CFLAGS)
 hildon_note_example_SOURCES		= hildon-note/hildon-note-example.c
 
+endif

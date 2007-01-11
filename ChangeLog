@@ -1,3 +1,9 @@
+2007-01-11  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
+	* configure.ac:
+	* examples/Makefile.am: Adding the --with-examples and --with-asserts
+	configure options (defaulting to no ; no respectively).
+
 2007-01-10  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
 	* examples/Makefile.am:
