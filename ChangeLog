@@ -1,3 +1,10 @@
+2007-01-15  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
+	* examples/Makefile.am:
+	* examples/hildon-time-picker:
+	* examples/hildon-time-picker/hildon-time-picker-example.c: Adding a
+	hildon-time-picker example.
+
 2007-01-11  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
 	* configure.ac:
