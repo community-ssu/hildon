@@ -1,5 +1,54 @@
 2007-01-15  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
+	* Makefile.am:
+	* configure.ac:
+	* tests:
+	* tests/Makefile.am:
+	* tests/Makefile.in:
+	* tests/TEST-CASES.txt:
+	* tests/check-hildon-banner.c:
+	* tests/check-hildon-calendar-popup.c:
+	* tests/check-hildon-caption.c:
+	* tests/check-hildon-code-dialog.c:
+	* tests/check-hildon-color-button.c:
+	* tests/check-hildon-color-popup.c:
+	* tests/check-hildon-color-selector.c:
+	* tests/check-hildon-composite-widget.c:
+	* tests/check-hildon-controlbar.c:
+	* tests/check-hildon-date-editor.c:
+	* tests/check-hildon-defines.c:
+	* tests/check-hildon-dialoghelp.c:
+	* tests/check-hildon-find-toolbar.c:
+	* tests/check-hildon-font-selection-dialog.c:
+	* tests/check-hildon-get-password-dialog.c:
+	* tests/check-hildon-name-password-dialog.c:
+	* tests/check-hildon-note.c:
+	* tests/check-hildon-number-editor.c:
+	* tests/check-hildon-program.c:
+	* tests/check-hildon-range-editor.c:
+	* tests/check-hildon-scroll-area.c:
+	* tests/check-hildon-seekbar.c:
+	* tests/check-hildon-set-password-dialog.c:
+	* tests/check-hildon-sort-dialog.c:
+	* tests/check-hildon-system-sound.c:
+	* tests/check-hildon-time-editor.c:
+	* tests/check-hildon-time-picker.c:
+	* tests/check-hildon-volumebar-range.c:
+	* tests/check-hildon-volumebar.c:
+	* tests/check-hildon-weekday-picker.c:
+	* tests/check-hildon-window.c:
+	* tests/check-hildon-wizard-dialog.c:
+	* tests/check_test.c:
+	* tests/check_utils.c:
+	* tests/check_utils.h:
+	* tests/hildon-clock-widgets_tests.c:
+	* tests/hildon-widgets_tests.c:
+	* tests/run_tests:
+	* tests/tc_banner_truncate.c:
+	* tests/test_suites.h: Adding the test suite.
+
+2007-01-15  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
 	* examples/Makefile.am:
 	* examples/hildon-time-picker:
 	* examples/hildon-time-picker/hildon-time-picker-example.c: Adding a

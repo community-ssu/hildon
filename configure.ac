@@ -73,15 +73,6 @@ if test "x$enable_rebuilds" = "xyes" && \
 fi
 AC_SUBST(REBUILD)
 
-# HILDON_WIDGETS__OBJ_*
-# default vars for the examples
-# includes all the low-level flags
-# FIXME Add esd and gconf flags
-HILDON_WIDGETS_OBJ_CFLAGS="\$(CFLAGS) \$(GTK_CFLAGS) -I\$(top_builddir)/src/"
-HILDON_WIDGETS_OBJ_LIBS="\$(top_builddir)/src/libhildon_\$(PACKAGE_VERSION_MAJOR).la \$(GTK_LIBS)"
-AC_SUBST(HILDON_WIDGETS_OBJ_CFLAGS)
-AC_SUBST(HILDON_WIDGETS_OBJ_LIBS)
-
 # build examples (or not)
 AC_ARG_WITH(examples, 
     AC_HELP_STRING([--with-examples], [Build the examples]),
@@ -111,7 +102,7 @@ AC_ARG_WITH(asserts,
          no)  BUILD_WITH_ASSERTS=no ;;
          *)   AC_MSG_ERROR(bad value ${withval} for --with-asserts) ;;
      esac],
-     [BUILD_WITH_ASSERTS=no])
+     [BUILD_WITH_ASSERTS=yes])
 
 # just print out our status
 if test x$BUILD_WITH_ASSERTS = xyes; then
@@ -122,14 +113,27 @@ else
     ASSERT_CFLAGS="-DG_DISABLE_ASSERT"
 fi
 
+# Check support (c unit test)
+PKG_CHECK_MODULES(CHECK, check , [BUILD_TESTS="yes"], [BUILD_TESTS="no"])
+AM_CONDITIONAL(BUILD_TESTS, test "x$BUILD_TESTS" = "xyes")
+
+# HILDON_WIDGETS__OBJ_*
+# default vars for the examples
+# includes all the low-level flags
+# FIXME Add esd and gconf flags
+HILDON_WIDGETS_OBJ_CFLAGS="\$(CFLAGS) \$(GTK_CFLAGS) \$(CHECK_CFLAGS) \$(GCONF_CFLAGS) -I\$(top_builddir)/src/"
+HILDON_WIDGETS_OBJ_LIBS="\$(top_builddir)/src/libhildon_\$(PACKAGE_VERSION_MAJOR).la \$(GTK_LIBS) \$(GCONF_LIBS) \$(CHECK_LIBS)"
+AC_SUBST(HILDON_WIDGETS_OBJ_CFLAGS)
+AC_SUBST(HILDON_WIDGETS_OBJ_LIBS)
+
 CFLAGS="$CFLAGS ${ASSERT_CFLAGS} -Wall -Wmissing-prototypes -Wmissing-declarations -Werror -Wno-format"
 # -Wno-format due to way translation string are done
 
-
 AC_CONFIG_FILES([Makefile src/Makefile  \
-                 pkgconfig/Makefile \
-                 examples/Makefile \
-                 pkgconfig/hildon.pc])
+                 pkgconfig/Makefile     \
+                 examples/Makefile      \
+                 pkgconfig/hildon.pc    \
+                 tests/Makefile])
 
 AC_OUTPUT
 
@@ -143,6 +147,7 @@ Configuration:
 - Api................: ${PACKAGE}-${PACKAGE_VERSION_MAJOR}
 - Build examples.....: ${BUILD_EXAMPLES}
 - Build with asserts.: ${BUILD_WITH_ASSERTS}
+- Build unit tests...: ${BUILD_TESTS}
 
 ######################################
 

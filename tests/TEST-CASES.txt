@@ -1,0 +1,4367 @@
+1. PURPOSE
+***************************************************************************
+
+This file contains a brief documentation of each test case considered.
+Please, whenever you add new test case, add its documentation here to 
+the list of tests (Section 2). Use the following example as a template:
+
+----------------------------------------------------------------------------------------
+- hildon-range-editor: Used to define an integer range.
+
+   - hildon_range_editor_set_range: Sets the current range value of the control.
+
+         - Errors detected: none.
+
+         1. Test that a regular range inside the range limits configured are set properly.
+            a) Using a range limit of (0, 50), tested with range value (10, 30)
+
+         2. Test that limit range values inside the range limits configured are set properly.
+            b) Using a range limit of (0, 50), tested with range value (0, 50)
+            c) Using a range limit of (100, 200), tested with range value (100, 200)
+
+         3. Test that values outside the configured range limits are handled properly.
+            a) Using a range limit of (0, 50), tested with range value (-5, 55)
+            b) Using a range limit of (0, 50), tested with range value (-5, 5)
+            c) Using a range limit of (0, 50), tested with range value (5, 55)
+
+   -  hildon_range_editor_get_range: Gets the current range value of the control.
+
+         Used along with hildon_range_editor_set_range tests in the same test cases.
+
+   - ...
+----------------------------------------------------------------------------------------
+
+
+2. LIST OF TESTS
+***************************************************************************
+
+- hildon-number-editor: A widget used to enter a number within a pre-defined range
+
+   - Property "value": [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+	    
+   - hildon_number_editor_set_range: Sets accepted number range for editor
+
+         - Errors detected: none.
+
+         1. Test that setting regular ranges do not cause a problem
+            a) Setting a number limit of (0, 100) 
+            b) Setting a number limit of (1, 100) 
+            c) Setting a number limit of (-100, 100)
+            d) Setting a number limit of (-100, 0)
+            e) Setting a number limit of (-100, -1)
+
+         2. Test that limit range values do not cause any problem
+            a) Setting a number limit of G_MAXINT and G_MININT
+            b) Set a number limit of (0, 100), and test that 0 and 100 work properly
+
+         3. Test that invalid values do not cause problems
+            a) Change the order of the minimum and maximum and check if it does not change (200, -2)
+            b) Set values where high value is less than low value (0, 100)
+            c) Set a range to a NULL widget
+
+   - hildon_number_editor_new: [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+	    
+   - hildon_number_editor_set_value: [TODO] 
+   - hildon_number_editor_get_value: [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+	    
+------------------------------------------------------------------------------
+
+- hildon-date-editor: Used to input a date. 
+
+   - Property "year": [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - Property "month": [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - Property "day": [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - Property "min-year": [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - Property "max-year": [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - hildon_date_editor_set_date: Sets the current date.
+
+         - Errors detected: none.
+
+         1. Test that setting a regular date is done properly.
+            a) Set date 30/03/1981
+
+         2. Test setting limit values for dates
+            a) Set date 30/03/2037
+            b) Set date 30/03/1970
+            c) Set date 30/01/1981
+            d) Set date 30/12/1981
+            e) Set date 31/3/1981
+            f) Set date 30/06/1981
+            g) Set date 28/02/1981
+            h) Set date 29/02/1980
+
+         3. Test that invalid values do not cause problems
+            a) The HildonDateEditor is NULL
+            b) The first argument is a GtkHbox instead of a HildonDateEditor
+            c) Set an invalid date (29/02/1981) for a regular year
+            d) Set negative values for year/month/day
+            e) Set invalid day for a month (31 of November)
+            f) Set invalid year (< 1970) 30/03/1969
+            g) Set invalid year (> 2037) 30/03/2038
+            h) Set invalid month (0) 30/00/1981
+            i) Set invalid month (13) 30/13/1981
+            j) Set invalid day (0) 00/03/1981
+            k) Set invalid day (32) 32/03/1981
+
+   - hildon_date_editor_get_date: gets the current date.
+
+         - Errors detected: none.
+
+         1. Test getting a regular date
+            a) Set date 30/03/1981. Check that the values retrieved
+            with get_date are the same as the ones got with
+            get_property
+
+         2. Test getting dates when the parameters are invalid
+            a) The HildonDateEditor is NULL
+            b) The year is NULL
+            c) The month is NULL
+            d) The day is NULL
+
+   - hildon_date_editor_get_year: gets the current year.
+
+         - Errors detected: none.
+
+         1. Test getting a regular value for the year
+            a) Get a year set with set_date
+            b) Get a year set with set_year
+            c) Get a year set with set_property
+
+         2. Test getting a limit value for the year
+            a) Get the year 2037
+            b) Get the year 1970
+
+         3. Test getting a year with invalid parameters
+            a) Get a year when HildonDateEditor is NULL
+            b) Get a year with GtkHBox instead of a HildonDateEditor
+            c) Get the year 2038
+            d) Get the year 1969
+
+   - hildon_date_editor_set_year: sets the current year.
+
+         - Errors detected: none.
+
+         1. Test setting a regular value for the year
+            a) Set year 1981
+
+         2. Test setting limit values for the year
+            a) Set year 2037
+            b) Set year 1970
+
+   - hildon_date_editor_get_month: gets the current month.
+
+         - Errors detected: none.
+
+         1. Test getting a regular value for the month
+            a) Get a month set with set_date
+            b) Get a month set with set_month
+            c) Get a month set with set_property
+
+         2. Test getting limit values for month
+            a) Get month 12
+            b) Get month 1
+
+         3. Test getting a month with invalid parameters
+            a) Get a month when HildonDateEditor is NULL
+            b) Get a month with GtkHBox instead of a HildonDateEditor
+
+   - hildon_date_editor_set_month: sets the current month.
+
+         - Errors detected: none
+
+         1. Test setting a regular value for the month
+            a) Set month 3
+
+         2. Test setting limit values for the month
+            a) Set month 12
+            b) Set month 1
+
+   - hildon_date_editor_get_day: gets the current day.
+
+         - Errors detected: none
+
+         1. Test getting a regular value for the day
+            a) Get a day set with set_date
+            b) Get a day set with set_day
+            c) Get a day set with set_property
+
+         2. Test getting limit values for day 
+            a) Get day 31/03
+            b) Get day 30/06
+            c) Get day 29/02/1980 (leap year)
+            d) Get day 28/02/1981 (common year)
+            e) Get day 1/02
+
+         3. Test getting a day with invalid parameters
+            a) Get a day when HildonDateEditor is NULL
+            b) Get a day with GtkHBox instead of a HildonDateEditor
+
+   - hildon_date_editor_set_day: sets the current day.
+
+         - Errors detected: none
+
+         1. Test setting a regular value for the day
+            a) Set day 30
+
+         2. Test setting values for the day over the limits
+            a) Set day 31/03
+            b) Set day 30/06
+            c) Set day 29/02/1980 (leap year)
+            d) Set day 28/02/1981 (common year)
+            e) Set day 1/02
+
+------------------------------------------------------------------------------
+
+- hildon-range-editor: A widget to define an integer range of values within a limit
+
+   - Property "min": [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - Property "max": [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - Property "lower": [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - Property "higher": [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - Property "separator": [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - hildon_range_editor_set_limits: Sets range limits
+   - hildon_range_editor_get_min: Retrieves current minimum limit for the range minimum value
+   - hildon_range_editor_get_max: Retrieves current maximum limit for the range maximum value
+
+         - Errors detected: none.
+
+         1. Test that setting regular ranges do not cause a problem
+             a) Set limits to (-10,10) 
+             b) Set limits to (0,10) 
+             c) Set limits to (-10,0)
+             d) Set limits to (1,10)
+             e) Set limits to (-10,-10)
+
+         2. Test that limit range values do not cause any problem
+            a) Set limits to (G_MININT,G_MAXINT)
+
+         3. Test that invalid values do not cause problems
+            a) Set inverted limits to (10,-10)
+            b) Set range editor object to NULL for set_limits
+            c) Set range editor object to NULL for get_min get_max
+
+   - hildon_range_editor_set_min: Sets the minimum range limit.
+
+         - Errors detected: none.
+
+         1. Test that setting regular ranges do not cause a problem
+             a) Set minimum limit to -100
+             a) Set minimum limit to 0
+             a) Set minimum limit to 100
+
+         2. Test that limit range values do not cause any problem
+            a) Set minimum limit to G_MININT
+
+         3. Test that invalid values do not cause problems
+            a) Set minimum limit grater than maximum limit.
+            b) Set range editor object to NULL.
+
+   - hildon_range_editor_set_max: Sets the maximum range limit.
+
+         - Errors detected: none.
+
+         1. Test that setting regular ranges do not cause a problem
+             a) Set maximum limit to -100
+             a) Set maximum limit to 0
+             a) Set maximum limit to 100
+
+         2. Test that limit range values do not cause any problem
+            a) Set maximum limit to G_MAXINT
+
+         3. Test that invalid values do not cause problems
+            a) Set maximum limit lower than minimum limit.
+            b) Set range editor object to NULL.
+
+   - hildon_range_editor_new_with_separator: [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - hildon_range_editor_set_range: [TODO] 
+   - hildon_range_editor_get_range: [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - hildon_range_editor_set_lower: [TODO] 
+   - hildon_range_editor_get_lower: [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - hildon_range_editor_set_higher: [TODO] 
+   - hildon_range_editor_get_higher: [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - hildon_range_editor_set_separator: [TODO] 
+   - hildon_range_editor_get_separator: [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+------------------------------------------------------------------------------
+
+- hildon-time-editor: A widget used to enter hours, minutes and seconds in two different modes:
+                      "time mode" (23h 59m 59s) and "duration mode" (99:59:59).
+
+   - Property "ticks": [TODO] 
+ 
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - Property "show_seconds": [TODO] 
+ 
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - Property "show_hours": [TODO] 
+ 
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - Property "duration_mode": [TODO] 
+ 
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - Property "duration_min": [TODO] 
+ 
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - Property "duration_max": [TODO] 
+ 
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - hildon_time_editor_set_time: Sets the time using hours, minutes and seconds format.
+   - hildon_time_editor_get_time: Gets the time using hours, minutes and seconds format.
+
+         - Errors detected: twelve.
+
+             NOTE: Following errors are errors only when tests are executed with gtk_widget_show 
+                   and gtk_main_iteration is called while are events pending. If you execute tests
+                   without showing them, tests are properly passed.
+
+             1.c) If time is set to 5h 30m 45s and show_seconds=TRUE, seconds are re-validated because of "focus out"
+                  event and are set to current system time seconds. Ramdomly can happen several cases:
+                        * Current system seconds are equal to 45, event is called, current system seconds 
+                          are set and test pass.
+                        * Current system seconds are diferent from 45, event is called, current system seconds 
+                          are set and test fail.
+                        * Event is not called seconds are set to passed value and test pass.
+                  Tipical behaviour is the described on second case.
+
+             1.d) Similar to 1.c).
+             1.e) If time is set to 5:30:45, duration_mode is TRUE and show_seconds is TRUE, seconds are set to 0. The problem seems
+                  to be similar to 1.c) and 1.d) but with diferent way of setting seconds. The problem appears
+                  when hildon_time_editor_set_ticks set values to hours, minutes and seconds entries, because
+                  "focus out" event is called and this event calls "hildon_time_editor_validate", which
+                  call to "hildon_time_editor_real_validate". This last method if several cases can 
+                  set time to validated values again (0 seconds in this case).
+             1.f) Similar to 1.e).
+             2.c) Similar to 1.c).
+             2.d) Similar to 1.c).
+             2.e) Similar to 1.e).
+             2.f) Similar to 1.e).
+             3.d) Similar to 1.c).
+             3.e) Similar to 1.c).
+             3.g) Similar to 1.e).
+             3.h) Similar to 1.e).
+              
+         1. Test that setting regular ranges do not cause problems
+             a) Set the time to "5h 30m" in time mode.
+             b) Set the time to "18h 2m" in time mode.
+             c) Set the time to "5h 30m 45s" in time mode.
+             d) Set the time to "18h 2m 5s" in time mode.
+             e) Set the time to "5:30:45" in duration mode.
+             f) Set the time to "50:40:30" in duration mode.
+
+         2. Test that limit range values do not cause problems
+             a) Set time value to 0h  0m 0s in time mode.
+             b) Set time value to 23h 59m 0s in time mode.
+             c) Set time value to 23h 59m 59s in time mode.
+             d) Set time value to 0h 59m 59s in time mode.
+             e) Set time value to 99:59:59 in duration mode.
+             f) Set time value to 0:0:0 in duration mode.
+
+         3. Test that invalid values do not cause problems
+             a) Set NULL editor time object on set_time.
+             b) Set NULL editor time object on get_time.
+             c) Set time value to 00h 60m 00s in time mode.
+             d) Set time value to 0h 0m 60s in time mode. 
+             e) Set time value to 24h 60m 60s in time mode.
+             f) Set time value to 50h 100m 100s in time mode.
+             g) Set time value to 0:80:80 in duration mode.
+             h) Set time value to 110:80:80 in duration mode.
+                               
+   - hildon_time_editor_set_ticks: Sets the time using seconds since midnight.
+   - hildon_time_editor_get_ticks: Gets the time using seconds since midnight.
+
+         - Errors detected: one segmentation fault 3.a) and seven errors depeding on "showing" widgets.
+           3.a) => Raises segmentation fault.
+
+             NOTE: Following errors are errors only when tests are executed with gtk_widget_show 
+                   and gtk_main_iteration is called while are events pending. If you execute tests
+                   without showing them, tests are properly passed.
+           2.b) If ticks are set to 86399 and show_seconds=TRUE, seconds are re-validated because of "focus out"
+                event. Then seconds can be set to current system time seconds. Ramdomly can happen several cases:
+                        * Current system seconds are equal to 59, event is called, current system seconds 
+                          are set and test pass.
+                        * Current system seconds are diferent from 59, event is called, current system seconds 
+                          are set and test fail.
+                        * Event is not called seconds are set to passed value and test pass.
+                Tipical behaviour is the described on second case.
+           2.d) If time is set to 359999, duration_mode is TRUE and show_seconds is TRUE, seconds are set to 0. 
+                The problem seems to be similar to 2.b but with diferent way of setting seconds. The problem appears
+                  when hildon_time_editor_set_ticks set values to hours, minutes and seconds entries, because
+                  "focus out" event is called and this event calls "hildon_time_editor_validate", which
+                  call to "hildon_time_editor_real_validate". This last method if several cases can 
+                  set time to validated values again (0 seconds in this case).
+           3.b) Similar to 2.b).
+           3.c) Similar to 2.b).
+           3.d) Similar to 2.b).
+           3.e) Similar to 2.d).
+           3.f) Similar to 2.d).
+                   
+         1. Test that setting regular ranges do not cause problems
+             a) Set ticks to 45660 seconds (time mode).
+             b) Set ticks to 124860 seconds (duration mode).
+
+         2. Test that limit range values do not cause problems
+             a) Set ticks to 0 seconds (time mode).
+             b) Set ticks to 86399 seconds (time mode).
+             c) Set ticks to 0 seconds (duration mode).
+             d) Set ticks to 359999 seconds (duration mode).             
+
+         3. Test that invalid values do not cause problems
+             a) Set ticks on a NULL object.
+             b) Set ticks to 86400 seconds (time mode).
+             c) Set ticks to 360000 seconds (time mode).
+             d) Set ticks to 90060 seconds (time mode).
+             e) Set ticks to 360000 seconds (duration mode).
+             f) Set ticks to 654333 seconds (duration mode).
+
+   - hildon_time_editor_set_duration_min: Sets the minimum allowed duration time.
+   - hildon_time_editor_get_duration_min: Gets the minimum allowed duration time.
+   - hildon_time_editor_set_duration_max: Sets the maximum allowed duration time.
+   - hildon_time_editor_get_duration_max: Sets the maximum allowed duration time.
+
+         - Errors detected: none.
+              NOTE: 3.f) test was modified in order not to test is ticks are properly set. This is related with
+              problem of hildon_time_editor_set_ticks, that set seconds to 0 if duration_mode is TRUE and show_seconds is TRUE.
+              If "hildon_time_editor_set_ticks" problem is solved in future, this test could be added.
+
+         1. Test that setting regular ranges do not cause problems
+             a) Set minimum duration to 100000 seconds having ticks under 100000.
+             b) Set minimum duration to 100000 seconds having ticks over 100000.
+             c) Set maximum duration to 200000 seconds having ticks under 100000.
+             d) Set maximum duration to 200000 seconds having ticks over 100000.
+
+         2. Test that limit range values do not cause problems
+             a) Set minimum duration to MAX_DURATION seconds having ticks under MAX_DURATION.
+             b) Set maximum duration to MAX_DURATION seconds having ticks under MAX_DURATION.
+             c) Set maximum duration to MIN_DURATION seconds having ticks over MIN_DURATION.
+             d) Set minimum duration to MIN_DURATION seconds having ticks over MIN_DURATION.
+
+         3. Test that invalid values do not cause problems
+             a) Set minimum duration on a NULL object
+             b) Set and get minimum duration to MAX_DURATION+1 setting ticks previously to a value under MAX_DURATION.
+             c) Set and get minimum duration to MAX_DURATION+1 setting ticks previously to a value over MAX_DURATION.
+             d) Set maximum duration on NULL object
+             e) Set and get maximum duration to MAX_DURATION+1 setting ticks previously to a value under MAX_DURATION.
+             f) Set and get maximum duration to MAX_DURATION+1 setting ticks previously to a value over MAX_DURATION.
+
+   - hildon_time_editor_set_duration_range:  Sets the duration range of the #HildonTimeEditor widget.
+   - hildon_time_editor_get_duration_range:  Sets the duration range of the #HildonTimeEditor widget.
+
+         - Errors detected: none. 
+
+         1. Test that setting regular ranges do not cause problems
+             a) Set duration range (100000,200000) having ticks under 100000.
+             b) Set duration range (100000,200000) having ticks equal to 100000.
+             c) Set duration range (100000,200000) having ticks over 100000.
+             d) Set duration range (100000,100000) having ticks under 100000.
+             e) Set duration range (100000,100000) having ticks equal 100000.
+             f) Set duration range (100000,100000) having ticks over 100000.
+
+         2. Test that limit range values do not cause problems
+             a) Set duration range to (MIN_DURATION,MAX_DURATION) having ticks between MIN_DURATION and MAX_DURATION.
+             b) Set duration range to (MIN_DURATION,MIN_DURATION) having ticks over MIN_DURATION.
+             c) Set duration range to (MAX_DURATION,MAX_DURATION) having ticks under MAX_DURATION.
+
+         3. Test that invalid values do not cause problems
+             a) Set duration_range on a NULL object. 
+             b) Set duration range to (MAX_DURATION,MIN_DURATION).
+             c) Set duration range to (MIN_DURATION,MAX_DURATION+1) having ticks between MIN_DURATION and MAX_DURATION.
+             d) Set duration range to (MAX_DURATION+1,MIN_DURATION).
+             e) Set duration range to (MAX_DURATION+1,MAX_DURATION+3).
+             f) Set duration range to (MAX_DURATION+3,MAX_DURATION+1).
+
+   - hildon_time_editor_set_show_seconds: [TODO] 
+   - hildon_time_editor_get_show_seconds: [TODO] 
+ 
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - hildon_time_editor_set_show_hours: [TODO] 
+   - hildon_time_editor_get_show_hours: [TODO] 
+ 
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - hildon_time_editor_set_duration_mode: [TODO] 
+   - hildon_time_editor_get_duration_mode: [TODO] 
+ 
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+------------------------------------------------------------------------------
+
+- hildon-calendar-popup: Calendar widget
+
+   - Property "min-year": [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - Property "max-year": [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - Property "day": [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - Property "month": [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - Property "year": [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - hildon_calendar_popup_set_date:
+   - hildon_calendar_popup_get_date:
+
+         - Errors detected: none.
+
+         1. Test that regular dates work properly.
+             a) Set and get date 30/03/1981.
+            
+         2. Test that limit values for year, month and day work properly.
+             a) Set and get year to max-year property
+             b) Set and get year to min-year property
+             c) Set and get month to 12
+             d) Set and get month to 1
+             e) Set and get day to 31 (March)
+             f) Set and get day to 30 (April)
+             g) Set and get day to 29 (February 2004)
+             h) Set and get day to 28 (February 2006)
+             i) Set and get day to 1
+             j) Set and get maximum allowed date (according to max-year property).
+             k) Set and get minimum allowed date (according to min-year property).
+
+         3. Test that invalid date values are handled properly.
+             a) Set and get year above max-year property
+             b) Set and get year under min-year property
+             c) Set and get month to 13
+             d) Set and get month to 0
+             e) Set and get day to 32 (March)
+             f) Set and get day to 31 (April)
+             g) Set and get day to 30 (February 2004)
+             h) Set and get day to 29 (February 2006)
+             i) Set and get day to 0
+             j) Set and get above maximum allowed date (according to max-year property).
+             k) Set and get under minimum allowed date (according to min-year property).
+             l) Set and get date using NULL calendar object
+
+   - hildon_calendar_popup_new: [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+------------------------------------------------------------------------------
+
+- hildon-weekday-picker: Widget that allows to select one or several days from week days.
+
+   - hildon_weekday_picker_set_day: Sets a day.
+   - hildon_weekday_picker_isset_day: Checks if a day is set.
+
+         - Errors detected: none.
+
+         1. Test that regular days work properly.
+             a) Set and isset the day "WEDNESDAY".             
+             b) Set and isset two days (WEDNESDAY and SATURDAY) on weekday picker and check that only the two selected days are set.
+            
+         2. Test that limit values for days work properly.
+             a) Set and isset the day "MONDAY". 
+             b) Set and isset the day "SUNDAY". 
+             c) Set and isset the days "MONDAY" and "SUNDAY". 
+             d) Set all days.
+
+         3. Test that invalid day values work properly.
+             a) Set MONDAY on NULL weekday picker.
+             b) Set G_DATE_BAD_WEEKDAY.
+             c) Set 8 on weekday picker.
+             d) Set -2 on weekday picker.
+             e) Do isset from NULL weekday picker
+
+   - hildon_weekday_picker_unset_day: [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - hildon_weekday_picker_toggle_day: [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - hildon_weekday_picker_set_all: [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - hildon_weekday_picker_unset_all: [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+------------------------------------------------------------------------------
+
+- hildon-controlbar: A widget used to show a bar that can be useful to control progress on tasks.
+
+   - Property "min": [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - Property "max": [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - Property "value": [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - hildon_controlbar_set_range: Sets the bar range.
+
+         - Errors detected: 3.b), 3.c), 3.d), 3.e)
+           3.b) => Minimum must be a value greater than 0 but
+                   set_range method does not check this
+                   precondition.
+           3.c) => Sets minimum to G_MININT and maximum to
+                   -1 instead of 0.
+           3.d) => Sets both minimum and maximum to -1.
+           3.e) => Sets maximum to -1 and minimum to G_MININT.
+
+         1. Test that regular ranges do not cause problems.
+             a) Set a range to [20,1000].
+             b) Set a range to [20,20].
+
+         2. Test that limit range values do not cause problems.
+             a) Set a range to [0,G_MAXINT-1].
+
+         3. Test that invalid values on range do not cause problems.
+             a) Set a range of [10,100] on NULL object.
+             b) Set a range of [-1,G_MAXINT].
+             c) Set a range of [G_MININT,-1].
+             d) Set a range of [G_MAXINT,-1].
+             e) Set a range of [1,G_MININT].
+
+   - hildon_controlbar_set_value: Sets current progress.
+   - hildon_controlbar_get_value: Gets current progress.
+
+         - Errors detected: 3.g)
+           3.g) => Method documentation says that value
+                   must be less than G_MAXINT, but G_MAXINT can
+                   be set when the widget is not showed. When the
+                   widget is showed a SIGKILL signal is received
+                   because it enters into an endless loop.
+
+         1. Test that regular values do not cause problems.
+             a) Set a value of 500 in the range [0,1000].
+
+         2. Test that limit values do not cause problems.
+             a) Set a value of 0 in the range [0,1000].
+             b) Set a value of 1000 in the range [0,1000].
+
+         3. Test that invalid values do not cause problems.
+             a) Set a value of 1 in a NULL controlbar.
+             b) Set a value of -1 in the range [2,1000].
+             c) Set a value of 1 in the range [2,1000].
+             d) Set a value of G_MININT in the range [2,1000].
+             e) Set a value of 1001 in the range [2,1000].
+             f) Set a value of G_MAXINT in the range [2,1000].
+             g) Set a value of G_MAXINT in the range [2,G_MAXINT].
+
+   - hildon_controlbar_set_max: [TODO] 
+   - hildon_controlbar_get_max: [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - hildon_controlbar_set_min: [TODO] 
+   - hildon_controlbar_get_min: [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+------------------------------------------------------------------------------
+
+- hildon-color-selector: A widget that is used to select one base or custom defined GdkColor.
+
+   - Property "color": [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - hildon_color_selector_set_color: Sets a GdkColor on a hildon color selector.
+   - hildon_color_selector_get_color: Gets the color on a hildon color selector.
+
+         - Errors detected: none.
+
+         1. Test that regular color values do not cause problems.
+	     a) Set the color #33CC33.
+
+         2. Test that limit color values do not cause problems.
+	     a) Set and get base color defined by #000000.
+             b) Set and get base color defined by #FFFFFF.
+             c) Set and get base color defined by #FF0000.
+ 	     d) Set and get base color defined by #0000FF.
+
+         3. Test that invalid color values do not cause problems.
+             a) Set and get base color defined by #00FFFF and pixel 0.
+             b) Set and get base color defined by #0ABCDE and pixel 0.
+             c) Set and get base color defined by #FF00FF and pixel 0.
+             d) Set the color (65536,65536,65536).
+             d) Set and get base color defined by NULL color.
+             e) Set base color on NULL object.
+             f) Get base color from NULL object.
+
+   - hildon_color_selector_new: [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+------------------------------------------------------------------------------
+
+- hildon-color-button: A widget that is used to open a HildonColorSelector.
+
+   - Property "color": [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - hildon_color_button_set_color: Sets a GdkColor on a hildon color button.
+   - hildon_color_button_get_color: Gets color set on a hildon color button.
+
+         - Errors detected: none.
+                                   
+         1. Test that regular color values do not cause problems.
+             a) Set color defined by red=255, green=255, blue=255 and pixel = 255.
+             b) Set color defined by red=10 green=20, blue=30 and pixel = 10.
+             c) Set color defined by red=20 green=10, blue=30 and pixel = 10.
+             d) Set color defined by red=30 green=10, blue=20 and pixel = 20.
+
+         2. Test that limit color values do not cause problems.
+             a) Set color defined by red=0, green=0, blue=0 and pixel = 0.
+             b) Set color defined by red=G_MAXUINT16 green=G_MAXUINT16, blue=G_MAXUINT16 and pixel = G_MAXUINT32.
+             c) Set color defined by red=G_MAXUINT16 green=0, blue=0 and pixel = G_MAXUINT32.
+             d) Set color defined by red=0 green=G_MAXUINT16, blue=0 and pixel = 0.
+             e) Set color defined by red=0 green=0, blue=G_MAXUINT16 and pixel = G_MAXUINT32.
+
+         3. Test that invalid values do not cause problems.            
+             a) Set color defined by (0, 0, 0) on a NULL object.
+             b) Get color from a NULL object.
+             c) Set color defined by (0, 0, 0) on a GtkHBox object.             
+             d) Get color on a GtkHBox object.
+
+   - hildon_color_button_new_with_color: [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+------------------------------------------------------------------------------
+
+- hildon-seekbar: A widget that allows seeking in media with a range widget.
+
+   - Property "total_time": [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - Property "position": [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - Property "fraction": [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - hildon_seekbar_set_total_time: Sets total time on a seekbar.
+   - hildon_seekbar_get_total_time: Gets total time.
+
+         - Errors detected: none.
+                                   
+         1. Test that regular time values do not cause problems.
+             a) Set and get 1000 seconds without setting new position and fraction. 
+             b) Set and get 500 seconds  without setting new position but new fraction should be set.
+             c) Set and get 500 seconds without setting new position but new fraction should be set.
+
+         2. Test that limit time values do not cause problems.
+             a) Set and get 0 seconds setting new position and fraction (previously set to 750).
+             b) Set and get G_MAXINT seconds without setting new position and fraction.
+
+         3. Test that invalid time values do not cause problems.            
+             a) Set and get seconds to a NULL object.
+             b) Set and get 0 seconds without setting new position and fraction.
+             c) Set and get -1 seconds without setting new position and fraction.
+
+   - hildon_seekbar_set_fraction: Sets current fraction (maximum position in a stream/the amount currently downloaded) on a seekbar.
+   - hildon_seekbar_get_fraction: Gets current fraction.
+
+         - Errors detected: none.
+                                   
+         1. Test that setting regular fraction values do not cause problems.
+             a) Set and get fraction to 500 with total time set to 1000.
+             b) Set and get fraction to 490 with total time set to 1000, fraction and position previously set to 500.
+
+         2. Test that limit fraction do not cause problems.
+             a) Set and get fraction to 0 with total time set to G_MAXINT.
+             b) Set and get fraction to 1 with total time set to G_MAXINT.
+             c) Set and get fraction to G_MAXINT-1 with total time set to G_MAXINT.
+             d) Set and get fraction to G_MAXINT with total time set to G_MAXINT.
+
+         3. Test that invalid fraction do not cause problems.            
+             a) Set and get fraction to NULL object.
+             b) Set and get fraction to -1 with total time set to G_MAXINT.
+             c) Set and get fraction to 2000 with total time set to 1000.
+
+   - hildon_seekbar_set_position: [TODO] 
+   - hildon_seekbar_get_position: [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+------------------------------------------------------------------------------
+
+- hildon-dialoghelp: A helper to allow enabling help if required.
+
+   - gtk_dialog_help_enable: Enable help on dialog.
+   - gtk_dialog_help_disable: Disable help on dialog.
+
+         - Errors detected: none.
+
+         1. Test that enable and disable do not cause problems.
+             a) Test if gtk_dialog_help_enable actually enables help dialog status
+             b) Test if gtk_dialog_help_enable actually adds help atom to atoms' list   
+             c) Test if gtk_dialog_help_disable actually removes help atom from atoms' list
+
+         2. Test that enable and disable with invalid objects do not cause problems.
+             a) Enable help dialog on a NULL object.
+             b) Disable help dialog on a NULL object.
+             
+------------------------------------------------------------------------------
+
+- hildon-caption: This widget is intended to be a container to another
+  widgets that could show a label for the captionized widget.
+
+   - Property "label": [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - Property "icon": [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - Property "status": [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - Property "size_group": [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - Property "separator": [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - Property "expand": [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - hildon_caption_is_mandatory: checks if the status of the
+     widget is mandatory or optional
+
+         - Errors detected: none.
+
+         1. Test that the mandatory status of the widget is retrieved
+            correctly. 
+            a) Create a HildonCaption with HILDON_CAPTION_OPTIONAL
+            flag and call is_mandatory
+            b) Create a HildonCaption with HILDON_CAPTION_MANDATORY
+            flag and call is_mandatory
+
+         2. Test that invalid values do not cause problems.
+            a) The HildonCaption is NULL
+            b) The first argument is a GtkHbox instead of a HildonCaption
+
+   - hildon_caption_set_status: checks if the status of the
+     widget is set correctly
+
+         - Errors detected: none.
+
+         1. Test that setting a valid HildonCaptionStatus works
+            correctly.
+            a) Set the status HILDON_CAPTION_MANDATORY
+
+         2. Test that invalid values do not cause problems.
+            a) Set the status 8
+            b) The HildonCaption is NULL
+            c) The first argument is a GtkHbox instead of a
+            HildonCaption
+
+   - hildon_caption_get_status: checks if the status of the
+     widget is got correctly
+
+         - Errors detected: none.
+
+         1. Test that getting a previously set valid
+            HildonCaptionStatus works correctly
+            a) Get the default status HILDON_CAPTION_OPTIONAL
+            b) Get the status HILDON_CAPTION_MANDATORY set with
+            set_status
+            c) Get the status HILDON_CAPTION_OPTIONAL set with
+            set_property
+
+         2. Test that invalid values do not cause problems
+            a) The HildonCaption is NULL
+            b) The first argument is a GtkHbox instead of a
+            HildonCaption
+
+   - hildon_caption_set_label: checks if the label of the
+     widget is set correctly
+
+         - Errors detected: none.
+
+         1. Test if setting a valid label works correctly
+            a) Set with a regular label
+            b) Set an empty label
+
+         2. Test that invalid values do not cause problems
+            a) The HildonCaption is NULL
+            b) Set a NULL label
+            c) The first argument is a GtkHbox instead of a
+            HildonCaption
+
+   - hildon_caption_get_label: checks if the label of the
+     widget is got correctly
+
+         - Errors detected: none.
+
+         1. Test that getting a previously set valid label works
+            correctly
+            a) Get a sample label set with set_label
+            b) Get an empty label set with set_label
+
+         2. Test that invalid values do not cause problems           
+            a) The HildonCaption is NULL
+            b) Get  a NULL label set with set_property
+            c) The first argument is a GtkHbox instead of a
+            HildonCaption
+
+   - hildon_caption_new: [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - hildon_caption_set_icon_image: [TODO] 
+   - hildon_caption_get_icon_image: [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - hildon_caption_set_separator: [TODO] 
+   - hildon_caption_get_separator: [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - hildon_caption_set_label_alignment: [TODO] 
+   - hildon_caption_get_label_alignment: [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - hildon_caption_set_child_expand: [TODO] 
+   - hildon_caption_get_child_expand: [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+------------------------------------------------------------------------------
+
+- hildon-defines: This file is not a widget, is a library with two
+  utility functions and a lot of defines, as its name says. These two
+  functions should be tested with functional tests because the unit
+  tests that we can implement do not check its more important
+  behavior, a signal emission.
+
+   - hildon_gtk_widget_set_logical_font: changes the logical font of a
+     given widget and all its children
+
+         - Errors detected: none.
+
+         1. Test setting a new logical font works as expected
+            a) set the font "TimesNewRoman"
+
+         2. Test that invalid parameters do not cause problems
+            a) set the font "TimesNewRoman" to a NULL widget
+            b) set a NULL font to a GtkLabel
+
+   - hildon_gtk_widget_set_logical_color: changes the logical color of a
+     given widget and all its children
+
+         - Errors detected: none.
+
+         1. Test setting a new logical color works as expected
+            a) set the color "Blue"
+
+         2. Test that invalid parameters do not cause problems
+            a) set the color "Blue" to a NULL widget
+            b) set a NULL color to a GtkLabel
+            HildonCaption
+
+------------------------------------------------------------------------------
+
+- hildon-time-picker: A widget that allows a user to set the time.
+
+   - Property "minutes": [TODO] 
+ 
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - hildon_time_picker_new: [TODO] 
+ 
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - hildon_time_picker_set_total_time: Sets the time on a time picker object.
+   - hildon_time_picker_get_total_time: Gets the time from a time picker object.
+
+         - Errors detected: none.
+                                   
+         1. Test that regular time values do not cause problems.
+             a) Set time to 5h 30m using time picker object.
+             b) Set time to 18h 2m using time picker object.
+
+         2. Test that limit time values do not cause problems.
+             a) Set time to 0h 0m using time picker object.
+             b) Set time to 0h 59m using time picker object.
+             c) Set time to 12h 59m using time picker object.
+             d) Set time to 23h 59m using time picker object.
+
+         3. Test that invalid time values do not cause problems.            
+             a) Set time using a NULL time picker.
+             b) Set time to 0h 60m using time picker object.
+             c) Set time to 24h 0m using time picker object.
+             d) Set time to 24h 60m using time picker object.
+             e) Set time to 16000h 15533m using time picker object.
+
+
+------------------------------------------------------------------------------
+
+- hildon-name-password-dialog: A widget that allows to enter an username and a password.
+
+   - Property "content": [TODO] 
+ 
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - Property "name": [TODO] 
+ 
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - Property "password": [TODO] 
+ 
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - hildon_name_password_dialog_new_with_default: Creates a dialog with default name and password
+
+         - Errors detected: none.
+                                   
+         1. Test that dialog is created properly with regular username values.
+             a) Create new name and password dialog with "test_name" and "test_password" by default.
+             b) Create new name and password dialog with "0123456789" and "123412341234" by default.
+             c) Create new name and password dialog with a string
+             combining letters, number and symbols for both
+             attributes.
+             d) Create new name and password dialog with empty strings
+
+         2. Test that dialog is created properly with invalid username values.
+             a) Create a name and password dialog with NULL name.
+             b) Create a name and password dialog with NULL password.
+
+   - hildon_name_password_dialog_get_name: Get name property from name-password-dialog.
+
+         - Errors detected: none.
+                                   
+         1. Test that getting name is correct with regular values.
+             a) Get name "test_name" set by g_object_set_property.
+             b) Get name "0123456789" set by g_object_set_property.
+             c) Get name combining letters, number and symbols set by g_object_set_property.
+
+         2. Test that getting name is correct with invalid values.
+             a) Get name on a NULL object.
+             c) Get empty password set by g_object_set_property with NULL value.
+
+   - hildon_name_password_dialog_new: [TODO] 
+ 
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - hildon_name_password_dialog_get_password: [TODO] 
+ 
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - hildon_name_password_dialog_set_domain: [TODO] 
+ 
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+
+------------------------------------------------------------------------------
+
+- hildon-get-password-dialog: A widget that allows to get a password.
+
+   - Property "domain": [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+          
+   - Property "password": [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+          
+   - Property "numbers_only": [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+          
+   - Property "caption-label": [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+          
+   - Property "max-characters": [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+          
+   - Property "get-old": [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+          
+   - hildon_get_password_dialog_new_with_default: Creates a dialog password
+                                                  by default.
+
+         - Errors detected: none.
+                                   
+         1. Test that dialog is created properly with regular password values.
+             a) Create new get password dialog with "test_password" password by default.
+             b) Create new get password dialog with "" password by default.
+             c) Create new get password dialog with "1234567890" password by default.
+             d) Create new get password dialog with a password combining letters, numbers and symbols by default.
+
+         2. Test that dialog is created properly with invalid password values.
+             a) Create new get password dialog with NULL password by default.
+             b) Create new get password dialog with "" password and NULL window by default.
+
+
+   - hildon_get_password_dialog_set_max_characters: Get password property from get-password-dialog.
+
+         - Errors detected: none.
+                                   
+         1. Test that getting password is correct with regular values.
+             a) Set max characters to 10 
+             b) Set max characters to G_MAXUINT16+1 
+
+         2. Test that getting name is correct with limit values.
+             a) Set max characters to 1.
+             b) Set max characters to G_MAXINT.
+
+         3. Test that getting name is correct with invalid values.
+             a) Set max characters to 0.
+             b) Set max characters to -1.
+             c) Set max characters on a NULL object.
+
+   - hildon_get_password_dialog_get_password: Get password property from get-password-dialog.
+
+         - Errors detected: none.
+                                   
+         1. Test that getting password is correct with regular values.
+             a) Get password "test_password" set by g_object_set_property.
+             b) Get password "01234567890" set by g_object_set_property.
+             c) Get password combining letters, numbers and symbols set by g_object_set_property.
+             d) Get password "" set by set by g_object_set_property.
+
+         2. Test that getting password is correct with invalid values.
+             a) Get empty password set by g_object_set_property with NULL value.
+             b) Get password from a NULL object.
+             
+   - hildon_get_password_dialog_new: [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+          
+   - hildon_get_password_dialog_set_domain: [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+          
+   - hildon_get_password_dialog_set_caption: [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+          
+----------------------------------------------------------------------------------------
+
+- hildon-find-toolbar: Used to define a search toolbar.
+
+   -  Property "label":
+
+         - Errors detected: none.
+
+         1. Test set and get regular values for "label" property
+            a) Tested with a regular label
+            b) Tested with an empty label
+
+         2. Test invalid values for "label" property
+            a) Tested with a NULL label
+         
+   - Property "prefix": [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - Property "list": [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - Property "column": [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - Property "max_characters": [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - Property "history_limit": [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - hildon_find_toolbar_new_with_model: Creates a toolbar with a given list of history terms.
+
+         - Errors detected: none.
+
+         1. Test that model is set properly
+            a) Check that model set is the same as retrieved using g_object_get_property
+
+   - hildon_find_toolbar_new: [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - hildon_find_toolbar_highlight_entry: [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+----------------------------------------------------------------------------------------
+
+- hildon-sort-dialog: Used to define a sort dialog.
+
+   - Property "sort-key": [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - Property "sort-order": [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - hildon_sort_dialog_add_sort_key: Adds a new sort key to the list.
+   - hildon_sort_dialog_set_sort_key: Sets the index of the currently selected sort key.
+   - hildon_sort_dialog_get_sort_key: Gets the index of the currently selected sort key.   
+
+         - Errors detected: none.
+
+         1. Check addition, set and get of valid regular values.
+            a) Add 3 keys to the list, then set and get key 1
+            b) Unselect sort key
+         
+         2. Check set and get of limit values.
+            a) Get of current key after dialog construction (empty list of keys)
+            b) Add 3 keys to the list, then set and get keys 0 and 2
+
+         3. Check handling of invalid values.
+            a) Set of key with empty key list 
+            b) Set negative key, lower than -1
+            c) Set of key outside the range of a non empty key list
+            d) Set a duplicated key and check if it is filtered
+            e) Add a NULL sort key.
+            f) Add key with a NULL object
+            g) Set key with a NULL object
+            h) Get key with a NULL object
+
+   - hildon_sort_dialog_new: [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - hildon_sort_dialog_get_sort_order: [TODO] 
+   - hildon_sort_dialog_set_sort_order: [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+----------------------------------------------------------------------------------------
+
+- hildon-volumebar: Used to define a volumebar
+
+   - Property "can-focus": [TODO] 
+ 
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - Property "has_mute": [TODO] 
+ 
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - Property "level": [TODO] 
+ 
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - Property "mute": [TODO] 
+ 
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - hildon_volumebar_set_mute: Enables or disables mute
+   - hildon_volumebar_get_mute: Gets current mute state
+
+         - Errors detected: None, but seems to be a non tested error
+         in 1.b: focus is set to self (HildonVolumebar) by set_mute,
+         but the init method of HildonVolumebar unsets the CAN_FOCUS
+         flag for this widget, so focus is not set at all. Seems
+         that instead of setting focus to self, it should be set to 
+         priv->volumebar, which is the focusable object. Could not
+         create a test for this because we cannot access priv elements
+         from the unit tests.
+
+         1. Check normal usage
+            a) Set mute ON when volumebar is focusable
+            b) Set mute OFF when volumebar is focusable
+            c) Set mute ON when volumebar is not focusable
+            d) Set mute OFF when volumebar is not focusable             
+         
+         2. Check handling of invalid values
+            a) Set mute with NULL volumebar object
+            b) Get mute with NULL volumebar object
+
+   - hildon_volumebar_get_level: [TODO] 
+   - hildon_volumebar_set_level: [TODO] 
+ 
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - hildon_volumebar_level_change: [TODO] 
+ 
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - hildon_volumebar_get_adjustment: [TODO] 
+ 
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+----------------------------------------------------------------------------------------
+
+- hildon-volumebar-range: Used to define the volumebar range
+
+   - Property "level": [TODO] 
+ 
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - hildon_volumebar_range_set_level: Sets range value
+   - hildon_volumebar_range_get_level: Gets range current value
+
+         - Errors detected: None.
+
+         1. Check normal usage
+            a) Set level over the threshold limit 
+            b) Set level under the threshold limit
+           
+         2. Check range limits
+            a) Set level to VOLUMEBAR_RANGE_MINIMUM_VALUE
+            b) Set level to VOLUMEBAR_RANGE_MAXIMUM_VALUE                     
+
+         3. Check handling of invalid values
+            a) Set level under the minimum value
+            b) Set level over the maximum value
+            c) Set level with a NULL object
+            d) Get level with a NULL object            
+
+   - hildon_volumebar_range_new: [TODO] 
+ 
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+----------------------------------------------------------------------------------------
+
+- hildon-code-dialog: Used to allow to enter a code.
+
+   - hildon_code_dialog_get_code: Gets the code inserted by the user.
+
+         - Errors detected: none.
+
+         1. Check normal usage
+            a) Get code from a newly created dialog.
+
+         2. Check handling of invalid values.
+            a) Get code from a NULL object.
+	    b) Get code from an object that it is not a code dialog.
+
+   - hildon_code_dialog_clear_code: [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - hildon_code_dialog_set_help_text: [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+----------------------------------------------------------------------------------------
+
+- hildon-set-password-dialog: A widget that allows to set a password.
+
+   - Property "domain": [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - Property "modify_protection": [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - Property "password": [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - hildon_set_password_dialog_get_protected: Get the boolean that points out if 
+                                               password protection is active.
+
+         - Errors detected: none.
+                                   
+         1. Test that protection boolean is get with regular password values.
+             a) Get TRUE from modify_protection property.
+             b) Get FALSE from modify_protection property.
+
+         2. Test that protection boolean is get with invalid password values.
+             a) Get modify_protection from a NULL object.
+
+   - hildon_set_password_dialog_get_password: Get password property from get-password-dialog.
+
+         - Errors detected: none.
+                                   
+         1. Test that getting password is correct with regular values.
+             a) Get password "test_password" from HildonSetPasswordDialog created with "test_password" by default.
+             b) Get password "" from HildonSetPasswordDialog created with "" by default.
+             c) Get password combining letters, numbers and symbols from HildonSetPasswordDialog created with such kind of password by default.
+
+         2. Test that getting password is correct with invalid values.
+             a) Get empty password from HildonSetPasswordDialog created with NULL password by default.
+             b) Get password from NULL object.
+
+   - hildon_set_password_dialog_new : [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - hildon_set_password_dialog_new_with_default: [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - hildon_set_password_dialog_set_domain: [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+----------------------------------------------------------------------------------------
+
+- hildon-note: A widget that shows a dialog to ask confirmation from the user.
+
+   - Property "note_type": [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - Property "description": [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - Property "icon": [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - Property "progressbar": [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - hildon_note_new_confirmation:
+
+         - Errors detected: none.
+
+	 1. Create confirmation note with regular values. 
+	    a) Create new confirmation note with description set to a combination of letters, numbers and symbols.
+            b) Create new confirmation note with description set to "".
+	    
+         2. Create confirmation note with invalid values.
+            a) Create new confirmation note with window set to NULL.
+	    b) Create new confirmation note with description set to NULL.
+
+   - hildon_note_new_information:
+
+         - Errors detected: none.
+
+	 1. Create information note with regular values. 
+	    a) Create new information note with description set to a combination of letters, numbers and symbols.
+            b) Create new information note with description set to "".
+	    
+         2. Create information note with invalid values.
+            a) Create new information note with window set to NULL.
+	    b) Create new information note with description set to NULL.
+   
+   - hildon_note_new_confirmation_with_icon_name:
+
+         - Errors detected: none.
+
+	 1. Create confirmation with icon name note with regular values. 
+            a) Create new confirmation note with description set to a combination of letters, numbers and symbols and icon name "qgn_list_cp_calibration".
+            b) Create new confirmation note with description set to "" and icon name NULL.
+	    
+         2. Create confirmation with icon name note with invalid values.
+            a) Create new confirmation note with window set to NULL.
+	    b) Create new confirmation note with description set to NULL.
+    
+   - hildon_note_new_cancel_with_progress_bar:
+
+         - Errors detected: none.
+
+	 1. Create cancel note with progress bar with regular values. 
+            a) Create new confirmation note with description set to a combination of letters, numbers and symbols and NULL GtkProgressBar.
+            b) Create new confirmation note with description set to "" and correct GtkProgressBar.
+
+	 2. Create cancel note with progress bar with invalid values. 
+            a) Create new confirmation note with description set to NULL.
+	    b) Create new confirmation note with window set to NULL.
+
+   - hildon_note_new_confirmation_add_buttons: [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+	    
+   - hildon_note_new_information_with_icon_name: [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+	    
+   - hildon_note_set_button_text: [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+	    
+   - hildon_note_set_button_texts: [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+	    
+----------------------------------------------------------------------------------------
+
+- hildon-banner: Used to show a message in a banner. Banners can show an animation icon, a 
+                 progress bar or only text.
+   
+   - Property "parent-window": [TODO] 
+ 
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - Property "is-timed": [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - hildon_banner_show_animation:
+
+         - Errors detected: none.
+
+         1. Check creation of new animation banner with regular values.
+            a) Create an animation banner with NULL animation name and a text.
+            b) Create an animation banner with qgn_list_mahjong animation name and an empty text.
+
+         2. Check creation of new animation banner with invalid values.
+            a) Create an animation banner with NULL text. 
+            b) Create an animation banner with NULL window.
+ 
+   - hildon_banner_show_progress:
+
+         - Errors detected: none.
+
+         1. Check creation of new banner with progress bar with regular values.
+            a) Create new progress banner with standard progress bar and an empty text.
+            b) Create new progress banner with NULL progress bar and a text.
+
+         2. Check creation of new banner with progress bar with invalid values.
+            a) Create new progress banner with NULL text.
+            b) Create new progress banner with NULL window.
+
+   -hildon_banner_show_information : [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - hildon_banner_show_information_with_markup: [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - hildon_banner_set_text: [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - hildon_banner_set_markup: [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - hildon_banner_set_fraction: [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+----------------------------------------------------------------------------------------
+
+- hildon-wizard-dialog: Used to define a wizard dialog
+
+   - Property "wizard-notebook":
+
+         - Errors detected: none.
+
+         1. Check set/get of a regular notebook
+            a) Set and get a valid notebook.
+           
+         2. Check handling of invalid values
+            a) Set property value to NULL.
+
+   - Property "wizard-notebook": [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - hildon_wizard_dialog_new: [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+----------------------------------------------------------------------------------------
+
+- hildon-font-selection-dialog: A dialog for font selection
+
+   - Property "family"
+
+         - Errors detected: 3.b
+           3.b) Produces a segmentation fault
+
+         1. Set and get regular values
+            a) Set and get a font from the middle of the available fonts list
+
+         2. Set and get limit values
+            a)  Set and get first font of the available fonts list
+            b)  Set and get last font of the available fonts list
+
+         3. Set and get invalid values
+            a) Set a non existing font
+            b) Set a NULL font
+
+   - Property "family-set"
+
+         - Errors: none. 
+
+         1. Set and get regular values
+            a) Get returns FALSE when no font is selected
+            b) Get returns TRUE when a font has been selected
+            c) Set and get of value TRUE once a font has been selected
+            d) Set and get of value FALSE 
+
+   - Property "size"
+
+         - Errors: none.
+
+         1. Set and get of regular values
+            a) Set a font size from the middle of the available sizes list 
+
+           2. Set and get limit values
+            a) Set first font size in the available sizes list 
+            b) Set last font size in the available sizes list 
+
+         3. Set and get invalid values
+            a) Set negative size
+            b) Set a positive size that is not in the available sizes list
+            c) Set a positive size over the maximum allowed for the property
+
+   - Property "size-set": [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - Property "color": [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - Property "color-set": [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - Property "bold": [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - Property "bold-set": [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - Property "italic": [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - Property "italic-set": [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - Property "underline": [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - Property "underline-set": [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - Property "strikethrough": [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - Property "strikethrough-set": [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - Property "position": [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - Property "position-set": [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - Property "preview-text": [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - hildon_font_selection_dialog_set_preview_text: Sets the text for the preview
+   - hildon_font_selection_dialog_get_preview_text: Returns the text for the preview
+
+         - Errors detected: none.
+
+         1. Set and get of valid values
+            a) Tested with a sample string
+
+         2. Set and get of invalid values
+            a) Set empty preview text
+            b) Set a NULL preview text
+            c) Set with NULL object
+            d) Set with NULL object
+
+   - hildon_font_selection_dialog_new: [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+          
+----------------------------------------------------------------------------------------
+
+- hildon-scroll-area: This is a helper to create Maemo specific views
+  which are using scrollable area 
+
+   - hildon_scroll_area_new:
+
+         Errors detected: none.
+
+         1. Check the construction of the scroll-area
+            a) Create a regular case of construction
+            b) Create a scroll area with a label
+           
+         2. Check the construction of the scroll-area with invalid values
+            a) Create with NULL widgets
+            b) Create with actual invalid widget instead of the scrolled-window
+            c) Create with actual invalid widget instead of the treeview
+ 
+----------------------------------------------------------------------------------------
+
+- hildon-window: A window object for Maemo based programs.
+
+   - hildon_window_add_with_scrollbar: Adds a widget to the window with scrollbars
+
+         Errors detected: none.
+
+         1. Check interface with regular values
+            a) Add a non viewport child
+            b) Add a viewport child
+
+         2. Check invalid values for this interface
+            a) Add a NULL child
+            b) Add a child to a NULL window
+            c) Add a child with a parent already set
+
+   - hildon_window_add_with_scrollbar: [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+      
+   - hildon_window_set_menu: [TODO] 
+   - hildon_window_get_menu: [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+      
+   - hildon_window_add_toolbar: [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+      
+   - hildon_window_remove_toolbar: [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+      
+   - hildon_window_get_is_topmost: [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+      
+----------------------------------------------------------------------------------------
+
+- hildon-system-sound: This file is not a widget, is a library with an
+  unique call that plays a system sound.
+
+   - hildon_play_system_sound: plays a system sound
+
+         - Errors detected: none.
+
+         1. Test playing a sound that exists
+            "/usr/share/sounds/ui-default_beep.wav" 
+            a) play with the default volume
+            b) play with volume = 0
+            c) play with volume = 1
+            d) play without the gconf value that specifies the volume
+
+         2. Test that invalid parameters do not cause problems
+            a) play the file NULL
+            b) play a file that does not exist:
+            "file_that_does_not_exist.wav" 
+
+----------------------------------------------------------------------------------------
+
+- hildon-color-popup: This file does not define a new GObject, it
+  creates a HildonColorPopup inside a common GtkDialog.
+
+   - hildon_color_popup_set_color_from_sliders: sets the color
+     selected by the sliders into the color passed as argument
+
+         - Errors detected: 3.a), 3.b), 3.c) 
+           3.a), 3.b), 3.c) => raise segmentation fault because 
+                               there is no check of the arguments.
+
+         1. Set a common color
+            a) Set the initial color (#33CC33)
+
+         2. Set a limit values for colors
+            a) Set the color (65535, 65535, 65535)
+            b) Set the color (0, 0, 0)
+
+         3. Test that invalid parameters does not cause problems
+            a) Set the color to a NULL HildonColorPopup
+            b) Set the color to a NULL GdkColor
+            c) Set the color to GtkHBox instead of a HildonColorPopup
+
+   - hildon_color_popup_new: [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+----------------------------------------------------------------------------------------
+
+- hildon-program: Object representing a hildon program.
+
+   - Property "can-hibernate": [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - hildon_program_add_window: Registers a HildonWindow as belonging
+     to a given HildonProgram
+
+         - Errors detected: 2.b), 2.c) 
+           2.b) => Raises segmentation fault.
+           2.c) => Raises segmentation fault.
+
+         1. Test regular usage of the add_window interface
+            a) Add a window object to the program
+            b) Add another window object to the program
+            c) Add the same window object to the program
+
+         2. Check invalid values for the add_window interface
+            a) Add to a NULL program
+            b) Add a NULL window
+            c) Add a label instead of a window
+
+   - hildon_program_remove_window: Used to unregister a window from
+     the program
+
+         - Errors detected: none.
+
+         1. Test regular usage of the remove_window interface
+            a) Add a window object to the program and remove it
+            b) Add another window object to the program and remove the first one
+            c) Remove a window two times
+
+         2. Check invalid values of the remove_window interface
+            a) Remove from a NULL program
+            b) Remove a NULL window
+            c) Remove a label instead of a window
+
+   - hildon_program_set_can_hibernate: Used to set whether or not the
+     Hildon task navigator should be able to set the program to
+     hibernation in case of low memory 
+
+         - Errors detected: none.
+
+         1. Test regular usage of the set_cant_hibernate interface
+            a) Test the initial value of the property, it must be FALSE
+            b) Set a value and test if the value is correct
+
+         2. Check invalid values of the set_can_hibernate interface
+            a) Set the property to a NULL object
+
+   - hildon_program_get_can_hibernate: [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - hildon_program_set_common_menu: [TODO] 
+   - hildon_program_get_common_menu: [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - hildon_program_set_common_toolbar: [TODO] 
+   - hildon_program_get_common_toolbar: [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - hildon_program_get_is_topmost: [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+----------------------------------------------------------------------------------------
+
+- hildon-composite-widget: Handles focus behavior for hildon composite widgets.
+
+   - hildon_composite_widget_focus: Handles focus behavior
+
+         - Errors detected: 2.b), 2.c)
+           2.b) -> segmentation fault
+           2.c) -> segmentation fault
+
+         1. Set a common color
+           a) Check with a composite widget (hildon_time_editor)
+           b) Check with a composite widget (hildon_time_editor) inside a window
+           c) Check with a composite widget (hildon_time_editor) inside a window and focus already given to the window
+
+         2. Test that invalid parameters do not cause problems
+           a) Check with non composite widget (gtkentry)
+           b) Check with NULL widget
+           c) Check with invalid direction (GTK_DIR_RIGHT+1)
+           d) Check with non composite widget (gtkentry) inside a window
+           e) Check with invalid direction (GTK_DIR_RIGHT+1) inside a window
+
+----------------------------------------------------------------------------------------
+
+- hildon-add-home-dialog:
+
+   - Property "name": [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - Property "new_name": [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - hildon_add_home_dialog_new: [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - hildon_add_home_dialog_get_name: [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+----------------------------------------------------------------------------------------
+
+- hildon-app:
+
+   - Property "scroll-control": [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - Property "two-part-title": [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - Property "zoom": [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - Property "app-title": [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - Property "killable": [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - Property "autoregistration": [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - Property "appview": [TODO] 
+   
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - Property "ui-manager": [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - hildon_app_new_with_appview: [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - hildon_app_set_appview: [TODO] 
+   - hildon_app_get_appview: [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - hildon_app_set_title: [TODO] 
+   - hildon_app_get_title: [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - hildon_app_set_two_part_title: [TODO] 
+   - hildon_app_get_two_part_title: [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - hildon_app_set_autoregistration: [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - hildon_app_register_view: [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - hildon_app_register_view_with_id: [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - hildon_app_unregister_view: [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - hildon_app_unregister_view_with_id: [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - hildon_app_find_view_id: [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - hildon_app_notify_view_changed: [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - hildon_app_set_killable: [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - hildon_app_set_ui_manager: [TODO] 
+   - hildon_app_get_ui_manager: [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+----------------------------------------------------------------------------------------
+
+- hildon-appview:
+
+   - Property "connected-adjustment": [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - Property "fullscreen-key-allowed": [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - Property "fullscreen": [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - Property "title": [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - Property "menu-ui": [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - hildon_appview_new: [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - hildon_appview_add_with_scrollbar: [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - hildon_appview_set_fullscreen_key_allowed: [TODO] 
+   - hildon_appview_get_fullscreen_key_allowed: [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - hildon_appview_set_fullscreen: [TODO] 
+   - hildon_appview_get_fullscreen: [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - hildon_appview_get_menu: [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - hildon_appview_set_title: [TODO] 
+   - hildon_appview_get_title: [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - hildon_appview_set_connected_adjustment: [TODO] 
+   - hildon_appview_get_connected_adjustment: [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - hildon_appview_set_menu_ui: [TODO] 
+   - hildon_appview_get_menu_ui: [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+----------------------------------------------------------------------------------------
+
+- hildon-file-handling-note:
+
+   - hildon_file_handling_note_new_moving: [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - hildon_file_handling_note_new_deleting: [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - hildon_file_handling_note_new_opening: [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - hildon_file_handling_note_new_saving: [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - hildon_file_handling_note_set_fraction: [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - hildon_file_handling_note_set_counter_and_name: [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - hildon_file_handling_note_set_name: [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+----------------------------------------------------------------------------------------
+
+- hildon-grid:
+
+   - Property "empty_label": [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - Property "style": [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - Property "scrollbar-position": [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - hildon_grid_set_style: [TODO] 
+   - hildon_grid_get_style: [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - hildon_grid_set_scrollbar_pos: [TODO] 
+   - hildon_grid_get_scrollbar_pos: [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - hildon_grid_activate_child: [TODO] 
+
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+----------------------------------------------------------------------------------------
+
+- hildon-grid-item:
+
+   - Property "emblem-type": [TODO] 
+ 
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - Property "icon-basename": [TODO] 
+ 
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - hildon_grid_item_new: [TODO] 
+ 
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - hildon_grid_item_new_with_label: [TODO] 
+ 
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - hildon_grid_item_set_emblem_type: [TODO] 
+   - hildon_grid_item_get_emblem_type(: [TODO] 
+ 
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - hildon_grid_item_set_label: [TODO] 
+ 
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+----------------------------------------------------------------------------------------
+
+- hildon-hvolumebar:
+
+   - hildon_hvolumebar_new: [TODO] 
+ 
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+----------------------------------------------------------------------------------------
+
+- hildon-vvolumebar:
+
+   - hildon_vvolumebar_new: [TODO] 
+ 
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+----------------------------------------------------------------------------------------
+
+- hildon-insert-object-dialog:
+
+   - Property "name": [TODO] 
+ 
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - hildon_insert_object_dialog_new: [TODO] 
+ 
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - hildon_insert_object_dialog_get_name: [TODO] 
+ 
+         - Errors detected: 
+         
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - hildon_insert_object_dialog_get_mime_type: [TODO] 
+ 
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+----------------------------------------------------------------------------------------
+
+- hildon-telephone-editor:
+
+   - Property "country": [TODO] 
+ 
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - Property "area": [TODO] 
+ 
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - Property "number": [TODO] 
+ 
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - Property "show-border": [TODO] 
+ 
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - Property "show-plus": [TODO] 
+ 
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - Property "set-format": [TODO] 
+ 
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - hildon_telephone_editor_new: [TODO] 
+ 
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - hildon_telephone_editor_new_with_strings: [TODO] 
+ 
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - hildon_telephone_editor_set_editable: [TODO] 
+ 
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - hildon_telephone_editor_set_show_plus: [TODO] 
+   - hildon_telephone_editor_get_show_plus: [TODO] 
+ 
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - hildon_telephone_editor_set_show_border: [TODO] 
+   - hildon_telephone_editor_get_show_border: [TODO] 
+ 
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - hildon_telephone_editor_set_widths: [TODO] 
+ 
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - hildon_telephone_editor_get_country: [TODO] 
+   - hildon_telephone_editor_set_country: [TODO] 
+ 
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - hildon_telephone_editor_set_area: [TODO] 
+   - hildon_telephone_editor_get_area: [TODO] 
+ 
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+
+   - hildon_telephone_editor_set_number: [TODO] 
+   - hildon_telephone_editor_get_number: [TODO] 
+ 
+         - Errors detected: 
+
+         1. Test regular values:
+            - 
+
+         2. Test limit values:
+            - 
+
+         3. Test invalid values:
+            - 
+

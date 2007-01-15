@@ -1,0 +1,5 @@
+#!/bin/sh
+
+#CK_FORK=no ./check_test 2> /dev/null
+CK_FORK=yes ./check_test 2> /dev/null
+

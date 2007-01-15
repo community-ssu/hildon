@@ -1,14 +1,16 @@
-SUBDIRS = src pkgconfig examples
+SUBDIRS 				= src 						\
+					  pkgconfig 					\
+					  examples 					\
+					  tests
 
-EXTRA_DIST = \
-	debian/changelog \
-	debian/control \
-	debian/copyright \
-	debian/hildon-libs-dev.docs \
-	debian/hildon-libs-dev.install \
-	debian/hildon-libs0.install \
-	debian/hildon-libs0-dbg.install \
-	debian/rules
+EXTRA_DIST 				= debian/changelog 				\
+					  debian/control 				\
+					  debian/copyright 				\
+					  debian/hildon-libs-dev.docs 			\
+					  debian/hildon-libs-dev.install 		\
+					  debian/hildon-libs0.install 			\
+					  debian/hildon-libs0-dbg.install 		\
+					  debian/rules
 
 MAINTAINERCLEANFILES			= Makefile.in aclocal.m4 configure 		\
 			  		  config.h.in compile 				\
