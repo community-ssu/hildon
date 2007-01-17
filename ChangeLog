@@ -1,3 +1,30 @@
+2007-01-17  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
+	* examples/Makefile.am:
+	* examples/hildon-color-button:
+	* examples/hildon-color-button/hildon-color-button-example.c:
+	* examples/hildon-color-chooser:
+	* examples/hildon-color-chooser/hildon-color-chooser-example.c: Adding
+	the color button and color chooser examples.
+
+	* src/hildon-color-button.c:
+	* src/hildon-color-button.h:
+	* src/hildon-color-chooser-dialog.c:
+	* src/hildon-color-chooser.c: Fixing the color-returning functions.
+
+	* src/hildon-find-toolbar.c:
+	* src/hildon-font-selection-dialog.c: Adjusting to new color-returning
+	functions.
+
+	* tests/Makefile.am:
+	* tests/Makefile.in:
+	* tests/check-hildon-color-button.c:
+	* tests/check-hildon-color-popup.c:
+	* tests/check-hildon-color-selector.c:
+	* tests/check_test.c:
+	* tests/test_suites.h: Adding the tests for color button and color
+	chooser.
+
 2007-01-15  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
 	* Makefile.am:

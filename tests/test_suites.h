@@ -34,7 +34,7 @@ Suite *create_hildon_calendar_popup_suite(void);
 Suite *create_hildon_weekday_picker_suite(void);
 Suite *create_hildon_controlbar_suite(void);
 Suite *create_hildon_color_button_suite(void);
-Suite *create_hildon_color_selector_suite(void);
+Suite *create_hildon_color_chooser_suite(void);
 Suite *create_hildon_seekbar_suite(void);
 Suite *create_hildon_dialoghelp_suite(void);
 Suite *create_hildon_caption_suite(void);
@@ -54,7 +54,6 @@ Suite *create_hildon_font_selection_dialog_suite(void);
 Suite *create_hildon_system_sound_suite(void);
 Suite *create_hildon_scroll_area_suite(void);
 Suite *create_hildon_window_suite(void);
-Suite *create_hildon_color_popup_suite(void);
 Suite *create_hildon_program_suite(void);
 Suite *create_hildon_composite_widget_suite(void);
 

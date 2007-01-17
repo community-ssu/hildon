@@ -404,6 +404,7 @@ hildon_color_button_clicked                     (GtkButton *button)
     {
         hildon_color_chooser_dialog_get_color (cs_dialog, &priv->color);
         hildon_color_button_set_color (HILDON_COLOR_BUTTON (button), &priv->color);
+        // FIXME A queue-draw should be enough here (not set needed)
     } 
 
     gtk_widget_hide (GTK_WIDGET(cs_dialog));
@@ -516,20 +517,31 @@ void
 hildon_color_button_set_color                   (HildonColorButton *button, 
                                                  GdkColor *color)
 {
+    g_return_if_fail (HILDON_IS_COLOR_BUTTON (button));
+
     g_object_set (G_OBJECT (button), "color", color, NULL);
 }
 
 /**
  * hildon_color_button_get_color:
  * @button: a #HildonColorButton
+ * @color: a color #GdkColor to be fillled with the current color
  *
- * Returns: the color selected by the button
  */
-GdkColor*
-hildon_color_button_get_color                   (HildonColorButton *button)
+void
+hildon_color_button_get_color                   (HildonColorButton *button, 
+                                                 GdkColor *color)
 {
-    GdkColor *color = NULL;
-    g_object_get (G_OBJECT (button), "color", &color, NULL);
-    return color;
+    HildonColorButtonPrivate *priv = NULL; 
+    g_return_if_fail (HILDON_IS_COLOR_BUTTON (button));
+    g_return_if_fail (color != NULL);
+   
+    priv = HILDON_COLOR_BUTTON_GET_PRIVATE (button);
+    g_assert (priv);
+
+    color->red = priv->color.red;
+    color->green = priv->color.green;
+    color->blue = priv->color.blue;
+    color->pixel = priv->color.pixel;
 }
 

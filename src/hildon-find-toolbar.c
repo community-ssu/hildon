@@ -515,7 +515,7 @@ hildon_find_toolbar_class_init                  (HildonFindToolbarClass *klass)
 {
     GObjectClass *object_class;
 
-    g_type_class_add_private (klass, sizeof(HildonFindToolbarPrivate));
+    g_type_class_add_private (klass, sizeof (HildonFindToolbarPrivate));
 
     object_class = G_OBJECT_CLASS(klass);
 

@@ -55,8 +55,8 @@ configure_tests(gint environment)
   srunner_add_suite(sr, create_hildon_date_editor_suite());
   srunner_add_suite(sr, create_hildon_weekday_picker_suite());
   srunner_add_suite(sr, create_hildon_controlbar_suite());
-  /* srunner_add_suite(sr, create_hildon_color_button_suite()); */
-  /* srunner_add_suite(sr, create_hildon_color_popup_suite()); */
+  srunner_add_suite(sr, create_hildon_color_button_suite());
+  srunner_add_suite(sr, create_hildon_color_chooser_suite());
   srunner_add_suite(sr, create_hildon_seekbar_suite());
   /* srunner_add_suite(sr, create_hildon_dialoghelp_suite()); */
   srunner_add_suite(sr, create_hildon_calendar_popup_suite());

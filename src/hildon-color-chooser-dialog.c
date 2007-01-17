@@ -153,7 +153,7 @@ hildon_color_chooser_dialog_get_type            (void)
             NULL
         };
 
-        dialog_type = g_type_register_static (HILDON_TYPE_COLOR_CHOOSER_DIALOG, 
+        dialog_type = g_type_register_static (GTK_TYPE_DIALOG, 
                 "HildonColorChooserDialog", &dialog_info, 0);
     }
 
@@ -172,6 +172,7 @@ hildon_color_chooser_dialog_init                (HildonColorChooserDialog *objec
 
     priv->hbox = gtk_hbox_new (FALSE, 0);
     priv->vbox = gtk_vbox_new (FALSE, 0);
+    priv->chooser = hildon_color_chooser_new ();
 
     gtk_box_pack_start (GTK_BOX (priv->hbox), priv->chooser, TRUE, TRUE, 0);
     gtk_box_pack_end (GTK_BOX (priv->hbox), priv->vbox, FALSE, FALSE, 0);
@@ -292,6 +293,8 @@ hildon_color_chooser_dialog_class_init          (HildonColorChooserDialogClass *
                     GDK_TYPE_COLOR,
                     G_PARAM_READABLE));
     }
+
+    g_type_class_add_private (object_klass, sizeof (HildonColorChooserDialogPrivate));
 }
 
 static void 
@@ -931,11 +934,11 @@ hildon_color_chooser_dialog_color_changed       (HildonColorChooser *chooser,
     HildonColorChooserDialogPrivate *priv = HILDON_COLOR_CHOOSER_DIALOG_GET_PRIVATE (data);
     char key[128], color_str[13];
     int tmp;
-    GdkColor *color;
+    GdkColor *color = g_new (GdkColor, 1);
 
     g_assert (priv);
 
-    g_object_get (G_OBJECT (chooser), "color", &color, NULL);
+    hildon_color_chooser_get_color (chooser, color);
 
     tmp = (priv->style_info.num_buttons.left * priv->style_info.num_buttons.right);
 
@@ -1087,7 +1090,7 @@ hildon_color_chooser_dialog_new                 (void)
 /**
  * hildon_color_chooser_dialog_get_color:
  * @dialog: a #HildonColorChooserDialog
- * @color: a color to fill with new values
+ * @color: a color to fill with new value
  *
  */
 void
@@ -1099,7 +1102,8 @@ hildon_color_chooser_dialog_get_color           (HildonColorChooserDialog *dialo
 
     g_return_if_fail (HILDON_IS_COLOR_CHOOSER_DIALOG (dialog));
     priv = HILDON_COLOR_CHOOSER_DIALOG_GET_PRIVATE (dialog);
+    g_assert (priv);
 
-    g_object_get (G_OBJECT (priv->chooser), "color", &color, NULL);
+    hildon_color_chooser_get_color (HILDON_COLOR_CHOOSER (priv->chooser), color);
 }
 

@@ -27,17 +27,17 @@
 #include "test_suites.h"
 #include "check_utils.h"
 
-#include "hildon-color-selector.h"
+#include "hildon-color-chooser.h"
 #include "hildon-window.h"
 
 #define MAX_COLOR 65535
 
 /* -------------------- Fixtures -------------------- */
-static HildonColorSelector *color_selector = NULL;
+static HildonColorChooser *color_chooser = NULL;
 static GtkWindow * cs_window;
 
 static void 
-fx_setup_default_color_selector ()
+fx_setup_default_color_chooser ()
 {
   int argc = 0;
   gtk_init(&argc, NULL);
@@ -46,22 +46,24 @@ fx_setup_default_color_selector ()
 
   /* Check window object has been created properly */
   fail_if(!HILDON_IS_WINDOW(cs_window),
-         "hildon-color-selector: Window creation failed.");  
+         "hildon-color-chooser: Window creation failed.");  
 
-  color_selector = HILDON_COLOR_SELECTOR(hildon_color_selector_new(cs_window));
-  /* Check that the color selector object has been created properly */
-  fail_if(!HILDON_IS_COLOR_SELECTOR(color_selector),
-          "hildon-color-selector: Creation failed.");  
+  color_chooser = HILDON_COLOR_CHOOSER(hildon_color_chooser_new());
+  /* Check that the color chooser object has been created properly */
+  fail_if(!HILDON_IS_COLOR_CHOOSER(color_chooser),
+          "hildon-color-chooser: Creation failed.");  
+
+  gtk_container_add (GTK_CONTAINER(cs_window), GTK_WIDGET (color_chooser));
 
   show_all_test_window(GTK_WIDGET(cs_window));
-  show_all_test_window(GTK_WIDGET(color_selector));
+  show_all_test_window(GTK_WIDGET(color_chooser));
 
 }
 
 static void 
-fx_teardown_default_color_selector ()
+fx_teardown_default_color_chooser ()
 {    
-  gtk_widget_destroy (GTK_WIDGET (color_selector)); 
+  gtk_widget_destroy (GTK_WIDGET (color_chooser)); 
   gtk_widget_destroy (GTK_WIDGET (cs_window));
  
 }
@@ -79,22 +81,26 @@ START_TEST (test_set_color_regular)
 {
   GdkColor color;
   GdkColor * b_color;
-  const GdkColor * ret_color;    
+  GdkColor * ret_color = g_new (GdkColor, 1);    
    
   /* Test 1: Set the color #33CC33*/
   gdk_color_parse( "#33CC33", &color);
   b_color = gdk_color_copy(&color);
 
-  hildon_color_selector_set_color(color_selector,b_color);
-  ret_color =  hildon_color_selector_get_color(color_selector);    
+  hildon_color_chooser_set_color(color_chooser,b_color);
+  hildon_color_chooser_get_color(color_chooser, ret_color);    
 
   fail_if ((b_color->red != ret_color->red) || (b_color->green != ret_color->green) || 
            (b_color->blue != ret_color->blue),
-           "hildon-color-selector: The returned RGB color is %i/%i/%i and should be %i/%i/%i",
+           "hildon-color-chooser: The returned RGB color is %i/%i/%i and should be %i/%i/%i",
            ret_color->red, ret_color->green, ret_color->blue,
            b_color->red, b_color->green, b_color->blue);
 
-  gdk_color_free(b_color);
+  if (b_color)
+    gdk_color_free(b_color);
+
+  if (ret_color)
+    gdk_color_free(ret_color);
 }
 END_TEST
 
@@ -110,11 +116,11 @@ START_TEST (test_set_color_limits)
 {
   GdkColor color;
   GdkColor * b_color;
-  const GdkColor * ret_color;
+  GdkColor * ret_color = g_new (GdkColor, 1);
 
-  /* Check that the color selector object has been created properly */
-  fail_if(!HILDON_IS_COLOR_SELECTOR(color_selector),
-          "hildon-color-selector: Creation failed.");   
+  /* Check that the color chooser object has been created properly */
+  fail_if(!HILDON_IS_COLOR_CHOOSER(color_chooser),
+          "hildon-color-chooser: Creation failed.");   
     
   b_color = gdk_color_copy(&color);
     
@@ -122,12 +128,12 @@ START_TEST (test_set_color_limits)
   gdk_color_parse( "#000000", &color);
   b_color = gdk_color_copy(&color);
 
-  hildon_color_selector_set_color(color_selector,b_color);
-  ret_color =  hildon_color_selector_get_color(color_selector);    
+  hildon_color_chooser_set_color(color_chooser,b_color);
+  hildon_color_chooser_get_color(color_chooser, ret_color);    
 
   fail_if ((b_color->red != ret_color->red) || (b_color->green != ret_color->green) || 
            (b_color->blue != ret_color->blue),
-           "hildon-color-selector: The returned RGB color is %i/%i/%i and should be %i/%i/%i",
+           "hildon-color-chooser: The returned RGB color is %i/%i/%i and should be %i/%i/%i",
            ret_color->red, ret_color->green, ret_color->blue,
            b_color->red, b_color->green, b_color->blue);
 
@@ -138,12 +144,12 @@ START_TEST (test_set_color_limits)
   gdk_color_parse( "#000000", &color);
   b_color = gdk_color_copy(&color);
 
-  hildon_color_selector_set_color(color_selector,b_color);
-  ret_color =  hildon_color_selector_get_color(color_selector);    
+  hildon_color_chooser_set_color(color_chooser,b_color);
+  hildon_color_chooser_get_color(color_chooser, ret_color);    
 
   fail_if ((b_color->red != ret_color->red) || (b_color->green != ret_color->green) || 
            (b_color->blue != ret_color->blue),
-           "hildon-color-selector: The returned RGB color is %i/%i/%i and should be %i/%i/%i",
+           "hildon-color-chooser: The returned RGB color is %i/%i/%i and should be %i/%i/%i",
            ret_color->red, ret_color->green, ret_color->blue,
            b_color->red, b_color->green, b_color->blue);
 
@@ -154,12 +160,12 @@ START_TEST (test_set_color_limits)
   gdk_color_parse( "#FF0000", &color);
   b_color = gdk_color_copy(&color);
 
-  hildon_color_selector_set_color(color_selector,b_color);
-  ret_color =  hildon_color_selector_get_color(color_selector);    
+  hildon_color_chooser_set_color(color_chooser,b_color);
+  hildon_color_chooser_get_color(color_chooser, ret_color);    
 
   fail_if ((b_color->red != ret_color->red) || (b_color->green != ret_color->green) || 
            (b_color->blue != ret_color->blue),
-           "hildon-color-selector: The returned RGB color is %i/%i/%i and should be %i/%i/%i",
+           "hildon-color-chooser: The returned RGB color is %i/%i/%i and should be %i/%i/%i",
            ret_color->red, ret_color->green, ret_color->blue,
            b_color->red, b_color->green, b_color->blue);
 
@@ -169,16 +175,20 @@ START_TEST (test_set_color_limits)
   gdk_color_parse( "#0000FF", &color);
   b_color = gdk_color_copy(&color);
 
-  hildon_color_selector_set_color(color_selector,b_color);
-  ret_color =  hildon_color_selector_get_color(color_selector);    
+  hildon_color_chooser_set_color(color_chooser,b_color);
+  hildon_color_chooser_get_color(color_chooser, ret_color);    
 
   fail_if ((b_color->red != ret_color->red) || (b_color->green != ret_color->green) || 
            (b_color->blue != ret_color->blue),
-           "hildon-color-selector: The returned RGB color is %i/%i/%i and should be %i/%i/%i",
+           "hildon-color-chooser: The returned RGB color is %i/%i/%i and should be %i/%i/%i",
            ret_color->red, ret_color->green, ret_color->blue,
            b_color->red, b_color->green, b_color->blue);
 
-  gdk_color_free(b_color);
+  if (b_color)
+    gdk_color_free(b_color);
+
+  if (ret_color)
+    gdk_color_free(ret_color);
 }
 END_TEST
 /**
@@ -196,14 +206,14 @@ START_TEST (test_set_color_invalid)
 {
   GdkColor color;
   GdkColor * b_color;
-  const GdkColor * ret_color;
+  GdkColor * ret_color = g_new (GdkColor, 1);
   guint red;
   guint green;
   guint blue;
 
-  /* Check that the color selector object has been created properly */
-  fail_if(!HILDON_IS_COLOR_SELECTOR(color_selector),
-          "hildon-color-selector: Creation failed.");
+  /* Check that the color chooser object has been created properly */
+  fail_if(!HILDON_IS_COLOR_CHOOSER(color_chooser),
+          "hildon-color-chooser: Creation failed.");
    
   b_color = gdk_color_copy(&color);
     
@@ -211,18 +221,18 @@ START_TEST (test_set_color_invalid)
   gdk_color_parse( "#000000", &color);
   b_color = gdk_color_copy(&color);
 
-  hildon_color_selector_set_color(color_selector,b_color);
+  hildon_color_chooser_set_color(color_chooser,b_color);
   gdk_color_free(b_color);
 
   /* Test 1: Set the color #00FFFF*/
   gdk_color_parse( "#00FFFF", &color);
   b_color = gdk_color_copy(&color);
 
-  hildon_color_selector_set_color(color_selector,b_color);
-  ret_color =  hildon_color_selector_get_color(color_selector);    
+  hildon_color_chooser_set_color(color_chooser,b_color);
+  hildon_color_chooser_get_color(color_chooser,ret_color);    
     
   fail_if ((0 != ret_color->red) || (0 != ret_color->green) || (0 != ret_color->blue),
-           "hildon-color-selector: The returned RGB color is %i/%i/%i and should be %i/%i/%i",
+           "hildon-color-chooser: The returned RGB color is %i/%i/%i and should be %i/%i/%i",
            ret_color->red, ret_color->green, ret_color->blue,
            0, 0, 0);
 
@@ -232,11 +242,11 @@ START_TEST (test_set_color_invalid)
   gdk_color_parse( "#0ABCDE", &color);
   b_color = gdk_color_copy(&color);
 
-  hildon_color_selector_set_color(color_selector,b_color);
-  ret_color =  hildon_color_selector_get_color(color_selector);    
+  hildon_color_chooser_set_color(color_chooser,b_color);
+  hildon_color_chooser_get_color(color_chooser,ret_color);    
 
   fail_if ((0 != ret_color->red) || (0 != ret_color->green) || (0 != ret_color->blue),
-           "hildon-color-selector: The returned RGB color is %i/%i/%i and should be %i/%i/%i",
+           "hildon-color-chooser: The returned RGB color is %i/%i/%i and should be %i/%i/%i",
            ret_color->red, ret_color->green, ret_color->blue,
            0, 0, 0);
 
@@ -246,11 +256,11 @@ START_TEST (test_set_color_invalid)
   gdk_color_parse( "#FF00FF", &color);
   b_color = gdk_color_copy(&color);
 
-  hildon_color_selector_set_color(color_selector,b_color);
-  ret_color =  hildon_color_selector_get_color(color_selector);    
+  hildon_color_chooser_set_color(color_chooser,b_color);
+  hildon_color_chooser_get_color(color_chooser,ret_color);    
 
   fail_if ((0 != ret_color->red) || (0 != ret_color->green) || (0 != ret_color->blue),
-           "hildon-color-selector: The returned RGB color is %i/%i/%i and should be %i/%i/%i",
+           "hildon-color-chooser: The returned RGB color is %i/%i/%i and should be %i/%i/%i",
            ret_color->red, ret_color->green, ret_color->blue,
            0, 0, 0);
 
@@ -267,36 +277,42 @@ START_TEST (test_set_color_invalid)
   b_color->green=green;
   b_color->blue=blue;
     
-  hildon_color_selector_set_color(color_selector,b_color);
-  ret_color =  hildon_color_selector_get_color(color_selector);    
+  hildon_color_chooser_set_color(color_chooser,b_color);
+  hildon_color_chooser_get_color(color_chooser, ret_color);    
 
   fail_if ((0 != ret_color->red) || (0 != ret_color->green) || (0 != ret_color->blue),
-           "hildon-color-selector: The returned RGB color is %i/%i/%i and should be %i/%i/%i",
+           "hildon-color-chooser: The returned RGB color is %i/%i/%i and should be %i/%i/%i",
            ret_color->red, ret_color->green, ret_color->blue,
            0, 0, 0);
     
-  /* Test 5: Set the color NULL on color selector*/
-  hildon_color_selector_set_color(color_selector,NULL);
+  /* Test 5: Set the color NULL on color chooser*/
+  hildon_color_chooser_set_color(color_chooser,NULL);
 
   /* Test 6: Set the color on NULL object*/
-  hildon_color_selector_set_color(NULL,b_color);
+  hildon_color_chooser_set_color(NULL,b_color);
 
   /* Test 7: Get color from NULL object*/
-  ret_color = hildon_color_selector_get_color(NULL);
+  hildon_color_chooser_get_color(NULL, ret_color);
+
+  if (b_color)
+    gdk_color_free(b_color);
+
+  if (ret_color)
+    gdk_color_free(ret_color);
 }
 END_TEST
 
 
 /* ---------- Suite creation ---------- */
 
-Suite *create_hildon_color_selector_suite()
+Suite *create_hildon_color_chooser_suite()
 {
   /* Create the suite */
-  Suite *s = suite_create("HildonColorSelector");
+  Suite *s = suite_create("HildonColorChooser");
 
-  /* Create test case for hildon_color_selector_set_color and add it to the suite */
+  /* Create test case for hildon_color_chooser_set_color and add it to the suite */
   TCase *tc1 = tcase_create("set_color");
-  tcase_add_checked_fixture(tc1, fx_setup_default_color_selector, fx_teardown_default_color_selector);
+  tcase_add_checked_fixture(tc1, fx_setup_default_color_chooser, fx_teardown_default_color_chooser);
   tcase_add_test(tc1, test_set_color_regular);
   tcase_add_test(tc1, test_set_color_limits);
   tcase_add_test(tc1, test_set_color_invalid);

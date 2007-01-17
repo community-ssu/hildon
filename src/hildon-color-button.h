@@ -74,8 +74,8 @@ hildon_color_button_new                         (void);
 GtkWidget*
 hildon_color_button_new_with_color              (const GdkColor *color);
 
-GdkColor*
-hildon_color_button_get_color                   (HildonColorButton *button);
+void
+hildon_color_button_get_color                   (HildonColorButton *button, GdkColor *color);
 
 void
 hildon_color_button_set_color                   (HildonColorButton *button,         

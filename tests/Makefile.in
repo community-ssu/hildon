@@ -63,7 +63,8 @@ am__check_test_SOURCES_DIST = check_test.c check_utils.c \
 	check-hildon-volumebar-range.c check-hildon-banner.c \
 	check-hildon-wizard-dialog.c \
 	check-hildon-font-selection-dialog.c check-hildon-window.c \
-	check-hildon-program.c check-hildon-composite-widget.c
+	check-hildon-program.c check-hildon-composite-widget.c \
+	check-hildon-color-button.c check-hildon-color-chooser.c
 @BUILD_TESTS_TRUE@am_check_test_OBJECTS =  \
 @BUILD_TESTS_TRUE@	check_test-check_test.$(OBJEXT) \
 @BUILD_TESTS_TRUE@	check_test-check_utils.$(OBJEXT) \
@@ -89,7 +90,9 @@ am__check_test_SOURCES_DIST = check_test.c check_utils.c \
 @BUILD_TESTS_TRUE@	check_test-check-hildon-font-selection-dialog.$(OBJEXT) \
 @BUILD_TESTS_TRUE@	check_test-check-hildon-window.$(OBJEXT) \
 @BUILD_TESTS_TRUE@	check_test-check-hildon-program.$(OBJEXT) \
-@BUILD_TESTS_TRUE@	check_test-check-hildon-composite-widget.$(OBJEXT)
+@BUILD_TESTS_TRUE@	check_test-check-hildon-composite-widget.$(OBJEXT) \
+@BUILD_TESTS_TRUE@	check_test-check-hildon-color-button.$(OBJEXT) \
+@BUILD_TESTS_TRUE@	check_test-check-hildon-color-chooser.$(OBJEXT)
 check_test_OBJECTS = $(am_check_test_OBJECTS)
 am__DEPENDENCIES_1 =
 @BUILD_TESTS_TRUE@check_test_DEPENDENCIES = $(am__DEPENDENCIES_1)
@@ -100,6 +103,8 @@ am__depfiles_maybe = depfiles
 @AMDEP_TRUE@	./$(DEPDIR)/check_test-check-hildon-calendar-popup.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/check_test-check-hildon-caption.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/check_test-check-hildon-code-dialog.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/check_test-check-hildon-color-button.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/check_test-check-hildon-color-chooser.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/check_test-check-hildon-composite-widget.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/check_test-check-hildon-controlbar.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/check_test-check-hildon-date-editor.Po \
@@ -304,7 +309,9 @@ target_vendor = @target_vendor@
 @BUILD_TESTS_TRUE@					  check-hildon-font-selection-dialog.c 	\
 @BUILD_TESTS_TRUE@					  check-hildon-window.c 		\
 @BUILD_TESTS_TRUE@					  check-hildon-program.c 		\
-@BUILD_TESTS_TRUE@					  check-hildon-composite-widget.c
+@BUILD_TESTS_TRUE@					  check-hildon-composite-widget.c	\
+@BUILD_TESTS_TRUE@					  check-hildon-color-button.c		\
+@BUILD_TESTS_TRUE@					  check-hildon-color-chooser.c
 
 @BUILD_TESTS_TRUE@check_test_LDADD = $(HILDON_WIDGETS_OBJ_LIBS)
 @BUILD_TESTS_TRUE@check_test_LDFLAGS = -module -avoid-version
@@ -363,6 +370,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/check_test-check-hildon-calendar-popup.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/check_test-check-hildon-caption.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/check_test-check-hildon-code-dialog.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/check_test-check-hildon-color-button.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/check_test-check-hildon-color-chooser.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/check_test-check-hildon-composite-widget.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/check_test-check-hildon-controlbar.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/check_test-check-hildon-date-editor.Po@am__quote@
@@ -1008,6 +1017,54 @@ check_test-check-hildon-composite-widget.lo: check-hildon-composite-widget.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	depfile='$(DEPDIR)/check_test-check-hildon-composite-widget.Plo' tmpdepfile='$(DEPDIR)/check_test-check-hildon-composite-widget.TPlo' @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(LIBTOOL) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(check_test_CFLAGS) $(CFLAGS) -c -o check_test-check-hildon-composite-widget.lo `test -f 'check-hildon-composite-widget.c' || echo '$(srcdir)/'`check-hildon-composite-widget.c
+
+check_test-check-hildon-color-button.o: check-hildon-color-button.c
+@am__fastdepCC_TRUE@	if $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(check_test_CFLAGS) $(CFLAGS) -MT check_test-check-hildon-color-button.o -MD -MP -MF "$(DEPDIR)/check_test-check-hildon-color-button.Tpo" -c -o check_test-check-hildon-color-button.o `test -f 'check-hildon-color-button.c' || echo '$(srcdir)/'`check-hildon-color-button.c; \
+@am__fastdepCC_TRUE@	then mv -f "$(DEPDIR)/check_test-check-hildon-color-button.Tpo" "$(DEPDIR)/check_test-check-hildon-color-button.Po"; else rm -f "$(DEPDIR)/check_test-check-hildon-color-button.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='check-hildon-color-button.c' object='check_test-check-hildon-color-button.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	depfile='$(DEPDIR)/check_test-check-hildon-color-button.Po' tmpdepfile='$(DEPDIR)/check_test-check-hildon-color-button.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(check_test_CFLAGS) $(CFLAGS) -c -o check_test-check-hildon-color-button.o `test -f 'check-hildon-color-button.c' || echo '$(srcdir)/'`check-hildon-color-button.c
+
+check_test-check-hildon-color-button.obj: check-hildon-color-button.c
+@am__fastdepCC_TRUE@	if $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(check_test_CFLAGS) $(CFLAGS) -MT check_test-check-hildon-color-button.obj -MD -MP -MF "$(DEPDIR)/check_test-check-hildon-color-button.Tpo" -c -o check_test-check-hildon-color-button.obj `if test -f 'check-hildon-color-button.c'; then $(CYGPATH_W) 'check-hildon-color-button.c'; else $(CYGPATH_W) '$(srcdir)/check-hildon-color-button.c'; fi`; \
+@am__fastdepCC_TRUE@	then mv -f "$(DEPDIR)/check_test-check-hildon-color-button.Tpo" "$(DEPDIR)/check_test-check-hildon-color-button.Po"; else rm -f "$(DEPDIR)/check_test-check-hildon-color-button.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='check-hildon-color-button.c' object='check_test-check-hildon-color-button.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	depfile='$(DEPDIR)/check_test-check-hildon-color-button.Po' tmpdepfile='$(DEPDIR)/check_test-check-hildon-color-button.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(check_test_CFLAGS) $(CFLAGS) -c -o check_test-check-hildon-color-button.obj `if test -f 'check-hildon-color-button.c'; then $(CYGPATH_W) 'check-hildon-color-button.c'; else $(CYGPATH_W) '$(srcdir)/check-hildon-color-button.c'; fi`
+
+check_test-check-hildon-color-button.lo: check-hildon-color-button.c
+@am__fastdepCC_TRUE@	if $(LIBTOOL) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(check_test_CFLAGS) $(CFLAGS) -MT check_test-check-hildon-color-button.lo -MD -MP -MF "$(DEPDIR)/check_test-check-hildon-color-button.Tpo" -c -o check_test-check-hildon-color-button.lo `test -f 'check-hildon-color-button.c' || echo '$(srcdir)/'`check-hildon-color-button.c; \
+@am__fastdepCC_TRUE@	then mv -f "$(DEPDIR)/check_test-check-hildon-color-button.Tpo" "$(DEPDIR)/check_test-check-hildon-color-button.Plo"; else rm -f "$(DEPDIR)/check_test-check-hildon-color-button.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='check-hildon-color-button.c' object='check_test-check-hildon-color-button.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	depfile='$(DEPDIR)/check_test-check-hildon-color-button.Plo' tmpdepfile='$(DEPDIR)/check_test-check-hildon-color-button.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(LIBTOOL) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(check_test_CFLAGS) $(CFLAGS) -c -o check_test-check-hildon-color-button.lo `test -f 'check-hildon-color-button.c' || echo '$(srcdir)/'`check-hildon-color-button.c
+
+check_test-check-hildon-color-chooser.o: check-hildon-color-chooser.c
+@am__fastdepCC_TRUE@	if $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(check_test_CFLAGS) $(CFLAGS) -MT check_test-check-hildon-color-chooser.o -MD -MP -MF "$(DEPDIR)/check_test-check-hildon-color-chooser.Tpo" -c -o check_test-check-hildon-color-chooser.o `test -f 'check-hildon-color-chooser.c' || echo '$(srcdir)/'`check-hildon-color-chooser.c; \
+@am__fastdepCC_TRUE@	then mv -f "$(DEPDIR)/check_test-check-hildon-color-chooser.Tpo" "$(DEPDIR)/check_test-check-hildon-color-chooser.Po"; else rm -f "$(DEPDIR)/check_test-check-hildon-color-chooser.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='check-hildon-color-chooser.c' object='check_test-check-hildon-color-chooser.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	depfile='$(DEPDIR)/check_test-check-hildon-color-chooser.Po' tmpdepfile='$(DEPDIR)/check_test-check-hildon-color-chooser.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(check_test_CFLAGS) $(CFLAGS) -c -o check_test-check-hildon-color-chooser.o `test -f 'check-hildon-color-chooser.c' || echo '$(srcdir)/'`check-hildon-color-chooser.c
+
+check_test-check-hildon-color-chooser.obj: check-hildon-color-chooser.c
+@am__fastdepCC_TRUE@	if $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(check_test_CFLAGS) $(CFLAGS) -MT check_test-check-hildon-color-chooser.obj -MD -MP -MF "$(DEPDIR)/check_test-check-hildon-color-chooser.Tpo" -c -o check_test-check-hildon-color-chooser.obj `if test -f 'check-hildon-color-chooser.c'; then $(CYGPATH_W) 'check-hildon-color-chooser.c'; else $(CYGPATH_W) '$(srcdir)/check-hildon-color-chooser.c'; fi`; \
+@am__fastdepCC_TRUE@	then mv -f "$(DEPDIR)/check_test-check-hildon-color-chooser.Tpo" "$(DEPDIR)/check_test-check-hildon-color-chooser.Po"; else rm -f "$(DEPDIR)/check_test-check-hildon-color-chooser.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='check-hildon-color-chooser.c' object='check_test-check-hildon-color-chooser.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	depfile='$(DEPDIR)/check_test-check-hildon-color-chooser.Po' tmpdepfile='$(DEPDIR)/check_test-check-hildon-color-chooser.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(check_test_CFLAGS) $(CFLAGS) -c -o check_test-check-hildon-color-chooser.obj `if test -f 'check-hildon-color-chooser.c'; then $(CYGPATH_W) 'check-hildon-color-chooser.c'; else $(CYGPATH_W) '$(srcdir)/check-hildon-color-chooser.c'; fi`
+
+check_test-check-hildon-color-chooser.lo: check-hildon-color-chooser.c
+@am__fastdepCC_TRUE@	if $(LIBTOOL) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(check_test_CFLAGS) $(CFLAGS) -MT check_test-check-hildon-color-chooser.lo -MD -MP -MF "$(DEPDIR)/check_test-check-hildon-color-chooser.Tpo" -c -o check_test-check-hildon-color-chooser.lo `test -f 'check-hildon-color-chooser.c' || echo '$(srcdir)/'`check-hildon-color-chooser.c; \
+@am__fastdepCC_TRUE@	then mv -f "$(DEPDIR)/check_test-check-hildon-color-chooser.Tpo" "$(DEPDIR)/check_test-check-hildon-color-chooser.Plo"; else rm -f "$(DEPDIR)/check_test-check-hildon-color-chooser.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='check-hildon-color-chooser.c' object='check_test-check-hildon-color-chooser.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	depfile='$(DEPDIR)/check_test-check-hildon-color-chooser.Plo' tmpdepfile='$(DEPDIR)/check_test-check-hildon-color-chooser.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(LIBTOOL) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(check_test_CFLAGS) $(CFLAGS) -c -o check_test-check-hildon-color-chooser.lo `test -f 'check-hildon-color-chooser.c' || echo '$(srcdir)/'`check-hildon-color-chooser.c
 
 mostlyclean-libtool:
 	-rm -f *.lo

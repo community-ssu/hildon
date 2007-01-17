@@ -81,7 +81,7 @@ START_TEST (test_set_color_regular)
 {
   GdkColor color;
   GdkColor * b_color;
-  GdkColor * ret_color;
+  GdkColor * ret_color = g_new (GdkColor, 1);
   guint red;
   guint green;
   guint blue;
@@ -101,7 +101,7 @@ START_TEST (test_set_color_regular)
   b_color->pixel=pixel;
     
   hildon_color_button_set_color(color_button,b_color);
-  ret_color =  hildon_color_button_get_color(color_button);
+  hildon_color_button_get_color(color_button, ret_color);
 
   fail_if ((red != ret_color->red) || (green != ret_color->green) || 
            (blue != ret_color->blue) || (pixel != ret_color->pixel),
@@ -121,7 +121,7 @@ START_TEST (test_set_color_regular)
   b_color->pixel=pixel;
     
   hildon_color_button_set_color(color_button,b_color);
-  ret_color =  hildon_color_button_get_color(color_button);
+  hildon_color_button_get_color(color_button, ret_color);
 
   fail_if ((red != ret_color->red) || (green != ret_color->green) || 
            (blue != ret_color->blue) || (pixel != ret_color->pixel),
@@ -141,7 +141,7 @@ START_TEST (test_set_color_regular)
   b_color->pixel=pixel;
     
   hildon_color_button_set_color(color_button,b_color);
-  ret_color =  hildon_color_button_get_color(color_button);
+  hildon_color_button_get_color(color_button, ret_color);
 
   fail_if ((red != ret_color->red) || (green != ret_color->green) || 
            (blue != ret_color->blue) || (pixel != ret_color->pixel),
@@ -161,7 +161,7 @@ START_TEST (test_set_color_regular)
   b_color->pixel=pixel;
     
   hildon_color_button_set_color(color_button,b_color);
-  ret_color =  hildon_color_button_get_color(color_button);
+  hildon_color_button_get_color(color_button, ret_color);
 
   fail_if ((red != ret_color->red) || (green != ret_color->green) || 
            (blue != ret_color->blue) || (pixel != ret_color->pixel),
@@ -169,7 +169,11 @@ START_TEST (test_set_color_regular)
            pixel, ret_color->red, ret_color->green, 
            ret_color->blue, ret_color->pixel);
     
-  gdk_color_free(b_color);
+  if (b_color)
+          gdk_color_free(b_color);
+
+  if (ret_color)
+          gdk_color_free(ret_color);
 }
 END_TEST
 
@@ -187,7 +191,7 @@ START_TEST (test_set_color_limits)
 {
   GdkColor color;
   GdkColor * b_color;
-  GdkColor * ret_color;
+  GdkColor * ret_color = g_new (GdkColor, 1);
   guint red;
   guint green;
   guint blue;
@@ -207,7 +211,7 @@ START_TEST (test_set_color_limits)
   b_color->pixel=pixel;
 
   hildon_color_button_set_color(color_button,b_color);
-  ret_color =  hildon_color_button_get_color(color_button);
+  hildon_color_button_get_color(color_button, ret_color);
 
   fail_if ((red != ret_color->red) || (green != ret_color->green) || 
            (blue != ret_color->blue) || (pixel != ret_color->pixel),
@@ -227,7 +231,7 @@ START_TEST (test_set_color_limits)
   b_color->blue=blue;
     
   hildon_color_button_set_color(color_button,b_color);
-  ret_color =  hildon_color_button_get_color(color_button);
+  hildon_color_button_get_color(color_button, ret_color);
 
   fail_if ((red != ret_color->red) || (green != ret_color->green) || 
            (blue != ret_color->blue) || (pixel != ret_color->pixel),
@@ -247,7 +251,7 @@ START_TEST (test_set_color_limits)
   b_color->pixel=pixel;
 
   hildon_color_button_set_color(color_button,b_color);
-  ret_color =  hildon_color_button_get_color(color_button);
+  hildon_color_button_get_color(color_button, ret_color);
 
   fail_if ((red != ret_color->red) || (green != ret_color->green) || 
            (blue != ret_color->blue) || (pixel != ret_color->pixel),
@@ -267,7 +271,7 @@ START_TEST (test_set_color_limits)
   b_color->pixel=pixel;
         
   hildon_color_button_set_color(color_button,b_color);
-  ret_color =  hildon_color_button_get_color(color_button);
+  hildon_color_button_get_color(color_button, ret_color);
 
   fail_if ((red != ret_color->red) || (green != ret_color->green) || 
            (blue != ret_color->blue) || (pixel != ret_color->pixel),
@@ -287,7 +291,7 @@ START_TEST (test_set_color_limits)
   b_color->pixel=pixel;
 
   hildon_color_button_set_color(color_button,b_color);
-  ret_color =  hildon_color_button_get_color(color_button);
+  hildon_color_button_get_color(color_button, ret_color);
 
   fail_if ((red != ret_color->red) || (green != ret_color->green) || 
            (blue != ret_color->blue) || (pixel != ret_color->pixel),
@@ -295,8 +299,11 @@ START_TEST (test_set_color_limits)
            pixel, ret_color->red, ret_color->green, 
            ret_color->blue, ret_color->pixel);
     
-  ret_color = NULL;
-  gdk_color_free(b_color);
+  if (b_color) 
+          gdk_color_free(b_color);
+
+  if (ret_color)
+          gdk_color_free(ret_color);
 }
 END_TEST
 
@@ -313,7 +320,7 @@ START_TEST (test_set_color_invalid)
 {
   GdkColor color;
   GdkColor * b_color;
-  GdkColor * ret_color;
+  GdkColor * ret_color = g_new (GdkColor, 1);
   GtkWidget *aux_object = NULL;
   guint red;
   guint green;
@@ -334,7 +341,7 @@ START_TEST (test_set_color_invalid)
   hildon_color_button_set_color(NULL,b_color);
 
   /* Test 2: Get color from NULL object*/
-  ret_color =  hildon_color_button_get_color(NULL);    
+  hildon_color_button_get_color(NULL, ret_color);    
    
   /* Test 3: Set color defined by (0, 0, 0) on GtkHBox object. */
   aux_object = gtk_hbox_new (TRUE, 0);
@@ -342,7 +349,7 @@ START_TEST (test_set_color_invalid)
   gdk_color_free(b_color);
 
   /* Test 4: Get color from GtkHBox object. */
-  ret_color = hildon_color_button_get_color((HildonColorButton *) (aux_object));
+  hildon_color_button_get_color((HildonColorButton *) (aux_object), ret_color);
     
   if (ret_color != NULL) 
     {
