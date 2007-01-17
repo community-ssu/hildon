@@ -1,5 +1,9 @@
 2007-01-17  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
+	* examples/: Moving the examples out of the directory.
+
+2007-01-17  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
 	* src/hildon.h: Changing from hildon-widgets.h
 
 	* examples/hildon-banner/hildon-banner-example.c:
