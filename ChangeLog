@@ -1,5 +1,10 @@
 2007-01-17  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
+	* examples/Makefile.am:
+	* examples/hildon-login-dialog-example.c: Adding login dialog example.
+
+2007-01-17  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
 	* examples/: Moving the examples out of the directory.
 
 2007-01-17  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
