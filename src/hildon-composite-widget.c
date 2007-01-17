@@ -1,5 +1,5 @@
 /*
- * This file is part of hildon-libs
+ * This file is a part of hildon
  *
  * Copyright (C) 2005, 2006 Nokia Corporation, all rights reserved.
  *
@@ -29,7 +29,7 @@
 #include "hildon-date-editor.h"
 #include "hildon-time-editor.h"
 
-/* This function is a private function of hildon-libs. It hadles focus 
+/* This function is a private function of hildon. It hadles focus 
  * changing for composite hildon widgets: HildonDateEditor, 
  * HildonNumberEditor, HildonTimeEditor, HildonWeekdayPicker. 
  * Its purpose is to focus the first widget (from left) inside the container 

@@ -10,7 +10,7 @@ AM_MAINTAINER_MODE
 AS_VERSION
 
 # set the libtool versioning
-AS_LIBTOOL(HILDON_WIDGETS, 0, 0, 0)
+AS_LIBTOOL(HILDON, 0, 0, 0)
 AM_INIT_AUTOMAKE
 
 AC_PROG_CC
@@ -37,17 +37,11 @@ PKG_CHECK_MODULES(GCONF, gconf-2.0 >= 2.6)
 AC_SUBST(GCONF_CFLAGS)
 AC_SUBST(GCONF_LIBS)
 
-PKG_CHECK_MODULES(LIBMB, libmb >= 1.3)
-AC_SUBST(LIBMB_CFLAGS)
-AC_SUBST(LIBMB_LIBS)
-
 ALL_LINGUAS="en_GB"
 AC_SUBST(ALL_LINGUAS) 
 AM_GLIB_GNU_GETTEXT
 
-##################################################
 # Check for gtk-doc.
-##################################################
 #ifdef(GTK_DOC_CHECK, GTK_DOC_CHECK([1.0]))
 #GTK_DOC_CHECK([1.0])
 
@@ -117,14 +111,14 @@ fi
 PKG_CHECK_MODULES(CHECK, check , [BUILD_TESTS="yes"], [BUILD_TESTS="no"])
 AM_CONDITIONAL(BUILD_TESTS, test "x$BUILD_TESTS" = "xyes")
 
-# HILDON_WIDGETS__OBJ_*
+# HILDON_OBJ_*
 # default vars for the examples
 # includes all the low-level flags
 # FIXME Add esd and gconf flags
-HILDON_WIDGETS_OBJ_CFLAGS="\$(CFLAGS) \$(GTK_CFLAGS) \$(CHECK_CFLAGS) \$(GCONF_CFLAGS) -I\$(top_builddir)/src/"
-HILDON_WIDGETS_OBJ_LIBS="\$(top_builddir)/src/libhildon_\$(PACKAGE_VERSION_MAJOR).la \$(GTK_LIBS) \$(GCONF_LIBS) \$(CHECK_LIBS)"
-AC_SUBST(HILDON_WIDGETS_OBJ_CFLAGS)
-AC_SUBST(HILDON_WIDGETS_OBJ_LIBS)
+HILDON_OBJ_CFLAGS="\$(CFLAGS) \$(GTK_CFLAGS) \$(CHECK_CFLAGS) \$(GCONF_CFLAGS) -I\$(top_builddir)/src/"
+HILDON_OBJ_LIBS="\$(top_builddir)/src/libhildon_\$(PACKAGE_VERSION_MAJOR).la \$(GTK_LIBS) \$(GCONF_LIBS) \$(CHECK_LIBS)"
+AC_SUBST(HILDON_OBJ_CFLAGS)
+AC_SUBST(HILDON_OBJ_LIBS)
 
 CFLAGS="$CFLAGS ${ASSERT_CFLAGS} -Wall -Wmissing-prototypes -Wmissing-declarations -Werror -Wno-format"
 # -Wno-format due to way translation string are done
@@ -138,17 +132,16 @@ AC_CONFIG_FILES([Makefile src/Makefile  \
 AC_OUTPUT
 
 echo "
-######################################
+
 Configuration:
 
+- Package:...........: ${PACKAGE}
 - Version............: ${VERSION}
+- Api................: ${PACKAGE}-${PACKAGE_VERSION_MAJOR}
 - Compiler...........: ${CC}
 - gtk-doc support....: ${enable_gtk_doc}
-- Api................: ${PACKAGE}-${PACKAGE_VERSION_MAJOR}
 - Build examples.....: ${BUILD_EXAMPLES}
 - Build with asserts.: ${BUILD_WITH_ASSERTS}
 - Build unit tests...: ${BUILD_TESTS}
-
-######################################
 
 "

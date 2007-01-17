@@ -1,4 +1,4 @@
-INCLUDES 						= -DG_LOG_DOMAIN=\"hildon-widgets\" \
+INCLUDES 						= -DG_LOG_DOMAIN=\"hildon-@PACKAGE_VERSION_MAJOR@\" \
 							  -DLOCALEDIR=\"$(localedir)\"
 
 MAINTAINERCLEANFILES 					= Makefile.in 			\
@@ -15,13 +15,11 @@ libhildon_@PACKAGE_VERSION_MAJOR@_la_LDFLAGS 		= $(HILDON_WIDGETS_LT_LDFLAGS)
 
 libhildon_@PACKAGE_VERSION_MAJOR@_la_LIBADD 		= $(GTK_LIBS) 			\
 							  $(GCONF_LIBS) 		\
-							  $(ESD_LIBS)			\
-							  $(LIBMB_LIBS)
+							  $(ESD_LIBS)			
 
 libhildon_@PACKAGE_VERSION_MAJOR@_la_CFLAGS		= $(GTK_CFLAGS) 		\
 							  $(GCONF_CFLAGS) 		\
-							  $(ESD_CFLAGS)			\
-							  $(LIBMB_CFLAGS)
+							  $(ESD_CFLAGS)	
 
 libhildon_@PACKAGE_VERSION_MAJOR@_la_SOURCES 		= hildon-composite-widget.c \
 							  hildon-controlbar.c \

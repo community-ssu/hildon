@@ -1,5 +1,5 @@
 /*
- * This file is part of hildon-libs
+ * This file is a part of hildon
  *
  * Copyright (C) 2005, 2006 Nokia Corporation, all rights reserved.
  *
@@ -23,6 +23,10 @@
  *
  */
 
+#ifdef                                          HAVE_CONFIG_H
+#include                                        <config.h>
+#endif
+
 #include                                        <memory.h>
 #include                                        <string.h>
 #include                                        <libintl.h>
@@ -36,7 +40,7 @@
 #include                                        "hildon-banner.h"
 #include                                        "hildon-color-chooser-dialog-private.h"
 
-#define                                         _(String) dgettext("hildon-libs", String)
+#define                                         _(String) dgettext(PACKAGE, String)
 
 static HildonColorChooserDialogClass*           parent_class = NULL;
 

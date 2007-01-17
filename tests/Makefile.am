@@ -30,8 +30,8 @@ check_test_SOURCES			= check_test.c 				\
 					  check-hildon-color-button.c		\
 					  check-hildon-color-chooser.c
 
-check_test_LDADD			= $(HILDON_WIDGETS_OBJ_LIBS)
+check_test_LDADD			= $(HILDON_OBJ_LIBS)
 check_test_LDFLAGS			= -module -avoid-version
-check_test_CFLAGS			= $(HILDON_WIDGETS_OBJ_CFLAGS) 
+check_test_CFLAGS			= $(HILDON_OBJ_CFLAGS) 
 
 endif

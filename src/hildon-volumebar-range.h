@@ -1,5 +1,5 @@
 /*
- * This file is part of hildon-libs
+ * This file is a part of hildon
  *
  * Copyright (C) 2005, 2006 Nokia Corporation, all rights reserved.
  *
