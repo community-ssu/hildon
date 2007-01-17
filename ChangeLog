@@ -1,5 +1,23 @@
 2007-01-17  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
+	* src/hildon.h: Changing from hildon-widgets.h
+
+	* examples/hildon-banner/hildon-banner-example.c:
+	* examples/hildon-caption/hildon-caption-example.c:
+	* examples/hildon-color-button/hildon-color-button-example.c:
+	* examples/hildon-color-chooser/hildon-color-chooser-example.c:
+	* examples/hildon-controlbar/hildon-controlbar-example.c:
+	* examples/hildon-note/hildon-note-example.c:
+	* examples/hildon-sort-dialog/hildon-sort-dialog-example.c:
+	* examples/hildon-time-picker/hildon-time-picker-example.c:
+	* examples/hildon-weekday-picker/hildon-weekday-picker-example.c:
+	* examples/hildon-window/hildon-window-example.c: Fixing the example
+	license header. 
+
+	* src/Makefile.am: Fixing the noinst headers.
+
+2007-01-17  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
 	* ./: Upgrading the license headers, moving package name to "hildon"
 	etc. 
 	

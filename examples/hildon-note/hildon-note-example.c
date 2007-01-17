@@ -1,13 +1,35 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <glib.h>
-#include <gtk/gtk.h>
-#include "hildon-widgets/hildon-window.h"
-#include "hildon-widgets/hildon-program.h"
-#include "hildon-widgets/hildon-note.h"
+/*
+ * This file is a part of hildon examples
+ *
+ * Copyright (C) 2005, 2006 Nokia Corporation, all rights reserved.
+ *
+ * Author: Michael Dominic Kostrzewa <michael.kostrzewa@nokia.com>
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public License
+ * as published by the Free Software Foundation; version 2.1 of
+ * the License.
+ *
+ * This library is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
+ * 02110-1301 USA
+ *
+ */
+
+#include                                        <stdio.h>
+#include                                        <stdlib.h>
+#include                                        <glib.h>
+#include                                        <gtk/gtk.h>
+#include                                        "hildon.h"
 
 static gboolean
-on_information_clicked (GtkWidget *widget)
+on_information_clicked                          (GtkWidget *widget)
 {
     HildonNote* note = HILDON_NOTE (hildon_note_new_information (NULL, 
             "This is a really really really long text that should " 
@@ -21,7 +43,7 @@ on_information_clicked (GtkWidget *widget)
 }
 
 static gboolean
-on_confirmation_clicked (GtkWidget *widget)
+on_confirmation_clicked                         (GtkWidget *widget)
 {
     HildonNote* note = HILDON_NOTE (hildon_note_new_confirmation (NULL, 
             "Do you want to confirm?!"));
@@ -33,7 +55,7 @@ on_confirmation_clicked (GtkWidget *widget)
 }
 
 static gboolean
-on_progress_clicked (GtkWidget *widget)
+on_progress_clicked                             (GtkWidget *widget)
 {
     GtkProgressBar *bar = GTK_PROGRESS_BAR (gtk_progress_bar_new ());
     HildonNote *note = HILDON_NOTE (hildon_note_new_cancel_with_progress_bar (NULL, 
@@ -46,7 +68,8 @@ on_progress_clicked (GtkWidget *widget)
 }
 
 int
-main (int argc, char **args)
+main                                            (int argc, 
+                                                 char **args)
 {
     gtk_init (&argc, &args);
     
