@@ -37,7 +37,10 @@
  * automatically added to the existing model, unless it is empty.
  */    
 
+#ifdef                                          HAVE_CONFIG_H
 #include                                        <config.h>
+#endif
+
 #include                                        "hildon-find-toolbar.h"
 #include                                        "hildon-defines.h"
 #include                                        <gdk/gdkkeysyms.h>

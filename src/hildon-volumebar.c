@@ -32,7 +32,10 @@
  * the volume when users click the mute icon.
  */
 
+#ifdef                                          HAVE_CONFIG_H
 #include                                        <config.h>
+#endif
+
 #include                                        "hildon-volumebar.h"
 #include                                        <gtk/gtk.h>
 #include                                        <gdk/gdkkeysyms.h>

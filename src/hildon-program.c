@@ -29,7 +29,10 @@
  *
  */
 
+#ifdef                                          HAVE_CONFIG_H
 #include                                        <config.h>
+#endif
+
 #include                                        "hildon-program.h"
 #include                                        "hildon-program-private.h"
 #include                                        "hildon-window-private.h"
