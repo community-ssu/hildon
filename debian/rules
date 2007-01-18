@@ -87,7 +87,6 @@ install: build
 
 #	Add here commands to install the package into debian/build
 	$(MAKE) install DESTDIR=$(CURDIR)/debian/build
-	rm -f $(CURDIR)/debian/build/usr/lib/outo/*.*a
 
 #	for the -dbg package
 	rm -rf $(CURDIR)/debian/build/usr/lib/debug
@@ -113,7 +112,7 @@ binary-arch: build install
 	dh_install --sourcedir=debian/build -v
 	dh_installman
 	dh_link
-	dh_strip --dbg-package="hildon-libs0"
+	dh_strip --dbg-package="hildon0"
 	dh_compress
 	dh_fixperms
 	dh_makeshlibs -V
