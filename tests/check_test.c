@@ -61,7 +61,7 @@ configure_tests(gint environment)
   /* srunner_add_suite(sr, create_hildon_dialoghelp_suite()); */
   srunner_add_suite(sr, create_hildon_calendar_popup_suite());
   srunner_add_suite(sr, create_hildon_caption_suite());
-  srunner_add_suite(sr, create_hildon_defines_suite());
+  srunner_add_suite(sr, create_hildon_helper_suite());
   srunner_add_suite(sr, create_hildon_find_toolbar_suite());
   /* srunner_add_suite(sr, create_hildon_name_password_dialog_suite());
   srunner_add_suite(sr, create_hildon_get_password_dialog_suite());

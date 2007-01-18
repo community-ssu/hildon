@@ -35,6 +35,7 @@
 #include                                        "hildon-controlbar.h"
 #include                                        "hildon-date-editor.h"
 #include                                        "hildon-defines.h"
+#include                                        "hildon-helper.h"
 #include                                        "hildon-enum-types.h"
 #include                                        "hildon-find-toolbar.h"
 #include                                        "hildon-font-selection-dialog.h"

@@ -1554,13 +1554,12 @@ the list of tests (Section 2). Use the following example as a template:
 
 ------------------------------------------------------------------------------
 
-- hildon-defines: This file is not a widget, is a library with two
-  utility functions and a lot of defines, as its name says. These two
-  functions should be tested with functional tests because the unit
-  tests that we can implement do not check its more important
+- hildon-helper: This file is not a widget, is a library with two
+  utility functions. These two functions should be tested with functional tests 
+  because the unit tests that we can implement do not check its more important
   behavior, a signal emission.
 
-   - hildon_gtk_widget_set_logical_font: changes the logical font of a
+   - hildon_helper_set_logical_font: changes the logical font of a
      given widget and all its children
 
          - Errors detected: none.
@@ -1572,7 +1571,7 @@ the list of tests (Section 2). Use the following example as a template:
             a) set the font "TimesNewRoman" to a NULL widget
             b) set a NULL font to a GtkLabel
 
-   - hildon_gtk_widget_set_logical_color: changes the logical color of a
+   - hildon_helepr_set_logical_color: changes the logical color of a
      given widget and all its children
 
          - Errors detected: none.

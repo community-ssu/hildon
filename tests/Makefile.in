@@ -57,7 +57,7 @@ am__check_test_SOURCES_DIST = check_test.c check_utils.c \
 	check-hildon-controlbar.c check-hildon-seekbar.c \
 	check-hildon-time-picker.c check-hildon-number-editor.c \
 	check-hildon-calendar-popup.c check-hildon-caption.c \
-	check-hildon-defines.c check-hildon-code-dialog.c \
+	check-hildon-helper.c check-hildon-code-dialog.c \
 	check-hildon-find-toolbar.c check-hildon-sort-dialog.c \
 	check-hildon-note.c check-hildon-volumebar.c \
 	check-hildon-volumebar-range.c check-hildon-banner.c \
@@ -78,7 +78,7 @@ am__check_test_SOURCES_DIST = check_test.c check_utils.c \
 @BUILD_TESTS_TRUE@	check_test-check-hildon-number-editor.$(OBJEXT) \
 @BUILD_TESTS_TRUE@	check_test-check-hildon-calendar-popup.$(OBJEXT) \
 @BUILD_TESTS_TRUE@	check_test-check-hildon-caption.$(OBJEXT) \
-@BUILD_TESTS_TRUE@	check_test-check-hildon-defines.$(OBJEXT) \
+@BUILD_TESTS_TRUE@	check_test-check-hildon-helper.$(OBJEXT) \
 @BUILD_TESTS_TRUE@	check_test-check-hildon-code-dialog.$(OBJEXT) \
 @BUILD_TESTS_TRUE@	check_test-check-hildon-find-toolbar.$(OBJEXT) \
 @BUILD_TESTS_TRUE@	check_test-check-hildon-sort-dialog.$(OBJEXT) \
@@ -106,9 +106,9 @@ am__depfiles_maybe = depfiles
 @AMDEP_TRUE@	./$(DEPDIR)/check_test-check-hildon-color-chooser.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/check_test-check-hildon-controlbar.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/check_test-check-hildon-date-editor.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/check_test-check-hildon-defines.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/check_test-check-hildon-find-toolbar.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/check_test-check-hildon-font-selection-dialog.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/check_test-check-hildon-helper.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/check_test-check-hildon-note.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/check_test-check-hildon-number-editor.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/check_test-check-hildon-program.Po \
@@ -293,7 +293,7 @@ target_vendor = @target_vendor@
 @BUILD_TESTS_TRUE@					  check-hildon-number-editor.c  	\
 @BUILD_TESTS_TRUE@					  check-hildon-calendar-popup.c 	\
 @BUILD_TESTS_TRUE@					  check-hildon-caption.c 		\
-@BUILD_TESTS_TRUE@					  check-hildon-defines.c 		\
+@BUILD_TESTS_TRUE@					  check-hildon-helper.c 		\
 @BUILD_TESTS_TRUE@					  check-hildon-code-dialog.c 		\
 @BUILD_TESTS_TRUE@					  check-hildon-find-toolbar.c 		\
 @BUILD_TESTS_TRUE@					  check-hildon-sort-dialog.c 		\
@@ -369,9 +369,9 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/check_test-check-hildon-color-chooser.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/check_test-check-hildon-controlbar.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/check_test-check-hildon-date-editor.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/check_test-check-hildon-defines.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/check_test-check-hildon-find-toolbar.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/check_test-check-hildon-font-selection-dialog.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/check_test-check-hildon-helper.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/check_test-check-hildon-note.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/check_test-check-hildon-number-editor.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/check_test-check-hildon-program.Po@am__quote@
@@ -700,29 +700,29 @@ check_test-check-hildon-caption.lo: check-hildon-caption.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(LIBTOOL) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(check_test_CFLAGS) $(CFLAGS) -c -o check_test-check-hildon-caption.lo `test -f 'check-hildon-caption.c' || echo '$(srcdir)/'`check-hildon-caption.c
 
-check_test-check-hildon-defines.o: check-hildon-defines.c
-@am__fastdepCC_TRUE@	if $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(check_test_CFLAGS) $(CFLAGS) -MT check_test-check-hildon-defines.o -MD -MP -MF "$(DEPDIR)/check_test-check-hildon-defines.Tpo" -c -o check_test-check-hildon-defines.o `test -f 'check-hildon-defines.c' || echo '$(srcdir)/'`check-hildon-defines.c; \
-@am__fastdepCC_TRUE@	then mv -f "$(DEPDIR)/check_test-check-hildon-defines.Tpo" "$(DEPDIR)/check_test-check-hildon-defines.Po"; else rm -f "$(DEPDIR)/check_test-check-hildon-defines.Tpo"; exit 1; fi
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='check-hildon-defines.c' object='check_test-check-hildon-defines.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	depfile='$(DEPDIR)/check_test-check-hildon-defines.Po' tmpdepfile='$(DEPDIR)/check_test-check-hildon-defines.TPo' @AMDEPBACKSLASH@
+check_test-check-hildon-helper.o: check-hildon-helper.c
+@am__fastdepCC_TRUE@	if $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(check_test_CFLAGS) $(CFLAGS) -MT check_test-check-hildon-helper.o -MD -MP -MF "$(DEPDIR)/check_test-check-hildon-helper.Tpo" -c -o check_test-check-hildon-helper.o `test -f 'check-hildon-helper.c' || echo '$(srcdir)/'`check-hildon-helper.c; \
+@am__fastdepCC_TRUE@	then mv -f "$(DEPDIR)/check_test-check-hildon-helper.Tpo" "$(DEPDIR)/check_test-check-hildon-helper.Po"; else rm -f "$(DEPDIR)/check_test-check-hildon-helper.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='check-hildon-helper.c' object='check_test-check-hildon-helper.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	depfile='$(DEPDIR)/check_test-check-hildon-helper.Po' tmpdepfile='$(DEPDIR)/check_test-check-hildon-helper.TPo' @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(check_test_CFLAGS) $(CFLAGS) -c -o check_test-check-hildon-defines.o `test -f 'check-hildon-defines.c' || echo '$(srcdir)/'`check-hildon-defines.c
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(check_test_CFLAGS) $(CFLAGS) -c -o check_test-check-hildon-helper.o `test -f 'check-hildon-helper.c' || echo '$(srcdir)/'`check-hildon-helper.c
 
-check_test-check-hildon-defines.obj: check-hildon-defines.c
-@am__fastdepCC_TRUE@	if $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(check_test_CFLAGS) $(CFLAGS) -MT check_test-check-hildon-defines.obj -MD -MP -MF "$(DEPDIR)/check_test-check-hildon-defines.Tpo" -c -o check_test-check-hildon-defines.obj `if test -f 'check-hildon-defines.c'; then $(CYGPATH_W) 'check-hildon-defines.c'; else $(CYGPATH_W) '$(srcdir)/check-hildon-defines.c'; fi`; \
-@am__fastdepCC_TRUE@	then mv -f "$(DEPDIR)/check_test-check-hildon-defines.Tpo" "$(DEPDIR)/check_test-check-hildon-defines.Po"; else rm -f "$(DEPDIR)/check_test-check-hildon-defines.Tpo"; exit 1; fi
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='check-hildon-defines.c' object='check_test-check-hildon-defines.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	depfile='$(DEPDIR)/check_test-check-hildon-defines.Po' tmpdepfile='$(DEPDIR)/check_test-check-hildon-defines.TPo' @AMDEPBACKSLASH@
+check_test-check-hildon-helper.obj: check-hildon-helper.c
+@am__fastdepCC_TRUE@	if $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(check_test_CFLAGS) $(CFLAGS) -MT check_test-check-hildon-helper.obj -MD -MP -MF "$(DEPDIR)/check_test-check-hildon-helper.Tpo" -c -o check_test-check-hildon-helper.obj `if test -f 'check-hildon-helper.c'; then $(CYGPATH_W) 'check-hildon-helper.c'; else $(CYGPATH_W) '$(srcdir)/check-hildon-helper.c'; fi`; \
+@am__fastdepCC_TRUE@	then mv -f "$(DEPDIR)/check_test-check-hildon-helper.Tpo" "$(DEPDIR)/check_test-check-hildon-helper.Po"; else rm -f "$(DEPDIR)/check_test-check-hildon-helper.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='check-hildon-helper.c' object='check_test-check-hildon-helper.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	depfile='$(DEPDIR)/check_test-check-hildon-helper.Po' tmpdepfile='$(DEPDIR)/check_test-check-hildon-helper.TPo' @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(check_test_CFLAGS) $(CFLAGS) -c -o check_test-check-hildon-defines.obj `if test -f 'check-hildon-defines.c'; then $(CYGPATH_W) 'check-hildon-defines.c'; else $(CYGPATH_W) '$(srcdir)/check-hildon-defines.c'; fi`
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(check_test_CFLAGS) $(CFLAGS) -c -o check_test-check-hildon-helper.obj `if test -f 'check-hildon-helper.c'; then $(CYGPATH_W) 'check-hildon-helper.c'; else $(CYGPATH_W) '$(srcdir)/check-hildon-helper.c'; fi`
 
-check_test-check-hildon-defines.lo: check-hildon-defines.c
-@am__fastdepCC_TRUE@	if $(LIBTOOL) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(check_test_CFLAGS) $(CFLAGS) -MT check_test-check-hildon-defines.lo -MD -MP -MF "$(DEPDIR)/check_test-check-hildon-defines.Tpo" -c -o check_test-check-hildon-defines.lo `test -f 'check-hildon-defines.c' || echo '$(srcdir)/'`check-hildon-defines.c; \
-@am__fastdepCC_TRUE@	then mv -f "$(DEPDIR)/check_test-check-hildon-defines.Tpo" "$(DEPDIR)/check_test-check-hildon-defines.Plo"; else rm -f "$(DEPDIR)/check_test-check-hildon-defines.Tpo"; exit 1; fi
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='check-hildon-defines.c' object='check_test-check-hildon-defines.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	depfile='$(DEPDIR)/check_test-check-hildon-defines.Plo' tmpdepfile='$(DEPDIR)/check_test-check-hildon-defines.TPlo' @AMDEPBACKSLASH@
+check_test-check-hildon-helper.lo: check-hildon-helper.c
+@am__fastdepCC_TRUE@	if $(LIBTOOL) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(check_test_CFLAGS) $(CFLAGS) -MT check_test-check-hildon-helper.lo -MD -MP -MF "$(DEPDIR)/check_test-check-hildon-helper.Tpo" -c -o check_test-check-hildon-helper.lo `test -f 'check-hildon-helper.c' || echo '$(srcdir)/'`check-hildon-helper.c; \
+@am__fastdepCC_TRUE@	then mv -f "$(DEPDIR)/check_test-check-hildon-helper.Tpo" "$(DEPDIR)/check_test-check-hildon-helper.Plo"; else rm -f "$(DEPDIR)/check_test-check-hildon-helper.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='check-hildon-helper.c' object='check_test-check-hildon-helper.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	depfile='$(DEPDIR)/check_test-check-hildon-helper.Plo' tmpdepfile='$(DEPDIR)/check_test-check-hildon-helper.TPlo' @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(LIBTOOL) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(check_test_CFLAGS) $(CFLAGS) -c -o check_test-check-hildon-defines.lo `test -f 'check-hildon-defines.c' || echo '$(srcdir)/'`check-hildon-defines.c
+@am__fastdepCC_FALSE@	$(LIBTOOL) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(check_test_CFLAGS) $(CFLAGS) -c -o check_test-check-hildon-helper.lo `test -f 'check-hildon-helper.c' || echo '$(srcdir)/'`check-hildon-helper.c
 
 check_test-check-hildon-code-dialog.o: check-hildon-code-dialog.c
 @am__fastdepCC_TRUE@	if $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(check_test_CFLAGS) $(CFLAGS) -MT check_test-check-hildon-code-dialog.o -MD -MP -MF "$(DEPDIR)/check_test-check-hildon-code-dialog.Tpo" -c -o check_test-check-hildon-code-dialog.o `test -f 'check-hildon-code-dialog.c' || echo '$(srcdir)/'`check-hildon-code-dialog.c; \

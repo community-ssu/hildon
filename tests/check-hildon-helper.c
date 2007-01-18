@@ -25,12 +25,12 @@
 #include <gtk/gtkmain.h>
 #include <gtk/gtklabel.h>
 #include "test_suites.h"
-#include "hildon-defines.h"
+#include "hildon-helper.h"
 
 /* -------------------- Fixtures -------------------- */
 
 static void 
-fx_setup_default_defines ()
+fx_setup_default_helper ()
 {
   int argc = 0;
 
@@ -38,30 +38,30 @@ fx_setup_default_defines ()
 }
 
 static void 
-fx_teardown_default_defines ()
+fx_teardown_default_helper ()
 {
 }
 /* -------------------- Test cases -------------------- */
 
-/* ----- Test case for gtk_widget_set_logical_font -----*/
+/* ----- Test case for hildon_helper_set_logical_font -----*/
 
 /**
  * Purpose: test setting a new logical font to a GtkWidget
  * Cases considered:
  *    - Set the font name "TimesNewRoman"
  */
-START_TEST (test_gtk_widget_set_logical_font_regular)
+START_TEST (test_hildon_helper_set_logical_font_regular)
 {
   GtkWidget *label = NULL;
   gulong signum = G_MAXULONG;
 
   label = gtk_label_new ("test label");
 
-  signum = hildon_gtk_widget_set_logical_font (label, "TimesNewRoman");
+  signum = hildon_helper_set_logical_font (label, "TimesNewRoman");
   gtk_widget_destroy (GTK_WIDGET (label));
 
   fail_if (signum <= 0,
-	   "hildon-defines: the returned signal id is %ul and should be > 0",
+	   "hildon-helper: the returned signal id is %ul and should be > 0",
 	   signum);
 }
 END_TEST
@@ -72,52 +72,52 @@ END_TEST
  *    - Set the font name "TimesNewRoman" to a NULL Widget
  *    - Set a NULL font name to a valid Widget
  */
-START_TEST (test_gtk_widget_set_logical_font_invalid)
+START_TEST (test_hildon_helper_set_logical_font_invalid)
 {
   GtkWidget *label = NULL;
   gulong signum = G_MAXULONG;
 
   /* Test 1 */
-  signum = hildon_gtk_widget_set_logical_font (NULL, "TimesNewRoman");
+  signum = hildon_helper_set_logical_font (NULL, "TimesNewRoman");
   fail_if (signum != 0,
-	   "hildon-defines: the returned signal id is %ul and should be 0",
+	   "hildon-helper: the returned signal id is %ul and should be 0",
 	   signum);
 
   /* Test 2 */
   label = gtk_label_new ("test label");
 
-  signum = hildon_gtk_widget_set_logical_font (label, NULL);
+  signum = hildon_helper_set_logical_font (label, NULL);
   gtk_widget_destroy (GTK_WIDGET (label));
 
   fail_if (signum != 0,
-	   "hildon-defines: the returned signal id is %ul and should be 0",
+	   "hildon-helper: the returned signal id is %ul and should be 0",
 	   signum);
 }
 END_TEST
 
 
-/* ----- Test case for gtk_widget_set_logical_color -----*/
+/* ----- Test case for hildon_helper_set_logical_color -----*/
 
 /**
  * Purpose: test setting a new logical color to a GtkWidget
  * Cases considered:
  *    - Set the logical color "Blue"
  */
-START_TEST (test_gtk_widget_set_logical_color_regular)
+START_TEST (test_hildon_helper_set_logical_color_regular)
 {
   GtkWidget *label = NULL;
   gulong signum = G_MAXULONG;
 
   label = gtk_label_new ("test label");
 
-  signum = hildon_gtk_widget_set_logical_color (label, 
+  signum = hildon_helper_set_logical_color (label, 
 						GTK_RC_BG, 
 						GTK_STATE_NORMAL, 
 						"Blue");
   gtk_widget_destroy (GTK_WIDGET (label));
 
   fail_if (signum <= 0,
-	   "hildon-defines: the returned signal id is %ul and should be > 0",
+	   "hildon-helper: the returned signal id is %ul and should be > 0",
 	   signum);
 }
 END_TEST
@@ -128,32 +128,32 @@ END_TEST
  *    - Set the color name "Blue" to a NULL Widget
  *    - Set a NULL color name to a valid Widget
  */
-START_TEST (test_gtk_widget_set_logical_color_invalid)
+START_TEST (test_hildon_helper_set_logical_color_invalid)
 {
   GtkWidget *label = NULL;
   gulong signum = G_MAXULONG;
 
   /* Test 1 */
-  signum = hildon_gtk_widget_set_logical_color (NULL,
+  signum = hildon_helper_set_logical_color (NULL,
 						GTK_RC_BG, 
 						GTK_STATE_NORMAL, 
 						"Blue");
   fail_if (signum != 0,
-	   "hildon-defines: the returned signal id is %ul and should be 0",
+	   "hildon-helper: the returned signal id is %ul and should be 0",
 	   signum);
 
   /* Create the widget */
   label = gtk_label_new ("test label");
 
   /* Test 2 */
-  signum = hildon_gtk_widget_set_logical_color (label,
+  signum = hildon_helper_set_logical_color (label,
 						GTK_RC_BG, 
 						GTK_STATE_NORMAL, 
 						NULL);
   gtk_widget_destroy (GTK_WIDGET (label));
 
   fail_if (signum != 0,
-	   "hildon-defines: the returned signal id is %ul and should be 0",
+	   "hildon-helper: the returned signal id is %ul and should be 0",
 	   signum);
 }
 END_TEST
@@ -162,25 +162,25 @@ END_TEST
 
 /* ---------- Suite creation ---------- */
 
-Suite *create_hildon_defines_suite()
+Suite *create_hildon_helper_suite()
 {
   /* Create the suite */
-  Suite *s = suite_create("HildonDefines");
+  Suite *s = suite_create("Hildonhelper");
 
   /* Create test cases */
-  TCase *tc1 = tcase_create("gtk_widget_set_logical_font");
-  TCase *tc2 = tcase_create("gtk_widget_set_logical_color");
+  TCase *tc1 = tcase_create("hildon_helper_set_logical_font");
+  TCase *tc2 = tcase_create("hildon_helper_set_logical_color");
 
   /* Create test case for set_logical_font and add it to the suite */
-  tcase_add_checked_fixture(tc1, fx_setup_default_defines, fx_teardown_default_defines);
-  tcase_add_test(tc1, test_gtk_widget_set_logical_font_regular);
-  tcase_add_test(tc1, test_gtk_widget_set_logical_font_invalid);
+  tcase_add_checked_fixture(tc1, fx_setup_default_helper, fx_teardown_default_helper);
+  tcase_add_test(tc1, test_hildon_helper_set_logical_font_regular);
+  tcase_add_test(tc1, test_hildon_helper_set_logical_font_invalid);
   suite_add_tcase (s, tc1);
 
   /* Create test case for set_logical_color and add it to the suite */
-  tcase_add_checked_fixture(tc2, fx_setup_default_defines, fx_teardown_default_defines);
-  tcase_add_test(tc2, test_gtk_widget_set_logical_color_regular);
-  tcase_add_test(tc2, test_gtk_widget_set_logical_color_invalid);
+  tcase_add_checked_fixture(tc2, fx_setup_default_helper, fx_teardown_default_helper);
+  tcase_add_test(tc2, test_hildon_helper_set_logical_color_regular);
+  tcase_add_test(tc2, test_hildon_helper_set_logical_color_invalid);
   suite_add_tcase (s, tc2);
 
   /* Return created suite */

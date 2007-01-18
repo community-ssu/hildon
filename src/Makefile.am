@@ -34,6 +34,7 @@ libhildon_@PACKAGE_VERSION_MAJOR@_la_SOURCES 		= hildon-private.c				\
 							  hildon-date-editor.c 				\
 							  hildon-time-editor.c 				\
 							  hildon-time-picker.c 				\
+							  hildon-helper.c				\
 							  hildon-weekday-picker.c 			\
 							  hildon-number-editor.c 			\
 							  hildon-range-editor.c 			\
@@ -70,6 +71,7 @@ libhildon_@PACKAGE_VERSION_MAJOR@_include_HEADERS 	= hildon-banner.h 				\
 							  hildon-defines.h 				\
 							  hildon-enum-types.h 				\
 							  hildon-find-toolbar.h 			\
+							  hildon-helper.h				\
 							  hildon-font-selection-dialog.h 		\
 							  hildon-get-password-dialog.h 			\
 							  hildon-hvolumebar.h 				\

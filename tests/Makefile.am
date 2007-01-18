@@ -14,7 +14,7 @@ check_test_SOURCES			= check_test.c 				\
 					  check-hildon-number-editor.c  	\
 					  check-hildon-calendar-popup.c 	\
 					  check-hildon-caption.c 		\
-					  check-hildon-defines.c 		\
+					  check-hildon-helper.c 		\
 					  check-hildon-code-dialog.c 		\
 					  check-hildon-find-toolbar.c 		\
 					  check-hildon-sort-dialog.c 		\
