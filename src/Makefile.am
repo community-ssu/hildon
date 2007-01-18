@@ -21,7 +21,7 @@ libhildon_@PACKAGE_VERSION_MAJOR@_la_CFLAGS		= $(GTK_CFLAGS) 				\
 							  $(GCONF_CFLAGS) 				\
 							  $(ESD_CFLAGS)	
 
-libhildon_@PACKAGE_VERSION_MAJOR@_la_SOURCES 		= hildon-composite-widget.c 			\
+libhildon_@PACKAGE_VERSION_MAJOR@_la_SOURCES 		= hildon-private.c				\
 							  hildon-controlbar.c 				\
 							  hildon-seekbar.c 				\
 							  hildon-note.c 				\
@@ -65,7 +65,6 @@ libhildon_@PACKAGE_VERSION_MAJOR@_include_HEADERS 	= hildon-banner.h 				\
 							  hildon-color-button.h		 		\
 							  hildon-color-chooser-dialog.h 		\
 							  hildon-color-chooser.h 			\
-							  hildon-composite-widget.h 			\
 							  hildon-controlbar.h 				\
 							  hildon-date-editor.h 				\
 							  hildon-defines.h 				\
@@ -97,6 +96,7 @@ libhildon_@PACKAGE_VERSION_MAJOR@_include_HEADERS 	= hildon-banner.h 				\
 
 noinst_HEADERS						= hildon-banner-private.h 			\
 							  hildon-calendar-popup-private.h 		\
+							  hildon-private.h				\
 							  hildon-caption-private.h 			\
 							  hildon-code-dialog-private.h 			\
 							  hildon-color-button-private.h 		\

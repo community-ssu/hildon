@@ -48,7 +48,7 @@
 #include                                        "hildon-calendar-popup.h"
 #include                                        "hildon-defines.h"
 #include                                        "hildon-input-mode-hint.h"
-#include                                        "hildon-composite-widget.h"
+#include                                        "hildon-private.h"
 #include                                        "hildon-marshalers.h"
 #include                                        "hildon-enum-types.h"
 #include                                        "hildon-time-editor.h"
@@ -213,7 +213,7 @@ hildon_date_editor_class_init                   (HildonDateEditorClass *editor_c
     gobject_class->get_property             = hildon_date_editor_get_property;
     widget_class->size_request              = hildon_date_editor_size_request;
     widget_class->size_allocate             = hildon_date_editor_size_allocate;
-    widget_class->focus                     = hildon_composite_widget_focus;
+    widget_class->focus                     = hildon_private_composite_focus;
 
     container_class->forall                 = hildon_child_forall;
     GTK_OBJECT_CLASS(editor_class)->destroy = hildon_date_editor_destroy;

@@ -32,7 +32,6 @@
 #include                                        "hildon-color-button.h"
 #include                                        "hildon-color-chooser-dialog.h"
 #include                                        "hildon-color-chooser.h"
-#include                                        "hildon-composite-widget.h"
 #include                                        "hildon-controlbar.h"
 #include                                        "hildon-date-editor.h"
 #include                                        "hildon-defines.h"

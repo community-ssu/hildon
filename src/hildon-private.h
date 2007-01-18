@@ -22,30 +22,17 @@
  *
  */
 
-/*
- * @file
- *
- * Hildon composite widget includes all features which were not fitting into
- * the any current class. A new, separate widget was not created because of the 
- * amount of current features is low. Need for this kind of class was not known 
- * when the building of the class hierarchy began. When a new feature is added, 
- * need for a new class should be re-considered. To make this decision one 
- * should really consider all the common features which are needed in the 
- * hildon composite widgets. Class position (for hildon-composite-widget)
- * in the class hierarchy is between GtkContainer and any composite widget.
- *
- */
+#ifndef                                         __HILDON_PRIVATE_H__
+#define                                         __HILDON_PRIVATE_H__
 
-#ifndef __HILDON_COMPOSITE_WIDGET__
-#define __HILDON_COMPOSITE_WIDGET__
-
-#include <gtk/gtk.h>
+#include                                        <gtk/gtk.h>
 
 G_BEGIN_DECLS
 
-gboolean
-hildon_composite_widget_focus( GtkWidget *widget, GtkDirectionType direction );
+gboolean G_GNUC_INTERNAL
+hildon_private_composite_focus                  (GtkWidget *widget, 
+                                                 GtkDirectionType direction);
 
 G_END_DECLS
 
-#endif /*__HILDON_COMPOSITE_WIDGET__*/
+#endif                                          /* __HILDON_PRIVATE_H__ */

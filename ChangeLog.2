@@ -1,5 +1,27 @@
 2007-01-18  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
+	* src/hildon-composite-widget.c:
+	* src/hildon-composite-widget.h:
+	* src/hildon-date-editor.c:
+	* src/hildon-number-editor.c:
+	* src/hildon-time-editor.c:
+	* src/hildon-weekday-picker.c:
+	* src/Makefile.am:
+	* src/hildon-private.c:
+	* src/hildon-private.h: Moving "composite widget" to private since
+	essentially it's just a handy private function.
+
+	* src/hildon.h: Removing it from exported headers.
+
+	* tests/Makefile.am:
+	* tests/Makefile.in:
+	* tests/TEST-CASES.txt:
+	* tests/check-hildon-composite-widget.c:
+	* tests/check_test.c: Removing the composite test case, since it's
+	external/not exported anymore.
+
+2007-01-18  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
 	* debian/changelog: Adding missing.
 
 	* src/hildon-banner.c: Modyfying to allow creation with null window.

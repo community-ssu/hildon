@@ -42,7 +42,7 @@
 #include                                        <stdio.h>
 #include                                        <stdlib.h>
 #include                                        "hildon-marshalers.h"
-#include                                        "hildon-composite-widget.h"
+#include                                        "hildon-private.h"
 #include                                        "hildon-input-mode-hint.h"
 #include                                        "hildon-defines.h"
 #include                                        "hildon-enum-types.h"
@@ -204,9 +204,9 @@ hildon_number_editor_class_init                 (HildonNumberEditorClass *editor
 
     parent_class = g_type_class_peek_parent (editor_class);
 
-    widget_class->size_request = hildon_number_editor_size_request;
-    widget_class->size_allocate = hildon_number_editor_size_allocate;
-    widget_class->focus = hildon_composite_widget_focus;
+    widget_class->size_request              = hildon_number_editor_size_request;
+    widget_class->size_allocate             = hildon_number_editor_size_allocate;
+    widget_class->focus                     = hildon_private_composite_focus;
 
     editor_class->range_error = hildon_number_editor_range_error;
 

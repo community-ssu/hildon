@@ -26,7 +26,6 @@ check_test_SOURCES			= check_test.c 				\
 					  check-hildon-font-selection-dialog.c 	\
 					  check-hildon-window.c 		\
 					  check-hildon-program.c 		\
-					  check-hildon-composite-widget.c	\
 					  check-hildon-color-button.c		\
 					  check-hildon-color-chooser.c
 

@@ -59,7 +59,7 @@
 #include                                        <gtk/gtktogglebutton.h>
 #include                                        <gtk/gtksizegroup.h>
 #include                                        <gtk/gtkwindow.h>
-#include                                        "hildon-composite-widget.h"
+#include                                        "hildon-private.h"
 #include                                        "hildon-weekday-picker-private.h"
 
 static GtkContainerClass*                       parent_class;
@@ -137,7 +137,7 @@ hildon_weekday_picker_class_init                (HildonWeekdayPickerClass *picke
     /* Override virtual methods */
     widget_class->size_request                  = hildon_weekday_picker_size_request;
     widget_class->size_allocate                 = hildon_weekday_picker_size_allocate;
-    widget_class->focus                         = hildon_composite_widget_focus;
+    widget_class->focus                         = hildon_private_composite_focus;
     container_class->forall                     = hildon_weekday_picker_forall;
     GTK_OBJECT_CLASS (picker_class)->destroy    = hildon_weekday_picker_destroy;
 

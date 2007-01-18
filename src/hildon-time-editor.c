@@ -55,7 +55,7 @@
 #include                                        "hildon-time-picker.h"
 #include                                        "hildon-banner.h"
 #include                                        "hildon-input-mode-hint.h"
-#include                                        "hildon-composite-widget.h"
+#include                                        "hildon-private.h"
 #include                                        "hildon-marshalers.h"
 #include                                        "hildon-enum-types.h"
 #include                                        "hildon-time-editor-private.h"
@@ -336,7 +336,7 @@ hildon_time_editor_class_init                   (HildonTimeEditorClass *editor_c
     widget_class->size_request                  = hildon_time_editor_size_request;
     widget_class->size_allocate                 = hildon_time_editor_size_allocate;
     widget_class->tap_and_hold_setup            = hildon_time_editor_tap_and_hold_setup;
-    widget_class->focus                         = hildon_composite_widget_focus;
+    widget_class->focus                         = hildon_private_composite_focus;
 
     container_class->forall                     = hildon_time_editor_forall;
     GTK_OBJECT_CLASS (editor_class)->destroy    = hildon_time_editor_destroy;

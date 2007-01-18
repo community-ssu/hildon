@@ -3275,28 +3275,6 @@ the list of tests (Section 2). Use the following example as a template:
 
 ----------------------------------------------------------------------------------------
 
-- hildon-composite-widget: Handles focus behavior for hildon composite widgets.
-
-   - hildon_composite_widget_focus: Handles focus behavior
-
-         - Errors detected: 2.b), 2.c)
-           2.b) -> segmentation fault
-           2.c) -> segmentation fault
-
-         1. Set a common color
-           a) Check with a composite widget (hildon_time_editor)
-           b) Check with a composite widget (hildon_time_editor) inside a window
-           c) Check with a composite widget (hildon_time_editor) inside a window and focus already given to the window
-
-         2. Test that invalid parameters do not cause problems
-           a) Check with non composite widget (gtkentry)
-           b) Check with NULL widget
-           c) Check with invalid direction (GTK_DIR_RIGHT+1)
-           d) Check with non composite widget (gtkentry) inside a window
-           e) Check with invalid direction (GTK_DIR_RIGHT+1) inside a window
-
-----------------------------------------------------------------------------------------
-
 - hildon-add-home-dialog:
 
    - Property "name": [TODO] 
