@@ -745,7 +745,6 @@ hildon_banner_show_information                  (GtkWidget *widget,
 {
     HildonBanner *banner;
 
-    g_return_if_fail (GTK_IS_WIDGET(widget));
     g_return_if_fail (icon_name == NULL || icon_name[0] != 0);
     g_return_if_fail (text != NULL);
 
@@ -804,7 +803,6 @@ hildon_banner_show_information_with_markup      (GtkWidget *widget,
 {
     HildonBanner *banner;
 
-    g_return_if_fail (GTK_IS_WIDGET (widget));
     g_return_if_fail (icon_name == NULL || icon_name[0] != 0);
     g_return_if_fail (markup != NULL);
 
@@ -862,7 +860,6 @@ hildon_banner_show_animation                    (GtkWidget *widget,
     GtkWidget *image_widget;
     const gchar *filename;
 
-    g_return_val_if_fail (GTK_IS_WIDGET(widget), NULL);
     g_return_val_if_fail (animation_name == NULL || animation_name[0] != 0, NULL);
     g_return_val_if_fail (text != NULL, NULL);
 
@@ -919,7 +916,6 @@ hildon_banner_show_progress                     (GtkWidget *widget,
     HildonBanner *banner;
     HildonBannerPrivate *priv;
 
-    g_return_val_if_fail (GTK_IS_WIDGET(widget), NULL);
     g_return_val_if_fail (bar == NULL || GTK_IS_PROGRESS_BAR (bar), NULL);
     g_return_val_if_fail (text != NULL, NULL);
 

@@ -349,12 +349,17 @@ START_TEST (test_set_color_invalid)
   gdk_color_free(b_color);
 
   /* Test 4: Get color from GtkHBox object. */
+  ret_color->red = 99;
+  ret_color->green = 99;
+  ret_color->blue = 99;
   hildon_color_button_get_color((HildonColorButton *) (aux_object), ret_color);
     
-  if (ret_color != NULL) 
+  if (ret_color->red != 99      || 
+      ret_color->green != 99    ||
+      ret_color->blue != 99)
     {
       gtk_widget_destroy(aux_object);
-      fail ("hildon-color-button: get_color must not return any object");
+      fail ("hildon-color-button: get_color must not modify the color when launched on invalid widget");
     }
   
   gtk_widget_destroy(aux_object);

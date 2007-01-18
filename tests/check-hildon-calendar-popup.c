@@ -262,20 +262,7 @@ START_TEST (test_set_get_date_invalid)
 
   g_value_init(&value, G_TYPE_UINT);
 
-  /* Test 1: Test above maximum year limit */
-  max_year = 2050;
-  g_value_set_uint (&value, max_year);
-  g_object_set_property (G_OBJECT (calendar), "max-year", &value);
-  year = max_year + 1;
-  month = 3;
-  day = 30;
-  hildon_calendar_popup_set_date(calendar, year, month, day);
-  hildon_calendar_popup_get_date(calendar, &ret_year, &ret_month, &ret_day);
-  fail_if(max_year != ret_year, 
-          "hildon-calendar-popup: Set date to %u/%u/%u, with maximum year set to %u, but get date returned year = %u != %u", 
-          year, month, day, max_year, ret_year, max_year);
-
-  /* Test 2: Test under minimum year limit */
+  /* Test 1: Test under minimum year limit */
   min_year = 2000;
   g_value_set_uint (&value, min_year);
   g_object_set_property (G_OBJECT (calendar), "min-year", &value);
@@ -288,7 +275,7 @@ START_TEST (test_set_get_date_invalid)
           "hildon-calendar-popup: Set date to %u/%u/%u, with minimum year set to %u, but get date returned year = %u != %u",
           year, month, day, min_year, ret_year, min_year);
 
-  /* Test 3: Test above maximum month limit */
+  /* Test 2: Test above maximum month limit */
   valid_year = 2006;
   valid_month = 10;
   valid_day = 5;
@@ -312,7 +299,7 @@ START_TEST (test_set_get_date_invalid)
           valid_year, valid_month, valid_day, year, month, day, ret_year, ret_month, ret_day, current_year, current_month, current_day);
 
 
-  /* Test 4: Test under minimum month limit */
+  /* Test 3: Test under minimum month limit */
   valid_year = 2006;
   valid_month = 2;
   valid_day = 15;
@@ -336,7 +323,7 @@ START_TEST (test_set_get_date_invalid)
           valid_year, valid_month, valid_day, year, month, day, ret_year, ret_month, ret_day, current_year, current_month, current_day);
 
 
-  /* Test 5: Test above maximum day limit */
+  /* Test 4: Test above maximum day limit */
 
   /* 31 */
   valid_year = 2005;
@@ -432,7 +419,7 @@ START_TEST (test_set_get_date_invalid)
           "hildon-calendar-popup: Set valid date to %u/%u/%u, then set an invalid date %u/%u/%u, but get date returned %u/%u/%u instead of %u/%u/%u",
           valid_year, valid_month, valid_day, year, month, day, ret_year, ret_month, ret_day, current_year, current_month, current_day);
 
-  /* Test6: Test day minimum limit */
+  /* Test5: Test day minimum limit */
   valid_year = 2005;
   valid_month = 2;
   valid_day = 15;
@@ -455,7 +442,7 @@ START_TEST (test_set_get_date_invalid)
           "hildon-calendar-popup: Set valid date to %u/%u/%u, then set an invalid date %u/%u/%u, but get date returned %u/%u/%u instead of %u/%u/%u",
           valid_year, valid_month, valid_day, year, month, day, ret_year, ret_month, ret_day, current_year, current_month, current_day);
 
-  /* Test7: Test above maximum allowed date */
+  /* Test6: Test above maximum allowed date */
   max_year = 2050;
   g_value_set_uint (&value, max_year);
   g_object_set_property (G_OBJECT (calendar), "max-year", &value);
@@ -472,7 +459,7 @@ START_TEST (test_set_get_date_invalid)
           "hildon-calendar-popup: Set valid date to %u/%u/%u, then set an invalid date %u/%u/%u, with maximum year set to %u, but get date returned %u/%u/%u instead of %u/%u/%u",
           valid_year, valid_month, valid_day, year, month, day, max_year, ret_year, ret_month, ret_day, max_year, month, day);
 
-  /* Test8: Test minimum allowed date */
+  /* Test7: Test minimum allowed date */
   min_year = 2000;
   g_value_set_uint (&value, min_year);
   g_object_set_property (G_OBJECT (calendar), "min-year", &value);
@@ -489,7 +476,7 @@ START_TEST (test_set_get_date_invalid)
           "hildon-calendar-popup: Set valid date to %u/%u/%u, then set an invalid date %u/%u/%u, with minimum year set to %u, but get date returned %u/%u/%u instead of %u/%u/%u",
           valid_year, valid_month, valid_day, year, month, day, min_year, ret_year, ret_month, ret_day, min_year, month, day);
 
-  /* Test9: Set and get date with NULL calendar objects */
+  /* Test8: Set and get date with NULL calendar objects */
   hildon_calendar_popup_set_date(NULL, 2006, 10, 15);
   hildon_calendar_popup_get_date(NULL, &year, &month, &day);
 }
