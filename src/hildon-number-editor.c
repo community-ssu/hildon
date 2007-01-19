@@ -464,7 +464,7 @@ hildon_number_editor_button_pressed             (GtkWidget *widget,
     /* Start repetition timer */
     if (! priv->button_event_id)
     {
-        do_mouse_timeout (editor);
+        change_numbers (editor, priv->button_type);
         priv->button_event_id = g_timeout_add (timeout,
                 (GSourceFunc) hildon_number_editor_start_timer,
                 editor);

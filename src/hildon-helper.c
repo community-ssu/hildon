@@ -35,6 +35,16 @@
 #include                                        <gtk/gtk.h>
 #include                                        "hildon-helper.h"
 
+#define                                         HILDON_FINGER_PRESSURE_THRESHOLD 0.4
+
+#define                                         HILDON_FINGER_BUTTON 8
+
+#define                                         HILDON_FINGER_ALT_BUTTON 1
+
+#define                                         HILDON_FINGER_ALT_MASK GDK_MOD4_MASK
+
+#define                                         HILDON_FINGER_SIMULATE_BUTTON 2
+
 struct                                          _HildonLogicalData
 {
     GtkRcFlags rcflags;
@@ -142,18 +152,48 @@ hildon_logical_data_free                        (HildonLogicalData *ld)
 }
 
 /**
- * hildon_helper_set_logical_font:
- * @widget : A @GtkWidget to assign this logical font for.
- * @logicalfontname : A gchar* with the logical font name to assign to the widget.
+ * hildon_helper_event_button_is_finger:
+ * @event: A @gtkeventbutton to check
+ *
+ * Checks if the given button event is a finger event.
  * 
- * This function assigns a defined logical font to the @widget and all its child widgets.
- * It also connects to the "style_set" signal which will retrieve & assign the new font 
+ * return value : TRUE if the event is a button event.
+ **/
+gboolean 
+hildon_helper_event_button_is_finger (GdkEventButton *event)
+{
+    gdouble pressure;
+
+    if (gdk_event_get_axis ((GdkEvent*) event, GDK_AXIS_PRESSURE, &pressure) &&
+        pressure > HILDON_FINGER_PRESSURE_THRESHOLD)
+        return TRUE;
+
+    if (event->button == HILDON_FINGER_BUTTON)
+        return TRUE;
+
+    if (event->button == HILDON_FINGER_ALT_BUTTON &&
+        event->state & HILDON_FINGER_ALT_MASK)
+        return TRUE;
+
+    if (event->button == HILDON_FINGER_SIMULATE_BUTTON)
+        return TRUE;
+
+    return FALSE;
+}
+
+/**
+ * hildon_helper_set_logical_font:
+ * @widget : a @gtkwidget to assign this logical font for.
+ * @logicalfontname : a gchar* with the logical font name to assign to the widget.
+ * 
+ * this function assigns a defined logical font to the @widget and all its child widgets.
+ * it also connects to the "style_set" signal which will retrieve & assign the new font 
  * for the given logical name each time the theme is changed.
- * The returned signal id can be used to disconnect the signal. 
- * The previous signal (obtained by calling this function) is disconnected 
+ * the returned signal id can be used to disconnect the signal. 
+ * the previous signal (obtained by calling this function) is disconnected 
  * automatically and should not be used. 
  * 
- * Return value : The signal id that is triggered every time theme is changed. 0 if font set failed.
+ * return value : the signal id that is triggered every time theme is changed. 0 if font set failed.
  **/
 gulong
 hildon_helper_set_logical_font                  (GtkWidget *widget, 

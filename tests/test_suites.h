@@ -38,7 +38,7 @@ Suite *create_hildon_color_chooser_suite(void);
 Suite *create_hildon_seekbar_suite(void);
 Suite *create_hildon_dialoghelp_suite(void);
 Suite *create_hildon_caption_suite(void);
-Suite *create_hildon_defines_suite(void);
+Suite *create_hildon_helper_suite(void);
 Suite *create_hildon_find_toolbar_suite(void);
 Suite *create_hildon_name_password_dialog_suite(void);
 Suite *create_hildon_get_password_dialog_suite(void);

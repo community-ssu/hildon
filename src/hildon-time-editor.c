@@ -62,6 +62,8 @@
 
 #define                                         _(String) dgettext(PACKAGE, String)
 
+#define                                         c_(String) dgettext("hildon-common-strings", String)
+
 #define                                         TICKS(h,m,s) \
                                                 ((h) * 3600 + (m) * 60 + (s))
 
@@ -1764,7 +1766,7 @@ hildon_time_editor_entry_keypress               (GtkWidget *widget,
        (only digits and control characters are allowed )*/
     if (!g_unichar_isdigit (event->keyval) && ! (event->keyval & 0xF000)) {
         g_signal_emit (editor, time_editor_signals[TIME_ERROR], 0, HILDON_DATE_TIME_ERROR_INVALID_CHAR, &r);
-        hildon_banner_show_information (widget, NULL, _("ckct_ib_illegal_character"));
+        hildon_banner_show_information (widget, NULL, c_("ckct_ib_illegal_character"));
         return TRUE;
     }
 

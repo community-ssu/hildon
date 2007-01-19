@@ -27,6 +27,8 @@
 
 #include                                        <gtk/gtkwindow.h>
 #include                                        <gdk/gdkkeysyms.h>
+#include                                        <gdk/gdkevents.h>
+#include                                        "hildon-defines.h"
 
 G_BEGIN_DECLS
 
@@ -39,6 +41,8 @@ hildon_helper_set_logical_color                 (GtkWidget *widget,
                                                  GtkRcFlags rcflags,
                                                  GtkStateType state, 
                                                  const gchar *logicalcolorname);
+gboolean 
+hildon_helper_event_button_is_finger            (GdkEventButton *event);
 
 G_END_DECLS
 

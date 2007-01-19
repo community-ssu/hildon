@@ -58,6 +58,8 @@
 
 #define                                         _(string) dgettext(PACKAGE, string)
 
+#define                                         c_(string) dgettext("hildon-common-strings", string)
+
 #define                                         ENTRY_BORDERS 11
 
 #define                                         DATE_EDITOR_HEIGHT 30
@@ -1207,7 +1209,7 @@ hildon_date_editor_date_error                   (HildonDateEditor *editor,
             break;
 
         case HILDON_DATE_TIME_ERROR_INVALID_CHAR:
-            hildon_banner_show_information (GTK_WIDGET (editor), NULL, _("ckct_ib_illegal_character"));
+            hildon_banner_show_information (GTK_WIDGET (editor), NULL, c_("ckct_ib_illegal_character"));
             break;
 
         case HILDON_DATE_TIME_ERROR_INVALID_DATE:
