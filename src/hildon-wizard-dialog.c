@@ -52,7 +52,7 @@
 #include                                        <libintl.h>
 #include                                        "hildon-wizard-dialog-private.h"
 
-#define                                         _(String) dgettext(PACKAGE, String)
+#define                                         _(String) dgettext("hildon-libs", String)
 
 static GtkDialogClass*                          parent_class;
 

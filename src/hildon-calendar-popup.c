@@ -51,7 +51,7 @@
 #include                                        "hildon-calendar-popup-private.h"
 
 #define                                         _(String)\
-                                                dgettext(PACKAGE, String)
+                                                dgettext("hildon-libs", String)
 
 static void 
 init_dmy                                        (guint year, 
@@ -295,7 +295,7 @@ hildon_calendar_popup_init                      (HildonCalendarPopup *cal)
     /* set the domain directory for different language */
     /* FIXME I can't exactly figure out why is this here... */
     if (set_domain) {
-        (void) bindtextdomain (PACKAGE, LOCALEDIR);
+        (void) bindtextdomain ("hildon-libs", LOCALEDIR);
         set_domain = 0;
     }
 

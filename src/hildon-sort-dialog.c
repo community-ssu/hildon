@@ -44,7 +44,7 @@
 #include                                        "hildon-sort-dialog-private.h"
 
 #define                                         _(String) \
-                                                dgettext(PACKAGE, String)
+                                                dgettext("hildon-libs", String)
 
 static GtkDialogClass*                          parent_class;
 

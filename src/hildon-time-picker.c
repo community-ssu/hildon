@@ -52,7 +52,7 @@
 #include                                        "hildon-time-editor.h"
 
 #define                                         _(String) \
-                                                dgettext(PACKAGE, String)
+                                                dgettext("hildon-libs", String)
 
 #define                                         DEFAULT_HOURS 1
 

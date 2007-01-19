@@ -55,7 +55,7 @@
 #include                                        "hildon-caption-private.h"
 
 #define                                         _(String)\
-                                                dgettext(PACKAGE, String)
+                                                dgettext("hildon-libs", String)
 
 #define                                         HILDON_CAPTION_SPACING 6
 

@@ -40,7 +40,7 @@
 #include                                        "hildon-banner.h"
 #include                                        "hildon-color-chooser-dialog-private.h"
 
-#define                                         _(String) dgettext(PACKAGE, String)
+#define                                         _(String) dgettext("hildon-libs", String)
 
 static HildonColorChooserDialogClass*           parent_class = NULL;
 

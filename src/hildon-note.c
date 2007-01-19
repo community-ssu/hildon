@@ -64,7 +64,7 @@
 #define                                         HILDON_NOTE_INFORMATION_ICON \
                                                 "qgn_note_info"
 
-#define                                         _(String) dgettext(PACKAGE, String)
+#define                                         _(String) dgettext("hildon-libs", String)
 
 static void 
 hildon_note_class_init                          (HildonNoteClass *class);

@@ -56,7 +56,7 @@
 #include                                        <libintl.h>
 #include                                        "hildon-date-editor-private.h"
 
-#define                                         _(string) dgettext(PACKAGE, string)
+#define                                         _(string) dgettext("hildon-libs", string)
 
 #define                                         c_(string) dgettext("hildon-common-strings", string)
 

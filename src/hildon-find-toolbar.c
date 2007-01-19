@@ -56,7 +56,7 @@
 #include                                        "hildon-find-toolbar-private.h"
 
 #define                                         _(String) \
-                                                dgettext(PACKAGE, String)
+                                                dgettext("hildon-libs", String)
 
 /*same define as gtkentry.c as entry will further handle this*/
 

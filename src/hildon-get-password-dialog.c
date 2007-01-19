@@ -50,7 +50,7 @@
 #include                                        <libintl.h>
 #include                                        "hildon-get-password-dialog-private.h"
 
-#define                                         _(String) dgettext(PACKAGE, String)
+#define                                         _(String) dgettext("hildon-libs", String)
 
 #define                                         HILDON_GET_PASSWORD_DIALOG_TITLE "ecdg_ti_get_old_password"
 

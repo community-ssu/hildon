@@ -50,7 +50,7 @@
 #include                                        <libintl.h>
 #include                                        "hildon-number-editor-private.h"
 
-#define                                         _(String) dgettext(PACKAGE, String)
+#define                                         _(String) dgettext("hildon-libs", String)
 
 /*Pixel spec defines*/
 #define                                         NUMBER_EDITOR_HEIGHT 30

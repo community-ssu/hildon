@@ -60,7 +60,7 @@
 #include                                        "hildon-enum-types.h"
 #include                                        "hildon-time-editor-private.h"
 
-#define                                         _(String) dgettext(PACKAGE, String)
+#define                                         _(String) dgettext("hildon-libs", String)
 
 #define                                         c_(String) dgettext("hildon-common-strings", String)
 

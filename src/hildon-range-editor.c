@@ -50,7 +50,7 @@
 #include                                        "hildon-range-editor-private.h"
 
 #define                                         _(string) \
-                                                dgettext(PACKAGE, string)
+                                                dgettext("hildon-libs", string)
 
 /* Alignment in entry box ( 0 = left, 1 = right ) */
 

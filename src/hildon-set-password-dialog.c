@@ -91,7 +91,7 @@
 
 #define                                         HILDON_REMOVE_PROTECTION_CONFIRMATION_CANCEL "ckdg_bd_dialog_c_passwd_cancel_button"
 
-#define                                         _(String) dgettext(PACKAGE, String)
+#define                                         _(String) dgettext("hildon-libs", String)
 
 #define                                         c_(String) dgettext("hildon-common-strings", String)
 

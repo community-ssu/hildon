@@ -49,7 +49,7 @@
 #define                                         BACKSPACE_ICON "qgn_calculator_backspace"
 
 #define                                         _(String) \
-                                                dgettext(PACKAGE, String)
+                                                dgettext("hildon-libs", String)
 
 #define                                         c_(String) \
                                                 dgettext("hildon-common-strings", String)

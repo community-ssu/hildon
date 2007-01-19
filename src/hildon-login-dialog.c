@@ -86,7 +86,7 @@ hildon_login_dialog_get_property                (GObject *object,
 
 #define                                         HILDON_LOGIN_DIALOG_CANCEL "frw_bd_get_user_name_and_pwd_cancel"
 
-#define                                         _(String) dgettext(PACKAGE, String)
+#define                                         _(String) dgettext("hildon-libs", String)
 
 static GtkDialogClass*                          parent_class;
 

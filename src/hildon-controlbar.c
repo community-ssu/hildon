@@ -45,7 +45,7 @@
 #include                                        "hildon-controlbar-private.h"
 
 #define                                         _(string)\
-                                                dgettext(PACKAGE, string)
+                                                dgettext("hildon-libs", string)
 
 #define                                         DEFAULT_WIDTH 234
 

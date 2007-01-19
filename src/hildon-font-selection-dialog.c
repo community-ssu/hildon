@@ -160,7 +160,7 @@ toggle_clicked                                  (GtkButton *button,
 
 static GtkDialogClass*                          parent_class = NULL;
 
-#define                                         _(String) dgettext(PACKAGE, String)
+#define                                         _(String) dgettext("hildon-libs", String)
 
 #define                                         SUPERSCRIPT_RISE 3333
 
