@@ -20,9 +20,9 @@ AC_PROG_AWK
 
 AC_HEADER_STDC
 
-GTK_VERSION=2.6.10
+GTK_VERSION=2.10
 
-PKG_CHECK_MODULES(GTK, gtk+-2.0)
+PKG_CHECK_MODULES(GTK, gtk+-2.0 >= 2.10)
 AC_SUBST(GTK_LIBS)
 AC_SUBST(GTK_CFLAGS)
 AC_SUBST(GTK_VERSION)
@@ -96,7 +96,7 @@ AC_ARG_WITH(asserts,
          no)  BUILD_WITH_ASSERTS=no ;;
          *)   AC_MSG_ERROR(bad value ${withval} for --with-asserts) ;;
      esac],
-     [BUILD_WITH_ASSERTS=yes])
+     [BUILD_WITH_ASSERTS=no])
 
 # just print out our status
 if test x$BUILD_WITH_ASSERTS = xyes; then

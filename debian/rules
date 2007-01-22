@@ -113,7 +113,7 @@ binary-arch: build install
 	dh_install --sourcedir=debian/build -v
 	dh_installman
 	dh_link
-	dh_strip --dbg-package="hildon0"
+	dh_strip --dbg-package="libhildon1"
 	dh_compress
 	dh_fixperms
 	dh_makeshlibs -V
