@@ -22,6 +22,8 @@
  *
  */
 
+/* FIXME: Add documentation for the macros here */
+
 #ifndef                                         __HILDON_DEFINES_H__
 #define                                         __HILDON_DEFINES_H__
 

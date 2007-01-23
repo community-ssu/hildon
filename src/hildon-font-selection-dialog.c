@@ -170,6 +170,13 @@ static GtkDialogClass*                          parent_class = NULL;
 
 #define                                         OFF_BIT 0x02
 
+/**
+ * hildon_font_selection_dialog_get_type:
+ *
+ * Initializes and returns the type of a hildon font selection dialog
+ *
+ * @Returns: GType of #HildonFontSelectionDialog
+ */
 GType G_GNUC_CONST
 hildon_font_selection_dialog_get_type           (void)
 {
@@ -518,13 +525,24 @@ hildon_font_selection_dialog_class_init         (HildonFontSelectionDialogClass 
     gobject_class->get_property     = hildon_font_selection_dialog_get_property;
     gobject_class->set_property     = hildon_font_selection_dialog_set_property;
 
-    /* Install property to the class */
+    /* Install properties to the class */
+
+    /**
+     * HildonFontSelectionDialog:family:
+     *
+     * Font family used.
+     */
     g_object_class_install_property (gobject_class, PROP_FAMILY,
             g_param_spec_string ("family",
                 "Font family", "String defines"
                 " the font family", "Sans",
                 G_PARAM_READWRITE));
 
+    /**
+     * HildonFontSelectionDialog:family-set:
+     *
+     * Is font family set or inconsistent.
+     */
     g_object_class_install_property (gobject_class, PROP_FAMILY_SET,
             g_param_spec_boolean ("family-set",
                 "family inconsistent state",
@@ -532,6 +550,11 @@ hildon_font_selection_dialog_class_init         (HildonFontSelectionDialogClass 
                 " is inconsistent", FALSE,
                 G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
 
+    /**
+     * HildonFontSelectionDialog:size:
+     *
+     * Font size.
+     */
     g_object_class_install_property (gobject_class, PROP_SIZE,
             g_param_spec_int ("size",
                 "Font size",
@@ -539,6 +562,11 @@ hildon_font_selection_dialog_class_init         (HildonFontSelectionDialogClass 
                 6, 32, 16,
                 G_PARAM_READWRITE));
 
+    /**
+     * HildonFontSelectionDialog:size-set:
+     *
+     * Is font size set or inconsistent.
+     */
     g_object_class_install_property (gobject_class, PROP_SIZE_SET,
             g_param_spec_boolean ("size-set",
                 "size inconsistent state",
@@ -546,6 +574,11 @@ hildon_font_selection_dialog_class_init         (HildonFontSelectionDialogClass 
                 " is inconsistent", FALSE,
                 G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
 
+    /**
+     * HildonFontSelectionDialog:color:
+     *
+     * GdkColor for the text.
+     */
     g_object_class_install_property (gobject_class, PROP_COLOR,
             g_param_spec_boxed ("color",
                 "text color",
@@ -553,6 +586,11 @@ hildon_font_selection_dialog_class_init         (HildonFontSelectionDialogClass 
                 GDK_TYPE_COLOR,
                 G_PARAM_READWRITE));
 
+    /**
+     * HildonFontSelectionDialog:color-set:
+     *
+     * Is font color set or inconsistent.
+     */
     g_object_class_install_property (gobject_class, PROP_COLOR_SET,
             g_param_spec_boolean ("color-set",
                 "color inconsistent state",
@@ -560,6 +598,11 @@ hildon_font_selection_dialog_class_init         (HildonFontSelectionDialogClass 
                 " is inconsistent", FALSE,
                 G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
 
+    /**
+     * HildonFontSelectionDialog:color-set:
+     *
+     * Is font set as bold.
+     */
     g_object_class_install_property (gobject_class, PROP_BOLD,
             g_param_spec_boolean ("bold",
                 "text weight",
@@ -567,6 +610,11 @@ hildon_font_selection_dialog_class_init         (HildonFontSelectionDialogClass 
                 FALSE,
                 G_PARAM_READWRITE));
 
+    /**
+     * HildonFontSelectionDialog:color-set:
+     *
+     * Is font bold status set or inconsistent.
+     */
     g_object_class_install_property (gobject_class, PROP_BOLD_SET,
             g_param_spec_boolean ("bold-set",
                 "bold inconsistent state",
@@ -574,6 +622,11 @@ hildon_font_selection_dialog_class_init         (HildonFontSelectionDialogClass 
                 " is inconsistent", FALSE,
                 G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
 
+    /**
+     * HildonFontSelectionDialog:italic:
+     *
+     * Is font set as italic.
+     */
     g_object_class_install_property (gobject_class, PROP_ITALIC,
             g_param_spec_boolean ("italic",
                 "text style",
@@ -581,6 +634,11 @@ hildon_font_selection_dialog_class_init         (HildonFontSelectionDialogClass 
                 FALSE,
                 G_PARAM_READWRITE));
 
+    /**
+     * HildonFontSelectionDialog:italic-set:
+     *
+     * Is font italic status set or inconsistent.
+     */
     g_object_class_install_property (gobject_class, PROP_ITALIC_SET,
             g_param_spec_boolean ("italic-set",
                 "italic inconsistent state",
@@ -588,6 +646,11 @@ hildon_font_selection_dialog_class_init         (HildonFontSelectionDialogClass 
                 " is inconsistent", FALSE,
                 G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
 
+    /**
+     * HildonFontSelectionDialog:underline:
+     *
+     * Is the font underlined.
+     */
     g_object_class_install_property (gobject_class, PROP_UNDERLINE,
             g_param_spec_boolean ("underline",
                 "text underline",
@@ -595,6 +658,11 @@ hildon_font_selection_dialog_class_init         (HildonFontSelectionDialogClass 
                 FALSE,
                 G_PARAM_READWRITE));
 
+    /**
+     * HildonFontSelectionDialog:underline:
+     *
+     * Is font underline status set or inconsistent.
+     */
     g_object_class_install_property (gobject_class, PROP_UNDERLINE_SET,
             g_param_spec_boolean ("underline-set",
                 "underline inconsistent state",
@@ -602,6 +670,11 @@ hildon_font_selection_dialog_class_init         (HildonFontSelectionDialogClass 
                 " is inconsistent", FALSE,
                 G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
 
+    /**
+     * HildonFontSelectionDialog:strikethrough:
+     *
+     * Is the font striken-through.
+     */
     g_object_class_install_property (gobject_class, PROP_STRIKETHROUGH,
             g_param_spec_boolean ("strikethrough",
                 "strikethroughed text",
@@ -609,6 +682,11 @@ hildon_font_selection_dialog_class_init         (HildonFontSelectionDialogClass 
                 FALSE,
                 G_PARAM_READWRITE));
 
+    /**
+     * HildonFontSelectionDialog:strikethrough-set:
+     *
+     * Is the font strikenthrough status set.
+     */
     g_object_class_install_property (gobject_class, PROP_STRIKETHROUGH_SET,
             g_param_spec_boolean ("strikethrough-set",
                 "strikethrough inconsistent state",
@@ -616,6 +694,11 @@ hildon_font_selection_dialog_class_init         (HildonFontSelectionDialogClass 
                 " is inconsistent", FALSE,
                 G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
 
+    /**
+     * HildonFontSelectionDialog:position:
+     *
+     * The font positioning versus baseline.
+     */
     g_object_class_install_property (gobject_class, PROP_POSITION,
             g_param_spec_int ("position",
                 "Font position",
@@ -623,13 +706,11 @@ hildon_font_selection_dialog_class_init         (HildonFontSelectionDialogClass 
                 -1, 1, 0,
                 G_PARAM_READWRITE));
 
-    g_object_class_install_property (gobject_class, PROP_FONT_SCALING,
-            g_param_spec_double ("font-scaling",
-                "Font scaling",
-                "Font scaling for the preview dialog",
-                0, 10, 1,
-                G_PARAM_READWRITE));
-
+    /**
+     * HildonFontSelectionDialog:position-set:
+     *
+     * Is the font positioning set.
+     */
     g_object_class_install_property (gobject_class, PROP_POSITION_SET,
             g_param_spec_boolean ("position-set",
                 "position inconsistent state",
@@ -637,6 +718,23 @@ hildon_font_selection_dialog_class_init         (HildonFontSelectionDialogClass 
                 " is inconsistent", FALSE,
                 G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
 
+    /**
+     * HildonFontSelectionDialog:font-scaling:
+     *
+     * The font scaling factor applied to the preview dialog.
+     */
+    g_object_class_install_property (gobject_class, PROP_FONT_SCALING,
+            g_param_spec_double ("font-scaling",
+                "Font scaling",
+                "Font scaling for the preview dialog",
+                0, 10, 1,
+                G_PARAM_READWRITE));
+
+    /**
+     * HildonFontSelectionDialog:preview-text:
+     *
+     * The text used for the preview dialog.
+     */
     g_object_class_install_property (gobject_class, PROP_PREVIEW_TEXT,
             g_param_spec_string("preview-text",
                 "Preview Text", 
@@ -645,7 +743,8 @@ hildon_font_selection_dialog_class_init         (HildonFontSelectionDialogClass 
                 "",
                 G_PARAM_READWRITE));
 
-    g_type_class_add_private (klass, sizeof(struct _HildonFontSelectionDialogPrivate));
+    g_type_class_add_private (klass, 
+            sizeof (struct _HildonFontSelectionDialogPrivate));
 }
 
 static void 
@@ -1110,7 +1209,6 @@ hildon_font_selection_dialog_show_preview       (HildonFontSelectionDialog *font
     gtk_widget_destroy (preview_dialog);
 }
 
-
 static gboolean 
 is_internal_font                                (const gchar * name)
 {
@@ -1254,8 +1352,8 @@ hildon_font_selection_dialog_new                (GtkWindow *parent,
  *
  * Returns: a string pointer
  */
-gchar *
-hildon_font_selection_dialog_get_preview_text(HildonFontSelectionDialog * fsd)
+gchar*
+hildon_font_selection_dialog_get_preview_text   (HildonFontSelectionDialog * fsd)
 {
     /* FIXME Return a const pointer? */
     HildonFontSelectionDialogPrivate *priv;

@@ -24,8 +24,8 @@
 
 /**
  * SECTION:hildon-find-toolbar
- * @short_description: A special toolbar to be used with HildonAppView
- * @see_also: #HildonAppView
+ * @short_description: A special toolbar to be used with HildonWindow.
+ * @see_also: #HildonWindow
  *
  * HildonFindToolbar is a predefined toolbar for text searching purpose. 
  * It contains a GtkListStore which has the text items that the user has 
@@ -58,7 +58,7 @@
 #define                                         _(String) \
                                                 dgettext("hildon-libs", String)
 
-/*same define as gtkentry.c as entry will further handle this*/
+/* Same define as gtkentry.c as entry will further handle this */
 
 #define                                         MAX_SIZE G_MAXUSHORT
 
@@ -149,6 +149,13 @@ enum
 
 static guint                                    HildonFindToolbar_signal [LAST_SIGNAL] = {0};
 
+/**
+ * hildon_find_toolbar_get_type:
+ *
+ * Initializes and returns the type of a hildon fond toolbar.
+ *
+ * @Returns: GType of #HildonFindToolbar
+ */
 GType G_GNUC_CONST
 hildon_find_toolbar_get_type                    (void)
 {
@@ -527,35 +534,66 @@ hildon_find_toolbar_class_init                  (HildonFindToolbarClass *klass)
 
     klass->history_append = (gpointer) hildon_find_toolbar_history_append;
 
-    g_object_class_install_property(object_class, PROP_LABEL, 
-            g_param_spec_string("label", 
+    /**
+     * HildonFindToolbar:label:
+     *
+     * The label to display before the search box.
+     *                      
+     */
+    g_object_class_install_property (object_class, PROP_LABEL, 
+            g_param_spec_string ("label", 
                 "Label", "Displayed name for"
                 " find-toolbar",
                 _("ecdg_ti_find_toolbar_label"),
                 G_PARAM_READWRITE |
                 G_PARAM_CONSTRUCT));
 
-    g_object_class_install_property(object_class, PROP_PREFIX, 
-            g_param_spec_string("prefix", 
+    /**
+     * HildonFindToolbar:label:
+     *
+     * The label to display before the search box.
+     *                      
+     */
+    g_object_class_install_property (object_class, PROP_PREFIX, 
+            g_param_spec_string ("prefix", 
                 "Prefix", "Search string", NULL,
                 G_PARAM_READWRITE));
 
-    g_object_class_install_property(object_class, PROP_LIST,
-            g_param_spec_object("list",
+    /**
+     * HildonFindToolbar:list:
+     *
+     * A #GtkListStore where the search history is kept.
+     *                      
+     */
+    g_object_class_install_property (object_class, PROP_LIST,
+            g_param_spec_object ("list",
                 "List"," GtkListStore model where "
                 "history list is kept",
                 GTK_TYPE_LIST_STORE,
                 G_PARAM_READWRITE));
 
+    /**
+     * HildonFindToolbar:column:
+     *
+     * The column number in GtkListStore where strings of
+     * search history are kept.
+     *                      
+     */
     g_object_class_install_property(object_class, PROP_COLUMN,
-            g_param_spec_int("column",
+            g_param_spec_int ("column",
                 "Column", "Column number in GtkListStore "
                 "where history list strings are kept",
                 0, G_MAXINT,
                 0, G_PARAM_READWRITE));
 
-    g_object_class_install_property(object_class, PROP_MAX,
-            g_param_spec_int("max_characters",
+    /**
+     * HildonFindToolbar:label:
+     *
+     * The label to display before the search box.
+     *                      
+     */
+    g_object_class_install_property (object_class, PROP_MAX,
+            g_param_spec_int ("max_characters",
                 "Maximum number of characters",
                 "Maximum number of characters "
                 "in search string",
@@ -563,8 +601,14 @@ hildon_find_toolbar_class_init                  (HildonFindToolbarClass *klass)
                 0, G_PARAM_READWRITE |
                 G_PARAM_CONSTRUCT));
 
-    g_object_class_install_property(object_class, PROP_HISTORY_LIMIT,
-            g_param_spec_int("history_limit",
+    /**
+     * HildonFindToolbar:history-limit:
+     *
+     * Maximum number of history items in the combobox.
+     *                      
+     */
+    g_object_class_install_property (object_class, PROP_HISTORY_LIMIT,
+            g_param_spec_int ("history-limit",
                 "Maximum number of history items",
                 "Maximum number of history items "
                 "in search combobox",
@@ -708,11 +752,10 @@ hildon_find_toolbar_init                        (HildonFindToolbar *self)
  * @label: label for the find_toolbar, NULL to set the label to 
  *         default "Find"
  * 
- * Returns a new HildonFindToolbar.
+ * Creates a new HildonFindToolbar.
  *
  * Returns: a new HildonFindToolbar
  */
-
 GtkWidget*
 hildon_find_toolbar_new                         (const gchar *label)
 {
@@ -727,14 +770,14 @@ hildon_find_toolbar_new                         (const gchar *label)
 }
 
 /**
- * hildon_find_toolbar_new_with_model
+ * hildon_find_toolbar_new_with_model:
  * @label: label for the find_toolbar, NULL to set the label to 
  *         default "Find"
  * @model: a @GtkListStore
  * @column: indicating which column the search histry list will 
  *          retreive string from
  * 
- * Returns a new HildonFindToolbar, with a model.
+ * Creates a new HildonFindToolbar with a model.
  *
  * Returns: a new #HildonFindToolbar
  */
@@ -753,10 +796,12 @@ hildon_find_toolbar_new_with_model              (const gchar *label,
 }
 
 /**
- * hildon_find_toolbar_highlight_entry
+ * hildon_find_toolbar_highlight_entry:
  * @ftb: find Toolbar whose entry is to be highlighted
  * @get_focus: if user passes TRUE to this value, then the text in
  * the entry will not only get highlighted, but also get focused.
+ *
+ * Highlights the current entry in the find toolbar.
  * 
  */
 void
@@ -774,7 +819,7 @@ hildon_find_toolbar_highlight_entry             (HildonFindToolbar *self,
 
     gtk_editable_select_region (GTK_EDITABLE (entry), 0, -1);
 
-    if(get_focus)
+    if (get_focus)
         gtk_widget_grab_focus (GTK_WIDGET (entry));
 }
 
