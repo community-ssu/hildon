@@ -39,6 +39,13 @@ const HildonIconSizes*                          hildoniconsizes = NULL;
 
 static HildonIconSizes                          iis; /* hildon internal icon sizes */
 
+/**
+ * hildon_icon_sizes_init:
+ *
+ * Initializes the icon size structures. Normally 
+ * it's not needed to call this manually. 
+ *
+ */
 void 
 hildon_icon_sizes_init                          (void)
 {

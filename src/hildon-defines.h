@@ -220,16 +220,6 @@ extern const                                    HildonIconSizes *hildoniconsizes
 
 #define                                         HILDON_HARDKEY_DECREASE   GDK_F8
 
-gulong
-hildon_gtk_widget_set_logical_font              (GtkWidget *widget, 
-                                                 const gchar *logicalfontname);
-
-gulong
-hildon_gtk_widget_set_logical_color             (GtkWidget *widget, 
-                                                 GtkRcFlags rcflags,
-                                                 GtkStateType state, 
-                                                 const gchar *logicalcolorname);
-
 void 
 hildon_icon_sizes_init                          (void);
 

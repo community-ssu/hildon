@@ -72,7 +72,7 @@
 
 #define                                         DEFAULT_MIN_YEAR 1970
 
-#define                                         DEFAULT_MAX_YEAR 2037
+#define                                         DEFAULT_MAX_YEAR 3000
 
 static GtkContainerClass*                       parent_class;
 
@@ -175,6 +175,13 @@ enum
 
 static guint                                    date_editor_signals[LAST_SIGNAL] = { 0 };
 
+/**
+ * hildon_date_editor_get_type:
+ *
+ * Initializes and returns the type of a hildon date editor.
+ *
+ * @Returns: GType of #HildonDateEditor
+ */
 GType G_GNUC_CONST
 hildon_date_editor_get_type                     (void)
 {
@@ -279,7 +286,7 @@ hildon_date_editor_class_init                   (HildonDateEditorClass *editor_c
             g_param_spec_uint ("min-year",
                 "Minimum valid year",
                 "Minimum valid year",
-                1, 2100,
+                1, 3000,
                 DEFAULT_MIN_YEAR,
                 G_PARAM_READWRITE));
 
@@ -292,7 +299,7 @@ hildon_date_editor_class_init                   (HildonDateEditorClass *editor_c
             g_param_spec_uint ("max-year",
                 "Maximum valid year",
                 "Maximum valid year",
-                1, 2100,
+                1, 3000,
                 DEFAULT_MAX_YEAR,
                 G_PARAM_READWRITE));
 }
@@ -621,7 +628,8 @@ hildon_date_editor_get_property                 (GObject *object,
     }
 }
 
-static void hildon_child_forall                 (GtkContainer *container,
+static void 
+hildon_child_forall                             (GtkContainer *container,
                                                  gboolean include_internals,
                                                  GtkCallback callback,
                                                  gpointer callback_data)
@@ -1031,6 +1039,19 @@ hildon_date_editor_entry_validate               (GtkWidget *widget,
     return error_code;
 }
 
+/* Idle callback */
+static gboolean
+hildon_date_editor_entry_select_all             (GtkWidget *widget)
+{
+    GDK_THREADS_ENTER ();
+
+    gtk_editable_select_region (GTK_EDITABLE (widget), 0, -1);
+
+    GDK_THREADS_LEAVE ();
+
+    return FALSE;
+}
+
 /* When entry becomes full, we move the focus to the next field.
    If we are on the last field, the whole contents are validated. */
 static void
@@ -1327,7 +1348,7 @@ hildon_date_editor_size_allocate                (GtkWidget *widget,
  *
  * Sets the year shown in the editor. 
  *
- * Returns: TRUE if the year is valid
+ * Returns: TRUE if the year is valid and has been set.
  */
 gboolean 
 hildon_date_editor_set_year                     (HildonDateEditor *editor, 
@@ -1368,7 +1389,7 @@ hildon_date_editor_set_year                     (HildonDateEditor *editor,
  *
  * Sets the month shown in the editor. 
  *
- * Returns: TRUE if the month is valid
+ * Returns: TRUE if the month is valid and has been set.
  */
 gboolean 
 hildon_date_editor_set_month                    (HildonDateEditor *editor, 
@@ -1409,7 +1430,7 @@ hildon_date_editor_set_month                    (HildonDateEditor *editor,
  *
  * Sets the day shown in the editor. 
  *
- * Returns: TRUE if the day is valid
+ * Returns: TRUE if the day is valid and has been set.
  */
 gboolean 
 hildon_date_editor_set_day                      (HildonDateEditor *editor, 
@@ -1502,15 +1523,3 @@ hildon_date_editor_get_day                      (HildonDateEditor *editor)
     return (guint) atoi (gtk_entry_get_text (GTK_ENTRY (priv->d_entry)));
 }
 
-/* Idle callback */
-static gboolean
-hildon_date_editor_entry_select_all             (GtkWidget *widget)
-{
-    GDK_THREADS_ENTER ();
-
-    gtk_editable_select_region (GTK_EDITABLE (widget), 0, -1);
-
-    GDK_THREADS_LEAVE ();
-
-    return FALSE;
-}
