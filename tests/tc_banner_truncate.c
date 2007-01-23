@@ -3,6 +3,7 @@
  *
  * Copyright (C) 2006, 2007 Nokia Corporation, all rights reserved.
  *
+ * Author:  Luc Pionchon <luc.pionchon@nokia.com>
  * Contact: Michael Dominic Kostrzewa <michael.kostrzewa@nokia.com>
  *
  * This library is free software; you can redistribute it and/or
@@ -24,7 +25,8 @@
 
 /*
 
- gcc `pkg-config --cflags gtk+-2.0 hildon-libs` `pkg-config --libs gtk+-2.0 hildon-libs`  -o tc_banner_truncate tc_banner_truncate.c && DISPLAY=:2 run-standalone.sh  ./tc_banner_truncate 1
+ gcc `pkg-config --cflags gtk+-2.0 hildon-libs` `pkg-config --libs gtk+-2.0 hildon-libs`  \
+     -o tc_banner_truncate tc_banner_truncate.c && DISPLAY=:2 run-standalone.sh  ./tc_banner_truncate 1
 
  Usage 1: tc_banner_truncate <case #>
  Usage 2: tc_banner_truncate <1|2|3> the string you like to be displayed

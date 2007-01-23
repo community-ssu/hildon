@@ -1,3 +1,5 @@
+MAINTAINERCLEANFILES 					= Makefile.in
+
 if BUILD_TESTS 
 
 noinst_PROGRAMS				= check_test
