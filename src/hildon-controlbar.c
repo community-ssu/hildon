@@ -139,6 +139,13 @@ hildon_controlbar_change_value                  (GtkRange *range,
                                                  gdouble new_value, 
                                                  gpointer data);
 
+/**
+ * hildon_controlbar_get_type:
+ *
+ * Initializes and returns the type of a hildon control bar.
+ *
+ * @Returns: GType of #HildonControlbar
+ */
 GType G_GNUC_CONST
 hildon_controlbar_get_type                      (void)
 {
@@ -213,7 +220,7 @@ hildon_controlbar_class_init                    (HildonControlbarClass *controlb
     /**
      * HildonControlbar:value:
      *
-     * Controlbar value.
+     * Controlbar current value.
      */
     g_object_class_install_property (gobject_class, PROP_VALUE,
             g_param_spec_int ("value",
@@ -413,7 +420,7 @@ hildon_controlbar_size_request                  (GtkWidget *self,
  * @self: pointer to #HildonControlbar
  * @value: value in range of >= 0 && < G_MAX_INT
  *
- * Change the current value of the control bar to the specified value.
+ * Set the current value of the control bar to the specified value.
  */
 void 
 hildon_controlbar_set_value                     (HildonControlbar * self, 
@@ -576,7 +583,7 @@ hildon_controlbar_get_min                       (HildonControlbar *self)
  * Event handler for button press
  * Need to change button1 to button2 before passing this event to
  * parent handler. (see specs)
- * Also updates button_press variable so that we can draw hilites
+ * Also updates button_press variable so that we can draw highlights
  * correctly
  */
 static gint 

@@ -22,6 +22,17 @@
  *
  */
 
+/**
+ * SECTION:hildon-code-dialog
+ * @short_description: A keypad-like widget used to enter pincodes.
+ *
+ * #HildonCodeDialog displays a keypad that can be used to enter 
+ * numerical pin codes or lock codes. 
+ *
+ */
+
+/* FIXME We need property access in this widget */
+
 #ifdef                                          HAVE_CONFIG_H
 #include                                        <config.h>
 #endif
@@ -88,6 +99,13 @@ hildon_code_dialog_key_press_event              (GtkWidget *widget,
 
 static GtkDialogClass*                          parent_class = NULL;
 
+/**
+ * hildon_code_dialog_get_type:
+ *
+ * Initializes and returns the type of a hildon code dialog.
+ *
+ * @Returns: GType of #HildonCodeDialog
+ */
 GType G_GNUC_CONST
 hildon_code_dialog_get_type                     (void)
 {

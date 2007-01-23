@@ -72,7 +72,6 @@ typedef enum
  *
  * Keys to set the icon placement in #HildonCaption.
  *
- * Since: 0.14.5
  */
 typedef enum
 {

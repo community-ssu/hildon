@@ -22,6 +22,18 @@
  *
  */
 
+/**
+ * SECTION:hildon-banner 
+ * @short_description: A widget used to display timed notifications. 
+ *
+ * #HildonBanner can be used to display a short, timed notification 
+ * or information to the user. It can communicate that a 
+ * task has been finished or the application state has changed.
+ * Banners should be used only to display non-critical pieces of 
+ * information.
+ *
+ */
+
 #ifdef                                          HAVE_CONFIG_H
 #include                                        <config.h>
 #endif

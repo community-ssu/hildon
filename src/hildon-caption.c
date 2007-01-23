@@ -153,7 +153,7 @@ enum
 /**
  * hildon_caption_get_type:
  *
- * Initialises, and returns the type of a hildon caption.
+ * Initializes and returns the type of a hildon caption.
  *
  * @Returns: GType of #HildonCaption
  */
@@ -1063,7 +1063,8 @@ hildon_caption_get_label                        (const HildonCaption *caption)
  * The default seaparator character is ":"
  * separately.
  */
-void hildon_caption_set_separator               (HildonCaption *caption, 
+void 
+hildon_caption_set_separator                    (HildonCaption *caption, 
                                                  const gchar *separator)
 {
     g_return_if_fail (HILDON_IS_CAPTION (caption));
@@ -1110,7 +1111,7 @@ hildon_caption_activate                         (GtkWidget *widget)
 /**
  * hildon_caption_set_child_expand:
  * @caption : a #HildonCaption
- * @expand : gboolean to determine is the child expandable
+ * @expand : gboolean to determine if the child is expandable
  *
  * Sets child expandability.
  */
