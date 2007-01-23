@@ -1,7 +1,7 @@
 /*
- * This file is part of hildon-libs
+ * This file is a part of hildon tests
  *
- * Copyright (C) 2005, 2006 Nokia Corporation, all rights reserved.
+ * Copyright (C) 2006, 2007 Nokia Corporation, all rights reserved.
  *
  * Contact: Michael Dominic Kostrzewa <michael.kostrzewa@nokia.com>
  *
