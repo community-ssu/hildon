@@ -131,13 +131,13 @@ hildon_note_set_property                        (GObject *object,
             break;
 
         case PROP_HILDON_NOTE_DESCRIPTION:
-            g_free (priv->original_description);
+            if (priv->original_description) 
+                    g_free (priv->original_description);
             priv->original_description = g_value_dup_string (value);
 
-            hildon_gtk_label_set_text_n_lines (GTK_LABEL (priv->label),
-                    priv->original_description, 
-                    priv->note_n == HILDON_NOTE_PROGRESSBAR_TYPE ? 1 : 5);
-
+            gtk_label_set_text (GTK_LABEL (priv->label), priv->original_description);
+            /* FIXME Is the "original_description" used anywhere? */
+            
             break;
 
         case PROP_HILDON_NOTE_ICON:
@@ -323,6 +323,8 @@ hildon_note_init                                (HildonNote *dialog)
     g_assert (priv);
 
     priv->label = gtk_label_new (NULL);
+    gtk_label_set_line_wrap (GTK_LABEL (priv->label), TRUE);
+    
     priv->icon  = gtk_image_new ();
 
     /* Acquire real references to our internal children, since

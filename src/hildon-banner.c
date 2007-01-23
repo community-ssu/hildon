@@ -153,7 +153,7 @@ static GtkWindowClass*                          parent_class = NULL;
 /**
  * hildon_banner_get_type:
  *
- * Initialises, and returns the type of a hildon banner.
+ * Initializes and returns the type of a hildon banner.
  *
  * @Returns: GType of #HildonBanner
  */
@@ -636,12 +636,25 @@ hildon_banner_class_init                        (HildonBannerClass *klass)
 
     /* Install properties.
        We need construct properties for singleton purposes */
+
+    /**
+     * HildonBanner:parent-window:
+     *
+     * The window for which the banner will be singleton. 
+     *                      
+     */
     g_object_class_install_property (object_class, PROP_PARENT_WINDOW,
             g_param_spec_object ("parent-window",
                 "Parent window",
                 "The window for which the banner will be singleton",
                 GTK_TYPE_WINDOW, G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY));
 
+    /**
+     * HildonBanner:is-timed:
+     *
+     * Whether the banner is timed and goes away automatically.
+     *                      
+     */
     g_object_class_install_property (object_class, PROP_IS_TIMED,
             g_param_spec_boolean ("is-timed",
                 "Is timed",
@@ -727,8 +740,8 @@ hildon_banner_get_instance_for_widget           (GtkWidget *widget,
 
 /**
  * hildon_banner_show_information:
- * @widget: the #GtkWidget that wants to display banner
- * @icon_name: the name of icon to use. Can be %NULL for default icon.
+ * @widget: the #GtkWidget that is the owner of the banner
+ * @icon_name: the name of icon to use. Can be %NULL for default icon
  * @text: Text to display
  *
  * This function creates and displays an information banner that
@@ -763,6 +776,17 @@ hildon_banner_show_information                  (GtkWidget *widget,
     gtk_widget_show_all (GTK_WIDGET (banner));
 }
 
+/**
+ * hildon_banner_show_informationf:
+ * @widget: the #GtkWidget that is the owner of the banner
+ * @icon_name: the name of icon to use. Can be %NULL for default icon
+ * @format: a printf-like format string
+ * @Varargs: arguments for the format string
+ *
+ * A helper function for #hildon_banner_show_information with
+ * string formatting.
+ *
+ */
 void       
 hildon_banner_show_informationf                 (GtkWidget *widget, 
                                                  const gchar *icon_name,
@@ -846,7 +870,7 @@ hildon_banner_show_information_with_markup      (GtkWidget *widget,
  * followed by #g_object_unref (in this order).
  * 
  * Returns: a #HildonBanner widget. You must call #gtk_widget_destroy
- *          once you are ready with the banner.
+ *          once you are done with the banner.
  *
  */
 GtkWidget*
@@ -905,7 +929,7 @@ hildon_banner_show_animation                    (GtkWidget *widget,
  * for more information.
  * 
  * Returns: a #HildonBanner widget. You must call #gtk_widget_destroy
- *          once you are ready with the banner.
+ *          once you are done with the banner.
  *
  */
 GtkWidget*
@@ -971,7 +995,6 @@ hildon_banner_set_text                          (HildonBanner *self,
  *
  * Sets the text with markup that is displayed in the banner.
  *
- * Since: 0.12.8
  */
 void 
 hildon_banner_set_markup                        (HildonBanner *self, 
@@ -1013,86 +1036,5 @@ hildon_banner_set_fraction                      (HildonBanner *self,
 
     g_return_if_fail (GTK_IS_PROGRESS_BAR (priv->main_item));
     gtk_progress_bar_set_fraction (GTK_PROGRESS_BAR (priv->main_item), fraction);
-}
-
-/**
- * Deprecated: really, do NOT use.
- */
-void 
-hildon_gtk_label_set_text_n_lines               (GtkLabel *label, 
-                                                 const gchar *text, 
-                                                 gint max_lines)
-{
-    /* Forces the wrapping of text into several lines and ellipsizes the rest. 
-       Similar to combination of gtk_label_set_wrap and pango ellipzation. 
-       We cannot just use those directly, since ellipzation always wins wrapping.
-
-       This means that we have to:
-     * First wrap the text
-     * Insert forced linebreaks into text
-     * Truncate the result
-
-     NOTE! This will not work with pango markup!
-
-    FIXME: luc: DO NOT TRUNCATE the text. Use as many lines as needed.
-    Lenth of the text is under applications' responsibility.
-    Widget does not have to enforce this. */
-
-    PangoLayout *layout;
-    PangoLayoutLine *line;
-    GtkRequisition req;
-    GString *wrapped_text;
-    gchar *line_data;
-    gint lines, i;
-
-    g_return_if_fail (GTK_IS_LABEL (label));
-    g_return_if_fail (max_lines >= 1);
-
-    /* Setup the label to contain the new data */
-    gtk_label_set_text (label, text);
-    gtk_label_set_line_wrap (label, TRUE);
-    gtk_label_set_ellipsize (label, PANGO_ELLIPSIZE_NONE);
-
-    /* We really want to recalculate the size, not use some old values */
-    gtk_widget_size_request (GTK_WIDGET (label), &req);
-    layout = gtk_label_get_layout (label);
-    lines = pango_layout_get_line_count (layout);
-
-    /* Now collect the wrapped text. */
-    wrapped_text = g_string_new (NULL);
-
-    for (i = 0; i < lines; i++)
-    {
-        /* Append the next line into wrapping buffer, but 
-           avoid adding extra whitespaces at the end, since those
-           can cause other lines to be ellipsized as well. */
-        line = pango_layout_get_line (layout, i);
-        line_data = g_strndup (pango_layout_get_text(layout) + line->start_index, 
-                line->length);
-        g_strchomp (line_data);
-        g_string_append (wrapped_text, line_data);
-
-        /* Append forced linebreaks, until we have the desired
-           amount of lines. After that we put the rest to the
-           last line to make ellipzation to happen */
-        if (i < lines - 1)
-        {
-            if (i < max_lines - 1)
-                g_string_append_c (wrapped_text, '\n');
-            else
-                g_string_append_c (wrapped_text, ' ');
-        }
-
-        g_free(line_data);
-    }
-
-    /* Now update the label to use wrapped text. Use builtin
-       ellipzation as well. */
-    gtk_widget_set_size_request (GTK_WIDGET (label), req.width, -1);
-    gtk_label_set_text (label, wrapped_text->str);
-    gtk_label_set_ellipsize (label, PANGO_ELLIPSIZE_END);
-    gtk_label_set_line_wrap (label, FALSE);
-
-    g_string_free (wrapped_text, TRUE);
 }
 

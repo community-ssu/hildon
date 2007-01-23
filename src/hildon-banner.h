@@ -98,12 +98,6 @@ void
 hildon_banner_set_fraction                      (HildonBanner *self,
                                                  gdouble fraction);
 
-/* For internal use of hildon libraries only */
-void 
-hildon_gtk_label_set_text_n_lines               (GtkLabel *label, 
-                                                 const gchar *text, 
-                                                 gint max_lines);
-
 G_END_DECLS
 
 #endif                                          /* __HILDON_BANNER_H__ */
