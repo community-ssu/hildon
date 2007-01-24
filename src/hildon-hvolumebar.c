@@ -95,7 +95,13 @@ hildon_hvolumebar_size_allocate                 (GtkWidget *widget,
 static void 
 hildon_hvolumebar_map                           (GtkWidget *widget);
 
-
+/**
+ * hildon_hvolumebar_get_type:
+ *
+ * Returns GType for HildonHVolumebar.
+ *
+ * Returns: HildonHVolumebar type
+ */
 GType G_GNUC_CONST
 hildon_hvolumebar_get_type                      (void)
 {
@@ -210,7 +216,6 @@ hildon_hvolumebar_expose                        (GtkWidget * widget,
                 widget->allocation.y,
                 widget->allocation.width,
                 widget->allocation.height);
-
 
         /* The contents of the widget can paint themselves */
         /* FIXME Not sure if this is even needed here */

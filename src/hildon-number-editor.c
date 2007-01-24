@@ -166,6 +166,13 @@ static GtkContainerClass*                       parent_class;
 
 static guint                                    HildonNumberEditor_signal[LAST_SIGNAL] = {0};
 
+/**
+ * hildon_number_editor_get_type:
+ *
+ * Returns GType for HildonNumberEditor.
+ *
+ * Returns: HildonNumberEditor type
+ */
 GType G_GNUC_CONST
 hildon_number_editor_get_type                   (void)
 {
@@ -218,6 +225,11 @@ hildon_number_editor_class_init                 (HildonNumberEditorClass *editor
     gobject_class->set_property             = hildon_number_editor_set_property;
     gobject_class->get_property             = hildon_number_editor_get_property;
 
+    /**
+     * HildonNumberEditor:value:
+     *
+     * The current value of the number editor.
+     */
     g_object_class_install_property (gobject_class, PROP_VALUE,
             g_param_spec_int ("value",
                 "Value",
@@ -831,7 +843,6 @@ hildon_number_editor_range_error                (HildonNumberEditor *editor,
 
     return TRUE;
 }
-
 
 /**
  * hildon_number_editor_new:

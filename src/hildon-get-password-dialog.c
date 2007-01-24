@@ -232,6 +232,12 @@ hildon_get_password_dialog_class_init           (HildonGetPasswordDialogClass *c
     object_class->get_property = hildon_get_password_get_property;
 
     /* Install new properties */
+    
+    /**
+     * HildonGetPasswordDialog:message:
+     *
+     * Optional message displayed to the user.
+     */
     g_object_class_install_property 
         (object_class, 
          PROP_MESSAGE, 
@@ -241,6 +247,11 @@ hildon_get_password_dialog_class_init           (HildonGetPasswordDialogClass *c
              NULL,
              G_PARAM_READWRITE));
 
+    /**
+     * HildonGetPasswordDialog:password:
+     *
+     * Password field contents.
+     */
     g_object_class_install_property
         (object_class, 
          PROP_PASSWORD,
@@ -250,15 +261,25 @@ hildon_get_password_dialog_class_init           (HildonGetPasswordDialogClass *c
              "DEFAULT",
              G_PARAM_READWRITE));
 
+    /**
+     * HildonGetPasswordDialog:numbers-only:
+     *
+     * If the password entry field is operating in numbers-only mode.
+     */
     g_object_class_install_property
         (object_class, 
          PROP_NUMBERS_ONLY,
-         g_param_spec_boolean ("numbers_only",
+         g_param_spec_boolean ("numbers-only",
              "NumbersOnly",
              "Set entry to accept only numeric values",
              FALSE,
              G_PARAM_READWRITE));
 
+    /**
+     * HildonGetPasswordDialog:caption-label:
+     *
+     * Caption label.
+     */
     g_object_class_install_property
         (object_class, 
          PROP_CAPTION_LABEL,
@@ -267,7 +288,12 @@ hildon_get_password_dialog_class_init           (HildonGetPasswordDialogClass *c
              "The text to be set as the caption label",
              NULL,
              G_PARAM_READWRITE));
-
+    
+    /**
+     * HildonGetPasswordDialog:max-characters:
+     *
+     * Maximum characters than can be entered.
+     */
     g_object_class_install_property
         (object_class, 
          PROP_MAX_CHARS,
@@ -280,6 +306,11 @@ hildon_get_password_dialog_class_init           (HildonGetPasswordDialogClass *c
              0,
              G_PARAM_READWRITE));
 
+    /**
+     * HildonGetPasswordDialog:get-old:
+     *
+     * If the dialog is used to retrieve an old password or set a new one.
+     */
     g_object_class_install_property
         (object_class,
          PROP_GET_OLD,
@@ -463,7 +494,7 @@ hildon_get_password_dialog_new_with_default     (GtkWindow *parent,
  * hildon_get_password_dialog_get_password:
  * @dialog: pointer to HildonSetPasswordDialog
  * 
- * Gets the currently entered password.
+ * Gets the currently entered password. The string should not be freed.
  *
  * Returns: current password entered by the user.
  */
@@ -491,7 +522,7 @@ hildon_get_password_dialog_get_password         (HildonGetPasswordDialog *dialog
  * @dialog: the dialog
  * @message: a custom message or some other descriptive text to be set
  * 
- * Sets the optional descriptive text.
+ * Sets the optional descriptive text displayed at the top of the dialog.
  */
 void 
 hildon_get_password_dialog_set_message          (HildonGetPasswordDialog *dialog, 

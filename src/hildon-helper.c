@@ -157,7 +157,7 @@ hildon_logical_data_free                        (HildonLogicalData *ld)
  *
  * Checks if the given button event is a finger event.
  * 
- * return value : TRUE if the event is a button event.
+ * return value : TRUE if the event is a finger event.
  **/
 gboolean 
 hildon_helper_event_button_is_finger (GdkEventButton *event)
@@ -186,11 +186,11 @@ hildon_helper_event_button_is_finger (GdkEventButton *event)
  * @widget : a @gtkwidget to assign this logical font for.
  * @logicalfontname : a gchar* with the logical font name to assign to the widget.
  * 
- * this function assigns a defined logical font to the @widget and all its child widgets.
+ * This function assigns a defined logical font to the @widget and all its child widgets.
  * it also connects to the "style_set" signal which will retrieve & assign the new font 
  * for the given logical name each time the theme is changed.
- * the returned signal id can be used to disconnect the signal. 
- * the previous signal (obtained by calling this function) is disconnected 
+ * The returned signal id can be used to disconnect the signal. 
+ * When calling multiple times the previous signal (obtained by calling this function) is disconnected 
  * automatically and should not be used. 
  * 
  * return value : the signal id that is triggered every time theme is changed. 0 if font set failed.
@@ -240,7 +240,7 @@ hildon_helper_set_logical_font                  (GtkWidget *widget,
  * It also connects to the "style_set" signal which will retrieve & assign the new color 
  * for the given logical name each time the theme is changed.
  * The returned signal id can be used to disconnect the signal.
- * The previous signal (obtained by calling this function) is disconnected 
+ * When calling multiple times the previous signal (obtained by calling this function) is disconnected 
  * automatically and should not be used. 
  * 
  * Example : If the style you want to modify is bg[NORMAL] then set rcflags to GTK_RC_BG and state to GTK_STATE_NORMAL.

@@ -214,6 +214,13 @@ hildon_note_get_property                        (GObject *object,
     }
 }
 
+/**
+ * hildon_note_get_type:
+ *
+ * Returns GType for HildonNote.
+ *
+ * Returns: HildonNote type
+ */
 GType G_GNUC_CONST
 hildon_note_get_type                            (void)
 {
@@ -259,14 +266,14 @@ hildon_note_class_init                          (HildonNoteClass *class)
             g_param_spec_enum ("note_type",
                 "note type",
                 "The type of the note dialog",
-                hildon_note_type_get_type(),
+                hildon_note_get_type (),
                 HILDON_NOTE_CONFIRMATION_TYPE,
                 G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
 
     /**
      * HildonNote:description:
      *
-     * Description for note.
+     * Description for the note.
      */
     g_object_class_install_property (object_class,
             PROP_HILDON_NOTE_DESCRIPTION,
@@ -279,7 +286,7 @@ hildon_note_class_init                          (HildonNoteClass *class)
     /**
      * HildonNote:icon:
      *
-     * Icon for note.
+     * Icon for the note.
      */
     g_object_class_install_property (object_class,
             PROP_HILDON_NOTE_ICON,
@@ -292,7 +299,7 @@ hildon_note_class_init                          (HildonNoteClass *class)
     /**
      * HildonNote:stock-icon:
      *
-     * Stock icon for note.
+     * Stock icon name for the note.
      */
     g_object_class_install_property (object_class,
             PROP_HILDON_NOTE_STOCK_ICON,
@@ -305,7 +312,7 @@ hildon_note_class_init                          (HildonNoteClass *class)
     /**
      * HildonNote:progressbar:
      *
-     * Progressbar for note.
+     * Progressbar for the note (if any).
      */
     g_object_class_install_property (object_class,
             PROP_HILDON_NOTE_PROGRESSBAR,

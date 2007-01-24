@@ -90,6 +90,13 @@ hildon_login_dialog_get_property                (GObject *object,
 
 static GtkDialogClass*                          parent_class;
 
+/**
+ * hildon_login_dialog_get_type:
+ *
+ * Returns GType for HildonLoginDialog.
+ *
+ * Returns: HildonLoginDialog type
+ */
 GType G_GNUC_CONST
 hildon_login_dialog_get_type                    (void)
 {
@@ -196,6 +203,12 @@ hildon_login_dialog_class_init                  (HildonLoginDialogClass *class)
     object_class->get_property = hildon_login_dialog_get_property;
 
     /* Install new properties */
+
+    /**
+     * HildonLoginDialog:message:
+     *
+     * Optional message displayed to the user.
+     */
     g_object_class_install_property (object_class, 
             PROP_MESSAGE, 
             g_param_spec_string ("message",
@@ -204,6 +217,11 @@ hildon_login_dialog_class_init                  (HildonLoginDialogClass *class)
                 NULL,
                 G_PARAM_READWRITE));
 
+    /**
+     * HildonLoginDialog:username:
+     *
+     * Contents of the username field.
+     */
     g_object_class_install_property (object_class,
             PROP_USERNAME, 
             g_param_spec_string ("username",
@@ -211,7 +229,12 @@ hildon_login_dialog_class_init                  (HildonLoginDialogClass *class)
                 "Username field",
                 "DEFAULT",
                 G_PARAM_READWRITE));
-
+    
+    /**
+     * HildonLoginDialog:password:
+     *
+     * Contents of the password field.
+     */
     g_object_class_install_property (object_class, 
             PROP_PASSWORD,
             g_param_spec_string ("password",
@@ -381,7 +404,8 @@ hildon_login_dialog_get_password                (HildonLoginDialog *dialog)
  * @dialog: the dialog
  * @msg: the message or some other descriptive text to be set
  * 
- * sets the optional descriptive text
+ * Sets the optional descriptive text that is displayed on the top 
+ * of the dialog. 
  */
 void 
 hildon_login_dialog_set_message                 (HildonLoginDialog *dialog, 

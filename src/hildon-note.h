@@ -50,15 +50,6 @@ typedef struct                                  _HildonNote HildonNote;
 
 typedef struct                                  _HildonNoteClass HildonNoteClass;
 
-typedef enum
-{
-    HILDON_NOTE_CONFIRMATION_TYPE = 0,
-    HILDON_NOTE_CONFIRMATION_BUTTON_TYPE,
-    HILDON_NOTE_INFORMATION_TYPE,
-    HILDON_NOTE_INFORMATION_THEME_TYPE,
-    HILDON_NOTE_PROGRESSBAR_TYPE
-}                                               HildonNoteType;
-
 struct                                          _HildonNote 
 {
     GtkDialog parent;
@@ -108,6 +99,15 @@ void
 hildon_note_set_button_texts                    (HildonNote *note, 
                                                  const gchar *text_ok,
                                                  const gchar *text_cancel);
+
+typedef enum
+{
+    HILDON_NOTE_CONFIRMATION_TYPE = 0,
+    HILDON_NOTE_CONFIRMATION_BUTTON_TYPE,
+    HILDON_NOTE_INFORMATION_TYPE,
+    HILDON_NOTE_INFORMATION_THEME_TYPE,
+    HILDON_NOTE_PROGRESSBAR_TYPE
+}                                               HildonNoteType;
 
 G_END_DECLS
 
