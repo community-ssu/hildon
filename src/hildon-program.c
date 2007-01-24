@@ -22,11 +22,12 @@
  *
  */
 
-/*
- * @file hildon-program.c
+/**
+ * SECTION:hildon-program
+ * @short_description: An object used to control a hildon program.
  *
- * This file implements the HildonProgram object
- *
+ * HildonProgram is not a widget itself nor a container. HildonProgram can 
+ * contain one or more @HildonWindow. 
  */
 
 #ifdef                                          HAVE_CONFIG_H
@@ -65,7 +66,7 @@ enum
     PROP_KILLABLE
 };
 
-GType
+GType G_GNUC_CONST
 hildon_program_get_type                         (void)
 {
     static GType program_type = 0;
@@ -138,6 +139,13 @@ hildon_program_class_init                       (HildonProgramClass *self)
     object_class->get_property  = hildon_program_get_property;
 
     /* Install properties */
+
+    /**
+     * HildonProgram:is-topmost:
+     *
+     * Whether one of the program's window or dialog currently
+     * is activated by window manager. 
+     */
     g_object_class_install_property (object_class, PROP_IS_TOPMOST,
                 g_param_spec_boolean ("is-topmost",
                 "Is top-most",
@@ -145,7 +153,13 @@ hildon_program_class_init                       (HildonProgramClass *self)
                 "is activated by window manager",
                 FALSE,
                 G_PARAM_READABLE)); 
-    
+
+    /**
+     * HildonProgram:can-hibernate:
+     *
+     * Whether the program should be set to hibernate by the Task
+     * Navigator in low memory situation.
+     */
     g_object_class_install_property (object_class, PROP_KILLABLE,
                 g_param_spec_boolean ("can-hibernate",
                 "Can hibernate",

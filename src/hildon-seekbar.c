@@ -131,7 +131,12 @@ enum
 };
 
 /**
- * Initialises, and returns the type of a hildon seekbar.
+ * hildon_seekbar_get_type:
+ * 
+ * Initializes, and returns the type of a hildon seekbar.
+ * 
+ * @Returns : GType of #HildonSeekbar
+ * 
  */
 GType G_GNUC_CONST 
 hildon_seekbar_get_type                         (void)
@@ -181,8 +186,13 @@ hildon_seekbar_class_init                       (HildonSeekbarClass *seekbar_cla
     object_class->set_property          = hildon_seekbar_set_property;
     object_class->get_property          = hildon_seekbar_get_property;
 
+    /**
+     * HildonSeekbar:total-time:
+     *
+     * Total playing time of this media file.
+     */
     g_object_class_install_property (object_class, PROP_TOTAL_TIME,
-            g_param_spec_double ("total_time",
+            g_param_spec_double ("total-time",
                 "total time",
                 "Total playing time of this media file",
                 0,           /* min value */
@@ -190,6 +200,11 @@ hildon_seekbar_class_init                       (HildonSeekbarClass *seekbar_cla
                 0,           /* default */
                 G_PARAM_READWRITE));
 
+    /**
+     * HildonSeekbar:position:
+     *
+     * Current position in this media file.
+     */
     g_object_class_install_property (object_class, PROP_POSITION,
             g_param_spec_double ("position",
                 "position",
@@ -199,6 +214,11 @@ hildon_seekbar_class_init                       (HildonSeekbarClass *seekbar_cla
                 0,           /* default */
                 G_PARAM_READWRITE));
 
+    /**
+     * HildonSeekbar:fraction:
+     *
+     * Current fraction related to the progress indicator.
+     */
     g_object_class_install_property (object_class, PROP_FRACTION,
             g_param_spec_double ("fraction",
                 "Fraction",

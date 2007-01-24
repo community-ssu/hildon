@@ -345,15 +345,25 @@ hildon_set_password_dialog_class_init           (HildonSetPasswordDialogClass *c
                 NULL,
                 G_PARAM_READWRITE));
 
+    /**
+     * HildonSetPasswordDialog:modify-protection:
+     *
+     * Password type.
+     */
     g_object_class_install_property (object_class, 
             PROP_HILDON_PASSWORD_DIALOG, 
-            g_param_spec_boolean ("modify_protection",
+            g_param_spec_boolean ("modify-protection",
                 "Password type",
                 "Set type to dialog",
                 TRUE, 
                 G_PARAM_CONSTRUCT_ONLY |
                 G_PARAM_READWRITE));
 
+    /**
+     * HildonSetPasswordDialog:password:
+     *
+     * Content of the password field.
+     */
     g_object_class_install_property (object_class, 
             PROP_PASSWORD, 
             g_param_spec_string ("password",

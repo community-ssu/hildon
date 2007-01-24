@@ -70,7 +70,7 @@ struct                                          _HildonProgramClass
     void (*_hildon_reserved4)(void);
 };
 
-GType
+GType G_GNUC_CONST
 hildon_program_get_type                         (void);
 
 HildonProgram*

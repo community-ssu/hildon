@@ -789,8 +789,6 @@ hildon_range_editor_refresh_widths              (HildonRangeEditorPrivate *priv)
     gtk_entry_set_max_length (GTK_ENTRY (priv->end_entry), length);
 }
 
-/* Public functions */
-
 /**
  * hildon_range_editor_get_type:
  * 
@@ -799,7 +797,7 @@ hildon_range_editor_refresh_widths              (HildonRangeEditorPrivate *priv)
  * @Returns : GType of #HildonRangeEditor
  * 
  */
-GType
+GType G_GNUC_CONST
 hildon_range_editor_get_type                    (void)
 {
     static GType editor_type = 0;
