@@ -20,7 +20,8 @@ MAINTAINERCLEANFILES			= Makefile.in aclocal.m4 configure 		\
 			  		  config.guess intltool-extract.in 	    	\
 			  		  intltool-merge.in intltool-update.in      	\
 			  		  mkinstalldirs build-stamp configure-stamp 	\
-					  gtk-doc.make
+					  gtk-doc.make					\
+					  m4/gtk-doc.m4
 
 deb: dist
 	-mkdir debian-build

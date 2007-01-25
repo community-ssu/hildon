@@ -23,8 +23,12 @@
  */
 
 /**
- * SECTION:hildon-helpers
+ * SECTION:hildon-helper
  * @short_description: A collection of usefull utilities and functions.
+ *
+ * Hildon provides some helper functions that can be used for commonly 
+ * performed tasks and functionality blocks. This includes operations 
+ * on widget styles and probing functions for touch events.
  *
  */
 

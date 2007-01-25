@@ -6,7 +6,7 @@
 
 <book id="index" xmlns:xi="http://www.w3.org/2003/XInclude">
   <bookinfo>
-    <title>hildon-libs &version; Reference Manual</title>
+    <title>hildon &version; Reference Manual</title>
   </bookinfo>
 
   <chapter>
@@ -16,9 +16,6 @@
 
   <chapter>
     <title>Toplevel Widgets</title>
-    <xi:include href="xml/hildon-app.xml"/>
-    <xi:include href="xml/hildon-appview.xml"/>
-    <xi:include href="xml/hildon-scroll-area.xml"/>
     <xi:include href="xml/hildon-window.xml"/>
     <xi:include href="xml/hildon-program.xml"/>
   </chapter>
@@ -27,8 +24,7 @@
     <title>Selectors</title>
     <xi:include href="xml/hildon-color-button.xml"/>
     <xi:include href="xml/hildon-color-chooser-dialog.xml"/>
-    <xi:include href="xml/hildon-color-selector.xml"/>
-    <xi:include href="xml/hildon-color-popup.xml"/>
+    <xi:include href="xml/hildon-color-chooser.xml"/>
     <xi:include href="xml/hildon-controlbar.xml"/>
     <xi:include href="xml/hildon-volumebar.xml"/>
     <xi:include href="xml/hildon-vvolumebar.xml"/>
@@ -37,8 +33,6 @@
     <xi:include href="xml/hildon-calendar-popup.xml"/>
     <xi:include href="xml/hildon-weekday-picker.xml"/>
     <xi:include href="xml/hildon-time-picker.xml"/>
-    <xi:include href="xml/hildon-grid.xml"/>
-    <xi:include href="xml/hildon-grid-item.xml"/>
   </chapter>
 
   <chapter>
@@ -57,17 +51,15 @@
 
   <chapter>
     <title>Notifications</title>
-    <xi:include href="xml/gtk-infoprint.xml"/>
     <xi:include href="xml/hildon-banner.xml"/>
     <xi:include href="xml/hildon-note.xml"/>
-    <xi:include href="xml/hildon-file-handling-note.xml"/>
   </chapter>
 
   <chapter>
     <title>Dialogs</title>
     <xi:include href="xml/hildon-set-password-dialog.xml"/>
     <xi:include href="xml/hildon-get-password-dialog.xml"/>
-    <xi:include href="xml/hildon-name-password-dialog.xml"/>
+    <xi:include href="xml/hildon-login-dialog.xml"/>
     <xi:include href="xml/hildon-sort-dialog.xml"/>
     <xi:include href="xml/hildon-font-selection-dialog.xml"/>
     <xi:include href="xml/hildon-code-dialog.xml"/>
@@ -76,30 +68,15 @@
 
   <chapter>
     <title>Other</title>
-    <!--
-    <xi:include href="xml/hildon-telephone-editor.xml"/>
-    <xi:include href="xml/hildon-add-home-dialog.xml"/>
-    -->
-    <xi:include href="xml/hildon-composite-widget.xml"/>
-    <xi:include href="xml/hildon-dialoghelp.xml"/>
-    <xi:include href="xml/hildon-system-sound.xml"/>
-    <xi:include href="xml/hildon-input-mode-hint.xml"/>
+    <xi:include href="xml/hildon-sound.xml"/>
+    <xi:include href="xml/hildon-helper.xml"/>
     <xi:include href="xml/hildon-defines.xml"/>
-    <xi:include href="xml/hildon-plugin-widget.xml"/>
   </chapter>
 
   <index>
     <title>Index</title>
   </index>
-  <index role="deprecated">
-    <title>Index of deprecated symbols</title>
-  </index>
 
   <!-- New symbols index -->
-  <index role="0.12.0" ><title>Index of new symbols in 0.12.0 </title></index>
-  <index role="0.12.2" ><title>Index of new symbols in 0.12.2 </title></index>
-  <index role="0.12.4" ><title>Index of new symbols in 0.12.4 </title></index>
-  <index role="0.12.8" ><title>Index of new symbols in 0.12.8 </title></index>
-  <index role="0.12.10"><title>Index of new symbols in 0.12.10</title></index>  
 
 </book>
