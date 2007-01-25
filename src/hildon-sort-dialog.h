@@ -87,10 +87,6 @@ gint
 hildon_sort_dialog_add_sort_key                 (HildonSortDialog *dialog,
                                                  const gchar *sort_key);
 
-gint 
-hildon_sort_dialog_add_sort_key_with_sorting    (HildonSortDialog *dialog, 
-                                                 const gchar *sort_key, 
-                                                 gboolean sorting);
 gint
 hildon_sort_dialog_add_sort_key_reversed        (HildonSortDialog *dialog,
                                                  const gchar *sort_key);

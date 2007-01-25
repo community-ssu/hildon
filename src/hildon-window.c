@@ -22,6 +22,17 @@
  *
  */
 
+/**
+ * SECTION:hildon-window
+ * @short_description: A basic container for other hildon widgets.
+ *
+ * A single #HildonProgram can contain many #HildonWindows. 
+ * HildonWindow is a customized version of GtkWindow that handles
+ * automatically some taks of the Hildon UI. A typicall hildon application
+ * should contain at least one #HildonWindow.
+ *
+ */
+
 #include                                        "hildon-window.h"
 #include                                        <memory.h>
 #include                                        <string.h>
@@ -184,6 +195,13 @@ enum
     MAX_WIN_MESSAGES
 };
 
+/**
+ * hildon_window_get_type:
+ *
+ * Initializes and returns the type of a hildon window.
+ *
+ * @Returns: GType of #HildonWindow
+ */
 GType G_GNUC_CONST
 hildon_window_get_type                          (void)
 {
@@ -244,6 +262,12 @@ hildon_window_class_init                        (HildonWindowClass * window_clas
             sizeof (struct _HildonWindowPrivate));
 
     /* Install properties */
+    
+    /**
+     * HildonWindow:is-topmost:
+     *
+     * Whether the window is currently activated by the window manager.
+     */
     g_object_class_install_property (object_class, PROP_IS_TOPMOST,
             g_param_spec_boolean ("is-topmost",
                 "Is top-most",
@@ -1550,7 +1574,6 @@ hildon_window_escape_timeout                    (gpointer data)
 
     return FALSE;
 }
-
 
 /**
  * hildon_window_new: 

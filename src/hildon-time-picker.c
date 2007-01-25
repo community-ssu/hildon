@@ -163,6 +163,13 @@ static const gint                               button_multipliers[WIDGET_GROUP_
     { 0, 0 }
 };
 
+/**
+ * hildon_time_picker_get_type:
+ *
+ * Returns the type of HildonTimePicker.
+ *
+ * Returns: HildonTimePicker type
+ */
 GType G_GNUC_CONST
 hildon_time_picker_get_type                     (void)
 {

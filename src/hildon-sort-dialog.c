@@ -78,6 +78,11 @@ sort_key_changed                                (GtkWidget *widget,
 static void 
 hildon_sort_dialog_finalize                     (GObject *object);
 
+gint 
+hildon_sort_dialog_add_sort_key_with_sorting    (HildonSortDialog *dialog, 
+                                                 const gchar *sort_key, 
+                                                 gboolean sorting);
+
 enum 
 {
     PROP_0,
@@ -104,9 +109,7 @@ sort_key_changed                                (GtkWidget *widget,
     priv->reversed = priv->key_reversed [index];
 }
 
-/*
- * Initialises the sort dialog class.
- */
+/* Initialises the sort dialog class. */
 static void
 hildon_sort_dialog_class_init                   (HildonSortDialogClass *class)
 {
@@ -117,25 +120,35 @@ hildon_sort_dialog_class_init                   (HildonSortDialogClass *class)
     gobject_class->set_property = hildon_sort_dialog_set_property;
     gobject_class->get_property = hildon_sort_dialog_get_property;
     gobject_class->finalize     = (gpointer) hildon_sort_dialog_finalize;
-    
+
+    /**
+     * HildonSortDialog:sort-key:
+     *
+     * The currently active sort key.
+     */
     g_object_class_install_property (gobject_class, PROP_SORT_KEY,
         g_param_spec_int ("sort-key",
                           "Sort Key",
                           "The currently active sort key",
-              G_MININT,
-              G_MAXINT,
+                          G_MININT,
+                          G_MAXINT,
                           0, G_PARAM_READWRITE));
-    
+   
+    /**
+     * HildonSortDialog:sort-order:
+     *
+     * The sort order for the currently active sort key.
+     */
     g_object_class_install_property (gobject_class, PROP_SORT_ORDER,
         g_param_spec_enum ("sort-order",
                           "Sort Order",
                           "The current sorting order",
-              GTK_TYPE_SORT_TYPE,
+                          GTK_TYPE_SORT_TYPE,
                           GTK_SORT_ASCENDING,
-              G_PARAM_READWRITE));
+                          G_PARAM_READWRITE));
 }
 
-gint 
+static gint 
 hildon_sort_dialog_add_sort_key_with_sorting    (HildonSortDialog *dialog, 
                                                  const gchar *sort_key, 
                                                  gboolean sorting)

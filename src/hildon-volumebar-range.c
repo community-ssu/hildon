@@ -22,12 +22,10 @@
  *
  */
 
-/* 
- * @file hildon-volumebar-range.c
- *
- * This file contains the implementation of the HildonVolumebarRange.
- * This widget is an "workhorse" for #HildonVolumebar widget. 
- * It is not designed to be used as a standalone widget.
+/**
+ * SECTION:hildon-volumebar-range
+ * @short_description: This widget is an "workhorse" for #HildonVolumebar
+ * widget. It is not designed to be used as a standalone widget.
  *
  * Purpose of this widget is to act as an "container" for GtkScale
  * widget. #HildonVolumebarRange changes some event parameters so
@@ -95,6 +93,13 @@ enum
   PROP_LEVEL
 };
 
+/**
+ * hildon_volumebar_range_get_type:
+ *
+ * Initializes and returns the type of a hildon volumebar range.
+ *
+ * @Returns: GType of #HildonVolumebarRange
+ */
 GType G_GNUC_CONST
 hildon_volumebar_range_get_type                 (void)
 {
@@ -137,6 +142,11 @@ hildon_volumebar_range_class_init               (HildonVolumebarRangeClass *volu
     object_class->set_property = hildon_volumebar_range_set_property;
     object_class->get_property = hildon_volumebar_range_get_property; 
 
+    /**
+     * HildonVolumebarRange:level:
+     *
+     * Current volume level. 
+     */
     g_object_class_install_property (object_class,
             PROP_LEVEL,
             g_param_spec_double ("level",

@@ -114,6 +114,13 @@ enum {
 
 static guint                                    signals [LAST_SIGNAL] = { 0 };
 
+/**
+ * hildon_volumebar_get_type:
+ *
+ * Initializes and returns the type of a hildon volumebar.
+ *
+ * @Returns: GType of #HildonVolumebar
+ */
 GType G_GNUC_CONST 
 hildon_volumebar_get_type                       (void)
 {
@@ -191,7 +198,11 @@ hildon_volumebar_class_init                     (HildonVolumebarClass *volumebar
    gobject_class->set_property          = hildon_volumebar_set_property;
    gobject_class->get_property          = hildon_volumebar_get_property; 
 
-   /*This kind of property could be usefull in the gtkcontainer*/
+   /**
+    * HildonVolumebar:can-focus:
+    *
+    * The widget focusability.
+    */
    g_object_class_install_property (gobject_class,
            PROP_HILDON_FOCUSABLE, 
            g_param_spec_boolean ("can-focus",
@@ -200,6 +211,11 @@ hildon_volumebar_class_init                     (HildonVolumebarClass *volumebar
                TRUE,
                G_PARAM_CONSTRUCT | G_PARAM_READWRITE));
 
+   /**
+    * HildonVolumebar:has-mute:
+    *
+    * Whether the mute button is visibile.
+    */
    g_object_class_install_property (gobject_class,
            PROP_HILDON_HAS_MUTE, 
            g_param_spec_boolean ("has_mute",
@@ -208,6 +224,11 @@ hildon_volumebar_class_init                     (HildonVolumebarClass *volumebar
                TRUE,
                G_PARAM_CONSTRUCT | G_PARAM_READWRITE));
 
+   /**
+    * HildonVolumebar:level:
+    *
+    * Current volume level.
+    */
    g_object_class_install_property (gobject_class,
            PROP_HILDON_LEVEL,
            g_param_spec_double ("level",
@@ -218,6 +239,11 @@ hildon_volumebar_class_init                     (HildonVolumebarClass *volumebar
                50.0,
                G_PARAM_READWRITE));
 
+   /**
+    * HildonVolumebar:can-focus:
+    *
+    * Whether volume is muted.
+    */
    g_object_class_install_property (gobject_class,
            PROP_HILDON_MUTE,
            g_param_spec_boolean ("mute",
@@ -661,9 +687,9 @@ hildon_volumebar_key_press                      (GtkWidget *widget,
 void G_GNUC_INTERNAL
 hildon_volumebar_mute_toggled                   (HildonVolumebar * self)
 {
-    g_return_if_fail(HILDON_IS_VOLUMEBAR(self));
+    g_return_if_fail (HILDON_IS_VOLUMEBAR (self));
     /* FIXME Emit by id */
-    g_signal_emit_by_name(self, "mute_toggled");
+    g_signal_emit_by_name (self, "mute_toggled");
 }
 
 void G_GNUC_INTERNAL 
@@ -672,5 +698,5 @@ hildon_volumebar_level_change                   (HildonVolumebar *self)
     g_return_if_fail (HILDON_IS_VOLUMEBAR (self));
 
     /* FIXME Use numerical val, id */
-    g_signal_emit_by_name (GTK_WIDGET(self), "level_changed");
+    g_signal_emit_by_name (GTK_WIDGET (self), "level_changed");
 }

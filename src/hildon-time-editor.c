@@ -253,6 +253,13 @@ hildon_time_editor_inserted_text                (GtkEditable *editable,
                                                  gint *position,
                                                  gpointer user_data);
 
+/**
+ * hildon_time_editor_get_type:
+ *
+ * Initializes and returns the type of a hildon time editor.
+ *
+ * @Returns: GType of #HildonTimeEditor
+ */
 GType G_GNUC_CONST
 hildon_time_editor_get_type                     (void)
 {

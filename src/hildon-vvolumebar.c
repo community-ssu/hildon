@@ -80,6 +80,13 @@ static void
 hildon_vvolumebar_size_allocate                 (GtkWidget * widget,
                                                  GtkAllocation * allocation);
 
+/**
+ * hildon_vvolumebar_get_type:
+ *
+ * Initializes and returns the type of a hildon vvolumebar.
+ *
+ * @Returns: GType of #HildonVVolumebar
+ */
 GType G_GNUC_CONST
 hildon_vvolumebar_get_type                      (void)
 {

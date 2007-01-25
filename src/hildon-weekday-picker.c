@@ -97,6 +97,13 @@ enum
 
 static guint                                    signals [LAST_SIGNAL] = { 0 } ;
 
+/**
+ * hildon_weekday_picker_get_type:
+ *
+ * Initializes and returns the type of a hildon weekday picker.
+ *
+ * @Returns: GType of #HildonWeekdayPicker
+ */
 GType G_GNUC_CONST
 hildon_weekday_picker_get_type                  (void)
 {
