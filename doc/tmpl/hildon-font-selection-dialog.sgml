@@ -13,27 +13,6 @@ HildonFontSelectionDialog
 
 </para>
 
-<!-- ##### SECTION Stability_Level ##### -->
-
-
-<!-- ##### FUNCTION hildon_font_selection_dialog_get_font ##### -->
-<para>
-
-</para>
-
-@fsd: 
-@Returns: 
-
-
-<!-- ##### FUNCTION hildon_font_selection_dialog_set_font ##### -->
-<para>
-
-</para>
-
-@fsd: 
-@list: 
-
-
 <!-- ##### FUNCTION hildon_font_selection_dialog_new ##### -->
 <para>
 
@@ -41,24 +20,6 @@ HildonFontSelectionDialog
 
 @parent: 
 @title: 
-@Returns: 
-
-
-<!-- ##### FUNCTION hildon_font_selection_dialog_set_buffer ##### -->
-<para>
-
-</para>
-
-@fsd: 
-@buffer: 
-
-
-<!-- ##### FUNCTION hildon_font_selection_dialog_get_text_tag ##### -->
-<para>
-
-</para>
-
-@fsd: 
 @Returns: 
 
 

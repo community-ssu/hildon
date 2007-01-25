@@ -41,12 +41,7 @@ ALL_LINGUAS="en_GB"
 AC_SUBST(ALL_LINGUAS) 
 AM_GLIB_GNU_GETTEXT
 
-# Check for gtk-doc.
-#ifdef(GTK_DOC_CHECK, GTK_DOC_CHECK([1.0]))
-#GTK_DOC_CHECK([1.0])
-
-#AC_CHECK_PROG(DOXYGEN_FOUND, doxygen, yes, no)
-#AM_CONDITIONAL(HAVE_DOXYGEN, [test "$DOXYGEN_FOUND" = "yes"])
+GTK_DOC_CHECK([1.3])
 
 localedir=${datadir}/locale
 
@@ -127,7 +122,8 @@ AC_CONFIG_FILES([Makefile src/Makefile  \
                  pkgconfig/Makefile     \
                  examples/Makefile      \
                  pkgconfig/hildon.pc    \
-                 tests/Makefile])
+                 tests/Makefile         \
+                 doc/Makefile])
 
 AC_OUTPUT
 

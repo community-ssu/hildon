@@ -68,16 +68,6 @@ hildon_program_set_can_hibernate (program, TRUE);
 
 </para>
 
-<!-- ##### SECTION Stability_Level ##### -->
-
-
-<!-- ##### MACRO hildon_program_new ##### -->
-<para>
-
-</para>
-
-
-
 <!-- ##### FUNCTION hildon_program_get_instance ##### -->
 <para>
 

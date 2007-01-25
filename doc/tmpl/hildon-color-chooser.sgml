@@ -17,9 +17,6 @@ compatible widget capable of choosing a color.
 
 </para>
 
-<!-- ##### SECTION Stability_Level ##### -->
-
-
 <!-- ##### FUNCTION hildon_color_chooser_new ##### -->
 <para>
 
@@ -28,7 +25,7 @@ compatible widget capable of choosing a color.
 @Returns: 
 
 
-<!-- ##### FUNCTION hildon_color_chooser_get_color ##### -->
+<!-- ##### FUNCTION hildon_color_chooser_set_color ##### -->
 <para>
 
 </para>
@@ -37,7 +34,7 @@ compatible widget capable of choosing a color.
 @color: 
 
 
-<!-- ##### FUNCTION hildon_color_chooser_set_color ##### -->
+<!-- ##### FUNCTION hildon_color_chooser_get_color ##### -->
 <para>
 
 </para>

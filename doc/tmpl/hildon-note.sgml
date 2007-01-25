@@ -28,20 +28,6 @@ else
 
 </para>
 
-<!-- ##### SECTION Stability_Level ##### -->
-
-
-<!-- ##### ENUM HildonNoteType ##### -->
-<para>
-
-</para>
-
-@HILDON_NOTE_CONFIRMATION_TYPE: 
-@HILDON_NOTE_CONFIRMATION_BUTTON_TYPE: 
-@HILDON_NOTE_INFORMATION_TYPE: 
-@HILDON_NOTE_INFORMATION_THEME_TYPE: 
-@HILDON_NOTE_PROGRESSBAR_TYPE: 
-
 <!-- ##### FUNCTION hildon_note_new_confirmation ##### -->
 <para>
 
@@ -60,17 +46,6 @@ else
 @parent: 
 @description: 
 @Varargs: 
-@Returns: 
-
-
-<!-- ##### FUNCTION hildon_note_new_confirmation_with_icon_stock ##### -->
-<para>
-
-</para>
-
-@parent: 
-@description: 
-@stock_id: 
 @Returns: 
 
 
@@ -117,28 +92,6 @@ else
 @Returns: 
 
 
-<!-- ##### FUNCTION hildon_note_new_information_with_icon_stock ##### -->
-<para>
-
-</para>
-
-@parent: 
-@description: 
-@stock_id: 
-@Returns: 
-
-
-<!-- ##### FUNCTION hildon_note_new_information_with_icon_theme ##### -->
-<para>
-
-</para>
-
-@parent: 
-@description: 
-@icon: 
-@Returns: 
-
-
 <!-- ##### FUNCTION hildon_note_set_button_text ##### -->
 <para>
 
@@ -154,15 +107,21 @@ else
 </para>
 
 @note: 
+@text_ok: 
+@text_cancel: 
+<!-- # Unused Parameters # -->
 @textOk: 
 @textCancel: 
 
 
-<!-- ##### FUNCTION hildon_note_type_get_type ##### -->
+<!-- ##### ENUM HildonNoteType ##### -->
 <para>
 
 </para>
 
-@Returns: GType
-
+@HILDON_NOTE_CONFIRMATION_TYPE: 
+@HILDON_NOTE_CONFIRMATION_BUTTON_TYPE: 
+@HILDON_NOTE_INFORMATION_TYPE: 
+@HILDON_NOTE_INFORMATION_THEME_TYPE: 
+@HILDON_NOTE_PROGRESSBAR_TYPE: 
 

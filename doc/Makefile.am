@@ -1,62 +1,35 @@
-## Process this file with automake to produce Makefile.in
+MAINTAINERCLEANFILES 				= Makefile.in
 
-# This is a blank Makefile.am for using gtk-doc.
-# Copy this to your project's API docs directory and modify the variables to
-# suit your project. See the GTK+ Makefiles in gtk+/docs/reference for examples
-# of using the various options.
+DOC_MODULE					= hildon
 
-MAINTAINERCLEANFILES = Makefile.in
+DOC_MAIN_SGML_FILE				= $(DOC_MODULE)-docs.sgml
 
-# The name of the module, e.g. 'glib'.
-DOC_MODULE=hildon-libs
+SCAN_OPTIONS					=
 
-# The top-level SGML file. Change it if you want.
-DOC_MAIN_SGML_FILE=$(DOC_MODULE)-docs.sgml
+SCANOBJ_OPTIONS					=--type-init-func="gtk_type_init(0)"
 
-# Extra options to supply to gtkdoc-scan.
-SCAN_OPTIONS=
+DOC_SOURCE_DIR					=../src
 
-# Extra options to pass to gtkdoc-scanobj or gtkdoc-scangobj.
-SCANOBJ_OPTIONS=--type-init-func="gtk_type_init(0)"
+HFILE_GLOB					=$(top_srcdir)/src/*.h
 
-# The directory containing the source code. Relative to $(srcdir).
-# gtk-doc will search all .c & .h files beneath here for inline comments
-# documenting functions and macros.
-DOC_SOURCE_DIR=../hildon-widgets
+CFILE_GLOB					=$(top_srcdir)/src/*.c
 
-# Used for dependencies.
-HFILE_GLOB=$(top_srcdir)/hildon-widgets/*.h
-CFILE_GLOB=$(top_srcdir)/hildon-widgets/*.c
+IGNORE_HFILES 					= 
 
-# Header files to ignore when scanning.
-IGNORE_HFILES = \
-		hildon-app-private.h            \
-		hildon-grid-item-private.h      \
-		hildon-volumebar-private.h      \
-		hildon-volumebar-range.h        \
-		hildon-window-private.h
+INCLUDES 					= $(GTK_CFLAGS) -I$(top_srcdir)
 
-# CFLAGS and LDFLAGS for compiling scan program. Only needed if 
-# $(DOC_MODULE).types is non-empty.
-INCLUDES = $(GTK_CFLAGS) -I$(top_srcdir)
+GTKDOC_LIBS 					= $(GTK_LIBS) ../src/libhildon_@PACKAGE_VERSION_MAJOR@.la 
 
-GTKDOC_LIBS = $(GTK_LIBS) ../hildon-widgets/libhildonwidgets.la 
+MKDB_OPTIONS					=--sgml-mode --output-format=xml
 
-# Extra options to supply to gtkdoc-mkdb.
-MKDB_OPTIONS=--sgml-mode --output-format=xml
-
-# Extra SGML files that are included by $(DOC_MAIN_SGML_FILE).
-content_files= \
-	version.xml
+content_files					= version.xml
 
 version.xml: ../configure.ac
 	@echo $(VERSION) > version.xml
 
-# Images to copy into HTML directory.
-HTML_IMAGES =
+HTML_IMAGES 					=
 
-# Extra options to supply to gtkdoc-fixref.
-FIXXREF_OPTIONS=
+FIXXREF_OPTIONS					=
 
 include $(top_srcdir)/gtk-doc.make
 

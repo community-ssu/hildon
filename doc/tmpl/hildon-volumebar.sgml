@@ -14,9 +14,6 @@ HildonVolumebar
 #HildonHVolumebar,#HildonVVolumebar
 </para>
 
-<!-- ##### SECTION Stability_Level ##### -->
-
-
 <!-- ##### FUNCTION hildon_volumebar_get_level ##### -->
 <para>
 
@@ -51,14 +48,6 @@ HildonVolumebar
 
 @self: 
 @mute: 
-
-
-<!-- ##### FUNCTION hildon_volumebar_level_change ##### -->
-<para>
-
-</para>
-
-@self: 
 
 
 <!-- ##### FUNCTION hildon_volumebar_get_adjustment ##### -->

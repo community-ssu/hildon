@@ -40,15 +40,6 @@ gtk_widget_destroy( picker );
 #HildonTimeEditor
 </para>
 
-<!-- ##### SECTION Stability_Level ##### -->
-
-
-<!-- ##### STRUCT HildonTimePickerPrivate ##### -->
-<para>
-
-</para>
-
-
 <!-- ##### FUNCTION hildon_time_picker_new ##### -->
 <para>
 

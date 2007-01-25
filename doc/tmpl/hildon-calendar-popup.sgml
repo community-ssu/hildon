@@ -39,16 +39,6 @@ HildonCalendarPopup
 #GtkCalendar
 </para>
 
-<!-- ##### SECTION Stability_Level ##### -->
-
-
-<!-- ##### MACRO HILDON_CALENDAR_POPUP_TYPE ##### -->
-<para>
-
-</para>
-
-
-
 <!-- ##### FUNCTION hildon_calendar_popup_new ##### -->
 <para>
 

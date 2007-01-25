@@ -23,33 +23,6 @@ hildon_date_editor_get_date(date_editor, &amp;y, &amp;m, &amp;d);
 
 </para>
 
-<!-- ##### SECTION Stability_Level ##### -->
-
-
-<!-- ##### MACRO HILDON_DATE_EDITOR_TYPE ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### ENUM HildonDateEditorErrorType ##### -->
-<para>
-
-</para>
-
-@NO_ERROR: 
-@MAX_DAY: 
-@MAX_MONTH: 
-@MAX_YEAR: 
-@MIN_DAY: 
-@MIN_MONTH: 
-@MIN_YEAR: 
-@EMPTY_DAY: 
-@EMPTY_MONTH: 
-@EMPTY_YEAR: 
-@INVALID_DATE: 
-
 <!-- ##### FUNCTION hildon_date_editor_new ##### -->
 <para>
 

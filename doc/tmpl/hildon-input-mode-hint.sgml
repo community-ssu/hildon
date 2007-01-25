@@ -25,9 +25,6 @@ g_object_set(G_OBJECT(entry), "autocap", FALSE, NULL);
 
 </para>
 
-<!-- ##### SECTION Stability_Level ##### -->
-
-
 <!-- ##### MACRO HILDON_INPUT_MODE_HINT ##### -->
 <para>
 

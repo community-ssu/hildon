@@ -1,0 +1,66 @@
+#include                                        <src/hildon-banner.h>
+#include                                        <src/hildon-calendar-popup.h>
+#include                                        <src/hildon-caption.h>
+#include                                        <src/hildon-code-dialog.h>
+#include                                        <src/hildon-color-button.h>
+#include                                        <src/hildon-color-chooser-dialog.h>
+#include                                        <src/hildon-color-chooser.h>
+#include                                        <src/hildon-controlbar.h>
+#include                                        <src/hildon-date-editor.h>
+#include                                        <src/hildon-defines.h>
+#include                                        <src/hildon-helper.h>
+#include                                        <src/hildon-enum-types.h>
+#include                                        <src/hildon-find-toolbar.h>
+#include                                        <src/hildon-font-selection-dialog.h>
+#include                                        <src/hildon-get-password-dialog.h>
+#include                                        <src/hildon-hvolumebar.h>
+#include                                        <src/hildon-input-mode-hint.h>
+#include                                        <src/hildon-login-dialog.h>
+#include                                        <src/hildon-marshalers.h>
+#include                                        <src/hildon-note.h>
+#include                                        <src/hildon-number-editor.h>
+#include                                        <src/hildon-program.h>
+#include                                        <src/hildon-range-editor.h>
+#include                                        <src/hildon-seekbar.h>
+#include                                        <src/hildon-set-password-dialog.h>
+#include                                        <src/hildon-sort-dialog.h>
+#include                                        <src/hildon-sound.h>
+#include                                        <src/hildon-time-editor.h>
+#include                                        <src/hildon-time-picker.h>
+#include                                        <src/hildon-volumebar-range.h>
+#include                                        <src/hildon-volumebar.h>
+#include                                        <src/hildon-vvolumebar.h>
+#include                                        <src/hildon-weekday-picker.h>
+#include                                        <src/hildon-window.h>
+#include                                        <src/hildon-wizard-dialog.h>
+
+hildon_banner_get_type
+hildon_calendar_popup_get_type
+hildon_caption_get_type
+hildon_code_dialog_get_type
+hildon_color_button_get_type
+hildon_color_chooser_dialog_get_type
+hildon_color_chooser_get_type
+hildon_controlbar_get_type
+hildon_date_editor_get_type
+hildon_find_toolbar_get_type
+hildon_font_selection_dialog_get_type
+hildon_get_password_dialog_get_type
+hildon_hvolumebar_get_type
+hildon_login_dialog_get_type
+hildon_note_get_type
+hildon_number_editor_get_type
+hildon_program_get_type
+hildon_range_editor_get_type
+hildon_seekbar_get_type
+hildon_set_password_dialog_get_type
+hildon_sort_dialog_get_type
+hildon_time_editor_get_type
+hildon_time_picker_get_type
+hildon_volumebar_get_type
+hildon_volumebar_range_get_type
+hildon_vvolumebar_get_type
+hildon_weekday_picker_get_type
+hildon_window_get_type
+hildon_wizard_dialog_get_type
+hildon_window_get_type

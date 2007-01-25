@@ -192,9 +192,6 @@ void _testCaptionControl(GtkWidget *parent, gchar **help)
 
 </para>
 
-<!-- ##### SECTION Stability_Level ##### -->
-
-
 <!-- ##### ENUM HildonCaptionStatus ##### -->
 <para>
 
@@ -203,20 +200,13 @@ void _testCaptionControl(GtkWidget *parent, gchar **help)
 @HILDON_CAPTION_OPTIONAL: 
 @HILDON_CAPTION_MANDATORY: 
 
-<!-- ##### MACRO HILDON_TYPE_CAPTION_STATUS ##### -->
+<!-- ##### ENUM HildonCaptionIconPosition ##### -->
 <para>
 
 </para>
 
-
-
-<!-- ##### FUNCTION hildon_caption_get_type ##### -->
-<para>
-
-</para>
-
-@Returns: 
-
+@HILDON_CAPTION_POSITION_LEFT: 
+@HILDON_CAPTION_POSITION_RIGHT: 
 
 <!-- ##### FUNCTION hildon_caption_new ##### -->
 <para>
@@ -231,7 +221,7 @@ void _testCaptionControl(GtkWidget *parent, gchar **help)
 @Returns: 
 
 
-<!-- ##### FUNCTION hildon_caption_get_sizegroup ##### -->
+<!-- ##### FUNCTION hildon_caption_get_size_group ##### -->
 <para>
 
 </para>
@@ -240,7 +230,7 @@ void _testCaptionControl(GtkWidget *parent, gchar **help)
 @Returns: 
 
 
-<!-- ##### FUNCTION hildon_caption_set_sizegroup ##### -->
+<!-- ##### FUNCTION hildon_caption_set_size_group ##### -->
 <para>
 
 </para>
@@ -268,6 +258,24 @@ void _testCaptionControl(GtkWidget *parent, gchar **help)
 
 
 <!-- ##### FUNCTION hildon_caption_get_status ##### -->
+<para>
+
+</para>
+
+@caption: 
+@Returns: 
+
+
+<!-- ##### FUNCTION hildon_caption_set_icon_position ##### -->
+<para>
+
+</para>
+
+@caption: 
+@pos: 
+
+
+<!-- ##### FUNCTION hildon_caption_get_icon_position ##### -->
 <para>
 
 </para>
@@ -346,24 +354,6 @@ void _testCaptionControl(GtkWidget *parent, gchar **help)
 
 @caption: 
 @Returns: 
-
-
-<!-- ##### FUNCTION hildon_caption_get_control ##### -->
-<para>
-
-</para>
-
-@caption: 
-@Returns: 
-
-
-<!-- ##### FUNCTION hildon_caption_set_control ##### -->
-<para>
-
-</para>
-
-@caption: 
-@control: 
 
 
 <!-- ##### FUNCTION hildon_caption_set_child_expand ##### -->

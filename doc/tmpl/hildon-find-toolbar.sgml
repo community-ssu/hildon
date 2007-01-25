@@ -14,23 +14,6 @@ HildonFindToolbar
 
 </para>
 
-<!-- ##### SECTION Stability_Level ##### -->
-
-
-<!-- ##### MACRO HILDON_FIND_TOOLBARClass ##### -->
-<para>
-
-</para>
-
-@klass: 
-
-
-<!-- ##### STRUCT HildonFindToolbarPrivate ##### -->
-<para>
-
-</para>
-
-
 <!-- ##### FUNCTION hildon_find_toolbar_new ##### -->
 <para>
 Create a HildonFindToolbar without any preset GtkListStore.

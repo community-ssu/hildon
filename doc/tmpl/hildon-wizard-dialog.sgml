@@ -28,14 +28,15 @@ switching the page either forward or backward in the notebook.
 
 </para>
 
-<!-- ##### SECTION Stability_Level ##### -->
-
-
-<!-- ##### STRUCT HildonWizardDialogPrivate ##### -->
+<!-- ##### ENUM HildonWizardDialogResponse ##### -->
 <para>
 
 </para>
 
+@HILDON_WIZARD_DIALOG_CANCEL: 
+@HILDON_WIZARD_DIALOG_PREVIOUS: 
+@HILDON_WIZARD_DIALOG_NEXT: 
+@HILDON_WIZARD_DIALOG_FINISH: 
 
 <!-- ##### FUNCTION hildon_wizard_dialog_new ##### -->
 <para>

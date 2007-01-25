@@ -27,8 +27,35 @@ hildon_time_editor_get_time( editor, &amp;h, &amp;m, &amp;s );
 
 </para>
 
-<!-- ##### SECTION Stability_Level ##### -->
+<!-- ##### ENUM HildonDateTimeError ##### -->
+<para>
 
+</para>
+
+@HILDON_DATE_TIME_ERROR_NO_ERROR: 
+@HILDON_DATE_TIME_ERROR_MAX_HOURS: 
+@HILDON_DATE_TIME_ERROR_MAX_MINS: 
+@HILDON_DATE_TIME_ERROR_MAX_SECS: 
+@HILDON_DATE_TIME_ERROR_MAX_DAY: 
+@HILDON_DATE_TIME_ERROR_MAX_MONTH: 
+@HILDON_DATE_TIME_ERROR_MAX_YEAR: 
+@HILDON_DATE_TIME_ERROR_MIN_HOURS: 
+@HILDON_DATE_TIME_ERROR_MIN_MINS: 
+@HILDON_DATE_TIME_ERROR_MIN_SECS: 
+@HILDON_DATE_TIME_ERROR_MIN_DAY: 
+@HILDON_DATE_TIME_ERROR_MIN_MONTH: 
+@HILDON_DATE_TIME_ERROR_MIN_YEAR: 
+@HILDON_DATE_TIME_ERROR_EMPTY_HOURS: 
+@HILDON_DATE_TIME_ERROR_EMPTY_MINS: 
+@HILDON_DATE_TIME_ERROR_EMPTY_SECS: 
+@HILDON_DATE_TIME_ERROR_EMPTY_DAY: 
+@HILDON_DATE_TIME_ERROR_EMPTY_MONTH: 
+@HILDON_DATE_TIME_ERROR_EMPTY_YEAR: 
+@HILDON_DATE_TIME_ERROR_MIN_DURATION: 
+@HILDON_DATE_TIME_ERROR_MAX_DURATION: 
+@HILDON_DATE_TIME_ERROR_INVALID_CHAR: 
+@HILDON_DATE_TIME_ERROR_INVALID_DATE: 
+@HILDON_DATE_TIME_ERROR_INVALID_TIME: 
 
 <!-- ##### FUNCTION hildon_time_editor_new ##### -->
 <para>
@@ -58,24 +85,6 @@ hildon_time_editor_get_time( editor, &amp;h, &amp;m, &amp;s );
 @hours: 
 @minutes: 
 @seconds: 
-
-
-<!-- ##### FUNCTION hildon_time_editor_show_seconds ##### -->
-<para>
-
-</para>
-
-@editor: 
-@enable: 
-
-
-<!-- ##### FUNCTION hildon_time_editor_enable_duration_mode ##### -->
-<para>
-
-</para>
-
-@editor: 
-@enable: 
 
 
 <!-- ##### FUNCTION hildon_time_editor_set_duration_range ##### -->
@@ -204,5 +213,14 @@ hildon_time_editor_get_time( editor, &amp;h, &amp;m, &amp;s );
 
 @editor: 
 @Returns: 
+
+
+<!-- ##### FUNCTION hildon_time_editor_get_time_separators ##### -->
+<para>
+
+</para>
+
+@hm_sep_label: 
+@ms_sep_label: 
 
 

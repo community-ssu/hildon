@@ -26,9 +26,6 @@ hildon_controlbar_set_value( HILDON_CONTROLBAR(cbar), 6 );
 
 </para>
 
-<!-- ##### SECTION Stability_Level ##### -->
-
-
 <!-- ##### FUNCTION hildon_controlbar_new ##### -->
 <para>
 

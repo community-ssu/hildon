@@ -62,9 +62,6 @@ gtk_window_set_icon (GTK_WINDOW (window), icon_pixbuf);
 
 </para>
 
-<!-- ##### SECTION Stability_Level ##### -->
-
-
 <!-- ##### MACRO HILDON_WINDOW_LONG_PRESS_TIME ##### -->
 <para>
 
@@ -72,11 +69,14 @@ gtk_window_set_icon (GTK_WINDOW (window), icon_pixbuf);
 
 
 
-<!-- ##### STRUCT HildonWindowPrivate ##### -->
+<!-- ##### ENUM HildonWindowClipboardOperation ##### -->
 <para>
 
 </para>
 
+@HILDON_WINDOW_CO_COPY: 
+@HILDON_WINDOW_CO_CUT: 
+@HILDON_WINDOW_CO_PASTE: 
 
 <!-- ##### FUNCTION hildon_window_new ##### -->
 <para>

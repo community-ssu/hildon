@@ -78,7 +78,7 @@ sort_key_changed                                (GtkWidget *widget,
 static void 
 hildon_sort_dialog_finalize                     (GObject *object);
 
-gint 
+static gint 
 hildon_sort_dialog_add_sort_key_with_sorting    (HildonSortDialog *dialog, 
                                                  const gchar *sort_key, 
                                                  gboolean sorting);
@@ -268,7 +268,7 @@ hildon_sort_dialog_init                         (HildonSortDialog * dialog)
  * Returns: HildonSortDialog type
  */
 GType G_GNUC_CONST
-hildon_sort_dialog_get_type                     ()
+hildon_sort_dialog_get_type                     (void)
 {
     static GType dialog_type = 0;
 

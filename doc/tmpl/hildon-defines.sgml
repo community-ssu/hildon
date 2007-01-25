@@ -14,16 +14,6 @@ hildon-defines
 
 </para>
 
-<!-- ##### SECTION Stability_Level ##### -->
-
-
-<!-- ##### FUNCTION hildon_icon_sizes_init ##### -->
-<para>
-
-</para>
-
-
-
 <!-- ##### STRUCT HildonIconSizes ##### -->
 <para>
 
@@ -502,25 +492,10 @@ hildon-defines
 
 
 
-<!-- ##### FUNCTION hildon_gtk_widget_set_logical_font ##### -->
+<!-- ##### FUNCTION hildon_icon_sizes_init ##### -->
 <para>
 
 </para>
 
-@widget: 
-@logicalfontname: 
-@Returns: 
-
-
-<!-- ##### FUNCTION hildon_gtk_widget_set_logical_color ##### -->
-<para>
-
-</para>
-
-@widget: 
-@rcflags: 
-@state: 
-@logicalcolorname: 
-@Returns: 
 
 

@@ -14,15 +14,6 @@ HildonCodeDialog
 
 </para>
 
-<!-- ##### SECTION Stability_Level ##### -->
-
-
-<!-- ##### STRUCT HildonCodeDialogPrivate ##### -->
-<para>
-
-</para>
-
-
 <!-- ##### FUNCTION hildon_code_dialog_new ##### -->
 <para>
 

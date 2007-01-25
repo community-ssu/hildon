@@ -73,9 +73,6 @@ Here is an example for using HildonSortDialog.
 
 </para>
 
-<!-- ##### SECTION Stability_Level ##### -->
-
-
 <!-- ##### FUNCTION hildon_sort_dialog_new ##### -->
 <para>
 
@@ -122,6 +119,16 @@ Here is an example for using HildonSortDialog.
 
 
 <!-- ##### FUNCTION hildon_sort_dialog_add_sort_key ##### -->
+<para>
+
+</para>
+
+@dialog: 
+@sort_key: 
+@Returns: 
+
+
+<!-- ##### FUNCTION hildon_sort_dialog_add_sort_key_reversed ##### -->
 <para>
 
 </para>

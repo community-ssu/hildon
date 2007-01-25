@@ -31,6 +31,14 @@ fi
   }
 }
 
+(gtkdocize --version) < /dev/null > /dev/null 2>&1 || {
+  echo
+  echo "You must have gtk-doc installed to compile $PROJECT."
+  echo "Install the appropriate package for your distribution,"
+  echo "or get the source tarball at http://ftp.gnome.org/pub/GNOME/sources/gtk-doc/"
+  DIE=1
+}
+
 (automake --version) < /dev/null > /dev/null 2>&1 || {
   echo
   echo "**Error**: You must have \`automake' installed."
@@ -39,7 +47,6 @@ fi
   DIE=1
   NO_AUTOMAKE=yes
 }
-
 
 # if no automake, don't bother testing for aclocal
 test -n "$NO_AUTOMAKE" || (aclocal --version) < /dev/null > /dev/null 2>&1 || {
@@ -74,6 +81,9 @@ if grep "^AM_PROG_LIBTOOL" configure.ac >/dev/null; then
     libtoolize --force --copy
   fi
 fi
+
+echo "Running gtkdocize..."
+gtkdocize || exit $?
 
 echo "Running aclocal $ACLOCAL_FLAGS ..."
 aclocal $ACLOCAL_FLAGS || {

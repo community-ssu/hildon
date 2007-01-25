@@ -22,15 +22,6 @@ gtk_object_get( GTK_OBJECT(cbutton), "color", color );
 
 </para>
 
-<!-- ##### SECTION Stability_Level ##### -->
-
-
-<!-- ##### STRUCT HildonColorButtonPrivate ##### -->
-<para>
-
-</para>
-
-
 <!-- ##### FUNCTION hildon_color_button_new ##### -->
 <para>
 
@@ -54,6 +45,8 @@ gtk_object_get( GTK_OBJECT(cbutton), "color", color );
 </para>
 
 @button: 
+@color: 
+<!-- # Unused Parameters # -->
 @Returns: 
 
 

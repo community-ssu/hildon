@@ -21,16 +21,6 @@ HildonRangeEditor
 
 </para>
 
-<!-- ##### SECTION Stability_Level ##### -->
-
-
-<!-- ##### MACRO HILDON_RANGE_EDITOR_TYPE ##### -->
-<para>
-
-</para>
-
-
-
 <!-- ##### FUNCTION hildon_range_editor_new_with_separator ##### -->
 <para>
 
