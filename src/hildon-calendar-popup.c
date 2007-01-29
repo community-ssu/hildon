@@ -24,17 +24,16 @@
 
 /**
  * SECTION:hildon-calendar-popup
- * @shortdesc: CalendarPopup allows choosing a date from a popup calendar.
- * @longdesc: The Calendar popup is a dialog that contains a GtkCalendar 
- * widget. The pop-up is cancelled by pressing the ESC key.
- * </para><para>
- * 
- * @seealso: #HildonDateEditor, #HildonTimeEditor
- * 
+ * @short_description: CalendarPopup allows choosing a date from a popup calendar.
+ * @see_also: #HildonDateEditor, #HildonTimeEditor
+ *
  * HildonCalendarPopup is a dialog which contains a GtkCalendar.  It
  * also contains arrow buttons for changing the month/year. If an
  * entered date is invalid, an information message will be shown.
- * 
+ *
+ * <example>
+ * <title>HildonCalendarPopup example</title>
+ * <programlisting>
  * ...
  * gint y, m, d;
  * GtkWidget *parent, *popup;
@@ -56,6 +55,9 @@
  * }
  * gtk_widget_destroy(popup);
  * ...
+ * </programlisting>
+ * </example>
+ *
  */
 
 #ifdef                                          HAVE_CONFIG_H

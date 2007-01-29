@@ -22,7 +22,7 @@
  *
  */
 
-/*
+/**
  * SECTION:hildon-vvolumebar
  * @short_description: A widget that displays a vertical volume bar
  * @see_also: #HildonVolumebar, #HildonHVolumebar
