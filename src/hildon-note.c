@@ -756,8 +756,8 @@ hildon_note_set_button_text                     (HildonNote *note,
 /**
  * hildon_note_set_button_texts:
  * @note: a #HildonNote
- * @textOk: the new text of the default OK button
- * @textCancel: the new text of the default cancel button 
+ * @text_ok: the new text of the default OK button
+ * @text_cancel: the new text of the default cancel button 
  *
  * Sets the button texts to be used by this hildon_note widget.
  */

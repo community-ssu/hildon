@@ -1,4 +1,11 @@
-MAINTAINERCLEANFILES 				= Makefile.in
+MAINTAINERCLEANFILES 				= Makefile.in				\
+						  hildon-sections.txt			\
+						  hildon-undocumented.txt		\
+						  version.xml
+
+CLEANFILES					= version.xml
+
+
 
 DOC_MODULE					= hildon
 
@@ -47,12 +54,14 @@ INCLUDES 					= $(GTK_CFLAGS) -I$(top_srcdir)
 
 GTKDOC_LIBS 					= $(GTK_LIBS) ../src/libhildon_@PACKAGE_VERSION_MAJOR@.la 
 
-MKDB_OPTIONS					=--sgml-mode --ignore-files=parse
+MKDB_OPTIONS					=--sgml-mode
 
 content_files					= version.xml
 
 version.xml: ../configure.ac
 	@echo $(VERSION) > version.xml
+
+html: html-build.stamp
 
 HTML_IMAGES 					=
 

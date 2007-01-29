@@ -347,7 +347,7 @@ hildon_program_get_instance                     (void)
 
 /**
  * hildon_program_add_window:
- * @program: The @HildonProgram to which the window should be registered
+ * @self: The @HildonProgram to which the window should be registered
  * @window: A @HildonWindow to be added
  *
  * Registers a @HildonWindow as belonging to a given @HildonProgram. This
@@ -436,7 +436,7 @@ hildon_program_remove_window                    (HildonProgram *self,
  **/
 void
 hildon_program_set_can_hibernate                (HildonProgram *self, 
-                                                 gboolean killable)
+                                                 gboolean can_hibernate)
 {
     HildonProgramPrivate *priv;
     
@@ -445,13 +445,13 @@ hildon_program_set_can_hibernate                (HildonProgram *self,
     priv = HILDON_PROGRAM_GET_PRIVATE (self);
     g_assert (priv);
 
-    if (priv->killable != killable)
+    if (priv->killable != can_hibernate)
     {
         g_slist_foreach (priv->windows, 
-                (GFunc)hildon_window_set_can_hibernate_property, &killable);
+                (GFunc) hildon_window_set_can_hibernate_property, &can_hibernate);
     }
 
-    priv->killable = killable;
+    priv->killable = can_hibernate;
 }
 
 /**

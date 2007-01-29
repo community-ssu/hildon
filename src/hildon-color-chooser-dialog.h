@@ -71,7 +71,7 @@ hildon_color_chooser_dialog_set_color           (HildonColorChooserDialog *choos
                                                  GdkColor *color);
 
 void
-hildon_color_chooser_dialog_get_color           (HildonColorChooserDialog *chooser,
+hildon_color_chooser_dialog_get_color           (HildonColorChooserDialog *dialog,
                                                  GdkColor *color);
 
 #endif                                          /* __HILDON_COLOR_CHOOSER_DIALOG_H__ */

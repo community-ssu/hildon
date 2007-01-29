@@ -34,6 +34,12 @@
  * Response buttons are dimmed/undimmed automatically and the standard
  * icon is shown/hidden in response to page navigation. The notebook
  * widget provided by users contains the actual wizard pages.
+ * 
+ * Using of the API is very simple, it has only one function to create it
+ * and the rest of it is handled by developers notebook.
+ * Also the response is returned, either cancel or finnish.
+ * Next and previous buttons are handled by the wizard dialog it self, by
+ * switching the page either forward or backward in the notebook.
  */
 
 #ifdef                                          HAVE_CONFIG_H

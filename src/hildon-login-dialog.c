@@ -336,7 +336,7 @@ hildon_login_dialog_new                         (GtkWindow *parent)
  * @name: default username, NULL if unset
  * @password: default password, NULL if unset
  * 
- * Same as #hildon_login_dialog_new, but with a 
+ * Same as #hildon_login_dialog_new but with a 
  * default username and password.
  *
  * Returns: the newly created #HildonLoginDialog

@@ -34,6 +34,28 @@
  * HildonCalendarPopup is a dialog which contains a GtkCalendar.  It
  * also contains arrow buttons for changing the month/year. If an
  * entered date is invalid, an information message will be shown.
+ * 
+ * ...
+ * gint y, m, d;
+ * GtkWidget *parent, *popup;
+ * <!-- -->
+ * // get current date into &amp;y, &amp;m, &amp;d...
+ * <!-- -->
+ * gtk_widget_get_ancestor (GTK_WIDGET (data), GTK_TYPE_WINDOW);
+ * popup = hildon_calendar_popup_new (GTK_WINDOW (parent), y, m, d);
+ * <!-- -->
+ * result = gtk_dialog_run (GTK_DIALOG (popup));
+ * switch (result)
+ * {
+ *      case GTK_RESPONSE_OK:
+ *      case GTK_RESPONSE_ACCEPT:
+ * <!-- -->
+ * hildon_calendar_popup_get_date (HILDON_CALENDAR_POPUP (popup), &amp;y, &amp;m, &amp;d);
+ * <!-- -->
+ * // here set the new date
+ * }
+ * gtk_widget_destroy(popup);
+ * ...
  */
 
 #ifdef                                          HAVE_CONFIG_H

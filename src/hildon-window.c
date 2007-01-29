@@ -24,12 +24,52 @@
 
 /**
  * SECTION:hildon-window
- * @short_description: A basic container for other hildon widgets.
+ * @short_description: Widget representing a top-level window in the Hildon framework.
  *
- * A single #HildonProgram can contain many #HildonWindows. 
- * HildonWindow is a customized version of GtkWindow that handles
- * automatically some taks of the Hildon UI. A typicall hildon application
- * should contain at least one #HildonWindow.
+ * The HildonWindow is a GTK widget which represents a top-level
+ * window in the Hildon framework. It is derived from the GtkWindow
+ * and provides additional commodities specific to the Hildon
+ * framework.
+
+ * Among these windows in the Hildon framework can have a single menu
+ * attached, which is toggled with a hardware key or by tapping
+ * a custom button in the window frame. This menu can be set
+ * by providing a GtkMenu to the hildon_window_set_menu() method.
+
+ * Similarly a window in the Hildon framework can have several toolbars
+ * attached. These can be added to the HildonWindow with
+ * hildon_window_add_toolbar()..
+ * 
+ * <example>
+ * <title>Creating a HildonWindow</title>
+ * <programlisting>
+ * HildonWindow *window;
+ * GtkToolbar *toolbar;
+ * GtkMenu *menu;
+ * GdkPixbuf *icon_pixbuf;
+ * <!-- -->
+ * window = HILDON_WINDOW (hildon_window_new());
+ * <!-- -->
+ * toolbar = create_toolbar();
+ * <!-- -->
+ * menu = create_menu();
+ * <!-- -->
+ * icon_pixbuf = create_icon();
+ * <!-- -->
+ * hildon_window_set_menu (window, menu);
+ * <!-- -->
+ * hildon_window_add_toolbar (window, toolbar);
+ * <!-- -->
+ * // Can be used to set the window fullscreen
+ * gtk_window_fullscreen (GTK_WINDOW (window));
+ * <!-- -->
+ * // Used to trigger the blinking of the window's icon in the task navigator
+ * gtk_window_set_urgency_hint (GTK_WINDOW (window), TRUE);
+ * <!-- -->
+ * // Change the window's icon in the task navigator
+ * gtk_window_set_icon (GTK_WINDOW (window), icon_pixbuf);
+ * </programlisting>
+ * </example>
  *
  */
 

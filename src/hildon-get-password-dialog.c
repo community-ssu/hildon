@@ -30,6 +30,41 @@
  * HildonGetPasswordDialog prompts the user for a password.  It allows
  * inputting password, with an optional configurable label eg. for
  * showing a custom message. The maximum length of the password can be set.
+ *
+ * <example>
+ * <title>HildonGetPassword example</title>
+ * <programlisting>
+ * get_dialog =  HILDON_GET_PASSWORD_DIALOG (hildon_get_password_dialog_new (parent, FALSE));
+ * <!-- -->
+ * gtk_widget_show (GTK_WIDGET (get_dialog));
+ * <!-- -->
+ * i = gtk_dialog_run (GTK_DIALOG (get_dialog));
+ * <!-- -->
+ * pass = hildon_get_password_dialog_get_password (get_dialog);
+ * <!-- -->
+ * if (i == GTK_RESPONSE_OK &amp;&amp; (strcmp (pass, dialog.current_password) != 0))
+ * {
+ *      gtk_infoprint (GTK_WINDOW (parent), STR_PASSWORD_INCORRECT);
+ *      gtk_widget_set_sensitive (GTK_WIDGET (dialog.button2), FALSE);
+ *      gtk_widget_set_sensitive (GTK_WIDGET (dialog.button3), FALSE);
+ *      gtk_widget_set_sensitive (GTK_WIDGET (dialog.button4), FALSE);
+ * }
+ * <!-- -->
+ * else if (i == GTK_RESPONSE_OK)
+ * {   
+ *      gtk_widget_set_sensitive( GTK_WIDGET( dialog.button2 ), TRUE);
+ * }
+ * <!-- -->
+ * else
+ * {
+ *      gtk_widget_set_sensitive (GTK_WIDGET (dialog.button2), FALSE);
+ *      gtk_widget_set_sensitive (GTK_WIDGET (dialog.button3), FALSE);
+ *      gtk_widget_set_sensitive (GTK_WIDGET (dialog.button4), FALSE);
+ * }
+ * gtk_widget_destroy (GTK_WIDGET (get_dialog));
+ * }
+ * </programlisting>
+ * </example>
  */
 
 #ifdef                                          HAVE_CONFIG_H
@@ -566,7 +601,6 @@ hildon_get_password_dialog_set_caption          (HildonGetPasswordDialog *dialog
  * @dialog: the dialog
  * @max_characters: the maximum number of characters the password dialog
  * accepts
- * @new_caption: the text to be set as the caption label
  * 
  * sets the maximum number of characters allowed as the password
  */

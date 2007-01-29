@@ -31,6 +31,18 @@
  * HildonDateEditor is a widget with three entry fields (day, month,
  * year) and an icon (button): clicking on the icon opens up a
  * HildonCalendarPopup.
+ *
+ * <example>
+ * <programlisting>
+ * gint y, m, d;
+ * <!-- -->
+ * date_editor = hildon_date_editor_new ();
+ * <!-- -->
+ * hildon_date_editor_get_date(date_editor, &amp;y, &amp;m, &amp;d);
+ * <!-- -->
+ * </programlisting>
+ * </example>
+ *
  */
 
 #ifdef                                          HAVE_CONFIG_H
@@ -118,7 +130,7 @@ hildon_date_editor_entry_focus_out              (GtkWidget *widget,
 
 static gboolean
 hildon_date_editor_date_error                   (HildonDateEditor *editor, 
-					         HildonDateTimeError type);
+                                                 HildonDateTimeError type);
 
 static gboolean 
 hildon_date_editor_entry_focus_in               (GtkWidget *widget,
@@ -767,9 +779,10 @@ hildon_date_editor_set_date                     (HildonDateEditor *editor,
  * @month: month
  * @day: day
  *
- * Returns: the year, month, and day currently on the
- * date editor. You can pass NULL to any of the pointers if
+ * Gets the date represented by the date editor.
+ * You can pass NULL to any of the pointers if
  * you're not interested in obtaining it. 
+ *
  */
 void 
 hildon_date_editor_get_date                     (HildonDateEditor *date,

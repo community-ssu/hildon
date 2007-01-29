@@ -29,6 +29,58 @@
  * HildonSortDialog is used to define an order (ascending/descending)
  * and a field by which items are sorted in a list. The combo boxes
  * display the current value when the dialog is opened.
+ *
+ * <example>
+ * <title>An example for using HildonSortDialog</title>
+ * <programlisting>
+ * HildonSortDialog *sort_dialog = HILDON_SORT_DIALOG (hildon_sort_dialog_new (parent));
+ * <!-- -->
+ * gint response_id, add_sort_index;
+ * <!-- -->
+ * sort_by[0] = STR_SORT_BY_DATE;
+ * sort_by[1] = STR_SORT_BY_NAME;
+ * sort_by[2] = STR_SORT_BY_SIZE;
+ * sort_by[3] = NULL;
+ * <!-- -->
+ * sorting_order[0] = STR_SORTING_ORDER_ASCENDING;
+ * sorting_order[1] = STR_SORTING_ORDER_DESCENDING;
+ * sorting_order[2] = NULL;
+ * <!-- -->
+ * add_sort_index = hildon_sort_dialog_add_sort_key (sort_dialog, STR_SORT_BY_DATE);
+ * <!-- -->
+ * hildon_sort_dialog_add_sort_key (sort_dialog, STR_SORT_BY_NAME);
+ * <!-- -->
+ * hildon_sort_dialog_add_sort_key (sort_dialog, STR_SORT_BY_SIZE);
+ * <!-- -->
+ * if (dialog.first_time_clicked == TRUE)
+ * {
+ * 	hildon_sort_dialog_set_sort_key (sort_dialog, add_sort_index);
+ * }
+ * <!-- -->
+ * if (dialog.first_time_clicked == FALSE)
+ * {
+ * 	hildon_sort_dialog_set_sort_key (sort_dialog, dialog.sort_key);
+ * 	hildon_sort_dialog_set_sort_order (sort_dialog, dialog.sort_order);
+ * }
+ * <!-- -->
+ * gtk_widget_show (GTK_WIDGET (sort_dialog));
+ * <!-- -->
+ * response_id = gtk_dialog_run (GTK_DIALOG (sort_dialog));
+ * <!-- -->
+ * if (response_id == GTK_RESPONSE_OK)
+ * {
+ * 	dialog.sort_key = hildon_sort_dialog_get_sort_key (sort_dialog);
+ * <!-- -->
+ * 	gtk_label_set_text (GTK_LABEL (dialog.label1), sort_by [dialog.sort_key]);
+ * <!-- -->
+ * 	dialog.sort_order = hildon_sort_dialog_get_sort_order (sort_dialog);
+ * <!-- -->
+ * 	gtk_label_set_text (GTK_LABEL (dialog.label2), sorting_order [dialog.sort_order]);
+ * <!-- -->
+ * 	dialog.first_time_clicked = FALSE;
+ * }
+ * </programlisting>
+ * </example>
  */
 
 #ifdef                                          HAVE_CONFIG_H

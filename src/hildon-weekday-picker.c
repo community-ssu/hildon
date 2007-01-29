@@ -35,6 +35,22 @@
  * a certain event should take place, for example, which days a Calendar event 
  * should be repeated on. It is used in Calendar in the Repeat dialog, in Tasks 
  * in the Repeat dialog and in the Email set-up wizard.
+ * 
+ * <example>
+ * <title>HildonWeekdayPicker example</title>
+ * <programlisting>
+ * gint i;
+ * HildonWeekdayPicker *picker = hildon_weekday_picker_new ();
+ * <!-- -->
+ * hildon_weekday_picker_set_day (picker, i);
+ * hildon_weekday_picker_unset_day (picker, i);
+ * hildon_weekday_picker_toggle_day (picker, i);
+ * hildon_weekday_picker_set_all (picker);
+ * <!-- -->
+ * hildon_weekday_picker_unset_all( picker );
+ * </programlisting>
+ * </example>
+ *
  */  
  
  /* GDate numbers days from 1 to 7 and G_DATE_MONDAY is 1st day. However

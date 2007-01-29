@@ -30,6 +30,16 @@
  * #HildonControlbar is a horizontally positioned range widget that is
  * visually divided into blocks and supports setting a minimum and
  * maximum value for the range.
+ * 
+ * <example>
+ * <title>HildonControlbar example</title>
+ * <programlisting>
+ * GtkWidget *cbar = hildon_controlbar_new();
+ * hildon_controlbar_set_max (HILDON_CONTROLBAR (cbar), 12);
+ * hildon_controlbar_set_value (HILDON_CONTROLBAR (cbar), 6);
+ * </programlisting>
+ * </example>
+ * 
  */
 
 #ifdef                                          HAVE_CONFIG_H

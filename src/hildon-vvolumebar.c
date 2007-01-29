@@ -30,6 +30,17 @@
  * #HildonVVolumebar is a subclass of #HildonVolumebar.  It displays a
  * vertical volume bar that allows increasing or decreasing volume
  * within a predefined range, and muting when users click the mute icon.
+ * 
+ * Here is an example that creates a vertical volume bar and connects
+ * both its signals.
+ * <example>
+ * <title>HildonVVolumebar example</title>
+ * <programlisting>
+ * GtkWidget *volbar = hildon_vvolumebar_new ();
+ * g_signal_connect (G_OBJECT (volbar), "mute_toggled", G_CALLBACK (mute_toggle), NULL);
+ * g_signal_connect (G_OBJECT (volbar), "level_changed", G_CALLBACK (level_change), NULL);
+ * </programlisting>
+ * </example>
  */
 
 #ifdef                                          HAVE_CONFIG_H

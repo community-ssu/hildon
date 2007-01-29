@@ -31,6 +31,18 @@
  * The selected color is shown in the button.
  * The selected color is a property of the button.
  * The property name is "color" and its type is GtkColor.
+ * 
+ * <example>
+ * <title>HildonColorButton example</title>
+ * <programlisting>
+ * HildonColorButton *cbutton;
+ * GtkColor *color;
+ * <!-- -->
+ * cbutton = hildon_color_button_new();
+ * gtk_object_get( GTK_OBJECT(cbutton), "color", color );
+ * </programlisting>
+ * </example>
+ * 
  */
 
 #ifdef                                          HAVE_CONFIG_H

@@ -69,8 +69,8 @@ hildon_login_dialog_new                         (GtkWindow *parent);
 
 GtkWidget*
 hildon_login_dialog_new_with_default            (GtkWindow *parent,
-                                                 const gchar *username,
-                                                 const gchar *pass);
+                                                 const gchar *name,
+                                                 const gchar *password);
 
 const gchar*
 hildon_login_dialog_get_username                (HildonLoginDialog *dialog);

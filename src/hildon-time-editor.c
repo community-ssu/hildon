@@ -33,6 +33,21 @@
  * amount of time up to 99 hours.  It consists of entries for hours,
  * minutes and seconds, and pm/am indicator as well as a button which
  * popups a #HildonTimePicker dialog.
+ *
+ * <example>
+ * <title>HildonTimePicker example</title>
+ * <programlisting>
+ * <!-- -->
+ * editor = hildon_time_editor_new ();
+ * hildon_time_editor_set_time (editor, h, m, s);
+ * <!-- -->
+ * gtk_box_pack_start (..., editor)
+ * <!-- -->
+ * hildon_time_editor_get_time (editor, &amp;h, &amp;m, &amp;s);
+ * <!-- -->
+ * </programlisting>
+ * </example>
+ *
  */
 
 #ifdef                                          HAVE_CONFIG_H
@@ -695,7 +710,6 @@ hildon_time_editor_finalize                     (GObject *obj_self)
 
 /**
  * hildon_time_editor_get_time_separators:
- * @editor: the #HildonTimeEditor
  * @hm_sep_label: the label that will show the hour:minutes separator
  * @ms_sep_label: the label that will show the minutes:seconds separator
  *
@@ -1857,7 +1871,7 @@ convert_to_24h                                  (guint *h,
 /**
  * hildon_time_editor_set_show_hours:
  * @editor: The #HildonTimeEditor.
- * @enable: Enable or disable showing of hours.
+ * @show_hours: Enable or disable showing of hours.
  *
  * This function shows or hides the hours field.
  *
@@ -1891,7 +1905,7 @@ hildon_time_editor_set_show_hours               (HildonTimeEditor *editor,
 
 /**
  * hildon_time_editor_get_show_hours:
- * @self: the @HildonTimeEditor widget.
+ * @editor: the @HildonTimeEditor widget.
  *
  * This function returns a boolean indicating the visibility of
  * hours in the @HildonTimeEditor
