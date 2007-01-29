@@ -30,6 +30,15 @@
  * The #HildonHVolumebar widget displays a horizontal volume bar that allows
  * increasing or decreasing volume within a pre-defined range, and includes 
  * a mute icon which users can click to mute the sound.
+ * 
+ * <example>
+ * <programlisting>
+ * GtkWidget *volbar = hildon_hvolumebar_new ();
+ * g_signal_connect (G_OBJECT(volbar), "mute_toggled", G_CALLBACK(mute_toggle), NULL);
+ * g_signal_connect (G_OBJECT(volbar), "level_changed", G_CALLBACK(level_change), NULL);
+ * </programlisting>
+ * </example>
+ *
  */
 
 #include                                        "hildon-hvolumebar.h"

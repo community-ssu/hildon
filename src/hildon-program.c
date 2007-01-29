@@ -24,10 +24,55 @@
 
 /**
  * SECTION:hildon-program
- * @short_description: An object used to control a hildon program.
+ * @short_description: An object that represents an application running in the Hildon framework.
  *
- * HildonProgram is not a widget itself nor a container. HildonProgram can 
- * contain one or more @HildonWindow. 
+ * The HildonProgram is an object used to represent an application running
+ * in the Hildon framework.
+ * 
+ * Such an application is thought to have one or more HildonWindow. These
+ * shall be registered to the HildonProgram with hildon_program_add_window,
+ * and can be unregistered similarly with hildon_program_remove_window.
+ * 
+ * The HildonProgram provides the programmer with commodities such
+ * as applying a common toolbar and menu to all the HildonWindow
+ * registered to it. This is done with hildon_program_set_common_menu()
+ * and hildon_program_set_common_toolbar().
+ * 
+ * The HildonProgram is also used to apply program-wide properties that
+ * are specific to the Hildon framework. For instance
+ * hildon_program_set_can_hibernate() sets whether or not an application
+ * can be set to hibernate by the Hildon task navigator, in situations of
+ * low memory.
+ * 
+ * <example>
+ * <programlisting>
+ * HildonProgram *program;
+ * HildonWindow *first_window;
+ * HildonWindow *second_window;
+ * GtkToolbar *common_toolbar, *window_specific_toolbar;
+ * GtkMenu *menu;
+ * <!-- -->
+ * program = HILDON_PROGRAM (hildon_program_new ());
+ * <!-- -->
+ * window1 = HILDON_WINDOW (hildon_window_new ());
+ * window2 = HILDON_WINDOW (hildon_window_new ());
+ * <!-- -->
+ * common_toolbar = create_common_toolbar ();
+ * window_specific_toolbar = create_window_specific_toolbar ();
+ * <!-- -->
+ * menu = create_menu ();
+ * <!-- -->
+ * hildon_program_add (program, window1);
+ * hildon_program_add (program, window2);
+ * <!-- -->
+ * hildon_program_set_common_menu (program, menu);
+ * <!-- -->
+ * hildon_program_set_common_toolbar (program, common_toolbar);
+ * hildon_window_add_toolbar (first_window, window_specific_toolbar);
+ * <!-- -->
+ * hildon_program_set_can_hibernate (program, TRUE);
+ * </programlisting>
+ * </example>
  */
 
 #ifdef                                          HAVE_CONFIG_H

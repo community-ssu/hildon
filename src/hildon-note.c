@@ -30,6 +30,22 @@
  * A simple note contains an information text and an OK button to be
  * pressed.  Additional features such as progress bars or animation can
  * also be included. 
+ * 
+ * <example>
+ * <title>HildonNote example</title>
+ * <programlisting>
+ * <!-- -->
+ * hildon_note_new_confirmation (window, "Confirmation message...");
+ * <!-- -->
+ * i = gtk_dialog_run (GTK_DIALOG (note));
+ * gtk_widget_destroy (GTK_WIDGET (note));
+ * <!-- -->
+ * if (i == GTK_RESPONSE_OK)
+ *      gtk_infoprint (window, "User pressed 'OK' button'");
+ * else
+ *      gtk_infoprint (window, "User pressed 'Cancel' button" );
+ * </programlisting>
+ * </example>
  */
 
 #ifdef                                          HAVE_CONFIG_H

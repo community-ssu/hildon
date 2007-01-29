@@ -29,6 +29,14 @@
  * HildonNumberEditor is used to enter a number from a specific range. 
  * There are two buttons to scroll the value in number field. 
  * Manual input is also possible.
+ *
+ * <example>
+ * <title>HildonNumberEditor example</title>
+ * <programlisting>
+ * number_editor = hildon_number_editor_new (-250, 500);
+ * hildon_number_editor_set_range (number_editor, 0, 100);
+ * </programlisting>
+ * </example>
  */
 
 #ifdef                                          HAVE_CONFIG_H

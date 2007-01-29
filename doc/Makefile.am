@@ -3,10 +3,6 @@ MAINTAINERCLEANFILES 				= Makefile.in				\
 						  hildon-undocumented.txt		\
 						  version.xml
 
-CLEANFILES					= version.xml
-
-
-
 DOC_MODULE					= hildon
 
 DOC_MAIN_SGML_FILE				= $(DOC_MODULE)-docs.sgml

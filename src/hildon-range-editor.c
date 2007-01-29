@@ -29,6 +29,14 @@
  * HidlonRangeEditor allows entering a pair of integers, e.g. the lower
  * and higher bounds of a range. A minimum and maximum can also be set
  * for the bounds.
+ * 
+ * <example>
+ * <programlisting>
+ *      range_editor = hildon_range_editor_new ();
+ *      hildon_range_editor_set_limits (editor, start, end );
+ *      hildon_range_editor_get_range (editor, &amp;start, &amp;end);
+ * </programlisting>
+ * </example>
  */
 
 #ifdef                                          HAVE_CONFIG_H
