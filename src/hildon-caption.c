@@ -48,6 +48,7 @@
 #include                                        <gtk/gtkoptionmenu.h>
 #include                                        <gtk/gtkmarshal.h>
 #include                                        <gtk/gtkalignment.h>
+#include                                        <gtk/gtkcheckbutton.h>
 #include                                        <stdio.h>
 #include                                        <string.h>
 #include                                        "hildon-defines.h"
@@ -708,8 +709,8 @@ static void
 hildon_caption_size_allocate                    (GtkWidget *widget,
                                                  GtkAllocation *allocation)
 {
-    GtkAllocation allocA;
-    GtkAllocation allocB;
+    GtkAllocation child_alloc;
+    GtkAllocation caption_alloc;
     GtkRequisition req;
     GtkWidget *child = NULL;
     HildonCaptionPrivate *priv = NULL;
@@ -728,50 +729,53 @@ hildon_caption_size_allocate                    (GtkWidget *widget,
 
     child = GTK_BIN (widget)->child;
 
-    widget->allocation = *allocation;  
+    widget->allocation = *allocation;
     gtk_widget_get_child_requisition (priv->caption_area, &req);
 
-    allocA.height = allocB.height = allocation->height;
-    allocA.width  = allocB.width  = allocation->width;
-    allocA.x = allocB.x = allocB.y = allocA.y = 0;
+    child_alloc.height = caption_alloc.height = allocation->height;
+    child_alloc.width  = caption_alloc.width  = allocation->width;
+    child_alloc.x = caption_alloc.x = caption_alloc.y = child_alloc.y = 0;
 
     /* Center the captioned widget */
-    if (allocA.width > req.width + HILDON_CAPTION_SPACING)
+    if (child_alloc.width > req.width + HILDON_CAPTION_SPACING)
     {
-        allocA.x += req.width + HILDON_CAPTION_SPACING * 2;
-        allocB.width = req.width;
+        child_alloc.x += req.width + HILDON_CAPTION_SPACING * 2;
+        caption_alloc.width = req.width;
     }
 
     /* Leave at least the space of the HILDON_CAPTION_SPACING in the left */
-    allocB.x = HILDON_CAPTION_SPACING;
+    caption_alloc.x = HILDON_CAPTION_SPACING;
 
     /* Leave room for the other drawable parts of the caption control */
-    allocA.width -= req.width + HILDON_CAPTION_SPACING * 2;
+    child_alloc.width -= req.width + HILDON_CAPTION_SPACING * 2;
 
     /* Give the child at least its minimum requisition, unless it is expandable */
     if (! priv->expand && child && GTK_WIDGET_VISIBLE(child))
     {
         GtkRequisition child_req;
         gtk_widget_get_child_requisition (child, &child_req);
-        allocA.width  = MIN (allocA.width,  child_req.width);
-        allocA.height = MIN (allocA.height, child_req.height);
+        child_alloc.width  = MIN (child_alloc.width,  child_req.width);
+        child_alloc.height = MIN (child_alloc.height, child_req.height);
+	/* Center the child */
+	child_alloc.y = (allocation->height - child_alloc.height -
+			 2 * GTK_CONTAINER (widget)->border_width)/2;
     }
 
     /* Ensure there are no negative dimensions */
-    if (allocA.width < 0)
+    if (child_alloc.width < 0)
     {
-        allocB.width = req.width + allocA.width;
-        allocA.width = 0;
-        allocB.width = MAX (allocB.width, 0);
+        caption_alloc.width = req.width + child_alloc.width;
+        child_alloc.width = 0;
+        caption_alloc.width = MAX (caption_alloc.width, 0);
     }
 
-    allocA.height = MAX (allocA.height, 0);
-    allocB.height = MAX (allocB.height, 0);
+    child_alloc.height = MAX (child_alloc.height, 0);
+    caption_alloc.height = MAX (caption_alloc.height, 0);
 
     if (child && GTK_WIDGET_VISIBLE(child) )
-        gtk_widget_size_allocate( child, &allocA );
+        gtk_widget_size_allocate (child, &child_alloc );
 
-    gtk_widget_size_allocate (priv->caption_area, &allocB);
+    gtk_widget_size_allocate (priv->caption_area, &caption_alloc);
 }
 
 static void 
@@ -870,6 +874,10 @@ hildon_caption_new                              (GtkSizeGroup *group,
             "icon", icon, 
             "status", flag,
             NULL);
+
+    /* Do not expand GtkCheckButton by default, we want to reduce its activation area */
+    if (GTK_IS_CHECK_BUTTON (child))
+      hildon_caption_set_child_expand (HILDON_CAPTION (widget), FALSE);
 
     return widget;
 }
