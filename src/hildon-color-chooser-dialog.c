@@ -23,6 +23,22 @@
  *
  */
 
+/**
+ * SECTION:hildon-color-chooser-dialog
+ * @short_description: A dialog used to select a color from HSV colorspace
+ * @see_also: #HildonColorButton
+ *
+ * HildonColorChooserDialog enables the user to 
+ * select an arbitrary color from a HSV colorspace.
+ * The color is stored in one of the predefined color 
+ * slots and can be reselected later on. 
+ *
+ * Additionally the user can choose one of the standard "factory"
+ * colors.
+ *
+ */
+
+
 #ifdef                                          HAVE_CONFIG_H
 #include                                        <config.h>
 #endif

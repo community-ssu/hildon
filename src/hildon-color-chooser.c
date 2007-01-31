@@ -23,6 +23,20 @@
  *
  */
 
+/**
+ * SECTION:hildon-color-chooser
+ * @short_description: A widget used to select a color from an HSV colorspace
+ * @see_also: #HildonColorChooserDialog
+ *
+ * HildonColorChooser is a widget that displays an HSV colorspace. 
+ * The user can manipulate the colorspace and easily select and shade of any color
+ * he wants. 
+ *
+ * Normally you should not need to use this widget directly. Using #HildonColorButton or
+ * #HildonColorChooserDialog is much more handy. 
+ * 
+ */
+
 #include                                        <gtk/gtk.h>
 #include                                        "hildon-color-chooser.h"
 #include                                        "hildon-color-chooser-private.h"
