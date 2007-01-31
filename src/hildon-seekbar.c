@@ -423,7 +423,7 @@ hildon_seekbar_get_fraction                     (HildonSeekbar *seekbar)
 {
     g_return_val_if_fail (HILDON_IS_SEEKBAR (seekbar), 0);
 
-    return osso_gtk_range_get_stream_position (GTK_RANGE(seekbar));
+    return gtk_range_get_fill_level (GTK_RANGE (seekbar));
 }
 
 /**
@@ -447,13 +447,13 @@ hildon_seekbar_set_fraction                     (HildonSeekbar *seekbar,
             fraction >= range->adjustment->lower);
 
     /* Set to show stream indicator. */
-    g_object_set (G_OBJECT (seekbar), "stream_indicator", TRUE, NULL);
+    g_object_set (G_OBJECT (seekbar), "show-fill-level", TRUE, NULL);
 
     fraction = CLAMP (fraction, range->adjustment->lower,
             range->adjustment->upper);
 
     /* Update stream position of range widget */
-    osso_gtk_range_set_stream_position (range, fraction);
+    gtk_range_set_fill_level (range, fraction);
 
     if (fraction < hildon_seekbar_get_position(seekbar))
         hildon_seekbar_set_position(seekbar, fraction);
@@ -504,7 +504,7 @@ hildon_seekbar_set_position                     (HildonSeekbar *seekbar,
     value = floor (adj->value);
     if (time != value) {
         value = (time < adj->upper) ? time : adj->upper;
-        if (value <= osso_gtk_range_get_stream_position (range)) {
+        if (value <= gtk_range_get_fill_level (range)) {
             adj->value = value;
             gtk_adjustment_value_changed (adj);
 

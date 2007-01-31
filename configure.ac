@@ -106,6 +106,12 @@ fi
 PKG_CHECK_MODULES(CHECK, check , [BUILD_TESTS="yes"], [BUILD_TESTS="no"])
 AM_CONDITIONAL(BUILD_TESTS, test "x$BUILD_TESTS" = "xyes")
 
+CFLAGS="$CFLAGS ${ASSERT_CFLAGS} -Wall -Wmissing-prototypes -Wmissing-declarations -Werror -Wno-format"
+# -Wno-format due to way translation string are done
+
+### enable MAEMO platform extensions
+CFLAGS="$CFLAGS -DMAEMO_CHANGES"
+
 # HILDON_OBJ_*
 # default vars for the examples
 # includes all the low-level flags
@@ -114,9 +120,6 @@ HILDON_OBJ_CFLAGS="\$(CFLAGS) \$(GTK_CFLAGS) \$(CHECK_CFLAGS) \$(GCONF_CFLAGS) -
 HILDON_OBJ_LIBS="\$(top_builddir)/src/libhildon_\$(PACKAGE_VERSION_MAJOR).la \$(GTK_LIBS) \$(GCONF_LIBS) \$(CHECK_LIBS)"
 AC_SUBST(HILDON_OBJ_CFLAGS)
 AC_SUBST(HILDON_OBJ_LIBS)
-
-CFLAGS="$CFLAGS ${ASSERT_CFLAGS} -Wall -Wmissing-prototypes -Wmissing-declarations -Werror -Wno-format"
-# -Wno-format due to way translation string are done
 
 AC_CONFIG_FILES([Makefile src/Makefile  \
                  pkgconfig/Makefile     \
