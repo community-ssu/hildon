@@ -1,3 +1,5 @@
+EXTRA_DIST					= gtk-doc.make
+
 MAINTAINERCLEANFILES 				= Makefile.in				\
 						  hildon-sections.txt			\
 						  hildon-undocumented.txt		\
@@ -63,5 +65,5 @@ HTML_IMAGES 					=
 
 FIXXREF_OPTIONS					=
 
-include $(top_srcdir)/gtk-doc.make
+include $(top_srcdir)/doc/gtk-doc.make
 

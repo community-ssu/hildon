@@ -11,7 +11,8 @@ noinst_PROGRAMS				= hildon-window-example 	\
 					  hildon-time-picker-example	\
 					  hildon-color-chooser-example	\
 					  hildon-color-button-example	\
-					  hildon-login-dialog-example
+					  hildon-login-dialog-example	\
+					  hildon-time-editor-example
 
 # HIldon window
 hildon_window_example_LDADD		= $(HILDON_OBJ_LIBS)
@@ -37,6 +38,11 @@ hildon_weekday_picker_example_SOURCES	= hildon-weekday-picker-example.c
 hildon_time_picker_example_LDADD	= $(HILDON_OBJ_LIBS)
 hildon_time_picker_example_CFLAGS	= $(HILDON_OBJ_CFLAGS)
 hildon_time_picker_example_SOURCES	= hildon-time-picker-example.c
+
+# Hildon time editor
+hildon_time_editor_example_LDADD	= $(HILDON_OBJ_LIBS)
+hildon_time_editor_example_CFLAGS	= $(HILDON_OBJ_CFLAGS)
+hildon_time_editor_example_SOURCES	= hildon-time-editor-example.c
 
 # Hildon sort dialog
 hildon_sort_dialog_example_LDADD	= $(HILDON_OBJ_LIBS)
