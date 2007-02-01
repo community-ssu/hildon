@@ -818,12 +818,12 @@ hildon_window_notify                            (GObject *gobject,
 {
     HildonWindow *window = HILDON_WINDOW (gobject);
 
-    if (strcmp (param->name, "title") == 0)
+    if (g_str_equal (param->name, "title"))
     {
 
         hildon_window_update_title (window);
     }
-    else if (strcmp (param->name, "is-topmost"))
+    else if (g_str_equal (param->name, "is-topmost"))
     {
         hildon_window_is_topmost_notify (window);
     }
@@ -1197,18 +1197,6 @@ hildon_window_window_state_event                (GtkWidget *widget,
         return FALSE;
     }
 }
-
-/*
-   static void 
-   hildon_window_title_notify (GObject *gobject,
-   GParamSpec *arg1,
-   gpointer user_data)
-   {
-   HildonWindow *window = HILDON_WINDOW (gobject);
-
-   hildon_window_update_title (window);
-
-   }*/
 
 /*
  * The menu popuping needs a menu popup-function
