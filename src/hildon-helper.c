@@ -234,6 +234,27 @@ hildon_helper_set_logical_font                  (GtkWidget *widget,
 }
 
 /**
+ * hildon_helper_set_insensitive_message
+ * @widget : A @GtkWidget to assign a banner to
+ * @message: A message to display to the user
+ *
+ * This function assigns an insensitive message to a @widget. When the @widget is 
+ * in an insensitive state and the user activates it, the @message will be displayed
+ * using a standard @HildonBanner. 
+ *
+ **/
+void
+hildon_helper_set_insensitive_message           (GtkWidget *widget,
+                                                 const gchar *message)
+{
+    g_return_if_fail (GTK_IS_WIDGET (widget));
+    g_return_if_fail (message != NULL);
+
+    g_warning ("FIXME: I'm not implemented yet!");
+}
+
+
+/**
  * hildon_helper_set_logical_color:
  * @widget : A @GtkWidget to assign this logical font for.
  * @rcflags : @GtkRcFlags enumeration defining whether to assign to FG, BG, TEXT or BASE style.

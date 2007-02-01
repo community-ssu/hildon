@@ -44,6 +44,10 @@ hildon_helper_set_logical_color                 (GtkWidget *widget,
 gboolean 
 hildon_helper_event_button_is_finger            (GdkEventButton *event);
 
+void
+hildon_helper_set_insensitive_message           (GtkWidget *widget,
+                                                 const gchar *message);
+
 G_END_DECLS
 
 #endif                                          /* HILDON_HELPER_H */
