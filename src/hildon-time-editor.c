@@ -511,7 +511,7 @@ hildon_time_editor_init                         (HildonTimeEditor *editor)
     priv->ampm_button    = gtk_button_new();
     priv->skipper        = FALSE;
 
-    icon = gtk_image_new_from_icon_name (ICON_NAME, HILDON_ICON_SIZE_WIDG);
+    icon = gtk_image_new_from_icon_name (ICON_NAME, HILDON_ICON_SIZE_SMALL);
     hbox = gtk_hbox_new (FALSE, 0);
 
     GTK_WIDGET_SET_FLAGS (editor, GTK_NO_WINDOW);

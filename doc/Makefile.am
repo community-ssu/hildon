@@ -1,5 +1,3 @@
-EXTRA_DIST					= gtk-doc.make
-
 MAINTAINERCLEANFILES 				= Makefile.in				\
 						  hildon-sections.txt			\
 						  hildon-undocumented.txt		\

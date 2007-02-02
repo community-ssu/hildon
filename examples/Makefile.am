@@ -12,7 +12,8 @@ noinst_PROGRAMS				= hildon-window-example 	\
 					  hildon-color-chooser-example	\
 					  hildon-color-button-example	\
 					  hildon-login-dialog-example	\
-					  hildon-time-editor-example
+					  hildon-time-editor-example	\
+					  hildon-icon-sizes-example
 
 # HIldon window
 hildon_window_example_LDADD		= $(HILDON_OBJ_LIBS)
@@ -73,5 +74,10 @@ hildon_color_button_example_SOURCES	= hildon-color-button-example.c
 hildon_login_dialog_example_LDADD	= $(HILDON_OBJ_LIBS)
 hildon_login_dialog_example_CFLAGS	= $(HILDON_OBJ_CFLAGS)
 hildon_login_dialog_example_SOURCES	= hildon-login-dialog-example.c
+
+# HIldon window
+hildon_icon_sizes_example_LDADD		= $(HILDON_OBJ_LIBS)
+hildon_icon_sizes_example_CFLAGS	= $(HILDON_OBJ_CFLAGS)
+hildon_icon_sizes_example_SOURCES	= hildon-icon-sizes-example.c
 
 endif

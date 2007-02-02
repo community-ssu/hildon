@@ -245,7 +245,7 @@ hildon_wizard_dialog_init                       (HildonWizardDialog *wizard_dial
     gtk_dialog_set_has_separator (dialog, FALSE);
 
     priv->box = GTK_BOX (gtk_hbox_new (FALSE, 0));
-    priv->image = gtk_image_new_from_icon_name ("qgn_widg_wizard", HILDON_ICON_SIZE_WIDG_WIZARD);
+    priv->image = gtk_image_new_from_icon_name ("qgn_widg_wizard", HILDON_ICON_SIZE_WIZARD);
 
     /* Default values for user provided properties */
     priv->notebook = NULL;
