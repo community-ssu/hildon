@@ -24,17 +24,14 @@
 
 /**
  * SECTION:hildon-find-toolbar
- * @short_description: A special toolbar to be used with HildonWindow.
+ * @short_description: A toolbar with a search field
  * @see_also: #HildonWindow
  *
- * HildonFindToolbar is a predefined toolbar for text searching purpose. 
- * It contains a GtkListStore which has the text items that the user has 
- * searched. But once the application is terminated, or HildonFindToolbar 
- * is trashed. Programmer is responsible for getting the GtkListStore through 
- * property "list", if he/she wants to use the information in the future.
- * And through the same property, programmer is able to set the GtkListStore. 
- * Note, once the search button is pressed, string in the GtkComboxEntry is 
- * automatically added to the existing model, unless it is empty.
+ * HildonFindToolbar is a toolbar that contains a search entry and a dropdown
+ * list with previously searched strings. The list is represented using a 
+ * #GtkListStore and can be accesed using a property 'list'. Entries are added
+ * automatically to the list when the search button is pressed.
+ *
  */    
 
 #ifdef                                          HAVE_CONFIG_H
