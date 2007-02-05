@@ -38,6 +38,7 @@
 
 #include                                        <gtk/gtk.h>
 #include                                        "hildon-helper.h"
+#include                                        "hildon-banner.h"
 
 #define                                         HILDON_FINGER_PRESSURE_THRESHOLD 0.4
 
@@ -233,6 +234,15 @@ hildon_helper_set_logical_font                  (GtkWidget *widget,
     return signum;
 }
 
+static void
+show_insensitive_message                        (GtkWidget *widget, 
+                                                 const gchar *message)
+{
+    g_assert (GTK_IS_WIDGET (widget));
+
+    hildon_banner_show_information (widget, NULL, message);
+}
+
 /**
  * hildon_helper_set_insensitive_message
  * @widget : A @GtkWidget to assign a banner to
@@ -250,7 +260,14 @@ hildon_helper_set_insensitive_message           (GtkWidget *widget,
     g_return_if_fail (GTK_IS_WIDGET (widget));
     g_return_if_fail (message != NULL);
 
-    g_warning ("FIXME: I'm not implemented yet!");
+    g_signal_handlers_disconnect_matched (G_OBJECT (widget), G_SIGNAL_MATCH_FUNC,
+					  0, 0, NULL,
+                      G_CALLBACK (show_insensitive_message), NULL);
+
+    if (message != NULL) {
+        g_signal_connect (G_OBJECT (widget), "insensitive-press",
+                G_CALLBACK (show_insensitive_message), (gpointer) message);
+    }
 }
 
 
