@@ -393,6 +393,7 @@ hildon_banner_set_property                      (GObject *object,
             window = g_value_get_object (value);         
 
             gtk_window_set_transient_for (GTK_WINDOW (object), (GtkWindow *) window);
+            priv->parent = (GtkWindow *) window;
 
             if (window)
                 gtk_window_set_destroy_with_parent (GTK_WINDOW (object), TRUE);
@@ -437,7 +438,7 @@ hildon_banner_destroy                           (GtkObject *object)
     g_assert (priv);
 
     HildonBanner *self;
-    GObject *parent_window;
+    GObject *parent_window = (GObject *) priv->parent;
 
     g_assert (HILDON_IS_BANNER (object));
     self = HILDON_BANNER (object);
@@ -449,8 +450,9 @@ hildon_banner_destroy                           (GtkObject *object)
     }
 
     /* Remove the data from parent window for timed banners. Those hold reference */
-    if (priv->is_timed && (parent_window = (GObject *) gtk_window_get_transient_for (GTK_WINDOW (object))) != NULL)
+    if (priv->is_timed && parent_window != NULL) {
         g_object_set_qdata (parent_window, hildon_banner_timed_quark (), NULL);
+    }
 
     (void) hildon_banner_clear_timeout (self);
 
@@ -463,12 +465,11 @@ static GObject*
 hildon_banner_real_get_instance                 (GObject *window, 
                                                  gboolean timed)
 {
-    g_assert (GTK_IS_WINDOW (window));
-
     if (timed) {
         /* If we have a parent window, the previous instance is stored there */
-        if (window) 
+        if (window) {
             return g_object_get_qdata(window, hildon_banner_timed_quark ());
+        }
 
         /* System notification instance is stored into global pointer */
         return (GObject *) global_timed_banner;
@@ -679,7 +680,9 @@ static void
 hildon_banner_init                              (HildonBanner *self)
 {
     HildonBannerPrivate *priv = HILDON_BANNER_GET_PRIVATE (self);
-    g_assert (self);
+    g_assert (priv);
+
+    priv->parent = NULL;
 
     /* Initialize the common layout inside banner */
     priv->layout = gtk_hbox_new (FALSE, HILDON_MARGIN_DEFAULT);
@@ -709,7 +712,6 @@ hildon_banner_ensure_child                      (HildonBanner *self,
     va_list args;
     HildonBannerPrivate *priv = HILDON_BANNER_GET_PRIVATE (self);
 
-    g_assert (HILDON_IS_BANNER (self));
     g_assert (priv);
 
     widget = priv->main_item;
@@ -725,7 +727,7 @@ hildon_banner_ensure_child                      (HildonBanner *self,
         /* We have to abandon old content widget */
         if (widget)
             gtk_container_remove (GTK_CONTAINER (priv->layout), widget);
-
+        
         /* Use user provided widget or create a new one */
         priv->main_item = widget = user_widget ? 
             user_widget : GTK_WIDGET (g_object_new_valist(type, first_property, args));
@@ -745,7 +747,6 @@ hildon_banner_get_instance_for_widget           (GtkWidget *widget,
 {
     GtkWidget *window;
 
-    g_return_val_if_fail (GTK_IS_WIDGET (widget), NULL);
     window = widget ? gtk_widget_get_ancestor (widget, GTK_TYPE_WINDOW) : NULL;
     return g_object_new (HILDON_TYPE_BANNER, "parent-window", window, "is-timed", timed, NULL);
 }

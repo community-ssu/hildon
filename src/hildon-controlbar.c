@@ -282,7 +282,7 @@ hildon_controlbar_init                          (HildonControlbar *controlbar)
             DEFAULT_HEIGHT);
 
     g_signal_connect (range, "change-value",
-            G_CALLBACK (hildon_controlbar_change_value), NULL );
+            G_CALLBACK (hildon_controlbar_change_value), NULL);
 }
 
 static GObject*
@@ -648,6 +648,8 @@ hildon_controlbar_change_value                  (GtkRange *range,
 {
     HildonControlbarPrivate *priv;
     GtkAdjustment *adj = range->adjustment;
+    gdouble vv = adj->upper - adj->lower;
+    gint calc = ((new_value - adj->lower) / vv) * (vv + 1.0) + adj->lower;
 
     priv = HILDON_CONTROLBAR_GET_PRIVATE(range);
     g_assert (priv);
@@ -672,7 +674,10 @@ hildon_controlbar_change_value                  (GtkRange *range,
         default:
             break;
     }
-    return FALSE;
+
+    GTK_RANGE_CLASS (parent_class)->change_value (range, scroll, calc);
+
+    return TRUE;
 }
 
 /*
@@ -796,13 +801,12 @@ hildon_controlbar_paint                         (HildonControlbar *self,
             "stepper-spacing", &stepper_spacing,
             "inner_border_width", &inner_border_width, NULL);
 
-    g_object_get (G_OBJECT (self), "minimum_visible_bars", &block_min, NULL);
-
     block_area = (w - 2 * stepper_size - 2 * stepper_spacing - 2 * inner_border_width);
 
     if (block_area <= 0)
         return;
 
+    block_min = 1;
     block_max = ctrlbar->upper - ctrlbar->lower + block_min; 
     block_act = priv->old_value - GTK_RANGE (self)->adjustment->lower + block_min;
 
@@ -844,6 +848,8 @@ hildon_controlbar_paint                         (HildonControlbar *self,
 
     block_count = ctrlbar->value - ctrlbar->lower +  block_min;
 
+    if (block_count == 0)
+            block_count = 1;
     /* Without this there is vertical block corruption when block_height = 
        1. This should work from 0 up to whatever */
 

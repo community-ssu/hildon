@@ -28,6 +28,16 @@
 #include                                        <gtk/gtk.h>
 #include                                        "hildon.h"
 
+static gboolean
+on_show_value_clicked                           (GtkWidget *widget, HildonControlbar *bar)
+{
+    g_assert (HILDON_IS_CONTROLBAR (bar));
+
+    g_debug ("Value is: %d", hildon_controlbar_get_value (bar));
+
+    return TRUE;
+}
+
 int
 main                                            (int argc, 
                                                  char **args)
@@ -42,11 +52,18 @@ main                                            (int argc,
     gtk_container_set_border_width (GTK_CONTAINER (window), 6);
     
     HildonControlbar *bar = HILDON_CONTROLBAR (hildon_controlbar_new ());
-    hildon_controlbar_set_range (bar, 20, 120);
-    hildon_controlbar_set_value (bar, 100);
+    hildon_controlbar_set_range (bar, 1, 4);
+    hildon_controlbar_set_value (bar, 2);
+    GtkVBox *vbox = GTK_VBOX (gtk_vbox_new (6, FALSE));
+    GtkButton *button = GTK_BUTTON (gtk_button_new_with_label ("Show value"));
 
     g_signal_connect (G_OBJECT (window), "delete_event", G_CALLBACK (gtk_main_quit), NULL);
-    gtk_container_add (GTK_CONTAINER (window), GTK_WIDGET (bar));
+    g_signal_connect (G_OBJECT (button), "clicked", G_CALLBACK (on_show_value_clicked), bar);
+
+    gtk_box_pack_start (GTK_BOX (vbox), GTK_WIDGET (bar), FALSE, FALSE, 0);
+    gtk_box_pack_start (GTK_BOX (vbox), GTK_WIDGET (button), FALSE, FALSE, 0);
+
+    gtk_container_add (GTK_CONTAINER (window), GTK_WIDGET (vbox));
     gtk_widget_show_all (GTK_WIDGET (window));
     
     gtk_main ();
