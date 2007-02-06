@@ -1,0 +1,29 @@
+The general rules of conduct are:
+
+* Code identation is 4 spaces NO TABS
+* Function parameters start at column 48, one param per line
+* Use inside-code gtk doc documentation for everything 
+* Do not put documentation outside of the code
+* Use g_assert's inside private functions where it makes sense (they're not
+  compiled-in by default)
+* Put space to separate operators. Ie:
+
+{
+    some_function (param1, param2);
+    a = 1 + 2;
+    b [1] = 10;
+}
+
+NEVER EVER DO:
+
+{
+    some_function(param1,param2);
+    a=1+2;
+    b[1]=10;
+}
+
+* Small testing programs can be put in the examples/ directory. They can be run
+  without installation blah blah blah blah blah blah blah blah  
+* Obey the rules present in the existing code base -- it's pretty consistent
+* Use ONE blank line to separate things 
+
