@@ -34,18 +34,18 @@ main                                            (int argc,
 {
     gtk_init (&argc, &args);
     
-    GtkDialog *dialog = GTK_DIALOG (gtk_dialog_new ());
+    HildonWindow *window = HILDON_WINDOW (hildon_window_new ());
     GtkWidget *button = gtk_button_new_with_label ("Click me");
 
     hildon_helper_set_insensitive_message (button, "Do not poke me!");
     gtk_widget_set_sensitive (button, FALSE);
-    
-    gtk_box_pack_start (GTK_BOX (dialog->vbox), button, TRUE, TRUE, 0);
+       
+    gtk_container_add (GTK_CONTAINER (window), button);
 
-    gtk_dialog_add_button (dialog, "Close", GTK_RESPONSE_CLOSE);
+    g_signal_connect (G_OBJECT (window), "delete_event", G_CALLBACK (gtk_main_quit), NULL);
 
-    gtk_widget_show_all (GTK_WIDGET (dialog));
-    gtk_dialog_run (dialog);
+    gtk_widget_show_all (GTK_WIDGET (window));
+    gtk_main ();
     
     return 0;
 }
