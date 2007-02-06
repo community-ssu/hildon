@@ -234,14 +234,32 @@ hildon_helper_set_logical_font                  (GtkWidget *widget,
     return signum;
 }
 
-static void
-show_insensitive_message                        (GtkWidget *widget, 
-                                                 const gchar *message)
+static GQuark
+hildon_helper_insensitive_message_quark (void)
 {
-    g_assert (GTK_IS_WIDGET (widget));
+  static GQuark quark = 0;
 
+  if (G_UNLIKELY (quark == 0))
+    quark = g_quark_from_static_string ("hildon-insensitive-message");
+
+  return quark;
+}
+
+
+static void
+show_insensitive_message (GtkWidget *widget, gpointer user_data)
+{
+  gchar *message = NULL;
+
+  g_assert (GTK_IS_WIDGET (widget));
+
+  message = (gchar*) g_object_get_qdata (G_OBJECT (widget),
+					 hildon_helper_insensitive_message_quark ());
+
+  if (message)
     hildon_banner_show_information (widget, NULL, message);
 }
+
 
 /**
  * hildon_helper_set_insensitive_message
@@ -253,6 +271,7 @@ show_insensitive_message                        (GtkWidget *widget,
  * using a standard @HildonBanner. 
  *
  **/
+
 void
 hildon_helper_set_insensitive_message           (GtkWidget *widget,
                                                  const gchar *message)
@@ -260,16 +279,57 @@ hildon_helper_set_insensitive_message           (GtkWidget *widget,
     g_return_if_fail (GTK_IS_WIDGET (widget));
     g_return_if_fail (message != NULL);
 
+    gpointer stored_message;
+
+    /* Clean up any previous instance of the insensitive message */
     g_signal_handlers_disconnect_matched (G_OBJECT (widget), G_SIGNAL_MATCH_FUNC,
 					  0, 0, NULL,
-                      G_CALLBACK (show_insensitive_message), NULL);
+					  G_CALLBACK (show_insensitive_message), NULL);
+    
+    stored_message = g_object_get_qdata (G_OBJECT (widget), hildon_helper_insensitive_message_quark ());
+    if (stored_message)
+      g_free (stored_message);
+
+    /* We need to dup the string because the pointer might not be valid when the
+     insensitive-press signal callback is executed */
+    g_object_set_qdata_full (G_OBJECT (widget), hildon_helper_insensitive_message_quark (), 
+			     (gpointer)g_strdup (message),
+			     g_free);
 
     if (message != NULL) {
-        g_signal_connect (G_OBJECT (widget), "insensitive-press",
-                G_CALLBACK (show_insensitive_message), (gpointer) message);
+      g_signal_connect (G_OBJECT (widget), "insensitive-press",
+			G_CALLBACK (show_insensitive_message), NULL);
     }
 }
 
+/**
+ * hildon_helper_set_insensitive_messagef
+ * @widget : A @GtkWidget to assign a banner to
+ * @format : a printf-like format string
+ * @varargs : arguments for the format string
+ *
+ * A version of hildon_helper_set_insensitive_message with string formatting.
+ *
+ **/
+
+void
+hildon_helper_set_insensitive_messagef        (GtkWidget *widget,
+					       const gchar *format,
+					       ...)
+{
+  g_return_if_fail (GTK_IS_WIDGET (widget));
+
+  gchar *message;
+  va_list args;
+
+  va_start (args, format);
+  message = g_strdup_vprintf (format, args);
+  va_end (args);
+
+  hildon_helper_set_insensitive_message (widget, message);
+
+  g_free (message);
+}
 
 /**
  * hildon_helper_set_logical_color:

@@ -48,6 +48,11 @@ void
 hildon_helper_set_insensitive_message           (GtkWidget *widget,
                                                  const gchar *message);
 
+void
+hildon_helper_set_insensitive_messagef          (GtkWidget *widget,
+						 const gchar *format,
+						 ...);
+
 G_END_DECLS
 
 #endif                                          /* HILDON_HELPER_H */
