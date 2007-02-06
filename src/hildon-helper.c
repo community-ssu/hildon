@@ -235,29 +235,29 @@ hildon_helper_set_logical_font                  (GtkWidget *widget,
 }
 
 static GQuark
-hildon_helper_insensitive_message_quark (void)
+hildon_helper_insensitive_message_quark         (void)
 {
-  static GQuark quark = 0;
+    static GQuark quark = 0;
 
-  if (G_UNLIKELY (quark == 0))
-    quark = g_quark_from_static_string ("hildon-insensitive-message");
+    if (G_UNLIKELY (quark == 0))
+        quark = g_quark_from_static_string ("hildon-insensitive-message");
 
-  return quark;
+    return quark;
 }
 
-
 static void
-show_insensitive_message (GtkWidget *widget, gpointer user_data)
+show_insensitive_message                        (GtkWidget *widget, 
+                                                 gpointer user_data)
 {
-  gchar *message = NULL;
+    gchar *message = NULL;
 
-  g_assert (GTK_IS_WIDGET (widget));
+    g_assert (GTK_IS_WIDGET (widget));
 
-  message = (gchar*) g_object_get_qdata (G_OBJECT (widget),
-					 hildon_helper_insensitive_message_quark ());
+    message = (gchar*) g_object_get_qdata (G_OBJECT (widget),
+            hildon_helper_insensitive_message_quark ());
 
-  if (message)
-    hildon_banner_show_information (widget, NULL, message);
+    if (message)
+        hildon_banner_show_information (widget, NULL, message);
 }
 
 
@@ -313,22 +313,22 @@ hildon_helper_set_insensitive_message           (GtkWidget *widget,
  **/
 
 void
-hildon_helper_set_insensitive_messagef        (GtkWidget *widget,
-					       const gchar *format,
-					       ...)
+hildon_helper_set_insensitive_messagef          (GtkWidget *widget,
+                                                 const gchar *format,
+                                                 ...)
 {
-  g_return_if_fail (GTK_IS_WIDGET (widget));
+    g_return_if_fail (GTK_IS_WIDGET (widget));
 
-  gchar *message;
-  va_list args;
+    gchar *message;
+    va_list args;
 
-  va_start (args, format);
-  message = g_strdup_vprintf (format, args);
-  va_end (args);
+    va_start (args, format);
+    message = g_strdup_vprintf (format, args);
+    va_end (args);
 
-  hildon_helper_set_insensitive_message (widget, message);
+    hildon_helper_set_insensitive_message (widget, message);
 
-  g_free (message);
+    g_free (message);
 }
 
 /**
