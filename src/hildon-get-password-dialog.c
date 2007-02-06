@@ -500,7 +500,7 @@ hildon_get_password_dialog_new                  (GtkWindow *parent,
  * @parent: parent window; can be NULL
  * @password: a default password to be shown in password field
  * @get_old: FALSE creates a new get password dialog and
- *           TRUE creates a new get old password dialog.That is,
+ *           TRUE creates a new get old password dialog. That is,
  *           if the password to be obtained is the old password,
  *           this parameter is specified TRUE.
  *                        

@@ -275,7 +275,6 @@ hildon_login_dialog_init                        (HildonLoginDialog *dialog)
     /* Setup username entry */
     priv->username_entry = GTK_ENTRY (gtk_entry_new ());
     g_object_set (priv->username_entry, "hildon-input-mode", HILDON_GTK_INPUT_MODE_FULL, NULL);
-    gtk_entry_set_visibility (GTK_ENTRY (priv->username_entry), FALSE);
 
     caption = HILDON_CAPTION (hildon_caption_new
             (group,

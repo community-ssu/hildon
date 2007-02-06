@@ -1,20 +1,22 @@
 MAINTAINERCLEANFILES			= Makefile.in
 
 if BUILD_EXAMPLES
-noinst_PROGRAMS				= hildon-window-example 	\
-					  hildon-banner-example		\
-					  hildon-caption-example	\
-					  hildon-weekday-picker-example \
-					  hildon-sort-dialog-example	\
-					  hildon-controlbar-example	\
-					  hildon-note-example		\
-					  hildon-time-picker-example	\
-					  hildon-color-chooser-example	\
-					  hildon-color-button-example	\
-					  hildon-login-dialog-example	\
-					  hildon-time-editor-example	\
-					  hildon-icon-sizes-example	\
-					  hildon-insensitive-example
+noinst_PROGRAMS				= hildon-window-example 		\
+					  hildon-banner-example			\
+					  hildon-caption-example		\
+					  hildon-weekday-picker-example 	\
+					  hildon-sort-dialog-example		\
+					  hildon-controlbar-example		\
+					  hildon-note-example			\
+					  hildon-time-picker-example		\
+					  hildon-color-chooser-example		\
+					  hildon-color-button-example		\
+					  hildon-login-dialog-example		\
+					  hildon-time-editor-example		\
+					  hildon-icon-sizes-example		\
+					  hildon-insensitive-example		\
+					  hildon-get-password-dialog-example	\
+					  hildon-set-password-dialog-example
 
 # HIldon window
 hildon_window_example_LDADD		= $(HILDON_OBJ_LIBS)
@@ -86,5 +88,14 @@ hildon_insensitive_example_LDADD	= $(HILDON_OBJ_LIBS)
 hildon_insensitive_example_CFLAGS	= $(HILDON_OBJ_CFLAGS)
 hildon_insensitive_example_SOURCES	= hildon-insensitive-example.c
 
+# HIldon get password dialog example
+hildon_get_password_dialog_example_LDADD	= $(HILDON_OBJ_LIBS)
+hildon_get_password_dialog_example_CFLAGS	= $(HILDON_OBJ_CFLAGS)
+hildon_get_password_dialog_example_SOURCES	= hildon-get-password-dialog-example.c
+
+# HIldon set password dialog example
+hildon_set_password_dialog_example_LDADD	= $(HILDON_OBJ_LIBS)
+hildon_set_password_dialog_example_CFLAGS	= $(HILDON_OBJ_CFLAGS)
+hildon_set_password_dialog_example_SOURCES	= hildon-set-password-dialog-example.c
 
 endif

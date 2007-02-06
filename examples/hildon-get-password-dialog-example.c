@@ -34,15 +34,14 @@ main                                            (int argc,
 {
     gtk_init (&argc, &args);
     
-    GtkDialog *dialog = GTK_DIALOG (hildon_login_dialog_new (NULL));
+    GtkDialog *dialog = GTK_DIALOG (hildon_get_password_dialog_new (NULL, TRUE));
     
-    hildon_login_dialog_set_message ((HildonLoginDialog *) dialog, "Enter password to login");
+    hildon_get_password_dialog_set_message ((HildonGetPasswordDialog *) dialog, "Enter secret password");
 
     gtk_widget_show_all (GTK_WIDGET (dialog));
     gtk_dialog_run (dialog);
 
-    g_debug ("Password: %s", hildon_login_dialog_get_password ((HildonLoginDialog *) dialog));
-    g_debug ("Username: %s", hildon_login_dialog_get_username ((HildonLoginDialog *) dialog));
+    g_debug ("Password: %s", hildon_get_password_dialog_get_password ((HildonGetPasswordDialog *) dialog));
     
     return 0;
 }
