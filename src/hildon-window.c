@@ -1002,6 +1002,7 @@ Window
 hildon_window_get_active_window                 (void)
 {
     Atom realtype;
+    gint xerror;
     int format;
     int status;
     Window ret;
@@ -1017,11 +1018,13 @@ hildon_window_get_active_window                 (void)
 
     win.win = NULL;
 
+    gdk_error_trap_push ();
     status = XGetWindowProperty (GDK_DISPLAY(), GDK_ROOT_WINDOW(),
             active_app_atom, 0L, 16L,
             0, XA_WINDOW, &realtype, &format,
             &n, &extra, &win.char_pointer);
-    if (!(status == Success && realtype == XA_WINDOW && format == 32
+    xerror = gdk_error_trap_pop ();
+    if (xerror || !(status == Success && realtype == XA_WINDOW && format == 32
                 && n == 1 && win.win != NULL))
     {
         if (win.win != NULL)
