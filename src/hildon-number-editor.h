@@ -57,12 +57,11 @@ struct                                          _HildonNumberEditor
     GtkContainer parent;
 };
 
-/* FIXME Needs documentation */
 typedef enum
 {
-    MAXIMUM_VALUE_EXCEED,
-    MINIMUM_VALUE_EXCEED,
-    ERRONEOUS_VALUE
+    HILDON_NUMBER_EDITOR_ERROR_MAXIMUM_VALUE_EXCEED,
+    HILDON_NUMBER_EDITOR_ERROR_MINIMUM_VALUE_EXCEED,
+    HILDON_NUMBER_EDITOR_ERROR_ERRONEOUS_VALUE
 }                                               HildonNumberEditorErrorType;
 
 struct                                          _HildonNumberEditorClass 

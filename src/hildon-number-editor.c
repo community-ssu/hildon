@@ -613,23 +613,23 @@ hildon_number_editor_validate_value             (HildonNumberEditor *editor,
                  */
                 if (value > priv->end && (priv->end >= 0 || (priv->end < 0 && value >= 0)))
                 {
-                    error_code = MAXIMUM_VALUE_EXCEED;
+                    error_code = HILDON_NUMBER_EDITOR_ERROR_MAXIMUM_VALUE_EXCEED;
                     fixup_value = priv->end;
                 }
                 else if (value < priv->start && (priv->start < 0 || (priv->start >= 0 && value <= 0)))
                 {
-                    error_code = MINIMUM_VALUE_EXCEED;
+                    error_code = HILDON_NUMBER_EDITOR_ERROR_MINIMUM_VALUE_EXCEED;
                     fixup_value = priv->start;
                 }
             }
             else
             {
                 if (value > priv->end) {
-                    error_code = MAXIMUM_VALUE_EXCEED;
+                    error_code = HILDON_NUMBER_EDITOR_ERROR_MAXIMUM_VALUE_EXCEED;
                     fixup_value = priv->end;
                 }
                 else if (value < priv->start) {
-                    error_code = MINIMUM_VALUE_EXCEED;
+                    error_code = HILDON_NUMBER_EDITOR_ERROR_MINIMUM_VALUE_EXCEED;
                     fixup_value = priv->start;
                 }
             }
@@ -638,10 +638,10 @@ hildon_number_editor_validate_value             (HildonNumberEditor *editor,
            have plain '-', intermediate forms are allowed AND
            minimum bound is negative */
         else if (! allow_intermediate || strcmp (text, "-") != 0 || priv->start >= 0)
-            error_code = ERRONEOUS_VALUE;
+            error_code = HILDON_NUMBER_EDITOR_ERROR_ERRONEOUS_VALUE;
     }
     else if (! allow_intermediate)
-        error_code = ERRONEOUS_VALUE;
+        error_code = HILDON_NUMBER_EDITOR_ERROR_ERRONEOUS_VALUE;
 
     if (error_code != -1)
     {
@@ -827,15 +827,15 @@ hildon_number_editor_range_error                (HildonNumberEditor *editor,
     /* Construct error message */
     switch (type)
     {
-        case MAXIMUM_VALUE_EXCEED:
+        case HILDON_NUMBER_EDITOR_ERROR_MAXIMUM_VALUE_EXCEED:
             err_msg = g_strdup_printf (_("ckct_ib_maximum_value"), max, max);
             break;
 
-        case MINIMUM_VALUE_EXCEED:
+        case HILDON_NUMBER_EDITOR_ERROR_MINIMUM_VALUE_EXCEED:
             err_msg = g_strdup_printf (_("ckct_ib_minimum_value"), min, min);
             break;
 
-        case ERRONEOUS_VALUE:
+        case HILDON_NUMBER_EDITOR_ERROR_ERRONEOUS_VALUE:
             err_msg =
                 g_strdup_printf (_("ckct_ib_set_a_value_within_range"), min, max);
             break;
