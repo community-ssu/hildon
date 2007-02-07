@@ -38,7 +38,6 @@
  *
  */
 
-
 #ifdef                                          HAVE_CONFIG_H
 #include                                        <config.h>
 #endif
@@ -780,6 +779,17 @@ hildon_color_chooser_dialog_destroy             (GtkObject *object)
     GTK_OBJECT_CLASS (parent_class)->destroy (object);
 }
 
+/**
+ * hildon_color_chooser_dialog_set_color:
+ * @dialog: a #HildonColorChooserDialog
+ * @color: a color to set on the #HildonColorChooserDialog
+ *
+ * Sets the dialog to point at the given color. It'll first try to
+ * search the palette of the existing colors to match the passed color. 
+ * If the color is not found in the pallette, the color in the currently 
+ * selected box will be modified.
+ *
+ */
 void 
 hildon_color_chooser_dialog_set_color           (HildonColorChooserDialog *dialog, 
                                                  GdkColor *color)
@@ -1110,7 +1120,9 @@ hildon_color_chooser_dialog_new                 (void)
 /**
  * hildon_color_chooser_dialog_get_color:
  * @dialog: a #HildonColorChooserDialog
- * @color: a color to fill with new value
+ * @color: a color structure to fill with the currently selected color
+ *
+ * Retrives the currently selected color in the color chooser dialog.
  *
  */
 void

@@ -371,7 +371,6 @@ hildon_color_chooser_size_allocate              (GtkWidget *widget,
     }
 }
 
-
 static void
 hildon_color_chooser_realize                    (GtkWidget *widget)
 {
@@ -771,6 +770,7 @@ init_borders                                    (GtkWidget *w,
  * @color: a color to be set
  *
  * Sets the color selected in the widget.
+ * Will move the crosshair pointer to indicate the passed color.
  */
 void 
 hildon_color_chooser_set_color                  (HildonColorChooser *sel, 
@@ -1244,7 +1244,14 @@ hildon_color_chooser_expose_timer               (gpointer data)
     return FALSE;
 }
 
-/* FIXME Missing documentation */
+/**
+ * hildon_color_chooser_get_color:
+ * @dialog: a #HildonColorChooser
+ * @color: a color structure to fill with the currently selected color
+ *
+ * Retrives the currently selected color in the chooser.
+ *
+ */
 void
 hildon_color_chooser_get_color                  (HildonColorChooser *sel, 
                                                  GdkColor *color)
