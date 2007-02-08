@@ -18,7 +18,8 @@ noinst_PROGRAMS				= hildon-window-example 		\
 					  hildon-get-password-dialog-example	\
 					  hildon-set-password-dialog-example	\
 					  hildon-window-menu-example		\
-					  hildon-window-cmn-menu-example
+					  hildon-window-cmn-menu-example	\
+					  hildon-vvolumebar-example
 
 # HIldon window
 hildon_window_example_LDADD		= $(HILDON_OBJ_LIBS)
@@ -105,9 +106,14 @@ hildon_window_menu_example_LDADD	= $(HILDON_OBJ_LIBS)
 hildon_window_menu_example_CFLAGS	= $(HILDON_OBJ_CFLAGS)
 hildon_window_menu__example_SOURCES	= hildon-window-menu-example.c
 
-# HIldon window common menu example
+# Hildon window common menu example
 hildon_window_cmn_menu_example_LDADD	= $(HILDON_OBJ_LIBS)
 hildon_window_cmn_menu_example_CFLAGS	= $(HILDON_OBJ_CFLAGS)
 hildon_window_cmn_menu_example_SOURCES	= hildon-window-cmn-menu-example.c
+
+# Hildon vvolume bar example
+hildon_vvolumebar_example_LDADD		= $(HILDON_OBJ_LIBS)
+hildon_vvolumebar_example_CFLAGS	= $(HILDON_OBJ_CFLAGS)
+hildon_vvolumebar_example_SOURCES	= hildon-vvolumebar-example.c
 
 endif
