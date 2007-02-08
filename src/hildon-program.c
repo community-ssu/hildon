@@ -381,7 +381,8 @@ hildon_program_common_toolbar_topmost_window    (gpointer window,
  * hildon_program_get_instance:
  *
  * Return value: Returns the #HildonProgram for the current process.
- * The object is created on the first call.
+ * The object is created on the first call. Note that you're not supposed 
+ * to unref the returned object since it's not reffed in the first place.
  **/
 HildonProgram*
 hildon_program_get_instance                     (void)

@@ -1,3 +1,18 @@
+2007-02-08  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
+	* examples/Makefile.am:
+	* examples/hildon-window-cmn-menu-example.c:
+	* examples/hildon-window-menu-example.c: Adding a common menu example
+	and a window menu example.
+
+	* src/hildon-program.c: Adding a note to the documentation about
+	HildonProgram reffing. Fixes MB#867. 
+
+	* src/hildon-window.c: Fixing the menu ref counting problem. Now
+	applications are NOT supposed to take care about menu destroying since
+	the HildonWindow handles that. Adding this to the documentation. Fixes
+	NB#46434.
+
 2007-02-07  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
 	* src/hildon-program.c:

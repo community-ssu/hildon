@@ -783,7 +783,7 @@ hildon_window_destroy                           (GtkObject *obj)
 
     while (menu_list)
     {
-        if (GTK_IS_MENU(menu_list->data))
+        if (GTK_IS_MENU (menu_list->data))
         {
             if (GTK_WIDGET_VISIBLE (GTK_WIDGET (menu_list->data)))
             {
@@ -791,6 +791,13 @@ hildon_window_destroy                           (GtkObject *obj)
                 gtk_menu_shell_deactivate (GTK_MENU_SHELL (menu_list->data));
             }
             gtk_menu_detach (GTK_MENU (menu_list->data));
+
+            /* Destroy it, but only if it's not a common menu */
+            if (priv->program && 
+                hildon_program_get_common_menu (priv->program) != menu_list->data) {
+                    g_object_unref (menu_list->data);
+                    gtk_object_destroy (GTK_OBJECT (menu_list->data));
+            }
         }
         menu_list = menu_list->next;
     }
@@ -1708,9 +1715,10 @@ hildon_window_remove_toolbar                    (HildonWindow *self,
  * hildon_window_get_menu:
  * @self : #HildonWindow
  * 
- * Gets the #GtMenu assigned to the #HildonAppview.
+ * Gets the #GtMenu assigned to the #HildonAppview. Note that the 
+ * window is still the owner of the menu.
  * 
- * Return value: The #GtkMenu assigned to this application view.
+ * Return value: The #GtkMenu assigned to this application view. 
  **/
 GtkMenu*
 hildon_window_get_menu                          (HildonWindow * self)
@@ -1731,7 +1739,8 @@ hildon_window_get_menu                          (HildonWindow * self)
  * Sets the menu to be used for this window. This menu overrides
  * a program-wide menu that may have been set with
  * hildon_program_set_common_menu. Pass NULL to remove the current
- * menu.
+ * menu. HildonWindow takes ownership of the passed menu and you're
+ * not supposed to free it yourself anymore.
  **/ 
 void
 hildon_window_set_menu                          (HildonWindow *self, 
