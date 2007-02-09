@@ -52,7 +52,8 @@ GTKDOC_LIBS 					= $(GTK_LIBS) ../src/libhildon_@PACKAGE_VERSION_MAJOR@.la
 
 MKDB_OPTIONS					=--sgml-mode
 
-content_files					= version.xml
+content_files					= version.xml \
+						  visual_index.xml
 
 version.xml: ../configure.ac
 	@echo $(VERSION) > version.xml

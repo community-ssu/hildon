@@ -12,6 +12,7 @@
   <chapter>
     <title>Object Hierarchy</title>
     <xi:include href="xml/tree_index.sgml"/>
+    <xi:include href="visual_index.xml"/>
   </chapter>
 
   <chapter>

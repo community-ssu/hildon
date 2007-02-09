@@ -303,6 +303,7 @@ hildon_code_dialog_init                         (HildonCodeDialog *dialog)
     g_signal_connect (G_OBJECT (cancelButton), "key-press-event",
                 G_CALLBACK (hildon_code_dialog_key_press_event), dialog);
 
+    gtk_widget_show_all (GTK_WIDGET (GTK_DIALOG (dialog)->vbox));
 }
 
 static void 

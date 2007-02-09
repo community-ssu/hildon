@@ -20,7 +20,8 @@ noinst_PROGRAMS				= hildon-window-example 		\
 					  hildon-window-menu-example		\
 					  hildon-window-cmn-menu-example	\
 					  hildon-vvolumebar-example		\
-					  hildon-toolbar-example
+					  hildon-toolbar-example		\
+					  hildon-code-dialog-example	
 
 # HIldon window
 hildon_window_example_LDADD		= $(HILDON_OBJ_LIBS)
@@ -121,5 +122,10 @@ hildon_vvolumebar_example_SOURCES	= hildon-vvolumebar-example.c
 hildon_toolbar_example_LDADD		= $(HILDON_OBJ_LIBS)
 hildon_toolbar_example_CFLAGS		= $(HILDON_OBJ_CFLAGS)
 hildon_toolbar_example_SOURCES		= hildon-toolbar-example.c
+
+# Hildon lock code dialog example
+hildon_code_dialog_example_LDADD	= $(HILDON_OBJ_LIBS)
+hildon_code_dialog_example_CFLAGS	= $(HILDON_OBJ_CFLAGS)
+hildon_code_dialog_example_SOURCES	= hildon-code-dialog-example.c
 
 endif

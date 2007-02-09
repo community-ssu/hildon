@@ -279,11 +279,11 @@ hildon_note_class_init                          (HildonNoteClass *class)
 
     g_object_class_install_property (object_class,
             PROP_HILDON_NOTE_TYPE,
-            g_param_spec_enum ("note_type",
+            g_param_spec_enum ("note-type",
                 "note type",
                 "The type of the note dialog",
-                hildon_note_get_type (),
-                HILDON_NOTE_CONFIRMATION_TYPE,
+                hildon_note_type_get_type (),
+                HILDON_NOTE_TYPE_CONFIRMATION,
                 G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
 
     /**
@@ -455,21 +455,21 @@ hildon_note_rebuild                             (HildonNote *note)
     /* Add needed buttons and images for each note type */
     switch (priv->note_n)
     {
-        case HILDON_NOTE_CONFIRMATION_TYPE:
+        case HILDON_NOTE_TYPE_CONFIRMATION:
             priv->okButton = gtk_dialog_add_button (dialog,
                     _("ecdg_bd_confirmation_note_ok"), GTK_RESPONSE_OK);
             priv->cancelButton = gtk_dialog_add_button (dialog,
                     _("ecdg_bd_confirmation_note_cancel"), GTK_RESPONSE_CANCEL);
 
             /* Fall through */
-        case HILDON_NOTE_CONFIRMATION_BUTTON_TYPE:
+        case HILDON_NOTE_TYPE_CONFIRMATION_BUTTON:
             gtk_image_set_from_icon_name (GTK_IMAGE (priv->icon),
                     HILDON_NOTE_CONFIRMATION_ICON, 
                     HILDON_ICON_SIZE_BIG_NOTE);
             break;
 
-        case HILDON_NOTE_INFORMATION_THEME_TYPE:
-        case HILDON_NOTE_INFORMATION_TYPE:
+        case HILDON_NOTE_TYPE_INFORMATION_THEME:
+        case HILDON_NOTE_TYPE_INFORMATION:
             /* Add clickable OK button (cancel really,
                but doesn't matter since this is info) */
             priv->cancelButton = gtk_dialog_add_button (dialog,
@@ -479,7 +479,7 @@ hildon_note_rebuild                             (HildonNote *note)
                     HILDON_ICON_SIZE_BIG_NOTE);
             break;
 
-        case HILDON_NOTE_PROGRESSBAR_TYPE:
+        case HILDON_NOTE_TYPE_PROGRESSBAR:
             priv->cancelButton = gtk_dialog_add_button (dialog,
                     _("ecdg_bd_cancel_note_cancel"), GTK_RESPONSE_CANCEL);
             IsHorizontal = FALSE;
@@ -552,7 +552,7 @@ hildon_note_new_confirmation_add_buttons        (GtkWindow *parent,
 
     GtkWidget *conf_note =
         g_object_new (HILDON_TYPE_NOTE,
-                "note_type", HILDON_NOTE_CONFIRMATION_BUTTON_TYPE,
+                "note-type", HILDON_NOTE_TYPE_CONFIRMATION_BUTTON,
                 "description", description,
                 "icon", HILDON_NOTE_CONFIRMATION_ICON, 
                 NULL);
@@ -627,8 +627,8 @@ hildon_note_new_confirmation_with_icon_name     (GtkWindow *parent,
     g_return_val_if_fail (description != NULL, NULL);
 
     dialog = g_object_new (HILDON_TYPE_NOTE,
-            "note_type",
-            HILDON_NOTE_CONFIRMATION_TYPE,
+            "note-type",
+            HILDON_NOTE_TYPE_CONFIRMATION,
             "description", description, "icon",
             icon_name, NULL);
 
@@ -686,8 +686,8 @@ hildon_note_new_information_with_icon_name      (GtkWindow * parent,
     g_return_val_if_fail (icon_name != NULL, NULL);
 
     dialog = g_object_new (HILDON_TYPE_NOTE,
-            "note_type",
-            HILDON_NOTE_INFORMATION_THEME_TYPE,
+            "note-type",
+            HILDON_NOTE_TYPE_INFORMATION_THEME,
             "description", description,
             "icon", icon_name, NULL);
 
@@ -728,8 +728,8 @@ hildon_note_new_cancel_with_progress_bar        (GtkWindow *parent,
     g_return_val_if_fail (description != NULL, NULL);
 
     dialog = g_object_new (HILDON_TYPE_NOTE,
-            "note_type",
-            HILDON_NOTE_PROGRESSBAR_TYPE,
+            "note-type",
+            HILDON_NOTE_TYPE_PROGRESSBAR,
             "description", description,
             "progressbar",
             progressbar, NULL);
@@ -812,13 +812,13 @@ sound_handling                                  (GtkWidget *widget,
 
     switch (priv->note_n)
     {
-        case HILDON_NOTE_INFORMATION_TYPE:
-        case HILDON_NOTE_INFORMATION_THEME_TYPE:
+        case HILDON_NOTE_TYPE_INFORMATION:
+        case HILDON_NOTE_TYPE_INFORMATION_THEME:
             hildon_play_system_sound (INFORMATION_SOUND_PATH);
             break;
 
-        case HILDON_NOTE_CONFIRMATION_TYPE:
-        case HILDON_NOTE_CONFIRMATION_BUTTON_TYPE:
+        case HILDON_NOTE_TYPE_CONFIRMATION:
+        case HILDON_NOTE_TYPE_CONFIRMATION_BUTTON:
             hildon_play_system_sound (CONFIRMATION_SOUND_PATH);
             break;
 
