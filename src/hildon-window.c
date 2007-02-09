@@ -1670,7 +1670,10 @@ hildon_window_add_with_scrollbar                (HildonWindow *self,
  * @self: A @HildonWindow
  * @toolbar: A #GtkToolbar to add to the HildonWindow
  *
- * Adds a toolbar to the window.
+ * Adds a toolbar to the window. Note that the toolbar is not automatically
+ * shown. You need to call #gtk_widget_show_all on it to make it visible. 
+ * It's also possible to hide the toolbar (without removing it) by calling
+ * #gtk_widget_hide_all.
  **/
 void 
 hildon_window_add_toolbar                       (HildonWindow *self, 
@@ -1697,7 +1700,9 @@ hildon_window_add_toolbar                       (HildonWindow *self,
  * @self: A @HildonWindow
  * @toolbar: A #GtkToolbar to remove from the HildonWindow
  *
- * Removes a toolbar from the window.
+ * Removes a toolbar from the window. Note that this decreases the refference
+ * count on the widget. If you want to keep the toolbar alive call #g_object_ref 
+ * before calling this function.
  **/
 void
 hildon_window_remove_toolbar                    (HildonWindow *self, 
