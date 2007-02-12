@@ -39,6 +39,9 @@ main                                            (int argc,
     GtkWidget *window = hildon_window_new ();
     hildon_program_add_window (program, HILDON_WINDOW (window));    
 
+    gtk_window_set_title (GTK_WINDOW (window), "world");
+    g_set_application_name ("hello");
+
     gtk_container_set_border_width (GTK_CONTAINER (window), 6);
     
     GtkWidget *label = GTK_WIDGET (gtk_label_new ("Hello world!"));
