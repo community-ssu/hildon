@@ -60,7 +60,7 @@ version.xml: ../configure.ac
 
 html: html-build.stamp
 
-HTML_IMAGES 					=
+HTML_IMAGES 					= $(srcdir)/images/calendar-popup.png
 
 FIXXREF_OPTIONS					=
 

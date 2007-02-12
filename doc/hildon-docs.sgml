@@ -16,6 +16,11 @@
   </chapter>
 
   <chapter>
+    <title>Widgets gallery</title>
+    <xi:include href="visual_index.xml"/>
+  </chapter>
+
+  <chapter>
     <title>Toplevel Widgets</title>
     <xi:include href="xml/hildon-window.xml"/>
     <xi:include href="xml/hildon-program.xml"/>
