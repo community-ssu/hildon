@@ -60,6 +60,7 @@ struct                                          _HildonCodeDialog
 struct _HildonCodeDialogClass
 {
     GtkDialogClass parent_class;
+    void (*input) (HildonCodeDialog *dialog);
 };
 
 GType G_GNUC_CONST

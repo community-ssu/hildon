@@ -28,28 +28,22 @@
 #include                                        <gtk/gtk.h>
 #include                                        "hildon.h"
 
-static gboolean
-on_input                                        (void);
-
-gboolean
-on_input                                        (void)
-{
-    g_debug ("Input in the code dialog!");
-    return TRUE;
-}
-
 int
 main                                            (int argc, 
                                                  char **args)
 {
     gtk_init (&argc, &args);
     
-    GtkDialog *dialog = GTK_DIALOG (hildon_code_dialog_new ());
-    g_signal_connect (G_OBJECT (dialog), "input", G_CALLBACK (on_input), NULL);
+    GtkDialog *dialog = GTK_DIALOG (gtk_dialog_new ());
+
+    HildonHVolumebar *bar = HILDON_HVOLUMEBAR (hildon_hvolumebar_new ());
+
+    gtk_box_pack_start (GTK_BOX (dialog->vbox), GTK_WIDGET (bar), FALSE, FALSE, 0);
+    gtk_dialog_add_button (dialog, "Close", GTK_RESPONSE_CLOSE);
 
     gtk_widget_show_all (GTK_WIDGET (dialog));
     gtk_dialog_run (dialog);
-    
+
     return 0;
 }
 

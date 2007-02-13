@@ -27,7 +27,8 @@
  * @short_description: A keypad-like widget used to enter pincodes.
  *
  * #HildonCodeDialog displays a keypad that can be used to enter 
- * numerical pin codes or lock codes. 
+ * numerical pin codes or lock codes. It emits a 'input' signal each time 
+ * an input action is performed on the dialog.
  *
  */
 
@@ -97,7 +98,15 @@ hildon_code_dialog_key_press_event              (GtkWidget *widget,
                                                  GdkEventKey *event,
                                                  gpointer user_data);
 
+static void 
+hildon_code_dialog_real_input                   (HildonCodeDialog *dialog);
+
+static void
+hildon_code_dialog_input                        (HildonCodeDialog *dialog);
+
 static GtkDialogClass*                          parent_class = NULL;
+
+static guint                                    input_signal;
 
 /**
  * hildon_code_dialog_get_type:
@@ -136,6 +145,18 @@ hildon_code_dialog_class_init                   (HildonCodeDialogClass *cd_class
 {
     parent_class = GTK_DIALOG_CLASS (g_type_class_peek_parent (cd_class));
     g_type_class_add_private (cd_class, sizeof (HildonCodeDialogPrivate));
+
+    cd_class->input = hildon_code_dialog_real_input;
+
+    /* FIXME Document this signal! */
+    input_signal = g_signal_new("input",
+                                HILDON_TYPE_CODE_DIALOG,
+                                G_SIGNAL_RUN_LAST,
+                                G_STRUCT_OFFSET (HildonCodeDialogClass, input),
+                                NULL, NULL,
+                                g_cclosure_marshal_VOID__VOID,
+                                G_TYPE_NONE,
+                                0);
 }
 
 static void 
@@ -377,6 +398,8 @@ hildon_code_dialog_insert_text                  (GtkEditable *editable,
         /* make the Ok button sensitive */
         gtk_widget_set_sensitive (priv->buttons[4][0], TRUE);
     }
+
+    hildon_code_dialog_input (dialog);
 }
 
 static gboolean 
@@ -505,4 +528,16 @@ hildon_code_dialog_set_help_text                (HildonCodeDialog *dialog,
     g_assert (priv);
 
     gtk_label_set_text (GTK_LABEL (priv->help_text), text);
+}
+
+static void 
+hildon_code_dialog_real_input                   (HildonCodeDialog *dialog)
+{
+}
+
+static void 
+hildon_code_dialog_input                        (HildonCodeDialog *dialog)
+{
+    /* Emit the signal */
+    g_signal_emit (dialog, input_signal, 0);
 }

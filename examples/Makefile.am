@@ -21,7 +21,8 @@ noinst_PROGRAMS				= hildon-window-example 		\
 					  hildon-window-cmn-menu-example	\
 					  hildon-vvolumebar-example		\
 					  hildon-toolbar-example		\
-					  hildon-code-dialog-example	
+					  hildon-code-dialog-example		\
+					  hildon-hvolumebar-example
 
 # HIldon window
 hildon_window_example_LDADD		= $(HILDON_OBJ_LIBS)
@@ -106,7 +107,7 @@ hildon_set_password_dialog_example_SOURCES	= hildon-set-password-dialog-example.
 # HIldon window menu example
 hildon_window_menu_example_LDADD	= $(HILDON_OBJ_LIBS)
 hildon_window_menu_example_CFLAGS	= $(HILDON_OBJ_CFLAGS)
-hildon_window_menu__example_SOURCES	= hildon-window-menu-example.c
+hildon_window_menu_example_SOURCES	= hildon-window-menu-example.c
 
 # Hildon window common menu example
 hildon_window_cmn_menu_example_LDADD	= $(HILDON_OBJ_LIBS)
@@ -117,6 +118,11 @@ hildon_window_cmn_menu_example_SOURCES	= hildon-window-cmn-menu-example.c
 hildon_vvolumebar_example_LDADD		= $(HILDON_OBJ_LIBS)
 hildon_vvolumebar_example_CFLAGS	= $(HILDON_OBJ_CFLAGS)
 hildon_vvolumebar_example_SOURCES	= hildon-vvolumebar-example.c
+
+# Hildon hvolume bar example
+hildon_hvolumebar_example_LDADD		= $(HILDON_OBJ_LIBS)
+hildon_hvolumebar_example_CFLAGS	= $(HILDON_OBJ_CFLAGS)
+hildon_hvolumebar_example_SOURCES	= hildon-hvolumebar-example.c
 
 # Hildon toolbar example
 hildon_toolbar_example_LDADD		= $(HILDON_OBJ_LIBS)
