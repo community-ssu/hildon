@@ -24,7 +24,7 @@
 
 /** 
  * SECTION:hildon-sort-dialog
- * @short_description: A widget for defining the sorting order of items
+ * @short_description: A widget for defining the sorting order of items.
  * 
  * HildonSortDialog is used to define an order (ascending/descending)
  * and a field by which items are sorted in a list. The combo boxes

@@ -25,7 +25,7 @@
 
 /**
  * SECTION:hildon-color-chooser
- * @short_description: A widget used to select a color from an HSV colorspace
+ * @short_description: A widget used to select a color from an HSV colorspace.
  * @see_also: #HildonColorChooserDialog
  *
  * HildonColorChooser is a widget that displays an HSV colorspace. 

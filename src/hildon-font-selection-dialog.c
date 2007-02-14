@@ -25,7 +25,7 @@
 /**
  * SECTION:hildon-font-selection-dialog
  * @short_description: A widget used to allow users to select a font 
- * with certain properties
+ * with certain properties.
  *
  * Font selection can be made using this widget. Users can select font name, 
  * size, style, etc. Users can also preview text in the selected font.

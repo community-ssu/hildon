@@ -24,7 +24,7 @@
 
 /**
  * SECTION:hildon-seekbar
- * @short_description: A widget used to identify a place from a content
+ * @short_description: A widget used to identify a place from a content.
  *
  * HildonSeekbar allows seeking in media with a range widget.  It
  * supports for setting or getting the length (total time) of the media,

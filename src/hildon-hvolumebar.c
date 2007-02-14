@@ -24,7 +24,7 @@
 
 /**
  * SECTION:hildon-hvolumebar
- * @short_description: A widget that displays a horizontal volume bar
+ * @short_description: A widget that displays a horizontal volume bar.
  * @see_also: #HildonVVolumebar, #HildonVolumebar
  * 
  * The #HildonHVolumebar widget displays a horizontal volume bar that allows

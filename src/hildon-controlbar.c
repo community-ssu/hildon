@@ -25,7 +25,7 @@
 /**
  * SECTION:hildon-controlbar
  * @short_description: A widget that allows increasing or decreasing
- * a value within a pre-defined range
+ * a value within a pre-defined range.
  *
  * #HildonControlbar is a horizontally positioned range widget that is
  * visually divided into blocks and supports setting a minimum and

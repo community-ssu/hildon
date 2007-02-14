@@ -25,7 +25,7 @@
 /**
  * SECTION:hildon-time-editor
  * @short_description: A widget used to enter time or duration in hours, minutes,
- * and optional seconds
+ * and optional seconds.
  * @see_also: #HildonTimePicker
  * 
  * HildonTimeEditor is used to edit time or duration. Time mode is

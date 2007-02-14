@@ -24,7 +24,7 @@
 
 /**
  * SECTION:hildon-time-picker
- * @short_description: A dialog popup widget which lets the user set the time
+ * @short_description: A dialog popup widget which lets the user set the time.
  * @see_also: #HildonTimeEditor
  * 
  * #HildonTimePicker is a dialog popup widget which lets the user set the time,

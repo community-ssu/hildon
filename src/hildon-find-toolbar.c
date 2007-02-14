@@ -24,7 +24,7 @@
 
 /**
  * SECTION:hildon-find-toolbar
- * @short_description: A toolbar with a search field
+ * @short_description: A toolbar with a search field.
  * @see_also: #HildonWindow
  *
  * HildonFindToolbar is a toolbar that contains a search entry and a dropdown

@@ -24,7 +24,7 @@
 
 /**
  * SECTION:hildon-set-password-dialog
- * @short_description: A dialog used to set, change or remove a password
+ * @short_description: A dialog used to set, change or remove a password.
  * @see_also: #HildonGetPasswordDialog
  *
  * HildonSetPasswordDialog allows setting and changing a password. 

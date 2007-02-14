@@ -24,7 +24,7 @@
 
 /**
  * SECTION:hildon-color-button
- * @short_description: A widget to open HildonColorChooserDialog
+ * @short_description: A widget to open HildonColorChooserDialog.
  * @see_also: #HildonColorChooserDialog, #HildonColorPopup
  *
  * HildonColorButton is a widget to open a HildonColorChooserDialog.

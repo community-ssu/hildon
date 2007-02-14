@@ -25,7 +25,7 @@
 /**
  * SECTION:hildon-login-dialog
  * @short_description: A widget which allows a user to enter an username
- * and a password
+ * and a password.
  * @see_also: #HildonGetPasswordDialog, #HildonSetPasswordDialog
  *
  * #HildonLoginDialog is used to enter a username and password

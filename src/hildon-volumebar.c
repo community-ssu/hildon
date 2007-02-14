@@ -24,7 +24,7 @@
 
 /**
  * SECTION:hildon-volumebar
- * @short_description: Base class for widgets that display a volume bar
+ * @short_description: Base class for widgets that display a volume bar.
  * @see_also: #HildonHVolumebar, #HildonVVolumebar
  *
  * #HildonVolumebar is a base class for widgets that display a volume bar that

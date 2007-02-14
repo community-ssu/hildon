@@ -24,7 +24,7 @@
 
 /**
  * SECTION:hildon-range-editor
- * @short_description: A widget is used to ask bounds of a range
+ * @short_description: A widget is used to ask bounds of a range.
  *
  * HidlonRangeEditor allows entering a pair of integers, e.g. the lower
  * and higher bounds of a range. A minimum and maximum can also be set

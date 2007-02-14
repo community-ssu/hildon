@@ -25,7 +25,7 @@
 /**
  * SECTION:hildon-date-editor
  * @short_description: A widget which queries a date from user or opens
- * a HildonCalendarPopup
+ * a HildonCalendarPopup.
  * @see_also: #HildonCalendarPopup, #HildonTimeEditor
  * 
  * HildonDateEditor is a widget with three entry fields (day, month,

@@ -24,7 +24,7 @@
 
 /**
  * SECTION:hildon-sound
- * @short_description: An esd-based utility function for playing a sound
+ * @short_description: An esd-based utility function for playing a sound.
  * 
  */
 

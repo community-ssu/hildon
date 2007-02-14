@@ -24,7 +24,7 @@
 
 /**
  * SECTION:hildon-vvolumebar
- * @short_description: A widget that displays a vertical volume bar
+ * @short_description: A widget that displays a vertical volume bar.
  * @see_also: #HildonVolumebar, #HildonHVolumebar
  *
  * #HildonVVolumebar is a subclass of #HildonVolumebar.  It displays a

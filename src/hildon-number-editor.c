@@ -24,7 +24,7 @@
 
 /**
  * SECTION:hildon-number-editor
- * @short_description: A widget used to enter a number within a pre-defined range
+ * @short_description: A widget used to enter a number within a pre-defined range.
  *
  * HildonNumberEditor is used to enter a number from a specific range. 
  * There are two buttons to scroll the value in number field. 

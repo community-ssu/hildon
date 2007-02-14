@@ -25,7 +25,7 @@
 /**
  * SECTION:hildon-weekday-picker
  * @short_description: A widget for picking days on which a certain event 
- * should take place
+ * should take place.
  * @see_also: #HildonWeekdayPicker 
  *
  * #HildonWeekdayPicker supports non-mutually exclusive selection of days of 

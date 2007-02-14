@@ -25,7 +25,7 @@
 /**
  * SECTION:hildon-caption
  * @short_description: A single-child container widget that precedes the 
- * contained widget with a field label and an optional icon
+ * contained widget with a field label and an optional icon.
  *
  * #HildonCaption is a single-child container widget that precedes the 
  * contained widget with a field label and an optional icon. It allows 

@@ -26,7 +26,7 @@
 /**
  * SECTION:hildon-wizard-dialog
  * @short_description: A widget to create a guided installation
- * process wizard
+ * process wizard.
  *
  * #HildonWizardDialog is a widget to create a guided installation
  * process. The dialog has four standard buttons, previous, next,

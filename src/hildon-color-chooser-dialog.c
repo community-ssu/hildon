@@ -25,7 +25,7 @@
 
 /**
  * SECTION:hildon-color-chooser-dialog
- * @short_description: A dialog used to select a color from HSV colorspace
+ * @short_description: A dialog used to select a color from HSV colorspace.
  * @see_also: #HildonColorButton
  *
  * HildonColorChooserDialog enables the user to 

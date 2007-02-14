@@ -24,7 +24,7 @@
 
 /**
  * SECTION:hildon-get-password-dialog
- * @short_description: A widget used to get a password
+ * @short_description: A widget used to get a password.
  * @see_also: #HildonSetPasswordDialog
  * 
  * HildonGetPasswordDialog prompts the user for a password.  It allows
