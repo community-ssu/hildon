@@ -33,7 +33,7 @@
 #include "hildon-font-selection-dialog.h"
 
 #define PREVIEW_TEXT TEST_STRING
-#define DEFAULT_FONT_FAMILY "Nokia Sans"
+#define DEFAULT_FONT_FAMILY "Sans"
 
 static const guint16 N_FONT_SIZES = 7;
 static const guint16 FONT_SIZES[] = 

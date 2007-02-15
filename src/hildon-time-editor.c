@@ -698,8 +698,11 @@ hildon_time_editor_finalize                     (GObject *obj_self)
     HildonTimeEditorPrivate *priv = HILDON_TIME_EDITOR_GET_PRIVATE (obj_self);
     g_assert (priv);
 
-    g_free (priv->am_symbol);
-    g_free (priv->pm_symbol);
+    if (priv->am_symbol) 
+            g_free (priv->am_symbol);
+
+    if (priv->pm_symbol)
+            g_free (priv->pm_symbol);
 
     if (priv->highlight_idle)
         g_source_remove (priv->highlight_idle);
@@ -793,7 +796,7 @@ hildon_time_editor_set_ticks                    (HildonTimeEditor *editor,
     guint i, h, m, s;
     gchar str[3];
 
-    g_assert (HILDON_IS_TIME_EDITOR (editor));
+    g_return_if_fail (HILDON_IS_TIME_EDITOR (editor));
 
     priv = HILDON_TIME_EDITOR_GET_PRIVATE (editor);
     g_assert (priv);

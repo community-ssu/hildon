@@ -1059,7 +1059,7 @@ hildon_caption_get_label                        (const HildonCaption *caption)
     priv = HILDON_CAPTION_GET_PRIVATE (caption);
     g_assert (priv);
 
-    return (gchar*) gtk_label_get_text (GTK_LABEL (GTK_LABEL (priv->label)));
+    return (gchar*) gtk_label_get_text (GTK_LABEL (priv->label));
 }
 
 /**

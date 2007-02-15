@@ -38,6 +38,8 @@
 
 #include <libintl.h>
 
+#define _(String) dgettext("hildon-libs", String)
+
 /* -------------------- Fixtures -------------------- */
 
 static HildonCaption *caption = NULL;
@@ -285,7 +287,7 @@ START_TEST (test_set_label_regular)
   /* We control i18n so we will never set it properly because apparently it will not be useful for testing */
   /* so _("ecdg_ti_caption_separato") should return the same result that "ecdg_ti_caption_separator" */
   /* If in the future we decide activate internationalization we must modify test implementation */
-  expected_ret_label = g_strconcat(TEST_LABEL,"ecdg_ti_caption_separator",NULL);
+  expected_ret_label = g_strconcat(TEST_LABEL,_("ecdg_ti_caption_separator"),NULL);
 
   /* Test 1 */
   hildon_caption_set_label (caption, TEST_LABEL);
@@ -303,7 +305,7 @@ START_TEST (test_set_label_regular)
   /* Test 2 */
   hildon_caption_set_label (caption, "");
   
-  fail_if (strcmp (hildon_caption_get_label (caption),"ecdg_ti_caption_separator") != 0,
+  fail_if (strcmp (hildon_caption_get_label (caption),_("ecdg_ti_caption_separator")) != 0,
            "hildon-caption: the returned label is %s and should be default separator",
            hildon_caption_get_label (caption));
 }
@@ -363,7 +365,7 @@ START_TEST (test_get_label_regular)
 
   /* Test 1 */
   hildon_caption_set_label (caption, TEST_LABEL);
-  expected_ret_label = g_strconcat(TEST_LABEL,"ecdg_ti_caption_separator",NULL);
+  expected_ret_label = g_strconcat(TEST_LABEL, _("ecdg_ti_caption_separator"),NULL);
 
   fail_if (strcmp (hildon_caption_get_label (caption), expected_ret_label) != 0,
 	   "hildon-caption: the returned label is %s and should be %s",
@@ -374,7 +376,7 @@ START_TEST (test_get_label_regular)
   /* Test 2 */
   hildon_caption_set_label (caption, "");
 
-  fail_if (strcmp (hildon_caption_get_label (caption), "ecdg_ti_caption_separator") != 0,
+  fail_if (strcmp (hildon_caption_get_label (caption), _("ecdg_ti_caption_separator")) != 0,
 	   "hildon-caption: the returned label is %s and should be default separator",
 	   hildon_caption_get_label (caption));
 }

@@ -176,9 +176,9 @@ START_TEST (test_set_range_invalid)
 
   min=hildon_controlbar_get_min(controlbar);
 
-  fail_if (min != 0,
-           "hildon-controlbar: The returned min is %d and should be 0",
-           min);
+  fail_if (min != init_min,
+           "hildon-controlbar: The returned min is %d and should be %d",
+           min, init_min);
 
   max=hildon_controlbar_get_max(controlbar);
 
@@ -193,14 +193,14 @@ START_TEST (test_set_range_invalid)
 
   min=hildon_controlbar_get_min(controlbar);
 
-  fail_if (min != 0,
-           "hildon-controlbar: The returned min is %d and should be 0",
-           min, 0);
+  fail_if (min != init_min,
+           "hildon-controlbar: The returned min is %d and should be %d",
+           min, init_min);
   max=hildon_controlbar_get_max(controlbar);
 
-  fail_if (max != 0,
-           "hildon-controlbar: The returned max is %d and should be 0",
-           max);
+  fail_if (max != init_max,
+           "hildon-controlbar: The returned max is %d and should be %d",
+           max, init_max);
 
   /* Test 4: Set a range of [G_MAXINT,-1] */
   init_min = G_MAXINT;
@@ -209,15 +209,15 @@ START_TEST (test_set_range_invalid)
 
   max=hildon_controlbar_get_max(controlbar);
 
-  fail_if (max != 0,
-           "hildon-controlbar: The returned max is %d and should be 0",
-           max);
+  fail_if (max != init_max,
+           "hildon-controlbar: The returned max is %d and should be %d",
+           max, init_max);
 
   min=hildon_controlbar_get_min(controlbar);
 
-  fail_if (min != 0,
-           "hildon-controlbar: The returned min is %d and should be 0",
-           min);
+  fail_if (min != init_max,
+           "hildon-controlbar: The returned min is %d and should be %d",
+           min, init_max);
 
   /* Test 5: Set a range of [1,G_MININT] */
   init_min = 1;
@@ -226,15 +226,15 @@ START_TEST (test_set_range_invalid)
 
   max=hildon_controlbar_get_max(controlbar);
 
-  fail_if (max != 0,
-           "hildon-controlbar: The returned max is %d and should be 0",
-           max);
+  fail_if (max != init_min,
+           "hildon-controlbar: The returned max is %d and should be %d",
+           max, init_min);
 
   min=hildon_controlbar_get_min(controlbar);
 
-  fail_if (min != 0,
-           "hildon-controlbar: The returned min is %d and should be 0",
-           min);
+  fail_if (min != init_min,
+           "hildon-controlbar: The returned min is %d and should be %d",
+           min, init_min);
 }
 END_TEST
 

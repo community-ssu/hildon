@@ -871,7 +871,7 @@ START_TEST (test_set_day_regular)
   guint day;
   guint ret_day;
 
-  day = 30;
+  day = 25;
 
   /* Test 1: Try day 30 */
   hildon_date_editor_set_day (date_editor, day);

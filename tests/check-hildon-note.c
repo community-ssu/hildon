@@ -89,8 +89,8 @@ START_TEST (test_new_confirmation_regular)
     
   g_object_get_property(G_OBJECT (note),"note_type",&enum_value);
   note_type = g_value_get_int(&enum_value);
-  fail_if( note_type != HILDON_NOTE_CONFIRMATION_TYPE,
-	   "hildon-note: Type was not set property on creation (HILDON_NOTE_CONFIRMATION_TYPE)",note_type);
+  fail_if( note_type != HILDON_NOTE_TYPE_CONFIRMATION,
+	   "hildon-note: Type was not set property on creation (HILDON_NOTE_TYPE_CONFIRMATION)",note_type);
 
   gtk_widget_destroy (GTK_WIDGET (note));
   note=NULL;
@@ -109,8 +109,8 @@ START_TEST (test_new_confirmation_regular)
 
   g_object_get_property(G_OBJECT (note),"note_type",&enum_value);
   note_type = g_value_get_int(&enum_value);
-  fail_unless( note_type == HILDON_NOTE_CONFIRMATION_TYPE,
-               "hildon-note: Type was not set property on creation (HILDON_NOTE_CONFIRMATION_TYPE)",note_type);
+  fail_unless( note_type == HILDON_NOTE_TYPE_CONFIRMATION,
+               "hildon-note: Type was not set property on creation (HILDON_NOTE_TYPE_CONFIRMATION)",note_type);
 
   gtk_widget_destroy (GTK_WIDGET (note));
   note=NULL;
@@ -152,8 +152,8 @@ START_TEST (test_new_confirmation_invalid)
 
   g_object_get_property(G_OBJECT (invalid_note),"note_type",&enum_value);
   note_type = g_value_get_int(&enum_value);
-  fail_if( note_type != HILDON_NOTE_CONFIRMATION_TYPE,
-	   "hildon-note: Type was not set property on creation (HILDON_NOTE_CONFIRMATION_TYPE)",note_type);
+  fail_if( note_type != HILDON_NOTE_TYPE_CONFIRMATION,
+	   "hildon-note: Type was not set property on creation (HILDON_NOTE_TYPE_CONFIRMATION)",note_type);
 
   gtk_widget_destroy (GTK_WIDGET (invalid_note));
   invalid_note=NULL;
@@ -201,8 +201,8 @@ START_TEST (test_new_information_regular)
 
   g_object_get_property(G_OBJECT (note),"note_type",&enum_value);
   note_type = g_value_get_int(&enum_value);   
-  fail_if( note_type != HILDON_NOTE_INFORMATION_THEME_TYPE,
-	   "hildon-note: Type was not set property on creation (HILDON_NOTE_INFORMATION_THEME_TYPE)",note_type);
+  fail_if( note_type != HILDON_NOTE_TYPE_INFORMATION_THEME,
+	   "hildon-note: Type was not set property on creation (HILDON_NOTE_TYPE_INFORMATION_THEME)",note_type);
 
   gtk_widget_destroy (GTK_WIDGET (note));
   note=NULL;
@@ -221,8 +221,8 @@ START_TEST (test_new_information_regular)
 
   g_object_get_property(G_OBJECT (note),"note_type",&enum_value);
   note_type = g_value_get_int(&enum_value);
-  fail_if( note_type != HILDON_NOTE_INFORMATION_THEME_TYPE,
-	   "hildon-note: Type was not set property on creation (HILDON_NOTE_INFORMATION_THEME_TYPE)",note_type);
+  fail_if( note_type != HILDON_NOTE_TYPE_INFORMATION_THEME,
+	   "hildon-note: Type was not set property on creation (HILDON_NOTE_TYPE_INFORMATION_THEME)",note_type);
 
   gtk_widget_destroy (GTK_WIDGET (note));
   note=NULL;
@@ -264,8 +264,8 @@ START_TEST (test_new_information_invalid)
 
   g_object_get_property(G_OBJECT (invalid_note),"note_type",&enum_value);
   note_type = g_value_get_int(&enum_value);
-  fail_if( note_type != HILDON_NOTE_INFORMATION_THEME_TYPE,
-	   "hildon-note: Type was not set property on creation (HILDON_NOTE_INFORMATION_THEME_TYPE)",note_type);
+  fail_if( note_type != HILDON_NOTE_TYPE_INFORMATION_THEME,
+	   "hildon-note: Type was not set property on creation (HILDON_NOTE_TYPE_INFORMATION_THEME)",note_type);
     
   gtk_widget_destroy (GTK_WIDGET (invalid_note));
   invalid_note=NULL;
@@ -318,8 +318,8 @@ START_TEST (test_new_confirmation_with_icon_name_regular)
   
   g_object_get_property(G_OBJECT (note),"note_type",&enum_value);
   note_type = g_value_get_int(&enum_value);  
-  fail_if( note_type != HILDON_NOTE_CONFIRMATION_TYPE,
-	   "hildon-note: Type was not set property on creation (HILDON_NOTE_CONFIRMATION_TYPE)",note_type);
+  fail_if( note_type != HILDON_NOTE_TYPE_CONFIRMATION,
+	   "hildon-note: Type was not set property on creation (HILDON_NOTE_TYPE_CONFIRMATION)",note_type);
   
   g_object_get_property(G_OBJECT (note),"icon",&icon_name_value);
   ret_icon_name = g_value_get_string (&icon_name_value);
@@ -345,8 +345,8 @@ START_TEST (test_new_confirmation_with_icon_name_regular)
   
   g_object_get_property(G_OBJECT (note),"note_type",&enum_value);
   note_type = g_value_get_int(&enum_value);  
-  fail_if( note_type != HILDON_NOTE_CONFIRMATION_TYPE,
-	   "hildon-note: Type was not set property on creation (HILDON_NOTE_CONFIRMATION_TYPE)",note_type);
+  fail_if( note_type != HILDON_NOTE_TYPE_CONFIRMATION,
+	   "hildon-note: Type was not set property on creation (HILDON_NOTE_TYPE_CONFIRMATION)",note_type);
   
   g_object_get_property(G_OBJECT (note),"icon",&icon_name_value);
   ret_icon_name = g_value_get_string (&icon_name_value);
@@ -404,8 +404,8 @@ START_TEST (test_new_confirmation_with_icon_name_invalid)
 
   g_object_get_property(G_OBJECT (invalid_note),"note_type",&enum_value);
   note_type = g_value_get_int(&enum_value);
-  fail_if( note_type != HILDON_NOTE_CONFIRMATION_TYPE,
-	   "hildon-note: Type was not set property on creation (HILDON_NOTE_CONFIRMATION_TYPE)",note_type);
+  fail_if( note_type != HILDON_NOTE_TYPE_CONFIRMATION,
+	   "hildon-note: Type was not set property on creation (HILDON_NOTE_TYPE_CONFIRMATION)",note_type);
 
   gtk_widget_destroy (GTK_WIDGET (invalid_note));
   invalid_note=NULL;
@@ -457,8 +457,8 @@ START_TEST (test_new_cancel_with_progress_bar_regular)
 
   g_object_get_property(G_OBJECT (note),"note_type",&enum_value);
   note_type = g_value_get_int(&enum_value);   
-  fail_if( note_type != HILDON_NOTE_PROGRESSBAR_TYPE,
-	   "hildon-note: Type was not set property on creation (HILDON_NOTE_PROGRESSBAR_TYPE)",note_type);
+  fail_if( note_type != HILDON_NOTE_TYPE_PROGRESSBAR,
+	   "hildon-note: Type was not set property on creation (HILDON_NOTE_TYPE_PROGRESSBAR)",note_type);
 
   gtk_widget_destroy (GTK_WIDGET (note));
   note=NULL;
@@ -483,8 +483,8 @@ START_TEST (test_new_cancel_with_progress_bar_regular)
 
   g_object_get_property(G_OBJECT (note),"note_type",&enum_value);
   note_type = g_value_get_int(&enum_value);   
-  fail_if( note_type != HILDON_NOTE_PROGRESSBAR_TYPE,
-	   "hildon-note: Type was not set property on creation (HILDON_NOTE_PROGRESSBAR_TYPE)",note_type);
+  fail_if( note_type != HILDON_NOTE_TYPE_PROGRESSBAR,
+	   "hildon-note: Type was not set property on creation (HILDON_NOTE_TYPE_PROGRESSBAR)",note_type);
 
   gtk_widget_destroy (GTK_WIDGET (progress_bar));
   gtk_widget_destroy (GTK_WIDGET (note));
@@ -534,8 +534,8 @@ START_TEST (test_new_cancel_with_progress_bar_invalid)
 
   g_object_get_property(G_OBJECT (note),"note_type",&enum_value);
   note_type = g_value_get_int(&enum_value);
-  fail_if( note_type != HILDON_NOTE_PROGRESSBAR_TYPE,
-	   "hildon-note: Type was not set property on creation (HILDON_NOTE_PROGRESSBAR_TYPE)",note_type);
+  fail_if( note_type != HILDON_NOTE_TYPE_PROGRESSBAR,
+	   "hildon-note: Type was not set property on creation (HILDON_NOTE_TYPE_PROGRESSBAR)",note_type);
 
   gtk_widget_destroy (GTK_WIDGET (note));
   note=NULL;
