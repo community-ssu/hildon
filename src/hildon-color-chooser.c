@@ -773,13 +773,13 @@ init_borders                                    (GtkWidget *w,
  * Will move the crosshair pointer to indicate the passed color.
  */
 void 
-hildon_color_chooser_set_color                  (HildonColorChooser *sel, 
+hildon_color_chooser_set_color                  (HildonColorChooser *chooser, 
                                                  GdkColor *color)
 {
     unsigned short hue, sat, val;
     unsigned long min, max;
     signed long tmp, diff;
-    HildonColorChooserPrivate *priv = HILDON_COLOR_CHOOSER_GET_PRIVATE (sel);
+    HildonColorChooserPrivate *priv = HILDON_COLOR_CHOOSER_GET_PRIVATE (chooser);
 
     g_assert (priv);
 
@@ -815,8 +815,8 @@ hildon_color_chooser_set_color                  (HildonColorChooser *sel,
     priv->currsat = sat;
     priv->currval = val;
 
-    inline_limited_expose (sel);
-    g_signal_emit (sel, color_chooser_signals[COLOR_CHANGED], 0);
+    inline_limited_expose (chooser);
+    g_signal_emit (chooser, color_chooser_signals[COLOR_CHANGED], 0);
 }
 
 inline void
@@ -1246,24 +1246,24 @@ hildon_color_chooser_expose_timer               (gpointer data)
 
 /**
  * hildon_color_chooser_get_color:
- * @dialog: a #HildonColorChooser
+ * @chooser: a #HildonColorChooser
  * @color: a color structure to fill with the currently selected color
  *
  * Retrives the currently selected color in the chooser.
  *
  */
 void
-hildon_color_chooser_get_color                  (HildonColorChooser *sel, 
+hildon_color_chooser_get_color                  (HildonColorChooser *chooser, 
                                                  GdkColor *color)
 {
     HildonColorChooserPrivate *priv;
     GdkVisual *system_visual = gdk_visual_get_system ();
     unsigned long rgb[3], rgb2[3];
 
-    g_return_if_fail (HILDON_IS_COLOR_CHOOSER (sel));
+    g_return_if_fail (HILDON_IS_COLOR_CHOOSER (chooser));
     g_return_if_fail (color != NULL);
 
-    priv = HILDON_COLOR_CHOOSER_GET_PRIVATE (sel);
+    priv = HILDON_COLOR_CHOOSER_GET_PRIVATE (chooser);
     g_assert (priv);
 
     inline_h2rgb (priv->currhue, rgb);

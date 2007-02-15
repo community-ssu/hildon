@@ -67,7 +67,7 @@ GtkWidget*
 hildon_color_chooser_dialog_new                 (void);
 
 void
-hildon_color_chooser_dialog_set_color           (HildonColorChooserDialog *chooser, 
+hildon_color_chooser_dialog_set_color           (HildonColorChooserDialog *dialog, 
                                                  GdkColor *color);
 
 void

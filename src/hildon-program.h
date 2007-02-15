@@ -86,7 +86,7 @@ hildon_program_remove_window                    (HildonProgram *self,
 
 void
 hildon_program_set_can_hibernate                (HildonProgram *self, 
-                                                 gboolean killable);
+                                                 gboolean can_hibernate);
 
 gboolean
 hildon_program_get_can_hibernate                (HildonProgram *self);
