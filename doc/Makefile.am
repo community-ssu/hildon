@@ -11,11 +11,13 @@ SCAN_OPTIONS					=
 
 SCANOBJ_OPTIONS					=--type-init-func="gtk_type_init(0)"
 
-DOC_SOURCE_DIR					=../src
+DOC_SOURCE_DIR					= $(top_srcdir)/src
+DOC_BUILD_DIR 					= $(top_builddir)/src
 
-HFILE_GLOB					=$(top_srcdir)/src/*.h
 
-CFILE_GLOB					=$(top_srcdir)/src/*.c
+HFILE_GLOB					= $(top_srcdir)/src/*.h
+
+CFILE_GLOB					= $(top_srcdir)/src/*.c
 
 IGNORE_HFILES 					= hildon-banner-private.h 		\
 						  hildon-calendar-popup-private.h	\
@@ -48,19 +50,23 @@ IGNORE_HFILES 					= hildon-banner-private.h 		\
 
 INCLUDES 					= $(GTK_CFLAGS) -I$(top_srcdir)
 
-GTKDOC_LIBS 					= $(GTK_LIBS) ../src/libhildon_@PACKAGE_VERSION_MAJOR@.la 
-
-MKDB_OPTIONS					=--sgml-mode
+MKDB_OPTIONS					=--sgml-mode --output-format=xml
 
 content_files					= version.xml \
 						  visual_index.xml
+
+GTKDOC_CFLAGS 					= $(HILDON_OBJ_CFLAGS)
+
+GTKDOC_LIBS 					= $(HILDON_OBJ_LIBS)
 
 version.xml: ../configure.ac
 	@echo $(VERSION) > version.xml
 
 html: html-build.stamp
 
-HTML_IMAGES 					= $(srcdir)/images/calendar-popup.png
+HTML_IMAGES 					= $(srcdir)/images/calendar-popup.png	\
+						  $(srcdir)/images/caption.png		\
+						  $(srcdir)/images/code-dialog.png
 
 FIXXREF_OPTIONS					=
 

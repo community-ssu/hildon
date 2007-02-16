@@ -40,6 +40,7 @@ struct                                          _HildonBannerPrivate
     GtkWidget *layout;
     guint timeout_id;
     gboolean is_timed;
+    guint    timeout;
     GtkWindow *parent;
 };
 

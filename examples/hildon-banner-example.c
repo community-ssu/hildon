@@ -45,7 +45,8 @@ on_progress_idle                                (GtkWidget *banner)
 static gboolean
 on_information_clicked                          (GtkWidget *widget)
 {
-    hildon_banner_show_information (widget, NULL, "Information banner"); 
+    GtkWidget* banner = hildon_banner_show_information (widget, NULL, "Information banner"); 
+    hildon_banner_set_timeout (HILDON_BANNER (banner), 9000);
     return TRUE;
 }
 

@@ -66,7 +66,7 @@
 
 /* default timeout */
 
-#define                                         HILDON_BANNER_TIMEOUT 3000
+#define                                         HILDON_BANNER_DEFAULT_TIMEOUT 3000
 
 /* default icons */
 
@@ -78,7 +78,8 @@ enum
 {
     PROP_0,
     PROP_PARENT_WINDOW, 
-    PROP_IS_TIMED
+    PROP_IS_TIMED,
+    PROP_TIMEOUT
 };
 
 static GtkWidget*                               global_timed_banner = NULL;
@@ -356,8 +357,8 @@ hildon_banner_ensure_timeout                    (HildonBanner *self)
     HildonBannerPrivate *priv = HILDON_BANNER_GET_PRIVATE (self);
     g_assert (priv);
 
-    if (priv->timeout_id == 0 && priv->is_timed)
-        priv->timeout_id = g_timeout_add (HILDON_BANNER_TIMEOUT, 
+    if (priv->timeout_id == 0 && priv->is_timed && priv->timeout > 0)
+        priv->timeout_id = g_timeout_add (priv->timeout, 
                 hildon_banner_timeout, self);
 }
 
@@ -374,6 +375,10 @@ hildon_banner_set_property                      (GObject *object,
 
     switch (prop_id) {
 
+        case PROP_TIMEOUT:
+             priv->timeout = g_value_get_uint (value);
+             break;
+ 
         case PROP_IS_TIMED:
             priv->is_timed = g_value_get_boolean (value);
 
@@ -417,6 +422,10 @@ hildon_banner_get_property                      (GObject *object,
 
     switch (prop_id)
     {
+        case PROP_TIMEOUT:
+             g_value_set_uint (value, priv->timeout);
+             break;
+ 
         case PROP_IS_TIMED:
             g_value_set_boolean (value, priv->is_timed);
             break;
@@ -674,6 +683,22 @@ hildon_banner_class_init                        (HildonBannerClass *klass)
                 "Whether or not the notification goes away automatically "
                 "after the specified time has passed",
                 FALSE, G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY));
+
+    /**
+     * HildonBanner:timeout:
+     *
+     * The time before making the banner banner go away. This needs 
+     * to be adjusted before the banner is mapped to the screen.
+     *                      
+     */
+    g_object_class_install_property (object_class, PROP_TIMEOUT,
+            g_param_spec_uint ("timeout",
+                "Timeout",
+                "The time before making the banner banner go away",
+                0,
+                10000,
+                HILDON_BANNER_DEFAULT_TIMEOUT,
+                G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY));
 }
 
 static void 
@@ -763,16 +788,18 @@ hildon_banner_get_instance_for_widget           (GtkWidget *widget,
  * spawn a new banner before the earlier one has timed out, the
  * previous one will be replaced.
  *
+ * Returns: The newly created banner
+ *
  */
-void 
+GtkWidget*
 hildon_banner_show_information                  (GtkWidget *widget, 
                                                  const gchar *icon_name,
                                                  const gchar *text)
 {
     HildonBanner *banner;
 
-    g_return_if_fail (icon_name == NULL || icon_name[0] != 0);
-    g_return_if_fail (text != NULL);
+    g_return_val_if_fail (icon_name == NULL || icon_name[0] != 0, NULL);
+    g_return_val_if_fail (text != NULL, NULL);
 
     /* Prepare banner */
     banner = hildon_banner_get_instance_for_widget (widget, TRUE);
@@ -787,6 +814,8 @@ hildon_banner_show_information                  (GtkWidget *widget,
 
     /* Show the banner, since caller cannot do that */
     gtk_widget_show_all (GTK_WIDGET (banner));
+
+    return (GtkWidget *) banner;
 }
 
 /**
@@ -799,25 +828,29 @@ hildon_banner_show_information                  (GtkWidget *widget,
  * A helper function for #hildon_banner_show_information with
  * string formatting.
  *
+ * Returns: the newly created banner
  */
-void       
+GtkWidget* 
 hildon_banner_show_informationf                 (GtkWidget *widget, 
                                                  const gchar *icon_name,
                                                  const gchar *format, 
                                                  ...)
 {
-    g_return_if_fail (format != NULL);
+    g_return_val_if_fail (format != NULL, NULL);
 
     gchar *message;
     va_list args;
+    GtkWidget *banner;
 
     va_start (args, format);
     message = g_strdup_vprintf (format, args);
     va_end (args);
 
-    hildon_banner_show_information (widget, icon_name, message);
+    banner = hildon_banner_show_information (widget, icon_name, message);
 
     g_free (message);
+
+    return banner;
 }
 
 /**
@@ -832,16 +865,18 @@ hildon_banner_show_informationf                 (GtkWidget *widget,
  * spawn a new banner before the earlier one has timed out, the
  * previous one will be replaced.
  *
+ * Returns: the newly created banner
+ *
  */
-void 
+GtkWidget*
 hildon_banner_show_information_with_markup      (GtkWidget *widget, 
                                                  const gchar *icon_name, 
                                                  const gchar *markup)
 {
     HildonBanner *banner;
 
-    g_return_if_fail (icon_name == NULL || icon_name[0] != 0);
-    g_return_if_fail (markup != NULL);
+    g_return_val_if_fail (icon_name == NULL || icon_name[0] != 0, NULL);
+    g_return_val_if_fail (markup != NULL, NULL);
 
     /* Prepare banner */
     banner = hildon_banner_get_instance_for_widget (widget, TRUE);
@@ -857,6 +892,8 @@ hildon_banner_show_information_with_markup      (GtkWidget *widget,
 
     /* Show the banner, since caller cannot do that */
     gtk_widget_show_all (GTK_WIDGET (banner));
+
+    return (GtkWidget *) banner;
 }
 
 /**
@@ -1051,3 +1088,84 @@ hildon_banner_set_fraction                      (HildonBanner *self,
     gtk_progress_bar_set_fraction (GTK_PROGRESS_BAR (priv->main_item), fraction);
 }
 
+/**
+ * hildon_banner_set_timeout:
+ * @self: a #HildonBanner widget
+ * @timeout: timeout to set in miliseconds.
+ *
+ * Sets the timeout on the banner. After the given amount of miliseconds
+ * has elapsed the banner will go away. Note that settings this only makes
+ * sense on the banners that are timed and that have not been yet displayed
+ * on the screen.
+ *
+ */
+void
+hildon_banner_set_timeout                       (HildonBanner *self,
+                                                 guint timeout)
+{
+    HildonBannerPrivate *priv;
+
+    g_return_if_fail (HILDON_IS_BANNER (self));
+    priv = HILDON_BANNER_GET_PRIVATE (self);
+    g_assert (priv);
+
+    priv->timeout = timeout;
+}
+
+/**
+ * hildon_banner_set_icon:
+ * @self: a #HildonBanner widget
+ * @icon_name: the name of icon to use. Can be %NULL for default icon
+ *
+ * Sets the icon to be used in the banner.
+ *
+ */
+void 
+hildon_banner_set_icon                          (HildonBanner *self, 
+                                                 const gchar  *icon_name)
+{
+    HildonBannerPrivate *priv;
+
+    g_return_if_fail (HILDON_IS_BANNER (self));
+    priv = HILDON_BANNER_GET_PRIVATE (self);
+    g_assert (priv);
+
+    hildon_banner_ensure_child (self, NULL, 0, GTK_TYPE_IMAGE, 
+            "pixel-size", HILDON_ICON_PIXEL_SIZE_NOTE, 
+            "icon-name", icon_name ? icon_name : HILDON_BANNER_DEFAULT_ICON,
+            "yalign", 0.0, 
+            NULL);
+}
+
+/**
+ * hildon_banner_set_icon_from_file:
+ * @self: a #HildonBanner widget
+ * @icon_file: the filename of icon to use. Can be %NULL for default icon
+ *
+ * Sets the icon from its filename to be used in the banner.
+ *
+ */
+void 
+hildon_banner_set_icon_from_file                (HildonBanner *self, 
+                                                 const gchar  *icon_file)
+{
+    HildonBannerPrivate *priv;
+
+    g_return_if_fail (HILDON_IS_BANNER (self));
+    priv = HILDON_BANNER_GET_PRIVATE (self);
+    g_assert (priv);
+
+    if (icon_file != NULL) {
+        hildon_banner_ensure_child (self, NULL, 0, GTK_TYPE_IMAGE, 
+                "pixel-size", HILDON_ICON_PIXEL_SIZE_NOTE, 
+                "file", icon_file,
+                "yalign", 0.0, 
+                NULL);
+    } else {
+        hildon_banner_ensure_child (self, NULL, 0, GTK_TYPE_IMAGE, 
+                "pixel-size", HILDON_ICON_PIXEL_SIZE_NOTE, 
+                "icon-name", HILDON_BANNER_DEFAULT_ICON,
+                "yalign", 0.0, 
+                NULL);
+    }
+}

@@ -60,18 +60,18 @@ struct                                          _HildonBannerClass
 GType G_GNUC_CONST
 hildon_banner_get_type                          (void);
 
-void       
+GtkWidget* 
 hildon_banner_show_information                  (GtkWidget *widget, 
                                                  const gchar *icon_name,
                                                  const gchar *text);
 
-void 
+GtkWidget*
 hildon_banner_show_informationf                 (GtkWidget *widget, 
                                                  const gchar *icon_name,
                                                  const gchar *format, 
                                                  ...);
 
-void       
+GtkWidget*       
 hildon_banner_show_information_with_markup      (GtkWidget *widget, 
                                                  const gchar *icon_name,
                                                  const gchar *markup);
@@ -97,6 +97,18 @@ hildon_banner_set_markup                        (HildonBanner *self,
 void     
 hildon_banner_set_fraction                      (HildonBanner *self,
                                                  gdouble fraction);
+
+void     
+hildon_banner_set_icon                          (HildonBanner *self,
+                                                 const gchar *icon_name);
+
+void     
+hildon_banner_set_icon_from_file                (HildonBanner *self,
+                                                 const gchar *icon_file);
+
+void
+hildon_banner_set_timeout                       (HildonBanner *self,
+                                                 guint timeout);
 
 G_END_DECLS
 
