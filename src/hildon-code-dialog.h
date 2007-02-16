@@ -79,6 +79,10 @@ void
 hildon_code_dialog_set_help_text                (HildonCodeDialog *dialog,
                                                  const gchar *text);
 
+void
+hildon_code_dialog_set_input_sensitive          (HildonCodeDialog *dialog, 
+                                                 gboolean sensitive);
+
 G_END_DECLS
 
 #endif                                          /* __HILDON_CODE_DIALOG_H__ */

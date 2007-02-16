@@ -541,3 +541,32 @@ hildon_code_dialog_input                        (HildonCodeDialog *dialog)
     /* Emit the signal */
     g_signal_emit (dialog, input_signal, 0);
 }
+
+/**
+ * hildon_code_dialog_set_input_sensitive
+ * @dialog: The #HildonCodeDialog whose state is to be changed
+ * @sensitive: The new state 
+ *
+ * This function will block or enable the input on the code dialog by
+ * making the input button sensitive (or not).
+ **/
+void
+hildon_code_dialog_set_input_sensitive          (HildonCodeDialog *dialog, 
+                                                 gboolean sensitive)
+{
+    int i;
+    int k;
+
+    g_return_if_fail (HILDON_IS_CODE_DIALOG (dialog));
+
+    HildonCodeDialogPrivate *priv = HILDON_CODE_DIALOG_GET_PRIVATE (dialog);
+    g_assert (priv);
+
+    for (i = 0; i < 5; i++)
+        for (k = 0; k < 3; k++) 
+            if (i != 4 && (k != 0 || k != 2))
+                gtk_widget_set_sensitive (priv->buttons [i][k], sensitive);
+
+    gtk_widget_set_sensitive (priv->help_text, sensitive);
+    gtk_widget_set_sensitive (priv->entry, sensitive);
+}
