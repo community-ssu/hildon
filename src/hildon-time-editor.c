@@ -61,6 +61,7 @@
 #include                                        <gtk/gtklabel.h>
 #include                                        <gtk/gtkframe.h>
 #include                                        <gdk/gdkkeysyms.h>
+#include                                        <gtk/gtkenums.h>
 #include                                        <string.h>
 #include                                        <time.h>
 #include                                        <stdlib.h>
@@ -69,7 +70,6 @@
 #include                                        "hildon-defines.h"
 #include                                        "hildon-time-picker.h"
 #include                                        "hildon-banner.h"
-#include                                        "hildon-input-mode-hint.h"
 #include                                        "hildon-private.h"
 #include                                        "hildon-marshalers.h"
 #include                                        "hildon-enum-types.h"
@@ -533,7 +533,7 @@ hildon_time_editor_init                         (HildonTimeEditor *editor)
         gtk_entry_set_has_frame (GTK_ENTRY (priv->entries[i]), FALSE);
 
         /* Set the entries to accept only numeric characters */
-        g_object_set (priv->entries[i], "input-mode", HILDON_INPUT_MODE_HINT_NUMERIC, NULL);
+        g_object_set (priv->entries[i], "input-mode", HILDON_GTK_INPUT_MODE_NUMERIC, NULL);
 
         /* The entry fields all take exactly two characters */
         gtk_entry_set_max_length (GTK_ENTRY (priv->entries[i]), 2);

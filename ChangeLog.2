@@ -1,3 +1,18 @@
+2007-02-19  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
+	* doc/hildon.types:
+	* src/Makefile.am:
+	* src/hildon-input-mode-hint.h: Removing this file. 
+	Now all the input-method related things are declared in gtkenums.h.
+
+	* src/hildon-number-editor.c:
+	* src/hildon-range-editor.c:
+	* src/hildon-time-editor.c:
+	* src/hildon.h: 
+	* src/hildon-date-editor.c:
+	* src/hildon-get-password-dialog.c: Use the input-mode enums defined
+	in gtkenums.h
+
 2007-02-16  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
 	* debian/changelog:

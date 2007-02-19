@@ -79,7 +79,6 @@
 #include                                        <unistd.h>
 #include                                        <stdio.h>
 #include                                        <gtk/gtk.h>
-#include                                        "hildon-input-mode-hint.h"
 #include                                        "hildon-caption.h"
 #include                                        "hildon-banner.h"
 #include                                        <libintl.h>
@@ -174,8 +173,8 @@ hildon_get_password_set_property                (GObject *object,
             g_object_set(G_OBJECT (gtk_bin_get_child GTK_BIN ((priv->password_entry))),
                     "input-mode",
                     (g_value_get_boolean (value)
-                     ? HILDON_INPUT_MODE_HINT_NUMERIC
-                     : HILDON_INPUT_MODE_HINT_ALPHANUMERICSPECIAL),
+                     ? HILDON_GTK_INPUT_MODE_NUMERIC
+                     : HILDON_GTK_INPUT_MODE_FULL),
                     NULL);
             break;
 
@@ -231,7 +230,7 @@ hildon_get_password_get_property                (GObject *object,
             g_object_get (G_OBJECT (gtk_bin_get_child (GTK_BIN (priv->password_entry))),
                     "input-mode", &input_mode, NULL);
             g_value_set_boolean (value,
-                    (input_mode == HILDON_INPUT_MODE_HINT_NUMERIC));
+                    (input_mode == HILDON_GTK_INPUT_MODE_NUMERIC));
             break;
 
         case PROP_CAPTION_LABEL:

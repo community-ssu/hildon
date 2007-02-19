@@ -75,7 +75,6 @@ libhildon_@PACKAGE_VERSION_MAJOR@_include_HEADERS 	= hildon-banner.h 				\
 							  hildon-font-selection-dialog.h 		\
 							  hildon-get-password-dialog.h 			\
 							  hildon-hvolumebar.h 				\
-							  hildon-input-mode-hint.h 			\
 							  hildon-login-dialog.h 			\
 							  hildon-marshalers.h 				\
 							  hildon-note.h 				\

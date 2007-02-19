@@ -51,7 +51,6 @@
 #include                                        <stdlib.h>
 #include                                        "hildon-marshalers.h"
 #include                                        "hildon-private.h"
-#include                                        "hildon-input-mode-hint.h"
 #include                                        "hildon-defines.h"
 #include                                        "hildon-enum-types.h"
 #include                                        "hildon-banner.h"
@@ -408,7 +407,7 @@ hildon_number_editor_init                       (HildonNumberEditor *editor)
             editor);
 
     g_object_set (G_OBJECT (priv->num_entry),
-            "input-mode", HILDON_INPUT_MODE_HINT_NUMERIC, NULL);
+            "input-mode", HILDON_GTK_INPUT_MODE_NUMERIC, NULL);
 
     gtk_widget_show (priv->num_entry);
     gtk_widget_show (priv->minus);

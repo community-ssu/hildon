@@ -52,7 +52,6 @@
 #include                                        <glib/gprintf.h>
 #include                                        <string.h>
 #include                                        <stdlib.h>
-#include                                        "hildon-input-mode-hint.h"
 #include                                        "hildon-banner.h"
 #include                                        <libintl.h>
 #include                                        "hildon-range-editor-private.h"
@@ -330,10 +329,10 @@ hildon_range_editor_init                        (HildonRangeEditor *editor)
             G_CALLBACK (hildon_range_editor_entry_changed), editor);
 
     g_object_set (G_OBJECT (priv->start_entry),
-            "input-mode", HILDON_INPUT_MODE_HINT_NUMERIC, NULL);
+            "input-mode", HILDON_GTK_INPUT_MODE_NUMERIC, NULL);
 
     g_object_set( G_OBJECT (priv->end_entry),
-            "input-mode", HILDON_INPUT_MODE_HINT_NUMERIC, NULL);
+            "input-mode", HILDON_GTK_INPUT_MODE_NUMERIC, NULL);
 
     gtk_widget_show (priv->start_entry);
     gtk_widget_show (priv->end_entry);

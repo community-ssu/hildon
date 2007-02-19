@@ -52,6 +52,7 @@
 #include                                        "hildon-date-editor.h"
 #include                                        <glib.h>
 #include                                        <gtk/gtk.h>
+#include                                        <gtk/gtkenums.h>
 #include                                        <gdk/gdkkeysyms.h>
 #include                                        <time.h>
 #include                                        <stdlib.h>
@@ -59,7 +60,6 @@
 #include                                        <string.h>
 #include                                        "hildon-calendar-popup.h"
 #include                                        "hildon-defines.h"
-#include                                        "hildon-input-mode-hint.h"
 #include                                        "hildon-private.h"
 #include                                        "hildon-marshalers.h"
 #include                                        "hildon-enum-types.h"
@@ -450,11 +450,11 @@ hildon_date_editor_init                         (HildonDateEditor *editor)
     priv->y_entry = gtk_entry_new ();
 
     g_object_set (G_OBJECT(priv->d_entry), "input-mode", 
-            HILDON_INPUT_MODE_HINT_NUMERIC, NULL);
+            HILDON_GTK_INPUT_MODE_NUMERIC, NULL);
     g_object_set (G_OBJECT(priv->m_entry), "input-mode", 
-            HILDON_INPUT_MODE_HINT_NUMERIC, NULL);
+            HILDON_GTK_INPUT_MODE_NUMERIC, NULL);
     g_object_set (G_OBJECT(priv->y_entry), "input-mode", 
-            HILDON_INPUT_MODE_HINT_NUMERIC, NULL);
+            HILDON_GTK_INPUT_MODE_NUMERIC, NULL);
 
     /* set entry look */
     gtk_entry_set_width_chars (GTK_ENTRY (priv->d_entry), DAY_ENTRY_WIDTH);

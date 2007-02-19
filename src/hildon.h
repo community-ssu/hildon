@@ -41,7 +41,6 @@
 #include                                        "hildon-font-selection-dialog.h"
 #include                                        "hildon-get-password-dialog.h"
 #include                                        "hildon-hvolumebar.h"
-#include                                        "hildon-input-mode-hint.h"
 #include                                        "hildon-login-dialog.h"
 #include                                        "hildon-marshalers.h"
 #include                                        "hildon-note.h"
