@@ -1478,12 +1478,15 @@ hildon_window_update_title                      (HildonWindow *window)
     {
         const gchar *old_title = gtk_window_get_title (GTK_WINDOW (window));
 
-        if (old_title && old_title[0])
+        if (old_title)
         {
             gchar *title = NULL;
-
-            title = g_strjoin (TITLE_SEPARATOR, application_name,
-                    old_title, NULL);
+                
+            if (strlen (old_title) == 0) 
+                title = g_strdup (application_name);
+            else
+                title = g_strjoin (TITLE_SEPARATOR, application_name,
+                                   old_title, NULL);
 
             gdk_window_set_title (GTK_WIDGET (window)->window, title);
 
