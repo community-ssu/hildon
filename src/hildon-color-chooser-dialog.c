@@ -295,7 +295,6 @@ hildon_color_chooser_dialog_class_init          (HildonColorChooserDialogClass *
                 GTK_TYPE_BORDER,
                 G_PARAM_READABLE));
 
-
     gtk_widget_class_install_style_property (widget_klass,
             g_param_spec_boxed ("default_color", "Default color",
                 "Default color for nonpainted custom colors",

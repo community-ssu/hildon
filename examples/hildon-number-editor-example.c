@@ -35,12 +35,12 @@ main                                            (int argc,
     gtk_init (&argc, &args);
     
     GtkDialog *dialog = GTK_DIALOG (gtk_dialog_new ());
-    GtkWidget *button = hildon_color_button_new ();
-    GtkWidget *label = gtk_label_new ("Pick the color:");
+    GtkWidget *editor = hildon_number_editor_new (2, 5);
+    GtkWidget *label = gtk_label_new ("Enter number:");
     GtkWidget *hbox = gtk_hbox_new (FALSE, 12);
 
     gtk_box_pack_start (GTK_BOX (hbox), label, TRUE, TRUE, 0);
-    gtk_box_pack_start (GTK_BOX (hbox), button, FALSE, FALSE, 0);
+    gtk_box_pack_start (GTK_BOX (hbox), editor, FALSE, FALSE, 0);
     gtk_box_pack_start (GTK_BOX (dialog->vbox), hbox, TRUE, TRUE, 0);
 
     gtk_dialog_add_button (dialog, "Close", GTK_RESPONSE_CLOSE);
@@ -48,11 +48,6 @@ main                                            (int argc,
     gtk_widget_show_all (GTK_WIDGET (dialog));
     gtk_dialog_run (dialog);
 
-    GdkColor *color;
-    g_object_get (G_OBJECT (button), "color", &color, NULL);
-
-    g_debug ("Color is: %d %d %d", color->red, color->green, color->blue);
-    
     return 0;
 }
 

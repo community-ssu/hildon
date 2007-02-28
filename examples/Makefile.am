@@ -23,7 +23,8 @@ noinst_PROGRAMS				= hildon-window-example 		\
 					  hildon-toolbar-example		\
 					  hildon-code-dialog-example		\
 					  hildon-hvolumebar-example		\
-					  hildon-lookup-example
+					  hildon-lookup-example			\
+					  hildon-number-editor-example
 
 # HIldon window
 hildon_window_example_LDADD		= $(HILDON_OBJ_LIBS)
@@ -139,5 +140,10 @@ hildon_code_dialog_example_SOURCES	= hildon-code-dialog-example.c
 hildon_lookup_example_LDADD		= $(HILDON_OBJ_LIBS)
 hildon_lookup_example_CFLAGS		= $(HILDON_OBJ_CFLAGS)
 hildon_lookup_example_SOURCES		= hildon-lookup-example.c
+
+# Hildon number editor
+hildon_number_editor_example_LDADD	= $(HILDON_OBJ_LIBS)
+hildon_number_editor_example_CFLAGS	= $(HILDON_OBJ_CFLAGS)
+hildon_number_editor_example_SOURCES	= hildon-number-editor-example.c
 
 endif

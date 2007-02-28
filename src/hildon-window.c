@@ -757,7 +757,8 @@ hildon_window_destroy                           (GtkObject *obj)
 {
     HildonWindow *self = HILDON_WINDOW (obj);
     HildonWindowPrivate *priv = HILDON_WINDOW_GET_PRIVATE (obj);
-    GList *menu_list;
+    GList *menu_list = NULL;
+    GList *menu_node = NULL;
     
     g_assert (priv != NULL);
 
@@ -780,29 +781,31 @@ hildon_window_destroy                           (GtkObject *obj)
     }
 
     menu_list = g_list_copy (gtk_menu_get_for_attach_widget (GTK_WIDGET (obj)));
+    menu_node = menu_list;
 
-    while (menu_list)
+    while (menu_node)
     {
-        if (GTK_IS_MENU (menu_list->data))
+        if (GTK_IS_MENU (menu_node->data))
         {
-            if (GTK_WIDGET_VISIBLE (GTK_WIDGET (menu_list->data)))
+            if (GTK_WIDGET_VISIBLE (GTK_WIDGET (menu_node->data)))
             {
-                gtk_menu_popdown (GTK_MENU (menu_list->data));
-                gtk_menu_shell_deactivate (GTK_MENU_SHELL (menu_list->data));
+                gtk_menu_popdown (GTK_MENU (menu_node->data));
+                gtk_menu_shell_deactivate (GTK_MENU_SHELL (menu_node->data));
             }
-            gtk_menu_detach (GTK_MENU (menu_list->data));
+            gtk_menu_detach (GTK_MENU (menu_node->data));
 
             /* Destroy it, but only if it's not a common menu */
             if (priv->program && 
-                hildon_program_get_common_menu (priv->program) != menu_list->data) {
-                    g_object_unref (menu_list->data);
-                    gtk_object_destroy (GTK_OBJECT (menu_list->data));
+                hildon_program_get_common_menu (priv->program) != menu_node->data) {
+                    gtk_object_destroy (GTK_OBJECT (menu_node->data));
+                    g_object_unref (menu_node->data);
             }
         }
-        menu_list = menu_list->next;
+        menu_node = menu_node->next;
     }
 
     g_list_free (menu_list);
+    menu_list = NULL;
 
     if (priv->program)
     {
