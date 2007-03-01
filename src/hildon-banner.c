@@ -1026,6 +1026,7 @@ hildon_banner_set_text                          (HildonBanner *self,
 {
     GtkLabel *label;
     HildonBannerPrivate *priv;
+    const gchar *existing_text;
 
     g_return_if_fail (HILDON_IS_BANNER (self));
 
@@ -1033,7 +1034,11 @@ hildon_banner_set_text                          (HildonBanner *self,
     g_assert (priv);
 
     label = GTK_LABEL (priv->label);
-    if (strcmp (gtk_label_get_text (label), text) != 0)
+    existing_text = gtk_label_get_text (label);
+
+    if (existing_text != NULL && 
+        text != NULL          &&
+        strcmp (existing_text, text) != 0)
             gtk_label_set_text (label, text);
 
     hildon_banner_check_position (GTK_WIDGET (self));
