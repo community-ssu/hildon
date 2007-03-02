@@ -118,7 +118,8 @@ hildon_caption_button_press                     (GtkWidget *widget,
                                                  GdkEventButton *event);
 
 static void
-hildon_caption_set_label_text                   (HildonCaptionPrivate *priv);
+hildon_caption_set_label_text                   (HildonCaptionPrivate *priv, 
+                                                 gboolean markup);
 
 static void 
 hildon_caption_set_child_property               (GtkContainer *container,
@@ -138,6 +139,7 @@ enum
 {
     PROP_0,
     PROP_LABEL,
+    PROP_MARKUP,
     PROP_ICON,
     PROP_STATUS,
     PROP_SEPARATOR,
@@ -232,6 +234,16 @@ hildon_caption_class_init                       (HildonCaptionClass *caption_cla
             g_param_spec_string ("label",
                 "Current label", "Caption label",
                 NULL, G_PARAM_READABLE | G_PARAM_WRITABLE) );
+    
+    /**
+     * HildonCaption:markup:
+     *
+     * Caption markup. Mutually exclusive with label.
+     */
+    g_object_class_install_property (gobject_class, PROP_MARKUP,
+            g_param_spec_string ("markup",
+                "Current markup", "Caption markup",
+                NULL, G_PARAM_WRITABLE) );
 
     /**
      * HildonCaption:icon:
@@ -408,7 +420,20 @@ hildon_caption_set_property                     (GObject *object,
 
             /* Update label */
             priv->text = g_value_dup_string (value);
-            hildon_caption_set_label_text (priv);
+            hildon_caption_set_label_text (priv, FALSE);
+            break;
+
+        case PROP_MARKUP:
+            /* Free old label string */
+            if (priv->text)
+            {
+                g_free (priv->text);
+                priv->text = NULL;
+            }
+
+            /* Update label */
+            priv->text = g_value_dup_string (value);
+            hildon_caption_set_label_text (priv, TRUE);
             break;
 
         case PROP_ICON:
@@ -453,7 +478,7 @@ hildon_caption_set_property                     (GObject *object,
             }
 
             priv->separator = g_value_dup_string (value);
-            hildon_caption_set_label_text (priv);
+            hildon_caption_set_label_text (priv, FALSE);
             break;
 
         default:
@@ -1036,9 +1061,27 @@ void
 hildon_caption_set_label                        (HildonCaption *caption, 
                                                  const gchar *label)
 {
-    g_return_if_fail (HILDON_IS_CAPTION(caption));
+    g_return_if_fail (HILDON_IS_CAPTION (caption));
 
     g_object_set (G_OBJECT(caption), "label", label, NULL);
+}
+
+/**
+ * hildon_caption_set_label_markup:
+ * @caption : a #HildonCaption
+ * @markup : the markup text to use
+ *
+ * Sets the label markup text that appears before the control. It acts like
+ * #hildon_caption_set_label but is using the markup text that allows to specify
+ * text properties such as bold or italic.
+ */
+void 
+hildon_caption_set_label_markup                 (HildonCaption *caption, 
+                                                 const gchar *markup)
+{
+    g_return_if_fail (HILDON_IS_CAPTION (caption));
+
+    g_object_set (G_OBJECT(caption), "markup", markup, NULL);
 }
 
 /**
@@ -1172,7 +1215,8 @@ hildon_caption_get_child_expand                 (const HildonCaption *caption)
 }
 
 static void
-hildon_caption_set_label_text                   (HildonCaptionPrivate *priv)
+hildon_caption_set_label_text                   (HildonCaptionPrivate *priv, 
+                                                 gboolean markup)
 {
     gchar *tmp = NULL;
     g_assert (priv != NULL);
@@ -1184,27 +1228,40 @@ hildon_caption_set_label_text                   (HildonCaptionPrivate *priv)
             /* Don't duplicate the separator, if the string already contains one */
             if (g_str_has_suffix (priv->text, priv->separator))
             {
-                gtk_label_set_text (GTK_LABEL (priv->label), priv->text);
+                if (markup)
+                    gtk_label_set_markup (GTK_LABEL (priv->label), priv->text);
+                else
+                    gtk_label_set_text (GTK_LABEL (priv->label), priv->text);
             }
             else
             {
                 /* Append separator and set text */
                 tmp = g_strconcat( priv->text, priv->separator, NULL );
-                gtk_label_set_text (GTK_LABEL( priv->label), tmp);
+                
+                if (markup)
+                    gtk_label_set_markup (GTK_LABEL (priv->label), tmp);
+                else
+                    gtk_label_set_text (GTK_LABEL (priv->label), tmp);
+
                 g_free (tmp);
             }
         }
         else
         {
-            gtk_label_set_text (GTK_LABEL (priv->label), priv->text);
+            if (markup) 
+                gtk_label_set_markup (GTK_LABEL (priv->label), priv->text);
+            else
+                gtk_label_set_text (GTK_LABEL (priv->label), priv->text);
         }
     }
     else
     {
         /* Clear the label */
-        gtk_label_set_text (GTK_LABEL (priv->label), "" );
+        if (markup)
+            gtk_label_set_markup (GTK_LABEL (priv->label), "");
+        else
+            gtk_label_set_text (GTK_LABEL (priv->label), "" );
     }
-
 }
 
 /**

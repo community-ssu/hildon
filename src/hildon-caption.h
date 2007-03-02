@@ -161,6 +161,10 @@ hildon_caption_set_child_expand                 (HildonCaption *caption,
 gboolean 
 hildon_caption_get_child_expand                 (const HildonCaption *caption);
 
+void
+hildon_caption_set_label_markup                 (HildonCaption *caption,
+                                                 const gchar *markup);
+
 G_END_DECLS
 
 #endif                                          /* __HILDON_CAPTION_H__ */

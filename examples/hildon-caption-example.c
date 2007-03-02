@@ -46,15 +46,18 @@ main                                            (int argc,
                                               gtk_image_new_from_stock (GTK_STOCK_OK, GTK_ICON_SIZE_BUTTON), 0);
     GtkWidget *caption4 = hildon_caption_new (size_group, "Check caption", gtk_check_button_new (), 
                                               gtk_image_new_from_stock (GTK_STOCK_OK, GTK_ICON_SIZE_BUTTON), 0);
-
+    GtkWidget *caption5 = hildon_caption_new (size_group, "", gtk_entry_new (), 
+                                              NULL, 0);
 
     hildon_caption_set_icon_position (HILDON_CAPTION (caption2), HILDON_CAPTION_POSITION_LEFT);
     hildon_caption_set_icon_position (HILDON_CAPTION (caption3), HILDON_CAPTION_POSITION_RIGHT);
+    hildon_caption_set_label_markup (HILDON_CAPTION (caption5), "<b>Bold caption</b>");
     
     gtk_box_pack_start (GTK_BOX (dialog->vbox), caption1, FALSE, FALSE, 0);
     gtk_box_pack_start (GTK_BOX (dialog->vbox), caption2, FALSE, FALSE, 0);
     gtk_box_pack_start (GTK_BOX (dialog->vbox), caption3, FALSE, FALSE, 0);
     gtk_box_pack_start (GTK_BOX (dialog->vbox), caption4, FALSE, FALSE, 0);
+    gtk_box_pack_start (GTK_BOX (dialog->vbox), caption5, FALSE, FALSE, 0);
 
     gtk_dialog_add_button (dialog, "Close", GTK_RESPONSE_CLOSE);
 
