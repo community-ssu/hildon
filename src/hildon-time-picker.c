@@ -855,7 +855,7 @@ hildon_time_picker_key_repeat_timeout           (gpointer tpicker)
     {
         /* Get button press repeater timeout from settings (in milliseconds) */
         g_object_get (gtk_widget_get_settings ((GtkWidget *) tpicker), 
-                        "gtk-timeout-update", &key_repeat, NULL);
+                        "gtk-timeout-repeat", &key_repeat, NULL);
             
         /* This is the first repeat. Shorten the timeout to key_repeat
            (instead of the first time's 3*key_repeat) */
