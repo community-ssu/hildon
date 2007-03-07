@@ -827,7 +827,7 @@ hildon_caption_forall                           (GtkContainer *container,
 }
 
 /**
- * hildon_caption_set_sizegroup:
+ * hildon_caption_set_size_group:
  * @caption : a #HildonCaption
  * @new_group : a #GtkSizeGroup
  *
@@ -842,7 +842,7 @@ hildon_caption_set_size_group                   (const HildonCaption *self,
 }
 
 /**
- * hildon_caption_get_sizegroup:
+ * hildon_caption_get_size_group:
  * @caption : a #HildonCaption
  *
  * Query given captioned control for the #GtkSizeGroup assigned to it.

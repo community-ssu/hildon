@@ -30,10 +30,9 @@
 G_BEGIN_DECLS
 
 /**
- * HILDON_VOLUMEBAR_RANGE_TYPE
+ * HILDON_TYPE_VOLUMEBAR_RANGE
  *
  * Macro for getting type of volumebar range.
- * Since: 0.12.10
  */
 #define                                         HILDON_TYPE_VOLUMEBAR_RANGE \
                                                 (hildon_volumebar_range_get_type())

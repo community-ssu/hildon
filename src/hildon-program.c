@@ -52,7 +52,7 @@
  * GtkToolbar *common_toolbar, *window_specific_toolbar;
  * GtkMenu *menu;
  * <!-- -->
- * program = HILDON_PROGRAM (hildon_program_new ());
+ * program = HILDON_PROGRAM (hildon_program_get_instance ());
  * <!-- -->
  * window1 = HILDON_WINDOW (hildon_window_new ());
  * window2 = HILDON_WINDOW (hildon_window_new ());
