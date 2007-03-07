@@ -69,7 +69,6 @@ struct                                          _HildonTimePickerPrivate
     gchar *am_symbol;
     gchar *pm_symbol;
 
-    guint key_repeat;
     guint minutes; /* time in minutes since midnight */
     gint mul; /* for key repeat handling */
     guint timer_id;

@@ -284,7 +284,6 @@ hildon_time_picker_init                         (HildonTimePicker *picker)
 {
     HildonTimePickerPrivate *priv = HILDON_TIME_PICKER_GET_PRIVATE (picker);
     gint widget_group_table_column_pos[WIDGET_GROUP_COUNT];
-    GtkSettings *settings = NULL;
     GtkDialog *dialog = GTK_DIALOG (picker);
     GtkTable *table = NULL;
     GtkWidget *maintocenter, *colon_label;
@@ -426,7 +425,6 @@ hildon_time_picker_init                         (HildonTimePicker *picker)
 
     priv->minutes = 0;
     priv->mul = 0;
-    priv->key_repeat = 0;
     priv->start_key_repeat = FALSE;
     priv->timer_id = 0;
     priv->button_press = FALSE;
@@ -457,12 +455,8 @@ hildon_time_picker_init                         (HildonTimePicker *picker)
 
     gtk_widget_pop_composite_child ();
 
-    /* Get button press repeater timeout from settings (in milliseconds) */
-    settings = gtk_settings_get_default ();
-    g_object_get (settings, "gtk-timeout-update", &priv->key_repeat, NULL);
-
     /* This dialog isn't modal */
-    gtk_window_set_modal (GTK_WINDOW(dialog), FALSE);
+    gtk_window_set_modal (GTK_WINDOW (dialog), FALSE);
     /* And final dialog packing */
     gtk_dialog_set_has_separator (dialog, FALSE);
     gtk_dialog_add_button (dialog, _("ecdg_bd_time_picker_close"),
@@ -608,6 +602,7 @@ hildon_time_picker_arrow_press                  (GtkWidget *widget,
     HildonTimePickerPrivate *priv = HILDON_TIME_PICKER_GET_PRIVATE (picker);
     gint i, button;
     gint newval = 0;
+    gint key_repeat = 0;
 
     /* Make sure we don't add repeat timer twice. Normally it shouldn't
        happen but WM can cause button release to be lost. */
@@ -640,9 +635,14 @@ hildon_time_picker_arrow_press                  (GtkWidget *widget,
 
     hildon_time_picker_change_time (picker, newval);
 
+    /* Get button press repeater timeout from settings (in milliseconds) */
+    g_object_get (gtk_widget_get_settings (widget), 
+                    "gtk-timeout-update", &key_repeat, NULL);
+
     /* Keep changing the time as long as button is being pressed.
        The first repeat takes 3 times longer to start than the rest. */
-    priv->timer_id = g_timeout_add (priv->key_repeat * 3,
+    
+    priv->timer_id = g_timeout_add (key_repeat * 3,
             hildon_time_picker_key_repeat_timeout,
             picker);
 
@@ -834,6 +834,7 @@ hildon_time_picker_key_repeat_timeout           (gpointer tpicker)
     HildonTimePicker *picker;
     HildonTimePickerPrivate *priv = NULL;
     gint newval = 0;
+    gint key_repeat = 0;
 
     picker = HILDON_TIME_PICKER(tpicker);
     g_assert(picker != NULL);
@@ -852,9 +853,13 @@ hildon_time_picker_key_repeat_timeout           (gpointer tpicker)
 
     if (priv->start_key_repeat)
     {
+        /* Get button press repeater timeout from settings (in milliseconds) */
+        g_object_get (gtk_widget_get_settings ((GtkWidget *) tpicker), 
+                        "gtk-timeout-update", &key_repeat, NULL);
+            
         /* This is the first repeat. Shorten the timeout to key_repeat
            (instead of the first time's 3*key_repeat) */
-        priv->timer_id = g_timeout_add (priv->key_repeat,
+        priv->timer_id = g_timeout_add (key_repeat,
                 hildon_time_picker_key_repeat_timeout,
                 picker);
         priv->start_key_repeat = FALSE;
