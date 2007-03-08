@@ -87,7 +87,7 @@ enum
 {
     PROP_0,
     PROP_COLOR,
-    PROP_IS_POPPED
+    PROP_POPUP_SHOWN
 };
 
 static void
@@ -212,14 +212,14 @@ hildon_color_button_class_init                  (HildonColorButtonClass *klass)
                 G_PARAM_READWRITE));
 
     /**
-     * HildonColorButton:is-popped:
+     * HildonColorButton:popup-shown:
      *
-     * If the color selection dialog is currently popped-down (visible)
+     * If the color selection dialog is currently popped-up (visible)
      */
-    g_object_class_install_property (gobject_class, PROP_IS_POPPED,
-            g_param_spec_boolean ("is-popped",
+    g_object_class_install_property (gobject_class, PROP_POPUP_SHOWN,
+            g_param_spec_boolean ("popup-shown",
                 "IsPopped",
-                "If the color selection dialog is popped down",
+                "If the color selection dialog is popped up",
                 FALSE,
                 G_PARAM_READABLE));
 
@@ -504,7 +504,7 @@ hildon_color_button_get_property                (GObject *object,
             g_value_set_boxed (value, &priv->color);
             break;
 
-        case PROP_IS_POPPED:
+        case PROP_POPUP_SHOWN:
             g_value_set_boolean (value, priv->popped);
 
         default:
@@ -561,17 +561,17 @@ hildon_color_button_set_color                   (HildonColorButton *button,
 }
 
 /**
- * hildon_color_button_get_is_popped
+ * hildon_color_button_get_popup_shown
  * @button: a #HildonColorButton
  *
  * This function checks if the color button has the color 
- * selection dialog currently popped-down. 
+ * selection dialog currently popped-up. 
  * 
- * Returns: TRUE if the dialog is popped-down (visible to user).
+ * Returns: TRUE if the dialog is popped-up (visible to user).
  *
  */
 gboolean
-hildon_color_button_get_is_popped               (HildonColorButton *button)
+hildon_color_button_get_popup_shown             (HildonColorButton *button)
 {
     HildonColorButtonPrivate *priv = NULL; 
     g_return_val_if_fail (HILDON_IS_COLOR_BUTTON (button), FALSE);
@@ -583,15 +583,15 @@ hildon_color_button_get_is_popped               (HildonColorButton *button)
 }
 
 /**
- * hildon_color_button_pop_up
+ * hildon_color_button_popdown
  * @button: a #HildonColorButton
  *
- * If the color selection dialog is currently popped-down (visible)
- * it will be popped-up (hidden).
+ * If the color selection dialog is currently popped-up (visible)
+ * it will be popped-down (hidden).
  *
  */
 void
-hildon_color_button_pop_up                      (HildonColorButton *button)
+hildon_color_button_popdown                     (HildonColorButton *button)
 {
     HildonColorButtonPrivate *priv = NULL; 
     g_return_if_fail (HILDON_IS_COLOR_BUTTON (button));

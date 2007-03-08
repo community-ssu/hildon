@@ -40,9 +40,9 @@ new_thread_func                                 (gpointer data)
         sleep (3);
 
 
-        if (hildon_color_button_get_is_popped (button)) {
+        if (hildon_color_button_get_popup_shown (button)) {
                 g_debug ("Dialog popped, trying to close it!");
-                hildon_color_button_pop_up (button);
+                hildon_color_button_popdown (button);
         } else {
                 g_debug ("Dialog not popped, doing nothing");
         }
