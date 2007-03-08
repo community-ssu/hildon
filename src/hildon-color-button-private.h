@@ -34,6 +34,7 @@ typedef struct                                  _HildonColorButtonPrivate Hildon
 struct                                          _HildonColorButtonPrivate
 {
     GtkWidget *dialog;
+    gboolean popped;
 
     GdkColor color;
     GdkGC *gc;

@@ -86,7 +86,8 @@
 enum 
 {
     PROP_0,
-    PROP_COLOR
+    PROP_COLOR,
+    PROP_IS_POPPED
 };
 
 static void
@@ -210,6 +211,18 @@ hildon_color_button_class_init                  (HildonColorButtonClass *klass)
                 GDK_TYPE_COLOR,
                 G_PARAM_READWRITE));
 
+    /**
+     * HildonColorButton:is-popped:
+     *
+     * If the color selection dialog is currently popped-down (visible)
+     */
+    g_object_class_install_property (gobject_class, PROP_IS_POPPED,
+            g_param_spec_boolean ("is-popped",
+                "IsPopped",
+                "If the color selection dialog is popped down",
+                FALSE,
+                G_PARAM_READABLE));
+
     g_type_class_add_private (gobject_class, sizeof (HildonColorButtonPrivate));
 }
 
@@ -309,6 +322,7 @@ hildon_color_button_init                        (HildonColorButton *cb)
 
     priv->dialog = NULL;
     priv->gc = NULL;
+    priv->popped = FALSE;
 
     gtk_widget_push_composite_child ();
 
@@ -350,7 +364,7 @@ hildon_color_button_finalize                    (GObject *object)
 
     if (priv->dialog)
     {
-        gtk_widget_destroy(priv->dialog);
+        gtk_widget_destroy (priv->dialog);
         priv->dialog = NULL;
     }
 
@@ -419,6 +433,7 @@ hildon_color_button_clicked                     (GtkButton *button)
     hildon_color_chooser_dialog_set_color (cs_dialog, &priv->color);
 
     /* Update the color for color button if selection was made */
+    priv->popped = TRUE;
     if (gtk_dialog_run (GTK_DIALOG (cs_dialog)) == GTK_RESPONSE_OK)
     {
         hildon_color_chooser_dialog_get_color (cs_dialog, &priv->color);
@@ -427,6 +442,7 @@ hildon_color_button_clicked                     (GtkButton *button)
     } 
 
     gtk_widget_hide (GTK_WIDGET(cs_dialog));
+    priv->popped = FALSE;
 }
 
 /* Popup a color selector dialog on hardkey Select press.
@@ -488,6 +504,9 @@ hildon_color_button_get_property                (GObject *object,
             g_value_set_boxed (value, &priv->color);
             break;
 
+        case PROP_IS_POPPED:
+            g_value_set_boolean (value, priv->popped);
+
         default:
             G_OBJECT_WARN_INVALID_PROPERTY_ID (object, param_id, pspec);
             break;
@@ -539,6 +558,50 @@ hildon_color_button_set_color                   (HildonColorButton *button,
     g_return_if_fail (HILDON_IS_COLOR_BUTTON (button));
 
     g_object_set (G_OBJECT (button), "color", color, NULL);
+}
+
+/**
+ * hildon_color_button_get_is_popped
+ * @button: a #HildonColorButton
+ *
+ * This function checks if the color button has the color 
+ * selection dialog currently popped-down. 
+ * 
+ * Returns: TRUE if the dialog is popped-down (visible to user).
+ *
+ */
+gboolean
+hildon_color_button_get_is_popped               (HildonColorButton *button)
+{
+    HildonColorButtonPrivate *priv = NULL; 
+    g_return_val_if_fail (HILDON_IS_COLOR_BUTTON (button), FALSE);
+
+    priv = HILDON_COLOR_BUTTON_GET_PRIVATE (button);
+    g_assert (priv);
+
+    return priv->popped;
+}
+
+/**
+ * hildon_color_button_pop_up
+ * @button: a #HildonColorButton
+ *
+ * If the color selection dialog is currently popped-down (visible)
+ * it will be popped-up (hidden).
+ *
+ */
+void
+hildon_color_button_pop_up                      (HildonColorButton *button)
+{
+    HildonColorButtonPrivate *priv = NULL; 
+    g_return_if_fail (HILDON_IS_COLOR_BUTTON (button));
+
+    priv = HILDON_COLOR_BUTTON_GET_PRIVATE (button);
+    g_assert (priv);
+
+    if (priv->popped && priv->dialog) {
+        gtk_dialog_response (GTK_DIALOG (priv->dialog), GTK_RESPONSE_CANCEL);
+    }
 }
 
 /**

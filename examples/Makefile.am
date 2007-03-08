@@ -25,7 +25,8 @@ noinst_PROGRAMS				= hildon-window-example 		\
 					  hildon-hvolumebar-example		\
 					  hildon-lookup-example			\
 					  hildon-number-editor-example		\
-					  hildon-scrolled-window-example
+					  hildon-scrolled-window-example	\
+					  hildon-color-pop-example
 
 # HIldon window
 hildon_window_example_LDADD		= $(HILDON_OBJ_LIBS)
@@ -81,6 +82,11 @@ hildon_color_chooser_example_SOURCES	= hildon-color-chooser-example.c
 hildon_color_button_example_LDADD	= $(HILDON_OBJ_LIBS)
 hildon_color_button_example_CFLAGS	= $(HILDON_OBJ_CFLAGS)
 hildon_color_button_example_SOURCES	= hildon-color-button-example.c
+
+# Hildon color pop example
+hildon_color_pop_example_LDADD		= $(HILDON_OBJ_LIBS)
+hildon_color_pop_example_CFLAGS		= $(HILDON_OBJ_CFLAGS)
+hildon_color_pop_example_SOURCES	= hildon-color-pop-example.c
 
 # Hildon color button example
 hildon_login_dialog_example_LDADD	= $(HILDON_OBJ_LIBS)

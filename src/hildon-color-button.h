@@ -82,6 +82,12 @@ void
 hildon_color_button_set_color                   (HildonColorButton *button,         
                                                  GdkColor *color);
 
+gboolean
+hildon_color_button_get_is_popped               (HildonColorButton *button);
+
+void
+hildon_color_button_pop_up                      (HildonColorButton *button);
+
 G_END_DECLS
 
 #endif                                          /* __HILDON_COLOR_BUTTON_H__ */
