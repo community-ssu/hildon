@@ -2,7 +2,8 @@ SUBDIRS 				= src 						\
 					  pkgconfig 					\
 					  examples 					\
 					  tests						\
-					  doc
+					  doc						\
+					  po
 
 EXTRA_DIST 				= debian/changelog 				\
 					  debian/control 				\

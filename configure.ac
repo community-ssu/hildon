@@ -126,7 +126,10 @@ AC_CONFIG_FILES([Makefile src/Makefile  \
                  examples/Makefile      \
                  pkgconfig/hildon.pc    \
                  tests/Makefile         \
-                 doc/Makefile])
+                 doc/Makefile           \
+                 po/POTFILES            \
+                 po/porules.mk          \
+                 po/Makefile])
 
 AC_OUTPUT
 

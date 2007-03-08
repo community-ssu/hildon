@@ -1,12 +1,12 @@
-# Copyright (C) 2006 Nokia Corporation, all rights reserved.
+# Copyright (C) 2006, 2007 Nokia Corporation, all rights reserved.
 # This file is distributed under the same license as the hildon-libs package
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: hildon-libs 4.0\n"
+"Project-Id-Version: hildon 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-09-01 11:19+0300\n"
-"PO-Revision-Date: 2006.03.20 15:34+0200\n"
+"POT-Creation-Date: 2007-03-08 16:03+0200\n"
+"PO-Revision-Date: 2007.03.08 15:34+0200\n"
 "Last-Translator:\n"
 "Language-Team: en_GB\n"
 "MIME-Version: 1.0\n"
@@ -14,451 +14,360 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 
-#. add description text (only shown when isrename==true
-#: ../hildon-widgets/hildon-add-home-dialog.c:173
-msgid "ckdg_ib_link_exists"
-msgstr ""
-
-# Title for "Preview" dialog
-#: ../hildon-widgets/hildon-add-home-dialog.c:260
-#, fuzzy
-msgid "ckdg_ti_rename_link"
-msgstr "Preview"
-
-#  Field text for sort field "name" in Sort dialog
-#: ../hildon-widgets/hildon-add-home-dialog.c:466
-#, fuzzy
-msgid "ckdg_fi_rename_name"
-msgstr "Name"
+# Close button for Time Picker
+#: ../src/hildon-time-picker.c:462
+msgid "ecdg_bd_time_picker_close"
+msgstr "Close"
 
 # Confirmation button for pop-up
-#: ../hildon-widgets/hildon-calendar-popup.c:287
+#: ../src/hildon-calendar-popup.c:337
 msgid "ecdg_bd_calendar_popout_done"
 msgstr "Done"
 
-# R indicator text for 5-bit palette
-#. Create labels for three kinds of color
-#: ../hildon-widgets/hildon-color-popup.c:114
-msgid "ecdg_fi_5bit_colour_selector_red"
-msgstr "Red"
-
-# G indicator text for 5-bit palette
-#: ../hildon-widgets/hildon-color-popup.c:115
-msgid "ecdg_fi_5bit_colour_selector_green"
-msgstr "Green"
-
-# B indicator text for 5-bit palette
-#: ../hildon-widgets/hildon-color-popup.c:116
-msgid "ecdg_fi_5bit_colour_selector_blue"
-msgstr "Blue"
-
-# Title for 5-bit palette
-#. Create popup dialog
-#: ../hildon-widgets/hildon-color-popup.c:166
-msgid "ecdg_ti_5bit_colour_selector"
-msgstr "Modify colour"
-
-# Confirmation button for 5-bit palette
-#: ../hildon-widgets/hildon-color-popup.c:170
-msgid "ecdg_bd_5bit_colour_selector_ok"
+# "Enter lock code" dialog ok button
+#: ../src/hildon-code-dialog.c:69
+msgid "secu_enter_lock_code_dialog_ok"
 msgstr "OK"
 
-# Cancel button for 5-bit palette
-#: ../hildon-widgets/hildon-color-popup.c:171
-msgid "ecdg_bd_5bit_colour_selector_cancel"
+# "Enter lock code" dialog Cancel button
+#: ../src/hildon-code-dialog.c:71
+msgid "secu_enter_lock_code_dialog_cancel"
 msgstr "Cancel"
 
-# Confirmation button for default palette
-#: ../hildon-widgets/hildon-color-selector.c:398
-#: ../hildon-widgets-plugins/hildon-color-chooser-dialog-hsv.c:251
-msgid "ecdg_bd_colour_selector_ok"
-msgstr "OK"
-
-# 5-bit palette opening button
-#: ../hildon-widgets/hildon-color-selector.c:401
-msgid "ecdg_bd_colour_selector_modify"
-msgstr "Modify"
-
-# Cancel button for default palette
-#: ../hildon-widgets/hildon-color-selector.c:410
-#: ../hildon-widgets-plugins/hildon-color-chooser-dialog-hsv.c:252
-msgid "ecdg_bd_colour_selector_cancel"
-msgstr "Cancel"
-
-# Title for default palette
-#: ../hildon-widgets/hildon-color-selector.c:416
-#: ../hildon-widgets-plugins/hildon-color-chooser-dialog-hsv.c:217
-msgid "ecdg_ti_colour_selector"
-msgstr "Colour selector"
+# Title for Lock Code Dialog
+#: ../src/hildon-code-dialog.c:73
+msgid "secu_application_title"
+msgstr "Enter lock code"
 
 # Displayed if the user tries to enter too large a value to a number-based field, such as Integer Field or Date Field.
-#: ../hildon-widgets/hildon-date-editor.c:1133
-#: ../hildon-widgets/hildon-date-editor.c:1136
-#: ../hildon-widgets/hildon-date-editor.c:1139
-#: ../hildon-widgets/hildon-number-editor.c:789
-#: ../hildon-widgets/hildon-range-editor.c:453
-#: ../hildon-widgets/hildon-range-editor.c:467
-#: ../hildon-widgets/hildon-time-editor.c:1304
+#: ../src/hildon-time-editor.c:1336 ../src/hildon-range-editor.c:477
+#: ../src/hildon-range-editor.c:491 ../src/hildon-date-editor.c:1212
+#: ../src/hildon-date-editor.c:1216 ../src/hildon-date-editor.c:1220
+#: ../src/hildon-number-editor.c:830
 msgid "ckct_ib_maximum_value"
 msgstr "Maximum value is %d"
 
 # Displayed if the user tries to enter too small a value to a number-based field, such as Integer Field or Date Field.
-#: ../hildon-widgets/hildon-date-editor.c:1143
-#: ../hildon-widgets/hildon-date-editor.c:1146
-#: ../hildon-widgets/hildon-number-editor.c:792
-#: ../hildon-widgets/hildon-range-editor.c:459
-#: ../hildon-widgets/hildon-range-editor.c:472
-#: ../hildon-widgets/hildon-time-editor.c:1310
+#: ../src/hildon-time-editor.c:1343 ../src/hildon-time-editor.c:1357
+#: ../src/hildon-range-editor.c:483 ../src/hildon-range-editor.c:496
+#: ../src/hildon-date-editor.c:1225 ../src/hildon-date-editor.c:1229
+#: ../src/hildon-number-editor.c:834
 msgid "ckct_ib_minimum_value"
 msgstr "Minimum value is %d"
 
 # The notification informs the user of the minimum and maximum values acceptable for the field.
 #. Empty field and not allowed intermediated OR failed conversion
-#: ../hildon-widgets/hildon-date-editor.c:1149
-#: ../hildon-widgets/hildon-date-editor.c:1152
-#: ../hildon-widgets/hildon-date-editor.c:1155
-#: ../hildon-widgets/hildon-number-editor.c:796
-#: ../hildon-widgets/hildon-range-editor.c:488
-#: ../hildon-widgets/hildon-range-editor.c:493
-#: ../hildon-widgets/hildon-time-editor.c:1325
-#: ../hildon-widgets/hildon-time-editor.c:1332
+#: ../src/hildon-time-editor.c:1369 ../src/hildon-time-editor.c:1376
+#: ../src/hildon-range-editor.c:512 ../src/hildon-range-editor.c:517
+#: ../src/hildon-date-editor.c:1233 ../src/hildon-date-editor.c:1237
+#: ../src/hildon-date-editor.c:1241 ../src/hildon-number-editor.c:839
 msgid "ckct_ib_set_a_value_within_range"
 msgstr "Value must be between %d and %d"
 
-# Displayed when the user enters a date where the values of the fields of the Date Field are all within their value range, but the combination does not exist as a date, e.g. 31.02.2002. Focus is returned to the first date fieldlet (i.e. day number in UK date format) and characters in the field are highlighted. Field contents are reset to the nearest valid value to what the user input.
-#: ../hildon-widgets/hildon-date-editor.c:1159
-msgid "ckct_ib_date_does_not_exist"
-msgstr "Invalid date"
+# Displayed if the user attempts to enter a duration that is smaller than the minimum value of a Date Editor widget.
+#: ../src/hildon-time-editor.c:1448
+msgid "ckct_ib_min_allowed_duration_hts"
+msgstr "Minimum allowed duration is %02d:%02d:%02d"
 
-#: ../hildon-widgets/hildon-file-handling-note.c:163
-#: ../hildon-widgets/hildon-file-handling-note.c:222
-#: ../hildon-widgets/hildon-file-handling-note.c:272
-msgid "sfil_nw_moving_file"
-msgstr ""
+# Displayed if the user attempts to enter a duration that is larger than the maximum value of a Date Editor widget.
+#: ../src/hildon-time-editor.c:1458
+msgid "ckct_ib_max_allowed_duration_hts"
+msgstr "Maximum allowed duration is %02d:%02d:%02d"
 
-#: ../hildon-widgets/hildon-file-handling-note.c:164
-msgid "sfil_bd_moving_file"
-msgstr ""
+#  Field text for sort field "size" in Sort dialog
+#: ../src/hildon-sort-dialog.c:248 ../src/hildon-sort-dialog.c:252
+msgid "ckdg_va_sort_descending"
+msgstr "Descending"
 
-#: ../hildon-widgets/hildon-file-handling-note.c:166
-msgid "docm_nw_moving_files"
-msgstr ""
+#  Field text for sort field "size" in Sort dialog
+#: ../src/hildon-sort-dialog.c:249 ../src/hildon-sort-dialog.c:251
+msgid "ckdg_va_sort_ascending"
+msgstr "Ascending"
 
-#: ../hildon-widgets/hildon-file-handling-note.c:168
-msgid "docm_bd_moving_files"
-msgstr ""
+#  Title for sort dialog
+#: ../src/hildon-sort-dialog.c:275
+msgid "ckdg_ti_sort"
+msgstr "Sort"
 
-#: ../hildon-widgets/hildon-file-handling-note.c:173
-#: ../hildon-widgets/hildon-file-handling-note.c:224
-#: ../hildon-widgets/hildon-file-handling-note.c:368
-msgid "docm_nw_saving_file"
-msgstr ""
+#  Label text for sort field choice list in Sort dialog
+#: ../src/hildon-sort-dialog.c:279
+msgid "ckdg_fi_sort_field"
+msgstr "Sort by:"
 
-#: ../hildon-widgets/hildon-file-handling-note.c:174
-msgid "docm_bd_saving_file"
-msgstr ""
+#  Label text for sort order choice list in Sort dialog
+#: ../src/hildon-sort-dialog.c:289
+msgid "ckdg_fi_sort_order"
+msgstr "Order:"
 
-#: ../hildon-widgets/hildon-file-handling-note.c:176
-msgid "docm_nw_saving_files"
-msgstr ""
+# Sort dialog OK button.
+#: ../src/hildon-sort-dialog.c:302
+msgid "ckdg_bd_sort_dialog_ok"
+msgstr "OK"
 
-#: ../hildon-widgets/hildon-file-handling-note.c:178
-msgid "docm_bd_saving_files"
-msgstr ""
-
-#: ../hildon-widgets/hildon-file-handling-note.c:183
-#: ../hildon-widgets/hildon-file-handling-note.c:226
-#: ../hildon-widgets/hildon-file-handling-note.c:336
-msgid "docm_nw_opening_file"
-msgstr ""
-
-#: ../hildon-widgets/hildon-file-handling-note.c:184
-msgid "docm_bd_opening_file"
-msgstr ""
-
-#: ../hildon-widgets/hildon-file-handling-note.c:186
-msgid "docm_nw_opening_files"
-msgstr ""
-
-#: ../hildon-widgets/hildon-file-handling-note.c:188
-msgid "docm_bd_opening_files"
-msgstr ""
-
-#: ../hildon-widgets/hildon-file-handling-note.c:193
-#: ../hildon-widgets/hildon-file-handling-note.c:228
-#: ../hildon-widgets/hildon-file-handling-note.c:304
-msgid "docm_nw_deleting_file"
-msgstr ""
-
-#: ../hildon-widgets/hildon-file-handling-note.c:194
-msgid "docm_bd_deleting_file"
-msgstr ""
-
-#: ../hildon-widgets/hildon-file-handling-note.c:196
-msgid "docm_nw_deleting_files"
-msgstr ""
-
-#: ../hildon-widgets/hildon-file-handling-note.c:198
-msgid "docm_bd_deleting_files"
-msgstr ""
+#  Sort dialog cancel button.
+#: ../src/hildon-sort-dialog.c:305
+msgid "ckdg_bd_sort_dialog_cancel"
+msgstr "Cancel"
 
 #  OK - button in Font - dialog
-#: ../hildon-widgets/hildon-font-selection-dialog.c:728
-#: ../hildon-widgets/hildon-font-selection-dialog.c:1081
+#: ../src/hildon-font-selection-dialog.c:766
+#: ../src/hildon-font-selection-dialog.c:1145
 msgid "ecdg_bd_font_dialog_ok"
 msgstr "OK"
 
 #  Preview button in "Font" dialog
-#: ../hildon-widgets/hildon-font-selection-dialog.c:731
+#: ../src/hildon-font-selection-dialog.c:769
 msgid "ecdg_bd_font_dialog_preview"
 msgstr "Preview"
 
 #  Cancel - button in Font - dialog
-#: ../hildon-widgets/hildon-font-selection-dialog.c:741
+#: ../src/hildon-font-selection-dialog.c:780
 msgid "ecdg_bd_font_dialog_cancel"
 msgstr "Cancel"
 
 # Preview string for "Preview" dialog
 #. Set default preview text
-#: ../hildon-widgets/hildon-font-selection-dialog.c:745
+#: ../src/hildon-font-selection-dialog.c:784
 msgid "ecdg_fi_preview_font_preview_text"
 msgstr "The quick brown fox jumped over the lazy dogs"
 
 #  Title for "Font" dialog
-#: ../hildon-widgets/hildon-font-selection-dialog.c:747
+#: ../src/hildon-font-selection-dialog.c:786
 msgid "ecdg_ti_font"
 msgstr "Font"
 
 #  Choice List in Font - dialog
-#: ../hildon-widgets/hildon-font-selection-dialog.c:776
+#: ../src/hildon-font-selection-dialog.c:813
 msgid "ecdg_fi_font_font"
 msgstr "Font face:"
 
 #  Choice List in Font - dialog
-#: ../hildon-widgets/hildon-font-selection-dialog.c:786
+#: ../src/hildon-font-selection-dialog.c:823
 msgid "ecdg_fi_font_size"
 msgstr "Font size:"
 
 #  Colour Selector in Font - dialog
-#: ../hildon-widgets/hildon-font-selection-dialog.c:803
+#: ../src/hildon-font-selection-dialog.c:841
 msgid "ecdg_fi_font_colour_selector"
 msgstr "Colour:"
 
 #  Choicelist in Font - dialog
-#: ../hildon-widgets/hildon-font-selection-dialog.c:813
+#: ../src/hildon-font-selection-dialog.c:850
 msgid "ecdg_fi_font_bold"
 msgstr "Bold:"
 
 #  Choicelist in Font - dialog
-#: ../hildon-widgets/hildon-font-selection-dialog.c:824
+#: ../src/hildon-font-selection-dialog.c:860
 msgid "ecdg_fi_font_italic"
 msgstr "Italic:"
 
 #  Choicelist in Font - dialog
-#: ../hildon-widgets/hildon-font-selection-dialog.c:834
+#: ../src/hildon-font-selection-dialog.c:870
 msgid "ecdg_fi_font_underline"
 msgstr "Underline:"
 
 #  Choicelist in Font - dialog
-#: ../hildon-widgets/hildon-font-selection-dialog.c:845
+#: ../src/hildon-font-selection-dialog.c:880
 msgid "ecdg_fi_font_strikethrough"
 msgstr "Strikethrough:"
 
 #  Choicelist in Font - dialog
-#: ../hildon-widgets/hildon-font-selection-dialog.c:856
+#: ../src/hildon-font-selection-dialog.c:891
 msgid "ecdg_fi_font_special"
 msgstr "Positioning:"
 
 #  Style - Page on Font dialog
-#: ../hildon-widgets/hildon-font-selection-dialog.c:867
+#: ../src/hildon-font-selection-dialog.c:903
 msgid "ecdg_ti_font_dialog_style"
 msgstr "Style"
 
 #  Formatting - Page on Font dialog
-#: ../hildon-widgets/hildon-font-selection-dialog.c:869
+#: ../src/hildon-font-selection-dialog.c:905
 msgid "ecdg_ti_font_dialog_format"
 msgstr "Formatting"
 
 #  Other - Page on Font dialog
-#: ../hildon-widgets/hildon-font-selection-dialog.c:871
+#: ../src/hildon-font-selection-dialog.c:907
 msgid "ecdg_ti_font_dialog_other"
 msgstr "Other"
 
 # Title for "Preview" dialog
-#: ../hildon-widgets/hildon-font-selection-dialog.c:1077
+#: ../src/hildon-font-selection-dialog.c:1141
 msgid "ecdg_ti_preview_font"
 msgstr "Preview"
 
 # Reference text string for sub- and superscripted textst
-#: ../hildon-widgets/hildon-font-selection-dialog.c:1085
-#: ../hildon-widgets/hildon-font-selection-dialog.c:1106
-#: ../hildon-widgets/hildon-font-selection-dialog.c:1116
-#: ../hildon-widgets/hildon-font-selection-dialog.c:1124
+#: ../src/hildon-font-selection-dialog.c:1149
+#: ../src/hildon-font-selection-dialog.c:1169
+#: ../src/hildon-font-selection-dialog.c:1189
+#: ../src/hildon-font-selection-dialog.c:1197
 msgid "ecdg_fi_preview_font_preview_reference"
 msgstr "Reference: "
 
 #  Choice list item in Font - dialog
-#: ../hildon-widgets/hildon-font-selection-dialog.c:1205
+#: ../src/hildon-font-selection-dialog.c:1279
 msgid "ecdg_va_font_printpos_1"
 msgstr "Normal"
 
 #  Choice list item in Font - dialog
-#: ../hildon-widgets/hildon-font-selection-dialog.c:1207
+#: ../src/hildon-font-selection-dialog.c:1280
 msgid "ecdg_va_font_printpos_2"
 msgstr "Superscript"
 
 #  Choice list item in Font - dialog
-#: ../hildon-widgets/hildon-font-selection-dialog.c:1209
+#: ../src/hildon-font-selection-dialog.c:1281
 msgid "ecdg_va_font_printpos_3"
 msgstr "Subscript"
 
 #  Trailer text for Choicelist in Font - dialog
-#: ../hildon-widgets/hildon-font-selection-dialog.c:1225
+#: ../src/hildon-font-selection-dialog.c:1297
 msgid "ecdg_va_font_size_trailer"
 msgstr " pt."
 
-# Default confirmation button label
-#: ../hildon-widgets/hildon-note.c:396
-msgid "ecdg_bd_confirmation_note_ok"
-msgstr "OK"
-
-# Default cancel button label
-#: ../hildon-widgets/hildon-note.c:398 ../hildon-widgets/hildon-note.c:797
-msgid "ecdg_bd_confirmation_note_cancel"
-msgstr "Cancel"
-
-# Default confirmation button label
-#: ../hildon-widgets/hildon-note.c:412
-msgid "ecdg_bd_information_note_ok"
-msgstr "OK"
-
-# Default cancel button label
-#: ../hildon-widgets/hildon-note.c:420
-msgid "ecdg_bd_cancel_note_cancel"
-msgstr "Cancel"
-
 # Separator text string
-#: ../hildon-widgets/hildon-range-editor.c:240
-#: ../hildon-widgets/hildon-range-editor.c:261
+#: ../src/hildon-range-editor.c:252 ../src/hildon-range-editor.c:274
 msgid "ckct_wi_range_separator"
 msgstr "–"
 
-#  Title for sort dialog
-#: ../hildon-widgets/hildon-sort-dialog.c:131
-msgid "ckdg_ti_sort"
-msgstr "Sort"
-
-#  Label text for sort field choice list in Sort dialog
-#: ../hildon-widgets/hildon-sort-dialog.c:135
-msgid "ckdg_fi_sort_field"
-msgstr "Sort by:"
-
-#  Field text for sort field "size" in Sort dialog
-#: ../hildon-widgets/hildon-sort-dialog.c:144
-msgid "ckdg_va_sort_ascending"
-msgstr "Ascending"
-
-#  Field text for sort field "size" in Sort dialog
-#: ../hildon-widgets/hildon-sort-dialog.c:146
-msgid "ckdg_va_sort_descending"
-msgstr "Descending"
-
-#  Label text for sort order choice list in Sort dialog
-#: ../hildon-widgets/hildon-sort-dialog.c:148
-msgid "ckdg_fi_sort_order"
-msgstr "Order:"
-
-# Sort dialog OK button.
-#: ../hildon-widgets/hildon-sort-dialog.c:160
-msgid "ckdg_bd_sort_dialog_ok"
-msgstr "OK"
-
-#  Sort dialog cancel button.
-#: ../hildon-widgets/hildon-sort-dialog.c:163
-msgid "ckdg_bd_sort_dialog_cancel"
-msgstr "Cancel"
-
-# Displayed if the user attempts to enter a duration that is smaller than the minimum value of a Date Editor widget.
-#: ../hildon-widgets/hildon-time-editor.c:1398
-msgid "ckct_ib_min_allowed_duration_hts"
-msgstr "Minimum allowed duration is %02d:%02d:%02d"
-
-# Displayed if the user attempts to enter a duration that is larger than the maximum value of a Date Editor widget.
-#: ../hildon-widgets/hildon-time-editor.c:1408
-msgid "ckct_ib_max_allowed_duration_hts"
-msgstr "Maximum allowed duration is %02d:%02d:%02d"
-
-# Close button for Time Picker
-#: ../hildon-widgets/hildon-time-picker.c:462
-msgid "ecdg_bd_time_picker_close"
-msgstr "Close"
-
 # Finish button
 #. Add response buttons: finish, previous, next, cancel
-#: ../hildon-widgets/hildon-wizard-dialog.c:233
+#: ../src/hildon-wizard-dialog.c:261
 msgid "ecdg_bd_wizard_finish"
 msgstr "Finish"
 
 # Previous button
-#: ../hildon-widgets/hildon-wizard-dialog.c:234
+#: ../src/hildon-wizard-dialog.c:262
 msgid "ecdg_bd_wizard_previous"
 msgstr "Previous"
 
 # Next button
-#: ../hildon-widgets/hildon-wizard-dialog.c:235
+#: ../src/hildon-wizard-dialog.c:263
 msgid "ecdg_bd_wizard_next"
 msgstr "Next"
 
 # Cancel button
-#: ../hildon-widgets/hildon-wizard-dialog.c:236
+#: ../src/hildon-wizard-dialog.c:264
 msgid "ecdg_bd_wizard_cancel"
 msgstr "Cancel"
 
 # Default title text for wizard's welcome screen, where %s is the name of the wizard and %d the number of total steps
-#: ../hildon-widgets/hildon-wizard-dialog.c:347
+#: ../src/hildon-wizard-dialog.c:396
 msgid "ecdg_ti_wizard_welcome"
 msgstr "%s step 1/%d: Welcome"
 
 # Default title text for wizard steps, where first %s is the name of the wizard and second %s the name of step.
-#: ../hildon-widgets/hildon-wizard-dialog.c:353
+#: ../src/hildon-wizard-dialog.c:402
 msgid "ecdg_ti_wizard_step"
 msgstr "%s step %d/%d: %s"
 
+# Displayed when the user enters a date where the values of the fields of the Date Field are all within their value range, but the combination does not exist as a date, e.g. 31.02.2002. Focus is returned to the first date fieldlet (i.e. day number in UK date format) and characters in the field are highlighted. Field contents are reset to the nearest valid value to what the user input.
+#: ../src/hildon-date-editor.c:1250
+msgid "ckct_ib_date_does_not_exist"
+msgstr "Invalid date"
+
+# Title for default palette
+#: ../src/hildon-color-chooser-dialog.c:188
+msgid "ecdg_ti_colour_selector"
+msgstr "Colour selector"
+
+# Confirmation button for default palette
+#: ../src/hildon-color-chooser-dialog.c:217
+msgid "ecdg_bd_colour_selector_ok"
+msgstr "OK"
+
+# Cancel button for default palette
+#: ../src/hildon-color-chooser-dialog.c:218
+msgid "ecdg_bd_colour_selector_cancel"
+msgstr "Cancel"
+
 # G indicator text for 5-bit palette
-#: ../hildon-widgets-plugins/hildon-color-chooser-dialog-hsv.c:933
+#: ../src/hildon-color-chooser-dialog.c:995
 #, fuzzy
 msgid "ecdg_ib_colour_selector_predefined"
 msgstr "Green"
 
-# No matches found
-#: ../hildon-widgets/hildon-app.c:1195
-#, fuzzy
-msgid "ckct_ib_min_zoom_level_reached"
-msgstr "No matches found"
-
-# Displayed if the user tries to enter too large a value to a number-based field, such as Integer Field or Date Field.
-#: ../hildon-widgets/hildon-app.c:1199
-#, fuzzy
-msgid "ckct_ib_max_zoom_level_reached"
-msgstr "Maximum value is %d"
-
-# Separator character
-#: ../hildon-widgets/hildon-caption.c:279
-#: ../hildon-widgets/hildon-caption.c:536
-msgid "ecdg_ti_caption_separator"
-msgstr ":"
-
 # Text string for the "Find" label
 #. Create the label
-#: ../hildon-widgets/hildon-find-toolbar.c:428
-#: ../hildon-widgets/hildon-find-toolbar.c:539
+#: ../src/hildon-find-toolbar.c:544 ../src/hildon-find-toolbar.c:685
 msgid "ecdg_ti_find_toolbar_label"
 msgstr "Find"
 
+# Separator character
+#: ../src/hildon-caption.c:304 ../src/hildon-caption.c:618
+msgid "ecdg_ti_caption_separator"
+msgstr ":"
+
+# Default confirmation button label
+#: ../src/hildon-note.c:460
+msgid "ecdg_bd_confirmation_note_ok"
+msgstr "OK"
+
+# Default cancel button label
+#: ../src/hildon-note.c:462 ../src/hildon-note.c:766
+msgid "ecdg_bd_confirmation_note_cancel"
+msgstr "Cancel"
+
+# Default confirmation button label
+#: ../src/hildon-note.c:476
+msgid "ecdg_bd_information_note_ok"
+msgstr "OK"
+
+# Default cancel button label
+#: ../src/hildon-note.c:484
+msgid "ecdg_bd_cancel_note_cancel"
+msgstr "Cancel"
+
+# Title for "Preview" dialog
+#, fuzzy
+#~ msgid "ckdg_ti_rename_link"
+#~ msgstr "Preview"
+
+#  Field text for sort field "name" in Sort dialog
+#, fuzzy
+#~ msgid "ckdg_fi_rename_name"
+#~ msgstr "Name"
+
+# R indicator text for 5-bit palette
+#~ msgid "ecdg_fi_5bit_colour_selector_red"
+#~ msgstr "Red"
+
+# G indicator text for 5-bit palette
+#~ msgid "ecdg_fi_5bit_colour_selector_green"
+#~ msgstr "Green"
+
+# B indicator text for 5-bit palette
+#~ msgid "ecdg_fi_5bit_colour_selector_blue"
+#~ msgstr "Blue"
+
+# Title for 5-bit palette
+#~ msgid "ecdg_ti_5bit_colour_selector"
+#~ msgstr "Modify colour"
+
+# Confirmation button for 5-bit palette
+#~ msgid "ecdg_bd_5bit_colour_selector_ok"
+#~ msgstr "OK"
+
+# Cancel button for 5-bit palette
+#~ msgid "ecdg_bd_5bit_colour_selector_cancel"
+#~ msgstr "Cancel"
+
+# 5-bit palette opening button
+#~ msgid "ecdg_bd_colour_selector_modify"
+#~ msgstr "Modify"
+
+# No matches found
+#, fuzzy
+#~ msgid "ckct_ib_min_zoom_level_reached"
+#~ msgstr "No matches found"
+
+# Displayed if the user tries to enter too large a value to a number-based field, such as Integer Field or Date Field.
+#, fuzzy
+#~ msgid "ckct_ib_max_zoom_level_reached"
+#~ msgstr "Maximum value is %d"
+
 # Shown when there are no items in the list.
-#: ../hildon-widgets/hildon-grid.c:304 ../hildon-widgets/hildon-grid.c:664
-msgid "ckct_wi_grid_no_items"
-msgstr "No items"
+#~ msgid "ckct_wi_grid_no_items"
+#~ msgstr "No items"
 
 # Separator character for time string
 #~ msgid "ecdg_ti_time_picker_separator"
@@ -630,18 +539,6 @@ msgstr "No items"
 # OK button for "Preview" dialog
 #~ msgid "ecgd_bd_preview_font_ok"
 #~ msgstr "OK"
-
-# Title for Lock Code Dialog
-#~ msgid "secu_application_title"
-#~ msgstr "Enter lock code"
-
-# "Enter lock code" dialog ok button
-#~ msgid "secu_enter_lock_code_dialog_ok"
-#~ msgstr "OK"
-
-# "Enter lock code" dialog Cancel button
-#~ msgid "secu_enter_lock_code_dialog_cancel"
-#~ msgstr "Cancel"
 
 # "Enter lock code" information banner device locked
 #~ msgid "secu_info_locked"

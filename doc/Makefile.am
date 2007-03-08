@@ -66,7 +66,26 @@ html: html-build.stamp
 
 HTML_IMAGES 					= $(srcdir)/images/calendar-popup.png	\
 						  $(srcdir)/images/caption.png		\
-						  $(srcdir)/images/code-dialog.png
+						  $(srcdir)/images/code-dialog.png	\
+						  $(srcdir)/color-button.png		\
+						  $(srcdir)/color-chooser-dialog.png	\
+						  $(srcdir)/color-chooser.png		\
+						  $(srcdir)/controlbar.png		\
+						  $(srcdir)/date-editor.png		\
+						  $(srcdir)/font-selection-dialog.png	\
+						  $(srcdir)/get-password-dialog.png	\
+						  $(srcdir)/hvolumebar.png		\
+						  $(srcdir)/login-dialog.png		\
+						  $(srcdir)/note.png			\
+						  $(srcdir)/number-editor.png		\
+						  $(srcdir)/range-editor.png		\
+						  $(srcdir)/seekbar.png			\
+						  $(srcdir)/set-password-dialog.png	\
+						  $(srcdir)/sort-dialog.png		\
+						  $(srcdir)/time-editor.png		\
+						  $(srcdir)/time-picker.png		\
+						  $(srcdir)/vvolumebar.png		\
+						  $(srcdir)/weekday-picker.png
 
 FIXXREF_OPTIONS					=
 

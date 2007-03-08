@@ -1,12 +1,9 @@
 languages := @ALL_LINGUAS@
 
-CLEANFILES = $(foreach mo,$(languages),$(mo).mo)
-EXTRA_DIST = $(foreach po,$(languages),$(po).po) POTFILES.in README \
-	debian/compat \
-	debian/control \
-	debian/rules \
-	debian/hildon-libs-l10n-engb.install
-MAINTAINERCLEANFILES = Makefile.in POTFILES
+CLEANFILES 				= $(foreach mo,$(languages),$(mo).mo)
+EXTRA_DIST 				= $(foreach po,$(languages),$(po).po) POTFILES.in README
+
+MAINTAINERCLEANFILES 			= Makefile.in POTFILES
 
 %.mo: %.po
 	msgfmt --statistics -v -o$(top_builddir)/po/$@ $(srcdir)/$<
