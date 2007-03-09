@@ -277,7 +277,6 @@ hildon_helper_set_insensitive_message           (GtkWidget *widget,
                                                  const gchar *message)
 {
     g_return_if_fail (GTK_IS_WIDGET (widget));
-    g_return_if_fail (message != NULL);
 
     /* Clean up any previous instance of the insensitive message */
     g_signal_handlers_disconnect_matched (G_OBJECT (widget), G_SIGNAL_MATCH_FUNC,
