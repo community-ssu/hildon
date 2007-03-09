@@ -279,17 +279,11 @@ hildon_helper_set_insensitive_message           (GtkWidget *widget,
     g_return_if_fail (GTK_IS_WIDGET (widget));
     g_return_if_fail (message != NULL);
 
-    gpointer stored_message;
-
     /* Clean up any previous instance of the insensitive message */
     g_signal_handlers_disconnect_matched (G_OBJECT (widget), G_SIGNAL_MATCH_FUNC,
 					  0, 0, NULL,
 					  G_CALLBACK (show_insensitive_message), NULL);
     
-    stored_message = g_object_get_qdata (G_OBJECT (widget), hildon_helper_insensitive_message_quark ());
-    if (stored_message)
-      g_free (stored_message);
-
     /* We need to dup the string because the pointer might not be valid when the
      insensitive-press signal callback is executed */
     g_object_set_qdata_full (G_OBJECT (widget), hildon_helper_insensitive_message_quark (), 
