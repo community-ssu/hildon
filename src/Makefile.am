@@ -9,7 +9,7 @@ MAINTAINERCLEANFILES 					= Makefile.in 					\
 
 EXTRA_DIST 						= hildon-marshalers.list
 
-lib_LTLIBRARIES 					= libhildon_@PACKAGE_VERSION_MAJOR@.la
+lib_LTLIBRARIES 					= libhildon-@PACKAGE_VERSION_MAJOR@.la
 
 libhildon_@PACKAGE_VERSION_MAJOR@_la_LDFLAGS 		= $(HILDON_WIDGETS_LT_LDFLAGS)
 
