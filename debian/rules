@@ -89,6 +89,10 @@ install: build
 #	Add here commands to install the package into debian/build
 	$(MAKE) install DESTDIR=$(CURDIR)/debian/build
 
+	ln -s libhildon-1.so $(CURDIR)/debian/build/usr/lib/libhildon_1.so 
+	ln -s libhildon-1.so.0 $(CURDIR)/debian/build/usr/lib/libhildon_1.so.0
+	ln -s libhildon-1.so.0.0.0 $(CURDIR)/debian/build/usr/lib/libhildon_1.so.0.0.0 
+
 #	for the -dbg package
 	rm -rf $(CURDIR)/debian/build/usr/lib/debug
 #	-mkdir -p $(CURDIR)/debian/build/usr/lib/debug
