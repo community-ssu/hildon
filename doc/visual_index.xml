@@ -1,68 +1,68 @@
 <para role="gallery">
   <link linkend="HildonCalendarPopup">
-          <inlinegraphic fileref="html/calendar-popup.png" format="PNG"></inlinegraphic>
+          <inlinegraphic fileref="calendar-popup.png" format="PNG"></inlinegraphic>
   </link> 
   <link linkend="HildonCaption">
-          <inlinegraphic fileref="html/caption.png" format="PNG"></inlinegraphic>
+          <inlinegraphic fileref="caption.png" format="PNG"></inlinegraphic>
   </link> 
   <link linkend="HildonCodeDialog">
-          <inlinegraphic fileref="html/code-dialog.png" format="PNG"></inlinegraphic>
+          <inlinegraphic fileref="code-dialog.png" format="PNG"></inlinegraphic>
   </link> 
   <link linkend="HildonColorButton">
-          <inlinegraphic fileref="html/color-button.png" format="PNG"></inlinegraphic>
+          <inlinegraphic fileref="color-button.png" format="PNG"></inlinegraphic>
   </link> 
   <link linkend="HildonColorChooserDialog">
-          <inlinegraphic fileref="html/color-chooser-dialog.png" format="PNG"></inlinegraphic>
+          <inlinegraphic fileref="color-chooser-dialog.png" format="PNG"></inlinegraphic>
   </link> 
   <link linkend="HildonCalorChooser">
-          <inlinegraphic fileref="html/color-chooser.png" format="PNG"></inlinegraphic>
+          <inlinegraphic fileref="color-chooser.png" format="PNG"></inlinegraphic>
   </link> 
   <link linkend="HildonCantrolbar">
-          <inlinegraphic fileref="html/controlbar.png" format="PNG"></inlinegraphic>
+          <inlinegraphic fileref="controlbar.png" format="PNG"></inlinegraphic>
   </link> 
   <link linkend="HildonDateEditor">
-          <inlinegraphic fileref="html/date-editor.png" format="PNG"></inlinegraphic>
+          <inlinegraphic fileref="date-editor.png" format="PNG"></inlinegraphic>
   </link> 
   <link linkend="HildonFontSelectionDialog">
-          <inlinegraphic fileref="html/font-selection-dialog.png" format="PNG"></inlinegraphic>
+          <inlinegraphic fileref="font-selection-dialog.png" format="PNG"></inlinegraphic>
   </link> 
   <link linkend="HildonGetPasswordDialog">
-          <inlinegraphic fileref="html/get-password-dialog.png" format="PNG"></inlinegraphic>
+          <inlinegraphic fileref="get-password-dialog.png" format="PNG"></inlinegraphic>
   </link> 
   <link linkend="HildonHVolumebar">
-          <inlinegraphic fileref="html/hvolumebar.png" format="PNG"></inlinegraphic>
+          <inlinegraphic fileref="hvolumebar.png" format="PNG"></inlinegraphic>
   </link> 
   <link linkend="HildonDialog">
-          <inlinegraphic fileref="html/login-dialog.png" format="PNG"></inlinegraphic>
+          <inlinegraphic fileref="login-dialog.png" format="PNG"></inlinegraphic>
   </link> 
   <link linkend="HildonNote">
-          <inlinegraphic fileref="html/note.png" format="PNG"></inlinegraphic>
+          <inlinegraphic fileref="note.png" format="PNG"></inlinegraphic>
   </link> 
   <link linkend="HildonNumberEditor">
-          <inlinegraphic fileref="html/number-editor.png" format="PNG"></inlinegraphic>
+          <inlinegraphic fileref="number-editor.png" format="PNG"></inlinegraphic>
   </link> 
   <link linkend="HildonRangeEditor">
-          <inlinegraphic fileref="html/range-editor.png" format="PNG"></inlinegraphic>
+          <inlinegraphic fileref="range-editor.png" format="PNG"></inlinegraphic>
   </link> 
   <link linkend="HildonSeekbar">
-          <inlinegraphic fileref="html/seekbar.png" format="PNG"></inlinegraphic>
+          <inlinegraphic fileref="seekbar.png" format="PNG"></inlinegraphic>
   </link> 
   <link linkend="HildonSetPasswordDialog">
-          <inlinegraphic fileref="html/set-password-dialog.png" format="PNG"></inlinegraphic>
+          <inlinegraphic fileref="set-password-dialog.png" format="PNG"></inlinegraphic>
   </link> 
   <link linkend="HildonSortDialog">
-          <inlinegraphic fileref="html/sort-dialog.png" format="PNG"></inlinegraphic>
+          <inlinegraphic fileref="sort-dialog.png" format="PNG"></inlinegraphic>
   </link> 
   <link linkend="HildonTimeEditor">
-          <inlinegraphic fileref="html/time-editor.png" format="PNG"></inlinegraphic>
+          <inlinegraphic fileref="time-editor.png" format="PNG"></inlinegraphic>
   </link> 
   <link linkend="HildonTimePicker">
-          <inlinegraphic fileref="html/time-picker.png" format="PNG"></inlinegraphic>
+          <inlinegraphic fileref="time-picker.png" format="PNG"></inlinegraphic>
   </link> 
   <link linkend="HildonVVolumebar">
-          <inlinegraphic fileref="html/vvolumebar.png" format="PNG"></inlinegraphic>
+          <inlinegraphic fileref="vvolumebar.png" format="PNG"></inlinegraphic>
   </link> 
   <link linkend="HildonWeekdayPicker">
-          <inlinegraphic fileref="html/weekday-picker.png" format="PNG"></inlinegraphic>
+          <inlinegraphic fileref="weekday-picker.png" format="PNG"></inlinegraphic>
   </link> 
 </para>

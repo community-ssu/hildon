@@ -1,7 +1,8 @@
 MAINTAINERCLEANFILES 				= Makefile.in				\
 						  hildon-sections.txt			\
 						  hildon-undocumented.txt		\
-						  version.xml
+						  version.xml				\
+						  tmpl/*.sgml
 
 DOC_MODULE					= hildon
 
@@ -64,28 +65,28 @@ version.xml: ../configure.ac
 
 html: html-build.stamp
 
-HTML_IMAGES 					= $(srcdir)/images/calendar-popup.png	\
-						  $(srcdir)/images/caption.png		\
-						  $(srcdir)/images/code-dialog.png	\
-						  $(srcdir)/color-button.png		\
-						  $(srcdir)/color-chooser-dialog.png	\
-						  $(srcdir)/color-chooser.png		\
-						  $(srcdir)/controlbar.png		\
-						  $(srcdir)/date-editor.png		\
-						  $(srcdir)/font-selection-dialog.png	\
-						  $(srcdir)/get-password-dialog.png	\
-						  $(srcdir)/hvolumebar.png		\
-						  $(srcdir)/login-dialog.png		\
-						  $(srcdir)/note.png			\
-						  $(srcdir)/number-editor.png		\
-						  $(srcdir)/range-editor.png		\
-						  $(srcdir)/seekbar.png			\
-						  $(srcdir)/set-password-dialog.png	\
-						  $(srcdir)/sort-dialog.png		\
-						  $(srcdir)/time-editor.png		\
-						  $(srcdir)/time-picker.png		\
-						  $(srcdir)/vvolumebar.png		\
-						  $(srcdir)/weekday-picker.png
+HTML_IMAGES 					= $(srcdir)/images/calendar-popup.png		\
+						  $(srcdir)/images/caption.png			\
+						  $(srcdir)/images/code-dialog.png		\
+						  $(srcdir)/images/color-button.png		\
+						  $(srcdir)/images/color-chooser-dialog.png	\
+						  $(srcdir)/images/color-chooser.png		\
+						  $(srcdir)/images/controlbar.png		\
+						  $(srcdir)/images/date-editor.png		\
+						  $(srcdir)/images/font-selection-dialog.png	\
+						  $(srcdir)/images/get-password-dialog.png	\
+						  $(srcdir)/images/hvolumebar.png		\
+						  $(srcdir)/images/login-dialog.png		\
+						  $(srcdir)/images/note.png			\
+						  $(srcdir)/images/number-editor.png		\
+						  $(srcdir)/images/range-editor.png		\
+						  $(srcdir)/images/seekbar.png			\
+						  $(srcdir)/images/set-password-dialog.png	\
+						  $(srcdir)/images/sort-dialog.png		\
+						  $(srcdir)/images/time-editor.png		\
+						  $(srcdir)/images/time-picker.png		\
+						  $(srcdir)/images/vvolumebar.png		\
+						  $(srcdir)/images/weekday-picker.png
 
 FIXXREF_OPTIONS					=
 

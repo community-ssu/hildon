@@ -26,8 +26,7 @@ EXTRA_DIST = 				\
 	$(HTML_IMAGES)			\
 	$(DOC_MAIN_SGML_FILE)		\
 	$(DOC_MODULE)-sections.txt	\
-	$(DOC_MODULE)-overrides.txt     \
-        gtk-doc.make
+	$(DOC_MODULE)-overrides.txt
 
 DOC_STAMPS=scan-build.stamp tmpl-build.stamp sgml-build.stamp html-build.stamp \
 	   $(srcdir)/tmpl.stamp $(srcdir)/sgml.stamp $(srcdir)/html.stamp
@@ -43,11 +42,6 @@ CLEANFILES = $(SCANOBJ_FILES) $(DOC_MODULE)-unused.txt $(DOC_STAMPS)
 
 if ENABLE_GTK_DOC
 all-local: html-build.stamp
-else
-all-local:
-endif
-
-docs: html-build.stamp
 
 #### scan ####
 
@@ -81,8 +75,9 @@ tmpl.stamp: tmpl-build.stamp
 	@true
 
 #### xml ####
+tmpl_files := $(wildcard $(srcdir)/tmpl/*.sgml)
 
-sgml-build.stamp: tmpl.stamp $(HFILE_GLOB) $(CFILE_GLOB) $(DOC_MODULE)-sections.txt $(expand_content_files)
+sgml-build.stamp: tmpl.stamp $(CFILE_GLOB) $(tmpl_files) $(expand_content_files)
 	@echo 'gtk-doc: Building XML'
 	@-chmod -R u+w $(srcdir)
 	cd $(srcdir) && \
@@ -104,6 +99,9 @@ html-build.stamp: sgml.stamp $(DOC_MAIN_SGML_FILE) $(content_files)
 	@echo 'gtk-doc: Fixing cross-references' 
 	cd $(srcdir) && gtkdoc-fixxref --module-dir=html --html-dir=$(HTML_DIR) $(FIXXREF_OPTIONS)
 	touch html-build.stamp
+else
+all-local:
+endif
 
 ##############
 
@@ -112,7 +110,7 @@ clean-local:
 	rm -rf .libs
 
 maintainer-clean-local: clean
-	cd $(srcdir) && rm -f tmpl/*.sgml* && rm -rf xml html $(DOC_MODULE)-decl-list.txt $(DOC_MODULE)-decl.txt
+	cd $(srcdir) && rm -rf xml html $(DOC_MODULE)-decl-list.txt $(DOC_MODULE)-decl.txt
 
 install-data-local:
 	installfiles=`echo $(srcdir)/html/*`; \
@@ -153,4 +151,4 @@ dist-hook: dist-check-gtkdoc dist-hook-local
 	  cp $(srcdir)/$(DOC_MODULE).types $(distdir)/$(DOC_MODULE).types; \
 	fi
 
-.PHONY : dist-hook-local docs
+.PHONY : dist-hook-local
