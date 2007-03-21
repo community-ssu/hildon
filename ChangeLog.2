@@ -1,3 +1,13 @@
+2007-03-20  Tommi Komulainen  <tommi.komulainen@nokia.com>
+
+	* doc/gtk-doc.make: Update from gtk-doc 1.7, and fix '*.sgml'
+	prerequisite with $(wildcard) to work in absence of any files.
+	* doc/Makefile.am (MAINTAINERCLEANFILES): Add 'tmpl/*.sgml' here, it
+	used to be handled in the modified gtk-doc.make
+	(HTML_IMAGES): Fix images locations by adding missing 'images/'
+	* doc/visual_index.xml: Remove extraneous 'html/' from image
+	references that were breaking the generated gallery page.
+	
 2007-03-20  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
 	* debian/rules: Force link creation and do not complain if failed.
