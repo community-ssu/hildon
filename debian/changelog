@@ -1,3 +1,15 @@
+libhildon (0.9.9-12) UNRELEASED; urgency=low
+
+  [ Tommi Komulainen ]
+  * Fix packaging for gtk-doc (not enabled by default)
+    - debian/libhildon1-dev.docs: Removed
+    - debian/libhildon1-dev.install: Added the gtk-doc directory here
+    - debian/rules: replace broken conditional dh_installdocs with dh_install
+      that excludes gtk-doc if the docs aren't installed
+    - debian/rules: unconditionally call dh_installdocs to include copyright
+
+ -- Tommi Komulainen <tommi.komulainen@nokia.com>  Wed, 21 Mar 2007 10:13:47 +0200
+
 libhildon (0.9.9-11) unstable; urgency=low
 
   * Unreleased.
