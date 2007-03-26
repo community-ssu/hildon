@@ -15,7 +15,9 @@ libhildon_@PACKAGE_VERSION_MAJOR@_la_LDFLAGS 		= $(HILDON_WIDGETS_LT_LDFLAGS)
 
 libhildon_@PACKAGE_VERSION_MAJOR@_la_LIBADD 		= $(GTK_LIBS) 					\
 							  $(GCONF_LIBS) 				\
-							  $(ESD_LIBS)			
+							  $(ESD_LIBS)					\
+							  @HILDON_LT_LDFLAGS@ 
+
 
 libhildon_@PACKAGE_VERSION_MAJOR@_la_CFLAGS		= $(GTK_CFLAGS) 				\
 							  $(GCONF_CFLAGS) 				\
