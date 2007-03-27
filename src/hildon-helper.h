@@ -53,6 +53,10 @@ hildon_helper_set_insensitive_messagef          (GtkWidget *widget,
 						 const gchar *format,
 						 ...);
 
+void
+hildon_helper_set_thumb_scrollbar               (GtkScrolledWindow *win, 
+                                                 gboolean thumb);
+
 G_END_DECLS
 
 #endif                                          /* HILDON_HELPER_H */

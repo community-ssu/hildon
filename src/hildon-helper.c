@@ -379,3 +379,30 @@ hildon_helper_set_logical_color                 (GtkWidget *widget,
 }
 
 
+/**
+ *
+ * hildon_helper_set_thumb_scrollbar
+ * @win: A @GtkScrolledWindow to use as target
+ * @thumb: TRUE to enable the thumb scrollbar, FALSE to disable
+ *
+ * This function enables a thumb scrollbar on a given scrolled window. It'll convert the
+ * existing normal scrollbar into a larger, finger-usable scrollbar that works without a stylus. 
+ * As fingerable list rows are fairly high, consider using the whole available vertical space 
+ * of your application for the content in order to have as many rows as possible 
+ * visible on the screen at once. 
+ *
+ * Finger-Sized scrollbar should always be used together with finger-sized content.
+ **/
+void
+hildon_helper_set_thumb_scrollbar               (GtkScrolledWindow *win, 
+                                                 gboolean thumb)
+{
+        g_return_if_fail (GTK_IS_SCROLLED_WINDOW (win));
+
+        if (win->vscrollbar) 
+                gtk_widget_set_name (win->vscrollbar, (thumb) ? "hildon-thumb-scrollbar" : NULL);
+}
+
+
+
+
