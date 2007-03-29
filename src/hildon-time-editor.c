@@ -533,7 +533,7 @@ hildon_time_editor_init                         (HildonTimeEditor *editor)
         gtk_entry_set_has_frame (GTK_ENTRY (priv->entries[i]), FALSE);
 
         /* Set the entries to accept only numeric characters */
-        g_object_set (priv->entries[i], "input-mode", HILDON_GTK_INPUT_MODE_NUMERIC, NULL);
+        g_object_set (priv->entries[i], "hildon-input-mode", HILDON_GTK_INPUT_MODE_NUMERIC, NULL);
 
         /* The entry fields all take exactly two characters */
         gtk_entry_set_max_length (GTK_ENTRY (priv->entries[i]), 2);

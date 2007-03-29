@@ -27,7 +27,8 @@ noinst_PROGRAMS				= hildon-window-example 		\
 					  hildon-number-editor-example		\
 					  hildon-scrolled-window-example	\
 					  hildon-color-pop-example		\
-					  hildon-thumb-scrollbar-example
+					  hildon-thumb-scrollbar-example	\
+					  hildon-date-editor-example
 
 # HIldon window
 hildon_window_example_LDADD		= $(HILDON_OBJ_LIBS)
@@ -163,5 +164,10 @@ hildon_scrolled_window_example_SOURCES	= hildon-scrolled-window-example.c
 hildon_thumb_scrollbar_example_LDADD	= $(HILDON_OBJ_LIBS)
 hildon_thumb_scrollbar_example_CFLAGS	= $(HILDON_OBJ_CFLAGS)
 hildon_thumb_scrollbar_example_SOURCES	= hildon-thumb-scrollbar-example.c
+
+# Hildon date editor example
+hildon_date_editor_example_LDADD	= $(HILDON_OBJ_LIBS)
+hildon_date_editor_example_CFLAGS	= $(HILDON_OBJ_CFLAGS)
+hildon_date_editor_example_SOURCES	= hildon-date-editor-example.c
 
 endif

@@ -59,5 +59,6 @@
 #include                                        "hildon-weekday-picker.h"
 #include                                        "hildon-window.h"
 #include                                        "hildon-wizard-dialog.h"
+#include                                        "hildon-calendar.h"
 
 #endif 

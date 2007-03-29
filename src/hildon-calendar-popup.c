@@ -27,7 +27,7 @@
  * @short_description: CalendarPopup allows choosing a date from a popup calendar.
  * @see_also: #HildonDateEditor, #HildonTimeEditor
  *
- * HildonCalendarPopup is a dialog which contains a GtkCalendar.  It
+ * HildonCalendarPopup is a dialog which contains a HildonCalendar.  It
  * also contains arrow buttons for changing the month/year. If an
  * entered date is invalid, an information message will be shown.
  *
@@ -65,8 +65,8 @@
 #endif
 
 #include                                        "hildon-calendar-popup.h"
+#include                                        "hildon-calendar.h"
 #include                                        <gtk/gtk.h>
-#include                                        <gtk/gtkcalendar.h>
 #include                                        <gdk/gdk.h>
 #include                                        <gdk/gdkkeysyms.h>
 #include                                        <langinfo.h>
@@ -208,11 +208,11 @@ hildon_calendar_popup_set_date                  (HildonCalendarPopup *cal,
     init_dmy (year, month, day, &dtmp, &mtmp, &ytmp);
 
     /* Remove all visual markers */
-    gtk_calendar_clear_marks (GTK_CALENDAR (priv->cal));
+    hildon_calendar_clear_marks (HILDON_CALENDAR (priv->cal));
 
     /* Set a new date */
-    gtk_calendar_select_month (GTK_CALENDAR (priv->cal), mtmp - 1, ytmp);
-    gtk_calendar_select_day (GTK_CALENDAR (priv->cal), dtmp);
+    hildon_calendar_select_month (HILDON_CALENDAR (priv->cal), mtmp - 1, ytmp);
+    hildon_calendar_select_day (HILDON_CALENDAR (priv->cal), dtmp);
 }
 
 /**
@@ -238,7 +238,7 @@ hildon_calendar_popup_get_date                  (HildonCalendarPopup *cal,
     priv = HILDON_CALENDAR_POPUP_GET_PRIVATE (cal);
     g_assert (priv);
 
-    gtk_calendar_get_date (GTK_CALENDAR (priv->cal), year, month, day);
+    hildon_calendar_get_date (HILDON_CALENDAR (priv->cal), year, month, day);
     if (month != NULL)
         *month = *month + 1;
 
@@ -266,7 +266,7 @@ hildon_calendar_popup_class_init                (HildonCalendarPopupClass *cal_c
             g_param_spec_uint ("min-year",
                 "Minimum valid year",
                 "Minimum valid year",
-                1, 2100,
+                1, 10000,
                 1970,
                 G_PARAM_WRITABLE));
 
@@ -274,7 +274,7 @@ hildon_calendar_popup_class_init                (HildonCalendarPopupClass *cal_c
             g_param_spec_uint ("max-year",
                 "Maximum valid year",
                 "Maximum valid year",
-                1, 2100,
+                1, 10000,
                 2037,
                 G_PARAM_WRITABLE));
 
@@ -323,13 +323,13 @@ hildon_calendar_popup_init                      (HildonCalendarPopup *cal)
         set_domain = 0;
     }
 
-    priv->cal = gtk_calendar_new ();
+    priv->cal = hildon_calendar_new ();
 
     /* dialog options and packing */
-    gtk_calendar_set_display_options (GTK_CALENDAR (priv->cal),
-            GTK_CALENDAR_SHOW_HEADING |
-            GTK_CALENDAR_SHOW_DAY_NAMES |
-            GTK_CALENDAR_SHOW_WEEK_NUMBERS);
+    hildon_calendar_set_display_options (HILDON_CALENDAR (priv->cal),
+            HILDON_CALENDAR_SHOW_HEADING |
+            HILDON_CALENDAR_SHOW_DAY_NAMES |
+            HILDON_CALENDAR_SHOW_WEEK_NUMBERS);
 
     gtk_box_pack_start (GTK_BOX (GTK_DIALOG (cal)->vbox), priv->cal,
             TRUE, TRUE, 0);
@@ -414,10 +414,7 @@ init_dmy                                        (guint year,
 }
 
 /*
- * Exits the dialog when "selected_date" signal is emmited. The
- * "selected_date" signal is a Hildon addition to GtkCalendar and is
- * emitted on button-release.
- */
+ * Exits the dialog when "selected_date" signal is emmited. */
 static void
 hildon_calendar_selected_date                   (GtkWidget *self, 
                                                  gpointer cal_popup)

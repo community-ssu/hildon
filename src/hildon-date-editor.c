@@ -259,8 +259,8 @@ hildon_date_editor_class_init                   (HildonDateEditorClass *editor_c
             g_param_spec_uint ("year",
                 "Current year",
                 "Current year",
-                1, 2100,
-                2005,
+                1, 10000,
+                2007,
                 G_PARAM_READABLE | G_PARAM_WRITABLE));
 
     /**
@@ -298,7 +298,7 @@ hildon_date_editor_class_init                   (HildonDateEditorClass *editor_c
             g_param_spec_uint ("min-year",
                 "Minimum valid year",
                 "Minimum valid year",
-                1, 3000,
+                1, 10000,
                 DEFAULT_MIN_YEAR,
                 G_PARAM_READWRITE));
 
@@ -311,7 +311,7 @@ hildon_date_editor_class_init                   (HildonDateEditorClass *editor_c
             g_param_spec_uint ("max-year",
                 "Maximum valid year",
                 "Maximum valid year",
-                1, 3000,
+                1, 10000,
                 DEFAULT_MAX_YEAR,
                 G_PARAM_READWRITE));
 }
@@ -449,11 +449,11 @@ hildon_date_editor_init                         (HildonDateEditor *editor)
     priv->m_entry = gtk_entry_new ();
     priv->y_entry = gtk_entry_new ();
 
-    g_object_set (G_OBJECT(priv->d_entry), "input-mode", 
+    g_object_set (G_OBJECT(priv->d_entry), "hildon-input-mode", 
             HILDON_GTK_INPUT_MODE_NUMERIC, NULL);
-    g_object_set (G_OBJECT(priv->m_entry), "input-mode", 
+    g_object_set (G_OBJECT(priv->m_entry), "hildon-input-mode", 
             HILDON_GTK_INPUT_MODE_NUMERIC, NULL);
-    g_object_set (G_OBJECT(priv->y_entry), "input-mode", 
+    g_object_set (G_OBJECT(priv->y_entry), "hildon-input-mode", 
             HILDON_GTK_INPUT_MODE_NUMERIC, NULL);
 
     /* set entry look */

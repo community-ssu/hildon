@@ -36,6 +36,7 @@
     <xi:include href="xml/hildon-hvolumebar.xml"/>
     <xi:include href="xml/hildon-seekbar.xml"/>
     <xi:include href="xml/hildon-calendar-popup.xml"/>
+    <xi:include href="xml/hildon-calendar.xml"/>
     <xi:include href="xml/hildon-weekday-picker.xml"/>
     <xi:include href="xml/hildon-time-picker.xml"/>
   </chapter>

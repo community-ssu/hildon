@@ -57,7 +57,8 @@ libhildon_@PACKAGE_VERSION_MAJOR@_la_SOURCES 		= hildon-private.c				\
 							  hildon-program.c 				\
 							  hildon-code-dialog.c 				\
 							  hildon-enum-types.c 				\
-							  hildon-marshalers.c
+							  hildon-marshalers.c				\
+							  hildon-calendar.c
 
 libhildon_@PACKAGE_VERSION_MAJOR@_includedir		= $(includedir)/$(PACKAGE)-$(PACKAGE_VERSION_MAJOR)/$(PACKAGE)
 
@@ -95,7 +96,8 @@ libhildon_@PACKAGE_VERSION_MAJOR@_include_HEADERS 	= hildon-banner.h 				\
 							  hildon-weekday-picker.h 			\
 							  hildon.h 					\
 							  hildon-window.h 				\
-							  hildon-wizard-dialog.h
+							  hildon-wizard-dialog.h			\
+							  hildon-calendar.h
 
 noinst_HEADERS						= hildon-banner-private.h 			\
 							  hildon-calendar-popup-private.h 		\
@@ -123,7 +125,8 @@ noinst_HEADERS						= hildon-banner-private.h 			\
 							  hildon-volumebar-private.h 			\
 							  hildon-weekday-picker-private.h 		\
 							  hildon-window-private.h 			\
-							  hildon-wizard-dialog-private.h
+							  hildon-wizard-dialog-private.h		\
+							  hildon-calendar-private.h
 
 # Don't build the library until we have built the header that it needs:
 $(OBJECTS) $(libhildon_$(PACKAGE_VERSION_MAJOR)_la_OBJECTS): hildon-enum-types.h hildon-marshalers.c hildon-marshalers.h

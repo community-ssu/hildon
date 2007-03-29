@@ -171,7 +171,7 @@ hildon_get_password_set_property                (GObject *object,
         case PROP_NUMBERS_ONLY:
             /* Set input mode for the password entry */
             g_object_set(G_OBJECT (gtk_bin_get_child GTK_BIN ((priv->password_entry))),
-                    "input-mode",
+                    "hildon-input-mode",
                     (g_value_get_boolean (value)
                      ? HILDON_GTK_INPUT_MODE_NUMERIC
                      : HILDON_GTK_INPUT_MODE_FULL),
@@ -228,7 +228,7 @@ hildon_get_password_get_property                (GObject *object,
             /* This property is set if and only if the input mode
                of the password entry has been set to numeric only */
             g_object_get (G_OBJECT (gtk_bin_get_child (GTK_BIN (priv->password_entry))),
-                    "input-mode", &input_mode, NULL);
+                    "hildon-input-mode", &input_mode, NULL);
             g_value_set_boolean (value,
                     (input_mode == HILDON_GTK_INPUT_MODE_NUMERIC));
             break;
