@@ -127,10 +127,12 @@ hildon_get_password_get_property                (GObject *object,
 static void 
 create_contents                                 (HildonGetPasswordDialog *dialog);
 
+#ifdef MAEMO_GTK 
 static void 
 invalid_input                                   (GtkWidget *widget, 
                                                  GtkInvalidInputType reason, 
                                                  gpointer unused);
+#endif
 
 enum
 {
@@ -169,6 +171,7 @@ hildon_get_password_set_property                (GObject *object,
             break;
 
         case PROP_NUMBERS_ONLY:
+#ifdef MAEMO_GTK 
             /* Set input mode for the password entry */
             g_object_set(G_OBJECT (gtk_bin_get_child GTK_BIN ((priv->password_entry))),
                     "hildon-input-mode",
@@ -176,6 +179,7 @@ hildon_get_password_set_property                (GObject *object,
                      ? HILDON_GTK_INPUT_MODE_NUMERIC
                      : HILDON_GTK_INPUT_MODE_FULL),
                     NULL);
+#endif
             break;
 
         case PROP_CAPTION_LABEL:
@@ -207,7 +211,9 @@ hildon_get_password_get_property                (GObject *object,
     HildonGetPasswordDialogPrivate *priv;
     const gchar *string;
     gint max_length;
+#ifdef MAEMO_GTK 
     gint input_mode;
+#endif
 
     priv = HILDON_GET_PASSWORD_DIALOG_GET_PRIVATE (dialog);
     g_assert (priv);
@@ -225,12 +231,16 @@ hildon_get_password_get_property                (GObject *object,
             break;
 
         case PROP_NUMBERS_ONLY:
+#ifdef MAEMO_GTK 
             /* This property is set if and only if the input mode
                of the password entry has been set to numeric only */
             g_object_get (G_OBJECT (gtk_bin_get_child (GTK_BIN (priv->password_entry))),
                     "hildon-input-mode", &input_mode, NULL);
             g_value_set_boolean (value,
                     (input_mode == HILDON_GTK_INPUT_MODE_NUMERIC));
+#else
+            g_value_set_boolean (value, FALSE);
+#endif
             break;
 
         case PROP_CAPTION_LABEL:
@@ -411,7 +421,9 @@ create_contents                                 (HildonGetPasswordDialog *dialog
     control = gtk_entry_new ();
     gtk_entry_set_width_chars (GTK_ENTRY (control), 20);
 
+#ifdef MAEMO_GTK 
     g_object_set (control, "hildon-input-mode", HILDON_GTK_INPUT_MODE_FULL, NULL);
+#endif
 
     gtk_entry_set_visibility (GTK_ENTRY(control), FALSE);
     priv->password_entry = HILDON_CAPTION
@@ -625,6 +637,7 @@ hildon_get_password_dialog_set_max_characters   (HildonGetPasswordDialog *dialog
      * disconnected before connecting the new signal. Besides, this 
      * should go into the constructor */
 
+#ifdef MAEMO_GTK 
     /* Connect callback to show error banner if the limit is exceeded */
     g_signal_connect (GTK_ENTRY
             (gtk_bin_get_child
@@ -633,8 +646,10 @@ hildon_get_password_dialog_set_max_characters   (HildonGetPasswordDialog *dialog
             G_CALLBACK (invalid_input),
             NULL
             );
+#endif
 }
 
+#ifdef MAEMO_GTK 
 /* Callback that gets called when maximum chars is reached in the entry */
 static void 
 invalid_input                                   (GtkWidget *widget, 
@@ -646,3 +661,4 @@ invalid_input                                   (GtkWidget *widget,
         hildon_banner_show_information (widget, NULL, _(HILDON_GET_PASSWORD_DIALOG_MAX_CHARS));
     }
 }
+#endif

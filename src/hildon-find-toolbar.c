@@ -108,10 +108,12 @@ static void
 hildon_find_toolbar_emit_close                  (GtkButton *button, 
                                                  gpointer self);
 
+#ifdef MAEMO_GTK 
 static void
 hildon_find_toolbar_emit_invalid_input          (GtkEntry *entry, 
                                                  GtkInvalidInputType type, 
                                                  gpointer self);
+#endif
 
 static void
 hildon_find_toolbar_entry_activate              (GtkWidget *widget,
@@ -481,6 +483,7 @@ static void
 hildon_find_toolbar_emit_close                  (GtkButton *button, 
                                                  gpointer self)
 {
+#ifdef MAEMO_GTK 
     HildonFindToolbarPrivate *priv = HILDON_FIND_TOOLBAR_GET_PRIVATE (self);
     g_assert (priv);
 
@@ -489,11 +492,13 @@ hildon_find_toolbar_emit_close                  (GtkButton *button,
     {
         hildon_gtk_im_context_hide (GTK_ENTRY (entry)->im_context);
     }
+#endif
 
     /* Clicked close button */
     g_signal_emit_by_name (self, "close", NULL);
 }
 
+#ifdef MAEMO_GTK 
 static void
 hildon_find_toolbar_emit_invalid_input          (GtkEntry *entry, 
                                                  GtkInvalidInputType type, 
@@ -502,6 +507,7 @@ hildon_find_toolbar_emit_invalid_input          (GtkEntry *entry,
     if(type == GTK_INVALID_INPUT_MAX_CHARS_REACHED)
         g_signal_emit_by_name (self, "invalid_input", NULL);
 }
+#endif
 
 static void
 hildon_find_toolbar_entry_activate              (GtkWidget *widget,
@@ -647,7 +653,7 @@ hildon_find_toolbar_class_init                  (HildonFindToolbarClass *klass)
      * 
      * Gets emitted when the maximum search prefix length is reached and
      * user tries to type more.
-     */ 
+     */
     HildonFindToolbar_signal[INVALID_INPUT] = 
         g_signal_new(
                 "invalid_input", HILDON_TYPE_FIND_TOOLBAR,
@@ -696,9 +702,12 @@ hildon_find_toolbar_init                        (HildonFindToolbar *self)
 
     /* ComboBoxEntry for search prefix string / history list */
     priv->entry_combo_box = GTK_COMBO_BOX_ENTRY (gtk_combo_box_entry_new ());
+
+#ifdef MAEMO_GTK
     g_signal_connect (hildon_find_toolbar_get_entry(priv),
             "invalid_input", 
             G_CALLBACK(hildon_find_toolbar_emit_invalid_input), self);
+#endif
 
     entry_combo_box_container = gtk_tool_item_new ();
 

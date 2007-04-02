@@ -1,3 +1,24 @@
+2007-04-02  Lucas Rocha  <lucas.rocha@nokia.com>
+
+	* src/hildon-range-editor.c (hildon_range_editor_init),
+	src/hildon-seekbar.c (hildon_seekbar_get_fraction,
+	hildon_seekbar_set_fraction, hildon_seekbar_set_position),
+	src/hildon-time-editor.c (hildon_time_editor_tap_and_hold_setup,
+	hildon_time_editor_class_init, hildon_time_editor_init),
+	src/hildon-get-password-dialog.c (invalid_input,
+	hildon_get_password_set_property, hildon_get_password_get_property,
+	create_contents, hildon_get_password_dialog_set_max_characters),
+	src/hildon-set-password-dialog.c (create_contents),
+	src/hildon-date-editor.c (hildon_date_editor_init),
+	src/hildon-login-dialog.c (hildon_login_dialog_init),
+	src/hildon-number-editor.c (hildon_number_editor_init),
+	src/hildon-find-toolbar.c (hildon_find_toolbar_emit_invalid_input,
+	hildon_find_toolbar_emit_close, hildon_find_toolbar_init): made all
+	the Maemo GTK+ specific API optional by adding a --with-maemo-gtk
+	 configure option and adding the respective checks in the code.
+	* src/hildon-calendar.c (hildon_calendar_paint_week_numbers,
+	hildon_calendar_drag_data_received): fixed some build warnings.
+
 2007-03-29  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
 	* debian/changelog: A 1.0.0 release notes.

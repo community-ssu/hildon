@@ -82,6 +82,27 @@ else
     AC_MSG_NOTICE(Will not build examples )
 fi
 
+# use maemo gtk+ specific api (or not)
+AC_ARG_WITH(maemo-gtk, 
+    AC_HELP_STRING([--with-maemo-gtk], [Use Maemo GTK+ API]),
+    [
+     case "${withval}" in
+         yes) USE_MAEMO_GTK=yes ;;
+         no)  USE_MAEMO_GTK=no ;;
+         *)   AC_MSG_ERROR(bad value ${withval} for --with-maemo-gtk) ;;
+     esac],
+     [USE_MAEMO_GTK=yes])
+
+AM_CONDITIONAL(USE_MAEMO_GTK, test "x$USE_MAEMO_GTK" = "xyes")
+
+# just print out our status
+if test x$USE_MAEMO_GTK = xyes; then
+    AC_MSG_NOTICE(Will use Maemo GTK+ specific API)
+    AC_DEFINE(MAEMO_GTK, [], [Whether to use Maemo GTK+ specific API])
+else
+    AC_MSG_NOTICE(Will not use Maemo GTK+ specific API)
+fi
+
 # build with assertion checks (or not)
 AC_ARG_WITH(asserts, 
     AC_HELP_STRING([--with-asserts], [Build with the assertion checks]),

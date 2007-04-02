@@ -328,11 +328,13 @@ hildon_range_editor_init                        (HildonRangeEditor *editor)
     g_signal_connect (priv->end_entry, "changed", 
             G_CALLBACK (hildon_range_editor_entry_changed), editor);
 
+#ifdef MAEMO_GTK 
     g_object_set (G_OBJECT (priv->start_entry),
             "hildon-input-mode", HILDON_GTK_INPUT_MODE_NUMERIC, NULL);
 
     g_object_set( G_OBJECT (priv->end_entry),
             "hildon-input-mode", HILDON_GTK_INPUT_MODE_NUMERIC, NULL);
+#endif 
 
     gtk_widget_show (priv->start_entry);
     gtk_widget_show (priv->end_entry);

@@ -274,7 +274,10 @@ hildon_login_dialog_init                        (HildonLoginDialog *dialog)
 
     /* Setup username entry */
     priv->username_entry = GTK_ENTRY (gtk_entry_new ());
+
+#ifdef MAEMO_GTK 
     g_object_set (priv->username_entry, "hildon-input-mode", HILDON_GTK_INPUT_MODE_FULL, NULL);
+#endif
 
     caption = HILDON_CAPTION (hildon_caption_new
             (group,
@@ -288,7 +291,11 @@ hildon_login_dialog_init                        (HildonLoginDialog *dialog)
 
     /* Setup password entry */
     priv->password_entry = GTK_ENTRY (gtk_entry_new ());
+
+#ifdef MAEMO_GTK
     g_object_set (priv->password_entry, "hildon-input-mode", HILDON_GTK_INPUT_MODE_FULL, NULL);
+#endif
+
     gtk_entry_set_visibility (GTK_ENTRY (priv->password_entry), FALSE);
 
     caption = HILDON_CAPTION (hildon_caption_new (group,

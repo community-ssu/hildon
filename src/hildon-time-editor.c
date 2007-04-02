@@ -232,11 +232,14 @@ hildon_time_editor_entry_keypress               (GtkWidget *widget,
 static gboolean
 hildon_time_editor_check_locale                 (HildonTimeEditor *editor);
 
+#ifdef MAEMO_GTK 
 static void 
 hildon_time_editor_tap_and_hold_setup           (GtkWidget *widget,
                                                  GtkWidget *menu,
                                                  GtkCallback func,
                                                  GtkWidgetTapAndHoldFlags flags);
+#endif
+
 static void
 hildon_time_editor_validate                     (HildonTimeEditor *editor, 
                                                  gboolean allow_intermediate);
@@ -359,7 +362,9 @@ hildon_time_editor_class_init                   (HildonTimeEditorClass *editor_c
     object_class->set_property                  = hildon_time_editor_set_property;
     widget_class->size_request                  = hildon_time_editor_size_request;
     widget_class->size_allocate                 = hildon_time_editor_size_allocate;
+#ifdef MAEMO_GTK 
     widget_class->tap_and_hold_setup            = hildon_time_editor_tap_and_hold_setup;
+#endif
     widget_class->focus                         = hildon_private_composite_focus;
 
     container_class->forall                     = hildon_time_editor_forall;
@@ -455,6 +460,7 @@ hildon_time_editor_class_init                   (HildonTimeEditorClass *editor_c
                 G_PARAM_READABLE | G_PARAM_WRITABLE) );
 }
 
+#ifdef MAEMO_GTK 
 static void 
 hildon_time_editor_tap_and_hold_setup           (GtkWidget *widget,
                                                  GtkWidget *menu,
@@ -475,6 +481,7 @@ hildon_time_editor_tap_and_hold_setup           (GtkWidget *widget,
     gtk_widget_tap_and_hold_setup (priv->iconbutton, menu, func,
             GTK_TAP_AND_HOLD_NONE);
 }
+#endif
 
 static void 
 hildon_time_editor_entry_changed                (GtkWidget *widget, 
@@ -532,8 +539,10 @@ hildon_time_editor_init                         (HildonTimeEditor *editor)
         /* No frames for entries, so that they all appear to be inside one long entry */
         gtk_entry_set_has_frame (GTK_ENTRY (priv->entries[i]), FALSE);
 
+#ifdef MAEMO_GTK 
         /* Set the entries to accept only numeric characters */
         g_object_set (priv->entries[i], "hildon-input-mode", HILDON_GTK_INPUT_MODE_NUMERIC, NULL);
+#endif
 
         /* The entry fields all take exactly two characters */
         gtk_entry_set_max_length (GTK_ENTRY (priv->entries[i]), 2);

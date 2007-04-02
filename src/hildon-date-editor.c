@@ -449,12 +449,14 @@ hildon_date_editor_init                         (HildonDateEditor *editor)
     priv->m_entry = gtk_entry_new ();
     priv->y_entry = gtk_entry_new ();
 
+#ifdef MAEMO_GTK
     g_object_set (G_OBJECT(priv->d_entry), "hildon-input-mode", 
             HILDON_GTK_INPUT_MODE_NUMERIC, NULL);
     g_object_set (G_OBJECT(priv->m_entry), "hildon-input-mode", 
             HILDON_GTK_INPUT_MODE_NUMERIC, NULL);
     g_object_set (G_OBJECT(priv->y_entry), "hildon-input-mode", 
             HILDON_GTK_INPUT_MODE_NUMERIC, NULL);
+#endif
 
     /* set entry look */
     gtk_entry_set_width_chars (GTK_ENTRY (priv->d_entry), DAY_ENTRY_WIDTH);

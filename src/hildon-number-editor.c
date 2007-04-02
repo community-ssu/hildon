@@ -406,8 +406,10 @@ hildon_number_editor_init                       (HildonNumberEditor *editor)
             G_CALLBACK (hildon_number_editor_button_released),
             editor);
 
+#ifdef MAEMO_GTK 
     g_object_set (G_OBJECT (priv->num_entry),
             "hildon-input-mode", HILDON_GTK_INPUT_MODE_NUMERIC, NULL);
+#endif
 
     gtk_widget_show (priv->num_entry);
     gtk_widget_show (priv->minus);

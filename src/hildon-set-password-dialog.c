@@ -275,7 +275,11 @@ create_contents                                 (HildonSetPasswordDialog *dialog
 
     /* Create the password field */
     priv->pwd1st_entry = gtk_entry_new ();
+
+#ifdef MAEMO_GTK
     g_object_set (priv->pwd1st_entry, "hildon-input-mode", HILDON_GTK_INPUT_MODE_FULL, NULL);
+#endif
+
     gtk_entry_set_visibility (GTK_ENTRY(priv->pwd1st_entry), FALSE);
     gtk_widget_show (priv->pwd1st_entry);
     priv->pwd1st_caption = hildon_caption_new (group,
@@ -291,7 +295,11 @@ create_contents                                 (HildonSetPasswordDialog *dialog
 
     /* Create the password verify field */
     priv->pwd2nd_entry = gtk_entry_new();
+
+#ifdef MAEMO_GTK
     g_object_set (priv->pwd2nd_entry, "hildon-input-mode", HILDON_GTK_INPUT_MODE_FULL, NULL);
+#endif
+
     gtk_widget_show (priv->pwd2nd_entry);
     priv->pwd2nd_caption = hildon_caption_new (group,
             priv->pwd2nd_caption_string,

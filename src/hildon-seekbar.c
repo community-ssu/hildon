@@ -423,7 +423,11 @@ hildon_seekbar_get_fraction                     (HildonSeekbar *seekbar)
 {
     g_return_val_if_fail (HILDON_IS_SEEKBAR (seekbar), 0);
 
+#ifdef MAEMO_GTK
     return gtk_range_get_fill_level (GTK_RANGE (seekbar));
+#else
+    return 0;
+#endif
 }
 
 /**
@@ -452,8 +456,10 @@ hildon_seekbar_set_fraction                     (HildonSeekbar *seekbar,
     fraction = CLAMP (fraction, range->adjustment->lower,
             range->adjustment->upper);
 
+#ifdef MAEMO_GTK 
     /* Update stream position of range widget */
     gtk_range_set_fill_level (range, fraction);
+#endif
 
     if (fraction < hildon_seekbar_get_position(seekbar))
         hildon_seekbar_set_position(seekbar, fraction);
@@ -504,7 +510,12 @@ hildon_seekbar_set_position                     (HildonSeekbar *seekbar,
     value = floor (adj->value);
     if (time != value) {
         value = (time < adj->upper) ? time : adj->upper;
+
+#ifdef MAEMO_GTK 
         if (value <= gtk_range_get_fill_level (range)) {
+#else
+        if (value) {
+#endif
             adj->value = value;
             gtk_adjustment_value_changed (adj);
 

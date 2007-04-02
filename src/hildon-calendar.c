@@ -2337,7 +2337,7 @@ hildon_calendar_paint_week_numbers              (GtkWidget *widget)
 {
     HildonCalendar *calendar;
     GdkGC *gc; 
-    gint row, week = 0, year;
+    guint row, week = 0, year;
     gint x_loc;
     char buffer[10];
     gint y_loc;
@@ -4297,7 +4297,7 @@ hildon_calendar_drag_data_received              (GtkWidget *widget,
          * supposed to call drag_status, not actually paste in the
          * data.
          */
-        str = gtk_selection_data_get_text (selection_data);
+        str = (gchar *) gtk_selection_data_get_text (selection_data);
         if (str) 
         {
             date = g_date_new ();
@@ -4316,7 +4316,7 @@ hildon_calendar_drag_data_received              (GtkWidget *widget,
     }
 
     date = g_date_new ();
-    str = gtk_selection_data_get_text (selection_data);
+    str = (gchar *) gtk_selection_data_get_text (selection_data);
     if (str) 
     {
         g_date_set_parse (date, str);
