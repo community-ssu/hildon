@@ -58,7 +58,9 @@ libhildon_@PACKAGE_VERSION_MAJOR@_la_SOURCES 		= hildon-private.c				\
 							  hildon-code-dialog.c 				\
 							  hildon-enum-types.c 				\
 							  hildon-marshalers.c				\
-							  hildon-calendar.c
+							  hildon-calendar.c				\
+							  hildon-bread-crumb-trail.c			\
+							  hildon-bread-crumb.c
 
 libhildon_@PACKAGE_VERSION_MAJOR@_includedir		= $(includedir)/$(PACKAGE)-$(PACKAGE_VERSION_MAJOR)/$(PACKAGE)
 
@@ -97,7 +99,9 @@ libhildon_@PACKAGE_VERSION_MAJOR@_include_HEADERS 	= hildon-banner.h 				\
 							  hildon.h 					\
 							  hildon-window.h 				\
 							  hildon-wizard-dialog.h			\
-							  hildon-calendar.h
+							  hildon-calendar.h				\
+							  hildon-bread-crumb-trail.h			\
+							  hildon-bread-crumb.h
 
 noinst_HEADERS						= hildon-banner-private.h 			\
 							  hildon-calendar-popup-private.h 		\

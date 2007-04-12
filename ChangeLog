@@ -1,3 +1,15 @@
+2007-04-12  Xan Lopez  <xan.lopez@nokia.com>
+
+	* examples/Makefile.am
+	* examples/hildon-bread-crumb-trail-example.c
+	* src/Makefile.am
+	* src/hildon-bread-crumb-trail.c
+	* src/hildon-bread-crumb-trail.h
+	* src/hildon-bread-crumb.c
+	* src/hildon-bread-crumb.h
+
+	New HildonBreadCrumbTrail widget.
+
 2007-04-02  Lucas Rocha  <lucas.rocha@nokia.com>
 
 	* src/hildon-range-editor.c (hildon_range_editor_init),
