@@ -1,5 +1,11 @@
 2007-04-12  Xan Lopez  <xan.lopez@nokia.com>
 
+	* examples/hildon-bread-crumb-trail-example.c
+
+	Add license.
+	
+2007-04-12  Xan Lopez  <xan.lopez@nokia.com>
+
 	* examples/Makefile.am
 	* examples/hildon-bread-crumb-trail-example.c
 	* src/Makefile.am
