@@ -1,5 +1,14 @@
 2007-04-13  Xan Lopez  <xan.lopez@nokia.com>
 
+        * src/hildon-bread-crumb-trail.c:
+        * src/hildon-bread-crumb-trail.h:
+        * src/hildon-bread-crumb.c:
+        * src/hildon-bread-crumb.h:
+
+	Untabify.
+	
+2007-04-13  Xan Lopez  <xan.lopez@nokia.com>
+
 	* src/hildon-bread-crumb-trail.c: don't use the priv data of bct
 	until it's passed the type check.
 

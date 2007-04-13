@@ -30,8 +30,8 @@
 
 G_BEGIN_DECLS
 
-typedef struct _HildonBreadCrumb	HildonBreadCrumb;
-typedef struct _HildonBreadCrumbClass	HildonBreadCrumbClass;
+typedef struct _HildonBreadCrumb        HildonBreadCrumb;
+typedef struct _HildonBreadCrumbClass   HildonBreadCrumbClass;
 typedef struct _HildonBreadCrumbPrivate HildonBreadCrumbPrivate;
 
 #define HILDON_TYPE_BREAD_CRUMB                 (hildon_bread_crumb_get_type ())
@@ -58,9 +58,9 @@ GtkWidget *hildon_bread_crumb_new (const gchar* text);
 void hildon_bread_crumb_set_text (HildonBreadCrumb *item, const gchar *text);
 const gchar* hildon_bread_crumb_get_text (HildonBreadCrumb *item);
 void hildon_bread_crumb_get_natural_size (HildonBreadCrumb *item,
-					  gint *width, gint *height);
+                                          gint *width, gint *height);
 void hildon_bread_crumb_set_show_separator (HildonBreadCrumb *item,
-					    gboolean show_separator);
+                                            gboolean show_separator);
 
 G_END_DECLS
 

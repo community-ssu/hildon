@@ -48,20 +48,20 @@ enum {
 };
 
 static void hildon_bread_crumb_trail_size_request (GtkWidget *widget,
-						   GtkRequisition *requisition);
+                                                   GtkRequisition *requisition);
 static void hildon_bread_crumb_trail_size_allocate (GtkWidget *widget,
-						    GtkAllocation *allocation);
+                                                    GtkAllocation *allocation);
 static void hildon_bread_crumb_trail_add (GtkContainer *container,
-					  GtkWidget *widget);
+                                          GtkWidget *widget);
 static void hildon_bread_crumb_trail_forall (GtkContainer *container,
-					     gboolean include_internals,
-					     GtkCallback callback,
-					     gpointer callback_data);
+                                             gboolean include_internals,
+                                             GtkCallback callback,
+                                             gpointer callback_data);
 static void hildon_bread_crumb_trail_remove (GtkContainer *container,
-					     GtkWidget *widget);
+                                             GtkWidget *widget);
 static void hildon_bread_crumb_trail_finalize (GObject *object);
 static void hildon_bread_crumb_trail_scroll_back (GtkWidget *button,
-						  HildonBreadCrumbTrail *bct);
+                                                  HildonBreadCrumbTrail *bct);
 static void hildon_bread_crumb_trail_update_back_button_sensitivity (HildonBreadCrumbTrail *bct);
 
 static guint bread_crumb_trail_signals[LAST_SIGNAL] = { 0 };
@@ -96,46 +96,46 @@ hildon_bread_crumb_trail_class_init (HildonBreadCrumbTrailClass *klass)
 
   /* FIXME: is this the best way to do it? */
   gtk_widget_class_install_style_property (widget_class,
-					   g_param_spec_int ("minimum-width",
-							     "Minimum width",
-							     "The minimum width in characters the children widgets will request",
-							     0,
-							     G_MAXINT,
-							     _BREAD_CRUMB_TRAIL_MINIMUM_WIDTH,
-							     G_PARAM_READABLE));
+                                           g_param_spec_int ("minimum-width",
+                                                             "Minimum width",
+                                                             "The minimum width in characters the children widgets will request",
+                                                             0,
+                                                             G_MAXINT,
+                                                             _BREAD_CRUMB_TRAIL_MINIMUM_WIDTH,
+                                                             G_PARAM_READABLE));
 
 #define _BREAD_CRUMB_TRAIL_MAXIMUM_WIDTH 250
 
   gtk_widget_class_install_style_property (widget_class,
-					   g_param_spec_int ("maximum-width",
-							     "Maximum width",
-							     "The maximum width in characters the children widgets will be allocated",
-							     0,
-							     G_MAXINT,
-							     _BREAD_CRUMB_TRAIL_MAXIMUM_WIDTH,
-							     G_PARAM_READABLE));
-							     
+                                           g_param_spec_int ("maximum-width",
+                                                             "Maximum width",
+                                                             "The maximum width in characters the children widgets will be allocated",
+                                                             0,
+                                                             G_MAXINT,
+                                                             _BREAD_CRUMB_TRAIL_MAXIMUM_WIDTH,
+                                                             G_PARAM_READABLE));
+                                                             
 #define _BREAD_CRUMB_TRAIL_ARROW_SIZE 34
 
   gtk_widget_class_install_style_property (widget_class,
-					   g_param_spec_int ("arrow-size",
-							     "Arrow size",
-							     "Size of the back button arrow",
-							     0,
-							     G_MAXINT,
-							     _BREAD_CRUMB_TRAIL_ARROW_SIZE,
-							     G_PARAM_READABLE));
+                                           g_param_spec_int ("arrow-size",
+                                                             "Arrow size",
+                                                             "Size of the back button arrow",
+                                                             0,
+                                                             G_MAXINT,
+                                                             _BREAD_CRUMB_TRAIL_ARROW_SIZE,
+                                                             G_PARAM_READABLE));
   /* Signals */
   bread_crumb_trail_signals[CRUMB_CLICKED] =
     g_signal_new ("crumb-clicked",
-		  G_OBJECT_CLASS_TYPE (object_class),
-		  G_SIGNAL_RUN_LAST,
-		  G_STRUCT_OFFSET (HildonBreadCrumbTrailClass, crumb_clicked),
-		  NULL, NULL,
-		  g_cclosure_marshal_VOID__POINTER,
-		  G_TYPE_NONE, 1,
-		  G_TYPE_POINTER);
-		  
+                  G_OBJECT_CLASS_TYPE (object_class),
+                  G_SIGNAL_RUN_LAST,
+                  G_STRUCT_OFFSET (HildonBreadCrumbTrailClass, crumb_clicked),
+                  NULL, NULL,
+                  g_cclosure_marshal_VOID__POINTER,
+                  G_TYPE_NONE, 1,
+                  G_TYPE_POINTER);
+                  
   /* Private data */
   g_type_class_add_private (gobject_class, sizeof (HildonBreadCrumbTrailPrivate));
 }
@@ -153,7 +153,7 @@ hildon_bread_crumb_trail_finalize (GObject *object)
 
 static void
 hildon_bread_crumb_trail_size_request (GtkWidget *widget,
-				       GtkRequisition *requisition)
+                                       GtkRequisition *requisition)
 {
   GList *p;
   GtkRequisition child_requisition;
@@ -179,8 +179,8 @@ hildon_bread_crumb_trail_size_request (GtkWidget *widget,
       /* Add minimum width for one item */
       /* TODO: this can be probably cached */
       gtk_widget_style_get (widget,
-			    "minimum-width", &minimum_width,
-			    NULL);
+                            "minimum-width", &minimum_width,
+                            NULL);
 
       tmp = g_strnfill ((gsize)minimum_width, 'm');
       layout = gtk_widget_create_pango_layout (widget, tmp);
@@ -207,7 +207,7 @@ hildon_bread_crumb_trail_size_request (GtkWidget *widget,
 
 static void
 hildon_bread_crumb_trail_size_allocate (GtkWidget *widget,
-					GtkAllocation *allocation)
+                                        GtkAllocation *allocation)
 {
   GtkRequisition req;
   gint natural_width, natural_height;
@@ -257,51 +257,51 @@ hildon_bread_crumb_trail_size_allocate (GtkWidget *widget,
 
       /* Does the widget fit with its natural size? */
       hildon_bread_crumb_get_natural_size (item,
-					   &natural_width,
-					   &natural_height);
+                                           &natural_width,
+                                           &natural_height);
 
       gtk_widget_style_get (widget,
-			    "maximum-width", &maximum_width,
-			    NULL);
+                            "maximum-width", &maximum_width,
+                            NULL);
 
       desired_width = MIN (natural_width, maximum_width);
 
       if (width + desired_width <= allocation_width)
-	{
-	  /* Yes, it does */
-	  first_show = p;
-	  first_hide = p->next;
-	  width += desired_width;
-	  g_debug ("It fits %s at x %d, width %d", hildon_bread_crumb_get_text (item),
-		   child_allocation.x, desired_width);
-	}
+        {
+          /* Yes, it does */
+          first_show = p;
+          first_hide = p->next;
+          width += desired_width;
+          g_debug ("It fits %s at x %d, width %d", hildon_bread_crumb_get_text (item),
+                   child_allocation.x, desired_width);
+        }
       else
-	{
-	  /* No, it doesn't. Allocate as much as possible
-	     and stop */
-	  child_allocation.width = allocation_width - width;
+        {
+          /* No, it doesn't. Allocate as much as possible
+             and stop */
+          child_allocation.width = allocation_width - width;
 
-	  gtk_widget_size_request (child, &req);
+          gtk_widget_size_request (child, &req);
 
-	  if (child_allocation.width > req.width)
-	    {
-	      first_hide = p->next;
-	      gtk_widget_size_allocate (child, &child_allocation);
-	      gtk_widget_show (child);
-	      gtk_widget_set_child_visible (child, TRUE);
-	      g_debug ("It doesn't. Allocated %s at x: %d, width %d, size_req width is %d",
-		       hildon_bread_crumb_get_text (item), 
-		       child_allocation.x, child_allocation.width,
-		       req.width);
-	      child_allocation.x += child_allocation.width;
-	    }
-	  else
-	    {
-	      extra_space = child_allocation.width;
-	    }
+          if (child_allocation.width > req.width)
+            {
+              first_hide = p->next;
+              gtk_widget_size_allocate (child, &child_allocation);
+              gtk_widget_show (child);
+              gtk_widget_set_child_visible (child, TRUE);
+              g_debug ("It doesn't. Allocated %s at x: %d, width %d, size_req width is %d",
+                       hildon_bread_crumb_get_text (item), 
+                       child_allocation.x, child_allocation.width,
+                       req.width);
+              child_allocation.x += child_allocation.width;
+            }
+          else
+            {
+              extra_space = child_allocation.width;
+            }
 
-	  break;
-	}
+          break;
+        }
     }
 
   /* Not enough items to fill the breadcrumb? */
@@ -318,28 +318,28 @@ hildon_bread_crumb_trail_size_allocate (GtkWidget *widget,
 
       /* Does the widget fit with its natural size? */
       hildon_bread_crumb_get_natural_size (item,
-					   &natural_width,
-					   &natural_height);
+                                           &natural_width,
+                                           &natural_height);
 
       gtk_widget_style_get (widget,
-			    "maximum-width", &maximum_width,
-			    NULL);
+                            "maximum-width", &maximum_width,
+                            NULL);
 
       desired_width = MIN (natural_width, maximum_width);
 
       /* If I'm the last and there's extra space, use it */
       if (p->prev == NULL && extra_space != 0)
-	{
-	  desired_width += extra_space;
-	}
+        {
+          desired_width += extra_space;
+        }
 
       child_allocation.width = desired_width;
       gtk_widget_size_allocate (child, &child_allocation);
       gtk_widget_show (child);
       gtk_widget_set_child_visible (child, TRUE);
       g_debug ("Natural Size. Allocated %s at x: %d, width %d",
-	       hildon_bread_crumb_get_text (item), 
-	       child_allocation.x, child_allocation.width);
+               hildon_bread_crumb_get_text (item), 
+               child_allocation.x, child_allocation.width);
       child_allocation.x += child_allocation.width;
     }
 
@@ -362,7 +362,7 @@ get_bread_crumb_id (HildonBreadCrumb *item)
 
 static void
 crumb_clicked_cb (GtkWidget *button,
-		  HildonBreadCrumbTrail *bct)
+                  HildonBreadCrumbTrail *bct)
 {
   GtkWidget *child;
   HildonBreadCrumbTrailPrivate *priv;
@@ -381,21 +381,21 @@ crumb_clicked_cb (GtkWidget *button,
 
   /* We need the item for the ID */
   g_signal_emit (bct, bread_crumb_trail_signals[CRUMB_CLICKED], 0,
-		 get_bread_crumb_id (HILDON_BREAD_CRUMB (child)));
+                 get_bread_crumb_id (HILDON_BREAD_CRUMB (child)));
 }
 
 static void
 hildon_bread_crumb_trail_add (GtkContainer *container,
-			      GtkWidget *widget)
+                              GtkWidget *widget)
 {
   gtk_widget_set_parent (widget, GTK_WIDGET (container));
 }
 
 static void
 hildon_bread_crumb_trail_forall (GtkContainer *container,
-				 gboolean include_internals,
-				 GtkCallback callback,
-				 gpointer callback_data)
+                                 gboolean include_internals,
+                                 GtkCallback callback,
+                                 gpointer callback_data)
 {
   g_return_if_fail (callback != NULL);
   g_return_if_fail (HILDON_IS_BREAD_CRUMB_TRAIL (container));
@@ -422,7 +422,7 @@ hildon_bread_crumb_trail_forall (GtkContainer *container,
 
 static void
 hildon_bread_crumb_trail_remove (GtkContainer *container,
-				 GtkWidget *widget)
+                                 GtkWidget *widget)
 {
   GList *p;
   HildonBreadCrumbTrailPrivate *priv;
@@ -435,21 +435,21 @@ hildon_bread_crumb_trail_remove (GtkContainer *container,
   while (p)
     {
       if (widget == GTK_WIDGET (p->data))
-	{
-	  g_signal_handlers_disconnect_by_func (widget, G_CALLBACK (crumb_clicked_cb),
-						HILDON_BREAD_CRUMB_TRAIL (container));
-	  gtk_widget_unparent (widget);
+        {
+          g_signal_handlers_disconnect_by_func (widget, G_CALLBACK (crumb_clicked_cb),
+                                                HILDON_BREAD_CRUMB_TRAIL (container));
+          gtk_widget_unparent (widget);
 
-	  priv->item_list = g_list_remove_link (priv->item_list, p);
-	  g_list_free (p);
+          priv->item_list = g_list_remove_link (priv->item_list, p);
+          g_list_free (p);
 
-	  hildon_bread_crumb_trail_update_back_button_sensitivity (HILDON_BREAD_CRUMB_TRAIL (container));
+          hildon_bread_crumb_trail_update_back_button_sensitivity (HILDON_BREAD_CRUMB_TRAIL (container));
 
-	  if (was_visible)
-	    {
-	      gtk_widget_queue_resize (GTK_WIDGET (container));
-	    }
-	}
+          if (was_visible)
+            {
+              gtk_widget_queue_resize (GTK_WIDGET (container));
+            }
+        }
 
       p = p->next;
     }
@@ -488,8 +488,8 @@ create_back_button (HildonBreadCrumbTrail *bct)
 
   arrow = gtk_arrow_new (GTK_ARROW_LEFT, GTK_SHADOW_NONE);
   gtk_widget_style_get (GTK_WIDGET (bct),
-			"arrow-size", &arrow_size,
-			NULL);
+                        "arrow-size", &arrow_size,
+                        NULL);
   gtk_widget_set_size_request (arrow, arrow_size, arrow_size);
 
   gtk_container_add (GTK_CONTAINER (button), arrow);
@@ -514,13 +514,13 @@ hildon_bread_crumb_trail_init (HildonBreadCrumbTrail *bct)
 
   priv->back_button = create_back_button (bct);
   g_signal_connect (priv->back_button, "clicked",
-		    G_CALLBACK (hildon_bread_crumb_trail_scroll_back),
-		    bct);
+                    G_CALLBACK (hildon_bread_crumb_trail_scroll_back),
+                    bct);
 }
 
 static void
 hildon_bread_crumb_trail_scroll_back (GtkWidget *button,
-				      HildonBreadCrumbTrail *bct)
+                                      HildonBreadCrumbTrail *bct)
 {
   HildonBreadCrumb *item;
 
@@ -529,14 +529,14 @@ hildon_bread_crumb_trail_scroll_back (GtkWidget *button,
   item = HILDON_BREAD_CRUMB (bct->priv->item_list->data);
 
   g_signal_emit (bct, bread_crumb_trail_signals[CRUMB_CLICKED], 0,
-		 get_bread_crumb_id (item));
+                 get_bread_crumb_id (item));
 }
 
 static GtkWidget*
 create_crumb_button (HildonBreadCrumbTrail *bct,
-		     const gchar *text,
-		     gpointer id,
-		     GDestroyNotify destroy)
+                     const gchar *text,
+                     gpointer id,
+                     GDestroyNotify destroy)
 {
   GtkWidget *item;
 
@@ -546,7 +546,7 @@ create_crumb_button (HildonBreadCrumbTrail *bct,
     g_object_set_data_full (G_OBJECT (item), "bread-crumb-id", id, destroy);
 
   g_signal_connect (G_OBJECT (item), "clicked",
-		    G_CALLBACK (crumb_clicked_cb), bct);
+                    G_CALLBACK (crumb_clicked_cb), bct);
 
   return item;
 }
@@ -583,9 +583,9 @@ hildon_bread_crumb_trail_new (void)
 
 void
 hildon_bread_crumb_trail_push (HildonBreadCrumbTrail *bct,
-			       HildonBreadCrumb *item,
-			       gpointer id,
-			       GDestroyNotify destroy)
+                               HildonBreadCrumb *item,
+                               gpointer id,
+                               GDestroyNotify destroy)
 {
   GtkWidget *widget;
   HildonBreadCrumbTrailPrivate *priv;;
@@ -604,7 +604,7 @@ hildon_bread_crumb_trail_push (HildonBreadCrumbTrail *bct,
     g_object_set_data_full (G_OBJECT (item), "bread-crumb-id", id, destroy);
 
   g_signal_connect (G_OBJECT (item), "clicked",
-		    G_CALLBACK (crumb_clicked_cb), bct);
+                    G_CALLBACK (crumb_clicked_cb), bct);
 
   priv->item_list = g_list_prepend (priv->item_list, widget);
 
@@ -623,9 +623,9 @@ hildon_bread_crumb_trail_push (HildonBreadCrumbTrail *bct,
 
 void
 hildon_bread_crumb_trail_push_text (HildonBreadCrumbTrail *bct,
-				    const gchar *text,
-				    gpointer id,
-				    GDestroyNotify destroy)
+                                    const gchar *text,
+                                    gpointer id,
+                                    GDestroyNotify destroy)
 {
   GtkWidget *widget;
   HildonBreadCrumbTrailPrivate *priv;
