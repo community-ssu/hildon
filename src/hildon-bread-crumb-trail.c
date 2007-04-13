@@ -588,10 +588,12 @@ hildon_bread_crumb_trail_push (HildonBreadCrumbTrail *bct,
 			       GDestroyNotify destroy)
 {
   GtkWidget *widget;
-  HildonBreadCrumbTrailPrivate *priv = bct->priv;
+  HildonBreadCrumbTrailPrivate *priv;;
 
   g_return_if_fail (HILDON_IS_BREAD_CRUMB_TRAIL (bct));
   g_return_if_fail (HILDON_IS_BREAD_CRUMB (item));
+
+  priv = bct->priv;
 
   widget = GTK_WIDGET (item);
 
@@ -626,10 +628,12 @@ hildon_bread_crumb_trail_push_text (HildonBreadCrumbTrail *bct,
 				    GDestroyNotify destroy)
 {
   GtkWidget *widget;
-  HildonBreadCrumbTrailPrivate *priv = bct->priv;
+  HildonBreadCrumbTrailPrivate *priv;
 
   g_return_if_fail (HILDON_IS_BREAD_CRUMB_TRAIL (bct));
   g_return_if_fail (text != NULL);
+
+  priv = bct->priv;
 
   widget = create_crumb_button (bct, text, id, destroy);
   gtk_container_add (GTK_CONTAINER (bct), widget);
@@ -679,7 +683,11 @@ hildon_bread_crumb_trail_pop (HildonBreadCrumbTrail *bct)
 void
 hildon_bread_crumb_trail_clear (HildonBreadCrumbTrail *bct)
 {
-  HildonBreadCrumbTrailPrivate *priv = bct->priv;
+  HildonBreadCrumbTrailPrivate *priv;
+
+  g_return_if_fail (HILDON_IS_BREAD_CRUMB_TRAIL (bct));
+
+  priv = bct->priv;
 
   while (priv->item_list)
     {
