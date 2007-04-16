@@ -1,9 +1,9 @@
 2007-04-13  Xan Lopez  <xan.lopez@nokia.com>
 
-        * src/hildon-bread-crumb-trail.c:
-        * src/hildon-bread-crumb-trail.h:
-        * src/hildon-bread-crumb.c:
-        * src/hildon-bread-crumb.h:
+	* src/hildon-bread-crumb-trail.c:
+	* src/hildon-bread-crumb-trail.h:
+	* src/hildon-bread-crumb.c:
+	* src/hildon-bread-crumb.h:
 
 	Untabify.
 	
@@ -30,7 +30,7 @@
 
 	New HildonBreadCrumbTrail widget.
 
-2007-04-02  Lucas Rocha  <lucas.rocha@nokia.com>
+2007-04-02  Lucas Rocha	 <lucas.rocha@nokia.com>
 
 	* src/hildon-range-editor.c (hildon_range_editor_init),
 	src/hildon-seekbar.c (hildon_seekbar_get_fraction,
