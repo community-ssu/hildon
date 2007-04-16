@@ -234,7 +234,7 @@ hildon_bread_crumb_get_natural_size (HildonBreadCrumb *item,
                                      gint *natural_width,
                                      gint *natural_height)
 {
-  GtkRequisition req;
+  GtkRequisition widget_req, label_req;
   gint width, height;
   PangoLayout *layout;
   HildonBreadCrumbPrivate *priv;
@@ -243,28 +243,29 @@ hildon_bread_crumb_get_natural_size (HildonBreadCrumb *item,
 
   priv = item->priv;
 
-  gtk_widget_size_request (GTK_WIDGET (item), &req);
-  if (natural_width)
-    *natural_width = req.width;
+  gtk_widget_size_request (GTK_WIDGET (item), &widget_req);
 
-  if (natural_height)
-    *natural_height = req.height;
-  /* Substract the size request of the label */
-  gtk_widget_size_request (priv->label, &req);
-  if (natural_width)
-    *natural_width -= req.width;
   layout = gtk_widget_create_pango_layout (priv->label, priv->text);
   pango_layout_get_size (layout, &width, &height);
   g_object_unref (layout);
 
   if (natural_width)
-    *natural_width += PANGO_PIXELS (width);
-  /* Border width */
-  if (natural_width)
-    *natural_width += GTK_CONTAINER (item)->border_width * 2;
+    {
+      *natural_width = widget_req.width;
+      /* Substract the size request of the label */
+      gtk_widget_size_request (priv->label, &label_req);
+      *natural_width -= label_req.width;
+
+      /* Add the "natural" width for the label */
+      *natural_width += PANGO_PIXELS (width);
+      *natural_width += GTK_CONTAINER (item)->border_width * 2;
+    }
 
   if (natural_height)
-    *natural_height += GTK_CONTAINER (item)->border_width * 2;
+    {
+      *natural_height = widget_req.height;
+      *natural_height += GTK_CONTAINER (item)->border_width * 2;
+    }
 }
 
 GtkWidget*

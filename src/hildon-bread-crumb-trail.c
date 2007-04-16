@@ -31,7 +31,6 @@ struct _HildonBreadCrumbTrailPrivate
 {
   GtkWidget *back_button;
   GList *item_list;
-  gchar *path_separator;
 };
 
 /* Signals */
@@ -145,7 +144,6 @@ hildon_bread_crumb_trail_finalize (GObject *object)
 {
   HildonBreadCrumbTrailPrivate *priv = HILDON_BREAD_CRUMB_TRAIL (object)->priv;
 
-  g_free (priv->path_separator);
   g_list_free (priv->item_list);
 
   G_OBJECT_CLASS (hildon_bread_crumb_trail_parent_class)->finalize (object);
@@ -193,7 +191,10 @@ hildon_bread_crumb_trail_size_request (GtkWidget *widget,
   /* Button requisitions */
   for (p = priv->item_list; p; p = p->next)
     {
-      gtk_widget_size_request (GTK_WIDGET (p->data), &child_requisition);
+      GtkWidget *child = GTK_WIDGET (p->data);
+
+      if (GTK_WIDGET_VISIBLE (child))
+        gtk_widget_size_request (child, &child_requisition);
     }
 
   /* Border width */
@@ -229,8 +230,8 @@ hildon_bread_crumb_trail_size_allocate (GtkWidget *widget,
   allocation_width = allocation->width - 2 * border_width;
 
   /* Allocate the back button */
-  child_allocation.x = allocation->x;
-  child_allocation.y = allocation->y;
+  child_allocation.x = allocation->x + border_width;
+  child_allocation.y = allocation->y + border_width;
   gtk_widget_get_child_requisition (priv->back_button, &child_requisition);
   child_allocation.width = child_requisition.width;
   child_allocation.height = child_requisition.height;
@@ -250,6 +251,10 @@ hildon_bread_crumb_trail_size_allocate (GtkWidget *widget,
   first_hide = NULL; 
   extra_space = 0;
 
+  gtk_widget_style_get (widget,
+                        "maximum-width", &maximum_width,
+                        NULL);
+
   for (p = priv->item_list; p; p = p->next)
     {
       item = HILDON_BREAD_CRUMB (p->data);
@@ -259,10 +264,6 @@ hildon_bread_crumb_trail_size_allocate (GtkWidget *widget,
       hildon_bread_crumb_get_natural_size (item,
                                            &natural_width,
                                            &natural_height);
-
-      gtk_widget_style_get (widget,
-                            "maximum-width", &maximum_width,
-                            NULL);
 
       desired_width = MIN (natural_width, maximum_width);
 
@@ -379,7 +380,6 @@ crumb_clicked_cb (GtkWidget *button,
       child = GTK_WIDGET (priv->item_list->data);
     }
 
-  /* We need the item for the ID */
   g_signal_emit (bct, bread_crumb_trail_signals[CRUMB_CLICKED], 0,
                  get_bread_crumb_id (HILDON_BREAD_CRUMB (child)));
 }

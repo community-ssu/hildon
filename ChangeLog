@@ -1,3 +1,10 @@
+2007-04-16  Xan Lopez  <xan.lopez@nokia.com>
+
+	* src/hildon-bread-crumb.c:
+	* src/hildon-bread-crumb-trail.c:
+
+	Some cleanups.
+
 2007-04-16  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
 	[1.0.1 release]
