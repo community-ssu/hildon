@@ -1,5 +1,10 @@
 2007-04-16  Xan Lopez  <xan.lopez@nokia.com>
 
+	* src/hildon-bread-crumb.c (hildon_bread_crumb_get_natural_size):
+	don't leak the pango layout.
+
+2007-04-16  Xan Lopez  <xan.lopez@nokia.com>
+
 	* src/hildon.h:
 	* examples/hildon-bread-crumb-trail-example.c:
 
