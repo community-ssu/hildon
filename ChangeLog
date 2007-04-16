@@ -1,3 +1,11 @@
+2007-04-16  Michael Dominic K.  <mdk@mdk.am> 
+
+	* debian/changelog: Removing the bug-fixed entries that were actually
+	resolved as WONTFIX.
+
+	* src/hildon-date-editor.c: Removing a redundant check. Fixes
+	NB#54182.
+
 2007-04-13  Xan Lopez  <xan.lopez@nokia.com>
 
 	* src/hildon-bread-crumb-trail.c:

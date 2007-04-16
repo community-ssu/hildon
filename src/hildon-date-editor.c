@@ -583,8 +583,6 @@ hildon_date_editor_set_property                 (GObject *object,
 
         case PROP_MIN_YEAR:
             val = g_value_get_uint (value);
-            g_return_if_fail (val > priv->max_year);
-            priv->min_year = val;
             /* Clamp current year */
             if (hildon_date_editor_get_year (editor) < priv->min_year)
                 hildon_date_editor_set_year (editor, priv->min_year);
@@ -592,7 +590,6 @@ hildon_date_editor_set_property                 (GObject *object,
 
         case PROP_MAX_YEAR:
             val = g_value_get_uint (value);
-            g_return_if_fail (val < priv->min_year);
             priv->max_year = val;
             /* Clamp current year */
             if (hildon_date_editor_get_year (editor) > priv->max_year)

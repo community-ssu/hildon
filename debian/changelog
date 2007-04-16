@@ -8,22 +8,16 @@ libhildon (1.0.0-1) stable; urgency=low
   * License change to LGPL version 2.1 or later
   * Adding examples for many widgets
 
-  * Fixes: NB#47891 hildon_program_get_is_topmost doesn't work correctly
   * Fixes: NB#49043 Build fails due to duplicate definition of INVALID_CHAR
   * Fixes: NB#49810 Errors in hildon-libs
-  * Fixes: NB#28070 hildon banners do not truncate content
   * Fixes: NB#47751 Tap and hold of Home key minimize applications but does not close the application menu
-  * Fixes: NB#49292 hildon-cancel-note needs to grant access to the label inside the note
-  * Fixes: NB#49586 Memory leak in hildon_vvolumebar_new routine
   * Fixes: NB#46434 HildonWindow: inconsistent memory management
-  * Fixes: NB#41012 hiding/showing toolbar in HildonWindow is not behaving in a consistent way
   * Fixes: NB#30265 Warning from hildonlibs build
   * Fixes: NB#47751 Tap and hold of Home key minimize applications but does not close the application menu
   * Fixes: NB#47989 Not possible to set empty title for HildonWindow
   * Fixes: NB#50496 While quickly tapping the same Edit button, the message is displayed differently.
   * Fixes: NB#51736 Enhancement in hildon_caption_set_label_text()
   * Fixes: NB#50854 application menu closes when mouse released
-  * Fixes: NB#52928 Application crashes when the hildon_helper_set_insensitive_message called more than 3 times on the same widget
   
  -- Michael Dominic Kostrzewa <michael.kostrzewa@nokia.com>  Thu, 29 Mar 2007 16:36:27 +0300
 
