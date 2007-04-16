@@ -5,7 +5,7 @@
 
 	Fix example.
 
-2007-04-16  Michael Dominic K.  <mdk@mdk.am> 
+2007-04-16  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
 	* debian/changelog: Removing the bug-fixed entries that were actually
 	resolved as WONTFIX.
