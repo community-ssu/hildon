@@ -1,3 +1,12 @@
+libhildon (1.0.1-1) stable; urgency=low
+
+  * New breadcrumb trial widget.
+  * Fingerable scrollbar API.
+
+  * Fixes: NB#54182 HildonDateEditor min/max properties cannot be set
+
+ -- Michael Dominic Kostrzewa <michael.kostrzewa@nokia.com>  Mon, 16 Apr 2007 11:09:27 +0300
+
 libhildon (1.0.0-1) stable; urgency=low
 
   * Move to Gtk 2.10

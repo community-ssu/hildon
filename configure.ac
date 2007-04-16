@@ -1,4 +1,4 @@
-AC_INIT([Hildon gtk widgets], [1.0.0], [michael.kostrzewa@nokia.com], [hildon])
+AC_INIT([Hildon gtk widgets], [1.0.1], [michael.kostrzewa@nokia.com], [hildon])
 AC_CANONICAL_SYSTEM
 
 AM_CONFIG_HEADER(config.h)
@@ -10,7 +10,18 @@ AM_MAINTAINER_MODE
 AS_VERSION
 
 # set the libtool versioning
-AS_LIBTOOL(HILDON, 0, 0, 0)
+# Quick guide into libtool versioning:
+# 1. Start with version information of `0:0:0' for each libtool library.
+# 2. Update the version information only immediately before a public release of your software. 
+#    More frequent updates are unnecessary, and only guarantee that the current interface number 
+#    gets larger faster.
+# 3. If the library source code has changed at all since the last update, then increment revision 
+#    (`c:r:a' becomes `c:r+1:a').
+# 4. If any interfaces have been added, removed, or changed since the last update, 
+#    increment current, and set revision to 0.
+# 5. If any interfaces have been added since the last public release, then increment age.
+# 6. If any interfaces have been removed since the last public release, then set age to 0.  
+AS_LIBTOOL(HILDON, 1, 0, 1)
 AM_INIT_AUTOMAKE
 
 AC_PROG_CC
