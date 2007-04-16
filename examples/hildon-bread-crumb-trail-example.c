@@ -23,15 +23,11 @@
  *
  */
 
-#include <gtk/gtk.h>
-#include "hildon-bread-crumb-trail.h"
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <unistd.h>
 
-#if 1
-#include <hildon/hildon.h>
-#endif
+#include "hildon.h"
 
 GtkWidget *treeview;
 gchar *current_root;
