@@ -51,6 +51,10 @@ struct _HildonBreadCrumb
 struct _HildonBreadCrumbClass
 {
   GtkButtonClass parent_class;
+
+  /* vfuncs */
+  void (* get_natural_size) (HildonBreadCrumb *bc,
+                             gint *natural_width, gint *natural_height);
 };
 
 GType hildon_bread_crumb_get_type (void) G_GNUC_CONST;

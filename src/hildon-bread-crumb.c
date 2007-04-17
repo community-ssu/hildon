@@ -29,7 +29,6 @@
 
 struct _HildonBreadCrumbPrivate
 {
-  GtkWidget *icon;
   GtkWidget *label;
   GtkWidget *arrow;
   gchar *text;
@@ -62,6 +61,8 @@ static void hildon_bread_crumb_set_property (GObject *object, guint prop_id,
                                              const GValue *value, GParamSpec *pspec);
 static void hildon_bread_crumb_get_property (GObject *object, guint prop_id,
                                              GValue *value, GParamSpec *pspec);
+static void hildon_bread_crumb_real_get_natural_size (HildonBreadCrumb *bread_crumb,
+                                                      gint *width, gint *height);
 
 G_DEFINE_TYPE (HildonBreadCrumb, hildon_bread_crumb, GTK_TYPE_BUTTON)
 
@@ -69,6 +70,8 @@ static void
 hildon_bread_crumb_class_init (HildonBreadCrumbClass *klass)
 {
   GObjectClass *gobject_class = (GObjectClass*)klass;
+
+  klass->get_natural_size = hildon_bread_crumb_real_get_natural_size;
 
   /* GObject signals */
   gobject_class->finalize = hildon_bread_crumb_finalize;
@@ -229,10 +232,10 @@ hildon_bread_crumb_set_show_separator (HildonBreadCrumb *item,
   g_object_notify (G_OBJECT (item), "show-separator");
 }
 
-void
-hildon_bread_crumb_get_natural_size (HildonBreadCrumb *item,
-                                     gint *natural_width,
-                                     gint *natural_height)
+static void
+hildon_bread_crumb_real_get_natural_size (HildonBreadCrumb *item,
+                                          gint *natural_width,
+                                          gint *natural_height)
 {
   GtkRequisition widget_req, label_req;
   gint width, height;
@@ -266,6 +269,23 @@ hildon_bread_crumb_get_natural_size (HildonBreadCrumb *item,
       *natural_height = widget_req.height;
       *natural_height += GTK_CONTAINER (item)->border_width * 2;
     }
+}
+
+void
+hildon_bread_crumb_get_natural_size (HildonBreadCrumb *bread_crumb,
+                                     gint *natural_width,
+                                     gint *natural_height)
+{
+  HildonBreadCrumbClass *klass;
+
+  g_return_if_fail (HILDON_IS_BREAD_CRUMB (bread_crumb));
+
+  klass = HILDON_BREAD_CRUMB_GET_CLASS (bread_crumb);
+
+  if (klass->get_natural_size)
+    return (* klass->get_natural_size) (bread_crumb,
+                                        natural_width,
+                                        natural_height);
 }
 
 GtkWidget*

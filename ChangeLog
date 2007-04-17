@@ -1,3 +1,10 @@
+2007-04-17  Xan Lopez  <xan.lopez@nokia.com>
+
+	* src/hildon-bread-crumb.c:
+	* src/hildon-bread-crumb.h:
+
+	Make the get_natural_size function a vfunc.
+
 2007-04-16  Xan Lopez  <xan.lopez@nokia.com>
 
 	* src/hildon-bread-crumb.c:
