@@ -130,6 +130,9 @@ hildon_banner_constructor                       (GType type,
                                                  guint n_construct_params,
                                                  GObjectConstructParam *construct_params);
 
+static void
+hildon_banner_finalize				(GObject *object);
+
 static gboolean 
 hildon_banner_map_event                         (GtkWidget *widget, 
                                                  GdkEventAny *event);
@@ -396,12 +399,17 @@ hildon_banner_set_property                      (GObject *object,
 
         case PROP_PARENT_WINDOW:
             window = g_value_get_object (value);         
+	    if (priv->parent) {
+		    g_object_remove_weak_pointer(G_OBJECT (priv->parent), (gpointer *)&priv->parent);
+	    }
 
             gtk_window_set_transient_for (GTK_WINDOW (object), (GtkWindow *) window);
             priv->parent = (GtkWindow *) window;
 
-            if (window)
+            if (window) {
                 gtk_window_set_destroy_with_parent (GTK_WINDOW (object), TRUE);
+		g_object_add_weak_pointer(G_OBJECT (window), (gpointer *)&priv->parent);
+	    }
 
             break;
 
@@ -547,6 +555,18 @@ hildon_banner_constructor                       (GType type,
     return banner;
 }
 
+static void
+hildon_banner_finalize				(GObject *object)
+{
+    HildonBannerPrivate *priv = HILDON_BANNER_GET_PRIVATE (object);
+
+    if (priv->parent) {
+	g_object_remove_weak_pointer(G_OBJECT (priv->parent), (gpointer *)&priv->parent);
+    }
+
+    G_OBJECT_CLASS (parent_class)->finalize (object);
+}
+
 /* We start the timer for timed notifications after the window appears on screen */
 static gboolean 
 hildon_banner_map_event                         (GtkWidget *widget, 
@@ -650,6 +670,7 @@ hildon_banner_class_init                        (HildonBannerClass *klass)
 
     /* Override virtual methods */
     object_class->constructor = hildon_banner_constructor;
+    object_class->finalize = hildon_banner_finalize;
     object_class->set_property = hildon_banner_set_property;
     object_class->get_property = hildon_banner_get_property;
     GTK_OBJECT_CLASS (klass)->destroy = hildon_banner_destroy;

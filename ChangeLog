@@ -1,3 +1,8 @@
+2007-04-19  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
+	* src/hildon-banner.c: Fixing a problem with timed banners having
+	their parrent destroyed before they are.
+
 2007-04-17  Xan Lopez  <xan.lopez@nokia.com>
 
 	* src/hildon-bread-crumb.c:
