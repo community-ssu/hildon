@@ -1,5 +1,9 @@
 2007-04-19  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
+	* debian/rules: Fixing the shlibs.
+
+2007-04-19  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
 	* src/hildon-banner.c: Fixing a problem with timed banners having
 	their parrent destroyed before they are.
 

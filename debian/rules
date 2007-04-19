@@ -122,7 +122,7 @@ binary-arch: build install
 	dh_strip --dbg-package="libhildon1"
 	dh_compress
 	dh_fixperms
-	dh_makeshlibs -V
+	dh_makeshlibs -V "libhildon1 (>= 1.0.1)" 
 	dh_installdeb
 	dh_shlibdeps
 	dh_gencontrol
