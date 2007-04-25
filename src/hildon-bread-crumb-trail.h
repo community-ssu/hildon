@@ -23,6 +23,8 @@
  *
  */
 
+#ifdef ENABLE_UNSTABLE_API
+
 #ifndef __HILDON_BREAD_CRUMB_TRAIL_H__
 #define __HILDON_BREAD_CRUMB_TRAIL_H__
 
@@ -75,3 +77,5 @@ void hildon_bread_crumb_trail_clear (HildonBreadCrumbTrail *bct);
 G_END_DECLS
 
 #endif
+
+#endif /* ENABLE_UNSTABLE_API */

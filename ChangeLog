@@ -1,4 +1,12 @@
 2007-04-25  Xan Lopez  <xan.lopez@nokia.com>
+
+	* src/hildon-bread-crumb-trail.h:
+	* src/hildon-bread-crumb.h:
+
+	Guard with ENABLE_UNSTABLE_API. To use the bread crumb you'll need
+	to define ENABLE_UNSTABLE_API in the code that includes these headers.
+	
+2007-04-25  Xan Lopez  <xan.lopez@nokia.com>
 	
 	* examples/hildon-bread-crumb-trail-example.c:
 	* src/Makefile.am:
