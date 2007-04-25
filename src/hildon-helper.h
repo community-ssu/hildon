@@ -22,6 +22,8 @@
  *
  */
 
+#ifdef                                          ENABLE_UNSTABLE_API
+
 #ifndef                                         __HILDON_HELPER_H__
 #define                                         __HILDON_HELPER_H__
 
@@ -59,4 +61,6 @@ hildon_helper_set_thumb_scrollbar               (GtkScrolledWindow *win,
 
 G_END_DECLS
 
-#endif                                          /* HILDON_HELPER_H */
+#endif                                          /* __HILDON_HELPER_H__ */
+
+#endif                                          /* ENABLE_UNSTABLE_API */
