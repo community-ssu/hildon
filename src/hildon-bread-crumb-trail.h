@@ -28,11 +28,12 @@
 
 #include <gtk/gtk.h>
 #include "hildon-bread-crumb.h"
+#include "hildon-bread-crumb-widget.h"
 
 G_BEGIN_DECLS
 
-typedef struct _HildonBreadCrumbTrail   HildonBreadCrumbTrail;
-typedef struct _HildonBreadCrumbTrailClass      HildonBreadCrumbTrailClass;
+typedef struct _HildonBreadCrumbTrail        HildonBreadCrumbTrail;
+typedef struct _HildonBreadCrumbTrailClass   HildonBreadCrumbTrailClass;
 typedef struct _HildonBreadCrumbTrailPrivate HildonBreadCrumbTrailPrivate;
 
 #define HILDON_TYPE_BREAD_CRUMB_TRAIL                 (hildon_bread_crumb_trail_get_type ())
@@ -60,9 +61,14 @@ struct _HildonBreadCrumbTrailClass
 GType hildon_bread_crumb_trail_get_type (void) G_GNUC_CONST;
 GtkWidget *hildon_bread_crumb_trail_new (void);
 void hildon_bread_crumb_trail_push (HildonBreadCrumbTrail *bct, HildonBreadCrumb *item,
-                              gpointer id, GDestroyNotify  notify);
+                                    gpointer id, GDestroyNotify  notify);
 void hildon_bread_crumb_trail_push_text (HildonBreadCrumbTrail *bct, const gchar *text,
-                                   gpointer id, GDestroyNotify notify);
+                                         gpointer id, GDestroyNotify notify);
+void hildon_bread_crumb_trail_push_icon (HildonBreadCrumbTrail *bct,
+                                         const gchar *text,
+                                         GtkWidget *icon,
+                                         gpointer id,
+                                         GDestroyNotify destroy);
 void hildon_bread_crumb_trail_pop (HildonBreadCrumbTrail *bct);
 void hildon_bread_crumb_trail_clear (HildonBreadCrumbTrail *bct);
 

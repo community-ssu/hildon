@@ -26,45 +26,34 @@
 #ifndef __HILDON_BREAD_CRUMB_H__
 #define __HILDON_BREAD_CRUMB_H__
 
-#include <gtk/gtk.h>
+#include <gtk/gtkwidget.h>
 
 G_BEGIN_DECLS
 
 typedef struct _HildonBreadCrumb        HildonBreadCrumb;
-typedef struct _HildonBreadCrumbClass   HildonBreadCrumbClass;
-typedef struct _HildonBreadCrumbPrivate HildonBreadCrumbPrivate;
+typedef struct _HildonBreadCrumbIface   HildonBreadCrumbIface;
 
-#define HILDON_TYPE_BREAD_CRUMB                 (hildon_bread_crumb_get_type ())
-#define HILDON_BREAD_CRUMB(obj)                 (G_TYPE_CHECK_INSTANCE_CAST ((obj), HILDON_TYPE_BREAD_CRUMB, HildonBreadCrumb))
-#define HILDON_BREAD_CRUMB_CLASS(klass)         (G_TYPE_CHECK_CLASS_CAST ((klass), HILDON_TYPE_BREAD_CRUMB, HildonBreadCrumbClass))
-#define HILDON_IS_BREAD_CRUMB(obj)              (G_TYPE_CHECK_INSTANCE_TYPE ((obj), HILDON_TYPE_BREAD_CRUMB))
-#define HILDON_IS_BREAD_CRUMB_CLASS(klass)      (G_TYPE_CHECK_CLASS_TYPE ((klass), HILDON_TYPE_BREAD_CRUMB))
-#define HILDON_BREAD_CRUMB_GET_CLASS(obj)       (G_TYPE_INSTANCE_GET_CLASS ((obj), HILDON_TYPE_BREAD_CRUMB, HildonBreadCrumbClass))
+#define HILDON_TYPE_BREAD_CRUMB           (hildon_bread_crumb_get_type ())
+#define HILDON_BREAD_CRUMB(obj)           (G_TYPE_CHECK_INSTANCE_CAST ((obj), HILDON_TYPE_BREAD_CRUMB, HildonBreadCrumb))
+#define HILDON_BREAD_CRUMB_CLASS(obj)     (G_TYPE_CHECK_CLASS_CAST ((obj), HILDON_TYPE_BREAD_CRUMB, HildonBreadCrumbIface))
+#define HILDON_IS_BREAD_CRUMB(obj)        (G_TYPE_CHECK_INSTANCE_TYPE ((obj), HILDON_TYPE_BREAD_CRUMB))
+#define HILDON_BREAD_CRUMB_GET_IFACE(obj) (G_TYPE_INSTANCE_GET_INTERFACE ((obj), HILDON_TYPE_BREAD_CRUMB, HildonBreadCrumbIface))
 
-struct _HildonBreadCrumb
+struct _HildonBreadCrumbIface
 {
-  GtkButton parent;
+  GTypeInterface g_iface;
 
-  HildonBreadCrumbPrivate *priv;
-};
-
-struct _HildonBreadCrumbClass
-{
-  GtkButtonClass parent_class;
-
-  /* vfuncs */
-  void (* get_natural_size) (HildonBreadCrumb *bc,
+  /* virtual table */
+  void (* get_natural_size) (HildonBreadCrumb *bread_crumb,
                              gint *natural_width, gint *natural_height);
+  /* signals */
+  void (* crumb_activated) (HildonBreadCrumb *bread_crumb);
 };
 
 GType hildon_bread_crumb_get_type (void) G_GNUC_CONST;
-GtkWidget *hildon_bread_crumb_new (const gchar* text);
-void hildon_bread_crumb_set_text (HildonBreadCrumb *item, const gchar *text);
-const gchar* hildon_bread_crumb_get_text (HildonBreadCrumb *item);
-void hildon_bread_crumb_get_natural_size (HildonBreadCrumb *item,
+void hildon_bread_crumb_get_natural_size (HildonBreadCrumb *bread_crumb,
                                           gint *width, gint *height);
-void hildon_bread_crumb_set_show_separator (HildonBreadCrumb *item,
-                                            gboolean show_separator);
+void hildon_bread_crumb_activated (HildonBreadCrumb *bread_crumb);
 
 G_END_DECLS
 

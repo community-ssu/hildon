@@ -23,6 +23,21 @@
  *
  */
 
+
+/**
+ * SECTION:hildon-bread-crumb-trail
+ * @short_description: Widget used to represent a specific path in a hierarchical tree.
+ * Stability: Unstable
+ *
+ * HildonBreadCrumbTrail is a GTK widget used to represent the currently active path in
+ * some kind of hierarchical structure (file system, media library, structured document, etc).
+ *
+ * It has built-in support for text and icon bread crumbs, but the trail only requires a very
+ * simple interface to be implemented for its children and thus new types of items can be
+ * implemented if needed. See #HildonBreadCrumb for more details.
+ */
+
+#include "hildon-marshalers.h"
 #include "hildon-bread-crumb-trail.h"
 
 #define HILDON_BREAD_CRUMB_TRAIL_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), HILDON_TYPE_BREAD_CRUMB_TRAIL, HildonBreadCrumbTrailPrivate))
@@ -103,17 +118,6 @@ hildon_bread_crumb_trail_class_init (HildonBreadCrumbTrailClass *klass)
                                                              _BREAD_CRUMB_TRAIL_MINIMUM_WIDTH,
                                                              G_PARAM_READABLE));
 
-#define _BREAD_CRUMB_TRAIL_MAXIMUM_WIDTH 250
-
-  gtk_widget_class_install_style_property (widget_class,
-                                           g_param_spec_int ("maximum-width",
-                                                             "Maximum width",
-                                                             "The maximum width in characters the children widgets will be allocated",
-                                                             0,
-                                                             G_MAXINT,
-                                                             _BREAD_CRUMB_TRAIL_MAXIMUM_WIDTH,
-                                                             G_PARAM_READABLE));
-                                                             
 #define _BREAD_CRUMB_TRAIL_ARROW_SIZE 34
 
   gtk_widget_class_install_style_property (widget_class,
@@ -130,9 +134,9 @@ hildon_bread_crumb_trail_class_init (HildonBreadCrumbTrailClass *klass)
                   G_OBJECT_CLASS_TYPE (object_class),
                   G_SIGNAL_RUN_LAST,
                   G_STRUCT_OFFSET (HildonBreadCrumbTrailClass, crumb_clicked),
-                  NULL, NULL,
-                  g_cclosure_marshal_VOID__POINTER,
-                  G_TYPE_NONE, 1,
+                  g_signal_accumulator_true_handled, NULL,
+                  _hildon_marshal_BOOLEAN__POINTER,
+                  G_TYPE_BOOLEAN, 1,
                   G_TYPE_POINTER);
                   
   /* Private data */
@@ -168,7 +172,6 @@ hildon_bread_crumb_trail_size_request (GtkWidget *widget,
   requisition->width = 0;
 
   gtk_widget_size_request (priv->back_button, &child_requisition);
-  g_debug ("BACK BUTTON REQUEST %d %d", child_requisition.width, child_requisition.width);
   requisition->width = child_requisition.width;
   requisition->height = child_requisition.height;
 
@@ -219,8 +222,6 @@ hildon_bread_crumb_trail_size_allocate (GtkWidget *widget,
   gint allocation_width;
   gint border_width, width;
   gint extra_space;
-  gint maximum_width;
-  gint desired_width;
   GList *p, *first_show, *first_hide;
   HildonBreadCrumbTrailPrivate *priv = HILDON_BREAD_CRUMB_TRAIL (widget)->priv;
 
@@ -251,10 +252,6 @@ hildon_bread_crumb_trail_size_allocate (GtkWidget *widget,
   first_hide = NULL; 
   extra_space = 0;
 
-  gtk_widget_style_get (widget,
-                        "maximum-width", &maximum_width,
-                        NULL);
-
   for (p = priv->item_list; p; p = p->next)
     {
       item = HILDON_BREAD_CRUMB (p->data);
@@ -265,16 +262,12 @@ hildon_bread_crumb_trail_size_allocate (GtkWidget *widget,
                                            &natural_width,
                                            &natural_height);
 
-      desired_width = MIN (natural_width, maximum_width);
-
-      if (width + desired_width <= allocation_width)
+      if (width + natural_width <= allocation_width)
         {
           /* Yes, it does */
           first_show = p;
           first_hide = p->next;
-          width += desired_width;
-          g_debug ("It fits %s at x %d, width %d", hildon_bread_crumb_get_text (item),
-                   child_allocation.x, desired_width);
+          width += natural_width;
         }
       else
         {
@@ -290,10 +283,6 @@ hildon_bread_crumb_trail_size_allocate (GtkWidget *widget,
               gtk_widget_size_allocate (child, &child_allocation);
               gtk_widget_show (child);
               gtk_widget_set_child_visible (child, TRUE);
-              g_debug ("It doesn't. Allocated %s at x: %d, width %d, size_req width is %d",
-                       hildon_bread_crumb_get_text (item), 
-                       child_allocation.x, child_allocation.width,
-                       req.width);
               child_allocation.x += child_allocation.width;
             }
           else
@@ -322,25 +311,16 @@ hildon_bread_crumb_trail_size_allocate (GtkWidget *widget,
                                            &natural_width,
                                            &natural_height);
 
-      gtk_widget_style_get (widget,
-                            "maximum-width", &maximum_width,
-                            NULL);
-
-      desired_width = MIN (natural_width, maximum_width);
-
       /* If I'm the last and there's extra space, use it */
       if (p->prev == NULL && extra_space != 0)
         {
-          desired_width += extra_space;
+          natural_width += extra_space;
         }
 
-      child_allocation.width = desired_width;
+      child_allocation.width = natural_width;
       gtk_widget_size_allocate (child, &child_allocation);
       gtk_widget_show (child);
       gtk_widget_set_child_visible (child, TRUE);
-      g_debug ("Natural Size. Allocated %s at x: %d, width %d",
-               hildon_bread_crumb_get_text (item), 
-               child_allocation.x, child_allocation.width);
       child_allocation.x += child_allocation.width;
     }
 
@@ -349,7 +329,6 @@ hildon_bread_crumb_trail_size_allocate (GtkWidget *widget,
       item = HILDON_BREAD_CRUMB (p->data);
       child = GTK_WIDGET (item);
 
-      g_debug ("Hiding %s", hildon_bread_crumb_get_text (item));
       gtk_widget_hide (GTK_WIDGET (item));
       gtk_widget_set_child_visible (GTK_WIDGET (item), FALSE);
     }
@@ -362,26 +341,32 @@ get_bread_crumb_id (HildonBreadCrumb *item)
 }
 
 static void
-crumb_clicked_cb (GtkWidget *button,
-                  HildonBreadCrumbTrail *bct)
+crumb_activated_cb (GtkWidget *button,
+                    HildonBreadCrumbTrail *bct)
 {
-  GtkWidget *child;
-  HildonBreadCrumbTrailPrivate *priv;
-
-  priv = bct->priv;
-
-  child = GTK_WIDGET (priv->item_list->data);
-
-  /* We remove the tip of the list until we hit the clicked button */
-  while (child != button)
-    {
-      gtk_container_remove (GTK_CONTAINER (bct), child);
-
-      child = GTK_WIDGET (priv->item_list->data);
-    }
+  gboolean signal_handled = FALSE;
 
   g_signal_emit (bct, bread_crumb_trail_signals[CRUMB_CLICKED], 0,
-                 get_bread_crumb_id (HILDON_BREAD_CRUMB (child)));
+                 get_bread_crumb_id (HILDON_BREAD_CRUMB (button)),
+                 &signal_handled);
+
+  if (signal_handled == FALSE)
+    {
+      GtkWidget *child;
+      HildonBreadCrumbTrailPrivate *priv;
+
+      priv = bct->priv;
+
+      child = GTK_WIDGET (priv->item_list->data);
+
+      /* We remove the tip of the list until we hit the clicked button */
+      while (child != button)
+        {
+          gtk_container_remove (GTK_CONTAINER (bct), child);
+
+          child = GTK_WIDGET (priv->item_list->data);
+        }
+    }
 }
 
 static void
@@ -436,7 +421,7 @@ hildon_bread_crumb_trail_remove (GtkContainer *container,
     {
       if (widget == GTK_WIDGET (p->data))
         {
-          g_signal_handlers_disconnect_by_func (widget, G_CALLBACK (crumb_clicked_cb),
+          g_signal_handlers_disconnect_by_func (widget, G_CALLBACK (crumb_activated_cb),
                                                 HILDON_BREAD_CRUMB_TRAIL (container));
           gtk_widget_unparent (widget);
 
@@ -532,25 +517,30 @@ hildon_bread_crumb_trail_scroll_back (GtkWidget *button,
                  get_bread_crumb_id (item));
 }
 
-static GtkWidget*
-create_crumb_button (HildonBreadCrumbTrail *bct,
-                     const gchar *text,
-                     gpointer id,
-                     GDestroyNotify destroy)
+/*
+ * Helper function to add a bread crumb to the trail. This should go in the
+ * container add method, but there's no way to plug there the id/destroy
+ * information (FIXME)
+ */
+
+static void
+attach_bread_crumb (HildonBreadCrumbTrail *bct,
+                    GtkWidget *bread_crumb,
+                    gpointer id,
+                    GDestroyNotify destroy)
 {
-  GtkWidget *item;
+  g_object_set_data_full (G_OBJECT (bread_crumb), "bread-crumb-id", id, destroy);
 
-  item = hildon_bread_crumb_new (text);
+  g_signal_connect (G_OBJECT (bread_crumb), "crumb-activated",
+                    G_CALLBACK (crumb_activated_cb), bct);
 
-  if (id)
-    g_object_set_data_full (G_OBJECT (item), "bread-crumb-id", id, destroy);
+  bct->priv->item_list = g_list_prepend (bct->priv->item_list, bread_crumb);
 
-  g_signal_connect (G_OBJECT (item), "clicked",
-                    G_CALLBACK (crumb_clicked_cb), bct);
+  gtk_container_add (GTK_CONTAINER (bct), bread_crumb);
+  gtk_widget_show (bread_crumb);
 
-  return item;
+  hildon_bread_crumb_trail_update_back_button_sensitivity (bct);
 }
-
 
 /* PUBLIC API */
 
@@ -561,6 +551,8 @@ create_crumb_button (HildonBreadCrumbTrail *bct,
  *
  * Returns: a #GtkWidget pointer of newly created bread crumb trail
  * widget
+ *
+ * Stability: Unstable
  */
 
 GtkWidget*
@@ -568,8 +560,6 @@ hildon_bread_crumb_trail_new (void)
 {
   return GTK_WIDGET (g_object_new (HILDON_TYPE_BREAD_CRUMB_TRAIL, NULL));
 }
-
-/* This is stupidly duplicated from the simple API, consolidate */
 
 /**
  * hildon_bread_crumb_trail_push:
@@ -579,6 +569,8 @@ hildon_bread_crumb_trail_new (void)
  * @destroy: GDestroyNotify callback to be called when the bread crumb is destroyed
  *
  * Adds a new bread crumb to the end of the trail.
+ *
+ * Stability: Unstable
  */
 
 void
@@ -588,27 +580,13 @@ hildon_bread_crumb_trail_push (HildonBreadCrumbTrail *bct,
                                GDestroyNotify destroy)
 {
   GtkWidget *widget;
-  HildonBreadCrumbTrailPrivate *priv;;
 
   g_return_if_fail (HILDON_IS_BREAD_CRUMB_TRAIL (bct));
   g_return_if_fail (HILDON_IS_BREAD_CRUMB (item));
 
-  priv = bct->priv;
-
   widget = GTK_WIDGET (item);
 
-  gtk_container_add (GTK_CONTAINER (bct), widget);
-  gtk_widget_show (widget);
-
-  if (id)
-    g_object_set_data_full (G_OBJECT (item), "bread-crumb-id", id, destroy);
-
-  g_signal_connect (G_OBJECT (item), "clicked",
-                    G_CALLBACK (crumb_clicked_cb), bct);
-
-  priv->item_list = g_list_prepend (priv->item_list, widget);
-
-  hildon_bread_crumb_trail_update_back_button_sensitivity (bct);
+  attach_bread_crumb (bct, widget, id, destroy);
 }
 
 /**
@@ -619,6 +597,8 @@ hildon_bread_crumb_trail_push (HildonBreadCrumbTrail *bct,
  * @destroy: GDestroyNotify callback to be called when the bread crumb is destroyed
  *
  * Adds a new bread crumb to the end of the trail containing the specified text.
+ *
+ * Stability: Unstable
  */
 
 void
@@ -628,20 +608,43 @@ hildon_bread_crumb_trail_push_text (HildonBreadCrumbTrail *bct,
                                     GDestroyNotify destroy)
 {
   GtkWidget *widget;
-  HildonBreadCrumbTrailPrivate *priv;
 
   g_return_if_fail (HILDON_IS_BREAD_CRUMB_TRAIL (bct));
   g_return_if_fail (text != NULL);
 
-  priv = bct->priv;
+  widget = _hildon_bread_crumb_widget_new_with_text (text);
+  attach_bread_crumb (bct, widget, id, destroy);
+}
 
-  widget = create_crumb_button (bct, text, id, destroy);
-  gtk_container_add (GTK_CONTAINER (bct), widget);
-  gtk_widget_show (widget);
+/**
+ * hildon_bread_crumb_trail_push_text:
+ * @bct: pointer to #HildonBreadCrumbTrail
+ * @text: content of the new bread crumb
+ * @icon: a widget to set as the icon in the bread crumb
+ * @id: optional id for the bread crumb
+ * @destroy: GDestroyNotify callback to be called when the bread crumb is destroyed
+ *
+ * Adds a new bread crumb to the end of the trail containing the specified text and
+ * icon.
+ *
+ * Stability: Unstable
+ */
 
-  priv->item_list = g_list_prepend (priv->item_list, widget);
+void
+hildon_bread_crumb_trail_push_icon (HildonBreadCrumbTrail *bct,
+                                    const gchar *text,
+                                    GtkWidget *icon,
+                                    gpointer id,
+                                    GDestroyNotify destroy)
+{
+  GtkWidget *widget;
 
-  hildon_bread_crumb_trail_update_back_button_sensitivity (bct);
+  g_return_if_fail (HILDON_IS_BREAD_CRUMB_TRAIL (bct));
+  g_return_if_fail (text != NULL);
+  g_return_if_fail (GTK_IS_WIDGET (icon));
+
+  widget = _hildon_bread_crumb_widget_new_with_icon (icon, text);
+  attach_bread_crumb (bct, widget, id, destroy);
 }
 
 /**
@@ -649,6 +652,8 @@ hildon_bread_crumb_trail_push_text (HildonBreadCrumbTrail *bct,
  * @bct: pointer to #HildonBreadCrumbTrail
  *
  * Removes the last bread crumb from the trail.
+ *
+ * Stability: Unstable
  */
 
 void
@@ -678,6 +683,8 @@ hildon_bread_crumb_trail_pop (HildonBreadCrumbTrail *bct)
  * @bct: pointer to #HildonBreadCrumbTrail
  *
  * Removes all the bread crumbs from the bread crumb trail.
+ *
+ * Stability: Unstable
  */
 
 void

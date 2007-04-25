@@ -39,6 +39,10 @@ enum {
   N_COLS
 };
 
+enum {
+  SORTID_DIRALPHA = 0
+};
+
 static void
 populate_store (GtkListStore *store,
 		const gchar *path)
@@ -49,6 +53,7 @@ populate_store (GtkListStore *store,
   GtkTreeIter iter;
   struct stat stat_info;
   GdkPixbuf *pixbuf = NULL;
+  GtkWidget *dummy;
 
   dir = g_dir_open (path, 0, &error);
   if (error)
@@ -57,6 +62,9 @@ populate_store (GtkListStore *store,
       g_error_free (error);
       return;
     }
+
+  /* Dummy widget for gtk_widget_render_icon */
+  dummy = gtk_label_new ("");
 
   while ((item = (gchar*)g_dir_read_name (dir)) != NULL)
     {
@@ -72,9 +80,15 @@ populate_store (GtkListStore *store,
       gtk_list_store_append (store, &iter);
 
       if (S_ISDIR (stat_info.st_mode))
-	pixbuf = gdk_pixbuf_new_from_file ("./gnome-fs-directory.png", NULL);
+        {
+          pixbuf = gtk_widget_render_icon (dummy, GTK_STOCK_DIRECTORY,
+                                           GTK_ICON_SIZE_BUTTON, NULL);
+        }
       else
-	pixbuf = gdk_pixbuf_new_from_file ("./gnome-mime-text.png", NULL);
+        {
+          pixbuf = gtk_widget_render_icon (dummy, GTK_STOCK_FILE,
+                                           GTK_ICON_SIZE_BUTTON, NULL);
+        }
 
       gtk_list_store_set (store, &iter,
 			  ICON_COL, pixbuf,
@@ -86,6 +100,8 @@ populate_store (GtkListStore *store,
     }
 
   g_dir_close (dir);
+
+  gtk_widget_destroy (dummy);
 
   return;
 }
@@ -117,13 +133,24 @@ row_activated_cb (GtkTreeView *treeview,
 
   if (is_dir == FALSE) goto out;
 
-  g_debug ("Clicked %s", text);
+  g_debug ("Clicked treeview row%s", text);
 
   new_root = g_strconcat (g_str_equal (current_root, "/")? "" : current_root, "/", text, NULL);
   gtk_list_store_clear (GTK_LIST_STORE (model));
   populate_store (GTK_LIST_STORE (model), new_root);
 
-  hildon_bread_crumb_trail_push_text (bct, text, new_root, (GDestroyNotify)free_id);
+  if (g_str_equal (current_root, "/home"))
+    {
+      GtkWidget *image;
+
+      image = gtk_image_new_from_stock (GTK_STOCK_HOME, GTK_ICON_SIZE_BUTTON);
+      hildon_bread_crumb_trail_push_icon (bct, text, image, new_root, (GDestroyNotify)free_id);
+    }
+  else
+    {
+      g_debug ("Adding %s, new root %s", text, new_root);
+      hildon_bread_crumb_trail_push_text (bct, text, new_root, (GDestroyNotify)free_id);
+    }
   
   if (current_root)
     {
@@ -136,19 +163,63 @@ row_activated_cb (GtkTreeView *treeview,
   g_free (text);
 }
 
-static void
+static gboolean
 crumb_clicked_cb (HildonBreadCrumbTrail *bct, gpointer id)
 {
   GtkTreeModel *model;
   gchar *text = (gchar*)id;
 
-  g_debug ("item %s clicked", text);
+  g_debug ("bread crumb item %s clicked", text);
   model = gtk_tree_view_get_model (GTK_TREE_VIEW (treeview));
   gtk_list_store_clear (GTK_LIST_STORE (model));
   populate_store (GTK_LIST_STORE (model), text);
   if (current_root)
     g_free (current_root);
   current_root = g_strdup (text);
+
+  return FALSE;
+}
+
+static gint
+sort_iter_compare_func (GtkTreeModel *model,
+                        GtkTreeIter  *a,
+                        GtkTreeIter  *b,
+                        gpointer      userdata)
+{
+  gint sortcol = GPOINTER_TO_INT (userdata);
+  gint ret = 0;
+
+  switch (sortcol)
+    {
+    case SORTID_DIRALPHA:
+      {
+        gboolean is_dir_a, is_dir_b;
+        gchar *string_a, *string_b;
+      
+        gtk_tree_model_get (model, a, IS_DIR_COL, &is_dir_a,
+                            STRING_COL, &string_a, -1);
+        gtk_tree_model_get (model, b, IS_DIR_COL, &is_dir_b,
+                            STRING_COL, &string_b, -1);
+
+        if (is_dir_a != is_dir_b)
+          {
+            /* One is a directory, the other isn't */
+            ret = (is_dir_a == TRUE) ? -1 : 1;
+          }
+        else
+          {
+            /* Same type, alphabetical sort */
+            ret = g_utf8_collate (string_a, string_b);
+            g_free (string_a);
+            g_free (string_b);
+          }
+        break;
+      }
+    default:
+      break;
+    }
+
+  return ret;
 }
 
 int main (int argc, char **argv)
@@ -195,6 +266,15 @@ int main (int argc, char **argv)
 				  GTK_POLICY_AUTOMATIC,
 				  GTK_POLICY_AUTOMATIC);
   store = gtk_list_store_new (N_COLS, GDK_TYPE_PIXBUF, G_TYPE_STRING, G_TYPE_BOOLEAN);
+  gtk_tree_sortable_set_sort_func (GTK_TREE_SORTABLE (store),
+                                   SORTID_DIRALPHA,
+                                   sort_iter_compare_func,
+                                   GINT_TO_POINTER (SORTID_DIRALPHA),
+                                   NULL);
+  gtk_tree_sortable_set_sort_column_id (GTK_TREE_SORTABLE (store),
+                                        SORTID_DIRALPHA,
+                                        GTK_SORT_ASCENDING);
+
   populate_store (store, "/");
   treeview = gtk_tree_view_new_with_model (GTK_TREE_MODEL (store));
   g_signal_connect (treeview, "row-activated", G_CALLBACK (row_activated_cb), bct);

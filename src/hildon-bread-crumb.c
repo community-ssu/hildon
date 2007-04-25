@@ -25,274 +25,95 @@
 
 #include "hildon-bread-crumb.h"
 
-#define HILDON_BREAD_CRUMB_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), HILDON_TYPE_BREAD_CRUMB, HildonBreadCrumbPrivate))
+static void hildon_bread_crumb_base_init (gpointer g_class);
 
-struct _HildonBreadCrumbPrivate
+GType
+hildon_bread_crumb_get_type (void)
 {
-  GtkWidget *label;
-  GtkWidget *arrow;
-  gchar *text;
+  static GType bread_crumb_type = 0;
 
-  gboolean show_separator;
-};
-
-/* Signals */
-
-enum {
-  LAST_SIGNAL
-};
-
-/* Properties */
-
-enum {
-  PROP_0,
-  PROP_TEXT,
-  PROP_SHOW_SEPARATOR
-};
-
-/*
-static guint bread_crumb_item_signals[LAST_SIGNAL] = { 0 };
-*/
-
-/* GType methods */
-
-static void hildon_bread_crumb_finalize (GObject *object);
-static void hildon_bread_crumb_set_property (GObject *object, guint prop_id,
-                                             const GValue *value, GParamSpec *pspec);
-static void hildon_bread_crumb_get_property (GObject *object, guint prop_id,
-                                             GValue *value, GParamSpec *pspec);
-static void hildon_bread_crumb_real_get_natural_size (HildonBreadCrumb *bread_crumb,
-                                                      gint *width, gint *height);
-
-G_DEFINE_TYPE (HildonBreadCrumb, hildon_bread_crumb, GTK_TYPE_BUTTON)
-
-static void
-hildon_bread_crumb_class_init (HildonBreadCrumbClass *klass)
-{
-  GObjectClass *gobject_class = (GObjectClass*)klass;
-
-  klass->get_natural_size = hildon_bread_crumb_real_get_natural_size;
-
-  /* GObject signals */
-  gobject_class->finalize = hildon_bread_crumb_finalize;
-  gobject_class->set_property = hildon_bread_crumb_set_property;
-  gobject_class->get_property = hildon_bread_crumb_get_property;
-
-  /* Properties */
-  g_object_class_install_property (gobject_class,
-                                   PROP_TEXT,
-                                   g_param_spec_string ("text",
-                                                        "Text",
-                                                        "Text displayed as the name of the item",
-                                                        NULL,
-                                                        G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
-
-  g_object_class_install_property (gobject_class,
-                                   PROP_SHOW_SEPARATOR,
-                                   g_param_spec_boolean ("show-separator",
-                                                         "Show separator",
-                                                         "Show the separator attached to the item",
-                                                         TRUE,
-                                                         G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
-
-  /* Private data */
-  g_type_class_add_private (gobject_class, sizeof (HildonBreadCrumbPrivate));
-}
-
-static void
-hildon_bread_crumb_init (HildonBreadCrumb *item)
-{
-  GtkWidget *hbox;
-  HildonBreadCrumbPrivate *priv = HILDON_BREAD_CRUMB_GET_PRIVATE (item);
-
-  item->priv = priv;
-
-  hbox = gtk_hbox_new (FALSE, 6);
-  gtk_container_add (GTK_CONTAINER (item), hbox);
-
-  priv->arrow = gtk_arrow_new (GTK_ARROW_RIGHT, GTK_SHADOW_NONE);
-  gtk_widget_set_name (priv->arrow, "hildon-bread-crumb-separator-arrow");
-  gtk_box_pack_start (GTK_BOX (hbox), priv->arrow, FALSE, FALSE, 0);
-
-  if (priv->show_separator)
-    gtk_widget_show (priv->arrow);
-
-  priv->label = gtk_label_new ("");
-  gtk_box_pack_start (GTK_BOX (hbox), priv->label, TRUE, TRUE, 0);
-  gtk_widget_show (priv->label);
-
-  gtk_widget_show (hbox);
-}
-
-static void
-hildon_bread_crumb_finalize (GObject *object)
-{
-  HildonBreadCrumbPrivate *priv = HILDON_BREAD_CRUMB (object)->priv;
-
-  g_free (priv->text);
-
-  G_OBJECT_CLASS (hildon_bread_crumb_parent_class)->finalize (object);
-}
-
-static void
-hildon_bread_crumb_set_property (GObject *object, guint prop_id,
-                                 const GValue *value, GParamSpec *pspec)
-{
-  HildonBreadCrumb *item = HILDON_BREAD_CRUMB (object);
-
-  switch (prop_id)
+  if (G_UNLIKELY (bread_crumb_type == 0))
     {
-    case PROP_TEXT:
-      hildon_bread_crumb_set_text (item, g_value_get_string (value));
-      break;
-    case PROP_SHOW_SEPARATOR:
-      hildon_bread_crumb_set_show_separator (item, g_value_get_boolean (value));
-      break;
-    default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
-      break;
+      const GTypeInfo bread_crumb_info =
+        {
+          sizeof (HildonBreadCrumbIface), /* class_size */
+          hildon_bread_crumb_base_init, /* base_init */
+          NULL, /* base_finalize */
+          NULL,
+          NULL, /* class_finalize */
+          NULL, /* class_data */
+          0,
+          0,
+          NULL
+        };
+      
+      bread_crumb_type =
+        g_type_register_static (G_TYPE_INTERFACE, "HildonBreadCrumb",
+                                &bread_crumb_info, 0);
+
+      g_type_interface_add_prerequisite (bread_crumb_type, GTK_TYPE_WIDGET);
+    }
+
+  return bread_crumb_type;
+}
+
+static void
+hildon_bread_crumb_base_init (gpointer g_class)
+{
+  static gboolean initialized = FALSE;
+
+  if (initialized == FALSE)
+    {
+      g_signal_new ("crumb-activated",
+                    HILDON_TYPE_BREAD_CRUMB,
+                    G_SIGNAL_RUN_LAST,
+                    G_STRUCT_OFFSET (HildonBreadCrumbIface, crumb_activated),
+                    NULL, NULL,
+                    g_cclosure_marshal_VOID__VOID,
+                    G_TYPE_NONE, 0);
+
+      initialized = TRUE;
     }
 }
 
-static void
-hildon_bread_crumb_get_property (GObject *object, guint prop_id,
-                                 GValue *value, GParamSpec *pspec)
-{
-  HildonBreadCrumb *item = HILDON_BREAD_CRUMB (object);
-
-  switch (prop_id)
-    {
-    case PROP_TEXT:
-      g_value_set_string (value, item->priv->text);
-      break;
-    case PROP_SHOW_SEPARATOR:
-      g_value_set_boolean (value, item->priv->show_separator);
-      break;
-    default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
-      break;
-    }
-}
-
-void
-hildon_bread_crumb_set_text (HildonBreadCrumb *item,
-                             const gchar *text)
-{
-  HildonBreadCrumbPrivate *priv;
-
-  g_return_if_fail (HILDON_IS_BREAD_CRUMB (item));
-
-  priv = item->priv;
-
-  if (priv->text)
-    g_free (priv->text);
-
-  priv->text = g_strdup (text);
-
-  gtk_label_set_label (GTK_LABEL (priv->label), text);
-  gtk_label_set_ellipsize (GTK_LABEL (item->priv->label),
-                           PANGO_ELLIPSIZE_START);
-  gtk_widget_show (priv->label);
-
-  g_object_notify (G_OBJECT (item), "text");
-}
-
-const gchar*
-hildon_bread_crumb_get_text (HildonBreadCrumb *item)
-{
-  HildonBreadCrumbPrivate *priv;
-
-  g_return_val_if_fail (HILDON_IS_BREAD_CRUMB (item), NULL);
-
-  priv = item->priv;
-
-  return priv->text;
-}
-
-void
-hildon_bread_crumb_set_show_separator (HildonBreadCrumb *item,
-                                       gboolean show_separator)
-{
-  HildonBreadCrumbPrivate *priv;
-
-  g_return_if_fail (HILDON_IS_BREAD_CRUMB (item));
-
-  priv = item->priv;
-
-  if (priv->show_separator == show_separator)
-    return;
-  
-  priv->show_separator = show_separator;
-
-  if (show_separator)
-    gtk_widget_show (priv->arrow);
-  else
-    gtk_widget_hide (priv->arrow);
-
-  g_object_notify (G_OBJECT (item), "show-separator");
-}
-
-static void
-hildon_bread_crumb_real_get_natural_size (HildonBreadCrumb *item,
-                                          gint *natural_width,
-                                          gint *natural_height)
-{
-  GtkRequisition widget_req, label_req;
-  gint width, height;
-  PangoLayout *layout;
-  HildonBreadCrumbPrivate *priv;
-
-  g_return_if_fail (HILDON_IS_BREAD_CRUMB (item));
-
-  priv = item->priv;
-
-  gtk_widget_size_request (GTK_WIDGET (item), &widget_req);
-
-  layout = gtk_widget_create_pango_layout (priv->label, priv->text);
-  pango_layout_get_size (layout, &width, &height);
-  g_object_unref (layout);
-
-  if (natural_width)
-    {
-      *natural_width = widget_req.width;
-      /* Substract the size request of the label */
-      gtk_widget_size_request (priv->label, &label_req);
-      *natural_width -= label_req.width;
-
-      /* Add the "natural" width for the label */
-      *natural_width += PANGO_PIXELS (width);
-      *natural_width += GTK_CONTAINER (item)->border_width * 2;
-    }
-
-  if (natural_height)
-    {
-      *natural_height = widget_req.height;
-      *natural_height += GTK_CONTAINER (item)->border_width * 2;
-    }
-}
+/**
+ * hildon_bread_crumb_get_natural_size:
+ * @bread_crumb: A #HildonBreadCrumb
+ * @width: location to store the natural width request of the @bread_crumb
+ * @height: location to store the natural height request of the @bread_crumb
+ *
+ * Function to ask the @bread_crumb its preferred width and height requisition.
+ * Natural size is different to size_request in that it's not the minimum space
+ * the widget needs, but the ideal space it'd like to be allocated. For example,
+ * in the case of a label the natural size would be the width and height needed
+ * to show the full label without line breaks.
+ *
+ **/
 
 void
 hildon_bread_crumb_get_natural_size (HildonBreadCrumb *bread_crumb,
-                                     gint *natural_width,
-                                     gint *natural_height)
+                                     gint *width,
+                                     gint *height)
 {
-  HildonBreadCrumbClass *klass;
-
   g_return_if_fail (HILDON_IS_BREAD_CRUMB (bread_crumb));
 
-  klass = HILDON_BREAD_CRUMB_GET_CLASS (bread_crumb);
-
-  if (klass->get_natural_size)
-    return (* klass->get_natural_size) (bread_crumb,
-                                        natural_width,
-                                        natural_height);
+  (* HILDON_BREAD_CRUMB_GET_IFACE (bread_crumb)->get_natural_size) (bread_crumb, width, height);
 }
 
-GtkWidget*
-hildon_bread_crumb_new (const gchar* text)
+/**
+ * hildon_bread_crumb_activated:
+ * @bread_crumb: a #HildonBreadCrumb
+ *
+ * Emits the "crumb-activated" signal. The signal is meant to indicate that
+ * the user has interacted with the bread crumb.
+ **/
+
+void
+hildon_bread_crumb_activated (HildonBreadCrumb *bread_crumb)
 {
-  return GTK_WIDGET (g_object_new (HILDON_TYPE_BREAD_CRUMB,
-                                   "text", text,
-                                   NULL));
+  g_return_if_fail (HILDON_IS_BREAD_CRUMB (bread_crumb));
+
+  g_signal_emit_by_name (bread_crumb, "crumb-activated");
 }
+
 

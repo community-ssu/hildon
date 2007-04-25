@@ -1,3 +1,23 @@
+2007-04-25  Xan Lopez  <xan.lopez@nokia.com>
+	
+	* examples/hildon-bread-crumb-trail-example.c:
+	* src/Makefile.am:
+	* src/hildon-bread-crumb-trail.c:
+	* src/hildon-bread-crumb-trail.h:
+	* src/hildon-bread-crumb.c:
+	* src/hildon-bread-crumb.h:
+	* src/hildon-marshalers.list:
+	* src/hildon-bread-crumb-widget.c:
+	* src/hildon-bread-crumb-widget.h:
+
+	Slight change in the widget design. The bread crumb trail API is
+	unchanged, but HildonBreadCrumb is now an interface. A *private*
+	implementation, hildon-bread-crumb-widget, is provided and used
+	internally by the trail for the push_text/push_icon functions.
+
+	The generic push API is still available, so anyone can implement
+	and use its own bread crumb widget.
+	
 2007-04-19  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
 	* debian/rules: Fixing the shlibs.
