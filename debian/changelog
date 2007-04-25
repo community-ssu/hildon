@@ -1,3 +1,12 @@
+libhildon (1.0.2-1) stable; urgency=low
+
+  * Guard unstable API's with ENABLE_UNSTABLE_API define
+  * Breadcrumb updates
+  * Fixing a problem with timed banners having their parrent destroyed before they are
+  * Fixing the sh libs
+
+ -- Michael Dominic Kostrzewa <michael.kostrzewa@nokia.com>  Wed, 25 Apr 2007 16:48:30 +0300
+
 libhildon (1.0.1-1) stable; urgency=low
 
   * New breadcrumb trial widget.

@@ -1,3 +1,9 @@
+[1.0.2-1 release]
+* Guard unstable API's with ENABLE_UNSTABLE_API define
+* Breadcrumb updates
+* Fixing a problem with timed banners having their parrent destroyed before they are
+* Fixing the sh libs
+
 [1.0.1-1 release] 
 * Breadcrumb trail widget by Xan
 * Fingerable scrollbar API by Michael
