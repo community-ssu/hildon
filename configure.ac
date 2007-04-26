@@ -1,4 +1,4 @@
-AC_INIT([Hildon gtk widgets], [1.0.3], [michael.kostrzewa@nokia.com], [hildon])
+AC_INIT([Hildon gtk widgets], [1.0.4], [michael.kostrzewa@nokia.com], [hildon])
 AC_CANONICAL_SYSTEM
 
 AM_CONFIG_HEADER(config.h)
@@ -21,7 +21,7 @@ AS_VERSION
 #    increment current, and set revision to 0.
 # 5. If any interfaces have been added since the last public release, then increment age.
 # 6. If any interfaces have been removed since the last public release, then set age to 0.  
-AS_LIBTOOL(HILDON, 3, 0, 3)
+AS_LIBTOOL(HILDON, 4, 0, 4)
 AM_INIT_AUTOMAKE
 
 AC_PROG_CC
@@ -142,7 +142,7 @@ CFLAGS="$CFLAGS ${ASSERT_CFLAGS} -Wall -Wmissing-prototypes -Wmissing-declaratio
 # -Wno-format due to way translation string are done
 
 ### enable MAEMO platform extensions
-CFLAGS="$CFLAGS -DMAEMO_CHANGES -DENABLE_UNSTABLE_API"
+CFLAGS="$CFLAGS -DMAEMO_CHANGES -DHILDON_ENABLE_UNSTABLE_API"
 
 # HILDON_OBJ_*
 # default vars for the examples

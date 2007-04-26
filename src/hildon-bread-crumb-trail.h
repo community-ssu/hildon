@@ -23,7 +23,7 @@
  *
  */
 
-#ifdef ENABLE_UNSTABLE_API
+#ifdef HILDON_ENABLE_UNSTABLE_API
 
 #ifndef __HILDON_BREAD_CRUMB_TRAIL_H__
 #define __HILDON_BREAD_CRUMB_TRAIL_H__
@@ -78,4 +78,4 @@ G_END_DECLS
 
 #endif
 
-#endif /* ENABLE_UNSTABLE_API */
+#endif /* HILDON_ENABLE_UNSTABLE_API */

@@ -1,3 +1,9 @@
+libhildon (1.0.4-1) stable; urgency=low
+
+  * Changing the API guard name to HILDON_ENABLE_UNSTABLE_API.
+
+ -- Michael Dominic Kostrzewa <michael.kostrzewa@nokia.com>  Thu, 26 Apr 2007 16:20:55 +0300
+
 libhildon (1.0.3-1) stable; urgency=low
 
   * Removing the API guard from helper functions. It was a mistake.
