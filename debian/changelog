@@ -1,3 +1,9 @@
+libhildon (1.0.3-1) stable; urgency=low
+
+  * Removing the API guard from helper functions. It was a mistake.
+
+ -- Michael Dominic Kostrzewa <michael.kostrzewa@nokia.com>  Thu, 26 Apr 2007 15:54:12 +0300
+
 libhildon (1.0.2-1) stable; urgency=low
 
   * Guard unstable API's with ENABLE_UNSTABLE_API define

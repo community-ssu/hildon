@@ -22,8 +22,6 @@
  *
  */
 
-#ifdef                                          ENABLE_UNSTABLE_API
-
 #ifndef                                         __HILDON_HELPER_H__
 #define                                         __HILDON_HELPER_H__
 
@@ -63,4 +61,3 @@ G_END_DECLS
 
 #endif                                          /* __HILDON_HELPER_H__ */
 
-#endif                                          /* ENABLE_UNSTABLE_API */

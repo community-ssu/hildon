@@ -1,3 +1,6 @@
+[1.0.3-1 release]
+* Removing the API guard from helper functions. It was a mistake.
+
 [1.0.2-1 release]
 * Guard unstable API's with ENABLE_UNSTABLE_API define
 * Breadcrumb updates
