@@ -374,6 +374,18 @@ hildon_bread_crumb_trail_add (GtkContainer *container,
                               GtkWidget *widget)
 {
   gtk_widget_set_parent (widget, GTK_WIDGET (container));
+
+  if (HILDON_IS_BREAD_CRUMB (widget))
+    {
+      HildonBreadCrumbTrail *bct = HILDON_BREAD_CRUMB_TRAIL (container);
+
+      g_signal_connect (G_OBJECT (widget), "crumb-activated",
+                        G_CALLBACK (crumb_activated_cb), container);
+
+      bct->priv->item_list = g_list_prepend (bct->priv->item_list, widget);
+
+      hildon_bread_crumb_trail_update_back_button_sensitivity (bct);
+    }
 }
 
 static void
@@ -517,12 +529,6 @@ hildon_bread_crumb_trail_scroll_back (GtkWidget *button,
                  get_bread_crumb_id (item));
 }
 
-/*
- * Helper function to add a bread crumb to the trail. This should go in the
- * container add method, but there's no way to plug there the id/destroy
- * information (FIXME)
- */
-
 static void
 attach_bread_crumb (HildonBreadCrumbTrail *bct,
                     GtkWidget *bread_crumb,
@@ -531,15 +537,9 @@ attach_bread_crumb (HildonBreadCrumbTrail *bct,
 {
   g_object_set_data_full (G_OBJECT (bread_crumb), "bread-crumb-id", id, destroy);
 
-  g_signal_connect (G_OBJECT (bread_crumb), "crumb-activated",
-                    G_CALLBACK (crumb_activated_cb), bct);
-
-  bct->priv->item_list = g_list_prepend (bct->priv->item_list, bread_crumb);
-
   gtk_container_add (GTK_CONTAINER (bct), bread_crumb);
-  gtk_widget_show (bread_crumb);
 
-  hildon_bread_crumb_trail_update_back_button_sensitivity (bct);
+  gtk_widget_show (bread_crumb);
 }
 
 /* PUBLIC API */
