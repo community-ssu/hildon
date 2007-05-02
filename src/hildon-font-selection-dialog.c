@@ -932,8 +932,15 @@ hildon_font_selection_dialog_finalize           (GObject *object)
     priv = HILDON_FONT_SELECTION_DIALOG_GET_PRIVATE (fontsel);
     g_assert (priv);
 
-    g_free (priv->preview_text);
-    g_free (priv->families);
+    if (priv->preview_text != NULL) {
+        g_free (priv->preview_text);
+        priv->preview_text = NULL;
+    }
+
+    if (priv->families != NULL) {
+        g_free (priv->families);
+        priv->families = NULL;
+    }
 
     if (G_OBJECT_CLASS (parent_class)->finalize)
         G_OBJECT_CLASS (parent_class)->finalize (object);

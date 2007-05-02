@@ -1,3 +1,11 @@
+2007-05-02  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
+	* src/hildon-font-selection-dialog.c: Adding a small check when
+	freeing memory. 
+
+	* src/hildon-wizard-dialog.c: Applying a patch by Iain Holmes to fix
+	buttons sensitivity on page switching.
+
 2007-04-27  Xan Lopez  <xan.lopez@nokia.com>
 
 	* src/hildon-bread-crumb-trail.c: make the add method handle all the

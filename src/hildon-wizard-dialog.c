@@ -427,13 +427,25 @@ response                                        (HildonWizardDialog *wizard_dial
 
     g_assert (priv);
 
+    current = gtk_notebook_current_page (notebook);
+
     switch (response_id) {
 
         case HILDON_WIZARD_DIALOG_PREVIOUS:
+            --current;
+            is_last = (current == last);
+            is_first = (current == 0);
+            make_buttons_sensitive (wizard_dialog,
+                                    !is_first, !is_first, !is_last); 
             gtk_notebook_prev_page (notebook); /* go to previous page */
             break;
 
         case HILDON_WIZARD_DIALOG_NEXT:
+            ++current;
+            is_last = (current == last);
+            is_first = (current == 0);
+            make_buttons_sensitive (wizard_dialog,
+                                    !is_first, !is_first, !is_last);
             gtk_notebook_next_page (notebook); /* go to next page */
             break;
 
