@@ -1159,7 +1159,9 @@ hildon_font_selection_dialog_show_preview       (HildonFontSelectionDialog *font
     preview_label = gtk_label_new (str);
     gtk_label_set_line_wrap (GTK_LABEL(preview_label), TRUE);
 
-    g_free (str);
+    if (str) 
+        g_free (str);
+
     str = NULL;
 
     gtk_container_add (GTK_CONTAINER (GTK_DIALOG(preview_dialog)->vbox),
@@ -1171,7 +1173,7 @@ hildon_font_selection_dialog_show_preview       (HildonFontSelectionDialog *font
             G_CALLBACK(hildon_font_selection_dialog_preview_key_press),
             NULL);
 
-    /*Set the font*/
+    /* Set the font */
     list = (show_ref) ? hildon_font_selection_dialog_create_attrlist (fontsel, 
             strlen (_("ecdg_fi_preview_font_preview_reference")),
             strlen (priv->preview_text)) :
@@ -1195,9 +1197,12 @@ hildon_font_selection_dialog_show_preview       (HildonFontSelectionDialog *font
         attr = pango_attr_family_new (str);
         add_preview_text_attr (list, attr, 0, strlen (_("ecdg_fi_preview_font_preview_reference")));
     }
-    g_free (str);
+    if (str != NULL)
+        g_free (str);
 
-    /*size*/
+    str = NULL;
+
+    /* size */
     if (size_set)
     {
         attr = pango_attr_size_new (size * PANGO_SCALE);

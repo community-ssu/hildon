@@ -37,7 +37,7 @@ main                                            (int argc,
     GtkDialog *dialog = GTK_DIALOG (gtk_dialog_new ());
 
     HildonVVolumebar *bar = HILDON_VVOLUMEBAR (hildon_vvolumebar_new ());
-    gtk_widget_set_size_request (GTK_WIDGET (bar), -1, 200);
+    gtk_widget_set_size_request (GTK_WIDGET (bar), -1, 300);
 
     gtk_box_pack_start (GTK_BOX (dialog->vbox), GTK_WIDGET (bar), FALSE, FALSE, 0);
     gtk_dialog_add_button (dialog, "Close", GTK_RESPONSE_CLOSE);

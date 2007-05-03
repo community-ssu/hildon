@@ -1,3 +1,11 @@
+2007-05-03  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
+	* examples/hildon-vvolumebar-example.c: The VVolumebar example now
+	uses slightly bigger height.
+
+	* src/hildon-font-selection-dialog.c: Adding some checks before
+	freeing memory in the font selection dialog.
+
 2007-05-02  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
 	* src/hildon-font-selection-dialog.c: Adding a small check when
