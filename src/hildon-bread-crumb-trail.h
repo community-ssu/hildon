@@ -30,7 +30,6 @@
 
 #include <gtk/gtk.h>
 #include "hildon-bread-crumb.h"
-#include "hildon-bread-crumb-widget.h"
 
 G_BEGIN_DECLS
 

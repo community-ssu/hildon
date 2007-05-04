@@ -1,3 +1,9 @@
+2007-05-04  Xan Lopez  <xan.lopez@nokia.com>
+
+	* src/hildon-bread-crumb-trail.c:
+	* src/hildon-bread-crumb-trail.h: Include hildon-bread-crumb-widget.h
+	from the .c file as it's a private file. 
+
 2007-05-03  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
 	* examples/hildon-vvolumebar-example.c: The VVolumebar example now

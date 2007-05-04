@@ -39,6 +39,7 @@
 
 #include "hildon-marshalers.h"
 #include "hildon-bread-crumb-trail.h"
+#include "hildon-bread-crumb-widget.h"
 
 #define HILDON_BREAD_CRUMB_TRAIL_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), HILDON_TYPE_BREAD_CRUMB_TRAIL, HildonBreadCrumbTrailPrivate))
 
