@@ -224,6 +224,7 @@ hildon_bread_crumb_trail_size_allocate (GtkWidget *widget,
   gint border_width, width;
   gint extra_space;
   GList *p, *first_show, *first_hide;
+  gint back_button_size;
   HildonBreadCrumbTrailPrivate *priv = HILDON_BREAD_CRUMB_TRAIL (widget)->priv;
 
   widget->allocation = *allocation;
@@ -235,10 +236,11 @@ hildon_bread_crumb_trail_size_allocate (GtkWidget *widget,
   child_allocation.x = allocation->x + border_width;
   child_allocation.y = allocation->y + border_width;
   gtk_widget_get_child_requisition (priv->back_button, &child_requisition);
-  child_allocation.width = child_requisition.width;
-  child_allocation.height = child_requisition.height;
+  /* We want the back button to be a square */
+  back_button_size = MAX (child_requisition.width, child_requisition.height);
+  child_allocation.width = child_allocation.height = back_button_size;
   gtk_widget_size_allocate (priv->back_button, &child_allocation);
-  child_allocation.x += child_allocation.width;
+  child_allocation.x += back_button_size;
 
   /* If there are no buttons there's nothing else to do */
   if (priv->item_list == NULL)
@@ -247,7 +249,7 @@ hildon_bread_crumb_trail_size_allocate (GtkWidget *widget,
   /* We find out how many buttons can we show, starting from the
      the last one in the logical path (the first item in the list) */
 
-  width = child_allocation.width;
+  width = back_button_size;
   p = priv->item_list;
   first_show = NULL;
   first_hide = NULL; 

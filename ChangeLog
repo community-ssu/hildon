@@ -1,6 +1,12 @@
 2007-05-04  Xan Lopez  <xan.lopez@nokia.com>
 
 	* src/hildon-bread-crumb-trail.c:
+	(hildon_bread_crumb_trail_size_allocate): 
+
+	Make the back button always a square.
+
+2007-05-04  Xan Lopez  <xan.lopez@nokia.com>
+
 	* src/hildon-bread-crumb-trail.h: Include hildon-bread-crumb-widget.h
 	from the .c file as it's a private file. 
 
