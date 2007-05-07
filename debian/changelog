@@ -1,3 +1,13 @@
+libhildon (1.0.5-1) stable; urgency=low
+
+  * Fixes: NB#54149 Date editor: Accepts year greater than 2037
+  * Fixes: NB#49374 Programs using HildonWizardDialog cannot set the sensitivity of buttons when the page changes
+
+  * Memory freeing fixes in font selection dialog.
+  * Breadcrumb update.
+
+ -- Michael Dominic Kostrzewa <michael.kostrzewa@nokia.com>  Mon, 07 May 2007 13:16:09 +0300
+
 libhildon (1.0.4-1) stable; urgency=low
 
   * Changing the API guard name to HILDON_ENABLE_UNSTABLE_API.

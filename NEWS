@@ -1,3 +1,8 @@
+[1.0.5-1 release]
+* Fixes in the HildonWizardDialog
+* Memory freeing fixes in font selection dialog
+* Breadcrumb update
+
 [1.0.3-1 release]
 * Removing the API guard from helper functions. It was a mistake.
 
