@@ -210,9 +210,11 @@ sort_iter_compare_func (GtkTreeModel *model,
           {
             /* Same type, alphabetical sort */
             ret = g_utf8_collate (string_a, string_b);
-            g_free (string_a);
-            g_free (string_b);
           }
+
+        g_free (string_a);
+        g_free (string_b);
+
         break;
       }
     default:

@@ -1,3 +1,10 @@
+2007-05-08  Xan Lopez  <xan.lopez@nokia.com>
+
+	* src/hildon-bread-crumb-trail.c: Use set_child_visible only to
+	control the visibility of the children.
+
+	* examples/hildon-bread-crumb-trail-example.c: Plug leak.
+
 2007-05-07  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
 	[1.0.5-1 release]

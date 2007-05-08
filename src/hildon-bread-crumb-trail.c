@@ -47,6 +47,7 @@ struct _HildonBreadCrumbTrailPrivate
 {
   GtkWidget *back_button;
   GList *item_list;
+  GtkWidget *arrow;
 };
 
 /* Signals */
@@ -284,7 +285,6 @@ hildon_bread_crumb_trail_size_allocate (GtkWidget *widget,
             {
               first_hide = p->next;
               gtk_widget_size_allocate (child, &child_allocation);
-              gtk_widget_show (child);
               gtk_widget_set_child_visible (child, TRUE);
               child_allocation.x += child_allocation.width;
             }
@@ -322,7 +322,6 @@ hildon_bread_crumb_trail_size_allocate (GtkWidget *widget,
 
       child_allocation.width = natural_width;
       gtk_widget_size_allocate (child, &child_allocation);
-      gtk_widget_show (child);
       gtk_widget_set_child_visible (child, TRUE);
       child_allocation.x += child_allocation.width;
     }
@@ -332,7 +331,6 @@ hildon_bread_crumb_trail_size_allocate (GtkWidget *widget,
       item = HILDON_BREAD_CRUMB (p->data);
       child = GTK_WIDGET (item);
 
-      gtk_widget_hide (GTK_WIDGET (item));
       gtk_widget_set_child_visible (GTK_WIDGET (item), FALSE);
     }
 }
@@ -463,7 +461,7 @@ hildon_bread_crumb_trail_update_back_button_sensitivity (HildonBreadCrumbTrail *
 
   list_length = g_list_length (priv->item_list);
 
-  if (list_length == 0 || list_length == 1)
+  if (list_length <= 1)
     {
       gtk_widget_set_sensitive (priv->back_button, FALSE);
     }
@@ -487,6 +485,7 @@ create_back_button (HildonBreadCrumbTrail *bct)
   gtk_widget_set_sensitive (button, FALSE);
 
   arrow = gtk_arrow_new (GTK_ARROW_LEFT, GTK_SHADOW_NONE);
+  bct->priv->arrow = arrow;
   gtk_widget_style_get (GTK_WIDGET (bct),
                         "arrow-size", &arrow_size,
                         NULL);
