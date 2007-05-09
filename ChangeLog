@@ -1,3 +1,7 @@
+2007-05-09  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
+	* src/hildon-helper.c: Correcting tabs in file.
+
 2007-05-08  Xan Lopez  <xan.lopez@nokia.com>
 
 	* src/hildon-bread-crumb-trail.c: Use set_child_visible only to

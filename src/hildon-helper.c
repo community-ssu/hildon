@@ -397,10 +397,10 @@ void
 hildon_helper_set_thumb_scrollbar               (GtkScrolledWindow *win, 
                                                  gboolean thumb)
 {
-        g_return_if_fail (GTK_IS_SCROLLED_WINDOW (win));
+    g_return_if_fail (GTK_IS_SCROLLED_WINDOW (win));
 
-        if (win->vscrollbar) 
-                gtk_widget_set_name (win->vscrollbar, (thumb) ? "hildon-thumb-scrollbar" : NULL);
+    if (win->vscrollbar) 
+        gtk_widget_set_name (win->vscrollbar, (thumb) ? "hildon-thumb-scrollbar" : NULL);
 }
 
 
