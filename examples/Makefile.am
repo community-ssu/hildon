@@ -29,12 +29,18 @@ noinst_PROGRAMS				= hildon-window-example 		\
 					  hildon-color-pop-example		\
 					  hildon-thumb-scrollbar-example	\
 					  hildon-date-editor-example		\
-					  hildon-bread-crumb-trail-example
+					  hildon-bread-crumb-trail-example	\
+					  hildon-finger-example
 
-# HIldon window
+# Hildon window
 hildon_window_example_LDADD		= $(HILDON_OBJ_LIBS)
 hildon_window_example_CFLAGS		= $(HILDON_OBJ_CFLAGS)
 hildon_window_example_SOURCES		= hildon-window-example.c
+
+# Hildon finger
+hildon_finger_example_LDADD		= $(HILDON_OBJ_LIBS)
+hildon_finger_example_CFLAGS		= $(HILDON_OBJ_CFLAGS)
+hildon_finger_example_SOURCES		= hildon-finger-example.c
 
 # Hildon banner
 hildon_banner_example_LDADD		= $(HILDON_OBJ_LIBS)

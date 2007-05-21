@@ -211,7 +211,7 @@ hildon_font_selection_dialog_get_property       (GObject *object,
                                                  GParamSpec *pspec)
 {
     gint i;
-    GdkColor *color = NULL;
+    GdkColor color;
 
     HildonFontSelectionDialogPrivate *priv =
         HILDON_FONT_SELECTION_DIALOG_GET_PRIVATE(object);
@@ -255,12 +255,9 @@ hildon_font_selection_dialog_get_property       (GObject *object,
             break;
 
         case PROP_COLOR:
-            color = g_new (GdkColor, 1);
             hildon_color_button_get_color
-                (HILDON_COLOR_BUTTON (priv->font_color_button), color);
-            g_value_set_boxed (value, (gconstpointer) color);
-            if(color != NULL)
-                gdk_color_free (color);
+                (HILDON_COLOR_BUTTON (priv->font_color_button), &color);
+            g_value_set_boxed (value, (gconstpointer) &color);
             break;
 
         case PROP_COLOR_SET:

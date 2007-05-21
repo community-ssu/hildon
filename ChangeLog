@@ -1,3 +1,12 @@
+2007-05-21  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
+	* examples/Makefile.am:
+	* examples/hildon-finger-example.c: Adding a finger-checking code
+	example. 
+
+	* src/hildon-font-selection-dialog.c: Do not allocate the color
+	structure using the g_new. Fixes NB#54061.
+
 2007-05-09  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
 	* src/hildon-helper.c: Correcting tabs in file.
