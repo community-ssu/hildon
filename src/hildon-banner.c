@@ -1,7 +1,7 @@
 /*
  * This file is a part of hildon
  *
- * Copyright (C) 2005, 2006 Nokia Corporation, all rights reserved.
+ * Copyright (C) 2005, 2006, 2007 Nokia Corporation, all rights reserved.
  *
  * Contact: Michael Dominic Kostrzewa <michael.kostrzewa@nokia.com>
  *
@@ -400,7 +400,7 @@ hildon_banner_set_property                      (GObject *object,
         case PROP_PARENT_WINDOW:
             window = g_value_get_object (value);         
 	    if (priv->parent) {
-		    g_object_remove_weak_pointer(G_OBJECT (priv->parent), (gpointer *)&priv->parent);
+		    g_object_remove_weak_pointer(G_OBJECT (priv->parent), (gpointer) &priv->parent);
 	    }
 
             gtk_window_set_transient_for (GTK_WINDOW (object), (GtkWindow *) window);
@@ -408,7 +408,7 @@ hildon_banner_set_property                      (GObject *object,
 
             if (window) {
                 gtk_window_set_destroy_with_parent (GTK_WINDOW (object), TRUE);
-		g_object_add_weak_pointer(G_OBJECT (window), (gpointer *)&priv->parent);
+		g_object_add_weak_pointer(G_OBJECT (window), (gpointer) &priv->parent);
 	    }
 
             break;
@@ -561,7 +561,7 @@ hildon_banner_finalize				(GObject *object)
     HildonBannerPrivate *priv = HILDON_BANNER_GET_PRIVATE (object);
 
     if (priv->parent) {
-	g_object_remove_weak_pointer(G_OBJECT (priv->parent), (gpointer *)&priv->parent);
+	g_object_remove_weak_pointer(G_OBJECT (priv->parent), (gpointer) &priv->parent);
     }
 
     G_OBJECT_CLASS (parent_class)->finalize (object);

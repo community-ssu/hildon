@@ -1,5 +1,12 @@
 2007-05-21  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
+	* autogen.sh:
+	* debian/rules:
+	* src/hildon-banner.c: Importing several usefull fixes from the
+	ubuntu-mobile branch.
+
+2007-05-21  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
 	* examples/Makefile.am:
 	* examples/hildon-finger-example.c: Adding a finger-checking code
 	example. 
