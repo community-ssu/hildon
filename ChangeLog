@@ -1,5 +1,12 @@
 2007-05-21  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
+	* examples/hildon-finger-example.c: Correcting the header file path.
+
+	* src/hildon-color-chooser-dialog.c: Allocate the color on the stack for 
+	the changed signal. Fixes a small memory leak.
+
+2007-05-21  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
 	* autogen.sh:
 	* debian/rules:
 	* src/hildon-banner.c: Importing several usefull fixes from the

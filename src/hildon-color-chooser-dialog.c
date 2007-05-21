@@ -963,16 +963,16 @@ hildon_color_chooser_dialog_color_changed       (HildonColorChooser *chooser,
     HildonColorChooserDialogPrivate *priv = HILDON_COLOR_CHOOSER_DIALOG_GET_PRIVATE (data);
     char key[128], color_str[13];
     int tmp;
-    GdkColor *color = g_new (GdkColor, 1);
+    GdkColor color;
 
     g_assert (priv);
 
-    hildon_color_chooser_get_color (chooser, color);
+    hildon_color_chooser_get_color (chooser, &color);
 
     tmp = (priv->style_info.num_buttons.left * priv->style_info.num_buttons.right);
 
     if (priv->selected >= tmp) {
-        priv->colors_custom[priv->selected - tmp] = *color;
+        priv->colors_custom[priv->selected - tmp] = color;
 
         gdk_gc_set_rgb_fg_color (priv->gc_array[priv->selected], &priv->colors_custom[priv->selected - tmp]);
         gtk_widget_queue_draw (priv->area_custom);
