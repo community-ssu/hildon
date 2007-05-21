@@ -516,6 +516,7 @@ hildon_color_chooser_dialog_style_set           (GtkWidget *widget,
 
     if (tmpcolor) {
         priv->style_info.default_color = *tmpcolor;
+	gdk_color_free (tmpcolor);
     } else {
         priv->style_info.default_color.red   = 0x0000;
         priv->style_info.default_color.green = 0x0000;
@@ -593,6 +594,7 @@ hildon_color_chooser_dialog_style_set           (GtkWidget *widget,
 
         if (tmpcolor) {
             priv->colors_defined[i] = *tmpcolor;
+	    gdk_color_free (tmpcolor);
         } else {
             if(i < 16) {
                 priv->colors_defined[i] = hardcoded_colors[i];

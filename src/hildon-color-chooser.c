@@ -1321,9 +1321,9 @@ hildon_color_chooser_get_property               (GObject *object,
     {
 
         case PROP_COLOR: {
-            GdkColor *color = g_new (GdkColor, 1);
-            hildon_color_chooser_get_color ((HildonColorChooser *) object, color);
-            g_value_take_boxed (value, color);
+            GdkColor color;
+            hildon_color_chooser_get_color ((HildonColorChooser *) object, &color);
+            g_value_set_boxed (value, &color);
             } break;
 
         default:

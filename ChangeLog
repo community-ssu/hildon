@@ -1,5 +1,11 @@
 2007-05-21  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
+	* src/hildon-color-chooser-dialog.c:
+	* src/hildon-color-chooser.c: A few more GdkColor struct allocation fixes
+	straight from Tommi labs.
+
+2007-05-21  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
 	* examples/hildon-finger-example.c: Correcting the header file path.
 
 	* src/hildon-color-chooser-dialog.c: Allocate the color on the stack for 
