@@ -1,3 +1,8 @@
+[1.0.6-1 release]
+* Memory allocation fixes for color and font selection widgets
+* Breadcrumb leak/visibility fixes
+* New examples
+
 [1.0.5-1 release]
 * Fixes in the HildonWizardDialog
 * Memory freeing fixes in font selection dialog

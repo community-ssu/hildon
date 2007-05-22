@@ -1,3 +1,14 @@
+libhildon (1.0.6-1) stable; urgency=low
+
+  * Fixes: NB#54061 Notes application crashes when font size & font colour is changed
+  * Fixes: NB#48934 Switch to page with empty page number dialog responded when taped outside the content area
+
+  * Memory allocation fixes for color and font selection widgets
+  * Breadcrumb leak/visibility fixes
+  * New examples
+
+ -- Michael Dominic Kostrzewa <michael.kostrzewa@nokia.com>  Tue, 22 May 2007 13:45:59 +0300
+
 libhildon (1.0.5-1) stable; urgency=low
 
   * Fixes: NB#54149 Date editor: Accepts year greater than 2037
