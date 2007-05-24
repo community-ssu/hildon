@@ -353,11 +353,8 @@ hildon_note_init                                (HildonNote *dialog)
     /* Acquire real references to our internal children, since
        they are not nessecarily packed into container in each
        layout */
-    g_object_ref (priv->label);
-    g_object_ref (priv->icon);
-
-    gtk_object_sink (GTK_OBJECT (priv->label));
-    gtk_object_sink (GTK_OBJECT (priv->icon));
+    g_object_ref_sink (priv->label);
+    g_object_ref_sink (priv->icon);
 
     gtk_dialog_set_has_separator (GTK_DIALOG (dialog), FALSE);
     gtk_window_set_modal (GTK_WINDOW (dialog), TRUE);

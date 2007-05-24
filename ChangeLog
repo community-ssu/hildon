@@ -1,3 +1,8 @@
+2007-05-24  Xan Lopez  <xan.lopez@nokia.com>
+
+	* src/hildon-note.c (hildon_note_init): Use g_object_ref_sink
+	instead of g_object_ref + gtk_object_sink.
+
 2007-05-22  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
 	[1.0.6-1 release]
