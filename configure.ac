@@ -114,6 +114,8 @@ else
     AC_MSG_NOTICE(Will not use Maemo GTK+ specific API)
 fi
 
+AC_ARG_ENABLE 
+
 # build with assertion checks (or not)
 AC_ARG_WITH(asserts, 
     AC_HELP_STRING([--with-asserts], [Build with the assertion checks]),
@@ -134,11 +136,31 @@ else
     ASSERT_CFLAGS="-DG_DISABLE_ASSERT"
 fi
 
+# build with relaxed flags or not
+AC_ARG_ENABLE(xan, 
+    AC_HELP_STRING([--enable-xan], [Build with relaxed warning settings]),
+    [
+     case "${enableval}" in
+         yes) BUILD_WITH_XAN=yes ;;
+         no)  BUILD_WITH_XAN=no ;;
+         *)   AC_MSG_ERROR(bad value ${enableval} for --enable-xan) ;;
+     esac],
+     [BUILD_WITH_XAN=no])
+
+# just print out our status
+if test x$BUILD_WITH_XAN = xyes; then
+    AC_MSG_NOTICE(Will build with relaxed warning settings)
+    XAN_CFLAGS=""
+else
+    AC_MSG_NOTICE(Will build with strict warning settings)
+    XAN_CFLAGS="-Werror"
+fi
+
 # Check support (c unit test)
 PKG_CHECK_MODULES(CHECK, check , [BUILD_TESTS="yes"], [BUILD_TESTS="no"])
 AM_CONDITIONAL(BUILD_TESTS, test "x$BUILD_TESTS" = "xyes")
 
-CFLAGS="$CFLAGS ${ASSERT_CFLAGS} -Wall -Wmissing-prototypes -Wmissing-declarations -Werror -Wno-format"
+CFLAGS="$CFLAGS ${ASSERT_CFLAGS} -Wall -Wmissing-prototypes -Wmissing-declarations -Wno-format ${XAN_FLAGS}"
 # -Wno-format due to way translation string are done
 
 ### enable MAEMO platform extensions
@@ -177,5 +199,6 @@ Configuration:
 - Build examples.....: ${BUILD_EXAMPLES}
 - Build with asserts.: ${BUILD_WITH_ASSERTS}
 - Build unit tests...: ${BUILD_TESTS}
+- Allow warnings.....: ${BUILD_WITH_XAN}
 
 "

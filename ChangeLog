@@ -1,3 +1,13 @@
+2007-05-24  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
+	* configure.ac: Adding a special '--enable-xan' configure option that
+	turns off the -Werror compilation setting. Usefull for development.
+
+	* src/hildon-calendar.c:
+	* src/hildon-number-editor.c:
+	* src/hildon-time-picker.c: Adding the 5* multiplier to
+	gtk-timeout-update.
+
 2007-05-24  Xan Lopez  <xan.lopez@nokia.com>
 
 	* src/hildon-note.c (hildon_note_init): Use g_object_ref_sink

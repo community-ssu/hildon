@@ -504,6 +504,7 @@ hildon_number_editor_start_timer                (HildonNumberEditor *editor)
     priv = HILDON_NUMBER_EDITOR_GET_PRIVATE (editor);
     settings = gtk_settings_get_default ();
     g_object_get (settings, "gtk-timeout-repeat", &timeout, NULL);
+    timeout *= 5;
 
     priv->button_event_id = g_timeout_add (timeout,
             (GSourceFunc) do_mouse_timeout,

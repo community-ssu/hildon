@@ -639,6 +639,8 @@ hildon_time_picker_arrow_press                  (GtkWidget *widget,
     g_object_get (gtk_widget_get_settings (widget), 
                     "gtk-timeout-repeat", &key_repeat, NULL);
 
+    key_repeat *= 5;
+
     /* Keep changing the time as long as button is being pressed.
        The first repeat takes 3 times longer to start than the rest. */
     
@@ -856,6 +858,8 @@ hildon_time_picker_key_repeat_timeout           (gpointer tpicker)
         /* Get button press repeater timeout from settings (in milliseconds) */
         g_object_get (gtk_widget_get_settings ((GtkWidget *) tpicker), 
                         "gtk-timeout-repeat", &key_repeat, NULL);
+
+        key_repeat *= 5;
             
         /* This is the first repeat. Shorten the timeout to key_repeat
            (instead of the first time's 3*key_repeat) */
