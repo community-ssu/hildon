@@ -1,3 +1,13 @@
+libhildon (1.0.7-1) stable; urgency=low
+
+  * Fixed at some point in the past, but adding here:
+
+  * Fixes: NB#44440 hildon_note_new_cancel_with_progress_bar does unreasonable ellipsization...
+  * Fixes: NB#49916 ADDRESS BOOK, truncation, §addr_nc_notification4b§
+  * Fixes: NB#52006 The number editor in Pdf Viewer goes on a loop after reaching the maximum value.
+
+ -- Michael Dominic Kostrzewa <michael.kostrzewa@nokia.com>  Fri, 25 May 2007 11:05:41 +0300
+
 libhildon (1.0.6-1) stable; urgency=low
 
   * Fixes: NB#54061 Notes application crashes when font size & font colour is changed

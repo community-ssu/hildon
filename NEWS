@@ -1,3 +1,6 @@
+[1.0.7-1 release]
+* Adding the gtk-timeout-update multiplier  to certain widgets
+
 [1.0.6-1 release]
 * Memory allocation fixes for color and font selection widgets
 * Breadcrumb leak/visibility fixes
