@@ -1,5 +1,11 @@
 2007-05-28  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
+	* src/hildon-date-editor.c: Changing the default max year to 2037. The
+	max/min year properties can be altered, so the client can modify it
+	anyways. 1970 - 2037 sounds like a sane default. Fixes NB#54147.
+
+2007-05-28  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
 	* src/hildon-calendar.c: Removing the unused 'hildonlike' property, making
 	hildonlike by default. Fixing a problem with disappearing arrows when
 	scrolling through months and years. Fixes NB#54127. 

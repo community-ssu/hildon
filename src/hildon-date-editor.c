@@ -84,7 +84,7 @@
 
 #define                                         DEFAULT_MIN_YEAR 1970
 
-#define                                         DEFAULT_MAX_YEAR 3000
+#define                                         DEFAULT_MAX_YEAR 2037
 
 static GtkContainerClass*                       parent_class;
 
