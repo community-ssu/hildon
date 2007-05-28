@@ -1,3 +1,8 @@
+2007-05-28  Michael Dominic K.  <mdk@mdk.am> 
+
+	* src/hildon-font-selection-dialog.c: When the font is really big, add the
+	scrollbar to the preview dialog. Fixes NB#54147.
+
 2007-05-28  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
 	* src/hildon-date-editor.c: Changing the default max year to 2037. The

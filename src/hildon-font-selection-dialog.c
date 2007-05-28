@@ -1161,10 +1161,6 @@ hildon_font_selection_dialog_show_preview       (HildonFontSelectionDialog *font
 
     str = NULL;
 
-    gtk_container_add (GTK_CONTAINER (GTK_DIALOG(preview_dialog)->vbox),
-            preview_label);
-
-
     /* set keypress handler (ESC hardkey) */
     g_signal_connect (G_OBJECT (preview_dialog), "key-press-event",
             G_CALLBACK(hildon_font_selection_dialog_preview_key_press),
@@ -1180,13 +1176,16 @@ hildon_font_selection_dialog_show_preview       (HildonFontSelectionDialog *font
             &family_set, "size", &size, "size-set", &size_set,
             NULL);
 
-    /* FIXME: This is a slightly ugly hack to force the width of the window so that
-     * the whole text fits with various font sizes. It's being done in such a way, 
-     * because of some GtkLabel wrapping issues and other mysterious bugs related to 
-     * truncating ellipsizing. Needs a rethink in future */
+    /* A smallish hack to add scrollbar when font size is really big */
 
-    gint dialog_width = (size_set && size > 24) ? 600 : 500; 
-    gtk_window_set_default_size (GTK_WINDOW (preview_dialog), dialog_width, -1);
+    if (size_set && size > 24) {
+        GtkScrolledWindow *scrolled = GTK_SCROLLED_WINDOW (gtk_scrolled_window_new (NULL, NULL));
+        gtk_scrolled_window_set_policy (scrolled, GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
+        gtk_scrolled_window_add_with_viewport (scrolled, GTK_WIDGET (preview_label));
+        gtk_container_add (GTK_CONTAINER (GTK_DIALOG(preview_dialog)->vbox), GTK_WIDGET (scrolled));
+        gtk_widget_set_size_request (GTK_WIDGET (scrolled), -1, 400);
+    } else 
+        gtk_container_add (GTK_CONTAINER (GTK_DIALOG(preview_dialog)->vbox), GTK_WIDGET (preview_label));
 
     /* make reference text to have the same fontface and size */
     if (family_set)
