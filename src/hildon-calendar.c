@@ -775,20 +775,6 @@ hildon_calendar_class_init                      (HildonCalendarClass *class)
                 0, 10000, 0,
                 GTK_PARAM_READWRITE));
 
-    /**
-     * HildonCalendar:hildonlike:
-     *
-     * Changes the appearance and behaviour of HildonCalendar to be consistent with
-     * Hildon library.
-     * 
-     */
-    gtk_widget_class_install_style_property (widget_class,
-            g_param_spec_boolean ("hildonlike",
-                "Size request",
-                "Size allocate",
-                FALSE,
-                GTK_PARAM_READABLE));
-
     hildon_calendar_signals[MONTH_CHANGED_SIGNAL] =
         g_signal_new ("month_changed",
                 G_OBJECT_CLASS_TYPE (gobject_class),
@@ -1297,7 +1283,6 @@ hildon_calendar_main_button                     (GtkWidget *widget,
     gint row, col;
     gint day_month;
     gint day;
-    gboolean hildonlike;
 
     calendar = HILDON_CALENDAR (widget);
     private_data = HILDON_CALENDAR_GET_PRIVATE (widget);
@@ -1312,23 +1297,19 @@ hildon_calendar_main_button                     (GtkWidget *widget,
     if (row == -1 || col == -1)
         return;
 
-    gtk_widget_style_get (GTK_WIDGET (calendar), "hildonlike", &hildonlike, NULL);
     day_month = calendar->day_month[row][col];
 
-    if (hildonlike) 
+    if ((calendar->year == private_data->min_year &&
+                calendar->month == 0 && day_month == MONTH_PREV) ||
+            (calendar->year == private_data->max_year &&
+             calendar->month == 11 && day_month == MONTH_NEXT)) 
     {
-        if ((calendar->year == private_data->min_year &&
-                    calendar->month == 0 && day_month == MONTH_PREV) ||
-                (calendar->year == private_data->max_year &&
-                 calendar->month == 11 && day_month == MONTH_NEXT)) 
-        {
-            private_data->is_bad_day = TRUE;
-            g_signal_emit (calendar, hildon_calendar_signals[ERRONEOUS_DATE_SIGNAL], 0);
-            return;
-        }
+        private_data->is_bad_day = TRUE;
+        g_signal_emit (calendar, hildon_calendar_signals[ERRONEOUS_DATE_SIGNAL], 0);
+        return;
     }
 
-    if (event->type == (hildonlike ? GDK_BUTTON_RELEASE : GDK_BUTTON_PRESS))
+    if (event->type == GDK_BUTTON_RELEASE)
     {
         day = calendar->day[row][col];
 
@@ -2118,6 +2099,14 @@ hildon_calendar_expose                          (GtkWidget *widget,
             hildon_calendar_paint_week_numbers (widget);
     }
 
+    /* FIXME This appeared after 2.6 -> 2.10 migration. Without this the 
+     * arrows disappear when spinning through the calendar. Apparently, something 
+     * overdraws them somehow or the expose events go into blackhole. This is 
+     * a dirty fix... but kinda works */
+
+    hildon_calendar_paint_header (widget);
+    hildon_calendar_paint_footer (widget);
+
     return FALSE;
 }
 
@@ -2236,7 +2225,6 @@ hildon_calendar_paint_day_names                 (GtkWidget *widget)
     HildonCalendarPrivate *private_data;
     gint focus_padding;
     gint focus_width;
-    gboolean hildonlike;
 
     g_return_if_fail (HILDON_IS_CALENDAR (widget));
     calendar = HILDON_CALENDAR (widget);
@@ -2246,7 +2234,6 @@ hildon_calendar_paint_day_names                 (GtkWidget *widget)
     gtk_widget_style_get (GTK_WIDGET (widget),
             "focus-line-width", &focus_width,
             "focus-padding", &focus_padding,
-            "hildonlike", &hildonlike,
             NULL);
     /*
      * Handle freeze/thaw functionality
@@ -2274,23 +2261,6 @@ hildon_calendar_paint_day_names                 (GtkWidget *widget)
      * Draw rectangles as inverted background for the labels.
      */
 
-    /* Hildon: don't paint dayname window */
-    if (!hildonlike)
-    {
-        gdk_gc_set_foreground (gc, SELECTED_BG_COLOR (widget));
-        gdk_draw_rectangle (private_data->day_name_win, gc, TRUE,
-                CALENDAR_MARGIN, CALENDAR_MARGIN,
-                cal_width-CALENDAR_MARGIN * 2,
-                private_data->day_name_h - CALENDAR_MARGIN);
-
-        if (calendar->display_flags & HILDON_CALENDAR_SHOW_WEEK_NUMBERS)
-            gdk_draw_rectangle (private_data->day_name_win, gc, TRUE,
-                    CALENDAR_MARGIN,
-                    private_data->day_name_h - CALENDAR_YSEP,
-                    private_data->week_width - CALENDAR_YSEP - CALENDAR_MARGIN,
-                    CALENDAR_YSEP);
-    }
-
     /*
      * Write the labels
      */
@@ -2313,7 +2283,7 @@ hildon_calendar_paint_day_names                 (GtkWidget *widget)
         pango_layout_get_pixel_extents (layout, NULL, &logical_rect);
 
         /* Hildon: draw passive focus for day name */
-        if (hildonlike && calendar->focus_col == i)
+        if (calendar->focus_col == i)
             gtk_paint_box(GTK_WIDGET (calendar)->style,
                     private_data->day_name_win,
                     GTK_STATE_NORMAL,
@@ -2346,7 +2316,6 @@ hildon_calendar_paint_week_numbers              (GtkWidget *widget)
     PangoRectangle logical_rect;
     gint focus_padding;
     gint focus_width;
-    gboolean hildonlike;
 
     g_return_if_fail (HILDON_IS_CALENDAR (widget));
     g_return_if_fail (widget->window != NULL);
@@ -2368,7 +2337,6 @@ hildon_calendar_paint_week_numbers              (GtkWidget *widget)
     gtk_widget_style_get (GTK_WIDGET (widget),
             "focus-line-width", &focus_width,
             "focus-padding", &focus_padding,
-            "hildonlike", &hildonlike,
             NULL);
 
     /*
@@ -2384,21 +2352,6 @@ hildon_calendar_paint_week_numbers              (GtkWidget *widget)
     gdk_gc_set_foreground (gc, SELECTED_BG_COLOR (widget));
 
     /* Hildon: don't paint background for weekday window */
-    if (!hildonlike)
-    {
-        if (private_data->day_name_win)
-            gdk_draw_rectangle (private_data->week_win, gc, TRUE,
-                    CALENDAR_MARGIN,
-                    0,
-                    private_data->week_width - CALENDAR_MARGIN,
-                    private_data->main_h + private_data->day_name_h - CALENDAR_MARGIN);
-        else
-            gdk_draw_rectangle (private_data->week_win, gc, TRUE,
-                    CALENDAR_MARGIN,
-                    CALENDAR_MARGIN,
-                    private_data->week_width - CALENDAR_MARGIN,
-                    private_data->main_h - 2 * CALENDAR_MARGIN);
-    }
 
     /*
      * Write the labels
@@ -2428,7 +2381,7 @@ hildon_calendar_paint_week_numbers              (GtkWidget *widget)
         pango_layout_get_pixel_extents (layout, NULL, &logical_rect);
 
         /* Hildon: draw passive focus for week */
-        if (hildonlike && calendar->focus_row == row) 
+        if (calendar->focus_row == row) 
         {
             guint y = top_y_for_row (calendar, calendar->focus_row + 1);
 
@@ -2495,7 +2448,6 @@ hildon_calendar_paint_day                       (GtkWidget *widget,
     gint y_top;
     gint y_loc;
     gint focus_width;
-    gboolean hildonlike;
 
     HildonCalendarPrivate *private_data;
     PangoLayout *layout;
@@ -2519,8 +2471,7 @@ hildon_calendar_paint_day                       (GtkWidget *widget,
         return;
     }
 
-    gtk_widget_style_get (widget, "focus-line-width", &focus_width,
-            "hildonlike", &hildonlike, NULL);
+    gtk_widget_style_get (widget, "focus-line-width", &focus_width, NULL);
 
     day = calendar->day[row][col];
     x_left = left_x_for_column (calendar, col);
@@ -2544,23 +2495,14 @@ hildon_calendar_paint_day                       (GtkWidget *widget,
         if (calendar->selected_day == day)
         {
             /* Hildon: use custom graphics */
-            if (hildonlike)
-            {
-                gtk_paint_box(GTK_WIDGET (calendar)->style,
-                        private_data->main_win,
-                        GTK_STATE_NORMAL,
-                        GTK_SHADOW_NONE, NULL,
-                        GTK_WIDGET (calendar), "active-day",
-                        x_left, y_top,
-                        HILDON_DAY_WIDTH,
-                        HILDON_DAY_HEIGHT);
-            }
-            else
-            {
-                gdk_gc_set_foreground (gc, SELECTED_BG_COLOR (GTK_WIDGET (calendar)));
-                gdk_draw_rectangle (private_data->main_win, gc, TRUE, x_left, y_top,
-                        HILDON_DAY_WIDTH, HILDON_DAY_HEIGHT);
-            }
+            gtk_paint_box(GTK_WIDGET (calendar)->style,
+                    private_data->main_win,
+                    GTK_STATE_NORMAL,
+                    GTK_SHADOW_NONE, NULL,
+                    GTK_WIDGET (calendar), "active-day",
+                    x_left, y_top,
+                    HILDON_DAY_WIDTH,
+                    HILDON_DAY_HEIGHT);
         } 
         if (calendar->marked_date[day-1])
             gdk_gc_set_foreground (gc, MARKED_COLOR    (GTK_WIDGET (calendar)));
@@ -2594,7 +2536,7 @@ hildon_calendar_paint_day                       (GtkWidget *widget,
     }
 
     /* Hildon: paint green indicator for current day */
-    if (hildonlike && (day == private_data->current_day && calendar->selected_day !=
+    if ((day == private_data->current_day && calendar->selected_day !=
                 private_data->current_day) && (calendar->day_month[row][col] == MONTH_CURRENT))
         hildon_calendar_check_current_date (calendar, x_left, y_top);
 
@@ -3192,19 +3134,17 @@ hildon_calendar_button_press                    (GtkWidget *widget,
     HildonCalendar *calendar;
     HildonCalendarPrivate *private_data;
     gint arrow = -1;
-    gboolean hildonlike;
 
     calendar = HILDON_CALENDAR (widget);
     private_data = HILDON_CALENDAR_GET_PRIVATE (widget);
 
-    gtk_widget_style_get (widget, "hildonlike", &hildonlike, NULL);
 
-    if (!hildonlike || event->type == GDK_2BUTTON_PRESS)
+    if (event->type == GDK_2BUTTON_PRESS)
     {
         if (event->window == private_data->main_win)
             hildon_calendar_main_button (widget, event);
     }
-    else if (hildonlike && (event->window == private_data->main_win))
+    else if (event->window == private_data->main_win)
     {
         gint x = (gint) (event->x);
         gint y = (gint) (event->y);
@@ -3257,15 +3197,11 @@ hildon_calendar_button_release                  (GtkWidget *widget,
 {
     HildonCalendar *calendar;
     HildonCalendarPrivate *private_data;
-    gboolean hildonlike;
 
     calendar = HILDON_CALENDAR (widget);
     private_data = HILDON_CALENDAR_GET_PRIVATE (widget);
 
-    gtk_widget_style_get(widget, "hildonlike", &hildonlike,
-            NULL);
-
-    if (hildonlike && (event->window == private_data->main_win))
+    if (event->window == private_data->main_win)
     {
         hildon_calendar_main_button (widget, event);
         gint x = (gint) (event->x);
@@ -3310,41 +3246,34 @@ hildon_calendar_motion_notify                   (GtkWidget *widget,
     gint event_x, event_y;
     gint row, col;
     gint old_row, old_col;
-    gboolean hildonlike;
 
     calendar = HILDON_CALENDAR (widget);
     private_data = HILDON_CALENDAR_GET_PRIVATE (widget);
     event_x = (gint) (event->x);
     event_y = (gint) (event->y);
 
-    gtk_widget_style_get(widget, "hildonlike", &hildonlike,
-            NULL);
-
     if (event->window == private_data->main_win)
     {
-        if (hildonlike)
+        /* Hildon: make active day to move, when stylus is slided */
+        if (private_data->slide_stylus)
         {
-            /* Hildon: make active day to move, when stylus is slided */
-            if (private_data->slide_stylus)
-            {
-                gint c_row = row_from_y (calendar, event_y);
-                gint c_col = column_from_x (calendar, event_x);
+            gint c_row = row_from_y (calendar, event_y);
+            gint c_col = column_from_x (calendar, event_x);
 
-                if (calendar->day_month[c_row][c_col] == MONTH_PREV ||
-                        calendar->day_month[c_row][c_col] == MONTH_NEXT)
-                { }
-                else if ((private_data->prev_row != c_row || private_data->prev_col != c_col) &&
-                        (calendar->highlight_row != -1 && calendar->highlight_col != -1))
-                {
-                    hildon_calendar_select_and_focus_day (calendar, 
-                            calendar->day[c_row][c_col]);
-                    /* Update passive focus indicators work weekday number and name */
-                    hildon_calendar_paint_week_numbers (GTK_WIDGET (calendar));
-                    hildon_calendar_paint_day_names (GTK_WIDGET (calendar));
-                }
-                private_data->prev_col = c_col;
-                private_data->prev_row = c_row;    
+            if (calendar->day_month[c_row][c_col] == MONTH_PREV ||
+                    calendar->day_month[c_row][c_col] == MONTH_NEXT)
+            { }
+            else if ((private_data->prev_row != c_row || private_data->prev_col != c_col) &&
+                    (calendar->highlight_row != -1 && calendar->highlight_col != -1))
+            {
+                hildon_calendar_select_and_focus_day (calendar, 
+                        calendar->day[c_row][c_col]);
+                /* Update passive focus indicators work weekday number and name */
+                hildon_calendar_paint_week_numbers (GTK_WIDGET (calendar));
+                hildon_calendar_paint_day_names (GTK_WIDGET (calendar));
             }
+            private_data->prev_col = c_col;
+            private_data->prev_row = c_row;    
         }
         if (private_data->in_drag) 
         {
@@ -3488,7 +3417,6 @@ hildon_calendar_paint_arrow                     (GtkWidget *widget,
     GdkGC *gc;
     HildonCalendar *calendar;
     gint state;
-    gboolean hildonlike;
     guint arrow_hlength, arrow_vlength;
     /*  gint width, height;*/
 
@@ -3497,7 +3425,6 @@ hildon_calendar_paint_arrow                     (GtkWidget *widget,
     gtk_widget_style_get (widget,
             "scroll-arrow-hlength", &arrow_hlength,
             "scroll-arrow-vlength", &arrow_vlength,
-            "hildonlike", &hildonlike,
             NULL);
 
     if (private_data->freeze_count)
@@ -3521,9 +3448,8 @@ hildon_calendar_paint_arrow                     (GtkWidget *widget,
         gdk_window_clear(window);
 
         /* Hildon: added support for dimmed arrows */
-        if (hildonlike &&
-                ((private_data->min_year && calendar->year <= private_data->min_year) ||
-                 (private_data->max_year && calendar->year >= private_data->max_year)))
+        if (((private_data->min_year && calendar->year <= private_data->min_year) ||
+             (private_data->max_year && calendar->year >= private_data->max_year)))
         {
             if (private_data->min_year &&
                     calendar->year <= private_data->min_year)

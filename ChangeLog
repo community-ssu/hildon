@@ -1,5 +1,11 @@
 2007-05-28  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
+	* src/hildon-calendar.c: Removing the unused 'hildonlike' property, making
+	hildonlike by default. Fixing a problem with disappearing arrows when
+	scrolling through months and years. Fixes NB#54127. 
+
+2007-05-28  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
 	* examples/hildon-date-editor-example.c: Adding error callback to the date
 	editor example. 
 
