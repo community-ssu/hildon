@@ -28,6 +28,16 @@
 #include                                        <gtk/gtk.h>
 #include                                        "hildon.h"
 
+static gboolean
+on_error (GtkWidget *widget, HildonDateTimeError error_type);
+
+static gboolean
+on_error (GtkWidget *widget, HildonDateTimeError error_type)
+{
+    g_debug ("Error: %d", error_type);
+    return FALSE;
+}
+
 int
 main (int argc, char **args)
 {
@@ -39,6 +49,8 @@ main (int argc, char **args)
     gtk_box_pack_start (GTK_BOX (dialog->vbox), GTK_WIDGET (date_editor), FALSE, FALSE, 0);
     gtk_dialog_add_button (dialog, "Close", GTK_RESPONSE_CANCEL);
 
+    g_signal_connect (G_OBJECT (date_editor), "date_error", G_CALLBACK (on_error), NULL);
+        
     gtk_widget_show_all (GTK_WIDGET (dialog));
     gtk_dialog_run (dialog);
     
