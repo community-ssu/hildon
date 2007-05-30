@@ -361,9 +361,12 @@ crumb_activated_cb (GtkWidget *button,
       child = GTK_WIDGET (priv->item_list->data);
 
       /* We remove the tip of the list until we hit the clicked button */
-      while (child != button)
+      while (child && child != button)
         {
           gtk_container_remove (GTK_CONTAINER (bct), child);
+
+          if (priv->item_list == NULL)
+              return;
 
           child = GTK_WIDGET (priv->item_list->data);
         }
