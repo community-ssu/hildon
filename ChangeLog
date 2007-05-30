@@ -1,3 +1,12 @@
+2007-05-30  Xan Lopez  <xan.lopez@nokia.com>
+
+	* src/hildon-bread-crumb-trail.c (hildon_bread_crumb_trail_class_init):
+	Add a new signal "move-parent", bind Escape and BackSpace to it. The handler
+	will fake an activation on the previous to the last item of the trail, so
+	the effect can be overrided by the developer as usual.
+	Also change the callback for the back button to do the same thing, so its
+	effect can be overrided too.
+
 2007-05-30  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
 	* src/hildon-caption.c: Implementing the proper focus grabbing in the

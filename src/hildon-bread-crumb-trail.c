@@ -37,6 +37,7 @@
  * implemented if needed. See #HildonBreadCrumb for more details.
  */
 
+#include <gdk/gdkkeysyms.h>
 #include "hildon-marshalers.h"
 #include "hildon-bread-crumb-trail.h"
 #include "hildon-bread-crumb-widget.h"
@@ -54,6 +55,7 @@ struct _HildonBreadCrumbTrailPrivate
 
 enum {
   CRUMB_CLICKED,
+  MOVE_PARENT,
   LAST_SIGNAL
 };
 
@@ -79,6 +81,9 @@ static void hildon_bread_crumb_trail_finalize (GObject *object);
 static void hildon_bread_crumb_trail_scroll_back (GtkWidget *button,
                                                   HildonBreadCrumbTrail *bct);
 static void hildon_bread_crumb_trail_update_back_button_sensitivity (HildonBreadCrumbTrail *bct);
+static void hildon_bread_crumb_trail_move_parent (HildonBreadCrumbTrail *bct);
+
+static gpointer get_bread_crumb_id (HildonBreadCrumb *item);
 
 static guint bread_crumb_trail_signals[LAST_SIGNAL] = { 0 };
 
@@ -93,6 +98,7 @@ hildon_bread_crumb_trail_class_init (HildonBreadCrumbTrailClass *klass)
   GtkObjectClass *object_class = (GtkObjectClass*)klass;
   GtkWidgetClass *widget_class = (GtkWidgetClass*)klass;
   GtkContainerClass *container_class = (GtkContainerClass*)klass;
+  GtkBindingSet *binding_set;
 
   /* GObject signals */
   gobject_class->finalize = hildon_bread_crumb_trail_finalize;
@@ -105,6 +111,9 @@ hildon_bread_crumb_trail_class_init (HildonBreadCrumbTrailClass *klass)
   container_class->add = hildon_bread_crumb_trail_add;
   container_class->forall = hildon_bread_crumb_trail_forall;
   container_class->remove = hildon_bread_crumb_trail_remove;
+
+  /* HildonBreadCrumbTrail signals */
+  klass->move_parent = hildon_bread_crumb_trail_move_parent;
 
   /* Style properties */
 
@@ -140,7 +149,26 @@ hildon_bread_crumb_trail_class_init (HildonBreadCrumbTrailClass *klass)
                   _hildon_marshal_BOOLEAN__POINTER,
                   G_TYPE_BOOLEAN, 1,
                   G_TYPE_POINTER);
+
+  bread_crumb_trail_signals[MOVE_PARENT] =
+    g_signal_new ("move-parent",
+                  G_OBJECT_CLASS_TYPE (object_class),
+                  G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
+                  G_STRUCT_OFFSET (HildonBreadCrumbTrailClass, move_parent),
+                  NULL, NULL,
+                  g_cclosure_marshal_VOID__VOID,
+                  G_TYPE_NONE,
+                  0);
                   
+
+  /* Binding set */
+  binding_set = gtk_binding_set_by_class (widget_class);
+
+  gtk_binding_entry_add_signal (binding_set, GDK_Escape, 0,
+                                "move-parent", 0);
+  gtk_binding_entry_add_signal (binding_set, GDK_BackSpace, 0,
+                                "move-parent", 0);
+                                
   /* Private data */
   g_type_class_add_private (gobject_class, sizeof (HildonBreadCrumbTrailPrivate));
 }
@@ -153,6 +181,16 @@ hildon_bread_crumb_trail_finalize (GObject *object)
   g_list_free (priv->item_list);
 
   G_OBJECT_CLASS (hildon_bread_crumb_trail_parent_class)->finalize (object);
+}
+
+static void
+hildon_bread_crumb_trail_move_parent (HildonBreadCrumbTrail *bct)
+{
+  if (g_list_length (bct->priv->item_list) > 1)
+    {
+      g_signal_emit_by_name (HILDON_BREAD_CRUMB (bct->priv->item_list->next->data),
+                             "crumb-activated");
+    }
 }
 
 static void
@@ -354,6 +392,7 @@ crumb_activated_cb (GtkWidget *button,
   if (signal_handled == FALSE)
     {
       GtkWidget *child;
+      gboolean focus_last_item = FALSE;
       HildonBreadCrumbTrailPrivate *priv;
 
       priv = bct->priv;
@@ -363,6 +402,9 @@ crumb_activated_cb (GtkWidget *button,
       /* We remove the tip of the list until we hit the clicked button */
       while (child && child != button)
         {
+          if (GTK_WIDGET_HAS_FOCUS (child))
+            focus_last_item = TRUE;
+
           gtk_container_remove (GTK_CONTAINER (bct), child);
 
           if (priv->item_list == NULL)
@@ -370,6 +412,9 @@ crumb_activated_cb (GtkWidget *button,
 
           child = GTK_WIDGET (priv->item_list->data);
         }
+
+      if (focus_last_item)
+        gtk_widget_grab_focus (GTK_WIDGET (bct->priv->item_list->data));
     }
 }
 
@@ -524,14 +569,7 @@ static void
 hildon_bread_crumb_trail_scroll_back (GtkWidget *button,
                                       HildonBreadCrumbTrail *bct)
 {
-  HildonBreadCrumb *item;
-
-  hildon_bread_crumb_trail_pop (bct);
-
-  item = HILDON_BREAD_CRUMB (bct->priv->item_list->data);
-
-  g_signal_emit (bct, bread_crumb_trail_signals[CRUMB_CLICKED], 0,
-                 get_bread_crumb_id (item));
+  hildon_bread_crumb_trail_move_parent (bct);
 }
 
 static void

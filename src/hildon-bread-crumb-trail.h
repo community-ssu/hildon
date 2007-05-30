@@ -57,6 +57,8 @@ struct _HildonBreadCrumbTrailClass
 
   void (*crumb_clicked) (HildonBreadCrumbTrail *bct,
                          gpointer id);
+
+  void (*move_parent) (HildonBreadCrumbTrail *bct);
 };
 
 GType hildon_bread_crumb_trail_get_type (void) G_GNUC_CONST;
