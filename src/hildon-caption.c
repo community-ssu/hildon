@@ -92,6 +92,9 @@ hildon_caption_set_focus                        (GtkWindow *window,
                                                  GtkWidget *caption);
 
 static void 
+hildon_caption_grab_focus                       (GtkWidget *widget);
+
+static void 
 hildon_caption_activate                         (GtkWidget *widget);
 
 static void
@@ -213,6 +216,7 @@ hildon_caption_class_init                       (HildonCaptionClass *caption_cla
     widget_class->size_request                  = hildon_caption_size_request;
     widget_class->size_allocate                 = hildon_caption_size_allocate;
     widget_class->button_press_event            = hildon_caption_button_press;
+    widget_class->grab_focus                    = hildon_caption_grab_focus;
 
     /* Create new signals and properties */
     widget_class->activate_signal = g_signal_new ("activate",
@@ -576,26 +580,8 @@ hildon_caption_button_press                     (GtkWidget *widget,
     g_assert (priv);
     GtkWidget *child = GTK_BIN (widget)->child;
 
-    /* nothing to do */
-    if (priv->is_focused == TRUE)
-        return FALSE;
-
-    /* If child can take focus, we simply grab focus to it */
-    if ((GTK_WIDGET_CAN_FOCUS (child) || GTK_IS_CONTAINER (child)) &&
-            GTK_WIDGET_IS_SENSITIVE (child))
-    {
-        /* Only if container can be focusable we must set is_focused to TRUE */ 
-        if (GTK_IS_CONTAINER (child))
-        {
-            if (gtk_widget_child_focus (child, GTK_DIR_TAB_FORWARD))
-                priv->is_focused = TRUE;
-        }
-        else
-        {
-            priv->is_focused = TRUE;
-            gtk_widget_grab_focus (GTK_BIN (widget)->child);
-        }
-    }
+    priv->is_focused = TRUE;
+    gtk_widget_grab_focus (GTK_BIN (widget)->child);
 
     return FALSE;
 }
@@ -1157,6 +1143,12 @@ hildon_caption_activate                         (GtkWidget *widget)
 {
     GtkWidget *child = GTK_BIN (widget)->child;
     gtk_widget_grab_focus (child);
+}
+
+static void
+hildon_caption_grab_focus                       (GtkWidget *widget)
+{
+    gtk_widget_grab_focus (GTK_BIN (widget)->child);
 }
 
 /**

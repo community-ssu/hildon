@@ -1,3 +1,8 @@
+2007-05-30  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
+	* src/hildon-caption.c: Implementing the proper focus grabbing in the
+	HildonCaption. Fixes NB#52379. 
+
 2007-05-30  Xan Lopez  <xan.lopez@nokia.com>
 
 	* src/hildon-bread-crumb-trail.c (crumb_activated_cb): be very paranoid about
@@ -6,7 +11,7 @@
 	is removed and the user still lets the default handler run. This would segfault
 	previously.
 
-2007-05-28  Michael Dominic K.  <michael.kostrzewa@nokia.com> 
+2007-05-28  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
 	* src/hildon-font-selection-dialog.c: When the font is really big, add the
 	scrollbar to the preview dialog. Fixes NB#54147.
