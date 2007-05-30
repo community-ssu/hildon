@@ -5,7 +5,7 @@
 	will fake an activation on the previous to the last item of the trail, so
 	the effect can be overrided by the developer as usual.
 	Also change the callback for the back button to do the same thing, so its
-	effect can be overrided too.
+	effect can be overrided too. Fixes: NB#58982
 
 2007-05-30  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
