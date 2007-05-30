@@ -1,5 +1,10 @@
 2007-05-30  Xan Lopez  <xan.lopez@nokia.com>
 
+	* src/hildon-bread-crumb-trail.h (struct _HildonBreadCrumbTrailClass):
+	Add padding for future expansions.
+
+2007-05-30  Xan Lopez  <xan.lopez@nokia.com>
+
 	* src/hildon-bread-crumb-trail.c (hildon_bread_crumb_trail_class_init):
 	Add a new signal "move-parent", bind Escape and BackSpace to it. The handler
 	will fake an activation on the previous to the last item of the trail, so

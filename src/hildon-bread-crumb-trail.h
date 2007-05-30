@@ -58,7 +58,14 @@ struct _HildonBreadCrumbTrailClass
   void (*crumb_clicked) (HildonBreadCrumbTrail *bct,
                          gpointer id);
 
+  /* Signals used for keybindings */
   void (*move_parent) (HildonBreadCrumbTrail *bct);
+
+  /* Padding for future expansion */
+  void (*_hildon_bct_reserved1) (void);
+  void (*_hildon_bct_reserved2) (void);
+  void (*_hildon_bct_reserved3) (void);
+  void (*_hildon_bct_reserved4) (void);
 };
 
 GType hildon_bread_crumb_trail_get_type (void) G_GNUC_CONST;
