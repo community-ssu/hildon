@@ -380,6 +380,11 @@ hildon_window_finalize                          (GObject * obj_self)
     
     self = HILDON_WINDOW (obj_self);
 
+    if (priv->escape_timeout) {
+      g_source_remove (priv->escape_timeout);
+      priv->escape_timeout = 0;
+    }
+
     g_free (priv->borders);
     g_free (priv->toolbar_borders);
 
