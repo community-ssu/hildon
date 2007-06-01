@@ -1,5 +1,13 @@
 2007-06-01  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
+	[1.0.8-1 release]
+
+	* NEWS:
+	* configure.ac:
+	* debian/changelog: Updating.
+
+2007-06-01  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
 	* src/hildon-window.c: When destroying the window, remove (if exists) the
 	escape timeout handler. Fixes #NB59276.
 

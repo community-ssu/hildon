@@ -1,3 +1,24 @@
+libhildon (1.0.8-1) stable; urgency=low
+
+  * Breadcrumb fixes
+  * HildonBanner fixes for transiency 
+  * Updated examples
+
+  * Fixes: NB#56434 Name of the month truncates in the Date & Time page in the startup wizard.
+  * Fixes: NB#54127 The arrow heads of Calendar popup vanish(except the one that is tapped) when tapped on one of the arrows of month or year.
+  * Fixes: NB#50288 Box remains on the am/pm indicator of the Date and Time Settings dialog.
+  * Fixes: NB#56082 HildonCalendarpopup:Sliding sylus to a dimmed date changes the year to 1970
+  * Fixes: NB#54147 Hildon calendar popup:The range checks for the years are not consistent.
+  * Fixes: NB#41501 Last line of text in preview dialog is not shown properly when bold and maximum font is selected
+  * Fixes: NB#38955 Inconsistent behaviour observed when 2 instances of date and time applet are open.
+  * Fixes: NB#52379 HildonCaption won't accept focus when it contains a complex widget tree
+  * Fixes: NB#56624 "Searching" info note displayed even after minimizing the search window
+  * Fixes: NB#59276 Escape timeout handler is not removed when HildonWindow is deleted.
+  * Fixes: NB#55161 Refreshing library is shown on top of other applications 
+  * Fixes: NB#58982 HildonBreadcrumbtrail:Pressing Esc key does not show any effect
+
+ -- Michael Dominic Kostrzewa <michael.kostrzewa@nokia.com>  Fri, 01 Jun 2007 15:43:59 +0300
+
 libhildon (1.0.7-1) stable; urgency=low
 
   * Fixed at some point in the past, but adding here:

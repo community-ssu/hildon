@@ -1,3 +1,9 @@
+[1.0.8-1 release]
+* HildonBanner fixes for transiency
+* InfoBanner fixes
+* Updated examples 
+* A few other fixes in few places 
+
 [1.0.7-1 release]
 * Adding the gtk-timeout-update multiplier  to certain widgets
 

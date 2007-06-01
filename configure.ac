@@ -1,4 +1,4 @@
-AC_INIT([Hildon gtk widgets], [1.0.7], [michael.kostrzewa@nokia.com], [hildon])
+AC_INIT([Hildon gtk widgets], [1.0.8], [michael.kostrzewa@nokia.com], [hildon])
 AC_CANONICAL_SYSTEM
 
 AM_CONFIG_HEADER(config.h)
@@ -21,7 +21,7 @@ AS_VERSION
 #    increment current, and set revision to 0.
 # 5. If any interfaces have been added since the last public release, then increment age.
 # 6. If any interfaces have been removed since the last public release, then set age to 0.  
-AS_LIBTOOL(HILDON, 7, 0, 7)
+AS_LIBTOOL(HILDON, 8, 0, 8)
 AM_INIT_AUTOMAKE
 
 AC_PROG_CC
@@ -137,23 +137,23 @@ else
 fi
 
 # build with relaxed flags or not
-AC_ARG_ENABLE(xan, 
-    AC_HELP_STRING([--enable-xan], [Build with relaxed warning settings]),
+AC_ARG_ENABLE(fatal, 
+    AC_HELP_STRING([--enable-fatal], [Build with fatal warnings]),
     [
      case "${enableval}" in
-         yes) BUILD_WITH_XAN=yes ;;
-         no)  BUILD_WITH_XAN=no ;;
-         *)   AC_MSG_ERROR(bad value ${enableval} for --enable-xan) ;;
+         yes) BUILD_WITH_FATAL=yes ;;
+         no)  BUILD_WITH_FATAL=no ;;
+         *)   AC_MSG_ERROR(bad value ${enableval} for --enable-fatal) ;;
      esac],
-     [BUILD_WITH_XAN=no])
+     [BUILD_WITH_FATAL=no])
 
 # just print out our status
 if test x$BUILD_WITH_XAN = xyes; then
-    AC_MSG_NOTICE(Will build with relaxed warning settings)
-    XAN_CFLAGS=""
-else
-    AC_MSG_NOTICE(Will build with strict warning settings)
+    AC_MSG_NOTICE(Will build with fatal warnings)
     XAN_CFLAGS="-Werror"
+else
+    AC_MSG_NOTICE(Will build with non-fatal warnings)
+    XAN_CFLAGS=""
 fi
 
 # Check support (c unit test)
@@ -199,6 +199,6 @@ Configuration:
 - Build examples.....: ${BUILD_EXAMPLES}
 - Build with asserts.: ${BUILD_WITH_ASSERTS}
 - Build unit tests...: ${BUILD_TESTS}
-- Allow warnings.....: ${BUILD_WITH_XAN}
+- Fatal warnings.....: ${BUILD_WITH_FATAL}
 
 "
