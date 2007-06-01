@@ -1,3 +1,9 @@
+2007-06-01  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
+	* src/hildon-banner.c: When realizing the widget, set the window
+	transiency. Setting the transiency in the gobject constructor is not
+	good, as the widget is not realized at that point. Fixes: #NB56624.
+
 2007-05-30  Xan Lopez  <xan.lopez@nokia.com>
 
 	* src/hildon-bread-crumb-trail.h (struct _HildonBreadCrumbTrailClass):

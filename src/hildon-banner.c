@@ -131,7 +131,7 @@ hildon_banner_constructor                       (GType type,
                                                  GObjectConstructParam *construct_params);
 
 static void
-hildon_banner_finalize				(GObject *object);
+hildon_banner_finalize                          (GObject *object);
 
 static gboolean 
 hildon_banner_map_event                         (GtkWidget *widget, 
@@ -399,17 +399,17 @@ hildon_banner_set_property                      (GObject *object,
 
         case PROP_PARENT_WINDOW:
             window = g_value_get_object (value);         
-	    if (priv->parent) {
-		    g_object_remove_weak_pointer(G_OBJECT (priv->parent), (gpointer) &priv->parent);
-	    }
+            if (priv->parent) {
+                g_object_remove_weak_pointer(G_OBJECT (priv->parent), (gpointer) &priv->parent);
+            }
 
             gtk_window_set_transient_for (GTK_WINDOW (object), (GtkWindow *) window);
             priv->parent = (GtkWindow *) window;
 
             if (window) {
                 gtk_window_set_destroy_with_parent (GTK_WINDOW (object), TRUE);
-		g_object_add_weak_pointer(G_OBJECT (window), (gpointer) &priv->parent);
-	    }
+                g_object_add_weak_pointer(G_OBJECT (window), (gpointer) &priv->parent);
+            }
 
             break;
 
@@ -556,12 +556,12 @@ hildon_banner_constructor                       (GType type,
 }
 
 static void
-hildon_banner_finalize				(GObject *object)
+hildon_banner_finalize                          (GObject *object)
 {
     HildonBannerPrivate *priv = HILDON_BANNER_GET_PRIVATE (object);
 
     if (priv->parent) {
-	g_object_remove_weak_pointer(G_OBJECT (priv->parent), (gpointer) &priv->parent);
+    g_object_remove_weak_pointer(G_OBJECT (priv->parent), (gpointer) &priv->parent);
     }
 
     G_OBJECT_CLASS (parent_class)->finalize (object);
@@ -644,12 +644,16 @@ hildon_banner_check_position                    (GtkWidget *widget)
 static void
 hildon_banner_realize                           (GtkWidget *widget)
 {
+    HildonBannerPrivate *priv = HILDON_BANNER_GET_PRIVATE (widget);
+    g_assert (priv);
+
     /* We let the parent to init widget->window before we need it */
     if (GTK_WIDGET_CLASS (parent_class)->realize)
         GTK_WIDGET_CLASS (parent_class)->realize (widget);
 
     /* We use special hint to turn the banner into information notification. */
     gdk_window_set_type_hint (widget->window, GDK_WINDOW_TYPE_HINT_NOTIFICATION);
+    gtk_window_set_transient_for (GTK_WINDOW (widget), (GtkWindow *) priv->parent);
 
     hildon_banner_check_position (widget);
 }
