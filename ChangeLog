@@ -1,3 +1,8 @@
+2007-06-04  Xan Lopez  <xan.lopez@nokia.com>
+
+	* src/hildon-bread-crumb-trail.c: set children visible before allocation.
+	* src/hildon-bread-crumb-widget.c: set xalign to 0.0 for labels.
+
 2007-06-01  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
 	[1.0.8-1 release]

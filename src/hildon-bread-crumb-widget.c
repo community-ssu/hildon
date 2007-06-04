@@ -264,6 +264,7 @@ hildon_bread_crumb_widget_set_contents (HildonBreadCrumbWidget *bread_crumb)
       if (priv->text)
         {
           priv->label = gtk_label_new (priv->text);
+          g_object_set (G_OBJECT (priv->label), "xalign", 0.0, NULL);
           gtk_label_set_ellipsize (GTK_LABEL (priv->label),
                                    PANGO_ELLIPSIZE_END);
 
@@ -291,6 +292,7 @@ hildon_bread_crumb_widget_set_contents (HildonBreadCrumbWidget *bread_crumb)
                           TRUE, TRUE, 0);
 
       priv->label = gtk_label_new (priv->text);
+      g_object_set (G_OBJECT (priv->label), "xalign", 0.0, NULL);
       gtk_label_set_ellipsize (GTK_LABEL (priv->label),
                                PANGO_ELLIPSIZE_END);
       gtk_box_pack_start (GTK_BOX (bread_crumb->contents), priv->label, TRUE, TRUE, 0);

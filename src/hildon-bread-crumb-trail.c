@@ -322,8 +322,8 @@ hildon_bread_crumb_trail_size_allocate (GtkWidget *widget,
           if (child_allocation.width > req.width)
             {
               first_hide = p->next;
-              gtk_widget_size_allocate (child, &child_allocation);
               gtk_widget_set_child_visible (child, TRUE);
+              gtk_widget_size_allocate (child, &child_allocation);
               child_allocation.x += child_allocation.width;
             }
           else
@@ -359,8 +359,8 @@ hildon_bread_crumb_trail_size_allocate (GtkWidget *widget,
         }
 
       child_allocation.width = natural_width;
-      gtk_widget_size_allocate (child, &child_allocation);
       gtk_widget_set_child_visible (child, TRUE);
+      gtk_widget_size_allocate (child, &child_allocation);
       child_allocation.x += child_allocation.width;
     }
 
