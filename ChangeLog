@@ -1,7 +1,7 @@
 2007-06-07  Xan Lopez  <xan.lopez@nokia.com>
 
 	* src/hildon-window: actually, you need to use the macro always, there's
-	no private pointer in the class structure. We should have cleaned this up
+	no private pointer in the instance structure. We should have cleaned this up
 	when we had the chance...
 	
 2007-06-07  Xan Lopez  <xan.lopez@nokia.com>
