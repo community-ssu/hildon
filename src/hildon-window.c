@@ -1747,7 +1747,7 @@ hildon_window_get_menu                          (HildonWindow * self)
 
     g_return_val_if_fail (HILDON_IS_WINDOW (self), NULL);
 
-    priv = HILDON_WINDOW_GET_PRIVATE (priv);
+    priv = HILDON_WINDOW_GET_PRIVATE (self);
 
     return GTK_MENU (priv->menu);
 }
