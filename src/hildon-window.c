@@ -1720,9 +1720,13 @@ void
 hildon_window_remove_toolbar                    (HildonWindow *self, 
                                                  GtkToolbar *toolbar)
 {
+    HildonWindowPrivate *priv;
+
     g_return_if_fail (HILDON_IS_WINDOW (self));
     
-    gtk_container_remove (GTK_CONTAINER (self->priv->vbox), GTK_WIDGET (toolbar));
+    priv = HILDON_WINDOW_GET_PRIVATE (self);
+
+    gtk_container_remove (GTK_CONTAINER (priv->vbox), GTK_WIDGET (toolbar));
 }
 
 /**
@@ -1737,9 +1741,13 @@ hildon_window_remove_toolbar                    (HildonWindow *self,
 GtkMenu*
 hildon_window_get_menu                          (HildonWindow * self)
 {
+    HildonWindowPrivate *priv;
+
     g_return_val_if_fail (HILDON_IS_WINDOW (self), NULL);
 
-    return GTK_MENU (self->priv->menu);
+    priv = HILDON_WINDOW_GET_PRIVATE (priv);
+
+    return GTK_MENU (priv->menu);
 }
 
 /**
@@ -1789,8 +1797,11 @@ hildon_window_set_menu                          (HildonWindow *self,
 gboolean
 hildon_window_get_is_topmost                    (HildonWindow *self)
 {
+    HildonWindowPrivate *priv;
+
     g_return_val_if_fail (HILDON_IS_WINDOW (self), FALSE);
 
-    return self->priv->is_topmost;
+    priv = HILDON_WINDOW_GET_PRIVATE (self);
+    return priv->is_topmost;
 }
 

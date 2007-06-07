@@ -1,5 +1,11 @@
 2007-06-07  Xan Lopez  <xan.lopez@nokia.com>
 
+	* src/hildon-window: actually, you need to use the macro always, there's
+	no private pointer in the class structure. We should have cleaned this up
+	when we had the chance...
+	
+2007-06-07  Xan Lopez  <xan.lopez@nokia.com>
+
 	* src/hildon-window.c: do not get the private date from HildonWindow before
 	it passes the g_return_if_fail check. Once it's passed the test, there's no
 	need to g_assert that it exists. Do not create a HildonWindowPrivate variable
