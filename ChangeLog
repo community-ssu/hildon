@@ -1,3 +1,10 @@
+2007-06-07  Tommi Komulainen  <tommi.komulainen@nokia.com>
+
+	* src/hildon-window.c (hildon_window_window_state_event,
+	hildon_window_is_topmost_notify, hildon_window_class_init): Stop the
+	escape timeout on focus-out-event rather than notify::is-topmost; the
+	latter doesn't get called when menus pop up. Fixes: NB#52946, MB#1101
+
 2007-06-07  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
 	* src/hildon-window.c: Adding a patch from Tommi Komulainen to pass the

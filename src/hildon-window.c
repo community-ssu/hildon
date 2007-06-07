@@ -185,6 +185,9 @@ hildon_window_key_release_event                 (GtkWidget *widget,
 static gboolean
 hildon_window_window_state_event                (GtkWidget *widget, 
                                                  GdkEventWindowState *event);
+static gboolean
+hildon_window_focus_out_event                   (GtkWidget *widget, 
+                                                 GdkEventFocus *event);
 
 static void
 hildon_window_notify                            (GObject *gobject, 
@@ -290,6 +293,7 @@ hildon_window_class_init                        (HildonWindowClass * window_clas
     widget_class->key_press_event       = hildon_window_key_press_event;
     widget_class->key_release_event     = hildon_window_key_release_event;
     widget_class->window_state_event    = hildon_window_window_state_event;
+    widget_class->focus_out_event       = hildon_window_focus_out_event;
 
     /* now the object stuff */
     object_class->finalize              = hildon_window_finalize;
@@ -1219,6 +1223,25 @@ hildon_window_window_state_event                (GtkWidget *widget,
 }
 
 /*
+ * If the window lost focus while the user started to press the ESC key, we
+ * won't get the release event. We need to stop the timeout.
+ */
+static gboolean
+hildon_window_focus_out_event                   (GtkWidget *widget, 
+                                                 GdkEventFocus *event)
+{
+  HildonWindowPrivate *priv = HILDON_WINDOW_GET_PRIVATE (widget);
+
+  if (priv->escape_timeout)
+  {
+      g_source_remove (priv->escape_timeout);
+      priv->escape_timeout = 0;
+  }
+
+  return GTK_WIDGET_CLASS (parent_class)->focus_out_event (widget, event);
+}
+
+/*
  * The menu popuping needs a menu popup-function
  */
 static void
@@ -1273,18 +1296,6 @@ hildon_window_is_topmost_notify                 (HildonWindow *window)
     if (priv->is_topmost)
     {
         hildon_window_take_common_toolbar (window);
-    }
-
-    else
-    {
-        /* If the window lost focus while the user started to press
-         * the ESC key, we won't get the release event. We need to
-         * stop the timeout*/
-        if (priv->escape_timeout)
-        {
-            g_source_remove (priv->escape_timeout);
-            priv->escape_timeout = 0;
-        }
     }
 }
 
