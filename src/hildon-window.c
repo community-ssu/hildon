@@ -1691,19 +1691,20 @@ hildon_window_add_toolbar                       (HildonWindow *self,
                                                  GtkToolbar *toolbar)
 {
     GtkBox *vbox;
-    HildonWindowPrivate *priv = HILDON_WINDOW_GET_PRIVATE (self);
+    HildonWindowPrivate *priv;
 
     g_return_if_fail (HILDON_IS_WINDOW (self));
     g_return_if_fail (toolbar && GTK_IS_TOOLBAR (toolbar));
-    g_assert (priv);
+
+    priv = HILDON_WINDOW_GET_PRIVATE (self);
 
     vbox = GTK_BOX (priv->vbox);
 
-    gtk_box_pack_start (vbox, GTK_WIDGET(toolbar), TRUE, TRUE, 0);
-    gtk_box_reorder_child (vbox, GTK_WIDGET(toolbar), 0);
+    gtk_box_pack_start (vbox, GTK_WIDGET (toolbar), TRUE, TRUE, 0);
+    gtk_box_reorder_child (vbox, GTK_WIDGET (toolbar), 0);
     gtk_widget_set_size_request (GTK_WIDGET (toolbar), -1, TOOLBAR_HEIGHT);
 
-    gtk_widget_queue_resize (GTK_WIDGET(self));
+    gtk_widget_queue_resize (GTK_WIDGET (self));
 }
 
 /**
@@ -1719,12 +1720,9 @@ void
 hildon_window_remove_toolbar                    (HildonWindow *self, 
                                                  GtkToolbar *toolbar)
 {
-    HildonWindowPrivate *priv = HILDON_WINDOW_GET_PRIVATE (self);
-    
     g_return_if_fail (HILDON_IS_WINDOW (self));
-    g_assert (priv);
     
-    gtk_container_remove (GTK_CONTAINER (priv->vbox), GTK_WIDGET(toolbar));
+    gtk_container_remove (GTK_CONTAINER (self->priv->vbox), GTK_WIDGET (toolbar));
 }
 
 /**
@@ -1739,12 +1737,9 @@ hildon_window_remove_toolbar                    (HildonWindow *self,
 GtkMenu*
 hildon_window_get_menu                          (HildonWindow * self)
 {
-    HildonWindowPrivate *priv = HILDON_WINDOW_GET_PRIVATE (self);
-    
     g_return_val_if_fail (HILDON_IS_WINDOW (self), NULL);
-    g_assert (priv);
 
-    return GTK_MENU (priv->menu);
+    return GTK_MENU (self->priv->menu);
 }
 
 /**
@@ -1762,18 +1757,21 @@ void
 hildon_window_set_menu                          (HildonWindow *self, 
                                                  GtkMenu *menu)
 {
-    HildonWindowPrivate *priv = HILDON_WINDOW_GET_PRIVATE (self);
+    HildonWindowPrivate *priv;
 
     g_return_if_fail (HILDON_IS_WINDOW (self));
-    g_assert (priv);
 
-    if (priv->menu != NULL) {
+    priv = HILDON_WINDOW_GET_PRIVATE (self);
+
+    if (priv->menu != NULL)
+    {
         gtk_menu_detach (GTK_MENU (priv->menu));
         g_object_unref (priv->menu);
     }
 
     priv->menu = (menu != NULL) ? GTK_WIDGET (menu) : NULL;
-    if (priv->menu != NULL) {
+    if (priv->menu != NULL)
+    {
         gtk_widget_set_name (priv->menu, "menu_force_with_corners");
         gtk_menu_attach_to_widget (GTK_MENU (priv->menu), GTK_WIDGET (self), &detach_menu_func);
         g_object_ref (GTK_MENU (priv->menu));
@@ -1791,11 +1789,8 @@ hildon_window_set_menu                          (HildonWindow *self,
 gboolean
 hildon_window_get_is_topmost                    (HildonWindow *self)
 {
-    HildonWindowPrivate *priv = HILDON_WINDOW_GET_PRIVATE (self);
-
     g_return_val_if_fail (HILDON_IS_WINDOW (self), FALSE);
-    g_assert (priv);
 
-    return priv->is_topmost;
+    return self->priv->is_topmost;
 }
 

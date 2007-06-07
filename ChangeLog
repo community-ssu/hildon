@@ -1,3 +1,10 @@
+2007-06-07  Xan Lopez  <xan.lopez@nokia.com>
+
+	* src/hildon-window.c: do not get the private date from HildonWindow before
+	it passes the g_return_if_fail check. Once it's passed the test, there's no
+	need to g_assert that it exists. Do not create a HildonWindowPrivate variable
+	if you are only going to access the data once. Whitespace cleanups.
+
 2007-06-04  Xan Lopez  <xan.lopez@nokia.com>
 
 	* src/hildon-bread-crumb-trail.c: set children visible before allocation.
