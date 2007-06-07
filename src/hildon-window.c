@@ -194,7 +194,9 @@ static void
 hildon_window_is_topmost_notify                 (HildonWindow *window);
 
 static gboolean
-hildon_window_toggle_menu                       (HildonWindow * self);
+hildon_window_toggle_menu                       (HildonWindow * self,
+						 guint button,
+						 guint32 time);
 
 static gboolean
 hildon_window_escape_timeout                    (gpointer data);
@@ -1079,7 +1081,7 @@ hildon_window_event_filter                      (GdkXEvent *xevent,
 
         if (xclient_message_type_check (cm, "_MB_GRAB_TRANSFER"))
         {
-            hildon_window_toggle_menu (HILDON_WINDOW ( data ));
+            hildon_window_toggle_menu (HILDON_WINDOW ( data ), cm->data.l[2], cm->data.l[0]);
             return GDK_FILTER_REMOVE;
         }
         /* opera hack clipboard client message */
@@ -1150,7 +1152,7 @@ hildon_window_key_press_event                   (GtkWidget *widget,
     switch (event->keyval)
     {
         case HILDON_HARDKEY_MENU:
-            if (hildon_window_toggle_menu (HILDON_WINDOW (widget)))
+            if (hildon_window_toggle_menu (HILDON_WINDOW (widget), 0, GDK_CURRENT_TIME))
                 return TRUE;
             break;
         case HILDON_HARDKEY_ESC:
@@ -1514,7 +1516,9 @@ detach_menu_func                                (GtkWidget *attach_widget,
  * to toggle)
  */
 static gboolean
-hildon_window_toggle_menu                       (HildonWindow * self)
+hildon_window_toggle_menu                       (HildonWindow * self,
+						 guint button,
+						 guint32 time)
 {
     GtkMenu *menu_to_use = NULL;
     GList *menu_children = NULL;
@@ -1576,16 +1580,14 @@ hildon_window_toggle_menu                       (HildonWindow * self)
             gtk_menu_popup (menu_to_use, NULL, NULL,
                     (GtkMenuPositionFunc)
                     hildon_window_menu_popup_func_full,
-                    self, 0, 
-                    gtk_get_current_event_time ());
+                    self, button, time);
         }
         else
         {
             gtk_menu_popup (menu_to_use, NULL, NULL,
                     (GtkMenuPositionFunc)
                     hildon_window_menu_popup_func,
-                    self, 0, 
-                    gtk_get_current_event_time ());
+                    self, button, time);
         }
         gtk_menu_shell_select_first (GTK_MENU_SHELL (menu_to_use), TRUE);
         return TRUE;

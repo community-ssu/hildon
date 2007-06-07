@@ -1,3 +1,8 @@
+2007-06-07  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
+	* src/hildon-window.c: Adding a patch from Tommi Komulainen to pass the
+	correct timestamp and button to gtk_menu_popup. Fixes MB#1466. 
+
 2007-06-07  Xan Lopez  <xan.lopez@nokia.com>
 
 	* src/hildon-window: actually, you need to use the macro always, there's
