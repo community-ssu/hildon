@@ -1,3 +1,15 @@
+libhildon (1.0.9-1) stable; urgency=low
+
+  * Breadcrumb align/visibility fixes
+
+  * Fixes: MB#1466 hildon_window_toggle_menu() unconditionally uses button=0 for gtk_menu_popup()
+  * Fixes: MB#1230 libhildon doesn't build because of broken strict-aliasing
+  * Fixes: MB#1093 Banners should use GDK_WINDOW_TYPE_HINT_NOTIFICATION
+  * Fixes: NB#52946 Pressing (accidentally) back and then menu key with thumb in quick succession and unfocusing the menu closes the application
+  * Fixes: MB#1101 Reproducible unintentional window/application close bug 
+
+ -- Michael Dominic Kostrzewa <michael.kostrzewa@nokia.com>  Thu, 07 Jun 2007 14:39:06 +0300
+
 libhildon (1.0.8-1) stable; urgency=low
 
   * Breadcrumb fixes
