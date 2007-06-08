@@ -1,3 +1,8 @@
+2007-06-08  Tommi Komulainen  <tommi.komulainen@nokia.com>
+
+	* configure.ac: Remove dysfunctional AC_ARG_ENABLE. Pointed out by
+	Loic Minier.
+
 2007-06-07  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
 	[1.0.9-1 release]

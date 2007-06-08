@@ -114,8 +114,6 @@ else
     AC_MSG_NOTICE(Will not use Maemo GTK+ specific API)
 fi
 
-AC_ARG_ENABLE 
-
 # build with assertion checks (or not)
 AC_ARG_WITH(asserts, 
     AC_HELP_STRING([--with-asserts], [Build with the assertion checks]),
