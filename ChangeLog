@@ -1,3 +1,8 @@
+2007-06-12  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
+	* src/hildon-window.c: Hide the window before performing the destroy.
+	Should make the app closing a little tiny bit more snappy. 
+
 2007-06-12  Xan Lopez  <xan.lopez@nokia.com>
 
 	* src/hildon-seekbar.c: add gtkrange.h header
