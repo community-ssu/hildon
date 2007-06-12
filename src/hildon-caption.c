@@ -578,7 +578,6 @@ hildon_caption_button_press                     (GtkWidget *widget,
 {
     HildonCaptionPrivate *priv = HILDON_CAPTION_GET_PRIVATE (widget);
     g_assert (priv);
-    GtkWidget *child = GTK_BIN (widget)->child;
 
     priv->is_focused = TRUE;
     gtk_widget_grab_focus (GTK_BIN (widget)->child);

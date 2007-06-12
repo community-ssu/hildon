@@ -47,6 +47,7 @@
 #include                                        <gtk/gtkalignment.h>
 #include                                        <gtk/gtkadjustment.h>
 #include                                        <gtk/gtktoolbar.h>
+#include                                        <gtk/gtkrange.h>
 #include                                        <gdk/gdkkeysyms.h>
 #include                                        "hildon-seekbar-private.h"
 

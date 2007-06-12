@@ -1,3 +1,8 @@
+2007-06-12  Xan Lopez  <xan.lopez@nokia.com>
+
+	* src/hildon-seekbar.c: add gtkrange.h header
+	* src/hildon-caption.c: remove unused variable
+
 2007-06-08  Tommi Komulainen  <tommi.komulainen@nokia.com>
 
 	* configure.ac: Remove dysfunctional AC_ARG_ENABLE. Pointed out by
