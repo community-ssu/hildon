@@ -63,9 +63,13 @@ libhildon_@PACKAGE_VERSION_MAJOR@_la_SOURCES 		= hildon-private.c				\
 							  hildon-bread-crumb.c				\
 							  hildon-bread-crumb-widget.c
 
+libhildon_@PACKAGE_VERSION_MAJOR@_built_public_headers  =
+							  hildon-enum-types.h                           \
+							  hildon-marshalers.h
+
 libhildon_@PACKAGE_VERSION_MAJOR@_includedir		= $(includedir)/$(PACKAGE)-$(PACKAGE_VERSION_MAJOR)/$(PACKAGE)
 
-libhildon_@PACKAGE_VERSION_MAJOR@_include_HEADERS 	= hildon-banner.h 				\
+libhildon_@PACKAGE_VERSION_MAJOR@_public_headers 	= hildon-banner.h 				\
 							  hildon-calendar-popup.h 			\
 							  hildon-caption.h 				\
 							  hildon-code-dialog.h 				\
@@ -75,14 +79,12 @@ libhildon_@PACKAGE_VERSION_MAJOR@_include_HEADERS 	= hildon-banner.h 				\
 							  hildon-controlbar.h 				\
 							  hildon-date-editor.h 				\
 							  hildon-defines.h 				\
-							  hildon-enum-types.h 				\
 							  hildon-find-toolbar.h 			\
 							  hildon-helper.h				\
 							  hildon-font-selection-dialog.h 		\
 							  hildon-get-password-dialog.h 			\
 							  hildon-hvolumebar.h 				\
 							  hildon-login-dialog.h 			\
-							  hildon-marshalers.h 				\
 							  hildon-note.h 				\
 							  hildon-number-editor.h 			\
 							  hildon-program.h 				\
@@ -103,6 +105,9 @@ libhildon_@PACKAGE_VERSION_MAJOR@_include_HEADERS 	= hildon-banner.h 				\
 							  hildon-calendar.h				\
 							  hildon-bread-crumb-trail.h			\
 							  hildon-bread-crumb.h
+			  
+libhildon_@PACKAGE_VERSION_MAJOR@_include_HEADERS 	= $(libhildon_public_sources)			\
+							  $(libhildon_built_public_sources)
 
 noinst_HEADERS						= hildon-banner-private.h 			\
 							  hildon-calendar-popup-private.h 		\
@@ -137,7 +142,7 @@ noinst_HEADERS						= hildon-banner-private.h 			\
 # Don't build the library until we have built the header that it needs:
 $(OBJECTS) $(libhildon_$(PACKAGE_VERSION_MAJOR)_la_OBJECTS): hildon-enum-types.h hildon-marshalers.c hildon-marshalers.h
 
-hildon-enum-types.h: 					  @REBUILD@ $(libhildon_$(PACKAGE_VERSION_MAJOR)_include_HEADERS) Makefile
+hildon-enum-types.h: 					  @REBUILD@ $(libhildon_$(PACKAGE_VERSION_MAJOR)_public_headers) Makefile
 	(cd $(srcdir) && glib-mkenums 						\
 			--fhead "#ifndef __HILDON_ENUM_TYPES_H__\n" 		\
 			--fhead "#define __HILDON_ENUM_TYPES_H__\n" 		\
@@ -149,9 +154,9 @@ hildon-enum-types.h: 					  @REBUILD@ $(libhildon_$(PACKAGE_VERSION_MAJOR)_inclu
 			--fprod "/* Enumerations from \"@filename@\" */\n" 	\
 			--vhead "GType @enum_name@_get_type (void);\n#define HILDON_TYPE_@ENUMSHORT@ (@enum_name@_get_type())\n" \
 			--ftail "\nG_END_DECLS\n\n#endif /* __HILDON_ENUM_TYPES_H__ */" \
-		$(libhildon_$(PACKAGE_VERSION_MAJOR)_include_HEADERS)) > $@
+		$(libhildon_$(PACKAGE_VERSION_MAJOR)_public_headers)) > $@
 
-hildon-enum-types.c: 					  @REBUILD@ $(libhildon_$(PACKAGE_VERSION_MAJOR)_include_HEADERS) Makefile
+hildon-enum-types.c: 					  @REBUILD@ $(libhildon_$(PACKAGE_VERSION_MAJOR)_public_headers) Makefile
 	(cd $(srcdir) && glib-mkenums 						\
 			--fhead "#include \"hildon.h\"\n" 			\
 			--fhead "#include <glib-object.h>" 			\
@@ -159,7 +164,7 @@ hildon-enum-types.c: 					  @REBUILD@ $(libhildon_$(PACKAGE_VERSION_MAJOR)_inclu
 			--vhead "GType\n@enum_name@_get_type (void)\n{\n  static GType etype = 0;\n  if (etype == 0) {\n    static const G@Type@Value values[] = {" 	\
 			--vprod "      { @VALUENAME@, \"@VALUENAME@\", \"@valuenick@\" }," \
 			--vtail "      { 0, NULL, NULL }\n    };\n    etype = g_@type@_register_static (\"@EnumName@\", values);\n  }\n  return etype;\n}\n" \
-		$(libhildon_$(PACKAGE_VERSION_MAJOR)_include_HEADERS)) > $@
+		$(libhildon_$(PACKAGE_VERSION_MAJOR)_public_headers)) > $@
 
 hildon-marshalers.h: 					hildon-marshalers.list
 	glib-genmarshal --prefix _hildon_marshal --header hildon-marshalers.list >hildon-marshalers.h

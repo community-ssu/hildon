@@ -1,3 +1,11 @@
+2007-06-12  Xan Lopez  <xan.lopez@nokia.com>
+
+	* src/Makefile.am: remove circular dependency in hildon-enum-types.h creation
+	by splitting the installed headers in generated and non-generated groups. Use
+	only the non-generated headers to create the hildon-enum-types.h file.
+
+	* src/hildon-seekbar.h: gtkscale.h already includes gtkrange.h.
+
 2007-06-12  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
 	* src/hildon-window.c: Hide the window before performing the destroy.
