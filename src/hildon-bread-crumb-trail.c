@@ -743,4 +743,13 @@ hildon_bread_crumb_trail_clear (HildonBreadCrumbTrail *bct)
     {
       hildon_bread_crumb_trail_pop (bct);
     }
+
+  /*
+    Sensitivity hack from hell. We need to do this while
+     http://bugzilla.gnome.org/show_bug.cgi?id=56070 is not
+     fixed to allow repeated clicking on the back button if
+     someone clears and rebuilds the trail when it's clicked
+  */
+  gtk_widget_hide (priv->back_button);
+  gtk_widget_show (priv->back_button);
 }

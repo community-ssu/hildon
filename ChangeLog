@@ -1,3 +1,9 @@
+2007-06-13  Xan Lopez  <xan.lopez@nokia.com>
+
+	* src/hildon-bread-crumb-trail.c (hildon_bread_crumb_trail_clear): workaround
+	http://bugzilla.gnome.org/show_bug.cgi?id=56070 hiding and showing the back
+	button on after clearing the trail.
+
 2007-06-13  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
 	* src/hildon-code-dialog.c: Removing the separator from the dialog.
