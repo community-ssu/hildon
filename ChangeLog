@@ -1,3 +1,7 @@
+2007-06-13  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
+	* src/hildon-code-dialog.c: Removing the separator from the dialog.
+
 2007-06-12  Xan Lopez  <xan.lopez@nokia.com>
 
 	* src/Makefile.am: remove circular dependency in hildon-enum-types.h creation

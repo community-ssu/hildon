@@ -190,6 +190,7 @@ hildon_code_dialog_init                         (HildonCodeDialog *dialog)
     gtk_window_set_title (GTK_WINDOW (dialog), DEVICELOCK_TITLE);
 
     gtk_window_set_type_hint (GTK_WINDOW (dialog), GDK_WINDOW_TYPE_HINT_DIALOG);
+    gtk_dialog_set_has_separator ((GtkDialog *) dialog, FALSE);
 
     hints.min_width  = -1;
     hints.min_height = -1;
