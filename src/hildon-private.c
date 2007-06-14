@@ -42,46 +42,41 @@ gboolean G_GNUC_INTERNAL
 hildon_private_composite_focus                  (GtkWidget *widget, 
                                                  GtkDirectionType direction)
 {
-    GtkWidget *toplevel = NULL;
-    GtkWidget *focus_widget = NULL;
+  GtkWidget *toplevel = NULL;
+  GtkWidget *focus_widget = NULL;
+  gboolean coming_from_outside = FALSE;
+  GtkDirectionType effective_direction;
 
-    /* Get the topmost parent widget */  
-    toplevel = gtk_widget_get_toplevel (widget);
+  toplevel = gtk_widget_get_toplevel (widget);
 
-    if (! GTK_IS_WINDOW (toplevel))
-        return GTK_WIDGET_CLASS (g_type_class_peek_parent (
-                    GTK_WIDGET_GET_CLASS (widget)))->focus (widget, direction);
-    /* Get focus widget in the topmost parent widget */
-    focus_widget = GTK_WINDOW (toplevel)->focus_widget;
+  focus_widget = GTK_WINDOW (toplevel)->focus_widget;
 
-    if (! GTK_IS_WIDGET (focus_widget))
-        return TRUE;
-
-    if (! gtk_widget_is_ancestor (focus_widget, widget))
+  if (focus_widget == NULL || gtk_widget_is_ancestor (focus_widget, widget) == FALSE)
     {
-        gtk_widget_grab_focus (widget);
+      /* When coming from outside we want to give focus to the first
+         item in the widgets */
+      effective_direction = GTK_DIR_TAB_FORWARD;
+      coming_from_outside = TRUE;
     }
-    else
-    {
-        /* Containers grab_focus grabs the focus to the correct widget */
-        switch (direction) {
-            case GTK_DIR_UP:
-            case GTK_DIR_DOWN:
-                if (HILDON_IS_DATE_EDITOR (widget) || HILDON_IS_TIME_EDITOR(widget))
-                    return FALSE;
-                else
-                    return GTK_WIDGET_CLASS (g_type_class_peek_parent
-                            (GTK_WIDGET_GET_CLASS(widget)))->focus (widget, direction);
-                break;
+  else
+    effective_direction = direction;
 
-            default:
-                return GTK_WIDGET_CLASS (g_type_class_peek_parent
-                        (GTK_WIDGET_GET_CLASS(widget)))->focus (widget, direction);
-                break;
-        }
-    }
+  switch (direction) {
+      case GTK_DIR_UP:
+      case GTK_DIR_DOWN:
+      case GTK_DIR_TAB_FORWARD:
+      case GTK_DIR_TAB_BACKWARD:
+        if ((HILDON_IS_DATE_EDITOR (widget) || HILDON_IS_TIME_EDITOR(widget)) &&
+            !coming_from_outside)
+          return FALSE;
+        /* fall through */
+      default:
+        return GTK_WIDGET_CLASS (g_type_class_peek_parent
+                                 (GTK_WIDGET_GET_CLASS(widget)))->focus (widget, effective_direction);
+  }
 
-    return TRUE;
+  g_assert_not_reached ();
+  return TRUE;
 }
 
 

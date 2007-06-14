@@ -1,3 +1,8 @@
+2007-06-14  Xan Lopez  <xan.lopez@nokia.com>
+
+	* src/hildon-private.c (hildon_private_composite_focus): make the focus handler
+	work again.
+
 2007-06-13  Xan Lopez  <xan.lopez@nokia.com>
 
 	* src/hildon-bread-crumb-trail.c (hildon_bread_crumb_trail_clear): workaround
