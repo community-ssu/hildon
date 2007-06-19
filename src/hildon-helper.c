@@ -271,7 +271,6 @@ show_insensitive_message                        (GtkWidget *widget,
  * using a standard @HildonBanner. 
  *
  **/
-
 void
 hildon_helper_set_insensitive_message           (GtkWidget *widget,
                                                  const gchar *message)
@@ -304,7 +303,6 @@ hildon_helper_set_insensitive_message           (GtkWidget *widget,
  * A version of hildon_helper_set_insensitive_message with string formatting.
  *
  **/
-
 void
 hildon_helper_set_insensitive_messagef          (GtkWidget *widget,
                                                  const gchar *format,

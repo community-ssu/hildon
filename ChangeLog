@@ -1,3 +1,15 @@
+2007-06-19  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
+	* src/hildon-volumebar.c:
+	* src/hildon-volumebar.h: Adding the
+	hildon_volumebar_set_range_insensitive_message and
+	hildon_volumebar_set_range_insensitive_messagef functions to set
+	insensitive message on the slider of the volumebar. Fixes NB#61129.
+
+	* examples/Makefile.am:
+	* examples/hildon-hvolumebar-insensitive-example.c: Adding an example to
+	test the new insensitive messsage functionality on HildonVolumebar.
+
 2007-06-14  Xan Lopez  <xan.lopez@nokia.com>
 
 	* src/hildon-private.c (hildon_private_composite_focus): make the focus handler
@@ -9,6 +21,7 @@
 	http://bugzilla.gnome.org/show_bug.cgi?id=56070 hiding and showing the back
 	button on after clearing the trail.
 
+>>>>>>> .r12381
 2007-06-13  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
 	* src/hildon-code-dialog.c: Removing the separator from the dialog.

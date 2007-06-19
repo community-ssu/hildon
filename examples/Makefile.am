@@ -23,6 +23,7 @@ noinst_PROGRAMS				= hildon-window-example 		\
 					  hildon-toolbar-example		\
 					  hildon-code-dialog-example		\
 					  hildon-hvolumebar-example		\
+					  hildon-hvolumebar-insensitive-example \
 					  hildon-lookup-example			\
 					  hildon-number-editor-example		\
 					  hildon-scrolled-window-example	\
@@ -141,6 +142,11 @@ hildon_vvolumebar_example_SOURCES	= hildon-vvolumebar-example.c
 hildon_hvolumebar_example_LDADD		= $(HILDON_OBJ_LIBS)
 hildon_hvolumebar_example_CFLAGS	= $(HILDON_OBJ_CFLAGS)
 hildon_hvolumebar_example_SOURCES	= hildon-hvolumebar-example.c
+
+# Hildon hvolume bar insensitive example
+hildon_hvolumebar_insensitive_example_LDADD	= $(HILDON_OBJ_LIBS)
+hildon_hvolumebar_insensitive_example_CFLAGS	= $(HILDON_OBJ_CFLAGS)
+hildon_hvolumebar_insensitive_example_SOURCES	= hildon-hvolumebar-insensitive-example.c
 
 # Hildon toolbar example
 hildon_toolbar_example_LDADD		= $(HILDON_OBJ_LIBS)

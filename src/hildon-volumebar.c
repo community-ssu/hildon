@@ -700,3 +700,56 @@ hildon_volumebar_level_change                   (HildonVolumebar *self)
     /* FIXME Use numerical val, id */
     g_signal_emit_by_name (GTK_WIDGET (self), "level_changed");
 }
+
+/**
+ * hildon_volumebar_set_range_insensitive_message:
+ * @widget: A @GtkWidget to assign the banner to 
+ * @message: A message to display to the user
+ *
+ * Used to asign an insensitive message to the slider of the given volumebar.
+ * It simply calls hildon_helper_set_insensitive_message on the slider/range of 
+ * the volumebar. 
+ */
+void
+hildon_volumebar_set_range_insensitive_message  (GtkWidget *widget,
+                                                 const gchar *message)
+{
+    g_return_if_fail (HILDON_IS_VOLUMEBAR (widget));
+
+    HildonVolumebarPrivate *priv;
+    priv = HILDON_VOLUMEBAR_GET_PRIVATE (widget);
+
+    hildon_helper_set_insensitive_message ((GtkWidget *) priv->volumebar, message);
+}
+
+/**
+ * hildon_volumebar_set_range_insensitive_messagef:
+ * @widget: A @GtkWidget to assign the banner to 
+ * @format : a printf-like format string
+ * @varargs : arguments for the format string
+ *
+ * A helper printf-like variant of hildon_helper_set_insensitive_message.
+ */
+void
+hildon_volumebar_set_range_insensitive_messagef (GtkWidget *widget,
+                                                 const gchar *format,
+                                                 ...)
+{
+    g_return_if_fail (HILDON_IS_VOLUMEBAR (widget));
+
+    HildonVolumebarPrivate *priv;
+    priv = HILDON_VOLUMEBAR_GET_PRIVATE (widget);
+
+    gchar *message;
+    va_list args;
+
+    va_start (args, format);
+    message = g_strdup_vprintf (format, args);
+    va_end (args);
+
+    hildon_helper_set_insensitive_message ((GtkWidget *) priv->volumebar, message);
+
+    g_free (message);
+}
+
+
