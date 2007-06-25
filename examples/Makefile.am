@@ -1,36 +1,37 @@
 MAINTAINERCLEANFILES			= Makefile.in
 
 if BUILD_EXAMPLES
-noinst_PROGRAMS				= hildon-window-example 		\
-					  hildon-banner-example			\
-					  hildon-caption-example		\
-					  hildon-weekday-picker-example 	\
-					  hildon-sort-dialog-example		\
-					  hildon-controlbar-example		\
-					  hildon-note-example			\
-					  hildon-time-picker-example		\
-					  hildon-color-chooser-example		\
-					  hildon-color-button-example		\
-					  hildon-login-dialog-example		\
-					  hildon-time-editor-example		\
-					  hildon-icon-sizes-example		\
-					  hildon-insensitive-example		\
-					  hildon-get-password-dialog-example	\
-					  hildon-set-password-dialog-example	\
-					  hildon-window-menu-example		\
-					  hildon-window-cmn-menu-example	\
-					  hildon-vvolumebar-example		\
-					  hildon-toolbar-example		\
-					  hildon-code-dialog-example		\
-					  hildon-hvolumebar-example		\
-					  hildon-hvolumebar-insensitive-example \
-					  hildon-lookup-example			\
-					  hildon-number-editor-example		\
-					  hildon-scrolled-window-example	\
-					  hildon-color-pop-example		\
-					  hildon-thumb-scrollbar-example	\
-					  hildon-date-editor-example		\
-					  hildon-bread-crumb-trail-example	\
+noinst_PROGRAMS				= hildon-window-example				\
+					  hildon-banner-example				\
+					  hildon-caption-example			\
+					  hildon-weekday-picker-example			\
+					  hildon-sort-dialog-example			\
+					  hildon-controlbar-example			\
+					  hildon-note-example				\
+					  hildon-time-picker-example			\
+					  hildon-color-chooser-example			\
+					  hildon-color-button-example			\
+					  hildon-login-dialog-example			\
+					  hildon-time-editor-example			\
+					  hildon-icon-sizes-example			\
+					  hildon-insensitive-example			\
+					  hildon-get-password-dialog-example		\
+					  hildon-set-password-dialog-example		\
+					  hildon-window-menu-example			\
+					  hildon-window-cmn-menu-example		\
+					  hildon-vvolumebar-example			\
+					  hildon-toolbar-example			\
+					  hildon-code-dialog-example			\
+					  hildon-hvolumebar-example			\
+					  hildon-hvolumebar-insensitive-example		\
+					  hildon-hvolumebar-insensitive-map-example	\
+					  hildon-lookup-example				\
+					  hildon-number-editor-example			\
+					  hildon-scrolled-window-example		\
+					  hildon-color-pop-example			\
+					  hildon-thumb-scrollbar-example		\
+					  hildon-date-editor-example			\
+					  hildon-bread-crumb-trail-example		\
 					  hildon-finger-example
 
 # Hildon window
@@ -112,6 +113,11 @@ hildon_icon_sizes_example_SOURCES	= hildon-icon-sizes-example.c
 hildon_insensitive_example_LDADD	= $(HILDON_OBJ_LIBS)
 hildon_insensitive_example_CFLAGS	= $(HILDON_OBJ_CFLAGS)
 hildon_insensitive_example_SOURCES	= hildon-insensitive-example.c
+
+# HIldon insensitive map example
+hildon_hvolumebar_insensitive_map_example_LDADD		= $(HILDON_OBJ_LIBS)
+hildon_hvolumebar_insensitive_map_example_CFLAGS	= $(HILDON_OBJ_CFLAGS)
+hildon_hvolumebar_insensitive_map_example_SOURCES	= hildon-hvolumebar-insensitive-map-example.c
 
 # HIldon get password dialog example
 hildon_get_password_dialog_example_LDADD	= $(HILDON_OBJ_LIBS)

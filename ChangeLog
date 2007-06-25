@@ -1,3 +1,10 @@
+2007-06-25  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
+	* examples/Makefile.am:
+	* examples/hildon-hvolumebar-insensitive-map-example.c: Adding an example
+	that makes a HildonVolumebar insensitive before mapping it. Seems to work
+	fine. Prolly NB#61128 is fixed now.
+
 2007-06-19  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
 	* src/hildon-volumebar.c:
@@ -21,7 +28,6 @@
 	http://bugzilla.gnome.org/show_bug.cgi?id=56070 hiding and showing the back
 	button on after clearing the trail.
 
->>>>>>> .r12381
 2007-06-13  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
 	* src/hildon-code-dialog.c: Removing the separator from the dialog.
