@@ -1,3 +1,12 @@
+2007-06-26  Xan Lopez  <xan@nokia.com>
+
+	* src/hildon-date-editor.c: (hildon_date_editor_keypress):
+	* src/hildon-time-editor.c: (hildon_time_editor_entry_keypress):
+
+	Move all focus crazyness to the rc files. This depends on gtk+2.0 >=
+	2.10.12-osso6 because the move-focus signal needs to be available in
+	GtkWidget.
+
 2007-06-25  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
 	* examples/Makefile.am:

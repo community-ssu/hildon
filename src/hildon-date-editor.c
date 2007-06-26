@@ -1129,46 +1129,21 @@ hildon_date_editor_keypress                     (GtkWidget *widget,
 {
     HildonDateEditor *ed;
     HildonDateEditorPrivate *priv;
-    gint pos;
-    gboolean r;
 
     g_assert (HILDON_IS_DATE_EDITOR (data));
     g_assert (GTK_IS_ENTRY (widget));
 
     ed = HILDON_DATE_EDITOR (data);
-    priv = HILDON_DATE_EDITOR_GET_PRIVATE (ed);
-    pos = gtk_editable_get_position (GTK_EDITABLE (widget));
-    g_assert (priv);
-
-    /* Show error message in case the key pressed is not allowed 
-       (only digits and control characters are allowed )*/
-    if (!g_unichar_isdigit (event->keyval) && ! (event->keyval & 0xF000)) {
-        g_signal_emit (ed, date_editor_signals[DATE_ERROR], 0, HILDON_DATE_TIME_ERROR_INVALID_CHAR, &r);        
-        return TRUE;
-    }
 
     switch (event->keyval) {
-        case GDK_Left:
-            if (pos == 0) {
-                (void) gtk_widget_child_focus (GTK_WIDGET (data), GTK_DIR_LEFT);
-                return TRUE;
-            }
-            break;
-
-        case GDK_Right:
-            if (pos >= g_utf8_strlen (gtk_entry_get_text (GTK_ENTRY (widget)), -1)) {
-                (void) gtk_widget_child_focus (GTK_WIDGET (data), GTK_DIR_RIGHT);
-                return TRUE;
-            }
-            break;
         case GDK_Return:
         case GDK_ISO_Enter:
             /* Ignore return value, since we want to handle event at all times.
                otherwise vkb would popup when the keyrepeat starts. */
-            (void) hildon_date_editor_set_calendar_icon_state (ed, TRUE);
+            hildon_date_editor_set_calendar_icon_state (ed, TRUE);
             return TRUE;
-
         case GDK_Escape:
+            priv = HILDON_DATE_EDITOR_GET_PRIVATE (ed);
             priv->skip_validation = TRUE;
             break;
         default:

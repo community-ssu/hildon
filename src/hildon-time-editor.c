@@ -224,10 +224,10 @@ static void
 hildon_time_editor_size_allocate                (GtkWidget *widget,
                                                  GtkAllocation *allocation);
 
-static gboolean 
-hildon_time_editor_entry_keypress               (GtkWidget *widget,
-                                                 GdkEventKey *event,
-                                                 gpointer data);
+static gboolean
+hildon_time_editor_entry_keypress (GtkEntry *entry,
+                                   GdkEventKey* event,
+                                   gpointer user_data);
 
 static gboolean
 hildon_time_editor_check_locale                 (HildonTimeEditor *editor);
@@ -1776,76 +1776,22 @@ hildon_time_editor_size_allocate                (GtkWidget *widget,
     gtk_widget_size_allocate (priv->sec_label, &alloc);
 }
 
-static gboolean 
-hildon_time_editor_entry_keypress               (GtkWidget *widget,
-                                                 GdkEventKey *event,
-                                                 gpointer data)
+static gboolean
+hildon_time_editor_entry_keypress (GtkEntry *entry,
+                                   GdkEventKey *event,
+                                   gpointer data)
 {
-    HildonTimeEditor *editor;
-    HildonTimeEditorPrivate *priv;
-    gint cursor_pos;
-    gboolean r;
-
-    g_assert (GTK_IS_ENTRY (widget));
-    g_assert (event != NULL);
-    g_assert (HILDON_IS_TIME_EDITOR (data));
-
-    editor = HILDON_TIME_EDITOR (data);
-    priv = HILDON_TIME_EDITOR_GET_PRIVATE (editor);
-    g_assert (priv); 
-    cursor_pos = gtk_editable_get_position (GTK_EDITABLE (widget));
-
-    /* Show error message in case the key pressed is not allowed 
-       (only digits and control characters are allowed )*/
-    if (!g_unichar_isdigit (event->keyval) && ! (event->keyval & 0xF000)) {
-        g_signal_emit (editor, time_editor_signals[TIME_ERROR], 0, HILDON_DATE_TIME_ERROR_INVALID_CHAR, &r);
-        hildon_banner_show_information (widget, NULL, c_("ckct_ib_illegal_character"));
-        return TRUE;
+  switch (event->keyval)
+    {
+    case GDK_Return:
+    case GDK_ISO_Enter:
+      hildon_time_editor_icon_clicked (entry, data);
+      return TRUE;
+    default:
+      return FALSE;
     }
 
-    switch (event->keyval)
-    {
-        case GDK_Return:
-            /* Return key popups up time picker dialog. Visually it looks as if
-               the time picker icon was clicked. Before opening the time picker
-               the fields are first validated and fixed. */
-
-            /* hildon_time_editor_validate (editor, FALSE);
-               hildon_gtk_button_set_depressed (GTK_BUTTON (priv->iconbutton), TRUE);
-               hildon_time_editor_icon_clicked (widget, data);
-               hildon_gtk_button_set_depressed (GTK_BUTTON (priv->iconbutton), FALSE); 
-
-               FIXME The above code used to be here before the consolidation that removed the 
-               _set_depressed crap. However, I think this code had NO EFFECT anyways, since
-               there is no expose event after the _set functions. So I'm just cutting it out. 
-               Another story would be to actually fix it... */
-                
-            hildon_time_editor_icon_clicked (widget, data);
-            return TRUE;
-
-        case GDK_Left:
-            /* left arrow pressed in the entry. If we are on first position, try to
-               move to the previous field. */
-            if (cursor_pos == 0) {
-                (void) gtk_widget_child_focus (GTK_WIDGET (editor), GTK_DIR_LEFT);
-                return TRUE;
-            }
-            break;
-
-        case GDK_Right:
-            /* right arrow pressed in the entry. If we are on last position, try to
-               move to the next field. */
-            if (cursor_pos >= g_utf8_strlen (gtk_entry_get_text (GTK_ENTRY (widget)), -1)) {
-                (void) gtk_widget_child_focus (GTK_WIDGET (editor), GTK_DIR_RIGHT);    
-                return TRUE;
-            }
-            break;
-
-        default:
-            break;
-    };
-
-    return FALSE;
+  g_assert_not_reached ();
 }
 
 static void
