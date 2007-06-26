@@ -1,4 +1,4 @@
-2007-06-26  Xan Lopez  <xan@nokia.com>
+2007-06-26  Xan Lopez  <xan.lopez@nokia.com>
 
 	* src/hildon-date-editor.c: (hildon_date_editor_keypress):
 	* src/hildon-time-editor.c: (hildon_time_editor_entry_keypress):
