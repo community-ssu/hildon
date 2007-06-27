@@ -146,19 +146,19 @@ AC_ARG_ENABLE(fatal,
      [BUILD_WITH_FATAL=no])
 
 # just print out our status
-if test x$BUILD_WITH_XAN = xyes; then
+if test x$BUILD_WITH_FATAL = xyes; then
     AC_MSG_NOTICE(Will build with fatal warnings)
-    XAN_CFLAGS="-Werror"
+    FATAL_CFLAGS="-Werror"
 else
     AC_MSG_NOTICE(Will build with non-fatal warnings)
-    XAN_CFLAGS=""
+    FATAL_CFLAGS=""
 fi
 
 # Check support (c unit test)
 PKG_CHECK_MODULES(CHECK, check , [BUILD_TESTS="yes"], [BUILD_TESTS="no"])
 AM_CONDITIONAL(BUILD_TESTS, test "x$BUILD_TESTS" = "xyes")
 
-CFLAGS="$CFLAGS ${ASSERT_CFLAGS} -Wall -Wmissing-prototypes -Wmissing-declarations -Wno-format ${XAN_FLAGS}"
+CFLAGS="$CFLAGS ${ASSERT_CFLAGS} -Wall -Wmissing-prototypes -Wmissing-declarations -Wno-format ${FATAL_FLAGS}"
 # -Wno-format due to way translation string are done
 
 ### enable MAEMO platform extensions

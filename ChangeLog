@@ -1,3 +1,7 @@
+2007-06-27  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
+	* configure.ac: Removing some remaining of --enable-xan.
+
 2007-06-26  Xan Lopez  <xan.lopez@nokia.com>
 
 	* src/hildon-date-editor.c: (hildon_date_editor_keypress):
