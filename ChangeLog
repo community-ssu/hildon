@@ -1,3 +1,11 @@
+2007-06-29  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
+	[1.0.10-1 release]
+
+	* NEWS:
+	* configure.ac:
+	* debian/changelog: Updating.
+
 2007-06-27  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
 	* configure.ac: Removing some remaining of --enable-xan.

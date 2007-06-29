@@ -1,4 +1,18 @@
-libhildon (1.0.9-1) stable; urgency=low
+libhildon (1.0.10-1) stable; urgency=low
+
+  * Fixing a bit of focus crazyness in the time and date editors
+  * Removing the separator from the code dialog
+  * Fixing circular dep to enums
+  * Hide the HildonWindow before performing the destroy
+
+  * Fixes: NB#61129 volumebar info banner in muted state
+  * Fixes: NB#61128 volumebar sensitivy does not change when the widget is not mapped
+  * Fixes: NB#60518 Unable to move the focus from the buttons to date or time editor.
+  * Fixes: NB#60349 Date editor invalidates keyboard number input
+
+ -- Michael Dominic Kostrzewa <michael.kostrzewa@nokia.com>  Fri, 29 Jun 2007 16:49:58 +0300
+
+ibhildon (1.0.9-1) stable; urgency=low
 
   * Breadcrumb align/visibility fixes
 

@@ -1,3 +1,9 @@
+[1.0.10-1 release]
+* Fixing a bit of focus crazyness in the time and date editors
+* Removing the separator from the code dialog
+* Fixing circular dep to enums
+* Hide the HildonWindow before performing the destroy
+
 [1.0.9-1 release]
 * Breadcrumb align/visibility fixes
 * HildonWindow fixes
