@@ -63,7 +63,7 @@ libhildon_@PACKAGE_VERSION_MAJOR@_la_SOURCES 		= hildon-private.c				\
 							  hildon-bread-crumb.c				\
 							  hildon-bread-crumb-widget.c
 
-libhildon_@PACKAGE_VERSION_MAJOR@_built_public_headers  =
+libhildon_@PACKAGE_VERSION_MAJOR@_built_public_headers  = \
 							  hildon-enum-types.h                           \
 							  hildon-marshalers.h
 
@@ -106,8 +106,8 @@ libhildon_@PACKAGE_VERSION_MAJOR@_public_headers 	= hildon-banner.h 				\
 							  hildon-bread-crumb-trail.h			\
 							  hildon-bread-crumb.h
 
-libhildon_@PACKAGE_VERSION_MAJOR@_include_HEADERS 	= $(libhildon_public_sources)			\
-							  $(libhildon_built_public_sources)
+libhildon_@PACKAGE_VERSION_MAJOR@_include_HEADERS 	= $(libhildon_@PACKAGE_VERSION_MAJOR@_public_headers)			\
+							  $(libhildon_@PACKAGE_VERSION_MAJOR@_built_public_headers)
 
 noinst_HEADERS						= hildon-banner-private.h 			\
 							  hildon-calendar-popup-private.h 		\

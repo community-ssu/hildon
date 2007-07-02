@@ -1,3 +1,7 @@
+2007-07-02  Johan Bilien  <johan.bilien@nokia.com>
+
+	* src/Makefile.am: fixed installation of the header files
+
 2007-06-29  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
 	[1.0.10-1 release]
