@@ -1,3 +1,10 @@
+2007-07-02  Xan Lopez <xan.lopez@nokia.com>
+
+	[1.0.10-2 release]
+
+	* NEWS:
+	* debian/changelog: Updating.
+
 2007-07-02  Johan Bilien  <johan.bilien@nokia.com>
 
 	* src/Makefile.am: fixed installation of the header files
