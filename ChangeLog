@@ -1,3 +1,11 @@
+2007-07-12  Tommi Komulainen  <tommi.komulainen@nokia.com>
+
+	* src/hildon-time-picker.c (hildon_time_picker_class_init,
+	hildon_time_picker_map, hildon_time_picker_realize,
+	hildon_time_picker_style_set): Split the contents of map to more
+	appropriate functions; set window decorations on realize and update
+	arrows' size requisitions on style-set. Avoids unnecessary resizing.
+
 2007-07-02  Xan Lopez <xan.lopez@nokia.com>
 
 	[1.0.10-2 release]

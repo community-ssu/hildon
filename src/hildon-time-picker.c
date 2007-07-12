@@ -168,7 +168,11 @@ hildon_time_picker_event_box_button_press       (GtkWidget *widget,
                                                  gpointer unused);
 
 static void
-hildon_time_picker_map                          (GtkWidget *widget);
+hildon_time_picker_realize                      (GtkWidget *widget);
+
+static void
+hildon_time_picker_style_set                    (GtkWidget *widget,
+                                                 GtkStyle *previous_style);
 
 static void
 frame_size_request                              (GtkWidget *widget, 
@@ -233,7 +237,8 @@ hildon_time_picker_class_init                   (HildonTimePickerClass *klass)
     gobject_class->finalize = hildon_time_picker_finalize;
     gobject_class->get_property = hildon_time_picker_get_property;
     gobject_class->set_property = hildon_time_picker_set_property;
-    widget_class->map = hildon_time_picker_map;
+    widget_class->realize = hildon_time_picker_realize;
+    widget_class->style_set = hildon_time_picker_style_set;
 
     /**
      * HildonTimePicker:minutes:
@@ -534,15 +539,24 @@ hildon_time_picker_get_property                 (GObject *object,
 }
 
 static void
-hildon_time_picker_map                          (GtkWidget *widget)
+hildon_time_picker_realize                      (GtkWidget *widget)
+{
+    GTK_WIDGET_CLASS (parent_class)->realize(widget);
+
+    /* We only want the border for the dialog. */
+    gdk_window_set_decorations (widget->window, GDK_DECOR_BORDER);
+}
+
+static void
+hildon_time_picker_style_set                    (GtkWidget *widget,
+                                                 GtkStyle *previous_style)
 {
     guint width, height;
     gint i, button;
     HildonTimePickerPrivate *priv = HILDON_TIME_PICKER_GET_PRIVATE (widget);
     g_assert (priv);
 
-    /* Widget is now mapped. Set border for the dialog. */
-    gdk_window_set_decorations (widget->window, GDK_DECOR_BORDER);
+    GTK_WIDGET_CLASS (parent_class)->style_set(widget, previous_style);
 
     /* Update hour/minute up/down buttons sizes from style properties */
     gtk_widget_style_get (widget,
@@ -559,8 +573,6 @@ hildon_time_picker_map                          (GtkWidget *widget)
             }
         }
     }
-
-    GTK_WIDGET_CLASS (parent_class)->map(widget);
 }
 
 /* 
