@@ -1,5 +1,10 @@
 2007-07-23  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
+	* src/hildon-date-editor.c: Adding the missing variable setter in the
+	set_property handler. Fixes NB#54182.
+
+2007-07-23  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
 	* src/hildon-window.h: Changing the long key press time from 1500ms to
 	800ms as requested in NB#63700. I have a bad feeling about this, let's
 	see... Fixes NB#63700.
