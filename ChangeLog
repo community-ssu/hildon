@@ -8,7 +8,7 @@
 	when font size > 32 and we pack a focusable widget inside. Actually using
 	the default response would work too, but since we don't show default
 	response state in any way (no theming) it would not be visible to the
-	user. Fixes NB#60575.
+	user. Fixes NB#63430.
 
 2007-07-23  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
