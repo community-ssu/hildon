@@ -32,12 +32,18 @@ noinst_PROGRAMS				= hildon-window-example				\
 					  hildon-thumb-scrollbar-example		\
 					  hildon-date-editor-example			\
 					  hildon-bread-crumb-trail-example		\
-					  hildon-finger-example
+					  hildon-finger-example				\
+					  hildon-seekbar-example
 
 # Hildon window
 hildon_window_example_LDADD		= $(HILDON_OBJ_LIBS)
 hildon_window_example_CFLAGS		= $(HILDON_OBJ_CFLAGS)
 hildon_window_example_SOURCES		= hildon-window-example.c
+
+# Hildon seekbar
+hildon_seekbar_example_LDADD		= $(HILDON_OBJ_LIBS)
+hildon_seekbar_example_CFLAGS		= $(HILDON_OBJ_CFLAGS)
+hildon_seekbar_example_SOURCES		= hildon-seekbar-example.c
 
 # Hildon finger
 hildon_finger_example_LDADD		= $(HILDON_OBJ_LIBS)

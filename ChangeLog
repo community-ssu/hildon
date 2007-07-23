@@ -1,5 +1,17 @@
 2007-07-23  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
+	* examples/Makefile.am:
+	* examples/hildon-seekbar-example.c: Adding the seekbar example to check
+	theming easily.
+
+	* src/hildon-font-selection-dialog.c: Fixing the default focus for dialog
+	when font size > 32 and we pack a focusable widget inside. Actually using
+	the default response would work too, but since we don't show default
+	response state in any way (no theming) it would not be visible to the
+	user. Fixes NB#60575.
+
+2007-07-23  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
 	* src/hildon-date-editor.c: Adding the missing variable setter in the
 	set_property handler. Fixes NB#54182.
 

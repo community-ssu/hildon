@@ -1213,6 +1213,12 @@ hildon_font_selection_dialog_show_preview       (HildonFontSelectionDialog *font
             GTK_WINDOW (fontsel));
 
     gtk_widget_show_all (preview_dialog);
+    gtk_dialog_set_default_response (GTK_DIALOG (preview_dialog), GTK_RESPONSE_OK);
+    
+    GtkBox *action_area = (GtkBox *) GTK_DIALOG (preview_dialog)->action_area;
+    GtkWidget *button = ((GtkBoxChild *) ((GSList *) action_area->children)->data)->widget;
+    gtk_widget_grab_focus (button);
+
     gtk_dialog_run (GTK_DIALOG (preview_dialog));
     gtk_widget_destroy (preview_dialog);
 }
