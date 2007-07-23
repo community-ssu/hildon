@@ -36,7 +36,7 @@
 
 G_BEGIN_DECLS
 
-#define                                         HILDON_WINDOW_LONG_PRESS_TIME 1500 /* in ms */
+#define                                         HILDON_WINDOW_LONG_PRESS_TIME 800 /* in ms */
 
 #define                                         HILDON_TYPE_WINDOW \
                                                 (hildon_window_get_type())
