@@ -829,3 +829,89 @@ hildon_find_toolbar_highlight_entry             (HildonFindToolbar *self,
         gtk_widget_grab_focus (GTK_WIDGET (entry));
 }
 
+/**
+ * hildon_find_toolbar_set_active:
+ * @toolbar: A find toolbar to operate on
+ * @index: An index in the model passed during construction, or -1 to have no active item
+ *
+ * Sets the active item on the toolbar's combo-box. Simply calls gtk_combo_box_set_active on 
+ * the HildonFindToolbar's combo.
+ * 
+ */
+void
+hildon_find_toolbar_set_active                  (HildonFindToolbar *toolbar,
+                                                 gint index)
+{
+    HildonFindToolbarPrivate *priv;
+
+    g_return_if_fail (HILDON_IS_FIND_TOOLBAR (toolbar));
+    priv = HILDON_FIND_TOOLBAR_GET_PRIVATE (toolbar);
+
+    gtk_combo_box_set_active (GTK_COMBO_BOX (priv->entry_combo_box), index);
+}
+
+/**
+ * hildon_find_toolbar_get_active:
+ * @toolbar: A find toolbar to query
+ *
+ * Gets the index of the currently active item, or -1 if there's no active item. Simply 
+ * calls gtk_combo_box_get_active on the HildonFindToolbar's combo.
+ *
+ * Returns: An integer which is the index of the currently active item, or -1 if there's no active item.
+ * 
+ */
+gint
+hildon_find_toolbar_get_active                  (HildonFindToolbar *toolbar)
+{
+    HildonFindToolbarPrivate *priv;
+
+    g_return_val_if_fail (HILDON_IS_FIND_TOOLBAR (toolbar), -1);
+    priv = HILDON_FIND_TOOLBAR_GET_PRIVATE (toolbar);
+
+    return gtk_combo_box_get_active (GTK_COMBO_BOX (priv->entry_combo_box));
+}
+
+/**
+ * hildon_find_toolbar_set_active_iter:
+ * @toolbar: A find toolbar to operate on
+ * @iter: An iter to make active
+ *
+ * Sets the current active item to be the one referenced by iter. Simply calls 
+ * gtk_combo_box_set_active_iter on the HildonFindToolbar's combo.
+ * 
+ */
+void
+hildon_find_toolbar_set_active_iter             (HildonFindToolbar *toolbar, 
+                                                 GtkTreeIter *iter)
+{
+    HildonFindToolbarPrivate *priv;
+
+    g_return_if_fail (HILDON_IS_FIND_TOOLBAR (toolbar));
+    priv = HILDON_FIND_TOOLBAR_GET_PRIVATE (toolbar);
+
+    gtk_combo_box_set_active_iter (GTK_COMBO_BOX (priv->entry_combo_box), iter);
+}
+
+/**
+ * hildon_find_toolbar_get_active_iter:
+ * @toolbar: A find toolbar to query
+ * @iter: The uninitialized GtkTreeIter
+ *
+ * Sets iter to point to the current active item, if it exists. Simply calls 
+ * gtk_combo_box_get_active_iter on the HildonFindToolbar's combo.
+ * 
+ * Returns: TRUE, if iter was set
+ *
+ */
+gboolean
+hildon_find_toolbar_get_active_iter             (HildonFindToolbar *toolbar, 
+                                                 GtkTreeIter *iter)
+{
+    HildonFindToolbarPrivate *priv;
+
+    g_return_val_if_fail (HILDON_IS_FIND_TOOLBAR (toolbar), FALSE);
+    priv = HILDON_FIND_TOOLBAR_GET_PRIVATE (toolbar);
+
+    return gtk_combo_box_get_active_iter (GTK_COMBO_BOX (priv->entry_combo_box), iter);
+}
+

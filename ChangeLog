@@ -1,3 +1,16 @@
+2007-07-24  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
+	* src/hildon-find-toolbar.c:
+	* src/hildon-find-toolbar.h: Adding a few new functions to control the
+	selected item: hildon_find_toolbar_set_active,
+	hildon_find_toolbar_set_active_iter, hildon_find_toolbar_get_active, 
+	hildon_find_toolbar_get_active_iter . They correspond to respective
+	GtkComboBox functions. Fixes NB#52301.
+
+	* examples/Makefile.am:
+	* examples/hildon-find-toolbar-example.c: Adding the example to test the
+	new functionality.
+
 2007-07-23  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
 	* examples/Makefile.am:

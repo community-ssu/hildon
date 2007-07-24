@@ -88,6 +88,21 @@ void
 hildon_find_toolbar_highlight_entry             (HildonFindToolbar *ftb,
                                                  gboolean get_focus);
 
+void
+hildon_find_toolbar_set_active                  (HildonFindToolbar *toolbar,
+                                                 gint index);
+
+gint
+hildon_find_toolbar_get_active                  (HildonFindToolbar *toolbar);
+
+void
+hildon_find_toolbar_set_active_iter             (HildonFindToolbar *toolbar, 
+                                                 GtkTreeIter *iter);
+
+gboolean
+hildon_find_toolbar_get_active_iter             (HildonFindToolbar *toolbar, 
+                                                 GtkTreeIter *iter);
+
 G_END_DECLS
 
 #endif                                          /* __HILDON_FIND_TOOLBAR_H__ */
