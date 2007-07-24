@@ -5,7 +5,7 @@
 	selected item: hildon_find_toolbar_set_active,
 	hildon_find_toolbar_set_active_iter, hildon_find_toolbar_get_active, 
 	hildon_find_toolbar_get_active_iter . They correspond to respective
-	GtkComboBox functions. Fixes NB#52301.
+	GtkComboBox functions. 
 
 	* examples/Makefile.am:
 	* examples/hildon-find-toolbar-example.c: Adding the example to test the
