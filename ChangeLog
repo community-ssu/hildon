@@ -1,5 +1,15 @@
 2007-07-25  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
+	* src/hildon-wizard-dialog.c: Don't call the _set_sensitivity again after
+	switching the page. Fixes NB#49374.
+
+	* examples/Makefile.am:
+	* examples/hildon-wizard-dialog-example.c: Adding an example for
+	HildonWizardDialog that shows how to handle manual sensitivity setting on
+	the wizard dialog.
+
+2007-07-25  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
 	* configure.ac:
 	* src/Makefile.am:
 	* src/hildon-version.h.in:

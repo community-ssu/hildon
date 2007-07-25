@@ -459,11 +459,6 @@ response                                        (HildonWizardDialog *wizard_dial
     is_last = current == last;
     is_first = current == 0;
 
-    /* If first page, previous and finish are disabled, 
-       if last page, next is disabled */
-    make_buttons_sensitive (wizard_dialog,
-            !is_first, !is_first, !is_last);
-
     /* Don't let the dialog close */
     g_signal_stop_emission_by_name (wizard_dialog, "response");
 
