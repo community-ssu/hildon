@@ -240,7 +240,7 @@ hildon_volumebar_class_init                     (HildonVolumebarClass *volumebar
                G_PARAM_READWRITE));
 
    /**
-    * HildonVolumebar:can-focus:
+    * HildonVolumebar:mute:
     *
     * Whether volume is muted.
     */

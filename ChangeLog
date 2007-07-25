@@ -1,5 +1,9 @@
 2007-07-25  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
+	* src/hildon-volumebar.c: Updating the docs.
+
+2007-07-25  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
 	[1.0.11-1 release]
 
 	* NEWS:
