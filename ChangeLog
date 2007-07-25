@@ -1,3 +1,11 @@
+2007-07-25  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
+	[1.0.11-1 release]
+
+	* NEWS:
+	* configure.ac:
+	* debian/changelog: Updating.
+
 2007-07-24  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
 	* src/hildon-find-toolbar.c:

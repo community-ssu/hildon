@@ -1,3 +1,10 @@
+[1.0.11-1 release]
+* Adding some new API functions to control the active item in HildonFindToolbar
+* Fixing the default focus for font selection dialog
+* New examples
+* Changing the default long key press time
+* Fixed time picker on-map breakage
+
 [1.0.10-2 release]
 * Fix header installation
 

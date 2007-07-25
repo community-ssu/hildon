@@ -1,3 +1,17 @@
+libhildon (1.0.11-1) stable; urgency=low
+
+  * Adding some new API functions to control the active item in HildonFindToolbar
+  * Fixing the default focus for font selection dialog
+  * New examples
+  * Changing the default long key press time
+  * Fixed time picker on-map breakage
+
+  * Fixes: NB#63700 wrong definition for HILDON_WINDOW_LONG_PRESS_TIME
+  * Fixes: NB#54182 HildonDateEditor min/max properties cannot be set
+  * Fixes: NB#63430 Ok button of preview dialog is not highlited,when font size is 32pt.
+
+ -- Michael Dominic Kostrzewa <michael.kostrzewa@nokia.com>  Wed, 25 Jul 2007 10:14:34 +0300
+
 libhildon (1.0.10-2) stable; urgency=low
 
   * Fix header installation. 
