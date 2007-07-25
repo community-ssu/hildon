@@ -173,7 +173,9 @@ HILDON_OBJ_LIBS="\$(top_builddir)/src/libhildon-\$(PACKAGE_VERSION_MAJOR).la \$(
 AC_SUBST(HILDON_OBJ_CFLAGS)
 AC_SUBST(HILDON_OBJ_LIBS)
 
-AC_CONFIG_FILES([Makefile src/Makefile  \
+AC_CONFIG_FILES([Makefile               \
+                 src/Makefile           \
+                 src/hildon-version.h   \
                  pkgconfig/Makefile     \
                  examples/Makefile      \
                  pkgconfig/hildon.pc    \

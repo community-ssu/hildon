@@ -104,7 +104,8 @@ libhildon_@PACKAGE_VERSION_MAJOR@_public_headers 	= hildon-banner.h 				\
 							  hildon-wizard-dialog.h			\
 							  hildon-calendar.h				\
 							  hildon-bread-crumb-trail.h			\
-							  hildon-bread-crumb.h
+							  hildon-bread-crumb.h				\
+							  hildon-version.h
 
 libhildon_@PACKAGE_VERSION_MAJOR@_include_HEADERS 	= $(libhildon_@PACKAGE_VERSION_MAJOR@_public_headers)			\
 							  $(libhildon_@PACKAGE_VERSION_MAJOR@_built_public_headers)

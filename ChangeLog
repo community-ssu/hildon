@@ -1,5 +1,12 @@
 2007-07-25  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
+	* configure.ac:
+	* src/Makefile.am:
+	* src/hildon-version.h.in:
+	* src/hildon.h: Adding the HILDON_CHECK_VERSION macro. Fixes: NB#62061.
+
+2007-07-25  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
 	* src/hildon-volumebar.c: Updating the docs.
 
 2007-07-25  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 

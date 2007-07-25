@@ -25,6 +25,7 @@
 #ifndef                                         __HILDON_H__
 #define                                         __HILDON_H__
 
+#include                                        "hildon-version.h"
 #include                                        "hildon-banner.h"
 #include                                        "hildon-calendar-popup.h"
 #include                                        "hildon-caption.h"
