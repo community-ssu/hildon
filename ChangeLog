@@ -1,3 +1,8 @@
+2007-07-26  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
+	* src/hildon-code-dialog.c: Fixing the dialog button alignment inside the
+	code dialog. Fixes NB#64355.
+
 2007-07-25  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
 	* src/hildon-wizard-dialog.c: Don't call the _set_sensitivity again after
