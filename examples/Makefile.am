@@ -35,7 +35,8 @@ noinst_PROGRAMS				= hildon-window-example				\
 					  hildon-finger-example				\
 					  hildon-seekbar-example			\
 					  hildon-find-toolbar-example			\
-					  hildon-wizard-dialog-example
+					  hildon-wizard-dialog-example			\
+					  hildon-hvolumebar-timer-example
 
 # Hildon window
 hildon_window_example_LDADD		= $(HILDON_OBJ_LIBS)
@@ -208,8 +209,13 @@ hildon_date_editor_example_CFLAGS	= $(HILDON_OBJ_CFLAGS)
 hildon_date_editor_example_SOURCES	= hildon-date-editor-example.c
 
 # Hildon bread crumb trail example
-hildon_bread_crumb_trail_example_LDADD	= $(HILDON_OBJ_LIBS)
-hildon_bread_crumb_trail_example_CFLAGS	= $(HILDON_OBJ_CFLAGS)
+hildon_bread_crumb_trail_example_LDADD		= $(HILDON_OBJ_LIBS)
+hildon_bread_crumb_trail_example_CFLAGS		= $(HILDON_OBJ_CFLAGS)
 hildon_bread_crumb_trail_example_SOURCES	= hildon-bread-crumb-trail-example.c
+
+# Hildon volumebar timer example
+hildon_hvolumebar_timer_example_LDADD		= $(HILDON_OBJ_LIBS)
+hildon_hvolumebar_timer_example_CFLAGS		= $(HILDON_OBJ_CFLAGS)
+hildon_hvolumebar_timer_example_SOURCES		= hildon-hvolumebar-timer-example.c
 
 endif

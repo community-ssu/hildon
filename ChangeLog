@@ -1,5 +1,11 @@
 2007-08-01  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
+	* examples/Makefile.am:
+	* examples/hildon-hvolumebar-timer-example.c: Adding an exmaple to debug
+	bug NB#61128. Strangely it works.
+
+2007-08-01  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
 	* src/hildon-date-editor.c: When the date editor entry has been changed
 	but the numbers of characters < max, turn off the skip validation flag.
 	Prevents a situation when we enter first a valid year and later re-write
