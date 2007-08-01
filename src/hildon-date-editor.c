@@ -1073,10 +1073,13 @@ hildon_date_editor_entry_changed                (GtkEditable *ed,
 {
     GtkEntry *entry;
     gint error_code;
+    
     HildonDateEditorPrivate *priv;
+    priv = HILDON_DATE_EDITOR_GET_PRIVATE (HILDON_DATE_EDITOR (data));
 
     g_assert (GTK_IS_ENTRY (ed));
     g_assert (HILDON_IS_DATE_EDITOR (data));
+    g_assert (priv);
 
     entry = GTK_ENTRY (ed);
 
@@ -1086,11 +1089,11 @@ hildon_date_editor_entry_changed                (GtkEditable *ed,
         error_code = hildon_date_editor_entry_validate (GTK_WIDGET (entry), data);
         if (error_code == HILDON_DATE_TIME_ERROR_NO_ERROR)
         {
-            priv = HILDON_DATE_EDITOR_GET_PRIVATE (HILDON_DATE_EDITOR (data));
-            g_assert (priv);
             priv->skip_validation = TRUE;
             gtk_widget_child_focus (GTK_WIDGET (data), GTK_DIR_RIGHT);
         }
+    } else {
+        priv->skip_validation = FALSE;
     }
 }
 

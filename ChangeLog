@@ -1,3 +1,10 @@
+2007-08-01  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
+	* src/hildon-date-editor.c: When the date editor entry has been changed
+	but the numbers of characters < max, turn off the skip validation flag.
+	Prevents a situation when we enter first a valid year and later re-write
+	it with an invalid one. Fixes NB#60154.
+
 2007-07-26  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
 	* src/hildon-code-dialog.c: Fixing the dialog button alignment inside the
