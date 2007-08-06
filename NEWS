@@ -1,3 +1,8 @@
+[1.0.12-1 release]
+* New HILDON_CHECK_VERSION macro
+* Bugfixes
+* Minor doc updates
+
 [1.0.11-1 release]
 * Adding some new API functions to control the active item in HildonFindToolbar
 * Fixing the default focus for font selection dialog

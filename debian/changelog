@@ -1,3 +1,16 @@
+libhildon (1.0.12-1) stable; urgency=low
+
+  * New HILDON_CHECK_VERSION macro
+  * Bugfixes
+  * Minor doc updates
+
+  * Fixes: NB#62061 Please include HILDON_CHECK_VERSION macro
+  * Fixes: NB#49374 Programs using HildonWizardDialog cannot set the sensitivity of buttons when the page changes
+  * Fixes: NB#64355 Control panel; Device lock: OK and Cancel buttons
+  * Fixes: NB#60154 It is possible to enter invalid date in the birthday date picker
+
+ -- Michael Dominic Kostrzewa <michael.kostrzewa@nokia.com>  Mon, 06 Aug 2007 09:52:19 +0300
+
 libhildon (1.0.11-1) stable; urgency=low
 
   * Adding some new API functions to control the active item in HildonFindToolbar
