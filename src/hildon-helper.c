@@ -95,7 +95,7 @@ hildon_change_style_recursive_from_ld           (GtkWidget *widget,
         /* Changing logical color */
         GdkColor color;
         gtk_widget_ensure_style (widget);
-        if (gtk_style_lookup_color (widget->style, ld->logicalcolorstring, &color) == TRUE)
+        if (gtk_style_lookup_color (widget->style, ld->logicalcolorstring, &color) == TRUE) {
             switch (ld->rcflags)
             {
                 case GTK_RC_FG:
@@ -113,10 +113,10 @@ hildon_change_style_recursive_from_ld           (GtkWidget *widget,
                 case GTK_RC_BASE:
                     gtk_widget_modify_base (widget, ld->state, &color);
                     break;
-
-            } else {
-                g_warning ("Failed to lookup '%s' color!", ld->logicalcolorstring);
             }
+        } else {
+            g_warning ("Failed to lookup '%s' color!", ld->logicalcolorstring);
+        }
     }
 
     if (ld->logicalfontstring != NULL)

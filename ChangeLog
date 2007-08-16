@@ -1,5 +1,10 @@
 2007-08-16  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
+	* src/hildon-helper.c: Remove the bogus warning about color not being
+	found. Fixes NB#58352.
+
+2007-08-16  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
 	* examples/Makefile.am:
 	* examples/hildon-toolbar-seekbar-example.c: Adding an example to test a
 	HildonSeekbar widget inside a toolbar.
