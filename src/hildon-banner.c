@@ -164,38 +164,12 @@ static HildonBanner*
 hildon_banner_get_instance_for_widget           (GtkWidget *widget, 
                                                  gboolean timed);
 
-static GtkWindowClass*                          parent_class = NULL;
+static gint
+hildon_banner_delete_event                      (GtkWidget *widget,
+                                                 GdkEvent  *event);
 
-/**
- * hildon_banner_get_type:
- *
- * Initializes and returns the type of a hildon banner.
- *
- * @Returns: GType of #HildonBanner
- */
-GType G_GNUC_CONST 
-hildon_banner_get_type                          (void)
-{
-    static GType banner_type = 0;
 
-    if (! banner_type)
-    {
-        static const GTypeInfo banner_info = {
-            sizeof (HildonBannerClass),
-            NULL,       /* base_init */
-            NULL,       /* base_finalize */
-            (GClassInitFunc) hildon_banner_class_init,
-            NULL,       /* class_finalize */
-            NULL,       /* class_data */
-            sizeof (HildonBanner),
-            0,  /* n_preallocs */
-            (GInstanceInitFunc) hildon_banner_init,
-        };
-        banner_type = g_type_register_static (GTK_TYPE_WINDOW,
-                "HildonBanner", &banner_info, 0 );
-    }
-    return banner_type;
-}
+G_DEFINE_TYPE (HildonBanner, hildon_banner, GTK_TYPE_WINDOW)
 
 /* copy/paste from old infoprint implementation: Use matchbox 
    properties to find the topmost application window */
@@ -473,8 +447,8 @@ hildon_banner_destroy                           (GtkObject *object)
 
     (void) hildon_banner_clear_timeout (self);
 
-    if (GTK_OBJECT_CLASS (parent_class)->destroy)
-        GTK_OBJECT_CLASS (parent_class)->destroy (object);
+    if (GTK_OBJECT_CLASS (hildon_banner_parent_class)->destroy)
+        GTK_OBJECT_CLASS (hildon_banner_parent_class)->destroy (object);
 }
 
 /* Search a previous banner instance */
@@ -522,7 +496,7 @@ hildon_banner_constructor                       (GType type,
     if (! banner)
     {
         /* We have to create a new banner */
-        banner = G_OBJECT_CLASS (parent_class)->constructor (type, n_construct_params, construct_params);
+        banner = G_OBJECT_CLASS (hildon_banner_parent_class)->constructor (type, n_construct_params, construct_params);
 
         /* Store the newly created singleton instance either into parent 
            window data or into global variables. */
@@ -561,10 +535,10 @@ hildon_banner_finalize                          (GObject *object)
     HildonBannerPrivate *priv = HILDON_BANNER_GET_PRIVATE (object);
 
     if (priv->parent) {
-    g_object_remove_weak_pointer(G_OBJECT (priv->parent), (gpointer) &priv->parent);
+        g_object_remove_weak_pointer(G_OBJECT (priv->parent), (gpointer) &priv->parent);
     }
 
-    G_OBJECT_CLASS (parent_class)->finalize (object);
+    G_OBJECT_CLASS (hildon_banner_parent_class)->finalize (object);
 }
 
 /* We start the timer for timed notifications after the window appears on screen */
@@ -574,14 +548,23 @@ hildon_banner_map_event                         (GtkWidget *widget,
 {
     gboolean result = FALSE;
 
-    if (GTK_WIDGET_CLASS (parent_class)->map_event)
-        result = GTK_WIDGET_CLASS (parent_class)->map_event (widget, event);
+    if (GTK_WIDGET_CLASS (hildon_banner_parent_class)->map_event)
+        result = GTK_WIDGET_CLASS (hildon_banner_parent_class)->map_event (widget, event);
 
     hildon_banner_ensure_timeout (HILDON_BANNER(widget));
 
     return result;
 }  
 
+#if defined(MAEMO_GTK)
+/* Do nothing for the delete event that will come from _GTK_DELETE_TEMPORARIES */
+static gint
+hildon_banner_delete_event                      (GtkWidget *widget,
+                                                 GdkEvent  *event)
+{
+    return TRUE;
+}
+#endif
 
 /* force to wrap truncated label by setting explicit size request
  * see N#27000 and G#329646 */
@@ -648,8 +631,8 @@ hildon_banner_realize                           (GtkWidget *widget)
     g_assert (priv);
 
     /* We let the parent to init widget->window before we need it */
-    if (GTK_WIDGET_CLASS (parent_class)->realize)
-        GTK_WIDGET_CLASS (parent_class)->realize (widget);
+    if (GTK_WIDGET_CLASS (hildon_banner_parent_class)->realize)
+        GTK_WIDGET_CLASS (hildon_banner_parent_class)->realize (widget);
 
     /* We use special hint to turn the banner into information notification. */
     gdk_window_set_type_hint (widget->window, GDK_WINDOW_TYPE_HINT_NOTIFICATION);
@@ -666,7 +649,6 @@ hildon_banner_class_init                        (HildonBannerClass *klass)
 
     object_class = G_OBJECT_CLASS (klass);
     widget_class = GTK_WIDGET_CLASS (klass);
-    parent_class = g_type_class_peek_parent (klass);
 
     /* Append private structure to class. This is more elegant than
        on g_new based approach */
@@ -680,6 +662,9 @@ hildon_banner_class_init                        (HildonBannerClass *klass)
     GTK_OBJECT_CLASS (klass)->destroy = hildon_banner_destroy;
     widget_class->map_event = hildon_banner_map_event;
     widget_class->realize = hildon_banner_realize;
+#if defined(MAEMO_GTK)
+    widget_class->delete_event = hildon_banner_delete_event;
+#endif
 
     /* Install properties.
        We need construct properties for singleton purposes */
@@ -745,6 +730,10 @@ hildon_banner_init                              (HildonBanner *self)
     gtk_box_pack_start (GTK_BOX (priv->layout), priv->label, TRUE, TRUE, 0);
 
     gtk_window_set_accept_focus (GTK_WINDOW (self), FALSE);
+
+#if defined(MAEMO_GTK)
+    gtk_window_set_is_temporary (GTK_WINDOW (self), TRUE);
+#endif
 }
 
 /* Makes sure that icon/progress item contains the desired type

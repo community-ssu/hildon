@@ -1,3 +1,12 @@
+2007-08-16  Xan Lopez  <xan.lopez@nokia.com>
+
+	* src/hildon-banner.c (hildon_banner_init): mark the banners as
+	temporary, depends on maemo-gtk >= 2.10.12-osso7. Also ignore the
+	delete event that will come from _GTK_DELETE_TEMPORARIES, as we
+	don't want to be closed by non-temporary windows on map.
+
+	Also use G_DEFINE_TYPE instead of manually typed code.
+
 2007-08-06  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
 	[1.0.12-1 release]
