@@ -1,3 +1,9 @@
+2007-08-16  Xan Lopez  <xan.lopez@nokia.com>
+
+	* src/hildon-banner.c: (hildon_banner_client_event): connect directly to
+	the client event and ignore it, since we use the delete event to close
+	after timeouts.
+
 2007-08-16  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
 	* src/hildon-helper.c: Remove the bogus warning about color not being

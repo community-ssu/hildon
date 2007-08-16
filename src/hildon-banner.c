@@ -557,12 +557,25 @@ hildon_banner_map_event                         (GtkWidget *widget,
 }  
 
 #if defined(MAEMO_GTK)
-/* Do nothing for the delete event that will come from _GTK_DELETE_TEMPORARIES */
+
+static GdkAtom atom_temporaries = GDK_NONE;
+
+/* Do nothing for _GTK_DELETE_TEMPORARIES */
 static gint
-hildon_banner_delete_event                      (GtkWidget *widget,
-                                                 GdkEvent  *event)
+hildon_banner_client_event                      (GtkWidget *widget,
+                                                 GdkEventClient  *event)
 {
-    return TRUE;
+  gboolean handled = FALSE;
+
+  if (atom_temporaries == GDK_NONE)
+    atom_temporaries = gdk_atom_intern_static_string ("_GTK_DELETE_TEMPORARIES");
+
+  if (event->message_type == atom_temporaries)
+    {
+      handled = TRUE;
+    }
+
+  return handled;
 }
 #endif
 
@@ -663,7 +676,7 @@ hildon_banner_class_init                        (HildonBannerClass *klass)
     widget_class->map_event = hildon_banner_map_event;
     widget_class->realize = hildon_banner_realize;
 #if defined(MAEMO_GTK)
-    widget_class->delete_event = hildon_banner_delete_event;
+    widget_class->client_event = hildon_banner_client_event;
 #endif
 
     /* Install properties.
