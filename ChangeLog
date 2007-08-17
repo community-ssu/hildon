@@ -1,3 +1,11 @@
+2007-08-17  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
+	[1.0.13-1 release]
+
+	* NEWS:
+	* configure.ac:
+	* debian/changelog: Updating.
+
 2007-08-16  Xan Lopez  <xan.lopez@nokia.com>
 
 	* src/hildon-banner.c: (hildon_banner_client_event): connect directly to

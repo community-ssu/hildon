@@ -1,4 +1,4 @@
-AC_INIT([Hildon gtk widgets], [1.0.12], [michael.kostrzewa@nokia.com], [hildon])
+AC_INIT([Hildon gtk widgets], [1.0.13], [michael.kostrzewa@nokia.com], [hildon])
 AC_CANONICAL_SYSTEM
 
 AM_CONFIG_HEADER(config.h)
@@ -21,7 +21,7 @@ AS_VERSION
 #    increment current, and set revision to 0.
 # 5. If any interfaces have been added since the last public release, then increment age.
 # 6. If any interfaces have been removed since the last public release, then set age to 0.  
-AS_LIBTOOL(HILDON, 12, 0, 12)
+AS_LIBTOOL(HILDON, 13, 0, 13)
 AM_INIT_AUTOMAKE
 
 AC_PROG_CC

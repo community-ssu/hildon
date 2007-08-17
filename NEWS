@@ -1,3 +1,8 @@
+[1.0.13-1 release]
+* Fixes to HildonBanners for temporary windows
+* Minor bugfix in the helper function for logical colors
+* New examples
+
 [1.0.12-1 release]
 * New HILDON_CHECK_VERSION macro
 * Bugfixes
