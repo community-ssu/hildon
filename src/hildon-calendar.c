@@ -3032,6 +3032,8 @@ calendar_timer                                  (gpointer data)
     GtkSettings *settings;
     guint timeout;
 
+    gdk_window_process_updates (((GtkWidget *) calendar)->window, TRUE);
+
     settings = gtk_settings_get_default ();
     g_object_get (settings, "gtk-timeout-repeat", &timeout, NULL);
     timeout *= 5;
