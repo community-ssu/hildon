@@ -1,3 +1,8 @@
+2007-08-21  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
+	* src/hildon-calendar-popup.c: Replacing the "Done" button in the calendar
+	popup with "Ok" and "Cancel". Fixes NB#59299.
+
 2007-08-20  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
 	* src/hildon-calendar.c: Process all window updates before executing next
