@@ -683,6 +683,7 @@ hildon_find_toolbar_init                        (HildonFindToolbar *self)
 {
     GtkToolItem *label_container;
     GtkToolItem *entry_combo_box_container;
+    GtkAlignment *alignment;
 
     HildonFindToolbarPrivate *priv = HILDON_FIND_TOOLBAR_GET_PRIVATE (self);
     g_assert (priv);
@@ -710,10 +711,13 @@ hildon_find_toolbar_init                        (HildonFindToolbar *self)
 #endif
 
     entry_combo_box_container = gtk_tool_item_new ();
+    alignment = gtk_alignment_new (0, 0.5, 1, 0);
 
     gtk_tool_item_set_expand (entry_combo_box_container, TRUE);
-    gtk_container_add (GTK_CONTAINER (entry_combo_box_container),
+    gtk_container_add (GTK_CONTAINER (alignment),
             GTK_WIDGET (priv->entry_combo_box));
+    gtk_container_add (GTK_CONTAINER (entry_combo_box_container),
+            GTK_WIDGET (alignment));
     gtk_widget_show_all(GTK_WIDGET (entry_combo_box_container));
     gtk_toolbar_insert (GTK_TOOLBAR (self), entry_combo_box_container, -1);
     g_signal_connect (hildon_find_toolbar_get_entry (priv),
@@ -730,6 +734,7 @@ hildon_find_toolbar_init                        (HildonFindToolbar *self)
             G_CALLBACK(hildon_find_toolbar_emit_search), self);
     gtk_widget_show_all( GTK_WIDGET(priv->find_button));
     gtk_toolbar_insert ( GTK_TOOLBAR(self), priv->find_button, -1);
+    gtk_widget_set_size_request (GTK_WIDGET (priv->find_button), 72, -1);
     if ( GTK_WIDGET_CAN_FOCUS( GTK_BIN(priv->find_button)->child) )
         GTK_WIDGET_UNSET_FLAGS(
                 GTK_BIN(priv->find_button)->child, GTK_CAN_FOCUS);
@@ -744,6 +749,7 @@ hildon_find_toolbar_init                        (HildonFindToolbar *self)
             gtk_image_new_from_icon_name ("qgn_toolb_gene_close",
                 HILDON_ICON_SIZE_TOOLBAR),
             "Close");
+    gtk_widget_set_size_request (GTK_WIDGET (priv->close_button), 72, -1);
     g_signal_connect(priv->close_button, "clicked",
             G_CALLBACK(hildon_find_toolbar_emit_close), self);
     gtk_widget_show_all(GTK_WIDGET(priv->close_button));

@@ -1,5 +1,11 @@
 2007-08-21  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
+	* src/hildon-find-toolbar.c: Puting the combobox inside alignment to not
+	expand vertically. Adding some extra space to the find toolbar buttons to
+	make them thumbable. Fixes NB#66060.
+
+2007-08-21  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
 	* src/hildon-calendar-popup.c: Replacing the "Done" button in the calendar
 	popup with "Ok" and "Cancel". Fixes NB#59299.
 
