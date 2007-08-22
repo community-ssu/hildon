@@ -114,9 +114,7 @@ hildon_change_style_recursive_from_ld           (GtkWidget *widget,
                     gtk_widget_modify_base (widget, ld->state, &color);
                     break;
             }
-        } else {
-            g_warning ("Failed to lookup '%s' color!", ld->logicalcolorstring);
-        }
+        } 
     }
 
     if (ld->logicalfontstring != NULL)

@@ -1,3 +1,10 @@
+2007-08-22  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
+	* src/hildon-helper.c: Really fixing NB#58352. Looks like
+	gtk_style_lookup_color sometime returns FALSE even though color was
+	found and values were filled properly. Weird. Removing the warning for the
+	time being.
+
 2007-08-21  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
 	* src/hildon-find-toolbar.c: Puting the combobox inside alignment to not
