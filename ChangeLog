@@ -1,3 +1,10 @@
+2007-08-23  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
+	* src/hildon-calendar.c:
+	* src/hildon-number-editor.c:
+	* src/hildon-time-picker.c: Changing the timeout repeat so that it
+	matches the spec of 6 chars per second. Fixes: NB#60489.
+
 2007-08-22  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
 	* src/hildon-helper.c: Really fixing NB#58352. Looks like

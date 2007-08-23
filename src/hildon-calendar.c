@@ -3036,7 +3036,7 @@ calendar_timer                                  (gpointer data)
 
     settings = gtk_settings_get_default ();
     g_object_get (settings, "gtk-timeout-repeat", &timeout, NULL);
-    timeout *= 5;
+    timeout *= 8;
 
     GDK_THREADS_ENTER ();
 
@@ -3070,7 +3070,7 @@ start_spinning                                  (GtkWidget *widget,
 
     settings = gtk_settings_get_default ();
     g_object_get (settings, "gtk-timeout-repeat", &timeout, NULL);
-    timeout *= 5;
+    timeout *= 8;
 
     private_data->click_child = click_child;
 
