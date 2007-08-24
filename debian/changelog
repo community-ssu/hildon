@@ -1,3 +1,25 @@
+libhildon (1.0.14-1) stable; urgency=low
+
+  * Removing the patch for hiding HildonWindow before destroy. Breaks DBus.
+  * Fixes for HildonCalendar expose methods
+  * Fixes for composite-widgets focus handling
+  * New dialog layout for the HildonCalendar (Ok/Cancel)
+  * Making find toolbar thumbable
+  * Changing the stylus repeat timeout to match our needs
+  * New esd dependency 
+
+  * Fixes: NB#54146 Hilon Calendar popup:The changes in active month/year are not shown
+  * Fixes: NB#59299 Leaving the calendar dialog is not possible without selecting something
+  * Fixes: NB#66060 Search toolbar has wrong height in ComboBoxEntry and toolbarbuttons are too narrow
+  * Fixes: NB#58352 on startup, hildon-desktop GLIB WARNING ** hildon-1...
+  * Fixes: NB#60489 Key repeat rate in number editor
+  * Fixes: NB#65155 HildonVolumebar: mute grabs focus, not possible to adjust volume using HW keys
+  * Fixes: NB#63955 hildon_volumebar_set_mute() grabs focus even if the widget is unmapped
+  * Fixes: NB#66673 Questionable main loop iteration in hildon_window_destroy()
+  * Fixes: NB#66628 Account setting dialog crashes while moving the focus using the h/w key. 
+ 
+ -- Michael Dominic Kostrzewa <michael.kostrzewa@nokia.com>  Fri, 24 Aug 2007 16:18:24 +0300
+
 libhildon (1.0.13-1) stable; urgency=low
 
   * Fixes to HildonBanners for temporary windows

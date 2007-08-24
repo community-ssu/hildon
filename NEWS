@@ -1,3 +1,12 @@
+[1.0.14-1 release]
+* Removing the patch for hiding HildonWindow before destroy. Breaks DBus.
+* Fixes for HildonCalendar expose methods
+* Fixes for composite-widgets focus handling
+* New dialog layout for the HildonCalendar (Ok/Cancel)
+* Making find toolbar thumbable
+* Changing the stylus repeat timeout to match our needs
+* New esd dependency 
+
 [1.0.13-1 release]
 * Fixes to HildonBanners for temporary windows
 * Minor bugfix in the helper function for logical colors

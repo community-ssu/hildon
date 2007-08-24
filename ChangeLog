@@ -1,5 +1,13 @@
 2007-08-24  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
+	[1.0.14-1 release]
+
+	* NEWS:
+	* configure.ac:
+	* debian/changelog: Updating.
+
+2007-08-24  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
 	* src/hildon-date-editor.c:
 	* src/hildon-number-editor.c:
 	* src/hildon-private.c:
