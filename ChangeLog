@@ -1,3 +1,11 @@
+2007-08-24  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
+	* examples/hildon-hvolumebar-example.c:
+	* src/hildon-volumebar.c: Improving the focus handling in the
+	volumebar widgets. Fixes NB#63955 and NB#65155. Also fixing the
+	set_property accessor so that "mute" property can be actually set. I'm
+	scared that nobody noticed it's totally broken.
+
 2007-08-23  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
 	* debian/control: Use libesd0-dev or osso-esd-dev as esd dependancy.

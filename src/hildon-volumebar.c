@@ -455,12 +455,12 @@ hildon_volumebar_set_property                   (GObject *object,
             break;
 
         case PROP_HILDON_LEVEL:
-            hildon_volumebar_set_level (HILDON_VOLUMEBAR (priv->volumebar),
+            hildon_volumebar_set_level (HILDON_VOLUMEBAR (object),
                     g_value_get_double (value));
             break;
 
         case PROP_HILDON_MUTE:
-            hildon_volumebar_set_mute (HILDON_VOLUMEBAR (priv->volumebar),
+            hildon_volumebar_set_mute (HILDON_VOLUMEBAR (object),
                     g_value_get_boolean (value));
             break;
 
@@ -564,20 +564,25 @@ hildon_volumebar_set_mute                       (HildonVolumebar *self,
                                                  gboolean mute)
 {
     HildonVolumebarPrivate *priv;
-    gboolean focusable = TRUE;
+    gboolean focusable;
+    gboolean volumebar_has_focus;
+    gboolean button_has_focus;
 
     g_return_if_fail (HILDON_IS_VOLUMEBAR (self));
 
     priv = HILDON_VOLUMEBAR_GET_PRIVATE (self);
     g_assert (priv);
 
+    volumebar_has_focus = GTK_WIDGET_HAS_FOCUS (GTK_WIDGET (priv->volumebar));
+    button_has_focus = GTK_WIDGET_HAS_FOCUS (GTK_WIDGET (priv->tbutton));
+
     /* Slider should be insensitive when mute is on */
     gtk_widget_set_sensitive (GTK_WIDGET (priv->volumebar), !mute);
-
+    
     focusable = GTK_WIDGET_CAN_FOCUS (GTK_WIDGET (priv->volumebar));
 
     if (mute){   
-        if (focusable) {
+        if (focusable && volumebar_has_focus) {
             /* Make mute button focusable since the slider isn't anymore */
             g_object_set (G_OBJECT (priv->tbutton), "can-focus", TRUE, NULL);
             gtk_widget_grab_focus (GTK_WIDGET (priv->tbutton));
@@ -588,14 +593,8 @@ hildon_volumebar_set_mute                       (HildonVolumebar *self,
         g_object_set (G_OBJECT (priv->tbutton), "can-focus", FALSE, NULL);
 
         /* Mute off grabs focus */
-        if (focusable){
-            gtk_widget_grab_focus (GTK_WIDGET (self));
-        }
-        else{
-            /* If volumebar is not focusable, focus the parent window instead */
-            GtkWidget *win = gtk_widget_get_ancestor (GTK_WIDGET (self), 
-                    GTK_TYPE_WINDOW);
-            gtk_window_set_focus (GTK_WINDOW (win), NULL);
+        if (focusable && button_has_focus){
+            gtk_widget_grab_focus (GTK_WIDGET (priv->volumebar));
         }
     }
 

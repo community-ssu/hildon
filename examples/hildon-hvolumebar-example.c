@@ -28,6 +28,19 @@
 #include                                        <gtk/gtk.h>
 #include                                        "hildon.h"
 
+void
+on_mute_clicked                                 (GtkWidget *clicked, 
+                                                 GObject *bar);
+
+void
+on_mute_clicked                                 (GtkWidget *clicked, 
+                                                 GObject *bar)
+{
+    gboolean focus;
+    g_object_get (bar, "mute", &focus, NULL);
+    g_object_set (bar, "mute", !focus, NULL);
+}
+
 int
 main                                            (int argc, 
                                                  char **args)
@@ -35,12 +48,16 @@ main                                            (int argc,
     gtk_init (&argc, &args);
     
     GtkDialog *dialog = GTK_DIALOG (gtk_dialog_new ());
+    GtkButton *button = GTK_BUTTON (gtk_button_new_with_label ("mute"));
 
     HildonHVolumebar *bar = HILDON_HVOLUMEBAR (hildon_hvolumebar_new ());
     gtk_widget_set_size_request (GTK_WIDGET (bar), 400, -1);
 
     gtk_box_pack_start (GTK_BOX (dialog->vbox), GTK_WIDGET (bar), FALSE, FALSE, 0);
+    gtk_box_pack_start (GTK_BOX (dialog->vbox), GTK_WIDGET (button), FALSE, FALSE, 0);
     gtk_dialog_add_button (dialog, "Close", GTK_RESPONSE_CLOSE);
+
+    g_signal_connect (G_OBJECT (button), "clicked", G_CALLBACK (on_mute_clicked), bar);
 
     gtk_widget_show_all (GTK_WIDGET (dialog));
     gtk_dialog_run (dialog);
