@@ -164,7 +164,9 @@ hildon_date_editor_size_allocate                (GtkWidget *widget,
 static void
 hildon_date_editor_size_request                 (GtkWidget *widget,
                                                  GtkRequisition *requisition);
-
+static gboolean
+hildon_date_editor_focus                        (GtkWidget *widget,
+                                                 GtkDirectionType direction);
 static gboolean
 hildon_date_editor_entry_select_all             (GtkWidget *widget);
 
@@ -234,7 +236,7 @@ hildon_date_editor_class_init                   (HildonDateEditorClass *editor_c
     gobject_class->get_property             = hildon_date_editor_get_property;
     widget_class->size_request              = hildon_date_editor_size_request;
     widget_class->size_allocate             = hildon_date_editor_size_allocate;
-    widget_class->focus                     = hildon_private_composite_focus;
+    widget_class->focus                     = hildon_date_editor_focus;
 
     container_class->forall                 = hildon_child_forall;
     GTK_OBJECT_CLASS(editor_class)->destroy = hildon_date_editor_destroy;
@@ -1330,6 +1332,23 @@ hildon_date_editor_size_allocate                (GtkWidget *widget,
 
         gtk_widget_size_allocate (delim, &alloc);
     }
+}
+
+static gboolean
+hildon_date_editor_focus                      (GtkWidget *widget,
+                                               GtkDirectionType direction)
+{
+  gboolean retval;
+  GtkDirectionType effective_direction;
+
+  g_assert (HILDON_IS_EDITOR_EDITOR (widget));
+
+  retval = hildon_private_composite_focus (widget, direction, &effective_direction);
+
+  if (retval == TRUE)
+    return GTK_WIDGET_CLASS (parent_class)->focus (widget, effective_direction);
+  else
+    return FALSE;
 }
 
 /**

@@ -225,6 +225,10 @@ hildon_time_editor_size_allocate                (GtkWidget *widget,
                                                  GtkAllocation *allocation);
 
 static gboolean
+hildon_time_editor_focus                        (GtkWidget *widget,
+                                                 GtkDirectionType direction);
+
+static gboolean
 hildon_time_editor_entry_keypress (GtkEntry *entry,
                                    GdkEventKey* event,
                                    gpointer user_data);
@@ -365,7 +369,7 @@ hildon_time_editor_class_init                   (HildonTimeEditorClass *editor_c
 #ifdef MAEMO_GTK 
     widget_class->tap_and_hold_setup            = hildon_time_editor_tap_and_hold_setup;
 #endif
-    widget_class->focus                         = hildon_private_composite_focus;
+    widget_class->focus                         = hildon_time_editor_focus;
 
     container_class->forall                     = hildon_time_editor_forall;
     GTK_OBJECT_CLASS (editor_class)->destroy    = hildon_time_editor_destroy;
@@ -1774,6 +1778,23 @@ hildon_time_editor_size_allocate                (GtkWidget *widget,
     alloc.y = allocation->y - 2;
     alloc.height = max_req.height + 2;
     gtk_widget_size_allocate (priv->sec_label, &alloc);
+}
+
+static gboolean
+hildon_time_editor_focus                      (GtkWidget *widget,
+                                               GtkDirectionType direction)
+{
+  gboolean retval;
+  GtkDirectionType effective_direction;
+
+  g_assert (HILDON_IS_EDITOR_EDITOR (widget));
+
+  retval = hildon_private_composite_focus (widget, direction, &effective_direction);
+
+  if (retval == TRUE)
+    return GTK_WIDGET_CLASS (parent_class)->focus (widget, effective_direction);
+  else
+    return FALSE;
 }
 
 static gboolean

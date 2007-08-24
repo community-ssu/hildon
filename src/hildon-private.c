@@ -39,13 +39,13 @@
  * regardless of where the focus is coming from.
  */
 gboolean G_GNUC_INTERNAL
-hildon_private_composite_focus                  (GtkWidget *widget, 
-                                                 GtkDirectionType direction)
+hildon_private_composite_focus                  (GtkWidget *widget,
+                                                 GtkDirectionType direction,
+                                                 GtkDirectionType *effective_direction)
 {
   GtkWidget *toplevel = NULL;
   GtkWidget *focus_widget = NULL;
   gboolean coming_from_outside = FALSE;
-  GtkDirectionType effective_direction;
 
   toplevel = gtk_widget_get_toplevel (widget);
 
@@ -55,11 +55,11 @@ hildon_private_composite_focus                  (GtkWidget *widget,
     {
       /* When coming from outside we want to give focus to the first
          item in the widgets */
-      effective_direction = GTK_DIR_TAB_FORWARD;
+      *effective_direction = GTK_DIR_TAB_FORWARD;
       coming_from_outside = TRUE;
     }
   else
-    effective_direction = direction;
+    *effective_direction = direction;
 
   switch (direction) {
       case GTK_DIR_UP:
@@ -68,11 +68,10 @@ hildon_private_composite_focus                  (GtkWidget *widget,
       case GTK_DIR_TAB_BACKWARD:
         if ((HILDON_IS_DATE_EDITOR (widget) || HILDON_IS_TIME_EDITOR(widget)) &&
             !coming_from_outside)
-          return FALSE;
+            return FALSE;
         /* fall through */
       default:
-        return GTK_WIDGET_CLASS (g_type_class_peek_parent
-                                 (GTK_WIDGET_GET_CLASS(widget)))->focus (widget, effective_direction);
+        return TRUE;
   }
 
   g_assert_not_reached ();

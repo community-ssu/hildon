@@ -96,6 +96,10 @@ hildon_number_editor_size_allocate              (GtkWidget *widget,
                                                  GtkAllocation *allocation);
 
 static gboolean
+hildon_number_editor_focus                      (GtkWidget *widget,
+                                                 GtkDirectionType direction);
+
+static gboolean
 hildon_number_editor_entry_keypress             (GtkWidget *widget, 
                                                  GdkEventKey *event,
                                                  gpointer data);
@@ -220,7 +224,7 @@ hildon_number_editor_class_init                 (HildonNumberEditorClass *editor
 
     widget_class->size_request              = hildon_number_editor_size_request;
     widget_class->size_allocate             = hildon_number_editor_size_allocate;
-    widget_class->focus                     = hildon_private_composite_focus;
+    widget_class->focus                     = hildon_number_editor_focus;
 
     editor_class->range_error = hildon_number_editor_range_error;
 
@@ -758,6 +762,23 @@ hildon_number_editor_size_allocate              (GtkWidget *widget,
     alloc.x += HILDON_MARGIN_DEFAULT;
 
     set_widget_allocation(priv->plus, &alloc, &widget->allocation);
+}
+
+static gboolean
+hildon_number_editor_focus                      (GtkWidget *widget,
+                                                 GtkDirectionType direction)
+{
+  gboolean retval;
+  GtkDirectionType effective_direction;
+
+  g_assert (HILDON_IS_EDITOR_EDITOR (widget));
+
+  retval = hildon_private_composite_focus (widget, direction, &effective_direction);
+
+  if (retval == TRUE)
+    return GTK_WIDGET_CLASS (parent_class)->focus (widget, effective_direction);
+  else
+    return FALSE;
 }
 
 static gboolean

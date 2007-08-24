@@ -31,7 +31,8 @@ G_BEGIN_DECLS
 
 gboolean G_GNUC_INTERNAL
 hildon_private_composite_focus                  (GtkWidget *widget, 
-                                                 GtkDirectionType direction);
+                                                 GtkDirectionType direction,
+                                                 GtkDirectionType *effective_direction);
 
 G_END_DECLS
 

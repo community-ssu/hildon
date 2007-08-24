@@ -89,6 +89,9 @@ hildon_weekday_picker_init                      (HildonWeekdayPicker *picker);
 static void
 hildon_weekday_picker_size_allocate             (GtkWidget *widget,
                                                  GtkAllocation *allocation);
+static gboolean
+hildon_weekday_picker_focus                     (GtkWidget *widget,
+                                                 GtkDirectionType direction);
 static void
 hildon_weekday_picker_size_request              (GtkWidget *widget,
                                                  GtkRequisition *requisition);
@@ -160,7 +163,7 @@ hildon_weekday_picker_class_init                (HildonWeekdayPickerClass *picke
     /* Override virtual methods */
     widget_class->size_request                  = hildon_weekday_picker_size_request;
     widget_class->size_allocate                 = hildon_weekday_picker_size_allocate;
-    widget_class->focus                         = hildon_private_composite_focus;
+    widget_class->focus                         = hildon_weekday_picker_focus;
     container_class->forall                     = hildon_weekday_picker_forall;
     GTK_OBJECT_CLASS (picker_class)->destroy    = hildon_weekday_picker_destroy;
 
@@ -372,6 +375,23 @@ hildon_weekday_picker_size_allocate             (GtkWidget *widget,
         else
             sval++;
     }
+}
+
+static gboolean
+hildon_weekday_picker_focus                      (GtkWidget *widget,
+                                                  GtkDirectionType direction)
+{
+  gboolean retval;
+  GtkDirectionType effective_direction;
+
+  g_assert (HILDON_IS_EDITOR_EDITOR (widget));
+
+  retval = hildon_private_composite_focus (widget, direction, &effective_direction);
+
+  if (retval == TRUE)
+    return GTK_WIDGET_CLASS (parent_class)->focus (widget, effective_direction);
+  else
+    return FALSE;
 }
 
 static void

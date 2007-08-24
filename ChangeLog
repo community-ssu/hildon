@@ -1,5 +1,15 @@
 2007-08-24  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
+	* src/hildon-date-editor.c:
+	* src/hildon-number-editor.c:
+	* src/hildon-private.c:
+	* src/hildon-private.h:
+	* src/hildon-time-editor.c:
+	* src/hildon-weekday-picker.c: A patch by Xan Lopez to fix focus
+	handling in subclassed composite widgets. Fixes: NB#66628.
+
+2007-08-24  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
 	* src/hildon-window.c: Removing extra gtk_main_iteration () processing
 	from destroy_ callback as it introduces problems in async dbus signal
 	handlers. Fixes NB#66673.
