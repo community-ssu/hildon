@@ -771,10 +771,6 @@ hildon_window_destroy                           (GtkObject *obj)
     GList *menu_list = NULL;
     GList *menu_node = NULL;
 
-    gtk_widget_hide ((GtkWidget *) self);
-    while (gtk_events_pending ())
-        gtk_main_iteration ();
-    
     g_assert (priv != NULL);
 
     if (priv->vbox != NULL)

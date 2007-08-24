@@ -1,5 +1,11 @@
 2007-08-24  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
+	* src/hildon-window.c: Removing extra gtk_main_iteration () processing
+	from destroy_ callback as it introduces problems in async dbus signal
+	handlers. Fixes NB#66673.
+
+2007-08-24  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
 	* examples/hildon-hvolumebar-example.c:
 	* src/hildon-volumebar.c: Improving the focus handling in the
 	volumebar widgets. Fixes NB#63955 and NB#65155. Also fixing the
