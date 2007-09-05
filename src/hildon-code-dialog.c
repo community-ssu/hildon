@@ -82,8 +82,25 @@ hildon_code_dialog_class_init                   (HildonCodeDialogClass *cd_class
 static void 
 hildon_code_dialog_init                         (HildonCodeDialog *self);
 
+static void
+hildon_code_dialog_realize                      (GtkWidget *widget);
+
+static void
+hildon_code_dialog_unrealize                    (GtkWidget *widget);
+
+static void
+hildon_code_dialog_finalize                     (GObject *object);
+
 static void 
 hildon_code_dialog_button_clicked               (GtkButton *buttonm,
+                                                 gpointer user_data);
+
+static void
+hildon_code_dialog_backspace                    (HildonCodeDialog *dialog);
+
+static void
+hildon_code_dialog_im_commit                    (GtkIMContext *im_context,
+                                                 gchar *utf8,
                                                  gpointer user_data);
 
 static void 
@@ -143,8 +160,16 @@ hildon_code_dialog_get_type                     (void)
 static void
 hildon_code_dialog_class_init                   (HildonCodeDialogClass *cd_class)
 {
+    GObjectClass *gobject_class = G_OBJECT_CLASS (cd_class);
+    GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (cd_class);
+
     parent_class = GTK_DIALOG_CLASS (g_type_class_peek_parent (cd_class));
     g_type_class_add_private (cd_class, sizeof (HildonCodeDialogPrivate));
+
+    gobject_class->finalize = hildon_code_dialog_finalize;
+
+    widget_class->realize = hildon_code_dialog_realize;
+    widget_class->unrealize = hildon_code_dialog_unrealize;
 
     cd_class->input = hildon_code_dialog_real_input;
 
@@ -290,9 +315,18 @@ hildon_code_dialog_init                         (HildonCodeDialog *dialog)
     priv->buttons[4][0] = priv->buttons[4][1] = okButton;
     priv->buttons[4][2] = cancelButton;
 
+    priv->im_context = gtk_im_multicontext_new();
+#ifdef MAEMO_GTK
+    g_object_set (G_OBJECT (priv->im_context), "hildon-input-mode",
+                  HILDON_GTK_INPUT_MODE_NUMERIC, NULL);
+#endif
+
     /*
        Connect signals.
     */
+    g_signal_connect (G_OBJECT (priv->im_context), "commit",
+                      G_CALLBACK (hildon_code_dialog_im_commit), dialog);
+
     g_signal_connect (G_OBJECT (priv->entry), "insert_text",
             G_CALLBACK (hildon_code_dialog_insert_text), dialog);
     
@@ -328,6 +362,77 @@ hildon_code_dialog_init                         (HildonCodeDialog *dialog)
     gtk_widget_show_all (GTK_WIDGET (GTK_DIALOG (dialog)->vbox));
 }
 
+static void
+hildon_code_dialog_realize                      (GtkWidget *widget)
+{
+    HildonCodeDialog *dialog = HILDON_CODE_DIALOG (widget);
+    HildonCodeDialogPrivate *priv = HILDON_CODE_DIALOG_GET_PRIVATE (dialog);
+
+    if (GTK_WIDGET_CLASS (parent_class)->realize)
+      (* GTK_WIDGET_CLASS (parent_class)->realize) (widget);
+
+    gtk_im_context_set_client_window (GTK_IM_CONTEXT (priv->im_context),
+                                     GTK_WIDGET (dialog)->window);
+    gtk_im_context_focus_in (priv->im_context);
+}
+
+static void
+hildon_code_dialog_unrealize                    (GtkWidget *widget)
+{
+    HildonCodeDialog *dialog = HILDON_CODE_DIALOG (widget);
+    HildonCodeDialogPrivate *priv = HILDON_CODE_DIALOG_GET_PRIVATE (dialog);
+
+    gtk_im_context_set_client_window (GTK_IM_CONTEXT (priv->im_context), NULL);
+
+    if (GTK_WIDGET_CLASS (parent_class)->unrealize)
+      (* GTK_WIDGET_CLASS (parent_class)->unrealize) (widget);
+}
+
+static void
+hildon_code_dialog_finalize                     (GObject *object)
+{
+    HildonCodeDialog *dialog = HILDON_CODE_DIALOG (object);
+    HildonCodeDialogPrivate *priv = HILDON_CODE_DIALOG_GET_PRIVATE (dialog);
+
+    g_object_unref (priv->im_context);
+
+    G_OBJECT_CLASS(parent_class)->finalize(object);
+}
+
+static void
+hildon_code_dialog_backspace                    (HildonCodeDialog *dialog)
+{
+    HildonCodeDialogPrivate *priv = HILDON_CODE_DIALOG_GET_PRIVATE (dialog);
+    gchar *text, *pos;
+
+    g_assert (priv);
+
+    text = g_strdup (gtk_entry_get_text (GTK_ENTRY (priv->entry)));
+        
+    pos = text;
+
+    while (*pos != '\0')
+    {
+      pos ++;
+    }
+
+    pos = g_utf8_find_prev_char (text, pos);
+
+    if (pos)
+    {
+      *pos=0;
+    }
+
+    gtk_entry_set_text (GTK_ENTRY (priv->entry), text);
+
+    if (*text == 0)
+    {
+      gtk_widget_set_sensitive (priv->buttons[4][0], FALSE);
+    }
+
+    g_free (text);
+}
+
 static void 
 hildon_code_dialog_button_clicked               (GtkButton *button, 
                                                  gpointer user_data)
@@ -344,32 +449,26 @@ hildon_code_dialog_button_clicked               (GtkButton *button,
     }
     else
     {
-        /* Backspace */
-        gchar *text = g_strdup (gtk_entry_get_text (GTK_ENTRY (priv->entry)));
-        gchar *pos;
-        
-        pos = text;
+        hildon_code_dialog_backspace (dialog);
+    }
+}
 
-        while (*pos != '\0')
-        {
-            pos ++;
-        }
+static void
+hildon_code_dialog_im_commit                    (GtkIMContext *im_context,
+                                                 gchar *utf8,
+                                                 gpointer user_data)
+{
+    HildonCodeDialog *dialog = HILDON_CODE_DIALOG (user_data);
+    HildonCodeDialogPrivate *priv = HILDON_CODE_DIALOG_GET_PRIVATE (dialog);
+    gint digit;
 
-        pos = g_utf8_find_prev_char (text, pos);
+    g_assert (priv);
 
-        if (pos)
-        {
-            *pos=0;
-        }
+    digit = g_ascii_strtod(utf8, NULL);
 
-        gtk_entry_set_text (GTK_ENTRY (priv->entry), text);
-
-        if (*text == 0)
-        {
-            gtk_widget_set_sensitive (priv->buttons[4][0], FALSE);
-        }
-
-        g_free (text);
+    if (g_ascii_isdigit(*utf8))
+    {
+        gtk_entry_append_text (GTK_ENTRY (priv->entry), utf8);
     }
 }
 
@@ -414,6 +513,15 @@ hildon_code_dialog_key_press_event              (GtkWidget *widget,
     gint x, y;
     
     g_assert (priv);
+
+    if (gtk_im_context_filter_keypress (priv->im_context, event))
+        return TRUE;
+
+    if (event->keyval == GDK_BackSpace)
+    {
+        hildon_code_dialog_backspace (dialog);
+        return TRUE;
+    }
 
     for (x = 0; x < 5; x++)
     {

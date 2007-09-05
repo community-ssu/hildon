@@ -38,6 +38,7 @@ struct                                          _HildonCodeDialogPrivate
     GtkWidget *entry;
     GtkWidget *buttons[5][3]; 
     GtkWidget *help_text;
+    GtkIMContext *im_context;
 };
 
 G_END_DECLS
