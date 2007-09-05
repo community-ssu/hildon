@@ -710,7 +710,7 @@ hildon_volumebar_level_change                   (HildonVolumebar *self)
  * the volumebar. 
  */
 void
-hildon_volumebar_set_range_insensitive_message  (GtkWidget *widget,
+hildon_volumebar_set_range_insensitive_message  (HildonVolumebar *widget,
                                                  const gchar *message)
 {
     g_return_if_fail (HILDON_IS_VOLUMEBAR (widget));
@@ -730,7 +730,7 @@ hildon_volumebar_set_range_insensitive_message  (GtkWidget *widget,
  * A helper printf-like variant of hildon_helper_set_insensitive_message.
  */
 void
-hildon_volumebar_set_range_insensitive_messagef (GtkWidget *widget,
+hildon_volumebar_set_range_insensitive_messagef (HildonVolumebar *widget,
                                                  const gchar *format,
                                                  ...)
 {

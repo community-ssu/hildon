@@ -1,5 +1,12 @@
 2007-09-05  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
+	* src/hildon-volumebar.c:
+	* src/hildon-volumebar.h: Changing the GtkWidget to HildonVolumebar in
+	hildon_volumebar_set_range_insensitive_message and
+	hildon_volumebar_set_range_insensitive_messagef. Fixes MB#1848.
+
+2007-09-05  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
 	* src/hildon-window.c: Fixing the border freeing on destroy.
 
 2007-09-05  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 

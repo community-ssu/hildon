@@ -89,11 +89,11 @@ GtkAdjustment*
 hildon_volumebar_get_adjustment                 (HildonVolumebar *self);
 
 void
-hildon_volumebar_set_range_insensitive_message  (GtkWidget *widget,
+hildon_volumebar_set_range_insensitive_message  (HildonVolumebar *widget,
                                                  const gchar *message);
 
 void
-hildon_volumebar_set_range_insensitive_messagef (GtkWidget *widget,
+hildon_volumebar_set_range_insensitive_messagef (HildonVolumebar *widget,
                                                  const gchar *format,
                                                  ...);
 
