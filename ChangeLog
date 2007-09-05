@@ -1,5 +1,9 @@
 2007-09-05  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
+	* src/hildon-window.c: Fixing the border freeing on destroy.
+
+2007-09-05  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
 	* src/hildon-code-dialog-private.h:
 	* src/hildon-code-dialog.c: Adding a patch by Tomas Junnonen to fix the
 	kw keyboard support in HildonCodeDialog.

@@ -391,8 +391,11 @@ hildon_window_finalize                          (GObject * obj_self)
       priv->escape_timeout = 0;
     }
 
-    g_free (priv->borders);
-    g_free (priv->toolbar_borders);
+    if (priv->borders) 
+        gtk_border_free (priv->borders);
+
+    if (priv->toolbar_borders)
+        gtk_border_free (priv->toolbar_borders);
 
     if (G_OBJECT_CLASS (parent_class)->finalize)
         G_OBJECT_CLASS (parent_class)->finalize (obj_self);
@@ -497,18 +500,37 @@ hildon_window_get_borders                       (HildonWindow *window)
     HildonWindowPrivate *priv = HILDON_WINDOW_GET_PRIVATE (window);
     g_assert (priv);
 
-    g_free (priv->borders);
-    g_free (priv->toolbar_borders);
+    GtkBorder *borders = NULL;
+    GtkBorder *toolbar_borders = NULL;
 
-    gtk_widget_style_get (GTK_WIDGET (window), "borders",&priv->borders,
-            "toolbar-borders", &priv->toolbar_borders,
+    if (priv->borders)
+        gtk_border_free (priv->borders);
+    if (priv->toolbar_borders)
+        gtk_border_free (priv->toolbar_borders);
+
+    priv->borders = NULL;
+    priv->toolbar_borders = NULL;
+
+    gtk_widget_style_get (GTK_WIDGET (window), "borders",&borders,
+            "toolbar-borders", &toolbar_borders,
             NULL);
 
-    if (! priv->borders)
-        priv->borders = (GtkBorder *) g_malloc0 (sizeof (GtkBorder));
+    // We're doing a copy here instead of reusing the pointer, 
+    // as we don't know where it comes from (has it been allocated using 
+    // malloc or slices... and we want to free it sanely. Blowing on 
+    // cold probbably.
 
-    if (! priv->toolbar_borders)
-        priv->toolbar_borders = (GtkBorder *) g_malloc0 (sizeof (GtkBorder));
+    if (borders) {
+        priv->borders = gtk_border_copy (borders);
+        gtk_border_free (borders);
+    } else 
+        priv->borders = g_slice_new0 (GtkBorder);
+
+    if (toolbar_borders) {
+        priv->toolbar_borders = gtk_border_copy (toolbar_borders);
+        gtk_border_free (toolbar_borders);
+    } else
+        priv->toolbar_borders = g_slice_new0 (GtkBorder);
 }
 
 static void
