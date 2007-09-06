@@ -1,3 +1,9 @@
+2007-09-06  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
+	* src/hildon-banner.c: Changing the infobanner background pixmap to NULL
+	when realizing the banner. Should make the infonbanner effect a bit more
+	bearable.
+
 2007-09-05  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
 	* src/hildon-volumebar.c:
