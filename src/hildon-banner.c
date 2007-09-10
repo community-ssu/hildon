@@ -650,7 +650,6 @@ hildon_banner_realize                           (GtkWidget *widget)
     /* We use special hint to turn the banner into information notification. */
     gdk_window_set_type_hint (widget->window, GDK_WINDOW_TYPE_HINT_NOTIFICATION);
     gtk_window_set_transient_for (GTK_WINDOW (widget), (GtkWindow *) priv->parent);
-    gdk_window_set_back_pixmap (widget->window, NULL, FALSE);
 
     hildon_banner_check_position (widget);
 }
