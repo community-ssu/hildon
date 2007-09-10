@@ -1,5 +1,10 @@
 2007-09-10  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
+	* src/hildon-caption.c: Applying a patch by Tommi to fix the focus
+	behaviour. Fixes: NB#68610. 
+
+2007-09-10  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
 	* src/hildon-banner.c: Actually reverting the previous change. It somehow
 	looks a bit worse.
 

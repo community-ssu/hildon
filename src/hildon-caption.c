@@ -576,11 +576,10 @@ static gboolean
 hildon_caption_button_press                     (GtkWidget *widget, 
                                                  GdkEventButton *event)
 {
-    HildonCaptionPrivate *priv = HILDON_CAPTION_GET_PRIVATE (widget);
-    g_assert (priv);
-
-    priv->is_focused = TRUE;
     gtk_widget_grab_focus (GTK_BIN (widget)->child);
+    
+    /* we'll update our focused state in set-focus when/if the child receives
+     * focus */
 
     return FALSE;
 }
