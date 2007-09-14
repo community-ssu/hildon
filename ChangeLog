@@ -1,5 +1,34 @@
 2007-09-14  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
+	* doc/Makefile.am:
+	* doc/hildon-docs.sgml:
+	* doc/images/bread-crumb-trail.png:
+	* doc/images/calendar-popup.png:
+	* doc/images/caption.png:
+	* doc/images/code-dialog.png:
+	* doc/images/color-button.png:
+	* doc/images/color-chooser-dialog.png:
+	* doc/images/color-chooser.png:
+	* doc/images/controlbar.png:
+	* doc/images/date-editor.png:
+	* doc/images/font-selection-dialog.png:
+	* doc/images/get-password-dialog.png:
+	* doc/images/hvolumebar.png:
+	* doc/images/login-dialog.png:
+	* doc/images/note.png:
+	* doc/images/number-editor.png:
+	* doc/images/range-editor.png:
+	* doc/images/seekbar.png:
+	* doc/images/set-password-dialog.png:
+	* doc/images/sort-dialog.png:
+	* doc/images/time-editor.png:
+	* doc/images/time-picker.png:
+	* doc/images/vvolumebar.png:
+	* doc/images/weekday-picker.png: Adding the new generated widget shots.
+	Adding the bread-crumb-trial and helpers to the documentation.
+
+2007-09-14  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
 	* examples/hildon-find-toolbar-example.c:
 	* src/hildon-find-toolbar.c:
 	* src/hildon-find-toolbar.h: FIxing the default history-append handler to

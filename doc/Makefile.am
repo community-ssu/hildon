@@ -48,7 +48,9 @@ IGNORE_HFILES 					= hildon-banner-private.h 		\
 						  hildon-weekday-picker-private.h 	\
 						  hildon-window-private.h 		\
 						  hildon-wizard-dialog-private.h	\
-						  hildon-calendar.h
+						  hildon-calendar.h			\
+						  hildon-bread-crumb-trial.h		\
+						  hildon-helper.h
 
 INCLUDES 					= $(GTK_CFLAGS) -I$(top_srcdir)
 
@@ -87,7 +89,8 @@ HTML_IMAGES 					= $(srcdir)/images/calendar-popup.png		\
 						  $(srcdir)/images/time-editor.png		\
 						  $(srcdir)/images/time-picker.png		\
 						  $(srcdir)/images/vvolumebar.png		\
-						  $(srcdir)/images/weekday-picker.png
+						  $(srcdir)/images/weekday-picker.png		\
+						  $(srcdir)/images/bread-crumb-trail.png
 
 FIXXREF_OPTIONS					=
 
