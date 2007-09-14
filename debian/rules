@@ -27,6 +27,12 @@ ifneq (,$(findstring thumb,$(DEB_BUILD_OPTIONS)))
 	CFLAGS += -mthumb
 endif
 
+ifeq (,$(findstring nodocs,$(DEB_BUILD_OPTIONS)))
+ENABLE_GTK_DOC = --enable-gtk-doc
+else
+ENABLE_GTK_DOC = --disable-gtk-doc
+endif
+
 ifeq (,$(findstring nostrip,$(DEB_BUILD_OPTIONS)))
 	INSTALL_PROGRAM += -s
 endif
@@ -52,7 +58,7 @@ config.status: $(SOURCE_DIR)/configure
                --infodir=\$${prefix}/share/info     \
                --with-doc-dir=\$${prefix}/share/doc \
                --disable-dependency-tracking        \
-               --disable-gtk-doc
+	       $(ENABLE_GTK_DOC)
 
 $(SOURCE_DIR)/configure:
 	AUTOGEN_SUBDIR_MODE=1 NOCONFIGURE=yes $(SOURCE_DIR)/autogen.sh
