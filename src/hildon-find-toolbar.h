@@ -103,6 +103,9 @@ gboolean
 hildon_find_toolbar_get_active_iter             (HildonFindToolbar *toolbar, 
                                                  GtkTreeIter *iter);
 
+gint32
+hildon_find_toolbar_get_last_index              (HildonFindToolbar *toolbar);
+
 G_END_DECLS
 
 #endif                                          /* __HILDON_FIND_TOOLBAR_H__ */

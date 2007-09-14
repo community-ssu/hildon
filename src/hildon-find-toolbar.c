@@ -465,7 +465,7 @@ hildon_find_toolbar_history_append              (HildonFindToolbar *self,
 
     g_free (string);
 
-    return TRUE;
+    return FALSE;
 }
 
 static void
@@ -711,7 +711,7 @@ hildon_find_toolbar_init                        (HildonFindToolbar *self)
 #endif
 
     entry_combo_box_container = gtk_tool_item_new ();
-    alignment = gtk_alignment_new (0, 0.5, 1, 0);
+    alignment = GTK_ALIGNMENT (gtk_alignment_new (0, 0.5, 1, 0));
 
     gtk_tool_item_set_expand (entry_combo_box_container, TRUE);
     gtk_container_add (GTK_CONTAINER (alignment),
@@ -919,5 +919,35 @@ hildon_find_toolbar_get_active_iter             (HildonFindToolbar *toolbar,
     priv = HILDON_FIND_TOOLBAR_GET_PRIVATE (toolbar);
 
     return gtk_combo_box_get_active_iter (GTK_COMBO_BOX (priv->entry_combo_box), iter);
+}
+
+/**
+ * hildon_find_toolbar_get_last_index
+ * @toolbar: A find toolbar to query
+ *
+ * Returns the index of the last (most recently added) item in the toolbar.
+ * Can be used to set this item active in the history-append signal.
+ *
+ * 
+ * Returns: Index of the last entry
+ *
+ */
+gint32
+hildon_find_toolbar_get_last_index              (HildonFindToolbar *toolbar)
+{
+    HildonFindToolbarPrivate *priv;
+
+    g_return_val_if_fail (HILDON_IS_FIND_TOOLBAR (toolbar), FALSE);
+    priv = HILDON_FIND_TOOLBAR_GET_PRIVATE (toolbar);
+
+    gint i = 0;
+    GtkTreeIter iter;
+
+    gtk_tree_model_get_iter_first (hildon_find_toolbar_get_list_model (priv), &iter);
+
+    while (gtk_tree_model_iter_next (hildon_find_toolbar_get_list_model (priv), &iter))
+        i++;
+
+    return i;
 }
 

@@ -28,6 +28,18 @@
 #include                                        <gtk/gtk.h>
 #include                                        "hildon.h"
 
+HildonFindToolbar *toolbar = NULL;
+
+gboolean
+on_history_append                               (void);
+
+gboolean
+on_history_append                               (void)
+{
+    hildon_find_toolbar_set_active (toolbar, hildon_find_toolbar_get_last_index (toolbar));
+    return FALSE;
+}
+
 int
 main                                            (int argc, 
                                                  char **args)
@@ -52,10 +64,11 @@ main                                            (int argc,
     gtk_list_store_append (store, &iter);
     gtk_list_store_set (store, &iter, 0, "Third", -1);
 
-    HildonFindToolbar *toolbar = HILDON_FIND_TOOLBAR (hildon_find_toolbar_new_with_model ("Find", store, 0));
+    toolbar = HILDON_FIND_TOOLBAR (hildon_find_toolbar_new_with_model ("Find", store, 0));
     hildon_find_toolbar_set_active (toolbar, 0);
     
     g_signal_connect (G_OBJECT (window), "delete_event", G_CALLBACK (gtk_main_quit), NULL);
+    g_signal_connect_after (G_OBJECT (toolbar), "history-append", G_CALLBACK (on_history_append), NULL);
     
     hildon_window_add_toolbar (HILDON_WINDOW (window), GTK_TOOLBAR (toolbar));
     gtk_widget_show_all (GTK_WIDGET (toolbar));
