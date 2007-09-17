@@ -1,3 +1,9 @@
+[1.0.15-1 release]
+* Fixing hw keyboard support in lock code dialog
+* Fixing focus behavior in caption
+* Additions to find toolbar
+* Documentation fixes
+
 [1.0.14-1 release]
 * Removing the patch for hiding HildonWindow before destroy. Breaks DBus.
 * Fixes for HildonCalendar expose methods

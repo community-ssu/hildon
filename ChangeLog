@@ -1,3 +1,11 @@
+2007-09-17  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
+	[1.0.15-1 release]
+
+	* NEWS:
+	* configure.ac:
+	* debian/changelog: Updating.
+
 2007-09-14  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
 	* doc/Makefile.am:

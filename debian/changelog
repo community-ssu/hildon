@@ -1,13 +1,15 @@
-libhildon (1.0.14-1.1) UNRELEASED; urgency=low
-
-  * NOT RELEASED YET
+libhildon (1.0.15-1.1) stable; urgency=low
 
   * debian/control: Add glib and gtk+ doc packages to build dependencies to
     get gtk-doc crossreferences right
   * debian/rules: --enable-gtk-doc (with nodocs DEB_BUILD_OPTIONS support)
-    (Fixes: NB#69306)
 
- -- Tommi Komulainen <tommi.komulainen@nokia.com>  Fri, 14 Sep 2007 16:50:47 +0300
+  * Fixes: NB#67955 Device lock/unlock code not accepted from HW keyboard
+  * Fixes: NB#52301 Wrong item is highlighted in Find toolbar history list 
+  * Fixes: NB#68610 caption multiple focus possible in Authentication dialog weba_fi_auhentication_realm
+  * Fixes: NB#69306 API documentation is missing
+
+ -- Michael Dominic Kostrzewa <michael.kostrzewa@nokia.com>  Mon, 17 Sep 2007 14:07:51 +0300
 
 libhildon (1.0.14-1) stable; urgency=low
 
