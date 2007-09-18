@@ -54,9 +54,9 @@
 #include                                        <libintl.h>
 #include                                        "hildon-code-dialog-private.h"
 
-#define                                         HEIGHT (38-HILDON_MARGIN_DEFAULT)
+#define                                         HEIGHT (48-HILDON_MARGIN_DEFAULT)
 
-#define                                         WIDTH  (60-HILDON_MARGIN_DEFAULT)
+#define                                         WIDTH  (100-HILDON_MARGIN_DEFAULT)
 
 #define                                         BACKSPACE_ICON "qgn_calculator_backspace"
 
