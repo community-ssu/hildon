@@ -67,9 +67,11 @@ hildon_change_style_recursive_from_ld           (GtkWidget *widget,
 
     /* Change the style for child widgets */
     if (GTK_IS_CONTAINER (widget)) {
-        GList *iterator = gtk_container_get_children (GTK_CONTAINER (widget));
-        for (iterator = iterator; iterator != NULL; iterator = g_list_next (iterator))
+        GList *iterator, *children;
+        children = gtk_container_get_children (GTK_CONTAINER (widget));
+        for (iterator = children; iterator != NULL; iterator = g_list_next (iterator))
             hildon_change_style_recursive_from_ld (GTK_WIDGET (iterator->data), prev_style, ld);
+        g_list_free (children);
     }
 
     /* gtk_widget_modify_*() emit "style_set" signals, so if we got here from

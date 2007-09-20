@@ -1,3 +1,7 @@
+2007-09-20  Johan Bilien  <johan.bilien@nokia.com> 
+
+	* src/hildon-helper.c: Fixed the leak of the a GList. Fixes: NB#70273.
+
 2007-09-18  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
 	* src/hildon-code-dialog.c: Making the hardcoded WIDTH/HEIGHT values a
