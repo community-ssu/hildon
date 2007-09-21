@@ -1,5 +1,12 @@
 2007-09-21  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
+	* examples/hildon-banner-long-example.c: Adding a test-case for long
+	hildon banner.
+
+	* src/hildon-find-toolbar.c: Fixing the get_last_index function.
+
+2007-09-21  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
 	* src/hildon-color-chooser-dialog.c:
 	* src/hildon-color-chooser.c:
 	* src/hildon-font-selection-dialog.c: Adding two patches by Tommi to fix

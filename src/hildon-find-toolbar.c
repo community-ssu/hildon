@@ -936,16 +936,22 @@ gint32
 hildon_find_toolbar_get_last_index              (HildonFindToolbar *toolbar)
 {
     HildonFindToolbarPrivate *priv;
-
+    GtkTreeModel *filter_model;
+    
     g_return_val_if_fail (HILDON_IS_FIND_TOOLBAR (toolbar), FALSE);
     priv = HILDON_FIND_TOOLBAR_GET_PRIVATE (toolbar);
+
+    filter_model = gtk_combo_box_get_model (GTK_COMBO_BOX (priv->entry_combo_box));
+
+    if (filter_model == NULL)
+        return 0;
 
     gint i = 0;
     GtkTreeIter iter;
 
-    gtk_tree_model_get_iter_first (hildon_find_toolbar_get_list_model (priv), &iter);
+    gtk_tree_model_get_iter_first (filter_model, &iter);
 
-    while (gtk_tree_model_iter_next (hildon_find_toolbar_get_list_model (priv), &iter))
+    while (gtk_tree_model_iter_next (filter_model, &iter))
         i++;
 
     return i;
