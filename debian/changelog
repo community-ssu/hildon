@@ -1,3 +1,16 @@
+libhildon (1.0.16-1.1) stable; urgency=low
+
+  * Mem-leak fixes in font selector and color selector
+  * Mem-leak fix in style helper
+  * Making the code dialog a bit more thumbable 
+
+  * Fixes: NB#63694 device lock, truncation of secu_application_title
+  * Fixes: NB#70273 Memory leaks when switching applets and background
+  * Fixes: NB#70474 Memory leak and access to already freed memory in color selector
+  * Fixes: NB#70499 HildonFontSelectionDialog memory leak 
+
+ -- Michael Dominic Kostrzewa <michael.kostrzewa@nokia.com>  Fri, 21 Sep 2007 14:41:13 +0300
+
 libhildon (1.0.15-1.1) stable; urgency=low
 
   * debian/control: Add glib and gtk+ doc packages to build dependencies to
