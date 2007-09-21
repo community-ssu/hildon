@@ -489,6 +489,7 @@ hildon_color_chooser_dialog_unrealize           (GtkWidget *widget)
 
     for (i = 0; i < tmp; i++) {
         g_object_unref (priv->gc_array[i]);
+	priv->gc_array[i] = NULL;
     }
 
     GTK_WIDGET_CLASS (parent_class)->unrealize (widget);
@@ -538,6 +539,7 @@ hildon_color_chooser_dialog_style_set           (GtkWidget *widget,
 
                 for (i = 0; i < tmpn; i++) {
                     g_object_unref (priv->gc_array[i]);
+		    priv->gc_array[i] = NULL;
                 }
             }
 
@@ -556,6 +558,11 @@ hildon_color_chooser_dialog_style_set           (GtkWidget *widget,
             (priv->style_info.num_buttons.top * priv->style_info.num_buttons.bottom);
 
         priv->gc_array = (GdkGC **) g_malloc0 (sizeof (GdkGC *) * tmpn);
+	if (GTK_WIDGET_REALIZED (widget)) {
+                for (i = 0; i < tmpn; i++) {
+		    priv->gc_array[i] = gdk_gc_new (widget->window);
+                }
+	}
 
         if (priv->gconf_client) {
 
@@ -1013,7 +1020,7 @@ hildon_color_chooser_dialog_refresh_style_info  (HildonColorChooserDialog *dialo
 
     if (tmp1) {
         priv->style_info.cont_sizes = *tmp1;
-        g_free (tmp1);
+        gtk_border_free (tmp1);
     } else {
         priv->style_info.cont_sizes.left = 0;
         priv->style_info.cont_sizes.right = 8;
@@ -1023,7 +1030,7 @@ hildon_color_chooser_dialog_refresh_style_info  (HildonColorChooserDialog *dialo
 
     if (tmp2) {
         priv->style_info.radio_sizes = *tmp2;
-        g_free (tmp2);
+        gtk_border_free (tmp2);
     } else {
         priv->style_info.radio_sizes.left = 16;
         priv->style_info.radio_sizes.right = 16;
@@ -1033,7 +1040,7 @@ hildon_color_chooser_dialog_refresh_style_info  (HildonColorChooserDialog *dialo
 
     if (tmp3) {
         priv->style_info.num_buttons = *tmp3;
-        g_free (tmp3);
+        gtk_border_free (tmp3);
     } else {
         priv->style_info.num_buttons.left = 8;
         priv->style_info.num_buttons.right = 2;

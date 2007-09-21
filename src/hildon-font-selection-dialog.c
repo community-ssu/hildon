@@ -889,6 +889,8 @@ hildon_font_selection_dialog_construct_notebook (HildonFontSelectionDialog *font
                 priv->cbx_positioning, NULL,
                 HILDON_CAPTION_OPTIONAL);
 
+    g_object_unref (group);
+
     gtk_box_pack_start (GTK_BOX (vbox_tab[2]), caption_control, FALSE, FALSE, 0);
 
     /* Populate notebook */

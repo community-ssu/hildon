@@ -1,3 +1,11 @@
+2007-09-21  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
+	* src/hildon-color-chooser-dialog.c:
+	* src/hildon-color-chooser.c:
+	* src/hildon-font-selection-dialog.c: Adding two patches by Tommi to fix
+	memory leaks in font selector and color selector. Fixes: NB#70499 and
+	NB#70474.
+
 2007-09-20  Johan Bilien  <johan.bilien@nokia.com> 
 
 	* src/hildon-helper.c: Fixed the leak of the a GList. Fixes: NB#70273.

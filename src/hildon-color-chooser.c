@@ -73,6 +73,9 @@ hildon_color_chooser_size_allocate              (GtkWidget *widget,
 static void
 hildon_color_chooser_realize                    (GtkWidget *widget);
 
+static void
+hildon_color_chooser_unrealize                  (GtkWidget *widget);
+
 static void 
 hildon_color_chooser_map                        (GtkWidget *widget);
 
@@ -262,6 +265,7 @@ hildon_color_chooser_class_init                 (HildonColorChooserClass *klass)
     widget_class->size_request          = hildon_color_chooser_size_request;
     widget_class->size_allocate         = hildon_color_chooser_size_allocate;
     widget_class->realize               = hildon_color_chooser_realize;
+    widget_class->unrealize             = hildon_color_chooser_unrealize;
     widget_class->map                   = hildon_color_chooser_map;
     widget_class->unmap                 = hildon_color_chooser_unmap;
     widget_class->expose_event          = hildon_color_chooser_expose;
@@ -403,11 +407,24 @@ hildon_color_chooser_realize                    (GtkWidget *widget)
 
 
     gdk_window_set_user_data (priv->event_window, widget);
-    widget->window = gtk_widget_get_parent_window (widget);
 
-    widget->style = gtk_style_attach (widget->style, widget->window);
+    GTK_WIDGET_CLASS (parent_class)->realize (widget);
+}
 
-    GTK_WIDGET_SET_FLAGS (widget, GTK_REALIZED);
+static void
+hildon_color_chooser_unrealize                  (GtkWidget *widget)
+{
+    HildonColorChooserPrivate *priv = HILDON_COLOR_CHOOSER_GET_PRIVATE (widget);
+
+    g_assert (priv);
+
+    if (priv->event_window) {
+	gdk_window_set_user_data (priv->event_window, NULL);
+	gdk_window_destroy (priv->event_window);
+	priv->event_window = NULL;
+    }
+
+    GTK_WIDGET_CLASS(parent_class)->unrealize(widget);
 }
 
 static void 
