@@ -660,7 +660,7 @@ hildon_bread_crumb_trail_push_text (HildonBreadCrumbTrail *bct,
 }
 
 /**
- * hildon_bread_crumb_trail_push_text:
+ * hildon_bread_crumb_trail_push_icon:
  * @bct: pointer to #HildonBreadCrumbTrail
  * @text: content of the new bread crumb
  * @icon: a widget to set as the icon in the bread crumb

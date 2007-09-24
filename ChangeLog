@@ -1,3 +1,7 @@
+2007-09-24  Xan Lopez  <xan.lopez@nokia.com>
+
+	* src/hildon-bread-crumb-trail.c: fix the name of the function in the docs.
+
 2007-09-21  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
 	[1.0.16-1 release]
