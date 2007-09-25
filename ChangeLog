@@ -1,3 +1,9 @@
+2007-09-25  Xan Lopez  <xan.lopez@nokia.com>
+
+	* src/hildon-bread-crumb-trail.c (hildon_bread_crumb_trail_push_text)
+	(hildon_bread_crumb_trail_push_icon): Do not show the separator for the
+	toplevel item. Fixes: NB#62031
+
 2007-09-24  Xan Lopez  <xan.lopez@nokia.com>
 
 	* src/hildon-bread-crumb-trail.c (hildon_bread_crumb_trail_push_icon):

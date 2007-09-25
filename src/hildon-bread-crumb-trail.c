@@ -656,6 +656,10 @@ hildon_bread_crumb_trail_push_text (HildonBreadCrumbTrail *bct,
   g_return_if_fail (text != NULL);
 
   widget = _hildon_bread_crumb_widget_new_with_text (text);
+  if (bct->priv->item_list == NULL)
+    {
+      g_object_set (G_OBJECT (widget), "show-separator", FALSE, NULL);
+    }
   attach_bread_crumb (bct, widget, id, destroy);
 }
 
@@ -687,6 +691,10 @@ hildon_bread_crumb_trail_push_icon (HildonBreadCrumbTrail *bct,
   g_return_if_fail (GTK_IS_WIDGET (icon));
 
   widget = _hildon_bread_crumb_widget_new_with_icon (icon, text);
+  if (bct->priv->item_list == NULL)
+    {
+      g_object_set (G_OBJECT (widget), "show-separator", FALSE, NULL);
+    }
   attach_bread_crumb (bct, widget, id, destroy);
 }
 
