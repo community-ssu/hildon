@@ -172,6 +172,8 @@ hildon_bread_crumb_widget_constructor (GType type,
   if (priv->show_separator)
     gtk_widget_show (priv->arrow);
 
+  gtk_widget_set_no_show_all (priv->arrow, TRUE);
+
   /* Contents base container */
   bread_crumb->contents = gtk_hbox_new (FALSE, HILDON_MARGIN_DEFAULT);
   gtk_container_add (GTK_CONTAINER (priv->hbox), bread_crumb->contents);
