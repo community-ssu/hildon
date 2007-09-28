@@ -1,3 +1,8 @@
+2007-09-26  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
+	* src/hildon-window.c: Applying patches by Xan to fix the toolbar
+	visibility. Fixes: NB#70842 and MB#615.
+
 2007-09-25  Xan Lopez  <xan.lopez@nokia.com>
 
 	* src/hildon-bread-crumb-widget.c (hildon_bread_crumb_widget_constructor):
