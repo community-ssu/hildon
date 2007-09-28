@@ -1,3 +1,11 @@
+libhildon (1.0.17-1.1) stable; urgency=low
+
+  * Fixes: NB#70842 General brokeness in toolbars visibility
+  * Fixes: NB#62031 Extra arrow in front of top level item in breadcrumb trail
+  * Fixes: MB#615 Can't show/hide the HildonWindow's toolbar
+
+ -- Michael Dominic Kostrzewa <michael.kostrzewa@nokia.com>  Fri, 28 Sep 2007 15:03:11 +0300
+
 libhildon (1.0.16-1.1) stable; urgency=low
 
   * Mem-leak fixes in font selector and color selector

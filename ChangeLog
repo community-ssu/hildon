@@ -1,3 +1,11 @@
+2007-09-28  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
+	[1.0.17-1 release]
+
+	* NEWS:
+	* configure.ac:
+	* debian/changelog: Updating.
+
 2007-09-26  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
 	* src/hildon-window.c: Applying patches by Xan to fix the toolbar
