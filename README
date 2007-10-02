@@ -1,1 +1,9 @@
+Building with stock GTK+
+------------------------
+
+To build with stock GTK+ pass --with-maemo-gtk=no to the configure script.
+
+Unstable API
+------------
+
 Please define HILDON_ENABLE_UNSTABLE_API to use the unstable api header parts.
