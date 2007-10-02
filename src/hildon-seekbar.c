@@ -47,6 +47,7 @@
 #include                                        <gtk/gtkalignment.h>
 #include                                        <gtk/gtkadjustment.h>
 #include                                        <gtk/gtktoolbar.h>
+#include                                        <gtk/gtkversion.h>
 #include                                        <gdk/gdkkeysyms.h>
 #include                                        "hildon-seekbar-private.h"
 
@@ -423,7 +424,7 @@ hildon_seekbar_get_fraction                     (HildonSeekbar *seekbar)
 {
     g_return_val_if_fail (HILDON_IS_SEEKBAR (seekbar), 0);
 
-#ifdef MAEMO_GTK
+#if defined(MAEMO_GTK) || GTK_CHECK_VERSION(2,11,0)
     return gtk_range_get_fill_level (GTK_RANGE (seekbar));
 #else
     return 0;
@@ -456,7 +457,7 @@ hildon_seekbar_set_fraction                     (HildonSeekbar *seekbar,
     fraction = CLAMP (fraction, range->adjustment->lower,
             range->adjustment->upper);
 
-#ifdef MAEMO_GTK 
+#if defined(MAEMO_GTK) || GTK_CHECK_VERSION(2,11,0)
     /* Update stream position of range widget */
     gtk_range_set_fill_level (range, fraction);
 #endif
@@ -511,7 +512,7 @@ hildon_seekbar_set_position                     (HildonSeekbar *seekbar,
     if (time != value) {
         value = (time < adj->upper) ? time : adj->upper;
 
-#ifdef MAEMO_GTK 
+#if defined(MAEMO_GTK) || GTK_CHECK_VERSION(2,11,0)
         if (value <= gtk_range_get_fill_level (range)) {
 #else
         if (value) {

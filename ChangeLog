@@ -1,3 +1,8 @@
+2007-10-02  Xan Lopez  <xan.lopez@nokia.com>
+
+	* src/hildon-seekbar.c: gtk_range_get_fill_level is available in GTK+ since
+	2.11.0, add a check for that besides the MAEMO_GTK check.
+
 2007-09-28  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
 	[1.0.17-1 release]
