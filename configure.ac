@@ -162,7 +162,7 @@ CFLAGS="$CFLAGS ${ASSERT_CFLAGS} -Wall -Wmissing-prototypes -Wmissing-declaratio
 # -Wno-format due to way translation string are done
 
 ### enable MAEMO platform extensions
-CFLAGS="$CFLAGS -DMAEMO_CHANGES -DHILDON_ENABLE_UNSTABLE_API"
+CFLAGS="$CFLAGS -DMAEMO_CHANGES"
 
 # HILDON_OBJ_*
 # default vars for the examples

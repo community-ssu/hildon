@@ -23,8 +23,6 @@
  *
  */
 
-#ifdef HILDON_ENABLE_UNSTABLE_API
-
 #ifndef __HILDON_BREAD_CRUMB_H__
 #define __HILDON_BREAD_CRUMB_H__
 
@@ -60,5 +58,3 @@ void hildon_bread_crumb_activated (HildonBreadCrumb *bread_crumb);
 G_END_DECLS
 
 #endif
-
-#endif /* HILDON_ENABLE_UNSTABLE_API */
