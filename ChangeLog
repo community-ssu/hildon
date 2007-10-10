@@ -1,3 +1,8 @@
+2007-10-10  Xan Lopez  <xan.lopez@nokia.com>
+
+	* src/hildon-code-dialog.c (hildon_code_dialog_init): check for
+	MAEMO_GTK or GTK+ > 2.11 before using GTK_BUTTONBOX_CENTER mode.
+
 2007-10-10  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
 	[1.99.0-1 release]
