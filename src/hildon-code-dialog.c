@@ -51,6 +51,7 @@
 #include                                        <gtk/gtkbbox.h>
 #include                                        <gtk/gtklabel.h>
 #include                                        <gtk/gtkalignment.h>
+#include                                        <gtk/gtkversion.h>
 #include                                        <libintl.h>
 #include                                        "hildon-code-dialog-private.h"
 
@@ -302,7 +303,7 @@ hildon_code_dialog_init                         (HildonCodeDialog *dialog)
     gtk_container_add (GTK_CONTAINER (priv->buttons[3][2]), image1);
     dialog_action_area1 = GTK_DIALOG (dialog)->action_area;
     gtk_button_box_set_layout (GTK_BUTTON_BOX (dialog_action_area1),
-#if GTK_VERSION_CHECK(2,11,0) || defined(MAEMO_GTK)
+#if GTK_CHECK_VERSION(2,11,0) || defined(MAEMO_GTK)
                                GTK_BUTTONBOX_CENTER);
 #else
                                GTK_BUTTONBOX_DEFAULT_STYLE);
