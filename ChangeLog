@@ -1,5 +1,13 @@
 2007-10-10  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
+	[2.0.0-1 release]
+
+	* NEWS:
+	* configure.ac:
+	* debian/changelog: Updating.
+
+2007-10-10  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
 	* examples/Makefile.am:
 	* examples/hildon-logical-color-example.c:
 	* src/hildon-helper.c: Fixing the way logical colors/fonts are being
