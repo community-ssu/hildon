@@ -1,3 +1,8 @@
+2007-10-10  Mohammad Anwari  <Mohammad.Anwari@nokia.com>
+
+	* configure.ac, pkgconfig/hildon-1.pc: Turn on -DMAEMO_CHANGES only if
+	USE_MAEMO_GTK is enabled.
+
 2007-10-10  Xan Lopez  <xan.lopez@nokia.com>
 
 	* src/hildon-code-dialog.c (hildon_code_dialog_init): check for

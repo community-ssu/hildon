@@ -110,6 +110,8 @@ AM_CONDITIONAL(USE_MAEMO_GTK, test "x$USE_MAEMO_GTK" = "xyes")
 if test x$USE_MAEMO_GTK = xyes; then
     AC_MSG_NOTICE(Will use Maemo GTK+ specific API)
     AC_DEFINE(MAEMO_GTK, [], [Whether to use Maemo GTK+ specific API])
+    MAEMO_CHANGES="-DMAEMO_CHANGES"
+    AC_SUBST(MAEMO_CHANGES)
 else
     AC_MSG_NOTICE(Will not use Maemo GTK+ specific API)
 fi
@@ -162,7 +164,7 @@ CFLAGS="$CFLAGS ${ASSERT_CFLAGS} -Wall -Wmissing-prototypes -Wmissing-declaratio
 # -Wno-format due to way translation string are done
 
 ### enable MAEMO platform extensions
-CFLAGS="$CFLAGS -DMAEMO_CHANGES"
+CFLAGS="$CFLAGS $MAEMO_CHANGES"
 
 # HILDON_OBJ_*
 # default vars for the examples
