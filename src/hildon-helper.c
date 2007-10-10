@@ -50,18 +50,134 @@
 
 #define                                         HILDON_FINGER_SIMULATE_BUTTON 2
 
-struct                                          _HildonLogicalData
+struct                                          _HildonLogicalElement
 {
-    GtkRcFlags rcflags;
+    gboolean is_color;                          /* If FALSE, it's a logical font def */
+    GtkRcFlags rc_flags;
     GtkStateType state;
-    gchar *logicalcolorstring;
-    gchar *logicalfontstring;
-} typedef                                       HildonLogicalData;
+    gchar *logical_color_name;
+    gchar *logical_font_name;
+} typedef                                       HildonLogicalElement;
+
+static void
+hildon_logical_element_list_free                (GSList *list)
+{
+    GSList *iterator = list;
+
+    while (iterator) {
+        HildonLogicalElement *element = (HildonLogicalElement *) iterator->data;
+
+        g_free (element->logical_color_name);
+        g_free (element->logical_font_name);
+        g_slice_free (HildonLogicalElement, element);
+
+        iterator = iterator->next;
+    }
+
+    /* Free the list itself */
+    g_slist_free (list);
+}
+
+static GQuark
+hildon_helper_logical_data_quark                (void)
+{
+    static GQuark quark = 0;
+
+    if (G_UNLIKELY (quark == 0))
+        quark = g_quark_from_static_string ("hildon-logical-data");
+
+    return quark;
+}
+
+static HildonLogicalElement*
+attach_blank_element                            (GtkWidget *widget, 
+                                                 GSList **style_list)
+{
+    gboolean first = (*style_list == NULL) ? TRUE : FALSE;
+
+    HildonLogicalElement *element = g_slice_new (HildonLogicalElement);
+    
+    element->is_color = FALSE;
+    element->rc_flags = 0;
+    element->state = 0;
+    element->logical_color_name = NULL;
+    element->logical_font_name = NULL;
+
+    *style_list = g_slist_append (*style_list, element);
+
+    if (first) 
+        g_object_set_qdata_full (G_OBJECT (widget), hildon_helper_logical_data_quark (), *style_list, (GDestroyNotify) hildon_logical_element_list_free);
+
+    return element;
+}
+
+static GSList*
+attach_new_font_element                         (GtkWidget *widget, 
+                                                 const gchar *font_name)
+{
+    GSList *style_list = g_object_get_qdata (G_OBJECT (widget), hildon_helper_logical_data_quark ());
+    HildonLogicalElement *element = NULL;
+   
+    /* Try to find an element that already sets a font */
+    GSList *iterator = style_list;
+    while (iterator) {
+        element = (HildonLogicalElement *) iterator->data;
+
+        if (element->is_color == FALSE) {
+            /* Reusing ... */
+            g_free (element->logical_font_name);
+            element->logical_font_name = g_strdup (font_name);
+            return style_list;
+        }
+
+        iterator = iterator->next;
+    }
+
+    /* It was not found so we need to create a new one and attach it */
+    element = attach_blank_element (widget, &style_list);
+    element->is_color = FALSE;
+    element->logical_font_name = g_strdup (font_name);
+    return style_list;
+}
+
+static GSList*
+attach_new_color_element                        (GtkWidget *widget, 
+                                                 GtkRcFlags flags, 
+                                                 GtkStateType state, 
+                                                 const gchar *color_name)
+{
+    GSList *style_list = g_object_get_qdata (G_OBJECT (widget), hildon_helper_logical_data_quark ());
+    HildonLogicalElement *element = NULL;
+   
+    /* Try to find an element that has same flags and state */
+    GSList *iterator = style_list;
+    while (iterator) {
+        element = (HildonLogicalElement *) iterator->data;
+
+        if (element->rc_flags == flags &&
+            element->state == state &&
+            element->is_color == TRUE) {
+            /* Reusing ... */
+            element->logical_color_name = g_strdup (color_name);
+            return style_list;
+        }
+
+        iterator = iterator->next;
+    }
+
+    /* It was not found so we need to create a new one and attach it */
+    element = attach_blank_element (widget, &style_list);
+    element->is_color = TRUE;
+    element->state = state;
+    element->rc_flags = flags;
+    element->logical_color_name = g_strdup (color_name);
+    return style_list;
+}
 
 static void 
-hildon_change_style_recursive_from_ld           (GtkWidget *widget, 
+hildon_change_style_recursive_from_list         (GtkWidget *widget, 
                                                  GtkStyle *prev_style, 
-                                                 HildonLogicalData *ld)
+                                                 GSList *list)
 {
     g_assert (GTK_IS_WIDGET (widget));
 
@@ -70,7 +186,7 @@ hildon_change_style_recursive_from_ld           (GtkWidget *widget,
         GList *iterator, *children;
         children = gtk_container_get_children (GTK_CONTAINER (widget));
         for (iterator = children; iterator != NULL; iterator = g_list_next (iterator))
-            hildon_change_style_recursive_from_ld (GTK_WIDGET (iterator->data), prev_style, ld);
+            hildon_change_style_recursive_from_list (GTK_WIDGET (iterator->data), prev_style, list);
         g_list_free (children);
     }
 
@@ -89,48 +205,57 @@ hildon_change_style_recursive_from_ld           (GtkWidget *widget,
         g_signal_handlers_block_matched (G_OBJECT (widget), G_SIGNAL_MATCH_ID | G_SIGNAL_MATCH_FUNC,
                 g_signal_lookup ("style_set", G_TYPE_FROM_INSTANCE (widget)),
                 0, NULL,
-                (gpointer) hildon_change_style_recursive_from_ld,
+                (gpointer) hildon_change_style_recursive_from_list,
                 NULL);
 
-    if (ld->logicalcolorstring != NULL)
-    {
-        /* Changing logical color */
-        GdkColor color;
-        gtk_widget_ensure_style (widget);
-        if (gtk_style_lookup_color (widget->style, ld->logicalcolorstring, &color) == TRUE) {
-            switch (ld->rcflags)
-            {
-                case GTK_RC_FG:
-                    gtk_widget_modify_fg (widget, ld->state, &color);
-                    break;
+    /* We iterate over all list elements and apply each style
+     * specification. */
 
-                case GTK_RC_BG:
-                    gtk_widget_modify_bg (widget, ld->state, &color);
-                    break;
+    GSList *iterator = list;
+    while (iterator) {
+    
+        HildonLogicalElement *element = (HildonLogicalElement *) iterator->data;
 
-                case GTK_RC_TEXT:
-                    gtk_widget_modify_text (widget, ld->state, &color);
-                    break;
+        if (element->is_color == TRUE) {
 
-                case GTK_RC_BASE:
-                    gtk_widget_modify_base (widget, ld->state, &color);
-                    break;
+            /* Changing logical color */
+            GdkColor color;
+            gtk_widget_ensure_style (widget);
+            if (gtk_style_lookup_color (widget->style, element->logical_color_name, &color) == TRUE) {
+               
+                switch (element->rc_flags)
+                {
+                    case GTK_RC_FG:
+                        gtk_widget_modify_fg (widget, element->state, &color);
+                        break;
+
+                    case GTK_RC_BG:
+                        gtk_widget_modify_bg (widget, element->state, &color);
+                        break;
+
+                    case GTK_RC_TEXT:
+                        gtk_widget_modify_text (widget, element->state, &color);
+                        break;
+
+                    case GTK_RC_BASE:
+                        gtk_widget_modify_base (widget, element->state, &color);
+                        break;
+                }
             }
-        } 
-    }
+        } else {
+            
+            /* Changing logical font */
+            GtkStyle *font_style = gtk_rc_get_style_by_paths (gtk_settings_get_default (), element->logical_font_name, NULL, G_TYPE_NONE);
+            if (font_style != NULL) {
+                PangoFontDescription *font_desc = font_style->font_desc;
 
-    if (ld->logicalfontstring != NULL)
-    {
-        /* Changing logical font */
-        GtkStyle *fontstyle = gtk_rc_get_style_by_paths (gtk_settings_get_default (), ld->logicalfontstring, NULL, G_TYPE_NONE);
-        if (fontstyle != NULL)
-        {
-            PangoFontDescription *fontdesc = fontstyle->font_desc;
-
-            if (fontdesc != NULL)
-                gtk_widget_modify_font (widget, fontdesc);
+                if (font_desc != NULL)
+                    gtk_widget_modify_font (widget, font_desc);
+            }
         }
-    }
+
+        iterator = iterator->next;
+    } 
 
     /* FIXME: Compilation workaround for gcc > 3.3 + -pedantic again */
 
@@ -138,22 +263,8 @@ hildon_change_style_recursive_from_ld           (GtkWidget *widget,
         g_signal_handlers_unblock_matched (G_OBJECT (widget), G_SIGNAL_MATCH_ID | G_SIGNAL_MATCH_FUNC,
                 g_signal_lookup ("style_set", G_TYPE_FROM_INSTANCE (widget)),
                 0, NULL,
-                (gpointer) hildon_change_style_recursive_from_ld,
+                (gpointer) hildon_change_style_recursive_from_list,
                 NULL);
-}
-
-static void 
-hildon_logical_data_free                        (HildonLogicalData *ld)
-{
-    g_return_if_fail (ld != NULL);
-
-    if (ld->logicalcolorstring)
-        g_free (ld->logicalcolorstring);
-
-    if (ld->logicalfontstring)
-        g_free (ld->logicalfontstring);
-
-    g_free (ld);
 }
 
 /**
@@ -165,7 +276,7 @@ hildon_logical_data_free                        (HildonLogicalData *ld)
  * return value : TRUE if the event is a finger event.
  **/
 gboolean 
-hildon_helper_event_button_is_finger (GdkEventButton *event)
+hildon_helper_event_button_is_finger            (GdkEventButton *event)
 {
     gdouble pressure;
 
@@ -204,32 +315,27 @@ gulong
 hildon_helper_set_logical_font                  (GtkWidget *widget, 
                                                  const gchar *logicalfontname)
 {
-    HildonLogicalData *ld;
     gulong signum = 0;
+    GSList *list;
 
     g_return_val_if_fail (GTK_IS_WIDGET (widget), 0);
     g_return_val_if_fail (logicalfontname != NULL, 0);
 
-    ld = g_malloc (sizeof (HildonLogicalData));
-
-    ld->rcflags = 0;
-    ld->state = 0;
-    ld->logicalcolorstring = NULL;
-    ld->logicalfontstring = g_strdup(logicalfontname);
+    list = attach_new_font_element (widget, logicalfontname);
 
     /* Disconnects the previously connected signals. That calls the closure notify
      * and effectively disposes the allocated data (hildon_logical_data_free) */
     g_signal_handlers_disconnect_matched (G_OBJECT (widget), G_SIGNAL_MATCH_FUNC, 
-            0, 0, NULL, 
-            G_CALLBACK (hildon_change_style_recursive_from_ld), NULL);
+                                          0, 0, NULL, 
+                                          G_CALLBACK (hildon_change_style_recursive_from_list), NULL);
 
     /* Change the font now */
-    hildon_change_style_recursive_from_ld (widget, NULL, ld);
+    hildon_change_style_recursive_from_list (widget, NULL, list);
 
     /* Connect to "style_set" so that the font gets changed whenever theme changes. */
     signum = g_signal_connect_data (G_OBJECT (widget), "style_set",
-            G_CALLBACK (hildon_change_style_recursive_from_ld),
-            ld, (GClosureNotify) hildon_logical_data_free, 0);
+                                    G_CALLBACK (hildon_change_style_recursive_from_list),
+                                    list, NULL, 0);
 
     return signum;
 }
@@ -346,32 +452,26 @@ hildon_helper_set_logical_color                 (GtkWidget *widget,
                                                  GtkStateType state, 
                                                  const gchar *logicalcolorname)
 {
-    HildonLogicalData *ld;
     gulong signum = 0;
+    GSList *list = NULL;
 
     g_return_val_if_fail (GTK_IS_WIDGET (widget), 0);
     g_return_val_if_fail (logicalcolorname != NULL, 0);
+    
+    list = attach_new_color_element (widget, rcflags, state, logicalcolorname);
 
-    ld = g_malloc (sizeof (HildonLogicalData));
-
-    ld->rcflags = rcflags;
-    ld->state = state;
-    ld->logicalcolorstring = g_strdup (logicalcolorname);
-    ld->logicalfontstring = NULL;
-
-    /* Disconnects the previously connected signals. That calls the closure notify
-     * and effectively disposes the allocated data (hildon_logical_data_free) */
+    /* Disconnects the previously connected signals. */
     g_signal_handlers_disconnect_matched (G_OBJECT (widget), G_SIGNAL_MATCH_FUNC, 
-            0, 0, NULL, 
-            G_CALLBACK (hildon_change_style_recursive_from_ld), NULL);
+                                          0, 0, NULL, 
+                                          G_CALLBACK (hildon_change_style_recursive_from_list), NULL);
 
     /* Change the colors now */
-    hildon_change_style_recursive_from_ld (widget, NULL, ld);
+    hildon_change_style_recursive_from_list (widget, NULL, list);
 
     /* Connect to "style_set" so that the colors gets changed whenever theme */
     signum = g_signal_connect_data (G_OBJECT (widget), "style_set",
-            G_CALLBACK (hildon_change_style_recursive_from_ld),
-            ld, (GClosureNotify) hildon_logical_data_free, 0);
+                                    G_CALLBACK (hildon_change_style_recursive_from_list),
+                                    list, NULL, 0);
 
     return signum;
 }

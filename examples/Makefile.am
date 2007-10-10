@@ -38,12 +38,18 @@ noinst_PROGRAMS				= hildon-window-example				\
 					  hildon-find-toolbar-example			\
 					  hildon-wizard-dialog-example			\
 					  hildon-hvolumebar-timer-example		\
-					  hildon-toolbar-seekbar-example
+					  hildon-toolbar-seekbar-example		\
+					  hildon-logical-color-example
 
 # Hildon window
 hildon_window_example_LDADD		= $(HILDON_OBJ_LIBS)
 hildon_window_example_CFLAGS		= $(HILDON_OBJ_CFLAGS)
 hildon_window_example_SOURCES		= hildon-window-example.c
+
+# Hildon logical color
+hildon_logical_color_example_LDADD	= $(HILDON_OBJ_LIBS)
+hildon_logical_color_example_CFLAGS	= $(HILDON_OBJ_CFLAGS)
+hildon_logical_color_example_SOURCES	= hildon-logical-color-example.c
 
 # Hildon wizard dialog
 hildon_wizard_dialog_example_LDADD	= $(HILDON_OBJ_LIBS)

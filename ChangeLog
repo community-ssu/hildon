@@ -1,3 +1,10 @@
+2007-10-10  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
+	* examples/Makefile.am:
+	* examples/hildon-logical-color-example.c:
+	* src/hildon-helper.c: Fixing the way logical colors/fonts are being
+	applied + adding a test case. Fixes: NB#71660.
+
 2007-10-08  Xan Lopez  <xan.lopez@nokia.com>
 
 	* src/hildon-window.c (hildon_window_map): only map the vbox if it's supposed
