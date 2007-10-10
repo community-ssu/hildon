@@ -1,7 +1,7 @@
-libhildon (2.0.0-1.1) stable; urgency=low
+libhildon (1.99.0-1) stable; urgency=low
 
   * Fixes: NB#71660 RSS applet is not using correct logical colors for feeds
-  * Upping version to 2.0.0 for hildon 2.0
+  * Upping version to (almost) 2.0.0 for hildon 2.0
 
  -- Michael Dominic Kostrzewa <michael.kostrzewa@nokia.com>  Wed, 10 Oct 2007 14:10:28 +0300
 
