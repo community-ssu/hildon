@@ -386,6 +386,7 @@ create_contents                                 (HildonGetPasswordDialog *dialog
     HildonGetPasswordDialogPrivate *priv;
     GtkSizeGroup * group;
     GtkWidget *control;
+    AtkObject *atk_aux = NULL;
 
     /* Cache private pointer for faster member access */
     priv = HILDON_GET_PASSWORD_DIALOG_GET_PRIVATE (dialog);
@@ -419,6 +420,11 @@ create_contents                                 (HildonGetPasswordDialog *dialog
 
     /* Create password text entry */
     control = gtk_entry_new ();
+    if ((atk_aux = gtk_widget_get_accessible(control)))
+      {
+	atk_object_set_name(atk_aux, _("Passwd"));
+      }
+
     gtk_entry_set_width_chars (GTK_ENTRY (control), 20);
 
 #ifdef MAEMO_GTK 

@@ -218,6 +218,7 @@ static void
 create_contents                                 (HildonSetPasswordDialog *dialog)
 {
     HildonSetPasswordDialogPrivate *priv = NULL;
+    AtkObject *atk_aux = NULL;
 
     GtkSizeGroup *group;
 
@@ -275,6 +276,11 @@ create_contents                                 (HildonSetPasswordDialog *dialog
 
     /* Create the password field */
     priv->pwd1st_entry = gtk_entry_new ();
+    if ((atk_aux = gtk_widget_get_accessible(priv->pwd1st_entry)))
+      {
+	atk_object_set_name(atk_aux, _("Old Passwd"));
+      }
+    
 
 #ifdef MAEMO_GTK
     g_object_set (priv->pwd1st_entry, "hildon-input-mode", HILDON_GTK_INPUT_MODE_FULL, NULL);
@@ -295,6 +301,11 @@ create_contents                                 (HildonSetPasswordDialog *dialog
 
     /* Create the password verify field */
     priv->pwd2nd_entry = gtk_entry_new();
+    if ((atk_aux = gtk_widget_get_accessible(priv->pwd2nd_entry)))
+      {
+	atk_object_set_name(atk_aux, _("New Passwd"));
+      }
+
 
 #ifdef MAEMO_GTK
     g_object_set (priv->pwd2nd_entry, "hildon-input-mode", HILDON_GTK_INPUT_MODE_FULL, NULL);
