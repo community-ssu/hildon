@@ -1,3 +1,9 @@
+libhildon (1.99.1-1) stable; urgency=low
+
+  * Fixes: NB#25592 Accessibility unable to access entry box
+
+ -- Michael Dominic Kostrzewa <michael.kostrzewa@nokia.com>  Fri, 14 Dec 2007 11:29:19 +0200
+
 libhildon (1.99.0-2) stable; urgency=low
 
   * Updating the gtk dependancy.
