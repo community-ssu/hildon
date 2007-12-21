@@ -470,7 +470,7 @@ static void
 hildon_bread_crumb_trail_remove (GtkContainer *container,
                                  GtkWidget *widget)
 {
-  GList *p;
+  GList *p, *next;
   HildonBreadCrumbTrailPrivate *priv;
   gboolean was_visible = GTK_WIDGET_VISIBLE (widget);
 
@@ -480,14 +480,15 @@ hildon_bread_crumb_trail_remove (GtkContainer *container,
 
   while (p)
     {
+      next = p->next;
+
       if (widget == GTK_WIDGET (p->data))
         {
           g_signal_handlers_disconnect_by_func (widget, G_CALLBACK (crumb_activated_cb),
                                                 HILDON_BREAD_CRUMB_TRAIL (container));
           gtk_widget_unparent (widget);
 
-          priv->item_list = g_list_remove_link (priv->item_list, p);
-          g_list_free (p);
+          priv->item_list = g_list_delete_link (priv->item_list, p);
 
           hildon_bread_crumb_trail_update_back_button_sensitivity (HILDON_BREAD_CRUMB_TRAIL (container));
 
@@ -497,7 +498,7 @@ hildon_bread_crumb_trail_remove (GtkContainer *container,
             }
         }
 
-      p = p->next;
+      p = next;
     }
 }
 
