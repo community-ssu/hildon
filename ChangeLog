@@ -1,3 +1,15 @@
+2007-12-21  Xan Lopez  <xan.lopez@nokia.com>
+
+	* examples/hildon-bread-crumb-trail-example.c (main): 
+
+	Add clear button.
+
+	* src/hildon-bread-crumb-trail.c (hildon_bread_crumb_trail_remove): 
+
+	Fix logic for the bread crumb trail node removal.
+
+	Fixes: NB#78616
+
 2007-12-14  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
 
 	[1.99.1-1 release]

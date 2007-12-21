@@ -180,6 +180,12 @@ crumb_clicked_cb (HildonBreadCrumbTrail *bct, gpointer id)
   return FALSE;
 }
 
+static void
+clear_cb (GtkWidget *button, GtkWidget *bct)
+{
+  hildon_bread_crumb_trail_clear (HILDON_BREAD_CRUMB_TRAIL (bct));
+}
+
 static gint
 sort_iter_compare_func (GtkTreeModel *model,
                         GtkTreeIter  *a,
@@ -230,7 +236,7 @@ int main (int argc, char **argv)
   HildonProgram *program;
 #endif
   GtkListStore *store;
-  GtkWidget *window, *scrolled_window, *vbox, *bct;
+  GtkWidget *window, *scrolled_window, *vbox, *bct, *button;
   GtkCellRenderer *renderer;
   GtkTreeViewColumn *column;
 
@@ -299,6 +305,12 @@ int main (int argc, char **argv)
   gtk_widget_show (treeview);
   gtk_box_pack_start (GTK_BOX (vbox), scrolled_window, TRUE, TRUE, 0);
   gtk_widget_show (scrolled_window);
+
+  button = gtk_button_new_with_label ("Clear!");
+  g_signal_connect (G_OBJECT (button), "clicked",
+                    G_CALLBACK (clear_cb), bct);
+  gtk_box_pack_start (GTK_BOX (vbox), button, FALSE, FALSE, 0);
+  gtk_widget_show (button);
 
   gtk_widget_show (window);
 
