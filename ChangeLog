@@ -1,5 +1,13 @@
 2008-01-09  Xan Lopez  <xan.lopez@nokia.com>
 
+	[2.0.0-1 release]
+
+	* NEWS:
+	* configure.ac:
+	* debian/changelog: Updating.
+
+2008-01-09  Xan Lopez  <xan.lopez@nokia.com>
+
 	* src/hildon-color-chooser.c (hildon_color_chooser_class_init): 
 
 	Add outer_border style property, we use it but don't define it (!).

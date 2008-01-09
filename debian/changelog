@@ -1,3 +1,10 @@
+libhildon (2.0.0-1ubuntu1) unstable; urgency=low
+
+  * Fixes: NB#78616: breadcrumb trail node removal logic fix.
+  * Fixes: NB#75310: add missing outer-border style property to HildonColorChooser.
+
+ -- Xan Lopez <xan.lopez@nokia.com>  Wed, 09 Jan 2008 14:27:08 +0200
+
 libhildon (1.99.1-1) stable; urgency=low
 
   * Fixes: NB#25592 Accessibility unable to access entry box
