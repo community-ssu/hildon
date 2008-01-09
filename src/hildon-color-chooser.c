@@ -274,18 +274,25 @@ hildon_color_chooser_class_init                 (HildonColorChooserClass *klass)
     widget_class->motion_notify_event   = hildon_color_chooser_pointer_motion;
 
     gtk_widget_class_install_style_property (widget_class,
-            g_param_spec_boxed ("inner_size",
-                "Inner sizes",
-                "Sizes of SV plane, H bar and spacing",
-                GTK_TYPE_BORDER,
-                G_PARAM_READABLE));
+                                             g_param_spec_boxed ("inner_size",
+                                                                 "Inner sizes",
+                                                                 "Sizes of SV plane, H bar and spacing",
+                                                                 GTK_TYPE_BORDER,
+                                                                 G_PARAM_READABLE));
 
     gtk_widget_class_install_style_property (widget_class,
-            g_param_spec_boxed ("graphic_border",
-                "Graphical borders",
-                "Size of graphical border",
-                GTK_TYPE_BORDER,
-                G_PARAM_READABLE));
+                                             g_param_spec_boxed ("outer_border",
+                                                                 "Outer border",
+                                                                 "The outer border for the chooser",
+                                                                 GTK_TYPE_BORDER,
+                                                                 G_PARAM_READABLE));
+
+    gtk_widget_class_install_style_property (widget_class,
+                                             g_param_spec_boxed ("graphic_border",
+                                                                 "Graphical borders",
+                                                                 "Size of graphical border",
+                                                                 GTK_TYPE_BORDER,
+                                                                 G_PARAM_READABLE));
 
     /**
      * HildonColorChooser:color:
