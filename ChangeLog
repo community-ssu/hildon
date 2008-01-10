@@ -1,5 +1,13 @@
 2008-01-10  Xan Lopez  <xan.lopez@nokia.com>
 
+	[2.0.1-1 release]
+
+	* NEWS:
+	* configure.ac:
+	* debian/changelog: Updating.
+
+2008-01-10  Xan Lopez  <xan.lopez@nokia.com>
+
 	* configure.ac:
 	* pkgconfig/Makefile.am:
 	* pkgconfig/hildon.pc.in:

@@ -1,3 +1,6 @@
+[2.0.1-1 release]
+* Do not use PACKAGE_VERSION_MAJOR for the API revision.
+
 [2.0.0-1 release]
 * Fix breadcrumb trail node removal logic.
 * Add missing outer-border style for HildonColorChooser.
