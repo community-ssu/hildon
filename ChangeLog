@@ -1,3 +1,13 @@
+2008-01-10  Xan Lopez  <xan.lopez@nokia.com>
+
+	* configure.ac:
+	* pkgconfig/Makefile.am:
+	* pkgconfig/hildon.pc.in:
+	* src/Makefile.am:
+
+	Do not use PACKAGE_VERSION_MAJOR as the API revision,
+	use newly created API_MAJOR_VERSION.
+	
 2008-01-09  Xan Lopez  <xan.lopez@nokia.com>
 
 	[2.0.0-1 release]

@@ -1,13 +1,13 @@
 MAINTAINERCLEANFILES			= Makefile.in
 
-all-local: hildon-@PACKAGE_VERSION_MAJOR@.pc
+all-local: hildon-@API_VERSION_MAJOR@.pc
 
-hildon-@PACKAGE_VERSION_MAJOR@.pc: hildon.pc
+hildon-@API_VERSION_MAJOR@.pc: hildon.pc
 	cp $< $@
 
 pkgconfigdir				= $(libdir)/pkgconfig
-pkgconfig_DATA				= hildon-@PACKAGE_VERSION_MAJOR@.pc
+pkgconfig_DATA				= hildon-@API_VERSION_MAJOR@.pc
 
 EXTRA_DIST				= hildon.pc.in
-CLEANFILES				= hildon-@PACKAGE_VERSION_MAJOR@.pc
+CLEANFILES				= hildon-@API_VERSION_MAJOR@.pc
 

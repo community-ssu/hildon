@@ -9,6 +9,10 @@ AM_MAINTAINER_MODE
 # define PACKAGE_VERSION_* variables
 AS_VERSION
 
+#define API_VERSION_MAJOR
+API_VERSION_MAJOR=1
+AC_SUBST(API_VERSION_MAJOR)
+
 # set the libtool versioning
 # Quick guide into libtool versioning:
 # 1. Start with version information of `0:0:0' for each libtool library.
@@ -171,7 +175,7 @@ CFLAGS="$CFLAGS $MAEMO_CHANGES"
 # includes all the low-level flags
 # FIXME Add esd and gconf flags
 HILDON_OBJ_CFLAGS="\$(CFLAGS) \$(GTK_CFLAGS) \$(CHECK_CFLAGS) \$(GCONF_CFLAGS) -I\$(top_builddir)/src/"
-HILDON_OBJ_LIBS="\$(top_builddir)/src/libhildon-\$(PACKAGE_VERSION_MAJOR).la \$(GTK_LIBS) \$(GCONF_LIBS) \$(CHECK_LIBS) `pkg-config --libs gthread-2.0`"
+HILDON_OBJ_LIBS="\$(top_builddir)/src/libhildon-\$(API_VERSION_MAJOR).la \$(GTK_LIBS) \$(GCONF_LIBS) \$(CHECK_LIBS) `pkg-config --libs gthread-2.0`"
 AC_SUBST(HILDON_OBJ_CFLAGS)
 AC_SUBST(HILDON_OBJ_LIBS)
 
@@ -195,7 +199,7 @@ Configuration:
 
 - Package:...........: ${PACKAGE}
 - Version............: ${VERSION}
-- Api................: ${PACKAGE}-${PACKAGE_VERSION_MAJOR}
+- Api................: ${PACKAGE}-${API_VERSION_MAJOR}
 - Compiler...........: ${CC}
 - gtk-doc support....: ${enable_gtk_doc}
 - Build examples.....: ${BUILD_EXAMPLES}

@@ -1,4 +1,4 @@
-INCLUDES 						= -DG_LOG_DOMAIN=\"hildon-@PACKAGE_VERSION_MAJOR@\" \
+INCLUDES 						= -DG_LOG_DOMAIN=\"hildon-@API_VERSION_MAJOR@\" \
 							  -DLOCALEDIR=\"$(localedir)\"
 
 MAINTAINERCLEANFILES 					= Makefile.in 					\
@@ -9,21 +9,21 @@ MAINTAINERCLEANFILES 					= Makefile.in 					\
 
 EXTRA_DIST 						= hildon-marshalers.list
 
-lib_LTLIBRARIES 					= libhildon-@PACKAGE_VERSION_MAJOR@.la
+lib_LTLIBRARIES 					= libhildon-@API_VERSION_MAJOR@.la
 
-libhildon_@PACKAGE_VERSION_MAJOR@_la_LDFLAGS 		= $(HILDON_WIDGETS_LT_LDFLAGS)
+libhildon_@API_VERSION_MAJOR@_la_LDFLAGS 		= $(HILDON_WIDGETS_LT_LDFLAGS)
 
-libhildon_@PACKAGE_VERSION_MAJOR@_la_LIBADD 		= $(GTK_LIBS) 					\
+libhildon_@API_VERSION_MAJOR@_la_LIBADD 		= $(GTK_LIBS) 					\
 							  $(GCONF_LIBS) 				\
 							  $(ESD_LIBS)					\
 							  @HILDON_LT_LDFLAGS@ 
 
 
-libhildon_@PACKAGE_VERSION_MAJOR@_la_CFLAGS		= $(GTK_CFLAGS) 				\
+libhildon_@API_VERSION_MAJOR@_la_CFLAGS		        = $(GTK_CFLAGS) 				\
 							  $(GCONF_CFLAGS) 				\
 							  $(ESD_CFLAGS)	
 
-libhildon_@PACKAGE_VERSION_MAJOR@_la_SOURCES 		= hildon-private.c				\
+libhildon_@API_VERSION_MAJOR@_la_SOURCES 		= hildon-private.c				\
 							  hildon-controlbar.c 				\
 							  hildon-seekbar.c 				\
 							  hildon-note.c 				\
@@ -63,13 +63,13 @@ libhildon_@PACKAGE_VERSION_MAJOR@_la_SOURCES 		= hildon-private.c				\
 							  hildon-bread-crumb.c				\
 							  hildon-bread-crumb-widget.c
 
-libhildon_@PACKAGE_VERSION_MAJOR@_built_public_headers  = \
+libhildon_@API_VERSION_MAJOR@_built_public_headers  = \
 							  hildon-enum-types.h                           \
 							  hildon-marshalers.h
 
-libhildon_@PACKAGE_VERSION_MAJOR@_includedir		= $(includedir)/$(PACKAGE)-$(PACKAGE_VERSION_MAJOR)/$(PACKAGE)
+libhildon_@API_VERSION_MAJOR@_includedir		= $(includedir)/$(PACKAGE)-$(API_VERSION_MAJOR)/$(PACKAGE)
 
-libhildon_@PACKAGE_VERSION_MAJOR@_public_headers 	= hildon-banner.h 				\
+libhildon_@API_VERSION_MAJOR@_public_headers 	        = hildon-banner.h 				\
 							  hildon-calendar-popup.h 			\
 							  hildon-caption.h 				\
 							  hildon-code-dialog.h 				\
@@ -107,8 +107,8 @@ libhildon_@PACKAGE_VERSION_MAJOR@_public_headers 	= hildon-banner.h 				\
 							  hildon-bread-crumb.h				\
 							  hildon-version.h
 
-libhildon_@PACKAGE_VERSION_MAJOR@_include_HEADERS 	= $(libhildon_@PACKAGE_VERSION_MAJOR@_public_headers)			\
-							  $(libhildon_@PACKAGE_VERSION_MAJOR@_built_public_headers)
+libhildon_@API_VERSION_MAJOR@_include_HEADERS 	        = $(libhildon_@API_VERSION_MAJOR@_public_headers)			\
+							  $(libhildon_@API_VERSION_MAJOR@_built_public_headers)
 
 noinst_HEADERS						= hildon-banner-private.h 			\
 							  hildon-calendar-popup-private.h 		\
@@ -141,9 +141,9 @@ noinst_HEADERS						= hildon-banner-private.h 			\
 							  hildon-bread-crumb-widget.h
 
 # Don't build the library until we have built the header that it needs:
-$(OBJECTS) $(libhildon_$(PACKAGE_VERSION_MAJOR)_la_OBJECTS): hildon-enum-types.h hildon-marshalers.c hildon-marshalers.h
+$(OBJECTS) $(libhildon_$(API_VERSION_MAJOR)_la_OBJECTS): hildon-enum-types.h hildon-marshalers.c hildon-marshalers.h
 
-hildon-enum-types.h: 					  @REBUILD@ $(libhildon_$(PACKAGE_VERSION_MAJOR)_public_headers) Makefile
+hildon-enum-types.h: 					  @REBUILD@ $(libhildon_$(API_VERSION_MAJOR)_public_headers) Makefile
 	(cd $(srcdir) && glib-mkenums 						\
 			--fhead "#ifndef __HILDON_ENUM_TYPES_H__\n" 		\
 			--fhead "#define __HILDON_ENUM_TYPES_H__\n" 		\
@@ -155,9 +155,9 @@ hildon-enum-types.h: 					  @REBUILD@ $(libhildon_$(PACKAGE_VERSION_MAJOR)_publi
 			--fprod "/* Enumerations from \"@filename@\" */\n" 	\
 			--vhead "GType @enum_name@_get_type (void);\n#define HILDON_TYPE_@ENUMSHORT@ (@enum_name@_get_type())\n" \
 			--ftail "\nG_END_DECLS\n\n#endif /* __HILDON_ENUM_TYPES_H__ */" \
-		$(libhildon_$(PACKAGE_VERSION_MAJOR)_public_headers)) > $@
+		$(libhildon_$(API_VERSION_MAJOR)_public_headers)) > $@
 
-hildon-enum-types.c: 					  @REBUILD@ $(libhildon_$(PACKAGE_VERSION_MAJOR)_public_headers) Makefile
+hildon-enum-types.c: 					  @REBUILD@ $(libhildon_$(API_VERSION_MAJOR)_public_headers) Makefile
 	(cd $(srcdir) && glib-mkenums 						\
 			--fhead "#include \"hildon.h\"\n" 			\
 			--fhead "#include <glib-object.h>" 			\
@@ -165,7 +165,7 @@ hildon-enum-types.c: 					  @REBUILD@ $(libhildon_$(PACKAGE_VERSION_MAJOR)_publi
 			--vhead "GType\n@enum_name@_get_type (void)\n{\n  static GType etype = 0;\n  if (etype == 0) {\n    static const G@Type@Value values[] = {" 	\
 			--vprod "      { @VALUENAME@, \"@VALUENAME@\", \"@valuenick@\" }," \
 			--vtail "      { 0, NULL, NULL }\n    };\n    etype = g_@type@_register_static (\"@EnumName@\", values);\n  }\n  return etype;\n}\n" \
-		$(libhildon_$(PACKAGE_VERSION_MAJOR)_public_headers)) > $@
+		$(libhildon_$(API_VERSION_MAJOR)_public_headers)) > $@
 
 hildon-marshalers.h: 					hildon-marshalers.list
 	glib-genmarshal --prefix _hildon_marshal --header hildon-marshalers.list >hildon-marshalers.h
