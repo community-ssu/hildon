@@ -41,9 +41,10 @@ main                                            (int argc,
 
     GtkMenu *menu = GTK_MENU (gtk_menu_new ());
     GtkWidget *menu_item = gtk_menu_item_new_with_label ("Test item");
+    gtk_widget_show (menu_item);
     gtk_menu_shell_append (GTK_MENU_SHELL (menu), menu_item);
 
-    hildon_window_set_menu (HILDON_WINDOW (window), menu);
+    hildon_window_set_main_menu (HILDON_WINDOW (window), menu);
 
     g_signal_connect (G_OBJECT (window), "delete_event", G_CALLBACK (gtk_main_quit), NULL);
     gtk_widget_show_all (GTK_WIDGET (window));

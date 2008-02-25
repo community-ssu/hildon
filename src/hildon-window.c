@@ -1817,19 +1817,21 @@ hildon_window_get_menu                          (HildonWindow * self)
 }
 
 /**
- * hildon_window_set_menu:
+ * hildon_window_set_main_menu:
  * @self: A #HildonWindow
  * @menu: The #GtkMenu to be used for this #HildonWindow
  * 
  * Sets the menu to be used for this window. This menu overrides
  * a program-wide menu that may have been set with
- * hildon_program_set_common_menu. Pass NULL to remove the current
- * menu. HildonWindow takes ownership of the passed menu and you're
+ * hildon_program_set_common_menu(). Pass %NULL to remove the current
+ * menu. #HildonWindow takes ownership of the passed menu and you're
  * not supposed to free it yourself anymore.
+ *
+ * Since: Hildon 2.2
  **/ 
 void
-hildon_window_set_menu                          (HildonWindow *self, 
-                                                 GtkMenu *menu)
+hildon_window_set_main_menu (HildonWindow* self,
+			     GtkMenu     * menu)
 {
     HildonWindowPrivate *priv;
 
@@ -1849,8 +1851,41 @@ hildon_window_set_menu                          (HildonWindow *self,
         gtk_widget_set_name (priv->menu, "menu_force_with_corners");
         gtk_menu_attach_to_widget (GTK_MENU (priv->menu), GTK_WIDGET (self), &detach_menu_func);
         g_object_ref (GTK_MENU (priv->menu));
-        gtk_widget_show_all (GTK_WIDGET (priv->menu));
     }
+}
+
+/**
+ * hildon_window_set_menu:
+ * @self: A #HildonWindow
+ * @menu: The #GtkMenu to be used for this #HildonWindow
+ * 
+ * Sets the menu to be used for this window. This menu overrides
+ * a program-wide menu that may have been set with
+ * hildon_program_set_common_menu. Pass NULL to remove the current
+ * menu. HildonWindow takes ownership of the passed menu and you're
+ * not supposed to free it yourself anymore.
+ *
+ * Note: hildon_window_set_menu() calls gtk_widget_show_all() for the
+ * #GtkMenu. To pass control about visibility to the application
+ * developer, hildon_window_set_main_menu() was introduced, which
+ * doesn't do this.
+ *
+ * Deprecated: Hildon 2.2: use hildon_window_set_main_menu()
+ **/ 
+void
+hildon_window_set_menu                          (HildonWindow *self, 
+                                                 GtkMenu *menu)
+{
+    HildonWindowPrivate *priv;
+
+    g_return_if_fail (HILDON_IS_WINDOW (self));
+
+    hildon_window_set_main_menu (self, menu);
+
+    priv = HILDON_WINDOW_GET_PRIVATE (self);
+
+    if (priv->menu != NULL)
+        gtk_widget_show_all (GTK_WIDGET (priv->menu));
 }
 
 /**

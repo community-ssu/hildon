@@ -8,7 +8,7 @@ DOC_MODULE					= hildon
 
 DOC_MAIN_SGML_FILE				= $(DOC_MODULE)-docs.sgml
 
-SCAN_OPTIONS					=
+SCAN_OPTIONS					=--deprecated-guards="HILDON_DISABLE_DEPRECATED"
 
 SCANOBJ_OPTIONS					=--type-init-func="gtk_type_init(0)"
 

@@ -1,3 +1,19 @@
+2008-02-25  Sven Herzberg  <sven@imendio.com>
+
+	Fixed: MB#1221: HildonWindow shouldn't call show_all for GtkMenu
+
+	* doc/Makefile.am: tell gtk-doc about HILDON_DISABLE_DEPRECATED
+	* examples/hildon-window-menu-example.c: (main): explicitly show
+	the menu item
+	* src/hildon-window.c:
+	(hildon_window_set_main_menu): moved most of the code from set_menu()
+	to this place; skipped the call to gtk_widget_show_all(); also didn't
+	introduce gtk_widget_show() as gtk_menu_popup() will call that anyways
+	(hildon_window_set_menu): removed most of the code, just keep the
+	questionable gtk_widget_show_all()
+	* src/hildon-window.h: added the new function and deprecate the old
+	one
+
 2008-01-10  Xan Lopez  <xan.lopez@nokia.com>
 
 	[2.0.1-1 release]

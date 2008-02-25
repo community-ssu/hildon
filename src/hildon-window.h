@@ -98,9 +98,15 @@ hildon_window_add_with_scrollbar                (HildonWindow *self,
 GtkMenu*    
 hildon_window_get_menu                          (HildonWindow *self);
 
+void
+hildon_window_set_main_menu                     (HildonWindow *self,
+						 GtkMenu      *menu);
+
+#ifndef HILDON_DISABLE_DEPRECATED
 void        
 hildon_window_set_menu                          (HildonWindow *self,
                                                  GtkMenu      *menu);
+#endif
 
 void    
 hildon_window_add_toolbar                       (HildonWindow *self,
