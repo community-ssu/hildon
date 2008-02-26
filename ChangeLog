@@ -1,3 +1,13 @@
+2008-02-26  Sven Herzberg  <sven@imendio.com>
+
+	Fixes: MB#2981: Build with asserts broken
+
+	* src/hildon-date-editor.c,
+	* src/hildon-number-editor.c,
+	* src/hildon-time-editor.c,
+	* src/hildon-weekday-picker.c: replace HILDON_IS_EDITOR_EDITOR by a
+	the proper GType instance check
+
 2008-02-25  Sven Herzberg  <sven@imendio.com>
 
 	Fixed: MB#1221: HildonWindow shouldn't call show_all for GtkMenu

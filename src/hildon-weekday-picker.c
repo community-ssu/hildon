@@ -384,7 +384,7 @@ hildon_weekday_picker_focus                      (GtkWidget *widget,
   gboolean retval;
   GtkDirectionType effective_direction;
 
-  g_assert (HILDON_IS_EDITOR_EDITOR (widget));
+  g_assert (HILDON_IS_WEEKDAY_PICKER (widget));
 
   retval = hildon_private_composite_focus (widget, direction, &effective_direction);
 

@@ -1787,7 +1787,7 @@ hildon_time_editor_focus                      (GtkWidget *widget,
   gboolean retval;
   GtkDirectionType effective_direction;
 
-  g_assert (HILDON_IS_EDITOR_EDITOR (widget));
+  g_assert (HILDON_IS_TIME_EDITOR (widget));
 
   retval = hildon_private_composite_focus (widget, direction, &effective_direction);
 
