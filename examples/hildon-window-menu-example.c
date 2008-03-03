@@ -40,13 +40,19 @@ main                                            (int argc,
     hildon_program_add_window (program, HILDON_WINDOW (window));
 
     GtkMenu *menu = GTK_MENU (gtk_menu_new ());
-    GtkWidget *menu_item = gtk_menu_item_new_with_label ("Test item");
+    GtkAccelGroup *group = gtk_accel_group_new ();
+    gtk_menu_set_accel_group (menu, group);
+    GtkWidget *menu_item = gtk_image_menu_item_new_from_stock (GTK_STOCK_QUIT,
+		    					       gtk_menu_get_accel_group (menu));
     gtk_widget_show (menu_item);
     gtk_menu_shell_append (GTK_MENU_SHELL (menu), menu_item);
 
     hildon_window_set_main_menu (HILDON_WINDOW (window), menu);
 
-    g_signal_connect (G_OBJECT (window), "delete_event", G_CALLBACK (gtk_main_quit), NULL);
+    g_signal_connect_swapped (menu_item, "activate",
+		    	      G_CALLBACK (gtk_object_destroy), window);
+
+    g_signal_connect (G_OBJECT (window), "destroy", G_CALLBACK (gtk_main_quit), NULL);
     gtk_widget_show_all (GTK_WIDGET (window));
     
     gtk_main ();

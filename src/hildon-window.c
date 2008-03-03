@@ -1817,6 +1817,24 @@ hildon_window_get_menu                          (HildonWindow * self)
     return GTK_MENU (priv->menu);
 }
 
+/* Since we've been asking developers to call gtk_window_add_accel_group()
+ * themselves, do not trigger criticals by trying it again.
+ */
+static void
+hildon_window_add_accel_group (HildonWindow *self,
+			       GtkAccelGroup *accel_group)
+{
+    GSList *groups, *l;
+
+    groups = gtk_accel_groups_from_object (G_OBJECT (self));
+    for (l = groups; l != NULL; l = l->next)
+      if (l->data == (gpointer)accel_group)
+	/* Maybe print a warning here? */
+	return;
+
+    gtk_window_add_accel_group (GTK_WINDOW (self), accel_group);
+}
+
 /**
  * hildon_window_set_main_menu:
  * @self: A #HildonWindow
@@ -1835,6 +1853,7 @@ hildon_window_set_main_menu (HildonWindow* self,
 			     GtkMenu     * menu)
 {
     HildonWindowPrivate *priv;
+    GtkAccelGroup *accel_group;
 
     g_return_if_fail (HILDON_IS_WINDOW (self));
 
@@ -1842,6 +1861,10 @@ hildon_window_set_main_menu (HildonWindow* self,
 
     if (priv->menu != NULL)
     {
+	accel_group = gtk_menu_get_accel_group (GTK_MENU (priv->menu));
+	if (accel_group != NULL)
+	    gtk_window_remove_accel_group (GTK_WINDOW (self), accel_group);
+
         gtk_menu_detach (GTK_MENU (priv->menu));
         g_object_unref (priv->menu);
     }
@@ -1852,6 +1875,10 @@ hildon_window_set_main_menu (HildonWindow* self,
         gtk_widget_set_name (priv->menu, "menu_force_with_corners");
         gtk_menu_attach_to_widget (GTK_MENU (priv->menu), GTK_WIDGET (self), &detach_menu_func);
         g_object_ref (GTK_MENU (priv->menu));
+
+	accel_group = gtk_menu_get_accel_group (GTK_MENU (priv->menu));
+	if (accel_group != NULL)
+	    hildon_window_add_accel_group (self, accel_group);
     }
 }
 
