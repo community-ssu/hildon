@@ -1,3 +1,9 @@
+libhildon (2.0.1-2) gutsy; urgency=low
+
+  * Fixes: MB#1276: wrong allocators used in hildon_window_get_borders
+
+ -- Sven Herzberg <sven@imendio.com>  Mon, 25 Feb 2008 11:50:10 +0100
+
 libhildon (2.0.1-1) unstable; urgency=low
 
   * Do not use PACKAGE_VERSION_MAJOR for the API revision.

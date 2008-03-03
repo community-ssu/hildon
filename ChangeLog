@@ -1,3 +1,10 @@
+2008-03-03  Sven Herzberg  <sven@imendio.com>
+
+	Fixes: MB#1276: wrong allocators used in hildon_window_get_borders
+
+	* src/hildon-window.c: (hildon_window_get_borders): don't imply any
+	knowledge about the border allocators used within GTK+
+
 2008-02-26  Sven Herzberg  <sven@imendio.com>
 
 	Fixes: MB#2981: Build with asserts broken

@@ -365,7 +365,7 @@ hildon_window_finalize                          (GObject * obj_self)
       priv->escape_timeout = 0;
     }
 
-    if (priv->borders) 
+    if (priv->borders)
         gtk_border_free (priv->borders);
 
     if (priv->toolbar_borders)
@@ -496,6 +496,7 @@ hildon_window_get_property                      (GObject *object,
 static void
 hildon_window_get_borders                       (HildonWindow *window)
 {
+    GtkBorder zero = {0, 0, 0, 0};
     HildonWindowPrivate *priv = HILDON_WINDOW_GET_PRIVATE (window);
     g_assert (priv);
 
@@ -522,14 +523,14 @@ hildon_window_get_borders                       (HildonWindow *window)
     if (borders) {
         priv->borders = gtk_border_copy (borders);
         gtk_border_free (borders);
-    } else 
-        priv->borders = g_slice_new0 (GtkBorder);
+    } else
+        priv->borders = g_boxed_copy (GTK_TYPE_BORDER, &zero);
 
     if (toolbar_borders) {
         priv->toolbar_borders = gtk_border_copy (toolbar_borders);
         gtk_border_free (toolbar_borders);
     } else
-        priv->toolbar_borders = g_slice_new0 (GtkBorder);
+        priv->toolbar_borders = g_boxed_copy (GTK_TYPE_BORDER, &zero);
 }
 
 static gboolean
