@@ -1,3 +1,10 @@
+2008-03-04  Michael Natterer  <mitch@imendio.com>
+
+	Fixes: NB#78481: information banners are hidden under browser menu
+
+	* src/hildon-banner.c: call gtk_window_present() on the banners so
+	they are risen if they are already visible.
+
 2008-03-03  Sven Herzberg  <sven@imendio.com>
 
 	Fixes: MB#1220: HildonWindow should take GtkMenu accel_group into account
