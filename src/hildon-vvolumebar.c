@@ -145,8 +145,6 @@ hildon_vvolumebar_init                          (HildonVVolumebar *vvolumebar)
     priv->volumebar = HILDON_VOLUMEBAR_RANGE (hildon_volumebar_range_new
             (GTK_ORIENTATION_VERTICAL));
 
-    GTK_WIDGET_UNSET_FLAGS (GTK_WIDGET (vvolumebar), GTK_CAN_FOCUS);
-
     gtk_widget_set_parent (GTK_WIDGET (priv->tbutton), GTK_WIDGET (vvolumebar));
     gtk_widget_set_parent (GTK_WIDGET (priv->volumebar), GTK_WIDGET (vvolumebar));
 

@@ -158,8 +158,6 @@ hildon_hvolumebar_init                          (HildonHVolumebar *hvolumebar)
         HILDON_VOLUMEBAR_RANGE(hildon_volumebar_range_new
                 (GTK_ORIENTATION_HORIZONTAL));
 
-    GTK_WIDGET_UNSET_FLAGS (GTK_WIDGET (hvolumebar), GTK_CAN_FOCUS);
-
     gtk_widget_set_parent (GTK_WIDGET (priv->tbutton), GTK_WIDGET (hvolumebar));
     gtk_widget_set_parent (GTK_WIDGET (priv->volumebar), GTK_WIDGET (hvolumebar));
 

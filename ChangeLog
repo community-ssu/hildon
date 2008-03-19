@@ -1,3 +1,24 @@
+2008-03-19  Michael Natterer  <mitch@imendio.com>
+
+	Fixes: NB#79791: Cannot set focus to Master volume using stylus
+
+	* src/hildon-volumebar.c
+	* src/hildon-vvolumebar.c
+	* src/hildon-hvolumebar.c (init): remove UNSET_FLAGS(CAN_FOCUS) so
+	the widget becomes focussable at all.
+
+	* src/hildon-volumebar.c: implement GtkWidget::grab_focus() and
+	set the focus to wither the mute button or the volumebar.
+
+	Remove own "can-focus" property and instead listen to
+	notify::can-focus in order to update the widget's state.
+
+	Implement GtkWidget::focus() and make sure we can also *leave* the
+	widget, not only enter it, depending on volumebar orientation and
+	requested focus direction.
+
+	Clean up set_mute() to cooperate nicely with all the above.
+
 2008-03-04  Michael Natterer  <mitch@imendio.com>
 
 	Fixes: NB#78481: information banners are hidden under browser menu
