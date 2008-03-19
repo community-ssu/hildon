@@ -1,3 +1,15 @@
+2008-03-19  Sven Herzberg  <sven@imendio.com>
+
+	Fixes: NB#22072: Revisiting fix for "Implement robust timer handling
+	in Info Banner" bug
+
+	* src/hildon-banner.c: (hildon_banner_timeout): reset the current
+	timeout id properly when the timeout will disappear this leaves no
+	artifacts around in the destroy(); there will only be the timeout
+	created by hildon_banner_ensure_timeout() and adding a new timeout
+	will also work if the timeout gets removed because the timeout_handler
+	returned FALSE
+
 2008-03-19  Michael Natterer  <mitch@imendio.com>
 
 	Fixes: NB#79791: Cannot set focus to Master volume using stylus
