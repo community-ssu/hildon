@@ -304,7 +304,7 @@ hildon_banner_timeout                           (gpointer data)
     }
 
     if (! continue_timeout) {
-        HildonBannerPrivate *priv = HILDON_BANNER_GET_PRIVATE (self);
+        HildonBannerPrivate *priv = HILDON_BANNER_GET_PRIVATE (data);
         priv->timeout_id = 0;
         gtk_widget_destroy (widget);
     }
