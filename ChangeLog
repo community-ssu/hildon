@@ -1,5 +1,16 @@
 2008-03-25  Sven Herzberg  <sven@imendio.com>
 
+	Fixes: MB#1212: Hide info banners (infoprints) on click
+
+	* src/hildon-banner.c: (simulate_close), (hildon_banner_timeout):
+	extracted the close event simulation into an extra function
+	(hildon_banner_button_press_event): simulate a close event and destroy
+	the widget if the event wasn't handled
+	(hildon_banner_class_init): added the button_press_event handler
+	(hildon_banner_init): added button-press events to the widget
+
+2008-03-25  Sven Herzberg  <sven@imendio.com>
+
 	Fixes: MB:#924: Hildon widgets doesn't support RTL mode
 	Patch from: Mohammad Anwari  <mdamt@maemo.org>
 

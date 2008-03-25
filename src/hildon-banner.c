@@ -133,6 +133,10 @@ hildon_banner_constructor                       (GType type,
 static void
 hildon_banner_finalize                          (GObject *object);
 
+static gboolean
+hildon_banner_button_press_event                (GtkWidget* widget,
+						 GdkEventButton* event);
+
 static gboolean 
 hildon_banner_map_event                         (GtkWidget *widget, 
                                                  GdkEventAny *event);
@@ -163,11 +167,6 @@ hildon_banner_ensure_child                      (HildonBanner *self,
 static HildonBanner*
 hildon_banner_get_instance_for_widget           (GtkWidget *widget, 
                                                  gboolean timed);
-
-static gint
-hildon_banner_delete_event                      (GtkWidget *widget,
-                                                 GdkEvent  *event);
-
 
 G_DEFINE_TYPE (HildonBanner, hildon_banner, GTK_TYPE_WINDOW)
 
@@ -276,11 +275,31 @@ hildon_banner_bind_label_style                  (HildonBanner *self,
 }
 
 /* In timeout function we automatically destroy timed banners */
+static gboolean
+simulate_close (GtkWidget* widget)
+{
+    gboolean result = FALSE;
+
+    /* If the banner is currently visible (it normally should), 
+       we simulate clicking the close button of the window.
+       This allows applications to reuse the banner by prevent
+       closing it etc */
+    if (GTK_WIDGET_DRAWABLE (widget))
+    {
+        GdkEvent *event = gdk_event_new (GDK_DELETE);
+        event->any.window = g_object_ref (widget->window);
+        event->any.send_event = FALSE;
+        result = gtk_widget_event (widget, event);
+        gdk_event_free (event);
+    }
+
+    return result;
+}
+
 static gboolean 
 hildon_banner_timeout                           (gpointer data)
 {
     GtkWidget *widget;
-    GdkEvent *event;
     gboolean continue_timeout = FALSE;
 
     GDK_THREADS_ENTER ();
@@ -290,18 +309,7 @@ hildon_banner_timeout                           (gpointer data)
     widget = GTK_WIDGET (data);
     g_object_ref (widget);
 
-    /* If the banner is currently visible (it normally should), 
-       we simulate clicking the close button of the window.
-       This allows applications to reuse the banner by prevent
-       closing it etc */
-    if (GTK_WIDGET_DRAWABLE (widget))
-    {
-        event = gdk_event_new (GDK_DELETE);
-        event->any.window = g_object_ref (widget->window);
-        event->any.send_event = FALSE;
-        continue_timeout = gtk_widget_event (widget, event);
-        gdk_event_free (event);
-    }
+    continue_timeout = simulate_close (widget);
 
     if (! continue_timeout) {
         HildonBannerPrivate *priv = HILDON_BANNER_GET_PRIVATE (data);
@@ -544,6 +552,21 @@ hildon_banner_finalize                          (GObject *object)
     G_OBJECT_CLASS (hildon_banner_parent_class)->finalize (object);
 }
 
+static gboolean
+hildon_banner_button_press_event                (GtkWidget* widget,
+						 GdkEventButton* event)
+{
+	gboolean result = simulate_close (widget);
+
+	if (!result) {
+		/* signal emission not stopped - basically behave like
+		 * gtk_main_do_event() for a delete event */
+		gtk_widget_destroy (widget);
+	}
+
+	return result;
+}
+
 /* We start the timer for timed notifications after the window appears on screen */
 static gboolean 
 hildon_banner_map_event                         (GtkWidget *widget, 
@@ -682,6 +705,7 @@ hildon_banner_class_init                        (HildonBannerClass *klass)
     GTK_OBJECT_CLASS (klass)->destroy = hildon_banner_destroy;
     widget_class->map_event = hildon_banner_map_event;
     widget_class->realize = hildon_banner_realize;
+    widget_class->button_press_event = hildon_banner_button_press_event;
 #if defined(MAEMO_GTK)
     widget_class->client_event = hildon_banner_client_event;
 #endif
@@ -754,6 +778,8 @@ hildon_banner_init                              (HildonBanner *self)
 #if defined(MAEMO_GTK)
     gtk_window_set_is_temporary (GTK_WINDOW (self), TRUE);
 #endif
+
+    gtk_widget_add_events (GTK_WIDGET (self), GDK_BUTTON_PRESS_MASK);
 }
 
 /* Makes sure that icon/progress item contains the desired type
