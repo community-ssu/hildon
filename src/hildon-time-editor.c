@@ -1734,9 +1734,11 @@ hildon_time_editor_size_allocate                (GtkWidget *widget,
     HildonTimeEditorPrivate *priv = HILDON_TIME_EDITOR_GET_PRIVATE (widget);
     GtkAllocation alloc;
     GtkRequisition req, max_req;
+    gboolean rtl;
 
     g_assert (priv);
 
+    rtl = (gtk_widget_get_direction (widget) == GTK_TEXT_DIR_RTL);
     widget->allocation = *allocation;
     gtk_widget_get_child_requisition (widget, &max_req);
 
@@ -1746,19 +1748,32 @@ hildon_time_editor_size_allocate                (GtkWidget *widget,
     alloc.y = allocation->y + MAX (allocation->height - max_req.height, 0) / 2;
 
     /* allocate frame */
-    gtk_widget_get_child_requisition (priv->frame, &req);
+    if (rtl)
+        gtk_widget_get_child_requisition (priv->iconbutton, &req);
+    else
+        gtk_widget_get_child_requisition (priv->frame, &req);
 
     alloc.width = req.width;
     alloc.height = max_req.height;
-    gtk_widget_size_allocate (priv->frame, &alloc);
+    if (rtl)
+        gtk_widget_size_allocate (priv->iconbutton, &alloc);
+    else
+        gtk_widget_size_allocate (priv->frame, &alloc);
 
     /* allocate icon */
     if (GTK_WIDGET_VISIBLE (priv->iconbutton)) {
-        gtk_widget_get_child_requisition (priv->iconbutton, &req);
+        if (rtl)
+            gtk_widget_get_child_requisition (priv->frame, &req);
+        else
+            gtk_widget_get_child_requisition (priv->iconbutton, &req);
 
         alloc.x += alloc.width + HILDON_MARGIN_DEFAULT;
         alloc.width = req.width;
-        gtk_widget_size_allocate (priv->iconbutton, &alloc);
+
+        if (rtl)
+            gtk_widget_size_allocate (priv->frame, &alloc);
+        else
+            gtk_widget_size_allocate (priv->iconbutton, &alloc);        
     }
 
     /* FIXME: ugly way to move labels up. They just don't seem move up

@@ -265,6 +265,10 @@ hildon_bread_crumb_trail_size_allocate (GtkWidget *widget,
   GList *p, *first_show, *first_hide;
   gint back_button_size;
   HildonBreadCrumbTrailPrivate *priv = HILDON_BREAD_CRUMB_TRAIL (widget)->priv;
+  gboolean rtl;
+
+  /* Get the rtl status */
+  rtl = (gtk_widget_get_direction (widget) == GTK_TEXT_DIR_RTL);
 
   widget->allocation = *allocation;
 
@@ -272,14 +276,24 @@ hildon_bread_crumb_trail_size_allocate (GtkWidget *widget,
   allocation_width = allocation->width - 2 * border_width;
 
   /* Allocate the back button */
-  child_allocation.x = allocation->x + border_width;
+  if (rtl)
+    child_allocation.x = allocation->width - border_width;
+  else
+    child_allocation.x = allocation->x + border_width;
+
   child_allocation.y = allocation->y + border_width;
   gtk_widget_get_child_requisition (priv->back_button, &child_requisition);
   /* We want the back button to be a square */
   back_button_size = MAX (child_requisition.width, child_requisition.height);
   child_allocation.width = child_allocation.height = back_button_size;
+
+  if (rtl)
+    child_allocation.x -= back_button_size;
+
   gtk_widget_size_allocate (priv->back_button, &child_allocation);
-  child_allocation.x += back_button_size;
+
+  if (!rtl)
+    child_allocation.x += back_button_size;
 
   /* If there are no buttons there's nothing else to do */
   if (priv->item_list == NULL)
@@ -323,8 +337,14 @@ hildon_bread_crumb_trail_size_allocate (GtkWidget *widget,
             {
               first_hide = p->next;
               gtk_widget_set_child_visible (child, TRUE);
+
+              if (rtl)
+                child_allocation.x -= child_allocation.width;
+
               gtk_widget_size_allocate (child, &child_allocation);
-              child_allocation.x += child_allocation.width;
+
+              if (!rtl)
+                child_allocation.x += child_allocation.width;
             }
           else
             {
@@ -360,8 +380,14 @@ hildon_bread_crumb_trail_size_allocate (GtkWidget *widget,
 
       child_allocation.width = natural_width;
       gtk_widget_set_child_visible (child, TRUE);
+
+      if (rtl)
+        child_allocation.x -= child_allocation.width;
+
       gtk_widget_size_allocate (child, &child_allocation);
-      child_allocation.x += child_allocation.width;
+
+      if (!rtl)
+        child_allocation.x += child_allocation.width;
     }
 
   for (p = first_hide; p; p = p->next)

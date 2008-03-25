@@ -1,5 +1,22 @@
 2008-03-25  Sven Herzberg  <sven@imendio.com>
 
+	Fixes: MB:#924: Hildon widgets doesn't support RTL mode
+	Patch from: Mohammad Anwari  <mdamt@maemo.org>
+
+	* src/hildon-banner.c: let the HildonBanners pop up on the left side
+	instead of the right in RTL mode
+	* src/hildon-bread-crumb-trail.c: mirror the appearance of the
+	breadcrumb button list in RTL mode
+	* src/hildon-caption.c: mirror the appearance of the caption widget in
+	RTL mode
+	* src/hildon-date-editor.c: mirror appearance of the date editor in
+	RTL mode
+	* src/hildon-time-editor.c: mirror appearance of the time editor in
+	RTL mode
+	* src/hildon-window.c: fix the position of the popup in RTL mode
+
+2008-03-25  Sven Herzberg  <sven@imendio.com>
+
 	Amendment to the fix of NB#22072. Fix compilation.
 
 	* src/hildon-banner.c: (hildon_banner_timeout): fix compilation

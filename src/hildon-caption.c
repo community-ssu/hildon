@@ -720,13 +720,17 @@ hildon_caption_size_allocate                    (GtkWidget *widget,
 {
     GtkAllocation child_alloc;
     GtkAllocation caption_alloc;
-    GtkRequisition req;
+    GtkRequisition req, child_req;
     GtkWidget *child = NULL;
     HildonCaptionPrivate *priv = NULL;
+    gboolean rtl;
 
     g_assert (HILDON_IS_CAPTION (widget));
     priv = HILDON_CAPTION_GET_PRIVATE (widget);
     g_assert (priv);
+
+    /* Get the rtl status */
+    rtl = (gtk_widget_get_direction (widget) == GTK_TEXT_DIR_RTL);
 
     /* Position the caption to its allocated location */
     if (GTK_WIDGET_REALIZED (widget))
@@ -737,6 +741,8 @@ hildon_caption_size_allocate                    (GtkWidget *widget,
                 MAX (allocation->height - GTK_CONTAINER (widget)->border_width * 2, 0));
 
     child = GTK_BIN (widget)->child;
+    if (child)
+        gtk_widget_get_child_requisition (child, &child_req);
 
     widget->allocation = *allocation;
     gtk_widget_get_child_requisition (priv->caption_area, &req);
@@ -746,23 +752,32 @@ hildon_caption_size_allocate                    (GtkWidget *widget,
     child_alloc.x = caption_alloc.x = caption_alloc.y = child_alloc.y = 0;
 
     /* Center the captioned widget */
-    if (child_alloc.width > req.width + HILDON_CAPTION_SPACING)
+    if (rtl)
     {
-        child_alloc.x += req.width + HILDON_CAPTION_SPACING * 2;
-        caption_alloc.width = req.width;
+        if (caption_alloc.width > child_req.width + HILDON_CAPTION_SPACING)
+        {
+            caption_alloc.x = caption_alloc.width - req.width;
+            child_alloc.width = child_req.width;
+        }
+        caption_alloc.width -= child_req.width + HILDON_CAPTION_SPACING * 2;
     }
+    else
+    {
+        if (child_alloc.width > req.width + HILDON_CAPTION_SPACING)
+        {
+            child_alloc.x += req.width + HILDON_CAPTION_SPACING * 2;
+            caption_alloc.width = req.width;
+        }
+        /* Leave at least the space of the HILDON_CAPTION_SPACING in the left */
+        caption_alloc.x = HILDON_CAPTION_SPACING;
 
-    /* Leave at least the space of the HILDON_CAPTION_SPACING in the left */
-    caption_alloc.x = HILDON_CAPTION_SPACING;
-
-    /* Leave room for the other drawable parts of the caption control */
-    child_alloc.width -= req.width + HILDON_CAPTION_SPACING * 2;
+        /* Leave room for the other drawable parts of the caption control */
+        child_alloc.width -= req.width + HILDON_CAPTION_SPACING * 2;
+    }
 
     /* Give the child at least its minimum requisition, unless it is expandable */
     if (! priv->expand && child && GTK_WIDGET_VISIBLE(child))
     {
-        GtkRequisition child_req;
-        gtk_widget_get_child_requisition (child, &child_req);
         child_alloc.width  = MIN (child_alloc.width,  child_req.width);
         child_alloc.height = MIN (child_alloc.height, child_req.height);
 	/* Center the child */
@@ -777,6 +792,9 @@ hildon_caption_size_allocate                    (GtkWidget *widget,
         child_alloc.width = 0;
         caption_alloc.width = MAX (caption_alloc.width, 0);
     }
+
+    if (rtl)
+        child_alloc.x = caption_alloc.x - child_req.width - HILDON_CAPTION_SPACING * 2;
 
     child_alloc.height = MAX (child_alloc.height, 0);
     caption_alloc.height = MAX (caption_alloc.height, 0);

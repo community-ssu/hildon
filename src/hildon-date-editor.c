@@ -1277,6 +1277,7 @@ hildon_date_editor_size_allocate                (GtkWidget *widget,
     GtkRequisition req;
     GtkRequisition max_req;
     GList *iter;
+    gboolean rtl;
 
     g_assert (GTK_IS_WIDGET (widget));
     g_assert (allocation != NULL);
@@ -1284,6 +1285,7 @@ hildon_date_editor_size_allocate                (GtkWidget *widget,
     ed = HILDON_DATE_EDITOR (widget);
     priv = HILDON_DATE_EDITOR_GET_PRIVATE (ed);
 
+    rtl = (gtk_widget_get_direction (widget) == GTK_TEXT_DIR_RTL);
     widget->allocation = *allocation;
 
     gtk_widget_get_child_requisition (widget, &max_req);
@@ -1302,7 +1304,6 @@ hildon_date_editor_size_allocate                (GtkWidget *widget,
 
         f_alloc.width = req.width;
         f_alloc.height = max_req.height;
-        gtk_widget_size_allocate (priv->frame, &f_alloc);
     }
 
     /* allocate icon */
@@ -1313,7 +1314,17 @@ hildon_date_editor_size_allocate                (GtkWidget *widget,
         img_alloc.x += f_alloc.width + HILDON_MARGIN_DEFAULT;
         img_alloc.width = req.width;
         img_alloc.height = max_req.height;
+
+        if (rtl)
+        {
+            img_alloc.x = f_alloc.x;
+            f_alloc.x  += img_alloc.width + HILDON_MARGIN_DEFAULT;
+        }
         gtk_widget_size_allocate (priv->d_button_image, &img_alloc);
+    }
+
+    if (GTK_WIDGET_VISIBLE (priv->frame)) {
+        gtk_widget_size_allocate (priv->frame, &f_alloc);
     }
 
     /* FIXME: We really should not alloc delimeters by hand (since they

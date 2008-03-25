@@ -633,7 +633,11 @@ hildon_banner_check_position                    (GtkWidget *widget)
         return;
     }
 
-    x = gdk_screen_width() - HILDON_BANNER_WINDOW_X - req.width;
+    if (gtk_widget_get_direction (widget) == GTK_TEXT_DIR_RTL)
+        x = HILDON_BANNER_WINDOW_X;
+    else
+        x = gdk_screen_width() - HILDON_BANNER_WINDOW_X - req.width;
+
     y = check_fullscreen_state (get_current_app_window ()) ? 
         HILDON_BANNER_WINDOW_FULLSCREEN_Y : HILDON_BANNER_WINDOW_Y;
 

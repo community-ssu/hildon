@@ -1272,7 +1272,13 @@ hildon_window_menu_popup_func                   (GtkMenu *menu,
     gtk_widget_style_get (GTK_WIDGET (menu), "horizontal-offset", x,
             "vertical-offset", y, NULL);
 
-    *x += window_x;
+    if (gtk_widget_get_direction (widget) == GTK_TEXT_DIR_RTL)
+    {
+        *x = GTK_WIDGET (widget)->allocation.width + window_x - GTK_WIDGET (menu)->allocation.width - *x;
+    }
+    else
+        *x += window_x;
+
     *y += window_y;
 
 }
@@ -1287,7 +1293,11 @@ hildon_window_menu_popup_func_full              (GtkMenu *menu,
     gtk_widget_style_get (GTK_WIDGET (menu), "horizontal-offset", x,
             "vertical-offset", y, NULL);
 
-    *x = MAX (0, *x);
+    if (gtk_widget_get_direction (widget) == GTK_TEXT_DIR_RTL)
+        *x = GTK_WIDGET (widget)->allocation.width - GTK_WIDGET (menu)->allocation.width - *x;
+    else
+        *x = MAX (0, *x);
+
     *y = MAX (0, *y);
 }
 
