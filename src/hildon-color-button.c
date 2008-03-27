@@ -83,7 +83,13 @@
 
 #define                                         INNER_BORDER_THICKNESS 2
 
-enum 
+enum
+{
+    SETUP_DIALOG,
+    LAST_SIGNAL
+};
+
+enum
 {
     PROP_0,
     PROP_COLOR,
@@ -143,6 +149,7 @@ draw_grid                                       (GdkDrawable *drawable,
                                                  gint h);
 
 static gpointer                                 parent_class = NULL;
+static guint                                    signals [LAST_SIGNAL] = { 0, };
 
 /**
  * hildon_color_button_get_type:
@@ -198,6 +205,16 @@ hildon_color_button_class_init                  (HildonColorButtonClass *klass)
     widget_class->unrealize         = hildon_color_button_unrealize;
     button_class->clicked           = hildon_color_button_clicked;
     widget_class->mnemonic_activate = hildon_color_button_mnemonic_activate;
+
+   signals[SETUP_DIALOG] =
+       g_signal_new ("setup-dialog",
+                     G_TYPE_FROM_CLASS (klass),
+                     G_SIGNAL_RUN_LAST,
+                     0,
+                     NULL, NULL,
+                     gtk_marshal_VOID__OBJECT,
+                     G_TYPE_NONE, 1,
+                     HILDON_TYPE_COLOR_CHOOSER_DIALOG);
 
     /**
      * HildonColorButton:color:
@@ -427,6 +444,8 @@ hildon_color_button_clicked                     (GtkButton *button)
         cs_dialog = HILDON_COLOR_CHOOSER_DIALOG (priv->dialog);
         if (parent)
             gtk_window_set_transient_for (GTK_WINDOW (cs_dialog), GTK_WINDOW (parent));
+
+        g_signal_emit (button, signals[SETUP_DIALOG], 0, priv->dialog);
     }
 
     /* Set the initial color for the color selector dialog */
