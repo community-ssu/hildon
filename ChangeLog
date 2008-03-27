@@ -1,5 +1,19 @@
 2008-03-27  Michael Natterer  <mitch@imendio.com>
 
+	Fixes: NB#81696: The passcode is not overwritten even after
+	selecting
+
+	* src/hildon-code-dialog.c
+	(hildon_code_dialog_button_clicked)
+	(hildon_code_dialog_im_commit): don't use gtk_entry_append_text()
+	because that doesn't overwrite selected text. Instead, emit the
+	"commit" signal on the entry's im_context so the entry's normal
+	insert logic is triggered. Set the cursor to the end of the entry
+	after each insert operation so that we *only* insert in the middle
+	of the text if something was selected.
+
+2008-03-27  Michael Natterer  <mitch@imendio.com>
+
 	Enable fixing: NB#79916 and NB#79918: The help topic for Color
 	selector cannot be opened
 

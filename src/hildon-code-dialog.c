@@ -450,7 +450,14 @@ hildon_code_dialog_button_clicked               (GtkButton *button,
 
     if (number && *number )
     {
-        gtk_entry_append_text (GTK_ENTRY (priv->entry), number);
+        gtk_editable_set_editable (GTK_EDITABLE (priv->entry), TRUE);
+
+        g_signal_emit_by_name (GTK_ENTRY (priv->entry)->im_context, "commit",
+                               number);
+
+        gtk_editable_set_editable (GTK_EDITABLE (priv->entry), FALSE);
+
+        gtk_editable_set_position (GTK_EDITABLE (priv->entry), -1);
     }
     else
     {
@@ -473,7 +480,14 @@ hildon_code_dialog_im_commit                    (GtkIMContext *im_context,
 
     if (g_ascii_isdigit(*utf8))
     {
-        gtk_entry_append_text (GTK_ENTRY (priv->entry), utf8);
+        gtk_editable_set_editable (GTK_EDITABLE (priv->entry), TRUE);
+
+        g_signal_emit_by_name (GTK_ENTRY (priv->entry)->im_context, "commit",
+                               utf8);
+
+        gtk_editable_set_editable (GTK_EDITABLE (priv->entry), FALSE);
+
+        gtk_editable_set_position (GTK_EDITABLE (priv->entry), -1);
     }
 }
 
