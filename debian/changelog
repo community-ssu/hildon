@@ -1,3 +1,16 @@
+libhildon (2.0.2-1) gutsy; urgency=low
+
+  * Fixes: MB#1220: HildonWindow should take GtkMenu accel_group into account
+  * Fixes: NB#78481: information banners are hidden under browser menu
+  * Fixes: NB#79791: Cannot set focus to Master volume using stylus
+  * Fixes: NB#22072: Revisiting fix for "Implement robust timer handling in Info Banner" bug
+  * Fixes: MB#924: Hildon widgets doesn't support RTL mode
+  * Fixes: MB#1212: Hide info banners (infoprints) on click
+  * Enable fixing: NB#79916 and NB#79918: The help topic for Color selector cannot be opened
+  * Fixes: NB#81696: The passcode is not overwritten even after	selecting
+
+ -- Natalia Dobrovolskaya <natalia.dobrovolskaya@nokia.com>  Thu, 03 Apr 2008 14:50:00 +0100
+
 libhildon (2.0.1-2) gutsy; urgency=low
 
   * Fixes: MB#1276: wrong allocators used in hildon_window_get_borders
