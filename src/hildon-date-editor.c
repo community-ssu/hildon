@@ -1299,7 +1299,7 @@ hildon_date_editor_size_allocate                (GtkWidget *widget,
         MAX (allocation->width - max_req.width, 0) / 2;
 
     /* allocate frame */
-    if (GTK_WIDGET_VISIBLE (priv->frame)) {
+    if (GTK_WIDGET_VISIBLE (widget)) {
         gtk_widget_get_child_requisition (priv->frame, &req);
 
         f_alloc.width = req.width;
@@ -1307,7 +1307,7 @@ hildon_date_editor_size_allocate                (GtkWidget *widget,
     }
 
     /* allocate icon */
-    if (GTK_WIDGET_VISIBLE (priv->d_button_image)) {
+    if (GTK_WIDGET_VISIBLE (widget)) {
         gtk_widget_get_child_requisition (priv->d_button_image,
                 &req);
 

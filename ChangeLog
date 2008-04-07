@@ -3,6 +3,14 @@
 	Prepares: NB#78896: libhildon code inspection/coverity: uninitialised
 	local values in hildon_date_editor_size_allocate
 
+	* src/hildon-date-editor.c: changed the arguments of the if()
+	conditions
+
+2008-04-07  Sven Herzberg  <sven@imendio.com>
+
+	Prepares: NB#78896: libhildon code inspection/coverity: uninitialised
+	local values in hildon_date_editor_size_allocate
+
 	* src/hildon-date-editor.c: split the calculation of the allocation
 	from the real allocation
 
