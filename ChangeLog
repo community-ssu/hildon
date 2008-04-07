@@ -1,5 +1,13 @@
 2008-04-07  Sven Herzberg  <sven@imendio.com>
 
+	Fixes: NB#78896: libhildon code inspection/coverity: uninitialised
+	local values in hildon_date_editor_size_allocate
+
+	* src/hildon-date-editor.c: moved the real allocation code into the
+	if() branch
+
+2008-04-07  Sven Herzberg  <sven@imendio.com>
+
 	Prepares: NB#78896: libhildon code inspection/coverity: uninitialised
 	local values in hildon_date_editor_size_allocate
 

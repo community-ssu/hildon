@@ -1320,14 +1320,14 @@ hildon_date_editor_size_allocate                (GtkWidget *widget,
             img_alloc.x = f_alloc.x;
             f_alloc.x  += img_alloc.width + HILDON_MARGIN_DEFAULT;
         }
-    }
 
-    if (GTK_WIDGET_VISIBLE (priv->d_button_image)) {
-        gtk_widget_size_allocate (priv->d_button_image, &img_alloc);
-    }
+        if (GTK_WIDGET_VISIBLE (priv->d_button_image)) {
+            gtk_widget_size_allocate (priv->d_button_image, &img_alloc);
+        }
 
-    if (GTK_WIDGET_VISIBLE (priv->frame)) {
-        gtk_widget_size_allocate (priv->frame, &f_alloc);
+        if (GTK_WIDGET_VISIBLE (priv->frame)) {
+            gtk_widget_size_allocate (priv->frame, &f_alloc);
+        }
     }
 
     /* FIXME: We really should not alloc delimeters by hand (since they
