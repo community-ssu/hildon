@@ -1320,6 +1320,9 @@ hildon_date_editor_size_allocate                (GtkWidget *widget,
             img_alloc.x = f_alloc.x;
             f_alloc.x  += img_alloc.width + HILDON_MARGIN_DEFAULT;
         }
+    }
+
+    if (GTK_WIDGET_VISIBLE (priv->d_button_image)) {
         gtk_widget_size_allocate (priv->d_button_image, &img_alloc);
     }
 
