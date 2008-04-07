@@ -3,6 +3,13 @@
 	Prepares: NB#78896: libhildon code inspection/coverity: uninitialised
 	local values in hildon_date_editor_size_allocate
 
+	* src/hildon-date-editor.c: merged the two if() branches together
+
+2008-04-07  Sven Herzberg  <sven@imendio.com>
+
+	Prepares: NB#78896: libhildon code inspection/coverity: uninitialised
+	local values in hildon_date_editor_size_allocate
+
 	* src/hildon-date-editor.c: changed the arguments of the if()
 	conditions
 

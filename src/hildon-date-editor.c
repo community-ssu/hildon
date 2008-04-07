@@ -1,4 +1,5 @@
-/*
+/* vim:set sw=4 expandtab cino=(0:
+ *
  * This file is a part of hildon
  *
  * Copyright (C) 2005, 2006 Nokia Corporation, all rights reserved.
@@ -1298,16 +1299,15 @@ hildon_date_editor_size_allocate                (GtkWidget *widget,
     f_alloc.x = img_alloc.x = allocation->x +
         MAX (allocation->width - max_req.width, 0) / 2;
 
-    /* allocate frame */
+    /* calculate allocations */
     if (GTK_WIDGET_VISIBLE (widget)) {
+        /* allocate frame */
         gtk_widget_get_child_requisition (priv->frame, &req);
 
         f_alloc.width = req.width;
         f_alloc.height = max_req.height;
-    }
 
-    /* allocate icon */
-    if (GTK_WIDGET_VISIBLE (widget)) {
+        /* allocate icon */
         gtk_widget_get_child_requisition (priv->d_button_image,
                 &req);
 
