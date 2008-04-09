@@ -140,6 +140,8 @@ hildon_banner_button_press_event                (GtkWidget* widget,
 static gboolean 
 hildon_banner_map_event                         (GtkWidget *widget, 
                                                  GdkEventAny *event);
+static void
+hildon_banner_reset_wrap_state                  (HildonBanner *banner);
 
 static void 
 force_to_wrap_truncated                         (HildonBanner *banner);
@@ -531,6 +533,7 @@ hildon_banner_constructor                       (GType type,
            assertion `nqueue->freeze_count > 0' failed */
 
         g_object_freeze_notify (banner);
+        hildon_banner_reset_wrap_state (HILDON_BANNER (banner));
     }
 
     /* We restart possible timeouts for each new timed banner request */
@@ -605,6 +608,25 @@ hildon_banner_client_event                      (GtkWidget *widget,
 }
 #endif
 
+static void
+hildon_banner_reset_wrap_state (HildonBanner *banner)
+{
+    PangoLayout *layout;
+    HildonBannerPrivate *priv;
+
+    priv = HILDON_BANNER_GET_PRIVATE (banner);
+    g_assert (priv);
+
+    layout = gtk_label_get_layout (GTK_LABEL (priv->label));
+
+    pango_layout_set_width (layout, -1);
+    priv->has_been_wrapped = FALSE;
+    priv->has_been_truncated = FALSE;
+
+    gtk_widget_set_size_request (priv->label, -1, -1);
+    gtk_widget_set_size_request (GTK_WIDGET (banner), -1, -1);
+}
+
 /* force to wrap truncated label by setting explicit size request
  * see N#27000 and G#329646 */
 static void 
@@ -614,30 +636,60 @@ force_to_wrap_truncated                         (HildonBanner *banner)
     PangoLayout *layout;
     int width_text, width_max;
     int width = -1;
+    int height = -1;
+    PangoRectangle logical;
+    GtkRequisition requisition;
     HildonBannerPrivate *priv = HILDON_BANNER_GET_PRIVATE (banner);
 
     g_assert (priv);
+
     label = GTK_LABEL (priv->label);
 
     layout = gtk_label_get_layout (label);
-    width_text  = PANGO_PIXELS(pango_layout_get_width (layout));
-    /* = width to which the lines of the PangoLayout should be wrapped */
+
+    pango_layout_get_extents (layout, NULL, &logical);
+    width_text = PANGO_PIXELS (logical.width);
 
     width_max = priv->is_timed ? HILDON_BANNER_LABEL_MAX_TIMED
         : HILDON_BANNER_LABEL_MAX_PROGRESS;
 
-    if (width_text >= width_max) {
-        /* explicitly request maximum size to force wrapping */
-        PangoRectangle logical;
+    /* If the width of the label is going to exceed the maximum allowed
+     * width, enforce the maximum allowed width now.
+     */
+    if (priv->has_been_wrapped
+        || width_text >= width_max) {
+        /* Force wrapping by setting the maximum size */
+        width = width_max;
 
-        pango_layout_set_width (layout, width_max * PANGO_SCALE);
-        pango_layout_get_extents (layout, NULL, &logical);
-
-        width = PANGO_PIXELS (logical.width);
+        priv->has_been_wrapped = TRUE;
     }
 
-    /* use fixed width when wrapping or natural one otherwise */
-    gtk_widget_set_size_request (GTK_WIDGET (label), width, -1);
+    /* Make the label update its layout */
+    gtk_widget_set_size_request (GTK_WIDGET (label), width, height);
+    gtk_widget_size_request (GTK_WIDGET (label), &requisition);
+
+    /* If the layout has now been wrapped and exceeds 3 lines, we truncate
+     * the rest of the label according to spec.
+     */
+    if (priv->has_been_truncated
+        || (pango_layout_is_wrapped (layout)
+            && pango_layout_get_line_count (layout) > 3)) {
+        int lines;
+
+        pango_layout_get_extents (layout, NULL, &logical);
+        lines = pango_layout_get_line_count (layout);
+
+        /* This calculation assumes that the same font is used
+         * throughout the banner -- this is usually the case on maemo
+         *
+         * FIXME: Pango >= 1.20 has pango_layout_set_height().
+         */
+        height = (PANGO_PIXELS (logical.height) * 3) / lines + 1;
+        priv->has_been_truncated = TRUE;
+    }
+
+    /* Set the new width/height if applicable */
+    gtk_widget_set_size_request (GTK_WIDGET (label), width, height);
 }
 
 
@@ -768,6 +820,7 @@ hildon_banner_init                              (HildonBanner *self)
 
     priv->label = g_object_new (GTK_TYPE_LABEL, NULL);
     gtk_label_set_line_wrap (GTK_LABEL (priv->label), TRUE);
+    gtk_label_set_line_wrap_mode (GTK_LABEL (priv->label), PANGO_WRAP_WORD_CHAR);
 
     gtk_container_set_border_width (GTK_CONTAINER (priv->layout), HILDON_MARGIN_DEFAULT);
     gtk_container_add (GTK_CONTAINER (self), priv->layout);
@@ -778,6 +831,8 @@ hildon_banner_init                              (HildonBanner *self)
 #if defined(MAEMO_GTK)
     gtk_window_set_is_temporary (GTK_WINDOW (self), TRUE);
 #endif
+
+    hildon_banner_reset_wrap_state (self);
 
     gtk_widget_add_events (GTK_WIDGET (self), GDK_BUTTON_PRESS_MASK);
 }
@@ -1102,8 +1157,10 @@ hildon_banner_set_text                          (HildonBanner *self,
 
     if (existing_text != NULL && 
         text != NULL          &&
-        strcmp (existing_text, text) != 0)
+        strcmp (existing_text, text) != 0) {
             gtk_label_set_text (label, text);
+            hildon_banner_reset_wrap_state (self);
+    }
 
     hildon_banner_check_position (GTK_WIDGET (self));
 }
@@ -1130,6 +1187,8 @@ hildon_banner_set_markup                        (HildonBanner *self,
 
     label = GTK_LABEL (priv->label);
     gtk_label_set_markup (label, markup);
+
+    hildon_banner_reset_wrap_state (self);
 
     hildon_banner_check_position (GTK_WIDGET(self));
 }

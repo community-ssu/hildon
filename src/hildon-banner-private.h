@@ -42,6 +42,8 @@ struct                                          _HildonBannerPrivate
     gboolean is_timed;
     guint    timeout;
     GtkWindow *parent;
+    gboolean has_been_wrapped;
+    gboolean has_been_truncated;
 };
 
 /* For internal use of hildon libraries only */

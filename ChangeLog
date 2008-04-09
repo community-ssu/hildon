@@ -1,3 +1,23 @@
+2008-04-09  Kristian Rietveld  <kris@imendio.com>
+
+	Fixes: NB#77775: Media Player, Save Now playing list, too long name
+	makes banner disappear.
+	Fixes: NB#79182: info banner flickering with certain message lengts.
+
+	* src/hildon-banner.c (hildon_banner_constructor),
+	(hildon_banner_init), (hildon_banner_set_text),
+	(hildon_banner_set_markup): call hildon_banner_reset_wrap_state(),
+	(hildon_banner_reset_wrap_state): new function: reset wrap flags to
+	FALSE, reset size requests of label and banner,
+	(force_to_wrap_truncated): when the text is too wide, always enforce
+	the maximum possible width instead of recalculating it from the
+	layout; enforce the maximum banner height of 3 lines,
+	(hildon_banner_init): set WORD_CHAR wrapping, this will result in
+	nicer wrapping and no truncated chars if space gets tight.
+
+	* src/hildon-banner-private.h: add has_been_wrapped and
+	has_been_truncated fields.
+
 2008-04-07  Sven Herzberg  <sven@imendio.com>
 
 	Fixes: NB#78896: libhildon code inspection/coverity: uninitialised
