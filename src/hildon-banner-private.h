@@ -39,11 +39,9 @@ struct                                          _HildonBannerPrivate
     GtkWidget *label;
     GtkWidget *layout;
     guint timeout_id;
-    gboolean is_timed;
+    guint    is_timed : 1, has_been_wrapped : 1, has_been_truncated : 1;
     guint    timeout;
     GtkWindow *parent;
-    gboolean has_been_wrapped;
-    gboolean has_been_truncated;
 };
 
 /* For internal use of hildon libraries only */

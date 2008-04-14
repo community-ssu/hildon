@@ -641,9 +641,12 @@ force_to_wrap_truncated                         (HildonBanner *banner)
     GtkRequisition requisition;
     HildonBannerPrivate *priv = HILDON_BANNER_GET_PRIVATE (banner);
 
-    g_assert (priv);
+    g_return_if_fail (priv);
 
     label = GTK_LABEL (priv->label);
+
+    if (!GTK_WIDGET_REALIZED (banner) || !GTK_WIDGET_REALIZED (label))
+      return;
 
     layout = gtk_label_get_layout (label);
 
