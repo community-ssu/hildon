@@ -933,7 +933,6 @@ hildon_banner_show_information                  (GtkWidget *widget,
 
     /* Show the banner, since caller cannot do that */
     gtk_widget_show_all (GTK_WIDGET (banner));
-    gtk_window_present (GTK_WINDOW (banner));
 
     return (GtkWidget *) banner;
 }
@@ -1012,7 +1011,6 @@ hildon_banner_show_information_with_markup      (GtkWidget *widget,
 
     /* Show the banner, since caller cannot do that */
     gtk_widget_show_all (GTK_WIDGET (banner));
-    gtk_window_present (GTK_WINDOW (banner));
 
     return (GtkWidget *) banner;
 }
@@ -1085,7 +1083,6 @@ hildon_banner_show_animation                    (GtkWidget *widget,
 
     /* And show it */
     gtk_widget_show_all (GTK_WIDGET (banner));
-    gtk_window_present (GTK_WINDOW (banner));
 
     return (GtkWidget *) banner;
 }
@@ -1130,7 +1127,6 @@ hildon_banner_show_progress                     (GtkWidget *widget,
 
     /* Show the banner */
     gtk_widget_show_all (GTK_WIDGET (banner));
-    gtk_window_present (GTK_WINDOW (banner));
 
     return GTK_WIDGET (banner);   
 }
