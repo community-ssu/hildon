@@ -1,3 +1,10 @@
+2008-04-15 13:21:13    <timj@imendio.com>
+
+	* src/hildon-banner.c: refetch layout pointer after GtkLabel possibly
+	recreated its layout, spotted by Kris. this fixes all remaining
+	artefacts and stability issues with the banner code. in particular:
+	Bug 83953 - Lock dialog is not visible when device is locked for the first time after flash
+
 2008-04-14 16:52:59    <timj@imendio.com>
 
 	* src/hildon-banner.c: guard force_to_wrap_truncated() against

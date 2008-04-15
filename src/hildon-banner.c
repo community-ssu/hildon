@@ -645,9 +645,6 @@ force_to_wrap_truncated                         (HildonBanner *banner)
 
     label = GTK_LABEL (priv->label);
 
-    if (!GTK_WIDGET_REALIZED (banner) || !GTK_WIDGET_REALIZED (label))
-      return;
-
     layout = gtk_label_get_layout (label);
 
     pango_layout_get_extents (layout, NULL, &logical);
@@ -667,9 +664,13 @@ force_to_wrap_truncated                         (HildonBanner *banner)
         priv->has_been_wrapped = TRUE;
     }
 
-    /* Make the label update its layout */
+    /* Make the label update its layout; and update our layout pointer
+     * because the layout will be cleared and refreshed.
+     */
     gtk_widget_set_size_request (GTK_WIDGET (label), width, height);
     gtk_widget_size_request (GTK_WIDGET (label), &requisition);
+
+    layout = gtk_label_get_layout (label);
 
     /* If the layout has now been wrapped and exceeds 3 lines, we truncate
      * the rest of the label according to spec.
