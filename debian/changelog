@@ -1,3 +1,13 @@
+libhildon (2.0.3-1) gutsy; urgency=low
+
+  * Fixes: NB#78896: libhildon code inspection/coverity: uninitialised local values in 
+    hildon_date_editor_size_allocate
+  * Fixes: NB#77775: Media Player, Save Now playing list, too long name makes banner disappear.
+  * Fixes: NB#79182: info banner flickering with certain message lengts.
+  * Fixes: NB#83953: Lock dialog is not visible when device is locked for the first time after flash
+
+ -- Natalia Dobrovolskaya <natalia.dobrovolskaya@nokia.com>  Tue, 15 Apr 2008 15:03:00 +0100
+
 libhildon (2.0.2-1) gutsy; urgency=low
 
   * Fixes: MB#1220: HildonWindow should take GtkMenu accel_group into account
