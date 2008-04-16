@@ -1,3 +1,11 @@
+libhildon (2.0.4-1) gutsy; urgency=low
+
+  * src/hildon-banner.c: revert the recent change, that introduced gtk_window_present() calls. 
+    This reopens: Bug 78481 - [freetest] information banners are hidden under browser menu
+    But resolves another variant of: Bug 83953
+
+ -- Natalia Dobrovolskaya <natalia.dobrovolskaya@nokia.com>  Wed, 16 Apr 2008 10:37:00 +0100
+
 libhildon (2.0.3-1) gutsy; urgency=low
 
   * Fixes: NB#78896: libhildon code inspection/coverity: uninitialised local values in 
@@ -11,7 +19,7 @@ libhildon (2.0.3-1) gutsy; urgency=low
 libhildon (2.0.2-1) gutsy; urgency=low
 
   * Fixes: MB#1220: HildonWindow should take GtkMenu accel_group into account
-  * Fixes: NB#78481: information banners are hidden under browser menu
+  * Fixes NB#78481: information banners are hidden under browser menu
   * Fixes: NB#79791: Cannot set focus to Master volume using stylus
   * Fixes: NB#22072: Revisiting fix for "Implement robust timer handling in Info Banner" bug
   * Fixes: MB#924: Hildon widgets doesn't support RTL mode
