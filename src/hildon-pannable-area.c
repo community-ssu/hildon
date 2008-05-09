@@ -56,8 +56,8 @@ struct _HildonPannableAreaPrivate {
 	gdouble ey;	/* motion event in acceleration mode */
 	gboolean enabled;
 	gboolean clicked;
-	GdkEventType last_type;	/* Last event type and time, to stop */
-	guint32 last_time;	/* infinite loops */
+	guint32 last_time;	/* Last event time, to stop infinite loops */
+	gint last_type;
 	gboolean moved;
 	GTimeVal click_start;
 	GTimeVal last_click;
@@ -237,7 +237,10 @@ hildon_pannable_area_button_press_cb (HildonPannableArea *area,
 
 	if ((!priv->enabled) || (event->button != 1) ||
 	    ((event->time == priv->last_time) &&
-	     (event->type == priv->last_type))) return TRUE;
+	     (priv->last_type == 1))) return TRUE;
+
+	priv->last_time = event->time;
+	priv->last_type = 1;
 
 	priv->click_x = event->x;
 	priv->click_y = event->y;
@@ -249,8 +252,6 @@ hildon_pannable_area_button_press_cb (HildonPannableArea *area,
 	}
 
 	g_get_current_time (&priv->click_start);
-	priv->last_type = event->type;
-	priv->last_time = event->time;
 	priv->x = event->x;
 	priv->y = event->y;
 	priv->ix = priv->x;
@@ -475,7 +476,7 @@ hildon_pannable_area_motion_notify_cb (HildonPannableArea *area,
 
 	if ((!priv->enabled) || (!priv->clicked) ||
 	    ((event->time == priv->last_time) &&
-	     (event->type == priv->last_type))) {
+	     (priv->last_type == 2))) {
 		gdk_window_get_pointer (
 			GTK_WIDGET (area)->window, NULL, NULL, 0);
 		return TRUE;
@@ -539,8 +540,8 @@ hildon_pannable_area_motion_notify_cb (HildonPannableArea *area,
 
 	if (priv->child) {
 		/* Send motion notify to child */
-		priv->last_type = event->type;
 		priv->last_time = event->time;
+		priv->last_type = 2;
 		event = (GdkEventMotion *)gdk_event_copy ((GdkEvent *)event);
 		event->x = priv->cx + (event->x - priv->ix);
 		event->y = priv->cy + (event->y - priv->iy);
@@ -567,12 +568,12 @@ hildon_pannable_area_button_release_cb (HildonPannableArea *area,
 
 	if ((!priv->clicked) || (!priv->enabled) || (event->button != 1) ||
 	    ((event->time == priv->last_time) &&
-	     (event->type == priv->last_type)))
+	     (priv->last_type == 3)))
 		return TRUE;
 
-	priv->last_type = event->type;
-
 	priv->last_time = event->time;
+	priv->last_type = 3;
+
 	g_get_current_time (&current);
 
 	priv->clicked = FALSE;
@@ -1004,6 +1005,7 @@ hildon_pannable_area_init (HildonPannableArea * self)
 	priv->moved = FALSE;
 	priv->clicked = FALSE;
 	priv->last_time = 0;
+	priv->last_type = 0;
 	priv->vscroll = TRUE;
 	priv->hscroll = TRUE;
 	priv->area_width = 6;

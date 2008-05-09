@@ -1,5 +1,10 @@
 2008-05-09 Alberto Garcia <agarcia@igalia.com>
 
+	* src/hildon-pannable-area.c
+	Merge latest changes (r4318, r4342) from libmokoui trunk
+
+2008-05-09 Alberto Garcia <agarcia@igalia.com>
+
 	* examples/Makefile.am
 	* examples/hildon-pannable-area-example.c
 	* src/Makefile.am
