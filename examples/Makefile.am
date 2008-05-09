@@ -39,6 +39,7 @@ noinst_PROGRAMS				= hildon-window-example				\
 					  hildon-wizard-dialog-example			\
 					  hildon-hvolumebar-timer-example		\
 					  hildon-toolbar-seekbar-example		\
+					  hildon-pannable-area-example			\
 					  hildon-logical-color-example
 
 # Hildon window
@@ -235,5 +236,10 @@ hildon_bread_crumb_trail_example_SOURCES	= hildon-bread-crumb-trail-example.c
 hildon_hvolumebar_timer_example_LDADD		= $(HILDON_OBJ_LIBS)
 hildon_hvolumebar_timer_example_CFLAGS		= $(HILDON_OBJ_CFLAGS)
 hildon_hvolumebar_timer_example_SOURCES		= hildon-hvolumebar-timer-example.c
+
+# Hildon pannable area
+hildon_pannable_area_example_LDADD		= $(HILDON_OBJ_LIBS)
+hildon_pannable_area_example_CFLAGS		= $(HILDON_OBJ_CFLAGS)
+hildon_pannable_area_example_SOURCES		= hildon-pannable-area-example.c
 
 endif

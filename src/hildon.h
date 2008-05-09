@@ -62,5 +62,6 @@
 #include                                        "hildon-wizard-dialog.h"
 #include                                        "hildon-calendar.h"
 #include                                        "hildon-bread-crumb-trail.h"
+#include                                        "hildon-pannable-area.h"
 
 #endif 

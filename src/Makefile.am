@@ -59,6 +59,7 @@ libhildon_@API_VERSION_MAJOR@_la_SOURCES 		= hildon-private.c				\
 							  hildon-enum-types.c 				\
 							  hildon-marshalers.c				\
 							  hildon-calendar.c				\
+							  hildon-pannable-area.c			\
 							  hildon-bread-crumb-trail.c			\
 							  hildon-bread-crumb.c				\
 							  hildon-bread-crumb-widget.c
@@ -103,6 +104,7 @@ libhildon_@API_VERSION_MAJOR@_public_headers 	        = hildon-banner.h 				\
 							  hildon-window.h 				\
 							  hildon-wizard-dialog.h			\
 							  hildon-calendar.h				\
+							  hildon-pannable-area.h			\
 							  hildon-bread-crumb-trail.h			\
 							  hildon-bread-crumb.h				\
 							  hildon-version.h

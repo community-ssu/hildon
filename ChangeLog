@@ -1,3 +1,13 @@
+2008-05-09 Alberto Garcia <agarcia@igalia.com>
+
+	* examples/Makefile.am
+	* examples/hildon-pannable-area-example.c
+	* src/Makefile.am
+	* src/hildon-pannable-area.c
+	* src/hildon-pannable-area.h
+	* src/hildon.h
+	New HildonPannableArea widget.
+
 2008-04-15 18:05:19    <timj@imendio.com>
 
 	* src/hildon-banner.c: revert the recent change, that introduced
