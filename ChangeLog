@@ -1,3 +1,18 @@
+2008-05-13 Victor Jaquez <vjaquez@igalia.com>
+
+	* doc/visual_index.xml
+	Fix reference to HildonLoginDialog in documentation
+
+	* doc/hildon-docs.sgml
+	* doc/hildon.types
+	* examples/Makefile.am
+	* examples/hildon-dialog-example.c
+	* src/Makefile.am
+	* src/hildon-dialog.c
+	* src/hildon-dialog.h
+	* src/hildon.h
+	New HildonDialog widget.
+
 2008-05-09 Alberto Garcia <agarcia@igalia.com>
 
 	* src/hildon-pannable-area.c

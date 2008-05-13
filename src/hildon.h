@@ -63,5 +63,6 @@
 #include                                        "hildon-calendar.h"
 #include                                        "hildon-bread-crumb-trail.h"
 #include                                        "hildon-pannable-area.h"
+#include                                        "hildon-dialog.h"
 
 #endif 

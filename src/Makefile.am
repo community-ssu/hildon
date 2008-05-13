@@ -62,7 +62,8 @@ libhildon_@API_VERSION_MAJOR@_la_SOURCES 		= hildon-private.c				\
 							  hildon-pannable-area.c			\
 							  hildon-bread-crumb-trail.c			\
 							  hildon-bread-crumb.c				\
-							  hildon-bread-crumb-widget.c
+							  hildon-bread-crumb-widget.c                   \
+							  hildon-dialog.c
 
 libhildon_@API_VERSION_MAJOR@_built_public_headers  = \
 							  hildon-enum-types.h                           \
@@ -107,6 +108,7 @@ libhildon_@API_VERSION_MAJOR@_public_headers 	        = hildon-banner.h 				\
 							  hildon-pannable-area.h			\
 							  hildon-bread-crumb-trail.h			\
 							  hildon-bread-crumb.h				\
+							  hildon-dialog.h				\
 							  hildon-version.h
 
 libhildon_@API_VERSION_MAJOR@_include_HEADERS 	        = $(libhildon_@API_VERSION_MAJOR@_public_headers)			\

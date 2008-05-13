@@ -64,6 +64,7 @@
 
   <chapter>
     <title>Dialogs</title>
+    <xi:include href="xml/hildon-dialog.xml"/>
     <xi:include href="xml/hildon-set-password-dialog.xml"/>
     <xi:include href="xml/hildon-get-password-dialog.xml"/>
     <xi:include href="xml/hildon-login-dialog.xml"/>

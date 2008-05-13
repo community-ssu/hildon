@@ -33,6 +33,7 @@
 #include                                        <src/hildon-window.h>
 #include                                        <src/hildon-wizard-dialog.h>
 #include                                        <src/hildon-calendar.h>
+#include                                        <src/hildon-dialog.h>
 
 hildon_banner_get_type
 hildon_calendar_popup_get_type
@@ -65,3 +66,4 @@ hildon_window_get_type
 hildon_wizard_dialog_get_type
 hildon_window_get_type
 hildon_calendar_get_type
+hildon_dialog_get_type
