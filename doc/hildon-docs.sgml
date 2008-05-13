@@ -76,6 +76,7 @@
 
   <chapter>
     <title>Other</title>
+    <xi:include href="xml/hildon-pannable-area.xml"/>
     <xi:include href="xml/hildon-sound.xml"/>
     <xi:include href="xml/hildon-helper.xml"/>
     <xi:include href="xml/hildon-defines.xml"/>

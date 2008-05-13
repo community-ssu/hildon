@@ -1,3 +1,9 @@
+2008-05-13 Alberto Garcia <agarcia@igalia.com>
+
+	* doc/hildon-docs.sgml
+	* doc/hildon.types
+	Added HildonPannableArea to the documentation.
+
 2008-05-13 Victor Jaquez <vjaquez@igalia.com>
 
 	* doc/visual_index.xml
