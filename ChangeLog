@@ -1,3 +1,15 @@
+2008-05-14  Alberto Garcia  <agarcia@igalia.com>
+
+	* src/hildon-dialog.c
+	(hildon_dialog_new_with_buttons): New constructor.
+
+	* examples/hildon-dialog-example.c
+	(main): Update the example to use the new
+	hildon_dialog_new_with_buttons().
+
+	* examples/hildon-pannable-area-example.c
+	(main): Update example.
+
 2008-05-13 Alberto Garcia <agarcia@igalia.com>
 
 	* doc/hildon-docs.sgml

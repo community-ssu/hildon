@@ -77,6 +77,13 @@ hildon_dialog_get_type                          (void);
 GtkWidget*
 hildon_dialog_new                               (void);
 
+GtkWidget*
+hildon_dialog_new_with_buttons                  (const gchar    *title,
+                                                 GtkWindow      *parent,
+                                                 GtkDialogFlags  flags,
+                                                 const gchar    *first_button_text,
+                                                 ...);
+
 G_END_DECLS
 
 #endif                                          /* __HILDON_DIALOG_H__ */

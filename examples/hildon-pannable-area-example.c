@@ -40,19 +40,25 @@ int
 main (int argc, char **args)
 {
     int i;
+    HildonProgram *program;
+    GtkWidget *window, *tv, *panarea;
+    GtkTreeViewColumn *col;
+    GtkCellRenderer *renderer;
+    GtkListStore *store;
+    GtkVBox *vbox;
 
     gtk_init (&argc, &args);
 
-    HildonProgram *program = hildon_program_get_instance ();
+    program = hildon_program_get_instance ();
 
     /* Create the main window */
-    GtkWidget *window = hildon_window_new ();
+    window = hildon_window_new ();
     hildon_program_add_window (program, HILDON_WINDOW (window));
 
     gtk_container_set_border_width (GTK_CONTAINER (window), 5);
 
     /* Create a VBox and pack some buttons */
-    GtkVBox *vbox = GTK_VBOX (gtk_vbox_new (FALSE, 1));
+    vbox = GTK_VBOX (gtk_vbox_new (FALSE, 1));
     for (i = 0; i < 30; i++) {
             gchar *label = g_strdup_printf ("Button number %d", i);
             GtkWidget *but = gtk_button_new_with_label (label);
@@ -62,13 +68,13 @@ main (int argc, char **args)
     }
 
     /* Create a treeview */
-    GtkWidget *tv = gtk_tree_view_new ();
-    GtkCellRenderer *renderer = gtk_cell_renderer_text_new ();
-    GtkTreeViewColumn *col = gtk_tree_view_column_new_with_attributes ("Title", renderer, "text", TEXT_COLUMN, NULL);
+    tv = gtk_tree_view_new ();
+    renderer = gtk_cell_renderer_text_new ();
+    col = gtk_tree_view_column_new_with_attributes ("Title", renderer, "text", TEXT_COLUMN, NULL);
     gtk_tree_view_append_column (GTK_TREE_VIEW(tv), col);
 
     /* Add some rows to the treeview */
-    GtkListStore *store = gtk_list_store_new (N_COLUMNS, G_TYPE_STRING);
+    store = gtk_list_store_new (N_COLUMNS, G_TYPE_STRING);
     for (i = 0; i < 100; i++) {
             GtkTreeIter iter;
             gchar *label = g_strdup_printf ("Row number %d", i);
@@ -83,7 +89,7 @@ main (int argc, char **args)
     gtk_box_pack_start (GTK_BOX (vbox), tv, TRUE, TRUE, 0);
 
     /* Put everything in a pannable area */
-    GtkWidget *panarea = hildon_pannable_area_new ();
+    panarea = hildon_pannable_area_new ();
     hildon_pannable_area_add_with_viewport (HILDON_PANNABLE_AREA (panarea), GTK_WIDGET (vbox));
     gtk_container_add (GTK_CONTAINER (window), panarea);
 

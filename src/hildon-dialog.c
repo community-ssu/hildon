@@ -84,3 +84,70 @@ hildon_dialog_new                               (void)
 
     return self;
 }
+
+/**
+ * hildon_dialog_new_with_buttons:
+ * @title: Title of the dialog, or %NULL
+ * @parent: Transient parent of the dialog, or %NULL
+ * @flags: from #GtkDialogFlags
+ * @first_button_text: stock ID or text to go in first button, or %NULL
+ * @Varargs: response ID for first button, then additional buttons, ending with %NULL
+ *
+ * Creates a new #HildonDialog. See gtk_dialog_new_with_buttons() for
+ * more information.
+ *
+ * Return value: a new #HildonDialog
+ */
+GtkWidget*
+hildon_dialog_new_with_buttons (const gchar    *title,
+                                GtkWindow      *parent,
+                                GtkDialogFlags  flags,
+                                const gchar    *first_button_text,
+                                ...)
+{
+  GtkWidget *dialog;
+
+  dialog = g_object_new (HILDON_TYPE_DIALOG, NULL);
+
+  /* This code is copied from gtk_dialog_new_empty(), as it's a
+   * private function that we cannot use here */
+  if (title)
+    gtk_window_set_title (GTK_WINDOW (dialog), title);
+
+  if (parent)
+    gtk_window_set_transient_for (GTK_WINDOW (dialog), parent);
+
+  if (flags & GTK_DIALOG_MODAL)
+    gtk_window_set_modal (GTK_WINDOW (dialog), TRUE);
+
+  if (flags & GTK_DIALOG_DESTROY_WITH_PARENT)
+    gtk_window_set_destroy_with_parent (GTK_WINDOW (dialog), TRUE);
+
+  if (flags & GTK_DIALOG_NO_SEPARATOR)
+    gtk_dialog_set_has_separator (dialog, FALSE);
+
+  /* This is almost copied from gtk_dialog_add_buttons_valist() */
+  if (first_button_text != NULL)
+    {
+      va_list args;
+      const gchar *text;
+      gint response_id;
+
+      va_start (args, first_button_text);
+      text = first_button_text;
+      response_id = va_arg (args, gint);
+
+      while (text != NULL)
+        {
+          gtk_dialog_add_button (GTK_DIALOG (dialog), text, response_id);
+
+          text = va_arg (args, gchar*);
+          if (text == NULL)
+             break;
+          response_id = va_arg (args, int);
+        }
+      va_end (args);
+    }
+
+  return dialog;
+}
