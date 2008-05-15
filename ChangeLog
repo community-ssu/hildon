@@ -1,3 +1,9 @@
+2008-05-15  Alberto Garcia  <agarcia@igalia.com>
+
+	* examples/hildon-dialog-example.c
+	* examples/hildon-pannable-area-example.c
+	Updated copyright
+
 2008-05-14  Alberto Garcia  <agarcia@igalia.com>
 
 	* src/hildon-dialog.c
