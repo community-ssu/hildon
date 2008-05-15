@@ -1,5 +1,13 @@
 2008-05-15  Alberto Garcia  <agarcia@igalia.com>
 
+	* doc/hildon-docs.sgml
+	* doc/hildon.types
+	* src/Makefile.am
+	* src/hildon-stackable-window.c
+	* src/hildon-stackable-window.h
+	* src/hildon.h
+	New HildonStackableWindow widget
+
 	* examples/hildon-dialog-example.c
 	* examples/hildon-pannable-area-example.c
 	Updated copyright

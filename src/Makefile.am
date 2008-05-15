@@ -54,6 +54,7 @@ libhildon_@API_VERSION_MAJOR@_la_SOURCES 		= hildon-private.c				\
 							  hildon-banner.c 				\
 							  hildon-caption.c 				\
 							  hildon-window.c 				\
+							  hildon-stackable-window.c 			\
 							  hildon-program.c 				\
 							  hildon-code-dialog.c 				\
 							  hildon-enum-types.c 				\
@@ -103,6 +104,7 @@ libhildon_@API_VERSION_MAJOR@_public_headers 	        = hildon-banner.h 				\
 							  hildon-weekday-picker.h 			\
 							  hildon.h 					\
 							  hildon-window.h 				\
+							  hildon-stackable-window.h 			\
 							  hildon-wizard-dialog.h			\
 							  hildon-calendar.h				\
 							  hildon-pannable-area.h			\
