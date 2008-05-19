@@ -29,39 +29,55 @@
 
 G_BEGIN_DECLS
 
-#define HILDON_TYPE_PANNABLE_AREA hildon_pannable_area_get_type()
-#define HILDON_PANNABLE_AREA(obj) (G_TYPE_CHECK_INSTANCE_CAST ((obj), \
-	HILDON_TYPE_PANNABLE_AREA, HildonPannableArea))
-#define HILDON_PANNABLE_AREA_CLASS(klass) (G_TYPE_CHECK_CLASS_CAST ((klass), \
-	HILDON_TYPE_PANNABLE_AREA, HildonPannableAreaClass))
-#define HILDON_IS_PANNABLE_AREA(obj) (G_TYPE_CHECK_INSTANCE_TYPE ((obj), \
-	HILDON_TYPE_PANNABLE_AREA))
-#define HILDON_IS_PANNABLE_AREA_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), \
-	HILDON_TYPE_PANNABLE_AREA))
-#define HILDON_PANNABLE_AREA_GET_CLASS(obj) (G_TYPE_INSTANCE_GET_CLASS ((obj), \
-	HILDON_TYPE_PANNABLE_AREA, HildonPannableAreaClass))
+#define                                         HILDON_TYPE_PANNABLE_AREA \
+                                                hildon_pannable_area_get_type()
 
-GType hildon_pannable_area_mode_get_type (void) G_GNUC_CONST;
-#define HILDON_TYPE_PANNABLE_AREA_MODE (hildon_pannable_area_mode_get_type())
+#define                                         HILDON_PANNABLE_AREA(obj) \
+                                                (G_TYPE_CHECK_INSTANCE_CAST ((obj), \
+                                                HILDON_TYPE_PANNABLE_AREA, HildonPannableArea))
 
-GType hildon_pannable_area_indicator_mode_get_type (void)  G_GNUC_CONST;
-#define HILDON_TYPE_PANNABLE_AREA_INDICATOR_MODE \
-	(hildon_pannable_area_indicator_mode_get_type())
+#define                                         HILDON_PANNABLE_AREA_CLASS(klass) \
+                                                (G_TYPE_CHECK_CLASS_CAST ((klass), \
+                                                HILDON_TYPE_PANNABLE_AREA, HildonPannableAreaClass))
+
+#define                                         HILDON_IS_PANNABLE_AREA(obj) \
+                                                (G_TYPE_CHECK_INSTANCE_TYPE ((obj), HILDON_TYPE_PANNABLE_AREA))
+
+#define                                         HILDON_IS_PANNABLE_AREA_CLASS(klass) \
+                                                (G_TYPE_CHECK_CLASS_TYPE ((klass), HILDON_TYPE_PANNABLE_AREA))
+
+#define                                         HILDON_PANNABLE_AREA_GET_CLASS(obj) \
+                                                (G_TYPE_INSTANCE_GET_CLASS ((obj), \
+                                                HILDON_TYPE_PANNABLE_AREA, HildonPannableAreaClass))
+
+GType
+hildon_pannable_area_mode_get_type              (void) G_GNUC_CONST;
+
+#define                                         HILDON_TYPE_PANNABLE_AREA_MODE \
+                                                (hildon_pannable_area_mode_get_type())
+
+GType
+hildon_pannable_area_indicator_mode_get_type    (void) G_GNUC_CONST;
+
+#define                                         HILDON_TYPE_PANNABLE_AREA_INDICATOR_MODE \
+                                                (hildon_pannable_area_indicator_mode_get_type())
 
 /**
  * HildonPannableArea:
  *
  * HildonPannableArea has no publicly accessible fields
  */
-typedef struct _HildonPannableArea HildonPannableArea;
-typedef struct _HildonPannableAreaClass HildonPannableAreaClass;
+typedef struct                                  _HildonPannableArea HildonPannableArea;
+typedef struct                                  _HildonPannableAreaClass HildonPannableAreaClass;
 
-struct _HildonPannableArea {
-  GtkEventBox parent;
+struct                                          _HildonPannableArea
+{
+    GtkEventBox parent;
 };
 
-struct _HildonPannableAreaClass {
-  GtkEventBoxClass parent_class;
+struct                                          _HildonPannableAreaClass
+{
+    GtkEventBoxClass parent_class;
 };
 
 /**
@@ -74,25 +90,25 @@ struct _HildonPannableAreaClass {
  * Used to change the behaviour of the pannable areaing
  */
 typedef enum {
-	HILDON_PANNABLE_AREA_MODE_PUSH,
-	HILDON_PANNABLE_AREA_MODE_ACCEL,
-	HILDON_PANNABLE_AREA_MODE_AUTO
+    HILDON_PANNABLE_AREA_MODE_PUSH,
+    HILDON_PANNABLE_AREA_MODE_ACCEL,
+    HILDON_PANNABLE_AREA_MODE_AUTO
 } HildonPannableAreaMode;
 
 typedef enum {
-	HILDON_PANNABLE_AREA_INDICATOR_MODE_AUTO,
-	HILDON_PANNABLE_AREA_INDICATOR_MODE_SHOW,
-	HILDON_PANNABLE_AREA_INDICATOR_MODE_HIDE
+    HILDON_PANNABLE_AREA_INDICATOR_MODE_AUTO,
+    HILDON_PANNABLE_AREA_INDICATOR_MODE_SHOW,
+    HILDON_PANNABLE_AREA_INDICATOR_MODE_HIDE
 } HildonPannableAreaIndicatorMode;
 
-GType hildon_pannable_area_get_type (void);
+GType hildon_pannable_area_get_type             (void);
 
-GtkWidget* hildon_pannable_area_new (void);
-GtkWidget* hildon_pannable_area_new_full (gint mode, gboolean enabled,
-					gdouble vel_min, gdouble vel_max,
-					gdouble decel, guint sps);
-void hildon_pannable_area_add_with_viewport (HildonPannableArea *area,
-					   GtkWidget *child);
+GtkWidget* hildon_pannable_area_new             (void);
+GtkWidget* hildon_pannable_area_new_full        (gint mode, gboolean enabled,
+                                                 gdouble vel_min, gdouble vel_max,
+                                                 gdouble decel, guint sps);
+void hildon_pannable_area_add_with_viewport     (HildonPannableArea *area,
+                                                 GtkWidget *child);
 
 G_END_DECLS
 

@@ -1,3 +1,9 @@
+2008-05-19  Alberto Garcia  <agarcia@igalia.com>
+
+	* src/hildon-pannable-area.h
+	* src/hildon-pannable-area.c
+	Changed indentation style to meet the one used in Hildon
+
 2008-05-19 Alejandro G. Castro <alex@igalia.com>
 
 	Reviewed the interaction of the AUTO mode, now we use the time
