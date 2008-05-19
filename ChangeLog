@@ -1,3 +1,21 @@
+2008-05-19 Alejandro G. Castro <alex@igalia.com>
+
+	Reviewed the interaction of the AUTO mode, now we use the time
+	attribute of the events and calculate the velocity in the motion,
+	doing a gimp like calculation. The velocity is calculated in each
+	motion event using the last velocity and the current one, the
+	SMOOTH_FACTOR controls the percentage of the new velocity we use.
+	
+	* src/hildon-pannable-area.c: Replaced the time based algorithm
+	for the AUTO mode.
+	(hildon_pannable_area_motion_notify_cb): now we do not launch the
+	timeout for the AUTO mode when we are still moving the cursor. We
+	added also the velocity calculation in this function.
+	(hildon_pannable_area_button_release_cb): launch the timeout in
+	case we are in AUTO mode. There are still some constants here that
+	come from the old implementation that should be reviewed and
+	handled properly.
+   	
 2008-05-15  Alberto Garcia  <agarcia@igalia.com>
 
 	* doc/hildon-docs.sgml

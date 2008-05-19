@@ -39,6 +39,9 @@
  * - 'Physical' mode for acceleration scrolling
  */
 
+#define SMOOTH_FACTOR 0.85
+#define FORCE 5
+
 #include <gdk/gdkx.h>
 #include "hildon-pannable-area.h"
 
@@ -59,8 +62,6 @@ struct _HildonPannableAreaPrivate {
 	guint32 last_time;	/* Last event time, to stop infinite loops */
 	gint last_type;
 	gboolean moved;
-	GTimeVal click_start;
-	GTimeVal last_click;
 	gdouble vmin;
 	gdouble vmax;
 	gdouble decel;
@@ -105,23 +106,6 @@ enum {
 	PROP_HINDICATOR,
 
 };
-
-static gdouble
-hildon_get_time_delta (GTimeVal *start, GTimeVal *end)
-{
-	gdouble x, y;
-
-	x = start->tv_sec;
-	x *= 1000000;
-	x += start->tv_usec;
-
-	y = end->tv_sec;
-	y *= 1000000;
-	y += end->tv_usec;
-
-	return y-x;
-
-}
 
 /* Following function inherited from libhildondesktop */
 static GList *
@@ -251,7 +235,6 @@ hildon_pannable_area_button_press_cb (HildonPannableArea *area,
 			event->time, FALSE);
 	}
 
-	g_get_current_time (&priv->click_start);
 	priv->x = event->x;
 	priv->y = event->y;
 	priv->ix = priv->x;
@@ -451,7 +434,8 @@ hildon_pannable_area_timeout (HildonPannableArea *area)
 			return FALSE;
 		}
 	} else if (priv->mode == HILDON_PANNABLE_AREA_MODE_AUTO) {
-		return TRUE;
+		priv->idle_id = 0;
+		return FALSE;
 	}
 
 	hildon_pannable_area_scroll (area, priv->vel_x, priv->vel_y, &sx, &sy);
@@ -473,6 +457,8 @@ hildon_pannable_area_motion_notify_cb (HildonPannableArea *area,
 	HildonPannableAreaPrivate *priv = PANNABLE_AREA_PRIVATE (area);
 	gint dnd_threshold;
 	gdouble x, y;
+	gdouble delta, rawvel_x, rawvel_y;
+	gint direction_x, direction_y;
 
 	if ((!priv->enabled) || (!priv->clicked) ||
 	    ((event->time == priv->last_time) &&
@@ -493,7 +479,12 @@ hildon_pannable_area_motion_notify_cb (HildonPannableArea *area,
 	if ((!priv->moved) && (
 	     (ABS (x) > dnd_threshold) || (ABS (y) > dnd_threshold))) {
 		priv->moved = TRUE;
-		if (priv->mode != HILDON_PANNABLE_AREA_MODE_PUSH) {
+		if ((priv->mode != HILDON_PANNABLE_AREA_MODE_PUSH)&&
+                    (priv->mode != HILDON_PANNABLE_AREA_MODE_AUTO)) {
+			
+			if (priv->idle_id)
+				g_source_remove (priv->idle_id);
+
 			priv->idle_id = g_timeout_add (
 				(gint)(1000.0/(gdouble)priv->sps),
 				(GSourceFunc)hildon_pannable_area_timeout,
@@ -527,7 +518,34 @@ hildon_pannable_area_motion_notify_cb (HildonPannableArea *area,
 				(priv->vmax-priv->vmin)) + priv->vmin);
 			break;
 		    case HILDON_PANNABLE_AREA_MODE_AUTO:
+
+			delta = event->time - priv->last_time;         
+            
+			rawvel_x = (((event->x - priv->x) / ABS (delta)) * 
+				    (gdouble)priv->sps) * FORCE;
+			rawvel_y = (((event->y - priv->y) / ABS (delta)) * 
+				    (gdouble)priv->sps) * FORCE;
+
+			/* we store the direction and after the calculation we 
+			   change it, this reduces the ifs for the calculation*/
+			direction_x = rawvel_x < 0 ? -1 : 1;
+			direction_y = rawvel_y < 0 ? -1 : 1;
+			
+			rawvel_y = ABS (rawvel_y);
+			rawvel_x = ABS (rawvel_x);
+                        
+			priv->vel_x = priv->vel_x * (1 - SMOOTH_FACTOR) +
+				direction_x * rawvel_x * SMOOTH_FACTOR;
+			priv->vel_y = priv->vel_y * (1 - SMOOTH_FACTOR) +
+				direction_y * rawvel_y * SMOOTH_FACTOR;
+
+			priv->vel_x  = priv->vel_x > 0 ? MIN (priv->vel_x, priv->vmax) 
+				: MAX (priv->vel_x, -1 * priv->vmax);
+			priv->vel_y  = priv->vel_y > 0 ? MIN (priv->vel_y, priv->vmax)
+				: MAX (priv->vel_y, -1 * priv->vmax);
+
 			hildon_pannable_area_scroll (area, x, y, NULL, NULL);
+
 			priv->x = event->x;
 			priv->y = event->y;
 
@@ -561,52 +579,38 @@ hildon_pannable_area_button_release_cb (HildonPannableArea *area,
 				      gpointer user_data)
 {
 	HildonPannableAreaPrivate *priv = PANNABLE_AREA_PRIVATE (area);
-	GTimeVal current;
 	gint x, y;
 	GdkWindow *child;
-	gdouble delta, speed_x, speed_y;
 
 	if ((!priv->clicked) || (!priv->enabled) || (event->button != 1) ||
 	    ((event->time == priv->last_time) &&
 	     (priv->last_type == 3)))
 		return TRUE;
 
+	if (priv->mode == HILDON_PANNABLE_AREA_MODE_AUTO)
+	{
+		if (priv->idle_id)
+			g_source_remove (priv->idle_id);
+
+		priv->idle_id = g_timeout_add (
+			(gint)(1000.0/(gdouble)priv->sps),
+			(GSourceFunc)hildon_pannable_area_timeout,
+			area);
+	}
+                        
 	priv->last_time = event->time;
 	priv->last_type = 3;
 
-	g_get_current_time (&current);
-
 	priv->clicked = FALSE;
-
-	if (priv->mode == HILDON_PANNABLE_AREA_MODE_AUTO) {
-		delta = hildon_get_time_delta (&priv->click_start, &current);
-		speed_x = event->x - priv->click_x;
-		speed_y = event->y - priv->click_y;
-
-		speed_x = speed_x * 1000000 / delta;
-		speed_y = speed_y * 1000000 / delta;
-
-		priv->vel_x = speed_x * (gdouble)priv->sps / 1000;
-		priv->vel_y = speed_y * (gdouble)priv->sps / 1000;
-
-		/*if( ABS(priv->vel_x )<20)
-		{
-			priv->vel_x = 0;
-		}
-		if(ABS(priv->vel_y )<20)
-		{
-			priv->vel_y = 0;
-		}*/
-	}
-
-	child = hildon_pannable_area_get_topmost (
-		GTK_BIN (priv->align)->child->window,
-		event->x, event->y, &x, &y);
 
 	if (!priv->child) {
 		priv->moved = FALSE;
 		return TRUE;
 	}
+
+	child = hildon_pannable_area_get_topmost (
+		GTK_BIN (priv->align)->child->window,
+		event->x, event->y, &x, &y);
 
 	event = (GdkEventButton *)gdk_event_copy ((GdkEvent *)event);
 	event->x = x;
