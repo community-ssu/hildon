@@ -1,5 +1,14 @@
 2008-05-20 Alejandro G. Castro <alex@igalia.com>
 
+	Bouncing effect added when touching the borders, you can change
+	the elasticity of the border changing the ELASTICITY define.
+	
+	* src/hildon-pannable-area.c: Added ELASTICITY define.
+	(hildon_pannable_area_timeout): Added inverse velocity when
+	touching the border of the child widget, that causes a bounce.
+
+2008-05-20 Alejandro G. Castro <alex@igalia.com>
+
 	Improved performance, we now do not go to the X server in order to
 	get the list of window children. Apparently the effect is the
 	same, we have to be careful and check if this breaks something in

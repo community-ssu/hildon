@@ -41,6 +41,7 @@
 
 #define SMOOTH_FACTOR 0.85
 #define FORCE 5
+#define ELASTICITY 0.3
 
 #include <gdk/gdkx.h>
 #include "hildon-pannable-area.h"
@@ -421,9 +422,16 @@ hildon_pannable_area_timeout                    (HildonPannableArea *area)
      * initial scroll position to the new mouse co-ordinate. This means
      * when you get to the top of the page, dragging down works immediately.
      */
-    if (!sx) priv->x = priv->ex;
-    if (!sy) priv->y = priv->ey;
+    if (!sx) {
+        priv->x = priv->ex;
+        priv->vel_x *= -1 * priv->decel * ELASTICITY;
+    }
 
+    if (!sy) {
+        priv->y = priv->ey;
+        priv->vel_y *= -1 * priv->decel * ELASTICITY;
+    }
+    
     return TRUE;
 }
 
