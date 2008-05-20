@@ -1,3 +1,9 @@
+2008-05-20 Alejandro G. Castro <alex@igalia.com>
+
+	* src/hildon-pannable-area.c:
+	(hildon_pannable_area_dispose): Fixed a crash when closing the
+	window and kinetics is activated.
+	
 2008-05-19  Alberto Garcia  <agarcia@igalia.com>
 
 	* src/hildon-pannable-area.h

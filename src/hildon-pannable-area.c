@@ -844,6 +844,11 @@ hildon_pannable_area_dispose                    (GObject * object)
 {
     HildonPannableAreaPrivate *priv = PANNABLE_AREA_PRIVATE (object);
 
+    if (priv->idle_id) {
+        g_source_remove (priv->idle_id);
+        priv->idle_id = 0;
+    }
+
     if (priv->hadjust) {
             g_object_unref (priv->hadjust);
             priv->hadjust = NULL;
