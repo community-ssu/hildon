@@ -1,5 +1,17 @@
 2008-05-20 Alejandro G. Castro <alex@igalia.com>
 
+	Improved performance, we now do not go to the X server in order to
+	get the list of window children. Apparently the effect is the
+	same, we have to be careful and check if this breaks something in
+	any corner case.
+	
+	* src/hildon-pannable-area.c:
+	(get_ordered_children): Removed this function.
+	(hildon_pannable_area_get_topmost): Replaced the ad-hoc search of
+	the children windows function with gdk_window_get_children.
+	
+2008-05-20 Alejandro G. Castro <alex@igalia.com>
+
 	* src/hildon-pannable-area.c:
 	(hildon_pannable_area_dispose): Fixed a crash when closing the
 	window and kinetics is activated.

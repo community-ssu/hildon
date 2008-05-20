@@ -107,30 +107,6 @@ enum {
 
 };
 
-/* Following function inherited from libhildondesktop */
-static GList *
-get_ordered_children                            (GdkWindow *window)
-{
-    Window      *children, root, parent;
-    guint        i, n_children = 0;
-    GList        *ret = NULL;
-
-    gdk_error_trap_push ();
-    XQueryTree (GDK_DISPLAY (), GDK_WINDOW_XID (window), &root,
-		&parent, &children, &n_children);
-
-    if (gdk_error_trap_pop ()) return NULL;
-
-    for (i = 0; i < n_children; i++) {
-        GdkWindow *window = gdk_window_lookup (children[i]);
-        if (window) ret = g_list_append (ret, window);
-    }
-
-    XFree (children);
-
-    return ret;
-}
-
 static GdkWindow *
 hildon_pannable_area_get_topmost                (GdkWindow *window, gint x, gint y,
                                                  gint *tx, gint *ty)
@@ -148,7 +124,7 @@ hildon_pannable_area_get_topmost                (GdkWindow *window, gint x, gint
 
     while (window) {
         gint child_x = 0, child_y = 0;
-        GList *c, *children = get_ordered_children (window);
+        GList *c, *children = gdk_window_get_children (window);
         GdkWindow *old_window = window;
 
         for (c = children; c; c = c->next) {
