@@ -1,3 +1,31 @@
+2008-05-21 Alejandro G. Castro <alex@igalia.com>
+
+	Rearranged the inheritance of the pannable area, now it inherits
+	from GtkBin. This will allow us to control the event_window and
+	the allocation process of the widget, required for some effects.
+	
+	* src/hildon-pannable-area.h: Replaced GtkEventBox structures with
+	GtkBin structures.  * src/hildon-pannable-area.c: Added the
+	event_window variable.
+	(hildon_pannable_area_button_press_cb):
+	(hildon_pannable_area_button_release_cb):
+	(hildon_pannable_area_motion_notify_cb): 
+	Changed the signature of the method, now we override the event
+	callback instead of connecting to the signal.
+
+	(hildon_pannable_area_realize):
+	(hildon_pannable_area_unrealize):
+	(hildon_pannable_area_map):
+	(hildon_pannable_area_unmap):
+	(hildon_pannable_area_size_allocate):
+	Added functions to control the widget construction. We add a 
+	INPUT_ONLY window and we put it over the widgets inside the 
+	container, this event_window handles the events.
+
+	(hildon_pannable_area_class_init):
+	Replaced the signal connections with overrides of the event 
+	callbacks.
+	
 2008-05-20 Alejandro G. Castro <alex@igalia.com>
 
 	Bouncing effect added when touching the borders, you can change

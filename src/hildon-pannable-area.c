@@ -46,7 +46,7 @@
 #include <gdk/gdkx.h>
 #include "hildon-pannable-area.h"
 
-G_DEFINE_TYPE (HildonPannableArea, hildon_pannable_area, GTK_TYPE_EVENT_BOX)
+G_DEFINE_TYPE (HildonPannableArea, hildon_pannable_area, GTK_TYPE_BIN)
 #define PANNABLE_AREA_PRIVATE(o) \
     (G_TYPE_INSTANCE_GET_PRIVATE ((o), HILDON_TYPE_PANNABLE_AREA,       \
                                   HildonPannableAreaPrivate))
@@ -54,6 +54,7 @@ typedef struct _HildonPannableAreaPrivate HildonPannableAreaPrivate;
 
 struct _HildonPannableAreaPrivate {
     HildonPannableAreaMode mode;
+    GdkWindow * event_window;
     gdouble x;	/* Used to store mouse co-ordinates of the first or */
     gdouble y;	/* previous events in a press-motion pair */
     gdouble ex;	/* Used to store mouse co-ordinates of the last */
@@ -190,13 +191,11 @@ synth_crossing                                  (GdkWindow *child,
 }
 
 static gboolean
-hildon_pannable_area_button_press_cb            (HildonPannableArea *area,
-                                                 GdkEventButton *event,
-                                                 gpointer user_data)
+hildon_pannable_area_button_press_cb            (GtkWidget *widget,
+                                                 GdkEventButton *event)
 {
     gint x, y;
-
-    HildonPannableAreaPrivate *priv = PANNABLE_AREA_PRIVATE (area);
+    HildonPannableAreaPrivate *priv = PANNABLE_AREA_PRIVATE (widget);
 
     if ((!priv->enabled) || (event->button != 1) ||
         ((event->time == priv->last_time) &&
@@ -256,7 +255,6 @@ hildon_pannable_area_button_press_cb            (HildonPannableArea *area,
         gdk_event_free ((GdkEvent *)event);
     } else
         priv->child = NULL;
-
 
     return TRUE;
 }
@@ -436,10 +434,10 @@ hildon_pannable_area_timeout                    (HildonPannableArea *area)
 }
 
 static gboolean
-hildon_pannable_area_motion_notify_cb           (HildonPannableArea *area,
-                                                 GdkEventMotion *event,
-                                                 gpointer user_data)
+hildon_pannable_area_motion_notify_cb           (GtkWidget *widget,
+                                                 GdkEventMotion *event)
 {
+    HildonPannableArea *area = HILDON_PANNABLE_AREA (widget);
     HildonPannableAreaPrivate *priv = PANNABLE_AREA_PRIVATE (area);
     gint dnd_threshold;
     gdouble x, y;
@@ -450,7 +448,7 @@ hildon_pannable_area_motion_notify_cb           (HildonPannableArea *area,
         ((event->time == priv->last_time) &&
          (priv->last_type == 2))) {
         gdk_window_get_pointer (
-            GTK_WIDGET (area)->window, NULL, NULL, 0);
+            widget->window, NULL, NULL, 0);
         return TRUE;
     }
 
@@ -494,13 +492,11 @@ hildon_pannable_area_motion_notify_cb           (HildonPannableArea *area,
                 priv->ey = event->y;
                 priv->vel_x = ((x > 0) ? 1 : -1) *
                     (((ABS (x) /
-                       (gdouble)GTK_WIDGET (area)->
-                       allocation.width) *
+                       (gdouble) widget->allocation.width) *
                       (priv->vmax-priv->vmin)) + priv->vmin);
                 priv->vel_y = ((y > 0) ? 1 : -1) *
                     (((ABS (y) /
-                       (gdouble)GTK_WIDGET (area)->
-                       allocation.height) *
+                       (gdouble) widget->allocation.height) *
                       (priv->vmax-priv->vmin)) + priv->vmin);
                 break;
             case HILDON_PANNABLE_AREA_MODE_AUTO:
@@ -554,17 +550,16 @@ hildon_pannable_area_motion_notify_cb           (HildonPannableArea *area,
         gdk_event_free ((GdkEvent *)event);
     }
 
-    gdk_window_get_pointer (GTK_WIDGET (area)->window, NULL, NULL, 0);
+    gdk_window_get_pointer (widget->window, NULL, NULL, 0);
 
     return TRUE;
 }
 
 static gboolean
-hildon_pannable_area_button_release_cb          (HildonPannableArea *area,
-                                                 GdkEventButton *event,
-                                                 gpointer user_data)
+hildon_pannable_area_button_release_cb          (GtkWidget *widget,
+                                                 GdkEventButton *event)
 {
-    HildonPannableAreaPrivate *priv = PANNABLE_AREA_PRIVATE (area);
+    HildonPannableAreaPrivate *priv = PANNABLE_AREA_PRIVATE (widget);
     gint x, y;
     GdkWindow *child;
 
@@ -581,7 +576,7 @@ hildon_pannable_area_button_release_cb          (HildonPannableArea *area,
         priv->idle_id = g_timeout_add (
             (gint)(1000.0/(gdouble)priv->sps),
             (GSourceFunc)hildon_pannable_area_timeout,
-            area);
+            widget);
     }
 
     priv->last_time = event->time;
@@ -789,12 +784,21 @@ hildon_pannable_area_set_property               (GObject * object, guint propert
                                                  const GValue * value, GParamSpec * pspec)
 {
     HildonPannableAreaPrivate *priv = PANNABLE_AREA_PRIVATE (object);
+    gboolean enabled;
 
     switch (property_id) {
         case PROP_ENABLED :
-            priv->enabled = g_value_get_boolean (value);
-            gtk_event_box_set_above_child (
-                    GTK_EVENT_BOX (object), priv->enabled);
+            enabled = g_value_get_boolean (value);           
+
+            if ((priv->enabled != enabled) && (GTK_WIDGET_REALIZED (object)))
+                {                    
+                    if (enabled)
+                        gdk_window_raise (priv->event_window);
+                    else
+                        gdk_window_lower (priv->event_window);
+                }
+
+            priv->enabled = enabled;
             break;
         case PROP_MODE :
             priv->mode = g_value_get_enum (value);
@@ -854,12 +858,131 @@ hildon_pannable_area_finalize                   (GObject * object)
 }
 
 static void
+hildon_pannable_area_realize                    (GtkWidget *widget)
+{
+    GdkWindowAttr attributes;
+    gint attributes_mask;
+    gint border_width;
+    HildonPannableAreaPrivate *priv;
+
+    GTK_WIDGET_SET_FLAGS (widget, GTK_REALIZED);
+
+    border_width = GTK_CONTAINER (widget)->border_width;
+  
+    attributes.x = widget->allocation.x + border_width;
+    attributes.y = widget->allocation.y + border_width;
+    attributes.width = widget->allocation.width - 2*border_width;
+    attributes.height = widget->allocation.height - 2*border_width;
+    attributes.window_type = GDK_WINDOW_CHILD;
+    attributes.event_mask = gtk_widget_get_events (widget)
+        | GDK_BUTTON_MOTION_MASK
+        | GDK_BUTTON_PRESS_MASK
+        | GDK_BUTTON_RELEASE_MASK
+        | GDK_EXPOSURE_MASK
+        | GDK_ENTER_NOTIFY_MASK
+        | GDK_LEAVE_NOTIFY_MASK;
+
+    priv = PANNABLE_AREA_PRIVATE (widget);
+
+    widget->window = gtk_widget_get_parent_window (widget);
+    g_object_ref (widget->window);
+  
+    attributes.wclass = GDK_INPUT_ONLY;
+    attributes_mask = GDK_WA_X | GDK_WA_Y;
+  
+    priv->event_window = gdk_window_new (widget->window,
+                                         &attributes, attributes_mask);
+    gdk_window_set_user_data (priv->event_window, widget);
+
+    widget->style = gtk_style_attach (widget->style, widget->window);
+}
+
+static void
+hildon_pannable_area_unrealize                  (GtkWidget *widget)
+{
+    HildonPannableAreaPrivate *priv;
+  
+    priv = PANNABLE_AREA_PRIVATE (widget);
+  
+    if (priv->event_window != NULL)
+        {
+            gdk_window_set_user_data (priv->event_window, NULL);
+            gdk_window_destroy (priv->event_window);
+            priv->event_window = NULL;
+        }
+
+    if (GTK_WIDGET_CLASS (hildon_pannable_area_parent_class)->unrealize)
+        (* GTK_WIDGET_CLASS (hildon_pannable_area_parent_class)->unrealize) (widget);
+}
+
+static void
+hildon_pannable_area_map                        (GtkWidget *widget)
+{
+    HildonPannableAreaPrivate *priv;
+
+    priv = PANNABLE_AREA_PRIVATE (widget);
+
+    if (priv->event_window != NULL && !priv->enabled)
+        gdk_window_show (priv->event_window);      
+
+    (* GTK_WIDGET_CLASS (hildon_pannable_area_parent_class)->map) (widget);
+
+    if (priv->event_window != NULL && priv->enabled)
+        gdk_window_show (priv->event_window);
+}
+
+static void
+hildon_pannable_area_unmap                      (GtkWidget *widget)
+{
+    HildonPannableAreaPrivate *priv;
+
+    priv = PANNABLE_AREA_PRIVATE (widget);
+
+    if (priv->event_window != NULL)
+        gdk_window_hide (priv->event_window);
+  
+    (* GTK_WIDGET_CLASS (hildon_pannable_area_parent_class)->unmap) (widget);
+}
+
+static void
 hildon_pannable_area_size_request               (GtkWidget      *widget,
                                                  GtkRequisition *requisition)
 {
     /* Request tiny size, seeing as we have no decoration of our own. */
     requisition->width = 32;
     requisition->height = 32;
+}
+
+static void
+hildon_pannable_area_size_allocate              (GtkWidget     *widget,
+                                                 GtkAllocation *allocation)
+{
+    GtkBin *bin;
+    GtkAllocation child_allocation;
+    HildonPannableAreaPrivate *priv;
+  
+    widget->allocation = *allocation;
+    bin = GTK_BIN (widget);
+  
+    child_allocation.x = allocation->x + GTK_CONTAINER (widget)->border_width;
+    child_allocation.y = allocation->y + GTK_CONTAINER (widget)->border_width;
+    child_allocation.width = MAX (allocation->width - GTK_CONTAINER (widget)->border_width * 2, 0);
+    child_allocation.height = MAX (allocation->height - GTK_CONTAINER (widget)->border_width * 2, 0);
+
+    if (GTK_WIDGET_REALIZED (widget))
+        {
+            priv = PANNABLE_AREA_PRIVATE (widget);
+            
+            if (priv->event_window != NULL)
+                gdk_window_move_resize (priv->event_window,
+                                        child_allocation.x,
+                                        child_allocation.y,
+                                        child_allocation.width,
+                                        child_allocation.height);      
+        }
+  
+    if (bin->child)
+        gtk_widget_size_allocate (bin->child, &child_allocation);
 }
 
 static void
@@ -891,9 +1014,17 @@ hildon_pannable_area_class_init                 (HildonPannableAreaClass * klass
 
     gtkobject_class->destroy = hildon_pannable_area_destroy;
 
+    widget_class->realize = hildon_pannable_area_realize;
+    widget_class->unrealize = hildon_pannable_area_unrealize;
+    widget_class->map = hildon_pannable_area_map;
+    widget_class->unmap = hildon_pannable_area_unmap;
     widget_class->size_request = hildon_pannable_area_size_request;
+    widget_class->size_allocate = hildon_pannable_area_size_allocate;
     widget_class->expose_event = hildon_pannable_area_expose_event;
     widget_class->style_set = hildon_pannable_area_style_set;
+    widget_class->button_press_event = hildon_pannable_area_button_press_cb;
+    widget_class->button_release_event = hildon_pannable_area_button_release_cb;
+    widget_class->motion_notify_event = hildon_pannable_area_motion_notify_cb;
 
     container_class->add = hildon_pannable_area_add;
 
@@ -1005,9 +1136,6 @@ hildon_pannable_area_init                       (HildonPannableArea * self)
     priv->hscroll = TRUE;
     priv->area_width = 6;
 
-    gtk_event_box_set_above_child (GTK_EVENT_BOX (self), TRUE);
-    gtk_event_box_set_visible_window (GTK_EVENT_BOX (self), FALSE);
-
     priv->align = gtk_alignment_new (0.5, 0.5, 1.0, 1.0);
     GTK_CONTAINER_CLASS (hildon_pannable_area_parent_class)->add (
             GTK_CONTAINER (self), priv->align);
@@ -1024,13 +1152,6 @@ hildon_pannable_area_init                       (HildonPannableArea * self)
 
     g_object_ref_sink (G_OBJECT (priv->hadjust));
     g_object_ref_sink (G_OBJECT (priv->vadjust));
-
-    g_signal_connect (G_OBJECT (self), "button-press-event",
-                      G_CALLBACK (hildon_pannable_area_button_press_cb), NULL);
-    g_signal_connect (G_OBJECT (self), "button-release-event",
-                      G_CALLBACK (hildon_pannable_area_button_release_cb), NULL);
-    g_signal_connect (G_OBJECT (self), "motion-notify-event",
-                      G_CALLBACK (hildon_pannable_area_motion_notify_cb), NULL);
 
     g_signal_connect_swapped (G_OBJECT (priv->hadjust), "changed",
                               G_CALLBACK (hildon_pannable_area_refresh), self);

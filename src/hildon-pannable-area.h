@@ -72,12 +72,12 @@ typedef struct                                  _HildonPannableAreaClass HildonP
 
 struct                                          _HildonPannableArea
 {
-    GtkEventBox parent;
+    GtkBin parent;
 };
 
 struct                                          _HildonPannableAreaClass
 {
-    GtkEventBoxClass parent_class;
+    GtkBinClass parent_class;
 };
 
 /**
