@@ -36,6 +36,7 @@
 #include                                        <src/hildon-dialog.h>
 #include                                        <src/hildon-pannable-area.h>
 #include                                        <src/hildon-stackable-window.h>
+#include                                        <src/hildon-app-menu.h>
 
 hildon_banner_get_type
 hildon_calendar_popup_get_type
@@ -71,3 +72,4 @@ hildon_calendar_get_type
 hildon_dialog_get_type
 hildon_pannable_area_get_type
 hildon_stackable_window_get_type
+hildon_app_menu_get_type

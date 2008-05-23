@@ -64,6 +64,7 @@ libhildon_@API_VERSION_MAJOR@_la_SOURCES 		= hildon-private.c				\
 							  hildon-bread-crumb-trail.c			\
 							  hildon-bread-crumb.c				\
 							  hildon-bread-crumb-widget.c                   \
+							  hildon-app-menu.c 				\
 							  hildon-dialog.c
 
 libhildon_@API_VERSION_MAJOR@_built_public_headers  = \
@@ -110,6 +111,7 @@ libhildon_@API_VERSION_MAJOR@_public_headers 	        = hildon-banner.h 				\
 							  hildon-pannable-area.h			\
 							  hildon-bread-crumb-trail.h			\
 							  hildon-bread-crumb.h				\
+							  hildon-app-menu.h				\
 							  hildon-dialog.h				\
 							  hildon-version.h
 
@@ -144,6 +146,7 @@ noinst_HEADERS						= hildon-banner-private.h 			\
 							  hildon-window-private.h 			\
 							  hildon-wizard-dialog-private.h		\
 							  hildon-calendar-private.h			\
+							  hildon-app-menu-private.h			\
 							  hildon-bread-crumb-widget.h
 
 # Don't build the library until we have built the header that it needs:
