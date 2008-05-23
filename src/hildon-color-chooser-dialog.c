@@ -219,7 +219,7 @@ hildon_color_chooser_dialog_init                (HildonColorChooserDialog *objec
     gtk_dialog_set_default_response (GTK_DIALOG (object), GTK_RESPONSE_OK);
 
     g_signal_connect (G_OBJECT (priv->chooser), 
-            "insensitive-press", G_CALLBACK (hildon_color_chooser_dialog_insensitive_press), object);
+            "query-tooltip", G_CALLBACK (hildon_color_chooser_dialog_insensitive_press), object);
 
     g_signal_connect (G_OBJECT (priv->area_custom), 
             "expose-event", G_CALLBACK (hildon_color_chooser_dialog_area_expose), object);
