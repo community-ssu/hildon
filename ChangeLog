@@ -7,7 +7,7 @@
 	(hildon_time_editor_init): g_signal_connect() to the
 	tap-and-hold-setup signal instead.
 
-	(hildon_time_editor_entry_keypress): add case to fix warning.
+	(hildon_time_editor_entry_keypress): add cast to fix warning.
 
 2008-05-23  Alberto Garcia  <agarcia@igalia.com>
 
