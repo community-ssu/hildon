@@ -333,13 +333,17 @@ static void
 hildon_app_menu_init                            (HildonAppMenu *menu)
 {
     GtkWidget *alignment;
-    guint filter_group_spacing, horizontal_spacing, vertical_spacing;
+    GdkScreen *screen;
+    int width;
+    guint filter_group_spacing, horizontal_spacing, vertical_spacing,
+            external_border;
     HildonAppMenuPrivate *priv = HILDON_APP_MENU_GET_PRIVATE(menu);
 
     gtk_widget_style_get (GTK_WIDGET (menu),
                           "filter-group-spacing", &filter_group_spacing,
                           "horizontal-spacing", &horizontal_spacing,
                           "vertical-spacing", &vertical_spacing,
+                          "external-border", &external_border,
                           NULL);
 
     /* Initialize private variables */
@@ -362,6 +366,11 @@ hildon_app_menu_init                            (HildonAppMenu *menu)
     gtk_container_add (GTK_CONTAINER (menu), GTK_WIDGET (priv->vbox));
     gtk_box_pack_start (priv->vbox, alignment, TRUE, TRUE, 0);
     gtk_box_pack_start (priv->vbox, GTK_WIDGET (priv->table), TRUE, TRUE, 0);
+
+    /* Set default size */
+    screen = gtk_widget_get_screen (GTK_WIDGET (menu));
+    width = gdk_screen_get_width (screen) - external_border * 2;
+    gtk_window_set_default_size (GTK_WINDOW (menu), width, -1);
 
     gtk_widget_show_all (GTK_WIDGET (priv->vbox));
 
@@ -418,5 +427,14 @@ hildon_app_menu_class_init                      (HildonAppMenuClass *klass)
             "Vertical spacing on menu items",
             "Vertical spacing between each menu item (but not filters)",
             0, G_MAXUINT, 10,
+            G_PARAM_READABLE));
+
+    gtk_widget_class_install_style_property (
+        widget_class,
+        g_param_spec_uint (
+            "external-border",
+            "Border between menu and screen edges",
+            "Border between the right and left edges of the menu and the screen edges",
+            0, G_MAXUINT, 40,
             G_PARAM_READABLE));
 }

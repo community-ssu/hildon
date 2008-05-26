@@ -7,6 +7,9 @@
 	(hildon_app_menu_popup): Use also the default window size to
 	decide where to place the menu
 
+	(hildon_app_menu_init, hildon_app_menu_class_init): New
+	external-border style property
+
 2008-05-26  Michael Natterer  <mitch@imendio.com>
 
 	* src/hildon-time-editor.c (hildon_time_editor_class_init): The
