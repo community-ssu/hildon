@@ -1,3 +1,9 @@
+2008-05-26  Alberto Garcia  <agarcia@igalia.com>
+
+	* src/hildon-app-menu.h
+	* src/hildon-app-menu.c
+	Renamed API variables for consistency
+
 2008-05-26  Michael Natterer  <mitch@imendio.com>
 
 	* src/hildon-time-editor.c (hildon_time_editor_class_init): The

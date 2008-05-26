@@ -99,22 +99,22 @@ hildon_app_menu_new                             (void)
 
 /**
  * hildon_app_menu_append
- * @self : A @HildonAppMenu
+ * @menu : A @HildonAppMenu
  * @item : A @GtkButton to add to the HildonAppMenu
  *
  * Adds the @item to the @HildonAppMenu
  */
 void
-hildon_app_menu_append                          (HildonAppMenu *self,
+hildon_app_menu_append                          (HildonAppMenu *menu,
                                                  GtkButton *item)
 {
     HildonAppMenuPrivate *priv;
     int row, col;
 
-    g_return_if_fail (HILDON_IS_APP_MENU (self));
+    g_return_if_fail (HILDON_IS_APP_MENU (menu));
     g_return_if_fail (GTK_IS_BUTTON (item));
 
-    priv = HILDON_APP_MENU_GET_PRIVATE(self);
+    priv = HILDON_APP_MENU_GET_PRIVATE(menu);
 
     /* Calculate the row and column number */
     col = priv->nitems % 2;
@@ -125,14 +125,14 @@ hildon_app_menu_append                          (HildonAppMenu *self,
     gtk_table_attach_defaults (priv->table, GTK_WIDGET (item), col, col + 1, row, row + 1);
 
     /* Close the menu when the button is pressed */
-    g_signal_connect_swapped (item, "clicked", G_CALLBACK (hildon_app_menu_popdown), self);
+    g_signal_connect_swapped (item, "clicked", G_CALLBACK (hildon_app_menu_popdown), menu);
 
     gtk_widget_show (GTK_WIDGET (item));
 }
 
 /**
  * hildon_app_menu_add_filter
- * @self : A @HildonAppMenu
+ * @menu : A @HildonAppMenu
  * @filter : A @GtkButton to add to the HildonAppMenu
  * @group : An existing filter group, or %NULL to create a new one
  *
@@ -141,17 +141,17 @@ hildon_app_menu_append                          (HildonAppMenu *self,
  * Return value: The filter group where the filter has been added
  */
 GtkWidget *
-hildon_app_menu_add_filter                      (HildonAppMenu *self,
+hildon_app_menu_add_filter                      (HildonAppMenu *menu,
                                                  GtkButton *filter,
                                                  GtkWidget *group)
 {
     HildonAppMenuPrivate *priv;
 
-    g_return_val_if_fail (HILDON_IS_APP_MENU (self), NULL);
+    g_return_val_if_fail (HILDON_IS_APP_MENU (menu), NULL);
     g_return_val_if_fail (GTK_IS_BUTTON (filter), NULL);
     g_return_val_if_fail (!group || GTK_IS_BOX (group), NULL);
 
-    priv = HILDON_APP_MENU_GET_PRIVATE(self);
+    priv = HILDON_APP_MENU_GET_PRIVATE(menu);
 
     /* Create a new group if needed */
     if (!group) {
@@ -165,7 +165,7 @@ hildon_app_menu_add_filter                      (HildonAppMenu *self,
     gtk_size_group_add_widget (priv->sizegroup, GTK_WIDGET (filter));
 
     /* Close the menu when the button is pressed */
-    g_signal_connect_swapped (filter, "clicked", G_CALLBACK (hildon_app_menu_popdown), self);
+    g_signal_connect_swapped (filter, "clicked", G_CALLBACK (hildon_app_menu_popdown), menu);
 
     gtk_widget_show (GTK_WIDGET (filter));
 
@@ -174,7 +174,7 @@ hildon_app_menu_add_filter                      (HildonAppMenu *self,
 
 /**
  * hildon_app_menu_get_group_from_filter
- * @self : A @HildonAppMenu
+ * @menu : A @HildonAppMenu
  * @filter : A @GtkButton previously added to the menu
  *
  * Gets the filter group from a @filter previously added to a @HildonAppMenu
@@ -182,17 +182,17 @@ hildon_app_menu_add_filter                      (HildonAppMenu *self,
  * Return value: The group where the @filter is in, or %NULL
  */
 GtkWidget *
-hildon_app_menu_get_group_from_filter           (HildonAppMenu *self,
+hildon_app_menu_get_group_from_filter           (HildonAppMenu *menu,
                                                  GtkButton *filter)
 {
     HildonAppMenuPrivate *priv;
     GList *grouplist;
     GtkWidget *result = NULL;
 
-    g_return_val_if_fail (HILDON_IS_APP_MENU (self), NULL);
+    g_return_val_if_fail (HILDON_IS_APP_MENU (menu), NULL);
     g_return_val_if_fail (GTK_IS_BUTTON (filter), NULL);
 
-    priv = HILDON_APP_MENU_GET_PRIVATE(self);
+    priv = HILDON_APP_MENU_GET_PRIVATE(menu);
 
     /* Get the list of filter groups */
     grouplist = gtk_container_get_children (GTK_CONTAINER (priv->filters_hbox));
@@ -329,13 +329,13 @@ hildon_app_menu_realize                         (GtkWidget *widget)
 }
 
 static void
-hildon_app_menu_init                            (HildonAppMenu *self)
+hildon_app_menu_init                            (HildonAppMenu *menu)
 {
     GtkWidget *alignment;
     guint filter_group_spacing, horizontal_spacing, vertical_spacing;
-    HildonAppMenuPrivate *priv = HILDON_APP_MENU_GET_PRIVATE(self);
+    HildonAppMenuPrivate *priv = HILDON_APP_MENU_GET_PRIVATE(menu);
 
-    gtk_widget_style_get (GTK_WIDGET (self),
+    gtk_widget_style_get (GTK_WIDGET (menu),
                           "filter-group-spacing", &filter_group_spacing,
                           "horizontal-spacing", &horizontal_spacing,
                           "vertical-spacing", &vertical_spacing,
@@ -358,13 +358,13 @@ hildon_app_menu_init                            (HildonAppMenu *self)
     gtk_container_add (GTK_CONTAINER (alignment), GTK_WIDGET (priv->filters_hbox));
 
     /* Pack everything */
-    gtk_container_add (GTK_CONTAINER (self), GTK_WIDGET (priv->vbox));
+    gtk_container_add (GTK_CONTAINER (menu), GTK_WIDGET (priv->vbox));
     gtk_box_pack_start (priv->vbox, alignment, TRUE, TRUE, 0);
     gtk_box_pack_start (priv->vbox, GTK_WIDGET (priv->table), TRUE, TRUE, 0);
 
     gtk_widget_show_all (GTK_WIDGET (priv->vbox));
 
-    gtk_window_set_type_hint (GTK_WINDOW (self), GDK_WINDOW_TYPE_HINT_POPUP_MENU);
+    gtk_window_set_type_hint (GTK_WINDOW (menu), GDK_WINDOW_TYPE_HINT_POPUP_MENU);
 }
 
 static void

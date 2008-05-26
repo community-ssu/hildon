@@ -65,11 +65,11 @@ GtkWidget *
 hildon_app_menu_new                             (void);
 
 void
-hildon_app_menu_append                          (HildonAppMenu *self,
+hildon_app_menu_append                          (HildonAppMenu *menu,
                                                  GtkButton *item);
 
 GtkWidget *
-hildon_app_menu_add_filter                      (HildonAppMenu *self,
+hildon_app_menu_add_filter                      (HildonAppMenu *menu,
                                                  GtkButton *filter,
                                                  GtkWidget *group);
 
