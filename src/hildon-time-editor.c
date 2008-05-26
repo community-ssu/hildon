@@ -366,9 +366,6 @@ hildon_time_editor_class_init                   (HildonTimeEditorClass *editor_c
     object_class->set_property                  = hildon_time_editor_set_property;
     widget_class->size_request                  = hildon_time_editor_size_request;
     widget_class->size_allocate                 = hildon_time_editor_size_allocate;
-#ifdef MAEMO_GTK 
-    widget_class->tap_and_hold_setup            = hildon_time_editor_tap_and_hold_setup;
-#endif
     widget_class->focus                         = hildon_time_editor_focus;
 
     container_class->forall                     = hildon_time_editor_forall;
@@ -609,6 +606,13 @@ hildon_time_editor_init                         (HildonTimeEditor *editor)
     hildon_time_editor_set_to_current_time (editor);
 
     gtk_widget_pop_composite_child ();
+
+#ifdef MAEMO_GTK 
+    g_signal_connect (editor, "tap-and-hold-setup",
+                      G_CALLBACK (hildon_time_editor_tap_and_hold_setup),
+                      NULL);
+#endif
+
 }
 
 static void 
@@ -1821,7 +1825,7 @@ hildon_time_editor_entry_keypress (GtkEntry *entry,
     {
     case GDK_Return:
     case GDK_ISO_Enter:
-      hildon_time_editor_icon_clicked (entry, data);
+      hildon_time_editor_icon_clicked (GTK_WIDGET (entry), data);
       return TRUE;
     default:
       return FALSE;

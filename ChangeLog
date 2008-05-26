@@ -1,3 +1,14 @@
+2008-05-26  Michael Natterer  <mitch@imendio.com>
+
+	* src/hildon-time-editor.c (hildon_time_editor_class_init): The
+	widget_class->tap_and_hold_setup signal slot doesn't exist any
+	longer, stop overriding it.
+
+	(hildon_time_editor_init): g_signal_connect() to the
+	tap-and-hold-setup signal instead.
+
+	(hildon_time_editor_entry_keypress): add case to fix warning.
+
 2008-05-23  Alberto Garcia  <agarcia@igalia.com>
 
 	* doc/hildon-docs.sgml
