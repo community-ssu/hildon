@@ -229,7 +229,7 @@ void
 hildon_app_menu_popup                           (HildonAppMenu *menu)
 {
     g_return_if_fail (HILDON_IS_APP_MENU (menu));
-    int xpos;
+    int x, xpos;
     GtkRequisition req;
     HildonAppMenuPrivate *priv = HILDON_APP_MENU_GET_PRIVATE(menu);
     GdkScreen *screen = gtk_widget_get_screen (GTK_WIDGET (menu));
@@ -247,8 +247,9 @@ hildon_app_menu_popup                           (HildonAppMenu *menu)
     }
 
     /* Position the menu in the top center of the screen */
+    gtk_window_get_default_size (GTK_WINDOW (menu), &x, NULL);
     gtk_widget_size_request (GTK_WIDGET (menu), &req);
-    xpos = (gdk_screen_get_width (screen) - req.width) / 2;
+    xpos = (gdk_screen_get_width (screen) - MAX(x, req.width)) / 2;
     gtk_window_move (GTK_WINDOW (menu), xpos, 0);
 
     gtk_widget_show (GTK_WIDGET (menu));

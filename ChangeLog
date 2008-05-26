@@ -4,6 +4,9 @@
 	* src/hildon-app-menu.c
 	Renamed API variables for consistency
 
+	(hildon_app_menu_popup): Use also the default window size to
+	decide where to place the menu
+
 2008-05-26  Michael Natterer  <mitch@imendio.com>
 
 	* src/hildon-time-editor.c (hildon_time_editor_class_init): The
