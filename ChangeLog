@@ -1,3 +1,22 @@
+2008-06-03 Alejandro G. Castro <alex@igalia.com>
+
+	* hildon-pannable-area.c: Added the overshoot property and removed
+	the OVERSHOOT define. Fixed an indent style error.
+	(hildon_pannable_area_motion_notify_cb):	
+	(hildon_pannable_area_get_property):
+	(hildon_pannable_area_set_property): Add overshoot property.
+	
+	(hildon_pannable_area_scroll): replaced OVERSHOOT define with
+	overshoot property.
+	
+	(hildon_pannable_area_class_init): Installed the new property.	
+
+	* hildon-pannable-area-example.c: Added a sawtooth function, this
+	way it is easier to check the movement in the pannable.
+	(get_sawtooth_label): Added this function.
+	(main): Now we get the labels from the new get_sawtooth_label
+	function.
+ 	
 2008-05-26  Alberto Garcia  <agarcia@igalia.com>
 
 	* src/hildon-app-menu.h

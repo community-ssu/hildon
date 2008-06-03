@@ -36,6 +36,28 @@ on_button_clicked (GtkWidget *widget, gpointer data)
     g_debug ("Button %d clicked", GPOINTER_TO_INT (data));
 }
 
+
+static void
+get_sawtooth_label (gchar **label, guint num)
+{
+  static gchar *sawtooth = NULL;
+  gchar *label_aux, *sawtooth_aux;
+  
+  if (num % 30 != 0) {
+    sawtooth_aux = g_strconcat (" ", sawtooth, NULL);
+    g_free (sawtooth);
+    
+    sawtooth = sawtooth_aux;
+  } else {
+    sawtooth = g_strdup (" ");
+  }
+  
+  label_aux = g_strconcat (sawtooth, *label, NULL);
+  g_free (*label);
+  
+  *label = label_aux;
+}
+
 int
 main (int argc, char **args)
 {
@@ -61,7 +83,11 @@ main (int argc, char **args)
     vbox = GTK_VBOX (gtk_vbox_new (FALSE, 1));
     for (i = 0; i < 30; i++) {
             gchar *label = g_strdup_printf ("Button number %d", i);
-            GtkWidget *but = gtk_button_new_with_label (label);
+            GtkWidget *but = NULL;
+
+            get_sawtooth_label (&label, i);
+
+            but = gtk_button_new_with_label (label);
             gtk_box_pack_start (GTK_BOX (vbox), but, TRUE, TRUE, 0);
             g_signal_connect (G_OBJECT (but), "clicked", G_CALLBACK (on_button_clicked), GINT_TO_POINTER (i));
             g_free (label);
@@ -78,6 +104,9 @@ main (int argc, char **args)
     for (i = 0; i < 100; i++) {
             GtkTreeIter iter;
             gchar *label = g_strdup_printf ("Row number %d", i);
+            
+            get_sawtooth_label (&label, i);
+
             gtk_list_store_append (store, &iter);
             gtk_list_store_set (store, &iter, TEXT_COLUMN, label, -1);
             g_free (label);
