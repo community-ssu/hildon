@@ -1,3 +1,20 @@
+2008-06-03  Alberto Garcia  <agarcia@igalia.com>
+
+	* src/hildon-window.c
+	* src/hildon-window.h
+	(hildon_window_class_init)
+	(hildon_window_unset_program)
+	(hildon_window_unset_program_real):
+	Make unset_program a virtual function
+
+	* src/hildon-stackable-window.c
+	* src/hildon-stackable-window.h
+	Added hildon_stackable_window_go_home()
+
+	* examples/Makefile.am
+	* examples/hildon-stackable-window-example.c
+	HildonStackableWindow example
+
 2008-06-03 Alejandro G. Castro <alex@igalia.com>
 
 	* hildon-pannable-area.c: Added the overshoot property and removed

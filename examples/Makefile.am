@@ -42,12 +42,18 @@ noinst_PROGRAMS				= hildon-window-example				\
 					  hildon-pannable-area-example			\
 					  hildon-logical-color-example			\
 					  hildon-app-menu-example			\
+					  hildon-stackable-window-example		\
 					  hildon-dialog-example
 
 # Hildon window
 hildon_window_example_LDADD		= $(HILDON_OBJ_LIBS)
 hildon_window_example_CFLAGS		= $(HILDON_OBJ_CFLAGS)
 hildon_window_example_SOURCES		= hildon-window-example.c
+
+# Hildon stackable window
+hildon_stackable_window_example_LDADD	= $(HILDON_OBJ_LIBS)
+hildon_stackable_window_example_CFLAGS	= $(HILDON_OBJ_CFLAGS)
+hildon_stackable_window_example_SOURCES = hildon-stackable-window-example.c
 
 # Hildon logical color
 hildon_logical_color_example_LDADD	= $(HILDON_OBJ_LIBS)

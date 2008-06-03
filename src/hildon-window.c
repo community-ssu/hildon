@@ -231,6 +231,9 @@ paint_toolbar                                   (GtkWidget *widget,
                                                  GdkEventExpose * event, 
                                                  gboolean fullscreen);
 
+static void
+hildon_window_unset_program_real                (HildonWindow *self);
+
 enum
 {
     PROP_0,
@@ -274,6 +277,9 @@ hildon_window_class_init                        (HildonWindowClass * window_clas
 
     /* To the container */
     container_class->forall             = hildon_window_forall;
+
+    /* To this class */
+    window_class->unset_program         = hildon_window_unset_program_real;
 
     /* gtkobject stuff*/
     GTK_OBJECT_CLASS (window_class)->destroy = hildon_window_destroy; 
@@ -1350,8 +1356,8 @@ hildon_window_set_program                       (HildonWindow *self,
  * Unsets the program to which the window belongs. This should only be called
  * by hildon_program_add_window
  */
-void G_GNUC_INTERNAL
-hildon_window_unset_program                     (HildonWindow *self)
+static void
+hildon_window_unset_program_real                (HildonWindow *self)
 {
     HildonWindowPrivate *priv = HILDON_WINDOW_GET_PRIVATE (self);
 
@@ -1373,6 +1379,15 @@ hildon_window_unset_program                     (HildonWindow *self)
     }
 
     priv->program = NULL;
+}
+
+void G_GNUC_INTERNAL
+hildon_window_unset_program                     (HildonWindow *self)
+{
+    g_return_if_fail (HILDON_IS_WINDOW (self));
+
+    if (HILDON_WINDOW_GET_CLASS (self)->unset_program != NULL)
+        HILDON_WINDOW_GET_CLASS (self)->unset_program (self);
 }
 
 /*

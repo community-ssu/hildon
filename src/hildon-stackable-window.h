@@ -61,6 +61,12 @@ typedef struct                                  _HildonStackableWindowClass Hild
 struct                                          _HildonStackableWindowClass
 {
     HildonWindowClass parent_class;
+
+    /* Padding for future extension */
+    void (*_hildon_reserved1)(void);
+    void (*_hildon_reserved2)(void);
+    void (*_hildon_reserved3)(void);
+    void (*_hildon_reserved4)(void);
 };
 
 struct                                          _HildonStackableWindow
@@ -68,10 +74,14 @@ struct                                          _HildonStackableWindow
     HildonWindow parent;
 };
 
-GType hildon_stackable_window_get_type (void) G_GNUC_CONST;
+GType
+hildon_stackable_window_get_type                (void) G_GNUC_CONST;
 
 GtkWidget*
 hildon_stackable_window_new                     (void);
+
+void
+hildon_stackable_window_go_home                 (HildonStackableWindow* self);
 
 G_END_DECLS
 
