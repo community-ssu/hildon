@@ -121,7 +121,7 @@ hildon_app_menu_append                          (HildonAppMenu *menu,
     /* GtkTable already calls gtk_table_resize() if necessary */
     gtk_table_attach_defaults (priv->table, GTK_WIDGET (item), col, col + 1, row, row + 1);
 
-    /* Close the menu when the button is pressed */
+    /* Close the menu when the button is clicked */
     g_signal_connect_swapped (item, "clicked", G_CALLBACK (gtk_widget_hide), menu);
 
     gtk_widget_show (GTK_WIDGET (item));
@@ -161,7 +161,7 @@ hildon_app_menu_add_filter                      (HildonAppMenu *menu,
     gtk_box_pack_start (GTK_BOX (group), GTK_WIDGET (filter), TRUE, TRUE, 0);
     gtk_size_group_add_widget (priv->sizegroup, GTK_WIDGET (filter));
 
-    /* Close the menu when the button is pressed */
+    /* Close the menu when the button is clicked */
     g_signal_connect_swapped (filter, "clicked", G_CALLBACK (gtk_widget_hide), menu);
 
     gtk_widget_show (GTK_WIDGET (filter));
@@ -279,19 +279,26 @@ hildon_app_menu_unmap                           (GtkWidget *widget)
 }
 
 static gboolean
-hildon_app_menu_button_press                    (GtkWidget *widget,
+hildon_app_menu_button_release                  (GtkWidget *widget,
                                                  GdkEventButton *event)
 {
     int x, y;
+    gboolean released_outside;
     HildonAppMenuPrivate *priv = HILDON_APP_MENU_GET_PRIVATE(widget);
-    gdk_window_get_position(widget->window, &x, &y);
-    if (event->window != priv->transfer_window ||
-        event->x < x || event->x > x + widget->allocation.width ||
-        event->y < y || event->y > y + widget->allocation.height) {
+
+    gdk_window_get_position (widget->window, &x, &y);
+
+    /* Whether the button has been released outside the widget */
+    released_outside = (event->window != priv->transfer_window ||
+                        event->x < x || event->x > x + widget->allocation.width ||
+                        event->y < y || event->y > y + widget->allocation.height);
+
+    if (released_outside) {
         gtk_widget_hide (widget);
-        return TRUE;
-    } else if (GTK_WIDGET_CLASS (hildon_app_menu_parent_class)->button_press_event) {
-        return GTK_WIDGET_CLASS (hildon_app_menu_parent_class)->button_press_event (widget, event);
+    }
+
+    if (GTK_WIDGET_CLASS (hildon_app_menu_parent_class)->button_release_event) {
+        return GTK_WIDGET_CLASS (hildon_app_menu_parent_class)->button_release_event (widget, event);
     } else {
         return FALSE;
     }
@@ -403,7 +410,7 @@ hildon_app_menu_class_init                      (HildonAppMenuClass *klass)
     widget_class->map = hildon_app_menu_map;
     widget_class->unmap = hildon_app_menu_unmap;
     widget_class->realize = hildon_app_menu_realize;
-    widget_class->button_press_event = hildon_app_menu_button_press;
+    widget_class->button_release_event = hildon_app_menu_button_release;
 
     g_type_class_add_private (klass, sizeof (HildonAppMenuPrivate));
 

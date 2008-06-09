@@ -94,6 +94,16 @@ hildon_note_rebuild                             (HildonNote *note);
 static void
 hildon_note_finalize                            (GObject *obj_self);
 
+static gboolean
+hildon_note_button_release                      (GtkWidget *widget,
+                                                 GdkEventButton *event);
+
+static void
+hildon_note_map                                 (GtkWidget *widget);
+
+static void
+hildon_note_unmap                               (GtkWidget *widget);
+
 static void
 hildon_note_realize                             (GtkWidget *widget);
 
@@ -125,6 +135,33 @@ enum
 };
 
 static GtkDialogClass*                          parent_class;
+
+static GdkWindow *
+grab_transfer_window_get                        (GtkWidget *widget)
+{
+    GdkWindow *window;
+    GdkWindowAttr attributes;
+    gint attributes_mask;
+
+    attributes.x = 0;
+    attributes.y = 0;
+    attributes.width = 10;
+    attributes.height = 10;
+    attributes.window_type = GDK_WINDOW_TEMP;
+    attributes.wclass = GDK_INPUT_ONLY;
+    attributes.override_redirect = TRUE;
+    attributes.event_mask = 0;
+
+    attributes_mask = GDK_WA_X | GDK_WA_Y | GDK_WA_NOREDIR;
+
+    window = gdk_window_new (gtk_widget_get_root_window (widget),
+                             &attributes, attributes_mask);
+    gdk_window_set_user_data (window, widget);
+
+    gdk_window_show (window);
+
+    return window;
+}
 
 static void
 hildon_note_set_property                        (GObject *object,
@@ -275,6 +312,9 @@ hildon_note_class_init                          (HildonNoteClass *class)
     object_class->finalize      = hildon_note_finalize;
     object_class->set_property  = hildon_note_set_property;
     object_class->get_property  = hildon_note_get_property;
+    widget_class->button_release_event = hildon_note_button_release;
+    widget_class->map           = hildon_note_map;
+    widget_class->unmap         = hildon_note_unmap;
     widget_class->realize       = hildon_note_realize;
 
     g_object_class_install_property (object_class,
@@ -349,6 +389,8 @@ hildon_note_init                                (HildonNote *dialog)
     gtk_label_set_line_wrap (GTK_LABEL (priv->label), TRUE);
     
     priv->icon  = gtk_image_new ();
+    priv->close_if_pressed_outside = FALSE;
+    priv->transfer_window = NULL;
 
     /* Acquire real references to our internal children, since
        they are not nessecarily packed into container in each
@@ -385,6 +427,72 @@ hildon_note_finalize                            (GObject *obj_self)
     G_OBJECT_CLASS (parent_class)->finalize (obj_self);
 }
 
+
+static gboolean
+hildon_note_button_release                      (GtkWidget *widget,
+                                                 GdkEventButton *event)
+{
+    int x, y;
+    gboolean released_outside;
+    HildonNotePrivate *priv = HILDON_NOTE_GET_PRIVATE (widget);
+
+    gdk_window_get_position (widget->window, &x, &y);
+
+    /* Whether the button has been released outside the widget */
+    released_outside = (event->window != priv->transfer_window ||
+                        event->x < x || event->x > x + widget->allocation.width ||
+                        event->y < y || event->y > y + widget->allocation.height);
+
+    if (released_outside && priv->close_if_pressed_outside) {
+        gtk_dialog_response (GTK_DIALOG (widget), GTK_RESPONSE_CANCEL);
+    }
+
+    if (GTK_WIDGET_CLASS (parent_class)->button_release_event) {
+        return GTK_WIDGET_CLASS (parent_class)->button_release_event (widget, event);
+    } else {
+        return FALSE;
+    }
+}
+
+static void
+hildon_note_map                                 (GtkWidget *widget)
+{
+    HildonNotePrivate *priv = HILDON_NOTE_GET_PRIVATE (widget);
+    g_assert (priv);
+
+    /* Map the window */
+    GTK_WIDGET_CLASS (parent_class)->map (widget);
+
+    if (priv->transfer_window == NULL && priv->close_if_pressed_outside) {
+        priv->transfer_window = grab_transfer_window_get (widget);
+        gdk_pointer_grab (
+            priv->transfer_window, TRUE,
+            GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK |
+            GDK_ENTER_NOTIFY_MASK | GDK_LEAVE_NOTIFY_MASK |
+            GDK_POINTER_MOTION_MASK, NULL, NULL, GDK_CURRENT_TIME);
+        gdk_keyboard_grab (priv->transfer_window, TRUE, GDK_CURRENT_TIME);
+        gtk_grab_add (widget);
+    }
+}
+
+static void
+hildon_note_unmap                               (GtkWidget *widget)
+{
+    HildonNotePrivate *priv = HILDON_NOTE_GET_PRIVATE (widget);
+    g_assert (priv);
+
+    if (priv->transfer_window != NULL) {
+        /* Remove the grab */
+        gdk_display_pointer_ungrab (gtk_widget_get_display (widget),
+                                    GDK_CURRENT_TIME);
+        gtk_grab_remove (widget);
+
+        /* Destroy the transfer window */
+        gdk_window_destroy (priv->transfer_window);
+        priv->transfer_window = NULL;
+    }
+}
+
 static void
 hildon_note_realize                             (GtkWidget *widget)
 {
@@ -402,6 +510,9 @@ hildon_note_realize                             (GtkWidget *widget)
     if (priv->sound_signal_handler == 0)
         priv->sound_signal_handler = g_signal_connect_after(widget, 
                 "expose-event", G_CALLBACK (sound_handling), NULL);
+
+    /* We use special hint to turn the note into information notification. */
+    gdk_window_set_type_hint (widget->window, GDK_WINDOW_TYPE_HINT_NOTIFICATION);
 }
 
 /* Helper function for removing a widget from it's container.
@@ -449,6 +560,9 @@ hildon_note_rebuild                             (HildonNote *note)
         priv->cancelButton = NULL;
     }
 
+    /* By default the note won't be closed when pressing outside */
+    priv->close_if_pressed_outside = FALSE;
+
     /* Add needed buttons and images for each note type */
     switch (priv->note_n)
     {
@@ -467,10 +581,7 @@ hildon_note_rebuild                             (HildonNote *note)
 
         case HILDON_NOTE_TYPE_INFORMATION_THEME:
         case HILDON_NOTE_TYPE_INFORMATION:
-            /* Add clickable OK button (cancel really,
-               but doesn't matter since this is info) */
-            priv->cancelButton = gtk_dialog_add_button (dialog,
-                    _("ecdg_bd_information_note_ok"), GTK_RESPONSE_CANCEL);
+            priv->close_if_pressed_outside = TRUE;
             gtk_image_set_from_icon_name (GTK_IMAGE (priv->icon),
                     HILDON_NOTE_INFORMATION_ICON,
                     HILDON_ICON_SIZE_BIG_NOTE);

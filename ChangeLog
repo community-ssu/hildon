@@ -1,7 +1,23 @@
 2008-06-09  Alberto Garcia  <agarcia@igalia.com>
 
+	* src/hildon-note.c
+	Added new transfer_window and close_if_pressed_outside private
+	attributes.
+	(hildon_note_rebuild):
+	Don't add a cancel button to the information note. It will be
+	closed when tapping outside
+	(hildon_note_realize):
+	Set the notification type hint
+	(hildon_note_map, hildon_note_unmap, grab_transfer_window_get):
+	Grab/ungrab pointer and keyboard if the note has to be closed when
+	tapping outside
+	(hildon_note_button_release):
+	Close the note when tapping outside (if applicable)
+
 	* src/hildon-app-menu.c
 	Grab/ungrab pointer and keyboard on map/unmap
+	(hildon_app_menu_button_release, hildon_app_menu_class_init):
+	Close the menu on button release, not button press
 
 	* src/hildon-banner.c
 	(hildon_banner_set_property)

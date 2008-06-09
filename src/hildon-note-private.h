@@ -40,6 +40,8 @@ struct                                          _HildonNotePrivate
     GtkWidget *label;
     GtkWidget *box;
     GtkWidget *icon;
+    GdkWindow *transfer_window;
+    guint close_if_pressed_outside : 1;
 
     HildonNoteType note_n;
     GtkWidget *progressbar;
