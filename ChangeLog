@@ -6,6 +6,7 @@
 	(hildon_note_rebuild):
 	Don't add a cancel button to the information note. It will be
 	closed when tapping outside
+	Remove the comment about the OK button in the documentation
 	(hildon_note_realize):
 	Set the notification type hint
 	(hildon_note_map, hildon_note_unmap, grab_transfer_window_get):

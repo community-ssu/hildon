@@ -27,9 +27,8 @@
  * @short_description: A widget to ask confirmation from the user.
  *
  * Notes are used to for confirmation (OK/Cancel/etc.) from the user.
- * A simple note contains an information text and an OK button to be
- * pressed.  Additional features such as progress bars or animation can
- * also be included. 
+ * A simple note contains an information text. Additional features
+ * such as progress bars or animation can also be included.
  * 
  * <example>
  * <title>HildonNote example</title>
