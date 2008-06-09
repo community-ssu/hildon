@@ -43,7 +43,7 @@ get_sawtooth_label (gchar **label, guint num)
   static gchar *sawtooth = NULL;
   gchar *label_aux, *sawtooth_aux;
   
-  if (num % 30 != 0) {
+  if (num % 5 != 0) {
     sawtooth_aux = g_strconcat (" ", sawtooth, NULL);
     g_free (sawtooth);
     

@@ -1,3 +1,51 @@
+2008-06-09  Alejandro G. Castro <alex@igalia.com>
+
+	Added fading scrollbars and adapted all the overshooting code to
+	horizontal scrolling. We have also fixed bugs with overshooting
+	and current fading implementation.
+		
+	* src/hildon-pannable-area.c
+	(hildon_pannable_area_scroll_indicator_fade): Time out function
+	used to change the transparency of the scrollbars.
+	
+	(hildon_pannable_area_button_press_cb): Added horizontal overshot
+	control and fixed a problem with fading, we now remove the fade
+	timeout before adding a new one.
+	
+	(hildon_pannable_axis_scroll):
+	(hildon_pannable_area_scroll):
+	(hildon_pannable_area_timeout): Added this functions so we can use
+	the scroll code both for vertical and horizontal.
+	
+	(hildon_pannable_area_motion_notify_cb):
+	(hildon_pannable_area_button_release_cb): Added the horizontal
+	scrolling control, fixed a problem with the overshooting timeout.
+
+	(rgb_from_gdkcolor): Added this function, it is used in the cairo
+	painting of the scrolls.
+	
+	(hildon_pannable_draw_vscroll):
+	(hildon_pannable_draw_hscroll):
+	(hildon_pannable_area_expose_event):
+	Draw both scrollbars and rectangles in the overshooting area.
+	
+	(hildon_pannable_area_get_property):
+	(hildon_pannable_area_set_property):
+	Modified the overshoot property to overshoot_max
+	
+	(hildon_pannable_area_map):
+	Replaced the comments symbols.
+	
+	(hildon_pannable_area_size_allocate):
+	(hildon_pannable_area_class_init):
+	(hildon_pannable_area_init): Added horizontal scroll, fading
+	effect properties, fixed a problem when overshooting in the bottom
+	of the widget.
+ 
+	* examples/hildon-pannable-area-example.c:
+	(get_sawtooth_label): Now we use smaller sawtooths, the effect
+	looks better in the example.
+	
 2008-06-03  Alberto Garcia  <agarcia@igalia.com>
 
 	* src/hildon-window.c
