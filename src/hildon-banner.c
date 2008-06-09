@@ -50,7 +50,7 @@
 
 /* position relative to the screen */
 
-#define                                         HILDON_BANNER_WINDOW_X 30
+#define                                         HILDON_BANNER_WINDOW_X 0
 
 #define                                         HILDON_BANNER_WINDOW_Y 73
 
@@ -371,17 +371,6 @@ hildon_banner_set_property                      (GObject *object,
  
         case PROP_IS_TIMED:
             priv->is_timed = g_value_get_boolean (value);
-
-            /* Timed and progress notifications have different
-               pixel size values for text. 
-               We force to use requisition size for timed banners 
-               in order to avoid resize problems when reusing the
-               window (see bug #24339) */
-            geom.max_width = priv->is_timed ? -1
-                : HILDON_BANNER_LABEL_MAX_PROGRESS;
-            geom.max_height = -1;
-            gtk_window_set_geometry_hints (GTK_WINDOW (object), 
-                    priv->label, &geom, GDK_HINT_MAX_SIZE);
             break;
 
         case PROP_PARENT_WINDOW:
@@ -703,6 +692,8 @@ hildon_banner_check_position                    (GtkWidget *widget)
     gint x, y;
     GtkRequisition req;
 
+    gtk_widget_set_size_request (widget, gdk_screen_width (), -1);
+
     force_to_wrap_truncated (HILDON_BANNER(widget)); /* see N#27000 and G#329646 */
 
     gtk_widget_size_request (widget, &req);
@@ -712,10 +703,7 @@ hildon_banner_check_position                    (GtkWidget *widget)
         return;
     }
 
-    if (gtk_widget_get_direction (widget) == GTK_TEXT_DIR_RTL)
-        x = HILDON_BANNER_WINDOW_X;
-    else
-        x = gdk_screen_width() - HILDON_BANNER_WINDOW_X - req.width;
+    x = HILDON_BANNER_WINDOW_X;
 
     y = check_fullscreen_state (get_current_app_window ()) ? 
         HILDON_BANNER_WINDOW_FULLSCREEN_Y : HILDON_BANNER_WINDOW_Y;
@@ -922,11 +910,6 @@ hildon_banner_show_information                  (GtkWidget *widget,
 
     /* Prepare banner */
     banner = hildon_banner_get_instance_for_widget (widget, TRUE);
-    hildon_banner_ensure_child (banner, NULL, 0, GTK_TYPE_IMAGE, 
-            "pixel-size", HILDON_ICON_PIXEL_SIZE_NOTE, 
-            "icon-name", icon_name ? icon_name : HILDON_BANNER_DEFAULT_ICON,
-            "yalign", 0.0, 
-            NULL);
 
     hildon_banner_set_text (banner, text);
     hildon_banner_bind_label_style (banner, NULL);
@@ -999,12 +982,6 @@ hildon_banner_show_information_with_markup      (GtkWidget *widget,
 
     /* Prepare banner */
     banner = hildon_banner_get_instance_for_widget (widget, TRUE);
-
-    hildon_banner_ensure_child (banner, NULL, 0, GTK_TYPE_IMAGE, 
-            "pixel-size", HILDON_ICON_PIXEL_SIZE_NOTE, 
-            "icon-name", icon_name ? icon_name : HILDON_BANNER_DEFAULT_ICON,
-            "yalign", 0.0, 
-            NULL);
 
     hildon_banner_set_markup (banner, markup);
     hildon_banner_bind_label_style (banner, NULL);

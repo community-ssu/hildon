@@ -1,3 +1,13 @@
+2008-06-09  Alberto Garcia  <agarcia@igalia.com>
+
+	* src/hildon-banner.c
+	(hildon_banner_set_property)
+	(hildon_banner_check_position):
+	Make the banner use the full width of the screen
+	(hildon_banner_show_information)
+	(hildon_banner_show_information_with_markup):
+	Don't display an icon by default
+
 2008-06-09  Alejandro G. Castro <alex@igalia.com>
 
 	Added fading scrollbars and adapted all the overshooting code to
