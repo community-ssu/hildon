@@ -1,5 +1,8 @@
 2008-06-09  Alberto Garcia  <agarcia@igalia.com>
 
+	* src/hildon-app-menu.c
+	Grab/ungrab pointer and keyboard on map/unmap
+
 	* src/hildon-banner.c
 	(hildon_banner_set_property)
 	(hildon_banner_check_position):
