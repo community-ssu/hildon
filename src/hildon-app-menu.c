@@ -75,9 +75,6 @@
 #include "hildon-app-menu.h"
 #include "hildon-app-menu-private.h"
 
-static GdkWindow *
-grab_transfer_window_get                        (GtkWidget *widget);
-
 G_DEFINE_TYPE (HildonAppMenu, hildon_app_menu, GTK_TYPE_WINDOW);
 
 /**
@@ -224,16 +221,13 @@ hildon_app_menu_map                             (GtkWidget *widget)
     GTK_WIDGET_CLASS (hildon_app_menu_parent_class)->map (widget);
 
     /* Grab pointer and keyboard */
-    if (priv->transfer_window == NULL) {
-        priv->transfer_window = grab_transfer_window_get (widget);
-        gdk_pointer_grab (
-            priv->transfer_window, TRUE,
-            GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK |
-            GDK_ENTER_NOTIFY_MASK | GDK_LEAVE_NOTIFY_MASK |
-            GDK_POINTER_MOTION_MASK, NULL, NULL, GDK_CURRENT_TIME);
-        gdk_keyboard_grab (priv->transfer_window, TRUE, GDK_CURRENT_TIME);
-        gtk_grab_add (widget);
-    }
+    gdk_pointer_grab (
+        widget->window, TRUE,
+        GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK |
+        GDK_ENTER_NOTIFY_MASK | GDK_LEAVE_NOTIFY_MASK |
+        GDK_POINTER_MOTION_MASK, NULL, NULL, GDK_CURRENT_TIME);
+    gdk_keyboard_grab (widget->window, TRUE, GDK_CURRENT_TIME);
+    gtk_grab_add (widget);
 }
 
 static void
@@ -241,16 +235,10 @@ hildon_app_menu_unmap                           (GtkWidget *widget)
 {
     HildonAppMenuPrivate *priv = HILDON_APP_MENU_GET_PRIVATE(widget);
 
-    if (priv->transfer_window != NULL) {
-        /* Remove the grab */
-        gdk_display_pointer_ungrab (gtk_widget_get_display (widget),
-                                    GDK_CURRENT_TIME);
-        gtk_grab_remove (widget);
-
-        /* Destroy the transfer window */
-        gdk_window_destroy (priv->transfer_window);
-        priv->transfer_window = NULL;
-    }
+    /* Remove the grab */
+    gdk_display_pointer_ungrab (gtk_widget_get_display (widget),
+                                GDK_CURRENT_TIME);
+    gtk_grab_remove (widget);
 
     GTK_WIDGET_CLASS (hildon_app_menu_parent_class)->unmap (widget);
 }
@@ -266,9 +254,9 @@ hildon_app_menu_button_release                  (GtkWidget *widget,
     gdk_window_get_position (widget->window, &x, &y);
 
     /* Whether the button has been released outside the widget */
-    released_outside = (event->window != priv->transfer_window ||
-                        event->x < x || event->x > x + widget->allocation.width ||
-                        event->y < y || event->y > y + widget->allocation.height);
+    released_outside = (event->window != widget->window ||
+                        event->x_root < x || event->x_root > x + widget->allocation.width ||
+                        event->y_root < y || event->y_root > y + widget->allocation.height);
 
     if (released_outside) {
         gtk_widget_hide (widget);
@@ -279,34 +267,6 @@ hildon_app_menu_button_release                  (GtkWidget *widget,
     } else {
         return FALSE;
     }
-}
-
-/* Grab transfer window (based on the one from GtkMenu) */
-static GdkWindow *
-grab_transfer_window_get                        (GtkWidget *widget)
-{
-    GdkWindow *window;
-    GdkWindowAttr attributes;
-    gint attributes_mask;
-
-    attributes.x = 0;
-    attributes.y = 0;
-    attributes.width = 10;
-    attributes.height = 10;
-    attributes.window_type = GDK_WINDOW_TEMP;
-    attributes.wclass = GDK_INPUT_ONLY;
-    attributes.override_redirect = TRUE;
-    attributes.event_mask = 0;
-
-    attributes_mask = GDK_WA_X | GDK_WA_Y | GDK_WA_NOREDIR;
-
-    window = gdk_window_new (gtk_widget_get_root_window (widget),
-                                 &attributes, attributes_mask);
-    gdk_window_set_user_data (window, widget);
-
-    gdk_window_show (window);
-
-    return window;
 }
 
 static void
@@ -339,7 +299,6 @@ hildon_app_menu_init                            (HildonAppMenu *menu)
     priv->table = GTK_TABLE (gtk_table_new (1, 2, TRUE));
     priv->sizegroup = GTK_SIZE_GROUP (gtk_size_group_new (GTK_SIZE_GROUP_BOTH));
     priv->nitems = 0;
-    priv->transfer_window = NULL;
 
     /* Set spacing between table elements */
     gtk_table_set_row_spacings (priv->table, vertical_spacing);
@@ -370,8 +329,6 @@ hildon_app_menu_finalize                        (GObject *object)
     HildonAppMenuPrivate *priv = HILDON_APP_MENU_GET_PRIVATE(object);
 
     g_object_unref (priv->sizegroup);
-    if (priv->transfer_window)
-        gdk_window_destroy (priv->transfer_window);
 
     g_signal_handlers_destroy (object);
     G_OBJECT_CLASS (hildon_app_menu_parent_class)->finalize (object);
