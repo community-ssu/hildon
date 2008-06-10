@@ -62,8 +62,8 @@
  * <!-- -->
  * menu = create_menu ();
  * <!-- -->
- * hildon_program_add (program, window1);
- * hildon_program_add (program, window2);
+ * hildon_program_add_window (program, window1);
+ * hildon_program_add_window (program, window2);
  * <!-- -->
  * hildon_program_set_common_menu (program, menu);
  * <!-- -->

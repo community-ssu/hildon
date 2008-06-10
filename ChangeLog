@@ -1,5 +1,8 @@
 2008-06-10  Alberto Garcia  <agarcia@igalia.com>
 
+	* src/hildon-program.c
+	Fixed typo in documentation
+
 	* src/hildon-app-menu.h
 	* src/hildon-app-menu.c
 	* examples/hildon-app-menu-example.c
