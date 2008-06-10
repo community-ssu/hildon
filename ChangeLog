@@ -1,3 +1,10 @@
+2008-06-10  Alberto Garcia  <agarcia@igalia.com>
+
+	* src/hildon-app-menu.h
+	* src/hildon-app-menu.c
+	* examples/hildon-app-menu-example.c
+	Remove hildon_app_menu_popup(), use gtk_widget_show() instead
+
 2008-06-09  Alberto Garcia  <agarcia@igalia.com>
 
 	* src/hildon-note.c

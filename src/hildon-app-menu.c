@@ -65,8 +65,8 @@
  * g_signal_connect (filter, "clicked", G_CALLBACK (filter_three_clicked), userdata);
  * hildon_app_menu_add_filter (menu, GTK_BUTTON (filter), filtergroup);
  * <!-- -->
- * // Pop the menu up
- * hildon_app_menu_popup (menu);
+ * // Show the menu
+ * gtk_widget_show (menu);
  * </programlisting>
  * </example>
  *
@@ -214,29 +214,6 @@ hildon_app_menu_get_group_from_filter           (HildonAppMenu *menu,
         g_critical("Filter not found in hildon app menu!");
 
     return result;
-}
-
-/**
- * hildon_app_menu_popup
- * @menu : A @HildonAppMenu
- *
- * Displays the @HildonAppMenu on top of the screen
- */
-void
-hildon_app_menu_popup                           (HildonAppMenu *menu)
-{
-    g_return_if_fail (HILDON_IS_APP_MENU (menu));
-    int x, xpos;
-    GtkRequisition req;
-    GdkScreen *screen = gtk_widget_get_screen (GTK_WIDGET (menu));
-
-    /* Position the menu in the top center of the screen */
-    gtk_window_get_default_size (GTK_WINDOW (menu), &x, NULL);
-    gtk_widget_size_request (GTK_WIDGET (menu), &req);
-    xpos = (gdk_screen_get_width (screen) - MAX(x, req.width)) / 2;
-    gtk_window_move (GTK_WINDOW (menu), xpos, 0);
-
-    gtk_widget_show (GTK_WIDGET (menu));
 }
 
 static void

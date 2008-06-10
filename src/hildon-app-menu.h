@@ -77,9 +77,6 @@ GtkWidget *
 hildon_app_menu_get_group_from_filter           (HildonAppMenu *menu,
                                                  GtkButton *filter);
 
-void
-hildon_app_menu_popup                           (HildonAppMenu *menu);
-
 G_END_DECLS
 
 #endif /* __HILDON_APP_MENU_H__ */

@@ -87,7 +87,7 @@ static void
 button_clicked                                  (GtkButton *button,
                                                  HildonAppMenu *menu)
 {
-    hildon_app_menu_popup (menu);
+    gtk_widget_show (menu);
 }
 
 static void
