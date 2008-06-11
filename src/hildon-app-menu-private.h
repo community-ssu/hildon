@@ -33,6 +33,7 @@ struct                                          _HildonAppMenuPrivate
     GtkBox *vbox;
     GtkTable *table;
     GtkSizeGroup *sizegroup;
+    GdkWindow *transfer_window;
     int nitems;
 };
 

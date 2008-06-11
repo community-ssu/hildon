@@ -1,5 +1,15 @@
 2008-06-11  Alberto Garcia  <agarcia@igalia.com>
 
+	* src/hildon-app-menu-private.h
+	* src/hildon-app-menu.c
+	(hildon_app_menu_init, hildon_app_menu_finalize)
+	(hildon_app_menu_map, hildon_app_menu_unmap)
+	(hildon_app_menu_button_release)
+	(grab_transfer_window_get):
+	Bring back the grab window
+	(hildon_app_menu_realize):
+	Decorate the window, set WM hint for Matchbox
+
 	* src/hildon-note.c (hildon_note_realize):
 	* src/hildon-banner.c (hildon_banner_realize):
 	Add WM hints for Matchbox
