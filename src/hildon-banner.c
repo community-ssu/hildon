@@ -714,6 +714,9 @@ hildon_banner_check_position                    (GtkWidget *widget)
 static void
 hildon_banner_realize                           (GtkWidget *widget)
 {
+    GdkDisplay *display;
+    Atom atom;
+    const gchar *notification_type = "_HILDON_NOTIFICATION_TYPE_BANNER";
     HildonBannerPrivate *priv = HILDON_BANNER_GET_PRIVATE (widget);
     g_assert (priv);
 
@@ -726,6 +729,13 @@ hildon_banner_realize                           (GtkWidget *widget)
     gtk_window_set_transient_for (GTK_WINDOW (widget), (GtkWindow *) priv->parent);
 
     hildon_banner_check_position (widget);
+
+    /* Set the _HILDON_NOTIFICATION_TYPE property so Matchbox places the window correctly */
+    display = gdk_drawable_get_display (widget->window);
+    atom = gdk_x11_get_xatom_by_name_for_display (display, "_HILDON_NOTIFICATION_TYPE");
+    XChangeProperty (GDK_WINDOW_XDISPLAY (widget->window), GDK_WINDOW_XID (widget->window),
+                     atom, XA_STRING, 8, PropModeReplace, (guchar *) notification_type,
+                     strlen (notification_type));
 }
 
 static void 

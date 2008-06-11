@@ -1,3 +1,9 @@
+2008-06-11  Alberto Garcia  <agarcia@igalia.com>
+
+	* src/hildon-note.c (hildon_note_realize):
+	* src/hildon-banner.c (hildon_banner_realize):
+	Add WM hints for Matchbox
+
 2008-06-10  Alberto Garcia  <agarcia@igalia.com>
 
 	* src/hildon-app-menu-private.h

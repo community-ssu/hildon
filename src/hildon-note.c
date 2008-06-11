@@ -65,6 +65,8 @@
 #include                                        "hildon-enum-types.h"
 #include                                        <stdio.h>
 #include                                        <string.h>
+#include                                        <X11/X.h>
+#include                                        <X11/Xatom.h>
 #include                                        "hildon-note-private.h"
 
 #define                                         CONFIRMATION_SOUND_PATH \
@@ -495,6 +497,9 @@ hildon_note_unmap                               (GtkWidget *widget)
 static void
 hildon_note_realize                             (GtkWidget *widget)
 {
+    GdkDisplay *display;
+    Atom atom;
+    const gchar *notification_type;
     HildonNotePrivate *priv = HILDON_NOTE_GET_PRIVATE (widget);
     g_assert (priv);
 
@@ -512,6 +517,21 @@ hildon_note_realize                             (GtkWidget *widget)
 
     /* We use special hint to turn the note into information notification. */
     gdk_window_set_type_hint (widget->window, GDK_WINDOW_TYPE_HINT_NOTIFICATION);
+
+    /* Set the _HILDON_NOTIFICATION_TYPE property so Matchbox places the window correctly */
+    display = gdk_drawable_get_display (widget->window);
+    atom = gdk_x11_get_xatom_by_name_for_display (display, "_HILDON_NOTIFICATION_TYPE");
+
+    if (priv->note_n == HILDON_NOTE_TYPE_INFORMATION ||
+        priv->note_n == HILDON_NOTE_TYPE_INFORMATION_THEME) {
+        notification_type = "_HILDON_NOTIFICATION_TYPE_INFO";
+    } else {
+        notification_type = "_HILDON_NOTIFICATION_TYPE_CONFIRMATION";
+    }
+
+    XChangeProperty (GDK_WINDOW_XDISPLAY (widget->window), GDK_WINDOW_XID (widget->window),
+                     atom, XA_STRING, 8, PropModeReplace, (guchar *) notification_type,
+                     strlen (notification_type));
 }
 
 /* Helper function for removing a widget from it's container.
