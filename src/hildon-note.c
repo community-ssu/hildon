@@ -465,14 +465,30 @@ hildon_note_map                                 (GtkWidget *widget)
     GTK_WIDGET_CLASS (parent_class)->map (widget);
 
     if (priv->transfer_window == NULL && priv->close_if_pressed_outside) {
+        gboolean has_grab = FALSE;
+
         priv->transfer_window = grab_transfer_window_get (widget);
-        gdk_pointer_grab (
-            priv->transfer_window, TRUE,
-            GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK |
-            GDK_ENTER_NOTIFY_MASK | GDK_LEAVE_NOTIFY_MASK |
-            GDK_POINTER_MOTION_MASK, NULL, NULL, GDK_CURRENT_TIME);
-        gdk_keyboard_grab (priv->transfer_window, TRUE, GDK_CURRENT_TIME);
-        gtk_grab_add (widget);
+
+        if (gdk_pointer_grab (priv->transfer_window, TRUE,
+                              GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK |
+                              GDK_ENTER_NOTIFY_MASK | GDK_LEAVE_NOTIFY_MASK |
+                              GDK_POINTER_MOTION_MASK, NULL, NULL,
+                              GDK_CURRENT_TIME) == GDK_GRAB_SUCCESS) {
+            if (gdk_keyboard_grab (priv->transfer_window, TRUE,
+                                   GDK_CURRENT_TIME) == GDK_GRAB_SUCCESS) {
+                has_grab = TRUE;
+            } else {
+                gdk_display_pointer_ungrab (gtk_widget_get_display (widget),
+                                            GDK_CURRENT_TIME);
+            }
+        }
+
+        if (has_grab) {
+            gtk_grab_add (widget);
+        } else {
+            gdk_window_destroy (priv->transfer_window);
+            priv->transfer_window = NULL;
+        }
     }
 }
 

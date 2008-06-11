@@ -230,14 +230,30 @@ hildon_app_menu_map                             (GtkWidget *widget)
 
     /* Grab pointer and keyboard */
     if (priv->transfer_window == NULL) {
+        gboolean has_grab = FALSE;
+
         priv->transfer_window = grab_transfer_window_get (widget);
-        gdk_pointer_grab (
-            priv->transfer_window, TRUE,
-            GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK |
-            GDK_ENTER_NOTIFY_MASK | GDK_LEAVE_NOTIFY_MASK |
-            GDK_POINTER_MOTION_MASK, NULL, NULL, GDK_CURRENT_TIME);
-        gdk_keyboard_grab (priv->transfer_window, TRUE, GDK_CURRENT_TIME);
-        gtk_grab_add (widget);
+
+        if (gdk_pointer_grab (priv->transfer_window, TRUE,
+                              GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK |
+                              GDK_ENTER_NOTIFY_MASK | GDK_LEAVE_NOTIFY_MASK |
+                              GDK_POINTER_MOTION_MASK, NULL, NULL,
+                              GDK_CURRENT_TIME) == GDK_GRAB_SUCCESS) {
+            if (gdk_keyboard_grab (priv->transfer_window, TRUE,
+                                   GDK_CURRENT_TIME) == GDK_GRAB_SUCCESS) {
+                has_grab = TRUE;
+            } else {
+                gdk_display_pointer_ungrab (gtk_widget_get_display (widget),
+                                            GDK_CURRENT_TIME);
+            }
+        }
+
+        if (has_grab) {
+            gtk_grab_add (widget);
+        } else {
+            gdk_window_destroy (priv->transfer_window);
+            priv->transfer_window = NULL;
+        }
     }
 }
 
@@ -373,6 +389,8 @@ hildon_app_menu_init                            (HildonAppMenu *menu)
     screen = gtk_widget_get_screen (GTK_WIDGET (menu));
     width = gdk_screen_get_width (screen) - external_border * 2;
     gtk_window_set_default_size (GTK_WINDOW (menu), width, -1);
+
+    gtk_window_set_modal (GTK_WINDOW (menu), TRUE);
 
     gtk_widget_show_all (GTK_WIDGET (priv->vbox));
 }

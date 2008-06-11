@@ -1,5 +1,12 @@
 2008-06-11  Alberto Garcia  <agarcia@igalia.com>
 
+	* src/hildon-app-menu.c (hildon_app_menu_init):
+	Make the window modal
+
+	* src/hildon-note.c (hildon_note_map)
+	* src/hildon-app-menu.c (hildon_app_menu_map):
+	Destroy the grab window if we're unable to grab the pointer
+
 	* src/hildon-app-menu-private.h
 	* src/hildon-app-menu.c
 	(hildon_app_menu_init, hildon_app_menu_finalize)
