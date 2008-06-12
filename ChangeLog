@@ -1,3 +1,8 @@
+2008-06-12  Alberto Garcia  <agarcia@igalia.com>
+
+	* src/hildon-note.c (hildon_note_button_release):
+	Close information notes also when tapping on them
+
 2008-06-12  Alejandro G. Castro <alex@igalia.com>
 
 	Added BOUNCE_STEPS define to control the overshoot effect. Removed

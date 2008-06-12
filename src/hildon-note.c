@@ -434,7 +434,7 @@ hildon_note_button_release                      (GtkWidget *widget,
                                                  GdkEventButton *event)
 {
     int x, y;
-    gboolean released_outside;
+    gboolean info_note, released_outside;
     HildonNotePrivate *priv = HILDON_NOTE_GET_PRIVATE (widget);
 
     gdk_window_get_position (widget->window, &x, &y);
@@ -443,7 +443,11 @@ hildon_note_button_release                      (GtkWidget *widget,
     released_outside = (event->x_root < x || event->x_root > x + widget->allocation.width ||
                         event->y_root < y || event->y_root > y + widget->allocation.height);
 
-    if (released_outside && priv->close_if_pressed_outside) {
+    /* Information notes are also closed by tapping on them */
+    info_note = (priv->note_n == HILDON_NOTE_TYPE_INFORMATION ||
+                 priv->note_n == HILDON_NOTE_TYPE_INFORMATION_THEME);
+
+    if (info_note || (released_outside && priv->close_if_pressed_outside)) {
         gtk_dialog_response (GTK_DIALOG (widget), GTK_RESPONSE_CANCEL);
     }
 
