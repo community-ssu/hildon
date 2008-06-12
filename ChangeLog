@@ -1,5 +1,8 @@
 2008-06-12  Alberto Garcia  <agarcia@igalia.com>
 
+	* src/hildon-dialog.c:
+	Change indentation style
+
 	* src/hildon-note.c
 	(hildon_note_button_release):
 	Use root coordinates to check if the release event happened
