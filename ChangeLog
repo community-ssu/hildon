@@ -1,3 +1,8 @@
+2008-06-12  Claudio Saavedra  <csaavedra@igalia.com>
+
+	* src/hildon-stackable-window.c: Fix some typos in the
+	documentation.
+
 2008-06-12  Alberto Garcia  <agarcia@igalia.com>
 
 	* src/hildon-dialog.c:

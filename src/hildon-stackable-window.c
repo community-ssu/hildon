@@ -26,10 +26,10 @@
  * SECTION:hildon-stackable-window
  * @short_description: Widget representing a stackable, top-level window in the Hildon framework.
  *
- * The HildonStackableWindow is a GTK widget which represents a
+ * The @HildonStackableWindow is a GTK+ widget which represents a
  * top-level window in the Hildon framework. It is derived from
- * HildonWindow. Applications that use stackable windows are organized
- * in a hierarchical way so users can one from any window back to the
+ * @HildonWindow. Applications that use stackable windows are organized
+ * in a hierarchical way so users can go from any window back to the
  * application's root window.
  */
 
@@ -181,7 +181,7 @@ hildon_stackable_window_init                    (HildonStackableWindow *self)
 /**
  * hildon_stackable_window_new:
  *
- * Creates a new HildonStackableWindow
+ * Creates a new @HildonStackableWindow.
  *
  * Return value: A @HildonStackableWindow
  **/
@@ -197,8 +197,8 @@ hildon_stackable_window_new                     (void)
  * hildon_stackable_window_go_home:
  * @self: A #HildonStackableWindow
  *
- * Will pop out all the stackable windows in the HildonProgram until the
- * first one, which can be considered as the "home" window
+ * Will pop out all the stackable windows in the @HildonProgram but the
+ * first one, which can be considered as the "home" window.
  */
 void
 hildon_stackable_window_go_home                 (HildonStackableWindow *self)
