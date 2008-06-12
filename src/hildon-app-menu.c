@@ -281,13 +281,11 @@ hildon_app_menu_button_release                  (GtkWidget *widget,
 {
     int x, y;
     gboolean released_outside;
-    HildonAppMenuPrivate *priv = HILDON_APP_MENU_GET_PRIVATE(widget);
 
     gdk_window_get_position (widget->window, &x, &y);
 
     /* Whether the button has been released outside the widget */
-    released_outside = (event->window != priv->transfer_window ||
-                        event->x_root < x || event->x_root > x + widget->allocation.width ||
+    released_outside = (event->x_root < x || event->x_root > x + widget->allocation.width ||
                         event->y_root < y || event->y_root > y + widget->allocation.height);
 
     if (released_outside) {

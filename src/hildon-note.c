@@ -440,9 +440,8 @@ hildon_note_button_release                      (GtkWidget *widget,
     gdk_window_get_position (widget->window, &x, &y);
 
     /* Whether the button has been released outside the widget */
-    released_outside = (event->window != priv->transfer_window ||
-                        event->x < x || event->x > x + widget->allocation.width ||
-                        event->y < y || event->y > y + widget->allocation.height);
+    released_outside = (event->x_root < x || event->x_root > x + widget->allocation.width ||
+                        event->y_root < y || event->y_root > y + widget->allocation.height);
 
     if (released_outside && priv->close_if_pressed_outside) {
         gtk_dialog_response (GTK_DIALOG (widget), GTK_RESPONSE_CANCEL);

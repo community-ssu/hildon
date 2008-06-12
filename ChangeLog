@@ -1,5 +1,18 @@
 2008-06-12  Alberto Garcia  <agarcia@igalia.com>
 
+	* src/hildon-note.c
+	(hildon_note_button_release):
+	Use root coordinates to check if the release event happened
+	outside the widget.
+
+	* src/hildon-app-menu.c
+	(hildon_app_menu_button_release):
+	Remove unnecessary check
+
+	* examples/hildon-app-menu-example.c
+	(button_clicked):
+	Add cast to fix warning
+
 	* src/hildon-app-menu.c
 	(hildon_app_menu_class_init):
 	New inner-border style property.
