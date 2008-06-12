@@ -39,25 +39,28 @@
  * 2  - Add method of scrolling to the selected element of a treeview and have it align to half way point
  * 3  - Add a property for initial scrolling of the widget, so it scrolls on realize
  * 4  - Add a method of removing children from the alignment, gtk-container-remove override?
- * 5  - Remove elasticity if it is no longer required?
+ * 5  x Remove elasticity if it is no longer required?
  * 6  x Reduce calls to queue_resize to improve performance
  * 7  - Make 'fast' factor a property
  * 8  - Strip out g_print/g_debug calls
- * 9  - Scroll policies
- * 10 - Delay click mode (only send synthetic clicks on mouse-up, as in previous
+ * 9  - Scroll policies (horizontal/vertical/both) suggest 1,2,3 for different policies (binary OR'd)
+ * 10 x Delay click mode (only send synthetic clicks on mouse-up, as in previous
  *      versions.
  * 11 - 'Physical' mode for acceleration scrolling
  * 12 - Add a property to disable overshoot entirely
+ * 13 x Fix problem with kinetics when pannable has been in overshoot (a flick stops rather than continues) (Search TODO 13)
+ * 14 - Review the other modes, probably they are not working well after overshooting patches
+ * 15 - Very small scrollbars when overshooting are not correctly rendered
  */
-
-#define SMOOTH_FACTOR 0.85
-#define FORCE 5
-#define ELASTICITY 0.2
 
 #include <gdk/gdkx.h>
 #include <cairo.h>
 #include <math.h>
 #include "hildon-pannable-area.h"
+
+#define SMOOTH_FACTOR 0.85
+#define FORCE 5
+#define BOUNCE_STEPS 6
 
 G_DEFINE_TYPE (HildonPannableArea, hildon_pannable_area, GTK_TYPE_BIN)
 #define PANNABLE_AREA_PRIVATE(o)                                \
@@ -301,9 +304,7 @@ hildon_pannable_area_button_press_cb (GtkWidget * widget,
 
   if ((!priv->enabled) || (event->button != 1) ||
       ((event->time == priv->last_time) &&
-       (priv->last_type == 1)) ||
-      (priv->overshot_dist_y) ||
-      (priv->overshot_dist_x))
+       (priv->last_type == 1)))
     return TRUE;
 
   priv->scroll_indicator_event_interrupt = 1;
@@ -361,6 +362,7 @@ hildon_pannable_area_button_press_cb (GtkWidget * widget,
 
     /* Send synthetic click (button press/release) event */
     ((GdkEventAny *) event)->window = g_object_ref (priv->child);
+
     gdk_event_put ((GdkEvent *) event);
     gdk_event_free ((GdkEvent *) event);
   } else
@@ -476,89 +478,100 @@ hildon_pannable_axis_scroll (HildonPannableArea *area,
   gdouble dist;
   HildonPannableAreaPrivate *priv = PANNABLE_AREA_PRIVATE (area);
 
+  dist = gtk_adjustment_get_value (adjust) - inc;
+
   /** Overshooting
    * We use overshot_dist to define the distance of the current overshoot,
    * and overshooting to define the direction/whether or not we are overshot
    */
-  if (adjust) {
-    dist = gtk_adjustment_get_value (adjust) - inc;
-    if (!(*overshooting)) {
+  if (!(*overshooting)) {
 
-      /* Initiation of the overshoot happens when the finger is released
-       * and the current position of the pannable contents are out of range
-       */
-      if (dist < adjust->lower) {
-        if (s) *s = FALSE;
+    /* Initiation of the overshoot happens when the finger is released
+     * and the current position of the pannable contents are out of range
+     */
+    if (dist < adjust->lower) {
+      if (s) *s = FALSE;
 
-        dist = adjust->lower;
+      dist = adjust->lower;
 
-        if ((!priv->clicked) && (*vel > 0) &&
-            (priv->mode == HILDON_PANNABLE_AREA_MODE_AUTO)) {
-          *overshooting = 1;
-          *overshot_dist = MIN (*overshot_dist + *vel, priv->overshoot_max);
-          gtk_widget_queue_resize (GTK_WIDGET (area));
-        }
-      } else if (dist > adjust->upper - adjust->page_size) {
-        if (s) *s = FALSE;
+      *overshooting = 1;
+      *overshot_dist = CLAMP (*overshot_dist + *vel, 0, priv->overshoot_max);
+      gtk_widget_queue_resize (GTK_WIDGET (area));
+    } else if (dist > adjust->upper - adjust->page_size) {
+      if (s) *s = FALSE;
 
-        dist = adjust->upper - adjust->page_size;
+      dist = adjust->upper - adjust->page_size;
 
-        if ((!priv->clicked) && (*vel < 0) &&
-            (priv->mode == HILDON_PANNABLE_AREA_MODE_AUTO)) {
-          *overshooting = 1;
-          *overshot_dist = MAX (*overshot_dist + *vel, -1*priv->overshoot_max);
-          gtk_widget_queue_resize (GTK_WIDGET (area));
-        }
-      } else if (s) {
+      *overshooting = 1;
+      *overshot_dist = CLAMP (*overshot_dist + *vel, -1*priv->overshoot_max, 0);
+      gtk_widget_queue_resize (GTK_WIDGET (area));
+    } else {
+      gtk_adjustment_set_value (adjust, dist);
+
+      if (s) {
         *s = TRUE;
       }
-      gtk_adjustment_set_value (adjust, dist);
-    } else {
-      if (!priv->clicked) {
-        if (s) *s = TRUE;
+    }
+  } else {
+    if (!priv->clicked) {
+      if (s) *s = TRUE;
 
-        /* When the overshoot has started we continue for 3 more steps into the overshoot
-         * before we reverse direction. The deceleration factor is calculated based on
-         * the percentage distance from the first item with each iteration, therefore always
-         * returning us to the top/bottom most element
-         */
-        if (*overshot_dist > 0) {
-          if ((*overshooting < 3) && (*vel > 0)) {
-            (*overshooting)++;
-            *vel = (((gdouble)*overshot_dist)/priv->overshoot_max) * (*vel);
-          } else if ((*overshooting >= 3) && (*vel > 0)) {
-            *vel *= -1;
-            (*overshooting)--;
-          } else if ((*overshooting > 1) && (*vel < 0)) {
-            (*overshooting)--;
-            *vel = (((gdouble)*overshot_dist)/priv->overshoot_max) * (*vel);
-          }
-          *overshot_dist = MIN (*overshot_dist + *vel, priv->overshoot_max);
-          if (*overshot_dist < 0) *overshot_dist = 0;
-          gtk_widget_queue_resize (GTK_WIDGET (area));
+      /* When the overshoot has started we continue for BOUNCE_STEPS more steps into the overshoot
+       * before we reverse direction. The deceleration factor is calculated based on
+       * the percentage distance from the first item with each iteration, therefore always
+       * returning us to the top/bottom most element
+       */
+      if (*overshot_dist > 0) {
 
-        } else if (*overshot_dist < 0) {
-          if ((*overshooting < 3) && (*vel < 0)) {
-            (*overshooting)++;
-            *vel = (((gdouble)*overshot_dist)/priv->overshoot_max) * (*vel) * -1;
-          } else if ((*overshooting >= 3) && (*vel < 0)) {
-            *vel *= -1;
-            (*overshooting)--;
-          } else if ((*overshooting > 1) && (*vel > 0)) {
-            (*overshooting)--;
-            *vel = (((gdouble)*overshot_dist)/priv->overshoot_max) * (*vel) * -1;
-          }
-          *overshot_dist = MAX (*overshot_dist + (*vel), -1*priv->overshoot_max);
-          if (*overshot_dist > 0) *overshot_dist = 0;
-          gtk_widget_queue_resize (GTK_WIDGET (area));
-
-        } else {
-          *vel = 0;
-          *overshooting = 0;
+        if ((*overshooting < BOUNCE_STEPS) && (*vel > 0)) {
+          (*overshooting)++;
+          *vel = (((gdouble)*overshot_dist)/priv->overshoot_max) * (*vel);
+        } else if ((*overshooting >= BOUNCE_STEPS) && (*vel > 0)) {
+          *vel *= -1;
+          (*overshooting)--;
+        } else if ((*overshooting > 1) && (*vel < 0)) {
+          (*overshooting)--;
+          /* we add the MAX in order to avoid very small speeds */
+          *vel = MIN ((((gdouble)*overshot_dist)/priv->overshoot_max) * (*vel), -10.0);
         }
+
+        *overshot_dist = CLAMP (*overshot_dist + *vel, 0, priv->overshoot_max);
+
+        gtk_widget_queue_resize (GTK_WIDGET (area));
+
+      } else if (*overshot_dist < 0) {
+
+        if ((*overshooting < BOUNCE_STEPS) && (*vel < 0)) {
+          (*overshooting)++;
+          *vel = (((gdouble)*overshot_dist)/priv->overshoot_max) * (*vel) * -1;
+        } else if ((*overshooting >= BOUNCE_STEPS) && (*vel < 0)) {
+          *vel *= -1;
+          (*overshooting)--;
+        } else if ((*overshooting > 1) && (*vel > 0)) {
+          (*overshooting)--;
+          /* we add the MIN in order to avoid very small speeds */
+          *vel = MAX ((((gdouble)*overshot_dist)/priv->overshoot_max) * (*vel) * -1, 10.0);
+        }
+
+        *overshot_dist = CLAMP (*overshot_dist + (*vel), -1*priv->overshoot_max, 0);
+
+        gtk_widget_queue_resize (GTK_WIDGET (area));
+
       } else {
+        *overshooting = 0;
+        *vel = 0;
+        gtk_widget_queue_resize (GTK_WIDGET (area));
+      }
+    } else {
+      if (*overshot_dist > 0) {
+        *overshot_dist = CLAMP ((*overshot_dist) + inc, 0, priv->overshoot_max);
+      } else if (*overshot_dist < 0) {
+        *overshot_dist = CLAMP ((*overshot_dist) + inc, -1 * priv->overshoot_max, 0);
+      } else {
+        *overshooting = 0;
         gtk_adjustment_set_value (adjust, dist);
       }
+      gtk_widget_queue_resize (GTK_WIDGET (area));
     }
   }
 }
@@ -592,12 +605,10 @@ hildon_pannable_area_scroll (HildonPannableArea *area,
    */
   if ((sx)&&(!(*sx))) {
     priv->x = priv->ex;
-    priv->vel_x *= -1 * priv->decel * ELASTICITY;
   }
 
   if ((sy)&&(!(*sy))) {
     priv->y = priv->ey;
-    priv->vel_y *= -1 * priv->decel * ELASTICITY;
   }
 
 }
@@ -649,7 +660,6 @@ hildon_pannable_area_motion_notify_cb (GtkWidget * widget,
   gint dnd_threshold;
   gdouble x, y;
   gdouble delta, rawvel_x, rawvel_y;
-  gdouble v;
   gint direction_x, direction_y;
 
   if ((!priv->enabled) || (!priv->clicked) ||
@@ -669,6 +679,7 @@ hildon_pannable_area_motion_notify_cb (GtkWidget * widget,
   if ((!priv->moved) && ((ABS (x) > dnd_threshold)
 			 || (ABS (y) > dnd_threshold))) {
     priv->moved = TRUE;
+
     if ((priv->mode != HILDON_PANNABLE_AREA_MODE_PUSH) &&
 	(priv->mode != HILDON_PANNABLE_AREA_MODE_AUTO)) {
 
@@ -732,55 +743,7 @@ hildon_pannable_area_motion_notify_cb (GtkWidget * widget,
       priv->vel_y = priv->vel_y > 0 ? MIN (priv->vel_y, priv->vmax)
 	: MAX (priv->vel_y, -1 * priv->vmax);
 
-      /* Overshooting while the finger is down */
-      if (priv->vscroll) {
-        if (priv->overshot_dist_y > 0) {
-          priv->overshot_dist_y = CLAMP (priv->overshot_dist_y + y, 0, priv->overshoot_max);
-        } else if (priv->overshot_dist_y < 0) {
-          priv->overshot_dist_y = CLAMP (priv->overshot_dist_y + y, -1 * priv->overshoot_max, 0);
-        } else {
-          v = priv->vadjust->value - y;
-
-          if (v < priv->vadjust->lower) {
-            priv->overshooting_y = 1;
-            priv->overshot_dist_y = MIN (priv->overshot_dist_y + y, priv->overshoot_max);
-          } else if (v > priv->vadjust->upper - priv->vadjust->page_size) {
-            priv->overshooting_y = 1;
-            priv->overshot_dist_y = MAX (priv->overshot_dist_y + y, -1 * priv->overshoot_max);
-          }
-        }
-      }
-
-      if (priv->hscroll) {
-        if (priv->overshot_dist_x > 0) {
-          priv->overshot_dist_x = CLAMP (priv->overshot_dist_x + x, 0, priv->overshoot_max);
-        } else if (priv->overshot_dist_x < 0) {
-          priv->overshot_dist_x = CLAMP (priv->overshot_dist_x + x, -1 * priv->overshoot_max, 0);
-        } else {
-          v = priv->hadjust->value - x;
-
-          if (v < priv->hadjust->lower) {
-            priv->overshooting_x = 1;
-            priv->overshot_dist_x = MIN (priv->overshot_dist_x + x, priv->overshoot_max);
-          } else if (v > priv->hadjust->upper - priv->hadjust->page_size) {
-            priv->overshooting_x = 1;
-            priv->overshot_dist_x = MAX (priv->overshot_dist_x + x, -1 * priv->overshoot_max);
-          }
-        }
-      }
-
-      if ((priv->overshot_dist_y == 0) &&
-          (priv->overshot_dist_x == 0)) {
-        hildon_pannable_area_scroll (area, x, y, NULL, NULL);
-      } else if (priv->overshot_dist_y == 0) {
-        hildon_pannable_area_scroll (area, 0, y, NULL, NULL);
-        gtk_widget_queue_resize (GTK_WIDGET (area));
-      } else if (priv->overshot_dist_x == 0) {
-        hildon_pannable_area_scroll (area, x, 0, NULL, NULL);
-        gtk_widget_queue_resize (GTK_WIDGET (area));
-      } else {
-        gtk_widget_queue_resize (GTK_WIDGET (area));
-      }
+      hildon_pannable_area_scroll (area, x, y, NULL, NULL);
 
       priv->x = event->x;
       priv->y = event->y;
@@ -844,13 +807,13 @@ hildon_pannable_area_button_release_cb (GtkWidget * widget,
 
     /* If overshoot has been initiated with a finger down, on release set max speed */
     if (priv->overshot_dist_y != 0) {
+      priv->overshooting_y = BOUNCE_STEPS; /* Hack to stop a bounce in the finger down case */
       priv->vel_y = priv->vmax;
-      priv->overshooting_y = 3; /* Hack to stop a bounce in the finger down case */
     }
 
     if (priv->overshot_dist_x != 0) {
+      priv->overshooting_x = BOUNCE_STEPS; /* Hack to stop a bounce in the finger down case */
       priv->vel_x = priv->vmax;
-      priv->overshooting_x = 3; /* Hack to stop a bounce in the finger down case */
     }
 
     priv->idle_id = g_timeout_add ((gint) (1000.0 / (gdouble) priv->sps),
@@ -914,26 +877,21 @@ hildon_pannable_draw_vscroll (GtkWidget * widget, GdkColor *back_color, GdkColor
 {
   HildonPannableAreaPrivate *priv = PANNABLE_AREA_PRIVATE (widget);
   gint y, height;
-  cairo_t *cr, *cr_tmp;
-  cairo_surface_t *surface;
+  cairo_t *cr;
   cairo_pattern_t *pattern;
   gdouble r, g, b;
   gint radius = (priv->vscroll_rect.width/2) - 1;
 
   cr = gdk_cairo_create(widget->window);
-  surface = cairo_surface_create_similar(cairo_get_target(cr),
-                                         CAIRO_CONTENT_COLOR,
-                                         priv->vscroll_rect.x+priv->vscroll_rect.width,
-                                         priv->vscroll_rect.y+priv->vscroll_rect.height);
-  cr_tmp = cairo_create(surface);
 
   /* Draw the background */
   rgb_from_gdkcolor (back_color, &r, &g, &b);
-  cairo_set_source_rgb (cr_tmp, r, g, b);
-  cairo_rectangle(cr_tmp, priv->vscroll_rect.x, priv->vscroll_rect.y,
+  cairo_set_source_rgb (cr, r, g, b);
+  cairo_rectangle(cr, priv->vscroll_rect.x, priv->vscroll_rect.y,
                   priv->vscroll_rect.width,
                   priv->vscroll_rect.height);
-  cairo_fill(cr_tmp);
+  cairo_fill_preserve (cr);
+  cairo_clip (cr);
 
   /* Calculate the scroll bar height and position */
   y = widget->allocation.y +
@@ -953,22 +911,19 @@ hildon_pannable_draw_vscroll (GtkWidget * widget, GdkColor *back_color, GdkColor
   pattern = cairo_pattern_create_linear(radius+1, y, radius+1,y + height);
   cairo_pattern_add_color_stop_rgb(pattern, 0, r, g, b);
   cairo_pattern_add_color_stop_rgb(pattern, 1, r/2, g/2, b/2);
-  cairo_set_source(cr_tmp, pattern);
-  cairo_fill(cr_tmp);
+  cairo_set_source(cr, pattern);
+  cairo_fill(cr);
   cairo_pattern_destroy(pattern);
 
-  cairo_arc(cr_tmp, priv->vscroll_rect.x + radius + 1, y + radius + 1, radius, G_PI, 0);
-  cairo_line_to(cr_tmp, priv->vscroll_rect.x + (radius * 2) + 1, y + height - radius);
-  cairo_arc(cr_tmp, priv->vscroll_rect.x + radius + 1, y + height - radius, radius, 0, G_PI);
-  cairo_line_to(cr_tmp, priv->vscroll_rect.x + 1, y + height - radius);
+  cairo_arc(cr, priv->vscroll_rect.x + radius + 1, y + radius + 1, radius, G_PI, 0);
+  cairo_line_to(cr, priv->vscroll_rect.x + (radius * 2) + 1, y + height - radius);
+  cairo_arc(cr, priv->vscroll_rect.x + radius + 1, y + height - radius, radius, 0, G_PI);
+  cairo_line_to(cr, priv->vscroll_rect.x + 1, y + height - radius);
+  cairo_clip (cr);
 
-  cairo_fill(cr_tmp);
-  cairo_destroy(cr_tmp);
-
-  cairo_set_source_surface(cr, surface, 0, 0);
   cairo_paint_with_alpha(cr, priv->scroll_indicator_alpha);
+
   cairo_destroy(cr);
-  cairo_surface_destroy(surface);
 }
 
 static void
@@ -976,26 +931,21 @@ hildon_pannable_draw_hscroll (GtkWidget * widget, GdkColor *back_color, GdkColor
 {
   HildonPannableAreaPrivate *priv = PANNABLE_AREA_PRIVATE (widget);
   gint x, width;
-  cairo_t *cr, *cr_tmp;
-  cairo_surface_t *surface;
+  cairo_t *cr;
   cairo_pattern_t *pattern;
   gdouble r, g, b;
   gint radius = (priv->hscroll_rect.height/2) - 1;
 
   cr = gdk_cairo_create(widget->window);
-  surface = cairo_surface_create_similar(cairo_get_target(cr),
-                                         CAIRO_CONTENT_COLOR,
-                                         priv->hscroll_rect.x+priv->hscroll_rect.width,
-                                         priv->hscroll_rect.y+priv->hscroll_rect.height);
-  cr_tmp = cairo_create(surface);
 
   /* Draw the background */
   rgb_from_gdkcolor (back_color, &r, &g, &b);
-  cairo_set_source_rgb (cr_tmp, r, g, b);
-  cairo_rectangle(cr_tmp, priv->hscroll_rect.x, priv->hscroll_rect.y,
+  cairo_set_source_rgb (cr, r, g, b);
+  cairo_rectangle(cr, priv->hscroll_rect.x, priv->hscroll_rect.y,
                   priv->hscroll_rect.width,
                   priv->hscroll_rect.height);
-  cairo_fill(cr_tmp);
+  cairo_fill_preserve (cr);
+  cairo_clip (cr);
 
   /* calculate the scrollbar width and position */
   x = widget->allocation.x +
@@ -1014,22 +964,19 @@ hildon_pannable_draw_hscroll (GtkWidget * widget, GdkColor *back_color, GdkColor
   pattern = cairo_pattern_create_linear(x, radius+1, x+width, radius+1);
   cairo_pattern_add_color_stop_rgb(pattern, 0, r, g, b);
   cairo_pattern_add_color_stop_rgb(pattern, 1, r/2, g/2, b/2);
-  cairo_set_source(cr_tmp, pattern);
-  cairo_fill(cr_tmp);
+  cairo_set_source(cr, pattern);
+  cairo_fill(cr);
   cairo_pattern_destroy(pattern);
 
-  cairo_arc_negative(cr_tmp, x + radius + 1, priv->hscroll_rect.y + radius + 1, radius, 3*G_PI_2, G_PI_2);
-  cairo_line_to(cr_tmp, x + width - radius, priv->hscroll_rect.y + (radius * 2) + 1);
-  cairo_arc_negative(cr_tmp, x + width - radius, priv->hscroll_rect.y + radius + 1, radius, G_PI_2, 3*G_PI_2);
-  cairo_line_to(cr_tmp, x + width - radius, priv->hscroll_rect.y + 1);
+  cairo_arc_negative(cr, x + radius + 1, priv->hscroll_rect.y + radius + 1, radius, 3*G_PI_2, G_PI_2);
+  cairo_line_to(cr, x + width - radius, priv->hscroll_rect.y + (radius * 2) + 1);
+  cairo_arc_negative(cr, x + width - radius, priv->hscroll_rect.y + radius + 1, radius, G_PI_2, 3*G_PI_2);
+  cairo_line_to(cr, x + width - radius, priv->hscroll_rect.y + 1);
+  cairo_clip (cr);
 
-  cairo_fill(cr_tmp);
-  cairo_destroy(cr_tmp);
-
-  cairo_set_source_surface(cr, surface, 0, 0);
   cairo_paint_with_alpha(cr, priv->scroll_indicator_alpha);
+
   cairo_destroy(cr);
-  cairo_surface_destroy(surface);
 }
 
 static gboolean
@@ -1189,7 +1136,6 @@ hildon_pannable_area_get_property (GObject * object, guint property_id,
   case PROP_OVERSHOOT_MAX:
     g_value_set_int (value, priv->overshoot_max);
     break;
-    
 
   default:
     G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
@@ -1545,7 +1491,7 @@ hildon_pannable_area_class_init (HildonPannableAreaClass * klass)
 							"Maximum scroll velocity",
 							"Maximum distance the child widget should scroll "
 							"per 'frame', in pixels.",
-							0, G_MAXDOUBLE, 48,
+							0, G_MAXDOUBLE, 80,
 							G_PARAM_READWRITE |
 							G_PARAM_CONSTRUCT));
 
@@ -1555,7 +1501,7 @@ hildon_pannable_area_class_init (HildonPannableAreaClass * klass)
 							"Deceleration multiplier",
 							"The multiplier used when decelerating when in "
 							"acceleration scrolling mode.",
-							0, 1.0, 0.95,
+							0, 1.0, 0.85,
 							G_PARAM_READWRITE |
 							G_PARAM_CONSTRUCT));
 
@@ -1564,10 +1510,10 @@ hildon_pannable_area_class_init (HildonPannableAreaClass * klass)
 				   g_param_spec_uint ("sps",
 						      "Scrolls per second",
 						      "Amount of scroll events to generate per second.",
-						      0, G_MAXUINT, 15,
+						      0, G_MAXUINT, 25,
 						      G_PARAM_READWRITE |
 						      G_PARAM_CONSTRUCT));
-  
+
   g_object_class_install_property (object_class,
 				   PROP_OVERSHOOT_MAX,
 				   g_param_spec_int ("overshoot",

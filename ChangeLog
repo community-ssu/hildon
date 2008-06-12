@@ -1,3 +1,34 @@
+2008-06-12  Alejandro G. Castro <alex@igalia.com>
+
+	Added BOUNCE_STEPS define to control the overshoot effect. Removed
+	ELASTICITY, refactor and review, fix some issues with drawing
+	scrollbars.
+
+	* src/hildon-pannable-area.c:
+	(hildon_pannable_area_button_press_cb): removed the conditions to
+	avoid clicks when overshooting. It is not required
+	
+	(hildon_pannable_axis_scroll): Added BOUNCE_STEPS
+	define. Refatored and reviewed the code, now we do not need to
+	manage velocity in motion_notify.
+	
+	(hildon_pannable_area_motion_notify_cb): We have moved the code
+	that controls the area_scroll to the axis_scroll function and get
+	rid of duplicated code.
+ 
+	(hildon_pannable_area_scroll): Remove the ELASTICITY define.
+	
+	(hildon_pannable_area_button_release_cb): Added BOUNCE_STEPS.
+	
+	(hildon_pannable_draw_vscroll),
+	(hildon_pannable_draw_hscroll): Fixed the problems with the
+	scrollbar drawing, now we do not use two surfaces, it is easier
+	and saves resources.
+ 	
+	(hildon_pannable_area_get_property): Style modification.
+	
+	(hildon_pannable_area_class_init): Changed some default values.
+
 2008-06-12  Claudio Saavedra  <csaavedra@igalia.com>
 
 	* src/hildon-stackable-window.c: Fix some typos in the
