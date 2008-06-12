@@ -1,3 +1,19 @@
+2008-06-12  Alberto Garcia  <agarcia@igalia.com>
+
+	* src/hildon-app-menu.c
+	(hildon_app_menu_class_init):
+	New inner-border style property.
+	Set all default spacings to 16
+	(hildon_app_menu_init):
+	Use vertical-spacing to set the space between filter buttons and
+	regular menu buttons.
+	Set the default container border using the inner-border value.
+
+	* examples/hildon-app-menu-example.c
+	(create_menu):
+	Don't set the menu border explicitly, now we have the inner-border
+	style property for that.
+
 2008-06-11  Alberto Garcia  <agarcia@igalia.com>
 
 	* src/hildon-app-menu.c (hildon_app_menu_init):

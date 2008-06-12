@@ -78,8 +78,6 @@ create_menu                                     (GtkWidget *label)
     hildon_app_menu_add_filter (menu, GTK_BUTTON (button), group);
     gtk_toggle_button_set_mode (GTK_TOGGLE_BUTTON (button), FALSE);
 
-    gtk_container_set_border_width (GTK_CONTAINER (menu), 30);
-
     return menu;
 }
 

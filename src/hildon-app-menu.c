@@ -354,19 +354,20 @@ hildon_app_menu_init                            (HildonAppMenu *menu)
     GdkScreen *screen;
     int width;
     guint filter_group_spacing, horizontal_spacing, vertical_spacing,
-            external_border;
+            inner_border, external_border;
     HildonAppMenuPrivate *priv = HILDON_APP_MENU_GET_PRIVATE(menu);
 
     gtk_widget_style_get (GTK_WIDGET (menu),
                           "filter-group-spacing", &filter_group_spacing,
                           "horizontal-spacing", &horizontal_spacing,
                           "vertical-spacing", &vertical_spacing,
+                          "inner-border", &inner_border,
                           "external-border", &external_border,
                           NULL);
 
     /* Initialize private variables */
     priv->filters_hbox = GTK_BOX (gtk_hbox_new (FALSE, filter_group_spacing));
-    priv->vbox = GTK_BOX (gtk_vbox_new (FALSE, 10));
+    priv->vbox = GTK_BOX (gtk_vbox_new (FALSE, vertical_spacing));
     priv->table = GTK_TABLE (gtk_table_new (1, 2, TRUE));
     priv->sizegroup = GTK_SIZE_GROUP (gtk_size_group_new (GTK_SIZE_GROUP_BOTH));
     priv->nitems = 0;
@@ -389,6 +390,9 @@ hildon_app_menu_init                            (HildonAppMenu *menu)
     screen = gtk_widget_get_screen (GTK_WIDGET (menu));
     width = gdk_screen_get_width (screen) - external_border * 2;
     gtk_window_set_default_size (GTK_WINDOW (menu), width, -1);
+
+    /* Set inner border */
+    gtk_container_set_border_width (GTK_CONTAINER (menu), inner_border);
 
     gtk_window_set_modal (GTK_WINDOW (menu), TRUE);
 
@@ -428,7 +432,7 @@ hildon_app_menu_class_init                      (HildonAppMenuClass *klass)
             "filter-group-spacing",
             "Space between filter groups",
             "Space in pixels between the filter groups",
-            0, G_MAXUINT, 10,
+            0, G_MAXUINT, 16,
             G_PARAM_READABLE));
 
     gtk_widget_class_install_style_property (
@@ -437,7 +441,7 @@ hildon_app_menu_class_init                      (HildonAppMenuClass *klass)
             "horizontal-spacing",
             "Horizontal spacing on menu items",
             "Horizontal spacing between each menu item (but not filters)",
-            0, G_MAXUINT, 10,
+            0, G_MAXUINT, 16,
             G_PARAM_READABLE));
 
     gtk_widget_class_install_style_property (
@@ -446,7 +450,16 @@ hildon_app_menu_class_init                      (HildonAppMenuClass *klass)
             "vertical-spacing",
             "Vertical spacing on menu items",
             "Vertical spacing between each menu item (but not filters)",
-            0, G_MAXUINT, 10,
+            0, G_MAXUINT, 16,
+            G_PARAM_READABLE));
+
+    gtk_widget_class_install_style_property (
+        widget_class,
+        g_param_spec_uint (
+            "inner-border",
+            "Border between menu edges and buttons",
+            "Border between menu edges and buttons",
+            0, G_MAXUINT, 16,
             G_PARAM_READABLE));
 
     gtk_widget_class_install_style_property (
