@@ -1,3 +1,13 @@
+libhildon (2.1.1-1) gutsy; urgency=low
+
+  * Update version number to 2.1.1-1
+  * configure.ac 2.1.1
+  * Too many individual changes for them to all be relevant here, many widgets
+    added, many widgets have been changed. A full list of additional/changed  widgets
+    can be found in the Hildon 2.2 widget UI spec.
+
+ -- Karl Lattimer <karl.lattimer@nokia.com>  Mon, 16 Jun 2008 16:00:00 +0200
+
 libhildon (2.0.4-1) gutsy; urgency=low
 
   * src/hildon-banner.c: revert the recent change, that introduced gtk_window_present() calls. 
