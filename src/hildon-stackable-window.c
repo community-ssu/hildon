@@ -33,6 +33,8 @@
  * application's root window.
  */
 
+#include                                        <X11/X.h>
+#include                                        <X11/Xatom.h>
 #include                                        "hildon-stackable-window.h"
 #include                                        "hildon-program.h"
 #include                                        "hildon-window-private.h"
@@ -159,6 +161,24 @@ hildon_stackable_window_unset_program           (HildonWindow *hwin)
 }
 
 static void
+hildon_stackable_window_realize                 (GtkWidget *widget)
+{
+    GdkDisplay *display;
+    Atom atom;
+
+    GTK_WIDGET_CLASS (hildon_stackable_window_parent_class)->realize (widget);
+
+    /* Set the window type to "_HILDON_WM_WINDOW_TYPE_STACKABLE", to allow the WM to manage
+       it properly.  */
+    display = gdk_drawable_get_display (widget->window);
+    atom = gdk_x11_get_xatom_by_name_for_display (display, "_HILDON_WM_WINDOW_TYPE_STACKABLE");
+    XChangeProperty (GDK_DISPLAY_XDISPLAY (display), GDK_WINDOW_XID (widget->window),
+		     gdk_x11_get_xatom_by_name_for_display (display, "_NET_WM_WINDOW_TYPE"),
+		     XA_ATOM, 32, PropModeAppend,
+		     (guchar *)&atom, 1);
+}
+
+static void
 hildon_stackable_window_class_init              (HildonStackableWindowClass *klass)
 {
     GtkWidgetClass    *widget_class = GTK_WIDGET_CLASS (klass);
@@ -166,6 +186,7 @@ hildon_stackable_window_class_init              (HildonStackableWindowClass *kla
 
     widget_class->map               = hildon_stackable_window_map;
     widget_class->unmap             = hildon_stackable_window_unmap;
+    widget_class->realize           = hildon_stackable_window_realize;
 
     window_class->unset_program     = hildon_stackable_window_unset_program;
 

@@ -1,3 +1,14 @@
+2008-06-16  Claudio Saavedra  <csaavedra@igalia.com>
+
+	* src/hildon-stackable-window.c
+	(hildon_stackable_window_class_init):
+	Add hildon_stackable_window_realize.
+	(hildon_stackable_window_realize):
+	Append the window type _HILDON_WM_WINDOW_TYPE_STACKABLE to
+	the _NET_WM_WINDOW_TYPE hint. Window managers should use this type
+	to apply theming and behavior specific to HildonStackableWindow
+	windows.
+
 2008-06-12  Alberto Garcia  <agarcia@igalia.com>
 
 	* src/hildon-note.c (hildon_note_button_release):
