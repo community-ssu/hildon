@@ -68,13 +68,8 @@ void
 hildon_app_menu_append                          (HildonAppMenu *menu,
                                                  GtkButton *item);
 
-GtkWidget *
+void
 hildon_app_menu_add_filter                      (HildonAppMenu *menu,
-                                                 GtkButton *filter,
-                                                 GtkWidget *group);
-
-GtkWidget *
-hildon_app_menu_get_group_from_filter           (HildonAppMenu *menu,
                                                  GtkButton *filter);
 
 G_END_DECLS

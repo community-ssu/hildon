@@ -1,3 +1,15 @@
+2008-06-17  Claudio Saavedra  <csaavedra@igalia.com>
+
+	* src/hildon-app-menu.h
+	Update API.
+	* src/hildon-app-menu.c
+	(hildon_app_menu_init, hildon_app_menu_class_init): Remove
+	multiple filter groups related code and API. Now we support only
+	one filter group.
+	* examples/hildon-app-menu-example.c:
+	(create_menu):
+	Update to reflect API changes.
+
 2008-06-16  Claudio Saavedra  <csaavedra@igalia.com>
 
 	* src/hildon-stackable-window.c
