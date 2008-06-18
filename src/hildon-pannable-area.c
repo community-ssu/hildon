@@ -51,6 +51,7 @@
  * 13 x Fix problem with kinetics when pannable has been in overshoot (a flick stops rather than continues) (Search TODO 13)
  * 14 - Review the other modes, probably they are not working well after overshooting patches
  * 15 - Very small scrollbars when overshooting are not correctly rendered
+ * 16 - WTF does switching off the indicator break scrolling, FIXED, Alex check changes.
  */
 
 #include <gdk/gdkx.h>
@@ -404,29 +405,30 @@ hildon_pannable_area_refresh (HildonPannableArea * area)
   /* Calculate if we need scroll indicators */
   gtk_widget_size_request (widget, NULL);
 
-  switch (priv->hindicator_mode) {
+/* TODO 16 WTF WTF WTF WTF */
+/*  switch (priv->hindicator_mode) {
   case HILDON_PANNABLE_AREA_INDICATOR_MODE_SHOW:
     hscroll = TRUE;
     break;
   case HILDON_PANNABLE_AREA_INDICATOR_MODE_HIDE:
     hscroll = FALSE;
     break;
-  default:
+  default:*/
     hscroll = (priv->hadjust->upper - priv->hadjust->lower >
 	       priv->hadjust->page_size) ? TRUE : FALSE;
-  }
+//  }
 
-  switch (priv->vindicator_mode) {
+  /*switch (priv->vindicator_mode) {
   case HILDON_PANNABLE_AREA_INDICATOR_MODE_SHOW:
     vscroll = TRUE;
     break;
   case HILDON_PANNABLE_AREA_INDICATOR_MODE_HIDE:
     vscroll = FALSE;
     break;
-  default:
+  default:*/
     vscroll = (priv->vadjust->upper - priv->vadjust->lower >
 	       priv->vadjust->page_size) ? TRUE : FALSE;
-  }
+//  }
 
   /* TODO: Read ltr settings to decide which corner gets scroll
    * indicators?
@@ -990,10 +992,10 @@ hildon_pannable_area_expose_event (GtkWidget * widget, GdkEventExpose * event)
   if (GTK_BIN (priv->align)->child) {
 
     if (priv->scroll_indicator_alpha > 0) {
-      if (priv->vscroll) {
+      if (priv->vindicator_mode != HILDON_PANNABLE_AREA_INDICATOR_MODE_HIDE) {
         hildon_pannable_draw_vscroll (widget, &back_color, &scroll_color);
       }
-      if (priv->hscroll) {
+      if (priv->hindicator_mode != HILDON_PANNABLE_AREA_INDICATOR_MODE_HIDE) {
         hildon_pannable_draw_hscroll (widget, &back_color, &scroll_color);
       }
     }
