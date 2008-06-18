@@ -1,3 +1,7 @@
+2008-06-18  Alberto Garcia  <agarcia@igalia.com>
+
+	* src/hildon-stackable-window.c: Fixed typos in doc
+
 2008-06-18  Claudio Saavedra  <csaavedra@igalia.com>
 
 	* src/hildon-pannable-area.c
