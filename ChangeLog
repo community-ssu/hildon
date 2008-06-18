@@ -1,3 +1,10 @@
+2008-06-18  Claudio Saavedra  <csaavedra@igalia.com>
+
+	* src/hildon-pannable-area.c
+	(hildon_pannable_area_scroll):
+	Calculate here whether we need to scroll instead of using the booleans
+	that tell us whether to /draw/ the scrolling bars.
+
 2008-06-17  Claudio Saavedra  <csaavedra@igalia.com>
 
 	* src/hildon-app-menu.h
