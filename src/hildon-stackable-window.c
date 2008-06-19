@@ -92,21 +92,22 @@ get_window_list                                 (GtkWidget *widget)
 static GtkWidget*
 get_last_window                                 (GtkWidget *widget)
 {
-    GtkWidget *retval;
+    GtkWidget *retval = NULL;
     GSList *windows = get_window_list (widget);
+    GSList *last = NULL;
 
     g_return_val_if_fail (windows != NULL, NULL);
 
-    retval = GTK_WIDGET (g_slist_last (windows)->data);
-
-    if (retval == widget)
+    /* Go to the end of the window list */
+    while (windows->next != NULL)
     {
-        gint l = g_slist_length (windows);
-        retval = GTK_WIDGET (g_slist_nth_data (windows, l - 2));
+        last = windows;
+        windows = windows->next;
     }
-    else
+
+    if ((windows->data == widget) && (last != NULL))
     {
-        retval = NULL;
+        retval = GTK_WIDGET (last->data);
     }
 
     return retval;
@@ -246,5 +247,5 @@ hildon_stackable_window_go_home                 (HildonStackableWindow *self)
     }
 
     if (!GTK_WIDGET_VISIBLE (rootwin))
-        gtk_widget_show (rootwin);
+        gtk_widget_show (GTK_WIDGET (rootwin));
 }
