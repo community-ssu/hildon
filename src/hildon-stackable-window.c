@@ -191,7 +191,7 @@ hildon_stackable_window_class_init              (HildonStackableWindowClass *kla
 
     window_class->unset_program     = hildon_stackable_window_unset_program;
 
-    g_type_class_add_private (klass, sizeof (HildonWindowPrivate));
+    g_type_class_add_private (klass, sizeof (HildonStackableWindowPrivate));
 }
 
 static void

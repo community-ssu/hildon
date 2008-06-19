@@ -3,6 +3,8 @@
 	* src/hildon-stackable-window.c
 	(hildon_stackable_window_go_home): Fix compilation warning
 	(get_last_window): Minor optimizations
+	(hildon_stackable_window_class_init): Fix initialization of
+	private structure.
 
 2008-06-18  Alberto Garcia  <agarcia@igalia.com>
 
