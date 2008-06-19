@@ -50,7 +50,7 @@
  * 12 - Add a property to disable overshoot entirely
  * 13 x Fix problem with kinetics when pannable has been in overshoot (a flick stops rather than continues) (Search TODO 13)
  * 14 - Review the other modes, probably they are not working well after overshooting patches
- * 15 - Very small scrollbars when overshooting are not correctly rendered
+ * 15 x Very small scrollbars when overshooting are not correctly rendered (fixed adding a minimum size)
  */
 
 #include <gdk/gdkx.h>
@@ -61,6 +61,7 @@
 #define SMOOTH_FACTOR 0.85
 #define FORCE 5
 #define BOUNCE_STEPS 6
+#define SCROLL_BAR_MIN_SIZE 5
 
 G_DEFINE_TYPE (HildonPannableArea, hildon_pannable_area, GTK_TYPE_BIN)
 #define PANNABLE_AREA_PRIVATE(o)                                \
@@ -911,6 +912,9 @@ hildon_pannable_draw_vscroll (GtkWidget * widget, GdkColor *back_color, GdkColor
              (widget->allocation.height -
               (priv->hscroll ? priv->area_width : 0)))) - y;
 
+  /* Set a minimum height */
+  height = MAX (SCROLL_BAR_MIN_SIZE, height);
+
   /* Draw the scrollbar */
   rgb_from_gdkcolor (scroll_color, &r, &g, &b);
 
@@ -963,6 +967,9 @@ hildon_pannable_draw_hscroll (GtkWidget * widget, GdkColor *back_color, GdkColor
         priv->hadjust->page_size) / priv->hadjust->upper) *
       (widget->allocation.width -
        (priv->vscroll ? priv->area_width : 0)))) - x;
+
+  /* Set a minimum width */
+  width = MAX (SCROLL_BAR_MIN_SIZE, width);
 
   /* Draw the scrollbar */
   rgb_from_gdkcolor (scroll_color, &r, &g, &b);

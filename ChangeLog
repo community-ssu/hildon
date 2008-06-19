@@ -1,5 +1,10 @@
 2008-06-19  Alberto Garcia  <agarcia@igalia.com>
 
+	* src/hildon-pannable-area.c
+	(hildon_pannable_draw_vscroll)
+	(hildon_pannable_draw_hscroll):
+	Define a minimum size for the scroll bars
+
 	* src/hildon-stackable-window.c
 	(hildon_stackable_window_go_home): Fix compilation warning
 	(get_last_window): Minor optimizations
