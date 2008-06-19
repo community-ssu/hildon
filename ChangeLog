@@ -1,3 +1,11 @@
+2008-06-19  Claudio Saavedra  <csaavedra@igalia.com>
+
+	* src/hildon-pannable-area.c
+	(hildon_pannable_draw_hscroll)
+	(hildon_pannable_draw_vscroll):
+	Use float variables to calculate the size of the scrollbars to
+	avoid error propagation and resizing during scrolling.
+
 2008-06-19  Alberto Garcia  <agarcia@igalia.com>
 
 	* src/hildon-pannable-area.c

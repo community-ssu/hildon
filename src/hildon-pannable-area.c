@@ -883,7 +883,7 @@ static void
 hildon_pannable_draw_vscroll (GtkWidget * widget, GdkColor *back_color, GdkColor *scroll_color)
 {
   HildonPannableAreaPrivate *priv = PANNABLE_AREA_PRIVATE (widget);
-  gint y, height;
+  gfloat y, height;
   cairo_t *cr;
   cairo_pattern_t *pattern;
   gdouble r, g, b;
@@ -940,7 +940,7 @@ static void
 hildon_pannable_draw_hscroll (GtkWidget * widget, GdkColor *back_color, GdkColor *scroll_color)
 {
   HildonPannableAreaPrivate *priv = PANNABLE_AREA_PRIVATE (widget);
-  gint x, width;
+  gfloat x, width;
   cairo_t *cr;
   cairo_pattern_t *pattern;
   gdouble r, g, b;
