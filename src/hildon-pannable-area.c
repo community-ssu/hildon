@@ -41,7 +41,7 @@
  * 4  - Add a method of removing children from the alignment, gtk-container-remove override?
  * 5  x Remove elasticity if it is no longer required?
  * 6  x Reduce calls to queue_resize to improve performance
- * 7  - Make 'fast' factor a property
+ * 7  x Make 'fast' factor a property
  * 8  - Strip out g_print/g_debug calls
  * 9  - Scroll policies (horizontal/vertical/both) suggest 1,2,3 for different policies (binary OR'd)
  * 10 x Delay click mode (only send synthetic clicks on mouse-up, as in previous
@@ -83,6 +83,7 @@ struct _HildonPannableAreaPrivate {
   gboolean moved;
   gdouble vmin;
   gdouble vmax;
+  gdouble vfast_factor;
   gdouble decel;
   guint sps;
   gdouble vel_x;
@@ -128,6 +129,7 @@ enum {
   PROP_MODE,
   PROP_VELOCITY_MIN,
   PROP_VELOCITY_MAX,
+  PROP_VELOCITY_FAST_FACTOR,
   PROP_DECELERATION,
   PROP_SPS,
   PROP_VINDICATOR,
@@ -332,10 +334,9 @@ hildon_pannable_area_button_press_cb (GtkWidget * widget,
   priv->iy = priv->y;
   /* Don't allow a click if we're still moving fast, where fast is
    * defined as a quarter of our top possible speed.
-   * TODO 7: Make 'fast' a property
    */
-  if ((ABS (priv->vel_x) < (priv->vmax * 0.25)) &&
-      (ABS (priv->vel_y) < (priv->vmax * 0.25)))
+  if ((ABS (priv->vel_x) < (priv->vmax * priv->vfast_factor)) &&
+      (ABS (priv->vel_y) < (priv->vmax * priv->vfast_factor)))
     priv->child =
       hildon_pannable_area_get_topmost (GTK_BIN (priv->align)->child->window,
 					event->x, event->y, &x, &y);
@@ -1134,6 +1135,9 @@ hildon_pannable_area_get_property (GObject * object, guint property_id,
   case PROP_VELOCITY_MAX:
     g_value_set_double (value, priv->vmax);
     break;
+  case PROP_VELOCITY_FAST_FACTOR:
+    g_value_set_double (value, priv->vfast_factor);
+    break;
   case PROP_DECELERATION:
     g_value_set_double (value, priv->decel);
     break;
@@ -1183,6 +1187,9 @@ hildon_pannable_area_set_property (GObject * object, guint property_id,
     break;
   case PROP_VELOCITY_MAX:
     priv->vmax = g_value_get_double (value);
+    break;
+  case PROP_VELOCITY_FAST_FACTOR:
+    priv->vfast_factor = g_value_get_double (value);
     break;
   case PROP_DECELERATION:
     priv->decel = g_value_get_double (value);
@@ -1505,6 +1512,17 @@ hildon_pannable_area_class_init (HildonPannableAreaClass * klass)
 							"Maximum distance the child widget should scroll "
 							"per 'frame', in pixels.",
 							0, G_MAXDOUBLE, 80,
+							G_PARAM_READWRITE |
+							G_PARAM_CONSTRUCT));
+
+  g_object_class_install_property (object_class,
+				   PROP_VELOCITY_FAST_FACTOR,
+				   g_param_spec_double ("velocity_fast_factor",
+							"Fast velocity factor",
+							"Minimum velocity that is considered 'fast': "
+							"children widgets won't receive button presses. "
+							"Expressed as a fraction of the maximum velocity.",
+							0, 1, 0.25,
 							G_PARAM_READWRITE |
 							G_PARAM_CONSTRUCT));
 

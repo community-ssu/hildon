@@ -1,3 +1,13 @@
+2008-06-19  Alberto Garcia  <agarcia@igalia.com>
+
+	* src/hildon-pannable-area.c
+	(hildon_pannable_area_class_init)
+	(hildon_pannable_area_set_property)
+	(hildon_pannable_area_get_property)
+	(hildon_pannable_area_button_press_cb):
+	New 'velocity_fast_factor' property to decide which velocity is
+	considered fast.
+
 2008-06-19  Claudio Saavedra  <csaavedra@igalia.com>
 
 	* src/hildon-pannable-area.c
