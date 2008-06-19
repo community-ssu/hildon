@@ -1324,6 +1324,8 @@ hildon_pannable_area_map (GtkWidget * widget)
     */
   }
 
+  priv->scroll_indicator_timeout = g_timeout_add ((gint) (1000.0 / (gdouble) priv->sps),
+						  (GSourceFunc) hildon_pannable_area_scroll_indicator_fade, widget);
 }
 
 static void
@@ -1580,7 +1582,7 @@ hildon_pannable_area_init (HildonPannableArea * self)
   priv->overshooting_y = 0;
   priv->overshooting_x = 0;
   priv->idle_id = 0;
-  priv->scroll_indicator_alpha = 0;
+  priv->scroll_indicator_alpha = 1;
   priv->scroll_indicator_timeout = 0;
   priv->scroll_indicator_event_interrupt = 0;
   priv->scroll_delay_counter = 0;

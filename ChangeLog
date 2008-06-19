@@ -1,3 +1,11 @@
+2008-06-19  Claudio Saavedra  <csaavedra@igalia.com>
+
+	* src/hildon-pannable-area.c
+	(hildon_pannable_area_init): Initially show the scroll indicators.
+	(hildon_pannable_area_map): Fade the scroll indicators out upon mapping.
+
+	Add initial effect showing the widget is pannable.
+
 2008-06-19  Alberto Garcia  <agarcia@igalia.com>
 
 	* src/hildon-pannable-area.c
