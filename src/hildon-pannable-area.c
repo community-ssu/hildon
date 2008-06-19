@@ -809,7 +809,8 @@ hildon_pannable_area_button_release_cb (GtkWidget * widget,
 
   priv->clicked = FALSE;
 
-  if (priv->mode == HILDON_PANNABLE_AREA_MODE_AUTO) {
+  if (priv->mode == HILDON_PANNABLE_AREA_MODE_AUTO ||
+      priv->mode == HILDON_PANNABLE_AREA_MODE_ACCEL) {
     if (priv->idle_id)
       g_source_remove (priv->idle_id);
 

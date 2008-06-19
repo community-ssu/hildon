@@ -1,3 +1,9 @@
+2008-06-19  Alberto Garcia  <agarcia@igalia.com>
+
+	* src/hildon-pannable-area.c
+	(hildon_pannable_area_button_release_cb): Fix overshooting in
+	accel mode.
+
 2008-06-19  Claudio Saavedra  <csaavedra@igalia.com>
 
 	* src/hildon-pannable-area.c
