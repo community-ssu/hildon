@@ -238,9 +238,14 @@ hildon_stackable_window_go_to_root_window       (HildonStackableWindow *self)
     {
         if (HILDON_IS_STACKABLE_WINDOW (tmp->data))
         {
+            GdkEvent *event;
             HildonStackableWindow *win = HILDON_STACKABLE_WINDOW (tmp->data);
             hildon_stackable_window_set_going_home (win, TRUE);
-            gtk_widget_destroy (GTK_WIDGET (win));
+
+            event = gdk_event_new (GDK_DELETE);
+            ((GdkEventAny *) event)->window = GTK_WIDGET (win)->window;
+            gtk_main_do_event (event);
+            gdk_event_free (event);
         }
 
         tmp = g_slist_nth (windows, 1);

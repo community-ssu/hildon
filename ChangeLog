@@ -5,6 +5,8 @@
 	* src/hildon-stackable-window.h
 	hildon_stackable_window_go_home() renamed to
 	hildon_stackable_window_go_to_root_window()
+	Send delete events to windows rather than closing them with
+	gtk_widget_destroy()
 
 2008-06-19  Alberto Garcia  <agarcia@igalia.com>
 
