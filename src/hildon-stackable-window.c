@@ -216,14 +216,14 @@ hildon_stackable_window_new                     (void)
 }
 
 /**
- * hildon_stackable_window_go_home:
+ * hildon_stackable_window_go_to_root_window:
  * @self: A #HildonStackableWindow
  *
  * Will pop out all the stackable windows in the @HildonProgram but the
  * first one, which can be considered as the "home" window.
  */
 void
-hildon_stackable_window_go_home                 (HildonStackableWindow *self)
+hildon_stackable_window_go_to_root_window       (HildonStackableWindow *self)
 {
     g_return_if_fail (HILDON_IS_STACKABLE_WINDOW (self));
 

@@ -81,7 +81,7 @@ GtkWidget*
 hildon_stackable_window_new                     (void);
 
 void
-hildon_stackable_window_go_home                 (HildonStackableWindow* self);
+hildon_stackable_window_go_to_root_window       (HildonStackableWindow* self);
 
 G_END_DECLS
 

@@ -1,3 +1,11 @@
+2008-06-23  Alberto Garcia  <agarcia@igalia.com>
+
+	* examples/hildon-stackable-window-example.c
+	* src/hildon-stackable-window.c
+	* src/hildon-stackable-window.h
+	hildon_stackable_window_go_home() renamed to
+	hildon_stackable_window_go_to_root_window()
+
 2008-06-19  Alberto Garcia  <agarcia@igalia.com>
 
 	* src/hildon-pannable-area.c
