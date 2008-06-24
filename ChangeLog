@@ -1,3 +1,13 @@
+2008-06-24  Alberto Garcia  <agarcia@igalia.com>
+
+	* src/hildon-stackable-window.c
+	(hildon_stackable_window_unset_program):
+	Calculate correctly whether to show the previous window if the
+	last one is removed from the stack.
+	(hildon_stackable_window_go_to_root_window):
+	Send delete events starting from the topmost window.
+	Stop if one of the windows is not destroyed.
+
 2008-06-24  Alejandro G. Castro <alex@igalia.com>
 
 	* src/hildon-pannable-area.c

@@ -155,7 +155,7 @@ hildon_stackable_window_unset_program           (HildonWindow *hwin)
         HILDON_WINDOW_CLASS (hildon_stackable_window_parent_class)->unset_program (hwin);
 
     if (HILDON_IS_STACKABLE_WINDOW (nextwin) && !GTK_WIDGET_VISIBLE (nextwin) &&
-        !hildon_stackable_window_get_going_home (HILDON_STACKABLE_WINDOW (nextwin)))
+        !hildon_stackable_window_get_going_home (HILDON_STACKABLE_WINDOW (hwin)))
     {
         gtk_widget_show (nextwin);
     }
@@ -225,32 +225,63 @@ hildon_stackable_window_new                     (void)
 void
 hildon_stackable_window_go_to_root_window       (HildonStackableWindow *self)
 {
+    GSList *windows, *iter;
+    gboolean windows_left;
+
     g_return_if_fail (HILDON_IS_STACKABLE_WINDOW (self));
 
-    GSList *windows       = get_window_list (GTK_WIDGET (self));
-    GSList *tmp           = NULL;
-    HildonWindow *rootwin = HILDON_WINDOW (g_slist_nth_data (windows, 0));
+    /* List of windows in reverse order (starting from the topmost one) */
+    windows = g_slist_reverse (g_slist_copy (get_window_list (GTK_WIDGET (self))));
+    iter = windows;
 
-    g_return_if_fail (rootwin != NULL);
-
-    tmp = g_slist_nth (windows, 1);
-    while (tmp != NULL)
+    /* Destroy all the windows but the last one (which is the root
+     * window, as the list is reversed) */
+    windows_left = (iter != NULL && iter->next != NULL);
+    while (windows_left)
     {
-        if (HILDON_IS_STACKABLE_WINDOW (tmp->data))
+        if (HILDON_IS_STACKABLE_WINDOW (iter->data))
         {
             GdkEvent *event;
-            HildonStackableWindow *win = HILDON_STACKABLE_WINDOW (tmp->data);
+            HildonStackableWindow *win;
+
+            /* Mark the window as "going home" */
+            win = HILDON_STACKABLE_WINDOW (iter->data);
             hildon_stackable_window_set_going_home (win, TRUE);
 
+            /* Set win pointer to NULL if the window is destroyed */
+            g_object_add_weak_pointer (G_OBJECT (win), (gpointer) &win);
+
+            /* Send a delete event */
             event = gdk_event_new (GDK_DELETE);
-            ((GdkEventAny *) event)->window = GTK_WIDGET (win)->window;
+            event->any.window = g_object_ref (GTK_WIDGET (win)->window);
             gtk_main_do_event (event);
             gdk_event_free (event);
-        }
 
-        tmp = g_slist_nth (windows, 1);
+            /* Continue sending delete events if the window has been destroyed */
+            if (win == NULL)
+            {
+                iter = iter->next;
+                windows_left = (iter != NULL && iter->next != NULL);
+            }
+            else
+            {
+                g_object_remove_weak_pointer (G_OBJECT (win), (gpointer) &win);
+                hildon_stackable_window_set_going_home (win, FALSE);
+                windows_left = FALSE;
+            }
+        }
+        else
+        {
+            g_warning ("Window list contains a non-stackable window");
+            windows_left = FALSE;
+        }
     }
 
-    if (!GTK_WIDGET_VISIBLE (rootwin))
-        gtk_widget_show (GTK_WIDGET (rootwin));
+    /* Show the last window that hasn't been destroyed */
+    if (iter != NULL && GTK_IS_WIDGET (iter->data))
+    {
+        gtk_widget_show (GTK_WIDGET (iter->data));
+    }
+
+    g_slist_free (windows);
 }
