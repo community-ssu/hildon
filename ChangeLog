@@ -7,6 +7,7 @@
 	(hildon_stackable_window_go_to_root_window):
 	Send delete events starting from the topmost window.
 	Stop if one of the windows is not destroyed.
+	Update doc.
 
 2008-06-24  Alejandro G. Castro <alex@igalia.com>
 
