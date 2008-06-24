@@ -8,6 +8,9 @@
 	Send delete events starting from the topmost window.
 	Stop if one of the windows is not destroyed.
 	Update doc.
+	(hildon_stackable_window_delete_event)
+	(hildon_stackable_window_class_init):
+	Ignore the delete event if the window is not the topmost one.
 
 2008-06-24  Alejandro G. Castro <alex@igalia.com>
 

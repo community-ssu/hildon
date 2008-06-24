@@ -179,6 +179,22 @@ hildon_stackable_window_realize                 (GtkWidget *widget)
 		     (guchar *)&atom, 1);
 }
 
+static gboolean
+hildon_stackable_window_delete_event            (GtkWidget *widget,
+                                                 GdkEventAny *event)
+{
+    GSList *list = get_window_list (widget);
+    list = g_slist_find (list, widget);
+
+    /* Ignore the delete event if this is not the topmost window */
+    if (list != NULL && list->next != NULL)
+        return TRUE;
+    else if (GTK_WIDGET_CLASS (hildon_stackable_window_parent_class)->delete_event)
+        return GTK_WIDGET_CLASS (hildon_stackable_window_parent_class)->delete_event (widget, event);
+    else
+        return FALSE;
+}
+
 static void
 hildon_stackable_window_class_init              (HildonStackableWindowClass *klass)
 {
@@ -188,6 +204,7 @@ hildon_stackable_window_class_init              (HildonStackableWindowClass *kla
     widget_class->map               = hildon_stackable_window_map;
     widget_class->unmap             = hildon_stackable_window_unmap;
     widget_class->realize           = hildon_stackable_window_realize;
+    widget_class->delete_event      = hildon_stackable_window_delete_event;
 
     window_class->unset_program     = hildon_stackable_window_unset_program;
 
