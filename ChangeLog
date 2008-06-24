@@ -1,3 +1,9 @@
+2008-06-24  Alejandro G. Castro <alex@igalia.com>
+
+	* src/hildon-pannable-area.c
+	(hildon_pannable_area_expose_event): Fixed a problem when
+	selecting the background color of the scrollbars.
+
 2008-06-23  Alberto Garcia  <agarcia@igalia.com>
 
 	* examples/hildon-stackable-window-example.c

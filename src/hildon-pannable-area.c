@@ -999,7 +999,7 @@ hildon_pannable_area_expose_event (GtkWidget * widget, GdkEventExpose * event)
 {
 
   HildonPannableAreaPrivate *priv = PANNABLE_AREA_PRIVATE (widget);
-  GdkColor back_color = widget->style->base[GTK_STATE_NORMAL];
+  GdkColor back_color = widget->style->bg[GTK_STATE_NORMAL];
   GdkColor scroll_color = widget->style->base[GTK_STATE_SELECTED];
 
   if (GTK_BIN (priv->align)->child) {
