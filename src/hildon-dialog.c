@@ -124,7 +124,7 @@ hildon_dialog_new_with_buttons                  (const gchar *title,
         gtk_window_set_destroy_with_parent (GTK_WINDOW (dialog), TRUE);
 
     if (flags & GTK_DIALOG_NO_SEPARATOR)
-        gtk_dialog_set_has_separator (dialog, FALSE);
+        gtk_dialog_set_has_separator (GTK_DIALOG (dialog), FALSE);
 
     /* This is almost copied from gtk_dialog_add_buttons_valist() */
     if (first_button_text != NULL) {

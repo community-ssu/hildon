@@ -47,12 +47,12 @@ main                                            (int argc,
     hildon_seekbar_set_total_time (bar, 100);
     hildon_seekbar_set_position (bar, 50);
 
-    GtkToolbar *toolbar = gtk_toolbar_new ();
+    GtkToolbar *toolbar = GTK_TOOLBAR (gtk_toolbar_new ());
     GtkToolItem *item = gtk_tool_item_new ();
     gtk_container_add (GTK_CONTAINER (item), GTK_WIDGET (bar));
     gtk_toolbar_insert (toolbar, item , 0);
 
-    hildon_window_add_toolbar (window, toolbar);
+    hildon_window_add_toolbar (HILDON_WINDOW (window), toolbar);
 
     g_signal_connect (G_OBJECT (window), "delete_event", G_CALLBACK (gtk_main_quit), NULL);
     gtk_widget_show_all (GTK_WIDGET (window));

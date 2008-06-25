@@ -140,8 +140,8 @@ hildon_app_menu_add_filter                      (HildonAppMenu *menu,
 {
     HildonAppMenuPrivate *priv;
 
-    g_return_val_if_fail (HILDON_IS_APP_MENU (menu), NULL);
-    g_return_val_if_fail (GTK_IS_BUTTON (filter), NULL);
+    g_return_if_fail (HILDON_IS_APP_MENU (menu));
+    g_return_if_fail (GTK_IS_BUTTON (filter));
 
     priv = HILDON_APP_MENU_GET_PRIVATE(menu);
 

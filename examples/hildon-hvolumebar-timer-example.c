@@ -28,6 +28,9 @@
 #include                                        <gtk/gtk.h>
 #include                                        "hildon.h"
 
+gboolean
+on_idle                                         (void);
+
 GtkDialog*                                      dialog = NULL;
 
 HildonHVolumebar*                               bar = NULL;
@@ -47,7 +50,7 @@ on_idle                                         (void)
         bar = HILDON_HVOLUMEBAR (hildon_hvolumebar_new ());
         gtk_widget_set_size_request (GTK_WIDGET (bar), 400, -1);
         hildon_helper_set_insensitive_message ((GtkWidget *) bar, "Insensitive");
-        hildon_volumebar_set_range_insensitive_message ((GtkWidget *) bar, "Insensitive range");
+        hildon_volumebar_set_range_insensitive_message (HILDON_VOLUMEBAR (bar), "Insensitive range");
 
         gtk_box_pack_start (GTK_BOX (dialog->vbox), GTK_WIDGET (bar), FALSE, FALSE, 0);
         gtk_dialog_add_button (dialog, "Close", GTK_RESPONSE_CLOSE);

@@ -1,5 +1,14 @@
 2008-06-25  Alberto Garcia  <agarcia@igalia.com>
 
+	* examples/hildon-app-menu-example.c (create_menu):
+	* examples/hildon-hvolumebar-insensitive-example.c (main):
+	* examples/hildon-hvolumebar-timer-example.c (on_idle):
+	* examples/hildon-toolbar-seekbar-example.c (main):
+	* src/hildon-app-menu.c (hildon_app_menu_add_filter):
+	* src/hildon-banner.c (hildon_banner_set_property):
+	* src/hildon-dialog.c (hildon_dialog_new_with_buttons):
+	Fix compilation warnings
+
 	* src/hildon-window.c:
 	Fix typo in doc
 

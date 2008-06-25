@@ -39,7 +39,6 @@ static HildonAppMenu *
 create_menu                                     (GtkWidget *label)
 {
     GtkWidget *button;
-    GtkWidget *group;
     HildonAppMenu *menu = HILDON_APP_MENU (hildon_app_menu_new ());
 
     /* Options */

@@ -359,7 +359,6 @@ hildon_banner_set_property                      (GObject *object,
                                                  GParamSpec *pspec)
 {
     GtkWidget *window;
-    GdkGeometry geom;
     HildonBannerPrivate *priv = HILDON_BANNER_GET_PRIVATE (object);
     g_assert (priv);
 
