@@ -1354,7 +1354,7 @@ hildon_window_set_program                       (HildonWindow *self,
 
 /*
  * Unsets the program to which the window belongs. This should only be called
- * by hildon_program_add_window
+ * by hildon_program_remove_window
  */
 static void
 hildon_window_unset_program_real                (HildonWindow *self)
