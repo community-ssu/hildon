@@ -36,24 +36,14 @@
 #include                                        <X11/X.h>
 #include                                        <X11/Xatom.h>
 #include                                        "hildon-stackable-window.h"
+#include                                        "hildon-stackable-window-private.h"
 #include                                        "hildon-program.h"
 #include                                        "hildon-window-private.h"
 #include                                        "hildon-program-private.h"
 
-typedef struct                                  _HildonStackableWindowPrivate HildonStackableWindowPrivate;
-
-struct                                          _HildonStackableWindowPrivate
-{
-    gboolean going_home;
-};
-
-#define                                         HILDON_STACKABLE_WINDOW_GET_PRIVATE(obj) \
-                                                (G_TYPE_INSTANCE_GET_PRIVATE ((obj),\
-                                                HILDON_TYPE_STACKABLE_WINDOW, HildonStackableWindowPrivate))
-
 G_DEFINE_TYPE (HildonStackableWindow, hildon_stackable_window, HILDON_TYPE_WINDOW);
 
-static void
+void G_GNUC_INTERNAL
 hildon_stackable_window_set_going_home          (HildonStackableWindow *self,
                                                  gboolean going_home)
 {
@@ -61,7 +51,7 @@ hildon_stackable_window_set_going_home          (HildonStackableWindow *self,
     priv->going_home = going_home;
 }
 
-static gboolean
+gboolean G_GNUC_INTERNAL
 hildon_stackable_window_get_going_home          (HildonStackableWindow *self)
 {
     HildonStackableWindowPrivate *priv = HILDON_STACKABLE_WINDOW_GET_PRIVATE (self);
@@ -230,77 +220,4 @@ hildon_stackable_window_new                     (void)
     HildonStackableWindow *newwindow = g_object_new (HILDON_TYPE_STACKABLE_WINDOW, NULL);
 
     return GTK_WIDGET (newwindow);
-}
-
-/**
- * hildon_stackable_window_go_to_root_window:
- * @self: A #HildonStackableWindow
- *
- * Will close all the stackable windows in the @HildonProgram but the
- * first one (the root window) by sending them a delete event. If any
- * of the windows refuses to close (by handling it) no further events
- * will be sent.
- */
-void
-hildon_stackable_window_go_to_root_window       (HildonStackableWindow *self)
-{
-    GSList *windows, *iter;
-    gboolean windows_left;
-
-    g_return_if_fail (HILDON_IS_STACKABLE_WINDOW (self));
-
-    /* List of windows in reverse order (starting from the topmost one) */
-    windows = g_slist_reverse (g_slist_copy (get_window_list (GTK_WIDGET (self))));
-    iter = windows;
-
-    /* Destroy all the windows but the last one (which is the root
-     * window, as the list is reversed) */
-    windows_left = (iter != NULL && iter->next != NULL);
-    while (windows_left)
-    {
-        if (HILDON_IS_STACKABLE_WINDOW (iter->data))
-        {
-            GdkEvent *event;
-            HildonStackableWindow *win;
-
-            /* Mark the window as "going home" */
-            win = HILDON_STACKABLE_WINDOW (iter->data);
-            hildon_stackable_window_set_going_home (win, TRUE);
-
-            /* Set win pointer to NULL if the window is destroyed */
-            g_object_add_weak_pointer (G_OBJECT (win), (gpointer) &win);
-
-            /* Send a delete event */
-            event = gdk_event_new (GDK_DELETE);
-            event->any.window = g_object_ref (GTK_WIDGET (win)->window);
-            gtk_main_do_event (event);
-            gdk_event_free (event);
-
-            /* Continue sending delete events if the window has been destroyed */
-            if (win == NULL)
-            {
-                iter = iter->next;
-                windows_left = (iter != NULL && iter->next != NULL);
-            }
-            else
-            {
-                g_object_remove_weak_pointer (G_OBJECT (win), (gpointer) &win);
-                hildon_stackable_window_set_going_home (win, FALSE);
-                windows_left = FALSE;
-            }
-        }
-        else
-        {
-            g_warning ("Window list contains a non-stackable window");
-            windows_left = FALSE;
-        }
-    }
-
-    /* Show the last window that hasn't been destroyed */
-    if (iter != NULL && GTK_IS_WIDGET (iter->data))
-    {
-        gtk_widget_show (GTK_WIDGET (iter->data));
-    }
-
-    g_slist_free (windows);
 }

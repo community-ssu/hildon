@@ -108,6 +108,9 @@ hildon_program_get_common_toolbar               (HildonProgram *self);
 gboolean
 hildon_program_get_is_topmost                   (HildonProgram *self);
 
+void
+hildon_program_go_to_root_window                (HildonProgram *self);
+
 G_END_DECLS
 
 #endif                                          /* __HILDON_PROGRAM_H__ */

@@ -85,8 +85,8 @@ new_window                                      (gboolean ismain)
         gtk_box_pack_end (GTK_BOX (hbbox), back, FALSE, FALSE, 0);
 
         g_signal_connect_swapped (G_OBJECT (back), "clicked",
-                                  G_CALLBACK (hildon_stackable_window_go_to_root_window),
-                                  HILDON_STACKABLE_WINDOW (window));
+                                  G_CALLBACK (hildon_program_go_to_root_window),
+                                  hildon_program_get_instance ());
     }
 
     return window;

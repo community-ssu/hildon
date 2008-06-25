@@ -80,9 +80,6 @@ hildon_stackable_window_get_type                (void) G_GNUC_CONST;
 GtkWidget*
 hildon_stackable_window_new                     (void);
 
-void
-hildon_stackable_window_go_to_root_window       (HildonStackableWindow* self);
-
 G_END_DECLS
 
 #endif                                 /* __HILDON_STACKABLE_WINDOW_H__ */

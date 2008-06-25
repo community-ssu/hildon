@@ -1,5 +1,15 @@
 2008-06-25  Alberto Garcia  <agarcia@igalia.com>
 
+	* examples/hildon-stackable-window-example.c (new_window):
+	* src/Makefile.am (noinst_HEADERS):
+	* src/hildon-program.c (hildon_program_go_to_root_window):
+	* src/hildon-program.h:
+	* src/hildon-stackable-window-private.h:
+	* src/hildon-stackable-window.c:
+	* src/hildon-stackable-window.h:
+	Create hildon-stackable-window-private.h
+	Move hildon_stackable_window_go_to_root_window() to HildonProgram
+
 	* examples/hildon-app-menu-example.c (create_menu):
 	* examples/hildon-hvolumebar-insensitive-example.c (main):
 	* examples/hildon-hvolumebar-timer-example.c (on_idle):
