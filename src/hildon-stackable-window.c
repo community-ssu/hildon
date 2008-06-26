@@ -31,6 +31,45 @@
  * #HildonWindow. Applications that use stackable windows are organized
  * in a hierarchical way so users can go from any window back to the
  * application's root window.
+ *
+ * To add a window to the stack, use hildon_program_add_window(). Once
+ * you show the new window, the previous one will be automatically
+ * hidden. When the new window is destroyed, the previous one will
+ * appear again.
+ *
+ * <example>
+ * <programlisting>
+ * void
+ * show_first_window (void)
+ * {
+ *     HildonProgram *program;
+ *     GtkWidget *win1;
+ * <!-- -->
+ *     program = hildon_program_get_instance ();
+ *     win1 = hildon_stackable_window_new ();
+ * <!-- -->
+ *     // ... configure first window
+ * <!-- -->
+ *     hildon_program_add_window (program, HILDON_WINDOW (win1));
+ *     gtk_widget_show (win1);
+ * }
+ * <!-- -->
+ * void
+ * show_second_window (void)
+ * {
+ *     HildonProgram *program;
+ *     GtkWidget *win2;
+ * <!-- -->
+ *     program = hildon_program_get_instance ();
+ *     win2 = hildon_stackable_window_new ();
+ * <!-- -->
+ *     // ... configure second window
+ * <!-- -->
+ *     hildon_program_add_window (program, HILDON_WINDOW (win2));
+ *     gtk_widget_show (win2);
+ * }
+ * </programlisting>
+ * </example>
  */
 
 #include                                        <X11/X.h>

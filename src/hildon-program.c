@@ -47,8 +47,8 @@
  * <example>
  * <programlisting>
  * HildonProgram *program;
- * HildonWindow *first_window;
- * HildonWindow *second_window;
+ * HildonWindow *window1;
+ * HildonWindow *window2;
  * GtkToolbar *common_toolbar, *window_specific_toolbar;
  * GtkMenu *menu;
  * <!-- -->
@@ -68,7 +68,7 @@
  * hildon_program_set_common_menu (program, menu);
  * <!-- -->
  * hildon_program_set_common_toolbar (program, common_toolbar);
- * hildon_window_add_toolbar (first_window, window_specific_toolbar);
+ * hildon_window_add_toolbar (window1, window_specific_toolbar);
  * <!-- -->
  * hildon_program_set_can_hibernate (program, TRUE);
  * </programlisting>

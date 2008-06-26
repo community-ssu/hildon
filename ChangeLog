@@ -1,5 +1,10 @@
 2008-06-26  Alberto Garcia  <agarcia@igalia.com>
 
+	* src/hildon-program.c
+	* src/hildon-stackable-window.c: Update documentation.
+
+2008-06-26  Alberto Garcia  <agarcia@igalia.com>
+
 	* src/hildon-stackable-window.c (get_previous_window_if_last):
 	Renamed get_last_window()
 	(hildon_stackable_window_map, hildon_stackable_window_unmap)
