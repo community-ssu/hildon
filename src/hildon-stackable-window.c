@@ -83,21 +83,21 @@ static GtkWidget*
 get_previous_window_if_last                     (GtkWidget *widget)
 {
     GtkWidget *retval = NULL;
-    GSList *windows = get_window_list (widget);
-    GSList *last = NULL;
+    GSList *iter = get_window_list (widget);
+    GSList *previous = NULL;
 
-    g_return_val_if_fail (windows != NULL, NULL);
+    g_return_val_if_fail (iter != NULL, NULL);
 
     /* Go to the end of the window list */
-    while (windows->next != NULL)
+    while (iter->next != NULL)
     {
-        last = windows;
-        windows = windows->next;
+        previous = iter;
+        iter = iter->next;
     }
 
-    if ((windows->data == widget) && (last != NULL))
+    if ((iter->data == widget) && (previous != NULL))
     {
-        retval = GTK_WIDGET (last->data);
+        retval = GTK_WIDGET (previous->data);
     }
 
     return retval;
