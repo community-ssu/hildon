@@ -1,3 +1,32 @@
+2008-06-26  Alejandro G. Castro <alex@igalia.com>
+
+	contributed and reviewed by: Claudio Saavedra <csaavedra@igalia.com>
+
+	* src/hildon-pannable-area.c
+	(hildon_pannable_area_button_press_cb),
+	(hildon_pannable_axis_scroll), 
+	(hildon_pannable_area_scroll),
+	(hildon_pannable_area_timeout),
+	(hildon_pannable_calculate_vel_factor),
+	(hildon_pannable_area_get_property),
+	(hildon_pannable_area_set_property),
+	(hildon_pannable_area_class_init), 
+	(hildon_pannable_area_init),
+	(hildon_pannable_area_scroll_to), 
+	(hildon_pannable_area_jump_to),
+	(hildon_pannable_area_scroll_to_child),
+	(hildon_pannable_area_jump_to_child):	
+	* src/hildon-pannable-area.h: Added the new API functions:
+	hildon_pannable_area_scroll_to, hildon_pannable_area_jump_to,
+	hildon_pannable_area_scroll_to_child,
+	hildon_pannable_area_jump_to_child
+
+
+	* examples/Makefile.am
+	* examples/hildon-pannable-area-example-2.c
+	* examples/hildon-pannable-area-example-3.c: Added these two new
+	examples in order to test and show how the new APIs work.
+
 2008-06-25  Alberto Garcia  <agarcia@igalia.com>
 
 	* examples/hildon-stackable-window-example.c (new_window):

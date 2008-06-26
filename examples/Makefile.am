@@ -40,11 +40,12 @@ noinst_PROGRAMS				= hildon-window-example				\
 					  hildon-hvolumebar-timer-example		\
 					  hildon-toolbar-seekbar-example		\
 					  hildon-pannable-area-example			\
+					  hildon-pannable-area-example-2		\
+					  hildon-pannable-area-example-3		\
 					  hildon-logical-color-example			\
 					  hildon-app-menu-example			\
 					  hildon-stackable-window-example		\
 					  hildon-dialog-example
-
 # Hildon window
 hildon_window_example_LDADD		= $(HILDON_OBJ_LIBS)
 hildon_window_example_CFLAGS		= $(HILDON_OBJ_CFLAGS)
@@ -249,6 +250,16 @@ hildon_hvolumebar_timer_example_SOURCES		= hildon-hvolumebar-timer-example.c
 hildon_pannable_area_example_LDADD		= $(HILDON_OBJ_LIBS)
 hildon_pannable_area_example_CFLAGS		= $(HILDON_OBJ_CFLAGS)
 hildon_pannable_area_example_SOURCES		= hildon-pannable-area-example.c
+
+# Hildon pannable area 2
+hildon_pannable_area_example_2_LDADD		= $(HILDON_OBJ_LIBS)
+hildon_pannable_area_example_2_CFLAGS		= $(HILDON_OBJ_CFLAGS)
+hildon_pannable_area_example_2_SOURCES		= hildon-pannable-area-example-2.c
+
+# Hildon pannable area 3
+hildon_pannable_area_example_3_LDADD		= $(HILDON_OBJ_LIBS)
+hildon_pannable_area_example_3_CFLAGS		= $(HILDON_OBJ_CFLAGS)
+hildon_pannable_area_example_3_SOURCES		= hildon-pannable-area-example-3.c
 
 # Hildon app menu
 hildon_app_menu_example_LDADD		= $(HILDON_OBJ_LIBS)

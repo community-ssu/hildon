@@ -109,8 +109,15 @@ GtkWidget* hildon_pannable_area_new_full        (gint mode, gboolean enabled,
                                                  gdouble decel, guint sps);
 void hildon_pannable_area_add_with_viewport     (HildonPannableArea *area,
                                                  GtkWidget *child);
+void hildon_pannable_area_scroll_to             (HildonPannableArea *area,
+						 const gint x, const gint y);
+void hildon_pannable_area_jump_to               (HildonPannableArea *area,
+ 						 const gint x, const gint y);
+void hildon_pannable_area_scroll_to_child       (HildonPannableArea *area,
+ 						 GtkWidget *child);
+void hildon_pannable_area_jump_to_child         (HildonPannableArea *area,
+                                                 GtkWidget *child);
 
 G_END_DECLS
 
 #endif /* _HILDON_PANNABLE_AREA */
-

@@ -62,6 +62,7 @@
 #define FORCE 5
 #define BOUNCE_STEPS 6
 #define SCROLL_BAR_MIN_SIZE 5
+#define RATIO_TOLERANCE 0.000001
 
 G_DEFINE_TYPE (HildonPannableArea, hildon_pannable_area, GTK_TYPE_BIN)
 #define PANNABLE_AREA_PRIVATE(o)                                \
@@ -85,6 +86,8 @@ struct _HildonPannableAreaPrivate {
   gdouble vmax;
   gdouble vfast_factor;
   gdouble decel;
+  gdouble scroll_time;
+  gdouble vel_factor;
   guint sps;
   gdouble vel_x;
   gdouble vel_y;
@@ -94,6 +97,8 @@ struct _HildonPannableAreaPrivate {
   gint cx;			/* Initial click child window mouse co-ordinates */
   gint cy;
   guint idle_id;
+  gdouble scroll_to_x;
+  gdouble scroll_to_y;
   gint overshot_dist_x;
   gint overshot_dist_y;
   gint overshooting_y;
@@ -134,7 +139,8 @@ enum {
   PROP_SPS,
   PROP_VINDICATOR,
   PROP_HINDICATOR,
-  PROP_OVERSHOOT_MAX
+  PROP_OVERSHOOT_MAX,
+  PROP_SCROLL_TIME
 };
 
 static GdkWindow *hildon_pannable_area_get_topmost (GdkWindow * window,
@@ -322,6 +328,9 @@ hildon_pannable_area_button_press_cb (GtkWidget * widget,
   priv->click_x = event->x;
   priv->click_y = event->y;
 
+  priv->scroll_to_x = -1;
+  priv->scroll_to_y = -1;
+
   if (priv->clicked && priv->child) {
     /* Widget stole focus on last click, send crossing-out event */
     synth_crossing (priv->child, 0, 0, event->x_root, event->y_root,
@@ -475,6 +484,7 @@ hildon_pannable_axis_scroll (HildonPannableArea *area,
                              gdouble inc,
                              gint *overshooting,
                              gint *overshot_dist,
+                             gdouble *scroll_to,
                              gboolean *s)
 {
   gdouble dist;
@@ -497,6 +507,7 @@ hildon_pannable_axis_scroll (HildonPannableArea *area,
       dist = adjust->lower;
 
       *overshooting = 1;
+      *scroll_to = -1;
       *overshot_dist = CLAMP (*overshot_dist + *vel, 0, priv->overshoot_max);
       gtk_widget_queue_resize (GTK_WIDGET (area));
     } else if (dist > adjust->upper - adjust->page_size) {
@@ -505,9 +516,19 @@ hildon_pannable_axis_scroll (HildonPannableArea *area,
       dist = adjust->upper - adjust->page_size;
 
       *overshooting = 1;
+      *scroll_to = -1;
       *overshot_dist = CLAMP (*overshot_dist + *vel, -1*priv->overshoot_max, 0);
       gtk_widget_queue_resize (GTK_WIDGET (area));
     } else {
+      if ((*scroll_to) != -1) {
+        if (((inc < 0)&&(*scroll_to <= dist))||
+            ((inc > 0)&&(*scroll_to >= dist))) {
+          dist = *scroll_to;
+          *scroll_to = -1;
+          *vel = 0;
+        }
+      }
+
       gtk_adjustment_set_value (adjust, dist);
 
       if (s) {
@@ -598,13 +619,13 @@ hildon_pannable_area_scroll (HildonPannableArea *area,
   if (vscroll) {
     hildon_pannable_axis_scroll (area, priv->vadjust, &priv->vel_y, y,
                                  &priv->overshooting_y, &priv->overshot_dist_y,
-                                 sy);
+                                 &priv->scroll_to_y, sy);
   }
 
   if (hscroll) {
     hildon_pannable_axis_scroll (area, priv->hadjust, &priv->vel_x, x,
                                  &priv->overshooting_x, &priv->overshot_dist_x,
-                                 sx);
+                                 &priv->scroll_to_x, sx);
   }
 
   /* If the scroll on a particular axis wasn't succesful, reset the
@@ -640,11 +661,26 @@ hildon_pannable_area_timeout (HildonPannableArea * area)
     /* Decelerate gradually when pointer is raised */
     if ((!priv->overshot_dist_y) &&
         (!priv->overshot_dist_x)) {
-      priv->vel_x *= priv->decel;
-      priv->vel_y *= priv->decel;
-      if ((ABS (priv->vel_x) < 1.0) && (ABS (priv->vel_y) < 1.0)) {
-	priv->idle_id = 0;
-	return FALSE;
+
+      /* in case we move to a specific point do not decelerate when arriving */
+      if ((priv->scroll_to_x != -1)||(priv->scroll_to_y != -1)) {
+
+        if (ABS (priv->vel_x) >= 1.5) {
+          priv->vel_x *= priv->decel;
+        }
+
+        if (ABS (priv->vel_y) >= 1.5) {
+          priv->vel_y *= priv->decel;
+        }
+
+      } else {
+        priv->vel_x *= priv->decel;
+        priv->vel_y *= priv->decel;
+
+        if ((ABS (priv->vel_x) < 1.0) && (ABS (priv->vel_y) < 1.0)) {
+          priv->idle_id = 0;
+          return FALSE;
+        }
       }
     }
   } else if (priv->mode == HILDON_PANNABLE_AREA_MODE_AUTO) {
@@ -1118,6 +1154,24 @@ hildon_pannable_area_add (GtkContainer * container, GtkWidget * child)
 }
 
 static void
+hildon_pannable_calculate_vel_factor (HildonPannableArea * self)
+{
+  HildonPannableAreaPrivate *priv = PANNABLE_AREA_PRIVATE (self);
+  gfloat fct = 0;
+  gfloat fct_i = 1;
+  gint i, n;
+
+  n = ceil (priv->sps * priv->scroll_time);
+
+  for (i = 0; i < n && fct_i >= RATIO_TOLERANCE; i++) {
+    fct_i *= priv->decel;
+    fct += fct_i;
+  }
+
+    priv->vel_factor = fct;
+}
+
+static void
 hildon_pannable_area_get_property (GObject * object, guint property_id,
 				   GValue * value, GParamSpec * pspec)
 {
@@ -1153,6 +1207,9 @@ hildon_pannable_area_get_property (GObject * object, guint property_id,
     break;
   case PROP_OVERSHOOT_MAX:
     g_value_set_int (value, priv->overshoot_max);
+    break;
+  case PROP_SCROLL_TIME:
+    g_value_set_double (value, priv->scroll_time);
     break;
 
   default:
@@ -1193,6 +1250,8 @@ hildon_pannable_area_set_property (GObject * object, guint property_id,
     priv->vfast_factor = g_value_get_double (value);
     break;
   case PROP_DECELERATION:
+    hildon_pannable_calculate_vel_factor (HILDON_PANNABLE_AREA (object));
+
     priv->decel = g_value_get_double (value);
     break;
   case PROP_SPS:
@@ -1206,6 +1265,11 @@ hildon_pannable_area_set_property (GObject * object, guint property_id,
     break;
   case PROP_OVERSHOOT_MAX:
     priv->overshoot_max = g_value_get_int (value);
+    break;
+  case PROP_SCROLL_TIME:
+    priv->scroll_time = g_value_get_double (value);
+
+    hildon_pannable_calculate_vel_factor (HILDON_PANNABLE_AREA (object));
     break;
 
   default:
@@ -1557,6 +1621,17 @@ hildon_pannable_area_class_init (HildonPannableAreaClass * klass)
                                                      G_PARAM_READWRITE |
                                                      G_PARAM_CONSTRUCT));
 
+  g_object_class_install_property (object_class,
+				   PROP_SCROLL_TIME,
+				   g_param_spec_double ("scroll_time",
+							"Time to scroll to a position",
+							"The time to scroll to a position when calling the hildon_pannable_scroll_to function"
+							"acceleration scrolling mode.",
+							1.0, 20.0, 10.0,
+							G_PARAM_READWRITE |
+							G_PARAM_CONSTRUCT));
+
+
   gtk_widget_class_install_style_property (widget_class,
 					   g_param_spec_uint
 					   ("indicator-width",
@@ -1583,12 +1658,19 @@ hildon_pannable_area_init (HildonPannableArea * self)
   priv->overshooting_y = 0;
   priv->overshooting_x = 0;
   priv->idle_id = 0;
+  priv->vel_x = 0.0;
+  priv->vel_y = 0.0;
   priv->scroll_indicator_alpha = 1;
   priv->scroll_indicator_timeout = 0;
   priv->scroll_indicator_event_interrupt = 0;
   priv->scroll_delay_counter = 0;
+  priv->scroll_to_x = -1;
+  priv->scroll_to_y = -1;
+
+  hildon_pannable_calculate_vel_factor (self);
 
   priv->align = gtk_alignment_new (0.5, 0.5, 1.0, 1.0);
+
   GTK_CONTAINER_CLASS (hildon_pannable_area_parent_class)->
     add (GTK_CONTAINER (self), priv->align);
   gtk_alignment_set_padding (GTK_ALIGNMENT (priv->align), 0, priv->area_width,
@@ -1674,4 +1756,245 @@ hildon_pannable_area_add_with_viewport (HildonPannableArea * area,
   gtk_container_add (GTK_CONTAINER (viewport), child);
   gtk_widget_show (viewport);
   gtk_container_add (GTK_CONTAINER (area), viewport);
+}
+
+/**
+ * hildon_pannable_area_scroll_to:
+ * @area: A #HildonPannableArea.
+ * @x: The x coordinate of the destination point or -1 to ignore this axis.
+ * @y: The y coordinate of the destination point or -1 to ignore this axis.
+ *
+ * Smoothly scrolls @area to ensure that (@x, @y) is a visible point
+ * on the widget. To move only in one coordinate, you can set the other one
+ * to -1. Notice that in PUSH mode this function works like jump_to.
+ *
+ * This is and example of how to calculate the position of a row in a
+ * #GtkTreeview:
+ * Here is a simple example:
+ * <informalexample><programlisting>
+ *  path = gtk_tree_model_get_path (model, &iter);
+ *  gtk_tree_view_get_background_area (GTK_TREE_VIEW (treeview),
+ *                                     path, NULL, &rect);
+ *  gtk_tree_view_convert_bin_window_to_tree_coords (GTK_TREE_VIEW (treeview),
+ *                                                   0, rect.y, NULL, &y);
+ *  hildon_pannable_area_scroll_to (HILDON_PANNABLE_AREA (ctx->panarea),
+ *                                  -1, y - rect.height);
+ * </programlisting></informalexample>
+ **/
+void
+hildon_pannable_area_scroll_to (HildonPannableArea *area,
+				const gint x, const gint y)
+{
+  HildonPannableAreaPrivate *priv;
+  gint width, height;
+  gint dist_x, dist_y;
+
+  g_return_if_fail (HILDON_IS_PANNABLE_AREA (area));
+
+  priv = PANNABLE_AREA_PRIVATE (area);
+
+  if (priv->mode == HILDON_PANNABLE_AREA_MODE_PUSH)
+    hildon_pannable_area_jump_to (area, x, y);
+
+  g_return_if_fail (x >= -1 && y >= -1);
+
+  if (x == -1 && y == -1) {
+    return;
+  }
+
+  width = priv->hadjust->upper - priv->hadjust->lower;
+  height = priv->vadjust->upper - priv->vadjust->lower;
+
+  g_return_if_fail (x < width || y < height);
+
+  if (x > -1) {
+    priv->scroll_to_x = x - priv->hadjust->page_size/2;
+    dist_x = priv->scroll_to_x - priv->hadjust->value;
+    if (dist_x == 0) {
+      priv->scroll_to_x = -1;
+    } else {
+      priv->vel_x = - dist_x/priv->vel_factor;
+    }
+  } else {
+    priv->scroll_to_x = -1;
+  }
+
+  if (y > -1) {
+    priv->scroll_to_y = y - priv->vadjust->page_size/2;
+    dist_y = priv->scroll_to_y - priv->vadjust->value;
+    if (dist_y == 0) {
+      priv->scroll_to_y = -1;
+    } else {
+      priv->vel_y = - dist_y/priv->vel_factor;
+    }
+  } else {
+    priv->scroll_to_y = y;
+  }
+
+  if ((priv->scroll_to_y == -1) && (priv->scroll_to_y == -1)) {
+    return;
+  }
+
+  priv->scroll_indicator_alpha = 1.0;
+
+  if (priv->scroll_indicator_timeout)
+    g_source_remove (priv->scroll_indicator_timeout);
+  priv->scroll_indicator_timeout = g_timeout_add ((gint) (1000.0 / (gdouble) priv->sps),
+                                                  (GSourceFunc) hildon_pannable_area_scroll_indicator_fade, area);
+
+  if (priv->idle_id)
+    g_source_remove (priv->idle_id);
+  priv->idle_id = g_timeout_add ((gint) (1000.0 / (gdouble) priv->sps),
+                                 (GSourceFunc)
+                                 hildon_pannable_area_timeout, area);
+}
+
+/**
+ * hildon_pannable_area_jump_to:
+ * @area: A #HildonPannableArea.
+ * @x: The x coordinate of the destination point or -1 to ignore this axis.
+ * @y: The y coordinate of the destination point or -1 to ignore this axis.
+ *
+ * Jumps the position of the @area to ensure that (@x, @y) is a
+ * visible point on the widget, . To move only in one coordinate, you
+ * can set the other one to -1. Check hildon_pannable_area_scroll_to()
+ * function for an example of how to calculate position of children in
+ * complex widgets like #GtkTreeview.
+ *
+ **/
+void
+hildon_pannable_area_jump_to (HildonPannableArea *area,
+                              const gint x, const gint y)
+{
+  HildonPannableAreaPrivate *priv;
+  gint width, height;
+
+  g_return_if_fail (HILDON_IS_PANNABLE_AREA (area));
+  g_return_if_fail (x >= -1 && y >= -1);
+
+  if (x == -1 && y == -1) {
+    return;
+  }
+
+  priv = PANNABLE_AREA_PRIVATE (area);
+
+  width = priv->hadjust->upper - priv->hadjust->lower;
+  height = priv->vadjust->upper - priv->vadjust->lower;
+
+  g_return_if_fail (x < width || y < height);
+
+  if (x != -1) {
+    gdouble jump_to = x - priv->hadjust->page_size/2;
+
+    if (jump_to > priv->hadjust->upper - priv->hadjust->page_size) {
+      jump_to = priv->hadjust->upper - priv->hadjust->page_size;
+    }
+
+    gtk_adjustment_set_value (priv->hadjust, jump_to);
+  }
+
+  if (y != -1) {
+    gdouble jump_to =  y - priv->vadjust->page_size/2;
+
+    if (jump_to > priv->vadjust->upper - priv->vadjust->page_size) {
+      jump_to = priv->vadjust->upper - priv->vadjust->page_size;
+    }
+
+    gtk_adjustment_set_value (priv->vadjust, jump_to);
+  }
+
+  priv->scroll_indicator_alpha = 1.0;
+
+  if (priv->scroll_indicator_timeout) {
+
+    priv->vel_x = 0.0;
+    priv->vel_y = 0.0;
+    priv->overshooting_x = 0;
+    priv->overshooting_y = 0;
+
+    if ((priv->overshot_dist_x>0)||(priv->overshot_dist_y>0)) {
+      priv->overshot_dist_x = 0;
+      priv->overshot_dist_y = 0;
+
+      gtk_widget_queue_resize (GTK_WIDGET (area));
+    }
+    g_source_remove (priv->scroll_indicator_timeout);
+  }
+
+  if (priv->idle_id)
+    g_source_remove (priv->idle_id);
+}
+
+/**
+ * hildon_pannable_area_scroll_to_child:
+ * @area: A #HildonPannableArea.
+ * @child: A #GtkWidget, descendant of @area.
+ *
+ * Smoothly scrolls until @child is visible inside @area. @child must
+ * be a descendant of @area. If you want to move inside a scrolleable
+ * widget, i. e. #GtkTreeview, it is better you use the
+ * hildon_pannable_area_scroll_to() function, you can calculate the
+ * position of the row using gtk_tree_view_get_background_area() and
+ * converting the coordinates with
+ * gtk_tree_view_convert_bin_window_to_tree_coords()
+ *
+ **/
+void
+hildon_pannable_area_scroll_to_child (HildonPannableArea *area, GtkWidget *child)
+{
+  GtkWidget *bin_child;
+  gint x, y;
+
+  g_return_if_fail (HILDON_IS_PANNABLE_AREA (area));
+  g_return_if_fail (GTK_IS_WIDGET (child));
+  g_return_if_fail (gtk_widget_is_ancestor (child, GTK_WIDGET (area)));
+
+  /* We need to get to check the child of the alignment inside the
+   * area */
+  bin_child = GTK_BIN (GTK_BIN (area)->child)->child;
+
+  /* we check if we added a viewport */
+  if (GTK_IS_VIEWPORT (bin_child)) {
+    bin_child = GTK_BIN (bin_child)->child;
+  }
+
+  if (gtk_widget_translate_coordinates (child, bin_child, 0, 0, &x, &y))
+    hildon_pannable_area_scroll_to (area, x, y);
+}
+
+/**
+ * hildon_pannable_area_scroll_to_child:
+ * @area: A #HildonPannableArea.
+ * @child: A #GtkWidget, descendant of @area.
+ *
+ * Smoothly scrolls until @child is visible inside @area. @child must
+ * be a descendant of @area. If you want to move inside a scrolleable
+ * widget, i. e. #GtkTreeview, it is better you use the
+ * hildon_pannable_area_scroll_to() function, you can calculate the
+ * position of the row using gtk_tree_view_get_background_area() and
+ * converting the coordinates with
+ * gtk_tree_view_convert_bin_window_to_tree_coords()
+ *
+ **/
+void
+hildon_pannable_area_jump_to_child (HildonPannableArea *area, GtkWidget *child)
+{
+  GtkWidget *bin_child;
+  gint x, y;
+
+  g_return_if_fail (HILDON_IS_PANNABLE_AREA (area));
+  g_return_if_fail (GTK_IS_WIDGET (child));
+  g_return_if_fail (gtk_widget_is_ancestor (child, GTK_WIDGET (area)));
+
+  /* We need to get to check the child of the alignment inside the
+   * area */
+  bin_child = GTK_BIN (GTK_BIN (area)->child)->child;
+
+  /* we check if we added a viewport */
+  if (GTK_IS_VIEWPORT (bin_child)) {
+    bin_child = GTK_BIN (bin_child)->child;
+  }
+
+  if (gtk_widget_translate_coordinates (child, bin_child, 0, 0, &x, &y))
+    hildon_pannable_area_jump_to (area, x, y);
 }
