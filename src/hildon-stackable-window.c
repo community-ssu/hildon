@@ -80,7 +80,7 @@ get_window_list                                 (GtkWidget *widget)
 }
 
 static GtkWidget*
-get_last_window                                 (GtkWidget *widget)
+get_previous_window_if_last                     (GtkWidget *widget)
 {
     GtkWidget *retval = NULL;
     GSList *windows = get_window_list (widget);
@@ -111,7 +111,7 @@ hildon_stackable_window_map                     (GtkWidget *widget)
     if (GTK_WIDGET_CLASS (hildon_stackable_window_parent_class)->map)
         GTK_WIDGET_CLASS (hildon_stackable_window_parent_class)->map (widget);
 
-    lastwin = get_last_window (widget);
+    lastwin = get_previous_window_if_last (widget);
 
     if (HILDON_IS_STACKABLE_WINDOW (lastwin) && GTK_WIDGET_VISIBLE (lastwin))
         gtk_widget_hide (lastwin);
@@ -125,7 +125,7 @@ hildon_stackable_window_unmap                   (GtkWidget *widget)
     if (GTK_WIDGET_CLASS (hildon_stackable_window_parent_class)->unmap)
         GTK_WIDGET_CLASS (hildon_stackable_window_parent_class)->unmap (widget);
 
-    lastwin = get_last_window (widget);
+    lastwin = get_previous_window_if_last (widget);
 
     if (HILDON_IS_STACKABLE_WINDOW (lastwin) && !GTK_WIDGET_VISIBLE (lastwin) &&
         !hildon_stackable_window_get_going_home (HILDON_STACKABLE_WINDOW (widget)))

@@ -1,3 +1,8 @@
+2008-06-26  Alberto Garcia  <agarcia@igalia.com>
+
+	* src/hildon-stackable-window.c (get_previous_window_if_last):
+	Renamed get_last_window()
+
 2008-06-26  Alejandro G. Castro <alex@igalia.com>
 
 	contributed and reviewed by: Claudio Saavedra <csaavedra@igalia.com>
