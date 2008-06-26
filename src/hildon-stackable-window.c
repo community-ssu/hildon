@@ -86,7 +86,11 @@ get_previous_window_if_last                     (GtkWidget *widget)
     GSList *iter = get_window_list (widget);
     GSList *previous = NULL;
 
-    g_return_val_if_fail (iter != NULL, NULL);
+    /* Return NULL if the window hasn't been added to the HildonProgram */
+    if (iter == NULL)
+    {
+        return NULL;
+    }
 
     /* Go to the end of the window list */
     while (iter->next != NULL)
@@ -137,9 +141,7 @@ hildon_stackable_window_unmap                   (GtkWidget *widget)
 static void
 hildon_stackable_window_unset_program           (HildonWindow *hwin)
 {
-    GSList *windows = get_window_list (GTK_WIDGET (hwin));
-    gint l = g_slist_length (windows);
-    GtkWidget *nextwin = GTK_WIDGET (g_slist_nth_data (windows, l - 2));
+    GtkWidget *nextwin = get_previous_window_if_last (GTK_WIDGET (hwin));
 
     if (HILDON_WINDOW_CLASS (hildon_stackable_window_parent_class)->unset_program)
         HILDON_WINDOW_CLASS (hildon_stackable_window_parent_class)->unset_program (hwin);
