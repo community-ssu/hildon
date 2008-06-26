@@ -110,46 +110,42 @@ get_previous_window_if_last                     (GtkWidget *widget)
 static void
 hildon_stackable_window_map                     (GtkWidget *widget)
 {
-    GtkWidget *lastwin;
+    GtkWidget *previous = get_previous_window_if_last (widget);
 
     if (GTK_WIDGET_CLASS (hildon_stackable_window_parent_class)->map)
         GTK_WIDGET_CLASS (hildon_stackable_window_parent_class)->map (widget);
 
-    lastwin = get_previous_window_if_last (widget);
-
-    if (HILDON_IS_STACKABLE_WINDOW (lastwin) && GTK_WIDGET_VISIBLE (lastwin))
-        gtk_widget_hide (lastwin);
+    if (HILDON_IS_STACKABLE_WINDOW (previous) && GTK_WIDGET_VISIBLE (previous))
+        gtk_widget_hide (previous);
 }
 
 static void
 hildon_stackable_window_unmap                   (GtkWidget *widget)
 {
-    GtkWidget *lastwin;
+    GtkWidget *previous = get_previous_window_if_last (widget);
 
     if (GTK_WIDGET_CLASS (hildon_stackable_window_parent_class)->unmap)
         GTK_WIDGET_CLASS (hildon_stackable_window_parent_class)->unmap (widget);
 
-    lastwin = get_previous_window_if_last (widget);
-
-    if (HILDON_IS_STACKABLE_WINDOW (lastwin) && !GTK_WIDGET_VISIBLE (lastwin) &&
+    if (HILDON_IS_STACKABLE_WINDOW (previous) && !GTK_WIDGET_VISIBLE (previous) &&
         !hildon_stackable_window_get_going_home (HILDON_STACKABLE_WINDOW (widget)))
     {
-        gtk_widget_show (lastwin);
+        gtk_widget_show (previous);
     }
 }
 
 static void
 hildon_stackable_window_unset_program           (HildonWindow *hwin)
 {
-    GtkWidget *nextwin = get_previous_window_if_last (GTK_WIDGET (hwin));
+    GtkWidget *previous = get_previous_window_if_last (GTK_WIDGET (hwin));
 
     if (HILDON_WINDOW_CLASS (hildon_stackable_window_parent_class)->unset_program)
         HILDON_WINDOW_CLASS (hildon_stackable_window_parent_class)->unset_program (hwin);
 
-    if (HILDON_IS_STACKABLE_WINDOW (nextwin) && !GTK_WIDGET_VISIBLE (nextwin) &&
+    if (HILDON_IS_STACKABLE_WINDOW (previous) && !GTK_WIDGET_VISIBLE (previous) &&
         !hildon_stackable_window_get_going_home (HILDON_STACKABLE_WINDOW (hwin)))
     {
-        gtk_widget_show (nextwin);
+        gtk_widget_show (previous);
     }
 }
 

@@ -2,6 +2,7 @@
 
 	* src/hildon-stackable-window.c (get_previous_window_if_last):
 	Renamed get_last_window()
+	(hildon_stackable_window_map, hildon_stackable_window_unmap)
 	(hildon_stackable_window_unset_program):
 	Simplified code.
 	(get_previous_window_if_last):
