@@ -508,19 +508,23 @@ hildon_pannable_axis_scroll (HildonPannableArea *area,
 
       dist = adjust->lower;
 
-      *overshooting = 1;
-      *scroll_to = -1;
-      *overshot_dist = CLAMP (*overshot_dist + *vel, 0, priv->overshoot_max);
-      gtk_widget_queue_resize (GTK_WIDGET (area));
+      if (priv->overshoot_max!=0) {
+        *overshooting = 1;
+        *scroll_to = -1;
+        *overshot_dist = CLAMP (*overshot_dist + *vel, 0, priv->overshoot_max);
+        gtk_widget_queue_resize (GTK_WIDGET (area));
+      }
     } else if (dist > adjust->upper - adjust->page_size) {
       if (s) *s = FALSE;
 
       dist = adjust->upper - adjust->page_size;
 
-      *overshooting = 1;
-      *scroll_to = -1;
-      *overshot_dist = CLAMP (*overshot_dist + *vel, -1*priv->overshoot_max, 0);
-      gtk_widget_queue_resize (GTK_WIDGET (area));
+      if (priv->overshoot_max!=0) {
+        *overshooting = 1;
+        *scroll_to = -1;
+        *overshot_dist = CLAMP (*overshot_dist + *vel, -1*priv->overshoot_max, 0);
+        gtk_widget_queue_resize (GTK_WIDGET (area));
+      }
     } else {
       if ((*scroll_to) != -1) {
         if (((inc < 0)&&(*scroll_to <= dist))||
@@ -531,12 +535,12 @@ hildon_pannable_axis_scroll (HildonPannableArea *area,
         }
       }
 
-      gtk_adjustment_set_value (adjust, dist);
-
       if (s) {
         *s = TRUE;
       }
     }
+
+    gtk_adjustment_set_value (adjust, dist);
   } else {
     if (!priv->clicked) {
       if (s) *s = TRUE;
@@ -1279,7 +1283,7 @@ hildon_pannable_area_set_property (GObject * object, guint property_id,
   case PROP_INITIAL_HINT:
     priv->initial_hint = g_value_get_boolean (value);
     break;
-    
+
   default:
     G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
   }
@@ -1387,9 +1391,9 @@ hildon_pannable_area_map (GtkWidget * widget)
     gdk_window_show (priv->event_window);
 
   if (priv->initial_hint) {
-    
-    if ((priv->mode == HILDON_PANNABLE_AREA_MODE_AUTO) ||
-        (priv->mode == HILDON_PANNABLE_AREA_MODE_ACCEL)) {
+    if ((priv->overshoot_max != 0) &&
+        ((priv->mode == HILDON_PANNABLE_AREA_MODE_AUTO) ||
+         (priv->mode == HILDON_PANNABLE_AREA_MODE_ACCEL))) {
       vscroll = (priv->vadjust->upper - priv->vadjust->lower >
                  priv->vadjust->page_size) ? TRUE : FALSE;
       hscroll = (priv->hadjust->upper - priv->hadjust->lower >
@@ -1403,10 +1407,10 @@ hildon_pannable_area_map (GtkWidget * widget)
         priv->overshot_dist_x = priv->overshoot_max;
         priv->vel_x = priv->vmax * 0.1;
       }
-      
+
       if (vscroll || hscroll) {
         priv->idle_id = g_timeout_add ((gint) (1000.0 / (gdouble) priv->sps),
-                                       (GSourceFunc) 
+                                       (GSourceFunc)
                                        hildon_pannable_area_timeout, widget);
       }
     }
@@ -1414,9 +1418,9 @@ hildon_pannable_area_map (GtkWidget * widget)
     if (vscroll || hscroll) {
       priv->scroll_indicator_alpha = 1;
 
-      priv->scroll_indicator_timeout = 
+      priv->scroll_indicator_timeout =
         g_timeout_add ((gint) (1000.0 / (gdouble) priv->sps),
-                       (GSourceFunc) hildon_pannable_area_scroll_indicator_fade, 
+                       (GSourceFunc) hildon_pannable_area_scroll_indicator_fade,
                        widget);
     }
   }
@@ -1476,9 +1480,6 @@ hildon_pannable_area_size_allocate (GtkWidget * widget,
   if (priv->overshot_dist_y > 0) {
     child_allocation.y += priv->overshot_dist_y;
     child_allocation.height -= priv->overshot_dist_y;
-
-    gtk_adjustment_set_value (priv->vadjust, priv->vadjust->lower);
-
   } else if (priv->overshot_dist_y < 0) {
     child_allocation.height += priv->overshot_dist_y;
   }
@@ -1486,9 +1487,6 @@ hildon_pannable_area_size_allocate (GtkWidget * widget,
   if (priv->overshot_dist_x > 0) {
     child_allocation.x += priv->overshot_dist_x;
     child_allocation.width -= priv->overshot_dist_x;
-
-    gtk_adjustment_set_value (priv->hadjust, priv->hadjust->lower);
-
   } else if (priv->overshot_dist_x < 0) {
     child_allocation.width += priv->overshot_dist_x;
   }
@@ -1645,7 +1643,7 @@ hildon_pannable_area_class_init (HildonPannableAreaClass * klass)
 				   PROP_OVERSHOOT_MAX,
 				   g_param_spec_int ("overshoot",
                                                      "Overshoot distance",
-                                                     "Space we allow the widget to pass over its limits when hitting the edges.",
+                                                     "Space we allow the widget to pass over its limits when hitting the edges, set 0 in order to deactivate overshooting.",
                                                      G_MININT, G_MAXINT, 150,
                                                      G_PARAM_READWRITE |
                                                      G_PARAM_CONSTRUCT));

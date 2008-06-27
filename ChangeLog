@@ -1,5 +1,24 @@
+2008-06-27  Alejandro G. Castro <alex@igalia.com>
+
+	* src/hildon-pannable-area.c: Fixed problem when overshoot_max is
+	zero, we are going to use that property in order to deactivate the
+	overshooting
+	(hildon_pannable_axis_scroll),
+	(hildon_pannable_area_size_allocate): Added conditions to control
+	when overshoot_max is zero. Moved the gtk_adjustment_set_value
+	call, now it is called in all situations and we can remove calls
+	in the allocate method.
+	(hildon_pannable_area_map): Control the situation when
+	overshoot_max is zero, we do not need the timeout.
+	(hildon_pannable_area_class_init): Added documentation in order to
+	point out that setting zero to overshoot_max means deactivate
+	overshooting.
+
+	NOTE: removed trailing whitespaces from my previous comments of
+	the Changelog.
+
 2008-06-26  Claudio Saavedra  <csaavedra@igalia.com>
- 
+
 	* src/hildon-pannable-area.c
 	(hildon_pannable_area_get_property),
 	(hildon_pannable_area_set_property),
@@ -34,18 +53,18 @@
 
 	* src/hildon-pannable-area.c
 	(hildon_pannable_area_button_press_cb),
-	(hildon_pannable_axis_scroll), 
+	(hildon_pannable_axis_scroll),
 	(hildon_pannable_area_scroll),
 	(hildon_pannable_area_timeout),
 	(hildon_pannable_calculate_vel_factor),
 	(hildon_pannable_area_get_property),
 	(hildon_pannable_area_set_property),
-	(hildon_pannable_area_class_init), 
+	(hildon_pannable_area_class_init),
 	(hildon_pannable_area_init),
-	(hildon_pannable_area_scroll_to), 
+	(hildon_pannable_area_scroll_to),
 	(hildon_pannable_area_jump_to),
 	(hildon_pannable_area_scroll_to_child),
-	(hildon_pannable_area_jump_to_child):	
+	(hildon_pannable_area_jump_to_child):
 	* src/hildon-pannable-area.h: Added the new API functions:
 	hildon_pannable_area_scroll_to, hildon_pannable_area_jump_to,
 	hildon_pannable_area_scroll_to_child,
@@ -204,26 +223,26 @@
 	* src/hildon-pannable-area.c:
 	(hildon_pannable_area_button_press_cb): removed the conditions to
 	avoid clicks when overshooting. It is not required
-	
+
 	(hildon_pannable_axis_scroll): Added BOUNCE_STEPS
 	define. Refatored and reviewed the code, now we do not need to
 	manage velocity in motion_notify.
-	
+
 	(hildon_pannable_area_motion_notify_cb): We have moved the code
 	that controls the area_scroll to the axis_scroll function and get
 	rid of duplicated code.
- 
+
 	(hildon_pannable_area_scroll): Remove the ELASTICITY define.
-	
+
 	(hildon_pannable_area_button_release_cb): Added BOUNCE_STEPS.
-	
+
 	(hildon_pannable_draw_vscroll),
 	(hildon_pannable_draw_hscroll): Fixed the problems with the
 	scrollbar drawing, now we do not use two surfaces, it is easier
 	and saves resources.
- 	
+
 	(hildon_pannable_area_get_property): Style modification.
-	
+
 	(hildon_pannable_area_class_init): Changed some default values.
 
 2008-06-12  Claudio Saavedra  <csaavedra@igalia.com>
@@ -338,49 +357,49 @@
 	Added fading scrollbars and adapted all the overshooting code to
 	horizontal scrolling. We have also fixed bugs with overshooting
 	and current fading implementation.
-		
+
 	* src/hildon-pannable-area.c
 	(hildon_pannable_area_scroll_indicator_fade): Time out function
 	used to change the transparency of the scrollbars.
-	
+
 	(hildon_pannable_area_button_press_cb): Added horizontal overshot
 	control and fixed a problem with fading, we now remove the fade
 	timeout before adding a new one.
-	
+
 	(hildon_pannable_axis_scroll):
 	(hildon_pannable_area_scroll):
 	(hildon_pannable_area_timeout): Added this functions so we can use
 	the scroll code both for vertical and horizontal.
-	
+
 	(hildon_pannable_area_motion_notify_cb):
 	(hildon_pannable_area_button_release_cb): Added the horizontal
 	scrolling control, fixed a problem with the overshooting timeout.
 
 	(rgb_from_gdkcolor): Added this function, it is used in the cairo
 	painting of the scrolls.
-	
+
 	(hildon_pannable_draw_vscroll):
 	(hildon_pannable_draw_hscroll):
 	(hildon_pannable_area_expose_event):
 	Draw both scrollbars and rectangles in the overshooting area.
-	
+
 	(hildon_pannable_area_get_property):
 	(hildon_pannable_area_set_property):
 	Modified the overshoot property to overshoot_max
-	
+
 	(hildon_pannable_area_map):
 	Replaced the comments symbols.
-	
+
 	(hildon_pannable_area_size_allocate):
 	(hildon_pannable_area_class_init):
 	(hildon_pannable_area_init): Added horizontal scroll, fading
 	effect properties, fixed a problem when overshooting in the bottom
 	of the widget.
- 
+
 	* examples/hildon-pannable-area-example.c:
 	(get_sawtooth_label): Now we use smaller sawtooths, the effect
 	looks better in the example.
-	
+
 2008-06-03  Alberto Garcia  <agarcia@igalia.com>
 
 	* src/hildon-window.c
@@ -402,21 +421,21 @@
 
 	* hildon-pannable-area.c: Added the overshoot property and removed
 	the OVERSHOOT define. Fixed an indent style error.
-	(hildon_pannable_area_motion_notify_cb):	
+	(hildon_pannable_area_motion_notify_cb):
 	(hildon_pannable_area_get_property):
 	(hildon_pannable_area_set_property): Add overshoot property.
-	
+
 	(hildon_pannable_area_scroll): replaced OVERSHOOT define with
 	overshoot property.
-	
-	(hildon_pannable_area_class_init): Installed the new property.	
+
+	(hildon_pannable_area_class_init): Installed the new property.
 
 	* hildon-pannable-area-example.c: Added a sawtooth function, this
 	way it is easier to check the movement in the pannable.
 	(get_sawtooth_label): Added this function.
 	(main): Now we get the labels from the new get_sawtooth_label
 	function.
- 	
+
 2008-05-26  Alberto Garcia  <agarcia@igalia.com>
 
 	* src/hildon-app-menu.h
@@ -458,13 +477,13 @@
 	Rearranged the inheritance of the pannable area, now it inherits
 	from GtkBin. This will allow us to control the event_window and
 	the allocation process of the widget, required for some effects.
-	
+
 	* src/hildon-pannable-area.h: Replaced GtkEventBox structures with
 	GtkBin structures.  * src/hildon-pannable-area.c: Added the
 	event_window variable.
 	(hildon_pannable_area_button_press_cb):
 	(hildon_pannable_area_button_release_cb):
-	(hildon_pannable_area_motion_notify_cb): 
+	(hildon_pannable_area_motion_notify_cb):
 	Changed the signature of the method, now we override the event
 	callback instead of connecting to the signal.
 
@@ -473,19 +492,19 @@
 	(hildon_pannable_area_map):
 	(hildon_pannable_area_unmap):
 	(hildon_pannable_area_size_allocate):
-	Added functions to control the widget construction. We add a 
-	INPUT_ONLY window and we put it over the widgets inside the 
+	Added functions to control the widget construction. We add a
+	INPUT_ONLY window and we put it over the widgets inside the
 	container, this event_window handles the events.
 
 	(hildon_pannable_area_class_init):
-	Replaced the signal connections with overrides of the event 
+	Replaced the signal connections with overrides of the event
 	callbacks.
-	
+
 2008-05-20 Alejandro G. Castro <alex@igalia.com>
 
 	Bouncing effect added when touching the borders, you can change
 	the elasticity of the border changing the ELASTICITY define.
-	
+
 	* src/hildon-pannable-area.c: Added ELASTICITY define.
 	(hildon_pannable_area_timeout): Added inverse velocity when
 	touching the border of the child widget, that causes a bounce.
@@ -496,18 +515,18 @@
 	get the list of window children. Apparently the effect is the
 	same, we have to be careful and check if this breaks something in
 	any corner case.
-	
+
 	* src/hildon-pannable-area.c:
 	(get_ordered_children): Removed this function.
 	(hildon_pannable_area_get_topmost): Replaced the ad-hoc search of
 	the children windows function with gdk_window_get_children.
-	
+
 2008-05-20 Alejandro G. Castro <alex@igalia.com>
 
 	* src/hildon-pannable-area.c:
 	(hildon_pannable_area_dispose): Fixed a crash when closing the
 	window and kinetics is activated.
-	
+
 2008-05-19  Alberto Garcia  <agarcia@igalia.com>
 
 	* src/hildon-pannable-area.h
@@ -521,7 +540,7 @@
 	doing a gimp like calculation. The velocity is calculated in each
 	motion event using the last velocity and the current one, the
 	SMOOTH_FACTOR controls the percentage of the new velocity we use.
-	
+
 	* src/hildon-pannable-area.c: Replaced the time based algorithm
 	for the AUTO mode.
 	(hildon_pannable_area_motion_notify_cb): now we do not launch the
@@ -531,7 +550,7 @@
 	case we are in AUTO mode. There are still some constants here that
 	come from the old implementation that should be reviewed and
 	handled properly.
-   	
+
 2008-05-15  Alberto Garcia  <agarcia@igalia.com>
 
 	* doc/hildon-docs.sgml
