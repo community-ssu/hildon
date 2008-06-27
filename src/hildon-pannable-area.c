@@ -36,9 +36,9 @@
  * todo items should be marked with a number and a relative position in the code where they are relevant.
  *
  * 1  x Make OVERSHOOT a property, the default of this property is fixed
- * 2  - Add method of scrolling to the selected element of a treeview and have it align to half way point
+ * 2  x Add method of scrolling to the selected element of a treeview and have it align to half way point
  * 3  - Add a property for initial scrolling of the widget, so it scrolls on realize
- * 4  - Add a method of removing children from the alignment, gtk-container-remove override?
+ * 4  X Add a method of removing children from the alignment, gtk-container-remove override?
  * 5  x Remove elasticity if it is no longer required?
  * 6  x Reduce calls to queue_resize to improve performance
  * 7  x Make 'fast' factor a property
@@ -47,9 +47,9 @@
  * 10 x Delay click mode (only send synthetic clicks on mouse-up, as in previous
  *      versions.
  * 11 - 'Physical' mode for acceleration scrolling
- * 12 - Add a property to disable overshoot entirely
+ * 12 X Add a property to disable overshoot entirely
  * 13 x Fix problem with kinetics when pannable has been in overshoot (a flick stops rather than continues) (Search TODO 13)
- * 14 - Review the other modes, probably they are not working well after overshooting patches
+ * 14 x Review the other modes, probably they are not working well after overshooting patches
  * 15 x Very small scrollbars when overshooting are not correctly rendered (fixed adding a minimum size)
  */
 
@@ -1765,21 +1765,31 @@ hildon_pannable_area_add_with_viewport (HildonPannableArea * area,
  * @y: The y coordinate of the destination point or -1 to ignore this axis.
  *
  * Smoothly scrolls @area to ensure that (@x, @y) is a visible point
- * on the widget. To move only in one coordinate, you can set the other one
- * to -1. Notice that in PUSH mode this function works like jump_to.
+ * on the widget. To move in only one coordinate, you must set the other one
+ * to -1. Notice that, in %HILDON_PANNABLE_AREA_MODE_PUSH mode, this function
+ * works just like hildon_pannable_area_jump_to().
  *
- * This is and example of how to calculate the position of a row in a
- * #GtkTreeview:
- * Here is a simple example:
+ * This function is useful if you need to present the user with a particular
+ * element inside a scrollable widget, like #GtkTreeView. For instance,
+ * the following example shows how to scroll inside a #GtkTreeView to
+ * make visible an item, indicated by the #GtkTreeIter @iter.
+ *
  * <informalexample><programlisting>
+ *  GtkTreePath *path;
+ *  GdkRectangle *rect;
+ *
  *  path = gtk_tree_model_get_path (model, &iter);
  *  gtk_tree_view_get_background_area (GTK_TREE_VIEW (treeview),
  *                                     path, NULL, &rect);
  *  gtk_tree_view_convert_bin_window_to_tree_coords (GTK_TREE_VIEW (treeview),
  *                                                   0, rect.y, NULL, &y);
- *  hildon_pannable_area_scroll_to (HILDON_PANNABLE_AREA (ctx->panarea),
- *                                  -1, y - rect.height);
+ *  hildon_pannable_area_scroll_to (panarea, -1, y);
+ *  gtk_tree_path_free (path);
  * </programlisting></informalexample>
+ *
+ * If you want to present a child widget in simpler scenarios,
+ * use hildon_pannable_area_scroll_to_child() instead.
+ *
  **/
 void
 hildon_pannable_area_scroll_to (HildonPannableArea *area,
@@ -1855,11 +1865,11 @@ hildon_pannable_area_scroll_to (HildonPannableArea *area,
  * @x: The x coordinate of the destination point or -1 to ignore this axis.
  * @y: The y coordinate of the destination point or -1 to ignore this axis.
  *
- * Jumps the position of the @area to ensure that (@x, @y) is a
- * visible point on the widget, . To move only in one coordinate, you
- * can set the other one to -1. Check hildon_pannable_area_scroll_to()
- * function for an example of how to calculate position of children in
- * complex widgets like #GtkTreeview.
+ * Jumps the position of @area to ensure that (@x, @y) is a visible
+ * point in the widget. In order to move in only one coordinate, you
+ * must set the other one to -1. See hildon_pannable_area_scroll_to()
+ * function for an example of how to calculate the position of
+ * children in scrollable widgets like #GtkTreeview.
  *
  **/
 void
@@ -1931,12 +1941,8 @@ hildon_pannable_area_jump_to (HildonPannableArea *area,
  * @child: A #GtkWidget, descendant of @area.
  *
  * Smoothly scrolls until @child is visible inside @area. @child must
- * be a descendant of @area. If you want to move inside a scrolleable
- * widget, i. e. #GtkTreeview, it is better you use the
- * hildon_pannable_area_scroll_to() function, you can calculate the
- * position of the row using gtk_tree_view_get_background_area() and
- * converting the coordinates with
- * gtk_tree_view_convert_bin_window_to_tree_coords()
+ * be a descendant of @area. If you need to scroll inside a scrollable
+ * widget, e.g., #GtkTreeview, see hildon_pannable_area_scroll_to().
  *
  **/
 void
@@ -1963,17 +1969,13 @@ hildon_pannable_area_scroll_to_child (HildonPannableArea *area, GtkWidget *child
 }
 
 /**
- * hildon_pannable_area_scroll_to_child:
+ * hildon_pannable_area_jump_to_child:
  * @area: A #HildonPannableArea.
  * @child: A #GtkWidget, descendant of @area.
  *
- * Smoothly scrolls until @child is visible inside @area. @child must
- * be a descendant of @area. If you want to move inside a scrolleable
- * widget, i. e. #GtkTreeview, it is better you use the
- * hildon_pannable_area_scroll_to() function, you can calculate the
- * position of the row using gtk_tree_view_get_background_area() and
- * converting the coordinates with
- * gtk_tree_view_convert_bin_window_to_tree_coords()
+ * Jumps to make sure @child is visible inside @area. @child must
+ * be a descendant of @area. If you want to move inside a scrollable
+ * widget, like, #GtkTreeview, see hildon_pannable_area_scroll_to().
  *
  **/
 void
