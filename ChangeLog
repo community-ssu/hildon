@@ -1,6 +1,38 @@
 2008-06-27  Alejandro G. Castro <alex@igalia.com>
 
 	* src/hildon-pannable-area.c,
+	(hildon_pannable_area_button_press_cb),
+	(hildon_pannable_area_refresh),
+	(hildon_pannable_area_scroll),
+	(hildon_pannable_area_motion_notify_cb),
+	(hildon_pannable_area_button_release_cb),
+	(hildon_pannable_area_expose_event),
+	(hildon_pannable_area_add),
+	(hildon_pannable_area_remove),
+	(hildon_pannable_area_realize),
+	(hildon_pannable_area_size_allocate),
+	(hildon_pannable_area_class_init),
+	(hildon_pannable_area_init),
+	(hildon_pannable_area_scroll_to_child),
+	(hildon_pannable_area_jump_to_child): Fixed the problem of
+	removing the child from the GtkBin, we have rearranged the widget
+	hierarchy, now there is no GtkAlignment which was not doing
+	anything interesting but breaking some of the assumptions of
+	GtkContainer. Now developers if they want to add a GtkAlignment
+	they could, but it is not inside the area.
+
+	We had to review the whole allocation/expose process, now it is
+	improved and we save at least three signals which would be saving
+	some time when rendering the widget. The allocation of the
+	scrollbars is now made in the allocate method as usual.
+
+	We have also added some conditions in order to control when there
+	is no child of the pannable area. Maybe we will need more work
+	here.
+
+2008-06-27  Alejandro G. Castro <alex@igalia.com>
+
+	* src/hildon-pannable-area.c,
 	(hildon_pannable_area_dispose): Released the fade-out timeout when
 	disposing the widget.
 
