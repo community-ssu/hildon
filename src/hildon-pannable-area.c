@@ -37,7 +37,7 @@
  *
  * 1  x Make OVERSHOOT a property, the default of this property is fixed
  * 2  x Add method of scrolling to the selected element of a treeview and have it align to half way point
- * 3  - Add a property for initial scrolling of the widget, so it scrolls on realize
+ * 3  x Add a property for initial scrolling of the widget, so it scrolls on realize
  * 4  X Add a method of removing children from the alignment, gtk-container-remove override?
  * 5  x Remove elasticity if it is no longer required?
  * 6  x Reduce calls to queue_resize to improve performance
@@ -108,6 +108,7 @@ struct _HildonPannableAreaPrivate {
   gint scroll_indicator_event_interrupt;
   gint scroll_delay_counter;
   gint overshoot_max;
+  gboolean initial_hint;
 
   GtkWidget *align;
   gboolean hscroll;
@@ -140,7 +141,8 @@ enum {
   PROP_VINDICATOR,
   PROP_HINDICATOR,
   PROP_OVERSHOOT_MAX,
-  PROP_SCROLL_TIME
+  PROP_SCROLL_TIME,
+  PROP_INITIAL_HINT
 };
 
 static GdkWindow *hildon_pannable_area_get_topmost (GdkWindow * window,
@@ -1211,6 +1213,9 @@ hildon_pannable_area_get_property (GObject * object, guint property_id,
   case PROP_SCROLL_TIME:
     g_value_set_double (value, priv->scroll_time);
     break;
+  case PROP_INITIAL_HINT:
+    g_value_set_boolean (value, priv->initial_hint);
+    break;
 
   default:
     G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
@@ -1271,7 +1276,10 @@ hildon_pannable_area_set_property (GObject * object, guint property_id,
 
     hildon_pannable_calculate_vel_factor (HILDON_PANNABLE_AREA (object));
     break;
-
+  case PROP_INITIAL_HINT:
+    priv->initial_hint = g_value_get_boolean (value);
+    break;
+    
   default:
     G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
   }
@@ -1366,6 +1374,7 @@ static void
 hildon_pannable_area_map (GtkWidget * widget)
 {
   HildonPannableAreaPrivate *priv;
+  gboolean hscroll, vscroll;
 
   priv = PANNABLE_AREA_PRIVATE (widget);
 
@@ -1377,20 +1386,40 @@ hildon_pannable_area_map (GtkWidget * widget)
   if (priv->event_window != NULL && priv->enabled)
     gdk_window_show (priv->event_window);
 
-  if (priv->mode == HILDON_PANNABLE_AREA_MODE_AUTO) {
-    /* TODO 3: This should only be active if this hint has been set
-     *priv->overshot_dist_y = priv->overshoot_max;
-     *
-     *priv->vel_y = priv->vmax * 0.1;
-     *
-     * priv->idle_id = g_timeout_add ((gint) (1000.0 / (gdouble) priv->sps),
-     *				   (GSourceFunc)
-     *				   hildon_pannable_area_timeout, widget);
-    */
-  }
+  if (priv->initial_hint) {
+    
+    if ((priv->mode == HILDON_PANNABLE_AREA_MODE_AUTO) ||
+        (priv->mode == HILDON_PANNABLE_AREA_MODE_ACCEL)) {
+      vscroll = (priv->vadjust->upper - priv->vadjust->lower >
+                 priv->vadjust->page_size) ? TRUE : FALSE;
+      hscroll = (priv->hadjust->upper - priv->hadjust->lower >
+                 priv->hadjust->page_size) ? TRUE : FALSE;
+      /* If scrolling is possible in both axes, only hint about scrolling in
+         the vertical one. */
+      if (vscroll) {
+        priv->overshot_dist_y = priv->overshoot_max;
+        priv->vel_y = priv->vmax * 0.1;
+      } else if (hscroll) {
+        priv->overshot_dist_x = priv->overshoot_max;
+        priv->vel_x = priv->vmax * 0.1;
+      }
+      
+      if (vscroll || hscroll) {
+        priv->idle_id = g_timeout_add ((gint) (1000.0 / (gdouble) priv->sps),
+                                       (GSourceFunc) 
+                                       hildon_pannable_area_timeout, widget);
+      }
+    }
 
-  priv->scroll_indicator_timeout = g_timeout_add ((gint) (1000.0 / (gdouble) priv->sps),
-						  (GSourceFunc) hildon_pannable_area_scroll_indicator_fade, widget);
+    if (vscroll || hscroll) {
+      priv->scroll_indicator_alpha = 1;
+
+      priv->scroll_indicator_timeout = 
+        g_timeout_add ((gint) (1000.0 / (gdouble) priv->sps),
+                       (GSourceFunc) hildon_pannable_area_scroll_indicator_fade, 
+                       widget);
+    }
+  }
 }
 
 static void
@@ -1631,6 +1660,14 @@ hildon_pannable_area_class_init (HildonPannableAreaClass * klass)
 							G_PARAM_READWRITE |
 							G_PARAM_CONSTRUCT));
 
+  g_object_class_install_property (object_class,
+ 				   PROP_INITIAL_HINT,
+ 				   g_param_spec_boolean ("initial-hint",
+ 							 "Initial hint",
+ 							 "Whether to hint the user about the pannability of the container.",
+ 							 TRUE,
+							 G_PARAM_READWRITE |
+ 							 G_PARAM_CONSTRUCT));
 
   gtk_widget_class_install_style_property (widget_class,
 					   g_param_spec_uint
@@ -1660,7 +1697,7 @@ hildon_pannable_area_init (HildonPannableArea * self)
   priv->idle_id = 0;
   priv->vel_x = 0.0;
   priv->vel_y = 0.0;
-  priv->scroll_indicator_alpha = 1;
+  priv->scroll_indicator_alpha = 0;
   priv->scroll_indicator_timeout = 0;
   priv->scroll_indicator_event_interrupt = 0;
   priv->scroll_delay_counter = 0;

@@ -1,4 +1,15 @@
 2008-06-26  Claudio Saavedra  <csaavedra@igalia.com>
+ 
+	* src/hildon-pannable-area.c
+	(hildon_pannable_area_get_property),
+	(hildon_pannable_area_set_property),
+	(hildon_pannable_area_map),
+	(hildon_pannable_area_class_init),
+	(hildon_pannable_area_init): Add a boolean "initial-hint" property
+	to cause the widget give a hint about its panning abilities upon
+	realization.
+
+2008-06-26  Claudio Saavedra  <csaavedra@igalia.com>
 
 	* src/hildon-pannable-area.c: Several documentation improvements.
 
