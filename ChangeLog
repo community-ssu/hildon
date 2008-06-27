@@ -1,5 +1,11 @@
 2008-06-27  Alejandro G. Castro <alex@igalia.com>
 
+	* src/hildon-pannable-area.c,
+	(hildon_pannable_area_dispose): Released the fade-out timeout when
+	disposing the widget.
+
+2008-06-27  Alejandro G. Castro <alex@igalia.com>
+
 	* src/hildon-pannable-area.c: Fixed problem when overshoot_max is
 	zero, we are going to use that property in order to deactivate the
 	overshooting

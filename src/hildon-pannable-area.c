@@ -1299,6 +1299,11 @@ hildon_pannable_area_dispose (GObject * object)
     priv->idle_id = 0;
   }
 
+  if (priv->scroll_indicator_timeout){
+    g_source_remove (priv->scroll_indicator_timeout);
+    priv->scroll_indicator_timeout = 0;
+  }
+
   if (priv->hadjust) {
     g_object_unref (priv->hadjust);
     priv->hadjust = NULL;
