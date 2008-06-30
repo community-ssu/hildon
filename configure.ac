@@ -1,4 +1,4 @@
-AC_INIT([Hildon gtk widgets], [2.1.1], [xan.lopez@nokia.com], [hildon])
+AC_INIT([Hildon gtk widgets], [2.1.2], [karl.lattimer@nokia.com], [hildon])
 AC_CANONICAL_SYSTEM
 
 AM_CONFIG_HEADER(config.h)

@@ -1,3 +1,13 @@
+libhildon (2.1.2-1) gutsy; urgency=low
+
+  * Update version number to 2.1.2-1
+  * configure.ac 2.1.2
+  * Too many individual changes for them to all be relevant here, many widgets
+    added, many widgets have been changed. A full list of additional/changed  widgets
+    can be found in the Hildon 2.2 widget UI spec.
+
+ -- Karl Lattimer <karl.lattimer@nokia.com>  Mon, 30 Jun 2008 13:55:29 +0300 
+
 libhildon (2.1.1-1) gutsy; urgency=low
 
   * Update version number to 2.1.1-1
