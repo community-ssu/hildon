@@ -42,6 +42,8 @@ noinst_PROGRAMS				= hildon-window-example				\
 					  hildon-pannable-area-example			\
 					  hildon-pannable-area-example-2		\
 					  hildon-pannable-area-example-3		\
+					  hildon-pannable-area-touch-list-example	\
+					  hildon-pannable-area-touch-grid-example	\
 					  hildon-logical-color-example			\
 					  hildon-app-menu-example			\
 					  hildon-stackable-window-example		\
@@ -260,6 +262,16 @@ hildon_pannable_area_example_2_SOURCES		= hildon-pannable-area-example-2.c
 hildon_pannable_area_example_3_LDADD		= $(HILDON_OBJ_LIBS)
 hildon_pannable_area_example_3_CFLAGS		= $(HILDON_OBJ_CFLAGS)
 hildon_pannable_area_example_3_SOURCES		= hildon-pannable-area-example-3.c
+
+# Hildon pannable area touch list
+hildon_pannable_area_touch_list_example_LDADD	= $(HILDON_OBJ_LIBS)
+hildon_pannable_area_touch_list_example_CFLAGS	= $(HILDON_OBJ_CFLAGS)
+hildon_pannable_area_touch_list_example_SOURCES	= hildon-pannable-area-touch-list-example.c
+
+# Hildon pannable area touch grid
+hildon_pannable_area_touch_grid_example_LDADD	= $(HILDON_OBJ_LIBS)
+hildon_pannable_area_touch_grid_example_CFLAGS	= $(HILDON_OBJ_CFLAGS)
+hildon_pannable_area_touch_grid_example_SOURCES	= hildon-pannable-area-touch-grid-example.c
 
 # Hildon app menu
 hildon_app_menu_example_LDADD		= $(HILDON_OBJ_LIBS)

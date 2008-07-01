@@ -1,3 +1,11 @@
+2008-07-01  Alberto Garcia  <agarcia@igalia.com>
+
+	* examples/Makefile.am
+	* examples/hildon-pannable-area-touch-grid-example.c
+	* examples/hildon-pannable-area-touch-list-example.c: Examples of
+	the Hildon Touch List and Hildon Touch Grid using the
+	HildonPannableArea widget.
+
 2008-06-27  Alejandro G. Castro <alex@ig\alia.com>
 
 	* src/hildon-pannable-area.c,
