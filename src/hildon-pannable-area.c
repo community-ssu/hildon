@@ -314,7 +314,7 @@ hildon_pannable_area_button_press_cb (GtkWidget * widget,
 
   if ((!priv->enabled) || (event->button != 1) ||
       ((event->time == priv->last_time) &&
-       (priv->last_type == 1)) || (GTK_BIN (widget)->child == NULL))
+       (priv->last_type == 1)) || (gtk_bin_get_child (GTK_BIN (widget)) == NULL))
     return TRUE;
 
   priv->scroll_indicator_event_interrupt = 1;
@@ -348,7 +348,7 @@ hildon_pannable_area_button_press_cb (GtkWidget * widget,
   if ((ABS (priv->vel_x) < (priv->vmax * priv->vfast_factor)) &&
       (ABS (priv->vel_y) < (priv->vmax * priv->vfast_factor)))
     priv->child =
-      hildon_pannable_area_get_topmost (GTK_BIN (widget)->child->window,
+      hildon_pannable_area_get_topmost (gtk_bin_get_child (GTK_BIN (widget))->window,
 					event->x, event->y, &x, &y);
   else
     priv->child = NULL;
@@ -358,7 +358,7 @@ hildon_pannable_area_button_press_cb (GtkWidget * widget,
   priv->vel_x = 0;
   priv->vel_y = 0;
 
-  if ((priv->child) && (priv->child != GTK_BIN (widget)->child->window)) {
+  if ((priv->child) && (priv->child != gtk_bin_get_child (GTK_BIN (widget))->window)) {
 
     g_object_add_weak_pointer ((GObject *) priv->child,
 			       (gpointer *) & priv->child);
@@ -407,7 +407,7 @@ static void
 hildon_pannable_area_refresh (HildonPannableArea * area)
 {
   HildonPannableAreaPrivate *priv = PANNABLE_AREA_PRIVATE (area);
-  GtkWidget *widget = GTK_BIN (area)->child;
+  GtkWidget *widget = gtk_bin_get_child (GTK_BIN (area));
   gboolean vscroll, hscroll;
 
   if (!widget) {
@@ -606,7 +606,7 @@ hildon_pannable_area_scroll (HildonPannableArea *area,
 
   priv = PANNABLE_AREA_PRIVATE (area);
 
-  if (GTK_BIN (area)->child == NULL)
+  if (gtk_bin_get_child (GTK_BIN (area)) == NULL)
     return;
 
   vscroll = (priv->vadjust->upper - priv->vadjust->lower >
@@ -704,7 +704,7 @@ hildon_pannable_area_motion_notify_cb (GtkWidget * widget,
   gdouble delta, rawvel_x, rawvel_y;
   gint direction_x, direction_y;
 
-  if (GTK_BIN (widget)->child == NULL)
+  if (gtk_bin_get_child (GTK_BIN (widget)) == NULL)
     return TRUE;
 
   if ((!priv->enabled) || (!priv->clicked) ||
@@ -825,7 +825,7 @@ hildon_pannable_area_button_release_cb (GtkWidget * widget,
   gint x, y;
   GdkWindow *child;
 
-  if (GTK_BIN (widget)->child == NULL)
+  if (gtk_bin_get_child (GTK_BIN (widget)) == NULL)
     return TRUE;
 
   priv->scroll_indicator_event_interrupt = 0;
@@ -879,7 +879,7 @@ hildon_pannable_area_button_release_cb (GtkWidget * widget,
   }
 
   child =
-    hildon_pannable_area_get_topmost (GTK_BIN (widget)->child->window,
+    hildon_pannable_area_get_topmost (gtk_bin_get_child (GTK_BIN (widget))->window,
 				      event->x, event->y, &x, &y);
 
   event = (GdkEventButton *) gdk_event_copy ((GdkEvent *) event);
@@ -1042,7 +1042,7 @@ hildon_pannable_area_expose_event (GtkWidget * widget, GdkEventExpose * event)
   GdkColor back_color = widget->style->bg[GTK_STATE_NORMAL];
   GdkColor scroll_color = widget->style->base[GTK_STATE_SELECTED];
 
-  if (GTK_BIN (widget)->child) {
+  if (gtk_bin_get_child (GTK_BIN (widget))) {
 
     if (priv->scroll_indicator_alpha > 0) {
       if (priv->vscroll) {
@@ -1146,7 +1146,7 @@ hildon_pannable_area_remove (GtkContainer *container, GtkWidget *child)
 {
   g_return_if_fail (HILDON_IS_PANNABLE_AREA (container));
   g_return_if_fail (child != NULL);
-  g_return_if_fail (GTK_BIN (container)->child == child);
+  g_return_if_fail (gtk_bin_get_child (GTK_BIN (container)) == child);
 
   gtk_widget_set_scroll_adjustments (child, NULL, NULL);
 
@@ -2025,15 +2025,15 @@ hildon_pannable_area_jump_to_child (HildonPannableArea *area, GtkWidget *child)
   g_return_if_fail (GTK_IS_WIDGET (child));
   g_return_if_fail (gtk_widget_is_ancestor (child, GTK_WIDGET (area)));
 
-  if (GTK_BIN (area)->child == NULL)
+  if (gtk_bin_get_child (GTK_BIN (area)) == NULL)
     return;
 
   /* We need to get to check the child of the inside the area */
-  bin_child = GTK_BIN (area)->child;
+  bin_child = gtk_bin_get_child (GTK_BIN (area));
 
   /* we check if we added a viewport */
   if (GTK_IS_VIEWPORT (bin_child)) {
-    bin_child = GTK_BIN (bin_child)->child;
+    bin_child = gtk_bin_get_child (GTK_BIN (bin_child));
   }
 
   if (gtk_widget_translate_coordinates (child, bin_child, 0, 0, &x, &y))

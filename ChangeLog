@@ -1,3 +1,15 @@
+2008-07-02  Claudio Saavedra  <csaavedra@igalia.com>
+
+	* src/hildon-pannable-area.c:
+	(hildon_pannable_area_button_press_cb),
+	(hildon_pannable_area_refresh), (hildon_pannable_area_scroll),
+	(hildon_pannable_area_motion_notify_cb),
+	(hildon_pannable_area_button_release_cb),
+	(hildon_pannable_area_expose_event), (hildon_pannable_area_remove),
+	(hildon_pannable_area_jump_to_child):
+
+	Use gtk_bin_get_child() instead of accessing GtkBin.child directly.
+
 2008-07-01  Alberto Garcia  <agarcia@igalia.com>
 
 	* examples/Makefile.am
