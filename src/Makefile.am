@@ -65,6 +65,7 @@ libhildon_@API_VERSION_MAJOR@_la_SOURCES 		= hildon-private.c				\
 							  hildon-bread-crumb.c				\
 							  hildon-bread-crumb-widget.c                   \
 							  hildon-app-menu.c 				\
+							  hildon-button.c 				\
 							  hildon-dialog.c
 
 libhildon_@API_VERSION_MAJOR@_built_public_headers  = \
@@ -113,6 +114,7 @@ libhildon_@API_VERSION_MAJOR@_public_headers 	        = hildon-banner.h 				\
 							  hildon-bread-crumb.h				\
 							  hildon-app-menu.h				\
 							  hildon-dialog.h				\
+							  hildon-button.h				\
 							  hildon-version.h
 
 libhildon_@API_VERSION_MAJOR@_include_HEADERS 	        = $(libhildon_@API_VERSION_MAJOR@_public_headers)			\

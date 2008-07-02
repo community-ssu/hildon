@@ -1,3 +1,15 @@
+2008-07-02  Alberto Garcia  <agarcia@igalia.com>
+
+	* doc/hildon-docs.sgml
+	* doc/hildon.types
+	* examples/Makefile.am
+	* examples/hildon-button-example.c
+	* src/Makefile.am
+	* src/hildon-button.c
+	* src/hildon-button.h
+	* src/hildon.h:	Initial version of the new HildonButton widget,
+	with examples.
+
 2008-07-02  Claudio Saavedra  <csaavedra@igalia.com>
 
 	* src/hildon-pannable-area.c:

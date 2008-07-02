@@ -47,6 +47,7 @@ noinst_PROGRAMS				= hildon-window-example				\
 					  hildon-logical-color-example			\
 					  hildon-app-menu-example			\
 					  hildon-stackable-window-example		\
+					  hildon-button-example				\
 					  hildon-dialog-example
 # Hildon window
 hildon_window_example_LDADD		= $(HILDON_OBJ_LIBS)
@@ -277,6 +278,11 @@ hildon_pannable_area_touch_grid_example_SOURCES	= hildon-pannable-area-touch-gri
 hildon_app_menu_example_LDADD		= $(HILDON_OBJ_LIBS)
 hildon_app_menu_example_CFLAGS		= $(HILDON_OBJ_CFLAGS)
 hildon_app_menu_example_SOURCES		= hildon-app-menu-example.c
+
+# Hildon button
+hildon_button_example_LDADD		= $(HILDON_OBJ_LIBS)
+hildon_button_example_CFLAGS		= $(HILDON_OBJ_CFLAGS)
+hildon_button_example_SOURCES		= hildon-button-example.c
 
 # Hildon dialog
 hildon_dialog_example_LDADD		= $(HILDON_OBJ_LIBS)
