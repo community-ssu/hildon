@@ -1,5 +1,20 @@
 2008-07-03  Alejandro G. Castro	 <alex@igalia.com>
 
+	More checks for the case where the overshoot is bigger than the
+	size of the widget.
+
+	* src/hildon-pannable-area.c:
+	(hildon_pannable_draw_vscroll),
+	(hildon_pannable_draw_hscroll): with this new calculation we avoid
+	to draw the slider of the scrollbar under the other scrollbar.
+	(hildon_pannable_area_expose_event): added new checks to control
+	the drawing of the overshooting area rectangle, in case it is too
+	big for the area of the widget.
+	(hildon_pannable_area_size_allocate): add more checks to avoid
+	setting a position to the child widget outside the area.
+
+2008-07-03  Alejandro G. Castro	 <alex@igalia.com>
+
 	* src/hildon-pannable-area.c
 	(hildon_pannable_area_size_allocate): Added conditions to control
 	when overshooting is bigger than the allocated space for the

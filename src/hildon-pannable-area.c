@@ -957,6 +957,11 @@ hildon_pannable_draw_vscroll (GtkWidget * widget, GdkColor *back_color, GdkColor
   /* Set a minimum height */
   height = MAX (SCROLL_BAR_MIN_SIZE, height);
 
+  /* Check the max y position */
+  y = MIN (y, widget->allocation.height -
+           (priv->hscroll ? priv->hscroll_rect.height : 0) -
+           height);
+
   /* Draw the scrollbar */
   rgb_from_gdkcolor (scroll_color, &r, &g, &b);
 
@@ -1013,6 +1018,11 @@ hildon_pannable_draw_hscroll (GtkWidget * widget, GdkColor *back_color, GdkColor
   /* Set a minimum width */
   width = MAX (SCROLL_BAR_MIN_SIZE, width);
 
+  /* Check the max x position */
+  x = MIN (x, widget->allocation.width -
+           (priv->vscroll ? priv->vscroll_rect.width : 0) -
+           width);
+
   /* Draw the scrollbar */
   rgb_from_gdkcolor (scroll_color, &r, &g, &b);
 
@@ -1055,47 +1065,77 @@ hildon_pannable_area_expose_event (GtkWidget * widget, GdkEventExpose * event)
 
     /* draw overshooting rectangles */
     if (priv->overshot_dist_y > 0) {
+      gint overshot_height;
+
+      overshot_height = MIN (priv->overshot_dist_y, widget->allocation.height -
+                             (priv->hscroll ? priv->hscroll_rect.height : 0));
+
       gdk_draw_rectangle (widget->window,
-			  widget->style->bg_gc[GTK_STATE_NORMAL],
-			  TRUE,
-			  widget->allocation.x,
-			  widget->allocation.y,
-			  widget->allocation.width -
-			  priv->vscroll_rect.width,
-                          priv->overshot_dist_y);
+                          widget->style->bg_gc[GTK_STATE_NORMAL],
+                          TRUE,
+                          widget->allocation.x,
+                          widget->allocation.y,
+                          widget->allocation.width -
+                          (priv->vscroll ? priv->vscroll_rect.width : 0),
+                          overshot_height);
     } else if (priv->overshot_dist_y < 0) {
+      gint overshot_height;
+      gint overshot_y;
+
+      overshot_height =
+        MAX (priv->overshot_dist_y,
+             -1*(widget->allocation.height -
+                 (priv->hscroll ? priv->hscroll_rect.height : 0)));
+
+      overshot_y = MAX (widget->allocation.y +
+                        widget->allocation.height +
+                        overshot_height -
+                        (priv->hscroll ? priv->hscroll_rect.height : 0), 0);
+
       gdk_draw_rectangle (widget->window,
-			  widget->style->bg_gc[GTK_STATE_NORMAL],
-			  TRUE,
-			  widget->allocation.x,
-			  widget->allocation.y +
-			  widget->allocation.height +
-			  priv->overshot_dist_y -
-                          (priv->hscroll ? priv->hscroll_rect.height : 0),
-			  widget->allocation.width -
-			  priv->vscroll_rect.width,
-			  -1 * priv->overshot_dist_y);
+                          widget->style->bg_gc[GTK_STATE_NORMAL],
+                          TRUE,
+                          widget->allocation.x,
+                          overshot_y,
+                          widget->allocation.width -
+                          priv->vscroll_rect.width,
+                          -overshot_height);
     }
 
     if (priv->overshot_dist_x > 0) {
+      gint overshot_width;
+
+      overshot_width = MIN (priv->overshot_dist_x, widget->allocation.width -
+                             (priv->vscroll ? priv->vscroll_rect.width : 0));
+
       gdk_draw_rectangle (widget->window,
 			  widget->style->bg_gc[GTK_STATE_NORMAL],
 			  TRUE,
 			  widget->allocation.x,
 			  widget->allocation.y,
-                          priv->overshot_dist_x,
+                          overshot_width,
 			  widget->allocation.height -
-			  priv->hscroll_rect.height);
+                          (priv->hscroll ? priv->hscroll_rect.height : 0));
     } else if (priv->overshot_dist_x < 0) {
+      gint overshot_width;
+      gint overshot_x;
+
+      overshot_width =
+        MAX (priv->overshot_dist_x,
+             -1*(widget->allocation.width -
+                 (priv->vscroll ? priv->vscroll_rect.width : 0)));
+
+      overshot_x = MAX (widget->allocation.x +
+                        widget->allocation.width +
+                        overshot_width -
+                        (priv->vscroll ? priv->vscroll_rect.width : 0), 0);
+
       gdk_draw_rectangle (widget->window,
 			  widget->style->bg_gc[GTK_STATE_NORMAL],
 			  TRUE,
-			  widget->allocation.x +
-			  widget->allocation.width +
-			  priv->overshot_dist_x -
-                          (priv->vscroll ? priv->vscroll_rect.width : 0),
+                          overshot_x,
 			  widget->allocation.y,
-			  -1 * priv->overshot_dist_x,
+			  -overshot_width,
 			  widget->allocation.height -
 			  priv->hscroll_rect.height);
     }
@@ -1489,14 +1529,16 @@ hildon_pannable_area_size_allocate (GtkWidget * widget,
                                  0);
 
   if (priv->overshot_dist_y > 0) {
-    child_allocation.y += priv->overshot_dist_y;
+    child_allocation.y = MIN (child_allocation.y + priv->overshot_dist_y,
+                              allocation->y + child_allocation.height);
     child_allocation.height = MAX (child_allocation.height - priv->overshot_dist_y, 0);
   } else if (priv->overshot_dist_y < 0) {
     child_allocation.height = MAX (child_allocation.height + priv->overshot_dist_y, 0);
   }
 
   if (priv->overshot_dist_x > 0) {
-    child_allocation.x += priv->overshot_dist_x;
+    child_allocation.x = MIN (child_allocation.x + priv->overshot_dist_x,
+                              allocation->x + child_allocation.width);
     child_allocation.width = MAX (child_allocation.width - priv->overshot_dist_x, 0);
   } else if (priv->overshot_dist_x < 0) {
     child_allocation.width = MAX (child_allocation.width + priv->overshot_dist_x, 0);
