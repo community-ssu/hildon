@@ -1,3 +1,10 @@
+2008-07-03  Alejandro G. Castro	 <alex@igalia.com>
+
+	* src/hildon-pannable-area.c
+	(hildon_pannable_area_size_allocate): Added conditions to control
+	when overshooting is bigger than the allocated space for the
+	children, this avoids negative allocations.
+
 2008-07-02  Alberto Garcia  <agarcia@igalia.com>
 
 	* doc/hildon-docs.sgml

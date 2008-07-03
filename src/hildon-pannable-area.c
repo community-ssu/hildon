@@ -1481,21 +1481,25 @@ hildon_pannable_area_size_allocate (GtkWidget * widget,
 
   hildon_pannable_area_refresh (HILDON_PANNABLE_AREA (widget));
 
-  child_allocation.width -= (priv->vscroll ? priv->vscroll_rect.width : 0);
-  child_allocation.height -= (priv->hscroll ? priv->hscroll_rect.height : 0);
+  child_allocation.width = MAX (child_allocation.width - (priv->vscroll ?
+                                                          priv->vscroll_rect.width : 0),
+                                0);
+  child_allocation.height = MAX (child_allocation.height - (priv->hscroll ?
+                                                            priv->hscroll_rect.height : 0),
+                                 0);
 
   if (priv->overshot_dist_y > 0) {
     child_allocation.y += priv->overshot_dist_y;
-    child_allocation.height -= priv->overshot_dist_y;
+    child_allocation.height = MAX (child_allocation.height - priv->overshot_dist_y, 0);
   } else if (priv->overshot_dist_y < 0) {
-    child_allocation.height += priv->overshot_dist_y;
+    child_allocation.height = MAX (child_allocation.height + priv->overshot_dist_y, 0);
   }
 
   if (priv->overshot_dist_x > 0) {
     child_allocation.x += priv->overshot_dist_x;
-    child_allocation.width -= priv->overshot_dist_x;
+    child_allocation.width = MAX (child_allocation.width - priv->overshot_dist_x, 0);
   } else if (priv->overshot_dist_x < 0) {
-    child_allocation.width += priv->overshot_dist_x;
+    child_allocation.width = MAX (child_allocation.width + priv->overshot_dist_x, 0);
   }
 
   if (bin->child)
