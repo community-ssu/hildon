@@ -162,7 +162,7 @@ static GdkWindow *hildon_pannable_area_get_topmost (GdkWindow * window,
 
   while (window) {
     gint child_x = 0, child_y = 0;
-    GList *c, *children = gdk_window_get_children (window);
+    GList *c, *children = gdk_window_peek_children (window);
     GdkWindow *old_window = window;
 
     for (c = children; c; c = c->next) {
@@ -180,8 +180,6 @@ static GdkWindow *hildon_pannable_area_get_topmost (GdkWindow * window,
 	window = child;
       }
     }
-
-    g_list_free (children);
 
     /*g_debug ("\\|/"); */
     if (window == old_window)
@@ -525,16 +523,11 @@ hildon_pannable_axis_scroll (HildonPannableArea *area,
           *vel = 0;
         }
       }
-
-      if (s) {
-        *s = TRUE;
-      }
     }
 
     gtk_adjustment_set_value (adjust, dist);
   } else {
     if (!priv->clicked) {
-      if (s) *s = TRUE;
 
       /* When the overshoot has started we continue for BOUNCE_STEPS more steps into the overshoot
        * before we reverse direction. The deceleration factor is calculated based on
@@ -598,9 +591,9 @@ hildon_pannable_axis_scroll (HildonPannableArea *area,
 
 static void
 hildon_pannable_area_scroll (HildonPannableArea *area,
-                             gdouble x, gdouble y,
-			     gboolean *sx, gboolean *sy)
+                             gdouble x, gdouble y)
 {
+  gboolean sx, sy;
   HildonPannableAreaPrivate *priv;
   gboolean hscroll, vscroll;
 
@@ -614,27 +607,30 @@ hildon_pannable_area_scroll (HildonPannableArea *area,
   hscroll = (priv->hadjust->upper - priv->hadjust->lower >
 	     priv->hadjust->page_size) ? TRUE : FALSE;
 
+  sx = TRUE;
+  sy = TRUE;
+
   if (vscroll) {
     hildon_pannable_axis_scroll (area, priv->vadjust, &priv->vel_y, y,
                                  &priv->overshooting_y, &priv->overshot_dist_y,
-                                 &priv->scroll_to_y, sy);
+                                 &priv->scroll_to_y, &sy);
   }
 
   if (hscroll) {
     hildon_pannable_axis_scroll (area, priv->hadjust, &priv->vel_x, x,
                                  &priv->overshooting_x, &priv->overshot_dist_x,
-                                 &priv->scroll_to_x, sx);
+                                 &priv->scroll_to_x, &sx);
   }
 
   /* If the scroll on a particular axis wasn't succesful, reset the
    * initial scroll position to the new mouse co-ordinate. This means
    * when you get to the top of the page, dragging down works immediately.
    */
-  if ((sx)&&(!(*sx))) {
+  if (!sx) {
     priv->x = priv->ex;
   }
 
-  if ((sy)&&(!(*sy))) {
+  if (!sy) {
     priv->y = priv->ey;
   }
 
@@ -643,7 +639,6 @@ hildon_pannable_area_scroll (HildonPannableArea *area,
 static gboolean
 hildon_pannable_area_timeout (HildonPannableArea * area)
 {
-  gboolean sx, sy;
   HildonPannableAreaPrivate *priv;
 
   GDK_THREADS_ENTER ();
@@ -686,7 +681,7 @@ hildon_pannable_area_timeout (HildonPannableArea * area)
     return FALSE;
   }
 
-  hildon_pannable_area_scroll (area, priv->vel_x, priv->vel_y, &sx, &sy);
+  hildon_pannable_area_scroll (area, priv->vel_x, priv->vel_y);
 
   GDK_THREADS_LEAVE ();
 
@@ -744,7 +739,7 @@ hildon_pannable_area_motion_notify_cb (GtkWidget * widget,
       /* Scroll by the amount of pixels the cursor has moved
        * since the last motion event.
        */
-      hildon_pannable_area_scroll (area, x, y, NULL, NULL);
+      hildon_pannable_area_scroll (area, x, y);
       priv->x = event->x;
       priv->y = event->y;
       break;
@@ -788,7 +783,7 @@ hildon_pannable_area_motion_notify_cb (GtkWidget * widget,
       priv->vel_y = priv->vel_y > 0 ? MIN (priv->vel_y, priv->vmax)
 	: MAX (priv->vel_y, -1 * priv->vmax);
 
-      hildon_pannable_area_scroll (area, x, y, NULL, NULL);
+      hildon_pannable_area_scroll (area, x, y);
 
       priv->x = event->x;
       priv->y = event->y;

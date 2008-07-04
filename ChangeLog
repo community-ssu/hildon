@@ -1,3 +1,20 @@
+2008-07-04  Alejandro G. Castro	 <alex@igalia.com>
+
+	* src/hildon-pannable-area.c,
+	(hildon_pannable_area_get_topmost): replaced
+	gdk_window_get_children with gdk_window_peek_children, this way we
+	do not have to free the list because it is not a copy.
+
+	(hildon_pannable_axis_scroll),
+	(hildon_pannable_area_scroll),
+	(hildon_pannable_area_timeout),
+	(hildon_pannable_area_motion_notify_cb): Code refactoring, removed
+	two parameters that were only used inside the
+	hildon_pannable_area_scroll function.
+
+	* examples/hildon-pannable-area-example.c,
+	(get_sawtooth_label): Fixed small memory leak.
+
 2008-07-03  Alejandro G. Castro	 <alex@igalia.com>
 
 	More checks for the case where the overshoot is bigger than the

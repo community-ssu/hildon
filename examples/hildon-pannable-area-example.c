@@ -49,6 +49,9 @@ get_sawtooth_label (gchar **label, guint num)
     
     sawtooth = sawtooth_aux;
   } else {
+    if (sawtooth)
+      g_free (sawtooth);
+
     sawtooth = g_strdup (" ");
   }
   
