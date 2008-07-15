@@ -1,3 +1,19 @@
+2008-07-15  Alejandro G. Castro	 <alex@igalia.com>
+
+	Changes required in order to allow vfast_factor set to zero to
+	work properly.
+
+	* src/hildon-pannable-area.c:
+	(hildon_pannable_area_button_press_cb): Changed the condition, it
+	is required for not allowing click when vfast_factor is zero.
+	(hildon_pannable_area_timeout): Initialized velocity variables
+	when we stop moving, it was less than 1 but not zero and we need
+	to check zero in some situations.
+	(hildon_pannable_area_class_init): Changed the default value of
+	the speed factor, now the button_press is just sent in case the
+	speed is 2 per cent of the max speed.
+	(hildon_pannable_area_init): Initialization with 0.
+
 2008-07-04  Alejandro G. Castro	 <alex@igalia.com>
 
 	* src/hildon-pannable-area.c,

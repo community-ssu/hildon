@@ -343,8 +343,8 @@ hildon_pannable_area_button_press_cb (GtkWidget * widget,
   /* Don't allow a click if we're still moving fast, where fast is
    * defined as a quarter of our top possible speed.
    */
-  if ((ABS (priv->vel_x) < (priv->vmax * priv->vfast_factor)) &&
-      (ABS (priv->vel_y) < (priv->vmax * priv->vfast_factor)))
+  if ((ABS (priv->vel_x) <= (priv->vmax * priv->vfast_factor)) &&
+      (ABS (priv->vel_y) <= (priv->vmax * priv->vfast_factor)))
     priv->child =
       hildon_pannable_area_get_topmost (gtk_bin_get_child (GTK_BIN (widget))->window,
 					event->x, event->y, &x, &y);
@@ -671,6 +671,8 @@ hildon_pannable_area_timeout (HildonPannableArea * area)
         priv->vel_y *= priv->decel;
 
         if ((ABS (priv->vel_x) < 1.0) && (ABS (priv->vel_y) < 1.0)) {
+          priv->vel_x = 0;
+          priv->vel_y = 0;
           priv->idle_id = 0;
           return FALSE;
         }
@@ -1665,7 +1667,7 @@ hildon_pannable_area_class_init (HildonPannableAreaClass * klass)
 							"Minimum velocity that is considered 'fast': "
 							"children widgets won't receive button presses. "
 							"Expressed as a fraction of the maximum velocity.",
-							0, 1, 0.25,
+							0, 1, 0.02,
 							G_PARAM_READWRITE |
 							G_PARAM_CONSTRUCT));
 
@@ -1742,8 +1744,8 @@ hildon_pannable_area_init (HildonPannableArea * self)
   priv->overshooting_y = 0;
   priv->overshooting_x = 0;
   priv->idle_id = 0;
-  priv->vel_x = 0.0;
-  priv->vel_y = 0.0;
+  priv->vel_x = 0;
+  priv->vel_y = 0;
   priv->scroll_indicator_alpha = 0;
   priv->scroll_indicator_timeout = 0;
   priv->scroll_indicator_event_interrupt = 0;
