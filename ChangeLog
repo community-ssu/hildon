@@ -1,3 +1,35 @@
+2008-07-17  Alejandro G. Castro	 <alex@igalia.com>
+
+	Added the movement modes to the hildon-pannable-area, with this
+	modes the developers can control in which directions the widget
+	can scroll. They can also connect to signals in order to do
+	something when that happens, allowing applications scroll. There
+	is an example uploaded showing how to use it.
+
+	* examples/Makefile.am:
+	* examples/hildon-pannable-area-example-4.c: Added this example of
+	an application using the modes.
+
+	* src/hildon-marshalers.list: Added a new marshaller for the new
+	signals.
+
+	* src/hildon-pannable-area.h: Added new enumerations and flags in
+	order to control the movement modes and the new signals to warn
+	about the movements in the area.
+
+	* src/hildon-pannable-area.c:
+	(hildon_pannable_axis_scroll),
+	(hildon_pannable_area_scroll),
+	(hildon_pannable_area_motion_notify_cb),
+	(hildon_pannable_area_get_property),
+	(hildon_pannable_area_set_property),
+	(hildon_pannable_area_map),
+	(hildon_pannable_area_class_init),
+	(hildon_pannable_area_init),
+	(hildon_pannable_area_jump_to): Added the modes to control the
+	movement in the widget. We have added properties to control it,
+	signals to warn about the movements and refactored some code.
+
 2008-07-15  Alejandro G. Castro	 <alex@igalia.com>
 
 	Changes required in order to allow vfast_factor set to zero to

@@ -50,17 +50,57 @@ G_BEGIN_DECLS
                                                 (G_TYPE_INSTANCE_GET_CLASS ((obj), \
                                                 HILDON_TYPE_PANNABLE_AREA, HildonPannableAreaClass))
 
-GType
-hildon_pannable_area_mode_get_type              (void) G_GNUC_CONST;
+/**
+ * HildonPannableAreaMode:
+ * @HILDON_PANNABLE_AREA_MODE_PUSH: Areaing follows pointer
+ * @HILDON_PANNABLE_AREA_MODE_ACCEL: Areaing uses physics to "spin" the widget
+ * @HILDON_PANNABLE_AREA_MODE_AUTO: Automatically chooses between push and accel
+ * modes, depending on input.
+ *
+ * Used to change the behaviour of the pannable areaing
+ */
+typedef enum {
+  HILDON_PANNABLE_AREA_MODE_PUSH,
+  HILDON_PANNABLE_AREA_MODE_ACCEL,
+  HILDON_PANNABLE_AREA_MODE_AUTO
+} HildonPannableAreaMode;
 
-#define                                         HILDON_TYPE_PANNABLE_AREA_MODE \
-                                                (hildon_pannable_area_mode_get_type())
+/**
+ * HildonPannableAreaMovDirection:
+ * @HILDON_PANNABLE_AREA_MOV_MODE_HORIZ:
+ * @HILDON_PANNABLE_AREA_MOV_MODE_VERT:
+ *
+ * Used to control the movement of the pannable, we can allow or
+ * disallow horizontal or vertical movement. This way the applications
+ * can control the movement using scroll_to and jump_to functions
+ */
+typedef enum {
+  HILDON_PANNABLE_AREA_MOV_MODE_HORI = 1 << 1,
+  HILDON_PANNABLE_AREA_MOV_MODE_VERT = 1 << 2,
+  HILDON_PANNABLE_AREA_MOV_MODE_BOTH = 0x000006
+} HildonPannableAreaMovMode;
 
-GType
-hildon_pannable_area_indicator_mode_get_type    (void) G_GNUC_CONST;
+/**
+ * HildonPannableAreaMovDirection:
+ * @HILDON_PANNABLE_AREA_MOV_UP:
+ * @HILDON_PANNABLE_AREA_MOV_DOWN:
+ * @HILDON_PANNABLE_AREA_MOV_LEFT:
+ * @HILDON_PANNABLE_AREA_MOV_RIGHT:
+ *
+ * Used to point out the direction of the movement
+ */
+typedef enum {
+  HILDON_PANNABLE_AREA_MOV_UP,
+  HILDON_PANNABLE_AREA_MOV_DOWN,
+  HILDON_PANNABLE_AREA_MOV_LEFT,
+  HILDON_PANNABLE_AREA_MOV_RIGHT
+} HildonPannableAreaMovDirection;
 
-#define                                         HILDON_TYPE_PANNABLE_AREA_INDICATOR_MODE \
-                                                (hildon_pannable_area_indicator_mode_get_type())
+typedef enum {
+    HILDON_PANNABLE_AREA_INDICATOR_MODE_AUTO,
+    HILDON_PANNABLE_AREA_INDICATOR_MODE_SHOW,
+    HILDON_PANNABLE_AREA_INDICATOR_MODE_HIDE
+} HildonPannableAreaIndicatorMode;
 
 /**
  * HildonPannableArea:
@@ -78,28 +118,14 @@ struct                                          _HildonPannableArea
 struct                                          _HildonPannableAreaClass
 {
     GtkBinClass parent_class;
+
+  void (* horizontal_movement) (HildonPannableArea *area,
+                                HildonPannableAreaIndicatorMode direction,
+                                GtkWidget *widget, gdouble x, gdouble y);
+  void (* vertical_movement) (HildonPannableArea *area,
+                              HildonPannableAreaIndicatorMode direction,
+                              GtkWidget *widget, gdouble x, gdouble y);
 };
-
-/**
- * HildonPannableAreaMode:
- * @HILDON_PANNABLE_AREA_MODE_PUSH: Areaing follows pointer
- * @HILDON_PANNABLE_AREA_MODE_ACCEL: Areaing uses physics to "spin" the widget
- * @HILDON_PANNABLE_AREA_MODE_AUTO: Automatically chooses between push and accel
- * modes, depending on input.
- *
- * Used to change the behaviour of the pannable areaing
- */
-typedef enum {
-    HILDON_PANNABLE_AREA_MODE_PUSH,
-    HILDON_PANNABLE_AREA_MODE_ACCEL,
-    HILDON_PANNABLE_AREA_MODE_AUTO
-} HildonPannableAreaMode;
-
-typedef enum {
-    HILDON_PANNABLE_AREA_INDICATOR_MODE_AUTO,
-    HILDON_PANNABLE_AREA_INDICATOR_MODE_SHOW,
-    HILDON_PANNABLE_AREA_INDICATOR_MODE_HIDE
-} HildonPannableAreaIndicatorMode;
 
 GType hildon_pannable_area_get_type             (void);
 
