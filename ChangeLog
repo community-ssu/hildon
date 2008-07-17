@@ -1,5 +1,12 @@
 2008-07-17  Alejandro G. Castro	 <alex@igalia.com>
 
+	* src/hildon-pannable-area.c,
+	(hildon_pannable_area_get_topmost): Cleaned the code, removed the
+	TODO list, it was complete and removed the g_debug and g_print
+	lines.
+
+2008-07-17  Alejandro G. Castro	 <alex@igalia.com>
+
 	Added the movement modes to the hildon-pannable-area, with this
 	modes the developers can control in which directions the widget
 	can scroll. They can also connect to signals in order to do

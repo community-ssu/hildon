@@ -32,27 +32,6 @@
  *
  */
 
-/* TODO:
- * todo items should be marked with a number and a relative position in the code where they are relevant.
- *
- * 1  x Make OVERSHOOT a property, the default of this property is fixed
- * 2  x Add method of scrolling to the selected element of a treeview and have it align to half way point
- * 3  x Add a property for initial scrolling of the widget, so it scrolls on realize
- * 4  X Add a method of removing children from the alignment, gtk-container-remove override?
- * 5  x Remove elasticity if it is no longer required?
- * 6  x Reduce calls to queue_resize to improve performance
- * 7  x Make 'fast' factor a property
- * 8  - Strip out g_print/g_debug calls
- * 9  x Scroll policies (horizontal/vertical/both) suggest 1,2,3 for different policies (binary OR'd)
- * 10 x Delay click mode (only send synthetic clicks on mouse-up, as in previous
- *      versions.
- * 11 - 'Physical' mode for acceleration scrolling
- * 12 X Add a property to disable overshoot entirely
- * 13 x Fix problem with kinetics when pannable has been in overshoot (a flick stops rather than continues) (Search TODO 13)
- * 14 x Review the other modes, probably they are not working well after overshooting patches
- * 15 x Very small scrollbars when overshooting are not correctly rendered (fixed adding a minimum size)
- */
-
 #include <gdk/gdkx.h>
 #include <cairo.h>
 #include <math.h>
@@ -175,8 +154,6 @@ static GdkWindow *hildon_pannable_area_get_topmost (GdkWindow * window,
   if ((x < 0) || (x >= width) || (y < 0) || (y >= height))
     return NULL;
 
-  /*g_debug ("Finding window at (%d, %d) in %p", x, y, window); */
-
   while (window) {
     gint child_x = 0, child_y = 0;
     GList *c, *children = gdk_window_peek_children (window);
@@ -187,8 +164,6 @@ static GdkWindow *hildon_pannable_area_get_topmost (GdkWindow * window,
       gint wx, wy;
 
       gdk_window_get_geometry (child, &wx, &wy, &width, &height, NULL);
-      /*g_debug ("Child: %p, (%dx%d+%d,%d)", child,
-         width, height, wx, wy); */
 
       if ((x >= wx) && (x < (wx + width)) && (y >= wy)
 	  && (y < (wy + height))) {
@@ -198,7 +173,6 @@ static GdkWindow *hildon_pannable_area_get_topmost (GdkWindow * window,
       }
     }
 
-    /*g_debug ("\\|/"); */
     if (window == old_window)
       break;
 
@@ -210,8 +184,6 @@ static GdkWindow *hildon_pannable_area_get_topmost (GdkWindow * window,
     *tx = x;
   if (ty)
     *ty = y;
-
-  /*g_debug ("Returning: %p", window); */
 
   return window;
 }
