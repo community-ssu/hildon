@@ -435,6 +435,8 @@ hildon_code_dialog_backspace                    (HildonCodeDialog *dialog)
       gtk_widget_set_sensitive (priv->buttons[4][0], FALSE);
     }
 
+    gtk_editable_set_position (GTK_EDITABLE (priv->entry), -1);
+
     g_free (text);
 }
 

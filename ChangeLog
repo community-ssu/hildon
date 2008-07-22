@@ -1,3 +1,9 @@
+2008-07-21 Tim Janik  <timj@imendio.com>
+
+	* src/hildon-code-dialog.c (hildon_code_dialog_backspace): fixed up
+	insertion position after backspace, so additional digits are appended,
+	fixes Bug #85874.
+
 2008-07-17  Alejandro G. Castro	 <alex@igalia.com>
 
 	* src/hildon-pannable-area.c,
