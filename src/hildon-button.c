@@ -48,8 +48,11 @@ struct                                          _HildonButtonPrivate
 
 enum {
   PROP_TITLE = 1,
-  PROP_VALUE
+  PROP_VALUE,
+  PROP_ARRANGEMENT_FLAGS
 };
+
+static void hildon_button_set_arrangement (HildonButton *button, HildonButtonFlags flags);
 
 static void
 hildon_button_set_property                      (GObject      *object,
@@ -66,6 +69,9 @@ hildon_button_set_property                      (GObject      *object,
         break;
     case PROP_VALUE:
         hildon_button_set_value (button, g_value_get_string (value));
+        break;
+    case PROP_ARRANGEMENT_FLAGS:
+        hildon_button_set_arrangement (button, g_value_get_int (value));
         break;
     default:
         G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -124,6 +130,16 @@ hildon_button_class_init                        (HildonButtonClass *klass)
             "Text of the value label inside the button",
             NULL,
             G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
+
+    g_object_class_install_property (
+            gobject_class,
+            PROP_ARRANGEMENT_FLAGS,
+            g_param_spec_int ("arrangement-flags",
+                              "Arrangement flags",
+                              "How the button contents must be arranged",
+                              0, 64,
+                              HILDON_BUTTON_WITH_HORIZONTAL_VALUE,
+                              G_PARAM_WRITABLE | G_PARAM_CONSTRUCT_ONLY));
 
     gtk_widget_class_install_style_property (
         widget_class,
@@ -195,6 +211,25 @@ hildon_button_new_full                          (HildonButtonFlags  flags,
                                                  GtkSizeGroup      *value_size_group)
 {
     GtkWidget *button;
+
+    /* Create widget */
+    button = g_object_new (HILDON_TYPE_BUTTON,
+                           "arrangement-flags", flags,
+                           "title", title,
+                           "value", value,
+                           "name", "hildon-button",
+                           NULL);
+    /* Set size groups */
+    if (title_size_group || value_size_group)
+        hildon_button_set_size_groups (HILDON_BUTTON (button), title_size_group, value_size_group);
+
+    return button;
+}
+
+static void
+hildon_button_set_arrangement (HildonButton *button,
+                               HildonButtonFlags flags)
+{
     GtkWidget *box;
     GtkWidget *alignment;
     HildonButtonPrivate *priv;
@@ -202,7 +237,9 @@ hildon_button_new_full                          (HildonButtonFlags  flags,
     guint vertical_spacing;
     gint width = -1;
     gint height = -1;
-    const char *widget_name = "hildon-button";
+    char *widget_name;
+
+    priv = HILDON_BUTTON_GET_PRIVATE (button);
 
     /* Requested height */
     if (flags & HILDON_BUTTON_FINGER_HEIGHT) {
@@ -213,6 +250,8 @@ hildon_button_new_full                          (HildonButtonFlags  flags,
         widget_name = "hildon-thumb-button";
     }
 
+    gtk_widget_set_name (GTK_WIDGET (button), widget_name);
+
     /* Requested width */
     if (flags & HILDON_BUTTON_HALFSCREEN_WIDTH) {
         width = HALFSCREEN_BUTTON_WIDTH;
@@ -220,19 +259,13 @@ hildon_button_new_full                          (HildonButtonFlags  flags,
         width = FULLSCREEN_BUTTON_WIDTH;
     }
 
-    /* Create widget */
-    button = g_object_new (HILDON_TYPE_BUTTON,
-                           "title", title,
-                           "value", value,
-                           "width-request", width,
-                           "height-request", height,
-                           "name", widget_name,
-                           NULL);
-
-    priv = HILDON_BUTTON_GET_PRIVATE (button);
+    g_object_set (button,
+                  "width-request", width,
+                  "height-request", height,
+                  NULL);
 
     /* Pack everything */
-    gtk_widget_style_get (button,
+    gtk_widget_style_get (GTK_WIDGET (button),
                           "horizontal-spacing", &horizontal_spacing,
                           "vertical-spacing", &vertical_spacing,
                           NULL);
@@ -251,13 +284,7 @@ hildon_button_new_full                          (HildonButtonFlags  flags,
     gtk_container_add (GTK_CONTAINER (alignment), box);
     gtk_container_add (GTK_CONTAINER (button), alignment);
 
-    /* Set size groups */
-    if (title_size_group || value_size_group)
-        hildon_button_set_size_groups (HILDON_BUTTON (button), title_size_group, value_size_group);
-
     gtk_widget_show_all (alignment);
-
-    return button;
 }
 
 void
