@@ -237,7 +237,7 @@ hildon_button_set_arrangement (HildonButton *button,
     guint vertical_spacing;
     gint width = -1;
     gint height = -1;
-    char *widget_name;
+    const char *widget_name = NULL;
 
     priv = HILDON_BUTTON_GET_PRIVATE (button);
 
@@ -250,7 +250,9 @@ hildon_button_set_arrangement (HildonButton *button,
         widget_name = "hildon-thumb-button";
     }
 
-    gtk_widget_set_name (GTK_WIDGET (button), widget_name);
+    if (widget_name) {
+        gtk_widget_set_name (GTK_WIDGET (button), widget_name);
+    }
 
     /* Requested width */
     if (flags & HILDON_BUTTON_HALFSCREEN_WIDTH) {

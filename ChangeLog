@@ -1,5 +1,11 @@
 2008-07-22  Claudio Saavedra  <csaavedra@igalia.com>
 
+	* src/hildon-button.c: (hildon_button_set_arrangement): Do not
+	set the widget name if the arrangement flags do not specify
+	a particular size.
+
+2008-07-22  Claudio Saavedra  <csaavedra@igalia.com>
+
 	* src/hildon-button.c: (hildon_button_set_property),
 	(hildon_button_class_init), (hildon_button_new_full),
 	(hildon_button_set_arrangement): Added "arrangement-flags"
