@@ -26,6 +26,7 @@
 #define                                         __HILDON_STACKABLE_WINDOW_H__
 
 #include                                        "hildon-window.h"
+#include                                        "hildon-app-menu.h"
 
 G_BEGIN_DECLS
 
@@ -79,6 +80,10 @@ hildon_stackable_window_get_type                (void) G_GNUC_CONST;
 
 GtkWidget*
 hildon_stackable_window_new                     (void);
+
+void
+hildon_stackable_window_set_main_menu           (HildonStackableWindow *self,
+                                                 HildonAppMenu *menu);
 
 G_END_DECLS
 

@@ -35,6 +35,7 @@ struct                                          _HildonAppMenuPrivate
     GtkSizeGroup *sizegroup;
     GdkWindow *transfer_window;
     int nitems;
+    gboolean pressed_outside;
 };
 
 

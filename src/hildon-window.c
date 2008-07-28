@@ -206,6 +206,11 @@ hildon_window_toggle_menu                       (HildonWindow * self,
 						 guint32 time);
 
 static gboolean
+hildon_window_toggle_menu_real                  (HildonWindow * self,
+						 guint button,
+						 guint32 time);
+
+static gboolean
 hildon_window_escape_timeout                    (gpointer data);
 
 static GdkFilterReturn
@@ -280,6 +285,7 @@ hildon_window_class_init                        (HildonWindowClass * window_clas
 
     /* To this class */
     window_class->unset_program         = hildon_window_unset_program_real;
+    window_class->toggle_menu           = hildon_window_toggle_menu_real;
 
     /* gtkobject stuff*/
     GTK_OBJECT_CLASS (window_class)->destroy = hildon_window_destroy; 
@@ -1555,13 +1561,31 @@ detach_menu_func                                (GtkWidget *attach_widget,
     /* FIXME Why is this even needed here? */
 }
 
+static gboolean
+hildon_window_toggle_menu                       (HildonWindow *self,
+						 guint button,
+						 guint32 time)
+{
+    g_return_val_if_fail (HILDON_IS_WINDOW (self), FALSE);
+
+    if (HILDON_WINDOW_GET_CLASS (self)->toggle_menu != NULL)
+    {
+        return HILDON_WINDOW_GET_CLASS (self)->toggle_menu (self, button, time);
+    }
+    else
+    {
+        return FALSE;
+    }
+}
+
+
 /*
  * Toggles the display of the HildonWindow menu.
  * Returns whether or not something was done (whether or not we had a menu
  * to toggle)
  */
 static gboolean
-hildon_window_toggle_menu                       (HildonWindow * self,
+hildon_window_toggle_menu_real                  (HildonWindow * self,
 						 guint button,
 						 guint32 time)
 {

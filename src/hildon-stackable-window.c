@@ -188,6 +188,56 @@ hildon_stackable_window_unset_program           (HildonWindow *hwin)
     }
 }
 
+void
+hildon_stackable_window_set_main_menu           (HildonStackableWindow *self,
+                                                 HildonAppMenu *menu)
+{
+    HildonStackableWindowPrivate *priv;
+
+    g_return_if_fail (HILDON_IS_STACKABLE_WINDOW (self));
+    g_return_if_fail (!menu || HILDON_IS_APP_MENU (menu));
+    priv = HILDON_STACKABLE_WINDOW_GET_PRIVATE (self);
+
+    /* Remove reference to old menu */
+    if (priv->app_menu)
+        g_object_unref (priv->app_menu);
+
+    /* Add new menu */
+    priv->app_menu = menu;
+    if (priv->app_menu)
+        g_object_ref (priv->app_menu);
+}
+
+static gboolean
+hildon_stackable_window_toggle_menu             (HildonWindow *self,
+						 guint button,
+						 guint32 time)
+{
+    HildonStackableWindowPrivate *priv;
+
+    g_return_val_if_fail (HILDON_IS_STACKABLE_WINDOW (self), FALSE);
+    priv = HILDON_STACKABLE_WINDOW_GET_PRIVATE (self);
+    g_assert (priv != NULL);
+
+    if (priv->app_menu)
+    {
+        if (GTK_WIDGET_MAPPED (GTK_WIDGET (priv->app_menu)))
+            gtk_widget_hide (GTK_WIDGET (priv->app_menu));
+        else
+            gtk_widget_show (GTK_WIDGET (priv->app_menu));
+
+        return TRUE;
+    }
+    else if (HILDON_WINDOW_CLASS (hildon_stackable_window_parent_class)->toggle_menu)
+    {
+        return HILDON_WINDOW_CLASS (hildon_stackable_window_parent_class)->toggle_menu (self, button, time);
+    }
+    else
+    {
+        return FALSE;
+    }
+}
+
 static void
 hildon_stackable_window_realize                 (GtkWidget *widget)
 {
@@ -223,10 +273,23 @@ hildon_stackable_window_delete_event            (GtkWidget *widget,
 }
 
 static void
+hildon_stackable_window_finalize                (GObject *object)
+{
+    HildonStackableWindowPrivate *priv = HILDON_STACKABLE_WINDOW_GET_PRIVATE (object);
+
+    if (priv->app_menu) {
+        gtk_widget_destroy (GTK_WIDGET (priv->app_menu));
+    }
+}
+
+static void
 hildon_stackable_window_class_init              (HildonStackableWindowClass *klass)
 {
+    GObjectClass      *obj_class    = G_OBJECT_CLASS (klass);
     GtkWidgetClass    *widget_class = GTK_WIDGET_CLASS (klass);
     HildonWindowClass *window_class = HILDON_WINDOW_CLASS (klass);
+
+    obj_class->finalize             = hildon_stackable_window_finalize;
 
     widget_class->map               = hildon_stackable_window_map;
     widget_class->unmap             = hildon_stackable_window_unmap;
@@ -234,6 +297,7 @@ hildon_stackable_window_class_init              (HildonStackableWindowClass *kla
     widget_class->delete_event      = hildon_stackable_window_delete_event;
 
     window_class->unset_program     = hildon_stackable_window_unset_program;
+    window_class->toggle_menu       = hildon_stackable_window_toggle_menu;
 
     g_type_class_add_private (klass, sizeof (HildonStackableWindowPrivate));
 }
@@ -241,7 +305,10 @@ hildon_stackable_window_class_init              (HildonStackableWindowClass *kla
 static void
 hildon_stackable_window_init                    (HildonStackableWindow *self)
 {
-    hildon_stackable_window_set_going_home (self, FALSE);
+    HildonStackableWindowPrivate *priv = HILDON_STACKABLE_WINDOW_GET_PRIVATE (self);
+
+    priv->going_home = FALSE;
+    priv->app_menu = NULL;
 }
 
 /**

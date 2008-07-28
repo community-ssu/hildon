@@ -1,3 +1,31 @@
+2008-07-28  Alberto Garcia  <agarcia@igalia.com>
+
+	* src/hildon-app-menu-private.h
+	* src/hildon-app-menu.c (hildon_app_menu_button_press)
+	(hildon_app_menu_button_release, hildon_app_menu_init)
+	(hildon_app_menu_class_init): Don't hide the menu on button
+	release if the user didn't press outside first.
+
+	* src/hildon-window.h
+	* src/hildon-window.c (hildon_window_toggle_menu)
+	(hildon_window_toggle_menu_real, hildon_window_class_init): Make
+	hildon_window_toggle_menu a virtual function for the stackable
+	window to override it.
+
+	* src/hildon-stackable-window.h
+	* src/hildon-stackable-window-private.h
+	* src/hildon-stackable-window.c
+	(hildon_stackable_window_realize)
+	(hildon_stackable_window_finalize)
+	(hildon_stackable_window_class_init)
+	(hildon_stackable_window_init)
+	(hildon_stackable_window_set_main_menu): New function to set the
+	app menu of a HildonStackableWindow.
+
+	* examples/hildon-app-menu-example.c: Remove the button to show
+	the app menu, now it'll be shown when clicking on the title bar
+	instead.
+
 2008-07-22  Claudio Saavedra  <csaavedra@igalia.com>
 
 	* src/hildon-button.c: (hildon_button_set_arrangement): Do not

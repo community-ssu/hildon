@@ -23,6 +23,7 @@
  */
 
 #include                                        <gtk/gtk.h>
+#include                                        <hildon-stackable-window.h>
 #include                                        <hildon-app-menu.h>
 
 static void
@@ -30,7 +31,7 @@ menu_button_clicked                             (GtkButton *button,
                                                  GtkLabel *label)
 {
     const char *buttontext = gtk_button_get_label (button);
-    char *text = g_strdup_printf("Last button clicked:\n%s", buttontext);
+    char *text = g_strdup_printf("Last option selected:\n%s", buttontext);
     gtk_label_set_text (label, text);
     g_free (text);
 }
@@ -77,13 +78,6 @@ create_menu                                     (GtkWidget *label)
 }
 
 static void
-button_clicked                                  (GtkButton *button,
-                                                 HildonAppMenu *menu)
-{
-    gtk_widget_show (GTK_WIDGET (menu));
-}
-
-static void
 close_app                                       (GtkWidget *widget,
                                                  GdkEvent  *event,
                                                  GtkWidget *menu)
@@ -97,7 +91,6 @@ main                                            (int argc,
                                                  char **argv)
 {
     GtkWidget *win;
-    GtkWidget *button;
     GtkWidget *label;
     GtkWidget *label2;
     GtkBox *vbox;
@@ -110,22 +103,26 @@ main                                            (int argc,
                          "}\n"
                          "class \"HildonAppMenu\" style \"default\"\n");
 
-    button = gtk_button_new_with_label ("Press me");
-    label = gtk_label_new ("This is an example of the\nHildonAppMenu widget");
-    label2 = gtk_label_new ("No button has been clicked");
+    label = gtk_label_new ("This is an example of the\nHildonAppMenu widget.\n\n"
+                           "Click on the titlebar\nto pop up the menu.");
+    label2 = gtk_label_new ("No menu option has been selected yet.");
+
+    gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_CENTER);
+    gtk_label_set_justify (GTK_LABEL (label2), GTK_JUSTIFY_CENTER);
+
     vbox = GTK_BOX (gtk_vbox_new (FALSE, 10));
-    win = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+    win = hildon_stackable_window_new ();
 
     menu = create_menu (label2);
 
+    hildon_stackable_window_set_main_menu (HILDON_STACKABLE_WINDOW (win), menu);
+
     gtk_box_pack_start (vbox, label, TRUE, TRUE, 0);
-    gtk_box_pack_start (vbox, button, TRUE, TRUE, 0);
     gtk_box_pack_start (vbox, label2, TRUE, TRUE, 0);
 
     gtk_container_set_border_width (GTK_CONTAINER (win), 20);
     gtk_container_add (GTK_CONTAINER (win), GTK_WIDGET (vbox));
 
-    g_signal_connect (button, "clicked", G_CALLBACK(button_clicked), menu);
     g_signal_connect (win, "delete_event", G_CALLBACK(close_app), menu);
 
     gtk_widget_show_all (win);
