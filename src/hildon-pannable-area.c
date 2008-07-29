@@ -44,7 +44,7 @@
 #define BOUNCE_STEPS 6
 #define SCROLL_BAR_MIN_SIZE 5
 #define RATIO_TOLERANCE 0.000001
-#define DND_THREDSHOLD_INC 20
+#define DND_THRESHOLD_INC 20
 
 G_DEFINE_TYPE (HildonPannableArea, hildon_pannable_area, GTK_TYPE_BIN)
 #define PANNABLE_AREA_PRIVATE(o)                                \
@@ -717,8 +717,8 @@ hildon_pannable_area_motion_notify_cb (GtkWidget * widget,
   y = event->y - priv->y;
 
   if (priv->first_drag && (!priv->moved) &&
-      ((ABS (x) > (dnd_threshold+DND_THREDSHOLD_INC))
-       || (ABS (y) > (dnd_threshold+DND_THREDSHOLD_INC)))) {
+      ((ABS (x) > (dnd_threshold+DND_THRESHOLD_INC))
+       || (ABS (y) > (dnd_threshold+DND_THRESHOLD_INC)))) {
     priv->moved = TRUE;
 
     if (priv->first_drag) {
