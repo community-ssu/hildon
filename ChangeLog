@@ -1,5 +1,14 @@
 2008-07-29  Claudio Saavedra  <csaavedra@igalia.com>
 
+	* src/Makefile.am: Added HildonPickerDialog.
+	* src/hildon-picker-dialog.c: Update includes.
+	* src/hildon.h: Add hildon-picker-dialog.h
+
+	Copied HildonPickerDialog from sandbox to trunk. Future work
+	on this widget must take place in trunk.
+
+2008-07-29  Claudio Saavedra  <csaavedra@igalia.com>
+
 	* src/Makefile.am: Added HildonTimeSelector.
 	* src/hildon.h: Add hildon-time-selector.h
 
