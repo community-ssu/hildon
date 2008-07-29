@@ -1,5 +1,15 @@
 2008-07-29  Claudio Saavedra  <csaavedra@igalia.com>
 
+	* src/Makefile.am: Added HildonTimeButton.
+	* src/hildon-time-button.c: Added missing LGPL header.
+	* src/hildon-time-button.h: Added missing LGPL header.
+	* src/hildon.h: Add hildon-time-button.h
+
+	Copied HildonTimeButton from sandbox to trunk. Future work on this
+	widget must take place in trunk.
+
+2008-07-29  Claudio Saavedra  <csaavedra@igalia.com>
+
 	* src/Makefile.am: Added HildonDateButton.
 	* src/hildon-date-button.c: Update includes.
 	* src/hildon.h: Add hildon-date-button.h
