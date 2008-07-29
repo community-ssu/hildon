@@ -60,8 +60,8 @@ vertical_buttons_window                         (void)
     /* Finger buttons */
     for (i = 0; i < 4; i++) {
         char *title = g_strdup_printf ("Finger %d", i);
-        button = hildon_button_new (HILDON_BUTTON_WITH_VERTICAL_VALUE |
-                                    HILDON_BUTTON_FINGER_HEIGHT, title, "Some value");
+        button = hildon_button_new_with_text (HILDON_BUTTON_WITH_VERTICAL_VALUE |
+                                              HILDON_BUTTON_FINGER_HEIGHT, title, "Some value");
         g_signal_connect (button, "clicked", G_CALLBACK (button_clicked_cb), NULL);
         gtk_box_pack_start (vbox1, button, FALSE, FALSE, 0);
         g_free (title);
@@ -70,8 +70,8 @@ vertical_buttons_window                         (void)
     /* Thumb buttons */
     for (i = 0; i < 3; i++) {
         char *title = g_strdup_printf ("Thumb %d", i);
-        button = hildon_button_new (HILDON_BUTTON_WITH_VERTICAL_VALUE |
-                                    HILDON_BUTTON_THUMB_HEIGHT, title, "Some value");
+        button = hildon_button_new_with_text (HILDON_BUTTON_WITH_VERTICAL_VALUE |
+                                              HILDON_BUTTON_THUMB_HEIGHT, title, "Some value");
         g_signal_connect (button, "clicked", G_CALLBACK (button_clicked_cb), NULL);
         gtk_box_pack_start (vbox2, button, FALSE, FALSE, 0);
         g_free (title);
@@ -80,7 +80,7 @@ vertical_buttons_window                         (void)
     /* Auto buttons */
     for (i = 0; i < 4; i++) {
         char *title = g_strdup_printf ("Auto %d", i);
-        button = hildon_button_new (HILDON_BUTTON_WITH_VERTICAL_VALUE, title, "Some value");
+        button = hildon_button_new_with_text (HILDON_BUTTON_WITH_VERTICAL_VALUE, title, "Some value");
         g_signal_connect (button, "clicked", G_CALLBACK (button_clicked_cb), NULL);
         gtk_box_pack_start (vbox3, button, FALSE, FALSE, 0);
         g_free (title);
@@ -118,28 +118,28 @@ horizontal_buttons_window                       (void)
     gtk_box_pack_start (vbox, GTK_WIDGET (hbox3), TRUE, TRUE, 0);
 
     /* Full screen width button */
-    button = hildon_button_new (HILDON_BUTTON_WITH_VERTICAL_VALUE |
-                                HILDON_BUTTON_FULLSCREEN_WIDTH, "Full width", "Some value");
+    button = hildon_button_new_with_text (HILDON_BUTTON_WITH_VERTICAL_VALUE |
+                                          HILDON_BUTTON_FULLSCREEN_WIDTH, "Full width", "Some value");
     gtk_box_pack_start (hbox1, button, TRUE, TRUE, 0);
     g_signal_connect (button, "clicked", G_CALLBACK (button_clicked_cb), NULL);
 
     /* Half screen width buttons */
-    button = hildon_button_new (HILDON_BUTTON_WITH_VERTICAL_VALUE |
-                                HILDON_BUTTON_HALFSCREEN_WIDTH, "Half width 1", "Some value");
+    button = hildon_button_new_with_text (HILDON_BUTTON_WITH_VERTICAL_VALUE |
+                                          HILDON_BUTTON_HALFSCREEN_WIDTH, "Half width 1", "Some value");
     gtk_box_pack_start (hbox2, button, TRUE, TRUE, 0);
     g_signal_connect (button, "clicked", G_CALLBACK (button_clicked_cb), NULL);
 
-    button = hildon_button_new (HILDON_BUTTON_WITH_VERTICAL_VALUE |
-                                HILDON_BUTTON_HALFSCREEN_WIDTH, "Half width 2 with longer text", "Some value");
+    button = hildon_button_new_with_text (HILDON_BUTTON_WITH_VERTICAL_VALUE |
+                                          HILDON_BUTTON_HALFSCREEN_WIDTH, "Half width 2 with longer text", "Some value");
     gtk_box_pack_start (hbox2, button, TRUE, TRUE, 0);
     g_signal_connect (button, "clicked", G_CALLBACK (button_clicked_cb), NULL);
 
     /* Auto width button */
-    button = hildon_button_new (HILDON_BUTTON_WITH_VERTICAL_VALUE, "Auto 1", "Some value");
+    button = hildon_button_new_with_text (HILDON_BUTTON_WITH_VERTICAL_VALUE, "Auto 1", "Some value");
     gtk_box_pack_start (hbox3, button, TRUE, TRUE, 0);
     g_signal_connect (button, "clicked", G_CALLBACK (button_clicked_cb), NULL);
 
-    button = hildon_button_new (HILDON_BUTTON_WITH_VERTICAL_VALUE, "Auto 2 with longer text", "Some value");
+    button = hildon_button_new_with_text (HILDON_BUTTON_WITH_VERTICAL_VALUE, "Auto 2 with longer text", "Some value");
     gtk_box_pack_start (hbox3, button, TRUE, TRUE, 0);
     g_signal_connect (button, "clicked", G_CALLBACK (button_clicked_cb), NULL);
 

@@ -73,7 +73,10 @@ GType
 hildon_button_get_type                          (void) G_GNUC_CONST;
 
 GtkWidget *
-hildon_button_new                               (HildonButtonFlags flags,
+hildon_button_new                               (HildonButtonFlags flags);
+
+GtkWidget *
+hildon_button_new_with_text                     (HildonButtonFlags  flags,
                                                  const char        *title,
                                                  const char        *value);
 
@@ -99,9 +102,9 @@ const char *
 hildon_button_get_value                         (HildonButton *button);
 
 void
-hildon_button_set_title_and_value               (HildonButton *button,
-                                                 const char *title,
-                                                 const char *value);
+hildon_button_set_text                          (HildonButton *button,
+                                                 const char   *title,
+                                                 const char   *value);
 
 void
 hildon_button_set_size_groups                   (HildonButton *button,

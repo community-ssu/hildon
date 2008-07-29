@@ -44,6 +44,7 @@ struct                                          _HildonButtonPrivate
 {
     GtkLabel *title;
     GtkLabel *value;
+    GtkWidget *alignment;
 };
 
 enum {
@@ -52,7 +53,12 @@ enum {
   PROP_ARRANGEMENT_FLAGS
 };
 
-static void hildon_button_set_arrangement (HildonButton *button, HildonButtonFlags flags);
+static void
+hildon_button_set_arrangement                   (HildonButton      *button,
+                                                 HildonButtonFlags  flags);
+
+static void
+hildon_button_construct_child                   (HildonButton *button);
 
 static void
 hildon_button_set_property                      (GObject      *object,
@@ -132,14 +138,15 @@ hildon_button_class_init                        (HildonButtonClass *klass)
             G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
 
     g_object_class_install_property (
-            gobject_class,
-            PROP_ARRANGEMENT_FLAGS,
-            g_param_spec_int ("arrangement-flags",
-                              "Arrangement flags",
-                              "How the button contents must be arranged",
-                              0, 64,
-                              HILDON_BUTTON_WITH_HORIZONTAL_VALUE,
-                              G_PARAM_WRITABLE | G_PARAM_CONSTRUCT_ONLY));
+        gobject_class,
+        PROP_ARRANGEMENT_FLAGS,
+        g_param_spec_int (
+            "arrangement-flags",
+            "Arrangement flags",
+            "How the button contents must be arranged",
+            0, 64,
+            HILDON_BUTTON_WITH_HORIZONTAL_VALUE,
+            G_PARAM_WRITABLE | G_PARAM_CONSTRUCT_ONLY));
 
     gtk_widget_class_install_style_property (
         widget_class,
@@ -169,12 +176,16 @@ hildon_button_init                              (HildonButton *self)
 
     priv->title = GTK_LABEL (gtk_label_new (NULL));
     priv->value = GTK_LABEL (gtk_label_new (NULL));
+    priv->alignment = gtk_alignment_new (0.5, 0.5, 0, 0);
 
     gtk_widget_set_name (GTK_WIDGET (priv->title), "hildon-button-title");
     gtk_widget_set_name (GTK_WIDGET (priv->value), "hildon-button-value");
 
     gtk_misc_set_alignment (GTK_MISC (priv->title), 0, 0.5);
     gtk_misc_set_alignment (GTK_MISC (priv->value), 0, 0.5);
+
+    /* The value label is not shown automatically, see hildon_button_set_value() */
+    gtk_widget_set_no_show_all (GTK_WIDGET (priv->value), TRUE);
 }
 
 void
@@ -196,7 +207,13 @@ hildon_button_set_size_groups                   (HildonButton *button,
 }
 
 GtkWidget *
-hildon_button_new                               (HildonButtonFlags  flags,
+hildon_button_new                               (HildonButtonFlags  flags)
+{
+    return hildon_button_new_full (flags, NULL, NULL, NULL, NULL);
+}
+
+GtkWidget *
+hildon_button_new_with_text                     (HildonButtonFlags  flags,
                                                  const char        *title,
                                                  const char        *value)
 {
@@ -231,7 +248,6 @@ hildon_button_set_arrangement (HildonButton *button,
                                HildonButtonFlags flags)
 {
     GtkWidget *box;
-    GtkWidget *alignment;
     HildonButtonPrivate *priv;
     guint horizontal_spacing;
     guint vertical_spacing;
@@ -278,15 +294,10 @@ hildon_button_set_arrangement (HildonButton *button,
         box = gtk_hbox_new (FALSE, horizontal_spacing);
     }
 
-    alignment = gtk_alignment_new (0.5, 0.5, 0, 0);
-
     gtk_box_pack_start (GTK_BOX (box), GTK_WIDGET (priv->title), TRUE, TRUE, 0);
     gtk_box_pack_start (GTK_BOX (box), GTK_WIDGET (priv->value), TRUE, TRUE, 0);
 
-    gtk_container_add (GTK_CONTAINER (alignment), box);
-    gtk_container_add (GTK_CONTAINER (button), alignment);
-
-    gtk_widget_show_all (alignment);
+    gtk_container_add (GTK_CONTAINER (priv->alignment), box);
 }
 
 void
@@ -299,6 +310,9 @@ hildon_button_set_title                         (HildonButton *button,
 
     priv = HILDON_BUTTON_GET_PRIVATE (button);
     gtk_label_set_text (priv->title, title);
+
+    if (title)
+        hildon_button_construct_child (button);
 
     g_object_notify (G_OBJECT (button), "title");
 }
@@ -313,6 +327,13 @@ hildon_button_set_value                         (HildonButton *button,
 
     priv = HILDON_BUTTON_GET_PRIVATE (button);
     gtk_label_set_text (priv->value, value);
+
+    /* If the button has no value, hide the label so the title is
+     * properly aligned */
+    if (value)
+        gtk_widget_show (GTK_WIDGET (priv->value));
+    else
+        gtk_widget_hide (GTK_WIDGET (priv->value));
 
     g_object_notify (G_OBJECT (button), "value");
 }
@@ -342,10 +363,28 @@ hildon_button_get_value                         (HildonButton *button)
 }
 
 void
-hildon_button_set_title_and_value               (HildonButton *button,
+hildon_button_set_text                          (HildonButton *button,
                                                  const char   *title,
                                                  const char   *value)
 {
     hildon_button_set_title (button, title);
     hildon_button_set_value (button, value);
+}
+
+static void
+hildon_button_construct_child                   (HildonButton *button)
+{
+    HildonButtonPrivate *priv = HILDON_BUTTON_GET_PRIVATE (button);
+    GtkBin *bin = GTK_BIN (button);
+
+    /* Return if there's nothing to do */
+    if (bin->child == priv->alignment)
+        return;
+
+    if (bin->child) {
+        gtk_container_remove (GTK_CONTAINER (button), bin->child);
+    }
+
+    gtk_container_add (GTK_CONTAINER (button), priv->alignment);
+    gtk_widget_show_all (priv->alignment);
 }

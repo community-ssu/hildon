@@ -1,3 +1,21 @@
+2008-07-29  Alberto Garcia  <agarcia@igalia.com>
+
+	* src/hildon-button.h
+	* src/hildon-button.c
+	(hildon_button_new)
+	(hildon_button_new_with_text): New constructor to create a button
+	with no text at all.
+	(hildon_button_init, hildon_button_set_arrangement)
+	(hildon_button_set_title, hildon_button_set_value)
+	(hildon_button_set_text)
+	(hildon_button_construct_child): Hide the value when it's not used
+	so the rest of the text is properly aligned.
+	Allow creating buttons with arbitrary widgets inside (not just
+	title/value labels).
+
+	* examples/hildon-button-example.c (vertical_buttons_window)
+	(horizontal_buttons_window): Update example to use new API.
+
 2008-07-29  Claudio Saavedra  <csaavedra@igalia.com>
 
 	* src/Makefile.am: Added HildonTimeButton.
