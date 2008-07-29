@@ -77,15 +77,6 @@ create_menu                                     (GtkWidget *label)
     return menu;
 }
 
-static void
-close_app                                       (GtkWidget *widget,
-                                                 GdkEvent  *event,
-                                                 GtkWidget *menu)
-{
-    gtk_widget_destroy (GTK_WIDGET (menu));
-    gtk_main_quit ();
-}
-
 int
 main                                            (int argc,
                                                  char **argv)
@@ -123,7 +114,7 @@ main                                            (int argc,
     gtk_container_set_border_width (GTK_CONTAINER (win), 20);
     gtk_container_add (GTK_CONTAINER (win), GTK_WIDGET (vbox));
 
-    g_signal_connect (win, "delete_event", G_CALLBACK(close_app), menu);
+    g_signal_connect (win, "delete_event", G_CALLBACK (gtk_main_quit), NULL);
 
     gtk_widget_show_all (win);
 

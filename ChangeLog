@@ -1,3 +1,8 @@
+2008-07-29  Alberto Garcia  <agarcia@igalia.com>
+
+	* examples/hildon-app-menu-example.c (main): Let the window
+	destroy the menu.
+
 2008-07-29  Alejandro G. Castro	 <alex@igalia.com>
 
 	* src/hildon-pannable-area.c
