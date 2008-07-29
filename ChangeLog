@@ -13,7 +13,7 @@
 	* examples/hildon-time-button-example.c:
 	* examples/hildon-touch-picker-example.c:
 
-	Add examples for the reciently added touch pickers,
+	Add examples for the recently added touch pickers,
 	picker dialogs,	and picker button widgets.
 
 2008-07-29  Alberto Garcia  <agarcia@igalia.com>
