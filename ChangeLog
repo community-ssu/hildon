@@ -1,5 +1,13 @@
 2008-07-29  Claudio Saavedra  <csaavedra@igalia.com>
 
+	* src/Makefile.am: Added HildonTimeSelector.
+	* src/hildon.h: Add hildon-time-selector.h
+
+	Copied HildonTimeSelector widget from sandbox to trunk. Future
+	work on this widget must happen in trunk.
+
+2008-07-29  Claudio Saavedra  <csaavedra@igalia.com>
+
 	* src/Makefile.am: Added HildonDateSelector.
 	* src/hildon.h: Add hildon-date-selector.h
 

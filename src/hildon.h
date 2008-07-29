@@ -55,6 +55,7 @@
 #include                                        "hildon-time-editor.h"
 #include                                        "hildon-time-picker.h"
 #include                                        "hildon-date-selector.h"
+#include                                        "hildon-time-selector.h"
 #include                                        "hildon-touch-picker.h"
 #include                                        "hildon-volumebar-range.h"
 #include                                        "hildon-volumebar.h"
