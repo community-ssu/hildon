@@ -722,29 +722,17 @@ hildon_pannable_area_motion_notify_cb (GtkWidget * widget,
     priv->moved = TRUE;
 
     if (priv->first_drag) {
-      GdkWindow *window = NULL;
-      GtkWidget *child_widget = NULL;
-
-      window = hildon_pannable_area_get_topmost
-        (gtk_bin_get_child (GTK_BIN (widget))->window,
-         priv->click_x, priv->click_y, NULL, NULL);
-
-      gdk_window_get_user_data (window, (void**) &child_widget);
 
       if (ABS (priv->click_y - event->y) >=
           ABS (priv->click_x - event->x)) {
         gboolean vscroll;
 
-        if (priv->click_y > event->y)
-          g_signal_emit (area,
-                         pannable_area_signals[VERTICAL_MOVEMENT],
-                         0, HILDON_PANNABLE_AREA_MOV_UP, child_widget,
-                         priv->click_x, priv->click_y);
-        else
-          g_signal_emit (area,
-                         pannable_area_signals[VERTICAL_MOVEMENT],
-                         0, HILDON_PANNABLE_AREA_MOV_DOWN, child_widget,
-                         priv->click_x, priv->click_y);
+        g_signal_emit (area,
+                       pannable_area_signals[VERTICAL_MOVEMENT],
+                       0, (priv->click_y > event->y) ?
+                       HILDON_PANNABLE_AREA_MOV_UP :
+                       HILDON_PANNABLE_AREA_MOV_DOWN,
+                       priv->click_x, priv->click_y);
 
         vscroll = (priv->vadjust->upper - priv->vadjust->lower >
                    priv->vadjust->page_size) ? TRUE : FALSE;
@@ -756,16 +744,12 @@ hildon_pannable_area_motion_notify_cb (GtkWidget * widget,
       } else {
         gboolean hscroll;
 
-        if (priv->click_x > event->x)
-          g_signal_emit (area,
-                         pannable_area_signals[HORIZONTAL_MOVEMENT],
-                         0, HILDON_PANNABLE_AREA_MOV_LEFT, child_widget,
-                         priv->click_x, priv->click_y);
-        else
-          g_signal_emit (area,
-                         pannable_area_signals[HORIZONTAL_MOVEMENT],
-                         0, HILDON_PANNABLE_AREA_MOV_RIGHT, child_widget,
-                         priv->click_x, priv->click_y);
+        g_signal_emit (area,
+                       pannable_area_signals[HORIZONTAL_MOVEMENT],
+                       0, (priv->click_x > event->x) ?
+                       HILDON_PANNABLE_AREA_MOV_LEFT :
+                       HILDON_PANNABLE_AREA_MOV_RIGHT,
+                       priv->click_x, priv->click_y);
 
         hscroll = (priv->hadjust->upper - priv->hadjust->lower >
                    priv->hadjust->page_size) ? TRUE : FALSE;
@@ -1831,10 +1815,9 @@ hildon_pannable_area_class_init (HildonPannableAreaClass * klass)
 		  G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
 		  G_STRUCT_OFFSET (HildonPannableAreaClass, horizontal_movement),
 		  NULL, NULL,
-		  _hildon_marshal_VOID__INT_OBJECT_DOUBLE_DOUBLE,
-		  G_TYPE_NONE, 4,
+		  _hildon_marshal_VOID__INT_DOUBLE_DOUBLE,
+		  G_TYPE_NONE, 3,
                   G_TYPE_INT,
-                  GTK_TYPE_WIDGET,
 		  G_TYPE_DOUBLE,
 		  G_TYPE_DOUBLE);
 
@@ -1844,10 +1827,9 @@ hildon_pannable_area_class_init (HildonPannableAreaClass * klass)
 		  G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
 		  G_STRUCT_OFFSET (HildonPannableAreaClass, vertical_movement),
 		  NULL, NULL,
-		  _hildon_marshal_VOID__INT_OBJECT_DOUBLE_DOUBLE,
-		  G_TYPE_NONE, 4,
+		  _hildon_marshal_VOID__INT_DOUBLE_DOUBLE,
+		  G_TYPE_NONE, 3,
                   G_TYPE_INT,
-                  GTK_TYPE_WIDGET,
 		  G_TYPE_DOUBLE,
 		  G_TYPE_DOUBLE);
 
@@ -2211,4 +2193,31 @@ hildon_pannable_area_jump_to_child (HildonPannableArea *area, GtkWidget *child)
 
   if (gtk_widget_translate_coordinates (child, bin_child, 0, 0, &x, &y))
     hildon_pannable_area_jump_to (area, x, y);
+}
+
+/**
+ * hildon_pannable_get_child_widget_at:
+ * @area: A #HildonPannableArea.
+ * @x: horizontal coordinate of the point
+ * @y: vertical coordinate of the point
+ *
+ * Get the widget at the point (x, y) inside the pannable area. In
+ * case no widget found it returns NULL.
+ *
+ * returns: the #GtkWidget if we find a widget, NULL in any other case
+ **/
+GtkWidget*
+hildon_pannable_get_child_widget_at (HildonPannableArea *area,
+                                     gdouble x, gdouble y)
+{
+  GdkWindow *window = NULL;
+  GtkWidget *child_widget = NULL;
+
+  window = hildon_pannable_area_get_topmost
+    (gtk_bin_get_child (GTK_BIN (area))->window,
+     x, y, NULL, NULL);
+
+  gdk_window_get_user_data (window, (void**) &child_widget);
+
+  return child_widget;
 }

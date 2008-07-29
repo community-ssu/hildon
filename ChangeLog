@@ -1,5 +1,32 @@
 2008-07-29  Alejandro G. Castro	 <alex@igalia.com>
 
+	Modified the procedure to get the widget at a point inside the
+	pannable area when using the movement type signals. Now the user
+	has to call a function to get the child, that way we just
+	calculate the child in case the user really want to use it and not
+	all the time.
+
+	* src/hildon-marshalers.list: Modified the marshallers, now we do
+	not have the widget as a parameter.
+
+	* src/hildon-pannable-area.c
+	(hildon_pannable_area_motion_notify_cb),
+	(hildon_pannable_area_class_init),
+	(hildon_pannable_get_child_widget_at):  Removed the widget
+	parameter from the signal callback. We have also refactored the
+	emission of the signals.
+
+	* src/hildon-pannable-area.h: Added a new method to the API to
+	calculate a widget at a point inside the pannable area,
+	hildon_pannable_get_child_widget_at.
+
+	* examples/hildon-pannable-area-example-4.c
+	(horizontal_movement): Modified the example to use the new API,
+	added condition to control which widget is under the event. This
+	way we can avoid scrolling laterally over other widgets.
+
+2008-07-29  Alejandro G. Castro	 <alex@igalia.com>
+
 	* src/hildon-pannable-area.c
 	(hildon_pannable_area_motion_notify_cb): Fixed bug handling the
 	modes, we stop getting the pointer events due to returning the

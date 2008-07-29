@@ -39,32 +39,34 @@ HiddenColContext *ctx;
 static void
 horizontal_movement (HildonPannableArea *area,
                      HildonPannableAreaMovDirection direction,
-		     GtkWidget *widget, gdouble x, gdouble y,
-                     gpointer user_data)
+		     gdouble x, gdouble y, gpointer user_data)
 {
   GtkTreePath *path;
   GdkRectangle rect;
   gint col_x;
   GtkTreeViewColumn *col = GTK_TREE_VIEW_COLUMN (user_data);
+  GtkWidget *child = hildon_pannable_get_child_widget_at (area, x, y);
 
-  g_print ("widget %p treeview %p\n", widget, ctx->treeview);
+  g_print ("widget %p treeview %p\n", child, ctx->treeview);
 
-  if (direction == HILDON_PANNABLE_AREA_MOV_LEFT) {
+  if (child == ctx->treeview) {
+    if (direction == HILDON_PANNABLE_AREA_MOV_LEFT){
 
-    path = gtk_tree_path_new_first ();
+      path = gtk_tree_path_new_first ();
 
-    gtk_tree_view_get_background_area (GTK_TREE_VIEW (ctx->treeview),
-                                       path, col, &rect);
+      gtk_tree_view_get_background_area (GTK_TREE_VIEW (ctx->treeview),
+                                         path, col, &rect);
 
-    gtk_tree_view_convert_bin_window_to_tree_coords (GTK_TREE_VIEW (ctx->treeview),
-                                                     rect.x, 0, &col_x, NULL);
+      gtk_tree_view_convert_bin_window_to_tree_coords (GTK_TREE_VIEW (ctx->treeview),
+                                                       rect.x, 0, &col_x, NULL);
 
-    gtk_tree_path_free (path);
+      gtk_tree_path_free (path);
 
-    hildon_pannable_area_scroll_to (area, col_x, -1);
-  }
-  else {
-    hildon_pannable_area_scroll_to (area, 0, -1);
+      hildon_pannable_area_scroll_to (area, col_x, -1);
+    }
+    else {
+      hildon_pannable_area_scroll_to (area, 0, -1);
+    }
   }
 
   g_print ("horizontal_movement %lf, %lf\n", x, y);

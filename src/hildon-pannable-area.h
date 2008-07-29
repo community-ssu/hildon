@@ -121,10 +121,10 @@ struct                                          _HildonPannableAreaClass
 
   void (* horizontal_movement) (HildonPannableArea *area,
                                 HildonPannableAreaIndicatorMode direction,
-                                GtkWidget *widget, gdouble x, gdouble y);
+                                gdouble x, gdouble y);
   void (* vertical_movement) (HildonPannableArea *area,
                               HildonPannableAreaIndicatorMode direction,
-                              GtkWidget *widget, gdouble x, gdouble y);
+                              gdouble x, gdouble y);
 };
 
 GType hildon_pannable_area_get_type             (void);
@@ -143,6 +143,8 @@ void hildon_pannable_area_scroll_to_child       (HildonPannableArea *area,
  						 GtkWidget *child);
 void hildon_pannable_area_jump_to_child         (HildonPannableArea *area,
                                                  GtkWidget *child);
+GtkWidget* hildon_pannable_get_child_widget_at  (HildonPannableArea *area,
+                                                 gdouble x, gdouble y);
 
 G_END_DECLS
 
