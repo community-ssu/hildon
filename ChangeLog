@@ -1,5 +1,11 @@
 2008-07-29  Claudio Saavedra  <csaavedra@igalia.com>
 
+	* src/hildon-button.c: (hildon_button_set_property),
+	(hildon_button_class_init): Make "arrangement-flags" a proper
+	G_TYPE_FLAGS derived property.
+
+2008-07-29  Claudio Saavedra  <csaavedra@igalia.com>
+
 	* examples/Makefile.am: Add below examples.
 	* examples/hildon-date-button-example.c:
 	* examples/hildon-picker-button-example.c:

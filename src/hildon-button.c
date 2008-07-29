@@ -34,6 +34,7 @@
  */
 
 #include                                        "hildon-button.h"
+#include                                        "hildon-enum-types.h"
 
 #define FINGER_BUTTON_HEIGHT                    70
 #define THUMB_BUTTON_HEIGHT                     105
@@ -85,7 +86,7 @@ hildon_button_set_property                      (GObject      *object,
         hildon_button_set_value (button, g_value_get_string (value));
         break;
     case PROP_ARRANGEMENT_FLAGS:
-        hildon_button_set_arrangement (button, g_value_get_int (value));
+        hildon_button_set_arrangement (button, g_value_get_enum (value));
         break;
     default:
         G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -148,11 +149,11 @@ hildon_button_class_init                        (HildonButtonClass *klass)
     g_object_class_install_property (
         gobject_class,
         PROP_ARRANGEMENT_FLAGS,
-        g_param_spec_int (
+        g_param_spec_flags (
             "arrangement-flags",
             "Arrangement flags",
             "How the button contents must be arranged",
-            0, 64,
+            HILDON_TYPE_BUTTON_FLAGS,
             HILDON_BUTTON_WITH_HORIZONTAL_VALUE,
             G_PARAM_WRITABLE | G_PARAM_CONSTRUCT_ONLY));
 
