@@ -86,7 +86,7 @@ hildon_button_set_property                      (GObject      *object,
         hildon_button_set_value (button, g_value_get_string (value));
         break;
     case PROP_ARRANGEMENT_FLAGS:
-        hildon_button_set_arrangement (button, g_value_get_enum (value));
+        hildon_button_set_arrangement (button, g_value_get_flags (value));
         break;
     default:
         G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
