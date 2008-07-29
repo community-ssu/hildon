@@ -38,6 +38,13 @@
 #include                                        <src/hildon-stackable-window.h>
 #include                                        <src/hildon-app-menu.h>
 #include                                        <src/hildon-button.h>
+#include                                        <src/hildon-touch-picker.h>
+#include                                        <src/hildon-time-selector.h>
+#include                                        <src/hildon-date-selector.h>
+#include                                        <src/hildon-picker-dialog.h>
+#include                                        <src/hildon-picker-button.h>
+#include                                        <src/hildon-date-button.h>
+#include                                        <src/hildon-time-button.h>
 
 hildon_banner_get_type
 hildon_calendar_popup_get_type
@@ -75,3 +82,10 @@ hildon_pannable_area_get_type
 hildon_stackable_window_get_type
 hildon_app_menu_get_type
 hildon_button_get_type
+hildon_touch_picker_get_type
+hildon_time_selector_get_type
+hildon_date_selector_get_type
+hildon_picker_dialog_get_type
+hildon_picker_button_get_type
+hildon_date_button_get_type
+hildon_time_button_get_type

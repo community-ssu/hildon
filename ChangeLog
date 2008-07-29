@@ -1,5 +1,13 @@
 2008-07-29  Claudio Saavedra  <csaavedra@igalia.com>
 
+	* doc/hildon-docs.sgml:
+	* doc/hildon.types:
+
+	 Add the touch pickers, picker dialogs, and picker button widgets
+	to the documentation.
+
+2008-07-29  Claudio Saavedra  <csaavedra@igalia.com>
+
 	* src/hildon-button.c: (hildon_button_set_property),
 	(hildon_button_class_init): Make "arrangement-flags" a proper
 	G_TYPE_FLAGS derived property.
