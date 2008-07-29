@@ -41,6 +41,7 @@ libhildon_@API_VERSION_MAJOR@_la_SOURCES 		= hildon-private.c				\
 							  hildon-touch-picker.c				\
 							  hildon-picker-dialog.c			\
 							  hildon-picker-button.c			\
+							  hildon-date-button.c				\
 							  hildon-helper.c				\
 							  hildon-weekday-picker.c 			\
 							  hildon-number-editor.c 			\
@@ -110,6 +111,7 @@ libhildon_@API_VERSION_MAJOR@_public_headers 	        = hildon-banner.h 				\
 							  hildon-touch-picker.h				\
 							  hildon-picker-dialog.h			\
 							  hildon-picker-button.h			\
+							  hildon-date-button.h				\
 							  hildon-volumebar-range.h 			\
 							  hildon-volumebar.h 				\
 							  hildon-vvolumebar.h 				\

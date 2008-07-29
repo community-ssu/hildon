@@ -1,5 +1,14 @@
 2008-07-29  Claudio Saavedra  <csaavedra@igalia.com>
 
+	* src/Makefile.am: Added HildonDateButton.
+	* src/hildon-date-button.c: Update includes.
+	* src/hildon.h: Add hildon-date-button.h
+
+	Copied HildonDateButton from sandbox to trunk. Future work on this
+	widget must take place in trunk.
+
+2008-07-29  Claudio Saavedra  <csaavedra@igalia.com>
+
 	* src/Makefile.am: Added HildonPickerButton.
 	* src/hildon-picker-button.h: Update includes.
 	* src/hildon.h: Add hildon-picker-button.h
