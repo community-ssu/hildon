@@ -58,6 +58,7 @@
 #include                                        "hildon-time-selector.h"
 #include                                        "hildon-touch-picker.h"
 #include                                        "hildon-picker-dialog.h"
+#include                                        "hildon-picker-button.h"
 #include                                        "hildon-volumebar-range.h"
 #include                                        "hildon-volumebar.h"
 #include                                        "hildon-vvolumebar.h"
