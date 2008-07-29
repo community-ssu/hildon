@@ -716,8 +716,9 @@ hildon_pannable_area_motion_notify_cb (GtkWidget * widget,
   x = event->x - priv->x;
   y = event->y - priv->y;
 
-  if ((!priv->moved) && ((ABS (x) > (dnd_threshold+DND_THREDSHOLD_INC))
-			 || (ABS (y) > (dnd_threshold+DND_THREDSHOLD_INC)))) {
+  if (priv->first_drag && (!priv->moved) &&
+      ((ABS (x) > (dnd_threshold+DND_THREDSHOLD_INC))
+       || (ABS (y) > (dnd_threshold+DND_THREDSHOLD_INC)))) {
     priv->moved = TRUE;
 
     if (priv->first_drag) {
@@ -732,6 +733,8 @@ hildon_pannable_area_motion_notify_cb (GtkWidget * widget,
 
       if (ABS (priv->click_y - event->y) >=
           ABS (priv->click_x - event->x)) {
+        gboolean vscroll;
+
         if (priv->click_y > event->y)
           g_signal_emit (area,
                          pannable_area_signals[VERTICAL_MOVEMENT],
@@ -743,11 +746,16 @@ hildon_pannable_area_motion_notify_cb (GtkWidget * widget,
                          0, HILDON_PANNABLE_AREA_MOV_DOWN, child_widget,
                          priv->click_x, priv->click_y);
 
-        if (!((priv->vscroll)&&
+        vscroll = (priv->vadjust->upper - priv->vadjust->lower >
+                   priv->vadjust->page_size) ? TRUE : FALSE;
+
+        if (!((vscroll)&&
               (priv->mov_mode&HILDON_PANNABLE_AREA_MOV_MODE_VERT)))
-          return TRUE;
+          priv->moved = FALSE;
 
       } else {
+        gboolean hscroll;
+
         if (priv->click_x > event->x)
           g_signal_emit (area,
                          pannable_area_signals[HORIZONTAL_MOVEMENT],
@@ -759,9 +767,12 @@ hildon_pannable_area_motion_notify_cb (GtkWidget * widget,
                          0, HILDON_PANNABLE_AREA_MOV_RIGHT, child_widget,
                          priv->click_x, priv->click_y);
 
-        if (!((priv->hscroll)&&
+        hscroll = (priv->hadjust->upper - priv->hadjust->lower >
+                   priv->hadjust->page_size) ? TRUE : FALSE;
+
+        if (!((hscroll)&&
               (priv->mov_mode&HILDON_PANNABLE_AREA_MOV_MODE_HORI)))
-          return TRUE;
+          priv->moved = FALSE;
       }
     }
 

@@ -1,3 +1,11 @@
+2008-07-29  Alejandro G. Castro	 <alex@igalia.com>
+
+	* src/hildon-pannable-area.c
+	(hildon_pannable_area_motion_notify_cb): Fixed bug handling the
+	modes, we stop getting the pointer events due to returning the
+	callback without properly calling the get pointer again. Fixed
+	also an error using the hscroll and vscroll.
+
 2008-07-28  Alberto Garcia  <agarcia@igalia.com>
 
 	* src/hildon-app-menu-private.h
