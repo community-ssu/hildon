@@ -1,5 +1,12 @@
 2008-07-29  Alejandro G. Castro	 <alex@igalia.com>
 
+	* src/hildon-pannable-area.c
+	(hildon_pannable_area_class_init): Set the min value of the
+	overshoot properties to zero, which points out that not
+	overshooting allowed.
+
+2008-07-29  Alejandro G. Castro	 <alex@igalia.com>
+
 	Modified the procedure to get the widget at a point inside the
 	pannable area when using the movement type signals. Now the user
 	has to call a function to get the child, that way we just

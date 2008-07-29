@@ -1769,7 +1769,7 @@ hildon_pannable_area_class_init (HildonPannableAreaClass * klass)
 				   g_param_spec_int ("vovershoot_max",
                                                      "Vertical overshoot distance",
                                                      "Space we allow the widget to pass over its vertical limits when hitting the edges, set 0 in order to deactivate overshooting.",
-                                                     G_MININT, G_MAXINT, 150,
+                                                     0, G_MAXINT, 150,
                                                      G_PARAM_READWRITE |
                                                      G_PARAM_CONSTRUCT));
 
@@ -1778,7 +1778,7 @@ hildon_pannable_area_class_init (HildonPannableAreaClass * klass)
 				   g_param_spec_int ("hovershoot_max",
                                                      "Horizontal overshoot distance",
                                                      "Space we allow the widget to pass over its horizontal limits when hitting the edges, set 0 in order to deactivate overshooting.",
-                                                     G_MININT, G_MAXINT, 150,
+                                                     0, G_MAXINT, 150,
                                                      G_PARAM_READWRITE |
                                                      G_PARAM_CONSTRUCT));
 
