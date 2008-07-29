@@ -20,9 +20,17 @@
  * SECTION:hildon-button
  * @short_description: Widget representing a button in the Hildon framework.
  *
- * The HildonButton is a GTK widget which represent a clickable
+ * The #HildonButton is a GTK widget which represent a clickable
  * button. It is derived from the GtkButton widget and provides
  * additional commodities specific to the Hildon framework.
+ *
+ * The height of a #HildonButton can be set to either "finger" height
+ * or "thumb" height. It can also be configured to use halfscreen or
+ * fullscreen width. Alternatively, either dimension can be set to
+ * "auto" so it behaves like a standard GtkButton.
+ *
+ * The #HildonButton can hold any valid child widget, but it usually
+ * contains two labels: title and value (the latter being optional).
  */
 
 #include                                        "hildon-button.h"
@@ -206,12 +214,33 @@ hildon_button_set_size_groups                   (HildonButton *button,
         gtk_size_group_add_widget (value_size_group, GTK_WIDGET (priv->value));
 }
 
+/**
+ * hildon_button_new:
+ * @flags: flags to set the size and layout of the button
+ *
+ * Creates a new #HildonButton. To add a child widget use gtk_container_add().
+ *
+ * Returns: a new #HildonButton
+ **/
 GtkWidget *
 hildon_button_new                               (HildonButtonFlags  flags)
 {
     return hildon_button_new_full (flags, NULL, NULL, NULL, NULL);
 }
 
+/**
+ * hildon_button_new_with_text:
+ * @flags: flags to set the size and layout of the button
+ * @title: Title of the button (main label)
+ * @value: Value of the button (secondary label), or %NULL
+ *
+ * Creates a new #HildonButton with two labels, @title and @value.
+ *
+ * If you just want to use the main label, set @value to %NULL. You
+ * can set it to a non-%NULL value at any time later.
+ *
+ * Returns: a new #HildonButton
+ **/
 GtkWidget *
 hildon_button_new_with_text                     (HildonButtonFlags  flags,
                                                  const char        *title,

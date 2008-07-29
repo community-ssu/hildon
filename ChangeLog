@@ -1,5 +1,9 @@
 2008-07-29  Alberto Garcia  <agarcia@igalia.com>
 
+	* src/hildon-button.c: Add some API documentation
+
+2008-07-29  Alberto Garcia  <agarcia@igalia.com>
+
 	* src/hildon-button.h
 	* src/hildon-button.c
 	(hildon_button_new)
