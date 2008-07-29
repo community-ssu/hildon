@@ -36,6 +36,7 @@ libhildon_@API_VERSION_MAJOR@_la_SOURCES 		= hildon-private.c				\
 							  hildon-date-editor.c 				\
 							  hildon-time-editor.c 				\
 							  hildon-time-picker.c 				\
+							  hildon-touch-picker.c				\
 							  hildon-helper.c				\
 							  hildon-weekday-picker.c 			\
 							  hildon-number-editor.c 			\
@@ -100,6 +101,7 @@ libhildon_@API_VERSION_MAJOR@_public_headers 	        = hildon-banner.h 				\
 							  hildon-sound.h 				\
 							  hildon-time-editor.h 				\
 							  hildon-time-picker.h 				\
+							  hildon-touch-picker.h				\
 							  hildon-volumebar-range.h 			\
 							  hildon-volumebar.h 				\
 							  hildon-vvolumebar.h 				\

@@ -1,5 +1,14 @@
 2008-07-29  Claudio Saavedra  <csaavedra@igalia.com>
 
+	* src/Makefile.am: Added HildonTouchPicker.
+	* src/hildon-touch-picker.c: Update includes.
+	* src/hildon.h: Add hildon-touch-picker.h
+
+	Copied HildonTouchPicker widget from sandbox to trunk. Future work
+	on this widget must happen in trunk.
+
+2008-07-29  Claudio Saavedra  <csaavedra@igalia.com>
+
 	* src/hildon-pannable-area.c:
 	(hildon_pannable_area_motion_notify_cb): Fix a typo.
 
