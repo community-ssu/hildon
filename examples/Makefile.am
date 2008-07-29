@@ -49,7 +49,13 @@ noinst_PROGRAMS				= hildon-window-example				\
 					  hildon-app-menu-example			\
 					  hildon-stackable-window-example		\
 					  hildon-button-example				\
-					  hildon-dialog-example
+					  hildon-dialog-example				\
+					  hildon-date-button-example			\
+					  hildon-picker-button-example			\
+					  hildon-picker-button-multicolumn-example	\
+					  hildon-time-button-example			\
+					  hildon-touch-picker-example
+
 # Hildon window
 hildon_window_example_LDADD		= $(HILDON_OBJ_LIBS)
 hildon_window_example_CFLAGS		= $(HILDON_OBJ_CFLAGS)
@@ -294,5 +300,30 @@ hildon_button_example_SOURCES		= hildon-button-example.c
 hildon_dialog_example_LDADD		= $(HILDON_OBJ_LIBS)
 hildon_dialog_example_CFLAGS		= $(HILDON_OBJ_CFLAGS)
 hildon_dialog_example_SOURCES		= hildon-dialog-example.c
+
+# Hildon date button
+hildon_date_button_example_LDADD	= $(HILDON_OBJ_LIBS)
+hildon_date_button_example_CFLAGS	= $(HILDON_OBJ_CFLAGS)
+hildon_date_button_example_SOURCES	= hildon-date-button-example.c
+
+# Hildon picker button
+hildon_picker_button_example_LDADD	= $(HILDON_OBJ_LIBS)
+hildon_picker_button_example_CFLAGS	= $(HILDON_OBJ_CFLAGS)
+hildon_picker_button_example_SOURCES	= hildon-picker-button-example.c
+
+# Hildon picker button with multicolumn picker
+hildon_picker_button_multicolumn_example_LDADD	= $(HILDON_OBJ_LIBS)
+hildon_picker_button_multicolumn_example_CFLAGS	= $(HILDON_OBJ_CFLAGS)
+hildon_picker_button_multicolumn_example_SOURCES= hildon-picker-button-multicolumn-example.c
+
+# Hildon time button
+hildon_time_button_example_LDADD	= $(HILDON_OBJ_LIBS)
+hildon_time_button_example_CFLAGS	= $(HILDON_OBJ_CFLAGS)
+hildon_time_button_example_SOURCES	= hildon-time-button-example.c
+
+# Hildon touch picker with multiselection
+hildon_touch_picker_example_LDADD	= $(HILDON_OBJ_LIBS)
+hildon_touch_picker_example_CFLAGS	= $(HILDON_OBJ_CFLAGS)
+hildon_touch_picker_example_SOURCES	= hildon-touch-picker-example.c
 
 endif
