@@ -20,7 +20,7 @@
  * SECTION:hildon-button
  * @short_description: Widget representing a button in the Hildon framework.
  *
- * The #HildonButton is a GTK widget which represent a clickable
+ * The #HildonButton is a GTK widget which represents a clickable
  * button. It is derived from the GtkButton widget and provides
  * additional commodities specific to the Hildon framework.
  *
@@ -197,6 +197,15 @@ hildon_button_init                              (HildonButton *self)
     gtk_widget_set_no_show_all (GTK_WIDGET (priv->value), TRUE);
 }
 
+/**
+ * hildon_button_set_size_groups:
+ * @button: a #HildonButton
+ * @title_size_group: A #GtkSizeGroup for the button title (main label), or %NULL
+ * @value_size_group: A #GtkSizeGroup group for the button value (secondary label), or %NULL
+ *
+ * Adds the title and value labels of @button to @title_size_group and
+ * @value_size_group respectively. %NULL size groups will be ignored.
+ **/
 void
 hildon_button_set_size_groups                   (HildonButton *button,
                                                  GtkSizeGroup *title_size_group,
@@ -205,6 +214,8 @@ hildon_button_set_size_groups                   (HildonButton *button,
     HildonButtonPrivate *priv;
 
     g_return_if_fail (HILDON_IS_BUTTON (button));
+    g_return_if_fail (!title_size_group || GTK_IS_SIZE_GROUP (title_size_group));
+    g_return_if_fail (!value_size_group || GTK_IS_SIZE_GROUP (value_size_group));
 
     priv = HILDON_BUTTON_GET_PRIVATE (button);
 
@@ -250,6 +261,25 @@ hildon_button_new_with_text                     (HildonButtonFlags  flags,
     return hildon_button_new_full (flags, title, value, NULL, NULL);
 }
 
+/**
+ * hildon_button_new_full:
+ * @flags: flags to set the size and layout of the button
+ * @title: Title of the button (main label)
+ * @value: Value of the button (secondary label), or %NULL
+ * @title_size_group: a #GtkSizeGroup for the @title label, or %NULL
+ * @value_size_group: a #GtkSizeGroup for the @value label, or %NULL
+ *
+ * Creates a new #HildonButton with two labels, @title and @value, and
+ * their respective size groups.
+ *
+ * If you just want to use the main label, set @value to %NULL. You
+ * can set it to a non-%NULL value at any time later.
+ *
+ * @title and @value will be added to @title_size_group and
+ * @value_size_group, respectively, if present.
+ *
+ * Returns: a new #HildonButton
+ **/
 GtkWidget *
 hildon_button_new_full                          (HildonButtonFlags  flags,
                                                  const char        *title,
@@ -330,6 +360,15 @@ hildon_button_set_arrangement (HildonButton *button,
     gtk_container_add (GTK_CONTAINER (priv->alignment), box);
 }
 
+/**
+ * hildon_button_set_title:
+ * @button: a #HildonButton
+ * @title: a new title (main label) for the button.
+ *
+ * Sets the title (main label) of @button to @title.
+ *
+ * This will clear the previously set title.
+ **/
 void
 hildon_button_set_title                         (HildonButton *button,
                                                  const char   *title)
@@ -347,6 +386,19 @@ hildon_button_set_title                         (HildonButton *button,
     g_object_notify (G_OBJECT (button), "title");
 }
 
+/**
+ * hildon_button_set_value:
+ * @button: a #HildonButton
+ * @value: a new value (secondary label) for the button, or %NULL
+ *
+ * Sets the value (secondary label) of @button to @value.
+ *
+ * This will clear the previously set value.
+ *
+ * If @value is set to %NULL, the value label will be hidden and the
+ * title label will be realigned.
+ *
+ **/
 void
 hildon_button_set_value                         (HildonButton *button,
                                                  const char   *value)
@@ -368,6 +420,16 @@ hildon_button_set_value                         (HildonButton *button,
     g_object_notify (G_OBJECT (button), "value");
 }
 
+/**
+ * hildon_button_get_title:
+ * @button: a #HildonButton
+ *
+ * Gets the text from the main label (title) of @button, or %NULL if
+ * none has been set.
+ *
+ * Returns: The text of the title label. This string is owned by the
+ * widget and must not be modified or freed.
+ **/
 const char *
 hildon_button_get_title                         (HildonButton *button)
 {
@@ -380,6 +442,16 @@ hildon_button_get_title                         (HildonButton *button)
     return gtk_label_get_text (priv->title);
 }
 
+/**
+ * hildon_button_get_value:
+ * @button: a #HildonButton
+ *
+ * Gets the text from the secondary label (value) of @button, or %NULL
+ * if none has been set.
+ *
+ * Returns: The text of the value label. This string is owned by the
+ * widget and must not be modified or freed.
+ **/
 const char *
 hildon_button_get_value                         (HildonButton *button)
 {
@@ -392,6 +464,14 @@ hildon_button_get_value                         (HildonButton *button)
     return gtk_label_get_text (priv->value);
 }
 
+/**
+ * hildon_button_set_text:
+ * @button: a #HildonButton
+ * @title: new text for the button title (main label)
+ * @value: new text for the button value (secondary label)
+ *
+ * Convenience function to change both labels of a #HildonButton
+ **/
 void
 hildon_button_set_text                          (HildonButton *button,
                                                  const char   *title,
