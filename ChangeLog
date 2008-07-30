@@ -1,5 +1,14 @@
 2008-07-30  Alberto Garcia  <agarcia@igalia.com>
 
+	* doc/hildon-docs.sgml
+	* doc/hildon.types
+	* src/Makefile.am
+	* src/hildon-toggle-button.c
+	* src/hildon-toggle-button.h
+	* src/hildon.h: New HildonToggleButton widget.
+
+2008-07-30  Alberto Garcia  <agarcia@igalia.com>
+
 	* src/hildon-button.c: Add API documentation.
 	(hildon_button_set_size_groups): Check input parameters
 

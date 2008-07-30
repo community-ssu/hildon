@@ -29,6 +29,7 @@
   <chapter>
     <title>Selectors</title>
     <xi:include href="xml/hildon-button.xml"/>
+    <xi:include href="xml/hildon-toggle-button.xml"/>
     <xi:include href="xml/hildon-color-button.xml"/>
     <xi:include href="xml/hildon-color-chooser-dialog.xml"/>
     <xi:include href="xml/hildon-color-chooser.xml"/>
