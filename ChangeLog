@@ -1,3 +1,10 @@
+2008-07-30  Alejandro G. Castro	 <alex@igalia.com>
+
+	* src/hildon-pannable-area.c
+	(hildon_pannable_area_motion_notify_cb): Avoid the first jumpy
+	effect after reaching the movement thredshold. This way we start
+	using the distance after passing the thredshold.
+
 2008-07-29  Claudio Saavedra  <csaavedra@igalia.com>
 
 	* src/hildon-button.c: (hildon_button_set_property): Use the

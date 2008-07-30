@@ -720,6 +720,8 @@ hildon_pannable_area_motion_notify_cb (GtkWidget * widget,
       ((ABS (x) > (dnd_threshold+DND_THRESHOLD_INC))
        || (ABS (y) > (dnd_threshold+DND_THRESHOLD_INC)))) {
     priv->moved = TRUE;
+    x = 0;
+    y = 0;
 
     if (priv->first_drag) {
 
