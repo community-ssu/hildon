@@ -21,7 +21,7 @@
 #ifndef __HILDON_TIME_SELECTOR_H__
 #define __HILDON_TIME_SELECTOR_H__
 
-#include "hildon-touch-picker.h"
+#include "hildon-touch-selector.h"
 
 G_BEGIN_DECLS
 
@@ -38,7 +38,7 @@ typedef struct _HildonTimeSelectorPrivate HildonTimeSelectorPrivate;
 
 struct _HildonTimeSelector
 {
-  HildonTouchPicker parent_instance;
+  HildonTouchSelector parent_instance;
 
   /*< private > */
   HildonTimeSelectorPrivate *priv;
@@ -46,7 +46,7 @@ struct _HildonTimeSelector
 
 struct _HildonTimeSelectorClass
 {
-  HildonTouchPickerClass parent_class;
+  HildonTouchSelectorClass parent_class;
 
   /* signals */
 };

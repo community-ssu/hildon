@@ -26,7 +26,7 @@ typedef struct _HildonPickerButtonPrivate HildonPickerButtonPrivate;
 
 struct _HildonPickerButtonPrivate
 {
-  GtkWidget *picker;
+  GtkWidget *selector;
   GtkWidget *dialog;
 };
 
@@ -39,7 +39,7 @@ enum
 
 enum
 {
-  PROP_PICKER = 1,
+  PROP_SELECTOR = 1,
 };
 
 static guint picker_button_signals[LAST_SIGNAL] = { 0 };
@@ -49,9 +49,9 @@ hildon_picker_button_get_property (GObject * object, guint property_id,
                                    GValue * value, GParamSpec * pspec)
 {
   switch (property_id) {
-  case PROP_PICKER:
+  case PROP_SELECTOR:
     g_value_set_object (value,
-                        hildon_picker_button_get_picker (HILDON_PICKER_BUTTON (object)));
+                        hildon_picker_button_get_selector (HILDON_PICKER_BUTTON (object)));
     break;
   default:
     G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
@@ -63,9 +63,9 @@ hildon_picker_button_set_property (GObject * object, guint property_id,
                                    const GValue * value, GParamSpec * pspec)
 {
   switch (property_id) {
-  case PROP_PICKER:
-    hildon_picker_button_set_picker (HILDON_PICKER_BUTTON (object),
-                                     g_value_get_object (value));
+  case PROP_SELECTOR:
+    hildon_picker_button_set_selector (HILDON_PICKER_BUTTON (object),
+                                       g_value_get_object (value));
     break;
   default:
     G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
@@ -81,7 +81,7 @@ hildon_picker_button_clicked (GtkButton * button)
 
   priv = GET_PRIVATE (HILDON_PICKER_BUTTON (button));
 
-  g_return_if_fail (HILDON_IS_TOUCH_PICKER (priv->picker));
+  g_return_if_fail (HILDON_IS_TOUCH_SELECTOR (priv->selector));
 
   /* Create the dialog if it doesn't exist already.  */
   if (!priv->dialog) {
@@ -92,8 +92,8 @@ hildon_picker_button_clicked (GtkButton * button)
       priv->dialog = hildon_picker_dialog_new (NULL);
     }
 
-    hildon_picker_dialog_set_picker (HILDON_PICKER_DIALOG (priv->dialog),
-                                     HILDON_TOUCH_PICKER (priv->picker));
+    hildon_picker_dialog_set_selector (HILDON_PICKER_DIALOG (priv->dialog),
+                                       HILDON_TOUCH_SELECTOR (priv->selector));
 
     gtk_window_set_modal (GTK_WINDOW (priv->dialog),
                           gtk_window_get_modal (GTK_WINDOW (parent)));
@@ -105,8 +105,8 @@ hildon_picker_button_clicked (GtkButton * button)
   switch (response) {
   case GTK_RESPONSE_OK:
     hildon_button_set_value (HILDON_BUTTON (button),
-                             hildon_touch_picker_get_current_text
-                             (HILDON_TOUCH_PICKER (priv->picker)));
+                             hildon_touch_selector_get_current_text
+                             (HILDON_TOUCH_SELECTOR (priv->selector)));
     g_signal_emit (HILDON_PICKER_BUTTON (button),
                    picker_button_signals[VALUE_CHANGED], 0);
     break;
@@ -128,11 +128,11 @@ hildon_picker_button_class_init (HildonPickerButtonClass * klass)
   button_class->clicked = hildon_picker_button_clicked;
 
   g_object_class_install_property (object_class,
-                                   PROP_PICKER,
-                                   g_param_spec_object ("touch-picker",
-                                                        "HildonTouchPicker widget",
-                                                        "HildonTouchPicker widget to be launched on button clicked",
-                                                        HILDON_TYPE_TOUCH_PICKER,
+                                   PROP_SELECTOR,
+                                   g_param_spec_object ("touch-selector",
+                                                        "HildonTouchSelector widget",
+                                                        "HildonTouchSelector widget to be launched on button clicked",
+                                                        HILDON_TYPE_TOUCH_SELECTOR,
                                                         G_PARAM_READWRITE));
 
   picker_button_signals[VALUE_CHANGED] =
@@ -152,7 +152,7 @@ hildon_picker_button_init (HildonPickerButton * self)
   priv = GET_PRIVATE (self);
 
   priv->dialog = NULL;
-  priv->picker = NULL;
+  priv->selector = NULL;
 }
 
 GtkWidget *
@@ -170,19 +170,19 @@ GtkWidget *
 hildon_picker_button_new_text (HildonButtonFlags flags)
 {
   GtkWidget *button;
-  GtkWidget *picker;
+  GtkWidget *selector;
   GtkListStore *store;
 
   button = hildon_picker_button_new (flags);
 
-  picker = hildon_touch_picker_new ();
+  selector = hildon_touch_selector_new ();
   store = gtk_list_store_new (1, G_TYPE_STRING);
 
-  hildon_touch_picker_append_text_column (HILDON_TOUCH_PICKER (picker),
-                                          GTK_TREE_MODEL (store));
+  hildon_touch_selector_append_text_column (HILDON_TOUCH_SELECTOR (selector),
+                                            GTK_TREE_MODEL (store));
 
-  hildon_picker_button_set_picker (HILDON_PICKER_BUTTON (button),
-                                   HILDON_TOUCH_PICKER (picker));
+  hildon_picker_button_set_selector (HILDON_PICKER_BUTTON (button),
+                                     HILDON_TOUCH_SELECTOR (selector));
 
   return button;
 }
@@ -201,7 +201,7 @@ hildon_picker_button_append_text (HildonPickerButton * button,
   priv = GET_PRIVATE (button);
 
   model =
-    hildon_touch_picker_get_model (HILDON_TOUCH_PICKER (priv->picker), 0);
+    hildon_touch_selector_get_model (HILDON_TOUCH_SELECTOR (priv->selector), 0);
 
   g_return_if_fail (GTK_IS_LIST_STORE (model));
 
@@ -223,7 +223,7 @@ hildon_picker_button_prepend_text (HildonPickerButton * button,
   priv = GET_PRIVATE (button);
 
   model =
-    hildon_touch_picker_get_model (HILDON_TOUCH_PICKER (priv->picker), 0);
+    hildon_touch_selector_get_model (HILDON_TOUCH_SELECTOR (priv->selector), 0);
 
   g_return_if_fail (GTK_IS_LIST_STORE (model));
 
@@ -246,7 +246,7 @@ hildon_picker_button_insert_text (HildonPickerButton * button,
   priv = GET_PRIVATE (button);
 
   model =
-    hildon_touch_picker_get_model (HILDON_TOUCH_PICKER (priv->picker), 0);
+    hildon_touch_selector_get_model (HILDON_TOUCH_SELECTOR (priv->selector), 0);
 
   g_return_if_fail (GTK_IS_LIST_STORE (model));
 
@@ -255,21 +255,21 @@ hildon_picker_button_insert_text (HildonPickerButton * button,
 }
 
 void
-hildon_picker_button_set_picker (HildonPickerButton * button,
-                                 HildonTouchPicker * picker)
+hildon_picker_button_set_selector (HildonPickerButton * button,
+                                   HildonTouchSelector * selector)
 {
   HildonPickerButtonPrivate *priv;
 
   g_return_if_fail (HILDON_IS_PICKER_BUTTON (button));
-  g_return_if_fail (HILDON_IS_TOUCH_PICKER (picker));
+  g_return_if_fail (HILDON_IS_TOUCH_SELECTOR (selector));
 
   priv = GET_PRIVATE (button);
 
-  priv->picker = g_object_ref (picker);
+  priv->selector = g_object_ref (selector);
 }
 
-HildonTouchPicker *
-hildon_picker_button_get_picker (HildonPickerButton * button)
+HildonTouchSelector *
+hildon_picker_button_get_selector (HildonPickerButton * button)
 {
   HildonPickerButtonPrivate *priv;
 
@@ -277,5 +277,5 @@ hildon_picker_button_get_picker (HildonPickerButton * button)
 
   priv = GET_PRIVATE (button);
 
-  return HILDON_TOUCH_PICKER (priv->picker);
+  return HILDON_TOUCH_SELECTOR (priv->selector);
 }

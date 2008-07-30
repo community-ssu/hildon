@@ -21,7 +21,7 @@
 #ifndef __HILDON_DATE_SELECTOR_H__
 #define __HILDON_DATE_SELECTOR_H__
 
-#include "hildon-touch-picker.h"
+#include "hildon-touch-selector.h"
 
 G_BEGIN_DECLS
 #define HILDON_TYPE_DATE_SELECTOR             (hildon_date_selector_get_type ())
@@ -37,7 +37,7 @@ typedef struct _HildonDateSelectorPrivate HildonDateSelectorPrivate;
 
 struct _HildonDateSelector
 {
-  HildonTouchPicker parent_instance;
+  HildonTouchSelector parent_instance;
 
   /*< private > */
   HildonDateSelectorPrivate *priv;
@@ -45,7 +45,7 @@ struct _HildonDateSelector
 
 struct _HildonDateSelectorClass
 {
-  HildonTouchPickerClass parent_class;
+  HildonTouchSelectorClass parent_class;
 
   /* signals */
 };

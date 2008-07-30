@@ -43,7 +43,7 @@
     <xi:include href="xml/hildon-weekday-picker.xml"/>
     <xi:include href="xml/hildon-time-picker.xml"/>
     <xi:include href="xml/hildon-app-menu.xml"/>
-    <xi:include href="xml/hildon-touch-picker.xml"/>
+    <xi:include href="xml/hildon-touch-selector.xml"/>
     <xi:include href="xml/hildon-date-selector.xml"/>
     <xi:include href="xml/hildon-time-selector.xml"/>
     <xi:include href="xml/hildon-picker-button.xml"/>

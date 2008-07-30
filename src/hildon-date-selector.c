@@ -48,7 +48,7 @@
 #define HILDON_DATE_SELECTOR_GET_PRIVATE(obj)                           \
   (G_TYPE_INSTANCE_GET_PRIVATE ((obj), HILDON_TYPE_DATE_SELECTOR, HildonDateSelectorPrivate))
 
-G_DEFINE_TYPE (HildonDateSelector, hildon_date_selector, HILDON_TYPE_TOUCH_PICKER)
+G_DEFINE_TYPE (HildonDateSelector, hildon_date_selector, HILDON_TYPE_TOUCH_SELECTOR)
 
 #define INIT_YEAR 100
 #define LAST_YEAR 50    /* since current year */
@@ -101,7 +101,7 @@ static GtkTreeModel *_create_month_model (HildonDateSelector * selector);
 static void _get_real_date (gint * year, gint * month, gint * day);
 static void _locales_init (HildonDateSelectorPrivate * priv);
 
-static void _manage_selector_change_cb (HildonTouchPicker * selector,
+static void _manage_selector_change_cb (HildonTouchSelector * selector,
                                         gint num_column, gpointer data);
 
 static GtkTreeModel *_update_day_model (HildonDateSelector * selector);
@@ -109,7 +109,7 @@ static GtkTreeModel *_update_day_model (HildonDateSelector * selector);
 static gint _month_days (gint month, gint year);
 static void _init_column_order (HildonDateSelector * selector);
 
-static gchar *_custom_print_func (HildonTouchPicker * selector);
+static gchar *_custom_print_func (HildonTouchSelector * selector);
 
 /***************************************************************************/
 /* The following date routines are taken from the lib_date package.  Keep
@@ -222,8 +222,8 @@ hildon_date_selector_init (HildonDateSelector * selector)
   GTK_WIDGET_SET_FLAGS (GTK_WIDGET (selector), GTK_NO_WINDOW);
   gtk_widget_set_redraw_on_allocate (GTK_WIDGET (selector), FALSE);
 
-  hildon_touch_picker_set_print_func (HILDON_TOUCH_PICKER (selector),
-                                      _custom_print_func);
+  hildon_touch_selector_set_print_func (HILDON_TOUCH_SELECTOR (selector),
+                                        _custom_print_func);
 
   _locales_init (selector->priv);
 
@@ -243,16 +243,16 @@ hildon_date_selector_init (HildonDateSelector * selector)
 
     switch (current_item) {
     case DAY:
-      hildon_touch_picker_append_text_column (HILDON_TOUCH_PICKER (selector),
-                                              selector->priv->day_model);
+      hildon_touch_selector_append_text_column (HILDON_TOUCH_SELECTOR (selector),
+                                                selector->priv->day_model);
       break;
     case MONTH:
-      hildon_touch_picker_append_text_column (HILDON_TOUCH_PICKER (selector),
-                                              selector->priv->month_model);
+      hildon_touch_selector_append_text_column (HILDON_TOUCH_SELECTOR (selector),
+                                                selector->priv->month_model);
       break;
     case YEAR:
-      hildon_touch_picker_append_text_column (HILDON_TOUCH_PICKER (selector),
-                                              selector->priv->year_model);
+      hildon_touch_selector_append_text_column (HILDON_TOUCH_SELECTOR (selector),
+                                                selector->priv->year_model);
       break;
     default:
       g_error ("Current column order incorrect");
@@ -290,7 +290,7 @@ hildon_date_selector_finalize (GObject * object)
 
 /* ------------------------------ PRIVATE METHODS ---------------------------- */
 static gchar *
-_custom_print_func (HildonTouchPicker * touch_picker)
+_custom_print_func (HildonTouchSelector * touch_selector)
 {
   HildonDateSelector *selector = NULL;
   gchar *result = NULL;
@@ -299,7 +299,7 @@ _custom_print_func (HildonTouchPicker * touch_picker)
   static gchar string[255];
   struct tm tm = { 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
-  selector = HILDON_DATE_SELECTOR (touch_picker);
+  selector = HILDON_DATE_SELECTOR (touch_selector);
 
   hildon_date_selector_get_date (selector, &year, &month, &day);
   day_of_week = _day_of_week (year, month + 1, day) % 7;
@@ -514,13 +514,13 @@ _update_day_model (HildonDateSelector * selector)
 
   hildon_date_selector_get_date (selector, NULL, NULL, &current_day);
 
-  hildon_touch_picker_get_active_iter (HILDON_TOUCH_PICKER (selector),
-                                       selector->priv->month_column, &iter);
+  hildon_touch_selector_get_active_iter (HILDON_TOUCH_SELECTOR (selector),
+                                         selector->priv->month_column, &iter);
   gtk_tree_model_get (selector->priv->month_model,
                       &iter, COLUMN_INT, &current_month, -1);
 
-  hildon_touch_picker_get_active_iter (HILDON_TOUCH_PICKER (selector),
-                                       selector->priv->year_column, &iter);
+  hildon_touch_selector_get_active_iter (HILDON_TOUCH_SELECTOR (selector),
+                                         selector->priv->year_column, &iter);
   gtk_tree_model_get (selector->priv->year_model,
                       &iter, COLUMN_INT, &current_year, -1);
 
@@ -573,13 +573,13 @@ _get_real_date (gint * year, gint * month, gint * day)
 
 
 static void
-_manage_selector_change_cb (HildonTouchPicker * touch_picker,
+_manage_selector_change_cb (HildonTouchSelector * touch_selector,
                             gint num_column, gpointer data)
 {
   HildonDateSelector *selector = NULL;
 
-  g_return_if_fail (HILDON_IS_DATE_SELECTOR (touch_picker));
-  selector = HILDON_DATE_SELECTOR (touch_picker);
+  g_return_if_fail (HILDON_IS_DATE_SELECTOR (touch_selector));
+  selector = HILDON_DATE_SELECTOR (touch_selector);
 
   if ((num_column == selector->priv->month_column) ||
       (num_column == selector->priv->year_column)) /* it is required to check that with
@@ -654,21 +654,21 @@ hildon_date_selector_select_current_date (HildonDateSelector * selector,
   gtk_tree_model_iter_nth_child (selector->priv->year_model, &iter, NULL,
                                  year - selector->priv->creation_year +
                                  INIT_YEAR);
-  hildon_touch_picker_set_active_iter (HILDON_TOUCH_PICKER (selector),
-                                       selector->priv->year_column, &iter,
-                                       FALSE);
+  hildon_touch_selector_set_active_iter (HILDON_TOUCH_SELECTOR (selector),
+                                         selector->priv->year_column, &iter,
+                                         FALSE);
 
   gtk_tree_model_iter_nth_child (selector->priv->month_model, &iter, NULL,
                                  month);
-  hildon_touch_picker_set_active_iter (HILDON_TOUCH_PICKER (selector),
-                                       selector->priv->month_column, &iter,
-                                       FALSE);
+  hildon_touch_selector_set_active_iter (HILDON_TOUCH_SELECTOR (selector),
+                                         selector->priv->month_column, &iter,
+                                         FALSE);
 
   gtk_tree_model_iter_nth_child (selector->priv->day_model, &iter, NULL,
                                  day - 1);
-  hildon_touch_picker_set_active_iter (HILDON_TOUCH_PICKER (selector),
-                                       selector->priv->day_column, &iter,
-                                       FALSE);
+  hildon_touch_selector_set_active_iter (HILDON_TOUCH_SELECTOR (selector),
+                                         selector->priv->day_column, &iter,
+                                         FALSE);
 
   return TRUE;
 }
@@ -692,23 +692,23 @@ hildon_date_selector_get_date (HildonDateSelector * selector,
   GtkTreeIter iter;
 
   if (year != NULL) {
-    hildon_touch_picker_get_active_iter (HILDON_TOUCH_PICKER (selector),
-                                         selector->priv->year_column, &iter);
+    hildon_touch_selector_get_active_iter (HILDON_TOUCH_SELECTOR (selector),
+                                           selector->priv->year_column, &iter);
     gtk_tree_model_get (selector->priv->year_model,
                         &iter, COLUMN_INT, year, -1);
   }
 
   if (month != NULL) {
-    hildon_touch_picker_get_active_iter (HILDON_TOUCH_PICKER (selector),
-                                         selector->priv->month_column, &iter);
+    hildon_touch_selector_get_active_iter (HILDON_TOUCH_SELECTOR (selector),
+                                           selector->priv->month_column, &iter);
     gtk_tree_model_get (selector->priv->month_model,
                         &iter, COLUMN_INT, month, -1);
   }
 
 
   if (day != NULL) {
-    if (hildon_touch_picker_get_active_iter (HILDON_TOUCH_PICKER (selector),
-                                             selector->priv->day_column, &iter))
+    if (hildon_touch_selector_get_active_iter (HILDON_TOUCH_SELECTOR (selector),
+                                               selector->priv->day_column, &iter))
     {
       gtk_tree_model_get (selector->priv->day_model,
                           &iter, COLUMN_INT, day, -1);
@@ -726,7 +726,7 @@ hildon_date_selector_select_day (HildonDateSelector * selector, guint day)
 
   gtk_tree_model_iter_nth_child (selector->priv->day_model, &iter, NULL,
                                  day - 1);
-  hildon_touch_picker_set_active_iter (HILDON_TOUCH_PICKER (selector),
-                                       selector->priv->day_column, &iter,
-                                       FALSE);
+  hildon_touch_selector_set_active_iter (HILDON_TOUCH_SELECTOR (selector),
+                                         selector->priv->day_column, &iter,
+                                         FALSE);
 }

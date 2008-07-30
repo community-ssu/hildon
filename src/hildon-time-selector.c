@@ -49,7 +49,7 @@
 #define HILDON_TIME_SELECTOR_GET_PRIVATE(obj)                           \
   (G_TYPE_INSTANCE_GET_PRIVATE ((obj), HILDON_TYPE_TIME_SELECTOR, HildonTimeSelectorPrivate))
 
-G_DEFINE_TYPE (HildonTimeSelector, hildon_time_selector, HILDON_TYPE_TOUCH_PICKER)
+G_DEFINE_TYPE (HildonTimeSelector, hildon_time_selector, HILDON_TYPE_TOUCH_SELECTOR)
 
 #define INIT_YEAR 100
 #define LAST_YEAR 50    /* since current year */
@@ -98,12 +98,12 @@ static GtkTreeModel *_create_minutes_model (HildonTimeSelector * selector);
 static GtkTreeModel *_create_ampm_model (HildonTimeSelector * selector);
 
 static void _get_real_time (gint * hours, gint * minutes);
-static void _manage_ampm_selection_cb (HildonTouchPicker * selector,
+static void _manage_ampm_selection_cb (HildonTouchSelector * selector,
                                        gint num_column, gpointer data);
 static void _check_ampm_format (HildonTimeSelector * selector);
 static void _set_pm (HildonTimeSelector * selector, gboolean pm);
 
-static gchar *_custom_print_func (HildonTouchPicker * selector);
+static gchar *_custom_print_func (HildonTouchSelector * selector);
 
 static void
 hildon_time_selector_class_init (HildonTimeSelectorClass * class)
@@ -139,8 +139,8 @@ hildon_time_selector_init (HildonTimeSelector * selector)
   GTK_WIDGET_SET_FLAGS (GTK_WIDGET (selector), GTK_NO_WINDOW);
   gtk_widget_set_redraw_on_allocate (GTK_WIDGET (selector), FALSE);
 
-  hildon_touch_picker_set_print_func (HILDON_TOUCH_PICKER (selector),
-                                      _custom_print_func);
+  hildon_touch_selector_set_print_func (HILDON_TOUCH_SELECTOR (selector),
+                                        _custom_print_func);
 
   _get_real_time (&selector->priv->creation_hours,
                   &selector->priv->creation_minutes);
@@ -150,17 +150,17 @@ hildon_time_selector_init (HildonTimeSelector * selector)
   selector->priv->hours_model = _create_hours_model (selector);
   selector->priv->minutes_model = _create_minutes_model (selector);
 
-  hildon_touch_picker_append_text_column (HILDON_TOUCH_PICKER (selector),
-                                          selector->priv->hours_model);
+  hildon_touch_selector_append_text_column (HILDON_TOUCH_SELECTOR (selector),
+                                            selector->priv->hours_model);
 
-  hildon_touch_picker_append_text_column (HILDON_TOUCH_PICKER (selector),
-                                          selector->priv->minutes_model);
+  hildon_touch_selector_append_text_column (HILDON_TOUCH_SELECTOR (selector),
+                                            selector->priv->minutes_model);
 
   if (selector->priv->ampm_format) {
     selector->priv->ampm_model = _create_ampm_model (selector);
 
-    hildon_touch_picker_append_text_column (HILDON_TOUCH_PICKER (selector),
-                                            selector->priv->ampm_model);
+    hildon_touch_selector_append_text_column (HILDON_TOUCH_SELECTOR (selector),
+                                              selector->priv->ampm_model);
 
     g_signal_connect (G_OBJECT (selector),
                       "changed", G_CALLBACK (_manage_ampm_selection_cb),
@@ -189,7 +189,7 @@ hildon_time_selector_finalize (GObject * object)
 /* ------------------------------ PRIVATE METHODS ---------------------------- */
 
 static gchar *
-_custom_print_func (HildonTouchPicker * touch_picker)
+_custom_print_func (HildonTouchSelector * touch_selector)
 {
   gchar *result = NULL;
   struct tm tm = { 0, 0, 0, 0, 0, 0, 0, 0, 0 };
@@ -198,7 +198,7 @@ _custom_print_func (HildonTouchPicker * touch_picker)
   guint hours = 0;
   guint minutes = 0;
 
-  selector = HILDON_TIME_SELECTOR (touch_picker);
+  selector = HILDON_TIME_SELECTOR (touch_selector);
 
   hildon_time_selector_get_time (selector, &hours, &minutes);
 
@@ -307,19 +307,19 @@ _get_real_time (gint * hours, gint * minutes)
 }
 
 static void
-_manage_ampm_selection_cb (HildonTouchPicker * touch_picker,
+_manage_ampm_selection_cb (HildonTouchSelector * touch_selector,
                            gint num_column, gpointer data)
 {
   HildonTimeSelector *selector = NULL;
   gint pm;
   GtkTreeIter iter;
 
-  g_return_if_fail (HILDON_IS_TIME_SELECTOR (touch_picker));
-  selector = HILDON_TIME_SELECTOR (touch_picker);
+  g_return_if_fail (HILDON_IS_TIME_SELECTOR (touch_selector));
+  selector = HILDON_TIME_SELECTOR (touch_selector);
 
   if (num_column == COLUMN_AMPM) {
-    hildon_touch_picker_get_active_iter (HILDON_TOUCH_PICKER (selector),
-                                         COLUMN_AMPM, &iter);
+    hildon_touch_selector_get_active_iter (HILDON_TOUCH_SELECTOR (selector),
+                                           COLUMN_AMPM, &iter);
     gtk_tree_model_get (selector->priv->ampm_model, &iter, COLUMN_INT, &pm, -1);
 
     selector->priv->pm = pm;
@@ -355,8 +355,8 @@ _set_pm (HildonTimeSelector * selector, gboolean pm)
 
   gtk_tree_model_iter_nth_child (selector->priv->ampm_model, &iter, NULL, pm);
 
-  hildon_touch_picker_set_active_iter (HILDON_TOUCH_PICKER (selector),
-                                       COLUMN_AMPM, &iter, FALSE);
+  hildon_touch_selector_set_active_iter (HILDON_TOUCH_SELECTOR (selector),
+                                         COLUMN_AMPM, &iter, FALSE);
 }
 
 /* ------------------------------ PUBLIC METHODS ---------------------------- */
@@ -403,13 +403,13 @@ hildon_time_selector_set_time (HildonTimeSelector * selector,
 
   gtk_tree_model_iter_nth_child (selector->priv->hours_model, &iter, NULL,
                                  hours_item);
-  hildon_touch_picker_set_active_iter (HILDON_TOUCH_PICKER (selector),
-                                       COLUMN_HOURS, &iter, FALSE);
+  hildon_touch_selector_set_active_iter (HILDON_TOUCH_SELECTOR (selector),
+                                         COLUMN_HOURS, &iter, FALSE);
 
   gtk_tree_model_iter_nth_child (selector->priv->minutes_model, &iter, NULL,
                                  minutes);
-  hildon_touch_picker_set_active_iter (HILDON_TOUCH_PICKER (selector),
-                                       COLUMN_MINUTES, &iter, FALSE);
+  hildon_touch_selector_set_active_iter (HILDON_TOUCH_SELECTOR (selector),
+                                         COLUMN_MINUTES, &iter, FALSE);
 
   return TRUE;
 }
@@ -421,8 +421,8 @@ hildon_time_selector_get_time (HildonTimeSelector * selector,
   GtkTreeIter iter;
 
   if (hours != NULL) {
-    hildon_touch_picker_get_active_iter (HILDON_TOUCH_PICKER (selector),
-                                         COLUMN_HOURS, &iter);
+    hildon_touch_selector_get_active_iter (HILDON_TOUCH_SELECTOR (selector),
+                                           COLUMN_HOURS, &iter);
     gtk_tree_model_get (selector->priv->hours_model,
                         &iter, COLUMN_INT, hours, -1);
     if (selector->priv->ampm_format) {
@@ -431,8 +431,8 @@ hildon_time_selector_get_time (HildonTimeSelector * selector,
   }
 
   if (minutes != NULL) {
-    hildon_touch_picker_get_active_iter (HILDON_TOUCH_PICKER (selector),
-                                         COLUMN_MINUTES, &iter);
+    hildon_touch_selector_get_active_iter (HILDON_TOUCH_SELECTOR (selector),
+                                           COLUMN_MINUTES, &iter);
     gtk_tree_model_get (selector->priv->minutes_model,
                         &iter, COLUMN_INT, minutes, -1);
   }

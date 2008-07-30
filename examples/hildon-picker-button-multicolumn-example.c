@@ -23,13 +23,13 @@
 #include "hildon-picker-button.h"
 
 GtkWidget *
-create_touch_picker (void)
+create_touch_selector (void)
 {
-  GtkWidget *picker;
+  GtkWidget *selector;
   GtkListStore *model;
   GtkTreeIter iter;
 
-  picker = hildon_touch_picker_new ();
+  selector = hildon_touch_selector_new ();
 
   model = gtk_list_store_new (1, G_TYPE_STRING);
 
@@ -45,8 +45,8 @@ create_touch_picker (void)
   gtk_list_store_append (model, &iter);
   gtk_list_store_set (model, &iter, 0, "Mailbox", -1);
 
-  hildon_touch_picker_append_text_column (HILDON_TOUCH_PICKER (picker),
-                                          GTK_TREE_MODEL (model));
+  hildon_touch_selector_append_text_column (HILDON_TOUCH_SELECTOR (selector),
+                                            GTK_TREE_MODEL (model));
 
   model = gtk_list_store_new (1, G_TYPE_STRING);
 
@@ -59,9 +59,9 @@ create_touch_picker (void)
   gtk_list_store_append (model, &iter);
   gtk_list_store_set (model, &iter, 0, "Smoke signals", -1);
 
-  hildon_touch_picker_append_text_column (HILDON_TOUCH_PICKER (picker),
-                                          GTK_TREE_MODEL (model));
-  return picker;
+  hildon_touch_selector_append_text_column (HILDON_TOUCH_SELECTOR (selector),
+                                            GTK_TREE_MODEL (model));
+  return selector;
 }
 
 static void
@@ -77,7 +77,7 @@ main (int argc, char **args)
   HildonProgram *program = NULL;
   GtkWidget *window = NULL;
   GtkWidget *button;
-  GtkWidget *picker;
+  GtkWidget *selector;
 
   gtk_init (&argc, &args);
 
@@ -87,12 +87,12 @@ main (int argc, char **args)
   window = hildon_stackable_window_new ();
   gtk_window_set_default_size (GTK_WINDOW (window), 300, 200);
   hildon_program_add_window (program, HILDON_WINDOW (window));
-  picker = create_touch_picker ();
+  selector = create_touch_selector ();
 
   button = hildon_picker_button_new (HILDON_BUTTON_WITH_VERTICAL_VALUE);
   hildon_button_set_title (HILDON_BUTTON (button), "Protocol");
-  hildon_picker_button_set_picker (HILDON_PICKER_BUTTON (button),
-                                   HILDON_TOUCH_PICKER (picker));
+  hildon_picker_button_set_selector (HILDON_PICKER_BUTTON (button),
+                                     HILDON_TOUCH_SELECTOR (selector));
   g_signal_connect (G_OBJECT (button), "value-changed",
                     G_CALLBACK (on_picker_value_changed), NULL);
 

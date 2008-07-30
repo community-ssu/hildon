@@ -20,9 +20,9 @@
 
 /**
  * SECTION:hildon-picker-dialog
- * @short_description: A utility widget that shows a #HildonTouchPicker widget
+ * @short_description: A utility widget that shows a #HildonTouchSelector widget
  *
- * HildonPickerDialog is a utility widget that shows a #HildonTouchPicker widget in
+ * HildonPickerDialog is a utility widget that shows a #HildonTouchSelector widget in
  * a new dialog (see #GtkDialog for more information about this issue)
  *
  */
@@ -37,7 +37,7 @@
 #include <libintl.h>
 #include <gtk/gtkmarshal.h>
 
-#include "hildon-touch-picker.h"
+#include "hildon-touch-selector.h"
 #include "hildon-picker-dialog.h"
 
 #define _(String)  dgettext("hildon-libs", String)
@@ -48,7 +48,7 @@ G_DEFINE_TYPE (HildonPickerDialog, hildon_picker_dialog, GTK_TYPE_DIALOG)
 
 struct _HildonPickerDialogPrivate
 {
-  GtkWidget *picker;
+  GtkWidget *selector;
   GtkWidget *separator;
   GtkWidget *button;
 
@@ -90,16 +90,16 @@ static void hildon_picker_dialog_realize (GtkWidget * widget);
 static gboolean requires_done_button (HildonPickerDialog * dialog);
 
 static void
-_select_on_picker_changed_cb (HildonTouchPicker * dialog,
-                              gint column, gpointer data);
+_select_on_selector_changed_cb (HildonTouchSelector * dialog,
+                                gint column, gpointer data);
 
 static gboolean
-_hildon_picker_dialog_set_picker (HildonPickerDialog * dialog,
-                                  HildonTouchPicker * picker);
+_hildon_picker_dialog_set_selector (HildonPickerDialog * dialog,
+                                    HildonTouchSelector * selector);
 
 static void
-_update_title_on_picker_changed_cb (HildonTouchPicker * picker,
-                                    gint column, gpointer data);
+_update_title_on_selector_changed_cb (HildonTouchSelector * selector,
+                                      gint column, gpointer data);
 
 static void
 hildon_picker_dialog_class_init (HildonPickerDialogClass * class)
@@ -122,7 +122,7 @@ hildon_picker_dialog_class_init (HildonPickerDialogClass * class)
   widget_class->realize = hildon_picker_dialog_realize;
 
   /* HildonPickerDialog */
-  class->set_picker = _hildon_picker_dialog_set_picker;
+  class->set_selector = _hildon_picker_dialog_set_selector;
 
   /* signals */
 
@@ -153,7 +153,7 @@ hildon_picker_dialog_init (HildonPickerDialog * dialog)
 
   dialog->priv = HILDON_PICKER_DIALOG_GET_PRIVATE (dialog);
 
-  dialog->priv->picker = NULL;
+  dialog->priv->selector = NULL;
   dialog->priv->button =
     gtk_dialog_add_button (GTK_DIALOG (dialog), "", GTK_RESPONSE_OK);
 
@@ -222,8 +222,8 @@ hildon_picker_dialog_realize (GtkWidget * widget)
 
 /* ------------------------------ PRIVATE METHODS ---------------------------- */
 static void
-_select_on_picker_changed_cb (HildonTouchPicker * picker,
-                              gint column, gpointer data)
+_select_on_selector_changed_cb (HildonTouchSelector * selector,
+                                gint column, gpointer data)
 {
   HildonPickerDialog *dialog = NULL;
 
@@ -235,8 +235,8 @@ _select_on_picker_changed_cb (HildonTouchPicker * picker,
 }
 
 static void
-_update_title_on_picker_changed_cb (HildonTouchPicker * picker,
-                                    gint column, gpointer data)
+_update_title_on_selector_changed_cb (HildonTouchSelector * selector,
+                                      gint column, gpointer data)
 {
   HildonPickerDialog *dialog = NULL;
   gchar *new_title = NULL;
@@ -245,10 +245,10 @@ _update_title_on_picker_changed_cb (HildonTouchPicker * picker,
 
   dialog = HILDON_PICKER_DIALOG (data);
 
-  new_title = hildon_touch_picker_get_current_text (picker);
+  new_title = hildon_touch_selector_get_current_text (selector);
 
   if (dialog->priv->title_label != NULL) {
-/*       gtk_label_set_text (GTK_LABEL(picker->priv->title_label), new_title); */
+/*       gtk_label_set_text (GTK_LABEL(selector->priv->title_label), new_title); */
   }
   gtk_window_set_title (GTK_WINDOW (dialog), new_title);
 
@@ -286,18 +286,18 @@ static gboolean
 requires_done_button (HildonPickerDialog * dialog)
 {
   gint n_columns = 0;
-  HildonTouchPickerSelectionMode mode =
-    HILDON_TOUCH_PICKER_SELECTION_MODE_SINGLE;
+  HildonTouchSelectorSelectionMode mode =
+    HILDON_TOUCH_SELECTOR_SELECTION_MODE_SINGLE;
 
   n_columns =
-    hildon_touch_picker_get_num_columns (HILDON_TOUCH_PICKER
-                                         (dialog->priv->picker));
+    hildon_touch_selector_get_num_columns (HILDON_TOUCH_SELECTOR
+                                           (dialog->priv->selector));
   mode =
-    hildon_touch_picker_get_column_selection_mode (HILDON_TOUCH_PICKER
-                                                   (dialog->priv->picker));
+    hildon_touch_selector_get_column_selection_mode (HILDON_TOUCH_SELECTOR
+                                                     (dialog->priv->selector));
 
   return ((n_columns > 1)
-          || (mode == HILDON_TOUCH_PICKER_SELECTION_MODE_MULTIPLE));
+          || (mode == HILDON_TOUCH_SELECTOR_SELECTION_MODE_MULTIPLE));
 }
 
 
@@ -327,27 +327,27 @@ hildon_picker_dialog_new (GtkWindow * parent)
 
 
 static gboolean
-_hildon_picker_dialog_set_picker (HildonPickerDialog * dialog,
-                                  HildonTouchPicker * picker)
+_hildon_picker_dialog_set_selector (HildonPickerDialog * dialog,
+                                    HildonTouchSelector * selector)
 {
-  if (dialog->priv->picker != NULL) {
+  if (dialog->priv->selector != NULL) {
     gtk_container_remove (GTK_CONTAINER (GTK_DIALOG (dialog)->vbox),
-                          dialog->priv->picker);
-    g_object_unref (dialog->priv->picker);
-    dialog->priv->picker = NULL;
+                          dialog->priv->selector);
+    g_object_unref (dialog->priv->selector);
+    dialog->priv->selector = NULL;
   }
 
-  dialog->priv->picker = GTK_WIDGET (picker);
+  dialog->priv->selector = GTK_WIDGET (selector);
 
-  if (dialog->priv->picker != NULL) {
+  if (dialog->priv->selector != NULL) {
     gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dialog)->vbox),
-                        dialog->priv->picker, TRUE, TRUE, 0);
-    gtk_widget_show (dialog->priv->picker);
-    g_object_ref (dialog->priv->picker);
+                        dialog->priv->selector, TRUE, TRUE, 0);
+    gtk_widget_show (dialog->priv->selector);
+    g_object_ref (dialog->priv->selector);
   }
 
   if (dialog->priv->signal_id) {
-    g_signal_handler_disconnect (dialog->priv->picker,
+    g_signal_handler_disconnect (dialog->priv->selector,
                                  dialog->priv->signal_id);
   }
 
@@ -356,34 +356,34 @@ _hildon_picker_dialog_set_picker (HildonPickerDialog * dialog,
     gtk_widget_show (GTK_DIALOG (dialog)->action_area);
     /* update the title */
     dialog->priv->signal_id =
-      g_signal_connect (G_OBJECT (dialog->priv->picker), "changed",
-                        G_CALLBACK (_update_title_on_picker_changed_cb),
+      g_signal_connect (G_OBJECT (dialog->priv->selector), "changed",
+                        G_CALLBACK (_update_title_on_selector_changed_cb),
                         dialog);
   } else {
     gtk_dialog_set_has_separator (GTK_DIALOG (dialog), FALSE);
     gtk_widget_hide (GTK_DIALOG (dialog)->action_area);
     dialog->priv->signal_id =
-      g_signal_connect (G_OBJECT (dialog->priv->picker), "changed",
-                        G_CALLBACK (_select_on_picker_changed_cb), dialog);
+      g_signal_connect (G_OBJECT (dialog->priv->selector), "changed",
+                        G_CALLBACK (_select_on_selector_changed_cb), dialog);
   }
 
   return TRUE;
 }
 
 gboolean
-hildon_picker_dialog_set_picker (HildonPickerDialog * dialog,
-                                 HildonTouchPicker * picker)
+hildon_picker_dialog_set_selector (HildonPickerDialog * dialog,
+                                   HildonTouchSelector * selector)
 {
   g_return_val_if_fail (HILDON_IS_PICKER_DIALOG (dialog), FALSE);
-  g_return_val_if_fail (HILDON_IS_TOUCH_PICKER (picker), FALSE);
+  g_return_val_if_fail (HILDON_IS_TOUCH_SELECTOR (selector), FALSE);
 
-  return HILDON_PICKER_DIALOG_GET_CLASS (dialog)->set_picker (dialog, picker);
+  return HILDON_PICKER_DIALOG_GET_CLASS (dialog)->set_selector (dialog, selector);
 }
 
-HildonTouchPicker *
-hildon_picker_dialog_get_picker (HildonPickerDialog * dialog)
+HildonTouchSelector *
+hildon_picker_dialog_get_selector (HildonPickerDialog * dialog)
 {
   g_return_val_if_fail (HILDON_IS_PICKER_DIALOG (dialog), NULL);
 
-  return HILDON_TOUCH_PICKER (dialog->priv->picker);
+  return HILDON_TOUCH_SELECTOR (dialog->priv->selector);
 }

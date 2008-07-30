@@ -15,14 +15,14 @@
  */
 
 #include "hildon-time-selector.h"
-#include "hildon-touch-picker.h"
+#include "hildon-touch-selector.h"
 #include "hildon-picker-button.h"
 #include "hildon-time-button.h"
 
 G_DEFINE_TYPE (HildonTimeButton, hildon_time_button, HILDON_TYPE_PICKER_BUTTON)
 
 #if 0
-#define GET_PRIVATE(o) \
+#define GET_PRIVATE(o)                                                  \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), HILDON_TYPE_TIME_BUTTON, HildonTimeButtonPrivate))
 typedef struct _HildonTimeButtonPrivate HildonTimeButtonPrivate;
 
@@ -73,8 +73,8 @@ hildon_time_button_init (HildonTimeButton * self)
 
   time_selector = hildon_time_selector_new ();
 
-  hildon_picker_button_set_picker (HILDON_PICKER_BUTTON (self),
-                                   HILDON_TOUCH_PICKER (time_selector));
+  hildon_picker_button_set_selector (HILDON_PICKER_BUTTON (self),
+                                     HILDON_TOUCH_SELECTOR (time_selector));
 }
 
 GtkWidget *
@@ -88,28 +88,28 @@ void
 hildon_time_button_get_time (HildonTimeButton * button,
                              guint * hours, guint * minutes)
 {
-  HildonTouchPicker *picker;
+  HildonTouchSelector *selector;
 
   g_return_if_fail (HILDON_IS_TIME_BUTTON (button));
 
-  picker = hildon_picker_button_get_picker (HILDON_PICKER_BUTTON (button));
+  selector = hildon_picker_button_get_selector (HILDON_PICKER_BUTTON (button));
 
-  hildon_time_selector_get_time (HILDON_TIME_SELECTOR (picker), hours, minutes);
+  hildon_time_selector_get_time (HILDON_TIME_SELECTOR (selector), hours, minutes);
 }
 
 void
 hildon_time_button_set_time (HildonTimeButton * button,
                              guint hours, guint minutes)
 {
-  HildonTouchPicker *picker;
+  HildonTouchSelector *selector;
   gchar *time;
 
   g_return_if_fail (HILDON_IS_TIME_BUTTON (button));
 
-  picker = hildon_picker_button_get_picker (HILDON_PICKER_BUTTON (button));
+  selector = hildon_picker_button_get_selector (HILDON_PICKER_BUTTON (button));
 
-  hildon_time_selector_set_time (HILDON_TIME_SELECTOR (picker), hours, minutes);
-  time = hildon_touch_picker_get_current_text (HILDON_TOUCH_PICKER (picker));
+  hildon_time_selector_set_time (HILDON_TIME_SELECTOR (selector), hours, minutes);
+  time = hildon_touch_selector_get_current_text (HILDON_TOUCH_SELECTOR (selector));
 
   hildon_button_set_value (HILDON_BUTTON (button), time);
 }

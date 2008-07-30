@@ -48,22 +48,20 @@ struct _HildonPickerDialogClass
 {
   GtkDialogClass parent_class;
 
-  gboolean (* set_picker) (HildonPickerDialog * dialog,
-                           HildonTouchPicker  * picker);
+  gboolean (* set_selector) (HildonPickerDialog * dialog,
+                             HildonTouchSelector * selector);
 };
 
 /* construction */
-GType              hildon_picker_dialog_get_type       (void) G_GNUC_CONST;
-GtkWidget         *hildon_picker_dialog_new            (GtkWindow * parent);
+GType                hildon_picker_dialog_get_type         (void) G_GNUC_CONST;
+GtkWidget           *hildon_picker_dialog_new              (GtkWindow * parent);
 
-gboolean           hildon_picker_dialog_set_picker     (HildonPickerDialog * dialog,
-                                                        HildonTouchPicker * picker);
-void               hildon_picker_dialog_set_done_label (HildonPickerDialog * dialog,
-                                                        const gchar * label);
-const gchar       *hildon_picker_dialog_get_done_label (HildonPickerDialog *
-                                                        dialog);
-HildonTouchPicker *hildon_picker_dialog_get_picker     (HildonPickerDialog *
-                                                        dialog);
+gboolean             hildon_picker_dialog_set_selector     (HildonPickerDialog * dialog,
+                                                            HildonTouchSelector * selector);
+void                 hildon_picker_dialog_set_done_label   (HildonPickerDialog * dialog,
+                                                            const gchar * label);
+const gchar         *hildon_picker_dialog_get_done_label   (HildonPickerDialog * dialog);
+HildonTouchSelector *hildon_picker_dialog_get_selector     (HildonPickerDialog * dialog);
 
 G_END_DECLS
 

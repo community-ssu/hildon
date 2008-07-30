@@ -19,7 +19,7 @@
 
 #include <glib-object.h>
 #include "hildon-button.h"
-#include "hildon-touch-picker.h"
+#include "hildon-touch-selector.h"
 
 G_BEGIN_DECLS
 
@@ -51,9 +51,9 @@ void hildon_picker_button_prepend_text   (HildonPickerButton * button,
 void hildon_picker_button_insert_text    (HildonPickerButton * button,
                                           gint position, const gchar * text);
 
-void hildon_picker_button_set_picker     (HildonPickerButton * button,
-                                          HildonTouchPicker * picker);
-HildonTouchPicker *hildon_picker_button_get_picker (HildonPickerButton * button);
+void hildon_picker_button_set_selector     (HildonPickerButton * button,
+                                            HildonTouchSelector * selector);
+HildonTouchSelector *hildon_picker_button_get_selector (HildonPickerButton * button);
 
 G_END_DECLS
 

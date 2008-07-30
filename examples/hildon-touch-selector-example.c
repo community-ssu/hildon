@@ -27,11 +27,11 @@
 #include "hildon-program.h"
 #include "hildon-stackable-window.h"
 
-#include "hildon-touch-picker.h"
+#include "hildon-touch-selector.h"
 #include "hildon-picker-dialog.h"
 #include "hildon-picker-button.h"
 
-static GtkWidget *create_picker ();
+static GtkWidget *create_selector ();
 static GtkWidget *get_visible_content (GtkWidget * window);
 
 static GtkWindow *parent_window = NULL;
@@ -42,19 +42,19 @@ static void
 value_changed (HildonPickerButton * button,
                gpointer user_data)
 {
-  HildonTouchPicker *picker;
+  HildonTouchSelector *selector;
   gchar *aux_string = NULL;
 
-  picker = hildon_picker_button_get_picker (button);
-  aux_string = hildon_touch_picker_get_current_text (picker);
+  selector = hildon_picker_button_get_selector (button);
+  aux_string = hildon_touch_selector_get_current_text (selector);
   gtk_label_set_text (GTK_LABEL (label), aux_string);
   g_free (aux_string);
 }
 
 static GtkWidget *
-create_picker ()
+create_selector ()
 {
-  GtkWidget *picker = NULL;
+  GtkWidget *selector = NULL;
   GSList *icon_list = NULL;
   GtkListStore *store_icons = NULL;
   GSList *item = NULL;
@@ -62,7 +62,7 @@ create_picker ()
   GValue val = { 0, };
   GValue val2 = { 0, };
 
-  picker = hildon_touch_picker_new ();
+  selector = hildon_touch_selector_new ();
 
   icon_list = gtk_stock_list_ids ();
 
@@ -85,14 +85,14 @@ create_picker ()
   g_value_set_string (&val2, "orange");
   g_object_set_property (G_OBJECT (renderer), "cell-background", &val2);
 
-  hildon_touch_picker_append_column (HILDON_TOUCH_PICKER (picker),
-                                     GTK_TREE_MODEL (store_icons),
-                                     renderer, "stock-id", 0, NULL);
+  hildon_touch_selector_append_column (HILDON_TOUCH_SELECTOR (selector),
+                                       GTK_TREE_MODEL (store_icons),
+                                       renderer, "stock-id", 0, NULL);
 
-  hildon_touch_picker_set_column_selection_mode (HILDON_TOUCH_PICKER (picker),
-                                                 HILDON_TOUCH_PICKER_SELECTION_MODE_MULTIPLE);
+  hildon_touch_selector_set_column_selection_mode (HILDON_TOUCH_SELECTOR (selector),
+                                                   HILDON_TOUCH_SELECTOR_SELECTION_MODE_MULTIPLE);
 
-  return picker;
+  return selector;
 }
 
 static GtkWidget *
@@ -100,15 +100,15 @@ get_visible_content (GtkWidget * window)
 {
   GtkWidget *result = NULL;
   GtkWidget *button = NULL;
-  GtkWidget *picker;
+  GtkWidget *selector;
 
-  label = gtk_label_new ("Here we are going to put the picker selection");
+  label = gtk_label_new ("Here we are going to put the selection");
 
   button = hildon_picker_button_new (HILDON_BUTTON_WITH_VERTICAL_VALUE);
   hildon_button_set_title (HILDON_BUTTON (button), "Click me..");
-  picker = create_picker ();
-  hildon_picker_button_set_picker (HILDON_PICKER_BUTTON (button),
-                                   HILDON_TOUCH_PICKER (picker));
+  selector = create_selector ();
+  hildon_picker_button_set_selector (HILDON_PICKER_BUTTON (button),
+                                     HILDON_TOUCH_SELECTOR (selector));
 
   g_signal_connect (G_OBJECT (button), "value-changed",
                     G_CALLBACK (value_changed), window);
@@ -131,7 +131,7 @@ main (int argc, char **args)
 
   program = hildon_program_get_instance ();
   g_set_application_name
-    ("hildon-touch-picker cell renderer example program");
+    ("hildon-touch-selector cell renderer example program");
 
   window = hildon_stackable_window_new ();
   parent_window = GTK_WINDOW (window);

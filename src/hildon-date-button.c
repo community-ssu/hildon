@@ -15,7 +15,7 @@
  */
 
 #include "hildon-date-selector.h"
-#include "hildon-touch-picker.h"
+#include "hildon-touch-selector.h"
 #include "hildon-picker-button.h"
 #include "hildon-date-button.h"
 
@@ -74,8 +74,8 @@ hildon_date_button_init (HildonDateButton * self)
 
   date_selector = hildon_date_selector_new ();
 
-  hildon_picker_button_set_picker (HILDON_PICKER_BUTTON (self),
-                                   HILDON_TOUCH_PICKER (date_selector));
+  hildon_picker_button_set_selector (HILDON_PICKER_BUTTON (self),
+                                     HILDON_TOUCH_SELECTOR (date_selector));
 }
 
 GtkWidget *
@@ -91,29 +91,29 @@ void
 hildon_date_button_get_date (HildonDateButton * button,
                              guint * year, guint * month, guint * day)
 {
-  HildonTouchPicker *picker;
+  HildonTouchSelector *selector;
 
   g_return_if_fail (HILDON_IS_DATE_BUTTON (button));
 
-  picker = hildon_picker_button_get_picker (HILDON_PICKER_BUTTON (button));
+  selector = hildon_picker_button_get_selector (HILDON_PICKER_BUTTON (button));
 
-  hildon_date_selector_get_date (HILDON_DATE_SELECTOR (picker), year, month, day);
+  hildon_date_selector_get_date (HILDON_DATE_SELECTOR (selector), year, month, day);
 }
 
 void
 hildon_date_button_set_date (HildonDateButton * button,
                              guint year, guint month, guint day)
 {
-  HildonTouchPicker *picker;
+  HildonTouchSelector *selector;
   gchar *date;
 
   g_return_if_fail (HILDON_IS_DATE_BUTTON (button));
 
-  picker = hildon_picker_button_get_picker (HILDON_PICKER_BUTTON (button));
+  selector = hildon_picker_button_get_selector (HILDON_PICKER_BUTTON (button));
 
-  hildon_date_selector_select_current_date (HILDON_DATE_SELECTOR (picker),
+  hildon_date_selector_select_current_date (HILDON_DATE_SELECTOR (selector),
                                             year, month, day);
-  date = hildon_touch_picker_get_current_text (HILDON_TOUCH_PICKER (picker));
+  date = hildon_touch_selector_get_current_text (HILDON_TOUCH_SELECTOR (selector));
 
   hildon_button_set_value (HILDON_BUTTON (button), date);
 }

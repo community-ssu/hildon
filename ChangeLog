@@ -1,3 +1,87 @@
+2008-07-30  Claudio Saavedra  <csaavedra@igalia.com>
+
+	* doc/hildon-docs.sgml:
+	* doc/hildon.types:
+
+	Update documentation.
+
+	* examples/Makefile.am: Update renamed examples.
+
+	* examples/hildon-picker-button-multicolumn-example.c:
+	(create_touch_selector), (main): Update after the rename.
+
+	* examples/hildon-touch-picker-example.c: Removed.
+	* examples/hildon-touch-selector-example.c: (value_changed),
+	(create_selector), (get_visible_content), (main): Renamed from
+	hildon-touch-picker-example.c
+
+	* src/Makefile.am: Updated renamed files.
+
+	* src/hildon-date-button.c: (hildon_date_button_init),
+	(hildon_date_button_get_date), (hildon_date_button_set_date):
+	* src/hildon-date-selector.c: (hildon_date_selector_init),
+	(_custom_print_func), (_update_day_model),
+	(_manage_selector_change_cb),
+	(hildon_date_selector_select_current_date),
+	(hildon_date_selector_get_date), (hildon_date_selector_select_day):
+	* src/hildon-date-selector.h:
+	* src/hildon-picker-button.c: (hildon_picker_button_get_property),
+	(hildon_picker_button_set_property),
+	(hildon_picker_button_clicked), (hildon_picker_button_class_init),
+	(hildon_picker_button_init), (hildon_picker_button_new_text),
+	(hildon_picker_button_append_text),
+	(hildon_picker_button_prepend_text),
+	(hildon_picker_button_insert_text),
+	(hildon_picker_button_set_selector),
+	(hildon_picker_button_get_selector):
+	* src/hildon-picker-button.h:
+	* src/hildon-picker-dialog.c: (hildon_picker_dialog_class_init),
+	(hildon_picker_dialog_init), (_select_on_selector_changed_cb),
+	(_update_title_on_selector_changed_cb), (requires_done_button),
+	(_hildon_picker_dialog_set_selector),
+	(hildon_picker_dialog_set_selector),
+	(hildon_picker_dialog_get_selector):
+	* src/hildon-picker-dialog.h:
+	* src/hildon-time-button.c: (hildon_time_button_init),
+	(hildon_time_button_get_time), (hildon_time_button_set_time):
+	* src/hildon-time-selector.c: (hildon_time_selector_init),
+	(_custom_print_func), (_manage_ampm_selection_cb), (_set_pm),
+	(hildon_time_selector_set_time), (hildon_time_selector_get_time):
+	* src/hildon-time-selector.h:
+	* src/hildon.h:
+
+	Massive code updates after the rename.
+
+	* src/hildon-touch-picker.c: Removed.
+	* src/hildon-touch-picker.h: Removed.
+
+	* src/hildon-touch-selector.c: (hildon_touch_selector_class_init),
+	(hildon_touch_selector_init), (hildon_touch_selector_map),
+	(hildon_touch_selector_remove), (_default_print_func),
+	(_selection_changed_cb), (_create_new_column),
+	(hildon_touch_selector_new), (hildon_touch_selector_append_column),
+	(hildon_touch_selector_append_text_column),
+	(hildon_touch_selector_remove_column),
+	(hildon_touch_selector_set_column_attributes),
+	(hildon_touch_selector_insert_column),
+	(hildon_touch_selector_get_num_columns),
+	(hildon_touch_selector_get_column_selection_mode),
+	(hildon_touch_selector_set_column_selection_mode),
+	(hildon_touch_selector_set_print_func),
+	(hildon_touch_selector_get_print_func),
+	(hildon_touch_selector_get_active_iter),
+	(hildon_touch_selector_set_active_iter),
+	(hildon_touch_selector_get_selected_rows),
+	(hildon_touch_selector_get_model),
+	(hildon_touch_selector_set_model),
+	(hildon_touch_selector_get_current_text),
+	(_hildon_touch_selector_center_on_selected_items):
+	* src/hildon-touch-selector.h: Renamed from
+	hildon-touch-picker.[ch]
+
+	Rename HildonTouchPicker to HildonTouchSelector. Updated all the
+	references, code examples, and related documentation.
+
 2008-07-30  Alberto Garcia  <agarcia@igalia.com>
 
 	* doc/hildon-docs.sgml

@@ -56,7 +56,7 @@
 #include                                        "hildon-time-picker.h"
 #include                                        "hildon-date-selector.h"
 #include                                        "hildon-time-selector.h"
-#include                                        "hildon-touch-picker.h"
+#include                                        "hildon-touch-selector.h"
 #include                                        "hildon-picker-dialog.h"
 #include                                        "hildon-picker-button.h"
 #include                                        "hildon-date-button.h"
