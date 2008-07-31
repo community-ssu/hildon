@@ -1,5 +1,13 @@
 2008-07-31  Alberto Garcia  <agarcia@igalia.com>
 
+	* src/hildon-app-menu-private.h
+	* src/hildon-app-menu.c (hildon_app_menu_add_filter)
+	(hildon_app_menu_init, hildon_app_menu_finalize): Don't use a
+	GtkSizeGroup for the filters, use the 'homogeneous' property of
+	the box instead.
+
+2008-07-31  Alberto Garcia  <agarcia@igalia.com>
+
 	* examples/hildon-button-example.c: Updated example.
 
 2008-07-30  Claudio Saavedra  <csaavedra@igalia.com>

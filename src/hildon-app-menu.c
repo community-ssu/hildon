@@ -147,7 +147,6 @@ hildon_app_menu_add_filter                      (HildonAppMenu *menu,
 
     /* Pack the filter in the group and set its size */
     gtk_box_pack_start (GTK_BOX (priv->filters_hbox), GTK_WIDGET (filter), TRUE, TRUE, 0);
-    gtk_size_group_add_widget (priv->sizegroup, GTK_WIDGET (filter));
 
     /* Close the menu when the button is clicked */
     g_signal_connect_swapped (filter, "clicked", G_CALLBACK (gtk_widget_hide), menu);
@@ -323,10 +322,9 @@ hildon_app_menu_init                            (HildonAppMenu *menu)
                           NULL);
 
     /* Initialize private variables */
-    priv->filters_hbox = GTK_BOX (gtk_hbox_new (FALSE, 0));
+    priv->filters_hbox = GTK_BOX (gtk_hbox_new (TRUE, 0));
     priv->vbox = GTK_BOX (gtk_vbox_new (FALSE, vertical_spacing));
     priv->table = GTK_TABLE (gtk_table_new (1, 2, TRUE));
-    priv->sizegroup = GTK_SIZE_GROUP (gtk_size_group_new (GTK_SIZE_GROUP_BOTH));
     priv->nitems = 0;
     priv->transfer_window = NULL;
     priv->pressed_outside = FALSE;
@@ -362,7 +360,6 @@ hildon_app_menu_finalize                        (GObject *object)
 {
     HildonAppMenuPrivate *priv = HILDON_APP_MENU_GET_PRIVATE(object);
 
-    g_object_unref (priv->sizegroup);
     if (priv->transfer_window)
         gdk_window_destroy (priv->transfer_window);
 
