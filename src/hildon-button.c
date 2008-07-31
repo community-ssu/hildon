@@ -30,7 +30,9 @@
  * "auto" so it behaves like a standard GtkButton.
  *
  * The #HildonButton can hold any valid child widget, but it usually
- * contains two labels: title and value (the latter being optional).
+ * contains two labels: title and value (the latter being
+ * optional). To change the alignment of the labels, use
+ * gtk_button_set_alignment()
  */
 
 #include                                        "hildon-button.h"

@@ -1,5 +1,12 @@
 2008-07-31  Alberto Garcia  <agarcia@igalia.com>
 
+	* src/hildon-button.c: Updated documentation.
+
+	* examples/hildon-button-example.c: Add the posibility to create
+	the buttons using horizontal layout for title and value.
+
+2008-07-31  Alberto Garcia  <agarcia@igalia.com>
+
 	* src/hildon-app-menu-private.h
 	* src/hildon-app-menu.c (hildon_app_menu_add_filter)
 	(hildon_app_menu_init, hildon_app_menu_finalize): Don't use a
