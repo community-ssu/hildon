@@ -42,14 +42,6 @@ typedef struct
 
 GType      hildon_picker_button_get_type (void);
 GtkWidget *hildon_picker_button_new      (HildonButtonFlags flags);
-GtkWidget *hildon_picker_button_new_text (HildonButtonFlags flags);
-
-void hildon_picker_button_append_text    (HildonPickerButton * button,
-                                          const gchar * text);
-void hildon_picker_button_prepend_text   (HildonPickerButton * button,
-                                          const gchar * text);
-void hildon_picker_button_insert_text    (HildonPickerButton * button,
-                                          gint position, const gchar * text);
 
 void hildon_picker_button_set_selector     (HildonPickerButton * button,
                                             HildonTouchSelector * selector);

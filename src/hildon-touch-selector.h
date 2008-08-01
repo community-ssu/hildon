@@ -64,6 +64,16 @@ typedef enum
 GType      hildon_touch_selector_get_type (void) G_GNUC_CONST;
 GtkWidget *hildon_touch_selector_new      (void);
 
+/* Simple (and recommended) API for one-text-column selectors. */
+GtkWidget *hildon_touch_selector_new_text (void);
+
+void hildon_touch_selector_append_text    (HildonTouchSelector * selector,
+                                          const gchar * text);
+void hildon_touch_selector_prepend_text   (HildonTouchSelector * selector,
+                                          const gchar * text);
+void hildon_touch_selector_insert_text    (HildonTouchSelector * selector,
+                                          gint position, const gchar * text);
+
 /* column related  */
 gboolean hildon_touch_selector_append_text_column     (HildonTouchSelector * selector,
                                                        GtkTreeModel * model);

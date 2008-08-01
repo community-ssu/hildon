@@ -21,6 +21,7 @@
 #include "hildon-stackable-window.h"
 
 #include "hildon-picker-button.h"
+#include "hildon-touch-selector.h"
 
 static void
 on_picker_value_changed (HildonPickerButton * button, gpointer data)
@@ -35,6 +36,7 @@ main (int argc, char **args)
   HildonProgram *program = NULL;
   GtkWidget *window = NULL;
   GtkWidget *button;
+  GtkWidget *selector;
 
   gtk_init (&argc, &args);
 
@@ -45,15 +47,19 @@ main (int argc, char **args)
   gtk_window_set_default_size (GTK_WINDOW (window), 300, 200);
   hildon_program_add_window (program, HILDON_WINDOW (window));
 
-  button = hildon_picker_button_new_text (HILDON_BUTTON_WITH_VERTICAL_VALUE);
+  button = hildon_picker_button_new (HILDON_BUTTON_WITH_VERTICAL_VALUE);
+  selector = hildon_touch_selector_new_text ();
   hildon_button_set_title (HILDON_BUTTON (button), "Continent");
 
-  hildon_picker_button_append_text (HILDON_PICKER_BUTTON (button), "America");
-  hildon_picker_button_append_text (HILDON_PICKER_BUTTON (button), "Europe");
-  hildon_picker_button_append_text (HILDON_PICKER_BUTTON (button), "Asia");
-  hildon_picker_button_append_text (HILDON_PICKER_BUTTON (button), "Africa");
-  hildon_picker_button_append_text (HILDON_PICKER_BUTTON (button),
-                                    "Australia");
+  hildon_touch_selector_append_text (HILDON_TOUCH_SELECTOR (selector), "America");
+  hildon_touch_selector_append_text (HILDON_TOUCH_SELECTOR (selector), "Europe");
+  hildon_touch_selector_append_text (HILDON_TOUCH_SELECTOR (selector), "Asia");
+  hildon_touch_selector_append_text (HILDON_TOUCH_SELECTOR (selector), "Africa");
+  hildon_touch_selector_append_text (HILDON_TOUCH_SELECTOR (selector),
+                                     "Australia");
+
+  hildon_picker_button_set_selector (HILDON_PICKER_BUTTON (button),
+                                     HILDON_TOUCH_SELECTOR (selector));
 
   g_signal_connect (G_OBJECT (button), "value-changed",
                     G_CALLBACK (on_picker_value_changed), NULL);

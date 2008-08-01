@@ -399,6 +399,112 @@ hildon_touch_selector_new ()
 }
 
 /**
+ * hildon_touch_selector_new_text:
+ * @void: 
+ *
+ * Creates a #HildonTouchSelector with a single text column that
+ * can be populated conveniently through hildon_touch_selector_append_text(),
+ * hildon_touch_selector_prepend_text(), hildon_touch_selector_insert_text().
+ *
+ * Returns: A new #HildonTouchSelector
+ **/
+GtkWidget *
+hildon_touch_selector_new_text (void)
+{
+  GtkWidget *selector;
+  GtkListStore *store;
+
+  selector = hildon_touch_selector_new ();
+  store = gtk_list_store_new (1, G_TYPE_STRING);
+
+  hildon_touch_selector_append_text_column (HILDON_TOUCH_SELECTOR (selector),
+                                            GTK_TREE_MODEL (store));
+
+  return selector;
+}
+
+/**
+ * hildon_touch_selector_append_text:
+ * @selector: A #HildonTouchSelector.
+ * @text: a non %NULL text string.
+ *
+ * Appends a new entry in a #HildonTouchSelector created with
+ * hildon_touch_selector_new_text().
+ **/
+void
+hildon_touch_selector_append_text (HildonTouchSelector * selector,
+                                   const gchar * text)
+{
+  GtkTreeIter iter;
+  GtkTreeModel *model;
+
+  g_return_if_fail (HILDON_IS_TOUCH_SELECTOR (selector));
+  g_return_if_fail (text != NULL);
+
+  model = hildon_touch_selector_get_model (HILDON_TOUCH_SELECTOR (selector), 0);
+
+  g_return_if_fail (GTK_IS_LIST_STORE (model));
+
+  gtk_list_store_append (GTK_LIST_STORE (model), &iter);
+  gtk_list_store_set (GTK_LIST_STORE (model), &iter, 0, text, -1);
+}
+
+/**
+ * hildon_touch_selector_prepend_text:
+ * @selector: A #HildonTouchSelector.
+ * @text: a non %NULL text string.
+ *
+ * Prepends a new entry in a #HildonTouchSelector created with
+ * hildon_touch_selector_new_text().
+ **/
+void
+hildon_touch_selector_prepend_text (HildonTouchSelector * selector,
+                                    const gchar * text)
+{
+  GtkTreeIter iter;
+  GtkTreeModel *model;
+
+  g_return_if_fail (HILDON_IS_TOUCH_SELECTOR (selector));
+  g_return_if_fail (text != NULL);
+
+  model = hildon_touch_selector_get_model (HILDON_TOUCH_SELECTOR (selector), 0);
+
+  g_return_if_fail (GTK_IS_LIST_STORE (model));
+
+  gtk_list_store_prepend (GTK_LIST_STORE (model), &iter);
+  gtk_list_store_set (GTK_LIST_STORE (model), &iter, 0, text, -1);
+}
+
+/**
+ * hildon_touch_selector_insert_text:
+ * @selector: a #HildonTouchSelector.
+ * @position: the position to insert @text.
+ * @text: A non %NULL text string.
+ *
+ * Inserts a new entry in particular positio of a #HildoTouchSelector created
+ * with hildon_touch_selector_new_text().
+ *
+ **/
+void
+hildon_touch_selector_insert_text (HildonTouchSelector * selector,
+                                   gint position, const gchar * text)
+{
+  GtkTreeIter iter;
+  GtkTreeModel *model;
+
+  g_return_if_fail (HILDON_IS_TOUCH_SELECTOR (selector));
+  g_return_if_fail (text != NULL);
+  g_return_if_fail (position >= 0);
+
+  model = hildon_touch_selector_get_model (HILDON_TOUCH_SELECTOR (selector), 0);
+
+  g_return_if_fail (GTK_IS_LIST_STORE (model));
+
+  gtk_list_store_insert (GTK_LIST_STORE (model), &iter, position);
+  gtk_list_store_set (GTK_LIST_STORE (model), &iter, 0, text, -1);
+}
+
+/**
  * hildon_touch_selector_append_text_column
  * @selector: the #HildonTouchSelector widget
  * @model: the #GtkTreeModel with the data of the column

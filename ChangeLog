@@ -1,3 +1,21 @@
+2008-08-01  Claudio Saavedra  <csaavedra@igalia.com>
+
+	* src/hildon-picker-button.c: Removed the simple _text() API.
+	* src/hildon-picker-button.h: Likewise.
+
+	* src/hildon-touch-selector.h:
+	* src/hildon-touch-selector.c:
+	(hildon_touch_selector_new_text),
+	(hildon_touch_selector_append_text),
+	(hildon_touch_selector_prepend_text),
+	(hildon_touch_selector_insert_text):
+
+	Moved the simple _text() API from HildonPickerButton to
+	HildonTouchPicker, to provide better escalability and not to tie
+	that API to HildonPickerButton.
+
+	* examples/hildon-picker-button-example.c: (main): Example updated.
+
 2008-07-31  Alberto Garcia  <agarcia@igalia.com>
 
 	* src/hildon-button.c: Updated documentation.
