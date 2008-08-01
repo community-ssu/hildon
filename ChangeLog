@@ -1,5 +1,13 @@
 2008-08-01  Claudio Saavedra  <csaavedra@igalia.com>
 
+	* src/hildon-touch-selector.c: (hildon_touch_selector_init),
+	(hildon_touch_selector_append_column): Make the widget a GtkVBox
+	derived class to ease placement of an entry widget in
+	HildonTouchSelectorEntry. Added a private GtkHBox, packed at the
+	end, where the selector columns are packed now.
+
+2008-08-01  Claudio Saavedra  <csaavedra@igalia.com>
+
 	* src/hildon-picker-button.c: Removed the simple _text() API.
 	* src/hildon-picker-button.h: Likewise.
 

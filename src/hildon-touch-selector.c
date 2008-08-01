@@ -39,14 +39,14 @@
 #define HILDON_TOUCH_SELECTOR_GET_PRIVATE(obj)                          \
   (G_TYPE_INSTANCE_GET_PRIVATE ((obj), HILDON_TYPE_TOUCH_SELECTOR, HildonTouchSelectorPrivate))
 
-G_DEFINE_TYPE (HildonTouchSelector, hildon_touch_selector, GTK_TYPE_HBOX)
+G_DEFINE_TYPE (HildonTouchSelector, hildon_touch_selector, GTK_TYPE_VBOX)
 
 #define CENTER_ON_SELECTED_ITEM_DELAY 50
 
 /**
  * Struct to maintain the data of each column. The columns are the elements
  * of the widget that belongs properly to the selection behaviour. As
- * the selector is a hbox, you can add more widgets, like buttons etc.
+ * the selector contents are arranged in a #GtkHBox, you can add more widgets, like buttons etc.
  * between the columns, but this doesn't belongs to the selection
  * logic
  */
@@ -63,6 +63,7 @@ struct _SelectorColumn
 struct _HildonTouchSelectorPrivate
 {
   GSList *columns;              /* the selection columns */
+  GtkWidget *hbox;              /* the container for the selector's columns */
 
   HildonTouchSelectorPrintFunc print_func;
 };
@@ -151,6 +152,11 @@ hildon_touch_selector_init (HildonTouchSelector * selector)
   selector->priv->columns = NULL;
 
   selector->priv->print_func = NULL;
+  selector->priv->hbox = gtk_hbox_new (FALSE, 0);
+
+  gtk_box_pack_end (GTK_BOX (selector), selector->priv->hbox,
+                    TRUE, TRUE, 0);
+  gtk_widget_show (selector->priv->hbox);
 
   /* FIXME: this is the correct height? A fixed height is the correct 
      implementation */
@@ -540,7 +546,7 @@ hildon_touch_selector_append_column (HildonTouchSelector * selector,
 
     selector->priv->columns = g_slist_append (selector->priv->columns,
                                               new_column);
-    gtk_box_pack_start (GTK_BOX (selector), new_column->panarea, TRUE, TRUE, 6);
+    gtk_box_pack_start (GTK_BOX (selector->priv->hbox), new_column->panarea, TRUE, TRUE, 6);
 
     gtk_widget_show_all (new_column->panarea);
   } else {
