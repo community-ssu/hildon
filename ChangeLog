@@ -1,3 +1,7 @@
+2008-08-04  Claudio Saavedra  <csaavedra@igalia.com>
+
+	* configure.ac: Set back the tarname in AC_INIT to hildon.
+
 2008-08-04  Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>
 
 	Release 2.1.3
