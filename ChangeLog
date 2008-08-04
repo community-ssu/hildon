@@ -1,5 +1,18 @@
 2008-08-04  Claudio Saavedra  <csaavedra@igalia.com>
 
+	* src/hildon-touch-selector.c: (hildon_touch_selector_class_init),
+	(_hildon_touch_selector_set_model),
+	(hildon_touch_selector_set_model): Move working code to
+	_hildon_touch_selector_set_mode(). Call the class method instead.
+
+	* src/hildon-touch-selector.h: Add (*set_model) to
+	HildonTouchSelectorClass.
+
+	Make hildon_touch_selector_set_model() a virtual method, so that
+	derived classes can extend it and do fancy stuff with the model.
+
+2008-08-04  Claudio Saavedra  <csaavedra@igalia.com>
+
 	* configure.ac: Set back the tarname in AC_INIT to hildon.
 
 2008-08-04  Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>

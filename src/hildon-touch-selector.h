@@ -52,6 +52,9 @@ struct _HildonTouchSelectorClass
 
   /* signals */
   void (*changed) (HildonTouchSelector * selector, gint column);
+
+  /* virtual methods */
+  void (*set_model) (HildonTouchSelector *selector, gint column, GtkTreeModel *model);
 };
 
 typedef enum
