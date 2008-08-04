@@ -1,4 +1,4 @@
-AC_INIT([Hildon gtk widgets], [2.1.2], [karl.lattimer@nokia.com], [hildon])
+AC_INIT([Hildon gtk widgets], [2.1.3])
 AC_CANONICAL_SYSTEM
 
 AM_CONFIG_HEADER(config.h)
@@ -42,11 +42,11 @@ AC_SUBST(GTK_LIBS)
 AC_SUBST(GTK_CFLAGS)
 AC_SUBST(GTK_VERSION)
 
-# ESD is needed for the hildon-note sounds.
+# libcanberra is needed for the hildon-note sounds.
 
-PKG_CHECK_MODULES(ESD, esound)
-AC_SUBST(ESD_LIBS)
-AC_SUBST(ESD_CFLAGS)
+PKG_CHECK_MODULES(CANBERRA, libcanberra)
+AC_SUBST(CANBERRA_LIBS)
+AC_SUBST(CANBERRA_CFLAGS)
 
 PKG_CHECK_MODULES(GCONF, gconf-2.0 >= 2.6)
 AC_SUBST(GCONF_CFLAGS)

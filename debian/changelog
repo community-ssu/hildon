@@ -1,3 +1,10 @@
+libhildon (2.1.3-1) gutsy; urgency=low
+
+  * Tons of changes, see the ChangeLog for more information.
+  * Replaced libesd with libcanberra. Fixes: NB#86876
+
+ -- Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>  Mon,  4 Aug 2008 15:07:03 +0300
+
 libhildon (2.1.2-1) gutsy; urgency=low
 
   * Update version number to 2.1.2-1

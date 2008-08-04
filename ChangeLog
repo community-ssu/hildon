@@ -1,3 +1,13 @@
+2008-08-04  Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>
+
+	Release 2.1.3
+
+	* src/hildon-sound.c (hildon_play_system_sound): Use libcanberra
+	instead of libesd (NB#86876). Volume handling is still an open issue.
+
+	* configure.ac, src/Makefile.am: Replace esd with libcanberra. Some
+	cleanups.
+
 2008-08-01  Claudio Saavedra  <csaavedra@igalia.com>
 
 	* src/hildon-touch-selector.c: (hildon_touch_selector_init),
