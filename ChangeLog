@@ -1,5 +1,24 @@
 2008-08-04  Claudio Saavedra  <csaavedra@igalia.com>
 
+	* src/hildon-touch-selector.c:
+	(hildon_touch_selector_class_init),
+	(hildon_touch_selector_get_property),
+	(_hildon_touch_selector_set_model),
+	(_hildon_touch_selector_has_multiple_selection),
+	(hildon_touch_selector_has_multiple_selection):
+	Add a "has-multiple-selection" property with a virtual
+	has_multiple_selection() method to allow derived classes to
+	override the default value for it. See the method and property
+	documentation for details.
+
+	* src/hildon-touch-selector.h: Add the new API.
+
+	* src/hildon-picker-dialog.c: (requires_done_button): Call
+	hildon_touch_selector_has_multiple_selection() instead of
+	determining the need for a button itself.
+
+2008-08-04  Claudio Saavedra  <csaavedra@igalia.com>
+
 	* src/hildon-touch-selector.c: (hildon_touch_selector_class_init),
 	(_hildon_touch_selector_set_model),
 	(hildon_touch_selector_set_model): Move working code to

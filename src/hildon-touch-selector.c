@@ -70,11 +70,20 @@ struct _HildonTouchSelectorPrivate
 
 enum
 {
+  PROP_HAS_MULTIPLE_SELECTION = 1
+};
+
+enum
+{
   CHANGED,
   LAST_SIGNAL
 };
 
 static gint hildon_touch_selector_signals[LAST_SIGNAL] = { 0 };
+
+static void hildon_touch_selector_get_property (GObject * object,
+                                                guint prop_id,
+                                                GValue * value, GParamSpec * pspec);
 
 /* gtkwidget */
 static void hildon_touch_selector_map (GtkWidget * widget);
@@ -96,6 +105,8 @@ static gboolean _hildon_touch_selector_center_on_selected_items (gpointer data);
 static void
 _hildon_touch_selector_set_model (HildonTouchSelector * selector,
                                   gint num_column, GtkTreeModel * model);
+static gboolean
+_hildon_touch_selector_has_multiple_selection (HildonTouchSelector * selector);
 
 static void
 hildon_touch_selector_class_init (HildonTouchSelectorClass * class)
@@ -112,6 +123,8 @@ hildon_touch_selector_class_init (HildonTouchSelectorClass * class)
 
   /* GObject */
 
+  gobject_class->get_property = hildon_touch_selector_get_property;
+
   /* GtkWidget */
   widget_class->map = hildon_touch_selector_map;
 
@@ -120,6 +133,8 @@ hildon_touch_selector_class_init (HildonTouchSelectorClass * class)
 
   /* HildonTouchSelector */
   class->set_model = _hildon_touch_selector_set_model;
+
+  class->has_multiple_selection = _hildon_touch_selector_has_multiple_selection;
 
   /* signals */
   /**
@@ -142,10 +157,37 @@ hildon_touch_selector_class_init (HildonTouchSelectorClass * class)
                   gtk_marshal_NONE__INT, G_TYPE_NONE, 1, G_TYPE_INT);
   /* properties */
 
+  g_object_class_install_property (gobject_class, PROP_HAS_MULTIPLE_SELECTION,
+                                   g_param_spec_boolean ("has-multiple-selection",
+                                                         "has multiple selection",
+                                                         "Whether the widget has multiple "
+                                                         "selection (like multiple columns, "
+                                                         "multiselection mode, or multiple "
+                                                         "internal widgets) and therefore "
+                                                         "it may need a confirmation button, "
+                                                         "for instance.",
+                                                         FALSE,
+                                                         G_PARAM_READABLE));
+
   /* style properties */
   g_type_class_add_private (object_class, sizeof (HildonTouchSelectorPrivate));
 }
 
+static void
+hildon_touch_selector_get_property (GObject * object,
+                                    guint prop_id,
+                                    GValue * value, GParamSpec * pspec)
+{
+  switch (prop_id) {
+  case PROP_HAS_MULTIPLE_SELECTION:
+    g_value_set_boolean (value,
+                         hildon_touch_selector_has_multiple_selection (HILDON_TOUCH_SELECTOR (object)));
+    break;
+  default:
+    G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+    break;
+  }
+}
 
 static void
 hildon_touch_selector_init (HildonTouchSelector * selector)
@@ -895,6 +937,7 @@ _hildon_touch_selector_set_model (HildonTouchSelector * selector,
                                  gint num_column, GtkTreeModel * model)
 {
   SelectorColumn *column = NULL;
+  g_print ("this was actually called\n");
 
   column =
     (SelectorColumn *) g_slist_nth_data (selector->priv->columns, num_column);
@@ -983,4 +1026,39 @@ _hildon_touch_selector_center_on_selected_items (gpointer data)
   }
 
   return FALSE;
+}
+
+static gboolean
+_hildon_touch_selector_has_multiple_selection (HildonTouchSelector * selector)
+{
+  HildonTouchSelectorSelectionMode mode = HILDON_TOUCH_SELECTOR_SELECTION_MODE_SINGLE;
+  gint n_columns = 0;
+
+  n_columns = hildon_touch_selector_get_num_columns (selector);
+  mode = hildon_touch_selector_get_column_selection_mode (selector);
+
+  return ((n_columns > 1) || (mode == HILDON_TOUCH_SELECTOR_SELECTION_MODE_MULTIPLE));
+}
+
+/**
+ * hildon_touch_selector_has_multiple_selection:
+ * @selector: A #HildonTouchSelector
+ *
+ * Determines whether @selector is complex enough to actually require an
+ * extra selection step than only picking an item. This is normally %TRUE
+ * if @selector has multiple columns, multiple selection, or when it is a
+ * more complex widget, like %HildonTouchSelectorEntry.
+ *
+ * This information is useful for widgets containing a %HildonTouchSelector,
+ * like #HildonPickerDialog, that could need a "Done" button, in case that
+ * its internal #HildonTouchSelector has multiple columns, for instance.
+ *
+ * Returns: %TRUE if @selector requires multiple selection steps.
+ **/
+gboolean
+hildon_touch_selector_has_multiple_selection (HildonTouchSelector * selector)
+{
+  g_return_val_if_fail (HILDON_IS_TOUCH_SELECTOR (selector), FALSE);
+
+  return HILDON_TOUCH_SELECTOR_GET_CLASS (selector)->has_multiple_selection (selector);
 }

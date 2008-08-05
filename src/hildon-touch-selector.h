@@ -55,6 +55,8 @@ struct _HildonTouchSelectorClass
 
   /* virtual methods */
   void (*set_model) (HildonTouchSelector *selector, gint column, GtkTreeModel *model);
+
+  gboolean (*has_multiple_selection) (HildonTouchSelector *selector);
 };
 
 typedef enum
@@ -126,6 +128,9 @@ void hildon_touch_selector_set_print_func     (HildonTouchSelector * selector,
 
 HildonTouchSelectorPrintFunc
 hildon_touch_selector_get_print_func          (HildonTouchSelector * selector);
+
+gboolean
+hildon_touch_selector_has_multiple_selection (HildonTouchSelector * selector);
 
 G_END_DECLS
 

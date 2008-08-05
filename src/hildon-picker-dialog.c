@@ -285,21 +285,9 @@ hildon_picker_dialog_get_done_label (HildonPickerDialog * dialog)
 static gboolean
 requires_done_button (HildonPickerDialog * dialog)
 {
-  gint n_columns = 0;
-  HildonTouchSelectorSelectionMode mode =
-    HILDON_TOUCH_SELECTOR_SELECTION_MODE_SINGLE;
-
-  n_columns =
-    hildon_touch_selector_get_num_columns (HILDON_TOUCH_SELECTOR
-                                           (dialog->priv->selector));
-  mode =
-    hildon_touch_selector_get_column_selection_mode (HILDON_TOUCH_SELECTOR
-                                                     (dialog->priv->selector));
-
-  return ((n_columns > 1)
-          || (mode == HILDON_TOUCH_SELECTOR_SELECTION_MODE_MULTIPLE));
+  return hildon_touch_selector_has_multiple_selection
+    (HILDON_TOUCH_SELECTOR (dialog->priv->selector));
 }
-
 
 /* ------------------------------ PUBLIC METHODS ---------------------------- */
 
