@@ -156,6 +156,7 @@ hildon_picker_dialog_init (HildonPickerDialog * dialog)
   dialog->priv->selector = NULL;
   dialog->priv->button =
     gtk_dialog_add_button (GTK_DIALOG (dialog), "", GTK_RESPONSE_OK);
+  gtk_widget_grab_default (dialog->priv->button);
 
   dialog->priv->title_label = gtk_label_new ("default value");
   gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dialog)->vbox),

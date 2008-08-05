@@ -1,3 +1,8 @@
+2008-08-05  Claudio Saavedra  <csaavedra@igalia.com>
+
+	* src/hildon-picker-dialog.c: (hildon_picker_dialog_init): Make the
+	"done" button the default widget for the dialog.
+
 2008-08-04  Claudio Saavedra  <csaavedra@igalia.com>
 
 	* src/hildon-touch-selector.c:
