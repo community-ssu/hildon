@@ -1,3 +1,13 @@
+2008-08-06  Alberto Garcia  <agarcia@igalia.com>
+
+	* doc/hildon-docs.sgml
+	* doc/hildon.types
+	* src/Makefile.am
+	* src/hildon-toggle-button.c
+	* src/hildon-toggle-button.h
+	* src/hildon.h: Removed HildonToggleButton widget, a derived
+	class is not necessary for this.
+
 2008-08-06  Alejandro G. Castro	 <alex@igalia.com>
 
 	* src/hildon-pannable-area.c,
