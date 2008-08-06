@@ -1434,10 +1434,10 @@ hildon_pannable_area_realize (GtkWidget * widget)
 
   attributes.x = widget->allocation.x + border_width;
   attributes.y = widget->allocation.y + border_width;
-  attributes.width = widget->allocation.width - 2 * border_width -
-    (priv->vscroll ? priv->vscroll_rect.width : 0);
-  attributes.height = widget->allocation.height - 2 * border_width -
-    (priv->hscroll ? priv->hscroll_rect.height : 0);
+  attributes.width = MAX (widget->allocation.width - 2 * border_width -
+                          (priv->vscroll ? priv->vscroll_rect.width : 0), 0);
+  attributes.height = MAX (widget->allocation.height - 2 * border_width -
+                           (priv->hscroll ? priv->hscroll_rect.height : 0), 0);
   attributes.window_type = GDK_WINDOW_CHILD;
   attributes.event_mask = gtk_widget_get_events (widget)
     | GDK_BUTTON_MOTION_MASK
@@ -1561,14 +1561,18 @@ hildon_pannable_area_size_allocate (GtkWidget * widget,
   widget->allocation = *allocation;
   bin = GTK_BIN (widget);
 
+  hildon_pannable_area_refresh (HILDON_PANNABLE_AREA (widget));
+
   priv = PANNABLE_AREA_PRIVATE (widget);
 
   child_allocation.x = allocation->x + GTK_CONTAINER (widget)->border_width;
   child_allocation.y = allocation->y + GTK_CONTAINER (widget)->border_width;
   child_allocation.width = MAX (allocation->width -
-				GTK_CONTAINER (widget)->border_width * 2, 0);
+				GTK_CONTAINER (widget)->border_width * 2 -
+                                (priv->vscroll ? priv->vscroll_rect.width : 0), 0);
   child_allocation.height = MAX (allocation->height -
-				 GTK_CONTAINER (widget)->border_width * 2, 0);
+				 GTK_CONTAINER (widget)->border_width * 2 -
+                                 (priv->hscroll ? priv->hscroll_rect.height : 0), 0);
 
   if (GTK_WIDGET_REALIZED (widget)) {
     if (priv->event_window != NULL)
@@ -1578,15 +1582,6 @@ hildon_pannable_area_size_allocate (GtkWidget * widget,
 			      child_allocation.width,
 			      child_allocation.height);
   }
-
-  hildon_pannable_area_refresh (HILDON_PANNABLE_AREA (widget));
-
-  child_allocation.width = MAX (child_allocation.width - (priv->vscroll ?
-                                                          priv->vscroll_rect.width : 0),
-                                0);
-  child_allocation.height = MAX (child_allocation.height - (priv->hscroll ?
-                                                            priv->hscroll_rect.height : 0),
-                                 0);
 
   if (priv->overshot_dist_y > 0) {
     child_allocation.y = MIN (child_allocation.y + priv->overshot_dist_y,

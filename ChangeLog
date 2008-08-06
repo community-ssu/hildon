@@ -1,3 +1,10 @@
+2008-08-06  Alejandro G. Castro	 <alex@igalia.com>
+
+	* src/hildon-pannable-area.c,
+	(hildon_pannable_area_realize),
+	(hildon_pannable_area_size_allocate): Code refactoring, add tests
+	for negative sizes.
+
 2008-08-05  Claudio Saavedra  <csaavedra@igalia.com>
 
 	* src/hildon-picker-dialog.c: (hildon_picker_dialog_init): Make the
