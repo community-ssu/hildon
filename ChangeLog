@@ -1,3 +1,44 @@
+2008-08-07  Alberto Garcia  <agarcia@igalia.com>
+
+	HildonButtonFlags split into HildonButtonArrangement (to set the
+	button layout) and HildonSizeType (which can be used for any
+	widget).
+
+	* src/hildon-button.h
+	* src/hildon-button.c
+	(hildon_button_class_init)
+	(hildon_button_set_arrangement)
+	(hildon_button_set_property): New "size-flags"
+	property. "arrangement-flags" renamed to "arrangement".
+	(hildon_button_new, hildon_button_new_with_text)
+	(hildon_button_new_full): Constructors updated to reflect type changes.
+
+	* src/hildon-helper.h
+	* src/hildon-helper.c (hildon_helper_set_theme_size): New function
+	to set the size of a widget.
+
+	* src/Makefile.am
+	* src/hildon.h
+	* src/hildon-button-helpers.c
+	* src/hildon-button-helpers.h: New hildon-button-helpers module.
+
+	* src/hildon-date-button.c
+	* src/hildon-date-button.h
+	* src/hildon-picker-button.c
+	* src/hildon-picker-button.h
+	* src/hildon-time-button.c
+	* src/hildon-time-button.h: Updated widgets to reflect
+	HildonButton API changes.
+
+	* examples/hildon-button-example.c
+	* examples/hildon-date-button-example.c
+	* examples/hildon-picker-button-example.c
+	* examples/hildon-picker-button-multicolumn-example.c
+	* examples/hildon-time-button-example.c
+	* examples/hildon-touch-selector-entry-example.c
+	* examples/hildon-touch-selector-example.c: Updated examples to
+	reflect HildonButton API changes.
+
 2008-08-06  Claudio Saavedra  <csaavedra@igalia.com>
 
 	* doc/hildon-docs.sgml:

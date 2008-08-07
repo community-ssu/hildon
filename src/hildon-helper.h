@@ -32,6 +32,16 @@
 
 G_BEGIN_DECLS
 
+typedef enum {
+   HILDON_SIZE_AUTO_WIDTH                       = 0 << 0, /* set to automatic width */
+   HILDON_SIZE_HALFSCREEN_WIDTH                 = 1 << 0, /* set to 50% screen width */
+   HILDON_SIZE_FULLSCREEN_WIDTH                 = 2 << 0, /* set to 100% screen width */
+   HILDON_SIZE_AUTO_HEIGHT                      = 0 << 2, /* set to automatic height */
+   HILDON_SIZE_FINGER_HEIGHT                    = 1 << 2, /* set to finger height */
+   HILDON_SIZE_THUMB_HEIGHT                     = 2 << 2, /* set to thumb height */
+   HILDON_SIZE_AUTO                             = (HILDON_SIZE_AUTO_WIDTH | HILDON_SIZE_AUTO_HEIGHT)
+}                                               HildonSizeType;
+
 gulong
 hildon_helper_set_logical_font                  (GtkWidget *widget, 
                                                  const gchar *logicalfontname);
@@ -56,6 +66,10 @@ hildon_helper_set_insensitive_messagef          (GtkWidget *widget,
 void
 hildon_helper_set_thumb_scrollbar               (GtkScrolledWindow *win, 
                                                  gboolean thumb);
+
+void
+hildon_helper_set_theme_size                    (GtkWidget       *button,
+                                                 HildonSizeType   size);
 
 G_END_DECLS
 

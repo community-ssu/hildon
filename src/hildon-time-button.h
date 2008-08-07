@@ -39,7 +39,8 @@ typedef struct
 } HildonTimeButtonClass;
 
 GType      hildon_time_button_get_type (void);
-GtkWidget *hildon_time_button_new      (HildonButtonFlags flags);
+GtkWidget *hildon_time_button_new      (HildonSizeType          size,
+                                        HildonButtonArrangement arrangement);
 
 void hildon_time_button_get_time       (HildonTimeButton * button,
                                         guint * hours, guint * minutes);

@@ -89,7 +89,7 @@ main (int argc, char **args)
                        "class \"HildonTouchSelector\" style \"default\"\n");
 
 
-  button = hildon_picker_button_new (HILDON_BUTTON_WITH_VERTICAL_VALUE);
+  button = hildon_picker_button_new (HILDON_SIZE_AUTO, HILDON_BUTTON_ARRANGEMENT_VERTICAL);
   hildon_button_set_title (HILDON_BUTTON (button), "Pick a band!");
   selector = hildon_touch_selector_entry_new_text ();
   for (i = 0; artists [i] != NULL; i++) {

@@ -89,7 +89,7 @@ main (int argc, char **args)
   hildon_program_add_window (program, HILDON_WINDOW (window));
   selector = create_touch_selector ();
 
-  button = hildon_picker_button_new (HILDON_BUTTON_WITH_VERTICAL_VALUE);
+  button = hildon_picker_button_new (HILDON_SIZE_AUTO, HILDON_BUTTON_ARRANGEMENT_VERTICAL);
   hildon_button_set_title (HILDON_BUTTON (button), "Protocol");
   hildon_picker_button_set_selector (HILDON_PICKER_BUTTON (button),
                                      HILDON_TOUCH_SELECTOR (selector));

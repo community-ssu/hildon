@@ -41,7 +41,8 @@ typedef struct
 } HildonPickerButtonClass;
 
 GType      hildon_picker_button_get_type (void);
-GtkWidget *hildon_picker_button_new      (HildonButtonFlags flags);
+GtkWidget *hildon_picker_button_new      (HildonSizeType          size,
+                                          HildonButtonArrangement arrangement);
 
 void hildon_picker_button_set_selector     (HildonPickerButton * button,
                                             HildonTouchSelector * selector);

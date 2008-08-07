@@ -79,11 +79,13 @@ hildon_date_button_init (HildonDateButton * self)
 }
 
 GtkWidget *
-hildon_date_button_new (HildonButtonFlags flags)
+hildon_date_button_new (HildonSizeType          size,
+                        HildonButtonArrangement arrangement)
 {
   return g_object_new (HILDON_TYPE_DATE_BUTTON,
                        "title", "Date",
-                       "arrangement-flags", flags,
+                       "arrangement", arrangement,
+                       "size-flags", size,
                        NULL);
 }
 

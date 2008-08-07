@@ -104,7 +104,7 @@ get_visible_content (GtkWidget * window)
 
   label = gtk_label_new ("Here we are going to put the selection");
 
-  button = hildon_picker_button_new (HILDON_BUTTON_WITH_VERTICAL_VALUE);
+  button = hildon_picker_button_new (HILDON_SIZE_AUTO, HILDON_BUTTON_ARRANGEMENT_VERTICAL);
   hildon_button_set_title (HILDON_BUTTON (button), "Click me..");
   selector = create_selector ();
   hildon_picker_button_set_selector (HILDON_PICKER_BUTTON (button),

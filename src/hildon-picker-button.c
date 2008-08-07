@@ -156,12 +156,13 @@ hildon_picker_button_init (HildonPickerButton * self)
 }
 
 GtkWidget *
-hildon_picker_button_new (HildonButtonFlags flags)
+hildon_picker_button_new (HildonSizeType          size,
+                          HildonButtonArrangement arrangement)
 {
   GtkWidget *button;
 
   button = g_object_new (HILDON_TYPE_PICKER_BUTTON,
-                         "arrangement-flags", flags, NULL);
+                         "arrangement", arrangement, "size-flags", size, NULL);
 
   return button;
 }

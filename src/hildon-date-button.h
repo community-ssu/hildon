@@ -39,7 +39,8 @@ typedef struct
 } HildonDateButtonClass;
 
 GType      hildon_date_button_get_type (void);
-GtkWidget *hildon_date_button_new      (HildonButtonFlags flags);
+GtkWidget *hildon_date_button_new      (HildonSizeType          size,
+                                        HildonButtonArrangement arrangement);
 
 void hildon_date_button_get_date       (HildonDateButton * button,
                                         guint * year, guint * month, guint * day);

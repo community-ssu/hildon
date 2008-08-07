@@ -61,12 +61,13 @@ struct                                          _HildonButtonPrivate
 enum {
   PROP_TITLE = 1,
   PROP_VALUE,
-  PROP_ARRANGEMENT_FLAGS
+  PROP_SIZE_FLAGS,
+  PROP_ARRANGEMENT
 };
 
 static void
-hildon_button_set_arrangement                   (HildonButton      *button,
-                                                 HildonButtonFlags  flags);
+hildon_button_set_arrangement                   (HildonButton            *button,
+                                                 HildonButtonArrangement  arrangement);
 
 static void
 hildon_button_construct_child                   (HildonButton *button);
@@ -87,8 +88,11 @@ hildon_button_set_property                      (GObject      *object,
     case PROP_VALUE:
         hildon_button_set_value (button, g_value_get_string (value));
         break;
-    case PROP_ARRANGEMENT_FLAGS:
-        hildon_button_set_arrangement (button, g_value_get_flags (value));
+    case PROP_SIZE_FLAGS:
+        hildon_helper_set_theme_size (GTK_WIDGET (button), g_value_get_flags (value));
+        break;
+    case PROP_ARRANGEMENT:
+        hildon_button_set_arrangement (button, g_value_get_enum (value));
         break;
     default:
         G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -150,13 +154,24 @@ hildon_button_class_init                        (HildonButtonClass *klass)
 
     g_object_class_install_property (
         gobject_class,
-        PROP_ARRANGEMENT_FLAGS,
+        PROP_SIZE_FLAGS,
         g_param_spec_flags (
-            "arrangement-flags",
-            "Arrangement flags",
+            "size-flags",
+            "Size flags",
+            "Size request for the button",
+            HILDON_TYPE_SIZE_TYPE,
+            HILDON_SIZE_AUTO,
+            G_PARAM_WRITABLE | G_PARAM_CONSTRUCT_ONLY));
+
+    g_object_class_install_property (
+        gobject_class,
+        PROP_ARRANGEMENT,
+        g_param_spec_enum (
+            "arrangement",
+            "Arrangement",
             "How the button contents must be arranged",
-            HILDON_TYPE_BUTTON_FLAGS,
-            HILDON_BUTTON_WITH_HORIZONTAL_VALUE,
+            HILDON_TYPE_BUTTON_ARRANGEMENT,
+            HILDON_BUTTON_ARRANGEMENT_HORIZONTAL,
             G_PARAM_WRITABLE | G_PARAM_CONSTRUCT_ONLY));
 
     gtk_widget_class_install_style_property (
@@ -230,42 +245,47 @@ hildon_button_set_size_groups                   (HildonButton *button,
 
 /**
  * hildon_button_new:
- * @flags: flags to set the size and layout of the button
+ * @size: Flags to set the size of the button.
+ * @arrangement: How the labels must be arranged.
  *
  * Creates a new #HildonButton. To add a child widget use gtk_container_add().
  *
  * Returns: a new #HildonButton
  **/
 GtkWidget *
-hildon_button_new                               (HildonButtonFlags  flags)
+hildon_button_new                               (HildonSizeType          size,
+                                                 HildonButtonArrangement arrangement)
 {
-    return hildon_button_new_full (flags, NULL, NULL, NULL, NULL);
+    return hildon_button_new_full (size, arrangement, NULL, NULL, NULL, NULL);
 }
 
 /**
  * hildon_button_new_with_text:
- * @flags: flags to set the size and layout of the button
- * @title: Title of the button (main label)
+ * @size: Flags to set the size of the button.
+ * @arrangement: How the labels must be arranged.
+ * @title: Title of the button (main label), or %NULL
  * @value: Value of the button (secondary label), or %NULL
  *
  * Creates a new #HildonButton with two labels, @title and @value.
  *
- * If you just want to use the main label, set @value to %NULL. You
- * can set it to a non-%NULL value at any time later.
+ * If you just don't want to use one of the labels, set it to
+ * %NULL. You can set it to a non-%NULL value at any time later.
  *
  * Returns: a new #HildonButton
  **/
 GtkWidget *
-hildon_button_new_with_text                     (HildonButtonFlags  flags,
-                                                 const char        *title,
-                                                 const char        *value)
+hildon_button_new_with_text                     (HildonSizeType           size,
+                                                 HildonButtonArrangement  arrangement,
+                                                 const gchar             *title,
+                                                 const gchar             *value)
 {
-    return hildon_button_new_full (flags, title, value, NULL, NULL);
+    return hildon_button_new_full (size, arrangement, title, value, NULL, NULL);
 }
 
 /**
  * hildon_button_new_full:
- * @flags: flags to set the size and layout of the button
+ * @size: Flags to set the size of the button.
+ * @arrangement: How the labels must be arranged.
  * @title: Title of the button (main label)
  * @value: Value of the button (secondary label), or %NULL
  * @title_size_group: a #GtkSizeGroup for the @title label, or %NULL
@@ -274,8 +294,8 @@ hildon_button_new_with_text                     (HildonButtonFlags  flags,
  * Creates a new #HildonButton with two labels, @title and @value, and
  * their respective size groups.
  *
- * If you just want to use the main label, set @value to %NULL. You
- * can set it to a non-%NULL value at any time later.
+ * If you just don't want to use one of the labels, set it to
+ * %NULL. You can set it to a non-%NULL value at any time later.
  *
  * @title and @value will be added to @title_size_group and
  * @value_size_group, respectively, if present.
@@ -283,17 +303,19 @@ hildon_button_new_with_text                     (HildonButtonFlags  flags,
  * Returns: a new #HildonButton
  **/
 GtkWidget *
-hildon_button_new_full                          (HildonButtonFlags  flags,
-                                                 const char        *title,
-                                                 const char        *value,
-                                                 GtkSizeGroup      *title_size_group,
-                                                 GtkSizeGroup      *value_size_group)
+hildon_button_new_full                          (HildonSizeType           size,
+                                                 HildonButtonArrangement  arrangement,
+                                                 const gchar             *title,
+                                                 const gchar             *value,
+                                                 GtkSizeGroup            *title_size_group,
+                                                 GtkSizeGroup            *value_size_group)
 {
     GtkWidget *button;
 
     /* Create widget */
     button = g_object_new (HILDON_TYPE_BUTTON,
-                           "arrangement-flags", flags,
+                           "size-flags", size,
+                           "arrangement", arrangement,
                            "title", title,
                            "value", value,
                            "name", "hildon-button",
@@ -306,43 +328,15 @@ hildon_button_new_full                          (HildonButtonFlags  flags,
 }
 
 static void
-hildon_button_set_arrangement (HildonButton *button,
-                               HildonButtonFlags flags)
+hildon_button_set_arrangement                   (HildonButton            *button,
+                                                 HildonButtonArrangement  arrangement)
 {
     GtkWidget *box;
     HildonButtonPrivate *priv;
     guint horizontal_spacing;
     guint vertical_spacing;
-    gint width = -1;
-    gint height = -1;
-    const char *widget_name = NULL;
 
     priv = HILDON_BUTTON_GET_PRIVATE (button);
-
-    /* Requested height */
-    if (flags & HILDON_BUTTON_FINGER_HEIGHT) {
-        height = FINGER_BUTTON_HEIGHT;
-        widget_name = "hildon-finger-button";
-    } else if (flags & HILDON_BUTTON_THUMB_HEIGHT) {
-        height = THUMB_BUTTON_HEIGHT;
-        widget_name = "hildon-thumb-button";
-    }
-
-    if (widget_name) {
-        gtk_widget_set_name (GTK_WIDGET (button), widget_name);
-    }
-
-    /* Requested width */
-    if (flags & HILDON_BUTTON_HALFSCREEN_WIDTH) {
-        width = HALFSCREEN_BUTTON_WIDTH;
-    } else if (flags & HILDON_BUTTON_FULLSCREEN_WIDTH) {
-        width = FULLSCREEN_BUTTON_WIDTH;
-    }
-
-    g_object_set (button,
-                  "width-request", width,
-                  "height-request", height,
-                  NULL);
 
     /* Pack everything */
     gtk_widget_style_get (GTK_WIDGET (button),
@@ -350,7 +344,7 @@ hildon_button_set_arrangement (HildonButton *button,
                           "vertical-spacing", &vertical_spacing,
                           NULL);
 
-    if (flags & HILDON_BUTTON_WITH_VERTICAL_VALUE) {
+    if (arrangement == HILDON_BUTTON_ARRANGEMENT_VERTICAL) {
         box = gtk_vbox_new (FALSE, vertical_spacing);
     } else {
         box = gtk_hbox_new (FALSE, horizontal_spacing);
@@ -373,7 +367,7 @@ hildon_button_set_arrangement (HildonButton *button,
  **/
 void
 hildon_button_set_title                         (HildonButton *button,
-                                                 const char   *title)
+                                                 const gchar  *title)
 {
     HildonButtonPrivate *priv;
 
@@ -403,7 +397,7 @@ hildon_button_set_title                         (HildonButton *button,
  **/
 void
 hildon_button_set_value                         (HildonButton *button,
-                                                 const char   *value)
+                                                 const gchar  *value)
 {
     HildonButtonPrivate *priv;
 
@@ -432,7 +426,7 @@ hildon_button_set_value                         (HildonButton *button,
  * Returns: The text of the title label. This string is owned by the
  * widget and must not be modified or freed.
  **/
-const char *
+const gchar *
 hildon_button_get_title                         (HildonButton *button)
 {
     HildonButtonPrivate *priv;
@@ -454,7 +448,7 @@ hildon_button_get_title                         (HildonButton *button)
  * Returns: The text of the value label. This string is owned by the
  * widget and must not be modified or freed.
  **/
-const char *
+const gchar *
 hildon_button_get_value                         (HildonButton *button)
 {
     HildonButtonPrivate *priv;
@@ -476,8 +470,8 @@ hildon_button_get_value                         (HildonButton *button)
  **/
 void
 hildon_button_set_text                          (HildonButton *button,
-                                                 const char   *title,
-                                                 const char   *value)
+                                                 const gchar  *title,
+                                                 const gchar  *value)
 {
     hildon_button_set_title (button, title);
     hildon_button_set_value (button, value);

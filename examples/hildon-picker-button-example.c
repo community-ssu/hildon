@@ -47,7 +47,7 @@ main (int argc, char **args)
   gtk_window_set_default_size (GTK_WINDOW (window), 300, 200);
   hildon_program_add_window (program, HILDON_WINDOW (window));
 
-  button = hildon_picker_button_new (HILDON_BUTTON_WITH_VERTICAL_VALUE);
+  button = hildon_picker_button_new (HILDON_SIZE_AUTO, HILDON_BUTTON_ARRANGEMENT_VERTICAL);
   selector = hildon_touch_selector_new_text ();
   hildon_button_set_title (HILDON_BUTTON (button), "Continent");
 

@@ -43,15 +43,15 @@ vertical_buttons_window                         (GtkButton *b,
     GtkBox *vbox2;
     GtkBox *vbox3;
     int i;
-    HildonButtonFlags layout;
+    HildonButtonArrangement arrangement;
 
     /* Create window */
     win = gtk_window_new (GTK_WINDOW_TOPLEVEL);
     gtk_container_set_border_width (GTK_CONTAINER (win), 20);
 
-    layout = gtk_toggle_button_get_active (horizontal) ?
-            HILDON_BUTTON_WITH_HORIZONTAL_VALUE :
-            HILDON_BUTTON_WITH_VERTICAL_VALUE;
+    arrangement = gtk_toggle_button_get_active (horizontal) ?
+            HILDON_BUTTON_ARRANGEMENT_HORIZONTAL :
+            HILDON_BUTTON_ARRANGEMENT_VERTICAL;
 
     /* Create and pack boxes */
     hbox = GTK_BOX (gtk_hbox_new (FALSE, 10));
@@ -66,9 +66,9 @@ vertical_buttons_window                         (GtkButton *b,
     /* Finger buttons */
     gtk_box_pack_start (vbox1, gtk_label_new ("Finger height"), FALSE, FALSE, 0);
     for (i = 0; i < 4; i++) {
-        char *title = g_strdup_printf ("Title %d", i);
-        button = hildon_button_new_with_text (layout |
-                                              HILDON_BUTTON_FINGER_HEIGHT, title,
+        gchar *title = g_strdup_printf ("Title %d", i);
+        button = hildon_button_new_with_text (HILDON_SIZE_FINGER_HEIGHT |
+                                              HILDON_SIZE_AUTO_WIDTH, arrangement, title,
                                               i % 2 ? "Value" : NULL);
         g_signal_connect (button, "clicked", G_CALLBACK (button_clicked_cb), NULL);
         gtk_box_pack_start (vbox1, button, FALSE, FALSE, 0);
@@ -78,9 +78,9 @@ vertical_buttons_window                         (GtkButton *b,
     /* Thumb buttons */
     gtk_box_pack_start (vbox2, gtk_label_new ("Thumb height"), FALSE, FALSE, 0);
     for (i = 0; i < 3; i++) {
-        char *title = g_strdup_printf ("Title %d", i);
-        button = hildon_button_new_with_text (layout |
-                                              HILDON_BUTTON_THUMB_HEIGHT, title,
+        gchar *title = g_strdup_printf ("Title %d", i);
+        button = hildon_button_new_with_text (HILDON_SIZE_THUMB_HEIGHT |
+                                              HILDON_SIZE_AUTO_WIDTH, arrangement, title,
                                               i % 2 ? "Value" : NULL);
         g_signal_connect (button, "clicked", G_CALLBACK (button_clicked_cb), NULL);
         gtk_box_pack_start (vbox2, button, FALSE, FALSE, 0);
@@ -90,8 +90,8 @@ vertical_buttons_window                         (GtkButton *b,
     /* Auto buttons */
     gtk_box_pack_start (vbox3, gtk_label_new ("Auto height"), FALSE, FALSE, 0);
     for (i = 0; i < 6; i++) {
-        char *title = g_strdup_printf ("Title %d", i);
-        button = hildon_button_new_with_text (layout, title,
+        gchar *title = g_strdup_printf ("Title %d", i);
+        button = hildon_button_new_with_text (HILDON_SIZE_AUTO, arrangement, title,
                                               i % 2 ? "Value" : NULL);
         g_signal_connect (button, "clicked", G_CALLBACK (button_clicked_cb), NULL);
         gtk_box_pack_start (vbox3, button, FALSE, FALSE, 0);
@@ -116,15 +116,15 @@ horizontal_buttons_window                       (GtkButton *b,
     GtkBox *hbox2;
     GtkBox *hbox3;
     GtkBox *hbox4;
-    HildonButtonFlags layout;
+    HildonButtonArrangement arrangement;
 
     /* Create window */
     win = gtk_window_new (GTK_WINDOW_TOPLEVEL);
     gtk_container_set_border_width (GTK_CONTAINER (win), 20);
 
-    layout = gtk_toggle_button_get_active (horizontal) ?
-            HILDON_BUTTON_WITH_HORIZONTAL_VALUE :
-            HILDON_BUTTON_WITH_VERTICAL_VALUE;
+    arrangement = gtk_toggle_button_get_active (horizontal) ?
+            HILDON_BUTTON_ARRANGEMENT_HORIZONTAL :
+            HILDON_BUTTON_ARRANGEMENT_VERTICAL;
 
     /* Create and pack boxes */
     vbox = GTK_BOX (gtk_vbox_new (FALSE, 10));
@@ -140,53 +140,46 @@ horizontal_buttons_window                       (GtkButton *b,
     gtk_box_pack_start (vbox, GTK_WIDGET (hbox4), FALSE, FALSE, 0);
 
     /* Full screen width button */
-    button = hildon_button_new_with_text (layout |
-                                          HILDON_BUTTON_FULLSCREEN_WIDTH |
-                                          HILDON_BUTTON_FINGER_HEIGHT, "Full width", "Value");
+    button = hildon_button_new_with_text (HILDON_SIZE_FULLSCREEN_WIDTH |
+                                          HILDON_SIZE_FINGER_HEIGHT, arrangement, "Full width", "Value");
     gtk_box_pack_start (hbox1, button, TRUE, TRUE, 0);
     g_signal_connect (button, "clicked", G_CALLBACK (button_clicked_cb), NULL);
 
     /* Half screen width buttons */
-    button = hildon_button_new_with_text (layout |
-                                          HILDON_BUTTON_HALFSCREEN_WIDTH |
-                                          HILDON_BUTTON_FINGER_HEIGHT, "Half width 1", "Value");
+    button = hildon_button_new_with_text (HILDON_SIZE_HALFSCREEN_WIDTH |
+                                          HILDON_SIZE_FINGER_HEIGHT, arrangement, "Half width 1", "Value");
     gtk_box_pack_start (hbox2, button, TRUE, TRUE, 0);
     g_signal_connect (button, "clicked", G_CALLBACK (button_clicked_cb), NULL);
 
-    button = hildon_button_new_with_text (layout |
-                                          HILDON_BUTTON_HALFSCREEN_WIDTH |
-                                          HILDON_BUTTON_FINGER_HEIGHT,
+    button = hildon_button_new_with_text (HILDON_SIZE_HALFSCREEN_WIDTH |
+                                          HILDON_SIZE_FINGER_HEIGHT, arrangement,
                                           "Half width 2 with long title",
                                           "Value");
     gtk_box_pack_start (hbox2, button, TRUE, TRUE, 0);
     g_signal_connect (button, "clicked", G_CALLBACK (button_clicked_cb), NULL);
 
     /* Half screen width buttons */
-    button = hildon_button_new_with_text (layout |
-                                          HILDON_BUTTON_HALFSCREEN_WIDTH |
-                                          HILDON_BUTTON_FINGER_HEIGHT, "Half width 3", NULL);
+    button = hildon_button_new_with_text (HILDON_SIZE_HALFSCREEN_WIDTH |
+                                          HILDON_SIZE_FINGER_HEIGHT, arrangement, "Half width 3", NULL);
     gtk_box_pack_start (hbox3, button, TRUE, TRUE, 0);
     g_signal_connect (button, "clicked", G_CALLBACK (button_clicked_cb), NULL);
 
-    button = hildon_button_new_with_text (layout |
-                                          HILDON_BUTTON_HALFSCREEN_WIDTH |
-                                          HILDON_BUTTON_FINGER_HEIGHT,
+    button = hildon_button_new_with_text (HILDON_SIZE_HALFSCREEN_WIDTH |
+                                          HILDON_SIZE_FINGER_HEIGHT, arrangement,
                                           "Half width 4 with very long title (REALLY long)",
                                           "Value (title is truncated)");
     gtk_box_pack_start (hbox3, button, TRUE, TRUE, 0);
     g_signal_connect (button, "clicked", G_CALLBACK (button_clicked_cb), NULL);
 
     /* Auto width button */
-    button = hildon_button_new_with_text (layout |
-                                          HILDON_BUTTON_AUTO_WIDTH |
-                                          HILDON_BUTTON_FINGER_HEIGHT,
+    button = hildon_button_new_with_text (HILDON_SIZE_AUTO_WIDTH |
+                                          HILDON_SIZE_FINGER_HEIGHT, arrangement,
                                           "Auto width 1", "Value");
     gtk_box_pack_start (hbox4, button, TRUE, TRUE, 0);
     g_signal_connect (button, "clicked", G_CALLBACK (button_clicked_cb), NULL);
 
-    button = hildon_button_new_with_text (layout |
-                                          HILDON_BUTTON_AUTO_WIDTH |
-                                          HILDON_BUTTON_FINGER_HEIGHT,
+    button = hildon_button_new_with_text (HILDON_SIZE_AUTO_WIDTH |
+                                          HILDON_SIZE_FINGER_HEIGHT, arrangement,
                                           "Auto width 2 with longer text", NULL);
     gtk_box_pack_start (hbox4, button, TRUE, TRUE, 0);
     g_signal_connect (button, "clicked", G_CALLBACK (button_clicked_cb), NULL);

@@ -19,7 +19,8 @@
 #ifndef                                         __HILDON_BUTTON_H__
 #define                                         __HILDON_BUTTON_H__
 
-#include <gtk/gtk.h>
+#include                                        <gtk/gtk.h>
+#include                                        "hildon-helper.h"
 
 G_BEGIN_DECLS
 
@@ -59,52 +60,49 @@ struct                                          _HildonButton
 };
 
 typedef enum {
-   HILDON_BUTTON_WITH_HORIZONTAL_VALUE          = 1,      /* adds second Label horizontally */
-   HILDON_BUTTON_WITH_VERTICAL_VALUE            = 2,      /* adds second Label vertically */
-   HILDON_BUTTON_AUTO_WIDTH                     = 0 << 2, /* leave width unset */
-   HILDON_BUTTON_HALFSCREEN_WIDTH               = 1 << 2, /* set to 50% screen width */
-   HILDON_BUTTON_FULLSCREEN_WIDTH               = 2 << 2, /* set to 100% screen width */
-   HILDON_BUTTON_AUTO_HEIGHT                    = 0 << 4, /* leave height unset */
-   HILDON_BUTTON_FINGER_HEIGHT                  = 1 << 4, /* set to finger height */
-   HILDON_BUTTON_THUMB_HEIGHT                   = 2 << 4, /* set to thumb height */
-}                                               HildonButtonFlags;
+   HILDON_BUTTON_ARRANGEMENT_HORIZONTAL,
+   HILDON_BUTTON_ARRANGEMENT_VERTICAL
+}                                               HildonButtonArrangement;
 
 GType
 hildon_button_get_type                          (void) G_GNUC_CONST;
 
 GtkWidget *
-hildon_button_new                               (HildonButtonFlags flags);
+hildon_button_new                               (HildonSizeType          size,
+                                                 HildonButtonArrangement arrangement);
 
 GtkWidget *
-hildon_button_new_with_text                     (HildonButtonFlags  flags,
-                                                 const char        *title,
-                                                 const char        *value);
+hildon_button_new_with_text                     (HildonSizeType           size,
+                                                 HildonButtonArrangement  arrangement,
+                                                 const gchar             *title,
+                                                 const gchar             *value);
 
 GtkWidget *
-hildon_button_new_full                          (HildonButtonFlags  flags,
-                                                 const char        *title,
-                                                 const char        *value,
-                                                 GtkSizeGroup      *title_size_group,
-                                                 GtkSizeGroup      *value_size_group);
+hildon_button_new_full                          (HildonSizeType           size,
+                                                 HildonButtonArrangement  arrangement,
+                                                 const gchar             *title,
+                                                 const gchar             *value,
+                                                 GtkSizeGroup            *title_size_group,
+                                                 GtkSizeGroup            *value_size_group);
 
 void
 hildon_button_set_title                         (HildonButton *button,
-                                                 const char *title);
+                                                 const gchar  *title);
 
 void
 hildon_button_set_value                         (HildonButton *button,
-                                                 const char *value);
+                                                 const gchar  *value);
 
-const char *
+const gchar *
 hildon_button_get_title                         (HildonButton *button);
 
-const char *
+const gchar *
 hildon_button_get_value                         (HildonButton *button);
 
 void
 hildon_button_set_text                          (HildonButton *button,
-                                                 const char   *title,
-                                                 const char   *value);
+                                                 const gchar  *title,
+                                                 const gchar  *value);
 
 void
 hildon_button_set_size_groups                   (HildonButton *button,
