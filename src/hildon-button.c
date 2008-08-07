@@ -50,6 +50,7 @@ struct                                          _HildonButtonPrivate
     GtkLabel *title;
     GtkLabel *value;
     GtkBox *hbox;
+    GtkWidget *label_box;
     GtkWidget *alignment;
     GtkWidget *image;
     GtkPositionType image_position;
@@ -202,15 +203,14 @@ hildon_button_init                              (HildonButton *self)
     priv->alignment = gtk_alignment_new (0.5, 0.5, 0, 0);
     priv->image = NULL;
     priv->image_position = GTK_POS_LEFT;
-    priv->hbox = GTK_BOX (gtk_hbox_new (FALSE, 0));
+    priv->hbox = NULL;
+    priv->label_box = NULL;
 
     gtk_widget_set_name (GTK_WIDGET (priv->title), "hildon-button-title");
     gtk_widget_set_name (GTK_WIDGET (priv->value), "hildon-button-value");
 
     gtk_misc_set_alignment (GTK_MISC (priv->title), 0, 0.5);
     gtk_misc_set_alignment (GTK_MISC (priv->value), 0, 0.5);
-
-    gtk_box_pack_start (priv->hbox, priv->alignment, TRUE, TRUE, 0);
 
     /* The labels are not shown automatically, see hildon_button_set_(title|value) */
     gtk_widget_set_no_show_all (GTK_WIDGET (priv->title), TRUE);
@@ -334,7 +334,6 @@ static void
 hildon_button_set_arrangement                   (HildonButton            *button,
                                                  HildonButtonArrangement  arrangement)
 {
-    GtkWidget *box;
     HildonButtonPrivate *priv;
     guint horizontal_spacing;
     guint vertical_spacing;
@@ -348,15 +347,13 @@ hildon_button_set_arrangement                   (HildonButton            *button
                           NULL);
 
     if (arrangement == HILDON_BUTTON_ARRANGEMENT_VERTICAL) {
-        box = gtk_vbox_new (FALSE, vertical_spacing);
+        priv->label_box = gtk_vbox_new (FALSE, vertical_spacing);
     } else {
-        box = gtk_hbox_new (FALSE, horizontal_spacing);
+        priv->label_box = gtk_hbox_new (FALSE, horizontal_spacing);
     }
 
-    gtk_box_pack_start (GTK_BOX (box), GTK_WIDGET (priv->title), TRUE, TRUE, 0);
-    gtk_box_pack_start (GTK_BOX (box), GTK_WIDGET (priv->value), TRUE, TRUE, 0);
-
-    gtk_container_add (GTK_CONTAINER (priv->alignment), box);
+    gtk_box_pack_start (GTK_BOX (priv->label_box), GTK_WIDGET (priv->title), FALSE, FALSE, 0);
+    gtk_box_pack_start (GTK_BOX (priv->label_box), GTK_WIDGET (priv->value), FALSE, FALSE, 0);
 }
 
 /**
@@ -554,13 +551,7 @@ static void
 hildon_button_construct_child                   (HildonButton *button)
 {
     HildonButtonPrivate *priv = HILDON_BUTTON_GET_PRIVATE (button);
-    GtkWidget *child = gtk_bin_get_child (GTK_BIN (button));
-
-    /* Save a ref to the alignment if necessary */
-    if (priv->alignment->parent != NULL) {
-        g_object_ref (priv->alignment);
-        gtk_container_remove (GTK_CONTAINER (priv->alignment->parent), priv->alignment);
-    }
+    GtkWidget *child;
 
     /* Save a ref to the image if necessary */
     if (priv->image && priv->image->parent != NULL) {
@@ -568,24 +559,39 @@ hildon_button_construct_child                   (HildonButton *button)
         gtk_container_remove (GTK_CONTAINER (priv->image->parent), priv->image);
     }
 
-    /* Remove the child from the container */
-    if (child != NULL) {
-        gtk_container_remove (GTK_CONTAINER (button), child);
+    /* Save a ref to the label box if necessary */
+    if (priv->label_box->parent != NULL) {
+        g_object_ref (priv->label_box);
+        gtk_container_remove (GTK_CONTAINER (priv->label_box->parent), priv->label_box);
     }
 
-    /* Pack the image and the alignment in a new hbox */
-    priv->hbox = GTK_BOX (gtk_hbox_new (FALSE, 0));
+    /* Remove the child from the container and add priv->alignment */
+    child = gtk_bin_get_child (GTK_BIN (button));
+    if (child != NULL && child != priv->alignment) {
+        gtk_container_remove (GTK_CONTAINER (button), child);
+        child = NULL;
+    }
 
+    if (child == NULL) {
+        gtk_container_add (GTK_CONTAINER (button), GTK_WIDGET (priv->alignment));
+    }
+
+    /* Create a new hbox */
+    if (priv->hbox) {
+        gtk_container_remove (GTK_CONTAINER (priv->alignment), GTK_WIDGET (priv->hbox));
+    }
+    priv->hbox = GTK_BOX (gtk_hbox_new (FALSE, 10));
+    gtk_container_add (GTK_CONTAINER (priv->alignment), GTK_WIDGET (priv->hbox));
+
+    /* Pack the image and the alignment in the new hbox */
     if (priv->image && priv->image_position == GTK_POS_LEFT)
         gtk_box_pack_start (priv->hbox, priv->image, FALSE, FALSE, 0);
 
-    gtk_box_pack_start (priv->hbox, priv->alignment, TRUE, TRUE, 0);
+    gtk_box_pack_start (priv->hbox, priv->label_box, TRUE, TRUE, 0);
 
     if (priv->image && priv->image_position == GTK_POS_RIGHT)
         gtk_box_pack_start (priv->hbox, priv->image, FALSE, FALSE, 0);
 
-    /* Add the hbox to the button */
-    gtk_container_add (GTK_CONTAINER (button), GTK_WIDGET (priv->hbox));
-
-    gtk_widget_show_all (GTK_WIDGET (priv->hbox));
+    /* Show everything */
+    gtk_widget_show_all (GTK_WIDGET (priv->alignment));
 }
