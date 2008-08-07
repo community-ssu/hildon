@@ -472,7 +472,7 @@ hildon_touch_selector_new_text (void)
   store = gtk_list_store_new (1, G_TYPE_STRING);
 
   hildon_touch_selector_append_text_column (HILDON_TOUCH_SELECTOR (selector),
-                                            GTK_TREE_MODEL (store));
+                                            GTK_TREE_MODEL (store), TRUE);
 
   return selector;
 }
@@ -608,6 +608,7 @@ hildon_touch_selector_append_column (HildonTouchSelector * selector,
  * hildon_touch_selector_append_text_column
  * @selector: the #HildonTouchSelector widget
  * @model: the #GtkTreeModel with the data of the column
+ * @center: whether to center the text on the column.
  *
  * Equivalent to hildon_touch_selector_append_column, but using a
  * default text cell renderer. This is the most common use of the
@@ -617,7 +618,7 @@ hildon_touch_selector_append_column (HildonTouchSelector * selector,
  **/
 gboolean
 hildon_touch_selector_append_text_column (HildonTouchSelector * selector,
-                                          GtkTreeModel * model)
+                                          GtkTreeModel * model, gboolean center)
 {
   GtkCellRenderer *renderer = NULL;
   GValue val = { 0, };
@@ -628,10 +629,12 @@ hildon_touch_selector_append_text_column (HildonTouchSelector * selector,
   if (model != NULL) {
     renderer = gtk_cell_renderer_text_new ();
 
-    g_value_init (&val, G_TYPE_FLOAT);
-    g_value_set_float (&val, 0.5);
-    /* FIXME: center the text, this should be configurable */
-    g_object_set_property (G_OBJECT (renderer), "xalign", &val);
+    if (center) {
+      g_value_init (&val, G_TYPE_FLOAT);
+      g_value_set_float (&val, 0.5);
+      /* FIXME: center the text, this should be configurable */
+      g_object_set_property (G_OBJECT (renderer), "xalign", &val);
+    }
 
     return hildon_touch_selector_append_column (selector, model, renderer,
                                                 "text", 0, NULL);

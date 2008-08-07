@@ -151,16 +151,16 @@ hildon_time_selector_init (HildonTimeSelector * selector)
   selector->priv->minutes_model = _create_minutes_model (selector);
 
   hildon_touch_selector_append_text_column (HILDON_TOUCH_SELECTOR (selector),
-                                            selector->priv->hours_model);
+                                            selector->priv->hours_model, TRUE);
 
   hildon_touch_selector_append_text_column (HILDON_TOUCH_SELECTOR (selector),
-                                            selector->priv->minutes_model);
+                                            selector->priv->minutes_model, TRUE);
 
   if (selector->priv->ampm_format) {
     selector->priv->ampm_model = _create_ampm_model (selector);
 
     hildon_touch_selector_append_text_column (HILDON_TOUCH_SELECTOR (selector),
-                                              selector->priv->ampm_model);
+                                              selector->priv->ampm_model, TRUE);
 
     g_signal_connect (G_OBJECT (selector),
                       "changed", G_CALLBACK (_manage_ampm_selection_cb),

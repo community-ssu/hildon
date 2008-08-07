@@ -1,5 +1,18 @@
 2008-08-06  Claudio Saavedra  <csaavedra@igalia.com>
 
+	* src/hildon-touch-selector.h:
+	* examples/hildon-picker-button-multicolumn-example.c:
+	(hildon_touch_selector_append_text_column): Add a gboolean
+	parameter to determine if text must be centered in the column.
+
+	* src/hildon-date-selector.c: (hildon_date_selector_init):
+	* src/hildon-time-selector.c: (hildon_time_selector_init):
+	* src/hildon-touch-selector.c: (hildon_touch_selector_new_text),
+	(create_touch_selector): Update widgets and example to reflect
+	the API change.
+
+2008-08-06  Claudio Saavedra  <csaavedra@igalia.com>
+
 	* src/hildon-touch-selector.c:
 	(hildon_touch_selector_set_active_iter): Set also the cursor in
 	the active row.

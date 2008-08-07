@@ -81,7 +81,7 @@ void hildon_touch_selector_insert_text    (HildonTouchSelector * selector,
 
 /* column related  */
 gboolean hildon_touch_selector_append_text_column     (HildonTouchSelector * selector,
-                                                       GtkTreeModel * model);
+                                                       GtkTreeModel * model, gboolean center);
 
 gboolean hildon_touch_selector_append_column          (HildonTouchSelector * selector,
                                                        GtkTreeModel * model,

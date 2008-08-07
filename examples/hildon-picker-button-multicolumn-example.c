@@ -46,7 +46,7 @@ create_touch_selector (void)
   gtk_list_store_set (model, &iter, 0, "Mailbox", -1);
 
   hildon_touch_selector_append_text_column (HILDON_TOUCH_SELECTOR (selector),
-                                            GTK_TREE_MODEL (model));
+                                            GTK_TREE_MODEL (model), TRUE);
 
   model = gtk_list_store_new (1, G_TYPE_STRING);
 
@@ -60,7 +60,7 @@ create_touch_selector (void)
   gtk_list_store_set (model, &iter, 0, "Smoke signals", -1);
 
   hildon_touch_selector_append_text_column (HILDON_TOUCH_SELECTOR (selector),
-                                            GTK_TREE_MODEL (model));
+                                            GTK_TREE_MODEL (model), TRUE);
   return selector;
 }
 

@@ -244,15 +244,15 @@ hildon_date_selector_init (HildonDateSelector * selector)
     switch (current_item) {
     case DAY:
       hildon_touch_selector_append_text_column (HILDON_TOUCH_SELECTOR (selector),
-                                                selector->priv->day_model);
+                                                selector->priv->day_model, TRUE);
       break;
     case MONTH:
       hildon_touch_selector_append_text_column (HILDON_TOUCH_SELECTOR (selector),
-                                                selector->priv->month_model);
+                                                selector->priv->month_model, TRUE);
       break;
     case YEAR:
       hildon_touch_selector_append_text_column (HILDON_TOUCH_SELECTOR (selector),
-                                                selector->priv->year_model);
+                                                selector->priv->year_model, TRUE);
       break;
     default:
       g_error ("Current column order incorrect");
