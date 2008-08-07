@@ -866,20 +866,21 @@ hildon_touch_selector_set_active_iter (HildonTouchSelector * selector,
   current_column = g_slist_nth_data (selector->priv->columns, column);
 
   selection = gtk_tree_view_get_selection (current_column->tree_view);
+  model = gtk_tree_view_get_model (current_column->tree_view);
+  path = gtk_tree_model_get_path (model, iter);
 
   gtk_tree_selection_select_iter (selection, iter);
+  gtk_tree_view_set_cursor (GTK_TREE_VIEW (current_column->tree_view), path, NULL, FALSE);
 
   if (scroll_to) {
-    model = gtk_tree_view_get_model (current_column->tree_view);
-    path = gtk_tree_model_get_path (model, iter);
     gtk_tree_view_get_background_area (current_column->tree_view,
                                        path, NULL, &rect);
     gtk_tree_view_convert_bin_window_to_tree_coords (current_column->tree_view,
                                                      0, rect.y, NULL, &y);
     hildon_pannable_area_scroll_to (HILDON_PANNABLE_AREA (current_column->panarea),
                                     -1, y);
-    gtk_tree_path_free (path);
   }
+  gtk_tree_path_free (path);
 }
 
 /**
