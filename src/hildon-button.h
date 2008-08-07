@@ -105,6 +105,14 @@ hildon_button_set_text                          (HildonButton *button,
                                                  const gchar  *value);
 
 void
+hildon_button_set_image                         (HildonButton *button,
+                                                 GtkWidget    *image);
+
+void
+hildon_button_set_image_position                (HildonButton    *button,
+                                                 GtkPositionType  position);
+
+void
 hildon_button_set_size_groups                   (HildonButton *button,
                                                  GtkSizeGroup *title_size_group,
                                                  GtkSizeGroup *value_size_group);

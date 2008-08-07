@@ -1,5 +1,14 @@
 2008-08-07  Alberto Garcia  <agarcia@igalia.com>
 
+	* src/hildon-button.h
+	* src/hildon-button.c
+	(hildon_button_init, hildon_button_set_image)
+	(hildon_button_set_image_position)
+	(hildon_button_construct_child): New functions to add an image to
+	the HildonButton.
+
+2008-08-07  Alberto Garcia  <agarcia@igalia.com>
+
 	* src/hildon-date-button.c
 	* src/hildon-picker-button.c
 	* src/hildon-time-button.c
