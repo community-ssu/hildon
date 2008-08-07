@@ -39,6 +39,7 @@
 #include                                        <src/hildon-app-menu.h>
 #include                                        <src/hildon-button.h>
 #include                                        <src/hildon-touch-selector.h>
+#include                                        <src/hildon-touch-selector-entry.h>
 #include                                        <src/hildon-time-selector.h>
 #include                                        <src/hildon-date-selector.h>
 #include                                        <src/hildon-picker-dialog.h>
@@ -83,6 +84,7 @@ hildon_stackable_window_get_type
 hildon_app_menu_get_type
 hildon_button_get_type
 hildon_touch_selector_get_type
+hildon_touch_selector_entry_get_type
 hildon_time_selector_get_type
 hildon_date_selector_get_type
 hildon_picker_dialog_get_type

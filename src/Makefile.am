@@ -42,6 +42,7 @@ libhildon_@API_VERSION_MAJOR@_la_SOURCES = \
 		hildon-date-selector.c			\
 		hildon-time-selector.c			\
 		hildon-touch-selector.c			\
+		hildon-touch-selector-entry.c		\
 		hildon-picker-dialog.c			\
 		hildon-picker-button.c			\
 		hildon-date-button.c			\
@@ -115,6 +116,7 @@ libhildon_@API_VERSION_MAJOR@_public_headers = \
 		hildon-date-selector.h			\
 		hildon-time-selector.h			\
 		hildon-touch-selector.h			\
+		hildon-touch-selector-entry.h		\
 		hildon-picker-dialog.h			\
 		hildon-picker-button.h			\
 		hildon-date-button.h			\

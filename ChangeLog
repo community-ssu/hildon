@@ -1,5 +1,19 @@
 2008-08-06  Claudio Saavedra  <csaavedra@igalia.com>
 
+	* doc/hildon-docs.sgml:
+	* doc/hildon.types:
+	* examples/Makefile.am:
+	* examples/hildon-touch-selector-entry-example.c:
+	* src/Makefile.am:
+	* src/hildon-touch-selector-entry.c:
+	* src/hildon-touch-selector-entry.h:
+	* src/hildon.h:
+
+	Moved HildonTouchSelectorEntry from sandbox. Added its
+	documentation and examples.
+
+2008-08-06  Claudio Saavedra  <csaavedra@igalia.com>
+
 	* src/hildon-touch-selector.h:
 	* examples/hildon-picker-button-multicolumn-example.c:
 	(hildon_touch_selector_append_text_column): Add a gboolean
