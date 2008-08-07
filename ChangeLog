@@ -1,5 +1,10 @@
 2008-08-07  Claudio Saavedra  <csaavedra@igalia.com>
 
+	* src/hildon-touch-selector.c: Comment out unimplemented
+	hildon_touch_selector_insert_column() to avoid a compile warning.
+
+2008-08-07  Claudio Saavedra  <csaavedra@igalia.com>
+
 	* src/hildon-touch-selector.c: (hildon_touch_selector_class_init),
 	(hildon_touch_selector_new), (hildon_touch_selector_remove_column),
 	(hildon_touch_selector_set_column_selection_mode),

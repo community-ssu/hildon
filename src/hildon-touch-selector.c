@@ -749,6 +749,7 @@ hildon_touch_selector_set_column_attributes (HildonTouchSelector * selector,
   gtk_tree_view_append_column (current_column->tree_view, tree_column);
 }
 
+#if 0
 gboolean
 hildon_touch_selector_insert_column (HildonTouchSelector * selector, gint position)
 {
@@ -756,6 +757,7 @@ hildon_touch_selector_insert_column (HildonTouchSelector * selector, gint positi
 
   return TRUE;
 }
+#endif
 
 /**
  * hildon_touch_selector_get_num_columns:
