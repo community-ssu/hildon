@@ -1,3 +1,22 @@
+2008-08-08  Alberto Garcia  <agarcia@igalia.com>
+
+	* doc/hildon-docs.sgml
+	* src/Makefile.am
+	* src/hildon.h
+	* src/hildon-gtk.h
+	* src/hildon-gtk.c: Convenience functions for standard Gtk
+	widgets, used to easily perform frequent operations.
+
+	* src/hildon-button-helpers.h
+	* src/hildon-button-helpers.c: Removed in favour of hildon-gtk.[ch]
+
+	* src/hildon-helper.h
+	* src/hildon-helper.c (hildon_helper_set_theme_size): Renamed to
+	hildon_gtk_widget_set_theme_size and moved to hildon-gtk.h
+
+	* src/hildon-button.h
+	* src/hildon-button.c: Use the new hildon-gtk.[ch] functions.
+
 2008-08-07  Alberto Garcia  <agarcia@igalia.com>
 
 	* src/hildon-button.c (hildon_button_init)

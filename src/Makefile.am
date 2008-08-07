@@ -77,7 +77,7 @@ libhildon_@API_VERSION_MAJOR@_la_SOURCES = \
 		hildon-bread-crumb-widget.c		\
 		hildon-app-menu.c 			\
 		hildon-button.c 			\
-		hildon-button-helpers.c			\
+		hildon-gtk.c				\
 		hildon-dialog.c
 
 libhildon_@API_VERSION_MAJOR@_built_public_headers  = \
@@ -137,7 +137,7 @@ libhildon_@API_VERSION_MAJOR@_public_headers = \
 		hildon-app-menu.h			\
 		hildon-dialog.h				\
 		hildon-button.h				\
-		hildon-button-helpers.h			\
+		hildon-gtk.h				\
 		hildon-version.h
 
 libhildon_@API_VERSION_MAJOR@_include_HEADERS = \

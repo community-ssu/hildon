@@ -40,14 +40,6 @@
 #include                                        "hildon-helper.h"
 #include                                        "hildon-banner.h"
 
-#define                                         HILDON_HEIGHT_FINGER 70
-
-#define                                         HILDON_HEIGHT_THUMB 105
-
-#define                                         HILDON_WIDTH_FULLSCREEN (gdk_screen_get_width (gdk_screen_get_default ()))
-
-#define                                         HILDON_WIDTH_HALFSCREEN (HILDON_WIDTH_FULLSCREEN / 2)
-
 #define                                         HILDON_FINGER_PRESSURE_THRESHOLD 0.4
 
 #define                                         HILDON_FINGER_BUTTON 8
@@ -509,41 +501,6 @@ hildon_helper_set_thumb_scrollbar               (GtkScrolledWindow *win,
         gtk_widget_set_name (win->vscrollbar, (thumb) ? "hildon-thumb-scrollbar" : NULL);
 }
 
-/**
- * hildon_helper_set_theme_size
- * @widget: A @GtkWidget
- * @size: Flags indicating the size of the widget
- *
- * This function sets the requested size of a widget.
- **/
-void
-hildon_helper_set_theme_size                    (GtkWidget      *widget,
-                                                 HildonSizeType  size)
-{
-    gint width = -1;
-    gint height = -1;
-    const gchar *widget_name = NULL;
 
-    g_return_if_fail (GTK_IS_WIDGET (widget));
 
-    /* Requested height */
-    if (size & HILDON_SIZE_FINGER_HEIGHT) {
-        height = HILDON_HEIGHT_FINGER;
-        widget_name = "hildon-finger-widget";
-    } else if (size & HILDON_SIZE_THUMB_HEIGHT) {
-        height = HILDON_HEIGHT_THUMB;
-        widget_name = "hildon-thumb-widget";
-    }
 
-    /* Requested width */
-    if (size & HILDON_SIZE_HALFSCREEN_WIDTH) {
-        width = HILDON_WIDTH_HALFSCREEN;
-    } else if (size & HILDON_SIZE_FULLSCREEN_WIDTH) {
-        width = HILDON_WIDTH_FULLSCREEN;
-    }
-
-    gtk_widget_set_size_request (widget, width, height);
-
-    if (widget_name)
-        gtk_widget_set_name (widget, widget_name);
-}

@@ -87,7 +87,7 @@ hildon_button_set_property                      (GObject      *object,
         hildon_button_set_value (button, g_value_get_string (value));
         break;
     case PROP_SIZE:
-        hildon_helper_set_theme_size (GTK_WIDGET (button), g_value_get_flags (value));
+        hildon_gtk_widget_set_theme_size (GTK_WIDGET (button), g_value_get_flags (value));
         break;
     case PROP_ARRANGEMENT:
         hildon_button_set_arrangement (button, g_value_get_enum (value));

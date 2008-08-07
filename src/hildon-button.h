@@ -19,8 +19,7 @@
 #ifndef                                         __HILDON_BUTTON_H__
 #define                                         __HILDON_BUTTON_H__
 
-#include                                        <gtk/gtk.h>
-#include                                        "hildon-helper.h"
+#include                                        "hildon-gtk.h"
 
 G_BEGIN_DECLS
 
