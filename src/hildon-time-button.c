@@ -82,7 +82,7 @@ hildon_time_button_new (HildonSizeType          size,
                         HildonButtonArrangement arrangement)
 {
   return g_object_new (HILDON_TYPE_TIME_BUTTON,
-                       "title", "Time", "arrangement", arrangement, "size-flags", size, NULL);
+                       "title", "Time", "arrangement", arrangement, "size", size, NULL);
 }
 
 void

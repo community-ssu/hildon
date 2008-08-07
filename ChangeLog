@@ -1,5 +1,14 @@
 2008-08-07  Alberto Garcia  <agarcia@igalia.com>
 
+	* src/hildon-date-button.c
+	* src/hildon-picker-button.c
+	* src/hildon-time-button.c
+	* src/hildon-button.c:
+	(hildon_button_class_init): "size-flags" renamed to "size"
+	(hildon_button_set_title): Hide the title label if set to NULL.
+
+2008-08-07  Alberto Garcia  <agarcia@igalia.com>
+
 	HildonButtonFlags split into HildonButtonArrangement (to set the
 	button layout) and HildonSizeType (which can be used for any
 	widget).

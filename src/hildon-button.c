@@ -30,18 +30,12 @@
  * "auto" so it behaves like a standard GtkButton.
  *
  * The #HildonButton can hold any valid child widget, but it usually
- * contains two labels: title and value (the latter being
- * optional). To change the alignment of the labels, use
- * gtk_button_set_alignment()
+ * contains two labels, named title and value. To change the alignment
+ * of the labels, use gtk_button_set_alignment()
  */
 
 #include                                        "hildon-button.h"
 #include                                        "hildon-enum-types.h"
-
-#define FINGER_BUTTON_HEIGHT                    70
-#define THUMB_BUTTON_HEIGHT                     105
-#define HALFSCREEN_BUTTON_WIDTH                 400
-#define FULLSCREEN_BUTTON_WIDTH                 800
 
 G_DEFINE_TYPE                                   (HildonButton, hildon_button, GTK_TYPE_BUTTON);
 
@@ -59,10 +53,10 @@ struct                                          _HildonButtonPrivate
 };
 
 enum {
-  PROP_TITLE = 1,
-  PROP_VALUE,
-  PROP_SIZE_FLAGS,
-  PROP_ARRANGEMENT
+    PROP_TITLE = 1,
+    PROP_VALUE,
+    PROP_SIZE,
+    PROP_ARRANGEMENT
 };
 
 static void
@@ -88,7 +82,7 @@ hildon_button_set_property                      (GObject      *object,
     case PROP_VALUE:
         hildon_button_set_value (button, g_value_get_string (value));
         break;
-    case PROP_SIZE_FLAGS:
+    case PROP_SIZE:
         hildon_helper_set_theme_size (GTK_WIDGET (button), g_value_get_flags (value));
         break;
     case PROP_ARRANGEMENT:
@@ -154,10 +148,10 @@ hildon_button_class_init                        (HildonButtonClass *klass)
 
     g_object_class_install_property (
         gobject_class,
-        PROP_SIZE_FLAGS,
+        PROP_SIZE,
         g_param_spec_flags (
-            "size-flags",
-            "Size flags",
+            "size",
+            "Size",
             "Size request for the button",
             HILDON_TYPE_SIZE_TYPE,
             HILDON_SIZE_AUTO,
@@ -314,7 +308,7 @@ hildon_button_new_full                          (HildonSizeType           size,
 
     /* Create widget */
     button = g_object_new (HILDON_TYPE_BUTTON,
-                           "size-flags", size,
+                           "size", size,
                            "arrangement", arrangement,
                            "title", title,
                            "value", value,
@@ -359,11 +353,14 @@ hildon_button_set_arrangement                   (HildonButton            *button
 /**
  * hildon_button_set_title:
  * @button: a #HildonButton
- * @title: a new title (main label) for the button.
+ * @title: a new title (main label) for the button, or %NULL
  *
  * Sets the title (main label) of @button to @title.
  *
  * This will clear the previously set title.
+ *
+ * If @title is set to %NULL, the title label will be hidden and the
+ * value label will be realigned.
  **/
 void
 hildon_button_set_title                         (HildonButton *button,
@@ -376,8 +373,14 @@ hildon_button_set_title                         (HildonButton *button,
     priv = HILDON_BUTTON_GET_PRIVATE (button);
     gtk_label_set_text (priv->title, title);
 
-    if (title)
+    /* If the button has no title, hide the label so the value is
+     * properly aligned */
+    if (title) {
         hildon_button_construct_child (button);
+        gtk_widget_show (GTK_WIDGET (priv->title));
+    } else {
+        gtk_widget_hide (GTK_WIDGET (priv->title));
+    }
 
     g_object_notify (G_OBJECT (button), "title");
 }
@@ -408,10 +411,12 @@ hildon_button_set_value                         (HildonButton *button,
 
     /* If the button has no value, hide the label so the title is
      * properly aligned */
-    if (value)
+    if (value) {
+        hildon_button_construct_child (button);
         gtk_widget_show (GTK_WIDGET (priv->value));
-    else
+    } else {
         gtk_widget_hide (GTK_WIDGET (priv->value));
+    }
 
     g_object_notify (G_OBJECT (button), "value");
 }

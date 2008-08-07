@@ -162,7 +162,7 @@ hildon_picker_button_new (HildonSizeType          size,
   GtkWidget *button;
 
   button = g_object_new (HILDON_TYPE_PICKER_BUTTON,
-                         "arrangement", arrangement, "size-flags", size, NULL);
+                         "arrangement", arrangement, "size", size, NULL);
 
   return button;
 }

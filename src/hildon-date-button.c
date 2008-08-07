@@ -85,7 +85,7 @@ hildon_date_button_new (HildonSizeType          size,
   return g_object_new (HILDON_TYPE_DATE_BUTTON,
                        "title", "Date",
                        "arrangement", arrangement,
-                       "size-flags", size,
+                       "size", size,
                        NULL);
 }
 
