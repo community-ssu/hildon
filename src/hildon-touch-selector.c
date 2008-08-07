@@ -20,11 +20,31 @@
 
 /**
  * SECTION:hildon-touch-selector
- * @short_description: A selector widget with several columns
+ * @short_description: A selector widget with several columns.
  *
- * HildonTouchSelector is a selector widget, very similar to the #GtkComboBox, but with
- * several individual pannable columns
+ * #HildonTouchSelector is a selector widget, that allows users to
+ * select items from one to many predefined lists. It is very similar
+ * to #GtkComboBox, but with several individual pannable columns.
  *
+ * Normally, you would use #HildonTouchSelector together with a
+ * #HildonPickerDialog activated from a button. For the most common
+ * cases, you should use #HildonPickerButton.
+ *
+ * The composition of each column in the selector is represented by a
+ * #GtkTreeModel. To add a new column to a #HildonTouchSelector, use
+ * hildon_touch_selector_append_column(). If you want to add a
+ * text-only column, without special attributes, use
+ * hildon_touch_selector_append_text_column().
+ *
+ * It is highly recommended that you use only one column
+ * #HildonTouchSelector<!-- -->s.
+ * If you only need a text only, one column selector, you can create it with
+ * hildon_touch_selector_new_text() and populate with
+ * hildon_touch_selector_append_text(), hildon_touch_selector_prepend_text(),
+ * and hildon_touch_selector_insert_text().
+ *
+ * If you need a selector widget that also accepts user inputs, you
+ * can use #HildonTouchSelectorEntry.
  */
 
 #ifdef HAVE_CONFIG_H
@@ -142,10 +162,10 @@ hildon_touch_selector_class_init (HildonTouchSelectorClass * class)
    * @widget: the object which received the signal
    *
    * The changed signal is emitted when the active
-   * item is changed. The can be due to the user selecting
+   * item is changed. This can be due to the user selecting
    * a different item from the list, or due to a
    * call to hildon_touch_selector_set_active_iter() on
-   * one of the columns
+   * one of the columns.
    *
    */
   hildon_touch_selector_signals[CHANGED] =
@@ -440,14 +460,14 @@ _create_new_column (HildonTouchSelector * selector,
 
 /**
  * hildon_touch_selector_new:
- * @:
+ * @void:
  *
- * Creates a new empty #HildonTouchSelector
+ * Creates a new empty #HildonTouchSelector.
  *
- * Returns: a new #HildonTouchSelector
+ * Returns: a new #HildonTouchSelector.
  **/
 GtkWidget *
-hildon_touch_selector_new ()
+hildon_touch_selector_new (void)
 {
   return g_object_new (HILDON_TYPE_TOUCH_SELECTOR, NULL);
 }
@@ -535,7 +555,7 @@ hildon_touch_selector_prepend_text (HildonTouchSelector * selector,
  * @position: the position to insert @text.
  * @text: A non %NULL text string.
  *
- * Inserts a new entry in particular positio of a #HildoTouchSelector created
+ * Inserts a new entry in particular position of a #HildoTouchSelector created
  * with hildon_touch_selector_new_text().
  *
  **/
@@ -559,22 +579,30 @@ hildon_touch_selector_insert_text (HildonTouchSelector * selector,
 }
 
 /**
- * hildon_touch_selector_append_text_column
- * @selector: the #HildonTouchSelector widget
+ * hildon_touch_selector_append_column
+ * @selector: a #HildonTouchSelector
  * @model: the #GtkTreeModel with the data of the column
+ * @cell_renderer: The #GtkCellRenderer where to draw each row contents.
+ * @Varargs: a %NULL-terminated pair of attributes and column numbers.
  *
- * This functions adds a new column to the widget, with the data on
- * the model. Only the widgets added in this way should used on
- * the selection logic, ie: the print function, the "changed" signal etc.
+ * This functions adds a new column to the widget, whose data will
+ * be obtained from the model. Only widgets added this way should used on
+ * the selection logic, i.e., the print function, the #HildonTouchPicker::changed
+ * signal, etc.
  *
- * There are a prerequisite on this model: this append
- * consideres that the text data is in the first column of the model
+ * Contents will be represented in @cell_renderer. You can pass a %NULL-terminated
+ * list of pairs property/value, in the same way you would use
+ * gtk_tree_view_column_set_attributes().
  *
- * Basically it adds a tree view to the widget, using the model and
+ * There is a prerequisite to be considered on models used: text data must
+ * be in the first column.
+ *
+ * This method basically adds a #GtkTreeView to the widget, using the model and
  * the data received.
  *
- * Returns: TRUE if a new column were added, FALSE otherside
+ * Returns: %TRUE if a new column was added, %FALSE otherwise
  **/
+
 gboolean
 hildon_touch_selector_append_column (HildonTouchSelector * selector,
                                      GtkTreeModel * model,
@@ -606,15 +634,15 @@ hildon_touch_selector_append_column (HildonTouchSelector * selector,
 
 /**
  * hildon_touch_selector_append_text_column
- * @selector: the #HildonTouchSelector widget
- * @model: the #GtkTreeModel with the data of the column
- * @center: whether to center the text on the column.
+ * @selector: a #HildonTouchSelector
+ * @model: a #GtkTreeModel with data for the column
+ * @center: whether to center the text on the column
  *
- * Equivalent to hildon_touch_selector_append_column, but using a
- * default text cell renderer. This is the most common use of the
+ * Equivalent to hildon_touch_selector_append_column(), but using a
+ * default text cell renderer. This is the most common use case of the
  * widget.
  *
- * Returns: TRUE if a new column were added, FALSE otherside
+ * Returns: %TRUE if a new column was added, %FALSE otherwise.
  **/
 gboolean
 hildon_touch_selector_append_text_column (HildonTouchSelector * selector,
@@ -644,29 +672,42 @@ hildon_touch_selector_append_text_column (HildonTouchSelector * selector,
 }
 
 /**
- * hildon_touch_selector_remove_column
+ * hildon_touch_selector_remove_column:
  * @selector: a #HildonTouchSelector
- * @position: the column position to remove, counting from 0 to (total column number - 1)
+ * @column: the position of the column to be removed
  *
+ * Removes a column from @selector.
  *
- * Returns: TRUE is the column was removed, FALSE otherwise
+ * Returns: %TRUE if the column was removed, %FALSE otherwise
  **/
 gboolean
-hildon_touch_selector_remove_column (HildonTouchSelector * selector, gint position)
+hildon_touch_selector_remove_column (HildonTouchSelector * selector, gint column)
 {
   SelectorColumn *current_column = NULL;
 
   g_return_val_if_fail (HILDON_IS_TOUCH_SELECTOR (selector), FALSE);
-  g_return_val_if_fail (position <
+  g_return_val_if_fail (column <
                         hildon_touch_selector_get_num_columns (selector), FALSE);
 
-  current_column = g_slist_nth_data (selector->priv->columns, position);
+  current_column = g_slist_nth_data (selector->priv->columns, column);
 
   gtk_container_remove (GTK_CONTAINER (selector), current_column->panarea);
 
   return TRUE;
 }
 
+/**
+ * hildon_touch_selector_set_column_attributes:
+ * @selector: a #HildonTouchSelector
+ * @num_column: the number of the column whose attributes we're setting
+ * @cell_renderer: the #GtkCellRendere we're setting the attributes of
+ * @Varargs: A %NULL-terminated list of attributes.
+ *
+ * Sets the attributes for the given column. The attributes must be given
+ * in attribute/column pairs, just like in gtk_tree_view_column_set_attributes().
+ * All existing attributes are removed and replaced with the new ones.
+ *
+ **/
 void
 hildon_touch_selector_set_column_attributes (HildonTouchSelector * selector,
                                              gint num_column,
@@ -716,12 +757,28 @@ hildon_touch_selector_insert_column (HildonTouchSelector * selector, gint positi
   return TRUE;
 }
 
+/**
+ * hildon_touch_selector_get_num_columns:
+ * @selector: a #HildonTouchSelector
+ *
+ * Gets the number of columns in the #HildonTouchSelector.
+ *
+ * Returns: the number of columns in @selector.
+ **/
 gint
 hildon_touch_selector_get_num_columns (HildonTouchSelector * selector)
 {
   return g_slist_length (selector->priv->columns);
 }
 
+/**
+ * hildon_touch_selector_get_column_selection_mode:
+ * @selector: a #HildonTouchSelector
+ *
+ * Gets the selection mode of @selector.
+ *
+ * Returns: one of #HildonTouchSelectorSelectionMode
+ **/
 HildonTouchSelectorSelectionMode
 hildon_touch_selector_get_column_selection_mode (HildonTouchSelector * selector)
 {
@@ -750,10 +807,16 @@ hildon_touch_selector_get_column_selection_mode (HildonTouchSelector * selector)
   return result;
 }
 
+/**
+ * hildon_touch_selector_set_column_selection_mode:
+ * @selector: a #HildonTouchSelector
+ * @mode: the #HildonTouchSelectorMode for @selector
+ *
+ * Sets the selection mode for @selector. See #HildonTouchSelectorSelectionMode.
+ **/
 void
 hildon_touch_selector_set_column_selection_mode (HildonTouchSelector * selector,
-                                                 HildonTouchSelectorSelectionMode
-                                                 mode)
+                                                 HildonTouchSelectorSelectionMode mode)
 {
   GtkTreeView *tv = NULL;
   SelectorColumn *column = NULL;
@@ -788,6 +851,18 @@ hildon_touch_selector_set_column_selection_mode (HildonTouchSelector * selector,
 
 }
 
+/**
+ * hildon_touch_selector_set_print_func:
+ * @selector: a #HildonTouchSelector
+ * @func: a #HildonTouchSelectorPrintFunc function
+ *
+ * Sets the function to be used by hildon_touch_selector_get_current_text()
+ * to produce a text representation of the currently selected items in @selector.
+ * The default function will return a concatenation of comma separated items
+ * selected in each column in @selector. Use this to override this method if you
+ * need a particular representation for your application.
+ *
+ **/
 void
 hildon_touch_selector_set_print_func (HildonTouchSelector * selector,
                                       HildonTouchSelectorPrintFunc func)
@@ -797,6 +872,16 @@ hildon_touch_selector_set_print_func (HildonTouchSelector * selector,
   selector->priv->print_func = func;
 }
 
+/**
+ * hildon_touch_selector_get_print_func:
+ * @selector: a #HildonTouchSelector
+ *
+ * Gets the #HildonTouchSelectorPrintFunc currently used. See
+ * hildon_touch_selector_set_print_func().
+ *
+ * Returns: a #HildonTouchSelectorPrintFunc or %NULL if the default
+ * one is currently used.
+ **/
 HildonTouchSelectorPrintFunc
 hildon_touch_selector_get_print_func (HildonTouchSelector * selector)
 {
@@ -811,15 +896,16 @@ hildon_touch_selector_get_print_func (HildonTouchSelector * selector)
  * @column: the column number we want to get the element
  * @iter: #GtkTreeIter currently selected
  *
- * Sets iter to the currently selected node on the nth-column, if selection is set to
- * HILDON_TOUCH_SELECTOR_SINGLE. iter may be NULL if you just want to test if selection
- * has any selected nodes.
+ * Sets @iter to the currently selected node on the nth-column, if selection is set to
+ * %HILDON_TOUCH_SELECTOR_SINGLE. @iter may be %NULL if you just want to test if selection
+ * has any selected items.
  *
- * This function will not work if you use selection is HILDON_TOUCH_SELECTOR_MULTIPLE.
+ * This function will not work if selection is in
+ * %HILDON_TOUCH_SELECTOR_MULTIPLE mode.
  *
- * See gtk_tree_selection_get_selected for more information
+ * See gtk_tree_selection_get_selected() for more information.
  *
- * Returns: TRUE if was posible to get the iter, FALSE otherwise
+ * Returns: %TRUE if @iter was correctly set, %FALSE otherwise
  **/
 gboolean
 hildon_touch_selector_get_active_iter (HildonTouchSelector * selector,
@@ -847,8 +933,10 @@ hildon_touch_selector_get_active_iter (HildonTouchSelector * selector,
  * @selector: a #HildonTouchSelector
  * @column:   the column to selects
  * @iter:     the #GtkTreeIter to be selected
+ * @scroll_to: whether to smoothly scroll to the item
  *
- * Sets the current iter
+ * Sets the currently selected item in the column @column to the one pointed by @iter,
+ * optionally smoothly scrolling to it.
  *
  **/
 void
@@ -889,16 +977,16 @@ hildon_touch_selector_set_active_iter (HildonTouchSelector * selector,
 /**
  * hildon_touch_selector_get_selected_rows:
  * @selector: a #HildonTouchSelector
- * @column:
+ * @column: the position of the column to get the selected rows from
  *
- * Creates a list of path of all selected rows at a concrete column. Additionally,
- * if you are planning on modifying the model after calling this function, you may
+ * Creates a list of #GtkTreePath<!-- -->s of all selected rows in a column. Additionally,
+ * if you to plan to modify the model after calling this function, you may
  * want to convert the returned list into a list of GtkTreeRowReferences. To do this,
  * you can use gtk_tree_row_reference_new().
  *
- * See #GtkTreeSelection:gtk_tree_selection_get_selected_rows for more information
+ * See gtk_tree_selection_get_selected_rows() for more information.
  *
- * Returns: A new GList containing a GtkTreePath for each selected row in the concrete column
+ * Returns: A new #GList containing a #GtkTreePath for each selected row in the column @column.
  *
  **/
 GList *
@@ -922,6 +1010,15 @@ hildon_touch_selector_get_selected_rows (HildonTouchSelector * selector,
   return result;
 }
 
+/**
+ * hildon_touch_selector_get_model:
+ * @selector: a #HildonTouchSelector
+ * @column: the position of the column in @selector
+ *
+ * Gets the model of a column of @selector.
+ *
+ * Returns: the #GtkTreeModel for the column @column of @selector.
+ **/
 GtkTreeModel *
 hildon_touch_selector_get_model (HildonTouchSelector * selector, gint column)
 {
@@ -938,35 +1035,44 @@ hildon_touch_selector_get_model (HildonTouchSelector * selector, gint column)
 
 static void
 _hildon_touch_selector_set_model (HildonTouchSelector * selector,
-                                 gint num_column, GtkTreeModel * model)
+                                 gint column, GtkTreeModel * model)
 {
-  SelectorColumn *column = NULL;
+  SelectorColumn *current_column = NULL;
   g_print ("this was actually called\n");
 
-  column =
-    (SelectorColumn *) g_slist_nth_data (selector->priv->columns, num_column);
+  current_column =
+    (SelectorColumn *) g_slist_nth_data (selector->priv->columns, column);
 
-  column->model = model;
-  gtk_tree_view_set_model (column->tree_view, column->model);
+  current_column->model = model;
+  gtk_tree_view_set_model (current_column->tree_view, current_column->model);
 }
 
+/**
+ * hildon_touch_selector_set_model:
+ * @selector: a #HildonTouchSelector
+ * @column: the position of the column to set the model to
+ * @model: a #GtkTreeModel
+ *
+ * Sets the #GtkTreeModel for a particular column in @model.
+ **/
 void
 hildon_touch_selector_set_model (HildonTouchSelector * selector,
-                                 gint num_column, GtkTreeModel * model)
+                                 gint column, GtkTreeModel * model)
 {
   g_return_if_fail (HILDON_TOUCH_SELECTOR (selector));
-  g_return_if_fail (num_column < hildon_touch_selector_get_num_columns (selector));
+  g_return_if_fail (column < hildon_touch_selector_get_num_columns (selector));
 
-  HILDON_TOUCH_SELECTOR_GET_CLASS (selector)->set_model (selector, num_column, model);
+  HILDON_TOUCH_SELECTOR_GET_CLASS (selector)->set_model (selector, column, model);
 }
+
 /**
- * hildon_touch_selector_get_active_text
- * @selector: the #HildonTouchSelector
+ * hildon_touch_selector_get_current_text:
+ * @selector: a #HildonTouchSelector
  *
- * It return a new gchar that represents the current element(s) selected,
- * using the current print_func.
+ * Returns a string representing the currently selected items for
+ * each column of @selector. See hildon_touch_selector_set_print_func().
  *
- * Returns: a new allocated gchar*
+ * Returns: a newly allocated string.
  **/
 gchar *
 hildon_touch_selector_get_current_text (HildonTouchSelector * selector)
