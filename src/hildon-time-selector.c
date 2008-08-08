@@ -336,7 +336,7 @@ _check_ampm_format (HildonTimeSelector * selector)
   client = gconf_client_get_default ();
   value = gconf_client_get_bool (client, CLOCK_GCONF_IS_24H_FORMAT, &error);
   if (error != NULL) {
-    g_error
+    g_warning
       ("Error trying to get gconf variable %s, using 24h format by default",
        CLOCK_GCONF_IS_24H_FORMAT);
     g_error_free (error);

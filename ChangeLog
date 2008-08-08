@@ -1,3 +1,9 @@
+2008-08-08  Alejandro Pinheiro <apinheiro@igalia.com>
+
+	* src/hildon-time-selector.c 
+	(_check_ampm_format): use of g_warning instead of g_error with a gconf error
+	in order to avoid a crash if gconf is not available
+	
 2008-08-08  Alberto Garcia  <agarcia@igalia.com>
 
 	* src/hildon-button.c (hildon_button_set_arrangement)
