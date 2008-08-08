@@ -27,6 +27,7 @@
 
 #include                                        <glib-object.h>
 #include                                        "hildon-window.h"
+#include                                        "hildon-stackable-window.h"
 
 G_BEGIN_DECLS
 
@@ -107,6 +108,12 @@ hildon_program_get_common_toolbar               (HildonProgram *self);
 
 gboolean
 hildon_program_get_is_topmost                   (HildonProgram *self);
+
+HildonStackableWindow *
+hildon_program_pop_window_stack                 (HildonProgram *self);
+
+HildonStackableWindow *
+hildon_program_peek_window_stack                (HildonProgram *self);
 
 void
 hildon_program_go_to_root_window                (HildonProgram *self);

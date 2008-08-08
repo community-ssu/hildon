@@ -32,10 +32,9 @@
  * in a hierarchical way so users can go from any window back to the
  * application's root window.
  *
- * To add a window to the stack, use hildon_program_add_window(). Once
- * you show the new window, the previous one will be automatically
- * hidden. When the new window is destroyed, the previous one will
- * appear again.
+ * To add a window to the stack, just use gtk_widget_show(). The
+ * previous one will be automatically hidden. When the new window is
+ * destroyed, the previous one will appear again.
  *
  * <example>
  * <programlisting>
@@ -50,7 +49,6 @@
  * <!-- -->
  *     // ... configure first window
  * <!-- -->
- *     hildon_program_add_window (program, HILDON_WINDOW (win1));
  *     gtk_widget_show (win1);
  * }
  * <!-- -->
@@ -65,7 +63,6 @@
  * <!-- -->
  *     // ... configure second window
  * <!-- -->
- *     hildon_program_add_window (program, HILDON_WINDOW (win2));
  *     gtk_widget_show (win2);
  * }
  * </programlisting>
@@ -95,97 +92,6 @@ hildon_stackable_window_get_going_home          (HildonStackableWindow *self)
 {
     HildonStackableWindowPrivate *priv = HILDON_STACKABLE_WINDOW_GET_PRIVATE (self);
     return priv->going_home;
-}
-
-static GSList*
-get_window_list                                 (GtkWidget *widget)
-{
-    HildonWindowPrivate *wpriv;
-    HildonProgramPrivate *ppriv;
-    GSList *retval = NULL;
-    g_return_val_if_fail (widget != NULL, NULL);
-
-    wpriv = HILDON_WINDOW_GET_PRIVATE (widget);
-    g_assert (wpriv != NULL);
-
-    if (wpriv->program)
-    {
-        ppriv = HILDON_PROGRAM_GET_PRIVATE (wpriv->program);
-        g_assert (ppriv != NULL);
-        retval = ppriv->windows;
-    }
-
-    return retval;
-}
-
-static GtkWidget*
-get_previous_window_if_last                     (GtkWidget *widget)
-{
-    GtkWidget *retval = NULL;
-    GSList *iter = get_window_list (widget);
-    GSList *previous = NULL;
-
-    /* Return NULL if the window hasn't been added to the HildonProgram */
-    if (iter == NULL)
-    {
-        return NULL;
-    }
-
-    /* Go to the end of the window list */
-    while (iter->next != NULL)
-    {
-        previous = iter;
-        iter = iter->next;
-    }
-
-    if ((iter->data == widget) && (previous != NULL))
-    {
-        retval = GTK_WIDGET (previous->data);
-    }
-
-    return retval;
-}
-
-static void
-hildon_stackable_window_map                     (GtkWidget *widget)
-{
-    GtkWidget *previous = get_previous_window_if_last (widget);
-
-    if (GTK_WIDGET_CLASS (hildon_stackable_window_parent_class)->map)
-        GTK_WIDGET_CLASS (hildon_stackable_window_parent_class)->map (widget);
-
-    if (HILDON_IS_STACKABLE_WINDOW (previous) && GTK_WIDGET_VISIBLE (previous))
-        gtk_widget_hide (previous);
-}
-
-static void
-hildon_stackable_window_unmap                   (GtkWidget *widget)
-{
-    GtkWidget *previous = get_previous_window_if_last (widget);
-
-    if (GTK_WIDGET_CLASS (hildon_stackable_window_parent_class)->unmap)
-        GTK_WIDGET_CLASS (hildon_stackable_window_parent_class)->unmap (widget);
-
-    if (HILDON_IS_STACKABLE_WINDOW (previous) && !GTK_WIDGET_VISIBLE (previous) &&
-        !hildon_stackable_window_get_going_home (HILDON_STACKABLE_WINDOW (widget)))
-    {
-        gtk_widget_show (previous);
-    }
-}
-
-static void
-hildon_stackable_window_unset_program           (HildonWindow *hwin)
-{
-    GtkWidget *previous = get_previous_window_if_last (GTK_WIDGET (hwin));
-
-    if (HILDON_WINDOW_CLASS (hildon_stackable_window_parent_class)->unset_program)
-        HILDON_WINDOW_CLASS (hildon_stackable_window_parent_class)->unset_program (hwin);
-
-    if (HILDON_IS_STACKABLE_WINDOW (previous) && !GTK_WIDGET_VISIBLE (previous) &&
-        !hildon_stackable_window_get_going_home (HILDON_STACKABLE_WINDOW (hwin)))
-    {
-        gtk_widget_show (previous);
-    }
 }
 
 void
@@ -256,20 +162,40 @@ hildon_stackable_window_realize                 (GtkWidget *widget)
 		     (guchar *)&atom, 1);
 }
 
-static gboolean
-hildon_stackable_window_delete_event            (GtkWidget *widget,
-                                                 GdkEventAny *event)
+static void
+hildon_stackable_window_show                    (GtkWidget *widget)
 {
-    GSList *list = get_window_list (widget);
-    list = g_slist_find (list, widget);
+    HildonProgram *program = hildon_program_get_instance ();
+    HildonStackableWindow *current_win = HILDON_STACKABLE_WINDOW (widget);
+    HildonStackableWindow *previous_win = hildon_program_peek_window_stack (program);
 
-    /* Ignore the delete event if this is not the topmost window */
-    if (list != NULL && list->next != NULL)
-        return TRUE;
-    else if (GTK_WIDGET_CLASS (hildon_stackable_window_parent_class)->delete_event)
-        return GTK_WIDGET_CLASS (hildon_stackable_window_parent_class)->delete_event (widget, event);
-    else
-        return FALSE;
+    if (previous_win != current_win)
+        _hildon_program_add_to_stack (program, current_win);
+
+    GTK_WIDGET_CLASS (hildon_stackable_window_parent_class)->show (widget);
+
+    if (previous_win != NULL && previous_win != current_win)
+        gtk_widget_hide (GTK_WIDGET (previous_win));
+}
+
+static void
+hildon_stackable_window_destroy                 (GtkObject *obj)
+{
+    HildonProgram *program = hildon_program_get_instance ();
+    HildonStackableWindow *topmost = hildon_program_peek_window_stack (program);
+
+    if (_hildon_program_remove_from_stack (program, HILDON_STACKABLE_WINDOW (obj)))
+    {
+        if (topmost != NULL && GTK_OBJECT (topmost) == obj)
+        {
+            HildonStackableWindowPrivate *priv = HILDON_STACKABLE_WINDOW_GET_PRIVATE (obj);
+            topmost = hildon_program_peek_window_stack (program);
+            if (topmost != NULL && !priv->going_home)
+                gtk_widget_show (GTK_WIDGET (topmost));
+        }
+    }
+
+    GTK_OBJECT_CLASS (hildon_stackable_window_parent_class)->destroy (obj);
 }
 
 static void
@@ -277,26 +203,25 @@ hildon_stackable_window_finalize                (GObject *object)
 {
     HildonStackableWindowPrivate *priv = HILDON_STACKABLE_WINDOW_GET_PRIVATE (object);
 
-    if (priv->app_menu) {
+    if (priv->app_menu)
         gtk_widget_destroy (GTK_WIDGET (priv->app_menu));
-    }
 }
 
 static void
 hildon_stackable_window_class_init              (HildonStackableWindowClass *klass)
 {
     GObjectClass      *obj_class    = G_OBJECT_CLASS (klass);
+    GtkObjectClass    *gtk_obj_class = GTK_OBJECT_CLASS (klass);
     GtkWidgetClass    *widget_class = GTK_WIDGET_CLASS (klass);
     HildonWindowClass *window_class = HILDON_WINDOW_CLASS (klass);
 
     obj_class->finalize             = hildon_stackable_window_finalize;
 
-    widget_class->map               = hildon_stackable_window_map;
-    widget_class->unmap             = hildon_stackable_window_unmap;
-    widget_class->realize           = hildon_stackable_window_realize;
-    widget_class->delete_event      = hildon_stackable_window_delete_event;
+    gtk_obj_class->destroy          = hildon_stackable_window_destroy;
 
-    window_class->unset_program     = hildon_stackable_window_unset_program;
+    widget_class->realize           = hildon_stackable_window_realize;
+    widget_class->show              = hildon_stackable_window_show;
+
     window_class->toggle_menu       = hildon_stackable_window_toggle_menu;
 
     g_type_class_add_private (klass, sizeof (HildonStackableWindowPrivate));

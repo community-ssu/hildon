@@ -35,13 +35,6 @@
 static void
 add_window                                      (GtkWidget* w);
 
-static void
-detach_window                                   (GtkWidget* w)
-{
-    HildonProgram *program = hildon_program_get_instance ();
-    hildon_program_remove_window (program, HILDON_WINDOW (w));
-}
-
 static GtkWidget*
 new_window                                      (gboolean ismain)
 {
@@ -74,11 +67,11 @@ new_window                                      (gboolean ismain)
     if (!ismain)
     {
         GtkWidget *detach, *back;
-        detach = GTK_WIDGET (gtk_button_new_with_label ("Detach"));
+        detach = GTK_WIDGET (gtk_button_new_with_label ("Destroy"));
         gtk_box_pack_end (GTK_BOX (hbbox), detach, FALSE, FALSE, 0);
 
         g_signal_connect_swapped (G_OBJECT (detach), "clicked",
-                                  G_CALLBACK (detach_window),
+                                  G_CALLBACK (gtk_widget_destroy),
                                   HILDON_STACKABLE_WINDOW (window));
 
         back = GTK_WIDGET (gtk_button_new_with_label ("Back to root"));
@@ -96,10 +89,6 @@ static void
 add_window                                      (GtkWidget *w)
 {
     GtkWidget *window = new_window (FALSE);
-    HildonProgram *program = hildon_program_get_instance ();
-
-    hildon_program_add_window (program, HILDON_WINDOW (window));
-
     gtk_widget_show_all (window);
 
     return;
@@ -109,16 +98,13 @@ int
 main                                            (int argc,
                                                  char **args)
 {
-    HildonProgram *program;
     GtkWidget *window;
 
     gtk_init (&argc, &args);
 
     g_set_application_name ("stack");
 
-    program = hildon_program_get_instance ();
     window = new_window (TRUE);
-    hildon_program_add_window (program, HILDON_WINDOW (window));
 
     g_signal_connect (G_OBJECT (window), "delete_event",
                       G_CALLBACK (gtk_main_quit), NULL);

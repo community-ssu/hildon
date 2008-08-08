@@ -27,6 +27,7 @@
 
 #include                                        <glib-object.h>
 #include                                        "hildon-window.h"
+#include                                        "hildon-stackable-window.h"
 
 G_BEGIN_DECLS
 
@@ -45,9 +46,18 @@ struct                                          _HildonProgramPrivate
     GtkWidget *common_menu;
     GtkWidget *common_toolbar;
     GSList *windows;
+    GSList *window_stack;
     Window window_group;
     gchar *name;
 };
+
+void G_GNUC_INTERNAL
+_hildon_program_add_to_stack                    (HildonProgram         *self,
+                                                 HildonStackableWindow *win);
+
+gboolean G_GNUC_INTERNAL
+_hildon_program_remove_from_stack               (HildonProgram         *self,
+                                                 HildonStackableWindow *win);
 
 G_END_DECLS
 

@@ -150,6 +150,8 @@ hildon_program_init                             (HildonProgram *self)
     priv->window_group = GDK_WINDOW_XID (gdk_display_get_default_group (gdk_display_get_default()));
     priv->common_toolbar = NULL;
     priv->name = NULL;
+    priv->windows = NULL;
+    priv->window_stack = NULL;
 }
 
 static void
@@ -259,6 +261,125 @@ hildon_program_get_property                     (GObject *object,
             G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
             break;
     }
+}
+
+/**
+ * hildon_program_pop_window_stack:
+ * @self: A #HildonProgram
+ *
+ * The #HildonProgram object maintains a list of stackable
+ * windows. Each time a #HildonStackableWindow is shown, it is
+ * automatically added to the top of the stack. Windows are removed
+ * from the stack when they are destroyed.
+ *
+ * This function removes the #HildonStackableWindow from the top of
+ * the stack and returns it. The window is automatically hidden, but
+ * not destroyed. If that window was visible and there are more
+ * windows left in the stack, the next one will be shown
+ * automatically.
+ *
+ * If the stack is empty, %NULL is returned.
+ *
+ * Returns: A #HildonStackableWindow, or %NULL.
+ */
+HildonStackableWindow *
+hildon_program_pop_window_stack                 (HildonProgram *self)
+{
+    HildonStackableWindow *top;
+
+    top = hildon_program_peek_window_stack (self);
+
+    if (top)
+    {
+        HildonStackableWindow *next;
+
+        /* Remove the window from the stack and get the next one */
+        _hildon_program_remove_from_stack (self, top);
+        next = hildon_program_peek_window_stack (self);
+
+        /* Hide the window just removed and show the next one if necessary */
+        if (GTK_WIDGET_VISIBLE (GTK_WIDGET (top)) && next != NULL);
+            gtk_widget_show (GTK_WIDGET (next));
+
+        gtk_widget_hide (GTK_WIDGET (top));
+    }
+
+    return top;
+}
+
+/**
+ * hildon_program_peek_window_stack:
+ * @self: A #HildonProgram
+ *
+ * The #HildonProgram object maintains a list of stackable
+ * windows. Each time a #HildonStackableWindow is shown, it is
+ * automatically added to the top of the stack. Windows are removed
+ * from the stack when they are destroyed.
+ *
+ * This function returns the #HildonStackableWindow from the top of
+ * the stack or %NULL if the stack is empty. The stack is never modified.
+ *
+ * Returns: A #HildonStackableWindow, or %NULL.
+ */
+HildonStackableWindow *
+hildon_program_peek_window_stack                (HildonProgram *self)
+{
+    HildonStackableWindow *top = NULL;
+    HildonProgramPrivate *priv;
+
+    g_return_val_if_fail (HILDON_IS_PROGRAM (self), NULL);
+
+    priv = HILDON_PROGRAM_GET_PRIVATE (self);
+    g_assert (priv);
+
+    if (priv->window_stack != NULL)
+        top = HILDON_STACKABLE_WINDOW (priv->window_stack->data);
+
+    return top;
+}
+
+void G_GNUC_INTERNAL
+_hildon_program_add_to_stack                    (HildonProgram         *self,
+                                                 HildonStackableWindow *win)
+{
+    HildonProgramPrivate *priv;
+
+    g_return_if_fail (HILDON_IS_PROGRAM (self));
+    g_return_if_fail (HILDON_IS_STACKABLE_WINDOW (win));
+
+    priv = HILDON_PROGRAM_GET_PRIVATE (self);
+    g_assert (priv);
+
+    if (g_slist_find (priv->window_stack, win) == NULL)
+    {
+        priv->window_stack = g_slist_prepend (priv->window_stack, win);
+    }
+    else
+    {
+        g_critical ("%s: window already in the stack!", __FUNCTION__);
+    }
+
+}
+
+gboolean G_GNUC_INTERNAL
+_hildon_program_remove_from_stack               (HildonProgram         *self,
+                                                 HildonStackableWindow *win)
+{
+    GSList *pos;
+    HildonProgramPrivate *priv;
+
+    g_return_val_if_fail (HILDON_IS_PROGRAM (self), FALSE);
+    g_return_val_if_fail (HILDON_IS_STACKABLE_WINDOW (win), FALSE);
+
+    priv = HILDON_PROGRAM_GET_PRIVATE (self);
+    g_assert (priv);
+
+    pos = g_slist_find (priv->window_stack, win);
+
+    if (pos != NULL)
+        priv->window_stack = g_slist_delete_link (priv->window_stack, pos);
+
+    return (pos != NULL);
 }
 
 /* Utilities */
@@ -708,8 +829,8 @@ hildon_program_go_to_root_window                (HildonProgram *self)
     priv = HILDON_PROGRAM_GET_PRIVATE (self);
     g_assert (priv);
 
-    /* List of windows in reverse order (starting from the topmost one) */
-    windows = g_slist_reverse (g_slist_copy (priv->windows));
+    /* List of stacked windows (starting from the topmost one) */
+    windows = g_slist_copy (priv->window_stack);
     iter = windows;
 
     /* Destroy all the windows but the last one (which is the root
@@ -750,7 +871,7 @@ hildon_program_go_to_root_window                (HildonProgram *self)
         }
         else
         {
-            g_warning ("Window list contains a non-stackable window");
+            g_critical ("Window list contains a non-stackable window");
             windows_left = FALSE;
         }
     }

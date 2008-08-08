@@ -1,3 +1,23 @@
+2008-08-08  Alberto Garcia  <agarcia@igalia.com>
+
+	* src/hildon-program-private.h
+	* src/hildon-program.c
+	* src/hildon-program.h
+	(_hildon_program_remove_from_stack, _hildon_program_add_to_stack)
+	(hildon_program_peek_window_stack)
+	(hildon_program_pop_window_stack)
+	(hildon_program_go_to_root_window): HildonProgram now has a
+	separate list for stackable windows. Functions are provided to
+	manage that list with a stack-like API.
+
+	* src/hildon-stackable-window.c: Stackable window management is
+	now much simpler with the new HildonProgram API. Windows no
+	longer need to be manually added to the program, they're
+	automatically pushed to the top of the stack when shown.
+
+	* examples/hildon-stackable-window-example.c: Updated example to
+	reflect the API changes.
+
 2008-08-07  Claudio Saavedra  <csaavedra@igalia.com>
 
 	* src/hildon-touch-selector.c: Comment out unimplemented
