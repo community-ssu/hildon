@@ -1,5 +1,17 @@
 2008-08-08  Alberto Garcia  <agarcia@igalia.com>
 
+	* doc/hildon-docs.sgml
+	* src/Makefile.am
+	* src/hildon.h
+	* src/hildon-check-button.h
+	* src/hildon-check-button.c: New functions to create the Hildon
+	Touch Checkbox.
+
+	* src/hildon-gtk.h
+	* src/hildon-gtk.c (hildon_gtk_check_button_new): Removed.
+
+2008-08-08  Alberto Garcia  <agarcia@igalia.com>
+
 	* src/hildon-button.h
 	* src/hildon-button.c
 	(hildon_button_add_title_size_group)

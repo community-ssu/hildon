@@ -74,6 +74,7 @@
 #include                                        "hildon-pannable-area.h"
 #include                                        "hildon-app-menu.h"
 #include                                        "hildon-button.h"
+#include                                        "hildon-check-button.h"
 #include                                        "hildon-gtk.h"
 #include                                        "hildon-dialog.h"
 

@@ -42,9 +42,6 @@ GtkWidget *
 hildon_gtk_toggle_button_new                    (HildonSizeType size);
 
 GtkWidget *
-hildon_gtk_check_button_new                     (HildonSizeType size);
-
-GtkWidget *
 hildon_gtk_radio_button_new                     (HildonSizeType  size,
                                                  GSList         *group);
 

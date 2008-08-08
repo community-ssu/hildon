@@ -109,23 +109,6 @@ hildon_gtk_toggle_button_new                    (HildonSizeType size)
 }
 
 /**
- * hildon_gtk_check_button_new:
- * @size: Flags indicating the size of the new button
- *
- * This is a convenience function to create a #GtkCheckButton setting
- * its size to one of the pre-defined Hildon sizes.
- *
- * Return value: A newly created #GtkCheckButton widget.
- **/
-GtkWidget *
-hildon_gtk_check_button_new                     (HildonSizeType size)
-{
-    GtkWidget *button = gtk_check_button_new ();
-    hildon_gtk_widget_set_theme_size (button, size);
-    return button;
-}
-
-/**
  * hildon_gtk_radio_button_new:
  * @size: Flags indicating the size of the new button
  * @group: An existing radio button group, or %NULL if you are
