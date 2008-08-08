@@ -218,32 +218,94 @@ hildon_button_init                              (HildonButton *self)
 }
 
 /**
- * hildon_button_set_size_groups:
+ * hildon_button_add_title_size_group:
  * @button: a #HildonButton
- * @title_size_group: A #GtkSizeGroup for the button title (main label), or %NULL
- * @value_size_group: A #GtkSizeGroup group for the button value (secondary label), or %NULL
+ * @size_group: A #GtkSizeGroup for the button title (main label)
  *
- * Adds the title and value labels of @button to @title_size_group and
- * @value_size_group respectively. %NULL size groups will be ignored.
+ * Adds the title label of @button to @size_group.
  **/
 void
-hildon_button_set_size_groups                   (HildonButton *button,
-                                                 GtkSizeGroup *title_size_group,
-                                                 GtkSizeGroup *value_size_group)
+hildon_button_add_title_size_group              (HildonButton *button,
+                                                 GtkSizeGroup *size_group)
 {
     HildonButtonPrivate *priv;
 
     g_return_if_fail (HILDON_IS_BUTTON (button));
-    g_return_if_fail (!title_size_group || GTK_IS_SIZE_GROUP (title_size_group));
-    g_return_if_fail (!value_size_group || GTK_IS_SIZE_GROUP (value_size_group));
+    g_return_if_fail (GTK_IS_SIZE_GROUP (size_group));
 
     priv = HILDON_BUTTON_GET_PRIVATE (button);
 
+    gtk_size_group_add_widget (size_group, GTK_WIDGET (priv->title));
+}
+
+/**
+ * hildon_button_add_value_size_group:
+ * @button: a #HildonButton
+ * @size_group: A #GtkSizeGroup for the button value (secondary label)
+ *
+ * Adds the value label of @button to @size_group.
+ **/
+void
+hildon_button_add_value_size_group              (HildonButton *button,
+                                                 GtkSizeGroup *size_group)
+{
+    HildonButtonPrivate *priv;
+
+    g_return_if_fail (HILDON_IS_BUTTON (button));
+    g_return_if_fail (GTK_IS_SIZE_GROUP (size_group));
+
+    priv = HILDON_BUTTON_GET_PRIVATE (button);
+
+    gtk_size_group_add_widget (size_group, GTK_WIDGET (priv->value));
+}
+
+/**
+ * hildon_button_add_image_size_group:
+ * @button: a #HildonButton
+ * @size_group: A #GtkSizeGroup for the button image
+ *
+ * Adds the image of @button to @size_group. You must add an image
+ * using hildon_button_set_image before calling this function.
+ **/
+void
+hildon_button_add_image_size_group              (HildonButton *button,
+                                                 GtkSizeGroup *size_group)
+{
+    HildonButtonPrivate *priv;
+
+    g_return_if_fail (HILDON_IS_BUTTON (button));
+    g_return_if_fail (GTK_IS_SIZE_GROUP (size_group));
+    g_return_if_fail (GTK_IS_WIDGET (priv->image));
+
+    priv = HILDON_BUTTON_GET_PRIVATE (button);
+
+    gtk_size_group_add_widget (size_group, GTK_WIDGET (priv->image));
+}
+
+/**
+ * hildon_button_add_size_groups:
+ * @button: a #HildonButton
+ * @title_size_group: A #GtkSizeGroup for the button title (main label), or %NULL
+ * @value_size_group: A #GtkSizeGroup group for the button value (secondary label), or %NULL
+ * @image_size_group: A #GtkSizeGroup group for the button image, or %NULL
+ *
+ * Convenience function to add title, value and image to size
+ * groups. %NULL size groups will be ignored.
+ **/
+void
+hildon_button_add_size_groups                   (HildonButton *button,
+                                                 GtkSizeGroup *title_size_group,
+                                                 GtkSizeGroup *value_size_group,
+                                                 GtkSizeGroup *image_size_group)
+{
     if (title_size_group)
-        gtk_size_group_add_widget (title_size_group, GTK_WIDGET (priv->title));
+        hildon_button_add_title_size_group (button, title_size_group);
 
     if (value_size_group)
-        gtk_size_group_add_widget (value_size_group, GTK_WIDGET (priv->value));
+        hildon_button_add_value_size_group (button, value_size_group);
+
+    if (image_size_group)
+        hildon_button_add_image_size_group (button, image_size_group);
 }
 
 /**
@@ -259,7 +321,7 @@ GtkWidget *
 hildon_button_new                               (HildonSizeType          size,
                                                  HildonButtonArrangement arrangement)
 {
-    return hildon_button_new_full (size, arrangement, NULL, NULL, NULL, NULL);
+    return hildon_button_new_with_text (size, arrangement, NULL, NULL);
 }
 
 /**
@@ -282,50 +344,15 @@ hildon_button_new_with_text                     (HildonSizeType           size,
                                                  const gchar             *title,
                                                  const gchar             *value)
 {
-    return hildon_button_new_full (size, arrangement, title, value, NULL, NULL);
-}
-
-/**
- * hildon_button_new_full:
- * @size: Flags to set the size of the button.
- * @arrangement: How the labels must be arranged.
- * @title: Title of the button (main label)
- * @value: Value of the button (secondary label), or %NULL
- * @title_size_group: a #GtkSizeGroup for the @title label, or %NULL
- * @value_size_group: a #GtkSizeGroup for the @value label, or %NULL
- *
- * Creates a new #HildonButton with two labels, @title and @value, and
- * their respective size groups.
- *
- * If you just don't want to use one of the labels, set it to
- * %NULL. You can set it to a non-%NULL value at any time later.
- *
- * @title and @value will be added to @title_size_group and
- * @value_size_group, respectively, if present.
- *
- * Returns: a new #HildonButton
- **/
-GtkWidget *
-hildon_button_new_full                          (HildonSizeType           size,
-                                                 HildonButtonArrangement  arrangement,
-                                                 const gchar             *title,
-                                                 const gchar             *value,
-                                                 GtkSizeGroup            *title_size_group,
-                                                 GtkSizeGroup            *value_size_group)
-{
     GtkWidget *button;
 
     /* Create widget */
     button = g_object_new (HILDON_TYPE_BUTTON,
                            "size", size,
-                           "arrangement", arrangement,
                            "title", title,
                            "value", value,
-                           "name", "hildon-button",
+                           "arrangement", arrangement,
                            NULL);
-    /* Set size groups */
-    if (title_size_group || value_size_group)
-        hildon_button_set_size_groups (HILDON_BUTTON (button), title_size_group, value_size_group);
 
     return button;
 }

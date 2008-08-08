@@ -76,14 +76,6 @@ hildon_button_new_with_text                     (HildonSizeType           size,
                                                  const gchar             *title,
                                                  const gchar             *value);
 
-GtkWidget *
-hildon_button_new_full                          (HildonSizeType           size,
-                                                 HildonButtonArrangement  arrangement,
-                                                 const gchar             *title,
-                                                 const gchar             *value,
-                                                 GtkSizeGroup            *title_size_group,
-                                                 GtkSizeGroup            *value_size_group);
-
 void
 hildon_button_set_title                         (HildonButton *button,
                                                  const gchar  *title);
@@ -112,9 +104,21 @@ hildon_button_set_image_position                (HildonButton    *button,
                                                  GtkPositionType  position);
 
 void
-hildon_button_set_size_groups                   (HildonButton *button,
+hildon_button_add_title_size_group              (HildonButton *button,
+                                                 GtkSizeGroup *size_group);
+void
+hildon_button_add_value_size_group              (HildonButton *button,
+                                                 GtkSizeGroup *size_group);
+
+void
+hildon_button_add_image_size_group              (HildonButton *button,
+                                                 GtkSizeGroup *size_group);
+
+void
+hildon_button_add_size_groups                   (HildonButton *button,
                                                  GtkSizeGroup *title_size_group,
-                                                 GtkSizeGroup *value_size_group);
+                                                 GtkSizeGroup *value_size_group,
+                                                 GtkSizeGroup *image_size_group);
 
 G_END_DECLS
 

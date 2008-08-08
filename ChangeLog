@@ -1,3 +1,14 @@
+2008-08-08  Alberto Garcia  <agarcia@igalia.com>
+
+	* src/hildon-button.h
+	* src/hildon-button.c
+	(hildon_button_add_title_size_group)
+	(hildon_button_add_value_size_group)
+	(hildon_button_add_image_size_group)
+	(hildon_button_add_size_groups): New functions to set size groups
+	for the button labels and image.
+	(hildon_button_new_full): Removed
+
 2008-08-08  Alejandro Pinheiro <apinheiro@igalia.com>
 
 	* src/hildon-time-selector.c 
