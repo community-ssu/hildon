@@ -1,5 +1,11 @@
 2008-08-08  Alberto Garcia  <agarcia@igalia.com>
 
+	* src/hildon-button.c (hildon_button_set_arrangement)
+	(hildon_button_construct_child): Don't construct the button child
+	before setting the arrangement.
+
+2008-08-08  Alberto Garcia  <agarcia@igalia.com>
+
 	* src/hildon-program-private.h
 	* src/hildon-program.c
 	* src/hildon-program.h

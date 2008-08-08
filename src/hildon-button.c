@@ -354,6 +354,8 @@ hildon_button_set_arrangement                   (HildonButton            *button
 
     gtk_box_pack_start (GTK_BOX (priv->label_box), GTK_WIDGET (priv->title), FALSE, FALSE, 0);
     gtk_box_pack_start (GTK_BOX (priv->label_box), GTK_WIDGET (priv->value), FALSE, FALSE, 0);
+
+    hildon_button_construct_child (button);
 }
 
 /**
@@ -552,6 +554,10 @@ hildon_button_construct_child                   (HildonButton *button)
 {
     HildonButtonPrivate *priv = HILDON_BUTTON_GET_PRIVATE (button);
     GtkWidget *child;
+
+    /* Don't do anything if the button is not constructed yet */
+    if (priv->label_box == NULL)
+        return;
 
     /* Save a ref to the image if necessary */
     if (priv->image && priv->image->parent != NULL) {
