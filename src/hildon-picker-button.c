@@ -14,6 +14,23 @@
  *
  */
 
+/**
+ * SECTION:hildon-picker-button
+ * @short_description: A button that launches a #HildonPickerDialog and displays the
+ * selected item
+ * @see_also: #HildonTouchSelector, #HildonPickerDialog
+ *
+ * #HildonPickerButton is a widget that lets the user select a particular item from
+ * a list. Visually, it's a button with title and value labels that brings up a
+ * #HildonPickerDialog. The user can then use this dialog to choose an item, which
+ * will be displayed in the value label of the button.
+ *
+ * You should create your own #HildonTouchSelector at convenience and set it
+ * to the #HildonPickerButton with hildon_picker_button_set_selector(). For
+ * the common use cases of buttons to select date and time, you can use #HildonDateButton
+ * and #HildonTimeButton.
+ *
+ */
 #include "hildon-picker-button.h"
 #include "hildon-picker-dialog.h"
 
@@ -135,6 +152,13 @@ hildon_picker_button_class_init (HildonPickerButtonClass * klass)
                                                         HILDON_TYPE_TOUCH_SELECTOR,
                                                         G_PARAM_READWRITE));
 
+  /**
+   * HildonPickerButton::value-changed:
+   * @widget: the widget that received the signal
+   *
+   * The ::value-changed signal is emitted each time the user chooses a different
+   * item from the #HildonTouchSelector related, and the value label gets updated.
+   */
   picker_button_signals[VALUE_CHANGED] =
     g_signal_new ("value-changed",
                   G_TYPE_FROM_CLASS (klass),
@@ -155,6 +179,17 @@ hildon_picker_button_init (HildonPickerButton * self)
   priv->selector = NULL;
 }
 
+/**
+ * hildon_picker_button_new:
+ * @size: One of #HildonSizeType, specifying the size of the new button.
+ * @arrangement: one of #HildonButtonArrangement, specifying the placement of the
+ * labels.
+ *
+ * Creates a new #HildonPickerButton. See hildon_button_new() for details on the
+ * parameters.
+ *
+ * Returns: a newly created #HildonPickerButton
+ **/
 GtkWidget *
 hildon_picker_button_new (HildonSizeType          size,
                           HildonButtonArrangement arrangement)
@@ -167,6 +202,14 @@ hildon_picker_button_new (HildonSizeType          size,
   return button;
 }
 
+/**
+ * hildon_picker_button_set_selector:
+ * @button: a #HildonPickerButton
+ * @selector: a #HildonTouchSelector
+ *
+ * Sets @selector as the #HildonTouchSelector to be shown in the
+ * #HildonPickerDialog that @button brings up.
+ **/
 void
 hildon_picker_button_set_selector (HildonPickerButton * button,
                                    HildonTouchSelector * selector)
@@ -181,6 +224,14 @@ hildon_picker_button_set_selector (HildonPickerButton * button,
   priv->selector = g_object_ref (selector);
 }
 
+/**
+ * hildon_picker_button_get_selector:
+ * @button: a #HildonPickerButton
+ *
+ * Retrieves the #HildonTouchSelector associated to @button.
+ *
+ * Returns: a #HildonTouchSelector
+ **/
 HildonTouchSelector *
 hildon_picker_button_get_selector (HildonPickerButton * button)
 {
