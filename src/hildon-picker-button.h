@@ -30,15 +30,18 @@ G_BEGIN_DECLS
 #define HILDON_IS_PICKER_BUTTON_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), HILDON_TYPE_PICKER_BUTTON))
 #define HILDON_PICKER_BUTTON_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), HILDON_TYPE_PICKER_BUTTON, HildonPickerButtonClass))
 
-typedef struct
+typedef struct _HildonPickerButton HildonPickerButton;
+typedef struct _HildonPickerButtonClass HildonPickerButtonClass;
+
+struct _HildonPickerButton
 {
   HildonButton parent;
-} HildonPickerButton;
+};
 
-typedef struct
+struct _HildonPickerButtonClass
 {
   HildonButtonClass parent_class;
-} HildonPickerButtonClass;
+};
 
 GType      hildon_picker_button_get_type (void);
 GtkWidget *hildon_picker_button_new      (HildonSizeType          size,

@@ -17,7 +17,7 @@
 /**
  * SECTION:hildon-time-button
  * @Short_Description: Button displaying and allowing selection of a time.
- * @See_Also: #HildonPickerButton, #HildonTimeButton
+ * @See_Also: #HildonPickerButton, #HildonDateButton
  *
  * #HildonTimeButton is a widget that shows a text label and a time, and allows
  * the user to select a different time. Visually, it's a button that, once clicked,

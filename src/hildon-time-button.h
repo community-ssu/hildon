@@ -28,15 +28,18 @@ G_BEGIN_DECLS
 #define HILDON_IS_TIME_BUTTON_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), HILDON_TYPE_TIME_BUTTON))
 #define HILDON_TIME_BUTTON_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), HILDON_TYPE_TIME_BUTTON, HildonTimeButtonClass))
 
-typedef struct
+typedef struct _HildonTimeButton      HildonTimeButton;
+typedef struct _HildonTimeButtonClass HildonTimeButtonClass;
+
+struct _HildonTimeButton
 {
   HildonPickerButton parent;
-} HildonTimeButton;
+};
 
-typedef struct
+struct _HildonTimeButtonClass
 {
   HildonPickerButtonClass parent_class;
-} HildonTimeButtonClass;
+};
 
 GType      hildon_time_button_get_type (void);
 GtkWidget *hildon_time_button_new      (HildonSizeType          size,
