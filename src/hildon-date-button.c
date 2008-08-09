@@ -14,6 +14,17 @@
  *
  */
 
+/**
+ * SECTION:hildon-date-button
+ * @Short_Description: Button displaying and allowing selection of a date.
+ * @See_Also: #HildonPickerButton, #HildonTimeButton
+ *
+ * #HildonDateButton is a widget that shows a text label and a date, and allows
+ * the user to select a different date. Visually, it's a button that, once clicked,
+ * presents a #HildonPickerDialog containing a #HildonDateSelector. Once the user selects
+ * a different date from the selector, this will be shown in the button.
+ */
+
 #include "hildon-date-selector.h"
 #include "hildon-touch-selector.h"
 #include "hildon-picker-button.h"
@@ -78,6 +89,16 @@ hildon_date_button_init (HildonDateButton * self)
                                      HILDON_TOUCH_SELECTOR (date_selector));
 }
 
+/**
+ * hildon_date_button_new:
+ * @size: One of #HildonSizeType
+ * @arrangement: one of #HildonButtonArrangement
+ *
+ * Creates a new #HildonDateButton. See hildon_button_new() for details on the
+ * parameters.
+ *
+ * Returns: a new #HildonDateButton
+ **/
 GtkWidget *
 hildon_date_button_new (HildonSizeType          size,
                         HildonButtonArrangement arrangement)
@@ -89,6 +110,15 @@ hildon_date_button_new (HildonSizeType          size,
                        NULL);
 }
 
+/**
+ * hildon_date_button_get_date:
+ * @button: a #HildonDateButton
+ * @year: return location for the selected year
+ * @month: return location for the selected month
+ * @day: return location for the selected day
+ *
+ * Retrieves currently selected date from @button.
+ **/
 void
 hildon_date_button_get_date (HildonDateButton * button,
                              guint * year, guint * month, guint * day)
@@ -102,6 +132,17 @@ hildon_date_button_get_date (HildonDateButton * button,
   hildon_date_selector_get_date (HILDON_DATE_SELECTOR (selector), year, month, day);
 }
 
+/**
+ * hildon_date_button_set_date:
+ * @button: a #HildonDateButton
+ * @year: the year to set.
+ * @month: the month number to set.
+ * @day: the day of the month to set.
+ *
+ * Sets the date in @button. The date set will be displayed
+ * and will be the default selected option on the shown #HildonDateSelector.
+ *
+ **/
 void
 hildon_date_button_set_date (HildonDateButton * button,
                              guint year, guint month, guint day)

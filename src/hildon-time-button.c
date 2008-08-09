@@ -14,6 +14,17 @@
  *
  */
 
+/**
+ * SECTION:hildon-time-button
+ * @Short_Description: Button displaying and allowing selection of a time.
+ * @See_Also: #HildonPickerButton, #HildonTimeButton
+ *
+ * #HildonTimeButton is a widget that shows a text label and a time, and allows
+ * the user to select a different time. Visually, it's a button that, once clicked,
+ * presents a #HildonPickerDialog containing a #HildonTimeSelector. Once the user selects
+ * a different time from the selector, this will be shown in the button.
+ */
+
 #include "hildon-time-selector.h"
 #include "hildon-touch-selector.h"
 #include "hildon-picker-button.h"
@@ -77,6 +88,16 @@ hildon_time_button_init (HildonTimeButton * self)
                                      HILDON_TOUCH_SELECTOR (time_selector));
 }
 
+/**
+ * hildon_time_button_new:
+ * @size: One of #HildonSizeType
+ * @arrangement: one of #HildonButtonArrangement
+ *
+ * Creates a new #HildonTimeButton. See hildon_button_new() for details on the
+ * parameters.
+ *
+ * Returns: a new #HildonTimeButton
+ **/
 GtkWidget *
 hildon_time_button_new (HildonSizeType          size,
                         HildonButtonArrangement arrangement)
@@ -85,6 +106,14 @@ hildon_time_button_new (HildonSizeType          size,
                        "title", "Time", "arrangement", arrangement, "size", size, NULL);
 }
 
+/**
+ * hildon_time_button_get_time:
+ * @button: a #HildonTimeButton
+ * @hours: return location for the hours of the time selected
+ * @minutes: return location for the minutes of the time selected
+ *
+ * Retrieves the time from @button.
+ **/
 void
 hildon_time_button_get_time (HildonTimeButton * button,
                              guint * hours, guint * minutes)
@@ -98,6 +127,15 @@ hildon_time_button_get_time (HildonTimeButton * button,
   hildon_time_selector_get_time (HILDON_TIME_SELECTOR (selector), hours, minutes);
 }
 
+/**
+ * hildon_time_button_set_time:
+ * @button: a #HildonTimeButton
+ * @hours: the hours to be set
+ * @minutes: the time to be set
+ *
+ * Sets the time to be displayed in @button. This time will
+ * be selected by default on the #HildonTimeSelector.
+ **/
 void
 hildon_time_button_set_time (HildonTimeButton * button,
                              guint hours, guint minutes)

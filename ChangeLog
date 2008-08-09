@@ -1,5 +1,10 @@
 2008-08-08  Claudio Saavedra  <csaavedra@igalia.com>
 
+	* src/hildon-date-button.c: Document the widget.
+	* src/hildon-time-button.c: Document the widget.
+
+2008-08-08  Claudio Saavedra  <csaavedra@igalia.com>
+
 	* src/hildon-picker-button.c: Document the widget.
 	* src/hildon-touch-selector-entry.c: Document the widget.
 
