@@ -33,10 +33,10 @@
 
 2008-08-08  Alejandro Pinheiro <apinheiro@igalia.com>
 
-	* src/hildon-time-selector.c 
+	* src/hildon-time-selector.c
 	(_check_ampm_format): use of g_warning instead of g_error with a gconf error
 	in order to avoid a crash if gconf is not available
-	
+
 2008-08-08  Alberto Garcia  <agarcia@igalia.com>
 
 	* src/hildon-button.c (hildon_button_set_arrangement)
@@ -1641,7 +1641,7 @@
 
 	Do not use PACKAGE_VERSION_MAJOR as the API revision,
 	use newly created API_MAJOR_VERSION.
-	
+
 2008-01-09  Xan Lopez  <xan.lopez@nokia.com>
 
 	[2.0.0-1 release]
@@ -1652,7 +1652,7 @@
 
 2008-01-09  Xan Lopez  <xan.lopez@nokia.com>
 
-	* src/hildon-color-chooser.c (hildon_color_chooser_class_init): 
+	* src/hildon-color-chooser.c (hildon_color_chooser_class_init):
 
 	Add outer_border style property, we use it but don't define it (!).
 
@@ -1660,17 +1660,17 @@
 
 2007-12-21  Xan Lopez  <xan.lopez@nokia.com>
 
-	* examples/hildon-bread-crumb-trail-example.c (main): 
+	* examples/hildon-bread-crumb-trail-example.c (main):
 
 	Add clear button.
 
-	* src/hildon-bread-crumb-trail.c (hildon_bread_crumb_trail_remove): 
+	* src/hildon-bread-crumb-trail.c (hildon_bread_crumb_trail_remove):
 
 	Fix logic for the bread crumb trail node removal.
 
 	Fixes: NB#78616
 
-2007-12-14  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+2007-12-14  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com>
 
 	[1.99.1-1 release]
 
@@ -1678,16 +1678,16 @@
 	* configure.ac:
 	* debian/changelog: Updating.
 
-2007-11-08  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+2007-11-08  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com>
 
 	Patch by Alejandro to get/set passwords dialogs accesibility.
 
 	* hildon-1/src/hildon-get-password-dialog.c:
-	* hildon-1/src/hildon-set-password-dialog.c: 
-	Set atk_set_name to the passwd entries in order to allow 
+	* hildon-1/src/hildon-set-password-dialog.c:
+	Set atk_set_name to the passwd entries in order to allow
 	accessibility by name on this entries.
-	
-2007-10-11  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
+2007-10-11  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com>
 
 	[1.99.0-2 release]
 
@@ -1704,7 +1704,7 @@
 	* src/hildon-code-dialog.c (hildon_code_dialog_init): check for
 	MAEMO_GTK or GTK+ > 2.11 before using GTK_BUTTONBOX_CENTER mode.
 
-2007-10-10  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+2007-10-10  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com>
 
 	[1.99.0-1 release]
 
@@ -1712,7 +1712,7 @@
 	* configure.ac:
 	* debian/changelog: Updating.
 
-2007-10-10  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+2007-10-10  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com>
 
 	* examples/Makefile.am:
 	* examples/hildon-logical-color-example.c:
@@ -1729,7 +1729,7 @@
 	* src/hildon-seekbar.c: gtk_range_get_fill_level is available in GTK+ since
 	2.11.0, add a check for that besides the MAEMO_GTK check.
 
-2007-09-28  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+2007-09-28  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com>
 
 	[1.0.17-1 release]
 
@@ -1737,7 +1737,7 @@
 	* configure.ac:
 	* debian/changelog: Updating.
 
-2007-09-26  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+2007-09-26  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com>
 
 	* src/hildon-window.c: Applying patches by Xan to fix the toolbar
 	visibility. Fixes: NB#70842 and MB#615.
@@ -1759,7 +1759,7 @@
 	* src/hildon-bread-crumb-trail.c (hildon_bread_crumb_trail_push_icon):
 	fix the name of the function in the docs.
 
-2007-09-21  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+2007-09-21  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com>
 
 	[1.0.16-1 release]
 
@@ -1767,14 +1767,14 @@
 	* configure.ac:
 	* debian/changelog: Updating.
 
-2007-09-21  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+2007-09-21  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com>
 
 	* examples/hildon-banner-long-example.c: Adding a test-case for long
 	hildon banner.
 
 	* src/hildon-find-toolbar.c: Fixing the get_last_index function.
 
-2007-09-21  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+2007-09-21  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com>
 
 	* src/hildon-color-chooser-dialog.c:
 	* src/hildon-color-chooser.c:
@@ -1782,16 +1782,16 @@
 	memory leaks in font selector and color selector. Fixes: NB#70499 and
 	NB#70474.
 
-2007-09-20  Johan Bilien  <johan.bilien@nokia.com> 
+2007-09-20  Johan Bilien  <johan.bilien@nokia.com>
 
 	* src/hildon-helper.c: Fixed the leak of the a GList. Fixes: NB#70273.
 
-2007-09-18  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+2007-09-18  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com>
 
 	* src/hildon-code-dialog.c: Making the hardcoded WIDTH/HEIGHT values a
 	little bit bigger. Fixes: #NB63694.
 
-2007-09-17  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+2007-09-17  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com>
 
 	[1.0.15-1 release]
 
@@ -1799,7 +1799,7 @@
 	* configure.ac:
 	* debian/changelog: Updating.
 
-2007-09-14  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+2007-09-14  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com>
 
 	* doc/Makefile.am:
 	* doc/hildon-docs.sgml:
@@ -1828,7 +1828,7 @@
 	* doc/images/weekday-picker.png: Adding the new generated widget shots.
 	Adding the bread-crumb-trial and helpers to the documentation.
 
-2007-09-14  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+2007-09-14  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com>
 
 	* examples/hildon-find-toolbar-example.c:
 	* src/hildon-find-toolbar.c:
@@ -1838,40 +1838,40 @@
 	hildon_find_toolbar_get_last_index that gets the index of the most
 	recently added (last) item. Fixes: NB#52301.
 
-2007-09-10  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+2007-09-10  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com>
 
 	* src/hildon-caption.c: Applying a patch by Tommi to fix the focus
-	behaviour. Fixes: NB#68610. 
+	behaviour. Fixes: NB#68610.
 
-2007-09-10  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+2007-09-10  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com>
 
 	* src/hildon-banner.c: Actually reverting the previous change. It somehow
 	looks a bit worse.
 
-2007-09-06  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+2007-09-06  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com>
 
 	* src/hildon-banner.c: Changing the infobanner background pixmap to NULL
 	when realizing the banner. Should make the infonbanner effect a bit more
 	bearable.
 
-2007-09-05  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+2007-09-05  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com>
 
 	* src/hildon-volumebar.c:
 	* src/hildon-volumebar.h: Changing the GtkWidget to HildonVolumebar in
 	hildon_volumebar_set_range_insensitive_message and
 	hildon_volumebar_set_range_insensitive_messagef. Fixes MB#1848.
 
-2007-09-05  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+2007-09-05  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com>
 
 	* src/hildon-window.c: Fixing the border freeing on destroy.
 
-2007-09-05  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+2007-09-05  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com>
 
 	* src/hildon-code-dialog-private.h:
 	* src/hildon-code-dialog.c: Adding a patch by Tomas Junnonen to fix the
 	kw keyboard support in HildonCodeDialog.
 
-2007-08-24  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+2007-08-24  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com>
 
 	[1.0.14-1 release]
 
@@ -1879,7 +1879,7 @@
 	* configure.ac:
 	* debian/changelog: Updating.
 
-2007-08-24  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+2007-08-24  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com>
 
 	* src/hildon-date-editor.c:
 	* src/hildon-number-editor.c:
@@ -1889,13 +1889,13 @@
 	* src/hildon-weekday-picker.c: A patch by Xan Lopez to fix focus
 	handling in subclassed composite widgets. Fixes: NB#66628.
 
-2007-08-24  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+2007-08-24  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com>
 
 	* src/hildon-window.c: Removing extra gtk_main_iteration () processing
 	from destroy_ callback as it introduces problems in async dbus signal
 	handlers. Fixes NB#66673.
 
-2007-08-24  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+2007-08-24  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com>
 
 	* examples/hildon-hvolumebar-example.c:
 	* src/hildon-volumebar.c: Improving the focus handling in the
@@ -1903,42 +1903,42 @@
 	set_property accessor so that "mute" property can be actually set. I'm
 	scared that nobody noticed it's totally broken.
 
-2007-08-23  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+2007-08-23  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com>
 
 	* debian/control: Use libesd0-dev or osso-esd-dev as esd dependancy.
 	Fixes NB#66548.
 
-2007-08-23  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+2007-08-23  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com>
 
 	* src/hildon-calendar.c:
 	* src/hildon-number-editor.c:
 	* src/hildon-time-picker.c: Changing the timeout repeat so that it
 	matches the spec of 6 chars per second. Fixes: NB#60489.
 
-2007-08-22  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+2007-08-22  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com>
 
 	* src/hildon-helper.c: Really fixing NB#58352. Looks like
 	gtk_style_lookup_color sometime returns FALSE even though color was
 	found and values were filled properly. Weird. Removing the warning for the
 	time being.
 
-2007-08-21  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+2007-08-21  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com>
 
 	* src/hildon-find-toolbar.c: Puting the combobox inside alignment to not
 	expand vertically. Adding some extra space to the find toolbar buttons to
 	make them thumbable. Fixes NB#66060.
 
-2007-08-21  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+2007-08-21  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com>
 
 	* src/hildon-calendar-popup.c: Replacing the "Done" button in the calendar
 	popup with "Ok" and "Cancel". Fixes NB#59299.
 
-2007-08-20  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+2007-08-20  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com>
 
 	* src/hildon-calendar.c: Process all window updates before executing next
 	timeout. Fixes: NB#54146.
 
-2007-08-17  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+2007-08-17  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com>
 
 	[1.0.13-1 release]
 
@@ -1952,12 +1952,12 @@
 	the client event and ignore it, since we use the delete event to close
 	after timeouts.
 
-2007-08-16  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+2007-08-16  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com>
 
 	* src/hildon-helper.c: Remove the bogus warning about color not being
 	found. Fixes NB#58352.
 
-2007-08-16  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+2007-08-16  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com>
 
 	* examples/Makefile.am:
 	* examples/hildon-toolbar-seekbar-example.c: Adding an example to test a
@@ -1972,7 +1972,7 @@
 
 	Also use G_DEFINE_TYPE instead of manually typed code.
 
-2007-08-06  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+2007-08-06  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com>
 
 	[1.0.12-1 release]
 
@@ -1981,25 +1981,25 @@
 	* debian/changelog:
 	* debian/rules: Updating.
 
-2007-08-01  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+2007-08-01  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com>
 
 	* examples/Makefile.am:
 	* examples/hildon-hvolumebar-timer-example.c: Adding an exmaple to debug
 	bug NB#61128. Strangely it works.
 
-2007-08-01  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+2007-08-01  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com>
 
 	* src/hildon-date-editor.c: When the date editor entry has been changed
 	but the numbers of characters < max, turn off the skip validation flag.
 	Prevents a situation when we enter first a valid year and later re-write
 	it with an invalid one. Fixes NB#60154.
 
-2007-07-26  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+2007-07-26  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com>
 
 	* src/hildon-code-dialog.c: Fixing the dialog button alignment inside the
 	code dialog. Fixes NB#64355.
 
-2007-07-25  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+2007-07-25  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com>
 
 	* src/hildon-wizard-dialog.c: Don't call the _set_sensitivity again after
 	switching the page. Fixes NB#49374.
@@ -2009,18 +2009,18 @@
 	HildonWizardDialog that shows how to handle manual sensitivity setting on
 	the wizard dialog.
 
-2007-07-25  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+2007-07-25  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com>
 
 	* configure.ac:
 	* src/Makefile.am:
 	* src/hildon-version.h.in:
 	* src/hildon.h: Adding the HILDON_CHECK_VERSION macro. Fixes: NB#62061.
 
-2007-07-25  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+2007-07-25  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com>
 
 	* src/hildon-volumebar.c: Updating the docs.
 
-2007-07-25  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+2007-07-25  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com>
 
 	[1.0.11-1 release]
 
@@ -2028,20 +2028,20 @@
 	* configure.ac:
 	* debian/changelog: Updating.
 
-2007-07-24  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+2007-07-24  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com>
 
 	* src/hildon-find-toolbar.c:
 	* src/hildon-find-toolbar.h: Adding a few new functions to control the
 	selected item: hildon_find_toolbar_set_active,
-	hildon_find_toolbar_set_active_iter, hildon_find_toolbar_get_active, 
+	hildon_find_toolbar_set_active_iter, hildon_find_toolbar_get_active,
 	hildon_find_toolbar_get_active_iter . They correspond to respective
-	GtkComboBox functions. 
+	GtkComboBox functions.
 
 	* examples/Makefile.am:
 	* examples/hildon-find-toolbar-example.c: Adding the example to test the
 	new functionality.
 
-2007-07-23  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+2007-07-23  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com>
 
 	* examples/Makefile.am:
 	* examples/hildon-seekbar-example.c: Adding the seekbar example to check
@@ -2053,12 +2053,12 @@
 	response state in any way (no theming) it would not be visible to the
 	user. Fixes NB#63430.
 
-2007-07-23  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+2007-07-23  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com>
 
 	* src/hildon-date-editor.c: Adding the missing variable setter in the
 	set_property handler. Fixes NB#54182.
 
-2007-07-23  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+2007-07-23  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com>
 
 	* src/hildon-window.h: Changing the long key press time from 1500ms to
 	800ms as requested in NB#63700. I have a bad feeling about this, let's
@@ -2083,7 +2083,7 @@
 
 	* src/Makefile.am: fixed installation of the header files
 
-2007-06-29  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+2007-06-29  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com>
 
 	[1.0.10-1 release]
 
@@ -2091,7 +2091,7 @@
 	* configure.ac:
 	* debian/changelog: Updating.
 
-2007-06-27  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+2007-06-27  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com>
 
 	* configure.ac: Removing some remaining of --enable-xan.
 
@@ -2104,14 +2104,14 @@
 	2.10.12-osso6 because the move-focus signal needs to be available in
 	GtkWidget.
 
-2007-06-25  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+2007-06-25  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com>
 
 	* examples/Makefile.am:
 	* examples/hildon-hvolumebar-insensitive-map-example.c: Adding an example
 	that makes a HildonVolumebar insensitive before mapping it. Seems to work
 	fine. Prolly NB#61128 is fixed now.
 
-2007-06-19  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+2007-06-19  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com>
 
 	* src/hildon-volumebar.c:
 	* src/hildon-volumebar.h: Adding the
@@ -2134,7 +2134,7 @@
 	http://bugzilla.gnome.org/show_bug.cgi?id=56070 hiding and showing the back
 	button on after clearing the trail.
 
-2007-06-13  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+2007-06-13  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com>
 
 	* src/hildon-code-dialog.c: Removing the separator from the dialog.
 
@@ -2146,10 +2146,10 @@
 
 	* src/hildon-seekbar.h: gtkscale.h already includes gtkrange.h.
 
-2007-06-12  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+2007-06-12  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com>
 
 	* src/hildon-window.c: Hide the window before performing the destroy.
-	Should make the app closing a little tiny bit more snappy. 
+	Should make the app closing a little tiny bit more snappy.
 
 2007-06-12  Xan Lopez  <xan.lopez@nokia.com>
 
@@ -2161,7 +2161,7 @@
 	* configure.ac: Remove dysfunctional AC_ARG_ENABLE. Pointed out by
 	Loic Minier.
 
-2007-06-07  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+2007-06-07  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com>
 
 	[1.0.9-1 release]
 
@@ -2176,17 +2176,17 @@
 	escape timeout on focus-out-event rather than notify::is-topmost; the
 	latter doesn't get called when menus pop up. Fixes: NB#52946, MB#1101
 
-2007-06-07  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+2007-06-07  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com>
 
 	* src/hildon-window.c: Adding a patch from Tommi Komulainen to pass the
-	correct timestamp and button to gtk_menu_popup. Fixes MB#1466. 
+	correct timestamp and button to gtk_menu_popup. Fixes MB#1466.
 
 2007-06-07  Xan Lopez  <xan.lopez@nokia.com>
 
 	* src/hildon-window: actually, you need to use the macro always, there's
 	no private pointer in the instance structure. We should have cleaned this up
 	when we had the chance...
-	
+
 2007-06-07  Xan Lopez  <xan.lopez@nokia.com>
 
 	* src/hildon-window.c: do not get the private date from HildonWindow before
@@ -2199,7 +2199,7 @@
 	* src/hildon-bread-crumb-trail.c: set children visible before allocation.
 	* src/hildon-bread-crumb-widget.c: set xalign to 0.0 for labels.
 
-2007-06-01  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+2007-06-01  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com>
 
 	[1.0.8-1 release]
 
@@ -2207,12 +2207,12 @@
 	* configure.ac:
 	* debian/changelog: Updating.
 
-2007-06-01  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+2007-06-01  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com>
 
 	* src/hildon-window.c: When destroying the window, remove (if exists) the
 	escape timeout handler. Fixes #NB59276.
 
-2007-06-01  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+2007-06-01  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com>
 
 	* src/hildon-banner.c: When realizing the widget, set the window
 	transiency. Setting the transiency in the gobject constructor is not
@@ -2232,10 +2232,10 @@
 	Also change the callback for the back button to do the same thing, so its
 	effect can be overrided too. Fixes: NB#58982
 
-2007-05-30  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+2007-05-30  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com>
 
 	* src/hildon-caption.c: Implementing the proper focus grabbing in the
-	HildonCaption. Fixes NB#52379. 
+	HildonCaption. Fixes NB#52379.
 
 2007-05-30  Xan Lopez  <xan.lopez@nokia.com>
 
@@ -2245,29 +2245,29 @@
 	is removed and the user still lets the default handler run. This would segfault
 	previously.
 
-2007-05-28  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+2007-05-28  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com>
 
 	* src/hildon-font-selection-dialog.c: When the font is really big, add the
 	scrollbar to the preview dialog. Fixes NB#54147.
 
-2007-05-28  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+2007-05-28  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com>
 
 	* src/hildon-date-editor.c: Changing the default max year to 2037. The
 	max/min year properties can be altered, so the client can modify it
 	anyways. 1970 - 2037 sounds like a sane default. Fixes NB#54147.
 
-2007-05-28  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+2007-05-28  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com>
 
 	* src/hildon-calendar.c: Removing the unused 'hildonlike' property, making
 	hildonlike by default. Fixing a problem with disappearing arrows when
-	scrolling through months and years. Fixes NB#54127. 
+	scrolling through months and years. Fixes NB#54127.
 
-2007-05-28  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+2007-05-28  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com>
 
 	* examples/hildon-date-editor-example.c: Adding error callback to the date
-	editor example. 
+	editor example.
 
-2007-05-25  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+2007-05-25  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com>
 
 	[1.0.7-1 release]
 
@@ -2275,7 +2275,7 @@
 	* debian/changelog:
 	* configure.ac: Updating.
 
-2007-05-24  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+2007-05-24  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com>
 
 	* configure.ac: Adding a special '--enable-xan' configure option that
 	turns off the -Werror compilation setting. Usefull for development.
@@ -2290,7 +2290,7 @@
 	* src/hildon-note.c (hildon_note_init): Use g_object_ref_sink
 	instead of g_object_ref + gtk_object_sink.
 
-2007-05-22  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+2007-05-22  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com>
 
 	[1.0.6-1 release]
 
@@ -2298,36 +2298,36 @@
 	* configure.ac:
 	* debian/changelog: Updating.
 
-2007-05-21  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+2007-05-21  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com>
 
 	* src/hildon-color-chooser-dialog.c:
 	* src/hildon-color-chooser.c: A few more GdkColor struct allocation fixes
 	straight from Tommi labs.
 
-2007-05-21  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+2007-05-21  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com>
 
 	* examples/hildon-finger-example.c: Correcting the header file path.
 
-	* src/hildon-color-chooser-dialog.c: Allocate the color on the stack for 
+	* src/hildon-color-chooser-dialog.c: Allocate the color on the stack for
 	the changed signal. Fixes a small memory leak.
 
-2007-05-21  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+2007-05-21  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com>
 
 	* autogen.sh:
 	* debian/rules:
 	* src/hildon-banner.c: Importing several usefull fixes from the
 	ubuntu-mobile branch.
 
-2007-05-21  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+2007-05-21  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com>
 
 	* examples/Makefile.am:
 	* examples/hildon-finger-example.c: Adding a finger-checking code
-	example. 
+	example.
 
 	* src/hildon-font-selection-dialog.c: Do not allocate the color
 	structure using the g_new. Fixes NB#54061.
 
-2007-05-09  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+2007-05-09  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com>
 
 	* src/hildon-helper.c: Correcting tabs in file.
 
@@ -2338,7 +2338,7 @@
 
 	* examples/hildon-bread-crumb-trail-example.c: Plug leak.
 
-2007-05-07  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+2007-05-07  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com>
 
 	[1.0.5-1 release]
 
@@ -2349,16 +2349,16 @@
 2007-05-04  Xan Lopez  <xan.lopez@nokia.com>
 
 	* src/hildon-bread-crumb-trail.c:
-	(hildon_bread_crumb_trail_size_allocate): 
+	(hildon_bread_crumb_trail_size_allocate):
 
 	Make the back button always a square.
 
 2007-05-04  Xan Lopez  <xan.lopez@nokia.com>
 
 	* src/hildon-bread-crumb-trail.h: Include hildon-bread-crumb-widget.h
-	from the .c file as it's a private file. 
+	from the .c file as it's a private file.
 
-2007-05-03  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+2007-05-03  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com>
 
 	* examples/hildon-vvolumebar-example.c: The VVolumebar example now
 	uses slightly bigger height.
@@ -2366,10 +2366,10 @@
 	* src/hildon-font-selection-dialog.c: Adding some checks before
 	freeing memory in the font selection dialog.
 
-2007-05-02  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+2007-05-02  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com>
 
 	* src/hildon-font-selection-dialog.c: Adding a small check when
-	freeing memory. 
+	freeing memory.
 
 	* src/hildon-wizard-dialog.c: Applying a patch by Iain Holmes to fix
 	buttons sensitivity on page switching.
@@ -2379,7 +2379,7 @@
 	* src/hildon-bread-crumb-trail.c: make the add method handle all the
 	internal details of adding a bread crumb to the trail.
 
-2007-04-26  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+2007-04-26  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com>
 
 	[1.0.4-1 release]
 
@@ -2391,7 +2391,7 @@
 	* src/hildon-bread-crumb.h: Changing the API guard to
 	HILDON_ENABLE_UNSTABLE_API.
 
-2007-04-26  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+2007-04-26  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com>
 
 	[1.0.3-1 release]
 
@@ -2401,7 +2401,7 @@
 	* debian/rules:
 	* src/hildon-helper.h: Updating.
 
-2007-04-25  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+2007-04-25  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com>
 
 	[1.0.2-1 release]
 
@@ -2409,7 +2409,7 @@
 	* configure.ac:
 	* debian/changelog:
 
-2007-04-25  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+2007-04-25  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com>
 
 	* README:
 	* configure.ac:
@@ -2422,9 +2422,9 @@
 
 	Guard with ENABLE_UNSTABLE_API. To use the bread crumb you'll need
 	to define ENABLE_UNSTABLE_API in the code that includes these headers.
-	
+
 2007-04-25  Xan Lopez  <xan.lopez@nokia.com>
-	
+
 	* examples/hildon-bread-crumb-trail-example.c:
 	* src/Makefile.am:
 	* src/hildon-bread-crumb-trail.c:
@@ -2442,12 +2442,12 @@
 
 	The generic push API is still available, so anyone can implement
 	and use its own bread crumb widget.
-	
-2007-04-19  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+
+2007-04-19  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com>
 
 	* debian/rules: Fixing the shlibs.
 
-2007-04-19  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+2007-04-19  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com>
 
 	* src/hildon-banner.c: Fixing a problem with timed banners having
 	their parrent destroyed before they are.
@@ -2466,7 +2466,7 @@
 
 	Some cleanups.
 
-2007-04-16  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+2007-04-16  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com>
 
 	[1.0.1-1 release]
 
@@ -2487,7 +2487,7 @@
 
 	Fix example.
 
-2007-04-16  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+2007-04-16  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com>
 
 	* debian/changelog: Removing the bug-fixed entries that were actually
 	resolved as WONTFIX.
@@ -2503,7 +2503,7 @@
 	* src/hildon-bread-crumb.h:
 
 	Untabify.
-	
+
 2007-04-13  Xan Lopez  <xan.lopez@nokia.com>
 
 	* src/hildon-bread-crumb-trail.c: don't use the priv data of bct
@@ -2514,7 +2514,7 @@
 	* examples/hildon-bread-crumb-trail-example.c
 
 	Add license.
-	
+
 2007-04-12  Xan Lopez  <xan.lopez@nokia.com>
 
 	* examples/Makefile.am
@@ -2548,7 +2548,7 @@
 	* src/hildon-calendar.c (hildon_calendar_paint_week_numbers,
 	hildon_calendar_drag_data_received): fixed some build warnings.
 
-2007-03-29  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com> 
+2007-03-29  Michael Dominic Kostrzewa  <michael.kostrzewa@nokia.com>
 
 	* debian/changelog: A 1.0.0 release notes.
 
