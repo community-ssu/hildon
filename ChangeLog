@@ -1,5 +1,10 @@
 2008-08-11  Alberto Garcia  <agarcia@igalia.com>
 
+	* examples/hildon-picker-button-multicolumn-example.c
+	(create_touch_selector): Fix compilation warning.
+
+2008-08-11  Alberto Garcia  <agarcia@igalia.com>
+
 	* src/hildon-pannable-area.c (hildon_pannable_area_button_press_cb)
 	(hildon_pannable_area_button_release_cb)
 	(hildon_pannable_get_child_widget_at): Fix compilation warnings.

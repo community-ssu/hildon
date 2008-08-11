@@ -22,7 +22,7 @@
 
 #include "hildon-picker-button.h"
 
-GtkWidget *
+static GtkWidget *
 create_touch_selector (void)
 {
   GtkWidget *selector;
