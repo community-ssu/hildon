@@ -50,7 +50,7 @@
  * gtk_dialog_run (dialog);
  * <!-- -->
  * hildon_date_editor_get_date (HILDON_DATE_EDITOR (date_editor), &amp;y, &amp;m, &amp;d);
- * g_debug ("Date: %u-%u-%u", y, m, d);
+ * g_debug ("Date: &percnt;u-&percnt;u-&percnt;u", y, m, d);
  * <!-- -->
  * </programlisting>
  * </example>

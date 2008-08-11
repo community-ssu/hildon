@@ -166,7 +166,6 @@ hildon_touch_selector_entry_new (void)
 
 /**
  * hildon_touch_selector_entry_new_text:
- * @void:
  *
  * Creates a #HildonTouchSelectorEntry with a single text column that
  * can be populated conveniently through hildon_touch_selector_append_text(),

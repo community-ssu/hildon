@@ -89,7 +89,7 @@ gboolean hildon_touch_selector_append_column          (HildonTouchSelector * sel
                                                        ...);
 
 void hildon_touch_selector_set_column_attributes      (HildonTouchSelector * selector,
-                                                       gint column,
+                                                       gint num_column,
                                                        GtkCellRenderer * cell_renderer,
                                                        ...);
 

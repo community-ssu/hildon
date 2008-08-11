@@ -1,5 +1,17 @@
 2008-08-11  Alberto Garcia  <agarcia@igalia.com>
 
+	* src/hildon-bread-crumb-trail.h
+	* src/hildon-date-editor.c
+	* src/hildon-date-selector.c
+	* src/hildon-pannable-area.c
+	* src/hildon-picker-dialog.c
+	* src/hildon-time-selector.c
+	* src/hildon-touch-selector-entry.c
+	* src/hildon-touch-selector.c
+	* src/hildon-touch-selector.h: Misc documentation fixes
+
+2008-08-11  Alberto Garcia  <agarcia@igalia.com>
+
 	* examples/hildon-date-editor-example.c (main): Updated date
 	editor example.
 

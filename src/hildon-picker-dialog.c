@@ -294,7 +294,7 @@ requires_done_button (HildonPickerDialog * dialog)
 
 /**
  * hildon_picker_dialog_new:
- * @:
+ * @parent: the parent window
  *
  * Creates a new #HildonPickerDialog
  *

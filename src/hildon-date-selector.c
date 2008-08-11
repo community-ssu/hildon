@@ -608,7 +608,6 @@ _month_days (gint month, gint year)
 
 /**
  * hildon_date_selector_new:
- * @:
  *
  * Creates a new #HildonDateSelector
  *

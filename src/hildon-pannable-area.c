@@ -473,7 +473,7 @@ hildon_pannable_axis_scroll (HildonPannableArea *area,
 
   dist = gtk_adjustment_get_value (adjust) - inc;
 
-  /** Overshooting
+  /* Overshooting
    * We use overshot_dist to define the distance of the current overshoot,
    * and overshooting to define the direction/whether or not we are overshot
    */
@@ -1959,18 +1959,20 @@ hildon_pannable_area_add_with_viewport (HildonPannableArea * area,
  * the following example shows how to scroll inside a #GtkTreeView to
  * make visible an item, indicated by the #GtkTreeIter @iter.
  *
- * <informalexample><programlisting>
+ * <example>
+ * <programlisting>
  *  GtkTreePath *path;
  *  GdkRectangle *rect;
- *
- *  path = gtk_tree_model_get_path (model, &iter);
+ *  <!-- -->
+ *  path = gtk_tree_model_get_path (model, &amp;iter);
  *  gtk_tree_view_get_background_area (GTK_TREE_VIEW (treeview),
- *                                     path, NULL, &rect);
+ *                                     path, NULL, &amp;rect);
  *  gtk_tree_view_convert_bin_window_to_tree_coords (GTK_TREE_VIEW (treeview),
- *                                                   0, rect.y, NULL, &y);
+ *                                                   0, rect.y, NULL, &amp;y);
  *  hildon_pannable_area_scroll_to (panarea, -1, y);
  *  gtk_tree_path_free (path);
- * </programlisting></informalexample>
+ * </programlisting>
+ * </example>
  *
  * If you want to present a child widget in simpler scenarios,
  * use hildon_pannable_area_scroll_to_child() instead.

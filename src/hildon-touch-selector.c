@@ -63,7 +63,7 @@ G_DEFINE_TYPE (HildonTouchSelector, hildon_touch_selector, GTK_TYPE_VBOX)
 
 #define CENTER_ON_SELECTED_ITEM_DELAY 50
 
-/**
+/*
  * Struct to maintain the data of each column. The columns are the elements
  * of the widget that belongs properly to the selection behaviour. As
  * the selector contents are arranged in a #GtkHBox, you can add more widgets, like buttons etc.
@@ -460,7 +460,6 @@ _create_new_column (HildonTouchSelector * selector,
 
 /**
  * hildon_touch_selector_new:
- * @void:
  *
  * Creates a new empty #HildonTouchSelector.
  *
@@ -474,7 +473,6 @@ hildon_touch_selector_new (void)
 
 /**
  * hildon_touch_selector_new_text:
- * @void: 
  *
  * Creates a #HildonTouchSelector with a single text column that
  * can be populated conveniently through hildon_touch_selector_append_text(),

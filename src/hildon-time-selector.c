@@ -363,7 +363,6 @@ _set_pm (HildonTimeSelector * selector, gboolean pm)
 
 /**
  * hildon_time_selector_new:
- * @:
  *
  * Creates a new #HildonTimeSelector
  *
@@ -375,7 +374,7 @@ hildon_time_selector_new ()
   return g_object_new (HILDON_TYPE_TIME_SELECTOR, NULL);
 }
 
-/**
+/*
  * hours (0-23)
  * minutes (0-59)
  */
