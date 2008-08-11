@@ -54,6 +54,7 @@ noinst_PROGRAMS				= hildon-window-example				\
 					  hildon-picker-button-example			\
 					  hildon-picker-button-multicolumn-example	\
 					  hildon-time-button-example			\
+					  hildon-check-button-example			\
 					  hildon-touch-selector-example			\
 					  hildon-touch-selector-entry-example
 
@@ -321,6 +322,11 @@ hildon_picker_button_multicolumn_example_SOURCES= hildon-picker-button-multicolu
 hildon_time_button_example_LDADD	= $(HILDON_OBJ_LIBS)
 hildon_time_button_example_CFLAGS	= $(HILDON_OBJ_CFLAGS)
 hildon_time_button_example_SOURCES	= hildon-time-button-example.c
+
+# Hildon check button
+hildon_check_button_example_LDADD	= $(HILDON_OBJ_LIBS)
+hildon_check_button_example_CFLAGS	= $(HILDON_OBJ_CFLAGS)
+hildon_check_button_example_SOURCES	= hildon-check-button-example.c
 
 # Hildon touch picker with multiselection
 hildon_touch_selector_example_LDADD	= $(HILDON_OBJ_LIBS)

@@ -1,5 +1,11 @@
 2008-08-11  Alberto Garcia  <agarcia@igalia.com>
 
+	* examples/Makefile.am
+	* examples/hildon-check-button-example.c: Example of the hildon
+	check button.
+
+2008-08-11  Alberto Garcia  <agarcia@igalia.com>
+
 	* src/hildon-window.h
 	* src/hildon-window.c (hildon_window_class_init)
 	(hildon_window_unset_program): Don't make
