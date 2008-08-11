@@ -1,5 +1,14 @@
 2008-08-11  Alberto Garcia  <agarcia@igalia.com>
 
+	* src/hildon-window.h
+	* src/hildon-window.c (hildon_window_class_init)
+	(hildon_window_unset_program): Don't make
+	hildon_window_unset_program a virtual function anymore.
+
+	* src/hildon-stackable-window.c: Update documentation
+
+2008-08-11  Alberto Garcia  <agarcia@igalia.com>
+
 	* doc/Makefile.am
 	* doc/hildon-docs.sgml
 	* doc/visual_index.xml

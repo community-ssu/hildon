@@ -79,10 +79,10 @@ struct                                          _HildonWindowClass
 
     /* opera hacks for clip board operation */
     void (*clipboard_operation)(HildonWindow *hwindow, int operation);
-    void (*unset_program)(HildonWindow *hwindow);
     gboolean (*toggle_menu)(HildonWindow * self, guint button, guint32 time);
     /* Padding for future extension */
     void (*_hildon_reserved1)(void);
+    void (*_hildon_reserved2)(void);
 };
 
 GType G_GNUC_CONST

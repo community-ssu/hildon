@@ -41,10 +41,8 @@
  * void
  * show_first_window (void)
  * {
- *     HildonProgram *program;
  *     GtkWidget *win1;
  * <!-- -->
- *     program = hildon_program_get_instance ();
  *     win1 = hildon_stackable_window_new ();
  * <!-- -->
  *     // ... configure first window
@@ -55,10 +53,8 @@
  * void
  * show_second_window (void)
  * {
- *     HildonProgram *program;
  *     GtkWidget *win2;
  * <!-- -->
- *     program = hildon_program_get_instance ();
  *     win2 = hildon_stackable_window_new ();
  * <!-- -->
  *     // ... configure second window
@@ -94,6 +90,15 @@ hildon_stackable_window_get_going_home          (HildonStackableWindow *self)
     return priv->going_home;
 }
 
+/**
+ * hildon_stackable_window_set_main_menu:
+ * @self: a #HildonStackableWindow
+ * @menu: a #HildonAppMenu to be used for this window
+ *
+ * Sets the menu to be used for this window. Pass %NULL to remove the
+ * current menu. #HildonStackableWindow takes ownership of the passed
+ * menu and you're not supposed to free it yourself anymore.
+ **/
 void
 hildon_stackable_window_set_main_menu           (HildonStackableWindow *self,
                                                  HildonAppMenu *menu)
