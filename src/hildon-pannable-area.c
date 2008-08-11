@@ -348,7 +348,7 @@ hildon_pannable_area_button_press_cb (GtkWidget * widget,
   if ((priv->child) && (priv->child != gtk_bin_get_child (GTK_BIN (widget))->window)) {
 
     g_object_add_weak_pointer ((GObject *) priv->child,
-			       (gpointer *) & priv->child);
+			       (gpointer) & priv->child);
 
     event = (GdkEventButton *) gdk_event_copy ((GdkEvent *) event);
     event->x = x;
@@ -953,7 +953,7 @@ hildon_pannable_area_button_release_cb (GtkWidget * widget,
 		    event->y_root, event->time, FALSE);
   }
   g_object_remove_weak_pointer ((GObject *) priv->child,
-				(gpointer *) & priv->child);
+				(gpointer) & priv->child);
 
   priv->moved = FALSE;
   gdk_event_free ((GdkEvent *) event);
@@ -2216,7 +2216,7 @@ hildon_pannable_get_child_widget_at (HildonPannableArea *area,
     (gtk_bin_get_child (GTK_BIN (area))->window,
      x, y, NULL, NULL);
 
-  gdk_window_get_user_data (window, (void**) &child_widget);
+  gdk_window_get_user_data (window, (gpointer) &child_widget);
 
   return child_widget;
 }

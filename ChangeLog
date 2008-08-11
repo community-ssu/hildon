@@ -1,5 +1,11 @@
 2008-08-11  Alberto Garcia  <agarcia@igalia.com>
 
+	* src/hildon-pannable-area.c (hildon_pannable_area_button_press_cb)
+	(hildon_pannable_area_button_release_cb)
+	(hildon_pannable_get_child_widget_at): Fix compilation warnings.
+
+2008-08-11  Alberto Garcia  <agarcia@igalia.com>
+
 	* src/hildon-button.c (hildon_button_add_image_size_group): Fix
 	assertion.
 
