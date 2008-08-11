@@ -1,3 +1,15 @@
+2008-08-11  Alberto Garcia  <agarcia@igalia.com>
+
+	* examples/hildon-date-editor-example.c (main): Updated date
+	editor example.
+
+	* examples/hildon-note-example.c (on_confirmation_clicked):
+	Updated confirmation note example.
+
+	* src/hildon-date-editor.c
+	* src/hildon-note.c: Updated sample programs in documentation.
+	Fixes: NB#87437
+
 2008-08-08  Claudio Saavedra  <csaavedra@igalia.com>
 
 	* src/hildon-date-button.h:

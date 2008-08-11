@@ -41,18 +41,25 @@ on_error (GtkWidget *widget, HildonDateTimeError error_type)
 int
 main (int argc, char **args)
 {
+    guint y, m, d;
+
     gtk_init (&argc, &args);
     
     GtkDialog *dialog = GTK_DIALOG (gtk_dialog_new ());
     HildonDateEditor *date_editor = HILDON_DATE_EDITOR (hildon_date_editor_new ());
 
-    gtk_box_pack_start (GTK_BOX (dialog->vbox), GTK_WIDGET (date_editor), FALSE, FALSE, 0);
+    gtk_box_pack_start (GTK_BOX (dialog->vbox), gtk_label_new ("Choose a date"), FALSE, FALSE, 10);
+    gtk_box_pack_start (GTK_BOX (dialog->vbox), GTK_WIDGET (date_editor), FALSE, FALSE, 10);
     gtk_dialog_add_button (dialog, "Close", GTK_RESPONSE_CANCEL);
 
     g_signal_connect (G_OBJECT (date_editor), "date_error", G_CALLBACK (on_error), NULL);
         
     gtk_widget_show_all (GTK_WIDGET (dialog));
     gtk_dialog_run (dialog);
+
+    hildon_date_editor_get_date (date_editor, &y, &m, &d);
+
+    g_debug ("Date: %u-%u-%u", y, m, d);
     
     return 0;
 }

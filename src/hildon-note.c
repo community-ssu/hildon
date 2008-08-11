@@ -34,15 +34,24 @@
  * <title>HildonNote example</title>
  * <programlisting>
  * <!-- -->
- * hildon_note_new_confirmation (window, "Confirmation message...");
+ * gboolean
+ * show_confirmation_note (GtkWindow *parent)
+ * {
+ *   gint retcode;
+ *   GtkWidget *note;
+ *   note = hildon_note_new_confirmation (parent, "Confirmation message...");
  * <!-- -->
- * i = gtk_dialog_run (GTK_DIALOG (note));
- * gtk_widget_destroy (GTK_WIDGET (note));
+ *   retcode = gtk_dialog_run (GTK_DIALOG (note));
+ *   gtk_widget_destroy (note);
  * <!-- -->
- * if (i == GTK_RESPONSE_OK)
- *      gtk_infoprint (window, "User pressed 'OK' button'");
- * else
- *      gtk_infoprint (window, "User pressed 'Cancel' button" );
+ *   if (retcode == GTK_RESPONSE_OK) {
+ *        g_debug ("User pressed 'OK' button'");
+ *        return TRUE;
+ *   } else {
+ *        g_debug ("User pressed 'Cancel' button");
+ *        return FALSE;
+ *   }
+ * }
  * </programlisting>
  * </example>
  */

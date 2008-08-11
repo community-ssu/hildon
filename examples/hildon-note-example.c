@@ -45,12 +45,18 @@ on_information_clicked                          (GtkWidget *widget)
 static gboolean
 on_confirmation_clicked                         (GtkWidget *widget)
 {
+    gint i;
     HildonNote* note = HILDON_NOTE (hildon_note_new_confirmation (NULL, 
             "Do you want to confirm?!"));
 
-    gtk_dialog_run (GTK_DIALOG (note));
+    i = gtk_dialog_run (GTK_DIALOG (note));
     gtk_object_destroy (GTK_OBJECT (note));
     
+    if (i == GTK_RESPONSE_OK)
+        g_debug ("Button 'OK' pressed");
+    else
+        g_debug ("Button 'Cancel' pressed");
+
     return TRUE;
 }
 

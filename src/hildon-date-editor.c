@@ -35,11 +35,22 @@
  *
  * <example>
  * <programlisting>
- * gint y, m, d;
+ * guint y, m, d;
+ * GtkDialog *dialog;
+ * GtkWidget *date_editor;
  * <!-- -->
+ * dialog = GTK_DIALOG (gtk_dialog_new ());
  * date_editor = hildon_date_editor_new ();
  * <!-- -->
- * hildon_date_editor_get_date(date_editor, &amp;y, &amp;m, &amp;d);
+ * gtk_box_pack_start (GTK_BOX (dialog->vbox), gtk_label_new ("Choose a date"), FALSE, FALSE, 10);
+ * gtk_box_pack_start (GTK_BOX (dialog->vbox), date_editor, FALSE, FALSE, 10);
+ * gtk_dialog_add_button (dialog, "Close", GTK_RESPONSE_CANCEL);
+ * <!-- -->
+ * gtk_widget_show_all (GTK_WIDGET (dialog));
+ * gtk_dialog_run (dialog);
+ * <!-- -->
+ * hildon_date_editor_get_date (HILDON_DATE_EDITOR (date_editor), &amp;y, &amp;m, &amp;d);
+ * g_debug ("Date: %u-%u-%u", y, m, d);
  * <!-- -->
  * </programlisting>
  * </example>
