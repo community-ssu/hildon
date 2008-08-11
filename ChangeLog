@@ -1,5 +1,10 @@
 2008-08-11  Alberto Garcia  <agarcia@igalia.com>
 
+	* src/hildon-button.c (hildon_button_add_image_size_group): Fix
+	assertion.
+
+2008-08-11  Alberto Garcia  <agarcia@igalia.com>
+
 	* src/hildon-bread-crumb-trail.h
 	* src/hildon-date-editor.c
 	* src/hildon-date-selector.c

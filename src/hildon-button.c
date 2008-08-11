@@ -275,9 +275,10 @@ hildon_button_add_image_size_group              (HildonButton *button,
 
     g_return_if_fail (HILDON_IS_BUTTON (button));
     g_return_if_fail (GTK_IS_SIZE_GROUP (size_group));
-    g_return_if_fail (GTK_IS_WIDGET (priv->image));
 
     priv = HILDON_BUTTON_GET_PRIVATE (button);
+
+    g_return_if_fail (GTK_IS_WIDGET (priv->image));
 
     gtk_size_group_add_widget (size_group, GTK_WIDGET (priv->image));
 }
