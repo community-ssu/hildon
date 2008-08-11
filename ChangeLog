@@ -1,5 +1,15 @@
 2008-08-11  Alberto Garcia  <agarcia@igalia.com>
 
+	* doc/Makefile.am
+	* doc/hildon-docs.sgml
+	* doc/visual_index.xml
+	* src/hildon-defines.c
+	* src/hildon-gtk.c
+	* src/hildon-helper.c
+	* src/hildon-range-editor.c: Lots of documentation fixes.
+
+2008-08-11  Alberto Garcia  <agarcia@igalia.com>
+
 	* examples/hildon-picker-button-multicolumn-example.c
 	(create_touch_selector): Fix compilation warning.
 

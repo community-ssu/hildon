@@ -547,7 +547,7 @@ hildon_range_editor_entry_focus_in              (GtkEditable *editable,
     return FALSE;
 }
 
-/* Gets and sets the current range. This has two usefull side effects:
+/* Gets and sets the current range. This has two useful side effects:
  * Values are now sorted to the correct order
  * Out of range values are clamped to range */
 static void 

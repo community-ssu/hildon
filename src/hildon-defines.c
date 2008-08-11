@@ -24,7 +24,7 @@
 
 /**
  * SECTION:hildon-defines
- * @short_description: A collection of usefull defines. 
+ * @short_description: A collection of useful defines.
  *
  */
 

@@ -36,7 +36,7 @@
                                                 (HILDON_WIDTH_FULLSCREEN / 2)
 
 /**
- * hildon_gtk_widget_set_theme_size
+ * hildon_gtk_widget_set_theme_size:
  * @widget: A #GtkWidget
  * @size: Flags indicating the size of the widget
  *

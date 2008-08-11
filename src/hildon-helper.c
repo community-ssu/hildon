@@ -24,12 +24,11 @@
 
 /**
  * SECTION:hildon-helper
- * @short_description: A collection of usefull utilities and functions.
+ * @short_description: A collection of useful utilities and functions.
  *
- * Hildon provides some helper functions that can be used for commonly 
- * performed tasks and functionality blocks. This includes operations 
+ * Hildon provides some helper functions that can be used for commonly
+ * performed tasks and functionality blocks. This includes operations
  * on widget styles and probing functions for touch events.
- *
  */
 
 #ifdef                                          HAVE_CONFIG_H
@@ -269,11 +268,11 @@ hildon_change_style_recursive_from_list         (GtkWidget *widget,
 
 /**
  * hildon_helper_event_button_is_finger:
- * @event: A @gtkeventbutton to check
+ * @event: A #GtkEventButton to check
  *
  * Checks if the given button event is a finger event.
- * 
- * return value : TRUE if the event is a finger event.
+ *
+ * Return value: TRUE if the event is a finger event.
  **/
 gboolean 
 hildon_helper_event_button_is_finger            (GdkEventButton *event)
@@ -299,17 +298,17 @@ hildon_helper_event_button_is_finger            (GdkEventButton *event)
 
 /**
  * hildon_helper_set_logical_font:
- * @widget : a @gtkwidget to assign this logical font for.
- * @logicalfontname : a gchar* with the logical font name to assign to the widget.
- * 
+ * @widget: a #GtkWidget to assign this logical font for.
+ * @logicalfontname: a gchar* with the logical font name to assign to the widget.
+ *
  * This function assigns a defined logical font to the @widget and all its child widgets.
- * it also connects to the "style_set" signal which will retrieve & assign the new font 
- * for the given logical name each time the theme is changed.
- * The returned signal id can be used to disconnect the signal. 
- * When calling multiple times the previous signal (obtained by calling this function) is disconnected 
- * automatically and should not be used. 
- * 
- * return value : the signal id that is triggered every time theme is changed. 0 if font set failed.
+ * it also connects to the "style_set" signal which will retrieve & assign the new font
+ * for the given logical name each time the theme is changed
+ * The returned signal id can be used to disconnect the signal.
+ * When calling multiple times the previous signal (obtained by calling this function) is disconnected
+ * automatically and should not be used.
+ *
+ * Return value: the signal id that is triggered every time theme is changed. 0 if font set failed.
  **/
 gulong
 hildon_helper_set_logical_font                  (GtkWidget *widget, 
@@ -368,14 +367,13 @@ show_insensitive_message                        (GtkWidget *widget,
 
 
 /**
- * hildon_helper_set_insensitive_message
- * @widget : A @GtkWidget to assign a banner to
+ * hildon_helper_set_insensitive_message:
+ * @widget: A #GtkWidget to assign a banner to
  * @message: A message to display to the user
  *
- * This function assigns an insensitive message to a @widget. When the @widget is 
+ * This function assigns an insensitive message to a @widget. When the @widget is
  * in an insensitive state and the user activates it, the @message will be displayed
- * using a standard @HildonBanner. 
- *
+ * using a standard #HildonBanner.
  **/
 void
 hildon_helper_set_insensitive_message           (GtkWidget *widget,
@@ -401,13 +399,12 @@ hildon_helper_set_insensitive_message           (GtkWidget *widget,
 }
 
 /**
- * hildon_helper_set_insensitive_messagef
- * @widget : A @GtkWidget to assign a banner to
- * @format : a printf-like format string
- * @varargs : arguments for the format string
+ * hildon_helper_set_insensitive_messagef:
+ * @widget: A #GtkWidget to assign a banner to
+ * @format: a printf-like format string
+ * @Varargs: arguments for the format string
  *
  * A version of hildon_helper_set_insensitive_message with string formatting.
- *
  **/
 void
 hildon_helper_set_insensitive_messagef          (GtkWidget *widget,
@@ -430,10 +427,10 @@ hildon_helper_set_insensitive_messagef          (GtkWidget *widget,
 
 /**
  * hildon_helper_set_logical_color:
- * @widget : A @GtkWidget to assign this logical font for.
- * @rcflags : @GtkRcFlags enumeration defining whether to assign to FG, BG, TEXT or BASE style.
- * @state : @GtkStateType indicating to which state to assign the logical color
- * @logicalcolorname : A gchar* with the logical font name to assign to the widget.
+ * @widget: A #GtkWidget to assign this logical font for.
+ * @rcflags: #GtkRcFlags enumeration defining whether to assign to FG, BG, TEXT or BASE style.
+ * @state: #GtkStateType indicating to which state to assign the logical color
+ * @logicalcolorname: A gchar* with the logical font name to assign to the widget.
  * 
  * This function assigns a defined logical color to the @widget and all it's child widgets.
  * It also connects to the "style_set" signal which will retrieve & assign the new color 
@@ -444,7 +441,7 @@ hildon_helper_set_insensitive_messagef          (GtkWidget *widget,
  * 
  * Example : If the style you want to modify is bg[NORMAL] then set rcflags to GTK_RC_BG and state to GTK_STATE_NORMAL.
  * 
- * Return value : The signal id that is triggered every time theme is changed. 0 if color set failed.
+ * Return value: The signal id that is triggered every time theme is changed. 0 if color set failed.
  **/
 gulong 
 hildon_helper_set_logical_color                 (GtkWidget *widget, 
@@ -478,16 +475,15 @@ hildon_helper_set_logical_color                 (GtkWidget *widget,
 
 
 /**
- *
- * hildon_helper_set_thumb_scrollbar
- * @win: A @GtkScrolledWindow to use as target
+ * hildon_helper_set_thumb_scrollbar:
+ * @win: A #GtkScrolledWindow to use as target
  * @thumb: TRUE to enable the thumb scrollbar, FALSE to disable
  *
  * This function enables a thumb scrollbar on a given scrolled window. It'll convert the
- * existing normal scrollbar into a larger, finger-usable scrollbar that works without a stylus. 
- * As fingerable list rows are fairly high, consider using the whole available vertical space 
- * of your application for the content in order to have as many rows as possible 
- * visible on the screen at once. 
+ * existing normal scrollbar into a larger, finger-usable scrollbar that works without a stylus.
+ * As fingerable list rows are fairly high, consider using the whole available vertical space
+ * of your application for the content in order to have as many rows as possible
+ * visible on the screen at once.
  *
  * Finger-Sized scrollbar should always be used together with finger-sized content.
  **/
