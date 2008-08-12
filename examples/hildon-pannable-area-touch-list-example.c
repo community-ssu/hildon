@@ -80,13 +80,21 @@ create_tree_view (HildonUIMode  mode,
   GtkWidget *tree_view;
   GtkCellRenderer *renderer;
   GtkTreeSelection *selection;
+  GtkTreeModel *model;
 
-  tree_view = g_object_new (GTK_TYPE_TREE_VIEW,
-                            "model", create_model (),
-                            "name", name,
-                            "hildon-ui-mode", mode,
-                            "rules-hint", TRUE,
-                            NULL);
+  if (name && g_str_equal (name, "fremantle-widget"))
+      tree_view = hildon_gtk_tree_view_new (mode);
+  else
+      tree_view = gtk_tree_view_new ();
+
+  if (name)
+    gtk_widget_set_name (tree_view, name);
+
+  gtk_tree_view_set_rules_hint (GTK_TREE_VIEW (tree_view), TRUE);
+
+  model = create_model ();
+  gtk_tree_view_set_model (GTK_TREE_VIEW (tree_view), model);
+  g_object_unref (model);
 
   selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (tree_view));
   if (multi_select)

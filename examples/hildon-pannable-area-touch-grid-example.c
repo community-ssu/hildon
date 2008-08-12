@@ -70,12 +70,19 @@ create_icon_view (HildonUIMode  mode,
 {
   GtkWidget *icon_view;
   GtkCellRenderer *renderer;
+  GtkTreeModel *model;
 
-  icon_view = g_object_new (GTK_TYPE_ICON_VIEW,
-                            "model", create_model (),
-                            "name", name,
-                            "hildon-ui-mode", mode,
-                            NULL);
+  if (name && g_str_equal (name, "fremantle-widget"))
+      icon_view = hildon_gtk_icon_view_new (mode);
+  else
+      icon_view = gtk_icon_view_new ();
+
+  if (name)
+    gtk_widget_set_name (icon_view, name);
+
+  model = create_model ();
+  gtk_icon_view_set_model (GTK_ICON_VIEW (icon_view), model);
+  g_object_unref (model);
 
   if (multi_select)
     gtk_icon_view_set_selection_mode (GTK_ICON_VIEW (icon_view),
