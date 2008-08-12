@@ -2,13 +2,13 @@ Source: libhildon
 Section: x11
 Priority: optional
 Maintainer: Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>
-Build-Depends: debhelper (>= 4.0.0), pkg-config, libgtk2.0-dev (>= 2.10.12-0osso16), libcanberra-dev, libxi-dev, libxt-dev, libpng12-dev, libgconf2-dev, gtk-doc-tools, libgtk2.0-doc, libglib2.0-doc
+Build-Depends: debhelper (>= 4.0.0), pkg-config, libgtk2.0-dev (>= 2:2.12.9-0osso3), libcanberra-dev, libxi-dev, libxt-dev, libpng12-dev, libgconf2-dev, gtk-doc-tools, libgtk2.0-doc, libglib2.0-doc
 Standards-Version: 3.6.0
 
 Package: libhildon1-dev
 Section: devel
 Architecture: any
-Depends: libhildon1 (= ${Source-Version}), libgtk2.0-dev (>= 2.10.12-0osso16), libesd0-dev | osso-esd-dev, libgconf2-dev
+Depends: libhildon1 (= ${Source-Version}), libgtk2.0-dev (>= 2:2.12.9-0osso3), libesd0-dev | osso-esd-dev, libgconf2-dev
 Description: Hildon libraries development files
 
 Package: libhildon1

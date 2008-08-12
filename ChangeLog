@@ -1,3 +1,9 @@
+2008-08-12  Alberto Garcia  <agarcia@igalia.com>
+
+	* debian/control: Depend on Gtk 2:2.12.9-0osso3
+
+	* configure.ac: Require Gtk+ 2.12.9 at least
+
 2008-08-12  Alejandro G. Castro	 <alex@igalia.com>
 
 	* src/hildon-pannable-area.c
