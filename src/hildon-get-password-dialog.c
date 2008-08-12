@@ -71,17 +71,16 @@
 #include                                        <config.h>
 #endif
 
-#include                                        "hildon-get-password-dialog.h"
-#include                                        <glib.h>
 #include                                        <errno.h>
 #include                                        <string.h>
 #include                                        <strings.h>
 #include                                        <unistd.h>
 #include                                        <stdio.h>
-#include                                        <gtk/gtk.h>
+#include                                        <libintl.h>
+
+#include                                        "hildon-get-password-dialog.h"
 #include                                        "hildon-caption.h"
 #include                                        "hildon-banner.h"
-#include                                        <libintl.h>
 #include                                        "hildon-get-password-dialog-private.h"
 
 #define                                         _(String) dgettext("hildon-libs", String)

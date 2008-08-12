@@ -21,7 +21,6 @@
 #ifndef _HILDON_TOUCH_SELECTOR_ENTRY
 #define _HILDON_TOUCH_SELECTOR_ENTRY
 
-#include <glib-object.h>
 #include "hildon-touch-selector.h"
 
 G_BEGIN_DECLS

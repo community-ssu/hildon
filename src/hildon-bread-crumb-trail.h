@@ -27,6 +27,7 @@
 #define __HILDON_BREAD_CRUMB_TRAIL_H__
 
 #include <gtk/gtk.h>
+
 #include "hildon-bread-crumb.h"
 
 G_BEGIN_DECLS

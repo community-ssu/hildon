@@ -25,9 +25,7 @@
 #ifndef                                         __HILDON_DIALOG_H__
 #define                                         __HILDON_DIALOG_H__
 
-#include                                        <glib.h>
-#include                                        <glib-object.h>
-#include                                        <gtk/gtkdialog.h>
+#include                                        <gtk/gtk.h>
 
 #include                                        "hildon-defines.h"
 

@@ -64,15 +64,16 @@
 #include                                        <config.h>
 #endif
 
-#include                                        "hildon-calendar-popup.h"
-#include                                        "hildon-calendar.h"
-#include                                        <gtk/gtk.h>
-#include                                        <gdk/gdk.h>
-#include                                        <gdk/gdkkeysyms.h>
 #include                                        <langinfo.h>
 #include                                        <time.h>
 #include                                        <libintl.h>
+
+#include                                        <gtk/gtk.h>
+#include                                        <gdk/gdkkeysyms.h>
+
+#include                                        "hildon-calendar-popup.h"
 #include                                        "hildon-calendar-popup-private.h"
+#include                                        "hildon-calendar.h"
 
 #define                                         _(String)\
                                                 dgettext("hildon-libs", String)

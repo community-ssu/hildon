@@ -87,11 +87,10 @@
 #include                                        <config.h>
 #endif
 
-#include                                        "hildon-sort-dialog.h"
 #include                                        <stdio.h>
 #include                                        <libintl.h>
-#include                                        <gtk/gtkcombobox.h>
-#include                                        <gtk/gtkbox.h>
+
+#include                                        "hildon-sort-dialog.h"
 #include                                        "hildon-caption.h"
 #include                                        "hildon-sort-dialog-private.h"
 

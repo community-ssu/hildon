@@ -25,8 +25,7 @@
 #ifndef                                         __HILDON_FIND_TOOLBAR_H__
 #define                                         __HILDON_FIND_TOOLBAR_H__
 
-#include                                        <gtk/gtktoolbar.h>
-#include                                        <gtk/gtkliststore.h>
+#include                                        <gtk/gtk.h>
 
 G_BEGIN_DECLS
 

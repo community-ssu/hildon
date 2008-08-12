@@ -45,13 +45,15 @@
  * standard #GtkCalendar or use #HildonDateEditor for more higher-level date setting
  * operations.
  *
- */    
+ */
 
 #ifdef                                          HAVE_CONFIG_H
 #include                                        <config.h>
 #endif
 
 #define                                         _GNU_SOURCE /* needed for GNU nl_langinfo_l */
+
+#include                                        <locale.h>
 
 #ifdef                                          HAVE_SYS_TIME_H
 #include                                        <sys/time.h>
@@ -61,15 +63,13 @@
 #include                                        <stdlib.h>
 #include                                        <time.h>
 #include                                        <langinfo.h>
-#include                                        <locale.h>
+
 #include                                        <glib/gprintf.h>
+#include                                        <gdk/gdkkeysyms.h>
+#include                                        <gtk/gtkprivate.h>
 
 #include                                        "hildon-calendar.h"
 #include                                        "hildon-marshalers.h"
-#include                                        <gtk/gtkdnd.h>
-#include                                        <gtk/gtkmain.h>
-#include                                        <gdk/gdkkeysyms.h>
-#include                                        <gtk/gtkprivate.h>
 #include                                        "hildon-calendar-private.h"
 
 /***************************************************************************/

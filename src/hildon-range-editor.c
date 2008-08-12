@@ -43,17 +43,14 @@
 #include                                        <config.h>
 #endif
 
-#include                                        "hildon-range-editor.h"
-#include                                        <gtk/gtkbox.h>
-#include                                        <gtk/gtklabel.h>
-#include                                        <gtk/gtksignal.h>
-#include                                        <gtk/gtkentry.h>
-#include                                        <gdk/gdkkeysyms.h>
-#include                                        <glib/gprintf.h>
+#include                                        <libintl.h>
 #include                                        <string.h>
 #include                                        <stdlib.h>
+#include                                        <glib/gprintf.h>
+#include                                        <gdk/gdkkeysyms.h>
+
+#include                                        "hildon-range-editor.h"
 #include                                        "hildon-banner.h"
-#include                                        <libintl.h>
 #include                                        "hildon-range-editor-private.h"
 
 #define                                         _(string) \

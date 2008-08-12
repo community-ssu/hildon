@@ -24,8 +24,7 @@
 #ifndef                                         __HILDON_FONT_SELECTION_DIALOG_H__
 #define                                         __HILDON_FONT_SELECTION_DIALOG_H__
 
-#include                                        <gtk/gtkdialog.h>
-#include                                        <gtk/gtktextbuffer.h>
+#include                                        <gtk/gtk.h>
 
 G_BEGIN_DECLS
 

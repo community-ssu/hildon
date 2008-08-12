@@ -60,23 +60,20 @@
 #include                                        <config.h>
 #endif
 
-#include                                        "hildon-note.h"
-#include                                        <gtk/gtklabel.h>
-#include                                        <gtk/gtkimage.h>
-#include                                        <gtk/gtkhbox.h>
-#include                                        <gtk/gtkalignment.h>
-#include                                        <gtk/gtkvbox.h>
-#include                                        <gtk/gtkbutton.h>
+#include                                        <stdio.h>
+#include                                        <string.h>
 #include                                        <libintl.h>
+#include                                        <X11/X.h>
+#include                                        <X11/Xatom.h>
+#include                                        <gdk/gdkx.h>
+
+#include                                        "hildon-note.h"
 #include                                        "hildon-defines.h"
 #include                                        "hildon-sound.h"
 #include                                        "hildon-banner.h" 
 #include                                        "hildon-enum-types.h"
-#include                                        <stdio.h>
-#include                                        <string.h>
-#include                                        <X11/X.h>
-#include                                        <X11/Xatom.h>
 #include                                        "hildon-note-private.h"
+
 
 #define                                         CONFIRMATION_SOUND_PATH \
                                                 "/usr/share/sounds/ui-confirmation_note.wav"

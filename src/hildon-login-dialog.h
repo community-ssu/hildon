@@ -25,7 +25,7 @@
 #ifndef                                         __HILDON_NAME_PASSWORD_DIALOG_H__
 #define                                         __HILDON_NAME_PASSWORD_DIALOG_H__
 
-#include                                        <gtk/gtkdialog.h>
+#include                                        <gtk/gtk.h>
 
 G_BEGIN_DECLS
 

@@ -27,8 +27,6 @@
 #endif
 
 #include                                        "hildon-private.h"
-#include                                        <gtk/gtkwidget.h>
-#include                                        <gtk/gtkwindow.h>
 #include                                        "hildon-date-editor.h"
 #include                                        "hildon-time-editor.h"
 

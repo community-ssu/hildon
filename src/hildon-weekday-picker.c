@@ -62,7 +62,6 @@
 #include                                        <config.h>
 #endif
 
-#include                                        "hildon-weekday-picker.h"
 #include                                        <stdio.h>
 #include                                        <stdarg.h>
 #include                                        <sys/types.h>
@@ -70,11 +69,9 @@
 #include                                        <libintl.h>
 #include                                        <langinfo.h>
 #include                                        <time.h>
-#include                                        <gtk/gtksignal.h>
 #include                                        <gdk/gdkkeysyms.h>
-#include                                        <gtk/gtktogglebutton.h>
-#include                                        <gtk/gtksizegroup.h>
-#include                                        <gtk/gtkwindow.h>
+
+#include                                        "hildon-weekday-picker.h"
 #include                                        "hildon-private.h"
 #include                                        "hildon-weekday-picker-private.h"
 

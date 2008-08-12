@@ -25,7 +25,8 @@
 #ifndef                                         __HILDON_DATE_EDITOR_H__
 #define                                         __HILDON_DATE_EDITOR_H__
 
-#include                                        <gtk/gtkcontainer.h>
+#include                                        <gtk/gtk.h>
+
 #include                                        "hildon-time-editor.h"
 
 G_BEGIN_DECLS

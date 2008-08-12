@@ -53,6 +53,7 @@
 
 #include <string.h>
 #include <stdlib.h>
+
 #include "hildon-pannable-area.h"
 #include "hildon-touch-selector.h"
 

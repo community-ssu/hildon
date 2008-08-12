@@ -46,12 +46,12 @@
 #include                                        <config.h>
 #endif
 
-#include                                        "hildon-controlbar.h"
 #include                                        <math.h>
+#include                                        <libintl.h>
 #include                                        <gdk/gdk.h>
 #include                                        <gdk/gdkkeysyms.h>
-#include                                        <gtk/gtk.h>
-#include                                        <libintl.h>
+
+#include                                        "hildon-controlbar.h"
 #include                                        "hildon-controlbar-private.h"
 
 #define                                         _(string)\

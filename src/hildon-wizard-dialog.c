@@ -46,16 +46,10 @@
 #include                                        <config.h>
 #endif
 
-#include                                        "hildon-wizard-dialog.h"
-#include                                        <gtk/gtkdialog.h>
-#include                                        <gtk/gtknotebook.h>
-#include                                        <gtk/gtkimage.h>
-#include                                        <gtk/gtkbox.h>
-#include                                        <gtk/gtkhbox.h>
-#include                                        <gtk/gtkvbox.h>
-#include                                        <gtk/gtkbutton.h>
-#include                                        "hildon-defines.h"
 #include                                        <libintl.h>
+
+#include                                        "hildon-wizard-dialog.h"
+#include                                        "hildon-defines.h"
 #include                                        "hildon-wizard-dialog-private.h"
 
 #define                                         _(String) dgettext("hildon-libs", String)

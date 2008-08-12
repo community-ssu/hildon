@@ -79,12 +79,12 @@
 #include                                        <config.h>
 #endif
 
+#include                                        <X11/Xatom.h>
+
 #include                                        "hildon-program.h"
 #include                                        "hildon-program-private.h"
 #include                                        "hildon-window-private.h"
-#include                                        "hildon-stackable-window.h"
 #include                                        "hildon-stackable-window-private.h"
-#include                                        <X11/Xatom.h>
 
 static void
 hildon_program_init                             (HildonProgram *self);

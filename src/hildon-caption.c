@@ -37,22 +37,11 @@
 #include                                        <config.h>
 #endif
 
-#include                                        "hildon-caption.h"
-#include                                        <gtk/gtkhbox.h>
-#include                                        <gtk/gtklabel.h>
-#include                                        <gtk/gtkimage.h>
-#include                                        <gtk/gtkentry.h>
-#include                                        <gtk/gtkcombo.h>
-#include                                        <gtk/gtkcombobox.h>
-#include                                        <gtk/gtkcomboboxentry.h>
-#include                                        <gtk/gtkoptionmenu.h>
-#include                                        <gtk/gtkmarshal.h>
-#include                                        <gtk/gtkalignment.h>
-#include                                        <gtk/gtkcheckbutton.h>
-#include                                        <stdio.h>
-#include                                        <string.h>
-#include                                        "hildon-defines.h"
 #include                                        <libintl.h>
+#include                                        <gtk/gtk.h>
+
+#include                                        "hildon-defines.h"
+#include                                        "hildon-caption.h"
 #include                                        "hildon-caption-private.h"
 
 #define                                         _(String)\

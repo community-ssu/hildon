@@ -18,6 +18,7 @@
 #define _HILDON_PICKER_BUTTON
 
 #include <glib-object.h>
+
 #include "hildon-button.h"
 #include "hildon-touch-selector.h"
 

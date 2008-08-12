@@ -66,13 +66,12 @@
  *
  */
 
+#include                                        <string.h>
+#include                                        <X11/Xatom.h>
+#include                                        <gdk/gdkx.h>
+
 #include                                        "hildon-app-menu.h"
 #include                                        "hildon-app-menu-private.h"
-
-#include                                        <gdk/gdkx.h>
-#include                                        <X11/X.h>
-#include                                        <X11/Xatom.h>
-#include                                        <string.h>
 
 static GdkWindow *
 grab_transfer_window_get                        (GtkWidget *widget);

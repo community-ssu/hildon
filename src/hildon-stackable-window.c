@@ -67,6 +67,7 @@
 
 #include                                        <X11/X.h>
 #include                                        <X11/Xatom.h>
+
 #include                                        "hildon-stackable-window.h"
 #include                                        "hildon-stackable-window-private.h"
 #include                                        "hildon-program.h"

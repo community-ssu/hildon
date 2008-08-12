@@ -25,9 +25,9 @@
 #ifndef                                         __HILDON_HELPER_H__
 #define                                         __HILDON_HELPER_H__
 
-#include                                        <gtk/gtkwindow.h>
 #include                                        <gdk/gdkkeysyms.h>
-#include                                        <gdk/gdkevents.h>
+#include                                        <gtk/gtk.h>
+
 #include                                        "hildon-defines.h"
 
 G_BEGIN_DECLS

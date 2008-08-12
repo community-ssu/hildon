@@ -14,6 +14,10 @@
  *
  */
 
+#include "hildon-date-button.h"
+#include "hildon-date-selector.h"
+#include "hildon-touch-selector.h"
+
 /**
  * SECTION:hildon-date-button
  * @Short_Description: Button displaying and allowing selection of a date.
@@ -24,11 +28,6 @@
  * presents a #HildonPickerDialog containing a #HildonDateSelector. Once the user selects
  * a different date from the selector, this will be shown in the button.
  */
-
-#include "hildon-date-selector.h"
-#include "hildon-touch-selector.h"
-#include "hildon-picker-button.h"
-#include "hildon-date-button.h"
 
 G_DEFINE_TYPE (HildonDateButton, hildon_date_button, HILDON_TYPE_PICKER_BUTTON)
 

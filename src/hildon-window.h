@@ -25,14 +25,7 @@
 #ifndef                                         __HILDON_WINDOW_H__
 #define                                         __HILDON_WINDOW_H__
 
-#include                                        <glib.h>
-#include                                        <glib-object.h>
-#include                                        <gtk/gtkwindow.h>
-#include                                        <gtk/gtkmenu.h>
-#include                                        <gtk/gtktoolbar.h>
-#include                                        <gdk/gdkx.h>
-
-#include                                        "hildon-defines.h"
+#include                                        <gtk/gtk.h>
 
 G_BEGIN_DECLS
 

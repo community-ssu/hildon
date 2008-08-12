@@ -35,9 +35,9 @@
  * 
  */
 
-#include                                        "hildon-volumebar-range.h"
-#include                                        <gtk/gtkrange.h>
 #include                                        <gdk/gdkkeysyms.h>
+
+#include                                        "hildon-volumebar-range.h"
 
 #define                                         VOLUMEBAR_RANGE_INITIAL_VALUE 50.0
 

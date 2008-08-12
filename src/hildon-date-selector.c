@@ -27,11 +27,10 @@
  *
  */
 
-
-#include "hildon-date-selector.h"
-
 #define _GNU_SOURCE     /* needed for GNU nl_langinfo_l */
 #define __USE_GNU       /* needed for locale */
+
+#include <locale.h>
 
 #ifdef HAVE_SYS_TIME_H
 #include <sys/time.h>
@@ -43,7 +42,8 @@
 #include <libintl.h>
 #include <time.h>
 #include <langinfo.h>
-#include <locale.h>
+
+#include "hildon-date-selector.h"
 
 #define HILDON_DATE_SELECTOR_GET_PRIVATE(obj)                           \
   (G_TYPE_INSTANCE_GET_PRIVATE ((obj), HILDON_TYPE_DATE_SELECTOR, HildonDateSelectorPrivate))

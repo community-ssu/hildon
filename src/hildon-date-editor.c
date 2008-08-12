@@ -61,24 +61,22 @@
 #include                                        <config.h>
 #endif
 
-#include                                        "hildon-date-editor.h"
-#include                                        <glib.h>
-#include                                        <gtk/gtk.h>
-#include                                        <gtk/gtkenums.h>
-#include                                        <gdk/gdkkeysyms.h>
 #include                                        <time.h>
 #include                                        <stdlib.h>
 #include                                        <stdio.h>
 #include                                        <string.h>
+#include                                        <libintl.h>
+#include                                        <gdk/gdkkeysyms.h>
+
+#include                                        "hildon-date-editor.h"
 #include                                        "hildon-calendar-popup.h"
 #include                                        "hildon-defines.h"
-#include                                        "hildon-private.h"
 #include                                        "hildon-marshalers.h"
 #include                                        "hildon-enum-types.h"
 #include                                        "hildon-time-editor.h"
 #include                                        "hildon-banner.h"
-#include                                        <libintl.h>
 #include                                        "hildon-date-editor-private.h"
+#include                                        "hildon-private.h"
 
 #define                                         _(string) dgettext("hildon-libs", string)
 

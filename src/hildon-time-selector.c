@@ -27,9 +27,6 @@
  *
  */
 
-
-#include "hildon-time-selector.h"
-
 #define _GNU_SOURCE     /* needed for GNU nl_langinfo_l */
 #define __USE_GNU       /* needed for locale */
 
@@ -43,8 +40,9 @@
 #include <time.h>
 #include <langinfo.h>
 #include <locale.h>
-
 #include <gconf/gconf-client.h>
+
+#include "hildon-time-selector.h"
 
 #define HILDON_TIME_SELECTOR_GET_PRIVATE(obj)                           \
   (G_TYPE_INSTANCE_GET_PRIVATE ((obj), HILDON_TYPE_TIME_SELECTOR, HildonTimeSelectorPrivate))

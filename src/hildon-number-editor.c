@@ -43,19 +43,19 @@
 #include                                        <config.h>
 #endif
 
-#include                                        "hildon-number-editor.h"
-#include                                        <gdk/gdkkeysyms.h>
-#include                                        <gtk/gtk.h>
 #include                                        <string.h>
 #include                                        <stdio.h>
 #include                                        <stdlib.h>
+#include                                        <libintl.h>
+#include                                        <gdk/gdkkeysyms.h>
+
+#include                                        "hildon-number-editor.h"
 #include                                        "hildon-marshalers.h"
-#include                                        "hildon-private.h"
 #include                                        "hildon-defines.h"
 #include                                        "hildon-enum-types.h"
 #include                                        "hildon-banner.h"
-#include                                        <libintl.h>
 #include                                        "hildon-number-editor-private.h"
+#include                                        "hildon-private.h"
 
 #define                                         _(String) dgettext("hildon-libs", String)
 

@@ -25,6 +25,10 @@
 #ifndef                                         __HILDON_WINDOW_PRIVATE_H__
 #define                                         __HILDON_WINDOW_PRIVATE_H__
 
+#include                                        "hildon-program.h"
+
+#include                                        <X11/Xlib.h>
+
 G_BEGIN_DECLS
 
 typedef struct                                  _HildonWindowPrivate HildonWindowPrivate;

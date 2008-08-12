@@ -24,7 +24,6 @@
 #ifndef _HILDON_PANNABLE_AREA
 #define _HILDON_PANNABLE_AREA
 
-#include <glib-object.h>
 #include <gtk/gtk.h>
 
 G_BEGIN_DECLS

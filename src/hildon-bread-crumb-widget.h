@@ -26,9 +26,9 @@
 #ifndef __HILDON_BREAD_CRUMB_WIDGET_H__
 #define __HILDON_BREAD_CRUMB_WIDGET_H__
 
-#include "hildon-bread-crumb.h"
-
 #include <gtk/gtk.h>
+
+#include "hildon-bread-crumb.h"
 
 G_BEGIN_DECLS
 

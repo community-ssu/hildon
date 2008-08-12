@@ -45,7 +45,6 @@
 #include                                        "hildon-volumebar.h"
 #include                                        "hildon-volumebar-range.h"
 #include                                        "hildon-volumebar-private.h"
-#include                                        <gtk/gtktoolbar.h>
 
 /* Defines for normal version of HVolumebar */
 /* Toggle button */

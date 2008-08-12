@@ -38,17 +38,12 @@
 #include                                        <config.h>
 #endif
 
-#include                                        "hildon-seekbar.h"
 #include                                        <libintl.h>
 #include                                        <stdio.h>
 #include                                        <math.h>
-#include                                        <gtk/gtklabel.h>
-#include                                        <gtk/gtkframe.h>
-#include                                        <gtk/gtkalignment.h>
-#include                                        <gtk/gtkadjustment.h>
-#include                                        <gtk/gtktoolbar.h>
-#include                                        <gtk/gtkversion.h>
 #include                                        <gdk/gdkkeysyms.h>
+
+#include                                        "hildon-seekbar.h"
 #include                                        "hildon-seekbar-private.h"
 
 static GtkScaleClass*                           parent_class = NULL;

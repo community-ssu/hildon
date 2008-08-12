@@ -35,23 +35,16 @@
 #include                                        <config.h>
 #endif
 
+#include                                        <libintl.h>
 #include                                        <stdlib.h>
 #include                                        <string.h>
-#include                                        <gtk/gtkstock.h>
-#include                                        <gtk/gtkcombobox.h>
-#include                                        <gtk/gtktogglebutton.h>
-#include                                        <gtk/gtkcheckbutton.h>
-#include                                        <gtk/gtklabel.h>
-#include                                        <gtk/gtkvbox.h>
-#include                                        <gtk/gtkliststore.h>
-#include                                        <gtk/gtknotebook.h>
-#include                                        <gtk/gtk.h>
+
 #include                                        <glib.h>
 #include                                        <gdk/gdkkeysyms.h>
+
 #include                                        "hildon-font-selection-dialog.h"
 #include                                        "hildon-caption.h"
 #include                                        "hildon-color-button.h"
-#include                                        <libintl.h>
 #include                                        "hildon-font-selection-dialog-private.h"
 
 /* These are what we use as the standard font sizes, for the size list */

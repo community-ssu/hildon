@@ -25,7 +25,7 @@
 #ifndef                                         __HILDON_CONTROLBAR_H__
 #define                                         __HILDON_CONTROLBAR_H__
 
-#include                                        <gtk/gtkscale.h>
+#include                                        <gtk/gtk.h>
 
 G_BEGIN_DECLS
 

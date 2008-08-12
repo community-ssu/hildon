@@ -38,16 +38,16 @@
 #include                                        <config.h>
 #endif
 
-#include                                        "hildon-login-dialog.h"
-#include                                        <glib.h>
-#include                                        <gtk/gtk.h>
 #include                                        <errno.h>
 #include                                        <string.h>
 #include                                        <strings.h>
 #include                                        <unistd.h>
 #include                                        <stdio.h>
-#include                                        "hildon-caption.h"
 #include                                        <libintl.h>
+#include                                        <glib.h>
+
+#include                                        "hildon-login-dialog.h"
+#include                                        "hildon-caption.h"
 #include                                        "hildon-login-dialog-private.h"
 
 enum

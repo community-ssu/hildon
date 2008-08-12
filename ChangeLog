@@ -1,5 +1,12 @@
 2008-08-12  Christian Dywan  <christian@imendio.com>
 
+	* src/hildon-*.c
+	* src/hildon-*.h: Ensure a consistent include order,
+	include <gtk/gtk.h> instead of particular files and
+	only include the topmost header in the gtk stack. See NB #39857
+
+2008-08-12  Christian Dywan  <christian@imendio.com>
+
 	* src/hildon-picker-dialog.c
 	* src/hildon-touch-selector.c: Fix warnings about unused and
 	uninitialized variables.

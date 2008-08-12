@@ -26,6 +26,8 @@
 #ifndef                                         __HILDON_COLOR_CHOOSER_DIALOG_PRIVATE_H__
 #define                                         __HILDON_COLOR_CHOOSER_DIALOG_PRIVATE_H__
 
+#include                                        <gconf/gconf-client.h>
+
 typedef struct                                  _HildonColorChooserDialogPrivate HildonColorChooserDialogPrivate;
 
 #define                                         HILDON_COLOR_CHOOSER_DIALOG_GET_PRIVATE(obj) \

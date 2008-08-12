@@ -35,7 +35,6 @@
 #include                                        <config.h>
 #endif
 
-#include                                        <gtk/gtk.h>
 #include                                        "hildon-helper.h"
 #include                                        "hildon-banner.h"
 

@@ -45,10 +45,8 @@
 #include                                        <memory.h>
 #include                                        <string.h>
 #include                                        <libintl.h>
-#include                                        <gdk/gdk.h>
 #include                                        <gdk/gdkkeysyms.h>
-#include                                        <gtk/gtk.h>
-#include                                        <gconf/gconf-client.h>
+
 #include                                        "hildon-color-chooser-dialog.h"
 #include                                        "hildon-color-chooser.h"
 #include                                        "hildon-defines.h"

@@ -25,7 +25,8 @@
 #ifndef                                         __HILDON_PROGRAM_PRIVATE_H__
 #define                                         __HILDON_PROGRAM_PRIVATE_H__
 
-#include                                        <glib-object.h>
+#include                                        <gdk/gdkx.h>
+
 #include                                        "hildon-window.h"
 #include                                        "hildon-stackable-window.h"
 

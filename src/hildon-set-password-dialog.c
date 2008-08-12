@@ -43,20 +43,20 @@
 #include                                        <config.h>
 #endif
 
-#include                                        "hildon-set-password-dialog.h"
-#include                                        <gdk/gdkkeysyms.h>
-#include                                        <gtk/gtk.h>
-#include                                        <glib.h>
 #include                                        <errno.h>
 #include                                        <string.h>
 #include                                        <strings.h>
 #include                                        <unistd.h>
 #include                                        <stdio.h>
+#include                                        <libintl.h>
+#include                                        <glib.h>
+#include                                        <gdk/gdkkeysyms.h>
+
+#include                                        "hildon-set-password-dialog.h"
 #include                                        "hildon-caption.h"
 #include                                        "hildon-note.h"
 #include                                        "hildon-defines.h"
 #include                                        "hildon-banner.h"
-#include                                        <libintl.h>
 #include                                        "hildon-set-password-dialog-private.h"
 
 #define                                         HILDON_SET_PASSWORD_DIALOG_TITLE "ecdg_ti_set_password"

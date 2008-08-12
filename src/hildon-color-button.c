@@ -49,12 +49,9 @@
 #include                                        <config.h>
 #endif
 
-#include                                        "hildon-color-button.h"
-#include                                        <gtk/gtkbutton.h>
-#include                                        <gtk/gtkalignment.h>
-#include                                        <gtk/gtkdrawingarea.h>
-#include                                        <gtk/gtksignal.h>
 #include                                        <gdk/gdkkeysyms.h>
+
+#include                                        "hildon-color-button.h"
 #include                                        "hildon-defines.h"
 #include                                        "hildon-color-chooser-dialog.h"
 #include                                        "hildon-color-button-private.h"

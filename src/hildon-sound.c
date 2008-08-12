@@ -28,10 +28,11 @@
  * 
  */
 
-#include "hildon-sound.h"
+#include <unistd.h>
 #include <gconf/gconf-client.h>
 #include <canberra.h>
-#include <unistd.h>
+
+#include "hildon-sound.h"
 
 #define ALARM_GCONF_PATH "/apps/osso/sound/system_alert_volume"
 

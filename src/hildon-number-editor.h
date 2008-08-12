@@ -25,7 +25,7 @@
 #ifndef                                         __HILDON_NUMBER_EDITOR_H__
 #define                                         __HILDON_NUMBER_EDITOR_H__
 
-#include                                        <gtk/gtkcontainer.h>
+#include                                        <gtk/gtk.h>
 
 G_BEGIN_DECLS
 

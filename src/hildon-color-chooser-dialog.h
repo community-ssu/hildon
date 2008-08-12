@@ -26,8 +26,7 @@
 #ifndef                                         __HILDON_COLOR_CHOOSER_DIALOG_H__
 #define                                         __HILDON_COLOR_CHOOSER_DIALOG_H__
 
-#include                                        <gdk/gdkcolor.h>
-#include                                        <gtk/gtkdialog.h>
+#include                                        <gtk/gtk.h>
 
 #define                                         HILDON_TYPE_COLOR_CHOOSER_DIALOG \
                                                 (hildon_color_chooser_dialog_get_type())

@@ -33,9 +33,7 @@
 
 #include <string.h>
 #include <stdlib.h>
-
 #include <libintl.h>
-#include <gtk/gtkmarshal.h>
 
 #include "hildon-touch-selector.h"
 #include "hildon-picker-dialog.h"

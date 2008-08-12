@@ -32,24 +32,18 @@
  * #GtkListStore and can be accesed using a property 'list'. Entries are added
  * automatically to the list when the search button is pressed.
  *
- */    
+ */
 
 #ifdef                                          HAVE_CONFIG_H
 #include                                        <config.h>
 #endif
 
-#include                                        "hildon-find-toolbar.h"
-#include                                        "hildon-defines.h"
-#include                                        <gdk/gdkkeysyms.h>
-#include                                        <gtk/gtklabel.h>
-#include                                        <gtk/gtkentry.h>
-#include                                        <gtk/gtkbutton.h>
-#include                                        <gtk/gtktoolbutton.h>
-#include                                        <gtk/gtktoolitem.h>
-#include                                        <gtk/gtkcomboboxentry.h>
-#include                                        <gtk/gtkseparatortoolitem.h>
 #include                                        <string.h>
 #include                                        <libintl.h>
+#include                                        <gdk/gdkkeysyms.h>
+
+#include                                        "hildon-find-toolbar.h"
+#include                                        "hildon-defines.h"
 #include                                        "hildon-find-toolbar-private.h"
 
 #define                                         _(String) \

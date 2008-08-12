@@ -38,6 +38,7 @@
  */
 
 #include <gdk/gdkkeysyms.h>
+
 #include "hildon-marshalers.h"
 #include "hildon-bread-crumb-trail.h"
 #include "hildon-bread-crumb-widget.h"

@@ -17,7 +17,9 @@
 #ifndef _HILDON_DATE_BUTTON
 #define _HILDON_DATE_BUTTON
 
-#include <glib-object.h>
+#include <gtk/gtk.h>
+
+#include "hildon-picker-button.h"
 
 G_BEGIN_DECLS
 

@@ -26,6 +26,7 @@
 #define                                         __HILDON_PROGRAM_H__
 
 #include                                        <glib-object.h>
+
 #include                                        "hildon-window.h"
 #include                                        "hildon-stackable-window.h"
 

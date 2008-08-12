@@ -26,6 +26,7 @@
 #define                                         __HILDON_VOLUMEBAR_PRIVATE__
 
 #include                                        <gtk/gtk.h>
+
 #include                                        "hildon-volumebar-range.h"
 
 G_BEGIN_DECLS

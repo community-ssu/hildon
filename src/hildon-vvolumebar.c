@@ -48,7 +48,6 @@
 #endif
 
 #include                                        "hildon-vvolumebar.h"
-#include                                        <gtk/gtk.h>
 #include                                        "hildon-volumebar-range.h"
 #include                                        "hildon-volumebar-private.h"
 

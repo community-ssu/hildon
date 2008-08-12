@@ -36,6 +36,7 @@
 
 #include                                        "hildon-button.h"
 #include                                        "hildon-enum-types.h"
+#include                                        "hildon-gtk.h"
 
 G_DEFINE_TYPE                                   (HildonButton, hildon_button, GTK_TYPE_BUTTON);
 

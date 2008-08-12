@@ -25,8 +25,8 @@
 #ifndef                                         __HILDON_VOLUMEBAR_H__
 #define                                         __HILDON_VOLUMEBAR_H__
 
-#include                                        <gtk/gtkcontainer.h>
-#include                                        <gtk/gtkadjustment.h>
+#include                                        <gtk/gtk.h>
+
 #include                                        "hildon-helper.h"
 
 G_BEGIN_DECLS

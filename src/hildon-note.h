@@ -25,8 +25,7 @@
 #ifndef                                         __HILDON_NOTE_H__
 #define                                         __HILDON_NOTE_H__
 
-#include                                        <gtk/gtkdialog.h>
-#include                                        <gtk/gtkprogressbar.h>
+#include                                        <gtk/gtk.h>
 
 G_BEGIN_DECLS
 

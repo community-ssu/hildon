@@ -37,7 +37,6 @@
  * 
  */
 
-#include                                        <gtk/gtk.h>
 #include                                        "hildon-color-chooser.h"
 #include                                        "hildon-color-chooser-private.h"
 

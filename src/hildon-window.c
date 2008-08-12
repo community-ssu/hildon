@@ -73,35 +73,21 @@
  *
  */
 
-#include                                        "hildon-window.h"
 #include                                        <memory.h>
 #include                                        <string.h>
 #include                                        <strings.h>
 #include                                        <stdio.h>
-#include                                        "hildon-program.h"
+#include                                        <libintl.h>
+#include                                        <X11/X.h>
+#include                                        <X11/Xatom.h>
+#include                                        <gdk/gdkkeysyms.h>
+#include                                        <gdk/gdkx.h>
+#include                                        <gtk/gtkprivate.h>
+
+#include                                        "hildon-window.h"
 #include                                        "hildon-window-private.h"
 #include                                        "hildon-find-toolbar.h"
-
-#include                                        <gtk/gtkmenu.h>
-#include                                        <gtk/gtkimcontext.h>
-#include                                        <gtk/gtkmenuitem.h>
-#include                                        <gtk/gtkcheckmenuitem.h>
-#include                                        <gtk/gtkmenushell.h>
-#include                                        <gtk/gtkwindow.h>
-#include                                        <gtk/gtkwidget.h>
-#include                                        <gtk/gtkvbox.h>
-#include                                        <gtk/gtklabel.h>
-#include                                        <gtk/gtkentry.h>
-#include                                        <gtk/gtktextview.h>
-#include                                        <gtk/gtkscrolledwindow.h>
-#include                                        <gtk/gtkmain.h>
-#include                                        <gdk/gdkkeysyms.h>
-#include                                        <gdk/gdk.h>
-#include                                        <gtk/gtkprivate.h>
-#include                                        <X11/X.h>
-#include                                        <X11/Xlib.h>
-#include                                        <X11/Xatom.h>
-#include                                        <libintl.h>
+#include                                        "hildon-defines.h"
 
 #define                                         _(String) gettext(String)
 

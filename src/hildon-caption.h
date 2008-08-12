@@ -25,10 +25,8 @@
 #ifndef                                         __HILDON_CAPTION_H__
 #define                                         __HILDON_CAPTION_H__
 
-#include                                        <glib.h>
-#include                                        <glib-object.h>
-#include                                        <gtk/gtkeventbox.h>
-#include                                        <gtk/gtksizegroup.h>
+#include                                        <gtk/gtk.h>
+
 #include                                        "hildon-enum-types.h"
 
 G_BEGIN_DECLS

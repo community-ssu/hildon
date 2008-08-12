@@ -26,10 +26,7 @@
 #ifndef                                         __HILDON_WIZARD_DIALOG_H__
 #define                                         __HILDON_WIZARD_DIALOG_H__
 
-#include                                        <gtk/gtkwidget.h>
-#include                                        <gtk/gtkwindow.h>
-#include                                        <gtk/gtknotebook.h>
-#include                                        <gtk/gtkdialog.h>
+#include                                        <gtk/gtk.h>
 
 G_BEGIN_DECLS
 

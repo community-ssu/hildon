@@ -36,11 +36,7 @@
 #ifndef                                         __HILDON_CALENDAR_H__
 #define                                         __HILDON_CALENDAR_H__
 
-#include                                        <gdk/gdk.h>
-#include                                        <gtk/gtkwidget.h>
-
-/* Not needed, retained for compatibility -Yosh */
-#include                                        <gtk/gtksignal.h>
+#include                                        <gtk/gtk.h>
 
 G_BEGIN_DECLS
 

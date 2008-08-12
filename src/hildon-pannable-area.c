@@ -32,9 +32,10 @@
  *
  */
 
-#include <gdk/gdkx.h>
-#include <cairo.h>
 #include <math.h>
+#include <cairo.h>
+#include <gdk/gdkx.h>
+
 #include "hildon-pannable-area.h"
 #include "hildon-marshalers.h"
 #include "hildon-enum-types.h"

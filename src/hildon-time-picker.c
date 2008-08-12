@@ -64,17 +64,17 @@
 #include                                        <config.h>
 #endif
 
-#include                                        "hildon-time-picker.h"
-#include                                        "hildon-defines.h"
-#include                                        <gtk/gtk.h>
-#include                                        <gdk/gdkkeysyms.h>
-#include                                        <gdk/gdk.h>
 #include                                        <time.h>
 #include                                        <stdio.h>
 #include                                        <stdlib.h>
 #include                                        <string.h>
 #include                                        <langinfo.h>
 #include                                        <libintl.h>
+#include                                        <gtk/gtk.h>
+#include                                        <gdk/gdkkeysyms.h>
+
+#include                                        "hildon-time-picker.h"
+#include                                        "hildon-defines.h"
 #include                                        "hildon-time-picker-private.h"
 #include                                        "hildon-time-editor.h"
 

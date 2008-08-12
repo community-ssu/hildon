@@ -25,10 +25,7 @@
 #ifndef                                         __HILDON_BANNER_H__
 #define                                         __HILDON_BANNER_H__
 
-#include                                        <gtk/gtkwindow.h>
-#include                                        <gtk/gtkprogressbar.h>
-#include                                        <gtk/gtklabel.h>
-#include                                        <gdk/gdkx.h>
+#include                                        <gtk/gtk.h>
 
 G_BEGIN_DECLS 
 
