@@ -47,6 +47,9 @@ IGNORE_HFILES 					= hildon-banner-private.h 		\
 						  hildon-volumebar-private.h 		\
 						  hildon-weekday-picker-private.h 	\
 						  hildon-window-private.h 		\
+						  hildon-app-menu-private.h		\
+						  hildon-calendar-private.h		\
+						  hildon-stackable-window-private.h	\
 						  hildon-wizard-dialog-private.h
 
 INCLUDES 					= $(GTK_CFLAGS) -I$(top_srcdir)

@@ -1,5 +1,9 @@
 2008-08-12  Alberto Garcia  <agarcia@igalia.com>
 
+	* doc/Makefile.am: Complete list of private headers.
+
+2008-08-12  Alberto Garcia  <agarcia@igalia.com>
+
 	* doc/hildon-docs.sgml
 	* src/hildon-app-menu.c
 	* src/hildon-bread-crumb.c
