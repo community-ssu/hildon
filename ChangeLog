@@ -1,3 +1,7 @@
+2008-08-12  Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>
+
+	Released 2.1.4
+
 2008-08-12  Alberto Garcia  <agarcia@igalia.com>
 
 	* debian/control: Depend on Gtk 2:2.12.9-0osso3
