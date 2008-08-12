@@ -275,12 +275,7 @@ hildon_window_class_init                        (HildonWindowClass * window_clas
             sizeof (struct _HildonWindowPrivate));
 
     /* Install properties */
-    
-    /**
-     * HildonWindow:is-topmost:
-     *
-     * Whether the window is currently activated by the window manager.
-     */
+
     g_object_class_install_property (object_class, PROP_IS_TOPMOST,
             g_param_spec_boolean ("is-topmost",
                 "Is top-most",

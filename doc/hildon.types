@@ -74,7 +74,6 @@ hildon_volumebar_get_type
 hildon_volumebar_range_get_type
 hildon_vvolumebar_get_type
 hildon_weekday_picker_get_type
-hildon_window_get_type
 hildon_wizard_dialog_get_type
 hildon_window_get_type
 hildon_calendar_get_type
