@@ -31,7 +31,6 @@
     <xi:include href="xml/hildon-button.xml"/>
     <xi:include href="xml/hildon-check-button.xml"/>
     <xi:include href="xml/hildon-color-button.xml"/>
-    <xi:include href="xml/hildon-color-chooser-dialog.xml"/>
     <xi:include href="xml/hildon-color-chooser.xml"/>
     <xi:include href="xml/hildon-controlbar.xml"/>
     <xi:include href="xml/hildon-volumebar.xml"/>
@@ -50,6 +49,11 @@
     <xi:include href="xml/hildon-picker-button.xml"/>
     <xi:include href="xml/hildon-time-button.xml"/>
     <xi:include href="xml/hildon-date-button.xml"/>
+  </chapter>
+
+  <chapter>
+    <title>Containers</title>
+    <xi:include href="xml/hildon-pannable-area.xml"/>
   </chapter>
 
   <chapter>
@@ -76,6 +80,7 @@
   <chapter>
     <title>Dialogs</title>
     <xi:include href="xml/hildon-dialog.xml"/>
+    <xi:include href="xml/hildon-color-chooser-dialog.xml"/>
     <xi:include href="xml/hildon-set-password-dialog.xml"/>
     <xi:include href="xml/hildon-get-password-dialog.xml"/>
     <xi:include href="xml/hildon-login-dialog.xml"/>
@@ -88,7 +93,6 @@
 
   <chapter>
     <title>Other</title>
-    <xi:include href="xml/hildon-pannable-area.xml"/>
     <xi:include href="xml/hildon-gtk.xml"/>
     <xi:include href="xml/hildon-sound.xml"/>
     <xi:include href="xml/hildon-helper.xml"/>
