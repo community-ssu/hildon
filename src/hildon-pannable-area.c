@@ -229,10 +229,16 @@ hildon_pannable_area_scroll_indicator_fade(HildonPannableArea * area)
   /* if moving do not fade out */
   if (((ABS (priv->vel_y)>1.0)||
        (ABS (priv->vel_x)>1.0))&&(!priv->clicked)) {
+
+    GDK_THREADS_LEAVE ();
+
     return TRUE;
   }
 
   if (!priv->scroll_indicator_timeout) {
+
+    GDK_THREADS_LEAVE ();
+
     return FALSE;
   }
 
@@ -262,6 +268,9 @@ hildon_pannable_area_scroll_indicator_fade(HildonPannableArea * area)
   if ((priv->scroll_indicator_alpha > 0.9) &&
       (priv->scroll_delay_counter < 20)) {
     priv->scroll_delay_counter++;
+
+    GDK_THREADS_LEAVE ();
+
     return TRUE;
   }
 
@@ -642,6 +651,9 @@ hildon_pannable_area_timeout (HildonPannableArea * area)
 
   if ((!priv->enabled) || (priv->mode == HILDON_PANNABLE_AREA_MODE_PUSH)) {
     priv->idle_id = 0;
+
+    GDK_THREADS_LEAVE ();
+
     return FALSE;
   }
 
@@ -669,12 +681,18 @@ hildon_pannable_area_timeout (HildonPannableArea * area)
           priv->vel_x = 0;
           priv->vel_y = 0;
           priv->idle_id = 0;
+
+          GDK_THREADS_LEAVE ();
+
           return FALSE;
         }
       }
     }
   } else if (priv->mode == HILDON_PANNABLE_AREA_MODE_AUTO) {
     priv->idle_id = 0;
+
+    GDK_THREADS_LEAVE ();
+
     return FALSE;
   }
 

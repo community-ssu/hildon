@@ -1,3 +1,10 @@
+2008-08-12  Alejandro G. Castro	 <alex@igalia.com>
+
+	* src/hildon-pannable-area.c
+	(hildon_pannable_area_scroll_indicator_fade),
+	(hildon_pannable_area_timeout): Added the GDK_THREADS_LEAVE macro
+	to protect the return of this timeout callbacks, avoiding deadlocks.
+
 2008-08-12  Christian Dywan  <christian@imendio.com>
 
 	* src/hildon-*.c
