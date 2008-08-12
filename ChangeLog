@@ -1,10 +1,14 @@
-2008-08-12  Claudio Saavedra  <csaavedra@igalia.com>
+2008-08-12  Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>
+
+	Released 2.1.4
+
+2008-08-12  Claudio Saavedra  
 
 	* doc/hildon.types: Remove duplicated hildon_window_get_type
 	* src/hildon-window.c: (hildon_window_class_init): Remove duplicated
 	documentation comment.
 
-2008-08-12  Claudio Saavedra  <csaavedra@igalia.com>
+2008-08-12  Claudio Saavedra  
 
 	reviewed by: <delete if not using a buddy>
 
@@ -12,11 +16,11 @@
 	* src/hildon-check-button.c: (hildon_check_button_new):
 	* src/hildon-window.c: (hildon_window_class_init):
 
-2008-08-12  Alberto Garcia  <agarcia@igalia.com>
+2008-08-12  Alberto Garcia  
 
 	* doc/Makefile.am: Complete list of private headers.
 
-2008-08-12  Alberto Garcia  <agarcia@igalia.com>
+2008-08-12  Alberto Garcia  
 
 	* doc/hildon-docs.sgml
 	* src/hildon-app-menu.c
@@ -27,17 +31,13 @@
 	* src/hildon-stackable-window.c
 	* src/hildon-window.c: Lots of documentation updates.
 
-2008-08-12  Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>
-
-	Released 2.1.4
-
-2008-08-12  Alberto Garcia  <agarcia@igalia.com>
+2008-08-12  Alberto Garcia  
 
 	* debian/control: Depend on Gtk 2:2.12.9-0osso3
 
 	* configure.ac: Require Gtk+ 2.12.9 at least
 
-2008-08-12  Alejandro G. Castro	 <alex@igalia.com>
+2008-08-12  Alejandro G. Castro	 
 
 	* src/hildon-pannable-area.c
 	(hildon_pannable_area_scroll_indicator_fade),
@@ -57,13 +57,13 @@
 	* src/hildon-touch-selector.c: Fix warnings about unused and
 	uninitialized variables.
 
-2008-08-11  Alberto Garcia  <agarcia@igalia.com>
+2008-08-11  Alberto Garcia  
 
 	* examples/Makefile.am
 	* examples/hildon-check-button-example.c: Example of the hildon
 	check button.
 
-2008-08-11  Alberto Garcia  <agarcia@igalia.com>
+2008-08-11  Alberto Garcia  
 
 	* src/hildon-window.h
 	* src/hildon-window.c (hildon_window_class_init)
@@ -72,7 +72,7 @@
 
 	* src/hildon-stackable-window.c: Update documentation
 
-2008-08-11  Alberto Garcia  <agarcia@igalia.com>
+2008-08-11  Alberto Garcia  
 
 	* doc/Makefile.am
 	* doc/hildon-docs.sgml
@@ -82,23 +82,23 @@
 	* src/hildon-helper.c
 	* src/hildon-range-editor.c: Lots of documentation fixes.
 
-2008-08-11  Alberto Garcia  <agarcia@igalia.com>
+2008-08-11  Alberto Garcia  
 
 	* examples/hildon-picker-button-multicolumn-example.c
 	(create_touch_selector): Fix compilation warning.
 
-2008-08-11  Alberto Garcia  <agarcia@igalia.com>
+2008-08-11  Alberto Garcia  
 
 	* src/hildon-pannable-area.c (hildon_pannable_area_button_press_cb)
 	(hildon_pannable_area_button_release_cb)
 	(hildon_pannable_get_child_widget_at): Fix compilation warnings.
 
-2008-08-11  Alberto Garcia  <agarcia@igalia.com>
+2008-08-11  Alberto Garcia  
 
 	* src/hildon-button.c (hildon_button_add_image_size_group): Fix
 	assertion.
 
-2008-08-11  Alberto Garcia  <agarcia@igalia.com>
+2008-08-11  Alberto Garcia  
 
 	* src/hildon-bread-crumb-trail.h
 	* src/hildon-date-editor.c
@@ -110,7 +110,7 @@
 	* src/hildon-touch-selector.c
 	* src/hildon-touch-selector.h: Misc documentation fixes
 
-2008-08-11  Alberto Garcia  <agarcia@igalia.com>
+2008-08-11  Alberto Garcia  
 
 	* examples/hildon-date-editor-example.c (main): Updated date
 	editor example.
@@ -122,7 +122,7 @@
 	* src/hildon-note.c: Updated sample programs in documentation.
 	Fixes: NB#87437
 
-2008-08-08  Claudio Saavedra  <csaavedra@igalia.com>
+2008-08-08  Claudio Saavedra  
 
 	* src/hildon-date-button.h:
 	* src/hildon-picker-button.h:
@@ -132,17 +132,17 @@
 	Some declarations changes to allow gtk-doc to document the widgets
 	properly.
 
-2008-08-08  Claudio Saavedra  <csaavedra@igalia.com>
+2008-08-08  Claudio Saavedra  
 
 	* src/hildon-date-button.c: Document the widget.
 	* src/hildon-time-button.c: Document the widget.
 
-2008-08-08  Claudio Saavedra  <csaavedra@igalia.com>
+2008-08-08  Claudio Saavedra  
 
 	* src/hildon-picker-button.c: Document the widget.
 	* src/hildon-touch-selector-entry.c: Document the widget.
 
-2008-08-08  Alberto Garcia  <agarcia@igalia.com>
+2008-08-08  Alberto Garcia  
 
 	* doc/hildon-docs.sgml
 	* src/Makefile.am
@@ -154,7 +154,7 @@
 	* src/hildon-gtk.h
 	* src/hildon-gtk.c (hildon_gtk_check_button_new): Removed.
 
-2008-08-08  Alberto Garcia  <agarcia@igalia.com>
+2008-08-08  Alberto Garcia  
 
 	* src/hildon-button.h
 	* src/hildon-button.c
@@ -165,19 +165,19 @@
 	for the button labels and image.
 	(hildon_button_new_full): Removed
 
-2008-08-08  Alejandro Pinheiro <apinheiro@igalia.com>
+2008-08-08  Alejandro Pinheiro 
 
 	* src/hildon-time-selector.c
 	(_check_ampm_format): use of g_warning instead of g_error with a gconf error
 	in order to avoid a crash if gconf is not available
 
-2008-08-08  Alberto Garcia  <agarcia@igalia.com>
+2008-08-08  Alberto Garcia  
 
 	* src/hildon-button.c (hildon_button_set_arrangement)
 	(hildon_button_construct_child): Don't construct the button child
 	before setting the arrangement.
 
-2008-08-08  Alberto Garcia  <agarcia@igalia.com>
+2008-08-08  Alberto Garcia  
 
 	* src/hildon-program-private.h
 	* src/hildon-program.c
@@ -197,12 +197,12 @@
 	* examples/hildon-stackable-window-example.c: Updated example to
 	reflect the API changes.
 
-2008-08-07  Claudio Saavedra  <csaavedra@igalia.com>
+2008-08-07  Claudio Saavedra  
 
 	* src/hildon-touch-selector.c: Comment out unimplemented
 	hildon_touch_selector_insert_column() to avoid a compile warning.
 
-2008-08-07  Claudio Saavedra  <csaavedra@igalia.com>
+2008-08-07  Claudio Saavedra  
 
 	* src/hildon-touch-selector.c: (hildon_touch_selector_class_init),
 	(hildon_touch_selector_new), (hildon_touch_selector_remove_column),
@@ -212,7 +212,7 @@
 
 	Complete review of HildonTouchSelector documentation.
 
-2008-08-08  Alberto Garcia  <agarcia@igalia.com>
+2008-08-08  Alberto Garcia  
 
 	* doc/hildon-docs.sgml
 	* src/Makefile.am
@@ -231,14 +231,14 @@
 	* src/hildon-button.h
 	* src/hildon-button.c: Use the new hildon-gtk.[ch] functions.
 
-2008-08-07  Alberto Garcia  <agarcia@igalia.com>
+2008-08-07  Alberto Garcia  
 
 	* src/hildon-button.c (hildon_button_init)
 	(hildon_button_set_arrangement, hildon_button_construct_child):
 	Pack the image and the labels inside the same GtkAlignment so
 	gtk_button_set_alignment() can be used
 
-2008-08-07  Alberto Garcia  <agarcia@igalia.com>
+2008-08-07  Alberto Garcia  
 
 	* src/hildon-button.h
 	* src/hildon-button.c
@@ -247,7 +247,7 @@
 	(hildon_button_construct_child): New functions to add an image to
 	the HildonButton.
 
-2008-08-07  Alberto Garcia  <agarcia@igalia.com>
+2008-08-07  Alberto Garcia  
 
 	* src/hildon-date-button.c
 	* src/hildon-picker-button.c
@@ -256,7 +256,7 @@
 	(hildon_button_class_init): "size-flags" renamed to "size"
 	(hildon_button_set_title): Hide the title label if set to NULL.
 
-2008-08-07  Alberto Garcia  <agarcia@igalia.com>
+2008-08-07  Alberto Garcia  
 
 	HildonButtonFlags split into HildonButtonArrangement (to set the
 	button layout) and HildonSizeType (which can be used for any
@@ -297,7 +297,7 @@
 	* examples/hildon-touch-selector-example.c: Updated examples to
 	reflect HildonButton API changes.
 
-2008-08-06  Claudio Saavedra  <csaavedra@igalia.com>
+2008-08-06  Claudio Saavedra  
 
 	* doc/hildon-docs.sgml:
 	* doc/hildon.types:
@@ -311,7 +311,7 @@
 	Moved HildonTouchSelectorEntry from sandbox. Added its
 	documentation and examples.
 
-2008-08-06  Claudio Saavedra  <csaavedra@igalia.com>
+2008-08-06  Claudio Saavedra  
 
 	* src/hildon-touch-selector.h:
 	* examples/hildon-picker-button-multicolumn-example.c:
@@ -324,13 +324,13 @@
 	(create_touch_selector): Update widgets and example to reflect
 	the API change.
 
-2008-08-06  Claudio Saavedra  <csaavedra@igalia.com>
+2008-08-06  Claudio Saavedra  
 
 	* src/hildon-touch-selector.c:
 	(hildon_touch_selector_set_active_iter): Set also the cursor in
 	the active row.
 
-2008-08-06  Alberto Garcia  <agarcia@igalia.com>
+2008-08-06  Alberto Garcia  
 
 	* doc/hildon-docs.sgml
 	* doc/hildon.types
@@ -340,19 +340,19 @@
 	* src/hildon.h: Removed HildonToggleButton widget, a derived
 	class is not necessary for this.
 
-2008-08-06  Alejandro G. Castro	 <alex@igalia.com>
+2008-08-06  Alejandro G. Castro	 
 
 	* src/hildon-pannable-area.c,
 	(hildon_pannable_area_realize),
 	(hildon_pannable_area_size_allocate): Code refactoring, add tests
 	for negative sizes.
 
-2008-08-05  Claudio Saavedra  <csaavedra@igalia.com>
+2008-08-05  Claudio Saavedra  
 
 	* src/hildon-picker-dialog.c: (hildon_picker_dialog_init): Make the
 	"done" button the default widget for the dialog.
 
-2008-08-04  Claudio Saavedra  <csaavedra@igalia.com>
+2008-08-04  Claudio Saavedra  
 
 	* src/hildon-touch-selector.c:
 	(hildon_touch_selector_class_init),
@@ -371,7 +371,7 @@
 	hildon_touch_selector_has_multiple_selection() instead of
 	determining the need for a button itself.
 
-2008-08-04  Claudio Saavedra  <csaavedra@igalia.com>
+2008-08-04  Claudio Saavedra  
 
 	* src/hildon-touch-selector.c: (hildon_touch_selector_class_init),
 	(_hildon_touch_selector_set_model),
@@ -384,7 +384,7 @@
 	Make hildon_touch_selector_set_model() a virtual method, so that
 	derived classes can extend it and do fancy stuff with the model.
 
-2008-08-04  Claudio Saavedra  <csaavedra@igalia.com>
+2008-08-04  Claudio Saavedra  
 
 	* configure.ac: Set back the tarname in AC_INIT to hildon.
 
@@ -398,7 +398,7 @@
 	* configure.ac, src/Makefile.am: Replace esd with libcanberra. Some
 	cleanups.
 
-2008-08-01  Claudio Saavedra  <csaavedra@igalia.com>
+2008-08-01  Claudio Saavedra  
 
 	* src/hildon-touch-selector.c: (hildon_touch_selector_init),
 	(hildon_touch_selector_append_column): Make the widget a GtkVBox
@@ -406,7 +406,7 @@
 	HildonTouchSelectorEntry. Added a private GtkHBox, packed at the
 	end, where the selector columns are packed now.
 
-2008-08-01  Claudio Saavedra  <csaavedra@igalia.com>
+2008-08-01  Claudio Saavedra  
 
 	* src/hildon-picker-button.c: Removed the simple _text() API.
 	* src/hildon-picker-button.h: Likewise.
@@ -424,14 +424,14 @@
 
 	* examples/hildon-picker-button-example.c: (main): Example updated.
 
-2008-07-31  Alberto Garcia  <agarcia@igalia.com>
+2008-07-31  Alberto Garcia  
 
 	* src/hildon-button.c: Updated documentation.
 
 	* examples/hildon-button-example.c: Add the posibility to create
 	the buttons using horizontal layout for title and value.
 
-2008-07-31  Alberto Garcia  <agarcia@igalia.com>
+2008-07-31  Alberto Garcia  
 
 	* src/hildon-app-menu-private.h
 	* src/hildon-app-menu.c (hildon_app_menu_add_filter)
@@ -439,11 +439,11 @@
 	GtkSizeGroup for the filters, use the 'homogeneous' property of
 	the box instead.
 
-2008-07-31  Alberto Garcia  <agarcia@igalia.com>
+2008-07-31  Alberto Garcia  
 
 	* examples/hildon-button-example.c: Updated example.
 
-2008-07-30  Claudio Saavedra  <csaavedra@igalia.com>
+2008-07-30  Claudio Saavedra  
 
 	* doc/hildon-docs.sgml:
 	* doc/hildon.types:
@@ -527,7 +527,7 @@
 	Rename HildonTouchPicker to HildonTouchSelector. Updated all the
 	references, code examples, and related documentation.
 
-2008-07-30  Alberto Garcia  <agarcia@igalia.com>
+2008-07-30  Alberto Garcia  
 
 	* doc/hildon-docs.sgml
 	* doc/hildon.types
@@ -536,24 +536,24 @@
 	* src/hildon-toggle-button.h
 	* src/hildon.h: New HildonToggleButton widget.
 
-2008-07-30  Alberto Garcia  <agarcia@igalia.com>
+2008-07-30  Alberto Garcia  
 
 	* src/hildon-button.c: Add API documentation.
 	(hildon_button_set_size_groups): Check input parameters
 
-2008-07-30  Alejandro G. Castro	 <alex@igalia.com>
+2008-07-30  Alejandro G. Castro	 
 
 	* src/hildon-pannable-area.c
 	(hildon_pannable_area_motion_notify_cb): Avoid the first jumpy
 	effect after reaching the movement thredshold. This way we start
 	using the distance after passing the thredshold.
 
-2008-07-29  Claudio Saavedra  <csaavedra@igalia.com>
+2008-07-29  Claudio Saavedra  
 
 	* src/hildon-button.c: (hildon_button_set_property): Use the
 	appropriate g_value_get_flags() method.
 
-2008-07-29  Claudio Saavedra  <csaavedra@igalia.com>
+2008-07-29  Claudio Saavedra  
 
 	* doc/hildon-docs.sgml:
 	* doc/hildon.types:
@@ -561,13 +561,13 @@
 	 Add the touch pickers, picker dialogs, and picker button widgets
 	to the documentation.
 
-2008-07-29  Claudio Saavedra  <csaavedra@igalia.com>
+2008-07-29  Claudio Saavedra  
 
 	* src/hildon-button.c: (hildon_button_set_property),
 	(hildon_button_class_init): Make "arrangement-flags" a proper
 	G_TYPE_FLAGS derived property.
 
-2008-07-29  Claudio Saavedra  <csaavedra@igalia.com>
+2008-07-29  Claudio Saavedra  
 
 	* examples/Makefile.am: Add below examples.
 	* examples/hildon-date-button-example.c:
@@ -579,11 +579,11 @@
 	Add examples for the recently added touch pickers,
 	picker dialogs,	and picker button widgets.
 
-2008-07-29  Alberto Garcia  <agarcia@igalia.com>
+2008-07-29  Alberto Garcia  
 
 	* src/hildon-button.c: Add some API documentation
 
-2008-07-29  Alberto Garcia  <agarcia@igalia.com>
+2008-07-29  Alberto Garcia  
 
 	* src/hildon-button.h
 	* src/hildon-button.c
@@ -601,7 +601,7 @@
 	* examples/hildon-button-example.c (vertical_buttons_window)
 	(horizontal_buttons_window): Update example to use new API.
 
-2008-07-29  Claudio Saavedra  <csaavedra@igalia.com>
+2008-07-29  Claudio Saavedra  
 
 	* src/Makefile.am: Added HildonTimeButton.
 	* src/hildon-time-button.c: Added missing LGPL header.
@@ -611,7 +611,7 @@
 	Copied HildonTimeButton from sandbox to trunk. Future work on this
 	widget must take place in trunk.
 
-2008-07-29  Claudio Saavedra  <csaavedra@igalia.com>
+2008-07-29  Claudio Saavedra  
 
 	* src/Makefile.am: Added HildonDateButton.
 	* src/hildon-date-button.c: Update includes.
@@ -620,7 +620,7 @@
 	Copied HildonDateButton from sandbox to trunk. Future work on this
 	widget must take place in trunk.
 
-2008-07-29  Claudio Saavedra  <csaavedra@igalia.com>
+2008-07-29  Claudio Saavedra  
 
 	* src/Makefile.am: Added HildonPickerButton.
 	* src/hildon-picker-button.h: Update includes.
@@ -629,7 +629,7 @@
 	Copied HildonPickerButton from sandbox to trunk. Future work on
 	this widget must take place in trunk.
 
-2008-07-29  Claudio Saavedra  <csaavedra@igalia.com>
+2008-07-29  Claudio Saavedra  
 
 	* src/Makefile.am: Added HildonPickerDialog.
 	* src/hildon-picker-dialog.c: Update includes.
@@ -638,7 +638,7 @@
 	Copied HildonPickerDialog from sandbox to trunk. Future work
 	on this widget must take place in trunk.
 
-2008-07-29  Claudio Saavedra  <csaavedra@igalia.com>
+2008-07-29  Claudio Saavedra  
 
 	* src/Makefile.am: Added HildonTimeSelector.
 	* src/hildon.h: Add hildon-time-selector.h
@@ -646,7 +646,7 @@
 	Copied HildonTimeSelector widget from sandbox to trunk. Future
 	work on this widget must happen in trunk.
 
-2008-07-29  Claudio Saavedra  <csaavedra@igalia.com>
+2008-07-29  Claudio Saavedra  
 
 	* src/Makefile.am: Added HildonDateSelector.
 	* src/hildon.h: Add hildon-date-selector.h
@@ -654,7 +654,7 @@
 	Copied HildonDateSelector widget from sandbox to trunk.  Future
 	work on this widget must happen in trunk.
 
-2008-07-29  Claudio Saavedra  <csaavedra@igalia.com>
+2008-07-29  Claudio Saavedra  
 
 	* src/Makefile.am: Added HildonTouchPicker.
 	* src/hildon-touch-picker.c: Update includes.
@@ -663,24 +663,24 @@
 	Copied HildonTouchPicker widget from sandbox to trunk. Future work
 	on this widget must happen in trunk.
 
-2008-07-29  Claudio Saavedra  <csaavedra@igalia.com>
+2008-07-29  Claudio Saavedra  
 
 	* src/hildon-pannable-area.c:
 	(hildon_pannable_area_motion_notify_cb): Fix a typo.
 
-2008-07-29  Alberto Garcia  <agarcia@igalia.com>
+2008-07-29  Alberto Garcia  
 
 	* examples/hildon-app-menu-example.c (main): Let the window
 	destroy the menu.
 
-2008-07-29  Alejandro G. Castro	 <alex@igalia.com>
+2008-07-29  Alejandro G. Castro	 
 
 	* src/hildon-pannable-area.c
 	(hildon_pannable_area_class_init): Set the min value of the
 	overshoot properties to zero, which points out that not
 	overshooting allowed.
 
-2008-07-29  Alejandro G. Castro	 <alex@igalia.com>
+2008-07-29  Alejandro G. Castro	 
 
 	Modified the procedure to get the widget at a point inside the
 	pannable area when using the movement type signals. Now the user
@@ -707,7 +707,7 @@
 	added condition to control which widget is under the event. This
 	way we can avoid scrolling laterally over other widgets.
 
-2008-07-29  Alejandro G. Castro	 <alex@igalia.com>
+2008-07-29  Alejandro G. Castro	 
 
 	* src/hildon-pannable-area.c
 	(hildon_pannable_area_motion_notify_cb): Fixed bug handling the
@@ -715,7 +715,7 @@
 	callback without properly calling the get pointer again. Fixed
 	also an error using the hscroll and vscroll.
 
-2008-07-28  Alberto Garcia  <agarcia@igalia.com>
+2008-07-28  Alberto Garcia  
 
 	* src/hildon-app-menu-private.h
 	* src/hildon-app-menu.c (hildon_app_menu_button_press)
@@ -743,13 +743,13 @@
 	the app menu, now it'll be shown when clicking on the title bar
 	instead.
 
-2008-07-22  Claudio Saavedra  <csaavedra@igalia.com>
+2008-07-22  Claudio Saavedra  
 
 	* src/hildon-button.c: (hildon_button_set_arrangement): Do not
 	set the widget name if the arrangement flags do not specify
 	a particular size.
 
-2008-07-22  Claudio Saavedra  <csaavedra@igalia.com>
+2008-07-22  Claudio Saavedra  
 
 	* src/hildon-button.c: (hildon_button_set_property),
 	(hildon_button_class_init), (hildon_button_new_full),
@@ -765,14 +765,14 @@
 	insertion position after backspace, so additional digits are appended,
 	fixes Bug #85874.
 
-2008-07-17  Alejandro G. Castro	 <alex@igalia.com>
+2008-07-17  Alejandro G. Castro	 
 
 	* src/hildon-pannable-area.c,
 	(hildon_pannable_area_get_topmost): Cleaned the code, removed the
 	TODO list, it was complete and removed the g_debug and g_print
 	lines.
 
-2008-07-17  Alejandro G. Castro	 <alex@igalia.com>
+2008-07-17  Alejandro G. Castro	 
 
 	Added the movement modes to the hildon-pannable-area, with this
 	modes the developers can control in which directions the widget
@@ -804,7 +804,7 @@
 	movement in the widget. We have added properties to control it,
 	signals to warn about the movements and refactored some code.
 
-2008-07-15  Alejandro G. Castro	 <alex@igalia.com>
+2008-07-15  Alejandro G. Castro	 
 
 	Changes required in order to allow vfast_factor set to zero to
 	work properly.
@@ -820,7 +820,7 @@
 	speed is 2 per cent of the max speed.
 	(hildon_pannable_area_init): Initialization with 0.
 
-2008-07-04  Alejandro G. Castro	 <alex@igalia.com>
+2008-07-04  Alejandro G. Castro	 
 
 	* src/hildon-pannable-area.c,
 	(hildon_pannable_area_get_topmost): replaced
@@ -837,7 +837,7 @@
 	* examples/hildon-pannable-area-example.c,
 	(get_sawtooth_label): Fixed small memory leak.
 
-2008-07-03  Alejandro G. Castro	 <alex@igalia.com>
+2008-07-03  Alejandro G. Castro	 
 
 	More checks for the case where the overshoot is bigger than the
 	size of the widget.
@@ -852,14 +852,14 @@
 	(hildon_pannable_area_size_allocate): add more checks to avoid
 	setting a position to the child widget outside the area.
 
-2008-07-03  Alejandro G. Castro	 <alex@igalia.com>
+2008-07-03  Alejandro G. Castro	 
 
 	* src/hildon-pannable-area.c
 	(hildon_pannable_area_size_allocate): Added conditions to control
 	when overshooting is bigger than the allocated space for the
 	children, this avoids negative allocations.
 
-2008-07-02  Alberto Garcia  <agarcia@igalia.com>
+2008-07-02  Alberto Garcia  
 
 	* doc/hildon-docs.sgml
 	* doc/hildon.types
@@ -871,7 +871,7 @@
 	* src/hildon.h:	Initial version of the new HildonButton widget,
 	with examples.
 
-2008-07-02  Claudio Saavedra  <csaavedra@igalia.com>
+2008-07-02  Claudio Saavedra  
 
 	* src/hildon-pannable-area.c:
 	(hildon_pannable_area_button_press_cb),
@@ -883,7 +883,7 @@
 
 	Use gtk_bin_get_child() instead of accessing GtkBin.child directly.
 
-2008-07-01  Alberto Garcia  <agarcia@igalia.com>
+2008-07-01  Alberto Garcia  
 
 	* examples/Makefile.am
 	* examples/hildon-pannable-area-touch-grid-example.c
@@ -891,7 +891,7 @@
 	the Hildon Touch List and Hildon Touch Grid using the
 	HildonPannableArea widget.
 
-2008-06-27  Alejandro G. Castro <alex@ig\alia.com>
+2008-06-27  Alejandro G. Castro 
 
 	* src/hildon-pannable-area.c,
 	(hildon_pannable_area_button_press_cb),
@@ -923,13 +923,13 @@
 	is no child of the pannable area. Maybe we will need more work
 	here.
 
-2008-06-27  Alejandro G. Castro <alex@ig\alia.com>
+2008-06-27  Alejandro G. Castro 
 
 	* src/hildon-pannable-area.c,
 	(hildon_pannable_area_dispose): Released the fade-out timeout when
 	disposing the widget.
 
-2008-06-27  Alejandro G. Castro <alex@ig\alia.com>
+2008-06-27  Alejandro G. Castro 
 
 	* src/hildon-pannable-area.c: Fixed problem when overshoot_max is
 	zero, we are going to use that property in order to deactivate the
@@ -948,7 +948,7 @@
 	NOTE: removed trailing whitespaces from my previous comments of
 	the Changelog.
 
-2008-06-26  Claudio Saavedra  <csaavedra@ig\alia.com>
+2008-06-26  Claudio Saavedra  
 
 	* src/hildon-pannable-area.c
 	(hildon_pannable_area_get_property),
@@ -959,16 +959,16 @@
 	to cause the widget give a hint about its panning abilities upon
 	realization.
 
-2008-06-26  Claudio Saavedra  <csaavedra@ig\alia.com>
+2008-06-26  Claudio Saavedra  
 
 	* src/hildon-pannable-area.c: Several documentation improvements.
 
-2008-06-26  Alberto Garcia  <agarcia@ig\alia.com>
+2008-06-26  Alberto Garcia  
 
 	* src/hildon-program.c
 	* src/hildon-stackable-window.c: Update documentation.
 
-2008-06-26  Alberto Garcia  <agarcia@ig\alia.com>
+2008-06-26  Alberto Garcia  
 
 	* src/hildon-stackable-window.c (get_previous_window_if_last):
 	Renamed get_last_window()
@@ -978,9 +978,9 @@
 	(get_previous_window_if_last):
 	Detect if the window hasn't been added to a HildonProgram.
 
-2008-06-26  Alejandro G. Castro <alex@ig\alia.com>
+2008-06-26  Alejandro G. Castro 
 
-	contributed and reviewed by: Claudio Saavedra <csaavedra@ig\alia.com>
+	contributed and reviewed by: Claudio Saavedra 
 
 	* src/hildon-pannable-area.c
 	(hildon_pannable_area_button_press_cb),
@@ -1007,7 +1007,7 @@
 	* examples/hildon-pannable-area-example-3.c: Added these two new
 	examples in order to test and show how the new APIs work.
 
-2008-06-25  Alberto Garcia  <agarcia@ig\alia.com>
+2008-06-25  Alberto Garcia  
 
 	* examples/hildon-stackable-window-example.c (new_window):
 	* src/Makefile.am (noinst_HEADERS):
@@ -1031,7 +1031,7 @@
 	* src/hildon-window.c:
 	Fix typo in doc
 
-2008-06-24  Alberto Garcia  <agarcia@ig\alia.com>
+2008-06-24  Alberto Garcia  
 
 	* src/hildon-stackable-window.c
 	(hildon_stackable_window_unset_program):
@@ -1045,13 +1045,13 @@
 	(hildon_stackable_window_class_init):
 	Ignore the delete event if the window is not the topmost one.
 
-2008-06-24  Alejandro G. Castro <alex@ig\alia.com>
+2008-06-24  Alejandro G. Castro 
 
 	* src/hildon-pannable-area.c
 	(hildon_pannable_area_expose_event): Fixed a problem when
 	selecting the background color of the scrollbars.
 
-2008-06-23  Alberto Garcia  <agarcia@ig\alia.com>
+2008-06-23  Alberto Garcia  
 
 	* examples/hildon-stackable-window-example.c
 	* src/hildon-stackable-window.c
@@ -1061,13 +1061,13 @@
 	Send delete events to windows rather than closing them with
 	gtk_widget_destroy()
 
-2008-06-19  Alberto Garcia  <agarcia@ig\alia.com>
+2008-06-19  Alberto Garcia  
 
 	* src/hildon-pannable-area.c
 	(hildon_pannable_area_button_release_cb): Fix overshooting in
 	accel mode.
 
-2008-06-19  Claudio Saavedra  <csaavedra@ig\alia.com>
+2008-06-19  Claudio Saavedra  
 
 	* src/hildon-pannable-area.c
 	(hildon_pannable_area_init): Initially show the scroll indicators.
@@ -1075,7 +1075,7 @@
 
 	Add initial effect showing the widget is pannable.
 
-2008-06-19  Alberto Garcia  <agarcia@ig\alia.com>
+2008-06-19  Alberto Garcia  
 
 	* src/hildon-pannable-area.c
 	(hildon_pannable_area_class_init)
@@ -1085,7 +1085,7 @@
 	New 'velocity_fast_factor' property to decide which velocity is
 	considered fast.
 
-2008-06-19  Claudio Saavedra  <csaavedra@ig\alia.com>
+2008-06-19  Claudio Saavedra  
 
 	* src/hildon-pannable-area.c
 	(hildon_pannable_draw_hscroll)
@@ -1093,7 +1093,7 @@
 	Use float variables to calculate the size of the scrollbars to
 	avoid error propagation and resizing during scrolling.
 
-2008-06-19  Alberto Garcia  <agarcia@ig\alia.com>
+2008-06-19  Alberto Garcia  
 
 	* src/hildon-pannable-area.c
 	(hildon_pannable_draw_vscroll)
@@ -1106,18 +1106,18 @@
 	(hildon_stackable_window_class_init): Fix initialization of
 	private structure.
 
-2008-06-18  Alberto Garcia  <agarcia@ig\alia.com>
+2008-06-18  Alberto Garcia  
 
 	* src/hildon-stackable-window.c: Fixed typos in doc
 
-2008-06-18  Claudio Saavedra  <csaavedra@ig\alia.com>
+2008-06-18  Claudio Saavedra  
 
 	* src/hildon-pannable-area.c
 	(hildon_pannable_area_scroll):
 	Calculate here whether we need to scroll instead of using the booleans
 	that tell us whether to /draw/ the scrolling bars.
 
-2008-06-17  Claudio Saavedra  <csaavedra@ig\alia.com>
+2008-06-17  Claudio Saavedra  
 
 	* src/hildon-app-menu.h
 	Update API.
@@ -1129,7 +1129,7 @@
 	(create_menu):
 	Update to reflect API changes.
 
-2008-06-16  Claudio Saavedra  <csaavedra@ig\alia.com>
+2008-06-16  Claudio Saavedra  
 
 	* src/hildon-stackable-window.c
 	(hildon_stackable_window_class_init):
@@ -1140,12 +1140,12 @@
 	to apply theming and behavior specific to HildonStackableWindow
 	windows.
 
-2008-06-12  Alberto Garcia  <agarcia@ig\alia.com>
+2008-06-12  Alberto Garcia  
 
 	* src/hildon-note.c (hildon_note_button_release):
 	Close information notes also when tapping on them
 
-2008-06-12  Alejandro G. Castro <alex@ig\alia.com>
+2008-06-12  Alejandro G. Castro 
 
 	Added BOUNCE_STEPS define to control the overshoot effect. Removed
 	ELASTICITY, refactor and review, fix some issues with drawing
@@ -1176,12 +1176,12 @@
 
 	(hildon_pannable_area_class_init): Changed some default values.
 
-2008-06-12  Claudio Saavedra  <csaavedra@ig\alia.com>
+2008-06-12  Claudio Saavedra  
 
 	* src/hildon-stackable-window.c: Fix some typos in the
 	documentation.
 
-2008-06-12  Alberto Garcia  <agarcia@ig\alia.com>
+2008-06-12  Alberto Garcia  
 
 	* src/hildon-dialog.c:
 	Change indentation style
@@ -1213,7 +1213,7 @@
 	Don't set the menu border explicitly, now we have the inner-border
 	style property for that.
 
-2008-06-11  Alberto Garcia  <agarcia@ig\alia.com>
+2008-06-11  Alberto Garcia  
 
 	* src/hildon-app-menu.c (hildon_app_menu_init):
 	Make the window modal
@@ -1236,7 +1236,7 @@
 	* src/hildon-banner.c (hildon_banner_realize):
 	Add WM hints for Matchbox
 
-2008-06-10  Alberto Garcia  <agarcia@ig\alia.com>
+2008-06-10  Alberto Garcia  
 
 	* src/hildon-app-menu-private.h
 	* src/hildon-app-menu.c
@@ -1253,7 +1253,7 @@
 	* examples/hildon-app-menu-example.c
 	Remove hildon_app_menu_popup(), use gtk_widget_show() instead
 
-2008-06-09  Alberto Garcia  <agarcia@ig\alia.com>
+2008-06-09  Alberto Garcia  
 
 	* src/hildon-note.c
 	Added new transfer_window and close_if_pressed_outside private
@@ -1283,7 +1283,7 @@
 	(hildon_banner_show_information_with_markup):
 	Don't display an icon by default
 
-2008-06-09  Alejandro G. Castro <alex@ig\alia.com>
+2008-06-09  Alejandro G. Castro 
 
 	Added fading scrollbars and adapted all the overshooting code to
 	horizontal scrolling. We have also fixed bugs with overshooting
@@ -1331,7 +1331,7 @@
 	(get_sawtooth_label): Now we use smaller sawtooths, the effect
 	looks better in the example.
 
-2008-06-03  Alberto Garcia  <agarcia@ig\alia.com>
+2008-06-03  Alberto Garcia  
 
 	* src/hildon-window.c
 	* src/hildon-window.h
@@ -1348,7 +1348,7 @@
 	* examples/hildon-stackable-window-example.c
 	HildonStackableWindow example
 
-2008-06-03 Alejandro G. Castro <alex@ig\alia.com>
+2008-06-03 Alejandro G. Castro 
 
 	* hildon-pannable-area.c: Added the overshoot property and removed
 	the OVERSHOOT define. Fixed an indent style error.
@@ -1367,7 +1367,7 @@
 	(main): Now we get the labels from the new get_sawtooth_label
 	function.
 
-2008-05-26  Alberto Garcia  <agarcia@ig\alia.com>
+2008-05-26  Alberto Garcia  
 
 	* src/hildon-app-menu.h
 	* src/hildon-app-menu.c
@@ -1390,7 +1390,7 @@
 
 	(hildon_time_editor_entry_keypress): add cast to fix warning.
 
-2008-05-23  Alberto Garcia  <agarcia@ig\alia.com>
+2008-05-23  Alberto Garcia  
 
 	* doc/hildon-docs.sgml
 	* doc/hildon.types
@@ -1403,7 +1403,7 @@
 	* src/hildon.h
 	New HildonAppMenu widget
 
-2008-05-21 Alejandro G. Castro <alex@ig\alia.com>
+2008-05-21 Alejandro G. Castro 
 
 	Rearranged the inheritance of the pannable area, now it inherits
 	from GtkBin. This will allow us to control the event_window and
@@ -1431,7 +1431,7 @@
 	Replaced the signal connections with overrides of the event
 	callbacks.
 
-2008-05-20 Alejandro G. Castro <alex@ig\alia.com>
+2008-05-20 Alejandro G. Castro 
 
 	Bouncing effect added when touching the borders, you can change
 	the elasticity of the border changing the ELASTICITY define.
@@ -1440,7 +1440,7 @@
 	(hildon_pannable_area_timeout): Added inverse velocity when
 	touching the border of the child widget, that causes a bounce.
 
-2008-05-20 Alejandro G. Castro <alex@ig\alia.com>
+2008-05-20 Alejandro G. Castro 
 
 	Improved performance, we now do not go to the X server in order to
 	get the list of window children. Apparently the effect is the
@@ -1452,19 +1452,19 @@
 	(hildon_pannable_area_get_topmost): Replaced the ad-hoc search of
 	the children windows function with gdk_window_get_children.
 
-2008-05-20 Alejandro G. Castro <alex@ig\alia.com>
+2008-05-20 Alejandro G. Castro 
 
 	* src/hildon-pannable-area.c:
 	(hildon_pannable_area_dispose): Fixed a crash when closing the
 	window and kinetics is activated.
 
-2008-05-19  Alberto Garcia  <agarcia@ig\alia.com>
+2008-05-19  Alberto Garcia  
 
 	* src/hildon-pannable-area.h
 	* src/hildon-pannable-area.c
 	Changed indentation style to meet the one used in Hildon
 
-2008-05-19 Alejandro G. Castro <alex@ig\alia.com>
+2008-05-19 Alejandro G. Castro 
 
 	Reviewed the interaction of the AUTO mode, now we use the time
 	attribute of the events and calculate the velocity in the motion,
@@ -1482,7 +1482,7 @@
 	come from the old implementation that should be reviewed and
 	handled properly.
 
-2008-05-15  Alberto Garcia  <agarcia@ig\alia.com>
+2008-05-15  Alberto Garcia  
 
 	* doc/hildon-docs.sgml
 	* doc/hildon.types
@@ -1496,7 +1496,7 @@
 	* examples/hildon-pannable-area-example.c
 	Updated copyright
 
-2008-05-14  Alberto Garcia  <agarcia@ig\alia.com>
+2008-05-14  Alberto Garcia  
 
 	* src/hildon-dialog.c
 	(hildon_dialog_new_with_buttons): New constructor.
@@ -1508,13 +1508,13 @@
 	* examples/hildon-pannable-area-example.c
 	(main): Update example.
 
-2008-05-13 Alberto Garcia <agarcia@ig\alia.com>
+2008-05-13 Alberto Garcia 
 
 	* doc/hildon-docs.sgml
 	* doc/hildon.types
 	Added HildonPannableArea to the documentation.
 
-2008-05-13 Victor Jaquez <vjaquez@ig\alia.com>
+2008-05-13 Victor Jaquez 
 
 	* doc/visual_index.xml
 	Fix reference to HildonLoginDialog in documentation
@@ -1529,12 +1529,12 @@
 	* src/hildon.h
 	New HildonDialog widget.
 
-2008-05-09 Alberto Garcia <agarcia@ig\alia.com>
+2008-05-09 Alberto Garcia 
 
 	* src/hildon-pannable-area.c
 	Merge latest changes (r4318, r4342) from libmokoui trunk
 
-2008-05-09 Alberto Garcia <agarcia@ig\alia.com>
+2008-05-09 Alberto Garcia 
 
 	* examples/Makefile.am
 	* examples/hildon-pannable-area-example.c
