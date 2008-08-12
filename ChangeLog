@@ -1,3 +1,14 @@
+2008-08-12  Alberto Garcia  <agarcia@igalia.com>
+
+	* doc/hildon-docs.sgml
+	* src/hildon-app-menu.c
+	* src/hildon-bread-crumb.c
+	* src/hildon-button.c
+	* src/hildon-gtk.c
+	* src/hildon-program.c
+	* src/hildon-stackable-window.c
+	* src/hildon-window.c: Lots of documentation updates.
+
 2008-08-12  Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>
 
 	Released 2.1.4

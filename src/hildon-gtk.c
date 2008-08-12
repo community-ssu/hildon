@@ -17,6 +17,7 @@
 /**
  * SECTION:hildon-gtk
  * @short_description: Additional functions for Gtk widgets
+ * @see_also: #HildonButton
  *
  * Hildon provides some functions to extend the functionality of
  * existing Gtk widgets. This also includes convenience functions to

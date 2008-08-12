@@ -36,6 +36,11 @@
  * previous one will be automatically hidden. When the new window is
  * destroyed, the previous one will appear again.
  *
+ * Alternatively, you can remove a window from the top of the stack
+ * without destroying it by using
+ * hildon_program_pop_window_stack(). The window will be automatically
+ * hidden and the previous one will appear.
+ *
  * <example>
  * <programlisting>
  * void

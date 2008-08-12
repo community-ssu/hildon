@@ -23,6 +23,14 @@
  *
  */
 
+/**
+ * SECTION:hildon-bread-crumb
+ * @short_description: Interface for elements in a #HildonBreadCrumbTrail
+ *
+ * #HildonBreadCrumb is an interface for creating new types of items
+ * for the #HildonBreadCrumbTrail widget.
+ */
+
 #include "hildon-bread-crumb.h"
 
 static void hildon_bread_crumb_base_init (gpointer g_class);

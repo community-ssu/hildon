@@ -30,19 +30,28 @@
  * Besides that, the #HildonAppMenu can contain a group of filter buttons
  * (#GtkToggleButton or #GtkRadioButton).
  *
+ * To use a #HildonAppMenu, add it to a #HildonStackableWindow with
+ * with hildon_stackable_window_set_main_menu(). The menu will appear
+ * when the user presses the window title bar.
+ *
+ * Alternatively, you can show it by hand using gtk_widget_show().
+ *
  * <example>
  * <title>Creating a HildonAppMenu</title>
  * <programlisting>
+ * HildonStackableWindow *win;
  * HildonAppMenu *menu;
  * GtkWidget *button;
  * GtkWidget *filter;
  * <!-- -->
+ * win = HILDON_STACKABLE_WINDOW (hildon_stackable_window_new ());
  * menu = HILDON_APP_MENU (hildon_app_menu_new ());
  * <!-- -->
  * // Create a button and add it to the menu
  * button = gtk_button_new_with_label ("Menu command one");
  * g_signal_connect (button, "clicked", G_CALLBACK (button_one_clicked), userdata);
  * hildon_app_menu_append (menu, GTK_BUTTON (button));
+ * <!-- -->
  * // Another button
  * button = gtk_button_new_with_label ("Menu command two");
  * g_signal_connect (button, "clicked", G_CALLBACK (button_two_clicked), userdata);
@@ -51,16 +60,17 @@
  * // Create a filter and add it to the menu
  * filter = gtk_radio_button_new_with_label (NULL, "Filter one");
  * gtk_toggle_button_set_mode (GTK_TOGGLE_BUTTON (filter), FALSE);
- * g_signal_connect (filter, "clicked", G_CALLBACK (filter_two_clicked), userdata);
+ * g_signal_connect (filter, "clicked", G_CALLBACK (filter_one_clicked), userdata);
  * hildon_app_menu_add_filter (menu, GTK_BUTTON (filter));
+ * <!-- -->
  * // Add a new filter
  * filter = gtk_radio_button_new_with_label_from_widget (GTK_RADIO_BUTTON (filter), "Filter two");
  * gtk_toggle_button_set_mode (GTK_TOGGLE_BUTTON (filter), FALSE);
- * g_signal_connect (filter, "clicked", G_CALLBACK (filter_three_clicked), userdata);
+ * g_signal_connect (filter, "clicked", G_CALLBACK (filter_two_clicked), userdata);
  * hildon_app_menu_add_filter (menu, GTK_BUTTON (filter));
  * <!-- -->
- * // Show the menu
- * gtk_widget_show (menu);
+ * // Add the menu to the window
+ * hildon_stackable_window_set_main_menu (win, menu);
  * </programlisting>
  * </example>
  *
@@ -81,9 +91,9 @@ G_DEFINE_TYPE (HildonAppMenu, hildon_app_menu, GTK_TYPE_WINDOW);
 /**
  * hildon_app_menu_new:
  *
- * Creates a new HildonAppMenu.
+ * Creates a new #HildonAppMenu.
  *
- * Return value: A @HildonAppMenu.
+ * Return value: A #HildonAppMenu.
  **/
 GtkWidget *
 hildon_app_menu_new                             (void)
@@ -93,11 +103,11 @@ hildon_app_menu_new                             (void)
 }
 
 /**
- * hildon_app_menu_append
- * @menu : A @HildonAppMenu
- * @item : A @GtkButton to add to the HildonAppMenu
+ * hildon_app_menu_append:
+ * @menu : A #HildonAppMenu
+ * @item : A #GtkButton to add to the #HildonAppMenu
  *
- * Adds the @item to the @HildonAppMenu
+ * Adds the @item to @menu.
  */
 void
 hildon_app_menu_append                          (HildonAppMenu *menu,
@@ -127,11 +137,10 @@ hildon_app_menu_append                          (HildonAppMenu *menu,
 
 /**
  * hildon_app_menu_add_filter
- * @menu : A @HildonAppMenu
- * @filter : A @GtkButton to add to the #HildonAppMenu.
+ * @menu : A #HildonAppMenu
+ * @filter : A #GtkButton to add to the #HildonAppMenu.
  *
- * Adds the @filter to the #HildonAppMenu.
- *
+ * Adds the @filter to @menu.
  */
 void
 hildon_app_menu_add_filter                      (HildonAppMenu *menu,
@@ -386,7 +395,7 @@ hildon_app_menu_class_init                      (HildonAppMenuClass *klass)
         g_param_spec_uint (
             "horizontal-spacing",
             "Horizontal spacing on menu items",
-            "Horizontal spacing between each menu item (but not filters)",
+            "Horizontal spacing between each menu item. Does not apply to filter buttons.",
             0, G_MAXUINT, 16,
             G_PARAM_READABLE));
 
@@ -395,7 +404,7 @@ hildon_app_menu_class_init                      (HildonAppMenuClass *klass)
         g_param_spec_uint (
             "vertical-spacing",
             "Vertical spacing on menu items",
-            "Vertical spacing between each menu item (but not filters)",
+            "Vertical spacing between each menu item. Does not apply to filter buttons.",
             0, G_MAXUINT, 16,
             G_PARAM_READABLE));
 

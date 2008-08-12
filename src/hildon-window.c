@@ -30,16 +30,16 @@
  * window in the Hildon framework. It is derived from the GtkWindow
  * and provides additional commodities specific to the Hildon
  * framework.
-
+ *
  * Among these windows in the Hildon framework can have a single menu
  * attached, which is toggled with a hardware key or by tapping
  * a custom button in the window frame. This menu can be set
  * by providing a GtkMenu to the hildon_window_set_menu() method.
-
+ *
  * Similarly a window in the Hildon framework can have several toolbars
  * attached. These can be added to the HildonWindow with
- * hildon_window_add_toolbar()..
- * 
+ * hildon_window_add_toolbar().
+ *
  * <example>
  * <title>Creating a HildonWindow</title>
  * <programlisting>
@@ -70,7 +70,6 @@
  * gtk_window_set_icon (GTK_WINDOW (window), icon_pixbuf);
  * </programlisting>
  * </example>
- *
  */
 
 #include                                        <memory.h>

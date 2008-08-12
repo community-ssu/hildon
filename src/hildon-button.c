@@ -30,8 +30,37 @@
  * "auto" so it behaves like a standard GtkButton.
  *
  * The #HildonButton can hold any valid child widget, but it usually
- * contains two labels, named title and value. To change the alignment
- * of the labels, use gtk_button_set_alignment()
+ * contains two labels, named title and value, and it can also contain
+ * an image. To change the alignment of the button contents, use
+ * gtk_button_set_alignment()
+ *
+ * <example>
+ * <title>Creating a HildonButton</title>
+ * <programlisting>
+ * void
+ * button_clicked (HildonButton *button, gpointer user_data)
+ * {
+ *     const gchar *title, *value;
+ * <!-- -->
+ *     title = hildon_button_get_title (button);
+ *     value = hildon_button_get_value (button);
+ *     g_debug ("Button clicked with title '&percnt;s' and value '&percnt;s'", title, value);
+ * }
+ * <!-- -->
+ * GtkWidget *
+ * create_button (void)
+ * {
+ *     GtkWidget *button;
+ * <!-- -->
+ *     button = hildon_button_new (HILDON_SIZE_AUTO, HILDON_BUTTON_ARRANGEMENT_VERTICAL);
+ *     hildon_button_set_text (HILDON_BUTTON (button), "Some title", "Some value");
+ * <!-- -->
+ *     g_signal_connect (button, "clicked", G_CALLBACK (button_clicked), NULL);
+ * <!-- -->
+ *     return button;
+ * }
+ * </programlisting>
+ * </example>
  */
 
 #include                                        "hildon-button.h"
@@ -266,7 +295,7 @@ hildon_button_add_value_size_group              (HildonButton *button,
  * @size_group: A #GtkSizeGroup for the button image
  *
  * Adds the image of @button to @size_group. You must add an image
- * using hildon_button_set_image before calling this function.
+ * using hildon_button_set_image() before calling this function.
  **/
 void
 hildon_button_add_image_size_group              (HildonButton *button,
@@ -315,7 +344,10 @@ hildon_button_add_size_groups                   (HildonButton *button,
  * @size: Flags to set the size of the button.
  * @arrangement: How the labels must be arranged.
  *
- * Creates a new #HildonButton. To add a child widget use gtk_container_add().
+ * Creates a new #HildonButton. To set text in the labels, use
+ * hildon_button_set_title() and
+ * hildon_button_set_value(). Alternatively, you can add a custom
+ * child widget using gtk_container_add().
  *
  * Returns: a new #HildonButton
  **/
@@ -394,7 +426,7 @@ hildon_button_set_arrangement                   (HildonButton            *button
  *
  * Sets the title (main label) of @button to @title.
  *
- * This will clear the previously set title.
+ * This will clear any previously set title.
  *
  * If @title is set to %NULL, the title label will be hidden and the
  * value label will be realigned.
@@ -429,7 +461,7 @@ hildon_button_set_title                         (HildonButton *button,
  *
  * Sets the value (secondary label) of @button to @value.
  *
- * This will clear the previously set value.
+ * This will clear any previously set value.
  *
  * If @value is set to %NULL, the value label will be hidden and the
  * title label will be realigned.
@@ -555,8 +587,8 @@ hildon_button_set_image                         (HildonButton *button,
  * @button: a #HildonButton
  * @position: the position of the image (%GTK_POS_LEFT or %GTK_POS_RIGHT)
  *
- * Sets the position of the image inside @button. Only left and right
- * are supported.
+ * Sets the position of the image inside @button. Only %GTK_POS_LEFT
+ * and %GTK_POS_RIGHT are currently supported.
  **/
 void
 hildon_button_set_image_position                (HildonButton    *button,

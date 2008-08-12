@@ -25,25 +25,32 @@
 /**
  * SECTION:hildon-program
  * @short_description: An object that represents an application running in the Hildon framework.
+ * @see_also: #HildonWindow, #HildonStackableWindow
  *
- * The HildonProgram is an object used to represent an application running
+ * The #HildonProgram is an object used to represent an application running
  * in the Hildon framework.
- * 
- * Such an application is thought to have one or more HildonWindow. These
- * shall be registered to the HildonProgram with hildon_program_add_window,
- * and can be unregistered similarly with hildon_program_remove_window.
- * 
- * The HildonProgram provides the programmer with commodities such
- * as applying a common toolbar and menu to all the HildonWindow
+ *
+ * Such an application is thought to have one or more #HildonWindow. These
+ * shall be registered to the #HildonProgram with hildon_program_add_window(),
+ * and can be unregistered similarly with hildon_program_remove_window().
+ *
+ * The #HildonProgram provides the programmer with commodities such
+ * as applying a common toolbar and menu to all the #HildonWindow
  * registered to it. This is done with hildon_program_set_common_menu()
  * and hildon_program_set_common_toolbar().
- * 
- * The HildonProgram is also used to apply program-wide properties that
+ *
+ * The #HildonProgram is also used to apply program-wide properties that
  * are specific to the Hildon framework. For instance
  * hildon_program_set_can_hibernate() sets whether or not an application
  * can be set to hibernate by the Hildon task navigator, in situations of
  * low memory.
- * 
+ *
+ * The #HildonProgram also contains a stack of
+ * #HildonStackableWindow. Such windows will be automatically added to
+ * the stack when shown, and removed when destroyed. The developer can
+ * use the stack with hildon_program_pop_window_stack(),
+ * hildon_program_peek_window_stack() and hildon_program_go_to_root_window().
+ *
  * <example>
  * <programlisting>
  * HildonProgram *program;
@@ -317,7 +324,7 @@ hildon_program_pop_window_stack                 (HildonProgram *self)
  * from the stack when they are destroyed.
  *
  * This function returns the #HildonStackableWindow from the top of
- * the stack or %NULL if the stack is empty. The stack is never modified.
+ * the stack, or %NULL if the stack is empty. The stack is never modified.
  *
  * Returns: A #HildonStackableWindow, or %NULL.
  */
@@ -522,10 +529,10 @@ hildon_program_get_instance                     (void)
 
 /**
  * hildon_program_add_window:
- * @self: The @HildonProgram to which the window should be registered
- * @window: A @HildonWindow to be added
+ * @self: The #HildonProgram to which the window should be registered
+ * @window: A #HildonWindow to be added
  *
- * Registers a @HildonWindow as belonging to a given @HildonProgram. This
+ * Registers a #HildonWindow as belonging to a given #HildonProgram. This
  * allows to apply program-wide settings as all the registered windows,
  * such as hildon_program_set_common_menu() and
  * hildon_pogram_set_common_toolbar()
@@ -654,10 +661,12 @@ hildon_program_get_can_hibernate                (HildonProgram *self)
  * @self: The #HildonProgram in which the common menu should be used
  * @menu: A GtkMenu to use as common menu for the program
  *
- * Sets a GtkMenu that will appear in all the @HildonWindow registered
- * to the #HildonProgram. Only one common GtkMenu can be set, further
- * call will detach the previous common GtkMenu. A @HildonWindow
- * can use it's own GtkMenu with @hildon_window_set_menu
+ * Sets a GtkMenu that will appear in all the #HildonWindow registered
+ * with the #HildonProgram. Only one common GtkMenu can be set, further
+ * calls will detach the previous common GtkMenu. A #HildonWindow
+ * can use it's own GtkMenu with hildon_window_set_menu()
+ *
+ * This method does not support #HildonAppMenu objects.
  **/
 void
 hildon_program_set_common_menu                  (HildonProgram *self, 
@@ -703,7 +712,7 @@ hildon_program_set_common_menu                  (HildonProgram *self,
  * @self: The #HildonProgram from which to retrieve the common menu
  *
  * Return value: the GtkMenu that was set as common menu for this
- * #HildonProgram, or NULL of no common menu was set.
+ * #HildonProgram, or %NULL of no common menu was set.
  **/
 GtkMenu*
 hildon_program_get_common_menu                  (HildonProgram *self)
@@ -723,11 +732,11 @@ hildon_program_get_common_menu                  (HildonProgram *self)
  * @self: The #HildonProgram in which the common toolbar should be used
  * @toolbar: A GtkToolbar to use as common toolbar for the program
  *
- * Sets a GtkToolbar that will appear in all the @HildonWindow registered
+ * Sets a GtkToolbar that will appear in all the #HildonWindow registered
  * to the #HildonProgram. Only one common GtkToolbar can be set, further
- * call will detach the previous common GtkToolbar. A @HildonWindow
- * can use its own GtkToolbar with @hildon_window_set_toolbar. Both
- * #HildonProgram and @HildonWindow specific toolbars will be shown
+ * call will detach the previous common GtkToolbar. A #HildonWindow
+ * can use its own GtkToolbar with hildon_window_add_toolbar(). Both
+ * #HildonProgram and #HildonWindow specific toolbars will be shown
  **/
 void
 hildon_program_set_common_toolbar               (HildonProgram *self, 
@@ -773,7 +782,7 @@ hildon_program_set_common_toolbar               (HildonProgram *self,
  * @self: The #HildonProgram from which to retrieve the common toolbar
  *
  * Return value: the GtkToolbar that was set as common toolbar for this
- * #HildonProgram, or NULL of no common menu was set.
+ * #HildonProgram, or %NULL of no common menu was set.
  **/
 GtkToolbar*
 hildon_program_get_common_toolbar               (HildonProgram *self)
@@ -814,9 +823,9 @@ hildon_program_get_is_topmost                   (HildonProgram *self)
  *
  * Will close all windows in the #HildonProgram but the first one (the
  * root window) by sending them a delete event. If any of the windows
- * refuses to close (by handling it) no further events will be
- * sent. All windows in the program must be #HildonStackableWindow for
- * this to work.
+ * refuses to close (by capturing the event) no further events will be
+ * sent. Only windows of type #HildonStackableWindow will be affected
+ * by this.
  */
 void
 hildon_program_go_to_root_window                (HildonProgram *self)
