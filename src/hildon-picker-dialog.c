@@ -177,9 +177,6 @@ hildon_picker_dialog_set_property (GObject * object,
                                    guint param_id,
                                    const GValue * value, GParamSpec * pspec)
 {
-  HildonPickerDialogPrivate *priv = HILDON_PICKER_DIALOG_GET_PRIVATE (object);
-  g_assert (priv);
-
   switch (param_id) {
   case PROP_DONE_BUTTON_TEXT:
     hildon_picker_dialog_set_done_label (HILDON_PICKER_DIALOG (object),
@@ -197,10 +194,8 @@ hildon_picker_dialog_get_property (GObject * object,
                                    GValue * value, GParamSpec * pspec)
 {
   HildonPickerDialog *dialog;
-  HildonPickerDialogPrivate *priv;
 
   dialog = HILDON_PICKER_DIALOG (object);
-  priv = HILDON_PICKER_DIALOG_GET_PRIVATE (object);
 
   switch (param_id) {
   case PROP_DONE_BUTTON_TEXT:

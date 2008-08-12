@@ -821,7 +821,7 @@ hildon_touch_selector_set_column_selection_mode (HildonTouchSelector * selector,
   GtkTreeView *tv = NULL;
   SelectorColumn *column = NULL;
   GtkTreeSelection *selection = NULL;
-  GtkSelectionMode treeview_mode;
+  GtkSelectionMode treeview_mode = GTK_SELECTION_MULTIPLE;
   GtkTreeIter iter;
 
   g_return_if_fail (HILDON_IS_TOUCH_SELECTOR (selector));
