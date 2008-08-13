@@ -1,3 +1,10 @@
+libhildon (2.1.5-1~unreleased) gutsy; urgency=low
+
+  * Replace esd dependencies in the dev package with libcanberra-dev.
+    Fixes: NB#87481
+
+ -- Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>  Wed, 13 Aug 2008 16:10:36 +0300
+
 libhildon (2.1.4-1) gutsy; urgency=low
 
   * Lot of changes, see ChangeLog for more information.

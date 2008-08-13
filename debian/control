@@ -8,7 +8,7 @@ Standards-Version: 3.6.0
 Package: libhildon1-dev
 Section: devel
 Architecture: any
-Depends: libhildon1 (= ${Source-Version}), libgtk2.0-dev (>= 2:2.12.9-0osso3), libesd0-dev | osso-esd-dev, libgconf2-dev
+Depends: libhildon1 (= ${Source-Version}), libgtk2.0-dev (>= 2:2.12.9-0osso3), libgconf2-dev, libcanberra-dev
 Description: Hildon libraries development files
 
 Package: libhildon1
