@@ -1,3 +1,8 @@
+2008-08-13  Alberto Garcia  <agarcia@igalia.com>
+
+	* examples/hildon-button-example.c: Add a switch to show images in
+	the buttons.
+
 2008-08-12  Claudio Saavedra  <csaavedra@igalia.com>
 
 	* doc/hildon-docs.sgml: Some docs reorganization.

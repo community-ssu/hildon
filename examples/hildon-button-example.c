@@ -25,6 +25,9 @@
 #include                                        <gtk/gtk.h>
 #include                                        <hildon-button.h>
 
+static GtkWidget *horizontal_layout;
+static GtkWidget *images;
+
 static void
 button_clicked_cb                               (HildonButton *button,
                                                  gpointer      data)
@@ -32,9 +35,16 @@ button_clicked_cb                               (HildonButton *button,
     g_debug ("Pressed button: %s", hildon_button_get_title (button));
 }
 
+
+static GtkWidget *
+create_image                                    (void)
+{
+    return gtk_image_new_from_stock (GTK_STOCK_INFO, GTK_ICON_SIZE_BUTTON);
+}
+
 static void
 vertical_buttons_window                         (GtkButton *b,
-                                                 GtkToggleButton *horizontal)
+                                                 gpointer   data)
 {
     GtkWidget *win;
     GtkWidget *button;
@@ -44,14 +54,17 @@ vertical_buttons_window                         (GtkButton *b,
     GtkBox *vbox3;
     int i;
     HildonButtonArrangement arrangement;
+    gboolean use_images;
 
     /* Create window */
     win = gtk_window_new (GTK_WINDOW_TOPLEVEL);
     gtk_container_set_border_width (GTK_CONTAINER (win), 20);
 
-    arrangement = gtk_toggle_button_get_active (horizontal) ?
+    arrangement = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (horizontal_layout)) ?
             HILDON_BUTTON_ARRANGEMENT_HORIZONTAL :
             HILDON_BUTTON_ARRANGEMENT_VERTICAL;
+
+    use_images = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (images));
 
     /* Create and pack boxes */
     hbox = GTK_BOX (gtk_hbox_new (FALSE, 10));
@@ -73,6 +86,10 @@ vertical_buttons_window                         (GtkButton *b,
         g_signal_connect (button, "clicked", G_CALLBACK (button_clicked_cb), NULL);
         gtk_box_pack_start (vbox1, button, FALSE, FALSE, 0);
         g_free (title);
+        if (use_images)
+            hildon_button_set_image (HILDON_BUTTON (button), create_image ());
+        if (i % 2 == 0)
+            hildon_button_set_image_position (HILDON_BUTTON (button), GTK_POS_RIGHT);
     }
 
     /* Thumb buttons */
@@ -85,6 +102,10 @@ vertical_buttons_window                         (GtkButton *b,
         g_signal_connect (button, "clicked", G_CALLBACK (button_clicked_cb), NULL);
         gtk_box_pack_start (vbox2, button, FALSE, FALSE, 0);
         g_free (title);
+        if (use_images)
+            hildon_button_set_image (HILDON_BUTTON (button), create_image ());
+        if (i % 2 == 0)
+            hildon_button_set_image_position (HILDON_BUTTON (button), GTK_POS_RIGHT);
     }
 
     /* Auto buttons */
@@ -96,6 +117,10 @@ vertical_buttons_window                         (GtkButton *b,
         g_signal_connect (button, "clicked", G_CALLBACK (button_clicked_cb), NULL);
         gtk_box_pack_start (vbox3, button, FALSE, FALSE, 0);
         g_free (title);
+        if (use_images)
+            hildon_button_set_image (HILDON_BUTTON (button), create_image ());
+        if (i % 2 == 0)
+            hildon_button_set_image_position (HILDON_BUTTON (button), GTK_POS_RIGHT);
     }
 
     gtk_container_add (GTK_CONTAINER (win), GTK_WIDGET (hbox));
@@ -107,7 +132,7 @@ vertical_buttons_window                         (GtkButton *b,
 
 static void
 horizontal_buttons_window                       (GtkButton *b,
-                                                 GtkToggleButton *horizontal)
+                                                 gpointer   data)
 {
     GtkWidget *win;
     GtkWidget *button;
@@ -117,14 +142,17 @@ horizontal_buttons_window                       (GtkButton *b,
     GtkBox *hbox3;
     GtkBox *hbox4;
     HildonButtonArrangement arrangement;
+    gboolean use_images;
 
     /* Create window */
     win = gtk_window_new (GTK_WINDOW_TOPLEVEL);
     gtk_container_set_border_width (GTK_CONTAINER (win), 20);
 
-    arrangement = gtk_toggle_button_get_active (horizontal) ?
+    arrangement = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (horizontal_layout)) ?
             HILDON_BUTTON_ARRANGEMENT_HORIZONTAL :
             HILDON_BUTTON_ARRANGEMENT_VERTICAL;
+
+    use_images = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (images));
 
     /* Create and pack boxes */
     vbox = GTK_BOX (gtk_vbox_new (FALSE, 10));
@@ -144,12 +172,16 @@ horizontal_buttons_window                       (GtkButton *b,
                                           HILDON_SIZE_FINGER_HEIGHT, arrangement, "Full width", "Value");
     gtk_box_pack_start (hbox1, button, TRUE, TRUE, 0);
     g_signal_connect (button, "clicked", G_CALLBACK (button_clicked_cb), NULL);
+    if (use_images)
+        hildon_button_set_image (HILDON_BUTTON (button), create_image ());
 
     /* Half screen width buttons */
     button = hildon_button_new_with_text (HILDON_SIZE_HALFSCREEN_WIDTH |
                                           HILDON_SIZE_FINGER_HEIGHT, arrangement, "Half width 1", "Value");
     gtk_box_pack_start (hbox2, button, TRUE, TRUE, 0);
     g_signal_connect (button, "clicked", G_CALLBACK (button_clicked_cb), NULL);
+    if (use_images)
+        hildon_button_set_image (HILDON_BUTTON (button), create_image ());
 
     button = hildon_button_new_with_text (HILDON_SIZE_HALFSCREEN_WIDTH |
                                           HILDON_SIZE_FINGER_HEIGHT, arrangement,
@@ -157,12 +189,18 @@ horizontal_buttons_window                       (GtkButton *b,
                                           "Value");
     gtk_box_pack_start (hbox2, button, TRUE, TRUE, 0);
     g_signal_connect (button, "clicked", G_CALLBACK (button_clicked_cb), NULL);
+    if (use_images)
+        hildon_button_set_image (HILDON_BUTTON (button), create_image ());
+    hildon_button_set_image_position (HILDON_BUTTON (button), GTK_POS_RIGHT);
 
     /* Half screen width buttons */
     button = hildon_button_new_with_text (HILDON_SIZE_HALFSCREEN_WIDTH |
                                           HILDON_SIZE_FINGER_HEIGHT, arrangement, "Half width 3", NULL);
     gtk_box_pack_start (hbox3, button, TRUE, TRUE, 0);
     g_signal_connect (button, "clicked", G_CALLBACK (button_clicked_cb), NULL);
+    if (use_images)
+        hildon_button_set_image (HILDON_BUTTON (button), create_image ());
+    hildon_button_set_image_position (HILDON_BUTTON (button), GTK_POS_RIGHT);
 
     button = hildon_button_new_with_text (HILDON_SIZE_HALFSCREEN_WIDTH |
                                           HILDON_SIZE_FINGER_HEIGHT, arrangement,
@@ -170,6 +208,8 @@ horizontal_buttons_window                       (GtkButton *b,
                                           "Value (title is truncated)");
     gtk_box_pack_start (hbox3, button, TRUE, TRUE, 0);
     g_signal_connect (button, "clicked", G_CALLBACK (button_clicked_cb), NULL);
+    if (use_images)
+        hildon_button_set_image (HILDON_BUTTON (button), create_image ());
 
     /* Auto width button */
     button = hildon_button_new_with_text (HILDON_SIZE_AUTO_WIDTH |
@@ -177,12 +217,17 @@ horizontal_buttons_window                       (GtkButton *b,
                                           "Auto width 1", "Value");
     gtk_box_pack_start (hbox4, button, TRUE, TRUE, 0);
     g_signal_connect (button, "clicked", G_CALLBACK (button_clicked_cb), NULL);
+    if (use_images)
+        hildon_button_set_image (HILDON_BUTTON (button), create_image ());
 
     button = hildon_button_new_with_text (HILDON_SIZE_AUTO_WIDTH |
                                           HILDON_SIZE_FINGER_HEIGHT, arrangement,
                                           "Auto width 2 with longer text", NULL);
     gtk_box_pack_start (hbox4, button, TRUE, TRUE, 0);
     g_signal_connect (button, "clicked", G_CALLBACK (button_clicked_cb), NULL);
+    if (use_images)
+        hildon_button_set_image (HILDON_BUTTON (button), create_image ());
+    hildon_button_set_image_position (HILDON_BUTTON (button), GTK_POS_RIGHT);
 
     gtk_container_add (GTK_CONTAINER (win), GTK_WIDGET (vbox));
 
@@ -200,13 +245,13 @@ main                                            (int    argc,
     GtkWidget *but2;
     GtkWidget *label;
     GtkBox *vbox;
+    GtkBox *hbox;
     GtkWidget *align;
-    GtkWidget *horizontal_layout;
-
 
     gtk_init (&argc, &argv);
 
     vbox = GTK_BOX (gtk_vbox_new (FALSE, 10));
+    hbox = GTK_BOX (gtk_hbox_new (TRUE, 10));
 
     win = gtk_window_new (GTK_WINDOW_TOPLEVEL);
 
@@ -215,8 +260,11 @@ main                                            (int    argc,
     but2 = gtk_button_new_with_label ("Buttons with different widths");
 
     horizontal_layout = gtk_check_button_new_with_label ("Use horizontal layout");
+    images = gtk_check_button_new_with_label ("Use images");
+    gtk_box_pack_start (hbox, horizontal_layout, TRUE, TRUE, 0);
+    gtk_box_pack_start (hbox, images, TRUE, TRUE, 0);
     align = gtk_alignment_new (0.5, 0.5, 0, 0);
-    gtk_container_add (GTK_CONTAINER (align), horizontal_layout);
+    gtk_container_add (GTK_CONTAINER (align), GTK_WIDGET (hbox));
 
     gtk_box_pack_start (vbox, label, TRUE, TRUE, 0);
     gtk_box_pack_start (vbox, but1, TRUE, TRUE, 0);
@@ -226,8 +274,8 @@ main                                            (int    argc,
     gtk_container_set_border_width (GTK_CONTAINER (win), 20);
     gtk_container_add (GTK_CONTAINER (win), GTK_WIDGET (vbox));
 
-    g_signal_connect (but1, "clicked", G_CALLBACK (vertical_buttons_window), horizontal_layout);
-    g_signal_connect (but2, "clicked", G_CALLBACK (horizontal_buttons_window), horizontal_layout);
+    g_signal_connect (but1, "clicked", G_CALLBACK (vertical_buttons_window), NULL);
+    g_signal_connect (but2, "clicked", G_CALLBACK (horizontal_buttons_window), NULL);
     g_signal_connect (win, "delete_event", G_CALLBACK (gtk_main_quit), NULL);
 
     gtk_widget_show_all (win);
