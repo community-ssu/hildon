@@ -1,5 +1,9 @@
 2008-08-13  Alberto Garcia  <agarcia@igalia.com>
 
+	* src/hildon-button.c: Update documentation.
+
+2008-08-13  Alberto Garcia  <agarcia@igalia.com>
+
 	* examples/hildon-button-example.c: Add a switch to show images in
 	the buttons.
 

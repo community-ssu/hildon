@@ -51,9 +51,16 @@
  * create_button (void)
  * {
  *     GtkWidget *button;
+ *     GtkWidget *image;
  * <!-- -->
  *     button = hildon_button_new (HILDON_SIZE_AUTO, HILDON_BUTTON_ARRANGEMENT_VERTICAL);
  *     hildon_button_set_text (HILDON_BUTTON (button), "Some title", "Some value");
+ * <!-- -->
+ *     image = gtk_image_new_from_stock (GTK_STOCK_INFO, GTK_ICON_SIZE_BUTTON);
+ *     hildon_button_set_image (HILDON_BUTTON (button), image);
+ *     hildon_button_set_image_position (HILDON_BUTTON (button), GTK_POS_RIGHT);
+ * <!-- -->
+ *     gtk_button_set_alignment (GTK_BUTTON (button), 0.0, 0.5);
  * <!-- -->
  *     g_signal_connect (button, "clicked", G_CALLBACK (button_clicked), NULL);
  * <!-- -->
