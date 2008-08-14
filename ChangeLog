@@ -1,3 +1,17 @@
+2008-08-14  Alberto Garcia  <agarcia@igalia.com>
+
+	* src/hildon-check-button.c (hildon_check_button_new):
+	Instead of using a custom container, display the label and the
+	checkbox using the standard GtkButton API.
+
+	* examples/hildon-check-button-example.c (main): Don't use
+	hildon_check_button_set_label() anymore
+
+	* src/hildon-check-button.h
+	* src/hildon-check-button.c
+	(hildon_check_button_set_label, hildon_check_button_get_label):
+	Set as deprecated, now we're using gtk_button_{get,set}_label()
+
 2008-08-14  Alejandro G. Castro	 <alex@igalia.com>
 
 	* src/hildon-pannable-area.c,

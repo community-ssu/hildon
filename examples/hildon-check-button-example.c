@@ -59,7 +59,7 @@ main                                            (int    argc,
         char *text;
         GtkWidget *button = hildon_check_button_new (HILDON_SIZE_HALFSCREEN_WIDTH | HILDON_SIZE_FINGER_HEIGHT);
         text = g_strdup_printf ("Button %d", i+1);
-        hildon_check_button_set_label (GTK_BUTTON (button), text);
+        gtk_button_set_label (GTK_BUTTON (button), text);
         g_free (text);
         gtk_table_attach_defaults (GTK_TABLE (table), button, i/2, (i/2) + 1, i%2, (i%2) + 1);
         g_signal_connect (button, "clicked", G_CALLBACK (button_clicked_cb), label);
