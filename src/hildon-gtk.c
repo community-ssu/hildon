@@ -75,6 +75,57 @@ hildon_gtk_widget_set_theme_size                (GtkWidget      *widget,
         gtk_widget_set_name (widget, widget_name);
 }
 
+static void
+image_visible_changed_cb                        (GtkWidget  *image,
+                                                 GParamSpec *arg1,
+                                                 gpointer   oldparent)
+{
+    if (!GTK_WIDGET_VISIBLE (image))
+        gtk_widget_show (image);
+}
+
+static void
+parent_changed_cb                               (GtkWidget  *image,
+                                                 GParamSpec *arg1,
+                                                 gpointer   oldparent)
+{
+    /* If the parent has really changed, remove the old signal handlers */
+    if (image->parent != oldparent) {
+        g_signal_handlers_disconnect_by_func (image, parent_changed_cb, oldparent);
+        g_signal_handlers_disconnect_by_func (image, image_visible_changed_cb, NULL);
+    }
+}
+
+static void
+image_changed_cb                                (GtkButton  *button,
+                                                 GParamSpec *arg1,
+                                                 gpointer    user_data)
+{
+    GtkWidget *image = gtk_button_get_image (button);
+
+    g_return_if_fail (image == NULL || GTK_IS_WIDGET (image));
+
+    if (image != NULL) {
+        /* If the button has a new image, show it */
+        gtk_widget_show (image);
+        /* Show the image no matter the value of gtk-button-images */
+        g_signal_connect (image, "notify::visible", G_CALLBACK (image_visible_changed_cb), NULL);
+        /* If the image is removed from the button, disconnect these handlers */
+        g_signal_connect (image, "notify::parent", G_CALLBACK (parent_changed_cb), image->parent);
+    }
+}
+
+static void
+button_common_init                              (GtkWidget      *button,
+                                                 HildonSizeType  size)
+{
+    /* Set requested size */
+    hildon_gtk_widget_set_theme_size (button, size);
+
+    /* Make sure that all images in this button are always shown */
+    g_signal_connect (button, "notify::image", G_CALLBACK (image_changed_cb), NULL);
+}
+
 /**
  * hildon_gtk_button_new:
  * @size: Flags indicating the size of the new button
@@ -82,13 +133,17 @@ hildon_gtk_widget_set_theme_size                (GtkWidget      *widget,
  * This is a convenience function to create a #GtkButton setting its
  * size to one of the pre-defined Hildon sizes.
  *
+ * Buttons created with this function also override the
+ * "gtk-button-images" setting. Images set using
+ * gtk_button_set_image() are always shown.
+ *
  * Return value: A newly created #GtkButton widget.
  **/
 GtkWidget *
 hildon_gtk_button_new                           (HildonSizeType size)
 {
     GtkWidget *button = gtk_button_new ();
-    hildon_gtk_widget_set_theme_size (button, size);
+    button_common_init (button, size);
     return button;
 }
 
@@ -99,13 +154,17 @@ hildon_gtk_button_new                           (HildonSizeType size)
  * This is a convenience function to create a #GtkToggleButton setting
  * its size to one of the pre-defined Hildon sizes.
  *
+ * Buttons created with this function also override the
+ * "gtk-button-images" setting. Images set using
+ * gtk_button_set_image() are always shown.
+ *
  * Return value: A newly created #GtkToggleButton widget.
  **/
 GtkWidget *
 hildon_gtk_toggle_button_new                    (HildonSizeType size)
 {
     GtkWidget *button = gtk_toggle_button_new ();
-    hildon_gtk_widget_set_theme_size (button, size);
+    button_common_init (button, size);
     return button;
 }
 
@@ -118,6 +177,10 @@ hildon_gtk_toggle_button_new                    (HildonSizeType size)
  * This is a convenience function to create a #GtkRadioButton setting
  * its size to one of the pre-defined Hildon sizes.
  *
+ * Buttons created with this function also override the
+ * "gtk-button-images" setting. Images set using
+ * gtk_button_set_image() are always shown.
+ *
  * Return value: A newly created #GtkRadioButton widget.
  **/
 GtkWidget *
@@ -125,7 +188,7 @@ hildon_gtk_radio_button_new                     (HildonSizeType  size,
                                                  GSList         *group)
 {
     GtkWidget *button = gtk_radio_button_new (group);
-    hildon_gtk_widget_set_theme_size (button, size);
+    button_common_init (button, size);
     return button;
 }
 
@@ -137,6 +200,10 @@ hildon_gtk_radio_button_new                     (HildonSizeType  size,
  * This is a convenience function to create a #GtkRadioButton setting
  * its size to one of the pre-defined Hildon sizes.
  *
+ * Buttons created with this function also override the
+ * "gtk-button-images" setting. Images set using
+ * gtk_button_set_image() are always shown.
+ *
  * Return value: A newly created #GtkRadioButton widget.
  **/
 GtkWidget *
@@ -144,7 +211,7 @@ hildon_gtk_radio_button_new_from_widget         (HildonSizeType  size,
                                                  GtkRadioButton *radio_group_member)
 {
     GtkWidget *button = gtk_radio_button_new_from_widget (radio_group_member);
-    hildon_gtk_widget_set_theme_size (button, size);
+    button_common_init (button, size);
     return button;
 }
 

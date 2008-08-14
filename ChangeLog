@@ -1,5 +1,12 @@
 2008-08-14  Alberto Garcia  <agarcia@igalia.com>
 
+	* src/hildon-gtk.c (hildon_gtk_button_new)
+	(hildon_gtk_toggle_button_new, hildon_gtk_radio_button_new)
+	(hildon_gtk_radio_button_new_from_widget): Make buttons show their
+	images overriding the value of the "gtk-button-images" setting.
+
+2008-08-14  Alberto Garcia  <agarcia@igalia.com>
+
 	* src/hildon-check-button.c (hildon_check_button_new):
 	Instead of using a custom container, display the label and the
 	checkbox using the standard GtkButton API.
