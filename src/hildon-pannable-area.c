@@ -166,8 +166,8 @@ static GdkWindow *hildon_pannable_area_get_topmost (GdkWindow * window,
 
       gdk_window_get_geometry (child, &wx, &wy, &width, &height, NULL);
 
-      if ((x >= wx) && (x < (wx + width)) && (y >= wy)
-	  && (y < (wy + height))) {
+      if (((x >= wx) && (x < (wx + width)) && (y >= wy)
+           && (y < (wy + height))) && (gdk_window_is_visible (child))) {
 	child_x = x - wx;
 	child_y = y - wy;
 	window = child;
@@ -513,7 +513,7 @@ hildon_pannable_axis_scroll (HildonPannableArea *area,
       if (overshoot_max!=0) {
         *overshooting = 1;
         *scroll_to = -1;
-        *overshot_dist = CLAMP (*overshot_dist + *vel, -1*overshoot_max, 0);
+        *overshot_dist = CLAMP (*overshot_dist + *vel, -overshoot_max, 0);
         gtk_widget_queue_resize (GTK_WIDGET (area));
       } else {
         *vel = 0.0;
@@ -570,7 +570,7 @@ hildon_pannable_axis_scroll (HildonPannableArea *area,
           *vel = MAX ((((gdouble)*overshot_dist)/overshoot_max) * (*vel) * -1, 10.0);
         }
 
-        *overshot_dist = CLAMP (*overshot_dist + (*vel), -1*overshoot_max, 0);
+        *overshot_dist = CLAMP (*overshot_dist + (*vel), -overshoot_max, 0);
 
         gtk_widget_queue_resize (GTK_WIDGET (area));
 
@@ -1151,8 +1151,8 @@ hildon_pannable_area_expose_event (GtkWidget * widget, GdkEventExpose * event)
 
       overshot_height =
         MAX (priv->overshot_dist_y,
-             -1*(widget->allocation.height -
-                 (priv->hscroll ? priv->hscroll_rect.height : 0)));
+             -(widget->allocation.height -
+               (priv->hscroll ? priv->hscroll_rect.height : 0)));
 
       overshot_y = MAX (widget->allocation.y +
                         widget->allocation.height +
@@ -1189,8 +1189,8 @@ hildon_pannable_area_expose_event (GtkWidget * widget, GdkEventExpose * event)
 
       overshot_width =
         MAX (priv->overshot_dist_x,
-             -1*(widget->allocation.width -
-                 (priv->vscroll ? priv->vscroll_rect.width : 0)));
+             -(widget->allocation.width -
+               (priv->vscroll ? priv->vscroll_rect.width : 0)));
 
       overshot_x = MAX (widget->allocation.x +
                         widget->allocation.width +

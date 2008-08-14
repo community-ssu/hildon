@@ -1,3 +1,13 @@
+2008-08-14  Alejandro G. Castro	 <alex@igalia.com>
+
+	* src/hildon-pannable-area.c,
+	(hildon_pannable_area_get_topmost): Fixed bug with click in the
+	GtkTreeview first line we detected it after the inclusion of the
+	GtkWindowImpl in gtk+. We now check if the window is visible, not
+	just if the pointer is over the window.
+	(hildon_pannable_axis_scroll),
+	(hildon_pannable_area_expose_event): Small style changes.
+
 2008-08-13  Alberto Garcia  <agarcia@igalia.com>
 
 	* src/hildon-button.c: Update documentation.
