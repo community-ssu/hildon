@@ -38,7 +38,7 @@ HiddenColContext *ctx;
 
 static void
 horizontal_movement (HildonPannableArea *area,
-                     HildonPannableAreaMovDirection direction,
+                     HildonMovementDirection direction,
 		     gdouble x, gdouble y, gpointer user_data)
 {
   GtkTreePath *path;
@@ -50,7 +50,7 @@ horizontal_movement (HildonPannableArea *area,
   g_print ("widget %p treeview %p\n", child, ctx->treeview);
 
   if (child == ctx->treeview) {
-    if (direction == HILDON_PANNABLE_AREA_MOV_LEFT){
+    if (direction == HILDON_MOVEMENT_LEFT){
 
       path = gtk_tree_path_new_first ();
 
@@ -74,7 +74,7 @@ horizontal_movement (HildonPannableArea *area,
 
 static void
 vertical_movement (HildonPannableArea *area,
-                   HildonPannableAreaMovDirection direction,
+                   HildonMovementDirection direction,
 		   gdouble x, gdouble y,
                    gpointer user_data)
 {
@@ -166,9 +166,9 @@ main (int argc, char **args)
 
     /* Put everything in a pannable area */
     panarea = hildon_pannable_area_new ();
-    g_object_set (panarea, "mov_mode", HILDON_PANNABLE_AREA_MOV_MODE_VERT,
+    g_object_set (panarea, "mov_mode", HILDON_MOVEMENT_MODE_VERT,
                   "hovershoot_max", 0,
-                  "hindicator_mode", HILDON_PANNABLE_AREA_INDICATOR_MODE_HIDE, NULL);
+                  "hindicator_mode", GTK_POLICY_NEVER, NULL);
 
     hildon_pannable_area_add_with_viewport (HILDON_PANNABLE_AREA (panarea), GTK_WIDGET (vbox));
     gtk_container_add (GTK_CONTAINER (window), panarea);

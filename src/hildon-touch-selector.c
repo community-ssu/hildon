@@ -426,7 +426,7 @@ _create_new_column (HildonTouchSelector * selector,
   panarea = hildon_pannable_area_new ();
 
   g_value_init (&val, G_TYPE_INT);
-  g_value_set_int (&val, HILDON_PANNABLE_AREA_INDICATOR_MODE_HIDE);
+  g_value_set_int (&val, GTK_POLICY_NEVER);
   g_object_set_property (G_OBJECT (panarea), "vindicator-mode", &val);
 
   g_value_unset (&val);

@@ -55,7 +55,7 @@ typedef struct _HildonPannableAreaPrivate HildonPannableAreaPrivate;
 
 struct _HildonPannableAreaPrivate {
   HildonPannableAreaMode mode;
-  HildonPannableAreaMovMode mov_mode;
+  HildonMovementMode mov_mode;
   GdkWindow *event_window;
   gdouble x;		/* Used to store mouse co-ordinates of the first or */
   gdouble y;		/* previous events in a press-motion pair */
@@ -110,9 +110,8 @@ struct _HildonPannableAreaPrivate {
 
   guint event_mode;
 
-  HildonPannableAreaIndicatorMode vindicator_mode;
-  HildonPannableAreaIndicatorMode hindicator_mode;
-
+  GtkPolicyType vindicator_mode;
+  GtkPolicyType hindicator_mode;
 };
 
 /*signals*/
@@ -127,7 +126,7 @@ static guint pannable_area_signals [LAST_SIGNAL] = { 0 };
 enum {
   PROP_ENABLED = 1,
   PROP_MODE,
-  PROP_MOV_MODE,
+  PROP_MOVEMENT_MODE,
   PROP_VELOCITY_MIN,
   PROP_VELOCITY_MAX,
   PROP_VELOCITY_FAST_FACTOR,
@@ -417,10 +416,10 @@ hildon_pannable_area_refresh (HildonPannableArea * area)
    gtk_widget_size_request (widget, NULL);
 
   switch (priv->hindicator_mode) {
-  case HILDON_PANNABLE_AREA_INDICATOR_MODE_SHOW:
+  case GTK_POLICY_ALWAYS:
     hscroll = TRUE;
     break;
-  case HILDON_PANNABLE_AREA_INDICATOR_MODE_HIDE:
+  case GTK_POLICY_NEVER:
     hscroll = FALSE;
     break;
   default:
@@ -429,10 +428,10 @@ hildon_pannable_area_refresh (HildonPannableArea * area)
   }
 
   switch (priv->vindicator_mode) {
-  case HILDON_PANNABLE_AREA_INDICATOR_MODE_SHOW:
+  case GTK_POLICY_ALWAYS:
     vscroll = TRUE;
     break;
-  case HILDON_PANNABLE_AREA_INDICATOR_MODE_HIDE:
+  case GTK_POLICY_NEVER:
     vscroll = FALSE;
     break;
   default:
@@ -751,15 +750,15 @@ hildon_pannable_area_motion_notify_cb (GtkWidget * widget,
         g_signal_emit (area,
                        pannable_area_signals[VERTICAL_MOVEMENT],
                        0, (priv->click_y > event->y) ?
-                       HILDON_PANNABLE_AREA_MOV_UP :
-                       HILDON_PANNABLE_AREA_MOV_DOWN,
+                       HILDON_MOVEMENT_UP :
+                       HILDON_MOVEMENT_DOWN,
                        priv->click_x, priv->click_y);
 
         vscroll = (priv->vadjust->upper - priv->vadjust->lower >
                    priv->vadjust->page_size) ? TRUE : FALSE;
 
         if (!((vscroll)&&
-              (priv->mov_mode&HILDON_PANNABLE_AREA_MOV_MODE_VERT)))
+              (priv->mov_mode&HILDON_MOVEMENT_MODE_VERT)))
           priv->moved = FALSE;
 
       } else {
@@ -768,15 +767,15 @@ hildon_pannable_area_motion_notify_cb (GtkWidget * widget,
         g_signal_emit (area,
                        pannable_area_signals[HORIZONTAL_MOVEMENT],
                        0, (priv->click_x > event->x) ?
-                       HILDON_PANNABLE_AREA_MOV_LEFT :
-                       HILDON_PANNABLE_AREA_MOV_RIGHT,
+                       HILDON_MOVEMENT_LEFT :
+                       HILDON_MOVEMENT_RIGHT,
                        priv->click_x, priv->click_y);
 
         hscroll = (priv->hadjust->upper - priv->hadjust->lower >
                    priv->hadjust->page_size) ? TRUE : FALSE;
 
         if (!((hscroll)&&
-              (priv->mov_mode&HILDON_PANNABLE_AREA_MOV_MODE_HORI)))
+              (priv->mov_mode&HILDON_MOVEMENT_MODE_HORIZ)))
           priv->moved = FALSE;
       }
     }
@@ -823,7 +822,7 @@ hildon_pannable_area_motion_notify_cb (GtkWidget * widget,
 
       delta = event->time - priv->last_time;
 
-      if (priv->mov_mode&HILDON_PANNABLE_AREA_MOV_MODE_HORI) {
+      if (priv->mov_mode&HILDON_MOVEMENT_MODE_HORIZ) {
         rawvel_x = (((event->x - priv->x) / ABS (delta)) *
                     (gdouble) priv->sps) * FORCE;
         /* we store the direction and after the calculation we
@@ -839,7 +838,7 @@ hildon_pannable_area_motion_notify_cb (GtkWidget * widget,
         priv->vel_x = 0;
       }
 
-      if (priv->mov_mode&HILDON_PANNABLE_AREA_MOV_MODE_VERT) {
+      if (priv->mov_mode&HILDON_MOVEMENT_MODE_VERT) {
         rawvel_y = (((event->y - priv->y) / ABS (delta)) *
                     (gdouble) priv->sps) * FORCE;
         direction_y = rawvel_y < 0 ? -1 : 1;
@@ -855,9 +854,9 @@ hildon_pannable_area_motion_notify_cb (GtkWidget * widget,
 
       hildon_pannable_area_scroll (area, x, y);
 
-      if (priv->mov_mode&HILDON_PANNABLE_AREA_MOV_MODE_HORI)
+      if (priv->mov_mode&HILDON_MOVEMENT_MODE_HORIZ)
         priv->x = event->x;
-      if (priv->mov_mode&HILDON_PANNABLE_AREA_MOV_MODE_VERT)
+      if (priv->mov_mode&HILDON_MOVEMENT_MODE_VERT)
         priv->y = event->y;
 
       break;
@@ -1292,7 +1291,7 @@ hildon_pannable_area_get_property (GObject * object, guint property_id,
   case PROP_MODE:
     g_value_set_enum (value, priv->mode);
     break;
-  case PROP_MOV_MODE:
+  case PROP_MOVEMENT_MODE:
     g_value_set_flags (value, priv->mov_mode);
     break;
   case PROP_VELOCITY_MIN:
@@ -1357,7 +1356,7 @@ hildon_pannable_area_set_property (GObject * object, guint property_id,
   case PROP_MODE:
     priv->mode = g_value_get_enum (value);
     break;
-  case PROP_MOV_MODE:
+  case PROP_MOVEMENT_MODE:
     priv->mov_mode = g_value_get_flags (value);
     break;
   case PROP_VELOCITY_MIN:
@@ -1695,8 +1694,8 @@ hildon_pannable_area_class_init (HildonPannableAreaClass * klass)
 				   g_param_spec_enum ("vindicator_mode",
 						      "vindicator mode",
 						      "Mode of the vertical scrolling indicator",
-						      HILDON_TYPE_PANNABLE_AREA_INDICATOR_MODE,
-						      HILDON_PANNABLE_AREA_INDICATOR_MODE_AUTO,
+						      GTK_TYPE_POLICY_TYPE,
+						      GTK_POLICY_AUTOMATIC,
 						      G_PARAM_READWRITE |
 						      G_PARAM_CONSTRUCT));
 
@@ -1705,8 +1704,8 @@ hildon_pannable_area_class_init (HildonPannableAreaClass * klass)
 				   g_param_spec_enum ("hindicator_mode",
 						      "hindicator mode",
 						      "Mode of the horizontal scrolling indicator",
-						      HILDON_TYPE_PANNABLE_AREA_INDICATOR_MODE,
-						      HILDON_PANNABLE_AREA_INDICATOR_MODE_AUTO,
+						      GTK_TYPE_POLICY_TYPE,
+						      GTK_POLICY_AUTOMATIC,
 						      G_PARAM_READWRITE |
 						      G_PARAM_CONSTRUCT));
 
@@ -1721,12 +1720,12 @@ hildon_pannable_area_class_init (HildonPannableAreaClass * klass)
 						      G_PARAM_CONSTRUCT));
 
   g_object_class_install_property (object_class,
-				   PROP_MOV_MODE,
+				   PROP_MOVEMENT_MODE,
 				   g_param_spec_flags ("mov_mode",
                                                        "Scroll movement mode",
                                                        "Controls if the widget can scroll vertically, horizontally or both",
-                                                       HILDON_TYPE_PANNABLE_AREA_MOV_MODE,
-                                                       HILDON_PANNABLE_AREA_MOV_MODE_BOTH,
+                                                       HILDON_TYPE_MOVEMENT_MODE,
+                                                       HILDON_MOVEMENT_MODE_BOTH,
                                                        G_PARAM_READWRITE |
                                                        G_PARAM_CONSTRUCT));
 

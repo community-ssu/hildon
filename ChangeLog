@@ -1,3 +1,24 @@
+2008-08-14  Alejandro G. Castro	 <alex@igalia.com>
+
+	* src/hildon-pannable-area.c:
+	(hildon_pannable_area_refresh),
+	(hildon_pannable_area_motion_notify_cb),
+	(hildon_pannable_area_class_init):
+	* src/hildon-pannable-area.h:
+	* src/hildon-touch-selector.c
+	(_create_new_column):
+	* examples/hildon-pannable-area-example-4.c:
+	(horizontal_movement),
+	(vertical_movement),
+	(main):
+	Replaced the names of enums in the HildonPannableArea:
+	   -  HILDON_PANNABLE_AREA_MOV_MODE_* ->
+	      HILDON_MOVEMENT_MODE_*
+	   -  HILDON_PANNABLE_AREA_MOV_* ->
+	      HILDON_MOVEMENT_*
+	   - Removed HildonPannableAreaIndicatorMode, now we
+	     use GtkPolicyType
+
 2008-08-14  Alberto Garcia  <agarcia@igalia.com>
 
 	* examples/hildon-pannable-area-touch-grid-example.c

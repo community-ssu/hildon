@@ -65,41 +65,36 @@ typedef enum {
 } HildonPannableAreaMode;
 
 /**
- * HildonPannableAreaMovDirection:
- * @HILDON_PANNABLE_AREA_MOV_MODE_HORIZ:
- * @HILDON_PANNABLE_AREA_MOV_MODE_VERT:
+ * HildonMovementMode:
+ * @HILDON_MOVEMENT_MODE_HORIZ:
+ * @HILDON_MOVEMENT_MODE_VERT:
+ * @HILDON_MOVEMENT_MODE_BOTH:
  *
  * Used to control the movement of the pannable, we can allow or
  * disallow horizontal or vertical movement. This way the applications
  * can control the movement using scroll_to and jump_to functions
  */
 typedef enum {
-  HILDON_PANNABLE_AREA_MOV_MODE_HORI = 1 << 1,
-  HILDON_PANNABLE_AREA_MOV_MODE_VERT = 1 << 2,
-  HILDON_PANNABLE_AREA_MOV_MODE_BOTH = 0x000006
-} HildonPannableAreaMovMode;
+  HILDON_MOVEMENT_MODE_HORIZ = 1 << 1,
+  HILDON_MOVEMENT_MODE_VERT = 1 << 2,
+  HILDON_MOVEMENT_MODE_BOTH = 0x000006
+} HildonMovementMode;
 
 /**
- * HildonPannableAreaMovDirection:
- * @HILDON_PANNABLE_AREA_MOV_UP:
- * @HILDON_PANNABLE_AREA_MOV_DOWN:
- * @HILDON_PANNABLE_AREA_MOV_LEFT:
- * @HILDON_PANNABLE_AREA_MOV_RIGHT:
+ * HildonMovementDirection:
+ * @HILDON_MOVEMENT_UP:
+ * @HILDON_MOVEMENT_DOWN:
+ * @HILDON_MOVEMENT_LEFT:
+ * @HILDON_MOVEMENT_RIGHT:
  *
  * Used to point out the direction of the movement
  */
 typedef enum {
-  HILDON_PANNABLE_AREA_MOV_UP,
-  HILDON_PANNABLE_AREA_MOV_DOWN,
-  HILDON_PANNABLE_AREA_MOV_LEFT,
-  HILDON_PANNABLE_AREA_MOV_RIGHT
-} HildonPannableAreaMovDirection;
-
-typedef enum {
-    HILDON_PANNABLE_AREA_INDICATOR_MODE_AUTO,
-    HILDON_PANNABLE_AREA_INDICATOR_MODE_SHOW,
-    HILDON_PANNABLE_AREA_INDICATOR_MODE_HIDE
-} HildonPannableAreaIndicatorMode;
+  HILDON_MOVEMENT_UP,
+  HILDON_MOVEMENT_DOWN,
+  HILDON_MOVEMENT_LEFT,
+  HILDON_MOVEMENT_RIGHT
+} HildonMovementDirection;
 
 /**
  * HildonPannableArea:
@@ -119,10 +114,10 @@ struct                                          _HildonPannableAreaClass
     GtkBinClass parent_class;
 
   void (* horizontal_movement) (HildonPannableArea *area,
-                                HildonPannableAreaIndicatorMode direction,
+                                HildonMovementDirection direction,
                                 gdouble x, gdouble y);
   void (* vertical_movement) (HildonPannableArea *area,
-                              HildonPannableAreaIndicatorMode direction,
+                              HildonMovementDirection direction,
                               gdouble x, gdouble y);
 };
 
