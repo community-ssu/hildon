@@ -25,7 +25,7 @@
  */
 
 #include <gtk/gtk.h>
-#include <hildon-pannable-area.h>
+#include <hildon.h>
 
 enum
 {

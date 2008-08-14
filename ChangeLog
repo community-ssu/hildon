@@ -1,5 +1,11 @@
 2008-08-14  Alberto Garcia  <agarcia@igalia.com>
 
+	* examples/hildon-pannable-area-touch-grid-example.c
+	* examples/hildon-pannable-area-touch-list-example.c: Fix
+	compilation warnings.
+
+2008-08-14  Alberto Garcia  <agarcia@igalia.com>
+
 	* src/hildon-gtk.c (hildon_gtk_button_new)
 	(hildon_gtk_toggle_button_new, hildon_gtk_radio_button_new)
 	(hildon_gtk_radio_button_new_from_widget): Make buttons show their
