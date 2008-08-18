@@ -976,6 +976,70 @@ hildon_pannable_area_button_release_cb (GtkWidget * widget,
   return TRUE;
 }
 
+/* utility event handler */
+static gboolean
+hildon_pannable_area_scroll_cb (GtkWidget *widget,
+                                GdkEventScroll *event)
+{
+  GtkAdjustment *adj = NULL;
+  HildonPannableAreaPrivate *priv = PANNABLE_AREA_PRIVATE (widget);
+
+  if ((!priv->enabled) ||
+      (gtk_bin_get_child (GTK_BIN (widget)) == NULL))
+    return TRUE;
+
+  priv->scroll_indicator_event_interrupt = 0;
+  priv->scroll_indicator_alpha = 10.0;
+
+  if (!priv->scroll_indicator_timeout) {
+    priv->scroll_indicator_timeout = g_timeout_add
+      ((gint) (1000.0 / (gdouble) (priv->sps*2)),
+       (GSourceFunc) hildon_pannable_area_scroll_indicator_fade, widget);
+  }
+
+  /* Stop inertial scrolling */
+  if (priv->idle_id) {
+    priv->vel_x = 0.0;
+    priv->vel_y = 0.0;
+    priv->overshooting_x = 0;
+    priv->overshooting_y = 0;
+
+    if ((priv->overshot_dist_x>0)||(priv->overshot_dist_y>0)) {
+      priv->overshot_dist_x = 0;
+      priv->overshot_dist_y = 0;
+
+      gtk_widget_queue_resize (GTK_WIDGET (widget));
+    }
+
+    g_source_remove (priv->idle_id);
+    priv->idle_id = 0;
+  }
+
+  if (event->direction == GDK_SCROLL_UP || event->direction == GDK_SCROLL_DOWN)
+    adj = priv->vadjust;
+  else
+    adj = priv->hadjust;
+
+  if (adj)
+    {
+      gdouble delta, new_value;
+
+      /* from gtkrange.c calculate delta*/
+      delta = pow (adj->page_size, 2.0 / 3.0);
+
+      if (event->direction == GDK_SCROLL_UP ||
+          event->direction == GDK_SCROLL_LEFT)
+        delta = - delta;
+
+      new_value = CLAMP (adj->value + delta, adj->lower, adj->upper - adj->page_size);
+
+      gtk_adjustment_set_value (adj, new_value);
+    }
+
+  return TRUE;
+}
+
+
 static void
 rgb_from_gdkcolor (GdkColor *color, gdouble *r, gdouble *g, gdouble *b)
 {
@@ -1458,6 +1522,7 @@ hildon_pannable_area_realize (GtkWidget * widget)
     | GDK_BUTTON_MOTION_MASK
     | GDK_BUTTON_PRESS_MASK
     | GDK_BUTTON_RELEASE_MASK
+    | GDK_SCROLL_MASK
     | GDK_EXPOSURE_MASK | GDK_ENTER_NOTIFY_MASK | GDK_LEAVE_NOTIFY_MASK;
 
   widget->window = gtk_widget_get_parent_window (widget);
@@ -1533,7 +1598,7 @@ hildon_pannable_area_map (GtkWidget * widget)
     }
 
     if (priv->vscroll || priv->hscroll) {
-      priv->scroll_indicator_alpha = 1;
+      priv->scroll_indicator_alpha = 1.0;
 
       priv->scroll_indicator_timeout =
         g_timeout_add ((gint) (1000.0 / (gdouble) priv->sps),
@@ -1670,6 +1735,7 @@ hildon_pannable_area_class_init (HildonPannableAreaClass * klass)
   widget_class->button_press_event = hildon_pannable_area_button_press_cb;
   widget_class->button_release_event = hildon_pannable_area_button_release_cb;
   widget_class->motion_notify_event = hildon_pannable_area_motion_notify_cb;
+  widget_class->scroll_event = hildon_pannable_area_scroll_cb;
 
   container_class->add = hildon_pannable_area_add;
   container_class->remove = hildon_pannable_area_remove;
@@ -1867,7 +1933,7 @@ hildon_pannable_area_init (HildonPannableArea * self)
   priv->idle_id = 0;
   priv->vel_x = 0;
   priv->vel_y = 0;
-  priv->scroll_indicator_alpha = 0;
+  priv->scroll_indicator_alpha = 0.0;
   priv->scroll_indicator_timeout = 0;
   priv->scroll_indicator_event_interrupt = 0;
   priv->scroll_delay_counter = 0;
@@ -2117,7 +2183,11 @@ hildon_pannable_area_jump_to (HildonPannableArea *area,
   priv->scroll_indicator_alpha = 1.0;
 
   if (priv->scroll_indicator_timeout) {
+    g_source_remove (priv->scroll_indicator_timeout);
+    priv->scroll_indicator_timeout = 0;
+  }
 
+  if (priv->idle_id) {
     priv->vel_x = 0.0;
     priv->vel_y = 0.0;
     priv->overshooting_x = 0;
@@ -2129,13 +2199,10 @@ hildon_pannable_area_jump_to (HildonPannableArea *area,
 
       gtk_widget_queue_resize (GTK_WIDGET (area));
     }
-    g_source_remove (priv->scroll_indicator_timeout);
-    priv->scroll_indicator_timeout = 0;
-  }
 
-  if (priv->idle_id)
     g_source_remove (priv->idle_id);
-  priv->idle_id = 0;
+    priv->idle_id = 0;
+  }
 }
 
 /**

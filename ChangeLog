@@ -1,5 +1,19 @@
 2008-08-18  Alejandro G. Castro	 <alex@igalia.com>
 
+	* src/hildon-pannable-area.c,
+	(hildon_pannable_area_scroll_cb),
+	(hildon_pannable_area_realize),
+	(hildon_pannable_area_class_init): Added scroll_event management
+	for pannable area, now we can scroll the usual desktop method.
+
+	(hildon_pannable_area_jump_to): Fixed the logic of the method, the
+	initialization of the parameters should depend on idle_id.
+
+	(hildon_pannable_area_init),
+	(hildon_pannable_area_map): Small code style modifications
+
+2008-08-18  Alejandro G. Castro	 <alex@igalia.com>
+
 	* src/hildon-pannable-area.c
 	(hildon_pannable_area_button_press_cb),
 	(hildon_pannable_area_motion_notify_cb),
