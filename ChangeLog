@@ -1,3 +1,13 @@
+2008-08-18  Alejandro G. Castro	 <alex@igalia.com>
+
+	* src/hildon-pannable-area.c
+	(hildon_pannable_area_button_press_cb),
+	(hildon_pannable_area_motion_notify_cb),
+	(hildon_pannable_area_button_release_cb),
+	(hildon_pannable_area_size_allocate),
+	(hildon_pannable_area_scroll_to): Improved the timeouts
+	management, we avoid creating them each time.
+
 2008-08-14  Alejandro G. Castro	 <alex@igalia.com>
 
 	* src/hildon-pannable-area.c:

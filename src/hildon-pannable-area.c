@@ -314,11 +314,12 @@ hildon_pannable_area_button_press_cb (GtkWidget * widget,
     return TRUE;
 
   priv->scroll_indicator_event_interrupt = 1;
-  if (priv->scroll_indicator_timeout){
-    g_source_remove (priv->scroll_indicator_timeout);
+  if (!priv->scroll_indicator_timeout){
+    priv->scroll_indicator_timeout = g_timeout_add
+      ((gint) (1000.0 / (gdouble) (priv->sps*2)),
+       (GSourceFunc) hildon_pannable_area_scroll_indicator_fade, widget);
   }
-  priv->scroll_indicator_timeout = g_timeout_add ((gint) (1000.0 / (gdouble) (priv->sps*2)),
-                     (GSourceFunc) hildon_pannable_area_scroll_indicator_fade, widget);
+
   priv->last_time = event->time;
   priv->last_type = 1;
 
@@ -785,13 +786,11 @@ hildon_pannable_area_motion_notify_cb (GtkWidget * widget,
     if ((priv->mode != HILDON_PANNABLE_AREA_MODE_PUSH) &&
 	(priv->mode != HILDON_PANNABLE_AREA_MODE_AUTO)) {
 
-      if (priv->idle_id)
-	g_source_remove (priv->idle_id);
-
-      priv->idle_id = g_timeout_add ((gint)
-				     (1000.0 / (gdouble) priv->sps),
-				     (GSourceFunc)
-				     hildon_pannable_area_timeout, area);
+      if (!priv->idle_id)
+        priv->idle_id = g_timeout_add ((gint)
+                                       (1000.0 / (gdouble) priv->sps),
+                                       (GSourceFunc)
+                                       hildon_pannable_area_timeout, area);
     }
   }
 
@@ -897,17 +896,16 @@ hildon_pannable_area_button_release_cb (GtkWidget * widget,
   priv->scroll_indicator_event_interrupt = 0;
   priv->scroll_delay_counter = 0;
 
-  if (priv->scroll_indicator_timeout) {
-    g_source_remove (priv->scroll_indicator_timeout);
-  }
-
   if ((ABS (priv->vel_y) > 1.0)||
       (ABS (priv->vel_x) > 1.0)) {
     priv->scroll_indicator_alpha = 1.0;
   }
 
-  priv->scroll_indicator_timeout = g_timeout_add ((gint) (1000.0 / (gdouble) priv->sps),
-                     (GSourceFunc) hildon_pannable_area_scroll_indicator_fade, widget);
+  if (!priv->scroll_indicator_timeout) {
+    priv->scroll_indicator_timeout = g_timeout_add
+      ((gint) (1000.0 / (gdouble) priv->sps),
+       (GSourceFunc) hildon_pannable_area_scroll_indicator_fade, widget);
+  }
 
   if ((!priv->clicked) || (!priv->enabled) || (event->button != 1) ||
       ((event->time == priv->last_time) && (priv->last_type == 3)))
@@ -917,8 +915,6 @@ hildon_pannable_area_button_release_cb (GtkWidget * widget,
 
   if (priv->mode == HILDON_PANNABLE_AREA_MODE_AUTO ||
       priv->mode == HILDON_PANNABLE_AREA_MODE_ACCEL) {
-    if (priv->idle_id)
-      g_source_remove (priv->idle_id);
 
     /* If overshoot has been initiated with a finger down, on release set max speed */
     if (priv->overshot_dist_y != 0) {
@@ -931,9 +927,10 @@ hildon_pannable_area_button_release_cb (GtkWidget * widget,
       priv->vel_x = priv->vmax;
     }
 
-    priv->idle_id = g_timeout_add ((gint) (1000.0 / (gdouble) priv->sps),
-				   (GSourceFunc)
-				   hildon_pannable_area_timeout, widget);
+    if (!priv->idle_id)
+      priv->idle_id = g_timeout_add ((gint) (1000.0 / (gdouble) priv->sps),
+                                     (GSourceFunc)
+                                     hildon_pannable_area_timeout, widget);
   }
 
   priv->last_time = event->time;
@@ -1620,7 +1617,7 @@ hildon_pannable_area_size_allocate (GtkWidget * widget,
   if (bin->child)
     gtk_widget_size_allocate (bin->child, &child_allocation);
 
-  /* we have to this after child size_allocate because page_size is
+  /* we have to do this after child size_allocate because page_size is
    * changed when we allocate the size of the children */
   if (priv->overshot_dist_y < 0) {
     gtk_adjustment_set_value (priv->vadjust, priv->vadjust->upper -
@@ -2052,16 +2049,15 @@ hildon_pannable_area_scroll_to (HildonPannableArea *area,
 
   priv->scroll_indicator_alpha = 1.0;
 
-  if (priv->scroll_indicator_timeout)
-    g_source_remove (priv->scroll_indicator_timeout);
-  priv->scroll_indicator_timeout = g_timeout_add ((gint) (1000.0 / (gdouble) priv->sps),
-                                                  (GSourceFunc) hildon_pannable_area_scroll_indicator_fade, area);
+  if (!priv->scroll_indicator_timeout)
+    priv->scroll_indicator_timeout = g_timeout_add
+      ((gint) (1000.0 / (gdouble) priv->sps),
+       (GSourceFunc) hildon_pannable_area_scroll_indicator_fade, area);
 
-  if (priv->idle_id)
-    g_source_remove (priv->idle_id);
-  priv->idle_id = g_timeout_add ((gint) (1000.0 / (gdouble) priv->sps),
-                                 (GSourceFunc)
-                                 hildon_pannable_area_timeout, area);
+  if (!priv->idle_id)
+    priv->idle_id = g_timeout_add ((gint) (1000.0 / (gdouble) priv->sps),
+                                   (GSourceFunc)
+                                   hildon_pannable_area_timeout, area);
 }
 
 /**
