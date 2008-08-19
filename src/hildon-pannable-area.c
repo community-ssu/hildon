@@ -1070,7 +1070,7 @@ hildon_pannable_draw_vscroll (GtkWidget * widget, GdkColor *back_color, GdkColor
   height = MAX (SCROLL_BAR_MIN_SIZE, height);
 
   /* Check the max y position */
-  y = MIN (y, widget->allocation.height -
+  y = MIN (y, widget->allocation.y + widget->allocation.height -
            (priv->hscroll ? priv->hscroll_rect.height : 0) -
            height);
 
@@ -1131,7 +1131,7 @@ hildon_pannable_draw_hscroll (GtkWidget * widget, GdkColor *back_color, GdkColor
   width = MAX (SCROLL_BAR_MIN_SIZE, width);
 
   /* Check the max x position */
-  x = MIN (x, widget->allocation.width -
+  x = MIN (x, widget->allocation.x + widget->allocation.width -
            (priv->vscroll ? priv->vscroll_rect.width : 0) -
            width);
 
@@ -1623,8 +1623,9 @@ hildon_pannable_area_size_allocate (GtkWidget * widget,
   GtkAllocation child_allocation;
   HildonPannableAreaPrivate *priv;
 
-  widget->allocation = *allocation;
   bin = GTK_BIN (widget);
+
+  widget->allocation = *allocation;
 
   hildon_pannable_area_refresh (HILDON_PANNABLE_AREA (widget));
 

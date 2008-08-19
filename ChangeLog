@@ -1,6 +1,15 @@
 2008-08-19  Alejandro G. Castro	 <alex@igalia.com>
 
 	* src/hildon-pannable-area.c,
+	(hildon_pannable_draw_vscroll),
+	(hildon_pannable_draw_hscroll): Fix error calculating the maximum
+	position allowed for the scrollbars.
+
+	(hildon_pannable_area_size_allocate): Small style change.
+
+2008-08-19  Alejandro G. Castro	 <alex@igalia.com>
+
+	* src/hildon-pannable-area.c,
 	(hildon_pannable_area_scroll_indicator_fade),
 	(hildon_pannable_area_button_press_cb),
 	(hildon_pannable_area_button_release_cb),
