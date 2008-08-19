@@ -46,6 +46,7 @@
 #define SCROLL_BAR_MIN_SIZE 5
 #define RATIO_TOLERANCE 0.000001
 #define DND_THRESHOLD_INC 20
+#define SCROLLBAR_FADE_DELAY 30
 
 G_DEFINE_TYPE (HildonPannableArea, hildon_pannable_area, GTK_TYPE_BIN)
 #define PANNABLE_AREA_PRIVATE(o)                                \
@@ -265,7 +266,7 @@ hildon_pannable_area_scroll_indicator_fade(HildonPannableArea * area)
     /* Stop a fade out, and fade back in */
     if (priv->scroll_indicator_alpha >= 0.9) {
       priv->scroll_indicator_timeout = 0;
-      priv->scroll_indicator_alpha = 1;
+      priv->scroll_indicator_alpha = 1.0;
       retval = FALSE;
     } else {
       priv->scroll_indicator_alpha += 0.2;
@@ -275,8 +276,8 @@ hildon_pannable_area_scroll_indicator_fade(HildonPannableArea * area)
   }
 
   if ((priv->scroll_indicator_alpha > 0.9) &&
-      (priv->scroll_delay_counter < 20)) {
-    priv->scroll_delay_counter++;
+      (priv->scroll_delay_counter > 0)) {
+    priv->scroll_delay_counter--;
 
     GDK_THREADS_LEAVE ();
 
@@ -287,8 +288,8 @@ hildon_pannable_area_scroll_indicator_fade(HildonPannableArea * area)
     /* Continue fade out */
     if (priv->scroll_indicator_alpha <= 0.1) {
       priv->scroll_indicator_timeout = 0;
-      priv->scroll_delay_counter = 0;
-      priv->scroll_indicator_alpha = 0;
+      priv->scroll_delay_counter = SCROLLBAR_FADE_DELAY;
+      priv->scroll_indicator_alpha = 0.0;
       retval = FALSE;
     } else {
       priv->scroll_indicator_alpha -= 0.2;
@@ -315,6 +316,8 @@ hildon_pannable_area_button_press_cb (GtkWidget * widget,
     return TRUE;
 
   priv->scroll_indicator_event_interrupt = 1;
+  priv->scroll_delay_counter = SCROLLBAR_FADE_DELAY;
+
   if (!priv->scroll_indicator_timeout){
     priv->scroll_indicator_timeout = g_timeout_add
       ((gint) (1000.0 / (gdouble) (priv->sps*2)),
@@ -875,7 +878,7 @@ hildon_pannable_area_button_release_cb (GtkWidget * widget,
     return TRUE;
 
   priv->scroll_indicator_event_interrupt = 0;
-  priv->scroll_delay_counter = 0;
+  priv->scroll_delay_counter = SCROLLBAR_FADE_DELAY;
 
   if ((ABS (priv->vel_y) > 1.0)||
       (ABS (priv->vel_x) > 1.0)) {
@@ -970,7 +973,8 @@ hildon_pannable_area_scroll_cb (GtkWidget *widget,
     return TRUE;
 
   priv->scroll_indicator_event_interrupt = 0;
-  priv->scroll_indicator_alpha = 10.0;
+  priv->scroll_indicator_alpha = 1.0;
+  priv->scroll_delay_counter = SCROLLBAR_FADE_DELAY + 20;
 
   if (!priv->scroll_indicator_timeout) {
     priv->scroll_indicator_timeout = g_timeout_add
@@ -1162,7 +1166,7 @@ hildon_pannable_area_expose_event (GtkWidget * widget, GdkEventExpose * event)
 
   if (gtk_bin_get_child (GTK_BIN (widget))) {
 
-    if (priv->scroll_indicator_alpha > 0) {
+    if (priv->scroll_indicator_alpha > 0.1) {
       if (priv->vscroll) {
         hildon_pannable_draw_vscroll (widget, &back_color, &scroll_color);
       }
@@ -1917,7 +1921,7 @@ hildon_pannable_area_init (HildonPannableArea * self)
   priv->scroll_indicator_alpha = 0.0;
   priv->scroll_indicator_timeout = 0;
   priv->scroll_indicator_event_interrupt = 0;
-  priv->scroll_delay_counter = 0;
+  priv->scroll_delay_counter = SCROLLBAR_FADE_DELAY;
   priv->scroll_to_x = -1;
   priv->scroll_to_y = -1;
   priv->first_drag = TRUE;
