@@ -215,6 +215,26 @@ synth_crossing (GdkWindow * child,
   gdk_event_free ((GdkEvent *) crossing_event);
 }
 
+static void
+hildon_pannable_area_redraw (HildonPannableArea * area)
+{
+  HildonPannableAreaPrivate *priv = PANNABLE_AREA_PRIVATE (area);
+
+  /* Redraw scroll indicators */
+  if (priv->hscroll) {
+    if (GTK_WIDGET (area)->window) {
+      gdk_window_invalidate_rect (GTK_WIDGET (area)->window,
+				  &priv->hscroll_rect, FALSE);
+    }
+  }
+  if (priv->vscroll) {
+    if (GTK_WIDGET (area)->window) {
+      gdk_window_invalidate_rect (GTK_WIDGET (area)->window,
+				  &priv->vscroll_rect, FALSE);
+    }
+  }
+}
+
 static gboolean
 hildon_pannable_area_scroll_indicator_fade(HildonPannableArea * area)
 {
@@ -250,18 +270,8 @@ hildon_pannable_area_scroll_indicator_fade(HildonPannableArea * area)
     } else {
       priv->scroll_indicator_alpha += 0.2;
     }
-    gtk_widget_queue_draw_area (GTK_WIDGET(area),
-                                priv->vscroll_rect.x,
-                                priv->vscroll_rect.y,
-                                priv->vscroll_rect.width,
-                                priv->vscroll_rect.height);
 
-    gtk_widget_queue_draw_area (GTK_WIDGET(area),
-                                priv->hscroll_rect.x,
-                                priv->hscroll_rect.y,
-                                priv->hscroll_rect.width,
-                                priv->hscroll_rect.height);
-
+    hildon_pannable_area_redraw (area);
   }
 
   if ((priv->scroll_indicator_alpha > 0.9) &&
@@ -283,17 +293,8 @@ hildon_pannable_area_scroll_indicator_fade(HildonPannableArea * area)
     } else {
       priv->scroll_indicator_alpha -= 0.2;
     }
-    gtk_widget_queue_draw_area (GTK_WIDGET(area),
-                                priv->vscroll_rect.x,
-                                priv->vscroll_rect.y,
-                                priv->vscroll_rect.width,
-                                priv->vscroll_rect.height);
 
-    gtk_widget_queue_draw_area (GTK_WIDGET(area),
-                                priv->hscroll_rect.x,
-                                priv->hscroll_rect.y,
-                                priv->hscroll_rect.width,
-                                priv->hscroll_rect.height);
+    hildon_pannable_area_redraw (area);
   }
 
   GDK_THREADS_LEAVE ();
@@ -378,26 +379,6 @@ hildon_pannable_area_button_press_cb (GtkWidget * widget,
     priv->child = NULL;
 
   return TRUE;
-}
-
-static void
-hildon_pannable_area_redraw (HildonPannableArea * area)
-{
-  HildonPannableAreaPrivate *priv = PANNABLE_AREA_PRIVATE (area);
-
-  /* Redraw scroll indicators */
-  if (priv->hscroll) {
-    if (GTK_WIDGET (area)->window) {
-      gdk_window_invalidate_rect (GTK_WIDGET (area)->window,
-				  &priv->hscroll_rect, FALSE);
-    }
-  }
-  if (priv->vscroll) {
-    if (GTK_WIDGET (area)->window) {
-      gdk_window_invalidate_rect (GTK_WIDGET (area)->window,
-				  &priv->vscroll_rect, FALSE);
-    }
-  }
 }
 
 static void

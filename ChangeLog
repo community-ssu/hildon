@@ -1,3 +1,10 @@
+2008-08-19  Alejandro G. Castro	 <alex@igalia.com>
+
+	* src/hildon-pannable-area.c,
+	(hildon_pannable_area_redraw),
+	(hildon_pannable_area_scroll_indicator_fade): Refactored redraw
+	lines, we were reimplemeting the redraw code.
+
 2008-08-18  Alejandro G. Castro	 <alex@igalia.com>
 
 	* src/hildon-pannable-area.c,
