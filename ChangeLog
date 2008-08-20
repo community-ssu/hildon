@@ -1,3 +1,22 @@
+2008-08-20  Alejandro G. Castro	 <alex@igalia.com>
+
+	* src/hildon-pannable-area.c,
+	(hildon_pannable_area_refresh),
+	(hildon_pannable_area_scroll),
+	(hildon_pannable_area_motion_notify_cb): Small code style change.
+
+	(hildon_pannable_area_class_init): Default initial_hint set to
+	FALSE, it is not in the specs.
+
+	(hildon_pannable_area_initial_effect),
+	(hildon_pannable_area_expose_event),
+	(hildon_pannable_area_map),
+	(hildon_pannable_area_init): Moved the launching point of the
+	initial effect, it was in map but the sizes where not correct in
+	that method so we do not know if we have the reproduce it. Now it
+	is placed in the expose_event method and uses a variable to
+	reproduce it just once.
+
 2008-08-19  Alejandro G. Castro	 <alex@igalia.com>
 
 	* src/hildon-pannable-area.c,

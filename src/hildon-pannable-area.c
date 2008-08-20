@@ -95,6 +95,7 @@ struct _HildonPannableAreaPrivate {
   gint vovershoot_max;
   gint hovershoot_max;
   gboolean initial_hint;
+  gboolean initial_effect;
   gboolean first_drag;
 
   gboolean hscroll;
@@ -409,7 +410,7 @@ hildon_pannable_area_refresh (HildonPannableArea * area)
     break;
   default:
     hscroll = (priv->hadjust->upper - priv->hadjust->lower >
-	       priv->hadjust->page_size) ? TRUE : FALSE;
+	       priv->hadjust->page_size);
   }
 
   switch (priv->vindicator_mode) {
@@ -421,7 +422,7 @@ hildon_pannable_area_refresh (HildonPannableArea * area)
     break;
   default:
     vscroll = (priv->vadjust->upper - priv->vadjust->lower >
-	       priv->vadjust->page_size) ? TRUE : FALSE;
+	       priv->vadjust->page_size);
   }
 
   /* Store the vscroll/hscroll areas for redrawing */
@@ -591,9 +592,9 @@ hildon_pannable_area_scroll (HildonPannableArea *area,
     return;
 
   vscroll = (priv->vadjust->upper - priv->vadjust->lower >
-	     priv->vadjust->page_size) ? TRUE : FALSE;
+	     priv->vadjust->page_size);
   hscroll = (priv->hadjust->upper - priv->hadjust->lower >
-	     priv->hadjust->page_size) ? TRUE : FALSE;
+	     priv->hadjust->page_size);
 
   sx = TRUE;
   sy = TRUE;
@@ -740,7 +741,7 @@ hildon_pannable_area_motion_notify_cb (GtkWidget * widget,
                        priv->click_x, priv->click_y);
 
         vscroll = (priv->vadjust->upper - priv->vadjust->lower >
-                   priv->vadjust->page_size) ? TRUE : FALSE;
+                   priv->vadjust->page_size);
 
         if (!((vscroll)&&
               (priv->mov_mode&HILDON_MOVEMENT_MODE_VERT)))
@@ -757,7 +758,7 @@ hildon_pannable_area_motion_notify_cb (GtkWidget * widget,
                        priv->click_x, priv->click_y);
 
         hscroll = (priv->hadjust->upper - priv->hadjust->lower >
-                   priv->hadjust->page_size) ? TRUE : FALSE;
+                   priv->hadjust->page_size);
 
         if (!((hscroll)&&
               (priv->mov_mode&HILDON_MOVEMENT_MODE_HORIZ)))
@@ -1156,6 +1157,48 @@ hildon_pannable_draw_hscroll (GtkWidget * widget, GdkColor *back_color, GdkColor
   cairo_destroy(cr);
 }
 
+static void
+hildon_pannable_area_initial_effect (GtkWidget * widget)
+{
+  HildonPannableAreaPrivate *priv = PANNABLE_AREA_PRIVATE (widget);
+  gboolean hscroll, vscroll;
+
+  if (priv->initial_hint) {
+    if (((priv->vovershoot_max != 0)||(priv->hovershoot_max != 0)) &&
+        ((priv->mode == HILDON_PANNABLE_AREA_MODE_AUTO) ||
+         (priv->mode == HILDON_PANNABLE_AREA_MODE_ACCEL))) {
+      vscroll = (priv->vadjust->upper - priv->vadjust->lower >
+                 priv->vadjust->page_size);
+      hscroll = (priv->hadjust->upper - priv->hadjust->lower >
+                 priv->hadjust->page_size);
+      /* If scrolling is possible in both axes, only hint about scrolling in
+         the vertical one. */
+      if ((vscroll)&&(priv->vovershoot_max != 0)) {
+        priv->overshot_dist_y = priv->vovershoot_max;
+        priv->vel_y = priv->vmax * 0.1;
+      } else if ((hscroll)&&(priv->hovershoot_max != 0)) {
+        priv->overshot_dist_x = priv->hovershoot_max;
+        priv->vel_x = priv->vmax * 0.1;
+      }
+
+      if (vscroll || hscroll) {
+        priv->idle_id = g_timeout_add ((gint) (1000.0 / (gdouble) priv->sps),
+                                       (GSourceFunc)
+                                       hildon_pannable_area_timeout, widget);
+      }
+    }
+
+    if (priv->vscroll || priv->hscroll) {
+      priv->scroll_indicator_alpha = 1.0;
+
+      priv->scroll_indicator_timeout =
+        g_timeout_add ((gint) (1000.0 / (gdouble) priv->sps),
+                       (GSourceFunc) hildon_pannable_area_scroll_indicator_fade,
+                       widget);
+    }
+  }
+}
+
 static gboolean
 hildon_pannable_area_expose_event (GtkWidget * widget, GdkEventExpose * event)
 {
@@ -1252,6 +1295,13 @@ hildon_pannable_area_expose_event (GtkWidget * widget, GdkEventExpose * event)
 			  priv->hscroll_rect.height);
     }
 
+  }
+
+  if (G_UNLIKELY (priv->initial_effect)) {
+
+    hildon_pannable_area_initial_effect (widget);
+
+    priv->initial_effect = FALSE;
   }
 
   return GTK_WIDGET_CLASS (hildon_pannable_area_parent_class)->expose_event (widget, event);
@@ -1545,7 +1595,6 @@ static void
 hildon_pannable_area_map (GtkWidget * widget)
 {
   HildonPannableAreaPrivate *priv;
-  gboolean hscroll, vscroll;
 
   priv = PANNABLE_AREA_PRIVATE (widget);
 
@@ -1556,41 +1605,6 @@ hildon_pannable_area_map (GtkWidget * widget)
 
   if (priv->event_window != NULL && priv->enabled)
     gdk_window_show (priv->event_window);
-
-  if (priv->initial_hint) {
-    if (((priv->vovershoot_max != 0)||(priv->hovershoot_max != 0)) &&
-        ((priv->mode == HILDON_PANNABLE_AREA_MODE_AUTO) ||
-         (priv->mode == HILDON_PANNABLE_AREA_MODE_ACCEL))) {
-      vscroll = (priv->vadjust->upper - priv->vadjust->lower >
-                 priv->vadjust->page_size) ? TRUE : FALSE;
-      hscroll = (priv->hadjust->upper - priv->hadjust->lower >
-                 priv->hadjust->page_size) ? TRUE : FALSE;
-      /* If scrolling is possible in both axes, only hint about scrolling in
-         the vertical one. */
-      if ((vscroll)&&(priv->vovershoot_max != 0)) {
-        priv->overshot_dist_y = priv->vovershoot_max;
-        priv->vel_y = priv->vmax * 0.1;
-      } else if ((hscroll)&&(priv->hovershoot_max != 0)) {
-        priv->overshot_dist_x = priv->hovershoot_max;
-        priv->vel_x = priv->vmax * 0.1;
-      }
-
-      if (vscroll || hscroll) {
-        priv->idle_id = g_timeout_add ((gint) (1000.0 / (gdouble) priv->sps),
-                                       (GSourceFunc)
-                                       hildon_pannable_area_timeout, widget);
-      }
-    }
-
-    if (priv->vscroll || priv->hscroll) {
-      priv->scroll_indicator_alpha = 1.0;
-
-      priv->scroll_indicator_timeout =
-        g_timeout_add ((gint) (1000.0 / (gdouble) priv->sps),
-                       (GSourceFunc) hildon_pannable_area_scroll_indicator_fade,
-                       widget);
-    }
-  }
 }
 
 static void
@@ -1861,7 +1875,7 @@ hildon_pannable_area_class_init (HildonPannableAreaClass * klass)
  				   g_param_spec_boolean ("initial-hint",
  							 "Initial hint",
  							 "Whether to hint the user about the pannability of the container.",
- 							 TRUE,
+ 							 FALSE,
 							 G_PARAM_READWRITE |
  							 G_PARAM_CONSTRUCT));
 
@@ -1926,6 +1940,7 @@ hildon_pannable_area_init (HildonPannableArea * self)
   priv->scroll_to_x = -1;
   priv->scroll_to_y = -1;
   priv->first_drag = TRUE;
+  priv->initial_effect = TRUE;
 
   hildon_pannable_calculate_vel_factor (self);
 
