@@ -109,12 +109,18 @@ hildon_check_button_set_active                  (GtkButton *button,
                                                  gboolean   is_active)
 {
     GtkCellRendererToggle *toggle_renderer;
+    gboolean prev_is_active;
 
     g_return_if_fail (GTK_IS_BUTTON (button));
     toggle_renderer = GTK_CELL_RENDERER_TOGGLE (g_object_get_data (G_OBJECT (button), "toggle-renderer"));
     g_return_if_fail (GTK_IS_CELL_RENDERER_TOGGLE (toggle_renderer));
 
-    gtk_cell_renderer_toggle_set_active (toggle_renderer, is_active);
+    prev_is_active = gtk_cell_renderer_toggle_get_active (toggle_renderer);
+
+    if (prev_is_active != is_active) {
+      gtk_cell_renderer_toggle_set_active (toggle_renderer, is_active);
+      gtk_widget_queue_draw (GTK_WIDGET (button));
+    }
 }
 
 /**

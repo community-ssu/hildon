@@ -1,5 +1,11 @@
 2008-08-20  Alejandro G. Castro	 <alex@igalia.com>
 
+	* src/hildon-check-button.c,
+	(hildon_check_button_set_active): Fixed problem when setting the
+	active value, the widget was not redrawn.
+
+2008-08-20  Alejandro G. Castro	 <alex@igalia.com>
+
 	* src/hildon-pannable-area.c,
 	(hildon_pannable_area_refresh),
 	(hildon_pannable_area_scroll),
