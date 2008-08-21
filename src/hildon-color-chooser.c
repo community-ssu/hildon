@@ -774,7 +774,7 @@ init_borders                                    (GtkWidget *w,
 
     if (tb) {
         *inner = *tb;
-        g_free (tb);
+        gtk_border_free (tb);
     } else {
         inner->left = 64;
         inner->right = 64;
