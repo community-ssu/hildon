@@ -49,9 +49,11 @@
 #define SCROLLBAR_FADE_DELAY 30
 
 G_DEFINE_TYPE (HildonPannableArea, hildon_pannable_area, GTK_TYPE_BIN)
+
 #define PANNABLE_AREA_PRIVATE(o)                                \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), HILDON_TYPE_PANNABLE_AREA, \
                                 HildonPannableAreaPrivate))
+
 typedef struct _HildonPannableAreaPrivate HildonPannableAreaPrivate;
 
 struct _HildonPannableAreaPrivate {
@@ -107,11 +109,6 @@ struct _HildonPannableAreaPrivate {
   GtkAdjustment *hadjust;
   GtkAdjustment *vadjust;
 
-  gdouble click_x;
-  gdouble click_y;
-
-  guint event_mode;
-
   GtkPolicyType vscrollbar_policy;
   GtkPolicyType hscrollbar_policy;
 };
@@ -142,79 +139,849 @@ enum {
   PROP_INITIAL_HINT
 };
 
-static GdkWindow *hildon_pannable_area_get_topmost (GdkWindow * window,
-                                                    gint x, gint y,
-                                                    gint * tx, gint * ty)
+static void hildon_pannable_area_class_init (HildonPannableAreaClass * klass);
+static void hildon_pannable_area_init (HildonPannableArea * area);
+static void hildon_pannable_area_get_property (GObject * object,
+                                               guint property_id,
+                                               GValue * value,
+                                               GParamSpec * pspec);
+static void hildon_pannable_area_set_property (GObject * object,
+                                               guint property_id,
+                                               const GValue * value,
+                                               GParamSpec * pspec);
+static void hildon_pannable_area_dispose (GObject * object);
+static void hildon_pannable_area_realize (GtkWidget * widget);
+static void hildon_pannable_area_unrealize (GtkWidget * widget);
+static void hildon_pannable_area_size_request (GtkWidget * widget,
+                                               GtkRequisition * requisition);
+static void hildon_pannable_area_size_allocate (GtkWidget * widget,
+                                                GtkAllocation * allocation);
+static void hildon_pannable_area_style_set (GtkWidget * widget,
+                                            GtkStyle * previous_style);
+static void hildon_pannable_area_map (GtkWidget * widget);
+static void hildon_pannable_area_unmap (GtkWidget * widget);
+static void rgb_from_gdkcolor (GdkColor *color, gdouble *r, gdouble *g, gdouble *b);
+static void hildon_pannable_draw_vscroll (GtkWidget * widget,
+                                          GdkColor *back_color,
+                                          GdkColor *scroll_color);
+static void hildon_pannable_draw_hscroll (GtkWidget * widget,
+                                          GdkColor *back_color,
+                                          GdkColor *scroll_color);
+static void hildon_pannable_area_initial_effect (GtkWidget * widget);
+static void hildon_pannable_area_redraw (HildonPannableArea * area);
+static gboolean hildon_pannable_area_scroll_indicator_fade(HildonPannableArea * area);
+static gboolean hildon_pannable_area_expose_event (GtkWidget * widget,
+                                                   GdkEventExpose * event);
+static GdkWindow * hildon_pannable_area_get_topmost (GdkWindow * window,
+                                                     gint x, gint y,
+                                                     gint * tx, gint * ty);
+static void synth_crossing (GdkWindow * child,
+                            gint x, gint y,
+                            gint x_root, gint y_root,
+                            guint32 time, gboolean in);
+static gboolean hildon_pannable_area_button_press_cb (GtkWidget * widget,
+                                                      GdkEventButton * event);
+static void hildon_pannable_area_refresh (HildonPannableArea * area);
+static void hildon_pannable_axis_scroll (HildonPannableArea *area,
+                                         GtkAdjustment *adjust,
+                                         gdouble *vel,
+                                         gdouble inc,
+                                         gint *overshooting,
+                                         gint *overshot_dist,
+                                         gdouble *scroll_to,
+                                         gint overshoot_max,
+                                         gboolean *s);
+static void hildon_pannable_area_scroll (HildonPannableArea *area,
+                                         gdouble x, gdouble y);
+static gboolean hildon_pannable_area_timeout (HildonPannableArea * area);
+static gboolean hildon_pannable_area_motion_notify_cb (GtkWidget * widget,
+                                                       GdkEventMotion * event);
+static gboolean hildon_pannable_area_button_release_cb (GtkWidget * widget,
+                                                        GdkEventButton * event);
+static gboolean hildon_pannable_area_scroll_cb (GtkWidget *widget,
+                                                GdkEventScroll *event);
+static void hildon_pannable_area_add (GtkContainer *container, GtkWidget *child);
+static void hildon_pannable_area_remove (GtkContainer *container, GtkWidget *child);
+static void hildon_pannable_calculate_vel_factor (HildonPannableArea * self);
+
+
+static void
+hildon_pannable_area_class_init (HildonPannableAreaClass * klass)
 {
-  /* Find the GdkWindow at the given point, by recursing from a given
-   * parent GdkWindow. Optionally return the co-ordinates transformed
-   * relative to the child window.
-   */
-  gint width, height;
+  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+  GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
+  GtkContainerClass *container_class = GTK_CONTAINER_CLASS (klass);
 
-  gdk_drawable_get_size (GDK_DRAWABLE (window), &width, &height);
-  if ((x < 0) || (x >= width) || (y < 0) || (y >= height))
-    return NULL;
 
-  while (window) {
-    gint child_x = 0, child_y = 0;
-    GList *c, *children = gdk_window_peek_children (window);
-    GdkWindow *old_window = window;
+  g_type_class_add_private (klass, sizeof (HildonPannableAreaPrivate));
 
-    for (c = children; c; c = c->next) {
-      GdkWindow *child = (GdkWindow *) c->data;
-      gint wx, wy;
+  object_class->get_property = hildon_pannable_area_get_property;
+  object_class->set_property = hildon_pannable_area_set_property;
+  object_class->dispose = hildon_pannable_area_dispose;
 
-      gdk_window_get_geometry (child, &wx, &wy, &width, &height, NULL);
+  widget_class->realize = hildon_pannable_area_realize;
+  widget_class->unrealize = hildon_pannable_area_unrealize;
+  widget_class->map = hildon_pannable_area_map;
+  widget_class->unmap = hildon_pannable_area_unmap;
+  widget_class->size_request = hildon_pannable_area_size_request;
+  widget_class->size_allocate = hildon_pannable_area_size_allocate;
+  widget_class->expose_event = hildon_pannable_area_expose_event;
+  widget_class->style_set = hildon_pannable_area_style_set;
+  widget_class->button_press_event = hildon_pannable_area_button_press_cb;
+  widget_class->button_release_event = hildon_pannable_area_button_release_cb;
+  widget_class->motion_notify_event = hildon_pannable_area_motion_notify_cb;
+  widget_class->scroll_event = hildon_pannable_area_scroll_cb;
 
-      if (((x >= wx) && (x < (wx + width)) && (y >= wy)
-           && (y < (wy + height))) && (gdk_window_is_visible (child))) {
-	child_x = x - wx;
-	child_y = y - wy;
-	window = child;
-      }
-    }
+  container_class->add = hildon_pannable_area_add;
+  container_class->remove = hildon_pannable_area_remove;
 
-    if (window == old_window)
-      break;
+  klass->horizontal_movement = NULL;
+  klass->vertical_movement = NULL;
 
-    x = child_x;
-    y = child_y;
-  }
+  g_object_class_install_property (object_class,
+				   PROP_ENABLED,
+				   g_param_spec_boolean ("enabled",
+							 "Enabled",
+							 "Enable or disable finger-scroll.",
+							 TRUE,
+							 G_PARAM_READWRITE |
+							 G_PARAM_CONSTRUCT));
 
-  if (tx)
-    *tx = x;
-  if (ty)
-    *ty = y;
+  g_object_class_install_property (object_class,
+				   PROP_VSCROLLBAR_POLICY,
+				   g_param_spec_enum ("vscrollbar_policy",
+						      "vscrollbar policy",
+						      "Visual policy of the vertical scrollbar",
+						      GTK_TYPE_POLICY_TYPE,
+						      GTK_POLICY_AUTOMATIC,
+						      G_PARAM_READWRITE |
+						      G_PARAM_CONSTRUCT));
 
-  return window;
+  g_object_class_install_property (object_class,
+				   PROP_HSCROLLBAR_POLICY,
+				   g_param_spec_enum ("hscrollbar_policy",
+						      "hscrollbar policy",
+						      "Visual policy of the horizontal scrollbar",
+						      GTK_TYPE_POLICY_TYPE,
+						      GTK_POLICY_AUTOMATIC,
+						      G_PARAM_READWRITE |
+						      G_PARAM_CONSTRUCT));
+
+  g_object_class_install_property (object_class,
+				   PROP_MODE,
+				   g_param_spec_enum ("mode",
+						      "Scroll mode",
+						      "Change the finger-scrolling mode.",
+						      HILDON_TYPE_PANNABLE_AREA_MODE,
+						      HILDON_PANNABLE_AREA_MODE_AUTO,
+						      G_PARAM_READWRITE |
+						      G_PARAM_CONSTRUCT));
+
+  g_object_class_install_property (object_class,
+				   PROP_MOVEMENT_MODE,
+				   g_param_spec_flags ("mov_mode",
+                                                       "Scroll movement mode",
+                                                       "Controls if the widget can scroll vertically, horizontally or both",
+                                                       HILDON_TYPE_MOVEMENT_MODE,
+                                                       HILDON_MOVEMENT_MODE_BOTH,
+                                                       G_PARAM_READWRITE |
+                                                       G_PARAM_CONSTRUCT));
+
+  g_object_class_install_property (object_class,
+				   PROP_VELOCITY_MIN,
+				   g_param_spec_double ("velocity_min",
+							"Minimum scroll velocity",
+							"Minimum distance the child widget should scroll "
+							"per 'frame', in pixels.",
+							0, G_MAXDOUBLE, 0,
+							G_PARAM_READWRITE |
+							G_PARAM_CONSTRUCT));
+
+  g_object_class_install_property (object_class,
+				   PROP_VELOCITY_MAX,
+				   g_param_spec_double ("velocity_max",
+							"Maximum scroll velocity",
+							"Maximum distance the child widget should scroll "
+							"per 'frame', in pixels.",
+							0, G_MAXDOUBLE, 80,
+							G_PARAM_READWRITE |
+							G_PARAM_CONSTRUCT));
+
+  g_object_class_install_property (object_class,
+				   PROP_VELOCITY_FAST_FACTOR,
+				   g_param_spec_double ("velocity_fast_factor",
+							"Fast velocity factor",
+							"Minimum velocity that is considered 'fast': "
+							"children widgets won't receive button presses. "
+							"Expressed as a fraction of the maximum velocity.",
+							0, 1, 0.02,
+							G_PARAM_READWRITE |
+							G_PARAM_CONSTRUCT));
+
+  g_object_class_install_property (object_class,
+				   PROP_DECELERATION,
+				   g_param_spec_double ("deceleration",
+							"Deceleration multiplier",
+							"The multiplier used when decelerating when in "
+							"acceleration scrolling mode.",
+							0, 1.0, 0.90,
+							G_PARAM_READWRITE |
+							G_PARAM_CONSTRUCT));
+
+  g_object_class_install_property (object_class,
+				   PROP_SPS,
+				   g_param_spec_uint ("sps",
+						      "Scrolls per second",
+						      "Amount of scroll events to generate per second.",
+						      0, G_MAXUINT, 25,
+						      G_PARAM_READWRITE |
+						      G_PARAM_CONSTRUCT));
+
+  g_object_class_install_property (object_class,
+				   PROP_VOVERSHOOT_MAX,
+				   g_param_spec_int ("vovershoot_max",
+                                                     "Vertical overshoot distance",
+                                                     "Space we allow the widget to pass over its vertical limits when hitting the edges, set 0 in order to deactivate overshooting.",
+                                                     0, G_MAXINT, 150,
+                                                     G_PARAM_READWRITE |
+                                                     G_PARAM_CONSTRUCT));
+
+  g_object_class_install_property (object_class,
+				   PROP_HOVERSHOOT_MAX,
+				   g_param_spec_int ("hovershoot_max",
+                                                     "Horizontal overshoot distance",
+                                                     "Space we allow the widget to pass over its horizontal limits when hitting the edges, set 0 in order to deactivate overshooting.",
+                                                     0, G_MAXINT, 150,
+                                                     G_PARAM_READWRITE |
+                                                     G_PARAM_CONSTRUCT));
+
+  g_object_class_install_property (object_class,
+				   PROP_SCROLL_TIME,
+				   g_param_spec_double ("scroll_time",
+							"Time to scroll to a position",
+							"The time to scroll to a position when calling the hildon_pannable_scroll_to function"
+							"acceleration scrolling mode.",
+							1.0, 20.0, 10.0,
+							G_PARAM_READWRITE |
+							G_PARAM_CONSTRUCT));
+
+  g_object_class_install_property (object_class,
+ 				   PROP_INITIAL_HINT,
+ 				   g_param_spec_boolean ("initial-hint",
+ 							 "Initial hint",
+ 							 "Whether to hint the user about the pannability of the container.",
+ 							 FALSE,
+							 G_PARAM_READWRITE |
+ 							 G_PARAM_CONSTRUCT));
+
+  gtk_widget_class_install_style_property (widget_class,
+					   g_param_spec_uint
+					   ("indicator-width",
+					    "Width of the scroll indicators",
+					    "Pixel width used to draw the scroll indicators.",
+					    0, G_MAXUINT, 8,
+					    G_PARAM_READWRITE));
+
+  pannable_area_signals[HORIZONTAL_MOVEMENT] =
+    g_signal_new ("horizontal_movement",
+		  G_TYPE_FROM_CLASS (object_class),
+		  G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
+		  G_STRUCT_OFFSET (HildonPannableAreaClass, horizontal_movement),
+		  NULL, NULL,
+		  _hildon_marshal_VOID__INT_DOUBLE_DOUBLE,
+		  G_TYPE_NONE, 3,
+                  G_TYPE_INT,
+		  G_TYPE_DOUBLE,
+		  G_TYPE_DOUBLE);
+
+  pannable_area_signals[VERTICAL_MOVEMENT] =
+    g_signal_new ("vertical_movement",
+		  G_TYPE_FROM_CLASS (object_class),
+		  G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
+		  G_STRUCT_OFFSET (HildonPannableAreaClass, vertical_movement),
+		  NULL, NULL,
+		  _hildon_marshal_VOID__INT_DOUBLE_DOUBLE,
+		  G_TYPE_NONE, 3,
+                  G_TYPE_INT,
+		  G_TYPE_DOUBLE,
+		  G_TYPE_DOUBLE);
+
+
 }
 
 static void
-synth_crossing (GdkWindow * child,
-		gint x, gint y,
-		gint x_root, gint y_root, guint32 time, gboolean in)
+hildon_pannable_area_init (HildonPannableArea * area)
 {
-  GdkEventCrossing *crossing_event;
-  GdkEventType type = in ? GDK_ENTER_NOTIFY : GDK_LEAVE_NOTIFY;
+  HildonPannableAreaPrivate *priv = PANNABLE_AREA_PRIVATE (area);
 
-  /* Send synthetic enter event */
-  crossing_event = (GdkEventCrossing *) gdk_event_new (type);
-  ((GdkEventAny *) crossing_event)->type = type;
-  ((GdkEventAny *) crossing_event)->window = g_object_ref (child);
-  ((GdkEventAny *) crossing_event)->send_event = FALSE;
-  crossing_event->subwindow = g_object_ref (child);
-  crossing_event->time = time;
-  crossing_event->x = x;
-  crossing_event->y = y;
-  crossing_event->x_root = x_root;
-  crossing_event->y_root = y_root;
-  crossing_event->mode = GDK_CROSSING_NORMAL;
-  crossing_event->detail = GDK_NOTIFY_UNKNOWN;
-  crossing_event->focus = FALSE;
-  crossing_event->state = 0;
-  gdk_event_put ((GdkEvent *) crossing_event);
-  gdk_event_free ((GdkEvent *) crossing_event);
+  priv->moved = FALSE;
+  priv->clicked = FALSE;
+  priv->last_time = 0;
+  priv->last_type = 0;
+  priv->vscroll_visible = TRUE;
+  priv->hscroll_visible = TRUE;
+  priv->area_width = 6;
+  priv->overshot_dist_x = 0;
+  priv->overshot_dist_y = 0;
+  priv->overshooting_y = 0;
+  priv->overshooting_x = 0;
+  priv->idle_id = 0;
+  priv->vel_x = 0;
+  priv->vel_y = 0;
+  priv->scroll_indicator_alpha = 0.0;
+  priv->scroll_indicator_timeout = 0;
+  priv->scroll_indicator_event_interrupt = 0;
+  priv->scroll_delay_counter = SCROLLBAR_FADE_DELAY;
+  priv->scroll_to_x = -1;
+  priv->scroll_to_y = -1;
+  priv->first_drag = TRUE;
+  priv->initial_effect = TRUE;
+
+  hildon_pannable_calculate_vel_factor (area);
+
+  gtk_widget_add_events (GTK_WIDGET (area), GDK_POINTER_MOTION_HINT_MASK);
+
+  priv->hadjust =
+    GTK_ADJUSTMENT (gtk_adjustment_new (0.0, 0.0, 0.0, 0.0, 0.0, 0.0));
+  priv->vadjust =
+    GTK_ADJUSTMENT (gtk_adjustment_new (0.0, 0.0, 0.0, 0.0, 0.0, 0.0));
+
+  g_object_ref_sink (G_OBJECT (priv->hadjust));
+  g_object_ref_sink (G_OBJECT (priv->vadjust));
+
+  g_signal_connect_swapped (G_OBJECT (priv->hadjust), "value-changed",
+			    G_CALLBACK (hildon_pannable_area_redraw), area);
+  g_signal_connect_swapped (G_OBJECT (priv->vadjust), "value-changed",
+			    G_CALLBACK (hildon_pannable_area_redraw), area);
+}
+
+static void
+hildon_pannable_area_get_property (GObject * object,
+                                   guint property_id,
+				   GValue * value,
+                                   GParamSpec * pspec)
+{
+  HildonPannableAreaPrivate *priv = PANNABLE_AREA_PRIVATE (object);
+
+  switch (property_id) {
+  case PROP_ENABLED:
+    g_value_set_boolean (value, priv->enabled);
+    break;
+  case PROP_MODE:
+    g_value_set_enum (value, priv->mode);
+    break;
+  case PROP_MOVEMENT_MODE:
+    g_value_set_flags (value, priv->mov_mode);
+    break;
+  case PROP_VELOCITY_MIN:
+    g_value_set_double (value, priv->vmin);
+    break;
+  case PROP_VELOCITY_MAX:
+    g_value_set_double (value, priv->vmax);
+    break;
+  case PROP_VELOCITY_FAST_FACTOR:
+    g_value_set_double (value, priv->vfast_factor);
+    break;
+  case PROP_DECELERATION:
+    g_value_set_double (value, priv->decel);
+    break;
+  case PROP_SPS:
+    g_value_set_uint (value, priv->sps);
+    break;
+  case PROP_VSCROLLBAR_POLICY:
+    g_value_set_enum (value, priv->vscrollbar_policy);
+    break;
+  case PROP_HSCROLLBAR_POLICY:
+    g_value_set_enum (value, priv->hscrollbar_policy);
+    break;
+  case PROP_VOVERSHOOT_MAX:
+    g_value_set_int (value, priv->vovershoot_max);
+    break;
+  case PROP_HOVERSHOOT_MAX:
+    g_value_set_int (value, priv->hovershoot_max);
+    break;
+  case PROP_SCROLL_TIME:
+    g_value_set_double (value, priv->scroll_time);
+    break;
+  case PROP_INITIAL_HINT:
+    g_value_set_boolean (value, priv->initial_hint);
+    break;
+
+  default:
+    G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+  }
+}
+
+static void
+hildon_pannable_area_set_property (GObject * object,
+                                   guint property_id,
+				   const GValue * value,
+                                   GParamSpec * pspec)
+{
+  HildonPannableAreaPrivate *priv = PANNABLE_AREA_PRIVATE (object);
+  gboolean enabled;
+
+  switch (property_id) {
+  case PROP_ENABLED:
+    enabled = g_value_get_boolean (value);
+
+    if ((priv->enabled != enabled) && (GTK_WIDGET_REALIZED (object))) {
+      if (enabled)
+	gdk_window_raise (priv->event_window);
+      else
+	gdk_window_lower (priv->event_window);
+    }
+
+    priv->enabled = enabled;
+    break;
+  case PROP_MODE:
+    priv->mode = g_value_get_enum (value);
+    break;
+  case PROP_MOVEMENT_MODE:
+    priv->mov_mode = g_value_get_flags (value);
+    break;
+  case PROP_VELOCITY_MIN:
+    priv->vmin = g_value_get_double (value);
+    break;
+  case PROP_VELOCITY_MAX:
+    priv->vmax = g_value_get_double (value);
+    break;
+  case PROP_VELOCITY_FAST_FACTOR:
+    priv->vfast_factor = g_value_get_double (value);
+    break;
+  case PROP_DECELERATION:
+    hildon_pannable_calculate_vel_factor (HILDON_PANNABLE_AREA (object));
+
+    priv->decel = g_value_get_double (value);
+    break;
+  case PROP_SPS:
+    priv->sps = g_value_get_uint (value);
+    break;
+  case PROP_VSCROLLBAR_POLICY:
+    priv->vscrollbar_policy = g_value_get_enum (value);
+
+    gtk_widget_queue_resize (GTK_WIDGET (object));
+    break;
+  case PROP_HSCROLLBAR_POLICY:
+    priv->hscrollbar_policy = g_value_get_enum (value);
+
+    gtk_widget_queue_resize (GTK_WIDGET (object));
+    break;
+  case PROP_VOVERSHOOT_MAX:
+    priv->vovershoot_max = g_value_get_int (value);
+    break;
+  case PROP_HOVERSHOOT_MAX:
+    priv->hovershoot_max = g_value_get_int (value);
+    break;
+  case PROP_SCROLL_TIME:
+    priv->scroll_time = g_value_get_double (value);
+
+    hildon_pannable_calculate_vel_factor (HILDON_PANNABLE_AREA (object));
+    break;
+  case PROP_INITIAL_HINT:
+    priv->initial_hint = g_value_get_boolean (value);
+    break;
+
+  default:
+    G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+  }
+}
+
+static void
+hildon_pannable_area_dispose (GObject * object)
+{
+  HildonPannableAreaPrivate *priv = PANNABLE_AREA_PRIVATE (object);
+
+  if (priv->idle_id) {
+    g_source_remove (priv->idle_id);
+    priv->idle_id = 0;
+  }
+
+  if (priv->scroll_indicator_timeout){
+    g_source_remove (priv->scroll_indicator_timeout);
+    priv->scroll_indicator_timeout = 0;
+  }
+
+  if (priv->hadjust) {
+    g_object_unref (priv->hadjust);
+    priv->hadjust = NULL;
+  }
+  if (priv->vadjust) {
+    g_object_unref (priv->vadjust);
+    priv->vadjust = NULL;
+  }
+
+  if (G_OBJECT_CLASS (hildon_pannable_area_parent_class)->dispose)
+    G_OBJECT_CLASS (hildon_pannable_area_parent_class)->dispose (object);
+}
+
+static void
+hildon_pannable_area_realize (GtkWidget * widget)
+{
+  GdkWindowAttr attributes;
+  gint attributes_mask;
+  gint border_width;
+  HildonPannableAreaPrivate *priv;
+
+  priv = PANNABLE_AREA_PRIVATE (widget);
+
+  GTK_WIDGET_SET_FLAGS (widget, GTK_REALIZED);
+
+  border_width = GTK_CONTAINER (widget)->border_width;
+
+  attributes.x = widget->allocation.x + border_width;
+  attributes.y = widget->allocation.y + border_width;
+  attributes.width = MAX (widget->allocation.width - 2 * border_width -
+                          (priv->vscroll_visible ? priv->vscroll_rect.width : 0), 0);
+  attributes.height = MAX (widget->allocation.height - 2 * border_width -
+                           (priv->hscroll_visible ? priv->hscroll_rect.height : 0), 0);
+  attributes.window_type = GDK_WINDOW_CHILD;
+  attributes.event_mask = gtk_widget_get_events (widget)
+    | GDK_BUTTON_MOTION_MASK
+    | GDK_BUTTON_PRESS_MASK
+    | GDK_BUTTON_RELEASE_MASK
+    | GDK_SCROLL_MASK
+    | GDK_EXPOSURE_MASK | GDK_ENTER_NOTIFY_MASK | GDK_LEAVE_NOTIFY_MASK;
+
+  widget->window = gtk_widget_get_parent_window (widget);
+  g_object_ref (widget->window);
+
+  attributes.wclass = GDK_INPUT_ONLY;
+  attributes_mask = GDK_WA_X | GDK_WA_Y;
+
+  priv->event_window = gdk_window_new (widget->window,
+				       &attributes, attributes_mask);
+  gdk_window_set_user_data (priv->event_window, widget);
+
+  widget->style = gtk_style_attach (widget->style, widget->window);
+}
+
+static void
+hildon_pannable_area_unrealize (GtkWidget * widget)
+{
+  HildonPannableAreaPrivate *priv;
+
+  priv = PANNABLE_AREA_PRIVATE (widget);
+
+  if (priv->event_window != NULL) {
+    gdk_window_set_user_data (priv->event_window, NULL);
+    gdk_window_destroy (priv->event_window);
+    priv->event_window = NULL;
+  }
+
+  if (GTK_WIDGET_CLASS (hildon_pannable_area_parent_class)->unrealize)
+    (*GTK_WIDGET_CLASS (hildon_pannable_area_parent_class)->unrealize)(widget);
+}
+
+static void
+hildon_pannable_area_size_request (GtkWidget * widget,
+				   GtkRequisition * requisition)
+{
+  GtkRequisition child_requisition;
+  HildonPannableAreaPrivate *priv = PANNABLE_AREA_PRIVATE (widget);
+  GtkWidget *child = gtk_bin_get_child (GTK_BIN (widget));
+
+  if (child && GTK_WIDGET_VISIBLE (child))
+    {
+      gtk_widget_size_request (child, &child_requisition);
+    }
+
+  if (priv->hscrollbar_policy == GTK_POLICY_NEVER) {
+    requisition->width += child_requisition.width;
+  } else {
+    requisition->width += priv->area_width;
+  }
+
+  if (priv->vscrollbar_policy == GTK_POLICY_NEVER) {
+    requisition->height += child_requisition.height;
+  } else {
+    requisition->height += priv->area_width;
+  }
+
+  requisition->width += GTK_CONTAINER (widget)->border_width;
+  requisition->height += GTK_CONTAINER (widget)->border_width;
+}
+
+static void
+hildon_pannable_area_size_allocate (GtkWidget * widget,
+				    GtkAllocation * allocation)
+{
+  GtkAllocation child_allocation;
+  HildonPannableAreaPrivate *priv;
+  GtkWidget *child = gtk_bin_get_child (GTK_BIN (widget));
+
+  widget->allocation = *allocation;
+
+  priv = PANNABLE_AREA_PRIVATE (widget);
+
+  child_allocation.x = allocation->x + GTK_CONTAINER (widget)->border_width;
+  child_allocation.y = allocation->y + GTK_CONTAINER (widget)->border_width;
+  child_allocation.width = MAX (allocation->width -
+				2 * GTK_CONTAINER (widget)->border_width -
+                                (priv->vscroll_visible ? priv->vscroll_rect.width : 0), 0);
+  child_allocation.height = MAX (allocation->height -
+				 2 * GTK_CONTAINER (widget)->border_width -
+                                 (priv->hscroll_visible ? priv->hscroll_rect.height : 0), 0);
+
+  if (GTK_WIDGET_REALIZED (widget)) {
+    if (priv->event_window != NULL)
+      gdk_window_move_resize (priv->event_window,
+			      child_allocation.x,
+			      child_allocation.y,
+			      child_allocation.width,
+			      child_allocation.height);
+  }
+
+  if (priv->overshot_dist_y > 0) {
+    child_allocation.y = MIN (child_allocation.y + priv->overshot_dist_y,
+                              allocation->y + child_allocation.height);
+    child_allocation.height = MAX (child_allocation.height - priv->overshot_dist_y, 0);
+  } else if (priv->overshot_dist_y < 0) {
+    child_allocation.height = MAX (child_allocation.height + priv->overshot_dist_y, 0);
+  }
+
+  if (priv->overshot_dist_x > 0) {
+    child_allocation.x = MIN (child_allocation.x + priv->overshot_dist_x,
+                              allocation->x + child_allocation.width);
+    child_allocation.width = MAX (child_allocation.width - priv->overshot_dist_x, 0);
+  } else if (priv->overshot_dist_x < 0) {
+    child_allocation.width = MAX (child_allocation.width + priv->overshot_dist_x, 0);
+  }
+
+  if (child)
+    gtk_widget_size_allocate (child, &child_allocation);
+
+  /* we have to do this after child size_allocate because page_size is
+   * changed when we allocate the size of the children */
+  if (priv->overshot_dist_y < 0) {
+    gtk_adjustment_set_value (priv->vadjust, priv->vadjust->upper -
+                              priv->vadjust->page_size);
+  }
+
+  if (priv->overshot_dist_x < 0) {
+    gtk_adjustment_set_value (priv->hadjust, priv->hadjust->upper -
+                              priv->hadjust->page_size);
+  }
+
+  hildon_pannable_area_refresh (HILDON_PANNABLE_AREA (widget));
+}
+
+static void
+hildon_pannable_area_style_set (GtkWidget * widget,
+                                GtkStyle * previous_style)
+{
+  HildonPannableAreaPrivate *priv = PANNABLE_AREA_PRIVATE (widget);
+
+  GTK_WIDGET_CLASS (hildon_pannable_area_parent_class)->
+    style_set (widget, previous_style);
+
+  gtk_widget_style_get (widget, "indicator-width", &priv->area_width, NULL);
+}
+
+static void
+hildon_pannable_area_map (GtkWidget * widget)
+{
+  HildonPannableAreaPrivate *priv;
+
+  priv = PANNABLE_AREA_PRIVATE (widget);
+
+  if (priv->event_window != NULL && !priv->enabled)
+    gdk_window_show (priv->event_window);
+
+  (*GTK_WIDGET_CLASS (hildon_pannable_area_parent_class)->map) (widget);
+
+  if (priv->event_window != NULL && priv->enabled)
+    gdk_window_show (priv->event_window);
+}
+
+static void
+hildon_pannable_area_unmap (GtkWidget * widget)
+{
+  HildonPannableAreaPrivate *priv;
+
+  priv = PANNABLE_AREA_PRIVATE (widget);
+
+  if (priv->event_window != NULL)
+    gdk_window_hide (priv->event_window);
+
+  (*GTK_WIDGET_CLASS (hildon_pannable_area_parent_class)->unmap) (widget);
+}
+
+static void
+rgb_from_gdkcolor (GdkColor *color, gdouble *r, gdouble *g, gdouble *b)
+{
+  *r = (color->red >> 8) / 255.0;
+  *g = (color->green >> 8) / 255.0;
+  *b = (color->blue >> 8) / 255.0;
+}
+
+static void
+hildon_pannable_draw_vscroll (GtkWidget * widget,
+                              GdkColor *back_color,
+                              GdkColor *scroll_color)
+{
+  HildonPannableAreaPrivate *priv = PANNABLE_AREA_PRIVATE (widget);
+  gfloat y, height;
+  cairo_t *cr;
+  cairo_pattern_t *pattern;
+  gdouble r, g, b;
+  gint radius = (priv->vscroll_rect.width/2) - 1;
+
+  cr = gdk_cairo_create(widget->window);
+
+  /* Draw the background */
+  rgb_from_gdkcolor (back_color, &r, &g, &b);
+  cairo_set_source_rgb (cr, r, g, b);
+  cairo_rectangle(cr, priv->vscroll_rect.x, priv->vscroll_rect.y,
+                  priv->vscroll_rect.width,
+                  priv->vscroll_rect.height);
+  cairo_fill_preserve (cr);
+  cairo_clip (cr);
+
+  /* Calculate the scroll bar height and position */
+  y = widget->allocation.y +
+    ((priv->vadjust->value / priv->vadjust->upper) *
+     (widget->allocation.height -
+      (priv->hscroll_visible ? priv->area_width : 0)));
+  height = (widget->allocation.y +
+            (((priv->vadjust->value +
+               priv->vadjust->page_size) /
+              priv->vadjust->upper) *
+             (widget->allocation.height -
+              (priv->hscroll_visible ? priv->area_width : 0)))) - y;
+
+  /* Set a minimum height */
+  height = MAX (SCROLL_BAR_MIN_SIZE, height);
+
+  /* Check the max y position */
+  y = MIN (y, widget->allocation.y + widget->allocation.height -
+           (priv->hscroll_visible ? priv->hscroll_rect.height : 0) -
+           height);
+
+  /* Draw the scrollbar */
+  rgb_from_gdkcolor (scroll_color, &r, &g, &b);
+
+  pattern = cairo_pattern_create_linear(radius+1, y, radius+1,y + height);
+  cairo_pattern_add_color_stop_rgb(pattern, 0, r, g, b);
+  cairo_pattern_add_color_stop_rgb(pattern, 1, r/2, g/2, b/2);
+  cairo_set_source(cr, pattern);
+  cairo_fill(cr);
+  cairo_pattern_destroy(pattern);
+
+  cairo_arc(cr, priv->vscroll_rect.x + radius + 1, y + radius + 1, radius, G_PI, 0);
+  cairo_line_to(cr, priv->vscroll_rect.x + (radius * 2) + 1, y + height - radius);
+  cairo_arc(cr, priv->vscroll_rect.x + radius + 1, y + height - radius, radius, 0, G_PI);
+  cairo_line_to(cr, priv->vscroll_rect.x + 1, y + height - radius);
+  cairo_clip (cr);
+
+  cairo_paint_with_alpha(cr, priv->scroll_indicator_alpha);
+
+  cairo_destroy(cr);
+}
+
+static void
+hildon_pannable_draw_hscroll (GtkWidget * widget,
+                              GdkColor *back_color,
+                              GdkColor *scroll_color)
+{
+  HildonPannableAreaPrivate *priv = PANNABLE_AREA_PRIVATE (widget);
+  gfloat x, width;
+  cairo_t *cr;
+  cairo_pattern_t *pattern;
+  gdouble r, g, b;
+  gint radius = (priv->hscroll_rect.height/2) - 1;
+
+  cr = gdk_cairo_create(widget->window);
+
+  /* Draw the background */
+  rgb_from_gdkcolor (back_color, &r, &g, &b);
+  cairo_set_source_rgb (cr, r, g, b);
+  cairo_rectangle(cr, priv->hscroll_rect.x, priv->hscroll_rect.y,
+                  priv->hscroll_rect.width,
+                  priv->hscroll_rect.height);
+  cairo_fill_preserve (cr);
+  cairo_clip (cr);
+
+  /* calculate the scrollbar width and position */
+  x = widget->allocation.x +
+    ((priv->hadjust->value / priv->hadjust->upper) *
+     (widget->allocation.width - (priv->vscroll_visible ? priv->area_width : 0)));
+  width =
+    (widget->allocation.x +
+     (((priv->hadjust->value +
+        priv->hadjust->page_size) / priv->hadjust->upper) *
+      (widget->allocation.width -
+       (priv->vscroll_visible ? priv->area_width : 0)))) - x;
+
+  /* Set a minimum width */
+  width = MAX (SCROLL_BAR_MIN_SIZE, width);
+
+  /* Check the max x position */
+  x = MIN (x, widget->allocation.x + widget->allocation.width -
+           (priv->vscroll_visible ? priv->vscroll_rect.width : 0) -
+           width);
+
+  /* Draw the scrollbar */
+  rgb_from_gdkcolor (scroll_color, &r, &g, &b);
+
+  pattern = cairo_pattern_create_linear(x, radius+1, x+width, radius+1);
+  cairo_pattern_add_color_stop_rgb(pattern, 0, r, g, b);
+  cairo_pattern_add_color_stop_rgb(pattern, 1, r/2, g/2, b/2);
+  cairo_set_source(cr, pattern);
+  cairo_fill(cr);
+  cairo_pattern_destroy(pattern);
+
+  cairo_arc_negative(cr, x + radius + 1, priv->hscroll_rect.y + radius + 1, radius, 3*G_PI_2, G_PI_2);
+  cairo_line_to(cr, x + width - radius, priv->hscroll_rect.y + (radius * 2) + 1);
+  cairo_arc_negative(cr, x + width - radius, priv->hscroll_rect.y + radius + 1, radius, G_PI_2, 3*G_PI_2);
+  cairo_line_to(cr, x + width - radius, priv->hscroll_rect.y + 1);
+  cairo_clip (cr);
+
+  cairo_paint_with_alpha(cr, priv->scroll_indicator_alpha);
+
+  cairo_destroy(cr);
+}
+
+static void
+hildon_pannable_area_initial_effect (GtkWidget * widget)
+{
+  HildonPannableAreaPrivate *priv = PANNABLE_AREA_PRIVATE (widget);
+  gboolean hscroll_visible, vscroll_visible;
+
+  if (priv->initial_hint) {
+    if (((priv->vovershoot_max != 0)||(priv->hovershoot_max != 0)) &&
+        ((priv->mode == HILDON_PANNABLE_AREA_MODE_AUTO) ||
+         (priv->mode == HILDON_PANNABLE_AREA_MODE_ACCEL))) {
+      vscroll_visible = (priv->vadjust->upper - priv->vadjust->lower >
+                 priv->vadjust->page_size);
+      hscroll_visible = (priv->hadjust->upper - priv->hadjust->lower >
+                 priv->hadjust->page_size);
+      /* If scrolling is possible in both axes, only hint about scrolling in
+         the vertical one. */
+      if ((vscroll_visible)&&(priv->vovershoot_max != 0)) {
+        priv->overshot_dist_y = priv->vovershoot_max;
+        priv->vel_y = priv->vmax * 0.1;
+      } else if ((hscroll_visible)&&(priv->hovershoot_max != 0)) {
+        priv->overshot_dist_x = priv->hovershoot_max;
+        priv->vel_x = priv->vmax * 0.1;
+      }
+
+      if (vscroll_visible || hscroll_visible) {
+        priv->idle_id = g_timeout_add ((gint) (1000.0 / (gdouble) priv->sps),
+                                       (GSourceFunc)
+                                       hildon_pannable_area_timeout, widget);
+      }
+    }
+
+    if (priv->vscroll_visible || priv->hscroll_visible) {
+      priv->scroll_indicator_alpha = 1.0;
+
+      priv->scroll_indicator_timeout =
+        g_timeout_add ((gint) (1000.0 / (gdouble) priv->sps),
+                       (GSourceFunc) hildon_pannable_area_scroll_indicator_fade,
+                       widget);
+    }
+  }
 }
 
 static void
@@ -304,6 +1071,192 @@ hildon_pannable_area_scroll_indicator_fade(HildonPannableArea * area)
 }
 
 static gboolean
+hildon_pannable_area_expose_event (GtkWidget * widget,
+                                   GdkEventExpose * event)
+{
+
+  HildonPannableAreaPrivate *priv = PANNABLE_AREA_PRIVATE (widget);
+  GdkColor back_color = widget->style->bg[GTK_STATE_NORMAL];
+  GdkColor scroll_color = widget->style->base[GTK_STATE_SELECTED];
+
+  if (gtk_bin_get_child (GTK_BIN (widget))) {
+
+    if (priv->scroll_indicator_alpha > 0.1) {
+      if (priv->vscroll_visible) {
+        hildon_pannable_draw_vscroll (widget, &back_color, &scroll_color);
+      }
+      if (priv->hscroll_visible) {
+        hildon_pannable_draw_hscroll (widget, &back_color, &scroll_color);
+      }
+    }
+
+    /* draw overshooting rectangles */
+    if (priv->overshot_dist_y > 0) {
+      gint overshot_height;
+
+      overshot_height = MIN (priv->overshot_dist_y, widget->allocation.height -
+                             (priv->hscroll_visible ? priv->hscroll_rect.height : 0));
+
+      gdk_draw_rectangle (widget->window,
+                          widget->style->bg_gc[GTK_STATE_NORMAL],
+                          TRUE,
+                          widget->allocation.x,
+                          widget->allocation.y,
+                          widget->allocation.width -
+                          (priv->vscroll_visible ? priv->vscroll_rect.width : 0),
+                          overshot_height);
+    } else if (priv->overshot_dist_y < 0) {
+      gint overshot_height;
+      gint overshot_y;
+
+      overshot_height =
+        MAX (priv->overshot_dist_y,
+             -(widget->allocation.height -
+               (priv->hscroll_visible ? priv->hscroll_rect.height : 0)));
+
+      overshot_y = MAX (widget->allocation.y +
+                        widget->allocation.height +
+                        overshot_height -
+                        (priv->hscroll_visible ? priv->hscroll_rect.height : 0), 0);
+
+      gdk_draw_rectangle (widget->window,
+                          widget->style->bg_gc[GTK_STATE_NORMAL],
+                          TRUE,
+                          widget->allocation.x,
+                          overshot_y,
+                          widget->allocation.width -
+                          priv->vscroll_rect.width,
+                          -overshot_height);
+    }
+
+    if (priv->overshot_dist_x > 0) {
+      gint overshot_width;
+
+      overshot_width = MIN (priv->overshot_dist_x, widget->allocation.width -
+                             (priv->vscroll_visible ? priv->vscroll_rect.width : 0));
+
+      gdk_draw_rectangle (widget->window,
+			  widget->style->bg_gc[GTK_STATE_NORMAL],
+			  TRUE,
+			  widget->allocation.x,
+			  widget->allocation.y,
+                          overshot_width,
+			  widget->allocation.height -
+                          (priv->hscroll_visible ? priv->hscroll_rect.height : 0));
+    } else if (priv->overshot_dist_x < 0) {
+      gint overshot_width;
+      gint overshot_x;
+
+      overshot_width =
+        MAX (priv->overshot_dist_x,
+             -(widget->allocation.width -
+               (priv->vscroll_visible ? priv->vscroll_rect.width : 0)));
+
+      overshot_x = MAX (widget->allocation.x +
+                        widget->allocation.width +
+                        overshot_width -
+                        (priv->vscroll_visible ? priv->vscroll_rect.width : 0), 0);
+
+      gdk_draw_rectangle (widget->window,
+			  widget->style->bg_gc[GTK_STATE_NORMAL],
+			  TRUE,
+                          overshot_x,
+			  widget->allocation.y,
+			  -overshot_width,
+			  widget->allocation.height -
+			  priv->hscroll_rect.height);
+    }
+
+  }
+
+  if (G_UNLIKELY (priv->initial_effect)) {
+
+    hildon_pannable_area_initial_effect (widget);
+
+    priv->initial_effect = FALSE;
+  }
+
+  return GTK_WIDGET_CLASS (hildon_pannable_area_parent_class)->expose_event (widget, event);
+}
+
+static GdkWindow *
+hildon_pannable_area_get_topmost (GdkWindow * window,
+                                  gint x, gint y,
+                                  gint * tx, gint * ty)
+{
+  /* Find the GdkWindow at the given point, by recursing from a given
+   * parent GdkWindow. Optionally return the co-ordinates transformed
+   * relative to the child window.
+   */
+  gint width, height;
+
+  gdk_drawable_get_size (GDK_DRAWABLE (window), &width, &height);
+  if ((x < 0) || (x >= width) || (y < 0) || (y >= height))
+    return NULL;
+
+  while (window) {
+    gint child_x = 0, child_y = 0;
+    GList *c, *children = gdk_window_peek_children (window);
+    GdkWindow *old_window = window;
+
+    for (c = children; c; c = c->next) {
+      GdkWindow *child = (GdkWindow *) c->data;
+      gint wx, wy;
+
+      gdk_window_get_geometry (child, &wx, &wy, &width, &height, NULL);
+
+      if (((x >= wx) && (x < (wx + width)) && (y >= wy)
+           && (y < (wy + height))) && (gdk_window_is_visible (child))) {
+	child_x = x - wx;
+	child_y = y - wy;
+	window = child;
+      }
+    }
+
+    if (window == old_window)
+      break;
+
+    x = child_x;
+    y = child_y;
+  }
+
+  if (tx)
+    *tx = x;
+  if (ty)
+    *ty = y;
+
+  return window;
+}
+
+static void
+synth_crossing (GdkWindow * child,
+		gint x, gint y,
+		gint x_root, gint y_root,
+                guint32 time, gboolean in)
+{
+  GdkEventCrossing *crossing_event;
+  GdkEventType type = in ? GDK_ENTER_NOTIFY : GDK_LEAVE_NOTIFY;
+
+  /* Send synthetic enter event */
+  crossing_event = (GdkEventCrossing *) gdk_event_new (type);
+  ((GdkEventAny *) crossing_event)->type = type;
+  ((GdkEventAny *) crossing_event)->window = g_object_ref (child);
+  ((GdkEventAny *) crossing_event)->send_event = FALSE;
+  crossing_event->subwindow = g_object_ref (child);
+  crossing_event->time = time;
+  crossing_event->x = x;
+  crossing_event->y = y;
+  crossing_event->x_root = x_root;
+  crossing_event->y_root = y_root;
+  crossing_event->mode = GDK_CROSSING_NORMAL;
+  crossing_event->detail = GDK_NOTIFY_UNKNOWN;
+  crossing_event->focus = FALSE;
+  crossing_event->state = 0;
+  gdk_event_put ((GdkEvent *) crossing_event);
+  gdk_event_free ((GdkEvent *) crossing_event);
+}
+
+static gboolean
 hildon_pannable_area_button_press_cb (GtkWidget * widget,
 				      GdkEventButton * event)
 {
@@ -326,9 +1279,6 @@ hildon_pannable_area_button_press_cb (GtkWidget * widget,
 
   priv->last_time = event->time;
   priv->last_type = 1;
-
-  priv->click_x = event->x;
-  priv->click_y = event->y;
 
   priv->scroll_to_x = -1;
   priv->scroll_to_y = -1;
@@ -735,16 +1685,16 @@ hildon_pannable_area_motion_notify_cb (GtkWidget * widget,
 
     if (priv->first_drag) {
 
-      if (ABS (priv->click_y - event->y) >=
-          ABS (priv->click_x - event->x)) {
+      if (ABS (priv->iy - event->y) >=
+          ABS (priv->ix - event->x)) {
         gboolean vscroll_visible;
 
         g_signal_emit (area,
                        pannable_area_signals[VERTICAL_MOVEMENT],
-                       0, (priv->click_y > event->y) ?
+                       0, (priv->iy > event->y) ?
                        HILDON_MOVEMENT_UP :
                        HILDON_MOVEMENT_DOWN,
-                       priv->click_x, priv->click_y);
+                       (gdouble)priv->ix, (gdouble)priv->iy);
 
         vscroll_visible = (priv->vadjust->upper - priv->vadjust->lower >
                    priv->vadjust->page_size);
@@ -758,13 +1708,13 @@ hildon_pannable_area_motion_notify_cb (GtkWidget * widget,
 
         g_signal_emit (area,
                        pannable_area_signals[HORIZONTAL_MOVEMENT],
-                       0, (priv->click_x > event->x) ?
+                       0, (priv->ix > event->x) ?
                        HILDON_MOVEMENT_LEFT :
                        HILDON_MOVEMENT_RIGHT,
-                       priv->click_x, priv->click_y);
+                       (gdouble)priv->ix, (gdouble)priv->iy);
 
         hscroll_visible = (priv->hadjust->upper - priv->hadjust->lower >
-                   priv->hadjust->page_size);
+                           priv->hadjust->page_size);
 
         if (!((hscroll_visible)&&
               (priv->mov_mode&HILDON_MOVEMENT_MODE_HORIZ)))
@@ -1033,305 +1983,6 @@ hildon_pannable_area_scroll_cb (GtkWidget *widget,
 
 
 static void
-rgb_from_gdkcolor (GdkColor *color, gdouble *r, gdouble *g, gdouble *b)
-{
-  *r = (color->red >> 8) / 255.0;
-  *g = (color->green >> 8) / 255.0;
-  *b = (color->blue >> 8) / 255.0;
-}
-
-static void
-hildon_pannable_draw_vscroll (GtkWidget * widget, GdkColor *back_color, GdkColor *scroll_color)
-{
-  HildonPannableAreaPrivate *priv = PANNABLE_AREA_PRIVATE (widget);
-  gfloat y, height;
-  cairo_t *cr;
-  cairo_pattern_t *pattern;
-  gdouble r, g, b;
-  gint radius = (priv->vscroll_rect.width/2) - 1;
-
-  cr = gdk_cairo_create(widget->window);
-
-  /* Draw the background */
-  rgb_from_gdkcolor (back_color, &r, &g, &b);
-  cairo_set_source_rgb (cr, r, g, b);
-  cairo_rectangle(cr, priv->vscroll_rect.x, priv->vscroll_rect.y,
-                  priv->vscroll_rect.width,
-                  priv->vscroll_rect.height);
-  cairo_fill_preserve (cr);
-  cairo_clip (cr);
-
-  /* Calculate the scroll bar height and position */
-  y = widget->allocation.y +
-    ((priv->vadjust->value / priv->vadjust->upper) *
-     (widget->allocation.height -
-      (priv->hscroll_visible ? priv->area_width : 0)));
-  height = (widget->allocation.y +
-            (((priv->vadjust->value +
-               priv->vadjust->page_size) /
-              priv->vadjust->upper) *
-             (widget->allocation.height -
-              (priv->hscroll_visible ? priv->area_width : 0)))) - y;
-
-  /* Set a minimum height */
-  height = MAX (SCROLL_BAR_MIN_SIZE, height);
-
-  /* Check the max y position */
-  y = MIN (y, widget->allocation.y + widget->allocation.height -
-           (priv->hscroll_visible ? priv->hscroll_rect.height : 0) -
-           height);
-
-  /* Draw the scrollbar */
-  rgb_from_gdkcolor (scroll_color, &r, &g, &b);
-
-  pattern = cairo_pattern_create_linear(radius+1, y, radius+1,y + height);
-  cairo_pattern_add_color_stop_rgb(pattern, 0, r, g, b);
-  cairo_pattern_add_color_stop_rgb(pattern, 1, r/2, g/2, b/2);
-  cairo_set_source(cr, pattern);
-  cairo_fill(cr);
-  cairo_pattern_destroy(pattern);
-
-  cairo_arc(cr, priv->vscroll_rect.x + radius + 1, y + radius + 1, radius, G_PI, 0);
-  cairo_line_to(cr, priv->vscroll_rect.x + (radius * 2) + 1, y + height - radius);
-  cairo_arc(cr, priv->vscroll_rect.x + radius + 1, y + height - radius, radius, 0, G_PI);
-  cairo_line_to(cr, priv->vscroll_rect.x + 1, y + height - radius);
-  cairo_clip (cr);
-
-  cairo_paint_with_alpha(cr, priv->scroll_indicator_alpha);
-
-  cairo_destroy(cr);
-}
-
-static void
-hildon_pannable_draw_hscroll (GtkWidget * widget, GdkColor *back_color, GdkColor *scroll_color)
-{
-  HildonPannableAreaPrivate *priv = PANNABLE_AREA_PRIVATE (widget);
-  gfloat x, width;
-  cairo_t *cr;
-  cairo_pattern_t *pattern;
-  gdouble r, g, b;
-  gint radius = (priv->hscroll_rect.height/2) - 1;
-
-  cr = gdk_cairo_create(widget->window);
-
-  /* Draw the background */
-  rgb_from_gdkcolor (back_color, &r, &g, &b);
-  cairo_set_source_rgb (cr, r, g, b);
-  cairo_rectangle(cr, priv->hscroll_rect.x, priv->hscroll_rect.y,
-                  priv->hscroll_rect.width,
-                  priv->hscroll_rect.height);
-  cairo_fill_preserve (cr);
-  cairo_clip (cr);
-
-  /* calculate the scrollbar width and position */
-  x = widget->allocation.x +
-    ((priv->hadjust->value / priv->hadjust->upper) *
-     (widget->allocation.width - (priv->vscroll_visible ? priv->area_width : 0)));
-  width =
-    (widget->allocation.x +
-     (((priv->hadjust->value +
-        priv->hadjust->page_size) / priv->hadjust->upper) *
-      (widget->allocation.width -
-       (priv->vscroll_visible ? priv->area_width : 0)))) - x;
-
-  /* Set a minimum width */
-  width = MAX (SCROLL_BAR_MIN_SIZE, width);
-
-  /* Check the max x position */
-  x = MIN (x, widget->allocation.x + widget->allocation.width -
-           (priv->vscroll_visible ? priv->vscroll_rect.width : 0) -
-           width);
-
-  /* Draw the scrollbar */
-  rgb_from_gdkcolor (scroll_color, &r, &g, &b);
-
-  pattern = cairo_pattern_create_linear(x, radius+1, x+width, radius+1);
-  cairo_pattern_add_color_stop_rgb(pattern, 0, r, g, b);
-  cairo_pattern_add_color_stop_rgb(pattern, 1, r/2, g/2, b/2);
-  cairo_set_source(cr, pattern);
-  cairo_fill(cr);
-  cairo_pattern_destroy(pattern);
-
-  cairo_arc_negative(cr, x + radius + 1, priv->hscroll_rect.y + radius + 1, radius, 3*G_PI_2, G_PI_2);
-  cairo_line_to(cr, x + width - radius, priv->hscroll_rect.y + (radius * 2) + 1);
-  cairo_arc_negative(cr, x + width - radius, priv->hscroll_rect.y + radius + 1, radius, G_PI_2, 3*G_PI_2);
-  cairo_line_to(cr, x + width - radius, priv->hscroll_rect.y + 1);
-  cairo_clip (cr);
-
-  cairo_paint_with_alpha(cr, priv->scroll_indicator_alpha);
-
-  cairo_destroy(cr);
-}
-
-static void
-hildon_pannable_area_initial_effect (GtkWidget * widget)
-{
-  HildonPannableAreaPrivate *priv = PANNABLE_AREA_PRIVATE (widget);
-  gboolean hscroll_visible, vscroll_visible;
-
-  if (priv->initial_hint) {
-    if (((priv->vovershoot_max != 0)||(priv->hovershoot_max != 0)) &&
-        ((priv->mode == HILDON_PANNABLE_AREA_MODE_AUTO) ||
-         (priv->mode == HILDON_PANNABLE_AREA_MODE_ACCEL))) {
-      vscroll_visible = (priv->vadjust->upper - priv->vadjust->lower >
-                 priv->vadjust->page_size);
-      hscroll_visible = (priv->hadjust->upper - priv->hadjust->lower >
-                 priv->hadjust->page_size);
-      /* If scrolling is possible in both axes, only hint about scrolling in
-         the vertical one. */
-      if ((vscroll_visible)&&(priv->vovershoot_max != 0)) {
-        priv->overshot_dist_y = priv->vovershoot_max;
-        priv->vel_y = priv->vmax * 0.1;
-      } else if ((hscroll_visible)&&(priv->hovershoot_max != 0)) {
-        priv->overshot_dist_x = priv->hovershoot_max;
-        priv->vel_x = priv->vmax * 0.1;
-      }
-
-      if (vscroll_visible || hscroll_visible) {
-        priv->idle_id = g_timeout_add ((gint) (1000.0 / (gdouble) priv->sps),
-                                       (GSourceFunc)
-                                       hildon_pannable_area_timeout, widget);
-      }
-    }
-
-    if (priv->vscroll_visible || priv->hscroll_visible) {
-      priv->scroll_indicator_alpha = 1.0;
-
-      priv->scroll_indicator_timeout =
-        g_timeout_add ((gint) (1000.0 / (gdouble) priv->sps),
-                       (GSourceFunc) hildon_pannable_area_scroll_indicator_fade,
-                       widget);
-    }
-  }
-}
-
-static gboolean
-hildon_pannable_area_expose_event (GtkWidget * widget, GdkEventExpose * event)
-{
-
-  HildonPannableAreaPrivate *priv = PANNABLE_AREA_PRIVATE (widget);
-  GdkColor back_color = widget->style->bg[GTK_STATE_NORMAL];
-  GdkColor scroll_color = widget->style->base[GTK_STATE_SELECTED];
-
-  if (gtk_bin_get_child (GTK_BIN (widget))) {
-
-    if (priv->scroll_indicator_alpha > 0.1) {
-      if (priv->vscroll_visible) {
-        hildon_pannable_draw_vscroll (widget, &back_color, &scroll_color);
-      }
-      if (priv->hscroll_visible) {
-        hildon_pannable_draw_hscroll (widget, &back_color, &scroll_color);
-      }
-    }
-
-    /* draw overshooting rectangles */
-    if (priv->overshot_dist_y > 0) {
-      gint overshot_height;
-
-      overshot_height = MIN (priv->overshot_dist_y, widget->allocation.height -
-                             (priv->hscroll_visible ? priv->hscroll_rect.height : 0));
-
-      gdk_draw_rectangle (widget->window,
-                          widget->style->bg_gc[GTK_STATE_NORMAL],
-                          TRUE,
-                          widget->allocation.x,
-                          widget->allocation.y,
-                          widget->allocation.width -
-                          (priv->vscroll_visible ? priv->vscroll_rect.width : 0),
-                          overshot_height);
-    } else if (priv->overshot_dist_y < 0) {
-      gint overshot_height;
-      gint overshot_y;
-
-      overshot_height =
-        MAX (priv->overshot_dist_y,
-             -(widget->allocation.height -
-               (priv->hscroll_visible ? priv->hscroll_rect.height : 0)));
-
-      overshot_y = MAX (widget->allocation.y +
-                        widget->allocation.height +
-                        overshot_height -
-                        (priv->hscroll_visible ? priv->hscroll_rect.height : 0), 0);
-
-      gdk_draw_rectangle (widget->window,
-                          widget->style->bg_gc[GTK_STATE_NORMAL],
-                          TRUE,
-                          widget->allocation.x,
-                          overshot_y,
-                          widget->allocation.width -
-                          priv->vscroll_rect.width,
-                          -overshot_height);
-    }
-
-    if (priv->overshot_dist_x > 0) {
-      gint overshot_width;
-
-      overshot_width = MIN (priv->overshot_dist_x, widget->allocation.width -
-                             (priv->vscroll_visible ? priv->vscroll_rect.width : 0));
-
-      gdk_draw_rectangle (widget->window,
-			  widget->style->bg_gc[GTK_STATE_NORMAL],
-			  TRUE,
-			  widget->allocation.x,
-			  widget->allocation.y,
-                          overshot_width,
-			  widget->allocation.height -
-                          (priv->hscroll_visible ? priv->hscroll_rect.height : 0));
-    } else if (priv->overshot_dist_x < 0) {
-      gint overshot_width;
-      gint overshot_x;
-
-      overshot_width =
-        MAX (priv->overshot_dist_x,
-             -(widget->allocation.width -
-               (priv->vscroll_visible ? priv->vscroll_rect.width : 0)));
-
-      overshot_x = MAX (widget->allocation.x +
-                        widget->allocation.width +
-                        overshot_width -
-                        (priv->vscroll_visible ? priv->vscroll_rect.width : 0), 0);
-
-      gdk_draw_rectangle (widget->window,
-			  widget->style->bg_gc[GTK_STATE_NORMAL],
-			  TRUE,
-                          overshot_x,
-			  widget->allocation.y,
-			  -overshot_width,
-			  widget->allocation.height -
-			  priv->hscroll_rect.height);
-    }
-
-  }
-
-  if (G_UNLIKELY (priv->initial_effect)) {
-
-    hildon_pannable_area_initial_effect (widget);
-
-    priv->initial_effect = FALSE;
-  }
-
-  return GTK_WIDGET_CLASS (hildon_pannable_area_parent_class)->expose_event (widget, event);
-}
-
-static void
-hildon_pannable_area_destroy (GtkObject * object)
-{
-  HildonPannableAreaPrivate *priv = PANNABLE_AREA_PRIVATE (object);
-
-  if (priv->hadjust) {
-    g_object_unref (G_OBJECT (priv->hadjust));
-    priv->hadjust = NULL;
-  }
-
-  if (priv->vadjust) {
-    g_object_unref (G_OBJECT (priv->vadjust));
-    priv->vadjust = NULL;
-  }
-
-  GTK_OBJECT_CLASS (hildon_pannable_area_parent_class)->destroy (object);
-}
-
-static void
 hildon_pannable_area_add (GtkContainer *container, GtkWidget *child)
 {
   HildonPannableAreaPrivate *priv = PANNABLE_AREA_PRIVATE (container);
@@ -1376,614 +2027,6 @@ hildon_pannable_calculate_vel_factor (HildonPannableArea * self)
   }
 
     priv->vel_factor = fct;
-}
-
-static void
-hildon_pannable_area_get_property (GObject * object, guint property_id,
-				   GValue * value, GParamSpec * pspec)
-{
-  HildonPannableAreaPrivate *priv = PANNABLE_AREA_PRIVATE (object);
-
-  switch (property_id) {
-  case PROP_ENABLED:
-    g_value_set_boolean (value, priv->enabled);
-    break;
-  case PROP_MODE:
-    g_value_set_enum (value, priv->mode);
-    break;
-  case PROP_MOVEMENT_MODE:
-    g_value_set_flags (value, priv->mov_mode);
-    break;
-  case PROP_VELOCITY_MIN:
-    g_value_set_double (value, priv->vmin);
-    break;
-  case PROP_VELOCITY_MAX:
-    g_value_set_double (value, priv->vmax);
-    break;
-  case PROP_VELOCITY_FAST_FACTOR:
-    g_value_set_double (value, priv->vfast_factor);
-    break;
-  case PROP_DECELERATION:
-    g_value_set_double (value, priv->decel);
-    break;
-  case PROP_SPS:
-    g_value_set_uint (value, priv->sps);
-    break;
-  case PROP_VSCROLLBAR_POLICY:
-    g_value_set_enum (value, priv->vscrollbar_policy);
-    break;
-  case PROP_HSCROLLBAR_POLICY:
-    g_value_set_enum (value, priv->hscrollbar_policy);
-    break;
-  case PROP_VOVERSHOOT_MAX:
-    g_value_set_int (value, priv->vovershoot_max);
-    break;
-  case PROP_HOVERSHOOT_MAX:
-    g_value_set_int (value, priv->hovershoot_max);
-    break;
-  case PROP_SCROLL_TIME:
-    g_value_set_double (value, priv->scroll_time);
-    break;
-  case PROP_INITIAL_HINT:
-    g_value_set_boolean (value, priv->initial_hint);
-    break;
-
-  default:
-    G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-  }
-}
-
-static void
-hildon_pannable_area_set_property (GObject * object, guint property_id,
-				   const GValue * value, GParamSpec * pspec)
-{
-  HildonPannableAreaPrivate *priv = PANNABLE_AREA_PRIVATE (object);
-  gboolean enabled;
-
-  switch (property_id) {
-  case PROP_ENABLED:
-    enabled = g_value_get_boolean (value);
-
-    if ((priv->enabled != enabled) && (GTK_WIDGET_REALIZED (object))) {
-      if (enabled)
-	gdk_window_raise (priv->event_window);
-      else
-	gdk_window_lower (priv->event_window);
-    }
-
-    priv->enabled = enabled;
-    break;
-  case PROP_MODE:
-    priv->mode = g_value_get_enum (value);
-    break;
-  case PROP_MOVEMENT_MODE:
-    priv->mov_mode = g_value_get_flags (value);
-    break;
-  case PROP_VELOCITY_MIN:
-    priv->vmin = g_value_get_double (value);
-    break;
-  case PROP_VELOCITY_MAX:
-    priv->vmax = g_value_get_double (value);
-    break;
-  case PROP_VELOCITY_FAST_FACTOR:
-    priv->vfast_factor = g_value_get_double (value);
-    break;
-  case PROP_DECELERATION:
-    hildon_pannable_calculate_vel_factor (HILDON_PANNABLE_AREA (object));
-
-    priv->decel = g_value_get_double (value);
-    break;
-  case PROP_SPS:
-    priv->sps = g_value_get_uint (value);
-    break;
-  case PROP_VSCROLLBAR_POLICY:
-    priv->vscrollbar_policy = g_value_get_enum (value);
-
-    gtk_widget_queue_resize (GTK_WIDGET (object));
-    break;
-  case PROP_HSCROLLBAR_POLICY:
-    priv->hscrollbar_policy = g_value_get_enum (value);
-
-    gtk_widget_queue_resize (GTK_WIDGET (object));
-    break;
-  case PROP_VOVERSHOOT_MAX:
-    priv->vovershoot_max = g_value_get_int (value);
-    break;
-  case PROP_HOVERSHOOT_MAX:
-    priv->hovershoot_max = g_value_get_int (value);
-    break;
-  case PROP_SCROLL_TIME:
-    priv->scroll_time = g_value_get_double (value);
-
-    hildon_pannable_calculate_vel_factor (HILDON_PANNABLE_AREA (object));
-    break;
-  case PROP_INITIAL_HINT:
-    priv->initial_hint = g_value_get_boolean (value);
-    break;
-
-  default:
-    G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-  }
-}
-
-static void
-hildon_pannable_area_dispose (GObject * object)
-{
-  HildonPannableAreaPrivate *priv = PANNABLE_AREA_PRIVATE (object);
-
-  if (priv->idle_id) {
-    g_source_remove (priv->idle_id);
-    priv->idle_id = 0;
-  }
-
-  if (priv->scroll_indicator_timeout){
-    g_source_remove (priv->scroll_indicator_timeout);
-    priv->scroll_indicator_timeout = 0;
-  }
-
-  if (priv->hadjust) {
-    g_object_unref (priv->hadjust);
-    priv->hadjust = NULL;
-  }
-  if (priv->vadjust) {
-    g_object_unref (priv->vadjust);
-    priv->vadjust = NULL;
-  }
-
-  if (G_OBJECT_CLASS (hildon_pannable_area_parent_class)->dispose)
-    G_OBJECT_CLASS (hildon_pannable_area_parent_class)->dispose (object);
-}
-
-static void
-hildon_pannable_area_finalize (GObject * object)
-{
-  G_OBJECT_CLASS (hildon_pannable_area_parent_class)->finalize (object);
-}
-
-static void
-hildon_pannable_area_realize (GtkWidget * widget)
-{
-  GdkWindowAttr attributes;
-  gint attributes_mask;
-  gint border_width;
-  HildonPannableAreaPrivate *priv;
-
-  priv = PANNABLE_AREA_PRIVATE (widget);
-
-  GTK_WIDGET_SET_FLAGS (widget, GTK_REALIZED);
-
-  border_width = GTK_CONTAINER (widget)->border_width;
-
-  attributes.x = widget->allocation.x + border_width;
-  attributes.y = widget->allocation.y + border_width;
-  attributes.width = MAX (widget->allocation.width - 2 * border_width -
-                          (priv->vscroll_visible ? priv->vscroll_rect.width : 0), 0);
-  attributes.height = MAX (widget->allocation.height - 2 * border_width -
-                           (priv->hscroll_visible ? priv->hscroll_rect.height : 0), 0);
-  attributes.window_type = GDK_WINDOW_CHILD;
-  attributes.event_mask = gtk_widget_get_events (widget)
-    | GDK_BUTTON_MOTION_MASK
-    | GDK_BUTTON_PRESS_MASK
-    | GDK_BUTTON_RELEASE_MASK
-    | GDK_SCROLL_MASK
-    | GDK_EXPOSURE_MASK | GDK_ENTER_NOTIFY_MASK | GDK_LEAVE_NOTIFY_MASK;
-
-  widget->window = gtk_widget_get_parent_window (widget);
-  g_object_ref (widget->window);
-
-  attributes.wclass = GDK_INPUT_ONLY;
-  attributes_mask = GDK_WA_X | GDK_WA_Y;
-
-  priv->event_window = gdk_window_new (widget->window,
-				       &attributes, attributes_mask);
-  gdk_window_set_user_data (priv->event_window, widget);
-
-  widget->style = gtk_style_attach (widget->style, widget->window);
-}
-
-static void
-hildon_pannable_area_unrealize (GtkWidget * widget)
-{
-  HildonPannableAreaPrivate *priv;
-
-  priv = PANNABLE_AREA_PRIVATE (widget);
-
-  if (priv->event_window != NULL) {
-    gdk_window_set_user_data (priv->event_window, NULL);
-    gdk_window_destroy (priv->event_window);
-    priv->event_window = NULL;
-  }
-
-  if (GTK_WIDGET_CLASS (hildon_pannable_area_parent_class)->unrealize)
-    (*GTK_WIDGET_CLASS (hildon_pannable_area_parent_class)->
-     unrealize) (widget);
-}
-
-static void
-hildon_pannable_area_map (GtkWidget * widget)
-{
-  HildonPannableAreaPrivate *priv;
-
-  priv = PANNABLE_AREA_PRIVATE (widget);
-
-  if (priv->event_window != NULL && !priv->enabled)
-    gdk_window_show (priv->event_window);
-
-  (*GTK_WIDGET_CLASS (hildon_pannable_area_parent_class)->map) (widget);
-
-  if (priv->event_window != NULL && priv->enabled)
-    gdk_window_show (priv->event_window);
-}
-
-static void
-hildon_pannable_area_unmap (GtkWidget * widget)
-{
-  HildonPannableAreaPrivate *priv;
-
-  priv = PANNABLE_AREA_PRIVATE (widget);
-
-  if (priv->event_window != NULL)
-    gdk_window_hide (priv->event_window);
-
-  (*GTK_WIDGET_CLASS (hildon_pannable_area_parent_class)->unmap) (widget);
-}
-
-static void
-hildon_pannable_area_size_request (GtkWidget * widget,
-				   GtkRequisition * requisition)
-{
-  GtkRequisition child_requisition;
-  HildonPannableAreaPrivate *priv = PANNABLE_AREA_PRIVATE (widget);
-  GtkWidget *child = gtk_bin_get_child (GTK_BIN (widget));
-
-  if (child && GTK_WIDGET_VISIBLE (child))
-    {
-      gtk_widget_size_request (child, &child_requisition);
-    }
-
-  if (priv->hscrollbar_policy == GTK_POLICY_NEVER) {
-    requisition->width += child_requisition.width;
-  } else {
-    requisition->width += priv->area_width;
-  }
-
-  if (priv->vscrollbar_policy == GTK_POLICY_NEVER) {
-    requisition->height += child_requisition.height;
-  } else {
-    requisition->height += priv->area_width;
-  }
-
-  requisition->width += GTK_CONTAINER (widget)->border_width;
-  requisition->height += GTK_CONTAINER (widget)->border_width;
-}
-
-static void
-hildon_pannable_area_size_allocate (GtkWidget * widget,
-				    GtkAllocation * allocation)
-{
-  GtkAllocation child_allocation;
-  HildonPannableAreaPrivate *priv;
-  GtkWidget *child = gtk_bin_get_child (GTK_BIN (widget));
-
-  widget->allocation = *allocation;
-
-  priv = PANNABLE_AREA_PRIVATE (widget);
-
-  child_allocation.x = allocation->x + GTK_CONTAINER (widget)->border_width;
-  child_allocation.y = allocation->y + GTK_CONTAINER (widget)->border_width;
-  child_allocation.width = MAX (allocation->width -
-				2 * GTK_CONTAINER (widget)->border_width -
-                                (priv->vscroll_visible ? priv->vscroll_rect.width : 0), 0);
-  child_allocation.height = MAX (allocation->height -
-				 2 * GTK_CONTAINER (widget)->border_width -
-                                 (priv->hscroll_visible ? priv->hscroll_rect.height : 0), 0);
-
-  if (GTK_WIDGET_REALIZED (widget)) {
-    if (priv->event_window != NULL)
-      gdk_window_move_resize (priv->event_window,
-			      child_allocation.x,
-			      child_allocation.y,
-			      child_allocation.width,
-			      child_allocation.height);
-  }
-
-  if (priv->overshot_dist_y > 0) {
-    child_allocation.y = MIN (child_allocation.y + priv->overshot_dist_y,
-                              allocation->y + child_allocation.height);
-    child_allocation.height = MAX (child_allocation.height - priv->overshot_dist_y, 0);
-  } else if (priv->overshot_dist_y < 0) {
-    child_allocation.height = MAX (child_allocation.height + priv->overshot_dist_y, 0);
-  }
-
-  if (priv->overshot_dist_x > 0) {
-    child_allocation.x = MIN (child_allocation.x + priv->overshot_dist_x,
-                              allocation->x + child_allocation.width);
-    child_allocation.width = MAX (child_allocation.width - priv->overshot_dist_x, 0);
-  } else if (priv->overshot_dist_x < 0) {
-    child_allocation.width = MAX (child_allocation.width + priv->overshot_dist_x, 0);
-  }
-
-  if (child)
-    gtk_widget_size_allocate (child, &child_allocation);
-
-  /* we have to do this after child size_allocate because page_size is
-   * changed when we allocate the size of the children */
-  if (priv->overshot_dist_y < 0) {
-    gtk_adjustment_set_value (priv->vadjust, priv->vadjust->upper -
-                              priv->vadjust->page_size);
-  }
-
-  if (priv->overshot_dist_x < 0) {
-    gtk_adjustment_set_value (priv->hadjust, priv->hadjust->upper -
-                              priv->hadjust->page_size);
-  }
-
-  hildon_pannable_area_refresh (HILDON_PANNABLE_AREA (widget));
-}
-
-static void
-hildon_pannable_area_style_set (GtkWidget * widget, GtkStyle * previous_style)
-{
-  HildonPannableAreaPrivate *priv = PANNABLE_AREA_PRIVATE (widget);
-
-  GTK_WIDGET_CLASS (hildon_pannable_area_parent_class)->
-    style_set (widget, previous_style);
-
-  gtk_widget_style_get (widget, "indicator-width", &priv->area_width, NULL);
-}
-
-static void
-hildon_pannable_area_class_init (HildonPannableAreaClass * klass)
-{
-  GObjectClass *object_class = G_OBJECT_CLASS (klass);
-  GtkObjectClass *gtkobject_class = GTK_OBJECT_CLASS (klass);
-  GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
-  GtkContainerClass *container_class = GTK_CONTAINER_CLASS (klass);
-
-
-  g_type_class_add_private (klass, sizeof (HildonPannableAreaPrivate));
-
-  object_class->get_property = hildon_pannable_area_get_property;
-  object_class->set_property = hildon_pannable_area_set_property;
-  object_class->dispose = hildon_pannable_area_dispose;
-  object_class->finalize = hildon_pannable_area_finalize;
-
-  gtkobject_class->destroy = hildon_pannable_area_destroy;
-
-  widget_class->realize = hildon_pannable_area_realize;
-  widget_class->unrealize = hildon_pannable_area_unrealize;
-  widget_class->map = hildon_pannable_area_map;
-  widget_class->unmap = hildon_pannable_area_unmap;
-  widget_class->size_request = hildon_pannable_area_size_request;
-  widget_class->size_allocate = hildon_pannable_area_size_allocate;
-  widget_class->expose_event = hildon_pannable_area_expose_event;
-  widget_class->style_set = hildon_pannable_area_style_set;
-  widget_class->button_press_event = hildon_pannable_area_button_press_cb;
-  widget_class->button_release_event = hildon_pannable_area_button_release_cb;
-  widget_class->motion_notify_event = hildon_pannable_area_motion_notify_cb;
-  widget_class->scroll_event = hildon_pannable_area_scroll_cb;
-
-  container_class->add = hildon_pannable_area_add;
-  container_class->remove = hildon_pannable_area_remove;
-
-  klass->horizontal_movement = NULL;
-  klass->vertical_movement = NULL;
-
-  g_object_class_install_property (object_class,
-				   PROP_ENABLED,
-				   g_param_spec_boolean ("enabled",
-							 "Enabled",
-							 "Enable or disable finger-scroll.",
-							 TRUE,
-							 G_PARAM_READWRITE |
-							 G_PARAM_CONSTRUCT));
-
-  g_object_class_install_property (object_class,
-				   PROP_VSCROLLBAR_POLICY,
-				   g_param_spec_enum ("vscrollbar_policy",
-						      "vscrollbar policy",
-						      "Visual policy of the vertical scrollbar",
-						      GTK_TYPE_POLICY_TYPE,
-						      GTK_POLICY_AUTOMATIC,
-						      G_PARAM_READWRITE |
-						      G_PARAM_CONSTRUCT));
-
-  g_object_class_install_property (object_class,
-				   PROP_HSCROLLBAR_POLICY,
-				   g_param_spec_enum ("hscrollbar_policy",
-						      "hscrollbar policy",
-						      "Visual policy of the horizontal scrollbar",
-						      GTK_TYPE_POLICY_TYPE,
-						      GTK_POLICY_AUTOMATIC,
-						      G_PARAM_READWRITE |
-						      G_PARAM_CONSTRUCT));
-
-  g_object_class_install_property (object_class,
-				   PROP_MODE,
-				   g_param_spec_enum ("mode",
-						      "Scroll mode",
-						      "Change the finger-scrolling mode.",
-						      HILDON_TYPE_PANNABLE_AREA_MODE,
-						      HILDON_PANNABLE_AREA_MODE_AUTO,
-						      G_PARAM_READWRITE |
-						      G_PARAM_CONSTRUCT));
-
-  g_object_class_install_property (object_class,
-				   PROP_MOVEMENT_MODE,
-				   g_param_spec_flags ("mov_mode",
-                                                       "Scroll movement mode",
-                                                       "Controls if the widget can scroll vertically, horizontally or both",
-                                                       HILDON_TYPE_MOVEMENT_MODE,
-                                                       HILDON_MOVEMENT_MODE_BOTH,
-                                                       G_PARAM_READWRITE |
-                                                       G_PARAM_CONSTRUCT));
-
-  g_object_class_install_property (object_class,
-				   PROP_VELOCITY_MIN,
-				   g_param_spec_double ("velocity_min",
-							"Minimum scroll velocity",
-							"Minimum distance the child widget should scroll "
-							"per 'frame', in pixels.",
-							0, G_MAXDOUBLE, 0,
-							G_PARAM_READWRITE |
-							G_PARAM_CONSTRUCT));
-
-  g_object_class_install_property (object_class,
-				   PROP_VELOCITY_MAX,
-				   g_param_spec_double ("velocity_max",
-							"Maximum scroll velocity",
-							"Maximum distance the child widget should scroll "
-							"per 'frame', in pixels.",
-							0, G_MAXDOUBLE, 80,
-							G_PARAM_READWRITE |
-							G_PARAM_CONSTRUCT));
-
-  g_object_class_install_property (object_class,
-				   PROP_VELOCITY_FAST_FACTOR,
-				   g_param_spec_double ("velocity_fast_factor",
-							"Fast velocity factor",
-							"Minimum velocity that is considered 'fast': "
-							"children widgets won't receive button presses. "
-							"Expressed as a fraction of the maximum velocity.",
-							0, 1, 0.02,
-							G_PARAM_READWRITE |
-							G_PARAM_CONSTRUCT));
-
-  g_object_class_install_property (object_class,
-				   PROP_DECELERATION,
-				   g_param_spec_double ("deceleration",
-							"Deceleration multiplier",
-							"The multiplier used when decelerating when in "
-							"acceleration scrolling mode.",
-							0, 1.0, 0.90,
-							G_PARAM_READWRITE |
-							G_PARAM_CONSTRUCT));
-
-  g_object_class_install_property (object_class,
-				   PROP_SPS,
-				   g_param_spec_uint ("sps",
-						      "Scrolls per second",
-						      "Amount of scroll events to generate per second.",
-						      0, G_MAXUINT, 25,
-						      G_PARAM_READWRITE |
-						      G_PARAM_CONSTRUCT));
-
-  g_object_class_install_property (object_class,
-				   PROP_VOVERSHOOT_MAX,
-				   g_param_spec_int ("vovershoot_max",
-                                                     "Vertical overshoot distance",
-                                                     "Space we allow the widget to pass over its vertical limits when hitting the edges, set 0 in order to deactivate overshooting.",
-                                                     0, G_MAXINT, 150,
-                                                     G_PARAM_READWRITE |
-                                                     G_PARAM_CONSTRUCT));
-
-  g_object_class_install_property (object_class,
-				   PROP_HOVERSHOOT_MAX,
-				   g_param_spec_int ("hovershoot_max",
-                                                     "Horizontal overshoot distance",
-                                                     "Space we allow the widget to pass over its horizontal limits when hitting the edges, set 0 in order to deactivate overshooting.",
-                                                     0, G_MAXINT, 150,
-                                                     G_PARAM_READWRITE |
-                                                     G_PARAM_CONSTRUCT));
-
-  g_object_class_install_property (object_class,
-				   PROP_SCROLL_TIME,
-				   g_param_spec_double ("scroll_time",
-							"Time to scroll to a position",
-							"The time to scroll to a position when calling the hildon_pannable_scroll_to function"
-							"acceleration scrolling mode.",
-							1.0, 20.0, 10.0,
-							G_PARAM_READWRITE |
-							G_PARAM_CONSTRUCT));
-
-  g_object_class_install_property (object_class,
- 				   PROP_INITIAL_HINT,
- 				   g_param_spec_boolean ("initial-hint",
- 							 "Initial hint",
- 							 "Whether to hint the user about the pannability of the container.",
- 							 FALSE,
-							 G_PARAM_READWRITE |
- 							 G_PARAM_CONSTRUCT));
-
-  gtk_widget_class_install_style_property (widget_class,
-					   g_param_spec_uint
-					   ("indicator-width",
-					    "Width of the scroll indicators",
-					    "Pixel width used to draw the scroll indicators.",
-					    0, G_MAXUINT, 8,
-					    G_PARAM_READWRITE));
-
-  pannable_area_signals[HORIZONTAL_MOVEMENT] =
-    g_signal_new ("horizontal_movement",
-		  G_TYPE_FROM_CLASS (object_class),
-		  G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
-		  G_STRUCT_OFFSET (HildonPannableAreaClass, horizontal_movement),
-		  NULL, NULL,
-		  _hildon_marshal_VOID__INT_DOUBLE_DOUBLE,
-		  G_TYPE_NONE, 3,
-                  G_TYPE_INT,
-		  G_TYPE_DOUBLE,
-		  G_TYPE_DOUBLE);
-
-  pannable_area_signals[VERTICAL_MOVEMENT] =
-    g_signal_new ("vertical_movement",
-		  G_TYPE_FROM_CLASS (object_class),
-		  G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
-		  G_STRUCT_OFFSET (HildonPannableAreaClass, vertical_movement),
-		  NULL, NULL,
-		  _hildon_marshal_VOID__INT_DOUBLE_DOUBLE,
-		  G_TYPE_NONE, 3,
-                  G_TYPE_INT,
-		  G_TYPE_DOUBLE,
-		  G_TYPE_DOUBLE);
-
-
-}
-
-static void
-hildon_pannable_area_init (HildonPannableArea * area)
-{
-  HildonPannableAreaPrivate *priv = PANNABLE_AREA_PRIVATE (area);
-
-  priv->moved = FALSE;
-  priv->clicked = FALSE;
-  priv->last_time = 0;
-  priv->last_type = 0;
-  priv->vscroll_visible = TRUE;
-  priv->hscroll_visible = TRUE;
-  priv->area_width = 6;
-  priv->overshot_dist_x = 0;
-  priv->overshot_dist_y = 0;
-  priv->overshooting_y = 0;
-  priv->overshooting_x = 0;
-  priv->idle_id = 0;
-  priv->vel_x = 0;
-  priv->vel_y = 0;
-  priv->scroll_indicator_alpha = 0.0;
-  priv->scroll_indicator_timeout = 0;
-  priv->scroll_indicator_event_interrupt = 0;
-  priv->scroll_delay_counter = SCROLLBAR_FADE_DELAY;
-  priv->scroll_to_x = -1;
-  priv->scroll_to_y = -1;
-  priv->first_drag = TRUE;
-  priv->initial_effect = TRUE;
-
-  hildon_pannable_calculate_vel_factor (area);
-
-  gtk_widget_add_events (GTK_WIDGET (area), GDK_POINTER_MOTION_HINT_MASK);
-
-  priv->hadjust =
-    GTK_ADJUSTMENT (gtk_adjustment_new (0.0, 0.0, 0.0, 0.0, 0.0, 0.0));
-  priv->vadjust =
-    GTK_ADJUSTMENT (gtk_adjustment_new (0.0, 0.0, 0.0, 0.0, 0.0, 0.0));
-
-  g_object_ref_sink (G_OBJECT (priv->hadjust));
-  g_object_ref_sink (G_OBJECT (priv->vadjust));
-
-  g_signal_connect_swapped (G_OBJECT (priv->hadjust), "value-changed",
-			    G_CALLBACK (hildon_pannable_area_redraw), area);
-  g_signal_connect_swapped (G_OBJECT (priv->vadjust), "value-changed",
-			    G_CALLBACK (hildon_pannable_area_redraw), area);
 }
 
 /**

@@ -1,3 +1,31 @@
+2008-08-22  Alejandro G. Castro	 <alex@igalia.com>
+
+	* src/hildon-pannable-area.c (hildon_pannable_area_class_init),
+	(hildon_pannable_area_init), (hildon_pannable_area_get_property),
+	(hildon_pannable_area_set_property),
+	(hildon_pannable_area_dispose), (hildon_pannable_area_realize),
+	(hildon_pannable_area_unrealize),
+	(hildon_pannable_area_size_request),
+	(hildon_pannable_area_size_allocate),
+	(hildon_pannable_area_style_set), (hildon_pannable_area_map),
+	(hildon_pannable_area_unmap), (rgb_from_gdkcolor),
+	(hildon_pannable_draw_vscroll), (hildon_pannable_draw_hscroll),
+	(hildon_pannable_area_initial_effect),
+	(hildon_pannable_area_redraw),
+	(hildon_pannable_area_scroll_indicator_fade),
+	(hildon_pannable_area_expose_event),
+	(hildon_pannable_area_get_topmost), (synth_crossing),
+	(hildon_pannable_area_button_press_cb),
+	(hildon_pannable_area_refresh), (hildon_pannable_axis_scroll),
+	(hildon_pannable_area_scroll), (hildon_pannable_area_timeout),
+	(hildon_pannable_area_motion_notify_cb),
+	(hildon_pannable_area_button_release_cb),
+	(hildon_pannable_area_scroll_cb), (hildon_pannable_area_add),
+	(hildon_pannable_area_remove),
+	(hildon_pannable_calculate_vel_factor): Widget refactorization,
+	chage the code layout to a more GtkWidget like. Review the use of
+	variables.
+
 2008-08-21  Alejandro G. Castro	 <alex@igalia.com>
 
 	* examples/hildon-pannable-area-example-4.c,
