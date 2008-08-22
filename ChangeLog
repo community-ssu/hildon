@@ -1,7 +1,45 @@
+2008-08-21  Alejandro G. Castro	 <alex@igalia.com>
+
+	* examples/hildon-pannable-area-example-4.c,
+	(main): Modified the name of the hindicator_mode to
+	hscrollbar_visible
+
+	* src/hildon-pannable-area.c,
+	(hildon_pannable_area_class_init),
+	(hildon_pannable_area_motion_notify_cb),
+	(hildon_pannable_area_size_allocate): Reviewed the drawing logic,
+	we have reduced the amount of signals and managed reviewed its
+	rationale. Changed the default decelerate value.
+
+	(hildon_pannable_area_add),
+	(hildon_pannable_area_redraw): Refactored functions.
+
+	(hildon_pannable_area_init),
+	(hildon_pannable_area_get_property),
+	(hildon_pannable_area_set_property):
+	(hildon_pannable_draw_vscroll),
+	(hildon_pannable_draw_hscroll),
+	(hildon_pannable_area_initial_effect),
+	(hildon_pannable_area_expose_event),
+	(hildon_pannable_area_scroll),
+	(hildon_pannable_area_button_press_cb),
+	(hildon_pannable_area_realize): Replaced the names hindicator_mode
+	and vindicator_mode with hscrollbar_policy and
+	vscrollbar_policy. Replaced hscroll and vscroll with
+	hscroll_visible and vscroll_visible.
+
+	(hildon_pannable_area_refresh): Refactor the function, remove
+	variables and check the calls to this function, added resize
+	conditions in case the children change their layout.
+
+	(hildon_pannable_area_size_request): Added more detailed
+	size_request calculation.
+
+
 2008-08-21  Alejandro Pinheiro <apinheiro@igalia.com>
 
 	* src/hildon-color-chooser.c
-	(init_borders): use the correct gtk_border_free instead of g_free, to 
+	(init_borders): use the correct gtk_border_free instead of g_free, to
 	avoid a crash when this widget is used (ie: the three color selection
 	examples)
 

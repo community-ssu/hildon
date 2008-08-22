@@ -168,7 +168,7 @@ main (int argc, char **args)
     panarea = hildon_pannable_area_new ();
     g_object_set (panarea, "mov_mode", HILDON_MOVEMENT_MODE_VERT,
                   "hovershoot_max", 0,
-                  "hindicator_mode", GTK_POLICY_NEVER, NULL);
+                  "hscrollbar_policy", GTK_POLICY_NEVER, NULL);
 
     hildon_pannable_area_add_with_viewport (HILDON_PANNABLE_AREA (panarea), GTK_WIDGET (vbox));
     gtk_container_add (GTK_CONTAINER (window), panarea);
