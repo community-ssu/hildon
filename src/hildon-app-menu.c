@@ -34,13 +34,13 @@
  * with hildon_stackable_window_set_main_menu(). The menu will appear
  * when the user presses the window title bar.
  *
+ * Alternatively, you can show it by hand using gtk_widget_show().
+ *
  * The menu will be automatically hidden when one of its buttons is
  * clicked. Use g_signal_connect_after() when connecting callbacks to
  * buttons to make sure that they're called after the menu
  * disappears. Alternatively, you can add the button to the menu
  * before connecting any callback.
- *
- * Alternatively, you can show it by hand using gtk_widget_show().
  *
  * <example>
  * <title>Creating a HildonAppMenu</title>
