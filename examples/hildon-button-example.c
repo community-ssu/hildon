@@ -24,6 +24,7 @@
 
 #include                                        <gtk/gtk.h>
 #include                                        <hildon-button.h>
+#include                                        <hildon-stackable-window.h>
 
 static GtkWidget *horizontal_layout;
 static GtkWidget *images;
@@ -57,7 +58,7 @@ vertical_buttons_window                         (GtkButton *b,
     gboolean use_images;
 
     /* Create window */
-    win = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+    win = hildon_stackable_window_new ();
     gtk_container_set_border_width (GTK_CONTAINER (win), 20);
 
     arrangement = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (horizontal_layout)) ?
@@ -145,7 +146,7 @@ horizontal_buttons_window                       (GtkButton *b,
     gboolean use_images;
 
     /* Create window */
-    win = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+    win = hildon_stackable_window_new ();
     gtk_container_set_border_width (GTK_CONTAINER (win), 20);
 
     arrangement = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (horizontal_layout)) ?
@@ -253,7 +254,7 @@ main                                            (int    argc,
     vbox = GTK_BOX (gtk_vbox_new (FALSE, 10));
     hbox = GTK_BOX (gtk_hbox_new (TRUE, 10));
 
-    win = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+    win = hildon_stackable_window_new ();
 
     label = gtk_label_new ("HildonButton example");
     but1 = gtk_button_new_with_label ("Buttons with different heights");

@@ -1,3 +1,9 @@
+2008-08-25  Alejandro Pinheiro <apinheiro@igalia.com>
+
+	* examples/hildon-button-example.c
+	(vertical_buttons_window) (horizontal_buttons_window) (main): use of
+	hildon_stackable_window_new instead of gtk_window_new
+
 2008-08-22  Alejandro G. Castro	 <alex@igalia.com>
 
 	* src/hildon-pannable-area.c (hildon_pannable_area_class_init),
