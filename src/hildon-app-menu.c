@@ -34,6 +34,12 @@
  * with hildon_stackable_window_set_main_menu(). The menu will appear
  * when the user presses the window title bar.
  *
+ * The menu will be automatically hidden when one of its buttons is
+ * clicked. Use g_signal_connect_after() when connecting callbacks to
+ * buttons to make sure that they're called after the menu
+ * disappears. Alternatively, you can add the button to the menu
+ * before connecting any callback.
+ *
  * Alternatively, you can show it by hand using gtk_widget_show().
  *
  * <example>
@@ -49,24 +55,24 @@
  * <!-- -->
  * // Create a button and add it to the menu
  * button = gtk_button_new_with_label ("Menu command one");
- * g_signal_connect (button, "clicked", G_CALLBACK (button_one_clicked), userdata);
+ * g_signal_connect_after (button, "clicked", G_CALLBACK (button_one_clicked), userdata);
  * hildon_app_menu_append (menu, GTK_BUTTON (button));
  * <!-- -->
  * // Another button
  * button = gtk_button_new_with_label ("Menu command two");
- * g_signal_connect (button, "clicked", G_CALLBACK (button_two_clicked), userdata);
+ * g_signal_connect_after (button, "clicked", G_CALLBACK (button_two_clicked), userdata);
  * hildon_app_menu_append (menu, GTK_BUTTON (button));
  * <!-- -->
  * // Create a filter and add it to the menu
  * filter = gtk_radio_button_new_with_label (NULL, "Filter one");
  * gtk_toggle_button_set_mode (GTK_TOGGLE_BUTTON (filter), FALSE);
- * g_signal_connect (filter, "clicked", G_CALLBACK (filter_one_clicked), userdata);
+ * g_signal_connect_after (filter, "clicked", G_CALLBACK (filter_one_clicked), userdata);
  * hildon_app_menu_add_filter (menu, GTK_BUTTON (filter));
  * <!-- -->
  * // Add a new filter
  * filter = gtk_radio_button_new_with_label_from_widget (GTK_RADIO_BUTTON (filter), "Filter two");
  * gtk_toggle_button_set_mode (GTK_TOGGLE_BUTTON (filter), FALSE);
- * g_signal_connect (filter, "clicked", G_CALLBACK (filter_two_clicked), userdata);
+ * g_signal_connect_after (filter, "clicked", G_CALLBACK (filter_two_clicked), userdata);
  * hildon_app_menu_add_filter (menu, GTK_BUTTON (filter));
  * <!-- -->
  * // Add the menu to the window

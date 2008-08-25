@@ -44,33 +44,33 @@ create_menu                                     (GtkWidget *label)
 
     /* Options */
     button = gtk_button_new_with_label ("Menu command one");
-    g_signal_connect (button, "clicked", G_CALLBACK (menu_button_clicked), label);
+    g_signal_connect_after (button, "clicked", G_CALLBACK (menu_button_clicked), label);
     hildon_app_menu_append (menu, GTK_BUTTON (button));
 
     button = gtk_button_new_with_label ("Menu command two");
-    g_signal_connect (button, "clicked", G_CALLBACK (menu_button_clicked), label);
+    g_signal_connect_after (button, "clicked", G_CALLBACK (menu_button_clicked), label);
     hildon_app_menu_append (menu, GTK_BUTTON (button));
 
     button = gtk_button_new_with_label ("Menu command three");
-    g_signal_connect (button, "clicked", G_CALLBACK (menu_button_clicked), label);
+    g_signal_connect_after (button, "clicked", G_CALLBACK (menu_button_clicked), label);
     hildon_app_menu_append (menu, GTK_BUTTON (button));
 
     button = gtk_button_new_with_label ("Menu command four");
-    g_signal_connect (button, "clicked", G_CALLBACK (menu_button_clicked), label);
+    g_signal_connect_after (button, "clicked", G_CALLBACK (menu_button_clicked), label);
     hildon_app_menu_append (menu, GTK_BUTTON (button));
 
     button = gtk_button_new_with_label ("Menu command five");
-    g_signal_connect (button, "clicked", G_CALLBACK (menu_button_clicked), label);
+    g_signal_connect_after (button, "clicked", G_CALLBACK (menu_button_clicked), label);
     hildon_app_menu_append (menu, GTK_BUTTON (button));
 
     /* Filters */
     button = gtk_radio_button_new_with_label (NULL, "filter one");
-    g_signal_connect (button, "clicked", G_CALLBACK (menu_button_clicked), label);
+    g_signal_connect_after (button, "clicked", G_CALLBACK (menu_button_clicked), label);
     hildon_app_menu_add_filter (menu, GTK_BUTTON (button));
     gtk_toggle_button_set_mode (GTK_TOGGLE_BUTTON (button), FALSE);
 
     button = gtk_radio_button_new_with_label_from_widget (GTK_RADIO_BUTTON (button), "filter two");
-    g_signal_connect (button, "clicked", G_CALLBACK (menu_button_clicked), label);
+    g_signal_connect_after (button, "clicked", G_CALLBACK (menu_button_clicked), label);
     hildon_app_menu_add_filter (menu, GTK_BUTTON (button));
     gtk_toggle_button_set_mode (GTK_TOGGLE_BUTTON (button), FALSE);
 

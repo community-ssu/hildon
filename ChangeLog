@@ -1,3 +1,9 @@
+2008-08-25  Alberto Garcia  <agarcia@igalia.com>
+
+	* src/hildon-app-menu.c
+	* examples/hildon-app-menu-example.c (create_menu): Update
+	examples and documentation to explain how to connect callbacks.
+
 2008-08-25  Alejandro Pinheiro <apinheiro@igalia.com>
 
 	* examples/hildon-button-example.c
