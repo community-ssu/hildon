@@ -1,3 +1,9 @@
+2008-08-26  Alberto Garcia  <agarcia@igalia.com>
+
+	* src/hildon-app-menu.c (hildon_app_menu_style_set)
+	(hildon_app_menu_init, hildon_app_menu_class_init): Set style
+	correctly.
+
 2008-08-26  Alejandro G. Castro	 <alex@igalia.com>
 
 	* src/hildon-pannable-area.c,

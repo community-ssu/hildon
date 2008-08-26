@@ -319,33 +319,53 @@ hildon_app_menu_realize                         (GtkWidget *widget)
 }
 
 static void
-hildon_app_menu_init                            (HildonAppMenu *menu)
+hildon_app_menu_style_set                       (GtkWidget *widget,
+                                                 GtkStyle  *previous_style)
 {
-    GtkWidget *alignment;
     GdkScreen *screen;
-    int width;
-    guint horizontal_spacing, vertical_spacing,
-            inner_border, external_border;
-    HildonAppMenuPrivate *priv = HILDON_APP_MENU_GET_PRIVATE(menu);
+    gint width;
+    guint horizontal_spacing, vertical_spacing, inner_border, external_border;
+    HildonAppMenuPrivate *priv;
 
-    gtk_widget_style_get (GTK_WIDGET (menu),
+    if (GTK_WIDGET_CLASS (hildon_app_menu_parent_class)->style_set)
+        GTK_WIDGET_CLASS (hildon_app_menu_parent_class)->style_set (widget, previous_style);
+
+    priv = HILDON_APP_MENU_GET_PRIVATE (widget);
+
+    gtk_widget_style_get (widget,
                           "horizontal-spacing", &horizontal_spacing,
                           "vertical-spacing", &vertical_spacing,
                           "inner-border", &inner_border,
                           "external-border", &external_border,
                           NULL);
 
+    /* Set spacings */
+    gtk_table_set_row_spacings (priv->table, vertical_spacing);
+    gtk_table_set_col_spacings (priv->table, horizontal_spacing);
+    gtk_box_set_spacing (priv->vbox, vertical_spacing);
+
+    /* Set inner border */
+    gtk_container_set_border_width (GTK_CONTAINER (widget), inner_border);
+
+    /* Set default size */
+    screen = gtk_widget_get_screen (widget);
+    width = gdk_screen_get_width (screen) - external_border * 2;
+    gtk_window_set_default_size (GTK_WINDOW (widget), width, -1);
+}
+
+static void
+hildon_app_menu_init                            (HildonAppMenu *menu)
+{
+    GtkWidget *alignment;
+    HildonAppMenuPrivate *priv = HILDON_APP_MENU_GET_PRIVATE(menu);
+
     /* Initialize private variables */
     priv->filters_hbox = GTK_BOX (gtk_hbox_new (TRUE, 0));
-    priv->vbox = GTK_BOX (gtk_vbox_new (FALSE, vertical_spacing));
+    priv->vbox = GTK_BOX (gtk_vbox_new (FALSE, 0));
     priv->table = GTK_TABLE (gtk_table_new (1, 2, TRUE));
     priv->nitems = 0;
     priv->transfer_window = NULL;
     priv->pressed_outside = FALSE;
-
-    /* Set spacing between table elements */
-    gtk_table_set_row_spacings (priv->table, vertical_spacing);
-    gtk_table_set_col_spacings (priv->table, horizontal_spacing);
 
     /* Align the filters to the center */
     alignment = gtk_alignment_new (0.5, 0.5, 0, 0);
@@ -355,14 +375,6 @@ hildon_app_menu_init                            (HildonAppMenu *menu)
     gtk_container_add (GTK_CONTAINER (menu), GTK_WIDGET (priv->vbox));
     gtk_box_pack_start (priv->vbox, alignment, TRUE, TRUE, 0);
     gtk_box_pack_start (priv->vbox, GTK_WIDGET (priv->table), TRUE, TRUE, 0);
-
-    /* Set default size */
-    screen = gtk_widget_get_screen (GTK_WIDGET (menu));
-    width = gdk_screen_get_width (screen) - external_border * 2;
-    gtk_window_set_default_size (GTK_WINDOW (menu), width, -1);
-
-    /* Set inner border */
-    gtk_container_set_border_width (GTK_CONTAINER (menu), inner_border);
 
     gtk_window_set_modal (GTK_WINDOW (menu), TRUE);
 
@@ -393,6 +405,7 @@ hildon_app_menu_class_init                      (HildonAppMenuClass *klass)
     widget_class->realize = hildon_app_menu_realize;
     widget_class->button_press_event = hildon_app_menu_button_press;
     widget_class->button_release_event = hildon_app_menu_button_release;
+    widget_class->style_set = hildon_app_menu_style_set;
 
     g_type_class_add_private (klass, sizeof (HildonAppMenuPrivate));
 
