@@ -1,5 +1,11 @@
 2008-08-26  Alejandro G. Castro	 <alex@igalia.com>
 
+	* src/hildon-pannable-area.c,
+	(hildon_pannable_area_size_request): Fixed problem with
+	pannable-area size_request.
+
+2008-08-26  Alejandro G. Castro	 <alex@igalia.com>
+
 	Added management for the grab-focus to a child widget, like a
 	range, we need to fade out the scrollbar when releasing.
 

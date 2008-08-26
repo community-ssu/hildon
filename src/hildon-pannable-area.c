@@ -692,9 +692,9 @@ hildon_pannable_area_size_request (GtkWidget * widget,
     }
 
   if (priv->hscrollbar_policy == GTK_POLICY_NEVER) {
-    requisition->width += child_requisition.width;
+    requisition->width = child_requisition.width;
   } else {
-    requisition->width += priv->area_width;
+    requisition->width = priv->area_width;
   }
 
   if (priv->vscrollbar_policy == GTK_POLICY_NEVER) {
