@@ -160,6 +160,9 @@ static void hildon_pannable_area_style_set (GtkWidget * widget,
                                             GtkStyle * previous_style);
 static void hildon_pannable_area_map (GtkWidget * widget);
 static void hildon_pannable_area_unmap (GtkWidget * widget);
+static void hildon_pannable_area_grab_notify (GtkWidget *widget,
+                                              gboolean was_grabbed,
+                                              gpointer user_data);
 static void rgb_from_gdkcolor (GdkColor *color, gdouble *r, gdouble *g, gdouble *b);
 static void hildon_pannable_draw_vscroll (GtkWidget * widget,
                                           GdkColor *back_color,
@@ -453,6 +456,8 @@ hildon_pannable_area_init (HildonPannableArea * area)
 			    G_CALLBACK (hildon_pannable_area_redraw), area);
   g_signal_connect_swapped (G_OBJECT (priv->vadjust), "value-changed",
 			    G_CALLBACK (hildon_pannable_area_redraw), area);
+  g_signal_connect (G_OBJECT (area), "grab-notify",
+                    G_CALLBACK (hildon_pannable_area_grab_notify), NULL);
 }
 
 static void
@@ -805,6 +810,30 @@ hildon_pannable_area_unmap (GtkWidget * widget)
     gdk_window_hide (priv->event_window);
 
   (*GTK_WIDGET_CLASS (hildon_pannable_area_parent_class)->unmap) (widget);
+}
+
+static void
+hildon_pannable_area_grab_notify (GtkWidget *widget,
+                                  gboolean was_grabbed,
+                                  gpointer user_data)
+{
+  /* an internal widget has grabbed the focus and now has returned it,
+     we have to do some release actions */
+  if (was_grabbed) {
+    HildonPannableAreaPrivate *priv = PANNABLE_AREA_PRIVATE (widget);
+
+    priv->scroll_indicator_event_interrupt = 0;
+    priv->scroll_delay_counter = SCROLLBAR_FADE_DELAY;
+
+    if (!priv->scroll_indicator_timeout) {
+      priv->scroll_indicator_timeout = g_timeout_add
+        ((gint) (1000.0 / (gdouble) priv->sps),
+         (GSourceFunc) hildon_pannable_area_scroll_indicator_fade, widget);
+    }
+
+    priv->last_type = 3;
+    priv->moved = FALSE;
+  }
 }
 
 static void

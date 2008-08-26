@@ -1,3 +1,15 @@
+2008-08-26  Alejandro G. Castro	 <alex@igalia.com>
+
+	Added management for the grab-focus to a child widget, like a
+	range, we need to fade out the scrollbar when releasing.
+
+	* src/hildon-pannable-area.c,
+	(hildon_pannable_area_init): Connected the grab-focus signal to
+	the callback.
+	(hildon_pannable_area_grab_notify): Added this function in order
+	to manage the situation when the grab-focus ends. We have to
+	fade-out the scrollbar.
+
 2008-08-25  Alberto Garcia  <agarcia@igalia.com>
 
 	* src/hildon-app-menu.c: Minor documentation update.
