@@ -104,6 +104,27 @@ hildon_button_set_image_position                (HildonButton    *button,
                                                  GtkPositionType  position);
 
 void
+hildon_button_set_alignment                     (HildonButton *button,
+                                                 gfloat        xalign,
+                                                 gfloat        yalign,
+                                                 gfloat        xscale,
+                                                 gfloat        yscale);
+void
+hildon_button_set_title_alignment               (HildonButton *button,
+                                                 gfloat        xalign,
+                                                 gfloat        yalign);
+
+void
+hildon_button_set_value_alignment               (HildonButton *button,
+                                                 gfloat        xalign,
+                                                 gfloat        yalign);
+
+void
+hildon_button_set_image_alignment               (HildonButton *button,
+                                                 gfloat        xalign,
+                                                 gfloat        yalign);
+
+void
 hildon_button_add_title_size_group              (HildonButton *button,
                                                  GtkSizeGroup *size_group);
 void

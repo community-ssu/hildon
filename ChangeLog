@@ -1,5 +1,19 @@
 2008-08-27  Alberto Garcia  <agarcia@igalia.com>
 
+	* src/hildon-button.h
+	* src/hildon-button.c (hildon_button_init)
+	(hildon_button_set_arrangement, hildon_button_set_alignment)
+	(hildon_button_set_title_alignment)
+	(hildon_button_set_value_alignment)
+	(hildon_button_set_image_alignment)
+	(hildon_button_construct_child): New methods to set the alignment
+	of the individual components of the button (title, value,
+	image). Also, new method to alter the xscale and yscale properties
+	of the GtkAlignment inside the button, so more complex layouts can
+	be created.
+
+2008-08-27  Alberto Garcia  <agarcia@igalia.com>
+
 	* src/hildon-button.c (hildon_button_style_set)
 	(hildon_button_class_init, hildon_button_set_arrangement)
 	(hildon_button_construct_child): Apply style properties

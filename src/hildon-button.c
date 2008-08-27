@@ -91,6 +91,8 @@ struct                                          _HildonButtonPrivate
     GtkWidget *alignment;
     GtkWidget *image;
     GtkPositionType image_position;
+    gfloat image_xalign;
+    gfloat image_yalign;
 };
 
 enum {
@@ -268,6 +270,8 @@ hildon_button_init                              (HildonButton *self)
     priv->alignment = gtk_alignment_new (0.5, 0.5, 0, 0);
     priv->image = NULL;
     priv->image_position = GTK_POS_LEFT;
+    priv->image_xalign = 0.0;
+    priv->image_yalign = 0.0;
     priv->hbox = NULL;
     priv->label_box = NULL;
 
@@ -441,8 +445,8 @@ hildon_button_set_arrangement                   (HildonButton            *button
         priv->label_box = gtk_hbox_new (FALSE, 0);
     }
 
-    gtk_box_pack_start (GTK_BOX (priv->label_box), GTK_WIDGET (priv->title), FALSE, FALSE, 0);
-    gtk_box_pack_start (GTK_BOX (priv->label_box), GTK_WIDGET (priv->value), FALSE, FALSE, 0);
+    gtk_box_pack_start (GTK_BOX (priv->label_box), GTK_WIDGET (priv->title), TRUE, TRUE, 0);
+    gtk_box_pack_start (GTK_BOX (priv->label_box), GTK_WIDGET (priv->value), TRUE, TRUE, 0);
 
     hildon_button_construct_child (button);
 }
@@ -638,14 +642,125 @@ hildon_button_set_image_position                (HildonButton    *button,
     hildon_button_construct_child (button);
 }
 
+/**
+ * hildon_button_set_alignment:
+ * @button: a #HildonButton
+ * @xalign: the horizontal alignment of the contents, from 0 (left) to 1 (right).
+ * @yalign: the vertical alignment of the contents, from 0 (top) to 1 (bottom).
+ * @xscale: the amount that the child widget expands horizontally to fill up unused space, from 0 to 1
+ * @yscale: the amount that the child widget expands vertically to fill up unused space, from 0 to 1
+ *
+ * Sets the alignment of the contents of the widget. If you don't need
+ * to change @xscale or @yscale you can just use
+ * gtk_button_set_alignment() instead.
+ **/
+void
+hildon_button_set_alignment                     (HildonButton *button,
+                                                 gfloat        xalign,
+                                                 gfloat        yalign,
+                                                 gfloat        xscale,
+                                                 gfloat        yscale)
+{
+    HildonButtonPrivate *priv;
+    GtkWidget *child;
+
+    g_return_if_fail (HILDON_IS_BUTTON (button));
+
+    priv = HILDON_BUTTON_GET_PRIVATE (button);
+
+    child = gtk_bin_get_child (GTK_BIN (button));
+
+    if (GTK_IS_ALIGNMENT (child)) {
+        gtk_button_set_alignment (GTK_BUTTON (button), xalign, yalign);
+        g_object_set (child, "xscale", xscale, "yscale", yscale, NULL);
+    }
+}
+
+/**
+ * hildon_button_set_title_alignment:
+ * @button: a #HildonButton
+ * @xalign: the horizontal alignment of the title label, from 0 (left) to 1 (right).
+ * @yalign: the vertical alignment of the title label, from 0 (top) to 1 (bottom).
+ *
+ * Sets the alignment of the title label. See also
+ * hildon_button_set_alignment() to set the alignment of the whole
+ * contents of the button.
+ **/
+void
+hildon_button_set_title_alignment               (HildonButton *button,
+                                                 gfloat        xalign,
+                                                 gfloat        yalign)
+{
+    HildonButtonPrivate *priv;
+
+    g_return_if_fail (HILDON_IS_BUTTON (button));
+
+    priv = HILDON_BUTTON_GET_PRIVATE (button);
+
+    gtk_misc_set_alignment (GTK_MISC (priv->title), xalign, yalign);
+}
+
+/**
+ * hildon_button_set_value_alignment:
+ * @button: a #HildonButton
+ * @xalign: the horizontal alignment of the value label, from 0 (left) to 1 (right).
+ * @yalign: the vertical alignment of the value label, from 0 (top) to 1 (bottom).
+ *
+ * Sets the alignment of the value label. See also
+ * hildon_button_set_alignment() to set the alignment of the whole
+ * contents of the button.
+ **/
+void
+hildon_button_set_value_alignment               (HildonButton *button,
+                                                 gfloat        xalign,
+                                                 gfloat        yalign)
+{
+    HildonButtonPrivate *priv;
+
+    g_return_if_fail (HILDON_IS_BUTTON (button));
+
+    priv = HILDON_BUTTON_GET_PRIVATE (button);
+
+    gtk_misc_set_alignment (GTK_MISC (priv->value), xalign, yalign);
+}
+
+/**
+ * hildon_button_set_image_alignment:
+ * @button: a #HildonButton
+ * @xalign: the horizontal alignment of the image, from 0 (left) to 1 (right).
+ * @yalign: the vertical alignment of the image, from 0 (top) to 1 (bottom).
+ *
+ * Sets the alignment of the image. See also
+ * hildon_button_set_alignment() to set the alignment of the whole
+ * contents of the button.
+ **/
+void
+hildon_button_set_image_alignment               (HildonButton *button,
+                                                 gfloat        xalign,
+                                                 gfloat        yalign)
+{
+    HildonButtonPrivate *priv;
+
+    g_return_if_fail (HILDON_IS_BUTTON (button));
+
+    priv = HILDON_BUTTON_GET_PRIVATE (button);
+
+    /* Return if there's nothing to do */
+    if (priv->image_xalign == xalign && priv->image_yalign == yalign)
+        return;
+
+    priv->image_xalign = xalign;
+    priv->image_yalign = yalign;
+
+    hildon_button_construct_child (button);
+}
+
 static void
 hildon_button_construct_child                   (HildonButton *button)
 {
     HildonButtonPrivate *priv = HILDON_BUTTON_GET_PRIVATE (button);
     GtkWidget *child;
     gint image_spacing;
-
-    gtk_widget_style_get (GTK_WIDGET (button), "image-spacing", &image_spacing, NULL);
 
     /* Don't do anything if the button is not constructed yet */
     if (priv->label_box == NULL)
@@ -678,17 +793,22 @@ hildon_button_construct_child                   (HildonButton *button)
     if (priv->hbox) {
         gtk_container_remove (GTK_CONTAINER (priv->alignment), GTK_WIDGET (priv->hbox));
     }
+    gtk_widget_style_get (GTK_WIDGET (button), "image-spacing", &image_spacing, NULL);
     priv->hbox = GTK_BOX (gtk_hbox_new (FALSE, image_spacing));
     gtk_container_add (GTK_CONTAINER (priv->alignment), GTK_WIDGET (priv->hbox));
 
     /* Pack the image and the alignment in the new hbox */
     if (priv->image && priv->image_position == GTK_POS_LEFT)
-        gtk_box_pack_start (priv->hbox, priv->image, FALSE, FALSE, 0);
+        gtk_box_pack_start (priv->hbox, priv->image, TRUE, TRUE, 0);
 
     gtk_box_pack_start (priv->hbox, priv->label_box, TRUE, TRUE, 0);
 
     if (priv->image && priv->image_position == GTK_POS_RIGHT)
-        gtk_box_pack_start (priv->hbox, priv->image, FALSE, FALSE, 0);
+        gtk_box_pack_start (priv->hbox, priv->image, TRUE, TRUE, 0);
+
+    /* Set image alignment */
+    if (priv->image)
+        gtk_misc_set_alignment (GTK_MISC (priv->image), priv->image_xalign, priv->image_yalign);
 
     /* Show everything */
     gtk_widget_show_all (GTK_WIDGET (priv->alignment));
