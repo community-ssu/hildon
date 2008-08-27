@@ -159,6 +159,33 @@ hildon_button_get_property                      (GObject    *object,
 }
 
 static void
+hildon_button_style_set                         (GtkWidget *widget,
+                                                 GtkStyle  *previous_style)
+{
+    guint horizontal_spacing, vertical_spacing, image_spacing;
+    HildonButtonPrivate *priv = HILDON_BUTTON_GET_PRIVATE (widget);
+
+    if (GTK_WIDGET_CLASS (hildon_button_parent_class)->style_set)
+        GTK_WIDGET_CLASS (hildon_button_parent_class)->style_set (widget, previous_style);
+
+    gtk_widget_style_get (widget,
+                          "horizontal-spacing", &horizontal_spacing,
+                          "vertical-spacing", &vertical_spacing,
+                          "image-spacing", &image_spacing,
+                          NULL);
+
+    if (GTK_IS_HBOX (priv->label_box)) {
+        gtk_box_set_spacing (GTK_BOX (priv->label_box), horizontal_spacing);
+    } else {
+        gtk_box_set_spacing (GTK_BOX (priv->label_box), vertical_spacing);
+    }
+
+    if (GTK_IS_BOX (priv->hbox)) {
+        gtk_box_set_spacing (priv->hbox, image_spacing);
+    }
+}
+
+static void
 hildon_button_class_init                        (HildonButtonClass *klass)
 {
     GObjectClass *gobject_class = (GObjectClass *)klass;
@@ -166,6 +193,7 @@ hildon_button_class_init                        (HildonButtonClass *klass)
 
     gobject_class->set_property = hildon_button_set_property;
     gobject_class->get_property = hildon_button_get_property;
+    widget_class->style_set = hildon_button_style_set;
 
     g_object_class_install_property (
         gobject_class,
@@ -403,21 +431,14 @@ hildon_button_set_arrangement                   (HildonButton            *button
                                                  HildonButtonArrangement  arrangement)
 {
     HildonButtonPrivate *priv;
-    guint horizontal_spacing;
-    guint vertical_spacing;
 
     priv = HILDON_BUTTON_GET_PRIVATE (button);
 
     /* Pack everything */
-    gtk_widget_style_get (GTK_WIDGET (button),
-                          "horizontal-spacing", &horizontal_spacing,
-                          "vertical-spacing", &vertical_spacing,
-                          NULL);
-
     if (arrangement == HILDON_BUTTON_ARRANGEMENT_VERTICAL) {
-        priv->label_box = gtk_vbox_new (FALSE, vertical_spacing);
+        priv->label_box = gtk_vbox_new (FALSE, 0);
     } else {
-        priv->label_box = gtk_hbox_new (FALSE, horizontal_spacing);
+        priv->label_box = gtk_hbox_new (FALSE, 0);
     }
 
     gtk_box_pack_start (GTK_BOX (priv->label_box), GTK_WIDGET (priv->title), FALSE, FALSE, 0);
@@ -622,6 +643,9 @@ hildon_button_construct_child                   (HildonButton *button)
 {
     HildonButtonPrivate *priv = HILDON_BUTTON_GET_PRIVATE (button);
     GtkWidget *child;
+    gint image_spacing;
+
+    gtk_widget_style_get (GTK_WIDGET (button), "image-spacing", &image_spacing, NULL);
 
     /* Don't do anything if the button is not constructed yet */
     if (priv->label_box == NULL)
@@ -654,7 +678,7 @@ hildon_button_construct_child                   (HildonButton *button)
     if (priv->hbox) {
         gtk_container_remove (GTK_CONTAINER (priv->alignment), GTK_WIDGET (priv->hbox));
     }
-    priv->hbox = GTK_BOX (gtk_hbox_new (FALSE, 10));
+    priv->hbox = GTK_BOX (gtk_hbox_new (FALSE, image_spacing));
     gtk_container_add (GTK_CONTAINER (priv->alignment), GTK_WIDGET (priv->hbox));
 
     /* Pack the image and the alignment in the new hbox */

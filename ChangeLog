@@ -1,3 +1,10 @@
+2008-08-27  Alberto Garcia  <agarcia@igalia.com>
+
+	* src/hildon-button.c (hildon_button_style_set)
+	(hildon_button_class_init, hildon_button_set_arrangement)
+	(hildon_button_construct_child): Apply style properties
+	correctly. Use the 'image-spacing' style property too.
+
 2008-08-26  Alberto Garcia  <agarcia@igalia.com>
 
 	* src/hildon-app-menu.c (hildon_app_menu_style_set)
