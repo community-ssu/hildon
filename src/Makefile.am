@@ -62,6 +62,7 @@ libhildon_@API_VERSION_MAJOR@_la_SOURCES = \
 		hildon-color-chooser-dialog.c 		\
 		hildon-defines.c 			\
 		hildon-find-toolbar.c 			\
+		hildon-edit-toolbar.c			\
 		hildon-banner.c 			\
 		hildon-caption.c 			\
 		hildon-window.c 			\
@@ -100,6 +101,7 @@ libhildon_@API_VERSION_MAJOR@_public_headers = \
 		hildon-date-editor.h 			\
 		hildon-defines.h 			\
 		hildon-find-toolbar.h 			\
+		hildon-edit-toolbar.h			\
 		hildon-helper.h				\
 		hildon-font-selection-dialog.h 		\
 		hildon-get-password-dialog.h 		\

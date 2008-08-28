@@ -39,6 +39,7 @@
 #include                                        "hildon-helper.h"
 #include                                        "hildon-enum-types.h"
 #include                                        "hildon-find-toolbar.h"
+#include                                        "hildon-edit-toolbar.h"
 #include                                        "hildon-font-selection-dialog.h"
 #include                                        "hildon-get-password-dialog.h"
 #include                                        "hildon-hvolumebar.h"

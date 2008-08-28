@@ -11,6 +11,7 @@
 #include                                        <src/hildon-helper.h>
 #include                                        <src/hildon-enum-types.h>
 #include                                        <src/hildon-find-toolbar.h>
+#include                                        <src/hildon-edit-toolbar.h>
 #include                                        <src/hildon-font-selection-dialog.h>
 #include                                        <src/hildon-get-password-dialog.h>
 #include                                        <src/hildon-hvolumebar.h>
@@ -57,6 +58,7 @@ hildon_color_chooser_get_type
 hildon_controlbar_get_type
 hildon_date_editor_get_type
 hildon_find_toolbar_get_type
+hildon_edit_toolbar_get_type
 hildon_font_selection_dialog_get_type
 hildon_get_password_dialog_get_type
 hildon_hvolumebar_get_type

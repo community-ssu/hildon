@@ -67,6 +67,7 @@
   <chapter>
     <title>Miscellaneous controls</title>
     <xi:include href="xml/hildon-find-toolbar.xml"/>
+    <xi:include href="xml/hildon-edit-toolbar.xml"/>
     <xi:include href="xml/hildon-caption.xml"/>
     <xi:include href="xml/hildon-bread-crumb-trail.xml"/>
   </chapter>

@@ -1,3 +1,12 @@
+2008-08-28  Alberto Garcia  <agarcia@igalia.com>
+
+	* doc/hildon-docs.sgml
+	* doc/hildon.types
+	* src/Makefile.am
+	* src/hildon-edit-toolbar.c
+	* src/hildon-edit-toolbar.h
+	* src/hildon.h: New HildonEditToolbar widget.
+
 2008-08-28  Claudio Saavedra  <csaavedra@igalia.com>
 
 	* examples/hildon-pannable-area-example-4.c: (main): Remove unneeded 
