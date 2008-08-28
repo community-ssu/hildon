@@ -111,7 +111,6 @@ main (int argc, char **args)
     GtkTreeViewColumn *col;
     GtkCellRenderer *renderer;
     GtkListStore *store;
-    GtkVBox *vbox;
 
     gtk_init (&argc, &args);
 
@@ -124,9 +123,6 @@ main (int argc, char **args)
     hildon_program_add_window (program, HILDON_WINDOW (window));
 
     gtk_container_set_border_width (GTK_CONTAINER (window), 5);
-
-    /* Create a VBox and pack some buttons */
-    vbox = GTK_VBOX (gtk_vbox_new (FALSE, 1));
 
     /* Create a treeview */
     tv = gtk_tree_view_new ();
@@ -161,16 +157,13 @@ main (int argc, char **args)
     gtk_tree_view_set_model (GTK_TREE_VIEW (tv), GTK_TREE_MODEL (store));
     g_object_unref (store);
 
-    /* Pack the treeview in the VBox */
-    gtk_box_pack_start (GTK_BOX (vbox), tv, TRUE, TRUE, 0);
-
     /* Put everything in a pannable area */
     panarea = hildon_pannable_area_new ();
     g_object_set (panarea, "mov_mode", HILDON_MOVEMENT_MODE_VERT,
                   "hovershoot_max", 0,
                   "hscrollbar_policy", GTK_POLICY_NEVER, NULL);
 
-    hildon_pannable_area_add_with_viewport (HILDON_PANNABLE_AREA (panarea), GTK_WIDGET (vbox));
+    hildon_pannable_area_add_with_viewport (HILDON_PANNABLE_AREA (panarea), GTK_WIDGET (tv));
     gtk_container_add (GTK_CONTAINER (window), panarea);
 
     g_signal_connect (G_OBJECT (window), "delete_event", G_CALLBACK (gtk_main_quit), NULL);

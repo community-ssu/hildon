@@ -1,3 +1,8 @@
+2008-08-28  Claudio Saavedra  <csaavedra@igalia.com>
+
+	* examples/hildon-pannable-area-example-4.c: (main): Remove unneeded 
+	extra GtkVBox.
+
 2008-08-28  Alejandro Pinheiro  <apinheiro@igalia.com>
 	* src/hildon-touch-selector.c
 	(_create_new_column): use g_object_set instead of two g_object_set_property
