@@ -54,6 +54,8 @@
 #include <string.h>
 #include <stdlib.h>
 
+#include "hildon-gtk.h"
+
 #include "hildon-pannable-area.h"
 #include "hildon-touch-selector.h"
 
@@ -414,9 +416,9 @@ _create_new_column (HildonTouchSelector * selector,
     attribute = va_arg (args, gchar *);
   }
 
-  tv = g_object_new (GTK_TYPE_TREE_VIEW, "model", model, "name", "fremantle-widget",    /* FIXME: is this always this name? */
-                     "hildon-ui-mode", HILDON_UI_MODE_EDIT,
-                     "rules-hint", TRUE, NULL);
+  tv = GTK_TREE_VIEW (hildon_gtk_tree_view_new (HILDON_UI_MODE_EDIT));
+  gtk_tree_view_set_model (tv, model);
+  gtk_tree_view_set_rules_hint (tv, TRUE);
 
   gtk_tree_view_append_column (GTK_TREE_VIEW (tv), tree_column);
 
@@ -427,7 +429,7 @@ _create_new_column (HildonTouchSelector * selector,
 
   g_value_init (&val, G_TYPE_INT);
   g_value_set_int (&val, GTK_POLICY_NEVER);
-  g_object_set_property (G_OBJECT (panarea), "vindicator-mode", &val);
+  g_object_set_property (G_OBJECT (panarea), "vscrollbar-policy", &val);
 
   g_value_unset (&val);
   g_value_init (&val, G_TYPE_BOOLEAN);

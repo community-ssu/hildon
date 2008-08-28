@@ -1,3 +1,18 @@
+2008-08-28  Alejandro Pinheiro  <apinheiro@igalia.com>
+	* src/hildon-touch-selector.c
+	(_create_new_column): use of hildon_gtk_tree_view_new to create
+	the treeview, instead of use directly g_object_new
+	(_create_new_column): update the property name "vindicator-mode" for the
+	new one "vscrollbar-policy" 
+	* examples/hildon-date-button-example.c
+	* examples/hildon-picker-button-multicolumn-example.c
+	* examples/hildon-touch-selector-entry-example.c
+	* examples/hildon-touch-selector-example.c
+	* examples/hildon-time-button-example.c
+	* examples/hildon-picker-button-example.c
+	Add a gtk_rc_parse_string in order to set the hildon-mode to HILDON_FREMANTLE
+	to all the treeviews inside a pannable area. 
+	
 2008-08-27  Alberto Garcia  <agarcia@igalia.com>
 
 	* src/hildon-button.h

@@ -69,6 +69,11 @@ main (int argc, char **args)
 
   gtk_init (&argc, &args);
 
+  gtk_rc_parse_string ("style \"fremantle-widget\" {\n"
+                       "  GtkWidget::hildon-mode = 1\n"
+                       "} widget \"*.fremantle-widget\" style \"fremantle-widget\""
+                       "widget_class \"*<HildonPannableArea>.GtkTreeView\" style \"fremantle-widget\"");
+
   program = hildon_program_get_instance ();
   g_set_application_name
     ("hildon-touch-picker cell renderer example program");
@@ -77,17 +82,6 @@ main (int argc, char **args)
   hildon_program_add_window (program, HILDON_WINDOW (window));
 
   gtk_container_set_border_width (GTK_CONTAINER (window), 6);
-
-  gtk_rc_parse_string ("style \"default\" {\n"
-                       "HildonTouchSelector::horizontal_spacing = 10 \n"
-                       "HildonTouchSelector::vertical_spacing = 20 \n"
-                       "HildonTouchSelector::child_padding=5 \n"
-                       "}\n"
-                       "style \"fremantle-widget\" {\n"
-                       " GtkWidget::hildon-mode = 1 \n"
-                       "} widget \"*.fremantle-widget\" style \"fremantle-widget\"\n"
-                       "class \"HildonTouchSelector\" style \"default\"\n");
-
 
   button = hildon_picker_button_new (HILDON_SIZE_AUTO, HILDON_BUTTON_ARRANGEMENT_VERTICAL);
   hildon_button_set_title (HILDON_BUTTON (button), "Pick a band!");

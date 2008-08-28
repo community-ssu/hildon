@@ -81,6 +81,11 @@ main (int argc, char **args)
 
   gtk_init (&argc, &args);
 
+  gtk_rc_parse_string ("style \"fremantle-widget\" {\n"
+                       "  GtkWidget::hildon-mode = 1\n"
+                       "} widget \"*.fremantle-widget\" style \"fremantle-widget\""
+                       "widget_class \"*<HildonPannableArea>.GtkTreeView\" style \"fremantle-widget\"");
+
   program = hildon_program_get_instance ();
   g_set_application_name ("hildon-picker-button-example");
 
