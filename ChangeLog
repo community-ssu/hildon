@@ -1,5 +1,9 @@
 2008-08-28  Alejandro Pinheiro  <apinheiro@igalia.com>
 	* src/hildon-touch-selector.c
+	(_create_new_column): use g_object_set instead of two g_object_set_property
+	
+2008-08-28  Alejandro Pinheiro  <apinheiro@igalia.com>
+	* src/hildon-touch-selector.c
 	(_create_new_column): use of hildon_gtk_tree_view_new to create
 	the treeview, instead of use directly g_object_new
 	(_create_new_column): update the property name "vindicator-mode" for the

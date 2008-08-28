@@ -397,7 +397,6 @@ _create_new_column (HildonTouchSelector * selector,
 {
   SelectorColumn *new_column = NULL;
   GtkTreeViewColumn *tree_column = NULL;
-  GValue val = { 0, };
   GtkTreeView *tv = NULL;
   GtkWidget *panarea = NULL;
   GtkTreeSelection *selection = NULL;
@@ -427,14 +426,8 @@ _create_new_column (HildonTouchSelector * selector,
 
   panarea = hildon_pannable_area_new ();
 
-  g_value_init (&val, G_TYPE_INT);
-  g_value_set_int (&val, GTK_POLICY_NEVER);
-  g_object_set_property (G_OBJECT (panarea), "vscrollbar-policy", &val);
-
-  g_value_unset (&val);
-  g_value_init (&val, G_TYPE_BOOLEAN);
-  g_value_set_boolean (&val, FALSE);
-  g_object_set_property (G_OBJECT (panarea), "initial-hint", &val);
+  g_object_set (G_OBJECT (panarea), "vscrollbar-policy", GTK_POLICY_NEVER, 
+                "initial-hint", FALSE, NULL);
 
   gtk_container_add (GTK_CONTAINER (panarea), GTK_WIDGET (tv));
 
