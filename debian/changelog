@@ -1,3 +1,18 @@
+libhildon (2.1.6-1) unstable; urgency=low
+
+  * Deprecated hildon_check_button_{set/get}_label().
+  * Renamed HILDON_PANNABLE_AREA_MOV_* macros to HILDON_MOVEMENT_*
+  * Initial hint in the pannable area set to FALSE.
+  * Renamed properties in HildonPannableArea from {h,v}indicator-mode to
+    {h,v}indicator_policy, and {h,v}scroll to {h,v}scroll_visible.
+  * New widget: HildonEditToolbar.
+  * Renamed hildon_touch_selector_{set,get}_active_iter() to
+    hildon_touch_selector_select_iter() and hildon_touch_selector_get_selected().
+  * Several API additions, bug fixes, internals improvements, documentation
+    improvements, and examples updates. See ChangeLog for details.
+
+ -- Claudio Saavedra <csaavedra@igalia.com>  Fri, 29 Aug 2008 15:25:33 +0300
+
 libhildon (2.1.5-1~unreleased) gutsy; urgency=low
 
   * Replace esd dependencies in the dev package with libcanberra-dev.

@@ -1,5 +1,12 @@
 2008-08-29  Claudio Saavedra  <csaavedra@igalia.com>
 
+	Release 2.1.6-1.
+
+	* configure.ac: prerelease version bump.
+	* debian/changelog: update.
+
+2008-08-29  Claudio Saavedra  <csaavedra@igalia.com>
+
 	* examples/hildon-pannable-area-example-2.c: (main): Add a pixbuf
 	renderer to display stock icons in the touch list. Also, set the sizes
 	to the recommended in the style guide.
