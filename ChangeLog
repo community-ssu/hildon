@@ -1,3 +1,8 @@
+2008-08-29  Alberto Garcia  <agarcia@igalia.com>
+
+	* src/hildon-stackable-window.c
+	(hildon_stackable_window_finalize): Call the parent class's finalize.
+
 2008-08-29  Claudio Saavedra  <csaavedra@igalia.com>
 
 	* examples/hildon-touch-selector-example.c: (create_selector): Use

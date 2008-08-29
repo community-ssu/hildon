@@ -216,6 +216,9 @@ hildon_stackable_window_finalize                (GObject *object)
 
     if (priv->app_menu)
         gtk_widget_destroy (GTK_WIDGET (priv->app_menu));
+
+    if (G_OBJECT_CLASS (hildon_stackable_window_parent_class)->finalize)
+        G_OBJECT_CLASS (hildon_stackable_window_parent_class)->finalize (object);
 }
 
 static void
