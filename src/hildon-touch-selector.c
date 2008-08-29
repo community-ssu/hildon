@@ -167,7 +167,7 @@ hildon_touch_selector_class_init (HildonTouchSelectorClass * class)
    * The changed signal is emitted when the active
    * item is changed. This can be due to the user selecting
    * a different item from the list, or due to a
-   * call to hildon_touch_selector_set_active_iter() on
+   * call to hildon_touch_selector_select_iter() on
    * one of the columns.
    *
    */
@@ -356,7 +356,7 @@ _default_print_func (HildonTouchSelector * selector)
 
   for (i = initial_value; i < num_columns; i++) {
     model = hildon_touch_selector_get_model (selector, i);
-    if (hildon_touch_selector_get_active_iter (selector, i, &iter)) {
+    if (hildon_touch_selector_get_selected (selector, i, &iter)) {
 
       gtk_tree_model_get (model, &iter, 0, &current_string, -1);
       if (i != 0) {
@@ -887,7 +887,7 @@ hildon_touch_selector_get_print_func (HildonTouchSelector * selector)
 }
 
 /**
- * hildon_touch_selector_get_active_iter:
+ * hildon_touch_selector_get_selected:
  * @selector: a #HildonTouchSelector
  * @column: the column number we want to get the element
  * @iter: #GtkTreeIter currently selected
@@ -904,8 +904,8 @@ hildon_touch_selector_get_print_func (HildonTouchSelector * selector)
  * Returns: %TRUE if @iter was correctly set, %FALSE otherwise
  **/
 gboolean
-hildon_touch_selector_get_active_iter (HildonTouchSelector * selector,
-                                       gint column, GtkTreeIter * iter)
+hildon_touch_selector_get_selected (HildonTouchSelector * selector,
+                                    gint column, GtkTreeIter * iter)
 {
   GtkTreeSelection *selection = NULL;
   SelectorColumn *current_column = NULL;
@@ -925,7 +925,7 @@ hildon_touch_selector_get_active_iter (HildonTouchSelector * selector,
 }
 
 /**
- * hildon_touch_selector_set_active_iter
+ * hildon_touch_selector_select_iter
  * @selector: a #HildonTouchSelector
  * @column:   the column to selects
  * @iter:     the #GtkTreeIter to be selected
@@ -936,9 +936,9 @@ hildon_touch_selector_get_active_iter (HildonTouchSelector * selector,
  *
  **/
 void
-hildon_touch_selector_set_active_iter (HildonTouchSelector * selector,
-                                       gint column, GtkTreeIter * iter,
-                                       gboolean scroll_to)
+hildon_touch_selector_select_iter (HildonTouchSelector * selector,
+                                   gint column, GtkTreeIter * iter,
+                                   gboolean scroll_to)
 {
   GtkTreePath *path;
   GtkTreeModel *model;
@@ -957,7 +957,6 @@ hildon_touch_selector_set_active_iter (HildonTouchSelector * selector,
   path = gtk_tree_model_get_path (model, iter);
 
   gtk_tree_selection_select_iter (selection, iter);
-  gtk_tree_view_set_cursor (GTK_TREE_VIEW (current_column->tree_view), path, NULL, FALSE);
 
   if (scroll_to) {
     gtk_tree_view_get_background_area (current_column->tree_view,
@@ -968,6 +967,31 @@ hildon_touch_selector_set_active_iter (HildonTouchSelector * selector,
                                     -1, y);
   }
   gtk_tree_path_free (path);
+}
+
+/**
+ * hildon_touch_selector_unselect_iter
+ * @selector: a #HildonTouchSelector
+ * @column:   the column to unselects from
+ * @iter:     the #GtkTreeIter to be unselected
+ *
+ * Unselect the item pointed by @iter in the column @column
+ *
+ **/
+
+void hildon_touch_selector_unselect_iter (HildonTouchSelector * selector,
+                                          gint column,
+                                          GtkTreeIter * iter)
+{
+  SelectorColumn *current_column = NULL;
+  GtkTreeSelection *selection = NULL;
+
+  g_return_if_fail (HILDON_IS_TOUCH_SELECTOR (selector));
+  g_return_if_fail (column < hildon_touch_selector_get_num_columns (selector));
+
+  current_column = g_slist_nth_data (selector->priv->columns, column);
+  selection = gtk_tree_view_get_selection (current_column->tree_view);
+  gtk_tree_selection_unselect_iter (selection, iter);
 }
 
 /**
@@ -1112,7 +1136,7 @@ _hildon_touch_selector_center_on_selected_items (gpointer data)
         && (selection_mode == HILDON_TOUCH_SELECTOR_SELECTION_MODE_MULTIPLE)) {
       break;
     }
-    if (hildon_touch_selector_get_active_iter (selector, i, &iter)) {
+    if (hildon_touch_selector_get_selected (selector, i, &iter)) {
       path = gtk_tree_model_get_path (column->model, &iter);
       gtk_tree_view_get_background_area (GTK_TREE_VIEW
                                          (column->tree_view), path, NULL,

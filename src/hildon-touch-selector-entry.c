@@ -261,7 +261,7 @@ entry_on_text_changed (GtkEditable * editable,
        GtkEntry represents a change in current selection, and therefore, users
        should be notified. */
     if (found) {
-      hildon_touch_selector_set_active_iter (selector, 0, &iter, TRUE);
+      hildon_touch_selector_select_iter (selector, 0, &iter, TRUE);
     }
     g_signal_emit_by_name (selector, "changed", 0);
   }

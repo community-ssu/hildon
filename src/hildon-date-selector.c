@@ -514,13 +514,13 @@ _update_day_model (HildonDateSelector * selector)
 
   hildon_date_selector_get_date (selector, NULL, NULL, &current_day);
 
-  hildon_touch_selector_get_active_iter (HILDON_TOUCH_SELECTOR (selector),
-                                         selector->priv->month_column, &iter);
+  hildon_touch_selector_get_selected (HILDON_TOUCH_SELECTOR (selector),
+                                      selector->priv->month_column, &iter);
   gtk_tree_model_get (selector->priv->month_model,
                       &iter, COLUMN_INT, &current_month, -1);
 
-  hildon_touch_selector_get_active_iter (HILDON_TOUCH_SELECTOR (selector),
-                                         selector->priv->year_column, &iter);
+  hildon_touch_selector_get_selected (HILDON_TOUCH_SELECTOR (selector),
+                                      selector->priv->year_column, &iter);
   gtk_tree_model_get (selector->priv->year_model,
                       &iter, COLUMN_INT, &current_year, -1);
 
@@ -653,21 +653,21 @@ hildon_date_selector_select_current_date (HildonDateSelector * selector,
   gtk_tree_model_iter_nth_child (selector->priv->year_model, &iter, NULL,
                                  year - selector->priv->creation_year +
                                  INIT_YEAR);
-  hildon_touch_selector_set_active_iter (HILDON_TOUCH_SELECTOR (selector),
-                                         selector->priv->year_column, &iter,
-                                         FALSE);
+  hildon_touch_selector_select_iter (HILDON_TOUCH_SELECTOR (selector),
+                                     selector->priv->year_column, &iter,
+                                     FALSE);
 
   gtk_tree_model_iter_nth_child (selector->priv->month_model, &iter, NULL,
                                  month);
-  hildon_touch_selector_set_active_iter (HILDON_TOUCH_SELECTOR (selector),
-                                         selector->priv->month_column, &iter,
-                                         FALSE);
+  hildon_touch_selector_select_iter (HILDON_TOUCH_SELECTOR (selector),
+                                     selector->priv->month_column, &iter,
+                                     FALSE);
 
   gtk_tree_model_iter_nth_child (selector->priv->day_model, &iter, NULL,
                                  day - 1);
-  hildon_touch_selector_set_active_iter (HILDON_TOUCH_SELECTOR (selector),
-                                         selector->priv->day_column, &iter,
-                                         FALSE);
+  hildon_touch_selector_select_iter (HILDON_TOUCH_SELECTOR (selector),
+                                     selector->priv->day_column, &iter,
+                                     FALSE);
 
   return TRUE;
 }
@@ -691,23 +691,23 @@ hildon_date_selector_get_date (HildonDateSelector * selector,
   GtkTreeIter iter;
 
   if (year != NULL) {
-    hildon_touch_selector_get_active_iter (HILDON_TOUCH_SELECTOR (selector),
-                                           selector->priv->year_column, &iter);
+    hildon_touch_selector_get_selected (HILDON_TOUCH_SELECTOR (selector),
+                                        selector->priv->year_column, &iter);
     gtk_tree_model_get (selector->priv->year_model,
                         &iter, COLUMN_INT, year, -1);
   }
 
   if (month != NULL) {
-    hildon_touch_selector_get_active_iter (HILDON_TOUCH_SELECTOR (selector),
-                                           selector->priv->month_column, &iter);
+    hildon_touch_selector_get_selected (HILDON_TOUCH_SELECTOR (selector),
+                                        selector->priv->month_column, &iter);
     gtk_tree_model_get (selector->priv->month_model,
                         &iter, COLUMN_INT, month, -1);
   }
 
 
   if (day != NULL) {
-    if (hildon_touch_selector_get_active_iter (HILDON_TOUCH_SELECTOR (selector),
-                                               selector->priv->day_column, &iter))
+    if (hildon_touch_selector_get_selected (HILDON_TOUCH_SELECTOR (selector),
+                                            selector->priv->day_column, &iter))
     {
       gtk_tree_model_get (selector->priv->day_model,
                           &iter, COLUMN_INT, day, -1);
@@ -725,7 +725,7 @@ hildon_date_selector_select_day (HildonDateSelector * selector, guint day)
 
   gtk_tree_model_iter_nth_child (selector->priv->day_model, &iter, NULL,
                                  day - 1);
-  hildon_touch_selector_set_active_iter (HILDON_TOUCH_SELECTOR (selector),
-                                         selector->priv->day_column, &iter,
-                                         FALSE);
+  hildon_touch_selector_select_iter (HILDON_TOUCH_SELECTOR (selector),
+                                     selector->priv->day_column, &iter,
+                                     FALSE);
 }
