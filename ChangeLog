@@ -1,3 +1,9 @@
+2008-08-29  Claudio Saavedra  <csaavedra@igalia.com>
+
+	* examples/hildon-pannable-area-example-2.c: (main): Add a pixbuf
+	renderer to display stock icons in the touch list. Also, set the sizes
+	to the recommended in the style guide.
+
 2008-08-28  Alejandro Pinheiro  <apinheiro@igalia.com>
 	* src/hildon-touch-selector.h
 	(hildon_touch_selector_set_active_iter): renamed, now is

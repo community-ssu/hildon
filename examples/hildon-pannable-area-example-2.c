@@ -30,7 +30,7 @@
 #include <string.h>
 #include "hildon.h"
 
-enum { TEXT_COLUMN, N_COLUMNS };
+enum { PIXBUF_COLUMN, TEXT_COLUMN, N_COLUMNS };
 
 typedef struct {
   GtkWidget *scroll_entry;
@@ -116,6 +116,7 @@ main (int argc, char **args)
   GtkWidget *entry;
   gboolean scroll = TRUE;
   gboolean jump = FALSE;
+  GSList *stocks, *item;
 
   gtk_init (&argc, &args);
 
@@ -128,21 +129,38 @@ main (int argc, char **args)
 
   /* Create a treeview */
   tv = gtk_tree_view_new ();
+
+  col = gtk_tree_view_column_new ();
+  gtk_tree_view_column_set_title (col, "Title");
+
+  renderer = gtk_cell_renderer_pixbuf_new ();
+  gtk_cell_renderer_set_fixed_size (renderer, 48, 48);
+  gtk_tree_view_column_pack_start (col, renderer, FALSE);
+  gtk_tree_view_column_set_attributes (col, renderer, "stock-id", PIXBUF_COLUMN, NULL);
+
   renderer = gtk_cell_renderer_text_new ();
-  col = gtk_tree_view_column_new_with_attributes ("Title", renderer, "text", TEXT_COLUMN, NULL);
+  gtk_cell_renderer_set_fixed_size (renderer, -1, 66);
+  gtk_tree_view_column_pack_start (col, renderer, FALSE);
+  gtk_tree_view_column_set_attributes (col, renderer, "text", TEXT_COLUMN, NULL);
   gtk_tree_view_append_column (GTK_TREE_VIEW(tv), col);
 
   /* Add some rows to the treeview */
-  store = gtk_list_store_new (N_COLUMNS, G_TYPE_STRING);
+  stocks = gtk_stock_list_ids ();
+  item = stocks;
+  store = gtk_list_store_new (N_COLUMNS, G_TYPE_STRING, G_TYPE_STRING);
   for (i = 0; i < 100; i++) {
     GtkTreeIter iter;
     gchar *label = g_strdup_printf ("Row %d", i);
     gtk_list_store_append (store, &iter);
-    gtk_list_store_set (store, &iter, TEXT_COLUMN, label, -1);
+    gtk_list_store_set (store, &iter, PIXBUF_COLUMN, (gchar *)item->data, TEXT_COLUMN, label, -1);
     g_free (label);
+    item = item->next? item->next : stocks;
   }
   gtk_tree_view_set_model (GTK_TREE_VIEW (tv), GTK_TREE_MODEL (store));
   g_object_unref (store);
+
+  g_slist_foreach (stocks, (GFunc)g_free, NULL);
+  g_slist_free (stocks);
 
   /* Put everything in a pannable area */
   panarea = hildon_pannable_area_new ();
