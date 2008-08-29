@@ -60,7 +60,6 @@ create_selector ()
   GSList *item = NULL;
   GtkCellRenderer *renderer = NULL;
   GValue val = { 0, };
-  GValue val2 = { 0, };
 
   selector = hildon_touch_selector_new ();
 
@@ -81,9 +80,6 @@ create_selector ()
   g_value_init (&val, G_TYPE_INT);
   g_value_set_int (&val, 100);
   g_object_set_property (G_OBJECT (renderer), "height", &val);
-  g_value_init (&val2, G_TYPE_STRING);
-  g_value_set_string (&val2, "orange");
-  g_object_set_property (G_OBJECT (renderer), "cell-background", &val2);
 
   hildon_touch_selector_append_column (HILDON_TOUCH_SELECTOR (selector),
                                        GTK_TREE_MODEL (store_icons),
