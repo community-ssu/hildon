@@ -59,7 +59,6 @@ create_selector ()
   GtkListStore *store_icons = NULL;
   GSList *item = NULL;
   GtkCellRenderer *renderer = NULL;
-  GValue val = { 0, };
 
   selector = hildon_touch_selector_new ();
 
@@ -77,9 +76,7 @@ create_selector ()
   g_slist_free (icon_list);
 
   renderer = gtk_cell_renderer_pixbuf_new ();
-  g_value_init (&val, G_TYPE_INT);
-  g_value_set_int (&val, 100);
-  g_object_set_property (G_OBJECT (renderer), "height", &val);
+  gtk_cell_renderer_set_fixed_size (renderer, -1, 100);
 
   hildon_touch_selector_append_column (HILDON_TOUCH_SELECTOR (selector),
                                        GTK_TREE_MODEL (store_icons),
