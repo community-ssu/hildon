@@ -36,6 +36,7 @@ noinst_PROGRAMS				= hildon-window-example				\
 					  hildon-finger-example				\
 					  hildon-seekbar-example			\
 					  hildon-find-toolbar-example			\
+					  hildon-edit-toolbar-example			\
 					  hildon-wizard-dialog-example			\
 					  hildon-hvolumebar-timer-example		\
 					  hildon-toolbar-seekbar-example		\
@@ -82,6 +83,11 @@ hildon_wizard_dialog_example_SOURCES	= hildon-wizard-dialog-example.c
 hildon_find_toolbar_example_LDADD	= $(HILDON_OBJ_LIBS)
 hildon_find_toolbar_example_CFLAGS	= $(HILDON_OBJ_CFLAGS)
 hildon_find_toolbar_example_SOURCES	= hildon-find-toolbar-example.c
+
+# Hildon edit toolbar
+hildon_edit_toolbar_example_LDADD	= $(HILDON_OBJ_LIBS)
+hildon_edit_toolbar_example_CFLAGS	= $(HILDON_OBJ_CFLAGS)
+hildon_edit_toolbar_example_SOURCES	= hildon-edit-toolbar-example.c
 
 # Hildon seekbar
 hildon_seekbar_example_LDADD		= $(HILDON_OBJ_LIBS)
