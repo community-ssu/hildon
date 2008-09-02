@@ -407,14 +407,14 @@
 	(hildon_pannable_area_timeout): Added the GDK_THREADS_LEAVE macro
 	to protect the return of this timeout callbacks, avoiding deadlocks.
 
-2008-08-12  Christian Dywan  <christian@imendio.com>
+2008-08-12  Christian Dywan  <christian@xxxxxxx.com>
 
 	* src/hildon-*.c
 	* src/hildon-*.h: Ensure a consistent include order,
 	include <gtk/gtk.h> instead of particular files and
 	only include the topmost header in the gtk stack. See NB #39857
 
-2008-08-12  Christian Dywan  <christian@imendio.com>
+2008-08-12  Christian Dywan  <christian@xxxxxxx.com>
 
 	* src/hildon-picker-dialog.c
 	* src/hildon-touch-selector.c: Fix warnings about unused and
@@ -1122,7 +1122,7 @@
 	Make the HildonButtonFlags a construction-only property, to allow
 	subclasses to set them properly.
 
-2008-07-21 Tim Janik  <timj@imendio.com>
+2008-07-21 Tim Janik  <timj@xxxxxxx.com>
 
 	* src/hildon-code-dialog.c (hildon_code_dialog_backspace): fixed up
 	insertion position after backspace, so additional digits are appended,
@@ -1742,7 +1742,7 @@
 	(hildon_app_menu_init, hildon_app_menu_class_init): New
 	external-border style property
 
-2008-05-26  Michael Natterer  <mitch@imendio.com>
+2008-05-26  Michael Natterer  <mitch@xxxxxxx.com>
 
 	* src/hildon-time-editor.c (hildon_time_editor_class_init): The
 	widget_class->tap_and_hold_setup signal slot doesn't exist any
@@ -1907,7 +1907,7 @@
 	* src/hildon.h
 	New HildonPannableArea widget.
 
-2008-04-15 18:05:19    <timj@imendio.com>
+2008-04-15 18:05:19    <timj@xxxxxxx.com>
 
 	* src/hildon-banner.c: revert the recent change, that introduced
 	gtk_window_present() calls. this reopens:
@@ -1915,14 +1915,14 @@
 	But resolves another variant of:
 	  Bug 83953 - Lock dialog is not visible when device is locked for the first time after flash
 
-2008-04-15 13:21:13    <timj@imendio.com>
+2008-04-15 13:21:13    <timj@xxxxxxx.com>
 
 	* src/hildon-banner.c: refetch layout pointer after GtkLabel possibly
 	recreated its layout, spotted by Kris. this fixes all remaining
 	artefacts and stability issues with the banner code. in particular:
 	Bug 83953 - Lock dialog is not visible when device is locked for the first time after flash
 
-2008-04-14 16:52:59    <timj@imendio.com>
+2008-04-14 16:52:59    <timj@xxxxxxx.com>
 
 	* src/hildon-banner.c: guard force_to_wrap_truncated() against
 	operating on unrealized widgets, fixes:
@@ -1930,7 +1930,7 @@
 
 	* src/hildon-banner-private.h: coalesce boolean fields into bitfield.
 
-2008-04-09  Kristian Rietveld  <kris@imendio.com>
+2008-04-09  Kristian Rietveld  <kris@xxxxxxx.com>
 
 	Fixes: NB#77775: Media Player, Save Now playing list, too long name
 	makes banner disappear.
@@ -1950,7 +1950,7 @@
 	* src/hildon-banner-private.h: add has_been_wrapped and
 	has_been_truncated fields.
 
-2008-04-07  Sven Herzberg  <sven@imendio.com>
+2008-04-07  Sven Herzberg  <sven@xxxxxxx.com>
 
 	Fixes: NB#78896: libhildon code inspection/coverity: uninitialised
 	local values in hildon_date_editor_size_allocate
@@ -1958,14 +1958,14 @@
 	* src/hildon-date-editor.c: moved the real allocation code into the
 	if() branch
 
-2008-04-07  Sven Herzberg  <sven@imendio.com>
+2008-04-07  Sven Herzberg  <sven@xxxxxxx.com>
 
 	Prepares: NB#78896: libhildon code inspection/coverity: uninitialised
 	local values in hildon_date_editor_size_allocate
 
 	* src/hildon-date-editor.c: merged the two if() branches together
 
-2008-04-07  Sven Herzberg  <sven@imendio.com>
+2008-04-07  Sven Herzberg  <sven@xxxxxxx.com>
 
 	Prepares: NB#78896: libhildon code inspection/coverity: uninitialised
 	local values in hildon_date_editor_size_allocate
@@ -1973,7 +1973,7 @@
 	* src/hildon-date-editor.c: changed the arguments of the if()
 	conditions
 
-2008-04-07  Sven Herzberg  <sven@imendio.com>
+2008-04-07  Sven Herzberg  <sven@xxxxxxx.com>
 
 	Prepares: NB#78896: libhildon code inspection/coverity: uninitialised
 	local values in hildon_date_editor_size_allocate
@@ -1981,7 +1981,7 @@
 	* src/hildon-date-editor.c: split the calculation of the allocation
 	from the real allocation
 
-2008-03-27  Michael Natterer  <mitch@imendio.com>
+2008-03-27  Michael Natterer  <mitch@xxxxxxx.com>
 
 	Fixes: NB#81696: The passcode is not overwritten even after
 	selecting
@@ -1995,7 +1995,7 @@
 	after each insert operation so that we *only* insert in the middle
 	of the text if something was selected.
 
-2008-03-27  Michael Natterer  <mitch@imendio.com>
+2008-03-27  Michael Natterer  <mitch@xxxxxxx.com>
 
 	Enable fixing: NB#79916 and NB#79918: The help topic for Color
 	selector cannot be opened
@@ -2004,7 +2004,7 @@
 	when the popup color selector is created. Please connect to this
 	signal in order to set the dialog's help ID.
 
-2008-03-25  Sven Herzberg  <sven@imendio.com>
+2008-03-25  Sven Herzberg  <sven@xxxxxxx.com>
 
 	Fixes: MB#1212: Hide info banners (infoprints) on click
 
@@ -2015,7 +2015,7 @@
 	(hildon_banner_class_init): added the button_press_event handler
 	(hildon_banner_init): added button-press events to the widget
 
-2008-03-25  Sven Herzberg  <sven@imendio.com>
+2008-03-25  Sven Herzberg  <sven@xxxxxxx.com>
 
 	Fixes: MB:#924: Hildon widgets doesn't support RTL mode
 	Patch from: Mohammad Anwari  <mdamt@maemo.org>
@@ -2032,13 +2032,13 @@
 	RTL mode
 	* src/hildon-window.c: fix the position of the popup in RTL mode
 
-2008-03-25  Sven Herzberg  <sven@imendio.com>
+2008-03-25  Sven Herzberg  <sven@xxxxxxx.com>
 
 	Amendment to the fix of NB#22072. Fix compilation.
 
 	* src/hildon-banner.c: (hildon_banner_timeout): fix compilation
 
-2008-03-19  Sven Herzberg  <sven@imendio.com>
+2008-03-19  Sven Herzberg  <sven@xxxxxxx.com>
 
 	Fixes: NB#22072: Revisiting fix for "Implement robust timer handling
 	in Info Banner" bug
@@ -2050,7 +2050,7 @@
 	will also work if the timeout gets removed because the timeout_handler
 	returned FALSE
 
-2008-03-19  Michael Natterer  <mitch@imendio.com>
+2008-03-19  Michael Natterer  <mitch@xxxxxxx.com>
 
 	Fixes: NB#79791: Cannot set focus to Master volume using stylus
 
@@ -2071,14 +2071,14 @@
 
 	Clean up set_mute() to cooperate nicely with all the above.
 
-2008-03-04  Michael Natterer  <mitch@imendio.com>
+2008-03-04  Michael Natterer  <mitch@xxxxxxx.com>
 
 	Fixes: NB#78481: information banners are hidden under browser menu
 
 	* src/hildon-banner.c: call gtk_window_present() on the banners so
 	they are risen if they are already visible.
 
-2008-03-03  Sven Herzberg  <sven@imendio.com>
+2008-03-03  Sven Herzberg  <sven@xxxxxxx.com>
 
 	Fixes: MB#1220: HildonWindow should take GtkMenu accel_group into account
 
@@ -2088,14 +2088,14 @@
 	* src/hildon-window.c: (hildon_window_add_accel_group),
 	(hildon_window_set_menu): added patch by Tommi Komulainen
 
-2008-03-03  Sven Herzberg  <sven@imendio.com>
+2008-03-03  Sven Herzberg  <sven@xxxxxxx.com>
 
 	Fixes: MB#1276: wrong allocators used in hildon_window_get_borders
 
 	* src/hildon-window.c: (hildon_window_get_borders): don't imply any
 	knowledge about the border allocators used within GTK+
 
-2008-02-26  Sven Herzberg  <sven@imendio.com>
+2008-02-26  Sven Herzberg  <sven@xxxxxxx.com>
 
 	Fixes: MB#2981: Build with asserts broken
 
@@ -2105,7 +2105,7 @@
 	* src/hildon-weekday-picker.c: replace HILDON_IS_EDITOR_EDITOR by a
 	the proper GType instance check
 
-2008-02-25  Sven Herzberg  <sven@imendio.com>
+2008-02-25  Sven Herzberg  <sven@xxxxxxx.com>
 
 	Fixed: MB#1221: HildonWindow shouldn't call show_all for GtkMenu
 

@@ -5,7 +5,7 @@
  *
  * Author: Karl Lattimer <karl.lattimer@nokia.com>
  *
- * Based on testhildoniconview.c by Kristian Rietveld <kris@imendio.com>
+ * Based on testhildoniconview.c by Kristian Rietveld <kris@xxxxxxx.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public License
