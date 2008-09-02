@@ -197,6 +197,11 @@ static void hildon_pannable_axis_scroll (HildonPannableArea *area,
 static void hildon_pannable_area_scroll (HildonPannableArea *area,
                                          gdouble x, gdouble y);
 static gboolean hildon_pannable_area_timeout (HildonPannableArea * area);
+static void hildon_pannable_area_calculate_velocity (gdouble *vel,
+                                                     gdouble delta,
+                                                     gdouble dist,
+                                                     gdouble vmax,
+                                                     guint sps);
 static gboolean hildon_pannable_area_motion_notify_cb (GtkWidget * widget,
                                                        GdkEventMotion * event);
 static gboolean hildon_pannable_area_button_release_cb (GtkWidget * widget,
@@ -306,7 +311,7 @@ hildon_pannable_area_class_init (HildonPannableAreaClass * klass)
 							"Maximum scroll velocity",
 							"Maximum distance the child widget should scroll "
 							"per 'frame', in pixels.",
-							0, G_MAXDOUBLE, 80,
+							0, G_MAXDOUBLE, 60,
 							G_PARAM_READWRITE |
 							G_PARAM_CONSTRUCT));
 
@@ -1673,6 +1678,25 @@ hildon_pannable_area_timeout (HildonPannableArea * area)
   return TRUE;
 }
 
+static void
+hildon_pannable_area_calculate_velocity (gdouble *vel,
+                                         gdouble delta,
+                                         gdouble dist,
+                                         gdouble vmax,
+                                         guint sps)
+{
+  gdouble rawvel;
+
+  if (ABS (dist) >= 0.00001) {
+    rawvel = ((dist / ABS (delta)) *
+              (gdouble) sps) * FORCE;
+    *vel = *vel * (1 - SMOOTH_FACTOR) +
+      rawvel * SMOOTH_FACTOR;
+    *vel = *vel > 0 ? MIN (*vel, vmax)
+      : MAX (dist, -1 * vmax);
+  }
+}
+
 static gboolean
 hildon_pannable_area_motion_notify_cb (GtkWidget * widget,
 				       GdkEventMotion * event)
@@ -1681,8 +1705,7 @@ hildon_pannable_area_motion_notify_cb (GtkWidget * widget,
   HildonPannableAreaPrivate *priv = PANNABLE_AREA_PRIVATE (area);
   gint dnd_threshold;
   gdouble x, y;
-  gdouble delta, rawvel_x, rawvel_y;
-  gint direction_x, direction_y;
+  gdouble delta;
 
   if (gtk_bin_get_child (GTK_BIN (widget)) == NULL)
     return TRUE;
@@ -1791,34 +1814,31 @@ hildon_pannable_area_motion_notify_cb (GtkWidget * widget,
 
       delta = event->time - priv->last_time;
 
-      if (priv->mov_mode&HILDON_MOVEMENT_MODE_HORIZ) {
-        rawvel_x = (((event->x - priv->x) / ABS (delta)) *
-                    (gdouble) priv->sps) * FORCE;
-        /* we store the direction and after the calculation we
-           change it, this reduces the ifs for the calculation */
-        direction_x = rawvel_x < 0 ? -1 : 1;
-        rawvel_x = ABS (rawvel_x);
-        priv->vel_x = priv->vel_x * (1 - SMOOTH_FACTOR) +
-          direction_x * rawvel_x * SMOOTH_FACTOR;
-        priv->vel_x = priv->vel_x > 0 ? MIN (priv->vel_x, priv->vmax)
-          : MAX (priv->vel_x, -1 * priv->vmax);
-      } else {
-        x = 0;
-        priv->vel_x = 0;
-      }
-
       if (priv->mov_mode&HILDON_MOVEMENT_MODE_VERT) {
-        rawvel_y = (((event->y - priv->y) / ABS (delta)) *
-                    (gdouble) priv->sps) * FORCE;
-        direction_y = rawvel_y < 0 ? -1 : 1;
-        rawvel_y = ABS (rawvel_y);
-        priv->vel_y = priv->vel_y * (1 - SMOOTH_FACTOR) +
-          direction_y * rawvel_y * SMOOTH_FACTOR;
-        priv->vel_y = priv->vel_y > 0 ? MIN (priv->vel_y, priv->vmax)
-          : MAX (priv->vel_y, -1 * priv->vmax);
+        gdouble dist = event->y - priv->y;
+
+        hildon_pannable_area_calculate_velocity (&priv->vel_y,
+                                                 delta,
+                                                 dist,
+                                                 priv->vmax,
+                                                 priv->sps);
       } else {
         y = 0;
         priv->vel_y = 0;
+      }
+
+
+      if (priv->mov_mode&HILDON_MOVEMENT_MODE_HORIZ) {
+        gdouble dist = event->x - priv->x;
+
+        hildon_pannable_area_calculate_velocity (&priv->vel_x,
+                                                 delta,
+                                                 dist,
+                                                 priv->vmax,
+                                                 priv->sps);
+      } else {
+        x = 0;
+        priv->vel_x = 0;
       }
 
       hildon_pannable_area_scroll (area, x, y);

@@ -1,3 +1,17 @@
+2008-09-02  Alejandro G. Castro	 <alex@igalia.com>
+
+	Reviewed interaction logic based on device experiences, refactored
+	code.
+
+	* src/hildon-pannable-area.c,
+	(hildon_pannable_area_class_init): Updated default vmax speed.
+	(hildon_pannable_area_calculate_velocity): Added this function, it
+	avoids duplicate valocity calculation. Adjusted calculation to
+	avoid problems with zero dist events.
+
+	(hildon_pannable_area_motion_notify_cb): Now we use the
+	calculate_velocity function.
+
 2008-09-02  Alejandro Pinheiro  <apinheiro@igalia.com>
 
 	* src/hildon-date-selector.c
