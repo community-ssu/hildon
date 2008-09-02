@@ -11,7 +11,7 @@ libhildon (2.1.6-1) unstable; urgency=low
   * Several API additions, bug fixes, internals improvements, documentation
     improvements, and examples updates. See ChangeLog for details.
 
- -- Claudio Saavedra <csaavedra@igalia.com>  Fri, 29 Aug 2008 15:25:33 +0300
+ -- Claudio Saavedra <csaavedra@iga1ia.com>  Fri, 29 Aug 2008 15:25:33 +0300
 
 libhildon (2.1.5-1~unreleased) gutsy; urgency=low
 
