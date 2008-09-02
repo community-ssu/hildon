@@ -1,3 +1,9 @@
+2008-08-28  Alejandro Pinheiro  <apinheiro@igalia.com>
+
+	* src/hildon-touch-selector.c
+	(hildon_touch_selector_get_num_columns): added a parameter validation
+	Fixes: NB#88022
+
 2008-08-29  Alberto Garcia  <agarcia@igalia.com>
 
 	* examples/Makefile.am

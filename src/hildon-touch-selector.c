@@ -764,6 +764,8 @@ hildon_touch_selector_insert_column (HildonTouchSelector * selector, gint positi
 gint
 hildon_touch_selector_get_num_columns (HildonTouchSelector * selector)
 {
+  g_return_val_if_fail (HILDON_IS_TOUCH_SELECTOR (selector), -1);
+
   return g_slist_length (selector->priv->columns);
 }
 
