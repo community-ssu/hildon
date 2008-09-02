@@ -1,3 +1,12 @@
+2008-09-02  Alejandro Pinheiro  <apinheiro@igalia.com>
+
+	* src/hildon-date-selector.h: clean some comments, now on the .c
+	* src/hildon-date-selector.c
+	(hildon_date_selector_select_month): first implementation
+	(hildon_date_selector_select_day): added documentation, reimplemented
+	using hildon_date_selector_select_current_date to avoid repeat code
+	Fixes: NB#88027
+
 2008-09-02  Alejandro G. Castro	 <alex@igalia.com>
 
 	Reviewed interaction logic based on device experiences, refactored

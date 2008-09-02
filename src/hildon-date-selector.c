@@ -620,7 +620,6 @@ hildon_date_selector_new ()
 }
 
 
-
 /**
  * hildon_date_selector_select_date:
  * @selector: the #HildonDateSelector
@@ -674,7 +673,7 @@ hildon_date_selector_select_current_date (HildonDateSelector * selector,
 
 
 /**
- * hildon_date_selector_select_date:
+ * hildon_date_selector_get_date:
  * @selector: the #HildonDateSelector
  * @year:  to set the current year
  * @month: to set the current month (0-11)
@@ -718,14 +717,48 @@ hildon_date_selector_get_date (HildonDateSelector * selector,
 }
 
 
-void
-hildon_date_selector_select_day (HildonDateSelector * selector, guint day)
+/**
+ * hildon_date_selector_select_month:
+ * @selector: the #HildonDateSelector
+ * @month: the current month (0-11)
+ * @year:  the current year
+ *
+ * Modify the current month and year on the current active date
+ *
+ * Utility function, too keep this API more similar to the previously existing
+ * hildon-calendar widget.
+ *
+ *
+ **/
+gboolean hildon_date_selector_select_month (HildonDateSelector *selector,
+                                            guint month, guint year)
 {
-  GtkTreeIter iter;
+  guint day = 0;
 
-  gtk_tree_model_iter_nth_child (selector->priv->day_model, &iter, NULL,
-                                 day - 1);
-  hildon_touch_selector_select_iter (HILDON_TOUCH_SELECTOR (selector),
-                                     selector->priv->day_column, &iter,
-                                     FALSE);
+  hildon_date_selector_get_date (selector, NULL, NULL, &day);
+
+  return hildon_date_selector_select_current_date (selector, year, month, day);
+}
+
+/**
+ * hildon_date_selector_select_day:
+ * @selector: the #HildonDateSelector
+ * @day:   the current day (1-31, 1-30, 1-29, 1-28) depends on the month
+ *
+ * Modify the current day on the current active date
+ *
+ * Utility function, too keep this API more similar to the previously existing
+ * hildon-calendar widget.
+ *
+ *
+ **/
+void
+hildon_date_selector_select_day (HildonDateSelector *selector, guint day)
+{
+  guint month = 0;
+  guint year = 0;
+
+  hildon_date_selector_get_date (selector, &year, &month, NULL);
+
+  hildon_date_selector_select_current_date (selector, year, month, day);
 }

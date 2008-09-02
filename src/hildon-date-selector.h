@@ -60,13 +60,6 @@ gboolean hildon_date_selector_select_month        (HildonDateSelector * selector
                                                    guint month, guint year);
 void     hildon_date_selector_select_day          (HildonDateSelector * selector, guint day);
 
-/*
- * This is an addition to the current hildon-calendar API,
- * probably we'll require to set the whole date, and not the
- * current two-step (year,month)+(day)
- *
- */
-
 gboolean hildon_date_selector_select_current_date (HildonDateSelector * selector,
                                                    guint year, guint month, guint day);
 void     hildon_date_selector_get_date            (HildonDateSelector * selector,
