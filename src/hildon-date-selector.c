@@ -647,7 +647,7 @@ hildon_date_selector_select_current_date (HildonDateSelector * selector,
   g_return_val_if_fail (month >= 0 && month < 12, FALSE);
 
   num_days = _month_days (month, year);
-  g_return_val_if_fail (day > 0 && day < num_days, FALSE);
+  g_return_val_if_fail (day > 0 && day <= num_days, FALSE);
 
 
   gtk_tree_model_iter_nth_child (selector->priv->year_model, &iter, NULL,

@@ -1,4 +1,11 @@
-2008-08-28  Alejandro Pinheiro  <apinheiro@igalia.com>
+2008-09-02  Alejandro Pinheiro  <apinheiro@igalia.com>
+
+	* src/hildon-date-selector.c
+	(hildon_date_selector_select_current_date): fix the day range check
+	as it failed using the last day of the current month
+	Fixes NB#88023
+
+2008-09-02  Alejandro Pinheiro  <apinheiro@igalia.com>
 
 	* src/hildon-touch-selector.c
 	(hildon_touch_selector_get_num_columns): added a parameter validation
