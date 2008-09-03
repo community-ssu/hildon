@@ -894,12 +894,13 @@ hildon_touch_selector_get_print_func (HildonTouchSelector * selector)
  * @column: the column number we want to get the element
  * @iter: #GtkTreeIter currently selected
  *
- * Sets @iter to the currently selected node on the nth-column, if selection is set to
- * %HILDON_TOUCH_SELECTOR_SINGLE. @iter may be %NULL if you just want to test if selection
- * has any selected items.
+ * Sets @iter to the currently selected node on the nth-column, if selection is
+ * set to %HILDON_TOUCH_SELECTOR_SINGLE or %HILDON_TOUCH_SELECTOR_MULTIPLE with
+ * a column different that the first one. @iter may be %NULL if you just want to
+ * test if selection has any selected items.
  *
  * This function will not work if selection is in
- * %HILDON_TOUCH_SELECTOR_MULTIPLE mode.
+ * %HILDON_TOUCH_SELECTOR_MULTIPLE mode and the column is the first one.
  *
  * See gtk_tree_selection_get_selected() for more information.
  *
@@ -911,12 +912,16 @@ hildon_touch_selector_get_selected (HildonTouchSelector * selector,
 {
   GtkTreeSelection *selection = NULL;
   SelectorColumn *current_column = NULL;
+  HildonTouchSelectorSelectionMode mode;
 
   g_return_val_if_fail (HILDON_IS_TOUCH_SELECTOR (selector), FALSE);
-  g_return_val_if_fail (hildon_touch_selector_get_column_selection_mode (selector)
-                        == HILDON_TOUCH_SELECTOR_SELECTION_MODE_SINGLE, FALSE);
   g_return_val_if_fail (column < hildon_touch_selector_get_num_columns (selector),
                         FALSE);
+  mode = hildon_touch_selector_get_column_selection_mode (selector);
+  g_return_val_if_fail
+    ((mode == HILDON_TOUCH_SELECTOR_SELECTION_MODE_SINGLE) ||
+     ((mode == HILDON_TOUCH_SELECTOR_SELECTION_MODE_MULTIPLE)&&(column>0)),
+     FALSE);
 
   current_column = g_slist_nth_data (selector->priv->columns, column);
 
