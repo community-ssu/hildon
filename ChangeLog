@@ -1,3 +1,8 @@
+2008-09-03  Claudio Saavedra  <csaavedra@igalia.com>
+
+	* src/hildon-time-selector.c: (_custom_print_func): Change the logical ids
+	to "wdgt_va_12h_time" and "wdgt_va_24h_time". Fixes NB#88045.
+
 2008-09-02  Alejandro Pinheiro  <apinheiro@igalia.com>
 
 	* src/hildon-date-selector.h: clean some comments, now on the .c

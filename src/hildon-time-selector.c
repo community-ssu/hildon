@@ -204,9 +204,9 @@ _custom_print_func (HildonTouchSelector * touch_selector)
   tm.tm_hour = hours;
 
   if (selector->priv->ampm_format) {
-    strftime (string, 255, _("wdgt_va_12h_hours"), &tm);
+    strftime (string, 255, _("wdgt_va_12h_time"), &tm);
   } else {
-    strftime (string, 255, _("wdgt_va_24h_hours"), &tm);
+    strftime (string, 255, _("wdgt_va_24h_time"), &tm);
   }
 
 
