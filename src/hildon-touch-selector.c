@@ -678,14 +678,18 @@ gboolean
 hildon_touch_selector_remove_column (HildonTouchSelector * selector, gint column)
 {
   SelectorColumn *current_column = NULL;
+  HildonTouchSelectorPrivate *priv;
 
   g_return_val_if_fail (HILDON_IS_TOUCH_SELECTOR (selector), FALSE);
   g_return_val_if_fail (column <
                         hildon_touch_selector_get_num_columns (selector), FALSE);
 
-  current_column = g_slist_nth_data (selector->priv->columns, column);
+  priv = HILDON_TOUCH_SELECTOR_GET_PRIVATE (selector);
+  current_column = g_slist_nth_data (priv->columns, column);
 
-  gtk_container_remove (GTK_CONTAINER (selector), current_column->panarea);
+  gtk_container_remove (GTK_CONTAINER (priv->hbox), current_column->panarea);
+  priv->columns = g_slist_remove (priv->columns, current_column);
+  g_free (current_column);
 
   return TRUE;
 }

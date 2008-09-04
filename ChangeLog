@@ -1,3 +1,10 @@
+2008-09-04  Claudio Saavedra  <csaavedra@igalia.com>
+
+	* src/hildon-touch-selector.c:
+	(hildon_touch_selector_remove_column): Remove from the correct parent
+	and also remove the list element and free it.
+	Fixes: NB#88049
+
 2008-09-04  Alejandro Pinheiro  <apinheiro@igalia.com>
 
 	* src/hildon-time-selector.c
