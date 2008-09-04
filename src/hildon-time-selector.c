@@ -243,24 +243,27 @@ _create_hours_model (HildonTimeSelector * selector)
   gint i = 0;
   gchar *label = NULL;
   GtkTreeIter iter;
-  gint last_hour = 12;
-  gint addition = 0;
+  static gint range_12h[12] = {12, 1, 2, 3, 4, 5, 6, 7, 8, 9,10,11};
+  static gint range_24h[24] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9,10,11,
+                               12,13,14,15,16,17,18,19,20,21,22,23};
+  gint *range = NULL;
+  gint num_elements = 0;
 
   if (selector->priv->ampm_format) {
-    last_hour = 12;
-    addition = 1;
+    range = range_12h;
+    num_elements = 12;
   } else {
-    last_hour = 24;
-    addition = 0;
+    range = range_24h;
+    num_elements = 24;
   }
 
   store_hours = gtk_list_store_new (2, G_TYPE_STRING, G_TYPE_INT);
-  for (i = 0; i < last_hour; i++) {
-    label = g_strdup_printf ("%02d", i + addition);
+  for (i = 0; i < num_elements; i++) {
+    label = g_strdup_printf ("%02d", range[i]);
 
     gtk_list_store_append (store_hours, &iter);
     gtk_list_store_set (store_hours, &iter,
-                        COLUMN_STRING, label, COLUMN_INT, i, -1);
+                        COLUMN_STRING, label, COLUMN_INT, range[i], -1);
     g_free (label);
   }
 
@@ -387,13 +390,9 @@ hildon_time_selector_set_time (HildonTimeSelector * selector,
   g_return_val_if_fail (minutes >= 0 && minutes <= 59, FALSE);
 
   if (selector->priv->ampm_format) {
-    if (hours > 12) {
-      hours_item = hours - 13;
-    } else {
-      hours_item = hours - 1;
-    }
-
     _set_pm (selector, hours >= 12);
+
+    hours_item = hours - selector->priv->pm * 12;
   } else {
     hours_item = hours;
   }
@@ -423,6 +422,7 @@ hildon_time_selector_get_time (HildonTimeSelector * selector,
     gtk_tree_model_get (selector->priv->hours_model,
                         &iter, COLUMN_INT, hours, -1);
     if (selector->priv->ampm_format) {
+      *hours %= 12;
       *hours += selector->priv->pm * 12;
     }
   }

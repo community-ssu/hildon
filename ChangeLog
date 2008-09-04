@@ -1,3 +1,13 @@
+2008-09-04  Alejandro Pinheiro  <apinheiro@igalia.com>
+
+	* src/hildon-time-selector.c
+	(_create_hours_model): change the range on 12h ampm format in order to use
+	a 12-11 range instead of previous 01-12 range
+	(hildon_time_selector_set_time): change the way to select the current time
+	on 12h ampm format, due the change on the range
+	(hildon_time_selector_get_time): fix the hour returned on 12 ampm format
+	Fixes: NB#88036
+
 2008-09-03  Alejandro Pinheiro  <apinheiro@igalia.com>
 
 	* src/hildon-touch-selector.c
