@@ -34,6 +34,9 @@
  * an image. To change the alignment of the button contents, use
  * gtk_button_set_alignment()
  *
+ * If only one label is needed, #GtkButton can be used as well, see
+ * also hildon_gtk_button_new().
+ *
  * <example>
  * <title>Creating a HildonButton</title>
  * <programlisting>
@@ -612,6 +615,27 @@ hildon_button_set_image                         (HildonButton *button,
     priv->image = image;
 
     hildon_button_construct_child (button);
+}
+
+/**
+ * hildon_button_get_image:
+ * @button: a #HildonButton
+ *
+ * Gets the widget that is currenty set as the image of @button,
+ * previously set with hildon_button_set_image()
+ *
+ * Returns: a #GtkWidget or %NULL in case there is no image
+ **/
+GtkWidget *
+hildon_button_get_image                         (HildonButton *button)
+{
+    HildonButtonPrivate *priv;
+
+    g_return_val_if_fail (HILDON_IS_BUTTON (button), NULL);
+
+    priv = HILDON_BUTTON_GET_PRIVATE (button);
+
+    return priv->image;
 }
 
 /**

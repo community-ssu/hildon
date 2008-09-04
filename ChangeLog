@@ -1,3 +1,9 @@
+2008-09-04  Alberto Garcia  <agarcia@igalia.com>
+
+	* src/hildon-button.h
+	* src/hildon-button.c (hildon_button_get_image): New method to
+	retrieve the image.
+
 2008-09-04  Claudio Saavedra  <csaavedra@igalia.com>
 
 	* src/hildon-touch-selector.c:

@@ -99,6 +99,9 @@ void
 hildon_button_set_image                         (HildonButton *button,
                                                  GtkWidget    *image);
 
+GtkWidget *
+hildon_button_get_image                         (HildonButton *button);
+
 void
 hildon_button_set_image_position                (HildonButton    *button,
                                                  GtkPositionType  position);
