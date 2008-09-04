@@ -53,8 +53,7 @@ G_DEFINE_TYPE (HildonTimeSelector, hildon_time_selector, HILDON_TYPE_TOUCH_SELEC
 #define LAST_YEAR 50    /* since current year */
 
 #define _(String)  dgettext("hildon-libs", String)
-
-/* #define _(String) "%I:%M %p" debug purposes */
+#define N_(String) String
 
 
 /* FIXME: we should get this two props from the clock ui headers */
@@ -220,17 +219,18 @@ _create_minutes_model (HildonTimeSelector * selector)
 {
   GtkListStore *store_minutes = NULL;
   gint i = 0;
-  gchar *label = NULL;
+  static gchar label[255];
+  struct tm tm = { 0, 0, 0, 0, 0, 0, 0, 0, 0 };
   GtkTreeIter iter;
 
   store_minutes = gtk_list_store_new (2, G_TYPE_STRING, G_TYPE_INT);
   for (i = 0; i <= 59; i++) {
-    label = g_strdup_printf ("%02d", i);
+    tm.tm_min = i;
+    strftime (label, 255, _("wdgt_va_minutes"), &tm);
 
     gtk_list_store_append (store_minutes, &iter);
     gtk_list_store_set (store_minutes, &iter,
                         COLUMN_STRING, label, COLUMN_INT, i, -1);
-    g_free (label);
   }
 
   return GTK_TREE_MODEL (store_minutes);
@@ -241,30 +241,34 @@ _create_hours_model (HildonTimeSelector * selector)
 {
   GtkListStore *store_hours = NULL;
   gint i = 0;
-  gchar *label = NULL;
   GtkTreeIter iter;
+  struct tm tm = { 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+  static gchar label[255];
   static gint range_12h[12] = {12, 1, 2, 3, 4, 5, 6, 7, 8, 9,10,11};
   static gint range_24h[24] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9,10,11,
                                12,13,14,15,16,17,18,19,20,21,22,23};
   gint *range = NULL;
   gint num_elements = 0;
+  gchar *format_string = NULL;
 
   if (selector->priv->ampm_format) {
     range = range_12h;
     num_elements = 12;
+    format_string = N_("wdgt_va_12h_hours");
   } else {
     range = range_24h;
     num_elements = 24;
+    format_string = N_("wdgt_va_24h_hours");
   }
 
   store_hours = gtk_list_store_new (2, G_TYPE_STRING, G_TYPE_INT);
   for (i = 0; i < num_elements; i++) {
-    label = g_strdup_printf ("%02d", range[i]);
+    tm.tm_hour = range[i];
+    strftime (label, 255, _(format_string), &tm);
 
     gtk_list_store_append (store_hours, &iter);
     gtk_list_store_set (store_hours, &iter,
                         COLUMN_STRING, label, COLUMN_INT, range[i], -1);
-    g_free (label);
   }
 
   return GTK_TREE_MODEL (store_hours);
@@ -275,16 +279,26 @@ _create_ampm_model (HildonTimeSelector * selector)
 {
   GtkListStore *store_ampm = NULL;
   GtkTreeIter iter;
+  static gchar label[255];
+  struct tm tm = { 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
   store_ampm = gtk_list_store_new (2, G_TYPE_STRING, G_TYPE_INT);
 
-  gtk_list_store_append (store_ampm, &iter);
-  gtk_list_store_set (store_ampm, &iter, COLUMN_STRING, "am",   /* FIXME: use nl_langinfo am/pm strings */
-                      COLUMN_INT, 0, -1);
+  tm.tm_hour = 0;
+  strftime (label, 255, _("wdgt_va_am_pm"), &tm);
 
   gtk_list_store_append (store_ampm, &iter);
   gtk_list_store_set (store_ampm, &iter,
-                      COLUMN_STRING, "pm", COLUMN_INT, 1, -1);
+                      COLUMN_STRING, label,
+                      COLUMN_INT, 0, -1);
+
+  tm.tm_hour = 12;
+  strftime (label, 255, _("wdgt_va_am_pm"), &tm);
+
+  gtk_list_store_append (store_ampm, &iter);
+  gtk_list_store_set (store_ampm, &iter,
+                      COLUMN_STRING, label,
+                      COLUMN_INT, 1, -1);
 
   return GTK_TREE_MODEL (store_ampm);
 }

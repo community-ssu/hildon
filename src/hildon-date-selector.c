@@ -87,8 +87,6 @@ struct _HildonDateSelectorPrivate
   gint creation_day;
   gint creation_month;
   gint creation_year;           /* date at creation time */
-
-  gchar *monthname[12];
 };
 
 static void hildon_date_selector_finalize (GObject * object);
@@ -273,13 +271,8 @@ static void
 hildon_date_selector_finalize (GObject * object)
 {
   HildonDateSelector *selector = NULL;
-  gint i = 0;
 
   selector = HILDON_DATE_SELECTOR (object);
-
-  for (i = 0; i < 12; i++) {
-    g_free (selector->priv->monthname[i]);
-  }
 
   g_slist_free (selector->priv->column_order);
 
@@ -328,31 +321,6 @@ _locales_init (HildonDateSelectorPrivate * priv)
   locale_t l;
 
   l = newlocale (LC_TIME_MASK, setlocale (LC_MESSAGES, NULL), NULL);
-
-  priv->monthname[0] = g_locale_to_utf8 (nl_langinfo_l (MON_1, l),
-                                         -1, NULL, NULL, NULL);
-  priv->monthname[1] = g_locale_to_utf8 (nl_langinfo_l (MON_2, l),
-                                         -1, NULL, NULL, NULL);
-  priv->monthname[2] = g_locale_to_utf8 (nl_langinfo_l (MON_3, l),
-                                         -1, NULL, NULL, NULL);
-  priv->monthname[3] = g_locale_to_utf8 (nl_langinfo_l (MON_4, l),
-                                         -1, NULL, NULL, NULL);
-  priv->monthname[4] = g_locale_to_utf8 (nl_langinfo_l (MON_5, l),
-                                         -1, NULL, NULL, NULL);
-  priv->monthname[5] = g_locale_to_utf8 (nl_langinfo_l (MON_6, l),
-                                         -1, NULL, NULL, NULL);
-  priv->monthname[6] = g_locale_to_utf8 (nl_langinfo_l (MON_7, l),
-                                         -1, NULL, NULL, NULL);
-  priv->monthname[7] = g_locale_to_utf8 (nl_langinfo_l (MON_8, l),
-                                         -1, NULL, NULL, NULL);
-  priv->monthname[8] = g_locale_to_utf8 (nl_langinfo_l (MON_9, l),
-                                         -1, NULL, NULL, NULL);
-  priv->monthname[9] = g_locale_to_utf8 (nl_langinfo_l (MON_10, l),
-                                         -1, NULL, NULL, NULL);
-  priv->monthname[10] = g_locale_to_utf8 (nl_langinfo_l (MON_11, l),
-                                          -1, NULL, NULL, NULL);
-  priv->monthname[11] = g_locale_to_utf8 (nl_langinfo_l (MON_12, l),
-                                          -1, NULL, NULL, NULL);
 
   priv->format = g_locale_to_utf8 (nl_langinfo_l (D_FMT, l),
                                    -1, NULL, NULL, NULL);
@@ -438,17 +406,18 @@ _create_day_model (HildonDateSelector * selector)
 {
   GtkListStore *store_days = NULL;
   gint i = 0;
-  gchar *label = NULL;
+  gchar label[255];
+  struct tm tm = { 0, 0, 0, 0, 0, 0, 0, 0, 0 };
   GtkTreeIter iter;
 
   store_days = gtk_list_store_new (2, G_TYPE_STRING, G_TYPE_INT);
   for (i = 1; i < 32; i++) {
-    label = g_strdup_printf ("%d", i);
+    tm.tm_mday = i;
+    strftime (label, 255, _("wdgt_va_day_numeric"), &tm);
 
     gtk_list_store_append (store_days, &iter);
     gtk_list_store_set (store_days, &iter,
                         COLUMN_STRING, label, COLUMN_INT, i, -1);
-    g_free (label);
   }
 
   return GTK_TREE_MODEL (store_days);
@@ -460,19 +429,20 @@ _create_year_model (HildonDateSelector * selector)
   GtkListStore *store_years = NULL;
   gint real_year = 0;
   gint i = 0;
-  gchar *label = NULL;
+  static gchar label[255];
+  struct tm tm = { 0, 0, 0, 0, 0, 0, 0, 0, 0 };
   GtkTreeIter iter;
 
   real_year = selector->priv->creation_year;
 
   store_years = gtk_list_store_new (2, G_TYPE_STRING, G_TYPE_INT);
   for (i = real_year - INIT_YEAR; i < real_year + LAST_YEAR; i++) {
-    label = g_strdup_printf ("%d", i);
+    tm.tm_year = i - 1900;
+    strftime (label, 255, _("wdgt_va_year"), &tm);
 
     gtk_list_store_append (store_years, &iter);
     gtk_list_store_set (store_years, &iter,
                         COLUMN_STRING, label, COLUMN_INT, i, -1);
-    g_free (label);
   }
 
   return GTK_TREE_MODEL (store_years);
@@ -484,17 +454,18 @@ _create_month_model (HildonDateSelector * selector)
   GtkTreeIter iter;
   gint i = 0;
   GtkListStore *store_months = NULL;
-  gchar *label = NULL;
+  static gchar label[255];
+  struct tm tm = { 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
   store_months = gtk_list_store_new (2, G_TYPE_STRING, G_TYPE_INT);
   for (i = 0; i < 12; i++) {
-    label = g_strdup_printf ("%s", selector->priv->monthname[i]);
+    tm.tm_mon = i;
+    strftime (label, 255, _("wdgt_va_month"), &tm);
 
     gtk_list_store_append (store_months, &iter);
-    gtk_list_store_set (store_months, &iter, COLUMN_STRING, label,      /* the label with the month */
-                        COLUMN_INT, i,  /* the month number */
+    gtk_list_store_set (store_months, &iter, COLUMN_STRING, label,
+                        COLUMN_INT, i,
                         -1);
-    g_free (label);
   }
 
   return GTK_TREE_MODEL (store_months);
@@ -506,7 +477,8 @@ _update_day_model (HildonDateSelector * selector)
   GtkListStore *store_days = NULL;
   gint i = 0;
   GtkTreeIter iter;
-  gchar *label = NULL;
+  static gchar label[255];
+  struct tm tm = { 0, 0, 0, 0, 0, 0, 0, 0, 0 };
   guint current_day = 0;
   guint current_year = 0;
   guint current_month = 0;
@@ -530,12 +502,12 @@ _update_day_model (HildonDateSelector * selector)
   gtk_list_store_clear (store_days);
 
   for (i = 1; i <= num_days; i++) {
-    label = g_strdup_printf ("%d", i);
+    tm.tm_mday = i;
+    strftime (label, 255, _("wdgt_va_day_numeric"), &tm);
 
     gtk_list_store_append (store_days, &iter);
     gtk_list_store_set (store_days, &iter,
                         COLUMN_STRING, label, COLUMN_INT, i, -1);
-    g_free (label);
   }
 
   /* now we select a day */

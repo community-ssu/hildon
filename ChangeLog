@@ -1,3 +1,20 @@
+2008-09-04  Alejandro Pinheiro  <apinheiro@igalia.com>
+
+	* src/hildon-time-selector.c
+	Define gettext auxiliar macro N_
+	(_create_minutes_model)
+	(_create_hours_model)
+	(_create_ampm_model): use of strftime in order to fill the model
+	* src/hildon-date-selector.c
+	(hildon_date_selector_finalize):
+	(_locales_init): remove the logic related to get the name of the months
+	using nl_langinfo, as it is not required anymore
+	(_create_day_model)
+	(_create_year_model)
+	(_create_month_model)
+	(_update_day_model): use of strftime in order to fill the model properly
+
+
 2008-09-04  Alberto Garcia  <agarcia@igalia.com>
 
 	* src/hildon-button.h
