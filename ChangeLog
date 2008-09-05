@@ -1,3 +1,8 @@
+2008-09-05  Claudio Saavedra  <csaavedra@igalia.com>
+
+	* examples/hildon-pannable-area-example-2.c: (main): Use the stock
+	labels for the text column, to make it more look more dynamic.
+
 2008-09-04  Alejandro Pinheiro  <apinheiro@igalia.com>
 
 	* src/hildon-time-selector.c

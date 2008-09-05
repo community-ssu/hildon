@@ -150,10 +150,14 @@ main (int argc, char **args)
   store = gtk_list_store_new (N_COLUMNS, G_TYPE_STRING, G_TYPE_STRING);
   for (i = 0; i < 100; i++) {
     GtkTreeIter iter;
-    gchar *label = g_strdup_printf ("Row %d", i);
+    GtkStockItem stock_item;
+    gchar *stock_id;
+
+    stock_id = (gchar *)item->data;
+    gtk_stock_lookup (stock_id, &stock_item);
     gtk_list_store_append (store, &iter);
-    gtk_list_store_set (store, &iter, PIXBUF_COLUMN, (gchar *)item->data, TEXT_COLUMN, label, -1);
-    g_free (label);
+    gtk_list_store_set (store, &iter, PIXBUF_COLUMN, stock_id, TEXT_COLUMN, stock_item.label, -1);
+
     item = item->next? item->next : stocks;
   }
   gtk_tree_view_set_model (GTK_TREE_VIEW (tv), GTK_TREE_MODEL (store));
