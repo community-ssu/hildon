@@ -1,5 +1,17 @@
 2008-09-05  Alberto Garcia  <agarcia@igalia.com>
 
+	* doc/hildon-docs.sgml
+	* doc/hildon.types
+	* examples/Makefile.am
+	* examples/hildon-entry-example.c
+	* src/Makefile.am
+	* src/hildon-entry.c
+	* src/hildon-entry.h
+	* src/hildon.h:
+	New HildonEntry widget, with example.
+
+2008-09-05  Alberto Garcia  <agarcia@igalia.com>
+
 	* src/hildon-button.c (hildon_button_construct_child): Pack the
 	image with expand == fill == FALSE. This is a workaround for a bug
 	in GtkBox.
