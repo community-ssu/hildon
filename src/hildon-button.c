@@ -823,12 +823,12 @@ hildon_button_construct_child                   (HildonButton *button)
 
     /* Pack the image and the alignment in the new hbox */
     if (priv->image && priv->image_position == GTK_POS_LEFT)
-        gtk_box_pack_start (priv->hbox, priv->image, TRUE, TRUE, 0);
+        gtk_box_pack_start (priv->hbox, priv->image, FALSE, FALSE, 0);
 
     gtk_box_pack_start (priv->hbox, priv->label_box, TRUE, TRUE, 0);
 
     if (priv->image && priv->image_position == GTK_POS_RIGHT)
-        gtk_box_pack_start (priv->hbox, priv->image, TRUE, TRUE, 0);
+        gtk_box_pack_start (priv->hbox, priv->image, FALSE, FALSE, 0);
 
     /* Set image alignment */
     if (priv->image)
