@@ -448,8 +448,11 @@ hildon_button_set_arrangement                   (HildonButton            *button
         priv->label_box = gtk_hbox_new (FALSE, 0);
     }
 
+    /* If we pack both labels with (TRUE, TRUE) or (FALSE, FALSE) they
+     * can be painted outside of the button in some situations, see
+     * NB#88126 */
     gtk_box_pack_start (GTK_BOX (priv->label_box), GTK_WIDGET (priv->title), TRUE, TRUE, 0);
-    gtk_box_pack_start (GTK_BOX (priv->label_box), GTK_WIDGET (priv->value), TRUE, TRUE, 0);
+    gtk_box_pack_start (GTK_BOX (priv->label_box), GTK_WIDGET (priv->value), FALSE, FALSE, 0);
 
     hildon_button_construct_child (button);
 }
