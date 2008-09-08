@@ -39,7 +39,7 @@ main                                            (int argc,
     label = gtk_label_new ("Hello, world!");
 
     gtk_window_set_title (GTK_WINDOW (d), "Hi!");
-    gtk_dialog_add_button (GTK_DIALOG (d), GTK_STOCK_OK, GTK_RESPONSE_NONE);
+    hildon_dialog_add_button (HILDON_DIALOG (d), GTK_STOCK_OK, GTK_RESPONSE_NONE);
     gtk_container_add (GTK_CONTAINER (GTK_DIALOG(d)->vbox), label);
 
     gtk_widget_show_all (GTK_WIDGET (d));

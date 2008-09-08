@@ -1,5 +1,17 @@
 2008-09-08  Alberto Garcia  <agarcia@igalia.com>
 
+	* src/hildon-dialog.h
+	* src/hildon-dialog.c
+	(hildon_dialog_add_button, hildon_dialog_add_buttons):
+	New methods to add buttons with finger size.
+	(hildon_dialog_new_with_buttons):
+	Create buttons with finger size.
+
+	* examples/hildon-dialog-example.c (main): Use HildonDialog
+	methods to add buttons.
+
+2008-09-08  Alberto Garcia  <agarcia@igalia.com>
+
 	* src/hildon-entry.c: Updated HildonButton documentation.
 
 2008-09-08  Alberto Garcia  <agarcia@igalia.com>

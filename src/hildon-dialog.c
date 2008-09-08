@@ -57,6 +57,7 @@
  */
 
 #include                                        "hildon-dialog.h"
+#include                                        "hildon-gtk.h"
 
 G_DEFINE_TYPE (HildonDialog, hildon_dialog, GTK_TYPE_DIALOG);
 
@@ -137,7 +138,7 @@ hildon_dialog_new_with_buttons                  (const gchar *title,
         response_id = va_arg (args, gint);
 
         while (text != NULL) {
-            gtk_dialog_add_button (GTK_DIALOG (dialog), text, response_id);
+            hildon_dialog_add_button (HILDON_DIALOG (dialog), text, response_id);
 
             text = va_arg (args, gchar*);
             if (text == NULL)
@@ -149,3 +150,62 @@ hildon_dialog_new_with_buttons                  (const gchar *title,
 
     return dialog;
 }
+
+/**
+ * hildon_dialog_add_button:
+ * @dialog: a #HildonDialog
+ * @button_text: text of the button, or stock ID
+ * @response_id: response ID for the button.
+ *
+ * Adds a button to the dialog. Works exactly like
+ * gtk_dialog_add_button(), the only difference being that the button
+ * has finger size.
+ *
+ * Returns: the button widget that was added
+ */
+GtkWidget *
+hildon_dialog_add_button                        (HildonDialog *dialog,
+                                                 const gchar  *button_text,
+                                                 gint          response_id)
+{
+    GtkWidget *button;
+    button = gtk_dialog_add_button (GTK_DIALOG (dialog), button_text, response_id);
+    hildon_gtk_widget_set_theme_size (button, HILDON_SIZE_AUTO_WIDTH | HILDON_SIZE_FINGER_HEIGHT);
+    return button;
+}
+
+/**
+ * hildon_dialog_add_buttons:
+ * @dialog: a #HildonDialog
+ * @first_button_text: text of the button, or stock ID
+ * @Varargs: response ID for first button, then more text-response_id pairs
+ *
+ * Adds several buttons to the dialog. Works exactly like
+ * gtk_dialog_add_buttons(), the only difference being that the
+ * buttons have finger size.
+ */
+void
+hildon_dialog_add_buttons                       (HildonDialog *dialog,
+                                                 const gchar  *first_button_text,
+                                                 ...)
+{
+    va_list args;
+    const gchar *text;
+    gint response_id;
+
+    va_start (args, first_button_text);
+    text = first_button_text;
+    response_id = va_arg (args, gint);
+
+    while (text != NULL) {
+        hildon_dialog_add_button (HILDON_DIALOG (dialog), text, response_id);
+
+        text = va_arg (args, gchar*);
+        if (text == NULL)
+            break;
+        response_id = va_arg (args, int);
+    }
+
+    va_end (args);
+}
+

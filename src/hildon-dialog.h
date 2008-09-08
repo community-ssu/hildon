@@ -82,6 +82,16 @@ hildon_dialog_new_with_buttons                  (const gchar    *title,
                                                  const gchar    *first_button_text,
                                                  ...);
 
+GtkWidget *
+hildon_dialog_add_button                        (HildonDialog *dialog,
+                                                 const gchar  *button_text,
+                                                 gint          response_id);
+
+void
+hildon_dialog_add_buttons                       (HildonDialog *dialog,
+                                                 const gchar  *first_button_text,
+                                                 ...);
+
 G_END_DECLS
 
 #endif                                          /* __HILDON_DIALOG_H__ */
