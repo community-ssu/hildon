@@ -1,3 +1,11 @@
+2008-09-02  Alejandro G. Castro	 <alex@igalia.com>
+
+	Patch contributed by Kris Rietveld (kris@imendio.com)
+
+	* src/hildon-pannable-area.c,
+	(hildon_pannable_area_get_topmost): replaced the get_geometry with
+	get_size and get_position, this saves an X server roundtrip.
+
 2008-09-05  Alberto Garcia  <agarcia@igalia.com>
 
 	* doc/hildon-docs.sgml

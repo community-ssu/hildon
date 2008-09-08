@@ -1237,7 +1237,8 @@ hildon_pannable_area_get_topmost (GdkWindow * window,
       GdkWindow *child = (GdkWindow *) c->data;
       gint wx, wy;
 
-      gdk_window_get_geometry (child, &wx, &wy, &width, &height, NULL);
+      gdk_drawable_get_size (GDK_DRAWABLE (child), &width, &height);
+      gdk_window_get_position (child, &wx, &wy);
 
       if (((x >= wx) && (x < (wx + width)) && (y >= wy)
            && (y < (wy + height))) && (gdk_window_is_visible (child))) {

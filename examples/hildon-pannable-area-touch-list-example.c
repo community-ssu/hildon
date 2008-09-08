@@ -34,6 +34,24 @@ enum
   EDIT_MODE     = 1 << 2
 };
 
+static gboolean add_item(gpointer user_data)
+{
+    GtkListStore *store = GTK_LIST_STORE(user_data);
+    static gint index = 0;    
+    gchar *str = NULL;
+
+    str = g_strdup_printf ("\nRow %d\n", index);
+    gtk_list_store_insert_with_values (store, NULL, index, 0, str, -1);
+    g_free (str);
+
+    index++;
+    if(index < 800)
+    {
+        return TRUE;
+    }
+    return FALSE;
+}
+
 
 static GtkTreeModel *
 create_model (void)
@@ -43,14 +61,7 @@ create_model (void)
 
   store = gtk_list_store_new (1, G_TYPE_STRING);
 
-  for (i = 0; i < 50; i++)
-    {
-      gchar *str;
-
-      str = g_strdup_printf ("\nRow %d\n", i);
-      gtk_list_store_insert_with_values (store, NULL, i, 0, str, -1);
-      g_free (str);
-    }
+  g_timeout_add(20, add_item, store);
 
   return GTK_TREE_MODEL (store);
 }
@@ -108,6 +119,8 @@ create_tree_view (HildonUIMode  mode,
                 "weight", PANGO_WEIGHT_BOLD,
                 NULL);
 
+  gtk_cell_renderer_set_fixed_size(renderer, 840, 70);
+
   gtk_tree_view_insert_column_with_attributes (GTK_TREE_VIEW (tree_view),
                                                0, "Column 0",
                                                renderer,
@@ -122,6 +135,7 @@ create_tree_view_window (GtkWidget *button,
                          gpointer   user_data)
 {
   const char *name;
+  GtkWidget *vbox;
   GtkWidget *window;
   GtkWidget *sw;
   GtkWidget *tree_view;
@@ -132,9 +146,18 @@ create_tree_view_window (GtkWidget *button,
                     G_CALLBACK (gtk_widget_destroy), window);
   gtk_container_set_border_width (GTK_CONTAINER (window), 6);
 
-  sw = hildon_pannable_area_new ();
+  vbox = gtk_vbox_new(FALSE, 0);
+
+  sw = gtk_scrolled_window_new(NULL, NULL);
+      //hildon_pannable_area_new ();
   gtk_container_add (GTK_CONTAINER (window), sw);
 
+  /*hildon_pannable_area_add_with_viewport(HILDON_PANNABLE_AREA(sw),
+                                         vbox);*/
+
+  gtk_scrolled_window_add_with_viewport(GTK_SCROLLED_WINDOW(sw),
+                                        vbox);
+  
   if ((GPOINTER_TO_INT (user_data) & NORMAL_MODE) == NORMAL_MODE)
     {
       mode = HILDON_UI_MODE_NORMAL;
@@ -157,8 +180,8 @@ create_tree_view_window (GtkWidget *button,
   g_signal_connect (tree_view, "row-insensitive",
                     G_CALLBACK (row_insensitive_callback), NULL);
 
-  gtk_widget_set_size_request (tree_view, 480, 800);
-  gtk_container_add (GTK_CONTAINER (sw), tree_view);
+  gtk_widget_set_size_request (sw, 480, 800);
+  gtk_box_pack_start(GTK_BOX(vbox), tree_view, TRUE, TRUE, 0);
 
   gtk_widget_show_all (window);
 }
@@ -175,10 +198,11 @@ main (int argc, char **argv)
 
   gtk_init (&argc, &argv);
 
+  /*
   gtk_rc_parse_string ("style \"fremantle-widget\" {\n"
                        "  GtkWidget::hildon-mode = 1\n"
                        "} widget \"*.fremantle-widget\" style \"fremantle-widget\"");
-
+*/
   window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
   g_signal_connect (window, "delete-event",
                     G_CALLBACK (gtk_main_quit), NULL);
