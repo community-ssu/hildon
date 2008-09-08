@@ -1,4 +1,10 @@
-2008-09-02  Alejandro G. Castro	 <alex@igalia.com>
+2008-09-08  Alejandro G. Castro	 <alex@igalia.com>
+
+	* examples/hildon-pannable-area-example.c,
+	(main): Removed examples panning a vbox inside a pannable
+	area. Check bug NB#87965
+
+2008-09-08  Alejandro G. Castro	 <alex@igalia.com>
 
 	Patch contributed by Kris Rietveld (kris@imendio.com)
 

@@ -31,13 +31,6 @@
 enum { TEXT_COLUMN, N_COLUMNS };
 
 static void
-on_button_clicked (GtkWidget *widget, gpointer data)
-{
-    g_debug ("Button %d clicked", GPOINTER_TO_INT (data));
-}
-
-
-static void
 get_sawtooth_label (gchar **label, guint num)
 {
   static gchar *sawtooth = NULL;
@@ -70,7 +63,6 @@ main (int argc, char **args)
     GtkTreeViewColumn *col;
     GtkCellRenderer *renderer;
     GtkListStore *store;
-    GtkVBox *vbox;
 
     gtk_init (&argc, &args);
 
@@ -81,20 +73,6 @@ main (int argc, char **args)
     hildon_program_add_window (program, HILDON_WINDOW (window));
 
     gtk_container_set_border_width (GTK_CONTAINER (window), 5);
-
-    /* Create a VBox and pack some buttons */
-    vbox = GTK_VBOX (gtk_vbox_new (FALSE, 1));
-    for (i = 0; i < 30; i++) {
-            gchar *label = g_strdup_printf ("Button number %d", i);
-            GtkWidget *but = NULL;
-
-            get_sawtooth_label (&label, i);
-
-            but = gtk_button_new_with_label (label);
-            gtk_box_pack_start (GTK_BOX (vbox), but, TRUE, TRUE, 0);
-            g_signal_connect (G_OBJECT (but), "clicked", G_CALLBACK (on_button_clicked), GINT_TO_POINTER (i));
-            g_free (label);
-    }
 
     /* Create a treeview */
     tv = gtk_tree_view_new ();
@@ -117,12 +95,9 @@ main (int argc, char **args)
     gtk_tree_view_set_model (GTK_TREE_VIEW (tv), GTK_TREE_MODEL (store));
     g_object_unref (store);
 
-    /* Pack the treeview in the VBox */
-    gtk_box_pack_start (GTK_BOX (vbox), tv, TRUE, TRUE, 0);
-
     /* Put everything in a pannable area */
     panarea = hildon_pannable_area_new ();
-    hildon_pannable_area_add_with_viewport (HILDON_PANNABLE_AREA (panarea), GTK_WIDGET (vbox));
+    hildon_pannable_area_add_with_viewport (HILDON_PANNABLE_AREA (panarea), GTK_WIDGET (tv));
     gtk_container_add (GTK_CONTAINER (window), panarea);
 
     g_signal_connect (G_OBJECT (window), "delete_event", G_CALLBACK (gtk_main_quit), NULL);
