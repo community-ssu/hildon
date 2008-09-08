@@ -1,5 +1,9 @@
 2008-09-08  Alberto Garcia  <agarcia@igalia.com>
 
+	* src/hildon-entry.c: Updated HildonButton documentation.
+
+2008-09-08  Alberto Garcia  <agarcia@igalia.com>
+
 	* src/hildon-button.c (hildon_button_set_arrangement): Pack the
 	button value label with (FALSE, FALSE) to prevent NB#88126 from
 	being triggered.
