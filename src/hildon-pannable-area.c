@@ -703,13 +703,13 @@ hildon_pannable_area_size_request (GtkWidget * widget,
   }
 
   if (priv->vscrollbar_policy == GTK_POLICY_NEVER) {
-    requisition->height += child_requisition.height;
+    requisition->height = child_requisition.height;
   } else {
-    requisition->height += priv->area_width;
+    requisition->height = priv->area_width;
   }
 
-  requisition->width += GTK_CONTAINER (widget)->border_width;
-  requisition->height += GTK_CONTAINER (widget)->border_width;
+  requisition->width += 2 * GTK_CONTAINER (widget)->border_width;
+  requisition->height += 2 * GTK_CONTAINER (widget)->border_width;
 }
 
 static void

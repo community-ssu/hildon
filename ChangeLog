@@ -1,3 +1,11 @@
+2008-09-09  Alejandro G. Castro	 <alex@igalia.com>
+
+	Patch contributed by Daniil Ivanov (ext-danil.ivanoc@nokia.com)
+
+	* src/hildon-pannable-area.c,
+	(hildon_pannable_area_size_request): Fixed bug in height
+	requisition, avoid increasing size and add border twice.
+
 2008-09-09  Claudio Saavedra  <csaavedra@igalia.com>
 
 	* configure.ac: postrelease version bump.
