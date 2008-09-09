@@ -1,3 +1,23 @@
+libhildon (2.1.8-1) unstable; urgency=low
+
+  * Make -gdb package contain useful debugging symbols.
+  * Fixes: NB#88022 (parameter validation in
+    hildon_touch_selector_get_num_columns)
+  * Fixes: NB#88023 (day range check
+    in hildon_date_selector_select_current_date)
+  * Fixes: NB#88027 (implement hildon_date_selector_select_month)
+  * Fixes: NB#88045 (fix logical id for time in HildonTimeSelector)
+  * Fixes: NB#88047 (fix retrieval of selected items in HildonTouchSelector)
+  * Fixes: NB#88036 (fix range of 12h time in HildonTimeSelector)
+  * Fixes: NB#88049 (fix columns removal from HildonTouchSelector)
+  * New hildon_button_get_image() method in HildonButton.
+  * New widget: HildonEntry.
+  * New methods to add buttons with finger size in HildonDialog.
+  * Miscellaneous improvements, other minor bug fixes, documentation
+    improvementsand examples updates. See ChangeLog for details.
+
+ -- Claudio Saavedra <csaavedra@igalia.com>  Tue, 09 Sep 2008 10:47:11 +0300
+
 libhildon (2.1.6-1) unstable; urgency=low
 
   * Deprecated hildon_check_button_{set/get}_label().

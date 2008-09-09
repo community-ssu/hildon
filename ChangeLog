@@ -1,3 +1,11 @@
+2008-09-09  Claudio Saavedra  <csaavedra@igalia.com>
+
+	Release 2.1.8-1.
+
+	* configure.ac: Prerelease version bump.
+	* debian/changelog: update.
+	* debian/rules: make -dbg package contain useful debugging symbols.
+
 2008-09-08  Alberto Garcia  <agarcia@igalia.com>
 
 	* src/hildon-dialog.h
