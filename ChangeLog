@@ -1,3 +1,11 @@
+2008-09-09  Alberto Garcia  <agarcia@igalia.com>
+
+	* examples/hildon-entry-example.c: Update the example adding
+	widgets to modify the text and the placeholder of the HildonEntry.
+
+	* src/hildon-entry.c: Show the placeholder everytime the widget
+	is empty and loses the focus.
+
 2008-09-09  Alejandro G. Castro	 <alex@igalia.com>
 
 	Patch contributed by Daniil Ivanov (ext-danil.ivanoc@nokia.com)

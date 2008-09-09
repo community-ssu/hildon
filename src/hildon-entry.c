@@ -3,8 +3,6 @@
  *
  * Copyright (C) 2008 Nokia Corporation, all rights reserved.
  *
- * Contact: Karl Lattimer <karl.lattimer@nokia.com>
- *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser Public License as published by
  * the Free Software Foundation; version 2 of the license.
@@ -40,7 +38,49 @@
 
 G_DEFINE_TYPE                                   (HildonEntry, hildon_entry, GTK_TYPE_ENTRY);
 
+#define                                         HILDON_ENTRY_GET_PRIVATE(obj) \
+                                                (G_TYPE_INSTANCE_GET_PRIVATE ((obj), \
+                                                HILDON_TYPE_ENTRY, HildonEntryPrivate));
+
+typedef struct                                  _HildonEntryPrivate HildonEntryPrivate;
+
+struct                                          _HildonEntryPrivate
+{
+    gchar *placeholder;
+};
+
 static const gchar *placeholder_widget_name     = "hildon-entry-placeholder";
+
+/* Function used to decide whether to show the placeholder or not */
+static void
+hildon_entry_refresh_contents                   (GtkWidget *entry)
+{
+    HildonEntryPrivate *priv = HILDON_ENTRY_GET_PRIVATE (entry);
+    gboolean showing_placeholder, entry_has_focus;
+
+    showing_placeholder = g_str_equal (gtk_widget_get_name (entry), placeholder_widget_name);
+    entry_has_focus = GTK_WIDGET_HAS_FOCUS (entry);
+
+    if (showing_placeholder) {
+        if (entry_has_focus) {
+            /* Remove the placeholder when the widget obtains focus */
+            gtk_widget_set_name (entry, NULL);
+            gtk_entry_set_text (GTK_ENTRY (entry), "");
+        } else {
+            /* Update the placeholder (it may have been changed) */
+            gtk_entry_set_text (GTK_ENTRY (entry), priv->placeholder);
+        }
+    } else {
+        /* Show the placeholder when the widget is empty and has no focus */
+        const gchar *text = gtk_entry_get_text (GTK_ENTRY (entry));
+        if (text[0] == '\0' && !entry_has_focus) {
+            if (priv->placeholder) {
+                gtk_widget_set_name (entry, placeholder_widget_name);
+                gtk_entry_set_text (GTK_ENTRY (entry), priv->placeholder);
+            }
+        }
+    }
+}
 
 /**
  * hildon_entry_set_text:
@@ -56,11 +96,14 @@ void
 hildon_entry_set_text                           (HildonEntry *entry,
                                                  const gchar *text)
 {
-    g_return_if_fail (HILDON_IS_ENTRY (entry));
-
-    gtk_entry_set_text (GTK_ENTRY (entry), text);
+    g_return_if_fail (HILDON_IS_ENTRY (entry) && text != NULL);
 
     gtk_widget_set_name (GTK_WIDGET (entry), NULL);
+    gtk_entry_set_text (GTK_ENTRY (entry), text);
+
+    /* If the entry is cleared show the placeholder */
+    if (text[0] == '\0')
+        hildon_entry_refresh_contents (GTK_WIDGET (entry));
 }
 
 /**
@@ -102,11 +145,15 @@ void
 hildon_entry_set_placeholder                    (HildonEntry *entry,
                                                  const gchar *text)
 {
-    g_return_if_fail (HILDON_IS_ENTRY (entry));
+    HildonEntryPrivate *priv;
 
-    gtk_widget_set_name (GTK_WIDGET (entry), placeholder_widget_name);
+    g_return_if_fail (HILDON_IS_ENTRY (entry) && text != NULL);
 
-    gtk_entry_set_text (GTK_ENTRY (entry), text);
+    priv = HILDON_ENTRY_GET_PRIVATE (entry);
+
+    g_free (priv->placeholder);
+    priv->placeholder = g_strdup (text);
+    hildon_entry_refresh_contents (GTK_WIDGET (entry));
 }
 
 /**
@@ -131,9 +178,8 @@ static gboolean
 hildon_entry_focus_in_event                     (GtkWidget     *widget,
                                                  GdkEventFocus *event)
 {
-    if (g_str_equal (gtk_widget_get_name (widget), placeholder_widget_name)) {
-        hildon_entry_set_text (HILDON_ENTRY (widget), "");
-    }
+    hildon_entry_refresh_contents (widget);
+
     if (GTK_WIDGET_CLASS (hildon_entry_parent_class)->focus_in_event) {
         return GTK_WIDGET_CLASS (hildon_entry_parent_class)->focus_in_event (widget, event);
     } else {
@@ -141,15 +187,47 @@ hildon_entry_focus_in_event                     (GtkWidget     *widget,
     }
 }
 
+static gboolean
+hildon_entry_focus_out_event                    (GtkWidget     *widget,
+                                                 GdkEventFocus *event)
+{
+    hildon_entry_refresh_contents (widget);
+
+    if (GTK_WIDGET_CLASS (hildon_entry_parent_class)->focus_out_event) {
+        return GTK_WIDGET_CLASS (hildon_entry_parent_class)->focus_out_event (widget, event);
+    } else {
+        return FALSE;
+    }
+}
+
+static void
+hildon_entry_finalize                           (GObject *object)
+{
+    HildonEntryPrivate *priv = HILDON_ENTRY_GET_PRIVATE (object);
+
+    g_free (priv->placeholder);
+
+    if (G_OBJECT_CLASS (hildon_entry_parent_class)->finalize)
+        G_OBJECT_CLASS (hildon_entry_parent_class)->finalize (object);
+}
+
 static void
 hildon_entry_class_init                         (HildonEntryClass *klass)
 {
+    GObjectClass *gobject_class = (GObjectClass *)klass;
     GtkWidgetClass *widget_class = (GtkWidgetClass *)klass;
 
+    gobject_class->finalize = hildon_entry_finalize;
     widget_class->focus_in_event = hildon_entry_focus_in_event;
+    widget_class->focus_out_event = hildon_entry_focus_out_event;
+
+    g_type_class_add_private (klass, sizeof (HildonEntryPrivate));
 }
 
 static void
 hildon_entry_init                               (HildonEntry *self)
 {
+    HildonEntryPrivate *priv = HILDON_ENTRY_GET_PRIVATE (self);
+
+    priv->placeholder = NULL;
 }
