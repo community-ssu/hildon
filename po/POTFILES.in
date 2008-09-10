@@ -14,6 +14,7 @@ src/hildon-weekday-picker.h
 src/hildon-note.h
 src/hildon-banner-private.h
 src/hildon-time-picker.h
+src/hildon-calendar.c
 src/hildon-calendar-popup.c
 src/hildon-controlbar-private.h
 src/hildon-vvolumebar.c
@@ -31,6 +32,8 @@ src/hildon-wizard-dialog-private.h
 src/hildon-code-dialog.h
 src/hildon-window.h
 src/hildon-date-editor-private.h
+src/hildon-date-selector.c
+src/hildon-time-selector.c
 src/hildon-seekbar.h
 src/hildon-login-dialog-private.h
 src/hildon-time-editor.c
@@ -91,3 +94,4 @@ src/hildon-calendar-popup.h
 src/hildon-number-editor.c
 src/hildon-controlbar.c
 src/hildon-program.c
+tests/check-hildon-caption.c

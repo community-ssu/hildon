@@ -1,5 +1,10 @@
 2008-09-10  Claudio Saavedra  <csaavedra@igalia.com>
 
+	* po/POTFILES.in: Add missing files with translatable strings.
+	Partially fixes NB#88287.
+
+2008-09-10  Claudio Saavedra  <csaavedra@igalia.com>
+
 	* examples/hildon-pannable-area-example-2.c: (main): No need to
 	set the cellrenderer height inside hildon touch lists, the theme does
 	that for us.
