@@ -66,12 +66,6 @@ main                                            (int    argc,
 
     gtk_init (&argc, &argv);
 
-    /* Style to paint the placeholder text in red */
-    gtk_rc_parse_string ("style \"placeholder\" {\n"
-                         "text[NORMAL] = \"#C03030\""
-                         "}\n"
-                         "widget \"*.hildon-entry-placeholder\" style \"placeholder\"\n");
-
     /* Window and vbox to pack everything */
     win = hildon_stackable_window_new ();
     vbox = GTK_BOX (gtk_vbox_new (FALSE, 10));

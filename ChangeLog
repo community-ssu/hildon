@@ -1,3 +1,8 @@
+2008-09-10  Claudio Saavedra  <csaavedra@igalia.com>
+
+	* examples/hildon-entry-example.c: (main): Remove the gtkrc bits, now
+	they are integrated in the theme.
+
 2008-09-09  Alberto Garcia  <agarcia@igalia.com>
 
 	* examples/hildon-entry-example.c: Update the example adding
