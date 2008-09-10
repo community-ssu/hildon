@@ -139,7 +139,6 @@ main (int argc, char **args)
   gtk_tree_view_column_set_attributes (col, renderer, "stock-id", PIXBUF_COLUMN, NULL);
 
   renderer = gtk_cell_renderer_text_new ();
-  gtk_cell_renderer_set_fixed_size (renderer, -1, 66);
   gtk_tree_view_column_pack_start (col, renderer, FALSE);
   gtk_tree_view_column_set_attributes (col, renderer, "text", TEXT_COLUMN, NULL);
   gtk_tree_view_append_column (GTK_TREE_VIEW(tv), col);
