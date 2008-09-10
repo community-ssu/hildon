@@ -74,6 +74,7 @@
 #include                                        "hildon-bread-crumb-trail.h"
 #include                                        "hildon-pannable-area.h"
 #include                                        "hildon-entry.h"
+#include                                        "hildon-text-view.h"
 #include                                        "hildon-app-menu.h"
 #include                                        "hildon-button.h"
 #include                                        "hildon-check-button.h"

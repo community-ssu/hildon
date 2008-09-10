@@ -63,6 +63,7 @@
     <xi:include href="xml/hildon-time-editor.xml"/>
     <xi:include href="xml/hildon-date-editor.xml"/>
     <xi:include href="xml/hildon-entry.xml"/>
+    <xi:include href="xml/hildon-text-view.xml"/>
   </chapter>
 
   <chapter>

@@ -1,3 +1,15 @@
+2008-09-10  Alberto Garcia  <agarcia@igalia.com>
+
+	* doc/hildon-docs.sgml
+	* doc/hildon.types
+	* examples/Makefile.am
+	* examples/hildon-text-view-example.c
+	* src/Makefile.am
+	* src/hildon-text-view.c
+	* src/hildon-text-view.h
+	* src/hildon.h:
+	New HildonTextView widget, with example.
+
 2008-09-10  Claudio Saavedra  <csaavedra@igalia.com>
 
 	* po/POTFILES.in: Add missing files with translatable strings.

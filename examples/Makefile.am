@@ -50,6 +50,7 @@ noinst_PROGRAMS				= hildon-window-example				\
 					  hildon-app-menu-example			\
 					  hildon-stackable-window-example		\
 					  hildon-entry-example				\
+					  hildon-text-view-example			\
 					  hildon-button-example				\
 					  hildon-dialog-example				\
 					  hildon-date-button-example			\
@@ -304,6 +305,11 @@ hildon_app_menu_example_SOURCES		= hildon-app-menu-example.c
 hildon_entry_example_LDADD		= $(HILDON_OBJ_LIBS)
 hildon_entry_example_CFLAGS		= $(HILDON_OBJ_CFLAGS)
 hildon_entry_example_SOURCES		= hildon-entry-example.c
+
+# Hildon text view
+hildon_text_view_example_LDADD		= $(HILDON_OBJ_LIBS)
+hildon_text_view_example_CFLAGS		= $(HILDON_OBJ_CFLAGS)
+hildon_text_view_example_SOURCES	= hildon-text-view-example.c
 
 # Hildon button
 hildon_button_example_LDADD		= $(HILDON_OBJ_LIBS)
