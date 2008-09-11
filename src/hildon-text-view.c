@@ -34,6 +34,23 @@
  * never be used to get/set the buffer in this
  * widget. hildon_text_view_get_buffer() and
  * hildon_text_view_set_buffer() must be used instead.
+ *
+ * <example>
+ * <title>Creating a HildonTextView with a placeholder</title>
+ * <programlisting>
+ * GtkWidget *
+ * create_text_view (void)
+ * {
+ *     GtkWidget *text_view;
+ * <!-- -->
+ *     text_view = hildon_text_view_new ();
+ *     hildon_text_view_set_placeholder (HILDON_TEXT_VIEW (text_view),
+ *                                       "Type some text here");
+ * <!-- -->
+ *     return text_view;
+ * }
+ * </programlisting>
+ * </example>
  */
 
 #include                                        "hildon-text-view.h"

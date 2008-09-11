@@ -67,12 +67,12 @@ void
 hildon_entry_set_text                           (HildonEntry *entry,
                                                  const gchar *text);
 
+const gchar *
+hildon_entry_get_text                           (HildonEntry *entry);
+
 void
 hildon_entry_set_placeholder                    (HildonEntry *entry,
                                                  const gchar *text);
-
-const gchar *
-hildon_entry_get_text                           (HildonEntry *entry);
 
 G_END_DECLS
 

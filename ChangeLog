@@ -1,3 +1,17 @@
+2008-09-11  Alberto Garcia  <agarcia@igalia.com>
+
+	* src/hildon-text-view.c:
+	Add sample code to the documentation.
+
+	* src/hildon-entry.h
+	* src/hildon-text-view.h:
+	Minor cosmetic changes.
+
+	* src/hildon-entry.c:
+	Add sample code to the documentation.
+	(hildon_entry_init, hildon_entry_refresh_contents):
+	Don't allow NULL values in the placeholder.
+
 2008-09-10  Alberto Garcia  <agarcia@igalia.com>
 
 	* doc/hildon-docs.sgml

@@ -72,7 +72,7 @@ hildon_text_view_get_buffer                     (HildonTextView *text_view);
 
 void
 hildon_text_view_set_placeholder                (HildonTextView *text_view,
-                                                 const gchar *text);
+                                                 const gchar    *text);
 
 G_END_DECLS
 

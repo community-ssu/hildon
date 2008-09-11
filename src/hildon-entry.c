@@ -32,6 +32,22 @@
  * gtk_entry_get_text() and gtk_entry_set_text() must never be used to
  * get/set the text in this widget. hildon_entry_get_text() and
  * hildon_entry_set_text() must be used instead.
+ *
+ * <example>
+ * <title>Creating a HildonEntry with a placeholder</title>
+ * <programlisting>
+ * GtkWidget *
+ * create_entry (void)
+ * {
+ *     GtkWidget *entry;
+ * <!-- -->
+ *     entry = hildon_entry_new (HILDON_SIZE_AUTO);
+ *     hildon_entry_set_placeholder (HILDON_ENTRY (entry), "First name");
+ * <!-- -->
+ *     return entry;
+ * }
+ * </programlisting>
+ * </example>
  */
 
 #include                                        "hildon-entry.h"
@@ -74,7 +90,7 @@ hildon_entry_refresh_contents                   (GtkWidget *entry)
         /* Show the placeholder when the widget is empty and has no focus */
         const gchar *text = gtk_entry_get_text (GTK_ENTRY (entry));
         if (text[0] == '\0' && !entry_has_focus) {
-            if (priv->placeholder) {
+            if (priv->placeholder[0] != '\0') {
                 gtk_widget_set_name (entry, placeholder_widget_name);
                 gtk_entry_set_text (GTK_ENTRY (entry), priv->placeholder);
             }
@@ -229,5 +245,5 @@ hildon_entry_init                               (HildonEntry *self)
 {
     HildonEntryPrivate *priv = HILDON_ENTRY_GET_PRIVATE (self);
 
-    priv->placeholder = NULL;
+    priv->placeholder = g_strdup ("");
 }
