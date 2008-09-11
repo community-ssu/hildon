@@ -27,7 +27,7 @@ button_clicked_cb                               (GtkButton *button,
                                                  GtkLabel  *label)
 {
     gboolean active = hildon_check_button_get_active (button);
-    const gchar *labeltext = hildon_check_button_get_label (button);
+    const gchar *labeltext = gtk_button_get_label (button);
     char *text = g_strconcat (labeltext, active ? " (checked)" : " (unchecked)", NULL);
     gtk_label_set_text (label, text);
     g_free (text);

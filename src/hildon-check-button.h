@@ -26,15 +26,6 @@ G_BEGIN_DECLS
 GtkWidget *
 hildon_check_button_new                         (HildonSizeType size);
 
-#ifndef HILDON_DISABLE_DEPRECATED
-void
-hildon_check_button_set_label                   (GtkButton   *button,
-                                                 const gchar *label);
-
-const gchar *
-hildon_check_button_get_label                   (GtkButton   *button);
-#endif
-
 void
 hildon_check_button_set_active                  (GtkButton *button,
                                                  gboolean   is_active);

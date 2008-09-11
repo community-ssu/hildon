@@ -18,12 +18,13 @@
  * SECTION:hildon-check-button
  * @short_description: Button with a check box inside
  *
- * This is a standard GtkButton which contains a check box and a
+ * This is a standard #GtkButton which contains a check box and a
  * label. Functions are provided to get and set the value of the check
  * box. Note that this button does NOT support an image, so don't use
  * gtk_button_set_image()
  *
  * <example>
+ * <title>Using a Hildon check button</title>
  * <programlisting>
  * void
  * button_clicked (GtkButton *button, gpointer user_data)
@@ -62,39 +63,6 @@ check_button_clicked                            (GtkButton             *button,
 {
     gboolean current = gtk_cell_renderer_toggle_get_active (renderer);
     gtk_cell_renderer_toggle_set_active (renderer, !current);
-}
-
-/**
- * hildon_check_button_set_label:
- * @button: A #GtkButton created with hildon_check_button_new()
- * @label: New text for the label.
- *
- * Sets the text of the button label to @label.
- *
- * Deprecated: Use gtk_button_set_label() instead.
- **/
-void
-hildon_check_button_set_label                   (GtkButton   *button,
-                                                 const gchar *label)
-{
-    gtk_button_set_label (button, label);
-}
-
-/**
- * hildon_check_button_get_label:
- * @button: A #GtkButton created with hildon_check_button_new()
- *
- * Gets the text of the label inside the button.
- *
- * Return value: the text of the label. This string is owned by the
- * button and must not be modified or freed.
- *
- * Deprecated: Use gtk_button_get_label() instead.
- **/
-const gchar *
-hildon_check_button_get_label                   (GtkButton *button)
-{
-    return gtk_button_get_label (button);
 }
 
 /**
@@ -150,10 +118,7 @@ hildon_check_button_get_active                  (GtkButton *button)
  * This function creates a #GtkButton containing a label and a check
  * box.
  *
- * This button has specific functions to get and set the value of the
- * check box.
- *
- * Return value: A newly created #GtkButton widget.
+ * Return value: A newly created #GtkButton widget with a check box.
  **/
 GtkWidget *
 hildon_check_button_new                         (HildonSizeType size)

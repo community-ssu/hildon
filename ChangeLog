@@ -1,5 +1,14 @@
 2008-09-11  Alberto Garcia  <agarcia@igalia.com>
 
+	* src/hildon-check-button.h
+	* src/hildon-check-button.c
+	(hildon_check_button_set_label, hildon_check_button_get_label)
+	* examples/hildon-check-button-example.c
+	(button_clicked_cb):
+	Removed deprecated methods.
+
+2008-09-11  Alberto Garcia  <agarcia@igalia.com>
+
 	* src/hildon-text-view.c:
 	Add sample code to the documentation.
 
