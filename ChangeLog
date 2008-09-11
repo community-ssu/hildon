@@ -1,5 +1,9 @@
 2008-09-11  Alberto Garcia  <agarcia@igalia.com>
 
+	* src/hildon-edit-toolbar.c: Update documentation.
+
+2008-09-11  Alberto Garcia  <agarcia@igalia.com>
+
 	* src/hildon-check-button.h
 	* src/hildon-check-button.c
 	(hildon_check_button_set_label, hildon_check_button_get_label)
