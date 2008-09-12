@@ -1,3 +1,9 @@
+2008-09-12  Alejandro G. Castro	 <alex@igalia.com>
+
+	* src/hildon-touch-selector.c,
+	(_hildon_touch_selector_set_model): Cleaning the code after
+	review, removed g_print and #if 0 from the code.
+
 2008-09-11  Alberto Garcia  <agarcia@igalia.com>
 
 	* src/hildon-edit-toolbar.c: Update documentation.

@@ -295,7 +295,7 @@ hildon_touch_selector_remove (GtkContainer * container, GtkWidget * widget)
  *
  * Default print function
  *
- * Returns: a new string that represent the selected items
+ * Returns: a new string that represents the selected items
  **/
 static gchar *
 _default_print_func (HildonTouchSelector * selector)
@@ -747,16 +747,6 @@ hildon_touch_selector_set_column_attributes (HildonTouchSelector * selector,
   gtk_tree_view_append_column (current_column->tree_view, tree_column);
 }
 
-#if 0
-gboolean
-hildon_touch_selector_insert_column (HildonTouchSelector * selector, gint position)
-{
-  g_warning ("Un-implemented!");
-
-  return TRUE;
-}
-#endif
-
 /**
  * hildon_touch_selector_get_num_columns:
  * @selector: a #HildonTouchSelector
@@ -1069,7 +1059,6 @@ _hildon_touch_selector_set_model (HildonTouchSelector * selector,
                                  gint column, GtkTreeModel * model)
 {
   SelectorColumn *current_column = NULL;
-  g_print ("this was actually called\n");
 
   current_column =
     (SelectorColumn *) g_slist_nth_data (selector->priv->columns, column);
