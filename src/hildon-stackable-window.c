@@ -42,6 +42,7 @@
  * hidden and the previous one will appear.
  *
  * <example>
+ * <title>Basic HildonStackableWindow example</title>
  * <programlisting>
  * static void
  * show_new_window (void)
@@ -65,7 +66,7 @@
  *     gtk_init (&amp;argc, &amp;args);
  * <!-- -->
  *     win = hildon_stackable_window_new ();
- *     gtk_window_set_title (GTK_WINDOW (win), "Main window));
+ *     gtk_window_set_title (GTK_WINDOW (win), "Main window);
  * <!-- -->
  *     // ... add some widgets to the window
  * <!-- -->

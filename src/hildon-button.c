@@ -56,7 +56,8 @@
  *     GtkWidget *button;
  *     GtkWidget *image;
  * <!-- -->
- *     button = hildon_button_new (HILDON_SIZE_AUTO, HILDON_BUTTON_ARRANGEMENT_VERTICAL);
+ *     button = hildon_button_new (HILDON_SIZE_AUTO_WIDTH | HILDON_SIZE_FINGER_HEIGHT,
+ *                                 HILDON_BUTTON_ARRANGEMENT_VERTICAL);
  *     hildon_button_set_text (HILDON_BUTTON (button), "Some title", "Some value");
  * <!-- -->
  *     image = gtk_image_new_from_stock (GTK_STOCK_INFO, GTK_ICON_SIZE_BUTTON);

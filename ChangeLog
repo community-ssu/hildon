@@ -1,5 +1,10 @@
 2008-09-12  Alberto Garcia  <agarcia@igalia.com>
 
+	* src/hildon-button.c
+	* src/hildon-stackable-window.c: Minor documentation updates.
+
+2008-09-12  Alberto Garcia  <agarcia@igalia.com>
+
 	* src/hildon-stackable-window.c: Updated documentation.
 
 2008-09-12  Claudio Saavedra  <csaavedra@igalia.com>
