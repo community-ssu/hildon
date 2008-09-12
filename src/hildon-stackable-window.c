@@ -43,28 +43,39 @@
  *
  * <example>
  * <programlisting>
- * void
- * show_first_window (void)
+ * static void
+ * show_new_window (void)
  * {
- *     GtkWidget *win1;
+ *     GtkWidget *win;
  * <!-- -->
- *     win1 = hildon_stackable_window_new ();
+ *     win = hildon_stackable_window_new ();
  * <!-- -->
- *     // ... configure first window
+ *     // ... configure new window
  * <!-- -->
- *     gtk_widget_show (win1);
+ *     // This automatically hides the previous window
+ *     gtk_widget_show (win);
  * }
  * <!-- -->
- * void
- * show_second_window (void)
+ * int
+ * main (int argc, char **argv)
  * {
- *     GtkWidget *win2;
+ *     GtkWidget *win;
+ *     GtkWidget *button;
  * <!-- -->
- *     win2 = hildon_stackable_window_new ();
+ *     gtk_init (&amp;argc, &amp;args);
  * <!-- -->
- *     // ... configure second window
+ *     win = hildon_stackable_window_new ();
+ *     gtk_window_set_title (GTK_WINDOW (win), "Main window));
  * <!-- -->
- *     gtk_widget_show (win2);
+ *     // ... add some widgets to the window
+ * <!-- -->
+ *     g_signal_connect (button, "clicked", G_CALLBACK (show_new_window), NULL);
+ *     g_signal_connect (win, "destroy", G_CALLBACK (gtk_main_quit), NULL);
+ * <!-- -->
+ *     gtk_widget_show_all (win);
+ *     gtk_main ();
+ * <!-- -->
+ *     return 0;
  * }
  * </programlisting>
  * </example>
