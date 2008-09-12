@@ -1,3 +1,8 @@
+2008-09-12  Claudio Saavedra  <csaavedra@igalia.com>
+
+	* src/hildon-defines.h: Update margins definitions
+	to the Fremantle sizes.
+
 2008-09-12  Alejandro G. Castro	 <alex@igalia.com>
 
 	* src/hildon-touch-selector.c,

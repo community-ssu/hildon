@@ -66,13 +66,13 @@ G_BEGIN_DECLS
 
 /* Margins */
 
-#define                                         HILDON_MARGIN_HALF 3
+#define                                         HILDON_MARGIN_HALF 4
 
-#define                                         HILDON_MARGIN_DEFAULT 6
+#define                                         HILDON_MARGIN_DEFAULT 8
 
-#define                                         HILDON_MARGIN_DOUBLE 12
+#define                                         HILDON_MARGIN_DOUBLE 16
 
-#define                                         HILDON_MARGIN_TRIPLE 18
+#define                                         HILDON_MARGIN_TRIPLE 24
 
 /* Hard keys */
 
