@@ -2,6 +2,7 @@
 
 	* src/hildon-defines.h: Update margins definitions
 	to the Fremantle sizes.
+	Fixes: NB#88364
 
 2008-09-12  Alejandro G. Castro	 <alex@igalia.com>
 
