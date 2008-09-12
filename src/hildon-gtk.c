@@ -24,6 +24,9 @@
  * easily perform frequent tasks.
  */
 
+#include <X11/Xatom.h>
+#include <gdk/gdkx.h>
+
 #include "hildon-gtk.h"
 
 #define                                         HILDON_HEIGHT_FINGER 70
@@ -277,4 +280,31 @@ hildon_gtk_icon_view_new_with_model             (HildonUIMode  mode,
                                                  GtkTreeModel *model)
 {
     return g_object_new (GTK_TYPE_ICON_VIEW, "hildon-ui-mode", mode, "model", model, NULL);
+}
+
+/**
+ * hildon_gtk_window_set_progress_indicator:
+ * @window: The window, we want to define its state
+ * @state: The state we want to set: 1 -> show progress indicator, 0
+ *          -> hide progress indicator.
+ *
+ * This functions notifies the window manager that it should add a
+ * progress indicator in the title of the window. It applies to
+ * #HildonDialog and #HildonWindow.
+ *
+ **/
+void
+hildon_gtk_window_set_progress_indicator        (GtkWindow    *window,
+                                                 guint        state)
+{
+  GtkWidget *widget = GTK_WIDGET (window);
+  GdkDisplay *display;
+  Atom atom;
+
+  display = gdk_drawable_get_display (widget->window);
+  atom = gdk_x11_get_xatom_by_name_for_display (display, "_HILDON_WM_WINDOW_PROGRESS_INDICATOR");
+
+  XChangeProperty (GDK_DISPLAY_XDISPLAY (display), GDK_WINDOW_XID (widget->window),
+                   atom, XA_INTEGER, 32, PropModeReplace,
+                   (guchar *)&state, 1);
 }
