@@ -1,3 +1,9 @@
+2008-09-15  Alberto Garcia  <agarcia@igalia.com>
+
+	* src/hildon-date-selector.c (hildon_date_selector_finalize):
+	Don't free selector->priv manually.
+	Fixes: NB#88414
+
 2008-09-12  Alejandro G. Castro	 <alex@igalia.com>
 
 	* src/hildon-gtk.c,

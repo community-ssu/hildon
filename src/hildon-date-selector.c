@@ -276,8 +276,6 @@ hildon_date_selector_finalize (GObject * object)
 
   g_slist_free (selector->priv->column_order);
 
-  g_free (selector->priv);
-
   (*G_OBJECT_CLASS (hildon_date_selector_parent_class)->finalize) (object);
 }
 
