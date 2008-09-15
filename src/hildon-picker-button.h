@@ -51,6 +51,9 @@ GtkWidget *hildon_picker_button_new      (HildonSizeType          size,
 void hildon_picker_button_set_selector     (HildonPickerButton * button,
                                             HildonTouchSelector * selector);
 HildonTouchSelector *hildon_picker_button_get_selector (HildonPickerButton * button);
+void hildon_picker_button_set_active       (HildonPickerButton * button,
+                                            gint index);
+gint hildon_picker_button_get_active       (HildonPickerButton * button);
 
 G_END_DECLS
 

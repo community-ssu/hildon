@@ -883,6 +883,87 @@ hildon_touch_selector_get_print_func (HildonTouchSelector * selector)
 }
 
 /**
+ * hildon_touch_selector_set_active:
+ * @selector: a #HildonTouchSelector
+ * @column: column number
+ * @index: the index of the item to select, or -1 to have no active item
+ *
+ * Sets the active item of the #HildonTouchSelector to @index. The
+ * column number is taken from @column.
+ *
+ * @selector must be in %HILDON_TOUCH_SELECTOR_SELECTION_MODE_SINGLE
+ **/
+void
+hildon_touch_selector_set_active                (HildonTouchSelector *selector,
+                                                 gint                 column,
+                                                 gint                 index)
+{
+  GtkTreeSelection *selection = NULL;
+  SelectorColumn *current_column = NULL;
+  HildonTouchSelectorSelectionMode mode;
+  GtkTreePath *path;
+
+  g_return_if_fail (HILDON_IS_TOUCH_SELECTOR (selector));
+  g_return_if_fail (column < hildon_touch_selector_get_num_columns (selector));
+  mode = hildon_touch_selector_get_column_selection_mode (selector);
+  g_return_if_fail (mode == HILDON_TOUCH_SELECTOR_SELECTION_MODE_SINGLE);
+
+  current_column = g_slist_nth_data (selector->priv->columns, column);
+
+  selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (current_column->tree_view));
+  path = gtk_tree_path_new_from_indices (index, -1);
+  gtk_tree_selection_unselect_all (selection);
+  if (index != -1)
+    gtk_tree_selection_select_path (selection, path);
+
+  gtk_tree_path_free (path);
+}
+
+/**
+ * hildon_touch_selector_get_active:
+ * @selector: a #HildonTouchSelector
+ * @column: column number
+ *
+ * Returns the index of the currently active item in column number
+ * @column, or -1 if there's no active item.
+ *
+ * @selector must be in %HILDON_TOUCH_SELECTOR_SELECTION_MODE_SINGLE
+ *
+ * Returns: an integer which is the index of the currently active
+ * item, or -1 if there's no active item.
+ **/
+gint
+hildon_touch_selector_get_active                (HildonTouchSelector *selector,
+                                                 gint                 column)
+{
+  GtkTreeSelection *selection = NULL;
+  SelectorColumn *current_column = NULL;
+  HildonTouchSelectorSelectionMode mode;
+  GtkTreeModel *model;
+  GtkTreeIter iter;
+  GtkTreePath *path;
+  gint index;
+
+  g_return_val_if_fail (HILDON_IS_TOUCH_SELECTOR (selector), -1);
+  g_return_val_if_fail (column < hildon_touch_selector_get_num_columns (selector), -1);
+  mode = hildon_touch_selector_get_column_selection_mode (selector);
+  g_return_val_if_fail (mode == HILDON_TOUCH_SELECTOR_SELECTION_MODE_SINGLE, -1);
+
+  current_column = g_slist_nth_data (selector->priv->columns, column);
+
+  selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (current_column->tree_view));
+  model = gtk_tree_view_get_model (GTK_TREE_VIEW (current_column->tree_view));
+
+  gtk_tree_selection_get_selected (selection, NULL, &iter);
+  path = gtk_tree_model_get_path (model, &iter);
+  index = (gtk_tree_path_get_indices (path))[0];
+
+  gtk_tree_path_free (path);
+
+  return index;
+}
+
+/**
  * hildon_touch_selector_get_selected:
  * @selector: a #HildonTouchSelector
  * @column: the column number we want to get the element

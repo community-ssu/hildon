@@ -244,3 +244,48 @@ hildon_picker_button_get_selector (HildonPickerButton * button)
 
   return HILDON_TOUCH_SELECTOR (priv->selector);
 }
+
+/**
+ * hildon_picker_button_get_active:
+ * @button: a #HildonPickerButton
+ *
+ * Returns the index of the currently active item, or -1 if there's no
+ * active item. If the selector has several columns, only the first
+ * one is used.
+ *
+ * Returns: an integer which is the index of the currently active item, or -1 if there's no active item.
+ **/
+gint
+hildon_picker_button_get_active                 (HildonPickerButton * button)
+{
+  HildonTouchSelector *sel;
+  g_return_val_if_fail (HILDON_IS_PICKER_BUTTON (button), -1);
+
+  sel = hildon_picker_button_get_selector (button);
+
+  return hildon_touch_selector_get_active (sel, 0);
+}
+
+/**
+ * hildon_picker_button_set_active:
+ * @button: a #HildonPickerButton
+ * @index: the index of the item to select, or -1 to have no active item
+ *
+ * Sets the active item of the #HildonTouchSelector associated to
+ * @button to @index. If the selector has several columns, only the
+ * first one is used.
+ **/
+void
+hildon_picker_button_set_active                 (HildonPickerButton * button,
+                                                 gint index)
+{
+  HildonTouchSelector *sel;
+  g_return_if_fail (HILDON_IS_PICKER_BUTTON (button));
+
+  sel = hildon_picker_button_get_selector (button);
+
+  hildon_touch_selector_set_active (sel, 0, index);
+
+  hildon_button_set_value (HILDON_BUTTON (button),
+                           hildon_touch_selector_get_current_text (sel));
+}

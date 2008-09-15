@@ -105,6 +105,11 @@ HildonTouchSelectorSelectionMode
 hildon_touch_selector_get_column_selection_mode       (HildonTouchSelector * selector);
 
 /* get/set active item */
+void hildon_touch_selector_set_active           (HildonTouchSelector *selector,
+                                                 gint column,
+                                                 gint index);
+gint hildon_touch_selector_get_active           (HildonTouchSelector * selector,
+                                                 gint column);
 gboolean hildon_touch_selector_get_selected     (HildonTouchSelector * selector,
                                                  gint column,
                                                  GtkTreeIter * iter);

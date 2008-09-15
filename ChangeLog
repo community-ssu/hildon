@@ -1,3 +1,17 @@
+2008-09-15  Alberto Garcia  <agarcia@igalia.com>
+
+	* src/hildon-touch-selector.h
+	* src/hildon-touch-selector.c
+	(hildon_touch_selector_get_active)
+	(hildon_touch_selector_set_active): New methods to set/get the
+	index of the selected item.
+
+	* src/hildon-picker-button.h
+	* src/hildon-picker-button.c
+	(hildon_picker_button_get_active)
+	(hildon_picker_button_set_active): New methods to set/get the
+	index of the selected item.
+
 2008-09-15  Claudio Saavedra  <csaavedra@igalia.com>
 
 	* configure.ac: post-release version bump.
