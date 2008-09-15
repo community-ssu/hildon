@@ -1,5 +1,9 @@
 2008-09-15  Claudio Saavedra  <csaavedra@igalia.com>
 
+	* configure.ac: post-release version bump.
+
+2008-09-15  Claudio Saavedra  <csaavedra@igalia.com>
+
 	Release 2.1.10-1.
 
 	* configure.ac: Pre-release version bump.
