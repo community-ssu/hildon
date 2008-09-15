@@ -1,3 +1,20 @@
+libhildon (2.1.10-1) unstable; urgency=low
+
+  * Fixes: NB#88214 (HildonPannableArea wrong requisition)
+  * Fixes: NB#88287 (Missing translations)
+  * Fixes: NB#88364 (Update margins definitions)
+  * Fixes: NB#88414 (Crash in HildonDateSelector on finalize)
+  * New widget: HildonTextEntry.
+  * Removed long deprecated methods hildon_check_button_set_label(),
+    hildon_check_button_get_label().
+  * New method: hildon_gtk_window_set_progress_indicator() to set progress indicator in
+    windows (depends on feature being implemented in WM).
+  * Documentation updates, coding fixes, examples updates. See ChangeLog for details.
+  * Add dependency of libhildon1 on hildon-libs-l10n-mr[0]
+  * Set myself as the maintainer of the debian package.
+
+ -- Claudio Saavedra <csaavedra@igalia.com>  Mon, 15 Sep 2008 15:36:06 +0300
+
 libhildon (2.1.8-1) unstable; urgency=low
 
   * Make -gdb package contain useful debugging symbols.

@@ -1,3 +1,12 @@
+2008-09-15  Claudio Saavedra  <csaavedra@igalia.com>
+
+	Release 2.1.10-1.
+
+	* configure.ac: Pre-release version bump.
+	* debian/changelog: Updates.
+	* debian/control: Add myself as maintainer and depend on l10n
+	packages.
+
 2008-09-15  Alberto Garcia  <agarcia@igalia.com>
 
 	* src/hildon-window.c

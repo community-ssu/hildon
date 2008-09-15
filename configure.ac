@@ -1,4 +1,4 @@
-AC_INIT([Hildon gtk widgets], [2.1.9], [hildon@projects.maemo.org], [hildon])
+AC_INIT([Hildon gtk widgets], [2.1.10], [hildon@projects.maemo.org], [hildon])
 AC_CANONICAL_SYSTEM
 
 AM_CONFIG_HEADER(config.h)
@@ -25,7 +25,7 @@ AC_SUBST(API_VERSION_MAJOR)
 #    increment current, and set revision to 0.
 # 5. If any interfaces have been added since the last public release, then increment age.
 # 6. If any interfaces have been removed since the last public release, then set age to 0.  
-AS_LIBTOOL(HILDON, 19, 0, 0)
+AS_LIBTOOL(HILDON, 20, 0, 0)
 AM_INIT_AUTOMAKE
 
 AC_PROG_CC
