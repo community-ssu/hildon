@@ -1862,6 +1862,12 @@ hildon_window_add_accel_group (HildonWindow *self,
  * menu. #HildonWindow takes ownership of the passed menu and you're
  * not supposed to free it yourself anymore.
  *
+ * Note that if you're using a #HildonStackableWindow (and not just a
+ * standard #HildonWindow) you should use
+ * hildon_stackable_window_set_main_menu()
+ * instead. #HildonStackableWindow uses #HildonAppMenu rather than
+ * #GtkMenu.
+ *
  * Since: Hildon 2.2
  **/ 
 void

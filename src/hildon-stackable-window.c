@@ -116,6 +116,10 @@ hildon_stackable_window_get_going_home          (HildonStackableWindow *self)
  * Sets the menu to be used for this window. Pass %NULL to remove the
  * current menu. #HildonStackableWindow takes ownership of the passed
  * menu and you're not supposed to free it yourself anymore.
+ *
+ * Note that #HildonStackableWindow widgets use #HildonAppMenu rather
+ * than #GtkMenu, so you're not supposed to use
+ * hildon_window_set_main_menu() with a #HildonStackableWindow.
  **/
 void
 hildon_stackable_window_set_main_menu           (HildonStackableWindow *self,

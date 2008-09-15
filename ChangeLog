@@ -1,5 +1,13 @@
 2008-09-15  Alberto Garcia  <agarcia@igalia.com>
 
+	* src/hildon-window.c
+	(hildon_window_set_main_menu)
+	* src/hildon-stackable-window.c
+	(hildon_stackable_window_set_main_menu):
+	Updated documentation.
+
+2008-09-15  Alberto Garcia  <agarcia@igalia.com>
+
 	* src/hildon-date-selector.c (hildon_date_selector_finalize):
 	Don't free selector->priv manually.
 	Fixes: NB#88414
