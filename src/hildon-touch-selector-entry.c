@@ -315,9 +315,11 @@ hildon_touch_selector_entry_changed (HildonTouchSelector * selector,
   priv = HILDON_TOUCH_SELECTOR_ENTRY_GET_PRIVATE (selector);
 
   text = hildon_touch_selector_get_text_from_model (HILDON_TOUCH_SELECTOR_ENTRY (selector));
-  gtk_entry_set_text (GTK_ENTRY (priv->entry), text);
-  gtk_editable_select_region (GTK_EDITABLE (priv->entry), 0, -1);
-  g_free (text);
+  if (text != NULL) {
+    gtk_entry_set_text (GTK_ENTRY (priv->entry), text);
+    gtk_editable_select_region (GTK_EDITABLE (priv->entry), 0, -1);
+    g_free (text);
+  }
 }
 
 static void

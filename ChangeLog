@@ -1,3 +1,10 @@
+2008-09-16  Claudio Saavedra  <csaavedra@igalia.com>
+
+	* src/hildon-touch-selector-entry.c:
+	(hildon_touch_selector_entry_changed): Check if there is no text
+	selected before setting the entry text.
+	Fixes: NB#88576
+
 2008-09-15  Alberto Garcia  <agarcia@igalia.com>
 
 	* src/hildon-touch-selector.h
