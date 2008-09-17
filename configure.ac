@@ -25,7 +25,7 @@ AC_SUBST(API_VERSION_MAJOR)
 #    increment current, and set revision to 0.
 # 5. If any interfaces have been added since the last public release, then increment age.
 # 6. If any interfaces have been removed since the last public release, then set age to 0.  
-AS_LIBTOOL(HILDON, 20, 0, 0)
+AS_LIBTOOL(HILDON, 18, 1, 18)
 AM_INIT_AUTOMAKE
 
 AC_PROG_CC
