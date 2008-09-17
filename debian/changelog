@@ -1,3 +1,9 @@
+libhildon (2.1.10-2) unstable; urgency=low
+
+  * Revert bump of shared library version to avoid shared library load issues.
+
+ -- Claudio Saavedra <csaavedra@igalia.com>  Wed, 17 Sep 2008 10:52:21 +0300
+
 libhildon (2.1.10-1) unstable; urgency=low
 
   * Fixes: NB#88214 (HildonPannableArea wrong requisition)
