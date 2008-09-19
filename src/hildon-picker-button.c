@@ -91,6 +91,25 @@ hildon_picker_button_set_property (GObject * object, guint property_id,
 }
 
 static void
+hildon_picker_button_finalize (GObject * object)
+{
+  HildonPickerButtonPrivate *priv;
+
+  priv = GET_PRIVATE (object);
+
+  if (priv->selector) {
+    g_object_unref (priv->selector);
+    priv->selector = NULL;
+  }
+  if (priv->dialog) {
+    gtk_widget_destroy (priv->dialog);
+    priv->dialog = NULL;
+  }
+
+  G_OBJECT_CLASS (hildon_picker_button_parent_class)->finalize (object);
+}
+
+static void
 hildon_picker_button_clicked (GtkButton * button)
 {
   GtkWidget *parent;
@@ -142,6 +161,7 @@ hildon_picker_button_class_init (HildonPickerButtonClass * klass)
 
   object_class->get_property = hildon_picker_button_get_property;
   object_class->set_property = hildon_picker_button_set_property;
+  object_class->finalize = hildon_picker_button_finalize;
 
   button_class->clicked = hildon_picker_button_clicked;
 
@@ -221,6 +241,10 @@ hildon_picker_button_set_selector (HildonPickerButton * button,
   g_return_if_fail (HILDON_IS_TOUCH_SELECTOR (selector));
 
   priv = GET_PRIVATE (button);
+
+  if (priv->selector) {
+    g_object_unref (priv->selector);
+  }
 
   priv->selector = g_object_ref (selector);
 }
