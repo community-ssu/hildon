@@ -63,6 +63,10 @@ main (int argc, char **args)
   hildon_touch_selector_append_text (HILDON_TOUCH_SELECTOR (selector),
                                      "Australia");
 
+  /* Select any item, just to show that during selector's setting, the currently selected
+     item will be displayed in the button's value. */
+  hildon_touch_selector_set_active (HILDON_TOUCH_SELECTOR (selector), 0, 2);
+
   hildon_picker_button_set_selector (HILDON_PICKER_BUTTON (button),
                                      HILDON_TOUCH_SELECTOR (selector));
 

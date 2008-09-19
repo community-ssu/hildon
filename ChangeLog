@@ -1,5 +1,10 @@
 2008-09-19  Claudio Saavedra  <csaavedra@igalia.com>
 
+	* examples/hildon-picker-button-example.c: (main): Select an item
+	in the selector before setting it to the button.
+
+2008-09-19  Claudio Saavedra  <csaavedra@igalia.com>
+
 	* src/hildon-picker-button.c: (hildon_picker_button_set_selector):
 	Update button's value if the selector has an item active.
 
