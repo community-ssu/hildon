@@ -1,5 +1,10 @@
 2008-09-19  Claudio Saavedra  <csaavedra@igalia.com>
 
+	* po/Makefile.am: Install properly the mo files.
+	* po/en_GB.po: Update translation, to ease testing purposes.
+
+2008-09-19  Claudio Saavedra  <csaavedra@igalia.com>
+
 	* examples/hildon-picker-button-example.c: (main): Select an item
 	in the selector before setting it to the button.
 

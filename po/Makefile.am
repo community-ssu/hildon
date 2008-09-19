@@ -5,6 +5,8 @@ EXTRA_DIST 				= $(foreach po,$(languages),$(po).po) POTFILES.in README
 
 MAINTAINERCLEANFILES 			= Makefile.in POTFILES
 
+MO_FILE                                 = $(PACKAGE)-libs
+
 %.mo: %.po
 	msgfmt --statistics -v -o$(top_builddir)/po/$@ $(srcdir)/$<
 
@@ -21,10 +23,10 @@ merge:
 install-data-local: all
 	for mo in $(languages); do \
 		$(mkinstalldirs) $(DESTDIR)$(localedir)/$$mo/LC_MESSAGES; \
-		$(INSTALL_DATA) $(top_builddir)/po/$$mo.mo $(DESTDIR)$(localedir)/$$mo/LC_MESSAGES/$(PACKAGE).mo; \
+		$(INSTALL_DATA) $(top_builddir)/po/$$mo.mo $(DESTDIR)$(localedir)/$$mo/LC_MESSAGES/$(MO_FILE).mo; \
 	done
 
 uninstall-local:
 	for mo in $(languages); do \
-		rm -f $(DESTDIR)$(localedir)/$$mo/LC_MESSAGES/$(PACKAGE).mo; \
+		rm -f $(DESTDIR)$(localedir)/$$mo/LC_MESSAGES/$(MO_FILE).mo; \
 	done
