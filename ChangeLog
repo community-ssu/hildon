@@ -1,12 +1,13 @@
 2008-09-19  Claudio Saavedra  <csaavedra@igalia.com>
 
-	* src/hildon-picker-button.c: (+hildon_picker_button_finalize): unref the HildonTouchSelector
-	and destroy the underlying HildonPickerDialog.
+	* src/hildon-picker-button.c: (+hildon_picker_button_finalize): unref
+	the HildonTouchSelector	and destroy the underlying HildonPickerDialog.
 	(hildon_picker_button_class_init): Plug the finalize method.
-	(hildon_picker_button_set_selector): If there's a previously set selector, unref'it before
-	setting a new one.
+	(hildon_picker_button_set_selector): If there's a previously set
+	selector, unref'it before setting a new one.
 
-	Fixes: NB#88720 (HildonPickerButton leaks a reference to the HildonTouchSelector)
+	Fixes: NB#88720 (HildonPickerButton leaks a reference to the
+	HildonTouchSelector)
 
 2008-09-16  Claudio Saavedra  <csaavedra@igalia.com>
 
