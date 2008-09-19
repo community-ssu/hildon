@@ -1,5 +1,13 @@
 2008-09-19  Claudio Saavedra  <csaavedra@igalia.com>
 
+	* src/hildon-picker-button.c: (hildon_picker_button_set_selector):
+	Update button's value if the selector has an item active.
+
+	Fixes: NB#88718 (HildonPickerButton not synchronizing its initial
+	'value' with the selector)
+
+2008-09-19  Claudio Saavedra  <csaavedra@igalia.com>
+
 	* src/hildon-picker-button.c: (+hildon_picker_button_finalize): unref
 	the HildonTouchSelector	and destroy the underlying HildonPickerDialog.
 	(hildon_picker_button_class_init): Plug the finalize method.

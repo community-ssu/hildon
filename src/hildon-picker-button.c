@@ -236,6 +236,7 @@ hildon_picker_button_set_selector (HildonPickerButton * button,
                                    HildonTouchSelector * selector)
 {
   HildonPickerButtonPrivate *priv;
+  const gchar *value;
 
   g_return_if_fail (HILDON_IS_PICKER_BUTTON (button));
   g_return_if_fail (HILDON_IS_TOUCH_SELECTOR (selector));
@@ -247,6 +248,13 @@ hildon_picker_button_set_selector (HildonPickerButton * button,
   }
 
   priv->selector = g_object_ref (selector);
+
+  value = hildon_touch_selector_get_current_text (HILDON_TOUCH_SELECTOR (priv->selector));
+  if (value) {
+    hildon_button_set_value (HILDON_BUTTON (button), value);
+    g_signal_emit (HILDON_PICKER_BUTTON (button),
+                   picker_button_signals[VALUE_CHANGED], 0);
+  }
 }
 
 /**
