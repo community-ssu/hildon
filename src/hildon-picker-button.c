@@ -312,12 +312,13 @@ hildon_picker_button_set_active                 (HildonPickerButton * button,
                                                  gint index)
 {
   HildonTouchSelector *sel;
+  gchar *text;
   g_return_if_fail (HILDON_IS_PICKER_BUTTON (button));
 
   sel = hildon_picker_button_get_selector (button);
-
   hildon_touch_selector_set_active (sel, 0, index);
 
-  hildon_button_set_value (HILDON_BUTTON (button),
-                           hildon_touch_selector_get_current_text (sel));
+  text = hildon_touch_selector_get_current_text (sel);
+  hildon_button_set_value (HILDON_BUTTON (button), text);
+  g_free (text);
 }
