@@ -193,6 +193,13 @@ hildon_touch_selector_class_init (HildonTouchSelectorClass * class)
                                                          G_PARAM_READABLE));
 
   /* style properties */
+  /* We need to ensure fremantle mode for the treeview in order to work
+     properly. This is not about the appearance, this is about behaviour */
+  gtk_rc_parse_string ("style \"fremantle-htst\" {\n"
+                       "  GtkWidget::hildon-mode = 1\n"
+                       "} widget \"*.fremantle-htst\" style \"fremantle-htst\""
+                       "widget_class \"*<HildonPannableArea>.GtkTreeView\" style :highest \"fremantle-htst\"");
+
   g_type_class_add_private (object_class, sizeof (HildonTouchSelectorPrivate));
 }
 

@@ -1,3 +1,16 @@
+2008-09-22  Alejandro Pinheiro <apinheiro@igalia.com>
+
+	* src/hildon-touch-selector.c:
+	(hildon_touch_selector_class_init): added gtkrc bits in order to ensure
+	that the treeview inside the touch selector is in fremantle hildon mode
+	* examples/hildon-date-button-example.c
+	* examples/hildon-picker-button-multicolumn-example.c
+	* examples/hildon-touch-selector-entry-example.c
+	* examples/hildon-touch-selector-example.c
+	* examples/hildon-time-button-example.c
+	* examples/hildon-picker-button-example.c:
+	(main): Remove the gtkrc bits, now hadled by hildon-touch-selector.c
+
 2008-09-22  Claudio Saavedra  <csaavedra@igalia.com>
 
 	* examples/hildon-text-view-example.c: (main): Remove the
