@@ -33,8 +33,9 @@ struct                                          _HildonAppMenuPrivate
     GtkBox *vbox;
     GtkTable *table;
     GdkWindow *transfer_window;
-    int nitems;
     gboolean pressed_outside;
+    GList *buttons;
+    GList *filters;
 };
 
 

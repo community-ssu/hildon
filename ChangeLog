@@ -1,3 +1,17 @@
+2008-09-24  Alberto Garcia  <agarcia@igalia.com>
+
+	* src/hildon-app-menu-private.h
+	* src/hildon-app-menu.c
+	(hildon_app_menu_append, hildon_app_menu_add_filter)
+	(button_visibility_changed, hildon_app_menu_apply_style)
+	(hildon_app_menu_style_set, hildon_app_menu_construct_child)
+	(hildon_app_menu_init, hildon_app_menu_finalize): Update the
+	layout everytime a button (item or filter) is shown or hidden.
+
+	* src/hildon-stackable-window.c
+	(hildon_stackable_window_set_main_menu): Destroy the old menu when
+	setting a new one.
+
 2008-09-22  Alejandro Pinheiro <apinheiro@igalia.com>
 
 	* src/hildon-touch-selector.c:

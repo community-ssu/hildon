@@ -115,7 +115,7 @@ hildon_stackable_window_get_going_home          (HildonStackableWindow *self)
  *
  * Sets the menu to be used for this window. Pass %NULL to remove the
  * current menu. #HildonStackableWindow takes ownership of the passed
- * menu and you're not supposed to free it yourself anymore.
+ * menu and you're not supposed to free it or reuse it anymore.
  *
  * Note that #HildonStackableWindow widgets use #HildonAppMenu rather
  * than #GtkMenu, so you're not supposed to use
@@ -131,14 +131,12 @@ hildon_stackable_window_set_main_menu           (HildonStackableWindow *self,
     g_return_if_fail (!menu || HILDON_IS_APP_MENU (menu));
     priv = HILDON_STACKABLE_WINDOW_GET_PRIVATE (self);
 
-    /* Remove reference to old menu */
+    /* Destroy old menu */
     if (priv->app_menu)
-        g_object_unref (priv->app_menu);
+        gtk_widget_destroy (priv->app_menu);
 
     /* Add new menu */
     priv->app_menu = menu;
-    if (priv->app_menu)
-        g_object_ref (priv->app_menu);
 }
 
 static gboolean
