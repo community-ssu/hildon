@@ -66,11 +66,25 @@ hildon_app_menu_new                             (void);
 
 void
 hildon_app_menu_append                          (HildonAppMenu *menu,
-                                                 GtkButton *item);
+                                                 GtkButton     *item);
+
+void
+hildon_app_menu_prepend                         (HildonAppMenu *menu,
+                                                 GtkButton     *item);
+
+void
+hildon_app_menu_insert                          (HildonAppMenu *menu,
+                                                 GtkButton     *item,
+                                                 gint           position);
+
+void
+hildon_app_menu_reorder_child                   (HildonAppMenu *menu,
+                                                 GtkButton     *item,
+                                                 gint           position);
 
 void
 hildon_app_menu_add_filter                      (HildonAppMenu *menu,
-                                                 GtkButton *filter);
+                                                 GtkButton     *filter);
 
 G_END_DECLS
 

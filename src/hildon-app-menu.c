@@ -121,15 +121,17 @@ hildon_app_menu_new                             (void)
 }
 
 /**
- * hildon_app_menu_append:
+ * hildon_app_menu_insert:
  * @menu : A #HildonAppMenu
  * @item : A #GtkButton to add to the #HildonAppMenu
+ * @position : The position in the item list where @item is added (from 0 to n-1).
  *
- * Adds the @item to @menu.
+ * Adds @item to @menu at the position indicated by @position.
  */
 void
-hildon_app_menu_append                          (HildonAppMenu *menu,
-                                                 GtkButton *item)
+hildon_app_menu_insert                          (HildonAppMenu *menu,
+                                                 GtkButton     *item,
+                                                 gint           position)
 {
     HildonAppMenuPrivate *priv;
 
@@ -140,12 +142,70 @@ hildon_app_menu_append                          (HildonAppMenu *menu,
 
     /* Add the item to the menu */
     gtk_widget_show (GTK_WIDGET (item));
-    priv->buttons = g_list_append (priv->buttons, item);
+    priv->buttons = g_list_insert (priv->buttons, item, position);
     hildon_app_menu_construct_child (menu);
 
     /* Close the menu when the button is clicked */
     g_signal_connect_swapped (item, "clicked", G_CALLBACK (gtk_widget_hide), menu);
     g_signal_connect (item, "notify::visible", G_CALLBACK (button_visibility_changed), menu);
+}
+
+/**
+ * hildon_app_menu_append:
+ * @menu : A #HildonAppMenu
+ * @item : A #GtkButton to add to the #HildonAppMenu
+ *
+ * Adds @item to the end of the menu's item list.
+ */
+void
+hildon_app_menu_append                          (HildonAppMenu *menu,
+                                                 GtkButton     *item)
+{
+    hildon_app_menu_insert (menu, item, -1);
+}
+
+/**
+ * hildon_app_menu_prepend:
+ * @menu : A #HildonAppMenu
+ * @item : A #GtkButton to add to the #HildonAppMenu
+ *
+ * Adds @item to the beginning of the menu's item list.
+ */
+void
+hildon_app_menu_prepend                         (HildonAppMenu *menu,
+                                                 GtkButton     *item)
+{
+    hildon_app_menu_insert (menu, item, 0);
+}
+
+/**
+ * hildon_app_menu_reorder_child:
+ * @menu : A #HildonAppMenu
+ * @item : A #GtkButton to move
+ * @position : The new position to place @item (from 0 to n-1).
+ *
+ * Moves a #GtkButton to a new position within #HildonAppMenu.
+ */
+void
+hildon_app_menu_reorder_child                   (HildonAppMenu *menu,
+                                                 GtkButton     *item,
+                                                 gint           position)
+{
+    HildonAppMenuPrivate *priv;
+
+    g_return_if_fail (HILDON_IS_APP_MENU (menu));
+    g_return_if_fail (GTK_IS_BUTTON (item));
+    g_return_if_fail (position >= 0);
+
+    priv = HILDON_APP_MENU_GET_PRIVATE (menu);
+
+    g_return_if_fail (g_list_find (priv->buttons, item));
+
+    /* Move the item */
+    priv->buttons = g_list_remove (priv->buttons, item);
+    priv->buttons = g_list_insert (priv->buttons, item, position);
+
+    hildon_app_menu_construct_child (menu);
 }
 
 /**

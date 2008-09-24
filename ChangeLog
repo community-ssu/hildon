@@ -1,3 +1,11 @@
+2008-09-24  Alberto Garcia  <agarcia@igalia.com>
+
+	* src/hildon-app-menu.h
+	* src/hildon-app-menu.c
+	(hildon_app_menu_insert, hildon_app_menu_reorder_child)
+	(hildon_app_menu_append, hildon_app_menu_prepend):
+	New methods to prepend, insert and move items in the menu.
+
 2008-09-24  Claudio Saavedra  <csaavedra@igalia.com>
 
 	* src/hildon-wizard-dialog.c:
