@@ -89,6 +89,10 @@
 #include                                        "hildon-app-menu.h"
 #include                                        "hildon-app-menu-private.h"
 
+enum {
+    PROP_COLUMNS = 1
+};
+
 static GdkWindow *
 grab_transfer_window_get                        (GtkWidget *widget);
 
@@ -170,6 +174,44 @@ hildon_app_menu_add_filter                      (HildonAppMenu *menu,
     /* Close the menu when the button is clicked */
     g_signal_connect_swapped (filter, "clicked", G_CALLBACK (gtk_widget_hide), menu);
     g_signal_connect (filter, "notify::visible", G_CALLBACK (button_visibility_changed), menu);
+}
+
+static void
+hildon_app_menu_set_columns                     (HildonAppMenu *menu,
+                                                 guint          columns)
+{
+    HildonAppMenuPrivate *priv;
+
+    g_warning ("This property will be removed in the future. See documentation for details");
+
+    g_return_if_fail (HILDON_IS_APP_MENU (menu));
+    g_return_if_fail (columns > 0);
+
+    priv = HILDON_APP_MENU_GET_PRIVATE (menu);
+
+    if (columns != priv->columns) {
+        priv->columns = columns;
+        hildon_app_menu_construct_child (menu);
+    }
+}
+
+static void
+hildon_app_menu_set_property                    (GObject      *object,
+                                                 guint         prop_id,
+                                                 const GValue *value,
+                                                 GParamSpec   *pspec)
+{
+    HildonAppMenu *menu = HILDON_APP_MENU (object);
+
+    switch (prop_id)
+    {
+    case PROP_COLUMNS:
+        hildon_app_menu_set_columns (menu, g_value_get_uint (value));
+        break;
+    default:
+        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+        break;
+    }
 }
 
 static void
@@ -411,7 +453,7 @@ hildon_app_menu_construct_child                 (HildonAppMenu *menu)
     /* Create boxes and tables */
     priv->filters_hbox = GTK_BOX (gtk_hbox_new (TRUE, 0));
     priv->vbox = GTK_BOX (gtk_vbox_new (FALSE, 0));
-    priv->table = GTK_TABLE (gtk_table_new (1, 2, TRUE));
+    priv->table = GTK_TABLE (gtk_table_new (1, priv->columns, TRUE));
 
     /* Align the filters to the center */
     alignment = gtk_alignment_new (0.5, 0.5, 0, 0);
@@ -431,7 +473,7 @@ hildon_app_menu_construct_child                 (HildonAppMenu *menu)
         GtkWidget *item = GTK_WIDGET (iter->data);
         if (GTK_WIDGET_VISIBLE (item)) {
             gtk_table_attach_defaults (priv->table, item, col, col + 1, row, row + 1);
-            if (++col == 2) {
+            if (++col == priv->columns) {
                 col = 0;
                 row++;
             }
@@ -465,6 +507,7 @@ hildon_app_menu_init                            (HildonAppMenu *menu)
     priv->pressed_outside = FALSE;
     priv->buttons = NULL;
     priv->filters = NULL;
+    priv->columns = 2;
 
     hildon_app_menu_construct_child (menu);
 
@@ -493,6 +536,7 @@ hildon_app_menu_class_init                      (HildonAppMenuClass *klass)
     GtkWidgetClass *widget_class = (GtkWidgetClass *)klass;
 
     gobject_class->finalize = hildon_app_menu_finalize;
+    gobject_class->set_property = hildon_app_menu_set_property;
     widget_class->map = hildon_app_menu_map;
     widget_class->unmap = hildon_app_menu_unmap;
     widget_class->realize = hildon_app_menu_realize;
@@ -501,6 +545,19 @@ hildon_app_menu_class_init                      (HildonAppMenuClass *klass)
     widget_class->style_set = hildon_app_menu_style_set;
 
     g_type_class_add_private (klass, sizeof (HildonAppMenuPrivate));
+
+    g_object_class_install_property (
+        gobject_class,
+        PROP_COLUMNS,
+        g_param_spec_uint (
+            "columns",
+            "Columns",
+            "Number of columns used to display menu items. "
+            "IMPORTANT: this is a temporary property. Don't use unless really needed. "
+            "The number of columns will be managed automatically in the future, "
+            "and this property will be removed.",
+            1, G_MAXUINT, 2,
+            G_PARAM_WRITABLE));
 
     gtk_widget_class_install_style_property (
         widget_class,

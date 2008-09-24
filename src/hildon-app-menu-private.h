@@ -36,6 +36,7 @@ struct                                          _HildonAppMenuPrivate
     gboolean pressed_outside;
     GList *buttons;
     GList *filters;
+    guint columns;
 };
 
 
