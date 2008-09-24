@@ -1,5 +1,10 @@
 2008-09-24  Alberto Garcia  <agarcia@igalia.com>
 
+	* src/hildon-stackable-window.c
+	(hildon_stackable_window_set_main_menu): Fix compilation warning.
+
+2008-09-24  Alberto Garcia  <agarcia@igalia.com>
+
 	* src/hildon-app-menu-private.h
 	* src/hildon-app-menu.c (hildon_app_menu_set_columns)
 	(hildon_app_menu_set_property, hildon_app_menu_construct_child)

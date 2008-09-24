@@ -133,7 +133,7 @@ hildon_stackable_window_set_main_menu           (HildonStackableWindow *self,
 
     /* Destroy old menu */
     if (priv->app_menu)
-        gtk_widget_destroy (priv->app_menu);
+        gtk_widget_destroy (GTK_WIDGET (priv->app_menu));
 
     /* Add new menu */
     priv->app_menu = menu;
