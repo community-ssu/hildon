@@ -484,11 +484,12 @@ hildon_note_rebuild                             (HildonNote *note)
     {
         case HILDON_NOTE_TYPE_CONFIRMATION:
             priv->okButton = gtk_dialog_add_button (dialog,
-                    _("ecdg_bd_confirmation_note_ok"), GTK_RESPONSE_OK);
+                    _("wdgt_bd_yes"), GTK_RESPONSE_OK);
             priv->cancelButton = gtk_dialog_add_button (dialog,
-                    _("ecdg_bd_confirmation_note_cancel"), GTK_RESPONSE_CANCEL);
+                    _("wdgt_bd_no"), GTK_RESPONSE_CANCEL);
+            gtk_widget_set_no_show_all (priv->cancelButton, FALSE);
+            break;
 
-            /* Fall through */
         case HILDON_NOTE_TYPE_CONFIRMATION_BUTTON:
             gtk_image_set_from_icon_name (GTK_IMAGE (priv->icon),
                     HILDON_NOTE_CONFIRMATION_ICON, 
@@ -496,15 +497,17 @@ hildon_note_rebuild                             (HildonNote *note)
             break;
 
         case HILDON_NOTE_TYPE_INFORMATION_THEME:
-        case HILDON_NOTE_TYPE_INFORMATION:
             gtk_image_set_from_icon_name (GTK_IMAGE (priv->icon),
                     HILDON_NOTE_INFORMATION_ICON,
                     HILDON_ICON_SIZE_BIG_NOTE);
             break;
 
+      case HILDON_NOTE_TYPE_INFORMATION:
+            break;
+
         case HILDON_NOTE_TYPE_PROGRESSBAR:
             priv->cancelButton = gtk_dialog_add_button (dialog,
-                    _("ecdg_bd_cancel_note_cancel"), GTK_RESPONSE_CANCEL);
+                    _("wdgt_bd_stop"), GTK_RESPONSE_CANCEL);
             IsHorizontal = FALSE;
             break;
 
@@ -786,7 +789,7 @@ hildon_note_set_button_text                     (HildonNote *note,
     if (priv->okButton) {
         gtk_button_set_label (GTK_BUTTON (priv->okButton), text);
         gtk_button_set_label (GTK_BUTTON (priv->cancelButton),
-                _("ecdg_bd_confirmation_note_cancel"));
+                _("wdgt_bd_no"));
     } else {
         gtk_button_set_label (GTK_BUTTON (priv->cancelButton), text);
     }
