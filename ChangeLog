@@ -1,5 +1,20 @@
 2008-09-24  Claudio Saavedra  <csaavedra@igalia.com>
 
+	* src/hildon-wizard-dialog.c:
+
+	(hildon_wizard_dialog_init): Update logical IDs and remove cancel
+	button.
+	(create_title): Update logical IDs and related code.
+	(response): No need to handle HILDON_WIZARD_DIALOG_CANCEL.
+
+	* src/hildon-wizard-dialog.h: Note that
+	HILDON_WIZARD_DIALOG_CANCEL should be marked as deprecated at some
+	point, as it is not used anymore.
+
+	Fixes: NB#88887 (Hildon Wizard changes for Hildon2.2)
+
+2008-09-24  Claudio Saavedra  <csaavedra@igalia.com>
+
 	* src/hildon-note.c:
 	(hildon_note_rebuild): Update logical IDs. Ensure "Cancel" button is
 	shown.  Do not display an icon in confirmation notes nor information

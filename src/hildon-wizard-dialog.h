@@ -56,6 +56,7 @@ typedef struct                                  _HildonWizardDialogClass HildonW
 
 typedef enum 
 {
+  /* HILDON_WIZARD_DIALOG_CANCEL should be marked as deprecated */
     HILDON_WIZARD_DIALOG_CANCEL = GTK_RESPONSE_CANCEL,
     HILDON_WIZARD_DIALOG_PREVIOUS = 0,
     HILDON_WIZARD_DIALOG_NEXT,

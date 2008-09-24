@@ -29,15 +29,15 @@
  * process wizard.
  *
  * #HildonWizardDialog is a widget to create a guided installation
- * process. The dialog has four standard buttons, previous, next,
- * finish, cancel, and contains several pages with optional icons.
+ * process. The dialog has three standard buttons, previous, next,
+ * finish, and contains several pages with optional icons.
  * Response buttons are dimmed/undimmed automatically and the standard
  * icon is shown/hidden in response to page navigation. The notebook
  * widget provided by users contains the actual wizard pages.
  * 
  * Using of the API is very simple, it has only one function to create it
  * and the rest of it is handled by developers notebook.
- * Also the response is returned, either cancel or finnish.
+ * Also the response is returned, either cancel or finish.
  * Next and previous buttons are handled by the wizard dialog it self, by
  * switching the page either forward or backward in the notebook.
  */
@@ -251,11 +251,10 @@ hildon_wizard_dialog_init                       (HildonWizardDialog *wizard_dial
     gtk_box_pack_start_defaults (GTK_BOX (priv->box), GTK_WIDGET (vbox));
     gtk_box_pack_start (GTK_BOX (vbox), GTK_WIDGET (priv->image), FALSE, FALSE, 0);
 
-    /* Add response buttons: finish, previous, next, cancel */
-    gtk_dialog_add_button (dialog, _("ecdg_bd_wizard_finish"), HILDON_WIZARD_DIALOG_FINISH);
-    gtk_dialog_add_button (dialog, _("ecdg_bd_wizard_previous"), HILDON_WIZARD_DIALOG_PREVIOUS);
-    gtk_dialog_add_button (dialog, _("ecdg_bd_wizard_next"), HILDON_WIZARD_DIALOG_NEXT);
-    gtk_dialog_add_button (dialog, _("ecdg_bd_wizard_cancel"), HILDON_WIZARD_DIALOG_CANCEL);
+    /* Add response buttons: finish, previous, next */
+    gtk_dialog_add_button (dialog, _("wdgt_bd_finish"), HILDON_WIZARD_DIALOG_FINISH);
+    gtk_dialog_add_button (dialog, _("wdgt_bd_previous"), HILDON_WIZARD_DIALOG_PREVIOUS);
+    gtk_dialog_add_button (dialog, _("wdgt_bd_next"), HILDON_WIZARD_DIALOG_NEXT);
 
     /* Set initial button states: previous and finish buttons are disabled */
     make_buttons_sensitive (wizard_dialog, FALSE, FALSE, TRUE);
@@ -387,14 +386,13 @@ create_title                                    (HildonWizardDialog *wizard_dial
 
     /* the welcome title on the initial page */
     if (current == 0) {
-        str = g_strdup_printf (_("ecdg_ti_wizard_welcome"), 
-                priv->wizard_name, pages);
+        str = g_strdup_printf (_("ecdg_ti_wizard_welcome"),
+                priv->wizard_name);
     } else {
         const gchar *steps = gtk_notebook_get_tab_label_text (notebook,
                 gtk_notebook_get_nth_page (notebook, current));
 
-        str = g_strdup_printf (_("ecdg_ti_wizard_step"), 
-                priv->wizard_name, current + 1, pages, steps);
+        str = g_strdup_printf (_("%s: %s"), priv->wizard_name, steps);
     }
 
     /* Update the dialog to display the generated title */
@@ -443,7 +441,6 @@ response                                        (HildonWizardDialog *wizard_dial
             gtk_notebook_next_page (notebook); /* go to next page */
             break;
 
-        case HILDON_WIZARD_DIALOG_CANCEL:      
         case HILDON_WIZARD_DIALOG_FINISH:      
             return;
 
