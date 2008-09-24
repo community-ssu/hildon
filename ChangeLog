@@ -1,3 +1,18 @@
+2008-09-24  Claudio Saavedra  <csaavedra@igalia.com>
+
+	Patch contributed by Kimmo Hämäläinen (kimmo.hamalainen@nokia.com)
+
+	* examples/hildon-note-example.c: (on_information_clicked),
+	(on_confirmation_clicked), (on_progress_clicked), (main): Add
+	debugging information.
+	* src/hildon-note-private.h: Remove close_if_pressed_outside,
+	not needed anymore.
+	* src/hildon-note.c: (hildon_note_class_init), (hildon_note_init),
+	(hildon_note_rebuild): Remove special handling of tapping outside/inside
+	in order to close: this will be handled by the WM from now on.
+
+	Fixes: NB#88891 (Allow WM to handle properly close-on-tap-outside behavior)
+
 2008-09-24  Alberto Garcia  <agarcia@igalia.com>
 
 	* src/hildon-app-menu-private.h
