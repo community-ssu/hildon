@@ -1,8 +1,9 @@
 2008-09-24  Claudio Saavedra  <csaavedra@igalia.com>
 
 	* src/hildon-note.c:
-	(hildon_note_rebuild): Update logical IDs. Ensure "Cancel" button is shown.
-	Do not display an icon in confirmation notes nor information notes.
+	(hildon_note_rebuild): Update logical IDs. Ensure "Cancel" button is
+	shown.  Do not display an icon in confirmation notes nor information
+	notes.
 	(hildon_note_set_button_text): Update logical ID for cancel button.
 
 	Fixes: NB#88850 (Update HildonNote button strings + signals)
