@@ -59,6 +59,7 @@ noinst_PROGRAMS				= hildon-window-example				\
 					  hildon-time-button-example			\
 					  hildon-check-button-example			\
 					  hildon-touch-selector-example			\
+					  hildon-touch-selector-multi-cells-example	\
 					  hildon-touch-selector-entry-example
 
 # Hildon window
@@ -350,6 +351,11 @@ hildon_check_button_example_SOURCES	= hildon-check-button-example.c
 hildon_touch_selector_example_LDADD	= $(HILDON_OBJ_LIBS)
 hildon_touch_selector_example_CFLAGS	= $(HILDON_OBJ_CFLAGS)
 hildon_touch_selector_example_SOURCES	= hildon-touch-selector-example.c
+
+# Hildon touch picker with several cells per column
+hildon_touch_selector_multi_cells_example_LDADD		= $(HILDON_OBJ_LIBS)
+hildon_touch_selector_multi_cells_example_CFLAGS	= $(HILDON_OBJ_CFLAGS)
+hildon_touch_selector_multi_cells_example_SOURCES	= hildon-touch-selector-multi-cells-example.c
 
 # Hildon touch selector with entry
 hildon_touch_selector_entry_example_LDADD	= $(HILDON_OBJ_LIBS)

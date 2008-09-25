@@ -22,6 +22,7 @@
 #define __HILDON_TOUCH_SELECTOR_H__
 
 #include <gtk/gtk.h>
+#include "hildon-touch-selector-column.h"
 
 G_BEGIN_DECLS
 
@@ -80,10 +81,12 @@ void hildon_touch_selector_insert_text    (HildonTouchSelector * selector,
                                           gint position, const gchar * text);
 
 /* column related  */
-gboolean hildon_touch_selector_append_text_column     (HildonTouchSelector * selector,
+HildonTouchSelectorColumn*
+hildon_touch_selector_append_text_column              (HildonTouchSelector * selector,
                                                        GtkTreeModel * model, gboolean center);
 
-gboolean hildon_touch_selector_append_column          (HildonTouchSelector * selector,
+HildonTouchSelectorColumn*
+hildon_touch_selector_append_column                   (HildonTouchSelector * selector,
                                                        GtkTreeModel * model,
                                                        GtkCellRenderer * cell_renderer,
                                                        ...);
@@ -103,6 +106,10 @@ void hildon_touch_selector_set_column_selection_mode  (HildonTouchSelector * sel
 
 HildonTouchSelectorSelectionMode
 hildon_touch_selector_get_column_selection_mode       (HildonTouchSelector * selector);
+
+HildonTouchSelectorColumn *
+hildon_touch_selector_get_column                      (HildonTouchSelector * selector,
+                                                       gint column);
 
 /* get/set active item */
 void hildon_touch_selector_set_active           (HildonTouchSelector *selector,

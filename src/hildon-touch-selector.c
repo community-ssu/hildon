@@ -45,6 +45,9 @@
  *
  * If you need a selector widget that also accepts user inputs, you
  * can use #HildonTouchSelectorEntry.
+ *
+ * Internally it uses a #GtkTreeView, but each one has only a #GtkTreeViewColumn,
+ * as the column management is made by #HildonTouchSelector
  */
 
 #ifdef HAVE_CONFIG_H
@@ -69,12 +72,11 @@ G_DEFINE_TYPE (HildonTouchSelector, hildon_touch_selector, GTK_TYPE_VBOX)
 /*
  * Struct to maintain the data of each column. The columns are the elements
  * of the widget that belongs properly to the selection behaviour. As
- * the selector contents are arranged in a #GtkHBox, you can add more widgets, like buttons etc.
- * between the columns, but this doesn't belongs to the selection
- * logic
+ * the selector contents are arranged in a #GtkHBox, you can add more widgets,
+ * like buttons etc. between the columns, but this doesn't belongs to the
+ * selection logic
  */
-typedef struct _SelectorColumn SelectorColumn;
-struct _SelectorColumn
+struct _HildonTouchSelectorColumnPrivate
 {
   HildonTouchSelector *parent;    /* the selector that contains this column */
   GtkTreeModel *model;
@@ -109,27 +111,56 @@ static void hildon_touch_selector_get_property (GObject * object,
                                                 GValue * value, GParamSpec * pspec);
 
 /* gtkwidget */
-static void hildon_touch_selector_map (GtkWidget * widget);
+static void hildon_touch_selector_map           (GtkWidget * widget);
 
 /* gtkcontainer */
-static void hildon_touch_selector_remove (GtkContainer * container,
-                                          GtkWidget * widget);
+static void hildon_touch_selector_remove        (GtkContainer * container,
+                                                 GtkWidget * widget);
 /* private functions */
-static void _selection_changed_cb (GtkTreeSelection * selection,
-                                   gpointer user_data);
-static gchar *_default_print_func (HildonTouchSelector * selector);
+static void _selection_changed_cb               (GtkTreeSelection * selection,
+                                                 gpointer user_data);
+static gchar *_default_print_func               (HildonTouchSelector * selector);
 
-static SelectorColumn *_create_new_column (HildonTouchSelector * selector,
-                                           GtkTreeModel * model,
-                                           GtkCellRenderer * renderer,
-                                           va_list args);
-static gboolean _hildon_touch_selector_center_on_selected_items (gpointer data);
+static HildonTouchSelectorColumn *_create_new_column (HildonTouchSelector * selector,
+                                                 GtkTreeModel * model,
+                                                 GtkCellRenderer * renderer,
+                                                 va_list args);
+static gboolean
+_hildon_touch_selector_center_on_selected_items (gpointer data);
 
 static void
-_hildon_touch_selector_set_model (HildonTouchSelector * selector,
-                                  gint num_column, GtkTreeModel * model);
+_hildon_touch_selector_set_model                (HildonTouchSelector * selector,
+                                                 gint num_column,
+                                                 GtkTreeModel * model);
 static gboolean
-_hildon_touch_selector_has_multiple_selection (HildonTouchSelector * selector);
+_hildon_touch_selector_has_multiple_selection   (HildonTouchSelector * selector);
+
+/* GtkCellLayout implementation (HildonTouchSelectorColumn)*/
+static void hildon_touch_selector_column_cell_layout_init         (GtkCellLayoutIface      *iface);
+
+static void hildon_touch_selector_column_cell_layout_pack_start   (GtkCellLayout         *cell_layout,
+                                                                   GtkCellRenderer       *cell,
+                                                                   gboolean               expand);
+static void hildon_touch_selector_column_cell_layout_pack_end     (GtkCellLayout         *cell_layout,
+                                                                   GtkCellRenderer       *cell,
+                                                                   gboolean               expand);
+static void hildon_touch_selector_column_cell_layout_clear        (GtkCellLayout         *cell_layout);
+static void hildon_touch_selector_column_cell_layout_add_attribute(GtkCellLayout         *cell_layout,
+                                                                   GtkCellRenderer       *cell,
+                                                                   const gchar           *attribute,
+                                                                   gint                   column);
+static void hildon_touch_selector_column_cell_layout_set_cell_data_func (GtkCellLayout         *cell_layout,
+                                                                         GtkCellRenderer       *cell,
+                                                                         GtkCellLayoutDataFunc  func,
+                                                                         gpointer               func_data,
+                                                                         GDestroyNotify         destroy);
+static void hildon_touch_selector_column_cell_layout_clear_attributes   (GtkCellLayout         *cell_layout,
+                                                                         GtkCellRenderer       *cell);
+static void hildon_touch_selector_column_cell_layout_reorder       (GtkCellLayout         *cell_layout,
+                                                                    GtkCellRenderer       *cell,
+                                                                    gint                   position);
+static GList *hildon_touch_selector_column_cell_layout_get_cells   (GtkCellLayout         *cell_layout);
+
 
 static void
 hildon_touch_selector_class_init (HildonTouchSelectorClass * class)
@@ -261,7 +292,7 @@ hildon_touch_selector_remove (GtkContainer * container, GtkWidget * widget)
   HildonTouchSelector *selector = NULL;
   GSList *iter = NULL;
   gint position = 0;
-  SelectorColumn *current_column = NULL;
+  HildonTouchSelectorColumn *current_column = NULL;
   gint num_columns = 0;
 
   g_return_if_fail (HILDON_IS_TOUCH_SELECTOR (container));
@@ -274,8 +305,8 @@ hildon_touch_selector_remove (GtkContainer * container, GtkWidget * widget)
   iter = selector->priv->columns;
   position = 0;
   while (iter) {
-    current_column = (SelectorColumn *) iter->data;
-    if (widget == current_column->panarea) {
+    current_column = HILDON_TOUCH_SELECTOR_COLUMN (iter->data);
+    if (widget == current_column->priv->panarea) {
       current_column = g_slist_nth_data (selector->priv->columns, position);
 
       selector->priv->columns = g_slist_remove (selector->priv->columns,
@@ -383,13 +414,13 @@ static void
 _selection_changed_cb (GtkTreeSelection * selection, gpointer user_data)
 {
   HildonTouchSelector *selector = NULL;
-  SelectorColumn *column = NULL;
+  HildonTouchSelectorColumn *column = NULL;
   gint num_column = -1;
 
-  column = (SelectorColumn *) user_data;
-  g_return_if_fail (HILDON_IS_TOUCH_SELECTOR (column->parent));
+  column = HILDON_TOUCH_SELECTOR_COLUMN (user_data);
+  g_return_if_fail (HILDON_IS_TOUCH_SELECTOR (column->priv->parent));
 
-  selector = column->parent;
+  selector = column->priv->parent;
 
   num_column = g_slist_index (selector->priv->columns, column);
 
@@ -397,12 +428,12 @@ _selection_changed_cb (GtkTreeSelection * selection, gpointer user_data)
 }
 
 
-static SelectorColumn *
+static HildonTouchSelectorColumn *
 _create_new_column (HildonTouchSelector * selector,
                     GtkTreeModel * model,
                     GtkCellRenderer * renderer, va_list args)
 {
-  SelectorColumn *new_column = NULL;
+  HildonTouchSelectorColumn *new_column = NULL;
   GtkTreeViewColumn *tree_column = NULL;
   GtkTreeView *tv = NULL;
   GtkWidget *panarea = NULL;
@@ -428,19 +459,19 @@ _create_new_column (HildonTouchSelector * selector,
 
   gtk_tree_view_append_column (GTK_TREE_VIEW (tv), tree_column);
 
-  new_column = (SelectorColumn *) g_malloc0 (sizeof (SelectorColumn));
-  new_column->parent = selector;
+  new_column = g_object_new (HILDON_TYPE_TOUCH_SELECTOR_COLUMN, NULL);
+  new_column->priv->parent = selector;
 
   panarea = hildon_pannable_area_new ();
 
-  g_object_set (G_OBJECT (panarea), "vscrollbar-policy", GTK_POLICY_NEVER, 
+  g_object_set (G_OBJECT (panarea), "vscrollbar-policy", GTK_POLICY_NEVER,
                 "initial-hint", FALSE, NULL);
 
   gtk_container_add (GTK_CONTAINER (panarea), GTK_WIDGET (tv));
 
-  new_column->model = model;
-  new_column->tree_view = tv;
-  new_column->panarea = panarea;
+  new_column->priv->model = model;
+  new_column->priv->tree_view = tv;
+  new_column->priv->panarea = panarea;
 
   selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (tv));
   gtk_tree_selection_set_mode (selection, GTK_SELECTION_BROWSE);
@@ -457,6 +488,172 @@ _create_new_column (HildonTouchSelector * selector,
                     G_CALLBACK (_selection_changed_cb), new_column);
 
   return new_column;
+}
+
+
+/* ------------------------ HildonTouchSelectorColumn implementation ---------------------- */
+G_DEFINE_TYPE_WITH_CODE (HildonTouchSelectorColumn, hildon_touch_selector_column, G_TYPE_OBJECT,
+			 G_IMPLEMENT_INTERFACE (GTK_TYPE_CELL_LAYOUT,
+						hildon_touch_selector_column_cell_layout_init))
+
+static void
+hildon_touch_selector_column_class_init (HildonTouchSelectorColumnClass *class)
+{
+  GObjectClass *object_class;
+
+  object_class = (GObjectClass*) class;
+
+  g_type_class_add_private (object_class, sizeof (HildonTouchSelectorColumnPrivate));
+}
+
+static void
+hildon_touch_selector_column_init (HildonTouchSelectorColumn *column)
+{
+  column->priv = G_TYPE_INSTANCE_GET_PRIVATE (column, HILDON_TYPE_TOUCH_SELECTOR_COLUMN,
+                                              HildonTouchSelectorColumnPrivate);
+}
+
+
+static void
+hildon_touch_selector_column_cell_layout_init (GtkCellLayoutIface      *iface)
+{
+  iface->pack_start         = hildon_touch_selector_column_cell_layout_pack_start;
+  iface->pack_end           = hildon_touch_selector_column_cell_layout_pack_end;
+  iface->clear              = hildon_touch_selector_column_cell_layout_clear;
+  iface->add_attribute      = hildon_touch_selector_column_cell_layout_add_attribute;
+  iface->set_cell_data_func = hildon_touch_selector_column_cell_layout_set_cell_data_func;
+  iface->clear_attributes   = hildon_touch_selector_column_cell_layout_clear_attributes;
+  iface->reorder            = hildon_touch_selector_column_cell_layout_reorder;
+  iface->get_cells          = hildon_touch_selector_column_cell_layout_get_cells;
+}
+
+static void
+hildon_touch_selector_column_cell_layout_pack_start (GtkCellLayout         *cell_layout,
+                                               GtkCellRenderer       *cell,
+                                               gboolean               expand)
+{
+  HildonTouchSelectorColumn *sel_column = NULL;
+  GtkTreeViewColumn *view_column = NULL;
+
+  g_return_if_fail (HILDON_IS_TOUCH_SELECTOR_COLUMN (cell_layout));
+  sel_column = HILDON_TOUCH_SELECTOR_COLUMN (cell_layout);
+
+  view_column = gtk_tree_view_get_column (sel_column->priv->tree_view, 0);
+
+  gtk_cell_layout_pack_start (GTK_CELL_LAYOUT(view_column), cell, expand);
+
+}
+
+static void
+hildon_touch_selector_column_cell_layout_pack_end (GtkCellLayout         *cell_layout,
+                                             GtkCellRenderer       *cell,
+                                             gboolean               expand)
+{
+  HildonTouchSelectorColumn *sel_column = NULL;
+  GtkTreeViewColumn *view_column = NULL;
+
+  g_return_if_fail (HILDON_IS_TOUCH_SELECTOR_COLUMN (cell_layout));
+  sel_column = HILDON_TOUCH_SELECTOR_COLUMN (cell_layout);
+
+  view_column = gtk_tree_view_get_column (sel_column->priv->tree_view, 0);
+
+  gtk_cell_layout_pack_end (GTK_CELL_LAYOUT(view_column), cell, expand);
+}
+
+static void
+hildon_touch_selector_column_cell_layout_clear (GtkCellLayout         *cell_layout)
+{
+  HildonTouchSelectorColumn *sel_column = NULL;
+  GtkTreeViewColumn *view_column = NULL;
+
+  g_return_if_fail (HILDON_IS_TOUCH_SELECTOR_COLUMN (cell_layout));
+  sel_column = HILDON_TOUCH_SELECTOR_COLUMN (cell_layout);
+
+  view_column = gtk_tree_view_get_column (sel_column->priv->tree_view, 0);
+
+  gtk_cell_layout_clear (GTK_CELL_LAYOUT(view_column));
+}
+
+static void
+hildon_touch_selector_column_cell_layout_add_attribute (GtkCellLayout         *cell_layout,
+                                                  GtkCellRenderer       *cell,
+                                                  const gchar           *attribute,
+                                                  gint                   column)
+{
+  HildonTouchSelectorColumn *sel_column = NULL;
+  GtkTreeViewColumn *view_column = NULL;
+
+  g_return_if_fail (HILDON_IS_TOUCH_SELECTOR_COLUMN (cell_layout));
+  sel_column = HILDON_TOUCH_SELECTOR_COLUMN (cell_layout);
+
+  view_column = gtk_tree_view_get_column (sel_column->priv->tree_view, 0);
+
+  gtk_cell_layout_add_attribute (GTK_CELL_LAYOUT(view_column), cell, attribute, column);
+}
+
+
+static void
+hildon_touch_selector_column_cell_layout_set_cell_data_func (GtkCellLayout         *cell_layout,
+                                                       GtkCellRenderer       *cell,
+                                                       GtkCellLayoutDataFunc  func,
+                                                       gpointer               func_data,
+                                                       GDestroyNotify         destroy)
+{
+  HildonTouchSelectorColumn *sel_column = NULL;
+  GtkTreeViewColumn *view_column = NULL;
+
+  g_return_if_fail (HILDON_IS_TOUCH_SELECTOR_COLUMN (cell_layout));
+  sel_column = HILDON_TOUCH_SELECTOR_COLUMN (cell_layout);
+
+  view_column = gtk_tree_view_get_column (sel_column->priv->tree_view, 0);
+
+  gtk_cell_layout_set_cell_data_func (GTK_CELL_LAYOUT(view_column), cell, func,
+                                      func_data, destroy);
+}
+
+static void
+hildon_touch_selector_column_cell_layout_clear_attributes (GtkCellLayout         *cell_layout,
+                                                     GtkCellRenderer       *cell)
+{
+  HildonTouchSelectorColumn *sel_column = NULL;
+  GtkTreeViewColumn *view_column = NULL;
+
+  g_return_if_fail (HILDON_IS_TOUCH_SELECTOR_COLUMN (cell_layout));
+  sel_column = HILDON_TOUCH_SELECTOR_COLUMN (cell_layout);
+
+  view_column = gtk_tree_view_get_column (sel_column->priv->tree_view, 0);
+
+  gtk_cell_layout_clear_attributes (GTK_CELL_LAYOUT (view_column), cell);
+}
+
+static void
+hildon_touch_selector_column_cell_layout_reorder (GtkCellLayout         *cell_layout,
+                                            GtkCellRenderer       *cell,
+                                            gint                   position)
+{
+  HildonTouchSelectorColumn *sel_column = NULL;
+  GtkTreeViewColumn *view_column = NULL;
+
+  g_return_if_fail (HILDON_IS_TOUCH_SELECTOR_COLUMN (cell_layout));
+  sel_column = HILDON_TOUCH_SELECTOR_COLUMN (cell_layout);
+
+  view_column = gtk_tree_view_get_column (sel_column->priv->tree_view, 0);
+
+  gtk_cell_layout_reorder (GTK_CELL_LAYOUT(view_column), cell, position);
+}
+
+static GList*
+hildon_touch_selector_column_cell_layout_get_cells (GtkCellLayout         *cell_layout)
+{
+  HildonTouchSelectorColumn *sel_column = NULL;
+  GtkTreeViewColumn *view_column = NULL;
+
+  g_return_val_if_fail (HILDON_IS_TOUCH_SELECTOR_COLUMN (cell_layout), NULL);
+  sel_column = HILDON_TOUCH_SELECTOR_COLUMN (cell_layout);
+
+  view_column = gtk_tree_view_get_column (sel_column->priv->tree_view, 0);
+
+  return gtk_cell_layout_get_cells (GTK_CELL_LAYOUT(view_column));
 }
 
 /* ------------------------------ PUBLIC METHODS ---------------------------- */
@@ -601,36 +798,39 @@ hildon_touch_selector_insert_text (HildonTouchSelector * selector,
  * This method basically adds a #GtkTreeView to the widget, using the model and
  * the data received.
  *
- * Returns: %TRUE if a new column was added, %FALSE otherwise
+ * Returns: the new column added added, NULL otherwise
  **/
 
-gboolean
+HildonTouchSelectorColumn*
 hildon_touch_selector_append_column (HildonTouchSelector * selector,
                                      GtkTreeModel * model,
                                      GtkCellRenderer * cell_renderer, ...)
 {
   va_list args;
-  SelectorColumn *new_column = NULL;
+  HildonTouchSelectorColumn *new_column = NULL;
 
-  g_return_val_if_fail (HILDON_IS_TOUCH_SELECTOR (selector), FALSE);
-  g_return_val_if_fail (GTK_IS_TREE_MODEL (model), FALSE);
+  g_return_val_if_fail (HILDON_IS_TOUCH_SELECTOR (selector), NULL);
+  g_return_val_if_fail (GTK_IS_TREE_MODEL (model), NULL);
 
   if (model != NULL) {
 
     va_start (args, cell_renderer);
     new_column = _create_new_column (selector, model, cell_renderer, args);
+    g_object_ref_sink (new_column);
     va_end (args);
 
     selector->priv->columns = g_slist_append (selector->priv->columns,
                                               new_column);
-    gtk_box_pack_start (GTK_BOX (selector->priv->hbox), new_column->panarea, TRUE, TRUE, 6);
+    gtk_box_pack_start (GTK_BOX (selector->priv->hbox),
+                        new_column->priv->panarea,
+                        TRUE, TRUE, 6);
 
-    gtk_widget_show_all (new_column->panarea);
+    gtk_widget_show_all (new_column->priv->panarea);
   } else {
-    return FALSE;
+    return NULL;
   }
 
-  return TRUE;
+  return new_column;
 }
 
 /**
@@ -643,9 +843,9 @@ hildon_touch_selector_append_column (HildonTouchSelector * selector,
  * default text cell renderer. This is the most common use case of the
  * widget.
  *
- * Returns: %TRUE if a new column was added, %FALSE otherwise.
+ * Returns: the new column added, NULL otherwise.
  **/
-gboolean
+HildonTouchSelectorColumn*
 hildon_touch_selector_append_text_column (HildonTouchSelector * selector,
                                           GtkTreeModel * model, gboolean center)
 {
@@ -661,7 +861,6 @@ hildon_touch_selector_append_text_column (HildonTouchSelector * selector,
     if (center) {
       g_value_init (&val, G_TYPE_FLOAT);
       g_value_set_float (&val, 0.5);
-      /* FIXME: center the text, this should be configurable */
       g_object_set_property (G_OBJECT (renderer), "xalign", &val);
     }
 
@@ -684,7 +883,7 @@ hildon_touch_selector_append_text_column (HildonTouchSelector * selector,
 gboolean
 hildon_touch_selector_remove_column (HildonTouchSelector * selector, gint column)
 {
-  SelectorColumn *current_column = NULL;
+  HildonTouchSelectorColumn *current_column = NULL;
   HildonTouchSelectorPrivate *priv;
 
   g_return_val_if_fail (HILDON_IS_TOUCH_SELECTOR (selector), FALSE);
@@ -694,9 +893,9 @@ hildon_touch_selector_remove_column (HildonTouchSelector * selector, gint column
   priv = HILDON_TOUCH_SELECTOR_GET_PRIVATE (selector);
   current_column = g_slist_nth_data (priv->columns, column);
 
-  gtk_container_remove (GTK_CONTAINER (priv->hbox), current_column->panarea);
+  gtk_container_remove (GTK_CONTAINER (priv->hbox), current_column->priv->panarea);
   priv->columns = g_slist_remove (priv->columns, current_column);
-  g_free (current_column);
+  g_object_unref (current_column);
 
   return TRUE;
 }
@@ -712,6 +911,10 @@ hildon_touch_selector_remove_column (HildonTouchSelector * selector, gint column
  * in attribute/column pairs, just like in gtk_tree_view_column_set_attributes().
  * All existing attributes are removed and replaced with the new ones.
  *
+ * Deprecated: #HildonTouchSelectorColumn implements #GtkCellLayout, use this
+ *             interface instead. You can get the column using
+ *             %hildon_touch_selector_get_column
+ *
  **/
 void
 hildon_touch_selector_set_column_attributes (HildonTouchSelector * selector,
@@ -721,7 +924,7 @@ hildon_touch_selector_set_column_attributes (HildonTouchSelector * selector,
 {
   va_list args;
   GtkTreeViewColumn *tree_column = NULL;
-  SelectorColumn *current_column = NULL;
+  HildonTouchSelectorColumn *current_column = NULL;
   gchar *attribute = NULL;
   gint value = 0;
 
@@ -731,8 +934,8 @@ hildon_touch_selector_set_column_attributes (HildonTouchSelector * selector,
 
   current_column = g_slist_nth_data (selector->priv->columns, num_column);
 
-  tree_column = gtk_tree_view_get_column (current_column->tree_view, 0);
-  gtk_tree_view_remove_column (current_column->tree_view, tree_column);
+  tree_column = gtk_tree_view_get_column (current_column->priv->tree_view, 0);
+  gtk_tree_view_remove_column (current_column->priv->tree_view, tree_column);
 
   tree_column = gtk_tree_view_column_new ();
   gtk_tree_view_column_pack_start (tree_column, cell_renderer, TRUE);
@@ -751,7 +954,7 @@ hildon_touch_selector_set_column_attributes (HildonTouchSelector * selector,
 
   va_end (args);
 
-  gtk_tree_view_append_column (current_column->tree_view, tree_column);
+  gtk_tree_view_append_column (current_column->priv->tree_view, tree_column);
 }
 
 /**
@@ -784,16 +987,16 @@ hildon_touch_selector_get_column_selection_mode (HildonTouchSelector * selector)
   HildonTouchSelectorSelectionMode result =
     HILDON_TOUCH_SELECTOR_SELECTION_MODE_SINGLE;
   GtkSelectionMode treeview_mode = GTK_SELECTION_SINGLE;
-  SelectorColumn *column = NULL;
+  HildonTouchSelectorColumn *column = NULL;
   GtkTreeSelection *selection = NULL;
 
   g_return_val_if_fail (HILDON_IS_TOUCH_SELECTOR (selector), result);
   g_return_val_if_fail (hildon_touch_selector_get_num_columns (selector) > 0,
                         result);
 
-  column = (SelectorColumn *) selector->priv->columns->data;
+  column = HILDON_TOUCH_SELECTOR_COLUMN (selector->priv->columns->data);
 
-  selection = gtk_tree_view_get_selection (column->tree_view);
+  selection = gtk_tree_view_get_selection (column->priv->tree_view);
   treeview_mode = gtk_tree_selection_get_mode (selection);
 
 
@@ -818,7 +1021,7 @@ hildon_touch_selector_set_column_selection_mode (HildonTouchSelector * selector,
                                                  HildonTouchSelectorSelectionMode mode)
 {
   GtkTreeView *tv = NULL;
-  SelectorColumn *column = NULL;
+  HildonTouchSelectorColumn *column = NULL;
   GtkTreeSelection *selection = NULL;
   GtkSelectionMode treeview_mode = GTK_SELECTION_MULTIPLE;
   GtkTreeIter iter;
@@ -826,8 +1029,8 @@ hildon_touch_selector_set_column_selection_mode (HildonTouchSelector * selector,
   g_return_if_fail (HILDON_IS_TOUCH_SELECTOR (selector));
   g_return_if_fail (hildon_touch_selector_get_num_columns (selector) > 0);
 
-  column = (SelectorColumn *) (g_slist_nth (selector->priv->columns, 0))->data;
-  tv = column->tree_view;
+  column = HILDON_TOUCH_SELECTOR_COLUMN ((g_slist_nth (selector->priv->columns, 0))->data);
+  tv = column->priv->tree_view;
 
   if (tv) {
     switch (mode) {
@@ -843,7 +1046,7 @@ hildon_touch_selector_set_column_selection_mode (HildonTouchSelector * selector,
     gtk_tree_selection_set_mode (selection, treeview_mode);
 
     selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (tv));
-    gtk_tree_model_get_iter_first (column->model, &iter);
+    gtk_tree_model_get_iter_first (column->priv->model, &iter);
     gtk_tree_selection_unselect_all (selection);
     gtk_tree_selection_select_iter (selection, &iter);
   }
@@ -906,7 +1109,7 @@ hildon_touch_selector_set_active                (HildonTouchSelector *selector,
                                                  gint                 index)
 {
   GtkTreeSelection *selection = NULL;
-  SelectorColumn *current_column = NULL;
+  HildonTouchSelectorColumn *current_column = NULL;
   HildonTouchSelectorSelectionMode mode;
   GtkTreePath *path;
 
@@ -917,7 +1120,7 @@ hildon_touch_selector_set_active                (HildonTouchSelector *selector,
 
   current_column = g_slist_nth_data (selector->priv->columns, column);
 
-  selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (current_column->tree_view));
+  selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (current_column->priv->tree_view));
   path = gtk_tree_path_new_from_indices (index, -1);
   gtk_tree_selection_unselect_all (selection);
   if (index != -1)
@@ -944,7 +1147,7 @@ hildon_touch_selector_get_active                (HildonTouchSelector *selector,
                                                  gint                 column)
 {
   GtkTreeSelection *selection = NULL;
-  SelectorColumn *current_column = NULL;
+  HildonTouchSelectorColumn *current_column = NULL;
   HildonTouchSelectorSelectionMode mode;
   GtkTreeModel *model;
   GtkTreeIter iter;
@@ -958,8 +1161,8 @@ hildon_touch_selector_get_active                (HildonTouchSelector *selector,
 
   current_column = g_slist_nth_data (selector->priv->columns, column);
 
-  selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (current_column->tree_view));
-  model = gtk_tree_view_get_model (GTK_TREE_VIEW (current_column->tree_view));
+  selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (current_column->priv->tree_view));
+  model = gtk_tree_view_get_model (GTK_TREE_VIEW (current_column->priv->tree_view));
 
   gtk_tree_selection_get_selected (selection, NULL, &iter);
   path = gtk_tree_model_get_path (model, &iter);
@@ -993,7 +1196,7 @@ hildon_touch_selector_get_selected (HildonTouchSelector * selector,
                                     gint column, GtkTreeIter * iter)
 {
   GtkTreeSelection *selection = NULL;
-  SelectorColumn *current_column = NULL;
+  HildonTouchSelectorColumn *current_column = NULL;
   HildonTouchSelectorSelectionMode mode;
 
   g_return_val_if_fail (HILDON_IS_TOUCH_SELECTOR (selector), FALSE);
@@ -1008,7 +1211,7 @@ hildon_touch_selector_get_selected (HildonTouchSelector * selector,
   current_column = g_slist_nth_data (selector->priv->columns, column);
 
   selection =
-    gtk_tree_view_get_selection (GTK_TREE_VIEW (current_column->tree_view));
+    gtk_tree_view_get_selection (GTK_TREE_VIEW (current_column->priv->tree_view));
 
   return gtk_tree_selection_get_selected (selection, NULL, iter);
 }
@@ -1032,7 +1235,8 @@ hildon_touch_selector_select_iter (HildonTouchSelector * selector,
   GtkTreePath *path;
   GtkTreeModel *model;
   GdkRectangle rect;
-  SelectorColumn *current_column = NULL;
+  HildonTouchSelectorColumn *current_column = NULL;
+  GtkTreeView *tv = NULL;
   GtkTreeSelection *selection = NULL;
   gint y;
 
@@ -1041,18 +1245,19 @@ hildon_touch_selector_select_iter (HildonTouchSelector * selector,
 
   current_column = g_slist_nth_data (selector->priv->columns, column);
 
-  selection = gtk_tree_view_get_selection (current_column->tree_view);
-  model = gtk_tree_view_get_model (current_column->tree_view);
+  tv = current_column->priv->tree_view;
+  selection = gtk_tree_view_get_selection (tv);
+  model = gtk_tree_view_get_model (tv);
   path = gtk_tree_model_get_path (model, iter);
 
   gtk_tree_selection_select_iter (selection, iter);
 
   if (scroll_to) {
-    gtk_tree_view_get_background_area (current_column->tree_view,
+    gtk_tree_view_get_background_area (tv,
                                        path, NULL, &rect);
-    gtk_tree_view_convert_bin_window_to_tree_coords (current_column->tree_view,
+    gtk_tree_view_convert_bin_window_to_tree_coords (tv,
                                                      0, rect.y, NULL, &y);
-    hildon_pannable_area_scroll_to (HILDON_PANNABLE_AREA (current_column->panarea),
+    hildon_pannable_area_scroll_to (HILDON_PANNABLE_AREA (current_column->priv->panarea),
                                     -1, y);
   }
   gtk_tree_path_free (path);
@@ -1072,14 +1277,14 @@ void hildon_touch_selector_unselect_iter (HildonTouchSelector * selector,
                                           gint column,
                                           GtkTreeIter * iter)
 {
-  SelectorColumn *current_column = NULL;
+  HildonTouchSelectorColumn *current_column = NULL;
   GtkTreeSelection *selection = NULL;
 
   g_return_if_fail (HILDON_IS_TOUCH_SELECTOR (selector));
   g_return_if_fail (column < hildon_touch_selector_get_num_columns (selector));
 
   current_column = g_slist_nth_data (selector->priv->columns, column);
-  selection = gtk_tree_view_get_selection (current_column->tree_view);
+  selection = gtk_tree_view_get_selection (current_column->priv->tree_view);
   gtk_tree_selection_unselect_iter (selection, iter);
 }
 
@@ -1103,7 +1308,7 @@ hildon_touch_selector_get_selected_rows (HildonTouchSelector * selector,
                                          gint column)
 {
   GList *result = NULL;
-  SelectorColumn *current_column = NULL;
+  HildonTouchSelectorColumn *current_column = NULL;
   GtkTreeSelection *selection = NULL;
 
   g_return_val_if_fail (HILDON_IS_TOUCH_SELECTOR (selector), NULL);
@@ -1111,10 +1316,9 @@ hildon_touch_selector_get_selected_rows (HildonTouchSelector * selector,
                         NULL);
 
   current_column = g_slist_nth_data (selector->priv->columns, column);
-  selection = gtk_tree_view_get_selection (current_column->tree_view);
+  selection = gtk_tree_view_get_selection (current_column->priv->tree_view);
 
   result = gtk_tree_selection_get_selected_rows (selection, NULL);
-
 
   return result;
 }
@@ -1131,7 +1335,7 @@ hildon_touch_selector_get_selected_rows (HildonTouchSelector * selector,
 GtkTreeModel *
 hildon_touch_selector_get_model (HildonTouchSelector * selector, gint column)
 {
-  SelectorColumn *current_column = NULL;
+  HildonTouchSelectorColumn *current_column = NULL;
 
   g_return_val_if_fail (HILDON_IS_TOUCH_SELECTOR (selector), NULL);
   g_return_val_if_fail (column < hildon_touch_selector_get_num_columns (selector),
@@ -1139,20 +1343,21 @@ hildon_touch_selector_get_model (HildonTouchSelector * selector, gint column)
 
   current_column = g_slist_nth_data (selector->priv->columns, column);
 
-  return current_column->model;
+  return current_column->priv->model;
 }
 
 static void
 _hildon_touch_selector_set_model (HildonTouchSelector * selector,
-                                 gint column, GtkTreeModel * model)
+                                  gint column, GtkTreeModel * model)
 {
-  SelectorColumn *current_column = NULL;
+  HildonTouchSelectorColumn *current_column = NULL;
 
   current_column =
-    (SelectorColumn *) g_slist_nth_data (selector->priv->columns, column);
+    HILDON_TOUCH_SELECTOR_COLUMN (g_slist_nth_data (selector->priv->columns, column));
 
-  current_column->model = model;
-  gtk_tree_view_set_model (current_column->tree_view, current_column->model);
+  current_column->priv->model = model;
+  gtk_tree_view_set_model (current_column->priv->tree_view,
+                           current_column->priv->model);
 }
 
 /**
@@ -1201,7 +1406,7 @@ static gboolean
 _hildon_touch_selector_center_on_selected_items (gpointer data)
 {
   HildonTouchSelector *selector = NULL;
-  SelectorColumn *column = NULL;
+  HildonTouchSelectorColumn *column = NULL;
   GSList *iter_column = NULL;
   GtkTreeIter iter;
   GtkTreePath *path;
@@ -1218,24 +1423,24 @@ _hildon_touch_selector_center_on_selected_items (gpointer data)
   iter_column = selector->priv->columns;
   i = 0;
   while (iter_column) {
-    column = (SelectorColumn *) iter_column->data;
+    column = HILDON_TOUCH_SELECTOR_COLUMN (iter_column->data);
 
     if ((i == 0)
         && (selection_mode == HILDON_TOUCH_SELECTOR_SELECTION_MODE_MULTIPLE)) {
       break;
     }
     if (hildon_touch_selector_get_selected (selector, i, &iter)) {
-      path = gtk_tree_model_get_path (column->model, &iter);
+      path = gtk_tree_model_get_path (column->priv->model, &iter);
       gtk_tree_view_get_background_area (GTK_TREE_VIEW
-                                         (column->tree_view), path, NULL,
+                                         (column->priv->tree_view), path, NULL,
                                          &rect);
 
       gtk_tree_view_convert_bin_window_to_tree_coords (GTK_TREE_VIEW
-                                                       (column->tree_view), 0,
+                                                       (column->priv->tree_view), 0,
                                                        rect.y, NULL, &y);
 
       hildon_pannable_area_scroll_to (HILDON_PANNABLE_AREA
-                                      (column->panarea), -1, y);
+                                      (column->priv->panarea), -1, y);
 
       gtk_tree_path_free (path);
     }
@@ -1279,4 +1484,30 @@ hildon_touch_selector_has_multiple_selection (HildonTouchSelector * selector)
   g_return_val_if_fail (HILDON_IS_TOUCH_SELECTOR (selector), FALSE);
 
   return HILDON_TOUCH_SELECTOR_GET_CLASS (selector)->has_multiple_selection (selector);
+}
+
+
+/**
+ * hildon_touch_selector_get_column:
+ * @selector: A #HildonTouchSelector
+ * @column: the column number
+ *
+ * Returns a representation of the column number i of the %HildonTouchSelector
+ *
+ * The main purpose of this is configure the cell layout, as %HildonTouchSelectorColumn
+ * implements the interface %GtkCellLayout
+ *
+ *
+ **/
+HildonTouchSelectorColumn *
+hildon_touch_selector_get_column (HildonTouchSelector * selector,
+                                  gint column)
+{
+  gint num_columns = -1;
+
+  g_return_val_if_fail (HILDON_IS_TOUCH_SELECTOR (selector), NULL);
+  num_columns = hildon_touch_selector_get_num_columns (selector);
+  g_return_val_if_fail (column < num_columns && column >= 0, NULL);
+
+  return g_slist_nth_data (selector->priv->columns, column);
 }
