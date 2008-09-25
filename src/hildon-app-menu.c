@@ -572,6 +572,10 @@ hildon_app_menu_init                            (HildonAppMenu *menu)
     hildon_app_menu_construct_child (menu);
 
     gtk_window_set_modal (GTK_WINDOW (menu), TRUE);
+
+    /* This should be treated like a normal, ref-counted widget */
+    g_object_force_floating (G_OBJECT (menu));
+    GTK_WINDOW (menu)->has_user_ref_count = FALSE;
 }
 
 static void

@@ -1,3 +1,16 @@
+2008-09-25  Alberto Garcia  <agarcia@igalia.com>
+
+	* src/hildon-stackable-window.c
+	(hildon_stackable_window_set_main_menu): Unref the previous menu
+	instead of destroying it.
+
+	* src/hildon-app-menu.c (hildon_app_menu_init): Re-enforce the
+	floating reference and set has_user_ref_count to FALSE to make
+	HildonAppMenu act like a normal ref-counted widget and not a
+	toplevel widget.
+
+	Fixes: NB#88923
+
 2008-09-25  Alejandro Pinheiro  <apinheiro@igalia.com>
 	* src/hildon-touch-selector-column.h: new file
 	* src/hildon-touch-selector.h
