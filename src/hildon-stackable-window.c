@@ -127,22 +127,22 @@ hildon_stackable_window_set_main_menu           (HildonStackableWindow *self,
                                                  HildonAppMenu *menu)
 {
     HildonStackableWindowPrivate *priv;
+    HildonAppMenu *old_menu;
 
     g_return_if_fail (HILDON_IS_STACKABLE_WINDOW (self));
     g_return_if_fail (!menu || HILDON_IS_APP_MENU (menu));
     priv = HILDON_STACKABLE_WINDOW_GET_PRIVATE (self);
 
-    if (menu == priv->app_menu)
-        return;
-
-    /* Remove old menu */
-    if (priv->app_menu)
-        g_object_unref (priv->app_menu);
+    old_menu = priv->app_menu;
 
     /* Add new menu */
     priv->app_menu = menu;
     if (menu)
         g_object_ref_sink (menu);
+
+    /* Unref old menu */
+    if (old_menu)
+        g_object_unref (old_menu);
 }
 
 static gboolean

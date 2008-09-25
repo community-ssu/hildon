@@ -42,6 +42,11 @@
  * disappears. Alternatively, you can add the button to the menu
  * before connecting any callback.
  *
+ * Although implemented with a #GtkWindow, #HildonAppMenu behaves like
+ * a normal ref-counted widget, so g_object_ref(), g_object_unref(),
+ * g_object_ref_sink() and friends will behave just like with any
+ * other non-toplevel widget.
+ *
  * <example>
  * <title>Creating a HildonAppMenu</title>
  * <programlisting>

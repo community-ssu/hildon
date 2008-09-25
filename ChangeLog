@@ -1,5 +1,13 @@
 2008-09-25  Alberto Garcia  <agarcia@igalia.com>
 
+	* src/hildon-app-menu.c: Updated documentation.
+
+	* src/hildon-stackable-window.c
+	(hildon_stackable_window_set_main_menu): Unref the old menu after
+	ref'ing the new one.
+
+2008-09-25  Alberto Garcia  <agarcia@igalia.com>
+
 	* src/hildon-stackable-window.c
 	(hildon_stackable_window_set_main_menu): Unref the previous menu
 	instead of destroying it.
