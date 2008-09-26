@@ -65,33 +65,36 @@ create_selector ()
 
   icon_list = gtk_stock_list_ids ();
 
-  store_icons = gtk_list_store_new (1, G_TYPE_STRING);
+  store_icons = gtk_list_store_new (2, G_TYPE_STRING, G_TYPE_STRING);
   for (item = icon_list; item; item = g_slist_next (item)) {
     GtkTreeIter iter;
-    gchar *label = item->data;
+    GtkStockItem stock_item;
+    gchar *stock_id;
 
+    stock_id = (gchar *)item->data;
+    gtk_stock_lookup (stock_id, &stock_item);
     gtk_list_store_append (store_icons, &iter);
-    gtk_list_store_set (store_icons, &iter, 0, label, -1);
-    g_free (label);
+    gtk_list_store_set (store_icons, &iter, 0, stock_id, 1, stock_item.label, -1);
+
+    g_free (stock_id);
   }
   g_slist_free (icon_list);
 
-  column = hildon_touch_selector_append_text_column (HILDON_TOUCH_SELECTOR (selector),
-                                                     GTK_TREE_MODEL (store_icons),
-                                                     TRUE);
+  column = hildon_touch_selector_append_column (HILDON_TOUCH_SELECTOR (selector),
+                                                GTK_TREE_MODEL (store_icons),
+                                                NULL, NULL);
 
   renderer = gtk_cell_renderer_pixbuf_new ();
-  gtk_cell_renderer_set_fixed_size (renderer, -1, 100);
+  gtk_cell_renderer_set_fixed_size (renderer, 75, 75);
   gtk_cell_layout_pack_start (GTK_CELL_LAYOUT (column), renderer, FALSE);
   gtk_cell_layout_set_attributes (GTK_CELL_LAYOUT (column), renderer,
                                   "stock-id", 0, NULL);
 
-  renderer = gtk_cell_renderer_pixbuf_new ();
-  gtk_cell_renderer_set_fixed_size (renderer, -1, 100);
-  gtk_cell_layout_pack_start (GTK_CELL_LAYOUT (column), renderer, FALSE);
+  renderer = gtk_cell_renderer_text_new ();
+  g_object_set (renderer, "xalign", 0.5, NULL);
+  gtk_cell_layout_pack_start (GTK_CELL_LAYOUT (column), renderer, TRUE);
   gtk_cell_layout_set_attributes (GTK_CELL_LAYOUT (column), renderer,
-                                  "stock-id", 0, NULL);
-  gtk_cell_layout_reorder (GTK_CELL_LAYOUT (column), renderer, 0);
+                                  "text", 1, NULL);
 
   hildon_touch_selector_set_column_selection_mode (HILDON_TOUCH_SELECTOR (selector),
                                                    HILDON_TOUCH_SELECTOR_SELECTION_MODE_MULTIPLE);

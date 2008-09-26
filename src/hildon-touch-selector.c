@@ -443,14 +443,17 @@ _create_new_column (HildonTouchSelector * selector,
   gint value;
 
   tree_column = gtk_tree_view_column_new ();
-  gtk_tree_view_column_pack_start (tree_column, renderer, TRUE);
 
-  attribute = va_arg (args, gchar *);
-  while (attribute != NULL) {
-    value = va_arg (args, gint);
-    gtk_tree_view_column_add_attribute (tree_column, renderer, attribute,
-                                        value);
+  if (renderer != NULL) {
+    gtk_tree_view_column_pack_start (tree_column, renderer, TRUE);
+
     attribute = va_arg (args, gchar *);
+    while (attribute != NULL) {
+      value = va_arg (args, gint);
+      gtk_tree_view_column_add_attribute (tree_column, renderer, attribute,
+                                          value);
+      attribute = va_arg (args, gchar *);
+    }
   }
 
   tv = GTK_TREE_VIEW (hildon_gtk_tree_view_new (HILDON_UI_MODE_EDIT));
@@ -788,9 +791,13 @@ hildon_touch_selector_insert_text (HildonTouchSelector * selector,
  * the selection logic, i.e., the print function, the #HildonTouchPicker::changed
  * signal, etc.
  *
- * Contents will be represented in @cell_renderer. You can pass a %NULL-terminated
- * list of pairs property/value, in the same way you would use
- * gtk_tree_view_column_set_attributes().
+ * You can optionally pass a #GtkCellRenderer in @cell_renderer,
+ * together with a %NULL-terminated list of pairs property/value, in
+ * the same way you would use gtk_tree_view_column_set_attributes().
+ * This will pack @cell_renderer at the start of the column, expanded by default.
+ * If you prefer not to add it this way, you can simply pass %NULL to @cell_renderer
+ * and use the #GtkCellLayout interface on the returned #HildonTouchSelectorColumn
+ * to set your renderers.
  *
  * There is a prerequisite to be considered on models used: text data must
  * be in the first column.
@@ -798,7 +805,7 @@ hildon_touch_selector_insert_text (HildonTouchSelector * selector,
  * This method basically adds a #GtkTreeView to the widget, using the model and
  * the data received.
  *
- * Returns: the new column added added, NULL otherwise
+ * Returns: the new column added added, %NULL otherwise.
  **/
 
 HildonTouchSelectorColumn*
