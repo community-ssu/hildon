@@ -1,3 +1,12 @@
+2008-09-26  Claudio Saavedra  <csaavedra@igalia.com>
+
+	* src/hildon-wizard-dialog-private.h: Remove image and box.
+	* src/hildon-wizard-dialog.c: (hildon_wizard_dialog_init),
+	(hildon_wizard_dialog_set_property), (response): Completely remove
+	image/icon support, and the containers required for the layout.
+
+	Fixes: NB#88927 (Hildon Wizard should not use icons anymore)
+
 2008-09-25  Alberto Garcia  <agarcia@igalia.com>
 
 	* src/hildon-app-menu.c: Updated documentation.

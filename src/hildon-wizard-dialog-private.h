@@ -39,8 +39,6 @@ struct                                          _HildonWizardDialogPrivate
 {
     gchar *wizard_name;
     GtkNotebook *notebook;
-    GtkBox *box;
-    GtkWidget *image;
     gboolean autotitle;
 };
 

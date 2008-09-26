@@ -30,14 +30,14 @@
  *
  * #HildonWizardDialog is a widget to create a guided installation
  * process. The dialog has three standard buttons, previous, next,
- * finish, and contains several pages with optional icons.
- * Response buttons are dimmed/undimmed automatically and the standard
- * icon is shown/hidden in response to page navigation. The notebook
+ * finish, and contains several pages.
+ *
+ * Response buttons are dimmed/undimmed automatically. The notebook
  * widget provided by users contains the actual wizard pages.
  * 
- * Using of the API is very simple, it has only one function to create it
+ * Usage of the API is very simple, it has only one function to create it
  * and the rest of it is handled by developers notebook.
- * Also the response is returned, either cancel or finish.
+ * Also, the response is returned, either cancel or finish.
  * Next and previous buttons are handled by the wizard dialog it self, by
  * switching the page either forward or backward in the notebook.
  */
@@ -235,21 +235,12 @@ hildon_wizard_dialog_init                       (HildonWizardDialog *wizard_dial
     GtkDialog *dialog = GTK_DIALOG (wizard_dialog);
 
     /* Init internal widgets */
-    GtkWidget *vbox = gtk_vbox_new (FALSE, 0);
     gtk_dialog_set_has_separator (dialog, FALSE);
-
-    priv->box = GTK_BOX (gtk_hbox_new (FALSE, 0));
-    priv->image = gtk_image_new_from_icon_name ("qgn_widg_wizard", HILDON_ICON_SIZE_WIZARD);
 
     /* Default values for user provided properties */
     priv->notebook = NULL;
     priv->wizard_name = NULL;
     priv->autotitle = TRUE;
-
-    /* Build wizard layout */
-    gtk_box_pack_start_defaults (GTK_BOX (dialog->vbox), GTK_WIDGET (priv->box));
-    gtk_box_pack_start_defaults (GTK_BOX (priv->box), GTK_WIDGET (vbox));
-    gtk_box_pack_start (GTK_BOX (vbox), GTK_WIDGET (priv->image), FALSE, FALSE, 0);
 
     /* Add response buttons: finish, previous, next */
     gtk_dialog_add_button (dialog, _("wdgt_bd_finish"), HILDON_WIZARD_DIALOG_FINISH);
@@ -274,6 +265,8 @@ hildon_wizard_dialog_set_property               (GObject *object,
                                                  GParamSpec *pspec)
 {
     HildonWizardDialogPrivate *priv = HILDON_WIZARD_DIALOG_GET_PRIVATE (object);
+    GtkDialog *dialog = GTK_DIALOG (object);
+
     g_assert (priv);
 
     switch (property_id) {
@@ -319,7 +312,7 @@ hildon_wizard_dialog_set_property               (GObject *object,
              * and remove borders) to make it look like a nice wizard widget */
             gtk_notebook_set_show_tabs (priv->notebook, FALSE);
             gtk_notebook_set_show_border (priv->notebook, FALSE);
-            gtk_box_pack_start_defaults (GTK_BOX( priv->box), GTK_WIDGET (priv->notebook));
+            gtk_box_pack_start_defaults (GTK_BOX (dialog->vbox), GTK_WIDGET (priv->notebook));
 
             /* Show the notebook so that a gtk_widget_show on the dialog is
              * all that is required to display the dialog correctly */
@@ -452,12 +445,6 @@ response                                        (HildonWizardDialog *wizard_dial
 
     /* Don't let the dialog close */
     g_signal_stop_emission_by_name (wizard_dialog, "response");
-
-    /* We show the default image on first and last pages */
-    if (current == last || current == 0)
-        gtk_widget_show (GTK_WIDGET(priv->image));
-    else
-        gtk_widget_hide (GTK_WIDGET(priv->image));
 
     /* New page number may appear in the title, update it */
     if (priv->autotitle) 
