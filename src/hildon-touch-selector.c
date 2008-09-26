@@ -912,8 +912,8 @@ hildon_touch_selector_remove_column (HildonTouchSelector * selector, gint column
  * All existing attributes are removed and replaced with the new ones.
  *
  * Deprecated: #HildonTouchSelectorColumn implements #GtkCellLayout, use this
- *             interface instead. You can get the column using
- *             %hildon_touch_selector_get_column
+ *             interface instead. See
+ *             hildon_touch_selector_get_column().
  *
  **/
 void
@@ -1470,9 +1470,9 @@ _hildon_touch_selector_has_multiple_selection (HildonTouchSelector * selector)
  * Determines whether @selector is complex enough to actually require an
  * extra selection step than only picking an item. This is normally %TRUE
  * if @selector has multiple columns, multiple selection, or when it is a
- * more complex widget, like %HildonTouchSelectorEntry.
+ * more complex widget, like #HildonTouchSelectorEntry.
  *
- * This information is useful for widgets containing a %HildonTouchSelector,
+ * This information is useful for widgets containing a #HildonTouchSelector,
  * like #HildonPickerDialog, that could need a "Done" button, in case that
  * its internal #HildonTouchSelector has multiple columns, for instance.
  *
@@ -1490,13 +1490,13 @@ hildon_touch_selector_has_multiple_selection (HildonTouchSelector * selector)
 /**
  * hildon_touch_selector_get_column:
  * @selector: A #HildonTouchSelector
- * @column: the column number
+ * @column: a column number
  *
- * Returns a representation of the column number i of the %HildonTouchSelector
+ * Returns the @column<!-- -->-th #HildonTouchSelectorColumn in @selector
  *
- * The main purpose of this is configure the cell layout, as %HildonTouchSelectorColumn
- * implements the interface %GtkCellLayout
  *
+ * Use this method to retrieve a #HildonTouchSelectorColumn. Then, you can use
+ * the #GtkCellLayout interface to set up the layout of the column.
  *
  **/
 HildonTouchSelectorColumn *
