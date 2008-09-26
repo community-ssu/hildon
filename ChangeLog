@@ -40,7 +40,7 @@
 	* examples/hildon-touch-selector-multi-cells-example.c
 	Example of how to use the GtkCellLayout interface on the selector
 
-	Fixes NB#88680 (Limiting API in HildonTouchSelector)
+	Fixes: NB#88680 (Limiting API in HildonTouchSelector)
 
 2008-09-24  Alberto Garcia  <agarcia@igalia.com>
 
