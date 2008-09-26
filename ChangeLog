@@ -26,9 +26,11 @@
 	HildonAppMenu act like a normal ref-counted widget and not a
 	toplevel widget.
 
-	Fixes: NB#88923
+	Fixes: NB#88923 (Semantics of hildon_stackable_window_set_main_menu()
+	changed)
 
 2008-09-25  Alejandro Pinheiro  <apinheiro@igalia.com>
+
 	* src/hildon-touch-selector-column.h: new file
 	* src/hildon-touch-selector.h
 	* src/hildon-touch-selector.c
@@ -38,7 +40,7 @@
 	* examples/hildon-touch-selector-multi-cells-example.c
 	Example of how to use the GtkCellLayout interface on the selector
 
-	Fixes NB#88680
+	Fixes NB#88680 (Limiting API in HildonTouchSelector)
 
 2008-09-24  Alberto Garcia  <agarcia@igalia.com>
 
@@ -543,19 +545,19 @@
 
 2008-08-28  Claudio Saavedra  <csaavedra@igalia.com>
 
-	* examples/hildon-pannable-area-example-4.c: (main): Remove unneeded 
+	* examples/hildon-pannable-area-example-4.c: (main): Remove unneeded
 	extra GtkVBox.
 
 2008-08-28  Alejandro Pinheiro  <apinheiro@igalia.com>
 	* src/hildon-touch-selector.c
 	(_create_new_column): use g_object_set instead of two g_object_set_property
-	
+
 2008-08-28  Alejandro Pinheiro  <apinheiro@igalia.com>
 	* src/hildon-touch-selector.c
 	(_create_new_column): use of hildon_gtk_tree_view_new to create
 	the treeview, instead of use directly g_object_new
 	(_create_new_column): update the property name "vindicator-mode" for the
-	new one "vscrollbar-policy" 
+	new one "vscrollbar-policy"
 	* examples/hildon-date-button-example.c
 	* examples/hildon-picker-button-multicolumn-example.c
 	* examples/hildon-touch-selector-entry-example.c
@@ -563,8 +565,8 @@
 	* examples/hildon-time-button-example.c
 	* examples/hildon-picker-button-example.c
 	Add a gtk_rc_parse_string in order to set the hildon-mode to HILDON_FREMANTLE
-	to all the treeviews inside a pannable area. 
-	
+	to all the treeviews inside a pannable area.
+
 2008-08-27  Alberto Garcia  <agarcia@igalia.com>
 
 	* src/hildon-button.h
