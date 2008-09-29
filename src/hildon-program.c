@@ -280,12 +280,15 @@ hildon_program_get_property                     (GObject *object,
  * from the stack when they are destroyed.
  *
  * This function removes the #HildonStackableWindow from the top of
- * the stack and returns it. The window is automatically hidden, but
- * not destroyed. If that window was visible and there are more
- * windows left in the stack, the next one will be shown
- * automatically.
+ * the stack and returns it. If the stack is empty, %NULL is returned.
  *
- * If the stack is empty, %NULL is returned.
+ * If the window was visible then it will be hidden. The next window
+ * from the stack (if any) will be shown automatically.
+ *
+ * If the window was not visible then all other windows will remain
+ * hidden.
+ *
+ * No window is destroyed in any case.
  *
  * Returns: A #HildonStackableWindow, or %NULL.
  */
