@@ -1,5 +1,7 @@
 libhildon (2.1.12-1) unstable; urgency=low
 
+  * Ship the upstream ChangeLog and NEWS file.
+
   Bug fixes:
 
   * Fixes: NB#88576 (critical warning in HildonTouchSelectorEntry)
@@ -26,7 +28,7 @@ libhildon (2.1.12-1) unstable; urgency=low
 
   * Examples updated, coding, theming, and documentation fixes.
 
- -- Claudio Saavedra <csaavedra@igalia.com>  Mon, 29 Sep 2008 09:30:38 +0300
+ -- Claudio Saavedra <csaavedra@igalia.com>  Mon, 29 Sep 2008 10:08:47 +0300
 
 libhildon (2.1.10-2) unstable; urgency=low
 
