@@ -1,3 +1,33 @@
+libhildon (2.1.12-1) unstable; urgency=low
+
+  Bug fixes:
+
+  * Fixes: NB#88576 (critical warning in HildonTouchSelectorEntry)
+  * Fixes: NB#88720 (HildonPickerButton leaks a reference to the
+    HildonTouchSelector)
+  * Fixes: NB#88718 (HildonPickerButton not synchronizing its initial
+    'value' with the selector)
+  * Fixes: NB#88891 (Allow WM to handle properly close-on-tap-outside behavior)
+  * Fixes: NB#88850 (Update HildonNote button strings + signals)
+  * Fixes: NB#88887 (Hildon Wizard changes for Hildon2.2)
+  * Fixes: NB#88680 (Limiting API in HildonTouchSelector)
+  * Fixes: NB#88923 (Semantics of hildon_stackable_window_set_main_menu()
+    changed)
+  * Fixes: NB#88927 (Hildon Wizard should not use icons anymore)
+
+  API additions:
+
+  * New methods to set/get index of selected item in HildonPickerButton and
+    HildonTouchSelector.
+  * Add HildonAppMenu::columns property.
+  * New HildonTouchSelectorColumn class implementing GtkCellLayout interface.
+
+  Other:
+
+  * Examples updated, coding, theming, and documentation fixes.
+
+ -- Claudio Saavedra <csaavedra@igalia.com>  Mon, 29 Sep 2008 09:30:38 +0300
+
 libhildon (2.1.10-2) unstable; urgency=low
 
   * Revert bump of shared library version to avoid shared library load issues.

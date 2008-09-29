@@ -1,5 +1,13 @@
 2008-09-29  Claudio Saavedra  <csaavedra@igalia.com>
 
+	[Release 2.1.12]
+
+	* NEWS: Update.
+	* configure.ac: Pre-release version bump.
+	* debian/changelog: Updates.
+
+2008-09-29  Claudio Saavedra  <csaavedra@igalia.com>
+
 	* NEWS: Update news for previous releases.
 
 2008-09-26  Claudio Saavedra  <csaavedra@igalia.com>
