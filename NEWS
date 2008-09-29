@@ -1,3 +1,97 @@
+[2.1.10 release]
+
+* Fixes: NB#88214 (HildonPannableArea wrong requisition)
+* Fixes: NB#88287 (Missing translations)
+* Fixes: NB#88364 (Update margins definitions)
+* Fixes: NB#88414 (Crash in HildonDateSelector on finalize)
+* New widget: HildonTextEntry.
+* Removed long deprecated methods hildon_check_button_set_label(),
+  hildon_check_button_get_label().
+* New method: hildon_gtk_window_set_progress_indicator() to set progress
+  indicator in windows (depends on feature being implemented in WM).
+* Documentation updates, coding fixes, examples updates. See ChangeLog for
+  details.
+
+[2.1.8 release]
+
+* Make -gdb package contain useful debugging symbols.
+* Fixes: NB#88022 (parameter validation in
+  hildon_touch_selector_get_num_columns)
+* Fixes: NB#88023 (day range check
+  in hildon_date_selector_select_current_date)
+* Fixes: NB#88027 (implement hildon_date_selector_select_month)
+* Fixes: NB#88045 (fix logical id for time in HildonTimeSelector)
+* Fixes: NB#88047 (fix retrieval of selected items in HildonTouchSelector)
+* Fixes: NB#88036 (fix range of 12h time in HildonTimeSelector)
+* Fixes: NB#88049 (fix columns removal from HildonTouchSelector)
+* New hildon_button_get_image() method in HildonButton.
+* New widget: HildonEntry.
+* New methods to add buttons with finger size in HildonDialog.
+* Miscellaneous improvements, other minor bug fixes, documentation
+  improvements and examples updates. See ChangeLog for details.
+
+[2.1.6 release]
+
+* Deprecated hildon_check_button_{set/get}_label().
+* Renamed HILDON_PANNABLE_AREA_MOV_* macros to HILDON_MOVEMENT_*
+* Initial hint in the pannable area set to FALSE.
+* Renamed properties in HildonPannableArea from {h,v}indicator-mode to
+  {h,v}indicator_policy, and {h,v}scroll to {h,v}scroll_visible.
+* New widget: HildonEditToolbar.
+* Renamed hildon_touch_selector_{set,get}_active_iter() to
+  hildon_touch_selector_select_iter() and hildon_touch_selector_get_selected().
+* Several API additions, bug fixes, internals improvements, documentation
+  improvements, and examples updates. See ChangeLog for details.
+
+[2.1.4-1 release]
+
+* Lot of changes, see ChangeLog for more information.
+* Depending on the new Gtk+.
+
+[2.1.3-1 release]
+
+* Tons of changes, see the ChangeLog for more information.
+* Replaced libesd with libcanberra. Fixes: NB#86876
+
+[2.1.2-1 release]
+
+* Too many individual changes for them to all be relevant here, many widgets
+  added, many widgets have been changed. A full list of additional/changed
+  widgets can be found in the Hildon 2.2 widget UI spec.
+
+[2.1.1-1 release]
+
+* Too many individual changes for them to all be relevant here, many widgets
+  added, many widgets have been changed. A full list of additional/changed
+  widgets can be found in the Hildon 2.2 widget UI spec.
+
+[2.0.3-1 release]
+
+* Fixes: NB#78896: libhildon code inspection/coverity: uninitialised local
+  values in hildon_date_editor_size_allocate
+* Fixes: NB#77775: Media Player, Save Now playing list, too long name makes
+  banner disappear.
+* Fixes: NB#79182: info banner flickering with certain message lengts.
+* Fixes: NB#83953: Lock dialog is not visible when device is locked for the
+  first time after flash
+
+[2.0.2-1 release]
+
+* Fixes: MB#1220: HildonWindow should take GtkMenu accel_group into account
+* Fixes NB#78481: information banners are hidden under browser menu
+* Fixes: NB#79791: Cannot set focus to Master volume using stylus
+* Fixes: NB#22072: Revisiting fix for "Implement robust timer handling in Info
+  Banner" bug
+* Fixes: MB#924: Hildon widgets doesn't support RTL mode
+* Fixes: MB#1212: Hide info banners (infoprints) on click
+* Enable fixing: NB#79916 and NB#79918: The help topic for Color selector
+  cannot be opened
+* Fixes: NB#81696: The passcode is not overwritten even after	selecting
+
+[2.0.1-2 release]
+
+* Fixes: MB#1276: wrong allocators used in hildon_window_get_borders
+
 [2.0.1-1 release]
 * Do not use PACKAGE_VERSION_MAJOR for the API revision.
 

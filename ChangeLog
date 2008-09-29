@@ -1,3 +1,7 @@
+2008-09-29  Claudio Saavedra  <csaavedra@igalia.com>
+
+	* NEWS: Update news for previous releases.
+
 2008-09-26  Claudio Saavedra  <csaavedra@igalia.com>
 
 	* examples/hildon-touch-selector-multi-cells-example.c:
