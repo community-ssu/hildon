@@ -1,5 +1,6 @@
 2008-09-29  Alberto Garcia  <agarcia@igalia.com>
 
+	* src/hildon-app-menu.c
 	* src/hildon-program.c: Update documentation.
 
 2008-09-29  Claudio Saavedra  <csaavedra@igalia.com>

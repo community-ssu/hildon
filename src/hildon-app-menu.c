@@ -30,11 +30,10 @@
  * Besides that, the #HildonAppMenu can contain a group of filter buttons
  * (#GtkToggleButton or #GtkRadioButton).
  *
- * To use a #HildonAppMenu, add it to a #HildonStackableWindow with
- * with hildon_stackable_window_set_main_menu(). The menu will appear
- * when the user presses the window title bar.
- *
- * Alternatively, you can show it by hand using gtk_widget_show().
+ * To use a #HildonAppMenu, add it to a #HildonStackableWindow using
+ * hildon_stackable_window_set_main_menu(). The menu will appear when
+ * the user presses the window title bar. Alternatively, you can show
+ * it by hand using gtk_widget_show().
  *
  * The menu will be automatically hidden when one of its buttons is
  * clicked. Use g_signal_connect_after() when connecting callbacks to
