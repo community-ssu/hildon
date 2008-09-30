@@ -1,3 +1,10 @@
+2008-09-30  Alberto Garcia  <agarcia@igalia.com>
+
+	* src/hildon-app-menu.c
+	(hildon_app_menu_construct_child, hildon_app_menu_init): When
+	updating the layout of the menu, don't create all widgets again,
+	just repack the items in their new places.
+
 2008-09-30  Alejandro Pinheiro <apinheiro@igalia.com>
 
  	* src/hildon-time-selector.c

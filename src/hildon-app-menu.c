@@ -480,7 +480,6 @@ hildon_app_menu_style_set                       (GtkWidget *widget,
 static void
 hildon_app_menu_construct_child                 (HildonAppMenu *menu)
 {
-    GtkWidget *alignment;
     HildonAppMenuPrivate *priv;
     gint col, row;
     GList *iter;
@@ -506,30 +505,11 @@ hildon_app_menu_construct_child                 (HildonAppMenu *menu)
         }
     }
 
-    /* Create the contents of the menu again */
-    if (priv->vbox) {
-        gtk_widget_destroy (GTK_WIDGET (priv->vbox));
-    }
+    /* Resize the table */
+    gtk_table_resize (priv->table, 1, priv->columns);
 
     /* Resize the menu to its minimum size */
     gtk_window_resize (GTK_WINDOW (menu), 1, 1);
-
-    /* Create boxes and tables */
-    priv->filters_hbox = GTK_BOX (gtk_hbox_new (TRUE, 0));
-    priv->vbox = GTK_BOX (gtk_vbox_new (FALSE, 0));
-    priv->table = GTK_TABLE (gtk_table_new (1, priv->columns, TRUE));
-
-    /* Align the filters to the center */
-    alignment = gtk_alignment_new (0.5, 0.5, 0, 0);
-    gtk_container_add (GTK_CONTAINER (alignment), GTK_WIDGET (priv->filters_hbox));
-
-    /* Pack everything */
-    gtk_container_add (GTK_CONTAINER (menu), GTK_WIDGET (priv->vbox));
-    gtk_box_pack_start (priv->vbox, alignment, TRUE, TRUE, 0);
-    gtk_box_pack_start (priv->vbox, GTK_WIDGET (priv->table), TRUE, TRUE, 0);
-
-    /* Apply style properties */
-    hildon_app_menu_apply_style (GTK_WIDGET (menu));
 
     /* Add buttons */
     col = row = 0;
@@ -551,8 +531,6 @@ hildon_app_menu_construct_child                 (HildonAppMenu *menu)
         }
     }
 
-    gtk_widget_show_all (GTK_WIDGET (priv->vbox));
-
     if (GTK_WIDGET_VISIBLE (GTK_WIDGET (menu))) {
         gtk_window_reshow_with_initial_size (GTK_WINDOW (menu));
     }
@@ -561,25 +539,41 @@ hildon_app_menu_construct_child                 (HildonAppMenu *menu)
 static void
 hildon_app_menu_init                            (HildonAppMenu *menu)
 {
+    GtkWidget *alignment;
     HildonAppMenuPrivate *priv = HILDON_APP_MENU_GET_PRIVATE(menu);
 
     /* Initialize private variables */
-    priv->filters_hbox = NULL;
-    priv->vbox = NULL;
-    priv->table = NULL;
     priv->transfer_window = NULL;
     priv->pressed_outside = FALSE;
     priv->buttons = NULL;
     priv->filters = NULL;
     priv->columns = 2;
 
-    hildon_app_menu_construct_child (menu);
+    /* Create boxes and tables */
+    priv->filters_hbox = GTK_BOX (gtk_hbox_new (TRUE, 0));
+    priv->vbox = GTK_BOX (gtk_vbox_new (FALSE, 0));
+    priv->table = GTK_TABLE (gtk_table_new (1, priv->columns, TRUE));
 
+    /* Align the filters to the center */
+    alignment = gtk_alignment_new (0.5, 0.5, 0, 0);
+    gtk_container_add (GTK_CONTAINER (alignment), GTK_WIDGET (priv->filters_hbox));
+
+    /* Pack everything */
+    gtk_container_add (GTK_CONTAINER (menu), GTK_WIDGET (priv->vbox));
+    gtk_box_pack_start (priv->vbox, alignment, TRUE, TRUE, 0);
+    gtk_box_pack_start (priv->vbox, GTK_WIDGET (priv->table), TRUE, TRUE, 0);
+
+    /* Apply style properties */
+    hildon_app_menu_apply_style (GTK_WIDGET (menu));
+
+    /* Make menu a modal window */
     gtk_window_set_modal (GTK_WINDOW (menu), TRUE);
 
     /* This should be treated like a normal, ref-counted widget */
     g_object_force_floating (G_OBJECT (menu));
     GTK_WINDOW (menu)->has_user_ref_count = FALSE;
+
+    gtk_widget_show_all (GTK_WIDGET (priv->vbox));
 }
 
 static void
