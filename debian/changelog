@@ -1,3 +1,9 @@
+libhildon (2.1.13-1~unrelased) unstable; urgency=low
+
+  * switch to use cdbs and simplify debian/rules.
+
+ -- Claudio Saavedra <csaavedra@igalia.com>  Tue, 30 Sep 2008 12:07:02 +0300
+
 libhildon (2.1.12-1) unstable; urgency=low
 
   * Ship the upstream ChangeLog and NEWS file.
