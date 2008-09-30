@@ -1,3 +1,8 @@
+2008-09-30  Alejandro G. Castro	 <alex@igalia.com>
+
+	* configure.ac: Fixed typo with fatal warnings support, the
+	variable name was not correct
+
 2008-09-29  Alberto Garcia  <agarcia@igalia.com>
 
 	* src/hildon-app-menu.c
