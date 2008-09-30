@@ -18,25 +18,39 @@
  * Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
-#ifndef __HILDON_TIME_SELECTOR_H__
-#define __HILDON_TIME_SELECTOR_H__
+#ifndef                                         __HILDON_TIME_SELECTOR_H__
+#define                                         __HILDON_TIME_SELECTOR_H__
 
-#include "hildon-touch-selector.h"
+#include                                        "hildon-touch-selector.h"
 
 G_BEGIN_DECLS
 
-#define HILDON_TYPE_TIME_SELECTOR             (hildon_time_selector_get_type ())
-#define HILDON_TIME_SELECTOR(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), HILDON_TYPE_TIME_SELECTOR, HildonTimeSelector))
-#define HILDON_TIME_SELECTOR_CLASS(vtable)    (G_TYPE_CHECK_CLASS_CAST ((vtable), HILDON_TYPE_TIME_SELECTOR, HildonTimeSelectorClass))
-#define HILDON_IS_TIME_SELECTOR(obj)          (G_TYPE_CHECK_INSTANCE_TYPE ((obj), HILDON_TYPE_TIME_SELECTOR))
-#define HILDON_IS_TIME_SELECTOR_CLASS(vtable) (G_TYPE_CHECK_CLASS_TYPE ((vtable), HILDON_TYPE_TIME_SELECTOR))
-#define HILDON_TIME_SELECTOR_GET_CLASS(inst)  (G_TYPE_INSTANCE_GET_CLASS ((inst), HILDON_TYPE_TIME_SELECTOR, HildonTimeSelectorClass))
+#define                                         HILDON_TYPE_TIME_SELECTOR \
+                                                (hildon_time_selector_get_type ())
 
-typedef struct _HildonTimeSelector HildonTimeSelector;
-typedef struct _HildonTimeSelectorClass HildonTimeSelectorClass;
-typedef struct _HildonTimeSelectorPrivate HildonTimeSelectorPrivate;
+#define                                         HILDON_TIME_SELECTOR(obj) \
+                                                (G_TYPE_CHECK_INSTANCE_CAST ((obj), \
+                                                HILDON_TYPE_TIME_SELECTOR, HildonTimeSelector))
 
-struct _HildonTimeSelector
+#define                                         HILDON_TIME_SELECTOR_CLASS(vtable) \
+                                                (G_TYPE_CHECK_CLASS_CAST ((vtable), \
+                                                HILDON_TYPE_TIME_SELECTOR, HildonTimeSelectorClass))
+
+#define                                         HILDON_IS_TIME_SELECTOR(obj) \
+                                                (G_TYPE_CHECK_INSTANCE_TYPE ((obj), HILDON_TYPE_TIME_SELECTOR))
+
+#define                                         HILDON_IS_TIME_SELECTOR_CLASS(vtable) \
+                                                (G_TYPE_CHECK_CLASS_TYPE ((vtable), HILDON_TYPE_TIME_SELECTOR))
+
+#define                                         HILDON_TIME_SELECTOR_GET_CLASS(inst) \
+                                                (G_TYPE_INSTANCE_GET_CLASS ((inst), \
+                                                HILDON_TYPE_TIME_SELECTOR, HildonTimeSelectorClass))
+
+typedef struct                                  _HildonTimeSelector HildonTimeSelector;
+typedef struct                                  _HildonTimeSelectorClass HildonTimeSelectorClass;
+typedef struct                                  _HildonTimeSelectorPrivate HildonTimeSelectorPrivate;
+
+struct                                          _HildonTimeSelector
 {
   HildonTouchSelector parent_instance;
 
@@ -44,7 +58,7 @@ struct _HildonTimeSelector
   HildonTimeSelectorPrivate *priv;
 };
 
-struct _HildonTimeSelectorClass
+struct                                          _HildonTimeSelectorClass
 {
   HildonTouchSelectorClass parent_class;
 
@@ -53,14 +67,22 @@ struct _HildonTimeSelectorClass
 
 
 /* construction */
-GType       hildon_time_selector_get_type (void) G_GNUC_CONST;
-GtkWidget * hildon_time_selector_new (void);
+GType G_GNUC_CONST
+hildon_time_selector_get_type                   (void) ;
+
+GtkWidget*
+hildon_time_selector_new                        (void);
 
 /* time management */
-gboolean hildon_time_selector_set_time (HildonTimeSelector * selector,
-                                        guint hours, guint minutes);
-void     hildon_time_selector_get_time (HildonTimeSelector * selector,
-                                        guint * hours, guint * minutes);
+gboolean
+hildon_time_selector_set_time                   (HildonTimeSelector *selector,
+                                                 guint               hours,
+                                                 guint               minutes);
+
+void
+hildon_time_selector_get_time                   (HildonTimeSelector *selector,
+                                                 guint              *hours,
+                                                 guint              *minutes);
 
 G_END_DECLS
 

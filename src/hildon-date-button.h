@@ -14,44 +14,68 @@
  *
  */
 
-#ifndef _HILDON_DATE_BUTTON
-#define _HILDON_DATE_BUTTON
+#ifndef                                         __HILDON_DATE_BUTTON__
+#define                                         __HILDON_DATE_BUTTON__
 
-#include <gtk/gtk.h>
+#include                                        <gtk/gtk.h>
 
-#include "hildon-picker-button.h"
+#include                                        "hildon-picker-button.h"
 
 G_BEGIN_DECLS
 
-#define HILDON_TYPE_DATE_BUTTON            hildon_date_button_get_type()
-#define HILDON_DATE_BUTTON(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), HILDON_TYPE_DATE_BUTTON, HildonDateButton))
-#define HILDON_DATE_BUTTON_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), HILDON_TYPE_DATE_BUTTON, HildonDateButtonClass))
-#define HILDON_IS_DATE_BUTTON(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), HILDON_TYPE_DATE_BUTTON))
-#define HILDON_IS_DATE_BUTTON_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), HILDON_TYPE_DATE_BUTTON))
-#define HILDON_DATE_BUTTON_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), HILDON_TYPE_DATE_BUTTON, HildonDateButtonClass))
+#define                                         HILDON_TYPE_DATE_BUTTON \
+                                                hildon_date_button_get_type()
 
-typedef struct _HildonDateButton      HildonDateButton;
-typedef struct _HildonDateButtonClass HildonDateButtonClass;
+#define                                         HILDON_DATE_BUTTON(obj) \
+                                                (G_TYPE_CHECK_INSTANCE_CAST ((obj),\
+                                                 HILDON_TYPE_DATE_BUTTON, HildonDateButton))
 
-struct _HildonDateButton
+#define                                         HILDON_DATE_BUTTON_CLASS(klass) \
+                                                (G_TYPE_CHECK_CLASS_CAST ((klass), \
+                                                HILDON_TYPE_DATE_BUTTON, HildonDateButtonClass))
+
+#define                                         HILDON_IS_DATE_BUTTON(obj) \
+                                                (G_TYPE_CHECK_INSTANCE_TYPE ((obj), HILDON_TYPE_DATE_BUTTON))
+
+#define                                         HILDON_IS_DATE_BUTTON_CLASS(klass) \
+                                                (G_TYPE_CHECK_CLASS_TYPE ((klass), HILDON_TYPE_DATE_BUTTON))
+
+#define                                         HILDON_DATE_BUTTON_GET_CLASS(obj) \
+                                                (G_TYPE_INSTANCE_GET_CLASS ((obj), \
+                                                HILDON_TYPE_DATE_BUTTON, HildonDateButtonClass))
+
+
+typedef struct                                  _HildonDateButton HildonDateButton;
+typedef struct                                  _HildonDateButtonClass HildonDateButtonClass;
+
+struct                                          _HildonDateButton
 {
   HildonPickerButton parent;
 };
 
-struct _HildonDateButtonClass
+struct                                          _HildonDateButtonClass
 {
   HildonPickerButtonClass parent_class;
 };
 
-GType      hildon_date_button_get_type (void);
-GtkWidget *hildon_date_button_new      (HildonSizeType          size,
-                                        HildonButtonArrangement arrangement);
+GType
+hildon_date_button_get_type                     (void);
 
-void hildon_date_button_get_date       (HildonDateButton * button,
-                                        guint * year, guint * month, guint * day);
-void hildon_date_button_set_date       (HildonDateButton * button,
-                                        guint year, guint month, guint day);
+GtkWidget*
+hildon_date_button_new                          (HildonSizeType          size,
+                                                 HildonButtonArrangement arrangement);
+
+void
+hildon_date_button_get_date                     (HildonDateButton *button,
+                                                 guint *year,
+                                                 guint *month,
+                                                 guint *day);
+void
+hildon_date_button_set_date                     (HildonDateButton * button,
+                                                 guint year,
+                                                 guint month,
+                                                 guint day);
 
 G_END_DECLS
 
-#endif /* _HILDON_DATE_BUTTON */
+#endif /* __HILDON_DATE_BUTTON__ */

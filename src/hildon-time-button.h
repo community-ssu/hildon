@@ -14,41 +14,63 @@
  *
  */
 
-#ifndef _HILDON_TIME_BUTTON
-#define _HILDON_TIME_BUTTON
+#ifndef                                         __HILDON_TIME_BUTTON__
+#define                                         __HILDON_TIME_BUTTON__
 
-#include <glib-object.h>
+#include                                        <glib-object.h>
 
 G_BEGIN_DECLS
 
-#define HILDON_TYPE_TIME_BUTTON            hildon_time_button_get_type()
-#define HILDON_TIME_BUTTON(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), HILDON_TYPE_TIME_BUTTON, HildonTimeButton))
-#define HILDON_TIME_BUTTON_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), HILDON_TYPE_TIME_BUTTON, HildonTimeButtonClass))
-#define HILDON_IS_TIME_BUTTON(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), HILDON_TYPE_TIME_BUTTON))
-#define HILDON_IS_TIME_BUTTON_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), HILDON_TYPE_TIME_BUTTON))
-#define HILDON_TIME_BUTTON_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), HILDON_TYPE_TIME_BUTTON, HildonTimeButtonClass))
+#define                                         HILDON_TYPE_TIME_BUTTON \
+                                                hildon_time_button_get_type()
 
-typedef struct _HildonTimeButton      HildonTimeButton;
-typedef struct _HildonTimeButtonClass HildonTimeButtonClass;
+#define                                         HILDON_TIME_BUTTON(obj) \
+                                                (G_TYPE_CHECK_INSTANCE_CAST ((obj),\
+                                                HILDON_TYPE_TIME_BUTTON, HildonTimeButton))
 
-struct _HildonTimeButton
+#define                                         HILDON_TIME_BUTTON_CLASS(klass) \
+                                                (G_TYPE_CHECK_CLASS_CAST ((klass), \
+                                                HILDON_TYPE_TIME_BUTTON, HildonTimeButtonClass))
+
+#define                                         HILDON_IS_TIME_BUTTON(obj) \
+                                                (G_TYPE_CHECK_INSTANCE_TYPE ((obj), HILDON_TYPE_TIME_BUTTON))
+
+#define                                         HILDON_IS_TIME_BUTTON_CLASS(klass) \
+                                                (G_TYPE_CHECK_CLASS_TYPE ((klass), HILDON_TYPE_TIME_BUTTON))
+
+#define                                         HILDON_TIME_BUTTON_GET_CLASS(obj) \
+                                                (G_TYPE_INSTANCE_GET_CLASS ((obj), \
+                                                HILDON_TYPE_TIME_BUTTON, HildonTimeButtonClass))
+
+typedef struct                                  _HildonTimeButton HildonTimeButton;
+typedef struct                                  _HildonTimeButtonClass HildonTimeButtonClass;
+
+struct                                          _HildonTimeButton
 {
   HildonPickerButton parent;
 };
 
-struct _HildonTimeButtonClass
+struct                                          _HildonTimeButtonClass
 {
   HildonPickerButtonClass parent_class;
 };
 
-GType      hildon_time_button_get_type (void);
-GtkWidget *hildon_time_button_new      (HildonSizeType          size,
-                                        HildonButtonArrangement arrangement);
+GType
+hildon_time_button_get_type                     (void);
 
-void hildon_time_button_get_time       (HildonTimeButton * button,
-                                        guint * hours, guint * minutes);
-void hildon_time_button_set_time       (HildonTimeButton * button,
-                                        guint hours, guint minutes);
+GtkWidget*
+hildon_time_button_new                          (HildonSizeType         size,
+                                                HildonButtonArrangement arrangement);
+
+void
+hildon_time_button_get_time                     (HildonTimeButton *button,
+                                                 guint            *hours,
+                                                 guint            *minutes);
+
+void
+hildon_time_button_set_time                     (HildonTimeButton *button,
+                                                 guint             hours,
+                                                 guint             minutes);
 
 G_END_DECLS
 

@@ -18,24 +18,38 @@
  * Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
-#ifndef __HILDON_DATE_SELECTOR_H__
-#define __HILDON_DATE_SELECTOR_H__
+#ifndef                                         __HILDON_DATE_SELECTOR_H__
+#define                                         __HILDON_DATE_SELECTOR_H__
 
-#include "hildon-touch-selector.h"
+#include                                        "hildon-touch-selector.h"
 
 G_BEGIN_DECLS
-#define HILDON_TYPE_DATE_SELECTOR             (hildon_date_selector_get_type ())
-#define HILDON_DATE_SELECTOR(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), HILDON_TYPE_DATE_SELECTOR, HildonDateSelector))
-#define HILDON_DATE_SELECTOR_CLASS(vtable)    (G_TYPE_CHECK_CLASS_CAST ((vtable), HILDON_TYPE_DATE_SELECTOR, HildonDateSelectorClass))
-#define HILDON_IS_DATE_SELECTOR(obj)          (G_TYPE_CHECK_INSTANCE_TYPE ((obj), HILDON_TYPE_DATE_SELECTOR))
-#define HILDON_IS_DATE_SELECTOR_CLASS(vtable) (G_TYPE_CHECK_CLASS_TYPE ((vtable), HILDON_TYPE_DATE_SELECTOR))
-#define HILDON_DATE_SELECTOR_GET_CLASS(inst)  (G_TYPE_INSTANCE_GET_CLASS ((inst), HILDON_TYPE_DATE_SELECTOR, HildonDateSelectorClass))
+#define                                         HILDON_TYPE_DATE_SELECTOR \
+                                                (hildon_date_selector_get_type ())
 
-typedef struct _HildonDateSelector HildonDateSelector;
-typedef struct _HildonDateSelectorClass HildonDateSelectorClass;
-typedef struct _HildonDateSelectorPrivate HildonDateSelectorPrivate;
+#define                                         HILDON_DATE_SELECTOR(obj) \
+                                                (G_TYPE_CHECK_INSTANCE_CAST ((obj), \
+                                                HILDON_TYPE_DATE_SELECTOR, HildonDateSelector))
 
-struct _HildonDateSelector
+#define                                         HILDON_DATE_SELECTOR_CLASS(vtable) \
+                                                (G_TYPE_CHECK_CLASS_CAST ((vtable), \
+                                                HILDON_TYPE_DATE_SELECTOR, HildonDateSelectorClass))
+
+#define                                         HILDON_IS_DATE_SELECTOR(obj) \
+                                                (G_TYPE_CHECK_INSTANCE_TYPE ((obj), HILDON_TYPE_DATE_SELECTOR))
+
+#define                                         HILDON_IS_DATE_SELECTOR_CLASS(vtable) \
+                                                (G_TYPE_CHECK_CLASS_TYPE ((vtable), HILDON_TYPE_DATE_SELECTOR))
+
+#define                                         HILDON_DATE_SELECTOR_GET_CLASS(inst) \
+                                                (G_TYPE_INSTANCE_GET_CLASS ((inst), \
+                                                HILDON_TYPE_DATE_SELECTOR, HildonDateSelectorClass))
+
+typedef struct                                  _HildonDateSelector HildonDateSelector;
+typedef struct                                  _HildonDateSelectorClass HildonDateSelectorClass;
+typedef struct                                  _HildonDateSelectorPrivate HildonDateSelectorPrivate;
+
+struct                                          _HildonDateSelector
 {
   HildonTouchSelector parent_instance;
 
@@ -43,7 +57,7 @@ struct _HildonDateSelector
   HildonDateSelectorPrivate *priv;
 };
 
-struct _HildonDateSelectorClass
+struct                                          _HildonDateSelectorClass
 {
   HildonTouchSelectorClass parent_class;
 
@@ -52,18 +66,33 @@ struct _HildonDateSelectorClass
 
 
 /* construction */
-GType       hildon_date_selector_get_type         (void) G_GNUC_CONST;
-GtkWidget * hildon_date_selector_new              (void);
+GType G_GNUC_CONST
+hildon_date_selector_get_type                   (void);
+
+GtkWidget*
+hildon_date_selector_new                        (void);
 
 /* date management */
-gboolean hildon_date_selector_select_month        (HildonDateSelector * selector,
-                                                   guint month, guint year);
-void     hildon_date_selector_select_day          (HildonDateSelector * selector, guint day);
+gboolean
+hildon_date_selector_select_month               (HildonDateSelector *selector,
+                                                 guint               month,
+                                                 guint               year);
 
-gboolean hildon_date_selector_select_current_date (HildonDateSelector * selector,
-                                                   guint year, guint month, guint day);
-void     hildon_date_selector_get_date            (HildonDateSelector * selector,
-                                                   guint * year, guint * month, guint * day);
+void
+hildon_date_selector_select_day                 (HildonDateSelector *selector,
+                                                 guint               day);
+
+gboolean
+hildon_date_selector_select_current_date        (HildonDateSelector *selector,
+                                                 guint               year,
+                                                 guint               month,
+                                                 guint               day);
+
+void
+hildon_date_selector_get_date                   (HildonDateSelector *selector,
+                                                 guint              *year,
+                                                 guint              *month,
+                                                 guint              *day);
 
 G_END_DECLS
 

@@ -73,14 +73,14 @@ hildon_time_picker_get_type                     (void);
 GtkWidget*
 hildon_time_picker_new                          (GtkWindow *parent);
 
-void 
+void
 hildon_time_picker_set_time                     (HildonTimePicker *picker,
-                                                 guint hours, 
+                                                 guint hours,
                                                  guint minutes);
 
-void 
+void
 hildon_time_picker_get_time                     (HildonTimePicker *picker,
-                                                 guint *hours, 
+                                                 guint *hours,
                                                  guint *minutes);
 
 G_END_DECLS

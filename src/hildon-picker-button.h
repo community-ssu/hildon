@@ -14,47 +14,71 @@
  *
  */
 
-#ifndef _HILDON_PICKER_BUTTON
-#define _HILDON_PICKER_BUTTON
+#ifndef                                         __HILDON_PICKER_BUTTON__
+#define                                         __HILDON_PICKER_BUTTON__
 
-#include <glib-object.h>
+#include                                        <glib-object.h>
 
-#include "hildon-button.h"
-#include "hildon-touch-selector.h"
+#include                                        "hildon-button.h"
+#include                                        "hildon-touch-selector.h"
 
 G_BEGIN_DECLS
 
-#define HILDON_TYPE_PICKER_BUTTON            hildon_picker_button_get_type()
-#define HILDON_PICKER_BUTTON(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), HILDON_TYPE_PICKER_BUTTON, HildonPickerButton))
-#define HILDON_PICKER_BUTTON_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), HILDON_TYPE_PICKER_BUTTON, HildonPickerButtonClass))
-#define HILDON_IS_PICKER_BUTTON(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), HILDON_TYPE_PICKER_BUTTON))
-#define HILDON_IS_PICKER_BUTTON_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), HILDON_TYPE_PICKER_BUTTON))
-#define HILDON_PICKER_BUTTON_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), HILDON_TYPE_PICKER_BUTTON, HildonPickerButtonClass))
+#define                                         HILDON_TYPE_PICKER_BUTTON \
+                                                hildon_picker_button_get_type()
 
-typedef struct _HildonPickerButton HildonPickerButton;
-typedef struct _HildonPickerButtonClass HildonPickerButtonClass;
+#define                                         HILDON_PICKER_BUTTON(obj) \
+                                                (G_TYPE_CHECK_INSTANCE_CAST ((obj), \
+                                                HILDON_TYPE_PICKER_BUTTON, HildonPickerButton))
 
-struct _HildonPickerButton
+#define                                         HILDON_PICKER_BUTTON_CLASS(klass) \
+                                                (G_TYPE_CHECK_CLASS_CAST ((klass), \
+                                                HILDON_TYPE_PICKER_BUTTON, HildonPickerButtonClass))
+
+#define                                         HILDON_IS_PICKER_BUTTON(obj) \
+                                                (G_TYPE_CHECK_INSTANCE_TYPE ((obj), HILDON_TYPE_PICKER_BUTTON))
+
+#define                                         HILDON_IS_PICKER_BUTTON_CLASS(klass) \
+                                                (G_TYPE_CHECK_CLASS_TYPE ((klass), HILDON_TYPE_PICKER_BUTTON))
+
+#define                                         HILDON_PICKER_BUTTON_GET_CLASS(obj) \
+                                                (G_TYPE_INSTANCE_GET_CLASS ((obj), \
+                                                HILDON_TYPE_PICKER_BUTTON, HildonPickerButtonClass))
+
+typedef struct                                  _HildonPickerButton HildonPickerButton;
+typedef struct                                  _HildonPickerButtonClass HildonPickerButtonClass;
+
+struct                                          _HildonPickerButton
 {
   HildonButton parent;
 };
 
-struct _HildonPickerButtonClass
+struct                                          _HildonPickerButtonClass
 {
   HildonButtonClass parent_class;
 };
 
-GType      hildon_picker_button_get_type (void);
-GtkWidget *hildon_picker_button_new      (HildonSizeType          size,
-                                          HildonButtonArrangement arrangement);
+GType
+hildon_picker_button_get_type                   (void);
 
-void hildon_picker_button_set_selector     (HildonPickerButton * button,
-                                            HildonTouchSelector * selector);
-HildonTouchSelector *hildon_picker_button_get_selector (HildonPickerButton * button);
-void hildon_picker_button_set_active       (HildonPickerButton * button,
-                                            gint index);
-gint hildon_picker_button_get_active       (HildonPickerButton * button);
+GtkWidget*
+hildon_picker_button_new                        (HildonSizeType          size,
+                                                 HildonButtonArrangement arrangement);
+
+void
+hildon_picker_button_set_selector               (HildonPickerButton * button,
+                                                 HildonTouchSelector *selector);
+
+HildonTouchSelector*
+hildon_picker_button_get_selector               (HildonPickerButton *button);
+
+void
+hildon_picker_button_set_active                 (HildonPickerButton * button,
+                                                 gint index);
+
+gint
+hildon_picker_button_get_active                 (HildonPickerButton * button);
 
 G_END_DECLS
 
-#endif /* _HILDON_PICKER_BUTTON */
+#endif /* __HILDON_PICKER_BUTTON__ */

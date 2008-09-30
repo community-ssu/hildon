@@ -389,10 +389,18 @@ hildon_time_selector_new ()
   return g_object_new (HILDON_TYPE_TIME_SELECTOR, NULL);
 }
 
-/*
- * hours (0-23)
- * minutes (0-59)
- */
+/**
+ * hildon_time_selector_set_time
+ * @selector: the #HildonTimeSelector
+ * @year:  the current hour (0-23)
+ * @minutes: the current minute (0-59)
+ *
+ * Sets the current active hour on the #HildonTimeSelector widget
+ *
+ * The format of the hours acceptes is always 24h format, with a range
+ * (0-23):(0-59).
+ *
+ **/
 gboolean
 hildon_time_selector_set_time (HildonTimeSelector * selector,
                                guint hours, guint minutes)
@@ -424,6 +432,18 @@ hildon_time_selector_set_time (HildonTimeSelector * selector,
   return TRUE;
 }
 
+/**
+ * hildon_time_selector_get_time
+ * @selector: the #HildonTimeSelector
+ * @year:  to set the current hour (0-23)
+ * @minutes: to set the current minute (0-59)
+ *
+ * Gets the current active hour on the #HildonTimeSelector widget. Both @year
+ * and @minutes can be NULL.
+ *
+ * This method returns the date always in 24h format, with a range (0-23):(0-59)
+ *
+ **/
 void
 hildon_time_selector_get_time (HildonTimeSelector * selector,
                                guint * hours, guint * minutes)

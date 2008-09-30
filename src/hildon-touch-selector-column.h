@@ -18,25 +18,41 @@
  * Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
-#ifndef __HILDON_TOUCH_SELECTOR_COLUMN_H__
-#define __HILDON_TOUCH_SELECTOR_COLUMN_H__
+#ifndef                                         __HILDON_TOUCH_SELECTOR_COLUMN_H__
+#define                                         __HILDON_TOUCH_SELECTOR_COLUMN_H__
 
-#include <gtk/gtk.h>
+#include                                        <gtk/gtk.h>
 
 G_BEGIN_DECLS
 
-#define HILDON_TYPE_TOUCH_SELECTOR_COLUMN	    (hildon_touch_selector_column_get_type ())
-#define HILDON_TOUCH_SELECTOR_COLUMN(obj)	    (G_TYPE_CHECK_INSTANCE_CAST ((obj), HILDON_TYPE_TOUCH_SELECTOR_COLUMN, HildonTouchSelectorColumn))
-#define HILDON_TOUCH_SELECTOR_COLUMN_CLASS(klass)   (G_TYPE_CHECK_CLASS_CAST ((klass), HILDON_TYPE_TOUCH_SELECTOR_COLUMN, HildonTouchSelectorColumnClass))
-#define HILDON_IS_TOUCH_SELECTOR_COLUMN(obj)	    (G_TYPE_CHECK_INSTANCE_TYPE ((obj), HILDON_TYPE_TOUCH_SELECTOR_COLUMN))
-#define HILDON_IS_TOUCH_SELECTOR_COLUMN_CLASS(klass)(G_TYPE_CHECK_CLASS_TYPE ((klass), HILDON_TYPE_TOUCH_SELECTOR_COLUMN))
-#define HILDON_TOUCH_SELECTOR_COLUMN_GET_CLASS(obj) (G_TYPE_INSTANCE_GET_CLASS ((obj), HILDON_TYPE_TOUCH_SELECTOR_COLUMN, HildonTouchSelectorColumnClass))
+#define                                         HILDON_TYPE_TOUCH_SELECTOR_COLUMN \
+                                                (hildon_touch_selector_column_get_type ())
 
-typedef struct _HildonTouchSelectorColumn        HildonTouchSelectorColumn;
-typedef struct _HildonTouchSelectorColumnClass   HildonTouchSelectorColumnClass;
-typedef struct _HildonTouchSelectorColumnPrivate HildonTouchSelectorColumnPrivate;
+#define                                         HILDON_TOUCH_SELECTOR_COLUMN(obj) \
+                                                (G_TYPE_CHECK_INSTANCE_CAST ((obj), \
+                                                HILDON_TYPE_TOUCH_SELECTOR_COLUMN, HildonTouchSelectorColumn))
 
-struct _HildonTouchSelectorColumn
+#define                                         HILDON_TOUCH_SELECTOR_COLUMN_CLASS(klass) \
+                                                (G_TYPE_CHECK_CLASS_CAST ((klass), \
+                                                HILDON_TYPE_TOUCH_SELECTOR_COLUMN, HildonTouchSelectorColumnClass))
+
+#define                                         HILDON_IS_TOUCH_SELECTOR_COLUMN(obj) \
+                                                (G_TYPE_CHECK_INSTANCE_TYPE ((obj), \
+                                                HILDON_TYPE_TOUCH_SELECTOR_COLUMN))
+
+#define                                         HILDON_IS_TOUCH_SELECTOR_COLUMN_CLASS(klass) \
+                                                (G_TYPE_CHECK_CLASS_TYPE ((klass), \
+                                                HILDON_TYPE_TOUCH_SELECTOR_COLUMN))
+
+#define                                         HILDON_TOUCH_SELECTOR_COLUMN_GET_CLASS(obj) \
+                                                (G_TYPE_INSTANCE_GET_CLASS ((obj), \
+                                                HILDON_TYPE_TOUCH_SELECTOR_COLUMN, HildonTouchSelectorColumnClass))
+
+typedef struct                                  _HildonTouchSelectorColumn HildonTouchSelectorColumn;
+typedef struct                                  _HildonTouchSelectorColumnClass HildonTouchSelectorColumnClass;
+typedef struct                                  _HildonTouchSelectorColumnPrivate HildonTouchSelectorColumnPrivate;
+
+struct                                         _HildonTouchSelectorColumn
 {
   GObject parent;
 
@@ -44,12 +60,13 @@ struct _HildonTouchSelectorColumn
   HildonTouchSelectorColumnPrivate *priv;
 };
 
-struct _HildonTouchSelectorColumnClass
+struct                                          _HildonTouchSelectorColumnClass
 {
   GObjectClass parent_class;
 };
 
-GType                   hildon_touch_selector_column_get_type            (void) G_GNUC_CONST;
+GType G_GNUC_CONST
+hildon_touch_selector_column_get_type           (void);
 
 G_END_DECLS
 

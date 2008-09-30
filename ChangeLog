@@ -1,3 +1,22 @@
+2008-09-30  Alejandro Pinheiro <apinheiro@igalia.com>
+
+ 	* src/hildon-time-selector.c
+ 	(hildon_time_selector_get_time)
+ 	(hildon_time_selector_set_time)
+ 	Added documentation of these public methods
+
+	* src/hildon-date-button.h
+	* src/hildon-touch-selector-column.h
+	* src/hildon-time-button.h
+	* src/hildon-picker-dialog.h
+	* src/hildon-time-selector.h
+	* src/hildon-picker-button.h
+	* src/hildon-touch-selector.h
+	* src/hildon-time-picker.h
+	* src/hildon-date-selector.h
+	* src/hildon-touch-selector-entry.h
+	Modified in order to use hildon-widgets code style
+
 2008-09-30  Alejandro G. Castro	 <alex@igalia.com>
 
 	Added deprecated support to the compilation process using
