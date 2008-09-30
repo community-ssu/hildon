@@ -1,5 +1,18 @@
 2008-09-30  Alejandro G. Castro	 <alex@igalia.com>
 
+	Added deprecated support to the compilation process using
+	HILDON_DISABLE_DEPRECATED
+
+	* configure.ac: Added the --disable-deprecated to the configure
+	script
+
+	* src/hildon-weekday-picker.c:
+	* src/hildon-weekday-picker.h: Deprecated widget, example of how
+	to use the deprecated support. We will update the other deprecated
+	widgets status in a new patch.
+
+2008-09-30  Alejandro G. Castro	 <alex@igalia.com>
+
 	* configure.ac: Fixed typo with fatal warnings support, the
 	variable name was not correct
 

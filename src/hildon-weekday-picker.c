@@ -58,6 +58,8 @@
     problem, we addjust GDate days numbering to be same as locale
     numbering */
 
+#undef                                          HILDON_DISABLE_DEPRECATED
+
 #ifdef                                          HAVE_CONFIG_H
 #include                                        <config.h>
 #endif

@@ -160,12 +160,25 @@ else
     FATAL_CFLAGS=""
 fi
 
+# disable deprecated symbols
+AC_ARG_ENABLE(deprecated,
+              [AC_HELP_STRING([--enable-deprecated],
+	                      [enable use of deprecated symbols [default=yes]])],,
+              [enable_deprecated="yes"])
+
+if test x$enable_deprecated = xno; then
+    DISABLE_DEPRECATED="-DHILDON_DISABLE_DEPRECATED"
+fi
+
 # Check support (c unit test)
 PKG_CHECK_MODULES(CHECK, check , [BUILD_TESTS="yes"], [BUILD_TESTS="no"])
 AM_CONDITIONAL(BUILD_TESTS, test "x$BUILD_TESTS" = "xyes")
 
 CFLAGS="$CFLAGS ${ASSERT_CFLAGS} -Wall -Wmissing-prototypes -Wmissing-declarations -Wno-format ${FATAL_CFLAGS}"
 # -Wno-format due to way translation string are done
+
+### disable deprecated symbols
+CFLAGS="$CFLAGS $DISABLE_DEPRECATED"
 
 ### enable MAEMO platform extensions
 CFLAGS="$CFLAGS $MAEMO_CHANGES"
@@ -201,6 +214,7 @@ Configuration:
 - Version............: ${VERSION}
 - Api................: ${PACKAGE}-${API_VERSION_MAJOR}
 - Compiler...........: ${CC}
+- Enable deprecated..: ${enable_deprecated}
 - gtk-doc support....: ${enable_gtk_doc}
 - Build examples.....: ${BUILD_EXAMPLES}
 - Build with asserts.: ${BUILD_WITH_ASSERTS}
