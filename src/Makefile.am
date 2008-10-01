@@ -122,6 +122,7 @@ libhildon_@API_VERSION_MAJOR@_public_headers = \
 		hildon-date-selector.h			\
 		hildon-time-selector.h			\
 		hildon-touch-selector.h			\
+		hildon-touch-selector-column.h		\
 		hildon-touch-selector-entry.h		\
 		hildon-picker-dialog.h			\
 		hildon-picker-button.h			\
