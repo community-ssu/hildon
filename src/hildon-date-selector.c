@@ -214,6 +214,7 @@ hildon_date_selector_init (HildonDateSelector * selector)
 {
   GSList *iter = NULL;
   gint current_item = 0;
+  HildonTouchSelectorColumn *column = NULL;
 
   selector->priv = HILDON_DATE_SELECTOR_GET_PRIVATE (selector);
 
@@ -234,23 +235,26 @@ hildon_date_selector_init (HildonDateSelector * selector)
   selector->priv->month_model = _create_month_model (selector);
   selector->priv->day_model = _create_day_model (selector);
 
-  /* We add the columns: FIXME: check the locale order */
+  /* We add the columns, checking the locale order */
   iter = selector->priv->column_order;
   for (iter = selector->priv->column_order; iter; iter = g_slist_next (iter)) {
     current_item = GPOINTER_TO_INT (iter->data);
 
     switch (current_item) {
     case DAY:
-      hildon_touch_selector_append_text_column (HILDON_TOUCH_SELECTOR (selector),
-                                                selector->priv->day_model, TRUE);
+      column = hildon_touch_selector_append_text_column (HILDON_TOUCH_SELECTOR (selector),
+                                                         selector->priv->day_model, TRUE);
+      g_object_set (G_OBJECT (column), "text-column", 0, NULL);
       break;
     case MONTH:
-      hildon_touch_selector_append_text_column (HILDON_TOUCH_SELECTOR (selector),
-                                                selector->priv->month_model, TRUE);
+      column = hildon_touch_selector_append_text_column (HILDON_TOUCH_SELECTOR (selector),
+                                                         selector->priv->month_model, TRUE);
+      g_object_set (G_OBJECT (column), "text-column", 0, NULL);
       break;
     case YEAR:
-      hildon_touch_selector_append_text_column (HILDON_TOUCH_SELECTOR (selector),
-                                                selector->priv->year_model, TRUE);
+      column = hildon_touch_selector_append_text_column (HILDON_TOUCH_SELECTOR (selector),
+                                                         selector->priv->year_model, TRUE);
+      g_object_set (G_OBJECT (column), "text-column", 0, NULL);
       break;
     default:
       g_error ("Current column order incorrect");

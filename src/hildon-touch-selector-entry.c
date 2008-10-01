@@ -61,8 +61,11 @@ static void hildon_touch_selector_entry_set_model (HildonTouchSelector * selecto
                                                    gint column, GtkTreeModel *model);
 static gboolean hildon_touch_selector_entry_has_multiple_selection (HildonTouchSelector * selector);
 
+static void
+_text_column_modified (GObject *pspec, GParamSpec *gobject, gpointer data);
+
+
 struct _HildonTouchSelectorEntryPrivate {
-  gint text_column;
   gulong signal_id;
   GtkWidget *entry;
 };
@@ -115,7 +118,11 @@ hildon_touch_selector_entry_class_init (HildonTouchSelectorEntryClass *klass)
                                    PROP_TEXT_COLUMN,
                                    g_param_spec_int ("text-column",
                                                      "Text Column",
-                                                     "A column in the data source model to get the strings from.",
+                                                     "A column in the data source model to get the strings from."
+                                                     "Deprecated: now this property is in HildonTouchSelectorColumn"
+                                                     "use hildon_touch_selector_entry_set_text_column() and"
+                                                     "hildon_touch_selector_entry_get_text_column() to manage"
+                                                     "this in a easy way",
                                                      -1,
                                                      G_MAXINT,
                                                      -1,
@@ -180,6 +187,7 @@ hildon_touch_selector_entry_new_text (void)
   GtkWidget *selector;
   GtkEntryCompletion *completion;
   HildonTouchSelectorEntryPrivate *priv;
+  HildonTouchSelectorColumn *column = NULL;
 
   selector = hildon_touch_selector_entry_new ();
 
@@ -188,41 +196,79 @@ hildon_touch_selector_entry_new_text (void)
   model = gtk_list_store_new (1, G_TYPE_STRING);
   completion = gtk_entry_get_completion (GTK_ENTRY (priv->entry));
   gtk_entry_completion_set_model (completion, GTK_TREE_MODEL (model));
+  column = hildon_touch_selector_append_text_column (HILDON_TOUCH_SELECTOR (selector),
+                                                     GTK_TREE_MODEL (model), FALSE);
 
-  hildon_touch_selector_append_text_column (HILDON_TOUCH_SELECTOR (selector),
-                                            GTK_TREE_MODEL (model), FALSE);
+  g_signal_connect (column, "notify::text-column", G_CALLBACK (_text_column_modified),
+                    selector);
   hildon_touch_selector_entry_set_text_column (HILDON_TOUCH_SELECTOR_ENTRY (selector), 0);
 
   return selector;
 }
 
+static void
+_text_column_modified (GObject *pspec, GParamSpec *gobject, gpointer data)
+{
+  HildonTouchSelectorEntry *selector;
+  HildonTouchSelectorEntryPrivate *priv;
+  GtkEntryCompletion *completion;
+  gint text_column = -1;
+
+  g_return_if_fail (HILDON_IS_TOUCH_SELECTOR_ENTRY (data));
+  selector = HILDON_TOUCH_SELECTOR_ENTRY (data);
+
+  priv = HILDON_TOUCH_SELECTOR_ENTRY_GET_PRIVATE (HILDON_TOUCH_SELECTOR_ENTRY(selector));
+  completion = gtk_entry_get_completion (GTK_ENTRY (priv->entry));
+
+  text_column = hildon_touch_selector_entry_get_text_column (selector);
+
+  gtk_entry_completion_set_text_column (completion, text_column);
+}
+
+/**
+ * hildon_touch_selector_entry_set_text_column:
+ * @selector: A #HildonTouchSelectorEntry
+ * @text_column: A column in model to get the strings from
+ *
+ * Sets the model column which touch selector box should use to get strings
+ * from to be text_column.
+ *
+ **/
 void
 hildon_touch_selector_entry_set_text_column (HildonTouchSelectorEntry *selector,
                                              gint text_column)
 {
-  HildonTouchSelectorEntryPrivate *priv;
-  GtkEntryCompletion *completion;
+  HildonTouchSelectorColumn *column = NULL;
 
   g_return_if_fail (HILDON_IS_TOUCH_SELECTOR_ENTRY (selector));
   g_return_if_fail (text_column >= -1);
 
-  priv = HILDON_TOUCH_SELECTOR_ENTRY_GET_PRIVATE (selector);
-  completion = gtk_entry_get_completion (GTK_ENTRY (priv->entry));
+  column = hildon_touch_selector_get_column (HILDON_TOUCH_SELECTOR (selector), 0);
 
-  gtk_entry_completion_set_text_column (completion, text_column);
-  priv->text_column = text_column;
+  g_object_set (G_OBJECT (column), "text-column", text_column, NULL);
 }
 
+/**
+ * hildon_touch_selector_entry_get_text_column:
+ * @selector: A #HildonTouchSelectorEntry
+ *
+ * Returns the @column which the touch selector is using to get the strings from
+ *
+ **/
 gint
 hildon_touch_selector_entry_get_text_column (HildonTouchSelectorEntry *selector)
 {
-  HildonTouchSelectorEntryPrivate *priv;
+  HildonTouchSelectorColumn *column = NULL;
+  gint text_column = -1;
 
   g_return_val_if_fail (HILDON_IS_TOUCH_SELECTOR_ENTRY (selector), -1);
 
-  priv = HILDON_TOUCH_SELECTOR_ENTRY_GET_PRIVATE (selector);
+  column = hildon_touch_selector_get_column (HILDON_TOUCH_SELECTOR (selector),
+                                             0);
 
-  return priv->text_column;
+  g_object_get (G_OBJECT (column), "text-column", &text_column, NULL);
+
+  return text_column;
 }
 
 static void
@@ -237,20 +283,24 @@ entry_on_text_changed (GtkEditable * editable,
   const gchar *prefix;
   gchar *text;
   gboolean found = FALSE;
+  gint text_column = -1;
 
   entry = GTK_ENTRY (editable);
   selector = HILDON_TOUCH_SELECTOR (userdata);
   priv = HILDON_TOUCH_SELECTOR_ENTRY_GET_PRIVATE (selector);
 
+  text_column =
+    hildon_touch_selector_entry_get_text_column (HILDON_TOUCH_SELECTOR_ENTRY (selector));
+
   prefix = gtk_entry_get_text (entry);
-  model = hildon_touch_selector_get_model (HILDON_TOUCH_SELECTOR (selector), 0);
+  model = hildon_touch_selector_get_model (selector, 0);
 
   if (!gtk_tree_model_get_iter_first (model, &iter)) {
     return;
   }
 
   do {
-    gtk_tree_model_get (model, &iter, priv->text_column, &text, -1);
+    gtk_tree_model_get (model, &iter, text_column, &text, -1);
     found = g_str_has_prefix (text, prefix);
     g_free (text);
   } while (found != TRUE && gtk_tree_model_iter_next (model, &iter));
@@ -282,10 +332,12 @@ hildon_touch_selector_get_text_from_model (HildonTouchSelectorEntry * selector)
   GtkTreePath *path;
   GList *selected_rows;
   gchar *text;
+  gint text_column = -1;
 
   priv = HILDON_TOUCH_SELECTOR_ENTRY_GET_PRIVATE (selector);
 
   model = hildon_touch_selector_get_model (HILDON_TOUCH_SELECTOR (selector), 0);
+  text_column = hildon_touch_selector_entry_get_text_column (selector);
   selected_rows = hildon_touch_selector_get_selected_rows (HILDON_TOUCH_SELECTOR (selector), 0);
 
   if (selected_rows == NULL) {
@@ -297,7 +349,7 @@ hildon_touch_selector_get_text_from_model (HildonTouchSelectorEntry * selector)
 
   path = (GtkTreePath *)selected_rows->data;
   gtk_tree_model_get_iter (model, &iter, path);
-  gtk_tree_model_get (model, &iter, priv->text_column, &text, -1);
+  gtk_tree_model_get (model, &iter, text_column, &text, -1);
 
   gtk_tree_path_free (path);
   g_list_free (selected_rows);
@@ -328,6 +380,7 @@ hildon_touch_selector_entry_set_model (HildonTouchSelector * selector,
 {
   GtkEntryCompletion *completion;
   HildonTouchSelectorEntryPrivate *priv;
+  gint text_column = -1;
 
   g_return_if_fail (HILDON_IS_TOUCH_SELECTOR_ENTRY (selector));
   g_return_if_fail (column == 0);
@@ -339,7 +392,10 @@ hildon_touch_selector_entry_set_model (HildonTouchSelector * selector,
 
   completion = gtk_entry_get_completion (GTK_ENTRY (priv->entry));
   gtk_entry_completion_set_model (completion, model);
-  gtk_entry_completion_set_text_column (completion, priv->text_column);
+
+  text_column = hildon_touch_selector_entry_get_text_column (HILDON_TOUCH_SELECTOR_ENTRY (selector));
+
+  gtk_entry_completion_set_text_column (completion, text_column);
 }
 
 static gboolean

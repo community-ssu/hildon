@@ -28,6 +28,7 @@ create_touch_selector (void)
   GtkWidget *selector;
   GtkListStore *model;
   GtkTreeIter iter;
+  HildonTouchSelectorColumn *column = NULL;
 
   selector = hildon_touch_selector_new ();
 
@@ -45,8 +46,9 @@ create_touch_selector (void)
   gtk_list_store_append (model, &iter);
   gtk_list_store_set (model, &iter, 0, "Mailbox", -1);
 
-  hildon_touch_selector_append_text_column (HILDON_TOUCH_SELECTOR (selector),
-                                            GTK_TREE_MODEL (model), TRUE);
+  column = hildon_touch_selector_append_text_column (HILDON_TOUCH_SELECTOR (selector),
+                                                     GTK_TREE_MODEL (model), TRUE);
+  g_object_set (G_OBJECT(column), "text-column", 0, NULL);
 
   model = gtk_list_store_new (1, G_TYPE_STRING);
 
@@ -59,8 +61,10 @@ create_touch_selector (void)
   gtk_list_store_append (model, &iter);
   gtk_list_store_set (model, &iter, 0, "Smoke signals", -1);
 
-  hildon_touch_selector_append_text_column (HILDON_TOUCH_SELECTOR (selector),
-                                            GTK_TREE_MODEL (model), TRUE);
+  column = hildon_touch_selector_append_text_column (HILDON_TOUCH_SELECTOR (selector),
+                                                     GTK_TREE_MODEL (model), TRUE);
+  g_object_set (G_OBJECT(column), "text-column", 0, NULL);
+  
   return selector;
 }
 

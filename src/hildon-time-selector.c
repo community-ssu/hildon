@@ -131,6 +131,8 @@ hildon_time_selector_class_init (HildonTimeSelectorClass * class)
 static void
 hildon_time_selector_init (HildonTimeSelector * selector)
 {
+  HildonTouchSelectorColumn *column = NULL;
+
   selector->priv = HILDON_TIME_SELECTOR_GET_PRIVATE (selector);
 
   GTK_WIDGET_SET_FLAGS (GTK_WIDGET (selector), GTK_NO_WINDOW);
@@ -147,11 +149,13 @@ hildon_time_selector_init (HildonTimeSelector * selector)
   selector->priv->hours_model = _create_hours_model (selector);
   selector->priv->minutes_model = _create_minutes_model (selector);
 
-  hildon_touch_selector_append_text_column (HILDON_TOUCH_SELECTOR (selector),
-                                            selector->priv->hours_model, TRUE);
+  column = hildon_touch_selector_append_text_column (HILDON_TOUCH_SELECTOR (selector),
+                                                     selector->priv->hours_model, TRUE);
+  g_object_set (column, "text-column", 0, NULL);
 
-  hildon_touch_selector_append_text_column (HILDON_TOUCH_SELECTOR (selector),
-                                            selector->priv->minutes_model, TRUE);
+  column = hildon_touch_selector_append_text_column (HILDON_TOUCH_SELECTOR (selector),
+                                                     selector->priv->minutes_model, TRUE);
+  g_object_set (column, "text-column", 0, NULL);
 
   if (selector->priv->ampm_format) {
     selector->priv->ampm_model = _create_ampm_model (selector);

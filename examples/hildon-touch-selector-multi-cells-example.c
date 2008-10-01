@@ -83,6 +83,7 @@ create_selector ()
   column = hildon_touch_selector_append_column (HILDON_TOUCH_SELECTOR (selector),
                                                 GTK_TREE_MODEL (store_icons),
                                                 NULL, NULL);
+  g_object_set (G_OBJECT(column), "text-column", 1, NULL);
 
   renderer = gtk_cell_renderer_pixbuf_new ();
   gtk_cell_renderer_set_fixed_size (renderer, 75, 75);

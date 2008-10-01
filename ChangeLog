@@ -1,3 +1,28 @@
+2008-10-01  Alejandro Pinheiro <apinheiro@igalia.com>
+
+	* src/hildon-touch-selector.c: added the property "text-column" to the
+	class HildonTouchSelectorColumn, and related get/set functions
+	(_default_printf_func): updated to use "text-column" property
+	* src/hildon-touch-selector-entry.c: mark as deprecated the property
+	"text-column" in his documentation, as this is now included on
+	HildonTouchSelectorColumn. The get/set_property can still be used,
+	working as a wrapper to the concrete column "text-column" property
+	(_text_column_modified): callback added in order to handle the signal
+	"notify::text-column" of the concrete HildonTouchSelectorColumn
+	(hildon_touch_selector_entry_get_text_column)
+	(hildon_touch_selector_entry_set_text_column): Added documentation, and
+	modified in order to use the HildonTouchSelectorColumn "text-column"
+	property
+	* src/hildon-time-selector.c:
+	* src/hildon-date-selector.c:
+	* examples/hildon-touch-selector-example.c
+	* examples/hildon-touch-selector-multi-cells-example.c
+	* examples/hildon-picker-button-multicolumn-example.c
+	Set the right value to "text-column" property on the creation of a new
+	column using hildon_touch_selector_append_column()
+
+	Fixes: NB#88644 (Hardcoded first column of the model as text column)
+
 2008-09-30  Alberto Garcia  <agarcia@igalia.com>
 
 	* src/hildon-app-menu.c
