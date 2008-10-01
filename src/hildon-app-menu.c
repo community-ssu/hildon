@@ -117,6 +117,10 @@ filter_visibility_changed                       (GtkWidget     *item,
                                                  GParamSpec    *arg1,
                                                  HildonAppMenu *menu);
 
+static void
+remove_item_from_list                           (GList    **list,
+                                                 gpointer   item);
+
 G_DEFINE_TYPE (HildonAppMenu, hildon_app_menu, GTK_TYPE_WINDOW);
 
 /**
@@ -155,12 +159,16 @@ hildon_app_menu_insert                          (HildonAppMenu *menu,
 
     /* Add the item to the menu */
     gtk_widget_show (GTK_WIDGET (item));
+    g_object_ref_sink (item);
     priv->buttons = g_list_insert (priv->buttons, item, position);
     hildon_app_menu_repack_items (menu, position);
 
     /* Close the menu when the button is clicked */
     g_signal_connect_swapped (item, "clicked", G_CALLBACK (gtk_widget_hide), menu);
     g_signal_connect (item, "notify::visible", G_CALLBACK (item_visibility_changed), menu);
+
+    /* Remove item from list when it is destroyed */
+    g_object_weak_ref (G_OBJECT (item), (GWeakNotify) remove_item_from_list, &(priv->buttons));
 }
 
 /**
@@ -243,12 +251,16 @@ hildon_app_menu_add_filter                      (HildonAppMenu *menu,
 
     /* Add the filter to the menu */
     gtk_widget_show (GTK_WIDGET (filter));
+    g_object_ref_sink (filter);
     priv->filters = g_list_append (priv->filters, filter);
     hildon_app_menu_repack_filters (menu);
 
     /* Close the menu when the button is clicked */
     g_signal_connect_swapped (filter, "clicked", G_CALLBACK (gtk_widget_hide), menu);
     g_signal_connect (filter, "notify::visible", G_CALLBACK (filter_visibility_changed), menu);
+
+    /* Remove filter from list when it is destroyed */
+    g_object_weak_ref (G_OBJECT (filter), (GWeakNotify) remove_item_from_list, &(priv->filters));
 }
 
 static void
@@ -306,6 +318,13 @@ filter_visibility_changed                       (GtkWidget     *item,
                                                  HildonAppMenu *menu)
 {
     hildon_app_menu_repack_filters (menu);
+}
+
+static void
+remove_item_from_list                           (GList    **list,
+                                                 gpointer   item)
+{
+    *list = g_list_remove (*list, item);
 }
 
 static void
@@ -518,6 +537,7 @@ hildon_app_menu_repack_filters                  (HildonAppMenu *menu)
         GtkWidget *filter = GTK_WIDGET (iter->data);
         if (GTK_WIDGET_VISIBLE (filter)) {
             gtk_box_pack_start (GTK_BOX (priv->filters_hbox), filter, TRUE, TRUE, 0);
+            g_object_unref (filter);
         }
     }
 }
@@ -560,6 +580,7 @@ hildon_app_menu_repack_items                    (HildonAppMenu *menu,
             /* Don't add an item to the table if it's already there */
             if (gtk_widget_get_parent (item) == NULL) {
                 gtk_table_attach_defaults (priv->table, item, col, col + 1, row, row + 1);
+                g_object_unref (item);
             }
             if (++col == priv->columns) {
                 col = 0;
@@ -628,6 +649,9 @@ hildon_app_menu_finalize                        (GObject *object)
 
     if (priv->transfer_window)
         gdk_window_destroy (priv->transfer_window);
+
+    g_list_foreach (priv->buttons, (GFunc) g_object_unref, NULL);
+    g_list_foreach (priv->filters, (GFunc) g_object_unref, NULL);
 
     g_list_free (priv->buttons);
     g_list_free (priv->filters);
