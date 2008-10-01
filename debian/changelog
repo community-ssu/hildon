@@ -1,3 +1,10 @@
+libhildon (2.1.12-2) unstable; urgency=low
+
+  * Add missing hildon-touch-selector-column.h to installable headers.
+  * Fix dh_makeshlibs rule.
+
+ -- Claudio Saavedra <csaavedra@igalia.com>  Wed, 01 Oct 2008 13:02:43 +0300
+
 libhildon (2.1.12-1) unstable; urgency=low
 
   * Ship the upstream ChangeLog and NEWS file.
