@@ -1,3 +1,15 @@
+2008-10-01  Alberto Garcia  <agarcia@igalia.com>
+
+	* src/hildon-app-menu.c (hildon_app_menu_insert)
+	(hildon_app_menu_reorder_child, hildon_app_menu_add_filter)
+	(hildon_app_menu_set_columns, item_visibility_changed)
+	(filter_visibility_changed, hildon_app_menu_repack_filters)
+	(hildon_app_menu_repack_items):
+	Repack items and filters separately.
+
+	Don't repack all items, change only the ones that are needed to
+	update the layout.
+
 2008-10-01  Alejandro Pinheiro <apinheiro@igalia.com>
 
 	* src/Makefile.am: added hildon-touch-selector-column.h

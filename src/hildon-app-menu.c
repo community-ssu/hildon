@@ -101,10 +101,19 @@ static GdkWindow *
 grab_transfer_window_get                        (GtkWidget *widget);
 
 static void
-hildon_app_menu_construct_child                 (HildonAppMenu *menu);
+hildon_app_menu_repack_items                    (HildonAppMenu *menu,
+                                                 gint           start_from);
 
 static void
-button_visibility_changed                       (GtkWidget     *item,
+hildon_app_menu_repack_filters                  (HildonAppMenu *menu);
+
+static void
+item_visibility_changed                         (GtkWidget     *item,
+                                                 GParamSpec    *arg1,
+                                                 HildonAppMenu *menu);
+
+static void
+filter_visibility_changed                       (GtkWidget     *item,
                                                  GParamSpec    *arg1,
                                                  HildonAppMenu *menu);
 
@@ -147,11 +156,11 @@ hildon_app_menu_insert                          (HildonAppMenu *menu,
     /* Add the item to the menu */
     gtk_widget_show (GTK_WIDGET (item));
     priv->buttons = g_list_insert (priv->buttons, item, position);
-    hildon_app_menu_construct_child (menu);
+    hildon_app_menu_repack_items (menu, position);
 
     /* Close the menu when the button is clicked */
     g_signal_connect_swapped (item, "clicked", G_CALLBACK (gtk_widget_hide), menu);
-    g_signal_connect (item, "notify::visible", G_CALLBACK (button_visibility_changed), menu);
+    g_signal_connect (item, "notify::visible", G_CALLBACK (item_visibility_changed), menu);
 }
 
 /**
@@ -196,20 +205,22 @@ hildon_app_menu_reorder_child                   (HildonAppMenu *menu,
                                                  gint           position)
 {
     HildonAppMenuPrivate *priv;
+    gint old_position;
 
     g_return_if_fail (HILDON_IS_APP_MENU (menu));
     g_return_if_fail (GTK_IS_BUTTON (item));
     g_return_if_fail (position >= 0);
 
     priv = HILDON_APP_MENU_GET_PRIVATE (menu);
+    old_position = g_list_index (priv->buttons, item);
 
-    g_return_if_fail (g_list_find (priv->buttons, item));
+    g_return_if_fail (old_position >= 0);
 
     /* Move the item */
     priv->buttons = g_list_remove (priv->buttons, item);
     priv->buttons = g_list_insert (priv->buttons, item, position);
 
-    hildon_app_menu_construct_child (menu);
+    hildon_app_menu_repack_items (menu, MIN (old_position, position));
 }
 
 /**
@@ -233,11 +244,11 @@ hildon_app_menu_add_filter                      (HildonAppMenu *menu,
     /* Add the filter to the menu */
     gtk_widget_show (GTK_WIDGET (filter));
     priv->filters = g_list_append (priv->filters, filter);
-    hildon_app_menu_construct_child (menu);
+    hildon_app_menu_repack_filters (menu);
 
     /* Close the menu when the button is clicked */
     g_signal_connect_swapped (filter, "clicked", G_CALLBACK (gtk_widget_hide), menu);
-    g_signal_connect (filter, "notify::visible", G_CALLBACK (button_visibility_changed), menu);
+    g_signal_connect (filter, "notify::visible", G_CALLBACK (filter_visibility_changed), menu);
 }
 
 static void
@@ -246,7 +257,8 @@ hildon_app_menu_set_columns                     (HildonAppMenu *menu,
 {
     HildonAppMenuPrivate *priv;
 
-    g_warning ("This property will be removed in the future. See documentation for details");
+    g_warning ("The 'columns' property will be removed in the future. "
+               "See HildonAppMenu documentation for details");
 
     g_return_if_fail (HILDON_IS_APP_MENU (menu));
     g_return_if_fail (columns > 0);
@@ -255,7 +267,7 @@ hildon_app_menu_set_columns                     (HildonAppMenu *menu,
 
     if (columns != priv->columns) {
         priv->columns = columns;
-        hildon_app_menu_construct_child (menu);
+        hildon_app_menu_repack_items (menu, 0);
     }
 }
 
@@ -279,11 +291,21 @@ hildon_app_menu_set_property                    (GObject      *object,
 }
 
 static void
-button_visibility_changed                       (GtkWidget     *item,
+item_visibility_changed                         (GtkWidget     *item,
                                                  GParamSpec    *arg1,
                                                  HildonAppMenu *menu)
 {
-    hildon_app_menu_construct_child (menu);
+    HildonAppMenuPrivate *priv = HILDON_APP_MENU_GET_PRIVATE (menu);
+
+    hildon_app_menu_repack_items (menu, g_list_index (priv->buttons, item));
+}
+
+static void
+filter_visibility_changed                       (GtkWidget     *item,
+                                                 GParamSpec    *arg1,
+                                                 HildonAppMenu *menu)
+{
+    hildon_app_menu_repack_filters (menu);
 }
 
 static void
@@ -478,23 +500,10 @@ hildon_app_menu_style_set                       (GtkWidget *widget,
 }
 
 static void
-hildon_app_menu_construct_child                 (HildonAppMenu *menu)
+hildon_app_menu_repack_filters                  (HildonAppMenu *menu)
 {
-    HildonAppMenuPrivate *priv;
-    gint col, row;
+    HildonAppMenuPrivate *priv = HILDON_APP_MENU_GET_PRIVATE(menu);
     GList *iter;
-
-    priv = HILDON_APP_MENU_GET_PRIVATE(menu);
-
-    /* Remove all buttons from their parents */
-    for (iter = priv->buttons; iter != NULL; iter = iter->next) {
-        GtkWidget *item = GTK_WIDGET (iter->data);
-        GtkWidget *parent = gtk_widget_get_parent (item);
-        if (parent) {
-            g_object_ref (item);
-            gtk_container_remove (GTK_CONTAINER (parent), item);
-        }
-    }
 
     for (iter = priv->filters; iter != NULL; iter = iter->next) {
         GtkWidget *item = GTK_WIDGET (iter->data);
@@ -502,25 +511,6 @@ hildon_app_menu_construct_child                 (HildonAppMenu *menu)
         if (parent) {
             g_object_ref (item);
             gtk_container_remove (GTK_CONTAINER (parent), item);
-        }
-    }
-
-    /* Resize the table */
-    gtk_table_resize (priv->table, 1, priv->columns);
-
-    /* Resize the menu to its minimum size */
-    gtk_window_resize (GTK_WINDOW (menu), 1, 1);
-
-    /* Add buttons */
-    col = row = 0;
-    for (iter = priv->buttons; iter != NULL; iter = iter->next) {
-        GtkWidget *item = GTK_WIDGET (iter->data);
-        if (GTK_WIDGET_VISIBLE (item)) {
-            gtk_table_attach_defaults (priv->table, item, col, col + 1, row, row + 1);
-            if (++col == priv->columns) {
-                col = 0;
-                row++;
-            }
         }
     }
 
@@ -529,6 +519,61 @@ hildon_app_menu_construct_child                 (HildonAppMenu *menu)
         if (GTK_WIDGET_VISIBLE (filter)) {
             gtk_box_pack_start (GTK_BOX (priv->filters_hbox), filter, TRUE, TRUE, 0);
         }
+    }
+}
+
+/*
+ * When items displayed in the menu change (e.g, a new item is added,
+ * an item is hidden or the list is reordered), the layout must be
+ * updated. To do this we repack all items starting from a given one.
+ */
+static void
+hildon_app_menu_repack_items                    (HildonAppMenu *menu,
+                                                 gint           start_from)
+{
+    HildonAppMenuPrivate *priv;
+    gint row, col;
+    GList *iter;
+
+    priv = HILDON_APP_MENU_GET_PRIVATE(menu);
+
+    /* Remove buttons from their parent */
+    if (start_from != -1) {
+        for (iter = g_list_nth (priv->buttons, start_from); iter != NULL; iter = iter->next) {
+            GtkWidget *item = GTK_WIDGET (iter->data);
+            GtkWidget *parent = gtk_widget_get_parent (item);
+            if (parent) {
+                g_object_ref (item);
+                gtk_container_remove (GTK_CONTAINER (parent), item);
+            }
+        }
+
+        /* If items have been removed, recalculate the size of the menu */
+        gtk_window_resize (GTK_WINDOW (menu), 1, 1);
+    }
+
+    /* Add buttons */
+    row = col = 0;
+    for (iter = priv->buttons; iter != NULL; iter = iter->next) {
+        GtkWidget *item = GTK_WIDGET (iter->data);
+        if (GTK_WIDGET_VISIBLE (item)) {
+            /* Don't add an item to the table if it's already there */
+            if (gtk_widget_get_parent (item) == NULL) {
+                gtk_table_attach_defaults (priv->table, item, col, col + 1, row, row + 1);
+            }
+            if (++col == priv->columns) {
+                col = 0;
+                row++;
+            }
+        }
+    }
+
+    /* The number of rows/columns might have changed, so we have to
+     * resize the table */
+    if (col == 0) {
+        gtk_table_resize (priv->table, row, priv->columns);
+    } else {
+        gtk_table_resize (priv->table, row + 1, priv->columns);
     }
 
     if (GTK_WIDGET_VISIBLE (GTK_WIDGET (menu))) {
