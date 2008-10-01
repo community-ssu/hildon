@@ -5,10 +5,7 @@ include /usr/share/cdbs/1/class/autotools.mk
 include /usr/share/cdbs/1/rules/utils.mk
 
 DEB_CONFIGURE_SCRIPT_ENV += LDFLAGS="-Wl,-O1 -Wl,--as-needed"
-DEB_COMPRESS_EXCLUDE = .c
 DEB_CONFIGURE_EXTRA_FLAGS := --enable-gtk-doc
 
-common-binary-predeb-arch:: list-missing
-
-makebuilddir/libhildon1::
+makebuilddir::
 	AUTOGEN_SUBDIR_MODE=1 NOCONFIGURE=yes ./autogen.sh
