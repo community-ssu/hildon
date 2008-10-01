@@ -1,5 +1,9 @@
 2008-10-01  Alejandro Pinheiro <apinheiro@igalia.com>
 
+	* src/Makefile.am: added hildon-touch-selector-column.h
+
+2008-10-01  Alejandro Pinheiro <apinheiro@igalia.com>
+
 	* src/hildon-touch-selector.c: added the property "text-column" to the
 	class HildonTouchSelectorColumn, and related get/set functions
 	(_default_printf_func): updated to use "text-column" property
