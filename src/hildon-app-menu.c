@@ -525,11 +525,11 @@ hildon_app_menu_repack_filters                  (HildonAppMenu *menu)
     GList *iter;
 
     for (iter = priv->filters; iter != NULL; iter = iter->next) {
-        GtkWidget *item = GTK_WIDGET (iter->data);
-        GtkWidget *parent = gtk_widget_get_parent (item);
+        GtkWidget *filter = GTK_WIDGET (iter->data);
+        GtkWidget *parent = gtk_widget_get_parent (filter);
         if (parent) {
-            g_object_ref (item);
-            gtk_container_remove (GTK_CONTAINER (parent), item);
+            g_object_ref (filter);
+            gtk_container_remove (GTK_CONTAINER (parent), filter);
         }
     }
 

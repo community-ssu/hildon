@@ -1,5 +1,10 @@
 2008-10-01  Alberto Garcia  <agarcia@igalia.com>
 
+	* src/hildon-app-menu.c (hildon_app_menu_repack_filters):
+	'item' variable renamed to 'filter'
+
+2008-10-01  Alberto Garcia  <agarcia@igalia.com>
+
 	* src/hildon-app-menu.c (hildon_app_menu_insert)
 	(hildon_app_menu_add_filter, remove_item_from_list)
 	(hildon_app_menu_repack_filters, hildon_app_menu_finalize):
