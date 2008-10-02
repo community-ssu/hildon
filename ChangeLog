@@ -1,3 +1,13 @@
+2008-10-02  Alberto Garcia  <agarcia@igalia.com>
+
+	* src/hildon-app-menu.c (hildon_app_menu_realize)
+	(hildon_app_menu_unrealize, hildon_app_menu_init)
+	(hildon_app_menu_class_init, item_visibility_changed):
+	Change the menu layout when the size of the screen changes.
+	(hildon_app_menu_set_columns, hildon_app_menu_set_property):
+	Show warning only when changing the number of colums using the
+	property.
+
 2008-10-02  Claudio Saavedra  <csaavedra@igalia.com>
 
 	* debian/compat: Set to 5

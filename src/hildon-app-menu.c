@@ -24,8 +24,10 @@
  * menu in the Hildon framework.
  *
  * This menu opens from the top of the screen and contains a number of
- * entries (#GtkButton) organized in two columns. Entries are added
- * left to right and top to bottom.
+ * entries (#GtkButton) organized in one or two columns, depending on
+ * the size of the screen (the number of columns changes automatically
+ * if the screen is resized). Entries are added left to right and top
+ * to bottom.
  *
  * Besides that, the #HildonAppMenu can contain a group of filter buttons
  * (#GtkToggleButton or #GtkRadioButton).
@@ -120,6 +122,9 @@ filter_visibility_changed                       (GtkWidget     *item,
 static void
 remove_item_from_list                           (GList    **list,
                                                  gpointer   item);
+
+static void
+hildon_app_menu_apply_style                     (GtkWidget *widget);
 
 G_DEFINE_TYPE (HildonAppMenu, hildon_app_menu, GTK_TYPE_WINDOW);
 
@@ -269,9 +274,6 @@ hildon_app_menu_set_columns                     (HildonAppMenu *menu,
 {
     HildonAppMenuPrivate *priv;
 
-    g_warning ("The 'columns' property will be removed in the future. "
-               "See HildonAppMenu documentation for details");
-
     g_return_if_fail (HILDON_IS_APP_MENU (menu));
     g_return_if_fail (columns > 0);
 
@@ -294,11 +296,26 @@ hildon_app_menu_set_property                    (GObject      *object,
     switch (prop_id)
     {
     case PROP_COLUMNS:
+        g_warning ("The 'columns' property will be removed in the future. "
+                   "See HildonAppMenu documentation for details");
         hildon_app_menu_set_columns (menu, g_value_get_uint (value));
         break;
     default:
         G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
         break;
+    }
+}
+
+static void
+screen_size_changed                            (GdkScreen     *screen,
+                                                HildonAppMenu *menu)
+{
+    hildon_app_menu_apply_style (GTK_WIDGET (menu));
+
+    if (gdk_screen_get_width (screen) > gdk_screen_get_height (screen)) {
+        hildon_app_menu_set_columns (menu, 2);
+    } else {
+        hildon_app_menu_set_columns (menu, 1);
     }
 }
 
@@ -463,6 +480,7 @@ static void
 hildon_app_menu_realize                         (GtkWidget *widget)
 {
     GdkDisplay *display;
+    GdkScreen *screen;
     Atom atom;
     const gchar *notification_type = "_HILDON_WM_WINDOW_TYPE_APP_MENU";
 
@@ -475,6 +493,23 @@ hildon_app_menu_realize                         (GtkWidget *widget)
     XChangeProperty (GDK_WINDOW_XDISPLAY (widget->window), GDK_WINDOW_XID (widget->window),
                      atom, XA_STRING, 8, PropModeReplace, (guchar *) notification_type,
                      strlen (notification_type));
+
+    /* Detect any screen changes */
+    screen = gtk_widget_get_screen (widget);
+    g_signal_connect (screen, "size-changed", G_CALLBACK (screen_size_changed), widget);
+
+    /* Force menu to set the initial layout */
+    screen_size_changed (screen, HILDON_APP_MENU (widget));
+}
+
+static void
+hildon_app_menu_unrealize                       (GtkWidget *widget)
+{
+    GdkScreen *screen = gtk_widget_get_screen (widget);
+    /* Disconnect "size-changed" signal handler */
+    g_signal_handlers_disconnect_by_func (screen, G_CALLBACK (screen_size_changed), widget);
+
+    GTK_WIDGET_CLASS (hildon_app_menu_parent_class)->unrealize (widget);
 }
 
 static void
@@ -629,9 +664,6 @@ hildon_app_menu_init                            (HildonAppMenu *menu)
     gtk_box_pack_start (priv->vbox, alignment, TRUE, TRUE, 0);
     gtk_box_pack_start (priv->vbox, GTK_WIDGET (priv->table), TRUE, TRUE, 0);
 
-    /* Apply style properties */
-    hildon_app_menu_apply_style (GTK_WIDGET (menu));
-
     /* Make menu a modal window */
     gtk_window_set_modal (GTK_WINDOW (menu), TRUE);
 
@@ -671,6 +703,7 @@ hildon_app_menu_class_init                      (HildonAppMenuClass *klass)
     widget_class->map = hildon_app_menu_map;
     widget_class->unmap = hildon_app_menu_unmap;
     widget_class->realize = hildon_app_menu_realize;
+    widget_class->unrealize = hildon_app_menu_unrealize;
     widget_class->button_press_event = hildon_app_menu_button_press;
     widget_class->button_release_event = hildon_app_menu_button_release;
     widget_class->style_set = hildon_app_menu_style_set;
