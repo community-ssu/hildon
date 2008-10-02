@@ -1,4 +1,4 @@
-usr/include
-usr/lib/*.so
-usr/lib/pkgconfig
-usr/share/gtk-doc/html
+debian/tmp/usr/lib/*.so
+debian/tmp/usr/lib/pkgconfig/
+debian/tmp/usr/include/
+debian/tmp/usr/share/gtk-doc/html/

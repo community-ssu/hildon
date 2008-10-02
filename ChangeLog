@@ -1,3 +1,12 @@
+2008-10-02  Claudio Saavedra  <csaavedra@igalia.com>
+
+	* debian/compat: Set to 5
+	* debian/control: Update dependencies.
+	* debian/libhildon1-dbg.install: Remove.
+	* debian/libhildon1-dev.install: Update according to cdbs paths.
+	* debian/libhildon1.install: Update according to cdbs paths.
+	* debian/rules: Switch to cdbs.
+
 2008-10-01  Alberto Garcia  <agarcia@igalia.com>
 
 	* src/hildon-app-menu.c (hildon_app_menu_repack_filters):
