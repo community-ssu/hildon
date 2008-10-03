@@ -1,3 +1,8 @@
+2008-10-03  Alberto Garcia  <agarcia@igalia.com>
+
+	* src/hildon-check-button.c (hildon_check_button_set_active): Emit
+	'clicked' when the state of the button is manually changed.
+
 2008-10-02  Alberto Garcia  <agarcia@igalia.com>
 
 	* src/hildon-app-menu.c (hildon_app_menu_realize)

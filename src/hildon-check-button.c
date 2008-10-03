@@ -86,7 +86,7 @@ hildon_check_button_set_active                  (GtkButton *button,
     prev_is_active = gtk_cell_renderer_toggle_get_active (toggle_renderer);
 
     if (prev_is_active != is_active) {
-      gtk_cell_renderer_toggle_set_active (toggle_renderer, is_active);
+      gtk_button_clicked (button);
       gtk_widget_queue_draw (GTK_WIDGET (button));
     }
 }
