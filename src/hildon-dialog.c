@@ -61,6 +61,9 @@
 
 G_DEFINE_TYPE (HildonDialog, hildon_dialog, GTK_TYPE_DIALOG);
 
+/* Buttons on a HildonDialog have fixed size */
+#define                                         HILDON_DIALOG_BUTTON_WIDTH 174
+
 static void
 hildon_dialog_class_init                        (HildonDialogClass *dialog_class)
 {
@@ -171,6 +174,7 @@ hildon_dialog_add_button                        (HildonDialog *dialog,
     GtkWidget *button;
     button = gtk_dialog_add_button (GTK_DIALOG (dialog), button_text, response_id);
     hildon_gtk_widget_set_theme_size (button, HILDON_SIZE_AUTO_WIDTH | HILDON_SIZE_FINGER_HEIGHT);
+    g_object_set (button, "width-request", HILDON_DIALOG_BUTTON_WIDTH, NULL);
     return button;
 }
 

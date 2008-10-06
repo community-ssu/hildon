@@ -1,5 +1,10 @@
 2008-10-06  Alberto Garcia  <agarcia@igalia.com>
 
+	* src/hildon-dialog.c (hildon_dialog_add_button):
+	Set fixed width to all buttons in the HildonDialog.
+
+2008-10-06  Alberto Garcia  <agarcia@igalia.com>
+
 	Patch contributed by Daniel Borgmann (danielb@openismus.com)
 
 	* src/hildon-gtk.c (hildon_gtk_widget_set_theme_size):
