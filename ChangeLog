@@ -1,3 +1,9 @@
+2008-10-06  Alejandro G. Castro	 <alex@igalia.com>
+
+	* src/hildon-weekday-picker.c,
+	* src/hildon-weekday-picker.h: Removed the deprecated symbols after
+	the agreement regarding deprecation in the library.
+
 2008-10-06  Claudio Saavedra  <csaavedra@igalia.com>
 
 	* examples/hildon-picker-button-multicolumn-example.c:

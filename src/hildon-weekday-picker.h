@@ -22,8 +22,6 @@
  *
  */
 
-#ifndef                                         HILDON_DISABLE_DEPRECATED
-
 #ifndef                                         __HILDON_WEEKDAY_PICKER_H__
 #define                                         __HILDON_WEEKDAY_PICKER_H__
 
@@ -98,5 +96,3 @@ hildon_weekday_picker_isset_day                 (HildonWeekdayPicker * picker,
 G_END_DECLS
 
 #endif                                          /* __HILDON_WEEKDAY_PICKER_H__ */
-
-#endif                                          /* GTK_DISABLE_DEPRECATED */
