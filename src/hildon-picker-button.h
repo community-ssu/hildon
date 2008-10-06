@@ -79,6 +79,13 @@ hildon_picker_button_set_active                 (HildonPickerButton * button,
 gint
 hildon_picker_button_get_active                 (HildonPickerButton * button);
 
+const gchar *
+hildon_picker_button_get_done_button_text       (HildonPickerButton * button);
+
+void
+hildon_picker_button_set_done_button_text       (HildonPickerButton *button,
+                                                 const gchar *done_button_text);
+
 G_END_DECLS
 
 #endif /* __HILDON_PICKER_BUTTON__ */

@@ -46,6 +46,7 @@ struct _HildonPickerButtonPrivate
 {
   GtkWidget *selector;
   GtkWidget *dialog;
+  gchar *done_button_text;
 };
 
 /* Signals */
@@ -58,6 +59,7 @@ enum
 enum
 {
   PROP_SELECTOR = 1,
+  PROP_DONE_BUTTON_TEXT
 };
 
 static guint picker_button_signals[LAST_SIGNAL] = { 0 };
@@ -70,6 +72,10 @@ hildon_picker_button_get_property (GObject * object, guint property_id,
   case PROP_SELECTOR:
     g_value_set_object (value,
                         hildon_picker_button_get_selector (HILDON_PICKER_BUTTON (object)));
+    break;
+  case PROP_DONE_BUTTON_TEXT:
+    g_value_set_string (value,
+                        hildon_picker_button_get_done_button_text (HILDON_PICKER_BUTTON (object)));
     break;
   default:
     G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
@@ -84,6 +90,10 @@ hildon_picker_button_set_property (GObject * object, guint property_id,
   case PROP_SELECTOR:
     hildon_picker_button_set_selector (HILDON_PICKER_BUTTON (object),
                                        g_value_get_object (value));
+    break;
+  case PROP_DONE_BUTTON_TEXT:
+    hildon_picker_button_set_done_button_text (HILDON_PICKER_BUTTON (object),
+                                               g_value_get_string (value));
     break;
   default:
     G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
@@ -131,6 +141,10 @@ hildon_picker_button_clicked (GtkButton * button)
 
     hildon_picker_dialog_set_selector (HILDON_PICKER_DIALOG (priv->dialog),
                                        HILDON_TOUCH_SELECTOR (priv->selector));
+    if (priv->done_button_text) {
+      hildon_picker_dialog_set_done_label (HILDON_PICKER_DIALOG (priv->dialog),
+                                           priv->done_button_text);
+    }
 
     gtk_window_set_modal (GTK_WINDOW (priv->dialog),
                           gtk_window_get_modal (GTK_WINDOW (parent)));
@@ -172,6 +186,13 @@ hildon_picker_button_class_init (HildonPickerButtonClass * klass)
                                                         "HildonTouchSelector widget to be launched on button clicked",
                                                         HILDON_TYPE_TOUCH_SELECTOR,
                                                         G_PARAM_READWRITE));
+  g_object_class_install_property (object_class,
+                                   PROP_DONE_BUTTON_TEXT,
+                                   g_param_spec_string ("done-button-text",
+                                                        "HildonPickerDialog \"done\" button text",
+                                                        "The text for the \"done\" button in the dialog launched",
+                                                        NULL,
+                                                        G_PARAM_READWRITE));
 
   /**
    * HildonPickerButton::value-changed:
@@ -198,6 +219,7 @@ hildon_picker_button_init (HildonPickerButton * self)
 
   priv->dialog = NULL;
   priv->selector = NULL;
+  priv->done_button_text = NULL;
 }
 
 /**
@@ -321,4 +343,49 @@ hildon_picker_button_set_active                 (HildonPickerButton * button,
   text = hildon_touch_selector_get_current_text (sel);
   hildon_button_set_value (HILDON_BUTTON (button), text);
   g_free (text);
+}
+
+/**
+ * hildon_picker_button_get_done_button_text:
+ * @button: a #HildonPickerButton
+ *
+ * Gets the text used in the #HildonPickerDialog that is launched by
+ * @button. If no custom text is set, then %NULL is returned.
+ *
+ * Returns: the custom string to be used, or %NULL if the default
+ * #HildonPickerDialog::done-button-text is to be used.
+ **/
+const gchar *
+hildon_picker_button_get_done_button_text (HildonPickerButton *button)
+{
+  HildonPickerButtonPrivate *priv;
+
+  g_return_val_if_fail (HILDON_IS_PICKER_BUTTON (button), NULL);
+
+  priv = GET_PRIVATE (button);
+
+  return priv->done_button_text;
+}
+
+/**
+ * hildon_picker_button_set_done_button_text:
+ * @button: a #HildonPickerButton
+ * @done_button_text: a string
+ *
+ * Sets a custom string to be used in the \"done\" button in the #HildonPickerDialog
+ * launched. If not set, the default HildonPickerButton::done-button-text property
+ * value will be used.
+ **/
+void
+hildon_picker_button_set_done_button_text (HildonPickerButton *button,
+                                           const gchar *done_button_text)
+{
+  HildonPickerButtonPrivate *priv;
+
+  g_return_if_fail (HILDON_IS_PICKER_BUTTON (button));
+  g_return_if_fail (done_button_text != NULL);
+
+  priv = GET_PRIVATE (button);
+
+  priv->done_button_text = done_button_text;
 }

@@ -1,5 +1,21 @@
 2008-10-06  Claudio Saavedra  <csaavedra@igalia.com>
 
+	* examples/hildon-picker-button-multicolumn-example.c:
+	(main): Use custom "done" button text.
+
+	* src/hildon-picker-button.c: (hildon_picker_button_get_property),
+	(hildon_picker_button_set_property),
+	(hildon_picker_button_clicked), (hildon_picker_button_class_init),
+	(hildon_picker_button_init),
+	(+hildon_picker_button_get_done_button_text),
+	(+hildon_picker_button_set_done_button_text): New methods to customize
+	the "done" button label in the launched HildonPickerDialog. Also,
+	make it a property.
+
+	* src/hildon-picker-button.h: add the public API.
+
+2008-10-06  Claudio Saavedra  <csaavedra@igalia.com>
+
 	* src/hildon-date-selector.h:
 	* src/hildon-picker-dialog.h:
 	* src/hildon-time-selector.h:
