@@ -66,8 +66,8 @@ struct                                          _HildonDateSelectorClass
 
 
 /* construction */
-GType G_GNUC_CONST
-hildon_date_selector_get_type                   (void);
+GType
+hildon_date_selector_get_type                   (void) G_GNUC_CONST;
 
 GtkWidget*
 hildon_date_selector_new                        (void);

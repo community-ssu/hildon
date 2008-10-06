@@ -67,8 +67,8 @@ struct                                          _HildonPickerDialogClass
 };
 
 /* construction */
-GType G_GNUC_CONST
-hildon_picker_dialog_get_type                   (void);
+GType
+hildon_picker_dialog_get_type                   (void) G_GNUC_CONST;
 
 GtkWidget*
 hildon_picker_dialog_new                        (GtkWindow * parent);

@@ -65,8 +65,8 @@ struct                                          _HildonTouchSelectorColumnClass
   GObjectClass parent_class;
 };
 
-GType G_GNUC_CONST
-hildon_touch_selector_column_get_type           (void);
+GType
+hildon_touch_selector_column_get_type           (void) G_GNUC_CONST;
 
 G_END_DECLS
 

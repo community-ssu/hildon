@@ -67,8 +67,8 @@ struct                                          _HildonTimeSelectorClass
 
 
 /* construction */
-GType G_GNUC_CONST
-hildon_time_selector_get_type                   (void) ;
+GType
+hildon_time_selector_get_type                   (void) G_GNUC_CONST;
 
 GtkWidget*
 hildon_time_selector_new                        (void);

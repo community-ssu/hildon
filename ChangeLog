@@ -1,3 +1,14 @@
+2008-10-06  Claudio Saavedra  <csaavedra@igalia.com>
+
+	* src/hildon-date-selector.h:
+	* src/hildon-picker-dialog.h:
+	* src/hildon-time-selector.h:
+	* src/hildon-touch-selector-column.h:
+	* src/hildon-touch-selector.h:
+
+	Set the G_GNUC_CONST macro properly in the hildon_*_get_type()
+	declarations. Fixes gtk-doc warnings.
+
 2008-10-06  Alberto Garcia  <agarcia@igalia.com>
 
 	* src/hildon-picker-dialog.h

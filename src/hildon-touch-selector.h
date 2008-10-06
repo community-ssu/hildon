@@ -85,8 +85,8 @@ typedef enum
 } HildonTouchSelectorSelectionMode;
 
 /* construction */
-GType G_GNUC_CONST
-hildon_touch_selector_get_type                  (void);
+GType
+hildon_touch_selector_get_type                  (void) G_GNUC_CONST;
 
 GtkWidget *
 hildon_touch_selector_new                       (void);
