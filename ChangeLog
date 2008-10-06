@@ -1,3 +1,10 @@
+2008-10-06  Alberto Garcia  <agarcia@igalia.com>
+
+	Patch contributed by Daniel Borgmann (danielb@openismus.com)
+
+	* src/hildon-gtk.c (hildon_gtk_widget_set_theme_size):
+	Set widget name using class name plus "-finger" or "-thumb".
+
 2008-10-03  Alberto Garcia  <agarcia@igalia.com>
 
 	* src/hildon-check-button.c (hildon_check_button_set_active): Emit

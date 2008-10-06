@@ -52,18 +52,21 @@ hildon_gtk_widget_set_theme_size                (GtkWidget      *widget,
 {
     gint width = -1;
     gint height = -1;
-    const gchar *widget_name = NULL;
+    gchar *widget_name = NULL;
 
     g_return_if_fail (GTK_IS_WIDGET (widget));
 
     /* Requested height */
     if (size & HILDON_SIZE_FINGER_HEIGHT) {
         height = HILDON_HEIGHT_FINGER;
-        widget_name = "hildon-finger-widget";
+        widget_name = "-finger";
     } else if (size & HILDON_SIZE_THUMB_HEIGHT) {
         height = HILDON_HEIGHT_THUMB;
-        widget_name = "hildon-thumb-widget";
+        widget_name = "-thumb";
     }
+
+    if (widget_name)
+        widget_name = g_strconcat (g_type_name (GTK_WIDGET_TYPE (widget)), widget_name, NULL);
 
     /* Requested width */
     if (size & HILDON_SIZE_HALFSCREEN_WIDTH) {
@@ -74,8 +77,10 @@ hildon_gtk_widget_set_theme_size                (GtkWidget      *widget,
 
     gtk_widget_set_size_request (widget, width, height);
 
-    if (widget_name)
+    if (widget_name) {
         gtk_widget_set_name (widget, widget_name);
+        g_free (widget_name);
+    }
 }
 
 static void
