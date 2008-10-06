@@ -23,7 +23,7 @@
  * @short_description: A utility widget that shows a #HildonTouchSelector widget
  *
  * HildonPickerDialog is a utility widget that shows a #HildonTouchSelector widget in
- * a new dialog (see #GtkDialog for more information about this issue)
+ * a new dialog (a #HildonDialog)
  *
  */
 
@@ -42,7 +42,7 @@
 
 #define HILDON_PICKER_DIALOG_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), HILDON_TYPE_PICKER_DIALOG, HildonPickerDialogPrivate))
 
-G_DEFINE_TYPE (HildonPickerDialog, hildon_picker_dialog, GTK_TYPE_DIALOG)
+G_DEFINE_TYPE (HildonPickerDialog, hildon_picker_dialog, HILDON_TYPE_DIALOG)
 
 struct _HildonPickerDialogPrivate
 {
@@ -153,7 +153,7 @@ hildon_picker_dialog_init (HildonPickerDialog * dialog)
 
   dialog->priv->selector = NULL;
   dialog->priv->button =
-    gtk_dialog_add_button (GTK_DIALOG (dialog), "", GTK_RESPONSE_OK);
+    hildon_dialog_add_button (HILDON_DIALOG (dialog), "", GTK_RESPONSE_OK);
   gtk_widget_grab_default (dialog->priv->button);
 
   dialog->priv->title_label = gtk_label_new ("default value");

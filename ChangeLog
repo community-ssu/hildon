@@ -1,5 +1,14 @@
 2008-10-06  Alberto Garcia  <agarcia@igalia.com>
 
+	* src/hildon-picker-dialog.h
+	* src/hildon-picker-dialog.c (hildon_picker_dialog_init):
+	Make HildonPickerDialog derive from HildonDialog, not GtkDialog
+
+	Fixes: NB#89329 (selectors in picker dialog are not visible when a
+	long text is set as label for done button)
+
+2008-10-06  Alberto Garcia  <agarcia@igalia.com>
+
 	* src/hildon-dialog.c (hildon_dialog_add_button):
 	Set fixed width to all buttons in the HildonDialog.
 
