@@ -1,3 +1,9 @@
+2008-10-08  Alberto Garcia  <agarcia@igalia.com>
+
+	* src/hildon-check-button.c (hildon_check_button_set_active)
+	(hildon_check_button_get_active, hildon_check_button_new): Use
+	g_object_[gs]et_qdata() instead of g_object_[gs]et_data().
+
 2008-10-08  Alejandro Pinheiro	 <apinheiro@igalia.com>
 
 	* src/hildon-touch-selector.h

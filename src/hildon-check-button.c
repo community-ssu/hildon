@@ -57,6 +57,8 @@
 
 #include                                        "hildon-check-button.h"
 
+static GQuark                                   quark = 0;
+
 static void
 check_button_clicked                            (GtkButton             *button,
                                                  GtkCellRendererToggle *renderer)
@@ -80,7 +82,7 @@ hildon_check_button_set_active                  (GtkButton *button,
     gboolean prev_is_active;
 
     g_return_if_fail (GTK_IS_BUTTON (button));
-    toggle_renderer = GTK_CELL_RENDERER_TOGGLE (g_object_get_data (G_OBJECT (button), "toggle-renderer"));
+    toggle_renderer = GTK_CELL_RENDERER_TOGGLE (g_object_get_qdata (G_OBJECT (button), quark));
     g_return_if_fail (GTK_IS_CELL_RENDERER_TOGGLE (toggle_renderer));
 
     prev_is_active = gtk_cell_renderer_toggle_get_active (toggle_renderer);
@@ -105,7 +107,7 @@ hildon_check_button_get_active                  (GtkButton *button)
     GtkCellRendererToggle *toggle_renderer;
 
     g_return_val_if_fail (GTK_IS_BUTTON (button), FALSE);
-    toggle_renderer = GTK_CELL_RENDERER_TOGGLE (g_object_get_data (G_OBJECT (button), "toggle-renderer"));
+    toggle_renderer = GTK_CELL_RENDERER_TOGGLE (g_object_get_qdata (G_OBJECT (button), quark));
     g_return_val_if_fail (GTK_IS_CELL_RENDERER_TOGGLE (toggle_renderer), FALSE);
 
     return gtk_cell_renderer_toggle_get_active (toggle_renderer);
@@ -127,6 +129,11 @@ hildon_check_button_new                         (HildonSizeType size)
     GtkWidget *cell_view = gtk_cell_view_new ();
     GtkCellRenderer *toggle_renderer = gtk_cell_renderer_toggle_new ();
 
+    /* Initialize quark */
+    if (G_UNLIKELY (quark == 0)) {
+        quark = g_quark_from_static_string ("toggle-renderer");
+    }
+
     /* Set the size of the button */
     hildon_gtk_widget_set_theme_size (button, size);
 
@@ -137,7 +144,7 @@ hildon_check_button_new                         (HildonSizeType size)
     g_signal_connect (cell_view, "notify::visible", G_CALLBACK (gtk_widget_show), NULL);
 
     /* Store the renderer for later use */
-    g_object_set_data (G_OBJECT (button), "toggle-renderer", toggle_renderer);
+    g_object_set_qdata (G_OBJECT (button), quark, toggle_renderer);
 
     /* Pack everything */
     gtk_cell_layout_pack_start (GTK_CELL_LAYOUT (cell_view), toggle_renderer, FALSE);
