@@ -1,3 +1,11 @@
+2008-10-08  Alejandro G. Castro	 <alex@igalia.com>
+
+	* examples/hildon-pannable-area-example-4.c,
+	(main),
+	* examples/hildon-pannable-area-example.c,
+	(main): Modified the code in order to use the container add, with
+	viewport treeviews could have problems if they are really big.
+
 2008-10-06  Alejandro G. Castro	 <alex@igalia.com>
 
 	* src/hildon-weekday-picker.c,

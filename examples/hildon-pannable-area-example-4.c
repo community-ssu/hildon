@@ -163,7 +163,7 @@ main (int argc, char **args)
                   "hovershoot_max", 0,
                   "hscrollbar_policy", GTK_POLICY_NEVER, NULL);
 
-    hildon_pannable_area_add_with_viewport (HILDON_PANNABLE_AREA (panarea), GTK_WIDGET (tv));
+    gtk_container_add (GTK_CONTAINER (panarea), GTK_WIDGET (tv));
     gtk_container_add (GTK_CONTAINER (window), panarea);
 
     g_signal_connect (G_OBJECT (window), "delete_event", G_CALLBACK (gtk_main_quit), NULL);
