@@ -49,15 +49,15 @@
  * The current selection has a string representation. In the most common cases,
  * each column model will contain a text column. You can configure
  * which column in particular using the #HildonTouchSelectorColumn property
- * \"text-column\"
+ * #HildonTouchSelectorColumn:text-column
  *
  * You can get this string representation using
  * hildon_touch_selector_get_current_text().
  * You can configure how the selection is printed with
  * hildon_touch_selector_set_print_func(), that sets the current hildon touch
  * selector print function. The widget has a default print function, that
- * uses the \"text-column\" property on each #HildonTouchSelectorColumn to
- * compose the final representation.
+ * uses the #HildonTouchSelectorColumn:text-column property on each
+ * #HildonTouchSelectorColumn to compose the final representation.
  *
  * If you create the selector using hildon_touch_selector_new_text() you
  * don't need to take care of this property, as the model is created internally.
@@ -65,6 +65,15 @@
  * need to specify properly the property for your custom model in order to get a
  * non-empty string representation, or define your custom print function.
  *
+ */
+
+/**
+ * SECTION:hildon-touch-selector-column
+ * @short_description: A visible column in a #HildonTouchSelector
+ *
+ * #HildonTouchSelectorColumn object represents a visible column in
+ * #HildonTouchSelector. It allows to manage the cell renderers related to each
+ * column.
  */
 
 #ifdef HAVE_CONFIG_H

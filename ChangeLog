@@ -1,3 +1,18 @@
+2008-10-08  Alejandro Pinheiro	 <apinheiro@igalia.com>
+
+	* src/hildon-touch-selector.h
+	(hildon_touch_selector_set_column_attributes): added deprecation
+	guard HILDON_DISABLE_DEPRECATED
+	* src/hildon-time-selector.c
+	(hildon_time_selector_set_time)
+	(hildon_time_selector_get_time): Fixed a typo on documentation
+	* src/hildon-touch-selector.c: update HildonTouchSelector and
+	HildonTouchSelectorColumn documentation
+	* src/hildon-touch-selector-entry.c: update "text-column" property
+	documentation
+	* doc/hildon-docs.sgml: added hildon-touch-selector-column in order
+	to be added to the general documentation.
+
 2008-10-08  Alejandro G. Castro	 <alex@igalia.com>
 
 	* examples/hildon-pannable-area-example-4.c,

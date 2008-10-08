@@ -396,7 +396,7 @@ hildon_time_selector_new ()
 /**
  * hildon_time_selector_set_time
  * @selector: the #HildonTimeSelector
- * @year:  the current hour (0-23)
+ * @hours:  the current hour (0-23)
  * @minutes: the current minute (0-59)
  *
  * Sets the current active hour on the #HildonTimeSelector widget
@@ -439,7 +439,7 @@ hildon_time_selector_set_time (HildonTimeSelector * selector,
 /**
  * hildon_time_selector_get_time
  * @selector: the #HildonTimeSelector
- * @year:  to set the current hour (0-23)
+ * @hours:  to set the current hour (0-23)
  * @minutes: to set the current minute (0-59)
  *
  * Gets the current active hour on the #HildonTimeSelector widget. Both @year
