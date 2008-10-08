@@ -42,14 +42,12 @@ struct                                          _HildonProgramPrivate
 {
     gboolean killable;
     gboolean is_topmost;
-    GdkWindow *group_leader;
     guint window_count;
     GtkWidget *common_menu;
     GtkWidget *common_toolbar;
     GSList *windows;
     GSList *window_stack;
     Window window_group;
-    gchar *name;
 };
 
 void G_GNUC_INTERNAL

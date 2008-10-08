@@ -1,5 +1,12 @@
 2008-10-08  Alberto Garcia  <agarcia@igalia.com>
 
+	* src/hildon-program-private.h
+	* src/hildon-program.c (hildon_program_init)
+	(hildon_program_finalize): Removed unused variables group_leader
+	and name from HildonProgramPrivate.
+
+2008-10-08  Alberto Garcia  <agarcia@igalia.com>
+
 	* src/hildon-check-button.c (hildon_check_button_set_active)
 	(hildon_check_button_get_active, hildon_check_button_new): Use
 	g_object_[gs]et_qdata() instead of g_object_[gs]et_data().
