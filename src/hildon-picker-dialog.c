@@ -82,7 +82,6 @@ hildon_picker_dialog_get_property (GObject * object,
                                    guint prop_id,
                                    GValue * value, GParamSpec * pspec);
 /* gtkwidget */
-static void hildon_picker_dialog_realize (GtkWidget * widget);
 
 /* private functions */
 static gboolean requires_done_button (HildonPickerDialog * dialog);
@@ -117,7 +116,6 @@ hildon_picker_dialog_class_init (HildonPickerDialogClass * class)
   gobject_class->get_property = hildon_picker_dialog_get_property;
 
   /* GtkWidget */
-  widget_class->realize = hildon_picker_dialog_realize;
 
   /* HildonPickerDialog */
   class->set_selector = _hildon_picker_dialog_set_selector;
@@ -203,15 +201,6 @@ hildon_picker_dialog_get_property (GObject * object,
     G_OBJECT_WARN_INVALID_PROPERTY_ID (object, param_id, pspec);
     break;
   }
-}
-
-
-static void
-hildon_picker_dialog_realize (GtkWidget * widget)
-{
-  GTK_WIDGET_CLASS (hildon_picker_dialog_parent_class)->realize (widget);
-
-/*   gdk_window_set_decorations (widget->window, GDK_DECOR_BORDER); */
 }
 
 /* ------------------------------ PRIVATE METHODS ---------------------------- */

@@ -1,3 +1,16 @@
+2008-10-09  Alejandro Pinheiro	 <apinheiro@igalia.com>
+
+	* src/hildon-picker-dialog.c
+	(hildon_picker_dialog_realize): Removed as not required
+	(hildon_picker_dialog_class_init): Avoid to redefine widget->realize
+	* src/hildon-picker-button.c
+	(_current_selector_empty): New function, checks if the selector is empty
+	(hildon_picker_button_clicked): Now it checks (using _current_selector_empty)
+	if the current selector is empty, in order to avoid to show the dialog
+	close the dialog in this case (and shows a g_warning).
+
+	Fixes: NB#88946 (Hildon Picker button should disable itself if there are no values)
+
 2008-10-09  Alejandro G. Castro	 <alex@igalia.com>
 
 	* src/hildon-pannable-area.c,

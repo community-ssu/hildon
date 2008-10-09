@@ -64,6 +64,11 @@ enum
 
 static guint picker_button_signals[LAST_SIGNAL] = { 0 };
 
+static gboolean
+_current_selector_empty                         (HildonPickerButton *button);
+
+
+
 static void
 hildon_picker_button_get_property (GObject * object, guint property_id,
                                    GValue * value, GParamSpec * pspec)
@@ -152,17 +157,21 @@ hildon_picker_button_clicked (GtkButton * button)
                           hildon_button_get_title (HILDON_BUTTON (button)));
   }
 
-  response = gtk_dialog_run (GTK_DIALOG (priv->dialog));
-  switch (response) {
-  case GTK_RESPONSE_OK:
-    hildon_button_set_value (HILDON_BUTTON (button),
-                             hildon_touch_selector_get_current_text
-                             (HILDON_TOUCH_SELECTOR (priv->selector)));
-    g_signal_emit (HILDON_PICKER_BUTTON (button),
-                   picker_button_signals[VALUE_CHANGED], 0);
-    break;
+  if (_current_selector_empty (HILDON_PICKER_BUTTON (button))) {
+    g_warning ("There are no elements to selects!! Not showing the dialog!!");
+  } else {
+    response = gtk_dialog_run (GTK_DIALOG (priv->dialog));
+    switch (response) {
+    case GTK_RESPONSE_OK:
+      hildon_button_set_value (HILDON_BUTTON (button),
+                               hildon_touch_selector_get_current_text
+                               (HILDON_TOUCH_SELECTOR (priv->selector)));
+      g_signal_emit (HILDON_PICKER_BUTTON (button),
+                     picker_button_signals[VALUE_CHANGED], 0);
+      break;
+    }
+    gtk_widget_hide (priv->dialog);
   }
-  gtk_widget_hide (priv->dialog);
 }
 
 static void
@@ -220,6 +229,34 @@ hildon_picker_button_init (HildonPickerButton * self)
   priv->dialog = NULL;
   priv->selector = NULL;
   priv->done_button_text = NULL;
+}
+
+static gboolean
+_current_selector_empty (HildonPickerButton *button)
+{
+  HildonPickerButtonPrivate *priv;
+  HildonTouchSelector *selector = NULL;
+  GtkTreeModel *model = NULL;
+  GtkTreeIter iter;
+  gint i = 0;
+
+  priv = GET_PRIVATE (button);
+  selector = HILDON_TOUCH_SELECTOR (priv->selector);
+
+  g_return_val_if_fail (HILDON_IS_TOUCH_SELECTOR (selector), TRUE);
+
+  if (hildon_touch_selector_has_multiple_selection (selector)) {
+    return FALSE;
+  } else {
+    for (i=0; i < hildon_touch_selector_get_num_columns (selector); i++) {
+      model = hildon_touch_selector_get_model (selector, i);
+
+      if (gtk_tree_model_get_iter_first (model, &iter)) {
+        return FALSE;
+      }
+    }
+    return TRUE;
+  }
 }
 
 /**
