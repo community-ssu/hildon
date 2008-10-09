@@ -1594,12 +1594,16 @@ hildon_pannable_area_scroll (HildonPannableArea *area,
     hildon_pannable_axis_scroll (area, priv->vadjust, &priv->vel_y, y,
                                  &priv->overshooting_y, &priv->overshot_dist_y,
                                  &priv->scroll_to_y, priv->vovershoot_max, &sy);
+  } else {
+    priv->vel_y = 0;
   }
 
   if (hscroll_visible) {
     hildon_pannable_axis_scroll (area, priv->hadjust, &priv->vel_x, x,
                                  &priv->overshooting_x, &priv->overshot_dist_x,
                                  &priv->scroll_to_x, priv->hovershoot_max, &sx);
+  } else {
+    priv->vel_x = 0;
   }
 
   /* If the scroll on a particular axis wasn't succesful, reset the
@@ -2182,19 +2186,24 @@ hildon_pannable_area_scroll_to (HildonPannableArea *area,
   HildonPannableAreaPrivate *priv;
   gint width, height;
   gint dist_x, dist_y;
+  gboolean hscroll_visible, vscroll_visible;
 
   g_return_if_fail (HILDON_IS_PANNABLE_AREA (area));
 
   priv = PANNABLE_AREA_PRIVATE (area);
 
-  if (priv->mode == HILDON_PANNABLE_AREA_MODE_PUSH)
-    hildon_pannable_area_jump_to (area, x, y);
+  vscroll_visible = (priv->vadjust->upper - priv->vadjust->lower >
+	     priv->vadjust->page_size);
+  hscroll_visible = (priv->hadjust->upper - priv->hadjust->lower >
+	     priv->hadjust->page_size);
 
-  g_return_if_fail (x >= -1 && y >= -1);
-
-  if (x == -1 && y == -1) {
+  if (((!vscroll_visible)&&(!hscroll_visible)) ||
+      (x == -1 && y == -1)) {
     return;
   }
+
+  if (priv->mode == HILDON_PANNABLE_AREA_MODE_PUSH)
+    hildon_pannable_area_jump_to (area, x, y);
 
   width = priv->hadjust->upper - priv->hadjust->lower;
   height = priv->vadjust->upper - priv->vadjust->lower;

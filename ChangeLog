@@ -1,3 +1,14 @@
+2008-10-09  Alejandro G. Castro	 <alex@igalia.com>
+
+	* src/hildon-pannable-area.c,
+	(hildon_pannable_area_scroll): Added clause to stop movement when
+	the child of pannable is smaller than one page.
+	(hildon_pannable_area_scroll_to): Added conditions to avoid
+	starting the scrolling movement if the child is smaller than one
+	page, the complete child is in the screen, we do not have to move.
+
+	Fixes: NB#89632 (Picker button selection doesn't change on first click)
+
 2008-10-09  Alberto Garcia  <agarcia@igalia.com>
 
 	* src/hildon-app-menu.c: Removed the 'columns' property, as now
