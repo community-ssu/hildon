@@ -137,10 +137,23 @@ static gchar *
 hildon_touch_selector_entry_print_func (HildonTouchSelector * selector)
 {
   HildonTouchSelectorEntryPrivate *priv;
+  GtkTreeModel *model;
+  GtkTreeIter iter;
+  gint column;
+  gchar *text;
 
   priv = HILDON_TOUCH_SELECTOR_ENTRY_GET_PRIVATE (selector);
 
-  return g_strdup (gtk_entry_get_text (GTK_ENTRY (priv->entry)));
+  if (*(gtk_entry_get_text (GTK_ENTRY (priv->entry))) != '\0') {
+    text = g_strdup (gtk_entry_get_text (GTK_ENTRY (priv->entry)));
+  } else {
+    model = hildon_touch_selector_get_model (selector, 0);
+    hildon_touch_selector_get_selected (selector, 0, &iter);
+    column = hildon_touch_selector_entry_get_text_column (HILDON_TOUCH_SELECTOR_ENTRY (selector));
+    gtk_tree_model_get (model, &iter, column, &text, -1);
+  }
+
+  return text;
 }
 
 static void
