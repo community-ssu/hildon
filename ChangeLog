@@ -1,5 +1,11 @@
 2008-10-09  Alberto Garcia  <agarcia@igalia.com>
 
+	* src/hildon-app-menu.c: Removed the 'columns' property, as now
+	this is managed automatically by the widget when the size of the
+	screen changes.
+
+2008-10-09  Alberto Garcia  <agarcia@igalia.com>
+
 	* src/hildon-picker-button.c
 	(hildon_picker_button_set_done_button_text): Make a copy of the
 	text, and free the previous value.

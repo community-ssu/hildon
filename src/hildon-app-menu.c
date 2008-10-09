@@ -95,10 +95,6 @@
 #include                                        "hildon-app-menu.h"
 #include                                        "hildon-app-menu-private.h"
 
-enum {
-    PROP_COLUMNS = 1
-};
-
 static GdkWindow *
 grab_transfer_window_get                        (GtkWidget *widget);
 
@@ -282,27 +278,6 @@ hildon_app_menu_set_columns                     (HildonAppMenu *menu,
     if (columns != priv->columns) {
         priv->columns = columns;
         hildon_app_menu_repack_items (menu, 0);
-    }
-}
-
-static void
-hildon_app_menu_set_property                    (GObject      *object,
-                                                 guint         prop_id,
-                                                 const GValue *value,
-                                                 GParamSpec   *pspec)
-{
-    HildonAppMenu *menu = HILDON_APP_MENU (object);
-
-    switch (prop_id)
-    {
-    case PROP_COLUMNS:
-        g_warning ("The 'columns' property will be removed in the future. "
-                   "See HildonAppMenu documentation for details");
-        hildon_app_menu_set_columns (menu, g_value_get_uint (value));
-        break;
-    default:
-        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
-        break;
     }
 }
 
@@ -699,7 +674,6 @@ hildon_app_menu_class_init                      (HildonAppMenuClass *klass)
     GtkWidgetClass *widget_class = (GtkWidgetClass *)klass;
 
     gobject_class->finalize = hildon_app_menu_finalize;
-    gobject_class->set_property = hildon_app_menu_set_property;
     widget_class->map = hildon_app_menu_map;
     widget_class->unmap = hildon_app_menu_unmap;
     widget_class->realize = hildon_app_menu_realize;
@@ -709,19 +683,6 @@ hildon_app_menu_class_init                      (HildonAppMenuClass *klass)
     widget_class->style_set = hildon_app_menu_style_set;
 
     g_type_class_add_private (klass, sizeof (HildonAppMenuPrivate));
-
-    g_object_class_install_property (
-        gobject_class,
-        PROP_COLUMNS,
-        g_param_spec_uint (
-            "columns",
-            "Columns",
-            "Number of columns used to display menu items. "
-            "IMPORTANT: this is a temporary property. Don't use unless really needed. "
-            "The number of columns will be managed automatically in the future, "
-            "and this property will be removed.",
-            1, G_MAXUINT, 2,
-            G_PARAM_WRITABLE));
 
     gtk_widget_class_install_style_property (
         widget_class,
