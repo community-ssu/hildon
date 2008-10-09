@@ -23,14 +23,14 @@
  * @short_description: A selector widget with one column and a text entry
  * @see_also: #HildonTouchSelector, #HildonPickerButton
  *
- * #HildonTouchSelectorEntry is a selector widget with a text entry, similar in behaviour
- * to #GtkComboBoxEntry, that allows user to select an item from a predefined list
- * or to enter a different one in a #GtkEntry. Items can also be searched and selected
- * by typing in the entry.
+ * #HildonTouchSelectorEntry is a selector widget with a text entry, similar in
+ * behaviour to #GtkComboBoxEntry, that allows user to select an item from a
+ * predefined list or to enter a different one in a #GtkEntry. Items can also
+ * be searched and selected by typing in the entry.
  *
  * The main difference between the #GtkTreeModel used by #HildonTouchSelector
- * and #HildonTouchSelectorEntry, is that the latter must always include a text column.
- * You should set it with hildon_touch_selector_entry_set_text_column().
+ * and #HildonTouchSelectorEntry, is that the latter must always include a text
+ * column. You should set it with hildon_touch_selector_entry_set_text_column().
  *
  * Normally, you would use #HildonTouchSelectorEntry together with a
  * #HildonPickerDialog activated from a button. For the most common
@@ -235,7 +235,7 @@ _text_column_modified (GObject *pspec, GParamSpec *gobject, gpointer data)
  * @text_column: A column in model to get the strings from
  *
  * Sets the model column which touch selector box should use to get strings
- * from to be text_column.
+ * from to be @text_column.
  *
  **/
 void

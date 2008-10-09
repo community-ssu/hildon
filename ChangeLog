@@ -1,3 +1,7 @@
+2008-10-09  Claudio Saavedra  <csaavedra@igalia.com>
+
+	* src/hildon-touch-selector-entry.c: Minor docs fixes.
+
 2008-10-09  Alberto Garcia  <agarcia@igalia.com>
 
 	* doc/hildon.types
