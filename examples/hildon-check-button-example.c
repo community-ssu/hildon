@@ -23,11 +23,11 @@
 #include                                        <hildon-check-button.h>
 
 static void
-button_clicked_cb                               (GtkButton *button,
-                                                 GtkLabel  *label)
+button_toggled_cb                               (HildonCheckButton *button,
+                                                 GtkLabel          *label)
 {
     gboolean active = hildon_check_button_get_active (button);
-    const gchar *labeltext = gtk_button_get_label (button);
+    const gchar *labeltext = gtk_button_get_label (GTK_BUTTON (button));
     char *text = g_strconcat (labeltext, active ? " (checked)" : " (unchecked)", NULL);
     gtk_label_set_text (label, text);
     g_free (text);
@@ -62,11 +62,11 @@ main                                            (int    argc,
         gtk_button_set_label (GTK_BUTTON (button), text);
         g_free (text);
         gtk_table_attach_defaults (GTK_TABLE (table), button, i/2, (i/2) + 1, i%2, (i%2) + 1);
-        g_signal_connect (button, "clicked", G_CALLBACK (button_clicked_cb), label);
+        g_signal_connect (button, "toggled", G_CALLBACK (button_toggled_cb), label);
     }
 
     gtk_box_pack_start (vbox, table, TRUE, TRUE, 0);
-    gtk_box_pack_start (vbox, gtk_label_new ("Last clicked:"), TRUE, TRUE, 0);
+    gtk_box_pack_start (vbox, gtk_label_new ("Last toggled:"), TRUE, TRUE, 0);
     gtk_box_pack_start (vbox, label, TRUE, TRUE, 0);
 
     gtk_container_set_border_width (GTK_CONTAINER (win), 20);

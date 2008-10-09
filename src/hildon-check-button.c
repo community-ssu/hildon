@@ -18,16 +18,16 @@
  * SECTION:hildon-check-button
  * @short_description: Button with a check box inside
  *
- * This is a standard #GtkButton which contains a check box and a
- * label. Functions are provided to get and set the value of the check
- * box. Note that this button does NOT support an image, so don't use
- * gtk_button_set_image()
+ * This is a button containing a check box and a label. Functions are
+ * provided to get and set the value of the check box. For the label
+ * use gtk_button_set_label(). Note that this button does NOT support
+ * an image, so don't use gtk_button_set_image()
  *
  * <example>
  * <title>Using a Hildon check button</title>
  * <programlisting>
  * void
- * button_clicked (GtkButton *button, gpointer user_data)
+ * button_toggled (HildonCheckButton *button, gpointer user_data)
  * {
  *     gboolean active;
  * <!-- -->
@@ -46,7 +46,7 @@
  *     button = hildon_check_button_new (HILDON_SIZE_AUTO);
  *     gtk_button_set_label (GTK_BUTTON (button), "Click me");
  * <!-- -->
- *     g_signal_connect (button, "clicked", G_CALLBACK (button_clicked), NULL);
+ *     g_signal_connect (button, "toggled", G_CALLBACK (button_toggled), NULL);
  * <!-- -->
  *     return button;
  * }
@@ -57,98 +57,153 @@
 
 #include                                        "hildon-check-button.h"
 
-static GQuark                                   quark = 0;
+enum {
+  TOGGLED,
+  LAST_SIGNAL
+};
 
-static void
-check_button_clicked                            (GtkButton             *button,
-                                                 GtkCellRendererToggle *renderer)
+static guint                                    signals[LAST_SIGNAL] = { 0 };
+
+G_DEFINE_TYPE                                   (HildonCheckButton, hildon_check_button, GTK_TYPE_BUTTON);
+
+#define                                         HILDON_CHECK_BUTTON_GET_PRIVATE(obj) \
+                                                (G_TYPE_INSTANCE_GET_PRIVATE ((obj), \
+                                                HILDON_TYPE_CHECK_BUTTON, HildonCheckButtonPrivate));
+
+typedef struct                                  _HildonCheckButtonPrivate HildonCheckButtonPrivate;
+
+struct                                          _HildonCheckButtonPrivate
 {
-    gboolean current = gtk_cell_renderer_toggle_get_active (renderer);
-    gtk_cell_renderer_toggle_set_active (renderer, !current);
+    GtkCellRendererToggle *toggle_renderer;
+};
+
+/**
+ * hildon_check_button_toggled:
+ * @button: A #HildonCheckButton
+ *
+ * Emits the #HildonCheckButton::toggled signal on the #HildonCheckButton.
+ */
+void
+hildon_check_button_toggled                     (HildonCheckButton *button)
+{
+    g_return_if_fail (HILDON_IS_CHECK_BUTTON (button));
+
+    g_signal_emit (button, signals[TOGGLED], 0);
 }
 
 /**
  * hildon_check_button_set_active:
- * @button: A #GtkButton created with hildon_check_button_new()
- * @is_active: new state for the check box
+ * @button: A #HildonCheckButton
+ * @is_active: new state for the button
  *
- * Sets the state of the check box.
+ * Sets the state of @button to @is_active
  **/
 void
-hildon_check_button_set_active                  (GtkButton *button,
-                                                 gboolean   is_active)
+hildon_check_button_set_active                  (HildonCheckButton *button,
+                                                 gboolean           is_active)
 {
-    GtkCellRendererToggle *toggle_renderer;
+    HildonCheckButtonPrivate *priv;
     gboolean prev_is_active;
 
-    g_return_if_fail (GTK_IS_BUTTON (button));
-    toggle_renderer = GTK_CELL_RENDERER_TOGGLE (g_object_get_qdata (G_OBJECT (button), quark));
-    g_return_if_fail (GTK_IS_CELL_RENDERER_TOGGLE (toggle_renderer));
+    g_return_if_fail (HILDON_IS_CHECK_BUTTON (button));
 
-    prev_is_active = gtk_cell_renderer_toggle_get_active (toggle_renderer);
+    priv = HILDON_CHECK_BUTTON_GET_PRIVATE (button);
+    prev_is_active = gtk_cell_renderer_toggle_get_active (priv->toggle_renderer);
 
     if (prev_is_active != is_active) {
-      gtk_button_clicked (button);
-      gtk_widget_queue_draw (GTK_WIDGET (button));
+        gtk_button_clicked (GTK_BUTTON (button));
+        gtk_widget_queue_draw (GTK_WIDGET (button));
     }
 }
 
 /**
  * hildon_check_button_get_active:
- * @button: A #GtkButton created with hildon_check_button_new()
+ * @button: A #HildonCheckButton
  *
- * Gets the state of the check box.
+ * Gets the state of the button.
  *
- * Return value: %TRUE if the check box is active, %FALSE otherwise.
+ * Return value: %TRUE if @button is active, %FALSE otherwise.
  **/
 gboolean
-hildon_check_button_get_active                  (GtkButton *button)
+hildon_check_button_get_active                  (HildonCheckButton *button)
 {
-    GtkCellRendererToggle *toggle_renderer;
+    HildonCheckButtonPrivate *priv;
 
-    g_return_val_if_fail (GTK_IS_BUTTON (button), FALSE);
-    toggle_renderer = GTK_CELL_RENDERER_TOGGLE (g_object_get_qdata (G_OBJECT (button), quark));
-    g_return_val_if_fail (GTK_IS_CELL_RENDERER_TOGGLE (toggle_renderer), FALSE);
+    g_return_val_if_fail (HILDON_IS_CHECK_BUTTON (button), FALSE);
 
-    return gtk_cell_renderer_toggle_get_active (toggle_renderer);
+    priv = HILDON_CHECK_BUTTON_GET_PRIVATE (button);
+
+    return gtk_cell_renderer_toggle_get_active (priv->toggle_renderer);
 }
 
 /**
  * hildon_check_button_new:
  * @size: Flags indicating the size of the new button
  *
- * This function creates a #GtkButton containing a label and a check
- * box.
+ * This function creates a #HildonCheckButton.
  *
- * Return value: A newly created #GtkButton widget with a check box.
+ * Return value: A newly created #HildonCheckButton
  **/
 GtkWidget *
 hildon_check_button_new                         (HildonSizeType size)
 {
-    GtkWidget *button = gtk_button_new ();
-    GtkWidget *cell_view = gtk_cell_view_new ();
-    GtkCellRenderer *toggle_renderer = gtk_cell_renderer_toggle_new ();
-
-    /* Initialize quark */
-    if (G_UNLIKELY (quark == 0)) {
-        quark = g_quark_from_static_string ("toggle-renderer");
-    }
-
-    /* Set the size of the button */
+    GtkWidget *button = g_object_new (HILDON_TYPE_CHECK_BUTTON, NULL);
     hildon_gtk_widget_set_theme_size (button, size);
+    return button;
+}
 
-    /* Toggle the check box when the button is clicked */
-    g_signal_connect (button, "clicked", G_CALLBACK (check_button_clicked), toggle_renderer);
+static void
+hildon_check_button_clicked                     (GtkButton *button)
+{
+    HildonCheckButtonPrivate *priv = HILDON_CHECK_BUTTON_GET_PRIVATE (button);
+    gboolean current = gtk_cell_renderer_toggle_get_active (priv->toggle_renderer);
+
+    gtk_cell_renderer_toggle_set_active (priv->toggle_renderer, !current);
+
+    hildon_check_button_toggled (HILDON_CHECK_BUTTON (button));
+}
+
+static void
+hildon_check_button_class_init                  (HildonCheckButtonClass *klass)
+{
+    GObjectClass *gobject_class = (GObjectClass*) klass;
+    GtkButtonClass *button_class = (GtkButtonClass*) klass;
+
+    button_class->clicked = hildon_check_button_clicked;
+
+    klass->toggled = NULL;
+
+    /**
+     * HildonCheckButton::toggled
+     *
+     * Emitted when the #HildonCheckButton's state is changed
+     */
+    signals[TOGGLED] =
+        g_signal_new ("toggled",
+                      G_OBJECT_CLASS_TYPE (gobject_class),
+                      G_SIGNAL_RUN_FIRST,
+                      G_STRUCT_OFFSET (HildonCheckButtonClass, toggled),
+                      NULL, NULL,
+                      g_cclosure_marshal_VOID__VOID,
+                      G_TYPE_NONE, 0);
+
+    g_type_class_add_private (klass, sizeof (HildonCheckButtonPrivate));
+}
+
+static void
+hildon_check_button_init                        (HildonCheckButton *button)
+{
+    HildonCheckButtonPrivate *priv = HILDON_CHECK_BUTTON_GET_PRIVATE (button);
+    GtkWidget *cell_view = gtk_cell_view_new ();
 
     /* Make sure that the check box is always shown, no matter the value of gtk-button-images */
     g_signal_connect (cell_view, "notify::visible", G_CALLBACK (gtk_widget_show), NULL);
 
-    /* Store the renderer for later use */
-    g_object_set_qdata (G_OBJECT (button), quark, toggle_renderer);
+    /* Create toggle renderer and pack it into the cell view */
+    priv->toggle_renderer = GTK_CELL_RENDERER_TOGGLE (gtk_cell_renderer_toggle_new ());
+    gtk_cell_layout_pack_start (GTK_CELL_LAYOUT (cell_view),
+                                GTK_CELL_RENDERER (priv->toggle_renderer), FALSE);
 
-    /* Pack everything */
-    gtk_cell_layout_pack_start (GTK_CELL_LAYOUT (cell_view), toggle_renderer, FALSE);
+    /* Add cell view to the image */
     gtk_button_set_image (GTK_BUTTON (button), cell_view);
-
-    return button;
 }

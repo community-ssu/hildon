@@ -1,3 +1,11 @@
+2008-10-09  Alberto Garcia  <agarcia@igalia.com>
+
+	* doc/hildon.types
+	* src/hildon-check-button.h
+	* src/hildon-check-button.c
+	* examples/hildon-check-button-example.c:
+	HildonCheckButton is now a new widget. 'toggled' signal added.
+
 2008-10-08  Alberto Garcia  <agarcia@igalia.com>
 
 	* src/hildon-program-private.h
