@@ -1,3 +1,9 @@
+2008-10-09  Alberto Garcia  <agarcia@igalia.com>
+
+	* src/hildon-picker-button.c
+	(hildon_picker_button_set_done_button_text): Make a copy of the
+	text, and free the previous value.
+
 2008-10-09  Claudio Saavedra  <csaavedra@igalia.com>
 
 	* src/hildon-touch-selector-entry.c:

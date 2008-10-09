@@ -387,5 +387,6 @@ hildon_picker_button_set_done_button_text (HildonPickerButton *button,
 
   priv = GET_PRIVATE (button);
 
-  priv->done_button_text = done_button_text;
+  g_free (priv->done_button_text);
+  priv->done_button_text = g_strdup (done_button_text);
 }
