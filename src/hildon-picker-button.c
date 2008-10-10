@@ -66,6 +66,10 @@ static guint picker_button_signals[LAST_SIGNAL] = { 0 };
 
 static gboolean
 _current_selector_empty                         (HildonPickerButton *button);
+static void
+hildon_picker_button_selector_selection_changed (HildonTouchSelector * selector,
+                                                 gint column,
+                                                 gpointer user_data);
 
 
 
@@ -113,6 +117,9 @@ hildon_picker_button_finalize (GObject * object)
   priv = GET_PRIVATE (object);
 
   if (priv->selector) {
+    g_signal_handlers_disconnect_by_func (priv->selector,
+                                          hildon_picker_button_selector_selection_changed,
+                                          object);
     g_object_unref (priv->selector);
     priv->selector = NULL;
   }
@@ -171,6 +178,27 @@ hildon_picker_button_clicked (GtkButton * button)
       break;
     }
     gtk_widget_hide (priv->dialog);
+  }
+}
+
+static void
+hildon_picker_button_selector_selection_changed (HildonTouchSelector * selector,
+                                                 gint column,
+                                                 gpointer user_data)
+
+{
+  gchar *value;
+  HildonPickerButton *button = HILDON_PICKER_BUTTON (user_data);
+  HildonPickerButtonPrivate *priv = GET_PRIVATE (button);
+
+  if (!GTK_IS_WINDOW (priv->dialog) ||
+      !gtk_window_is_active (GTK_WINDOW (priv->dialog))) {
+    value = hildon_touch_selector_get_current_text (HILDON_TOUCH_SELECTOR (priv->selector));
+    if (value) {
+      hildon_button_set_value (HILDON_BUTTON (button), value);
+      g_signal_emit (HILDON_PICKER_BUTTON (button),
+                     picker_button_signals[VALUE_CHANGED], 0);
+    }
   }
 }
 
@@ -303,10 +331,17 @@ hildon_picker_button_set_selector (HildonPickerButton * button,
   priv = GET_PRIVATE (button);
 
   if (priv->selector) {
+    g_signal_handlers_disconnect_by_func (priv->selector,
+                                          hildon_picker_button_selector_selection_changed,
+                                          button);
     g_object_unref (priv->selector);
   }
 
   priv->selector = g_object_ref (selector);
+
+  g_signal_connect (G_OBJECT (selector), "changed",
+                    G_CALLBACK (hildon_picker_button_selector_selection_changed),
+                    button);
 
   value = hildon_touch_selector_get_current_text (HILDON_TOUCH_SELECTOR (priv->selector));
   if (value) {

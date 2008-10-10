@@ -1,3 +1,18 @@
+2008-10-10  Claudio Saavedra  <csaavedra@igalia.com>
+
+	* src/hildon-picker-button.c: (hildon_picker_button_finalize):
+	Disconnect the handler for HildonTouchSelector::changed.
+
+	(hildon_picker_button_selector_selection_changed): Update the button
+	value if the selection change was not triggered by the
+	HildonPickerDialog.
+
+	(hildon_picker_button_set_selector): connect to
+	HildonTouchSelector::changed.
+
+	Fixes: NB#89650 (Picker button is not updated, when selection in
+	selector has changed)
+
 2008-10-09  Alejandro Pinheiro	 <apinheiro@igalia.com>
 
 	* src/hildon-picker-dialog.c
