@@ -1,5 +1,13 @@
 2008-10-10  Claudio Saavedra  <csaavedra@igalia.com>
 
+	[Release 2.1.14]
+
+	* configure.ac: pre-release version bump
+	* NEWS: updates.
+	* debian/changelog: updates.
+
+2008-10-10  Claudio Saavedra  <csaavedra@igalia.com>
+
 	* src/hildon-picker-button.c: (hildon_picker_button_finalize):
 	Disconnect the handler for HildonTouchSelector::changed.
 

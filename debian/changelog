@@ -1,3 +1,45 @@
+libhildon (2.1.14-1) unstable; urgency=low
+
+  * Switch the build system to use cdbs.
+  * Add --disable-deprecated configure option.
+
+  Bug fixes:
+
+  * Fixes: NB#88644 (Hardcoded first column of the model as text column)
+  * Fixes: NB#89329 (selectors in picker dialog are not visible when a
+    long text is set as label for done button)
+  * Fixes: NB#89651 (HildonTouchSelectorEntry title is <unnamed>, when
+    entry is empty)
+  * Fixes: NB#89632 (Picker button selection doesn't change on first click)
+  * Fixes: NB#88946 (Hildon Picker button should disable itself if there are no
+    values)
+  * Fixes: NB#89650 (Picker button is not updated, when selection in selector
+    has changed)
+
+  API additions:
+
+  * HildonTouchSelectorColumn::text-column property.
+  * hildon_picker_button_set_done_button_text() and
+    hildon_picker_button_get_done_button_text()
+  * HildonCheckButton is a proper widget.
+
+  Deprecations:
+
+  * HildonWeekdayPicker
+  * HildonTouchSelectorEntry::text-column property, use
+    HildonTouchSelectorColumn::text-column instead.
+  * hildon_touch_selector_set_column_attributes(), use
+    HildonTouchSelectorColumn and friends.
+  * HildonAppMenu::columns property, this is managed automatically now.
+
+  Other:
+
+  * hildon_gtk_set_theme_size() sets widget name using "WidgetName-size" layout,
+    to ease proper theming (Daniel Borgmann)
+  * Many documentation improvements and additions.
+
+ -- Claudio Saavedra <csaavedra@igalia.com>  Fri, 10 Oct 2008 13:40:57 +0300
+
 libhildon (2.1.12-2) unstable; urgency=low
 
   * Add missing hildon-touch-selector-column.h to installable headers.
