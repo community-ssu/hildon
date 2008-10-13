@@ -1,3 +1,10 @@
+2008-10-13  Claudio Saavedra  <csaavedra@igalia.com>
+
+	* src/hildon-touch-selector-entry.c:
+	(hildon_touch_selector_entry_print_func): Return NULL if there is no
+	text in the GtkEntry and there is no item selected. Fixes a
+	potential crasher.
+
 2008-10-13  Alberto Garcia  <agarcia@igalia.com>
 
 	* src/hildon-app-menu-private.h
