@@ -1,3 +1,14 @@
+2008-10-13  Alberto Garcia  <agarcia@igalia.com>
+
+	* src/hildon-app-menu-private.h
+	* src/hildon-app-menu.[ch]
+	* src/hildon-button.[ch]
+	* src/hildon-check-button.[ch]
+	* src/hildon-entry.[ch]
+	* src/hildon-pannable-area.[ch]
+	* src/hildon-text-view.[ch]:
+	Added private field to the object's structure.
+
 2008-10-13  Claudio Saavedra  <csaavedra@igalia.com>
 
 	* configure.ac: post-release version bump

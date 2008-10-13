@@ -25,8 +25,6 @@ G_BEGIN_DECLS
                                                 (G_TYPE_INSTANCE_GET_PRIVATE ((obj), \
                                                 HILDON_TYPE_APP_MENU, HildonAppMenuPrivate));
 
-typedef struct                                  _HildonAppMenuPrivate HildonAppMenuPrivate;
-
 struct                                          _HildonAppMenuPrivate
 {
     GtkBox *filters_hbox;

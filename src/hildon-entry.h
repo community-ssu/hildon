@@ -46,6 +46,8 @@ typedef struct                                  _HildonEntry HildonEntry;
 
 typedef struct                                  _HildonEntryClass HildonEntryClass;
 
+typedef struct                                  _HildonEntryPrivate HildonEntryPrivate;
+
 struct                                          _HildonEntryClass
 {
     GtkEntryClass parent_class;
@@ -54,6 +56,9 @@ struct                                          _HildonEntryClass
 struct                                          _HildonEntry
 {
     GtkEntry parent;
+
+    /* private */
+    HildonEntryPrivate *priv;
 };
 
 

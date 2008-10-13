@@ -58,8 +58,6 @@ G_DEFINE_TYPE                                   (HildonEntry, hildon_entry, GTK_
                                                 (G_TYPE_INSTANCE_GET_PRIVATE ((obj), \
                                                 HILDON_TYPE_ENTRY, HildonEntryPrivate));
 
-typedef struct                                  _HildonEntryPrivate HildonEntryPrivate;
-
 struct                                          _HildonEntryPrivate
 {
     gchar *placeholder;
@@ -71,7 +69,7 @@ static const gchar *placeholder_widget_name     = "hildon-entry-placeholder";
 static void
 hildon_entry_refresh_contents                   (GtkWidget *entry)
 {
-    HildonEntryPrivate *priv = HILDON_ENTRY_GET_PRIVATE (entry);
+    HildonEntryPrivate *priv = HILDON_ENTRY (entry)->priv;
     gboolean showing_placeholder, entry_has_focus;
 
     showing_placeholder = g_str_equal (gtk_widget_get_name (entry), placeholder_widget_name);
@@ -161,14 +159,10 @@ void
 hildon_entry_set_placeholder                    (HildonEntry *entry,
                                                  const gchar *text)
 {
-    HildonEntryPrivate *priv;
-
     g_return_if_fail (HILDON_IS_ENTRY (entry) && text != NULL);
 
-    priv = HILDON_ENTRY_GET_PRIVATE (entry);
-
-    g_free (priv->placeholder);
-    priv->placeholder = g_strdup (text);
+    g_free (entry->priv->placeholder);
+    entry->priv->placeholder = g_strdup (text);
     hildon_entry_refresh_contents (GTK_WIDGET (entry));
 }
 
@@ -219,7 +213,7 @@ hildon_entry_focus_out_event                    (GtkWidget     *widget,
 static void
 hildon_entry_finalize                           (GObject *object)
 {
-    HildonEntryPrivate *priv = HILDON_ENTRY_GET_PRIVATE (object);
+    HildonEntryPrivate *priv = HILDON_ENTRY (object)->priv;
 
     g_free (priv->placeholder);
 
@@ -243,7 +237,6 @@ hildon_entry_class_init                         (HildonEntryClass *klass)
 static void
 hildon_entry_init                               (HildonEntry *self)
 {
-    HildonEntryPrivate *priv = HILDON_ENTRY_GET_PRIVATE (self);
-
-    priv->placeholder = g_strdup ("");
+    self->priv = HILDON_ENTRY_GET_PRIVATE (self);
+    self->priv->placeholder = g_strdup ("");
 }

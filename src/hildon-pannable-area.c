@@ -54,8 +54,6 @@ G_DEFINE_TYPE (HildonPannableArea, hildon_pannable_area, GTK_TYPE_BIN)
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), HILDON_TYPE_PANNABLE_AREA, \
                                 HildonPannableAreaPrivate))
 
-typedef struct _HildonPannableAreaPrivate HildonPannableAreaPrivate;
-
 struct _HildonPannableAreaPrivate {
   HildonPannableAreaMode mode;
   HildonMovementMode mov_mode;
@@ -422,6 +420,8 @@ hildon_pannable_area_init (HildonPannableArea * area)
 {
   HildonPannableAreaPrivate *priv = PANNABLE_AREA_PRIVATE (area);
 
+  area->priv = priv;
+
   priv->moved = FALSE;
   priv->clicked = FALSE;
   priv->last_time = 0;
@@ -471,7 +471,7 @@ hildon_pannable_area_get_property (GObject * object,
 				   GValue * value,
                                    GParamSpec * pspec)
 {
-  HildonPannableAreaPrivate *priv = PANNABLE_AREA_PRIVATE (object);
+  HildonPannableAreaPrivate *priv = HILDON_PANNABLE_AREA (object)->priv;
 
   switch (property_id) {
   case PROP_ENABLED:
@@ -528,7 +528,7 @@ hildon_pannable_area_set_property (GObject * object,
 				   const GValue * value,
                                    GParamSpec * pspec)
 {
-  HildonPannableAreaPrivate *priv = PANNABLE_AREA_PRIVATE (object);
+  HildonPannableAreaPrivate *priv = HILDON_PANNABLE_AREA (object)->priv;
   gboolean enabled;
 
   switch (property_id) {
@@ -600,7 +600,7 @@ hildon_pannable_area_set_property (GObject * object,
 static void
 hildon_pannable_area_dispose (GObject * object)
 {
-  HildonPannableAreaPrivate *priv = PANNABLE_AREA_PRIVATE (object);
+  HildonPannableAreaPrivate *priv = HILDON_PANNABLE_AREA (object)->priv;
 
   if (priv->idle_id) {
     g_source_remove (priv->idle_id);
@@ -633,7 +633,7 @@ hildon_pannable_area_realize (GtkWidget * widget)
   gint border_width;
   HildonPannableAreaPrivate *priv;
 
-  priv = PANNABLE_AREA_PRIVATE (widget);
+  priv = HILDON_PANNABLE_AREA (widget)->priv;
 
   GTK_WIDGET_SET_FLAGS (widget, GTK_REALIZED);
 
@@ -671,7 +671,7 @@ hildon_pannable_area_unrealize (GtkWidget * widget)
 {
   HildonPannableAreaPrivate *priv;
 
-  priv = PANNABLE_AREA_PRIVATE (widget);
+  priv = HILDON_PANNABLE_AREA (widget)->priv;
 
   if (priv->event_window != NULL) {
     gdk_window_set_user_data (priv->event_window, NULL);
@@ -688,7 +688,7 @@ hildon_pannable_area_size_request (GtkWidget * widget,
 				   GtkRequisition * requisition)
 {
   GtkRequisition child_requisition;
-  HildonPannableAreaPrivate *priv = PANNABLE_AREA_PRIVATE (widget);
+  HildonPannableAreaPrivate *priv = HILDON_PANNABLE_AREA (widget)->priv;
   GtkWidget *child = gtk_bin_get_child (GTK_BIN (widget));
 
   if (child && GTK_WIDGET_VISIBLE (child))
@@ -722,7 +722,7 @@ hildon_pannable_area_size_allocate (GtkWidget * widget,
 
   widget->allocation = *allocation;
 
-  priv = PANNABLE_AREA_PRIVATE (widget);
+  priv = HILDON_PANNABLE_AREA (widget)->priv;
 
   child_allocation.x = allocation->x + GTK_CONTAINER (widget)->border_width;
   child_allocation.y = allocation->y + GTK_CONTAINER (widget)->border_width;
@@ -780,7 +780,7 @@ static void
 hildon_pannable_area_style_set (GtkWidget * widget,
                                 GtkStyle * previous_style)
 {
-  HildonPannableAreaPrivate *priv = PANNABLE_AREA_PRIVATE (widget);
+  HildonPannableAreaPrivate *priv = HILDON_PANNABLE_AREA (widget)->priv;
 
   GTK_WIDGET_CLASS (hildon_pannable_area_parent_class)->
     style_set (widget, previous_style);
@@ -793,7 +793,7 @@ hildon_pannable_area_map (GtkWidget * widget)
 {
   HildonPannableAreaPrivate *priv;
 
-  priv = PANNABLE_AREA_PRIVATE (widget);
+  priv = HILDON_PANNABLE_AREA (widget)->priv;
 
   if (priv->event_window != NULL && !priv->enabled)
     gdk_window_show (priv->event_window);
@@ -809,7 +809,7 @@ hildon_pannable_area_unmap (GtkWidget * widget)
 {
   HildonPannableAreaPrivate *priv;
 
-  priv = PANNABLE_AREA_PRIVATE (widget);
+  priv = HILDON_PANNABLE_AREA (widget)->priv;
 
   if (priv->event_window != NULL)
     gdk_window_hide (priv->event_window);
@@ -825,7 +825,7 @@ hildon_pannable_area_grab_notify (GtkWidget *widget,
   /* an internal widget has grabbed the focus and now has returned it,
      we have to do some release actions */
   if (was_grabbed) {
-    HildonPannableAreaPrivate *priv = PANNABLE_AREA_PRIVATE (widget);
+    HildonPannableAreaPrivate *priv = HILDON_PANNABLE_AREA (widget)->priv;
 
     priv->scroll_indicator_event_interrupt = 0;
     priv->scroll_delay_counter = SCROLLBAR_FADE_DELAY;
@@ -854,7 +854,7 @@ hildon_pannable_draw_vscroll (GtkWidget * widget,
                               GdkColor *back_color,
                               GdkColor *scroll_color)
 {
-  HildonPannableAreaPrivate *priv = PANNABLE_AREA_PRIVATE (widget);
+  HildonPannableAreaPrivate *priv = HILDON_PANNABLE_AREA (widget)->priv;
   gfloat y, height;
   cairo_t *cr;
   cairo_pattern_t *pattern;
@@ -918,7 +918,7 @@ hildon_pannable_draw_hscroll (GtkWidget * widget,
                               GdkColor *back_color,
                               GdkColor *scroll_color)
 {
-  HildonPannableAreaPrivate *priv = PANNABLE_AREA_PRIVATE (widget);
+  HildonPannableAreaPrivate *priv = HILDON_PANNABLE_AREA (widget)->priv;
   gfloat x, width;
   cairo_t *cr;
   cairo_pattern_t *pattern;
@@ -979,7 +979,7 @@ hildon_pannable_draw_hscroll (GtkWidget * widget,
 static void
 hildon_pannable_area_initial_effect (GtkWidget * widget)
 {
-  HildonPannableAreaPrivate *priv = PANNABLE_AREA_PRIVATE (widget);
+  HildonPannableAreaPrivate *priv = HILDON_PANNABLE_AREA (widget)->priv;
   gboolean hscroll_visible, vscroll_visible;
 
   if (priv->initial_hint) {
@@ -1021,7 +1021,7 @@ hildon_pannable_area_initial_effect (GtkWidget * widget)
 static void
 hildon_pannable_area_redraw (HildonPannableArea * area)
 {
-  HildonPannableAreaPrivate *priv = PANNABLE_AREA_PRIVATE (area);
+  HildonPannableAreaPrivate *priv = HILDON_PANNABLE_AREA (area)->priv;
 
   /* Redraw scroll indicators */
   if (GTK_WIDGET_DRAWABLE (area)) {
@@ -1041,11 +1041,9 @@ static gboolean
 hildon_pannable_area_scroll_indicator_fade(HildonPannableArea * area)
 {
   gint retval = TRUE;
-  HildonPannableAreaPrivate *priv;
+  HildonPannableAreaPrivate *priv = area->priv;
 
   GDK_THREADS_ENTER ();
-
-  priv = PANNABLE_AREA_PRIVATE (area);
 
   /* if moving do not fade out */
   if (((ABS (priv->vel_y)>1.0)||
@@ -1109,7 +1107,7 @@ hildon_pannable_area_expose_event (GtkWidget * widget,
                                    GdkEventExpose * event)
 {
 
-  HildonPannableAreaPrivate *priv = PANNABLE_AREA_PRIVATE (widget);
+  HildonPannableAreaPrivate *priv = HILDON_PANNABLE_AREA (widget)->priv;
   GdkColor back_color = widget->style->bg[GTK_STATE_NORMAL];
   GdkColor scroll_color = widget->style->base[GTK_STATE_SELECTED];
 
@@ -1296,7 +1294,7 @@ hildon_pannable_area_button_press_cb (GtkWidget * widget,
 				      GdkEventButton * event)
 {
   gint x, y;
-  HildonPannableAreaPrivate *priv = PANNABLE_AREA_PRIVATE (widget);
+  HildonPannableAreaPrivate *priv = HILDON_PANNABLE_AREA (widget)->priv;
 
   if ((!priv->enabled) || (event->button != 1) ||
       ((event->time == priv->last_time) &&
@@ -1372,7 +1370,7 @@ hildon_pannable_area_button_press_cb (GtkWidget * widget,
 static void
 hildon_pannable_area_refresh (HildonPannableArea * area)
 {
-  HildonPannableAreaPrivate *priv = PANNABLE_AREA_PRIVATE (area);
+  HildonPannableAreaPrivate *priv = area->priv;
   gboolean prev_hscroll_visible, prev_vscroll_visible;
 
   if (!gtk_bin_get_child (GTK_BIN (area))) {
@@ -1455,7 +1453,7 @@ hildon_pannable_axis_scroll (HildonPannableArea *area,
                              gboolean *s)
 {
   gdouble dist;
-  HildonPannableAreaPrivate *priv = PANNABLE_AREA_PRIVATE (area);
+  HildonPannableAreaPrivate *priv = area->priv;
 
   dist = gtk_adjustment_get_value (adjust) - inc;
 
@@ -1574,10 +1572,8 @@ hildon_pannable_area_scroll (HildonPannableArea *area,
                              gdouble x, gdouble y)
 {
   gboolean sx, sy;
-  HildonPannableAreaPrivate *priv;
+  HildonPannableAreaPrivate *priv = area->priv;
   gboolean hscroll_visible, vscroll_visible;
-
-  priv = PANNABLE_AREA_PRIVATE (area);
 
   if (gtk_bin_get_child (GTK_BIN (area)) == NULL)
     return;
@@ -1623,11 +1619,9 @@ hildon_pannable_area_scroll (HildonPannableArea *area,
 static gboolean
 hildon_pannable_area_timeout (HildonPannableArea * area)
 {
-  HildonPannableAreaPrivate *priv;
+  HildonPannableAreaPrivate *priv = area->priv;
 
   GDK_THREADS_ENTER ();
-
-  priv = PANNABLE_AREA_PRIVATE (area);
 
   if ((!priv->enabled) || (priv->mode == HILDON_PANNABLE_AREA_MODE_PUSH)) {
     priv->idle_id = 0;
@@ -1707,7 +1701,7 @@ hildon_pannable_area_motion_notify_cb (GtkWidget * widget,
 				       GdkEventMotion * event)
 {
   HildonPannableArea *area = HILDON_PANNABLE_AREA (widget);
-  HildonPannableAreaPrivate *priv = PANNABLE_AREA_PRIVATE (area);
+  HildonPannableAreaPrivate *priv = area->priv;
   gint dnd_threshold;
   gdouble x, y;
   gdouble delta;
@@ -1881,7 +1875,7 @@ static gboolean
 hildon_pannable_area_button_release_cb (GtkWidget * widget,
 					GdkEventButton * event)
 {
-  HildonPannableAreaPrivate *priv = PANNABLE_AREA_PRIVATE (widget);
+  HildonPannableAreaPrivate *priv = HILDON_PANNABLE_AREA (widget)->priv;
   gint x, y;
   GdkWindow *child;
 
@@ -1977,7 +1971,7 @@ hildon_pannable_area_scroll_cb (GtkWidget *widget,
                                 GdkEventScroll *event)
 {
   GtkAdjustment *adj = NULL;
-  HildonPannableAreaPrivate *priv = PANNABLE_AREA_PRIVATE (widget);
+  HildonPannableAreaPrivate *priv = HILDON_PANNABLE_AREA (widget)->priv;
 
   if ((!priv->enabled) ||
       (gtk_bin_get_child (GTK_BIN (widget)) == NULL))
@@ -2039,7 +2033,7 @@ hildon_pannable_area_scroll_cb (GtkWidget *widget,
 static void
 hildon_pannable_area_add (GtkContainer *container, GtkWidget *child)
 {
-  HildonPannableAreaPrivate *priv = PANNABLE_AREA_PRIVATE (container);
+  HildonPannableAreaPrivate *priv = HILDON_PANNABLE_AREA (container)->priv;
 
   g_return_if_fail (gtk_bin_get_child (GTK_BIN (container)) == NULL);
 
@@ -2068,7 +2062,7 @@ hildon_pannable_area_remove (GtkContainer *container, GtkWidget *child)
 static void
 hildon_pannable_calculate_vel_factor (HildonPannableArea * self)
 {
-  HildonPannableAreaPrivate *priv = PANNABLE_AREA_PRIVATE (self);
+  HildonPannableAreaPrivate *priv = self->priv;
   gfloat fct = 0;
   gfloat fct_i = 1;
   gint i, n;
@@ -2190,7 +2184,7 @@ hildon_pannable_area_scroll_to (HildonPannableArea *area,
 
   g_return_if_fail (HILDON_IS_PANNABLE_AREA (area));
 
-  priv = PANNABLE_AREA_PRIVATE (area);
+  priv = area->priv;
 
   vscroll_visible = (priv->vadjust->upper - priv->vadjust->lower >
 	     priv->vadjust->page_size);
@@ -2278,7 +2272,7 @@ hildon_pannable_area_jump_to (HildonPannableArea *area,
     return;
   }
 
-  priv = PANNABLE_AREA_PRIVATE (area);
+  priv = area->priv;
 
   width = priv->hadjust->upper - priv->hadjust->lower;
   height = priv->vadjust->upper - priv->vadjust->lower;

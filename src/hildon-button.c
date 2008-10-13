@@ -84,8 +84,6 @@ G_DEFINE_TYPE                                   (HildonButton, hildon_button, GT
                                                 (G_TYPE_INSTANCE_GET_PRIVATE ((obj), \
                                                 HILDON_TYPE_BUTTON, HildonButtonPrivate));
 
-typedef struct                                  _HildonButtonPrivate HildonButtonPrivate;
-
 struct                                          _HildonButtonPrivate
 {
     GtkLabel *title;
@@ -148,7 +146,7 @@ hildon_button_get_property                      (GObject    *object,
                                                  GParamSpec *pspec)
 {
     HildonButton *button = HILDON_BUTTON (object);
-    HildonButtonPrivate *priv = HILDON_BUTTON_GET_PRIVATE (button);
+    HildonButtonPrivate *priv = HILDON_BUTTON (button)->priv;
 
     switch (prop_id)
     {
@@ -169,7 +167,7 @@ hildon_button_style_set                         (GtkWidget *widget,
                                                  GtkStyle  *previous_style)
 {
     guint horizontal_spacing, vertical_spacing, image_spacing;
-    HildonButtonPrivate *priv = HILDON_BUTTON_GET_PRIVATE (widget);
+    HildonButtonPrivate *priv = HILDON_BUTTON (widget)->priv;
 
     if (GTK_WIDGET_CLASS (hildon_button_parent_class)->style_set)
         GTK_WIDGET_CLASS (hildon_button_parent_class)->style_set (widget, previous_style);
@@ -269,6 +267,8 @@ hildon_button_init                              (HildonButton *self)
 {
     HildonButtonPrivate *priv = HILDON_BUTTON_GET_PRIVATE (self);
 
+    self->priv = priv;
+
     priv->title = GTK_LABEL (gtk_label_new (NULL));
     priv->value = GTK_LABEL (gtk_label_new (NULL));
     priv->alignment = gtk_alignment_new (0.5, 0.5, 0, 0);
@@ -301,14 +301,10 @@ void
 hildon_button_add_title_size_group              (HildonButton *button,
                                                  GtkSizeGroup *size_group)
 {
-    HildonButtonPrivate *priv;
-
     g_return_if_fail (HILDON_IS_BUTTON (button));
     g_return_if_fail (GTK_IS_SIZE_GROUP (size_group));
 
-    priv = HILDON_BUTTON_GET_PRIVATE (button);
-
-    gtk_size_group_add_widget (size_group, GTK_WIDGET (priv->title));
+    gtk_size_group_add_widget (size_group, GTK_WIDGET (button->priv->title));
 }
 
 /**
@@ -322,14 +318,10 @@ void
 hildon_button_add_value_size_group              (HildonButton *button,
                                                  GtkSizeGroup *size_group)
 {
-    HildonButtonPrivate *priv;
-
     g_return_if_fail (HILDON_IS_BUTTON (button));
     g_return_if_fail (GTK_IS_SIZE_GROUP (size_group));
 
-    priv = HILDON_BUTTON_GET_PRIVATE (button);
-
-    gtk_size_group_add_widget (size_group, GTK_WIDGET (priv->value));
+    gtk_size_group_add_widget (size_group, GTK_WIDGET (button->priv->value));
 }
 
 /**
@@ -344,16 +336,12 @@ void
 hildon_button_add_image_size_group              (HildonButton *button,
                                                  GtkSizeGroup *size_group)
 {
-    HildonButtonPrivate *priv;
-
     g_return_if_fail (HILDON_IS_BUTTON (button));
     g_return_if_fail (GTK_IS_SIZE_GROUP (size_group));
 
-    priv = HILDON_BUTTON_GET_PRIVATE (button);
+    g_return_if_fail (GTK_IS_WIDGET (button->priv->image));
 
-    g_return_if_fail (GTK_IS_WIDGET (priv->image));
-
-    gtk_size_group_add_widget (size_group, GTK_WIDGET (priv->image));
+    gtk_size_group_add_widget (size_group, GTK_WIDGET (button->priv->image));
 }
 
 /**
@@ -438,9 +426,7 @@ static void
 hildon_button_set_arrangement                   (HildonButton            *button,
                                                  HildonButtonArrangement  arrangement)
 {
-    HildonButtonPrivate *priv;
-
-    priv = HILDON_BUTTON_GET_PRIVATE (button);
+    HildonButtonPrivate *priv = button->priv;
 
     /* Pack everything */
     if (arrangement == HILDON_BUTTON_ARRANGEMENT_VERTICAL) {
@@ -478,7 +464,7 @@ hildon_button_set_title                         (HildonButton *button,
 
     g_return_if_fail (HILDON_IS_BUTTON (button));
 
-    priv = HILDON_BUTTON_GET_PRIVATE (button);
+    priv = button->priv;
     gtk_label_set_text (priv->title, title);
 
     /* If the button has no title, hide the label so the value is
@@ -514,7 +500,7 @@ hildon_button_set_value                         (HildonButton *button,
 
     g_return_if_fail (HILDON_IS_BUTTON (button));
 
-    priv = HILDON_BUTTON_GET_PRIVATE (button);
+    priv = button->priv;
     gtk_label_set_text (priv->value, value);
 
     /* If the button has no value, hide the label so the title is
@@ -542,13 +528,9 @@ hildon_button_set_value                         (HildonButton *button,
 const gchar *
 hildon_button_get_title                         (HildonButton *button)
 {
-    HildonButtonPrivate *priv;
-
     g_return_val_if_fail (HILDON_IS_BUTTON (button), NULL);
 
-    priv = HILDON_BUTTON_GET_PRIVATE (button);
-
-    return gtk_label_get_text (priv->title);
+    return gtk_label_get_text (button->priv->title);
 }
 
 /**
@@ -564,13 +546,9 @@ hildon_button_get_title                         (HildonButton *button)
 const gchar *
 hildon_button_get_value                         (HildonButton *button)
 {
-    HildonButtonPrivate *priv;
-
     g_return_val_if_fail (HILDON_IS_BUTTON (button), NULL);
 
-    priv = HILDON_BUTTON_GET_PRIVATE (button);
-
-    return gtk_label_get_text (priv->value);
+    return gtk_label_get_text (button->priv->value);
 }
 
 /**
@@ -607,7 +585,7 @@ hildon_button_set_image                         (HildonButton *button,
     g_return_if_fail (HILDON_IS_BUTTON (button));
     g_return_if_fail (!image || GTK_IS_WIDGET (image));
 
-    priv = HILDON_BUTTON_GET_PRIVATE (button);
+    priv = button->priv;
 
     /* Return if there's nothing to do */
     if (image == priv->image)
@@ -633,13 +611,9 @@ hildon_button_set_image                         (HildonButton *button,
 GtkWidget *
 hildon_button_get_image                         (HildonButton *button)
 {
-    HildonButtonPrivate *priv;
-
     g_return_val_if_fail (HILDON_IS_BUTTON (button), NULL);
 
-    priv = HILDON_BUTTON_GET_PRIVATE (button);
-
-    return priv->image;
+    return button->priv->image;
 }
 
 /**
@@ -654,18 +628,14 @@ void
 hildon_button_set_image_position                (HildonButton    *button,
                                                  GtkPositionType  position)
 {
-    HildonButtonPrivate *priv;
-
     g_return_if_fail (HILDON_IS_BUTTON (button));
     g_return_if_fail (position == GTK_POS_LEFT || position == GTK_POS_RIGHT);
 
-    priv = HILDON_BUTTON_GET_PRIVATE (button);
-
     /* Return if there's nothing to do */
-    if (priv->image_position == position)
+    if (button->priv->image_position == position)
         return;
 
-    priv->image_position = position;
+    button->priv->image_position = position;
 
     hildon_button_construct_child (button);
 }
@@ -689,12 +659,9 @@ hildon_button_set_alignment                     (HildonButton *button,
                                                  gfloat        xscale,
                                                  gfloat        yscale)
 {
-    HildonButtonPrivate *priv;
     GtkWidget *child;
 
     g_return_if_fail (HILDON_IS_BUTTON (button));
-
-    priv = HILDON_BUTTON_GET_PRIVATE (button);
 
     child = gtk_bin_get_child (GTK_BIN (button));
 
@@ -719,13 +686,9 @@ hildon_button_set_title_alignment               (HildonButton *button,
                                                  gfloat        xalign,
                                                  gfloat        yalign)
 {
-    HildonButtonPrivate *priv;
-
     g_return_if_fail (HILDON_IS_BUTTON (button));
 
-    priv = HILDON_BUTTON_GET_PRIVATE (button);
-
-    gtk_misc_set_alignment (GTK_MISC (priv->title), xalign, yalign);
+    gtk_misc_set_alignment (GTK_MISC (button->priv->title), xalign, yalign);
 }
 
 /**
@@ -743,13 +706,9 @@ hildon_button_set_value_alignment               (HildonButton *button,
                                                  gfloat        xalign,
                                                  gfloat        yalign)
 {
-    HildonButtonPrivate *priv;
-
     g_return_if_fail (HILDON_IS_BUTTON (button));
 
-    priv = HILDON_BUTTON_GET_PRIVATE (button);
-
-    gtk_misc_set_alignment (GTK_MISC (priv->value), xalign, yalign);
+    gtk_misc_set_alignment (GTK_MISC (button->priv->value), xalign, yalign);
 }
 
 /**
@@ -771,7 +730,7 @@ hildon_button_set_image_alignment               (HildonButton *button,
 
     g_return_if_fail (HILDON_IS_BUTTON (button));
 
-    priv = HILDON_BUTTON_GET_PRIVATE (button);
+    priv = button->priv;
 
     /* Return if there's nothing to do */
     if (priv->image_xalign == xalign && priv->image_yalign == yalign)
@@ -786,7 +745,7 @@ hildon_button_set_image_alignment               (HildonButton *button,
 static void
 hildon_button_construct_child                   (HildonButton *button)
 {
-    HildonButtonPrivate *priv = HILDON_BUTTON_GET_PRIVATE (button);
+    HildonButtonPrivate *priv = button->priv;
     GtkWidget *child;
     gint image_spacing;
 

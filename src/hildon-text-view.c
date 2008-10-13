@@ -61,8 +61,6 @@ G_DEFINE_TYPE                                   (HildonTextView, hildon_text_vie
                                                 (G_TYPE_INSTANCE_GET_PRIVATE ((obj), \
                                                 HILDON_TYPE_TEXT_VIEW, HildonTextViewPrivate));
 
-typedef struct                                  _HildonTextViewPrivate HildonTextViewPrivate;
-
 struct                                          _HildonTextViewPrivate
 {
     GtkTextBuffer *main_buffer;                   /* Used to show the "real" contents */
@@ -76,7 +74,7 @@ static const gchar *placeholder_widget_name     = "hildon-text-view-placeholder"
 static void
 hildon_text_view_refresh_contents               (GtkWidget *text_view)
 {
-    HildonTextViewPrivate *priv = HILDON_TEXT_VIEW_GET_PRIVATE (text_view);
+    HildonTextViewPrivate *priv = HILDON_TEXT_VIEW (text_view)->priv;
     gint bufsize = gtk_text_buffer_get_char_count (priv->main_buffer);
 
     if ((bufsize > 0) || GTK_WIDGET_HAS_FOCUS (text_view)) {
@@ -113,7 +111,7 @@ hildon_text_view_set_buffer                     (HildonTextView *text_view,
     g_return_if_fail (HILDON_IS_TEXT_VIEW (text_view));
     g_return_if_fail (GTK_IS_TEXT_BUFFER (buffer));
 
-    priv = HILDON_TEXT_VIEW_GET_PRIVATE (text_view);
+    priv = text_view->priv;
 
     /* If this is the same buffer, don't do anything */
     if (buffer == priv->main_buffer)
@@ -154,15 +152,11 @@ hildon_text_view_set_buffer                     (HildonTextView *text_view,
 GtkTextBuffer *
 hildon_text_view_get_buffer                     (HildonTextView *text_view)
 {
-    HildonTextViewPrivate *priv;
-
     g_return_val_if_fail (HILDON_IS_TEXT_VIEW (text_view), NULL);
-
-    priv = HILDON_TEXT_VIEW_GET_PRIVATE (text_view);
 
     /* Always return priv->main_buffer even if the placeholder is
      * being displayed */
-    return priv->main_buffer;
+    return text_view->priv->main_buffer;
 }
 
 /**
@@ -176,13 +170,9 @@ void
 hildon_text_view_set_placeholder                (HildonTextView *text_view,
                                                  const gchar    *text)
 {
-    HildonTextViewPrivate *priv;
-
     g_return_if_fail (HILDON_IS_TEXT_VIEW (text_view) && text != NULL);
 
-    priv = HILDON_TEXT_VIEW_GET_PRIVATE (text_view);
-
-    gtk_text_buffer_set_text (priv->placeholder_buffer, text, -1);
+    gtk_text_buffer_set_text (text_view->priv->placeholder_buffer, text, -1);
 }
 
 /**
@@ -229,7 +219,7 @@ hildon_text_view_focus_out_event                (GtkWidget     *widget,
 static void
 hildon_text_view_finalize                       (GObject *object)
 {
-    HildonTextViewPrivate *priv = HILDON_TEXT_VIEW_GET_PRIVATE (object);
+    HildonTextViewPrivate *priv = HILDON_TEXT_VIEW (object)->priv;
 
     g_signal_handler_disconnect (priv->main_buffer, priv->changed_id);
     g_object_unref (priv->main_buffer);
@@ -256,6 +246,8 @@ static void
 hildon_text_view_init                           (HildonTextView *self)
 {
     HildonTextViewPrivate *priv = HILDON_TEXT_VIEW_GET_PRIVATE (self);
+
+    self->priv = priv;
 
     priv->main_buffer = gtk_text_buffer_new (NULL);
     priv->placeholder_buffer = gtk_text_buffer_new (NULL);
