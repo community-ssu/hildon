@@ -1,3 +1,9 @@
+libhildon (2.1.14-2) unstable; urgency=low
+
+  * Fix a potential crasher in HildonTouchSelectorEntry.
+
+ -- Claudio Saavedra <csaavedra@igalia.com>  Mon, 13 Oct 2008 15:58:53 +0300
+
 libhildon (2.1.14-1) unstable; urgency=low
 
   * Switch the build system to use cdbs.
