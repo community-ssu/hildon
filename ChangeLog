@@ -1,3 +1,18 @@
+2008-10-14  Alejandro Pinheiro	 <apinheiro@igalia.com>
+
+	* src/hildon-touch-selector.h:
+	Set parent_instance and parent_class as GtkVBox and GtkVboxClass, as
+	currently the type definition was using GTK_TYPE_VBOX
+	* src/hildon-touch-selector.c:
+	Added some implementation notes in order to clarify that any other widget
+	added without the column related API will not be included on the
+	selection logic, and how the widget is freed, as some people ask about
+	it.
+	(hildon_touch_selector_remove): Reimplemented in order to free properly
+	the column related data when you remove the private hbox.
+	* doc/hildon.types: Added the type hildon_touch_selector_column, in order
+	to get a proper HildonTouchSelectorColumn documentation
+
 2008-10-13  Claudio Saavedra  <csaavedra@igalia.com>
 
 	* src/hildon-touch-selector-entry.c:

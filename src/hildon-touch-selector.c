@@ -96,11 +96,13 @@ G_DEFINE_TYPE (HildonTouchSelector, hildon_touch_selector, GTK_TYPE_VBOX)
 #define CENTER_ON_SELECTED_ITEM_DELAY 50
 
 /*
+ * IMPLEMENTATION NOTES:
  * Struct to maintain the data of each column. The columns are the elements
- * of the widget that belongs properly to the selection behaviour. As
- * the selector contents are arranged in a #GtkHBox, you can add more widgets,
- * like buttons etc. between the columns, but this doesn't belongs to the
- * selection logic
+ * of the widget that belongs properly to the selection behaviour. Although
+ * internally the columns are arranged in a private #GtkHBox, as the selector
+ * itself is a #GtkVBox, you can add more widgets, like buttons etc., so
+ * you finally could have a widget with more elements that the columns, but
+ * this doesn't belongs to the selection logic
  */
 struct _HildonTouchSelectorColumnPrivate
 {
@@ -300,6 +302,21 @@ hildon_touch_selector_init (HildonTouchSelector * selector)
   gtk_widget_set_size_request (GTK_WIDGET (selector), -1, 320);
 }
 
+/*
+ * IMPLEMENTATION NOTES:
+ * Some people sent questions regarding a missing dispose/finalize function on
+ * this widget that could lead to leak memory, so we will clarify this topic.
+ *
+ * This is not required as #HildonTouchSelector extends #GtkContainer. When the
+ * widget is freed, the #GtkContainer freeing memory functions are called. This
+ * process includes remove each widget individually, so all the widgets are
+ * properly freed.
+ *
+ * In the same way, this widget redefines gtk_container->remove function, in
+ * order to free the column related information if it is required.
+ *
+ * Please take a look to hildon_touch_selector_remove for more information.
+ */
 static void
 hildon_touch_selector_map (GtkWidget * widget)
 {
@@ -318,39 +335,22 @@ static void
 hildon_touch_selector_remove (GtkContainer * container, GtkWidget * widget)
 {
   HildonTouchSelector *selector = NULL;
-  GSList *iter = NULL;
-  gint position = 0;
-  HildonTouchSelectorColumn *current_column = NULL;
-  gint num_columns = 0;
 
   g_return_if_fail (HILDON_IS_TOUCH_SELECTOR (container));
-
   selector = HILDON_TOUCH_SELECTOR (container);
-  num_columns = hildon_touch_selector_get_num_columns (selector);
 
-  /* Check if the widget is inside a column and remove
-     it from the list */
-  iter = selector->priv->columns;
-  position = 0;
-  while (iter) {
-    current_column = HILDON_TOUCH_SELECTOR_COLUMN (iter->data);
-    if (widget == current_column->priv->panarea) {
-      current_column = g_slist_nth_data (selector->priv->columns, position);
+  /* Remove the extra data related to the columns, if required. */
+  if (widget == selector->priv->hbox) {
+    g_slist_foreach (selector->priv->columns, (GFunc) g_object_unref, NULL);
 
-      selector->priv->columns = g_slist_remove (selector->priv->columns,
-                                                current_column);
-      g_free (current_column);
+    g_slist_free (selector->priv->columns);
 
-      break;
-    }
-
-    position++;
-    iter = g_slist_next (iter);
-  }
-  if (position >= num_columns) {
-    g_debug ("This widget was not inside the selector column");
+    selector->priv->columns = NULL;
+  } else {
+    g_debug ("Freeing a widget outside the columns logic");
   }
 
+  /* Now remove the widget itself from the container */
   GTK_CONTAINER_CLASS (hildon_touch_selector_parent_class)->remove (container, widget);
 }
 
