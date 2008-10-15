@@ -190,6 +190,17 @@ hildon_button_style_set                         (GtkWidget *widget,
 }
 
 static void
+hildon_button_finalize                          (GObject *object)
+{
+    HildonButtonPrivate *priv = HILDON_BUTTON (object)->priv;
+
+    g_object_unref (priv->alignment);
+    g_object_unref (priv->label_box);
+
+    G_OBJECT_CLASS (hildon_button_parent_class)->finalize (object);
+}
+
+static void
 hildon_button_class_init                        (HildonButtonClass *klass)
 {
     GObjectClass *gobject_class = (GObjectClass *)klass;
@@ -197,6 +208,7 @@ hildon_button_class_init                        (HildonButtonClass *klass)
 
     gobject_class->set_property = hildon_button_set_property;
     gobject_class->get_property = hildon_button_get_property;
+    gobject_class->finalize = hildon_button_finalize;
     widget_class->style_set = hildon_button_style_set;
 
     g_object_class_install_property (
@@ -284,6 +296,8 @@ hildon_button_init                              (HildonButton *self)
 
     gtk_misc_set_alignment (GTK_MISC (priv->title), 0, 0.5);
     gtk_misc_set_alignment (GTK_MISC (priv->value), 0, 0.5);
+
+    g_object_ref_sink (priv->alignment);
 
     /* The labels are not shown automatically, see hildon_button_set_(title|value) */
     gtk_widget_set_no_show_all (GTK_WIDGET (priv->title), TRUE);
@@ -434,6 +448,8 @@ hildon_button_set_arrangement                   (HildonButton            *button
     } else {
         priv->label_box = gtk_hbox_new (FALSE, 0);
     }
+
+    g_object_ref_sink (priv->label_box);
 
     /* If we pack both labels with (TRUE, TRUE) or (FALSE, FALSE) they
      * can be painted outside of the button in some situations, see
@@ -748,9 +764,16 @@ hildon_button_construct_child                   (HildonButton *button)
     HildonButtonPrivate *priv = button->priv;
     GtkWidget *child;
     gint image_spacing;
+    const gchar *title, *value;
 
     /* Don't do anything if the button is not constructed yet */
-    if (priv->label_box == NULL)
+    if (G_UNLIKELY (priv->label_box == NULL))
+        return;
+
+    /* Don't do anything if the button has no contents */
+    title = gtk_label_get_text (priv->title);
+    value = gtk_label_get_text (priv->value);
+    if (!priv->image && !title[0] && !value[0])
         return;
 
     /* Save a ref to the image if necessary */

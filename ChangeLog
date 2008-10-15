@@ -1,3 +1,15 @@
+2008-10-15  Alberto Garcia  <agarcia@igalia.com>
+
+	* src/hildon-button.c
+	(hildon_button_construct_child):
+	Don't pack anything in the button until text or image are
+	set. This allows adding a custom child after creating the button
+	with hildon_button_new().
+	(hildon_button_finalize, hildon_button_class_init)
+	(hildon_button_init, hildon_button_set_arrangement): Destroy the
+	alignment and the label box even when they're not packed in the
+	button.
+
 2008-10-14  Alejandro Pinheiro	 <apinheiro@igalia.com>
 
 	* src/hildon-touch-selector.h:
