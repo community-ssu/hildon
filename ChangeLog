@@ -1,5 +1,14 @@
 2008-10-16  Alberto Garcia  <agarcia@igalia.com>
 
+	* src/hildon-app-menu.c (hildon_app_menu_insert)
+	(hildon_app_menu_add_filter, can_activate_accel): Allow items in
+	the HildonAppMenu to be activatable using keyboard accelerators
+	when the menu is not being shown.
+
+	Fixes: NB#89935 (Shortcuts for menu buttons are not working)
+
+2008-10-16  Alberto Garcia  <agarcia@igalia.com>
+
 	* src/hildon-stackable-window.c
 	(hildon_stackable_window_show):
 	Don't hide old windows automatically when new windows are shown:

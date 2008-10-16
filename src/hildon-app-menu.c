@@ -105,6 +105,11 @@ hildon_app_menu_repack_items                    (HildonAppMenu *menu,
 static void
 hildon_app_menu_repack_filters                  (HildonAppMenu *menu);
 
+static gboolean
+can_activate_accel                              (GtkWidget *widget,
+                                                 guint      signal_id,
+                                                 gpointer   user_data);
+
 static void
 item_visibility_changed                         (GtkWidget     *item,
                                                  GParamSpec    *arg1,
@@ -163,6 +168,10 @@ hildon_app_menu_insert                          (HildonAppMenu *menu,
     g_object_ref_sink (item);
     priv->buttons = g_list_insert (priv->buttons, item, position);
     hildon_app_menu_repack_items (menu, position);
+
+    /* Enable accelerators */
+    gtk_widget_realize (GTK_WIDGET (item));
+    g_signal_connect (item, "can-activate-accel", G_CALLBACK (can_activate_accel), NULL);
 
     /* Close the menu when the button is clicked */
     g_signal_connect_swapped (item, "clicked", G_CALLBACK (gtk_widget_hide), menu);
@@ -256,6 +265,10 @@ hildon_app_menu_add_filter                      (HildonAppMenu *menu,
     priv->filters = g_list_append (priv->filters, filter);
     hildon_app_menu_repack_filters (menu);
 
+    /* Enable accelerators */
+    gtk_widget_realize (GTK_WIDGET (filter));
+    g_signal_connect (filter, "can-activate-accel", G_CALLBACK (can_activate_accel), NULL);
+
     /* Close the menu when the button is clicked */
     g_signal_connect_swapped (filter, "clicked", G_CALLBACK (gtk_widget_hide), menu);
     g_signal_connect (filter, "notify::visible", G_CALLBACK (filter_visibility_changed), menu);
@@ -292,6 +305,14 @@ screen_size_changed                            (GdkScreen     *screen,
     } else {
         hildon_app_menu_set_columns (menu, 1);
     }
+}
+
+static gboolean
+can_activate_accel                              (GtkWidget *widget,
+                                                 guint      signal_id,
+                                                 gpointer   user_data)
+{
+    return GTK_WIDGET_VISIBLE (widget);
 }
 
 static void
