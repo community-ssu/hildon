@@ -274,20 +274,14 @@ hildon_program_get_property                     (GObject *object,
  * The #HildonProgram object maintains a list of stackable
  * windows. Each time a #HildonStackableWindow is shown, it is
  * automatically added to the top of the stack. Windows are removed
- * from the stack when they are destroyed.
+ * from the stack when they are hidden or destroyed.
  *
- * This function removes the #HildonStackableWindow from the top of
- * the stack and returns it. If the stack is empty, %NULL is returned.
+ * This function is equivalent to calling gtk_widget_hide() on the
+ * window on top of the stack. The window is hidden and removed from
+ * the stack, but not destroyed.
  *
- * If the window was visible then it will be hidden. The next window
- * from the stack (if any) will be shown automatically.
- *
- * If the window was not visible then all other windows will remain
- * hidden.
- *
- * No window is destroyed in any case.
- *
- * Returns: A #HildonStackableWindow, or %NULL.
+ * Returns: The #HildonStackableWindow that was removed from the
+ * stack, or %NULL if the stack was empty.
  */
 HildonStackableWindow *
 hildon_program_pop_window_stack                 (HildonProgram *self)
@@ -296,20 +290,9 @@ hildon_program_pop_window_stack                 (HildonProgram *self)
 
     top = hildon_program_peek_window_stack (self);
 
+    /* Hide the window (it'll be removed from the stack) */
     if (top)
-    {
-        HildonStackableWindow *next;
-
-        /* Remove the window from the stack and get the next one */
-        _hildon_program_remove_from_stack (self, top);
-        next = hildon_program_peek_window_stack (self);
-
-        /* Hide the window just removed and show the next one if necessary */
-        if (GTK_WIDGET_VISIBLE (GTK_WIDGET (top)) && next != NULL);
-            gtk_widget_show (GTK_WIDGET (next));
-
         gtk_widget_hide (GTK_WIDGET (top));
-    }
 
     return top;
 }
@@ -883,12 +866,6 @@ hildon_program_go_to_root_window                (HildonProgram *self)
             g_critical ("Window list contains a non-stackable window");
             windows_left = FALSE;
         }
-    }
-
-    /* Show the last window that hasn't been destroyed */
-    if (iter != NULL && GTK_IS_WIDGET (iter->data))
-    {
-        gtk_widget_show (GTK_WIDGET (iter->data));
     }
 
     g_slist_free (windows);

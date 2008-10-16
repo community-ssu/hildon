@@ -1,3 +1,26 @@
+2008-10-16  Alberto Garcia  <agarcia@igalia.com>
+
+	* src/hildon-stackable-window.c
+	(hildon_stackable_window_show):
+	Don't hide old windows automatically when new windows are shown:
+	this is now a task for the window manager.
+	(hildon_stackable_window_class_init)
+	(hildon_stackable_window_hide):
+	Remove windows from the stack everytime they're hidden.
+	(hildon_stackable_window_realize):
+	Don't change the _NET_WM_WINDOW_TYPE property. Use
+	_HILDON_STACKABLE_WINDOW instead for the window manager to manage
+	it as a stackable window.
+
+	* src/hildon-program.c
+	(hildon_program_pop_window_stack):
+	Just hide the window to remove it from the stack.
+	(hildon_program_go_to_root_window):
+	Don't call gtk_widget_show(), this is now a task for the window
+	manager.
+
+	Fixes: NB#89411
+
 2008-10-15  Alberto Garcia  <agarcia@igalia.com>
 
 	* src/hildon-button.c
