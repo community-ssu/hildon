@@ -461,4 +461,9 @@ hildon_picker_button_set_done_button_text (HildonPickerButton *button,
 
   g_free (priv->done_button_text);
   priv->done_button_text = g_strdup (done_button_text);
+
+  if (priv->dialog) {
+    hildon_picker_dialog_set_done_label (HILDON_PICKER_DIALOG (priv->dialog),
+                                         priv->done_button_text);
+  }
 }

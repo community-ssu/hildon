@@ -1,5 +1,14 @@
 2008-10-20  Claudio Saavedra  <csaavedra@igalia.com>
 
+	* src/hildon-picker-button.c:
+	(hildon_picker_button_set_done_button_text): Set the dialog's
+	done button text here as well.
+
+	Fixes NB#90232 (Picker button does not set the label on done button
+	for the second time)
+
+2008-10-20  Claudio Saavedra  <csaavedra@igalia.com>
+
 	* src/hildon-picker-button.c: (hildon_picker_button_clicked): Update
 	warning message.
 
