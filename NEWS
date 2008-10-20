@@ -1,3 +1,16 @@
+[2.1.16 release]
+
+  * HildonTouchSelector internal layout cleaning.
+  * Improved HildonButton customizability.
+  * Allow Hildon Touch Menu theming (Daniel Borgmann)
+
+  Bug fixes:
+
+  * Fixes: NB#89411 (Window Manager locks caused by HildonStackableWindow)
+  * Fixes: NB#89935 (Shortcuts for menu buttons are not working)
+  * Fixes  NB#90232 (Picker button does not set the label on done button for the
+    second time)
+
 [2.1.14 release]
 
   Bug fixes:

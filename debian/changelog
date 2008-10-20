@@ -1,3 +1,18 @@
+libhildon (2.1.16-1) unstable; urgency=low
+
+  * HildonTouchSelector internal layout cleaning.
+  * Improved HildonButton customizability.
+  * Allow Hildon Touch Menu theming (Daniel Borgmann)
+
+  Bug fixes:
+
+  * Fixes: NB#89411 (Window Manager locks caused by HildonStackableWindow)
+  * Fixes: NB#89935 (Shortcuts for menu buttons are not working)
+  * Fixes  NB#90232 (Picker button does not set the label on done button for the
+    second time)
+
+ -- Claudio Saavedra <csaavedra@igalia.com>  Mon, 20 Oct 2008 11:37:31 +0200
+
 libhildon (2.1.14-1) unstable; urgency=low
 
   * Switch the build system to use cdbs.

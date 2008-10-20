@@ -1,3 +1,11 @@
+2008-10-20  Claudio Saavedra  <csaavedra@igalia.com>
+
+	* NEWS: Updates
+	* configure.ac: Bump version
+	* debian/changelog: Updates
+	* debian/rules: Set PKG_CONFIG_PATH to make docs build with
+	gtk-doc 1.10.
+
 2008-10-20  Alberto Garcia  <agarcia@igalia.com>
 
 	Patch contributed by Daniel Borgmann (danielb@openismus.com)
