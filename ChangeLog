@@ -1,5 +1,9 @@
 2008-10-20  Claudio Saavedra  <csaavedra@igalia.com>
 
+	* configure.ac: post release version bump
+
+2008-10-20  Claudio Saavedra  <csaavedra@igalia.com>
+
 	* NEWS: Updates
 	* configure.ac: Bump version
 	* debian/changelog: Updates
