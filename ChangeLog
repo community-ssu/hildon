@@ -28,7 +28,7 @@
 	Don't call gtk_widget_show(), this is now a task for the window
 	manager.
 
-	Fixes: NB#89411
+	Fixes: NB#89411 (Window Manager locks caused by HildonStackableWindow)
 
 2008-10-15  Alberto Garcia  <agarcia@igalia.com>
 
