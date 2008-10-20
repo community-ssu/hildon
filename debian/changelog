@@ -3,8 +3,7 @@ libhildon (2.1.16-1) unstable; urgency=low
   * HildonTouchSelector internal layout cleaning.
   * Improved HildonButton customizability.
   * Allow Hildon Touch Menu theming (Daniel Borgmann)
-  * Set PKG_CONFIG_PATH in rules to allow building docs with
-    pkg-config 1.10.
+  * Set PKG_CONFIG_PATH in rules to allow building docs with pkg-config 1.10.
 
   Bug fixes:
 
