@@ -1,5 +1,23 @@
 2008-10-20  Alberto Garcia  <agarcia@igalia.com>
 
+	* src/hildon-app-menu-private.h
+	* src/hildon-app-menu.c
+	(hildon_app_menu_init, hildon_app_menu_set_parent_window):
+	Store the menu's parent window.
+
+	* src/hildon-stackable-window.c
+	(hildon_stackable_window_toggle_menu)
+	(hildon_stackable_window_finalize):
+	Set the menu's parent window when the menu is shown, unset it when
+	it is destroyed.
+
+	* src/hildon-app-menu.c
+	(hildon_app_menu_hide_idle, hildon_app_menu_key_press)
+	(hildon_app_menu_class_init):
+	Send unhandled keyboard accelerators to the parent window.
+
+2008-10-20  Alberto Garcia  <agarcia@igalia.com>
+
 	* src/hildon-stackable-window.c
 	(hildon_stackable_window_finalize): Unref the menu, don't destroy it
 

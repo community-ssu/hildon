@@ -294,6 +294,16 @@ hildon_app_menu_set_columns                     (HildonAppMenu *menu,
     }
 }
 
+void G_GNUC_INTERNAL
+hildon_app_menu_set_parent_window              (HildonAppMenu *self,
+                                                GtkWindow     *parent_window)
+{
+    g_return_if_fail (HILDON_IS_APP_MENU (self));
+    g_return_if_fail (parent_window == NULL || GTK_IS_WINDOW (parent_window));
+
+    self->priv->parent_window = parent_window;
+}
+
 static void
 screen_size_changed                            (GdkScreen     *screen,
                                                 HildonAppMenu *menu)
@@ -390,6 +400,69 @@ hildon_app_menu_unmap                           (GtkWidget *widget)
     }
 
     GTK_WIDGET_CLASS (hildon_app_menu_parent_class)->unmap (widget);
+}
+
+static gboolean
+hildon_app_menu_hide_idle                       (gpointer widget)
+{
+    gtk_widget_hide (GTK_WIDGET (widget));
+    return FALSE;
+}
+
+/* Send keyboard accelerators to the parent window, if necessary.
+ * This code is heavily based on gtk_menu_key_press ()
+ */
+static gboolean
+hildon_app_menu_key_press                       (GtkWidget   *widget,
+                                                 GdkEventKey *event)
+{
+    GtkWindow *parent_window;
+
+    g_return_val_if_fail (HILDON_IS_APP_MENU (widget), FALSE);
+    g_return_val_if_fail (event != NULL, FALSE);
+
+    if (GTK_WIDGET_CLASS (hildon_app_menu_parent_class)->key_press_event (widget, event))
+        return TRUE;
+
+    parent_window = HILDON_APP_MENU (widget)->priv->parent_window;
+
+    if (parent_window) {
+        guint accel_key, accel_mods;
+        GdkModifierType consumed_modifiers;
+        GdkDisplay *display;
+        GSList *accel_groups;
+        GSList *list;
+
+        display = gtk_widget_get_display (widget);
+
+        /* Figure out what modifiers went into determining the key symbol */
+        gdk_keymap_translate_keyboard_state (gdk_keymap_get_for_display (display),
+                                             event->hardware_keycode, event->state, event->group,
+                                             NULL, NULL, NULL, &consumed_modifiers);
+
+        accel_key = gdk_keyval_to_lower (event->keyval);
+        accel_mods = event->state & gtk_accelerator_get_default_mod_mask () & ~consumed_modifiers;
+
+        /* If lowercasing affects the keysym, then we need to include SHIFT in the modifiers,
+         * We re-upper case when we match against the keyval, but display and save in caseless form.
+         */
+        if (accel_key != event->keyval)
+            accel_mods |= GDK_SHIFT_MASK;
+
+        accel_groups = gtk_accel_groups_from_object (G_OBJECT (parent_window));
+
+        for (list = accel_groups; list; list = list->next) {
+            GtkAccelGroup *accel_group = list->data;
+
+            if (gtk_accel_group_query (accel_group, accel_key, accel_mods, NULL)) {
+                gtk_window_activate_key (parent_window, event);
+                gdk_threads_add_idle (hildon_app_menu_hide_idle, widget);
+                break;
+            }
+        }
+    }
+
+    return TRUE;
 }
 
 static gboolean
@@ -636,6 +709,7 @@ hildon_app_menu_init                            (HildonAppMenu *menu)
     menu->priv = priv;
 
     /* Initialize private variables */
+    priv->parent_window = NULL;
     priv->transfer_window = NULL;
     priv->pressed_outside = FALSE;
     priv->buttons = NULL;
@@ -695,6 +769,7 @@ hildon_app_menu_class_init                      (HildonAppMenuClass *klass)
     widget_class->unmap = hildon_app_menu_unmap;
     widget_class->realize = hildon_app_menu_realize;
     widget_class->unrealize = hildon_app_menu_unrealize;
+    widget_class->key_press_event = hildon_app_menu_key_press;
     widget_class->button_press_event = hildon_app_menu_button_press;
     widget_class->button_release_event = hildon_app_menu_button_release;
     widget_class->style_set = hildon_app_menu_style_set;

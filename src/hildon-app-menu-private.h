@@ -30,6 +30,7 @@ struct                                          _HildonAppMenuPrivate
     GtkBox *filters_hbox;
     GtkBox *vbox;
     GtkTable *table;
+    GtkWindow *parent_window;
     GdkWindow *transfer_window;
     gboolean pressed_outside;
     GList *buttons;
@@ -37,6 +38,9 @@ struct                                          _HildonAppMenuPrivate
     guint columns;
 };
 
+void G_GNUC_INTERNAL
+hildon_app_menu_set_parent_window              (HildonAppMenu *self,
+                                                GtkWindow     *parent_window);
 
 G_END_DECLS
 

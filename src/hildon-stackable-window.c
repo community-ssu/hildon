@@ -87,6 +87,7 @@
 
 #include                                        "hildon-stackable-window.h"
 #include                                        "hildon-stackable-window-private.h"
+#include                                        "hildon-app-menu-private.h"
 #include                                        "hildon-program.h"
 #include                                        "hildon-window-private.h"
 #include                                        "hildon-program-private.h"
@@ -158,10 +159,12 @@ hildon_stackable_window_toggle_menu             (HildonWindow *self,
 
     if (priv->app_menu)
     {
-        if (GTK_WIDGET_MAPPED (GTK_WIDGET (priv->app_menu)))
+        if (GTK_WIDGET_MAPPED (GTK_WIDGET (priv->app_menu))) {
             gtk_widget_hide (GTK_WIDGET (priv->app_menu));
-        else
+        } else {
+            hildon_app_menu_set_parent_window (priv->app_menu, GTK_WINDOW (self));
             gtk_widget_show (GTK_WIDGET (priv->app_menu));
+        }
 
         return TRUE;
     }
@@ -219,8 +222,10 @@ hildon_stackable_window_finalize                (GObject *object)
 {
     HildonStackableWindowPrivate *priv = HILDON_STACKABLE_WINDOW_GET_PRIVATE (object);
 
-    if (priv->app_menu)
+    if (priv->app_menu) {
+        hildon_app_menu_set_parent_window (priv->app_menu, NULL);
         g_object_unref (GTK_WIDGET (priv->app_menu));
+    }
 
     if (G_OBJECT_CLASS (hildon_stackable_window_parent_class)->finalize)
         G_OBJECT_CLASS (hildon_stackable_window_parent_class)->finalize (object);
