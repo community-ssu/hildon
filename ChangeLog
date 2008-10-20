@@ -1,3 +1,8 @@
+2008-10-20  Alberto Garcia  <agarcia@igalia.com>
+
+	* src/hildon-stackable-window.c
+	(hildon_stackable_window_finalize): Unref the menu, don't destroy it
+
 2008-10-20  Claudio Saavedra  <csaavedra@igalia.com>
 
 	* configure.ac: post release version bump
