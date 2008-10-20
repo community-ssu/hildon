@@ -165,7 +165,7 @@ hildon_picker_button_clicked (GtkButton * button)
   }
 
   if (_current_selector_empty (HILDON_PICKER_BUTTON (button))) {
-    g_warning ("There are no elements to selects!! Not showing the dialog!!");
+    g_warning ("There are no elements in the selector. Nothing to show.");
   } else {
     response = gtk_dialog_run (GTK_DIALOG (priv->dialog));
     switch (response) {

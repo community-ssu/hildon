@@ -1,3 +1,8 @@
+2008-10-20  Claudio Saavedra  <csaavedra@igalia.com>
+
+	* src/hildon-picker-button.c: (hildon_picker_button_clicked): Update
+	warning message.
+
 2008-10-16  Alberto Garcia  <agarcia@igalia.com>
 
 	* src/hildon-app-menu.c (hildon_app_menu_insert)
