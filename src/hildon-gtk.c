@@ -135,6 +135,22 @@ button_common_init                              (GtkWidget      *button,
 }
 
 /**
+ * hildon_gtk_menu_new:
+ *
+ * This is a convenience function to create a #GtkMenu setting its
+ * widget name to allow Hildon specific styling.
+ *
+ * Return value: A newly created #GtkMenu widget.
+ **/
+GtkWidget *
+hildon_gtk_menu_new                             (void)
+{
+    GtkWidget *menu = gtk_menu_new ();
+    gtk_widget_set_name (menu, "HildonContextSensitiveMenu");
+    return menu;
+}
+
+/**
  * hildon_gtk_button_new:
  * @size: Flags indicating the size of the new button
  *

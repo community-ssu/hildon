@@ -36,6 +36,9 @@ hildon_gtk_widget_set_theme_size                (GtkWidget      *widget,
                                                  HildonSizeType  size);
 
 GtkWidget *
+hildon_gtk_menu_new                             (void);
+
+GtkWidget *
 hildon_gtk_button_new                           (HildonSizeType size);
 
 GtkWidget *
