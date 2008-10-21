@@ -1,3 +1,8 @@
+2008-10-21  Claudio Saavedra  <csaavedra@igalia.com>
+
+	* src/hildon-picker-dialog.h: Add missing HildonTouchSelector
+	header include.
+
 2008-10-21  Alberto Garcia  <agarcia@igalia.com>
 
 	* src/hildon-picker-button.c

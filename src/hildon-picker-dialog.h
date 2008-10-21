@@ -22,6 +22,7 @@
 #define                                         __HILDON_PICKER_DIALOG_H__
 
 #include                                        "hildon-dialog.h"
+#include                                        "hildon-touch-selector.h"
 
 G_BEGIN_DECLS
 
