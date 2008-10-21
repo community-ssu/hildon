@@ -1,3 +1,10 @@
+libhildon (2.1.14-3) unstable; urgency=low
+
+  * Add /usr/share/pkgconfig to PKG_CONFIG_PATH in order to fix build with
+  latest gtk-doc.
+
+ -- Claudio Saavedra <csaavedra@igalia.com>  Tue, 21 Oct 2008 09:38:27 +0200
+
 libhildon (2.1.14-2) unstable; urgency=low
 
   * Fix a potential crasher in HildonTouchSelectorEntry.
