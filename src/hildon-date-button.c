@@ -158,4 +158,6 @@ hildon_date_button_set_date (HildonDateButton * button,
   date = hildon_touch_selector_get_current_text (HILDON_TOUCH_SELECTOR (selector));
 
   hildon_button_set_value (HILDON_BUTTON (button), date);
+
+  g_free (date);
 }

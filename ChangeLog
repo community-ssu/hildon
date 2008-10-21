@@ -1,3 +1,24 @@
+2008-10-21  Alberto Garcia  <agarcia@igalia.com>
+
+	* src/hildon-picker-button.c
+	(hildon_picker_button_finalize):
+	Free priv->done_button_text
+
+	* src/hildon-time-button.c
+	(hildon_time_button_set_time)
+	* src/hildon-picker-button.c
+	(hildon_picker_button_clicked)
+	(hildon_picker_button_selector_selection_changed)
+	(hildon_picker_button_set_selector)
+	* src/hildon-date-button.c
+	(hildon_date_button_set_date):
+	Free strings returned by hildon_touch_selector_get_current_text()
+
+	* src/hildon-button.c (hildon_button_construct_child):
+	Fix leaks in priv->image and priv->label_box
+
+	Fixes: NB#90535 (Memory leak in picker button)
+
 2008-10-21  Claudio Saavedra  <csaavedra@igalia.com>
 
 	* src/hildon-button.c: (hildon_button_get_property): Do not access

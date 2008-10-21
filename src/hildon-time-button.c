@@ -148,7 +148,8 @@ hildon_time_button_set_time (HildonTimeButton * button,
   selector = hildon_picker_button_get_selector (HILDON_PICKER_BUTTON (button));
 
   hildon_time_selector_set_time (HILDON_TIME_SELECTOR (selector), hours, minutes);
-  time = hildon_touch_selector_get_current_text (HILDON_TOUCH_SELECTOR (selector));
 
+  time = hildon_touch_selector_get_current_text (HILDON_TOUCH_SELECTOR (selector));
   hildon_button_set_value (HILDON_BUTTON (button), time);
+  g_free (time);
 }

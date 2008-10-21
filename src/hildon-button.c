@@ -775,15 +775,14 @@ hildon_button_construct_child                   (HildonButton *button)
     if (!priv->image && !title[0] && !value[0])
         return;
 
-    /* Save a ref to the image if necessary */
-    if (priv->image && priv->image->parent != NULL) {
+    /* Save a ref to the image, and remove it from its container if necessary */
+    if (priv->image) {
         g_object_ref (priv->image);
-        gtk_container_remove (GTK_CONTAINER (priv->image->parent), priv->image);
+        if (priv->image->parent != NULL)
+            gtk_container_remove (GTK_CONTAINER (priv->image->parent), priv->image);
     }
 
-    /* Save a ref to the label box if necessary */
     if (priv->label_box->parent != NULL) {
-        g_object_ref (priv->label_box);
         gtk_container_remove (GTK_CONTAINER (priv->label_box->parent), priv->label_box);
     }
 
@@ -815,9 +814,11 @@ hildon_button_construct_child                   (HildonButton *button)
     if (priv->image && priv->image_position == GTK_POS_RIGHT)
         gtk_box_pack_start (priv->hbox, priv->image, FALSE, FALSE, 0);
 
-    /* Set image alignment */
-    if (priv->image)
+    /* Set image alignment and remove previously set ref */
+    if (priv->image) {
         gtk_misc_set_alignment (GTK_MISC (priv->image), priv->image_xalign, priv->image_yalign);
+        g_object_unref (priv->image);
+    }
 
     /* Show everything */
     gtk_widget_show_all (GTK_WIDGET (priv->alignment));
