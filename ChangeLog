@@ -1,3 +1,8 @@
+2008-10-21  Claudio Saavedra  <csaavedra@igalia.com>
+
+	* src/hildon-button.c: (hildon_button_get_property): Do not access
+	private elements directly, use getters instead.
+
 2008-10-20  Alberto Garcia  <agarcia@igalia.com>
 
 	* src/hildon-app-menu-private.h

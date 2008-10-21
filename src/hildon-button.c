@@ -146,15 +146,14 @@ hildon_button_get_property                      (GObject    *object,
                                                  GParamSpec *pspec)
 {
     HildonButton *button = HILDON_BUTTON (object);
-    HildonButtonPrivate *priv = HILDON_BUTTON (button)->priv;
 
     switch (prop_id)
     {
     case PROP_TITLE:
-        g_value_set_string (value, gtk_label_get_text (priv->title));
+        g_value_set_string (value, hildon_button_get_title (button));
         break;
     case PROP_VALUE:
-        g_value_set_string (value, gtk_label_get_text (priv->value));
+        g_value_set_string (value, hildon_button_get_value (button));
         break;
     default:
         G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
