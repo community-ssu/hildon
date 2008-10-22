@@ -7,5 +7,9 @@ include /usr/share/cdbs/1/rules/utils.mk
 DEB_CONFIGURE_SCRIPT_ENV += LDFLAGS="-Wl,-O1 -Wl,--as-needed" PKG_CONFIG_PATH=/usr/lib/pkgconfig:/usr/share/pkgconfig
 DEB_CONFIGURE_EXTRA_FLAGS := --enable-gtk-doc
 
-makebuilddir::
-	AUTOGEN_SUBDIR_MODE=1 NOCONFIGURE=yes ./autogen.sh
+SOURCE_DIR=$(CURDIR)
+
+config.status: $(SOURCE_DIR)/configure
+
+$(SOURCE_DIR)/configure:
+	AUTOGEN_SUBDIR_MODE=1 NOCONFIGURE=yes $(SOURCE_DIR)/autogen.sh

@@ -1,3 +1,8 @@
+2008-10-22  Alejandro Pinheiro  <apinheiro@igalia.com>
+
+	* debian/rules: Fixed a error in order to avoid unnecessary calls
+	to autogen.sh on package building
+
 2008-10-22  Alberto Garcia  <agarcia@igalia.com>
 
 	* examples/hildon-app-menu-example.c: Add keyboard accelerator.
