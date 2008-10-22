@@ -1,3 +1,7 @@
+2008-10-22  Alberto Garcia  <agarcia@igalia.com>
+
+	* examples/hildon-app-menu-example.c: Add keyboard accelerator.
+
 2008-10-21  Claudio Saavedra  <csaavedra@igalia.com>
 
 	* src/hildon-picker-dialog.h: Add missing HildonTouchSelector

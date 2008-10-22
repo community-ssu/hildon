@@ -23,8 +23,7 @@
  */
 
 #include                                        <gtk/gtk.h>
-#include                                        <hildon-stackable-window.h>
-#include                                        <hildon-app-menu.h>
+#include                                        <hildon.h>
 
 static void
 menu_button_clicked                             (GtkButton *button,
@@ -34,10 +33,12 @@ menu_button_clicked                             (GtkButton *button,
     char *text = g_strdup_printf("Last option selected:\n%s", buttontext);
     gtk_label_set_text (label, text);
     g_free (text);
+    g_debug ("Button clicked: %s", buttontext);
 }
 
 static HildonAppMenu *
-create_menu                                     (GtkWidget *label)
+create_menu                                     (GtkWidget     *label,
+                                                 GtkAccelGroup *accel)
 {
     GtkWidget *button;
     HildonAppMenu *menu = HILDON_APP_MENU (hildon_app_menu_new ());
@@ -46,6 +47,8 @@ create_menu                                     (GtkWidget *label)
     button = gtk_button_new_with_label ("Menu command one");
     g_signal_connect_after (button, "clicked", G_CALLBACK (menu_button_clicked), label);
     hildon_app_menu_append (menu, GTK_BUTTON (button));
+
+    gtk_widget_add_accelerator (button, "activate", accel, GDK_r, GDK_CONTROL_MASK, GTK_ACCEL_VISIBLE);
 
     button = gtk_button_new_with_label ("Menu command two");
     g_signal_connect_after (button, "clicked", G_CALLBACK (menu_button_clicked), label);
@@ -86,6 +89,7 @@ main                                            (int argc,
     GtkWidget *label2;
     GtkBox *vbox;
     HildonAppMenu *menu;
+    GtkAccelGroup *accel;
 
     gtk_init (&argc, &argv);
 
@@ -98,15 +102,20 @@ main                                            (int argc,
                            "Click on the titlebar\nto pop up the menu.");
     label2 = gtk_label_new ("No menu option has been selected yet.");
 
+    accel = gtk_accel_group_new ();
+
     gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_CENTER);
     gtk_label_set_justify (GTK_LABEL (label2), GTK_JUSTIFY_CENTER);
 
     vbox = GTK_BOX (gtk_vbox_new (FALSE, 10));
     win = hildon_stackable_window_new ();
 
-    menu = create_menu (label2);
+    menu = create_menu (label2, accel);
 
     hildon_stackable_window_set_main_menu (HILDON_STACKABLE_WINDOW (win), menu);
+
+    gtk_window_add_accel_group (GTK_WINDOW (win), accel);
+    g_object_unref (accel);
 
     gtk_box_pack_start (vbox, label, TRUE, TRUE, 0);
     gtk_box_pack_start (vbox, label2, TRUE, TRUE, 0);
