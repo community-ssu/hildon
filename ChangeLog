@@ -1,3 +1,9 @@
+2008-10-23  Daniel Borgmann  <danielb@openismus.com>
+
+	reviewed by:  Claudio Saavedra  <csaavedra@igalia.com>
+
+	* src/hildon-gtk.c (hildon_gtk_menu_new): Change capitalization
+
 2008-10-22  Alejandro Pinheiro  <apinheiro@igalia.com>
 
 	* debian/rules: Fixed a error in order to avoid unnecessary calls

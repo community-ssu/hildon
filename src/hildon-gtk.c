@@ -146,7 +146,7 @@ GtkWidget *
 hildon_gtk_menu_new                             (void)
 {
     GtkWidget *menu = gtk_menu_new ();
-    gtk_widget_set_name (menu, "HildonContextSensitiveMenu");
+    gtk_widget_set_name (menu, "hildon-context-sensitive-menu");
     return menu;
 }
 
