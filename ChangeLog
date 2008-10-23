@@ -1,3 +1,10 @@
+2008-10-23  Alberto Garcia  <agarcia@igalia.com>
+
+	* debian/control
+	* debian/libhildon1-dev.install
+	* debian/libhildon1-doc.install:
+	Move all gtk-doc files to a separate libhildon1-doc package.
+
 2008-10-23  Daniel Borgmann  <danielb@openismus.com>
 
 	reviewed by:  Claudio Saavedra  <csaavedra@igalia.com>
