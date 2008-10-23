@@ -1,3 +1,8 @@
+2008-10-23  Claudio Saavedra  <csaavedra@igalia.com>
+
+	* src/hildon-touch-selector-entry.c: Fix some gtk-doc warnings.
+	* src/hildon-touch-selector.c: Ditto.
+
 2008-10-23  Alejandro Pinheiro  <apinheiro@igalia.com>
 
 	* debian/control: Added new package libhildon1-examples, in order to pack

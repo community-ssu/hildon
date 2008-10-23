@@ -1627,12 +1627,10 @@ hildon_touch_selector_has_multiple_selection (HildonTouchSelector * selector)
  * @selector: A #HildonTouchSelector
  * @column: a column number
  *
- * Returns the @column<!-- -->-th #HildonTouchSelectorColumn in @selector
- *
- *
  * Use this method to retrieve a #HildonTouchSelectorColumn. Then, you can use
  * the #GtkCellLayout interface to set up the layout of the column.
  *
+ * Returns: the @column<!-- -->-th #HildonTouchSelectorColumn in @selector
  **/
 HildonTouchSelectorColumn *
 hildon_touch_selector_get_column (HildonTouchSelector * selector,

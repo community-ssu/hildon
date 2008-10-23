@@ -270,7 +270,9 @@ hildon_touch_selector_entry_set_text_column (HildonTouchSelectorEntry *selector,
  * hildon_touch_selector_entry_get_text_column:
  * @selector: A #HildonTouchSelectorEntry
  *
- * Returns the @column which the touch selector is using to get the strings from
+ * Gets the text column that @selector is using as a text column.
+ *
+ * Returns: the number of the column used as a text column.
  *
  **/
 gint
