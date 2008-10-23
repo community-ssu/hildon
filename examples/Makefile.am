@@ -364,7 +364,7 @@ hildon_touch_selector_entry_example_SOURCES	= hildon-touch-selector-entry-exampl
 
 endif
 
-examplesdir                             = $(datadir)/doc/libhildon1/examples
+examplesdir                             = $(datadir)/doc/libhildon1-examples/examples
 examples_DATA				= Makefile.static                               \
 					  hildon-window-example.c			\
 					  hildon-banner-example.c			\

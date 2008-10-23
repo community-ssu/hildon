@@ -1,3 +1,16 @@
+2008-10-23  Alejandro Pinheiro  <apinheiro@igalia.com>
+
+	* debian/control: Change libhildon1-examples dependency from libhildon1
+	to libhildon1-dev
+	* debian/libhildon1-examples.install
+	* debian/rules
+	* Makefile.am: Modified the final install directory for the examples on
+	package libhildon1-examples
+	* Makefile.static: Update clean target in order to remove all the binary
+	examples
+
+	Changes suggested by Claudio after review new libhildon1-examples package
+
 2008-10-23  Claudio Saavedra  <csaavedra@igalia.com>
 
 	* src/hildon-touch-selector-entry.c: Fix some gtk-doc warnings.

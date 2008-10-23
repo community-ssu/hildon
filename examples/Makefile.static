@@ -13,4 +13,5 @@ all: $(EXAMPLES)
 
 clean:
 	rm -f *example
+	rm -f *example-[1-9]
 

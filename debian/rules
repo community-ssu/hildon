@@ -16,5 +16,5 @@ $(SOURCE_DIR)/configure:
 	AUTOGEN_SUBDIR_MODE=1 NOCONFIGURE=yes $(SOURCE_DIR)/autogen.sh
 
 common-binary-indep::
-	sed -i 's_"hildon.h"_<hildon/hildon.h>_' $(DEB_DESTDIR)/usr/share/doc/libhildon1/examples/*.c
-	mv $(DEB_DESTDIR)/usr/share/doc/libhildon1/examples/Makefile.static $(DEB_DESTDIR)/usr/share/doc/libhildon1/examples/Makefile
+	sed -i 's_"hildon.h"_<hildon/hildon.h>_' $(DEB_DESTDIR)/usr/share/doc/libhildon1-examples/examples/*.c
+	mv $(DEB_DESTDIR)/usr/share/doc/libhildon1-examples/examples/Makefile.static $(DEB_DESTDIR)/usr/share/doc/libhildon1-examples/examples/Makefile
