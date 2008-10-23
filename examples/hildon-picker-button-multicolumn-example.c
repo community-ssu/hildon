@@ -14,13 +14,9 @@
  *
  */
 
-#include <glib.h>
-#include <gtk/gtk.h>
-
-#include "hildon-program.h"
-#include "hildon-stackable-window.h"
-
-#include "hildon-picker-button.h"
+#include                                        <glib.h>
+#include                                        <gtk/gtk.h>
+#include                                        "hildon.h"
 
 static GtkWidget *
 create_touch_selector (void)

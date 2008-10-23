@@ -22,11 +22,11 @@
  *
  */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <glib.h>
-#include <gtk/gtk.h>
-#include "hildon.h"
+#include                                        <stdio.h>
+#include                                        <stdlib.h>
+#include                                        <glib.h>
+#include                                        <gtk/gtk.h>
+#include                                        "hildon.h"
 
 enum { TEXT_COLUMN, OPTIONAL_COLUMN, N_COLUMNS };
 

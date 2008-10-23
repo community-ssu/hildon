@@ -18,10 +18,10 @@
  * Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
-#include <glib.h>
-#include <gtk/gtk.h>
+#include                                        <glib.h>
+#include                                        <gtk/gtk.h>
 
-#include "hildon.h"
+#include                                        "hildon.h"
 
 static const gchar* artists [] = {
   "AC/DC",

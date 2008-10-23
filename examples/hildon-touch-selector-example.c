@@ -21,15 +21,9 @@
  *
  */
 
-#include <glib.h>
-#include <gtk/gtk.h>
-
-#include "hildon-program.h"
-#include "hildon-stackable-window.h"
-
-#include "hildon-touch-selector.h"
-#include "hildon-picker-dialog.h"
-#include "hildon-picker-button.h"
+#include                                        <glib.h>
+#include                                        <gtk/gtk.h>
+#include                                        "hildon.h"
 
 static GtkWidget *create_selector ();
 static GtkWidget *get_visible_content (GtkWidget * window);

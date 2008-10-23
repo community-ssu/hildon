@@ -1,3 +1,19 @@
+2008-10-23  Alejandro Pinheiro  <apinheiro@igalia.com>
+
+	* debian/control: Added new package libhildon1-examples, in order to pack
+	the current hildon examples as documentation
+	* debian/rules: Not to compress .c files, modify some includes on the
+	examples (as normally are compiled locally, but when installed it will
+	require to include the installed libhildon1 library), and rename
+	Makefile.static
+	* examples/Makefile.am: Added examplesdir and examples_DATA, in order to
+	install all the example files on the new example package
+	* examples/Makefile.static: Added static makefile that can be used to
+	compile the examples, once installed the new example package
+	* examples: Most of the examples were modified in order to grant that
+	all use only '#include "hildon.h"', in order to be easy to prepare
+	it on the example package
+
 2008-10-23  Alberto Garcia  <agarcia@igalia.com>
 
 	* debian/control

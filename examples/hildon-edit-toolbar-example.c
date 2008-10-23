@@ -20,8 +20,8 @@
  *
  */
 
-#include <gtk/gtk.h>
-#include <hildon.h>
+#include                                        <gtk/gtk.h>
+#include                                        "hildon.h"
 
 typedef enum
 {

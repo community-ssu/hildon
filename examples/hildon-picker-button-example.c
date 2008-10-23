@@ -14,14 +14,9 @@
  *
  */
 
-#include <glib.h>
-#include <gtk/gtk.h>
-
-#include "hildon-program.h"
-#include "hildon-stackable-window.h"
-
-#include "hildon-picker-button.h"
-#include "hildon-touch-selector.h"
+#include                                        <glib.h>
+#include                                        <gtk/gtk.h>
+#include                                        "hildon.h"
 
 static void
 on_picker_value_changed (HildonPickerButton * button, gpointer data)

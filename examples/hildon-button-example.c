@@ -23,8 +23,7 @@
  */
 
 #include                                        <gtk/gtk.h>
-#include                                        <hildon-button.h>
-#include                                        <hildon-stackable-window.h>
+#include                                        "hildon.h"
 
 static GtkWidget *horizontal_layout;
 static GtkWidget *images;

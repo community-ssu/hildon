@@ -21,7 +21,7 @@
  */
 
 #include                                        <gtk/gtk.h>
-#include                                        <hildon.h>
+#include                                        "hildon.h"
 
 HildonEntry *mainentry;
 

@@ -23,11 +23,11 @@
  *
  */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <glib.h>
-#include <gtk/gtk.h>
-#include "hildon.h"
+#include                                        <stdio.h>
+#include                                        <stdlib.h>
+#include                                        <glib.h>
+#include                                        <gtk/gtk.h>
+#include                                        "hildon.h"
 
 GtkWidget *btn;
 

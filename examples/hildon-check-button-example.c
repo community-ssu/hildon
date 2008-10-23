@@ -20,7 +20,7 @@
  *
  */
 
-#include                                        <hildon-check-button.h>
+#include                                        "hildon.h"
 
 static void
 button_toggled_cb                               (HildonCheckButton *button,

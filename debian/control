@@ -23,7 +23,14 @@ Architecture: any
 Depends: libhildon1 (= ${binary:Version})
 Description: Debug symbols for hildon libraries
 
+Package: libhildon1-examples
+Section: doc
+Architecture: all
+Depends: libhildon1 (= ${binary:Version})
+Description: Examples source file for hildon libraries
+
 Package: libhildon1-doc
 Section: doc
 Architecture: all
 Description: Hildon libraries documentation
+
