@@ -336,7 +336,6 @@ hildon_calendar_popup_init                      (HildonCalendarPopup *cal)
             TRUE, TRUE, 0);
     gtk_dialog_set_has_separator (GTK_DIALOG (cal), FALSE);
     gtk_dialog_add_button (GTK_DIALOG (cal), _("ecdg_bd_font_dialog_ok"), GTK_RESPONSE_OK);
-    gtk_dialog_add_button (GTK_DIALOG (cal), _("ecdg_bd_wizard_cancel"), GTK_RESPONSE_CANCEL);
     gtk_widget_show(priv->cal);
 
     /* Connect signals */

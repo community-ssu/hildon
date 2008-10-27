@@ -84,8 +84,6 @@ hildon_login_dialog_get_property                (GObject *object,
 
 #define                                         HILDON_LOGIN_DIALOG_OK "frw_bd_get_user_name_and_pwd_ok"
 
-#define                                         HILDON_LOGIN_DIALOG_CANCEL "frw_bd_get_user_name_and_pwd_cancel"
-
 #define                                         _(String) dgettext("hildon-libs", String)
 
 static GtkDialogClass*                          parent_class;
@@ -270,7 +268,6 @@ hildon_login_dialog_init                        (HildonLoginDialog *dialog)
 
     /* Create buttons */    
     gtk_dialog_add_button (GTK_DIALOG (dialog), _(HILDON_LOGIN_DIALOG_OK), GTK_RESPONSE_OK);
-    gtk_dialog_add_button (GTK_DIALOG (dialog), _(HILDON_LOGIN_DIALOG_CANCEL), GTK_RESPONSE_CANCEL);
 
     /* Setup username entry */
     priv->username_entry = GTK_ENTRY (gtk_entry_new ());

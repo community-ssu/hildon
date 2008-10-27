@@ -1,5 +1,18 @@
 2008-10-27  Claudio Saavedra  <csaavedra@igalia.com>
 
+	* src/hildon-calendar-popup.c: (hildon_calendar_popup_init):
+	* src/hildon-code-dialog.c: (hildon_code_dialog_init):
+	* src/hildon-color-chooser-dialog.c:
+	(hildon_color_chooser_dialog_init):
+	* src/hildon-font-selection-dialog.c:
+	(hildon_font_selection_dialog_init):
+	* src/hildon-login-dialog.c: (hildon_login_dialog_init):
+
+	Remove all cancel/close-like dialogs, as these are not going to be
+	displayed at all.
+
+2008-10-27  Claudio Saavedra  <csaavedra@igalia.com>
+
 	* src/hildon-note.c: (hildon_note_rebuild),
 	(hildon_note_new_confirmation_add_buttons): Explicitely show the buttons
 	when needed.

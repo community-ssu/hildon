@@ -766,10 +766,6 @@ hildon_font_selection_dialog_init               (HildonFontSelectionDialog *font
             fontseldiag);
     gtk_widget_show(preview_button);
 
-    gtk_dialog_add_button (GTK_DIALOG (fontseldiag),
-            _("ecdg_bd_font_dialog_cancel"),
-            GTK_RESPONSE_CANCEL);
-
     /*Set default preview text*/
     priv->preview_text = g_strdup (_("ecdg_fi_preview_font_preview_text"));
 

@@ -60,8 +60,6 @@
 
 #define                                         DEVICELOCK_OK _("secu_enter_lock_code_dialog_ok")
 
-#define                                         DEVICELOCK_CANCEL _("secu_enter_lock_code_dialog_cancel")
-
 #define                                         DEVICELOCK_TITLE _("secu_application_title")
 
 #define                                         DEVICELOCK_MAX_CHAR_REACHED c_("ckdg_ib_maximum_characters_reached")
@@ -302,10 +300,7 @@ hildon_code_dialog_init                         (HildonCodeDialog *dialog)
 
     okButton = gtk_dialog_add_button (GTK_DIALOG (dialog) ,DEVICELOCK_OK,
             GTK_RESPONSE_OK);
-    cancelButton =
-        gtk_dialog_add_button (GTK_DIALOG (dialog), DEVICELOCK_CANCEL,
-                GTK_RESPONSE_CANCEL);
-    
+
     gtk_widget_set_sensitive (okButton, FALSE);
 
     priv->buttons[4][0] = priv->buttons[4][1] = okButton;
