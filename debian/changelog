@@ -1,3 +1,29 @@
+libhildon (2.1.18-1) unstable; urgency=low
+
+  [ Alejandro Pinheiro ]
+
+  * Add a libhildon1-examples package with the examples.
+  * Avoid running autogen.sh twice during package construction.
+
+  [ Alberto Garcia ]
+
+  * Add libhildon1-doc examples with the API documentation.
+
+  Bug fixes:
+
+  * Fixes: NB#90535 (Memory leak in picker button)
+  * Fixes: NB#90861 (Custom Confirmation dialogs should be protected
+    from cancel button removal)
+  * Fixes: NB#90661 (Delete dialog is displayed without NO button)
+
+  Other:
+
+  * Remove all cancel/close dialogs, where appropriate.
+  * Documentation improvements, some internal cleanups.
+  * HildonAppMenu: unhandled keyboard accelerators are sent to the parent window.
+
+ -- Claudio Saavedra <csaavedra@igalia.com>  Mon, 27 Oct 2008 14:08:43 +0200
+
 libhildon (2.1.16-1) unstable; urgency=low
 
   * HildonTouchSelector internal layout cleaning.

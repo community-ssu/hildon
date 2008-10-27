@@ -1,3 +1,18 @@
+[2.1.18 release]
+
+  Bug fixes:
+
+  * Fixes: NB#90535 (Memory leak in picker button)
+  * Fixes: NB#90861 (Custom Confirmation dialogs should be protected
+    from cancel button removal)
+  * Fixes: NB#90661 (Delete dialog is displayed without NO button)
+
+  Other:
+
+  * Remove all cancel/close dialogs, where appropriate.
+  * Documentation improvements, some internal cleanups.
+  * HildonAppMenu: unhandled keyboard accelerators are sent to the parent window.
+
 [2.1.16 release]
 
   * HildonTouchSelector internal layout cleaning.

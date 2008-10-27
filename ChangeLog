@@ -1,5 +1,13 @@
 2008-10-27  Claudio Saavedra  <csaavedra@igalia.com>
 
+	[Release 2.1.18]
+
+	* NEWS: updates
+	* configure.ac: bump version
+	* debian/changelog: updates
+
+2008-10-27  Claudio Saavedra  <csaavedra@igalia.com>
+
 	* src/hildon-calendar-popup.c: (hildon_calendar_popup_init):
 	* src/hildon-code-dialog.c: (hildon_code_dialog_init):
 	* src/hildon-color-chooser-dialog.c:
