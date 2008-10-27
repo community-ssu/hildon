@@ -573,6 +573,7 @@ hildon_note_new_confirmation_add_buttons        (GtkWindow *parent,
     va_list args;
     char *message;
     int value;
+    GtkWidget *button;
 
     g_return_val_if_fail (description != NULL, NULL);
 
@@ -597,7 +598,12 @@ hildon_note_new_confirmation_add_buttons        (GtkWindow *parent,
         }
         value = va_arg (args, int);
 
-        gtk_dialog_add_button (GTK_DIALOG (conf_note), message, value);
+        button = gtk_dialog_add_button (GTK_DIALOG (conf_note), message, value);
+        /* maemo-gtk is going to set the "no-show-all" property all
+           cancel/close-like buttons to TRUE, so that they are not shown. On
+           the other hand, this confirmation note with custom buttons should
+           not obey this rule, so we need to make sure they are shown. */
+        gtk_widget_set_no_show_all (button, FALSE);
     }
 
     va_end (args);

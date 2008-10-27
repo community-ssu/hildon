@@ -1,3 +1,11 @@
+2008-10-27  Claudio Saavedra  <csaavedra@igalia.com>
+
+	* src/hildon-note.c: (hildon_note_new_confirmation_add_buttons): Make
+	sure all buttons are shown, even the Cancel/Close-like ones.
+
+	Fixes bug NB#90861 (Custom Confirmation dialogs should be
+	protected from cancel button removal)
+
 2008-10-23  Alejandro Pinheiro  <apinheiro@igalia.com>
 
 	* debian/control: Change libhildon1-examples dependency from libhildon1
