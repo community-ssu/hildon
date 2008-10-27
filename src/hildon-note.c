@@ -487,6 +487,7 @@ hildon_note_rebuild                             (HildonNote *note)
                     _("wdgt_bd_yes"), GTK_RESPONSE_OK);
             priv->cancelButton = gtk_dialog_add_button (dialog,
                     _("wdgt_bd_no"), GTK_RESPONSE_CANCEL);
+            gtk_widget_show (priv->cancelButton);
             gtk_widget_set_no_show_all (priv->cancelButton, FALSE);
             break;
 
@@ -603,6 +604,7 @@ hildon_note_new_confirmation_add_buttons        (GtkWindow *parent,
            cancel/close-like buttons to TRUE, so that they are not shown. On
            the other hand, this confirmation note with custom buttons should
            not obey this rule, so we need to make sure they are shown. */
+        gtk_widget_show (button);
         gtk_widget_set_no_show_all (button, FALSE);
     }
 

@@ -1,5 +1,13 @@
 2008-10-27  Claudio Saavedra  <csaavedra@igalia.com>
 
+	* src/hildon-note.c: (hildon_note_rebuild),
+	(hildon_note_new_confirmation_add_buttons): Explicitely show the buttons
+	when needed.
+
+	Fixes NB#90661 (Delete dialog is displayed without NO button)
+
+2008-10-27  Claudio Saavedra  <csaavedra@igalia.com>
+
 	* src/hildon-note.c: (hildon_note_new_confirmation_add_buttons): Make
 	sure all buttons are shown, even the Cancel/Close-like ones.
 
