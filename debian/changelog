@@ -1,3 +1,10 @@
+libhildon (2.1.18-2) unstable; urgency=low
+
+  * Reverted patch that added private fields to some objects' structures
+    and broke ABI compatibility with 2.1.14
+
+ -- Alberto Garcia <agarcia@igalia.com>  Tue, 28 Oct 2008 15:28:45 +0100
+
 libhildon (2.1.18-1) unstable; urgency=low
 
   [ Alejandro Pinheiro ]

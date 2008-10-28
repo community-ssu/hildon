@@ -48,8 +48,6 @@ typedef struct                                  _HildonAppMenu HildonAppMenu;
 
 typedef struct                                  _HildonAppMenuClass HildonAppMenuClass;
 
-typedef struct                                  _HildonAppMenuPrivate HildonAppMenuPrivate;
-
 struct                                          _HildonAppMenuClass
 {
     GtkWindowClass parent_class;
@@ -58,9 +56,6 @@ struct                                          _HildonAppMenuClass
 struct                                          _HildonAppMenu
 {
     GtkWindow parent;
-
-    /* private */
-    HildonAppMenuPrivate *priv;
 };
 
 GType

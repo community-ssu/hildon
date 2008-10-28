@@ -46,8 +46,6 @@ typedef struct                                  _HildonCheckButton HildonCheckBu
 
 typedef struct                                  _HildonCheckButtonClass HildonCheckButtonClass;
 
-typedef struct                                  _HildonCheckButtonPrivate HildonCheckButtonPrivate;
-
 struct                                          _HildonCheckButtonClass
 {
     GtkButtonClass parent_class;
@@ -59,9 +57,6 @@ struct                                          _HildonCheckButtonClass
 struct                                          _HildonCheckButton
 {
     GtkButton parent;
-
-    /* private */
-    HildonCheckButtonPrivate *priv;
 };
 
 GType

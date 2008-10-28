@@ -48,8 +48,6 @@ typedef struct                                  _HildonButton HildonButton;
 
 typedef struct                                  _HildonButtonClass HildonButtonClass;
 
-typedef struct                                  _HildonButtonPrivate HildonButtonPrivate;
-
 struct                                          _HildonButtonClass
 {
     GtkButtonClass parent_class;
@@ -58,9 +56,6 @@ struct                                          _HildonButtonClass
 struct                                          _HildonButton
 {
     GtkButton parent;
-
-    /* private */
-    HildonButtonPrivate *priv;
 };
 
 typedef enum {

@@ -103,14 +103,10 @@ typedef enum {
  */
 typedef struct                                  _HildonPannableArea HildonPannableArea;
 typedef struct                                  _HildonPannableAreaClass HildonPannableAreaClass;
-typedef struct                                  _HildonPannableAreaPrivate HildonPannableAreaPrivate;
 
 struct                                          _HildonPannableArea
 {
     GtkBin parent;
-
-    /* private */
-    HildonPannableAreaPrivate *priv;
 };
 
 struct                                          _HildonPannableAreaClass

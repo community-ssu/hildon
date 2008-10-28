@@ -70,6 +70,8 @@ G_DEFINE_TYPE                                   (HildonCheckButton, hildon_check
                                                 (G_TYPE_INSTANCE_GET_PRIVATE ((obj), \
                                                 HILDON_TYPE_CHECK_BUTTON, HildonCheckButtonPrivate));
 
+typedef struct                                  _HildonCheckButtonPrivate HildonCheckButtonPrivate;
+
 struct                                          _HildonCheckButtonPrivate
 {
     GtkCellRendererToggle *toggle_renderer;
@@ -100,11 +102,13 @@ void
 hildon_check_button_set_active                  (HildonCheckButton *button,
                                                  gboolean           is_active)
 {
+    HildonCheckButtonPrivate *priv;
     gboolean prev_is_active;
 
     g_return_if_fail (HILDON_IS_CHECK_BUTTON (button));
 
-    prev_is_active = gtk_cell_renderer_toggle_get_active (button->priv->toggle_renderer);
+    priv = HILDON_CHECK_BUTTON_GET_PRIVATE (button);
+    prev_is_active = gtk_cell_renderer_toggle_get_active (priv->toggle_renderer);
 
     if (prev_is_active != is_active) {
         gtk_button_clicked (GTK_BUTTON (button));
@@ -123,9 +127,13 @@ hildon_check_button_set_active                  (HildonCheckButton *button,
 gboolean
 hildon_check_button_get_active                  (HildonCheckButton *button)
 {
+    HildonCheckButtonPrivate *priv;
+
     g_return_val_if_fail (HILDON_IS_CHECK_BUTTON (button), FALSE);
 
-    return gtk_cell_renderer_toggle_get_active (button->priv->toggle_renderer);
+    priv = HILDON_CHECK_BUTTON_GET_PRIVATE (button);
+
+    return gtk_cell_renderer_toggle_get_active (priv->toggle_renderer);
 }
 
 /**
@@ -147,7 +155,7 @@ hildon_check_button_new                         (HildonSizeType size)
 static void
 hildon_check_button_clicked                     (GtkButton *button)
 {
-    HildonCheckButtonPrivate *priv = HILDON_CHECK_BUTTON (button)->priv;
+    HildonCheckButtonPrivate *priv = HILDON_CHECK_BUTTON_GET_PRIVATE (button);
     gboolean current = gtk_cell_renderer_toggle_get_active (priv->toggle_renderer);
 
     gtk_cell_renderer_toggle_set_active (priv->toggle_renderer, !current);
@@ -187,9 +195,6 @@ hildon_check_button_init                        (HildonCheckButton *button)
 {
     HildonCheckButtonPrivate *priv = HILDON_CHECK_BUTTON_GET_PRIVATE (button);
     GtkWidget *cell_view = gtk_cell_view_new ();
-
-    /* Store private part */
-    button->priv = priv;
 
     /* Make sure that the check box is always shown, no matter the value of gtk-button-images */
     g_signal_connect (cell_view, "notify::visible", G_CALLBACK (gtk_widget_show), NULL);
