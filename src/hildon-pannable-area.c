@@ -2106,11 +2106,34 @@ void
 hildon_pannable_area_add_with_viewport (HildonPannableArea * area,
 					GtkWidget * child)
 {
-  GtkWidget *viewport = gtk_viewport_new (NULL, NULL);
-  gtk_viewport_set_shadow_type (GTK_VIEWPORT (viewport), GTK_SHADOW_NONE);
-  gtk_container_add (GTK_CONTAINER (viewport), child);
+  GtkBin *bin;
+  GtkWidget *viewport;
+
+  g_return_if_fail (HILDON_IS_PANNABLE_AREA (area));
+  g_return_if_fail (GTK_IS_WIDGET (child));
+  g_return_if_fail (child->parent == NULL);
+
+  bin = GTK_BIN (area);
+
+  if (bin->child != NULL)
+    {
+      g_return_if_fail (GTK_IS_VIEWPORT (bin->child));
+      g_return_if_fail (GTK_BIN (bin->child)->child == NULL);
+
+      viewport = bin->child;
+    }
+  else
+    {
+      HildonPannableAreaPrivate *priv = area->priv;
+
+      viewport = gtk_viewport_new (priv->hadjust,
+                                   priv->vadjust);
+      gtk_viewport_set_shadow_type (GTK_VIEWPORT (viewport), GTK_SHADOW_NONE);
+      gtk_container_add (GTK_CONTAINER (area), viewport);
+    }
+
   gtk_widget_show (viewport);
-  gtk_container_add (GTK_CONTAINER (area), viewport);
+  gtk_container_add (GTK_CONTAINER (viewport), child);
 }
 
 /**
