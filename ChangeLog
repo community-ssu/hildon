@@ -1,3 +1,23 @@
+2008-10-28  Alejandro G. Castro	 <alex@igalia.com>
+
+	Reviewed the threading handling of the pannable widget, we have
+	used the gdk_threads_add_timeout function instead of the usual
+	glib handlers. This avoids some problems with the threads.
+
+	* src/hildon-pannable-area.c (hildon_pannable_area_grab_notify),
+	(hildon_pannable_area_initial_effect),
+	(hildon_pannable_area_scroll_indicator_fade),
+	(hildon_pannable_area_button_press_cb),
+	(hildon_pannable_area_timeout),
+	(hildon_pannable_area_motion_notify_cb),
+	(hildon_pannable_area_button_release_cb),
+	(hildon_pannable_area_scroll_cb),
+	(hildon_pannable_area_scroll_to): Removed the
+	GDK_THREAD_ENTER/LEAVE and replaced g_timeout_add with
+	gdk_threads_add_timeout.
+
+	Fixes: NB#89541 (Crash in pannable area when closing picker dialog)
+
 2008-10-27  Claudio Saavedra  <csaavedra@igalia.com>
 
 	[Release 2.1.18]
