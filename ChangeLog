@@ -1,5 +1,17 @@
 2008-10-28  Alejandro G. Castro	 <alex@igalia.com>
 
+	* src/hildon-pannable-area.c,
+	(hildon_pannable_area_scroll_to),
+	(hildon_pannable_area_jump_to),
+	(hildon_pannable_area_scroll_to_child),
+	(hildon_pannable_area_jump_to_child): Added a precondition to the
+	scroll and jump to functions: the widget must be mapped before we
+	can safely call these functions. We have also added documentation
+	to the functions to explain how to use them in this situation.
+
+
+2008-10-28  Alejandro G. Castro	 <alex@igalia.com>
+
 	Reviewed the threading handling of the pannable widget, we have
 	used the gdk_threads_add_timeout function instead of the usual
 	glib handlers. This avoids some problems with the threads.
