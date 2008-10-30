@@ -441,7 +441,7 @@ _default_print_func (HildonTouchSelector * selector)
         g_free (result);
         result = aux;
       } else {
-        result = g_strdup_printf ("%s", current_string);
+        result = current_string;
       }
     }
   }
