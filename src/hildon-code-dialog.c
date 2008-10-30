@@ -189,7 +189,6 @@ hildon_code_dialog_init                         (HildonCodeDialog *dialog)
     GtkWidget *dialog_action_area1 = NULL;
     GdkGeometry hints;
     GtkWidget *okButton;
-    GtkWidget *cancelButton;
 
     priv = HILDON_CODE_DIALOG_GET_PRIVATE (dialog);
     g_assert (priv);
@@ -306,7 +305,6 @@ hildon_code_dialog_init                         (HildonCodeDialog *dialog)
     gtk_widget_set_sensitive (okButton, FALSE);
 
     priv->buttons[4][0] = priv->buttons[4][1] = okButton;
-    priv->buttons[4][2] = cancelButton;
 
     priv->im_context = gtk_im_multicontext_new();
 #ifdef MAEMO_GTK
@@ -349,9 +347,6 @@ hildon_code_dialog_init                         (HildonCodeDialog *dialog)
     g_signal_connect (G_OBJECT (okButton), "key-press-event",
                 G_CALLBACK(hildon_code_dialog_key_press_event), dialog);
     
-    g_signal_connect (G_OBJECT (cancelButton), "key-press-event",
-                G_CALLBACK (hildon_code_dialog_key_press_event), dialog);
-
     gtk_widget_show_all (GTK_WIDGET (GTK_DIALOG (dialog)->vbox));
 }
 
