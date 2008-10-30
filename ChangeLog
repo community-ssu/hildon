@@ -1,3 +1,17 @@
+2008-10-30  Alejandro Pinheiro  <apinheiro@igalia.com>
+
+	* src/hildon-picker-dialog.c:
+	Defined a utility macro with the desired touch selector height
+	Removed currently unused separator, and title_label variables from
+	private structure.
+	(hildon_picker_dialog_init): Removed code related to the creation
+	of unused private variables title_label and separator.
+	(_hildon_picker_dialog_set_selector): Added gtk_widget_set_size_request
+	to ensure correct visualization of the touch selector inside the dialog.
+	* src/hildon-touch-selector.c
+	(hildon_touch_selector_init): Removed a gtk_widget_set_size_request to
+	ensure a concrete height of the widget.
+
 2008-10-30  Claudio Saavedra  <csaavedra@igalia.com>
 
 	* src/Makefile.am:

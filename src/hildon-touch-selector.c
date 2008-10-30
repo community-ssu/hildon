@@ -298,10 +298,6 @@ hildon_touch_selector_init (HildonTouchSelector * selector)
   gtk_box_pack_end (GTK_BOX (selector), selector->priv->hbox,
                     TRUE, TRUE, 0);
   gtk_widget_show (selector->priv->hbox);
-
-  /* FIXME: this is the correct height? A fixed height is the correct 
-     implementation */
-  gtk_widget_set_size_request (GTK_WIDGET (selector), -1, 320);
 }
 
 /*
