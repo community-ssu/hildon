@@ -78,6 +78,8 @@
 	(configure_tests): Marked the deprecated code that was adding
 	suites with deprecated tests.
 
+	Fixes: NB#91135 (Deprecate legacy hildon widgets)
+
 2008-10-30  Claudio Saavedra  <csaavedra@igalia.com>
 
 	* src/hildon-touch-selector.c: (_default_print_func): Do not
