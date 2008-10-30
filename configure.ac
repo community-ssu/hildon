@@ -180,7 +180,8 @@ CFLAGS="$CFLAGS ${ASSERT_CFLAGS} -Wall -Wmissing-prototypes -Wmissing-declaratio
 # -Wno-format due to way translation string are done
 
 ### disable deprecated symbols
-CFLAGS="$CFLAGS $DISABLE_DEPRECATED"
+EXTRA_CFLAGS="$DISABLE_DEPRECATED"
+AC_SUBST(EXTRA_CFLAGS)
 
 ### enable MAEMO platform extensions
 CFLAGS="$CFLAGS $MAEMO_CHANGES"

@@ -26,6 +26,18 @@
 
 2008-10-30  Alejandro G. Castro	 <alex@igalia.com>
 
+	Added a new EXTRA_CFLAGS option to add the deprecated define to
+	the compilation command. This way we can avoid using the define in
+	the documentation compilation.
+
+	* configure.ac: Defined EXTRA_CFLAGS.
+
+	* examples/Makefile.am:
+	* src/Makefile.am:
+	* tests/Makefile.am: Included EXTRA_CFLAGS in the compilation.
+
+2008-10-30  Alejandro G. Castro	 <alex@igalia.com>
+
 	Fremantle deprecated widgets marked, HILDON_DISABLE_DEPRECATED
 
 	* configure.ac: Added an AM_CONDITIONAL in order to use in the

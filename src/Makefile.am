@@ -23,6 +23,7 @@ libhildon_@API_VERSION_MAJOR@_la_LIBADD = \
 libhildon_@API_VERSION_MAJOR@_la_CFLAGS	= \
 		$(GTK_CFLAGS) 			\
 		$(GCONF_CFLAGS) 		\
+		$(EXTRA_CFLAGS)			\
 		$(CANBERRA_CFLAGS)
 
 libhildon_@API_VERSION_MAJOR@_la_SOURCES = \
