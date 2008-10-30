@@ -22,6 +22,8 @@
  *
  */
 
+#ifndef                                         HILDON_DISABLE_DEPRECATED
+
 #ifndef                                         __HILDON_TIME_EDITOR_H__
 #define                                         __HILDON_TIME_EDITOR_H__
 
@@ -167,3 +169,5 @@ hildon_time_editor_get_time_separators          (GtkLabel *hm_sep_label,
 G_END_DECLS
 
 #endif                                          /* __HILDON_TIME_EDITOR_H__ */
+
+#endif                                          /* HILDON_DISABLE_DEPRECATED */

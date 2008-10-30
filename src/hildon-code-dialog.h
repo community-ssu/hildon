@@ -22,6 +22,8 @@
  *
  */
 
+#ifndef                                         HILDON_DISABLE_DEPRECATED
+
 #ifndef                                         __HILDON_CODE_DIALOG_H__
 #define                                         __HILDON_CODE_DIALOG_H__
 
@@ -86,3 +88,5 @@ hildon_code_dialog_set_input_sensitive          (HildonCodeDialog *dialog,
 G_END_DECLS
 
 #endif                                          /* __HILDON_CODE_DIALOG_H__ */
+
+#endif                                          /* HILDON_DISABLE_DEPRECATED */

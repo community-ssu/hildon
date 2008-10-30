@@ -22,6 +22,8 @@
  *
  */
 
+#ifndef                                         HILDON_DISABLE_DEPRECATED
+
 #ifndef                                         __HILDON_SORT_DIALOG_H__
 #define                                         __HILDON_SORT_DIALOG_H__
 
@@ -94,3 +96,5 @@ hildon_sort_dialog_add_sort_key_reversed        (HildonSortDialog *dialog,
 G_END_DECLS
 
 #endif                                          /* __HILDON_SORT_DIALOG_H__ */
+
+#endif                                          /* HILDON_DISABLE_DEPRECATED */

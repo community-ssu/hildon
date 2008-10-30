@@ -23,6 +23,7 @@
  *
  */
 
+#ifndef                                         HILDON_DISABLE_DEPRECATED
 
 #ifndef                                         __HILDON_COLOR_CHOOSER_H__
 #define                                         __HILDON_COLOR_CHOOSER_H__
@@ -78,3 +79,5 @@ hildon_color_chooser_get_color                  (HildonColorChooser *chooser,
                                                  GdkColor *color);
 
 #endif                                          /* __HILDON_COLOR_CHOOSER_H__ */
+
+#endif                                          /* HILDON_DISABLE_DEPRECATED */

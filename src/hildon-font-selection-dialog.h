@@ -21,6 +21,9 @@
  * 02110-1301 USA
  *
  */
+
+#ifndef                                         HILDON_DISABLE_DEPRECATED
+
 #ifndef                                         __HILDON_FONT_SELECTION_DIALOG_H__
 #define                                         __HILDON_FONT_SELECTION_DIALOG_H__
 
@@ -84,3 +87,5 @@ hildon_font_selection_dialog_set_preview_text   (HildonFontSelectionDialog *fsd,
 G_END_DECLS
 
 #endif                                          /* __HILDON_FONT_SELECTION_DIALOG_H__ */
+
+#endif                                          /* HILDON_DISABLE_DEPRECATED */

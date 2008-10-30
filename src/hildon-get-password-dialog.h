@@ -22,6 +22,8 @@
  *
  */
 
+#ifndef                                         HILDON_DISABLE_DEPRECATED
+
 #ifndef                                         __HILDON_GET_PASSWORD_DIALOG_H__
 #define                                         __HILDON_GET_PASSWORD_DIALOG_H__
 
@@ -90,3 +92,5 @@ hildon_get_password_dialog_get_password         (HildonGetPasswordDialog *dialog
 G_END_DECLS
 
 #endif                                          /* __HILDON_GET_PASSWORD_DIALOG_H__ */
+
+#endif                                          /* HILDON_DISABLE_DEPRECATED */

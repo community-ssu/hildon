@@ -204,6 +204,7 @@ hildon-enum-types.h: @REBUILD@ $(libhildon_$(API_VERSION_MAJOR)_public_headers) 
 
 hildon-enum-types.c: @REBUILD@ $(libhildon_$(API_VERSION_MAJOR)_public_headers) Makefile
 	(cd $(srcdir) && glib-mkenums 				\
+	--fhead "#undef HILDON_DISABLE_DEPRECATED\n"               \
 	--fhead "#include \"hildon.h\"\n" 			\
 	--fhead "#include <glib-object.h>" 			\
       	--fprod "\n/* enumerations from \"@filename@\" */" 	\

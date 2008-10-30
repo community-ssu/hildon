@@ -50,7 +50,9 @@ configure_tests(gint environment)
   SRunner *sr;
   
   /* Create srunner object with the first test suite */
-  sr = srunner_create(create_hildon_range_editor_suite());
+
+  sr = srunner_create(create_hildon_caption_suite());
+#ifndef HILDON_DISABLE_DEPRECATED
   srunner_add_suite(sr, create_hildon_number_editor_suite());
   srunner_add_suite(sr, create_hildon_time_editor_suite());
   srunner_add_suite(sr, create_hildon_time_picker_suite());
@@ -62,22 +64,24 @@ configure_tests(gint environment)
   srunner_add_suite(sr, create_hildon_seekbar_suite());
   /* srunner_add_suite(sr, create_hildon_dialoghelp_suite()); */
   srunner_add_suite(sr, create_hildon_calendar_popup_suite());
-  srunner_add_suite(sr, create_hildon_caption_suite());
-  srunner_add_suite(sr, create_hildon_helper_suite());
-  srunner_add_suite(sr, create_hildon_find_toolbar_suite());
+  srunner_add_suite(sr, create_hildon_range_editor_suite());
   /* srunner_add_suite(sr, create_hildon_name_password_dialog_suite());
   srunner_add_suite(sr, create_hildon_get_password_dialog_suite());
   srunner_add_suite(sr, create_hildon_set_password_dialog_suite()); */
   srunner_add_suite(sr, create_hildon_sort_dialog_suite());
   srunner_add_suite(sr, create_hildon_code_dialog_suite());
-  srunner_add_suite(sr, create_hildon_note_suite());
   srunner_add_suite(sr, create_hildon_volumebar_suite());
   srunner_add_suite(sr, create_hildon_volumebar_range_suite());
+  srunner_add_suite(sr, create_hildon_font_selection_dialog_suite());
+#endif /* HILDON_DISABLE_DEPRECATED */
+
+  srunner_add_suite(sr, create_hildon_find_toolbar_suite());
+  srunner_add_suite(sr, create_hildon_note_suite());
   srunner_add_suite(sr, create_hildon_wizard_dialog_suite());
   /* srunner_add_suite(sr, create_hildon_scroll_area_suite()); */
   srunner_add_suite(sr, create_hildon_banner_suite());
-  srunner_add_suite(sr, create_hildon_font_selection_dialog_suite());
   srunner_add_suite(sr, create_hildon_window_suite());
+  srunner_add_suite(sr, create_hildon_helper_suite());
 
   /* Disable tests that need maemo environment to be up if it is not running */
   if (environment != ENVIRONMENT_MAEMO_ERROR)

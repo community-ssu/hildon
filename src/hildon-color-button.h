@@ -22,6 +22,8 @@
  *
  */
 
+#ifndef                                         HILDON_DISABLE_DEPRECATED
+
 #ifndef                                         __HILDON_COLOR_BUTTON_H__
 #define                                         __HILDON_COLOR_BUTTON_H__
 
@@ -92,6 +94,4 @@ G_END_DECLS
 
 #endif                                          /* __HILDON_COLOR_BUTTON_H__ */
 
-
-
-
+#endif                                          /* HILDON_DISABLE_DEPRECATED */

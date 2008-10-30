@@ -22,6 +22,8 @@
  *
  */
 
+#ifndef                                         HILDON_DISABLE_DEPRECATED
+
 #ifndef                                         __HILDON_CALENDAR_POPUP_H__
 #define                                         __HILDON_CALENDAR_POPUP_H__
 
@@ -85,3 +87,5 @@ hildon_calendar_popup_get_date                  (HildonCalendarPopup *cal,
 G_END_DECLS
 
 #endif                                          /* __HILDON_CALENDAR_POPUP_H__ */
+
+#endif                                          /* HILDON_DISABLE_DEPRECATED */

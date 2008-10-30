@@ -22,6 +22,8 @@
  *
  */
 
+#ifndef                                         HILDON_DISABLE_DEPRECATED
+
 #ifndef                                         __HILDON_VOLUMEBAR_H__
 #define                                         __HILDON_VOLUMEBAR_H__
 
@@ -100,3 +102,5 @@ hildon_volumebar_set_range_insensitive_messagef (HildonVolumebar *widget,
 G_END_DECLS
 
 #endif                                          /* __HILDON_VOLUMEBAR_H__ */
+
+#endif                                          /* HILDON_DISABLE_DEPRECATED */

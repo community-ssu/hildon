@@ -23,6 +23,8 @@
  *
  */
 
+#undef HILDON_DISABLE_DEPRECATED
+
 #include "hildon-bread-crumb-widget.h"
 #include "hildon-defines.h"
 

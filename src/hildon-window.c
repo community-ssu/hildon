@@ -72,6 +72,8 @@
  * </example>
  */
 
+#undef                                          HILDON_DISABLE_DEPRECATED
+
 #include                                        <memory.h>
 #include                                        <string.h>
 #include                                        <strings.h>

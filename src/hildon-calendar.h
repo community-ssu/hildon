@@ -33,6 +33,8 @@
  * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
  */
 
+#ifndef                                         HILDON_DISABLE_DEPRECATED
+
 #ifndef                                         __HILDON_CALENDAR_H__
 #define                                         __HILDON_CALENDAR_H__
 
@@ -174,3 +176,5 @@ hildon_calendar_thaw                            (HildonCalendar *calendar);
 G_END_DECLS
 
 #endif                                          /* __HILDON_CALENDAR_H__ */
+
+#endif                                          /* HILDON_DISABLE_DEPRECATED */

@@ -22,6 +22,8 @@
  *
  */
 
+#ifndef                                         HILDON_DISABLE_DEPRECATED
+
 #ifndef                                         __HILDON_HVOLUMEBAR_H__
 #define                                         __HILDON_HVOLUMEBAR_H__
 
@@ -70,3 +72,5 @@ hildon_hvolumebar_new                           (void);
 G_END_DECLS
 
 #endif                                          /* __HILDON_HVOLUMEBAR_H__ */
+
+#endif                                          /* HILDON_DISABLE_DEPRECATED */

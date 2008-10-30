@@ -41,6 +41,8 @@
  *
  */
 
+#undef                                          HILDON_DISABLE_DEPRECATED
+
 #include                                        "hildon-hvolumebar.h"
 #include                                        "hildon-volumebar.h"
 #include                                        "hildon-volumebar-range.h"

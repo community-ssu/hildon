@@ -22,6 +22,8 @@
  *
  */
 
+#ifndef                                         HILDON_DISABLE_DEPRECATED
+
 #ifndef                                         __HILDON_NAME_PASSWORD_DIALOG_H__
 #define                                         __HILDON_NAME_PASSWORD_DIALOG_H__
 
@@ -85,3 +87,5 @@ hildon_login_dialog_set_message                 (HildonLoginDialog *dialog,
 G_END_DECLS
 
 #endif                                          /* __HILDON_LOGIN_DIALOG_H__ */
+
+#endif                                          /* HILDON_DISABLE_DEPRECATED */

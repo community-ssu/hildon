@@ -23,6 +23,8 @@
  *
  */
 
+#ifndef HILDON_DISABLE_DEPRECATED
+
 #ifndef __HILDON_BREAD_CRUMB_TRAIL_H__
 #define __HILDON_BREAD_CRUMB_TRAIL_H__
 
@@ -85,3 +87,4 @@ G_END_DECLS
 
 #endif
 
+#endif /* HILDON_DISABLE_DEPRECATED */

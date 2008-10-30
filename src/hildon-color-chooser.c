@@ -37,6 +37,8 @@
  * 
  */
 
+#undef                                          HILDON_DISABLE_DEPRECATED
+
 #include                                        "hildon-color-chooser.h"
 #include                                        "hildon-color-chooser-private.h"
 

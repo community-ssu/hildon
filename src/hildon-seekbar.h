@@ -22,6 +22,8 @@
  *
  */
 
+#ifndef                                         HILDON_DISABLE_DEPRECATED
+
 #ifndef                                         __HILDON_SEEKBAR_H__
 #define                                         __HILDON_SEEKBAR_H__
 
@@ -95,3 +97,5 @@ hildon_seekbar_get_fraction                     (HildonSeekbar *seekbar);
 G_END_DECLS
 
 #endif                                          /* __HILDON_SEEKBAR_H__ */
+
+#endif                                          /* HILDON_DISABLE_DEPRECATED */

@@ -170,6 +170,8 @@ if test x$enable_deprecated = xno; then
     DISABLE_DEPRECATED="-DHILDON_DISABLE_DEPRECATED"
 fi
 
+AM_CONDITIONAL([HILDON_DISABLE_DEPRECATED], test "x$enable_deprecated" = "xno")
+
 # Check support (c unit test)
 PKG_CHECK_MODULES(CHECK, check , [BUILD_TESTS="yes"], [BUILD_TESTS="no"])
 AM_CONDITIONAL(BUILD_TESTS, test "x$BUILD_TESTS" = "xyes")

@@ -22,6 +22,8 @@
  *
  */
 
+#ifndef                                         HILDON_DISABLE_DEPRECATED
+
 #ifndef                                         __HILDON_RANGE_EDITOR_H__
 #define                                         __HILDON_RANGE_EDITOR_H__
 
@@ -124,3 +126,6 @@ hildon_range_editor_get_separator               (HildonRangeEditor *editor);
 G_END_DECLS
 
 #endif                                          /* __HILDON_RANGE_EDITOR_H__ */
+
+#endif                                          /* HILDON_DISABLE_DEPRECATED */
+

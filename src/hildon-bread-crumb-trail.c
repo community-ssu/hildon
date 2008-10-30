@@ -37,6 +37,8 @@
  * implemented if needed. See #HildonBreadCrumb for more details.
  */
 
+#undef HILDON_DISABLE_DEPRECATED
+
 #include <gdk/gdkkeysyms.h>
 
 #include "hildon-marshalers.h"

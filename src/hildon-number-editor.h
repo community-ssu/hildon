@@ -22,6 +22,8 @@
  *
  */
 
+#ifndef                                         HILDON_DISABLE_DEPRECATED
+
 #ifndef                                         __HILDON_NUMBER_EDITOR_H__
 #define                                         __HILDON_NUMBER_EDITOR_H__
 
@@ -92,3 +94,5 @@ hildon_number_editor_set_value                  (HildonNumberEditor *editor,
 G_END_DECLS
 
 #endif                                          /* __HILDON_NUMBER_EDITOR_H__ */
+
+#endif                                          /* HILDON_DISABLE_DEPRECATED */

@@ -22,6 +22,8 @@
  *
  */
 
+#ifndef                                         HILDON_DISABLE_DEPRECATED
+
 #ifndef                                         __HILDON_PRIVATE_H__
 #define                                         __HILDON_PRIVATE_H__
 
@@ -37,3 +39,5 @@ hildon_private_composite_focus                  (GtkWidget *widget,
 G_END_DECLS
 
 #endif                                          /* __HILDON_PRIVATE_H__ */
+
+#endif                                          /* HILDON_DISABLE_DEPRECATED */

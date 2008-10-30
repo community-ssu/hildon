@@ -60,6 +60,8 @@
  * </example>
  */
 
+#undef                                          HILDON_DISABLE_DEPRECATED
+
 #ifdef                                          HAVE_CONFIG_H
 #include                                        <config.h>
 #endif

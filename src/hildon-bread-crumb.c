@@ -31,6 +31,8 @@
  * for the #HildonBreadCrumbTrail widget.
  */
 
+#undef HILDON_DISABLE_DEPRECATED
+
 #include "hildon-bread-crumb.h"
 
 static void hildon_bread_crumb_base_init (gpointer g_class);

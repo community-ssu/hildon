@@ -23,6 +23,8 @@
  *
  */
 
+#ifndef HILDON_DISABLE_DEPRECATED
+
 #ifndef __HILDON_BREAD_CRUMB_WIDGET_H__
 #define __HILDON_BREAD_CRUMB_WIDGET_H__
 
@@ -73,3 +75,5 @@ void _hildon_bread_crumb_widget_set_icon_position (HildonBreadCrumbWidget *bread
 G_END_DECLS
 
 #endif
+
+#endif /* HILDON_DISABLE_DEPRECATED */

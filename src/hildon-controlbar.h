@@ -22,6 +22,8 @@
  *
  */
 
+#ifndef                                         HILDON_DISABLE_DEPRECATED
+
 #ifndef                                         __HILDON_CONTROLBAR_H__
 #define                                         __HILDON_CONTROLBAR_H__
 
@@ -99,3 +101,5 @@ hildon_controlbar_set_range                     (HildonControlbar *self,
 G_END_DECLS
 
 #endif                                          /* __HILDON_CONTROLBAR_H__ */
+
+#endif                                          /* HILDON_DISABLE_DEPRECATED */

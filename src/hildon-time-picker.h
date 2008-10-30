@@ -22,6 +22,8 @@
  *
  */
 
+#ifndef                                         HILDON_DISABLE_DEPRECATED
+
 #ifndef                                         __HILDON_TIME_PICKER_H__
 #define                                         __HILDON_TIME_PICKER_H__
 
@@ -86,3 +88,5 @@ hildon_time_picker_get_time                     (HildonTimePicker *picker,
 G_END_DECLS
 
 #endif                                          /* __HILDON_TIME_PICKER_H__ */
+
+#endif                                          /* HILDON_DISABLE_DEPRECATED */
