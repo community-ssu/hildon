@@ -18,7 +18,7 @@ libhildon_@API_VERSION_MAJOR@_la_LIBADD = \
 		$(GTK_LIBS) 			\
 	  	$(GCONF_LIBS) 			\
 	  	$(CANBERRA_LIBS)		\
-	  	@HILDON_LT_LDFLAGS@ 
+	  	@HILDON_LT_LDFLAGS@
 
 libhildon_@API_VERSION_MAJOR@_la_CFLAGS	= \
 		$(GTK_CFLAGS) 			\
@@ -207,7 +207,7 @@ hildon-enum-types.c: @REBUILD@ $(libhildon_$(API_VERSION_MAJOR)_public_headers) 
 	--fhead "#undef HILDON_DISABLE_DEPRECATED\n"               \
 	--fhead "#include \"hildon.h\"\n" 			\
 	--fhead "#include <glib-object.h>" 			\
-      	--fprod "\n/* enumerations from \"@filename@\" */" 	\
+	--fprod "\n/* enumerations from \"@filename@\" */" 	\
 	--vhead "GType\n@enum_name@_get_type (void)\n{\n  static GType etype = 0;\n  if (etype == 0) {\n    static const G@Type@Value values[] = {" 	\
 	--vprod "      { @VALUENAME@, \"@VALUENAME@\", \"@valuenick@\" }," \
 	--vtail "      { 0, NULL, NULL }\n    };\n    etype = g_@type@_register_static (\"@EnumName@\", values);\n  }\n  return etype;\n}\n" \

@@ -1,5 +1,12 @@
 2008-10-30  Claudio Saavedra  <csaavedra@igalia.com>
 
+	* src/Makefile.am:
+	* tests/Makefile.am:
+
+	Remove spurious whitespaces.
+
+2008-10-30  Claudio Saavedra  <csaavedra@igalia.com>
+
 	* src/hildon-code-dialog.c: (hildon_code_dialog_init): Fix a
 	compilation warning after the cancel button removal.
 

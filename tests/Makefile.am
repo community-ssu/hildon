@@ -1,6 +1,6 @@
 MAINTAINERCLEANFILES 					= Makefile.in
 
-if BUILD_TESTS 
+if BUILD_TESTS
 
 noinst_PROGRAMS				= check_test
 
@@ -42,6 +42,6 @@ endif
 
 check_test_LDADD			= $(HILDON_OBJ_LIBS)
 check_test_LDFLAGS			= -module -avoid-version
-check_test_CFLAGS			= $(HILDON_OBJ_CFLAGS) 
+check_test_CFLAGS			= $(HILDON_OBJ_CFLAGS)
 
 endif
