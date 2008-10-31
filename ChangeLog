@@ -1,3 +1,11 @@
+2008-10-31  Claudio Saavedra  <csaavedra@igalia.com>
+
+	* src/hildon-button.c: (hildon_button_set_arrangement): Set the value
+	label font to "SmallSystemFont" for vertically arranged buttons.
+
+	Partially fixes: NB#90662 (HildonButton "value" and "detail" text is
+	unformatted)
+
 2008-10-31  Alberto Garcia  <agarcia@igalia.com>
 
 	* src/hildon-check-button.c
