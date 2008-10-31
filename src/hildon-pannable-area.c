@@ -2171,7 +2171,7 @@ hildon_pannable_area_add_with_viewport (HildonPannableArea * area,
  * use hildon_pannable_area_scroll_to_child() instead.
  *
  * There is a precondition to this function: the widget must be
- * already mapped. Check the hildon_pannable_area_jump_to_child() for
+ * already realized. Check the hildon_pannable_area_jump_to_child() for
  * more tips regarding how to call this function during
  * initialization.
  **/
@@ -2184,7 +2184,7 @@ hildon_pannable_area_scroll_to (HildonPannableArea *area,
   gint dist_x, dist_y;
   gboolean hscroll_visible, vscroll_visible;
 
-  g_return_if_fail (GTK_WIDGET_MAPPED (area));
+  g_return_if_fail (GTK_WIDGET_REALIZED (area));
   g_return_if_fail (HILDON_IS_PANNABLE_AREA (area));
 
   priv = area->priv;
@@ -2261,7 +2261,7 @@ hildon_pannable_area_scroll_to (HildonPannableArea *area,
  * children in scrollable widgets like #GtkTreeview.
  *
  * There is a precondition to this function: the widget must be
- * already mapped. Check the hildon_pannable_area_jump_to_child() for
+ * already realized. Check the hildon_pannable_area_jump_to_child() for
  * more tips regarding how to call this function during
  * initialization.
  **/
@@ -2273,7 +2273,7 @@ hildon_pannable_area_jump_to (HildonPannableArea *area,
   gint width, height;
 
   g_return_if_fail (HILDON_IS_PANNABLE_AREA (area));
-  g_return_if_fail (GTK_WIDGET_MAPPED (area));
+  g_return_if_fail (GTK_WIDGET_REALIZED (area));
   g_return_if_fail (x >= -1 && y >= -1);
 
   if (x == -1 && y == -1) {
@@ -2342,7 +2342,7 @@ hildon_pannable_area_jump_to (HildonPannableArea *area,
  * widget, e.g., #GtkTreeview, see hildon_pannable_area_scroll_to().
  *
  * There is a precondition to this function: the widget must be
- * already mapped. Check the hildon_pannable_area_jump_to_child() for
+ * already realized. Check the hildon_pannable_area_jump_to_child() for
  * more tips regarding how to call this function during
  * initialization.
  **/
@@ -2352,7 +2352,7 @@ hildon_pannable_area_scroll_to_child (HildonPannableArea *area, GtkWidget *child
   GtkWidget *bin_child;
   gint x, y;
 
-  g_return_if_fail (GTK_WIDGET_MAPPED (area));
+  g_return_if_fail (GTK_WIDGET_REALIZED (area));
   g_return_if_fail (HILDON_IS_PANNABLE_AREA (area));
   g_return_if_fail (GTK_IS_WIDGET (child));
   g_return_if_fail (gtk_widget_is_ancestor (child, GTK_WIDGET (area)));
@@ -2382,11 +2382,10 @@ hildon_pannable_area_scroll_to_child (HildonPannableArea *area, GtkWidget *child
  * widget, like, #GtkTreeview, see hildon_pannable_area_scroll_to().
  *
  * There is a precondition to this function: the widget must be
- * already mapped. You can control if the widget is ready with the
- * GTK_WIDGET_MAPPED macro. If you want to call this function during
- * the initialization process of the widget do it inside an idle call
- * and control with the GTK_WIDGET_MAPPED macro the moment when it is
- * safe to call it.
+ * already realized. You can control if the widget is ready with the
+ * GTK_WIDGET_REALIZED macro. If you want to call this function during
+ * the initialization process of the widget do it inside a callback to
+ * the ::realize signal, using g_signal_connect_after() function.
  **/
 void
 hildon_pannable_area_jump_to_child (HildonPannableArea *area, GtkWidget *child)
@@ -2394,7 +2393,7 @@ hildon_pannable_area_jump_to_child (HildonPannableArea *area, GtkWidget *child)
   GtkWidget *bin_child;
   gint x, y;
 
-  g_return_if_fail (GTK_WIDGET_MAPPED (area));
+  g_return_if_fail (GTK_WIDGET_REALIZED (area));
   g_return_if_fail (HILDON_IS_PANNABLE_AREA (area));
   g_return_if_fail (GTK_IS_WIDGET (child));
   g_return_if_fail (gtk_widget_is_ancestor (child, GTK_WIDGET (area)));
