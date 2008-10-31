@@ -1,3 +1,8 @@
+2008-10-31  Alberto Garcia  <agarcia@igalia.com>
+
+	* src/hildon-check-button.c (hildon_check_button_new):
+	Align the contents of the check button to the left.
+
 2008-10-30  Alejandro G. Castro	 <alex@igalia.com>
 
 	* src/hildon-pannable-area.c,

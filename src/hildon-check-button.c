@@ -139,7 +139,7 @@ hildon_check_button_get_active                  (HildonCheckButton *button)
 GtkWidget *
 hildon_check_button_new                         (HildonSizeType size)
 {
-    GtkWidget *button = g_object_new (HILDON_TYPE_CHECK_BUTTON, NULL);
+    GtkWidget *button = g_object_new (HILDON_TYPE_CHECK_BUTTON, "xalign", 0.0, NULL);
     hildon_gtk_widget_set_theme_size (button, size);
     return button;
 }
