@@ -104,7 +104,7 @@ hildon_check_button_set_active                  (HildonCheckButton *button,
 
     g_return_if_fail (HILDON_IS_CHECK_BUTTON (button));
 
-    prev_is_active = gtk_cell_renderer_toggle_get_active (button->priv->toggle_renderer);
+    prev_is_active = hildon_check_button_get_active (button);
 
     if (prev_is_active != is_active) {
         gtk_button_clicked (GTK_BUTTON (button));
@@ -147,12 +147,12 @@ hildon_check_button_new                         (HildonSizeType size)
 static void
 hildon_check_button_clicked                     (GtkButton *button)
 {
-    HildonCheckButtonPrivate *priv = HILDON_CHECK_BUTTON (button)->priv;
-    gboolean current = gtk_cell_renderer_toggle_get_active (priv->toggle_renderer);
+    HildonCheckButton *checkbutton = HILDON_CHECK_BUTTON (button);
+    gboolean current = hildon_check_button_get_active (checkbutton);
 
-    gtk_cell_renderer_toggle_set_active (priv->toggle_renderer, !current);
+    gtk_cell_renderer_toggle_set_active (checkbutton->priv->toggle_renderer, !current);
 
-    hildon_check_button_toggled (HILDON_CHECK_BUTTON (button));
+    hildon_check_button_toggled (checkbutton);
 }
 
 static void

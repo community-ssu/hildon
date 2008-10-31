@@ -1,5 +1,11 @@
 2008-10-31  Alberto Garcia  <agarcia@igalia.com>
 
+	* src/hildon-check-button.c
+	(hildon_check_button_set_active, hildon_check_button_clicked):
+	Don't access private parts directly, use getters instead.
+
+2008-10-31  Alberto Garcia  <agarcia@igalia.com>
+
 	* src/hildon-check-button.c (hildon_check_button_new):
 	Align the contents of the check button to the left.
 
