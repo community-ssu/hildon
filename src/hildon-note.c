@@ -509,6 +509,8 @@ hildon_note_rebuild                             (HildonNote *note)
         case HILDON_NOTE_TYPE_PROGRESSBAR:
             priv->cancelButton = gtk_dialog_add_button (dialog,
                     _("wdgt_bd_stop"), GTK_RESPONSE_CANCEL);
+            gtk_widget_show (priv->cancelButton);
+            gtk_widget_set_no_show_all (priv->cancelButton, FALSE);
             IsHorizontal = FALSE;
             break;
 

@@ -1,5 +1,10 @@
 2008-11-03  Claudio Saavedra  <csaavedra@igalia.com>
 
+	* src/hildon-note.c: (hildon_note_rebuild): Make sure the cancel button
+	is shown in the cancel note.
+
+2008-11-03  Claudio Saavedra  <csaavedra@igalia.com>
+
 	* src/hildon-controlbar.c: (hildon_controlbar_init): Remove steppers.
 	* src/hildon-seekbar.c: (hildon_seekbar_class_init),
 	(hildon_seekbar_init): Remove steppers, remove expose event.
