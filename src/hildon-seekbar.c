@@ -77,10 +77,6 @@ hildon_seekbar_size_allocate                    (GtkWidget *widget,
                                                  GtkAllocation *allocation);
 
 static gboolean 
-hildon_seekbar_expose                           (GtkWidget *widget,
-                                                 GdkEventExpose *event);
-
-static gboolean 
 hildon_seekbar_button_press_event               (GtkWidget *widget,
                                                  GdkEventButton *event);
 
@@ -176,7 +172,6 @@ hildon_seekbar_class_init                       (HildonSeekbarClass *seekbar_cla
 
     widget_class->size_request          = hildon_seekbar_size_request;
     widget_class->size_allocate         = hildon_seekbar_size_allocate;
-    widget_class->expose_event          = hildon_seekbar_expose;
     widget_class->button_press_event    = hildon_seekbar_button_press_event;
     widget_class->button_release_event  = hildon_seekbar_button_release_event;
     widget_class->key_press_event       = hildon_seekbar_keypress;
@@ -241,8 +236,6 @@ hildon_seekbar_init                             (HildonSeekbar *seekbar)
     /* Initialize range widget */
     range->orientation = GTK_ORIENTATION_HORIZONTAL;
     range->flippable = TRUE;
-    range->has_stepper_a = TRUE;
-    range->has_stepper_d = TRUE;
     range->round_digits = MAX_ROUND_DIGITS;
 
     gtk_scale_set_draw_value (GTK_SCALE (seekbar), FALSE);
@@ -585,35 +578,6 @@ hildon_seekbar_size_allocate                    (GtkWidget *widget,
 
     if (GTK_WIDGET_CLASS (parent_class)->size_allocate)
         GTK_WIDGET_CLASS (parent_class)->size_allocate (widget, allocation);
-}
-
-static gboolean
-hildon_seekbar_expose                           (GtkWidget *widget,
-                                                 GdkEventExpose *event)
-{
-    HildonSeekbarPrivate *priv;
-    gint extra_side_borders = 0;
-
-    priv = HILDON_SEEKBAR_GET_PRIVATE(widget);
-    g_assert (priv);
-
-    extra_side_borders = priv->is_toolbar ? TOOL_EXTRA_SIDE_BORDER :
-        EXTRA_SIDE_BORDER;
-
-    if (GTK_WIDGET_DRAWABLE (widget)) {
-        /* Paint border */
-        gtk_paint_box(widget->style, widget->window,
-                GTK_WIDGET_STATE(widget), GTK_SHADOW_OUT,
-                NULL, widget, "seekbar",
-                widget->allocation.x - extra_side_borders,
-                widget->allocation.y,
-                widget->allocation.width + 2 * extra_side_borders,
-                widget->allocation.height);
-
-        (*GTK_WIDGET_CLASS (parent_class)->expose_event) (widget, event);
-    }
-
-    return FALSE;
 }
 
 /*

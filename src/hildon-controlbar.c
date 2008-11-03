@@ -275,8 +275,6 @@ hildon_controlbar_init                          (HildonControlbar *controlbar)
     priv->old_value = 0;
     range = GTK_RANGE (controlbar);
 
-    range->has_stepper_a = TRUE;
-    range->has_stepper_d = TRUE;
     range->round_digits = -1;
 
     gtk_widget_set_size_request (GTK_WIDGET (controlbar), 

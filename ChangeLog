@@ -1,3 +1,12 @@
+2008-11-03  Claudio Saavedra  <csaavedra@igalia.com>
+
+	* src/hildon-controlbar.c: (hildon_controlbar_init): Remove steppers.
+	* src/hildon-seekbar.c: (hildon_seekbar_class_init),
+	(hildon_seekbar_init): Remove steppers, remove expose event.
+	* src/hildon-volumebar-range.c: (hildon_volumebar_range_init): Remove steppers.
+
+	Fixes: NB#91104 (Remove stepper buttons from legacy hildon widgets)
+
 2008-10-31  Claudio Saavedra  <csaavedra@igalia.com>
 
 	* src/hildon-button.c: (hildon_button_set_arrangement): Set the value

@@ -162,9 +162,7 @@ hildon_volumebar_range_class_init               (HildonVolumebarRangeClass *volu
 static void 
 hildon_volumebar_range_init                     (HildonVolumebarRange *volumerange)
 {
-    /* stepper_a = "less", stepper_d = "more" */
-    GTK_RANGE (volumerange)->has_stepper_a = TRUE;
-    GTK_RANGE (volumerange)->has_stepper_d = TRUE;
+  /* do nothing. */
 }
 
 static void
