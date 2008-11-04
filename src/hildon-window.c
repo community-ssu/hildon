@@ -92,9 +92,9 @@
 
 #define                                         _(String) gettext(String)
 
-#define                                         TOOLBAR_HEIGHT 40
+#define                                         TOOLBAR_HEIGHT 70
 
-#define                                         TOOLBAR_MIDDLE 10
+#define                                         TOOLBAR_MIDDLE 0
 
 /*FIXME*/
 #define                                         CAN_HIBERNATE "CANKILL"
@@ -888,14 +888,7 @@ paint_toolbar                                   (GtkWidget *widget,
                                                  gboolean fullscreen)
 {
     gint toolbar_num = 0; 
-    gint ftb_index = 0;
     gint count;
-    GtkWidget *findtoolbar = NULL;
-    HildonWindowPrivate *priv = HILDON_WINDOW_GET_PRIVATE (widget);
-    gchar toolbar_mode[40];
-    GtkBorder *tb = priv->toolbar_borders;
-
-    g_assert (priv != NULL);
 
     /* collect info to help on painting the boxes */
     g_list_foreach (box->children, visible_toolbar, 
@@ -904,115 +897,27 @@ paint_toolbar                                   (GtkWidget *widget,
     if(toolbar_num <= 0)
         return;
 
-    g_list_foreach (box->children, find_findtoolbar, (gpointer) &findtoolbar);
-
-    if (findtoolbar != NULL)
-    {
-        gint pass_bundle[2];/* an array for convient data passing
-                               the first member contains the y allocation
-                               of the find toolbar, and the second allocation
-                               contains the index(how many toolbars are above
-                               find toolbar) */
-        pass_bundle[0] = findtoolbar->allocation.y;
-        pass_bundle[1] = ftb_index;
-        g_list_foreach(box->children, find_findtoolbar_index,
-                (gpointer) pass_bundle);
-        ftb_index = pass_bundle[1];
-    }
-
-    /*upper border*/
-    sprintf (toolbar_mode, "toolbar%sframe-top", 
-            fullscreen ? "-fullscreen-" : "-");
-    gtk_paint_box (widget->style, widget->window,
-            GTK_WIDGET_STATE (widget), GTK_SHADOW_OUT,
-            &event->area, widget, toolbar_mode,
-            widget->allocation.x,
-            GTK_WIDGET (box)->allocation.y - tb->top,
-            widget->allocation.width, tb->top);
-
     /*top most toolbar painting*/
-    if (findtoolbar != NULL && ftb_index == 0 )
-    {
-        sprintf (toolbar_mode, "findtoolbar%s", 
-                fullscreen ? "-fullscreen" : "");
+    gtk_paint_box (widget->style, widget->window,
+            GTK_WIDGET_STATE(widget), GTK_SHADOW_OUT,
+            &event->area, widget, "toolbar-primary",
+            widget->allocation.x,
+            GTK_WIDGET(box)->allocation.y,
+            widget->allocation.width,
+            TOOLBAR_HEIGHT);
 
-        gtk_paint_box (widget->style, widget->window,
-                GTK_WIDGET_STATE(widget), GTK_SHADOW_OUT,
-                &event->area, widget, toolbar_mode,
-                widget->allocation.x,
-                GTK_WIDGET(box)->allocation.y,
-                widget->allocation.width,
-                TOOLBAR_HEIGHT);
-    }
-    else
-    {
-        sprintf (toolbar_mode, "toolbar%s", 
-                fullscreen ? "-fullscreen" : "");
-
-        gtk_paint_box (widget->style, widget->window,
-                GTK_WIDGET_STATE(widget), GTK_SHADOW_OUT,
-                &event->area, widget, toolbar_mode,
-                widget->allocation.x,
-                GTK_WIDGET(box)->allocation.y,
-                widget->allocation.width,
-                TOOLBAR_HEIGHT);
-    }
     /*multi toolbar painting*/
     for (count = 0; count < toolbar_num - 1; count++)
     {
-        sprintf (toolbar_mode, "toolbar%sframe-middle", 
-                fullscreen ? "-fullscreen-" : "-");
-
-        gtk_paint_box (widget->style, widget->window,
-                GTK_WIDGET_STATE(widget), GTK_SHADOW_OUT,
-                &event->area, widget, toolbar_mode,
-                widget->allocation.x,
-                GTK_WIDGET(box)->allocation.y + 
-                (1 + count) * TOOLBAR_HEIGHT + 
-                count * TOOLBAR_MIDDLE,
-                widget->allocation.width,
-                TOOLBAR_MIDDLE);
-
-        if (findtoolbar != NULL && count + 1 == ftb_index)
-        {
-
-            sprintf (toolbar_mode, "findtoolbar%s", 
-                    fullscreen ? "-fullscreen" : "");
-
             gtk_paint_box (widget->style, widget->window,
-                    GTK_WIDGET_STATE(widget), GTK_SHADOW_OUT,
-                    &event->area, widget, toolbar_mode,
-                    widget->allocation.x,
-                    GTK_WIDGET(box)->allocation.y + 
-                    (1 + count) * (TOOLBAR_HEIGHT + TOOLBAR_MIDDLE),
-                    widget->allocation.width,
-                    TOOLBAR_HEIGHT);
-        }
-        else
-        {
-            sprintf (toolbar_mode, "toolbar%s", 
-                    fullscreen ? "-fullscreen" : "");
-
-            gtk_paint_box (widget->style, widget->window,
-                    GTK_WIDGET_STATE(widget), GTK_SHADOW_OUT,
-                    &event->area, widget, toolbar_mode,
-                    widget->allocation.x,
-                    GTK_WIDGET(box)->allocation.y + 
-                    (1 + count) * (TOOLBAR_HEIGHT + TOOLBAR_MIDDLE),
-                    widget->allocation.width,
-                    TOOLBAR_HEIGHT);
-        }
+                           GTK_WIDGET_STATE(widget), GTK_SHADOW_OUT,
+                           &event->area, widget, "toolbar-secondary",
+                           widget->allocation.x,
+                           GTK_WIDGET(box)->allocation.y +
+                           (1 + count) * (TOOLBAR_HEIGHT),
+                           widget->allocation.width,
+                           TOOLBAR_HEIGHT);
     }
-    sprintf (toolbar_mode, "toolbar%sframe-bottom", 
-            fullscreen ? "-fullscreen-" : "-");
-
-    gtk_paint_box (widget->style, widget->window,
-            GTK_WIDGET_STATE(widget), GTK_SHADOW_OUT,
-            &event->area, widget, toolbar_mode,
-            widget->allocation.x,
-            GTK_WIDGET(box)->allocation.y + 
-            GTK_WIDGET(box)->allocation.height,
-            widget->allocation.width, tb->bottom);
 }
 
 /*
