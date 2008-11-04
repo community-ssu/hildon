@@ -289,7 +289,7 @@ hildon_pannable_area_class_init (HildonPannableAreaClass * klass)
                                                        "Scroll movement mode",
                                                        "Controls if the widget can scroll vertically, horizontally or both",
                                                        HILDON_TYPE_MOVEMENT_MODE,
-                                                       HILDON_MOVEMENT_MODE_BOTH,
+                                                       HILDON_MOVEMENT_MODE_VERT,
                                                        G_PARAM_READWRITE |
                                                        G_PARAM_CONSTRUCT));
 
