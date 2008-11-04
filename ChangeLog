@@ -1,5 +1,10 @@
 2008-11-04  Claudio Saavedra  <csaavedra@igalia.com>
 
+	* src/hildon-button.c: (hildon_button_set_arrangement): Fix some
+	compilation time warnings.
+
+2008-11-04  Claudio Saavedra  <csaavedra@igalia.com>
+
 	* src/hildon-pannable-area.c: (hildon_pannable_area_class_init): Set
 	the default value for HildonPannableArea::mov-mode to
 	HILDON_PANNABLE_AREA_MODE_VERT.

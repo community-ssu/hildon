@@ -77,6 +77,7 @@
 #include                                        "hildon-button.h"
 #include                                        "hildon-enum-types.h"
 #include                                        "hildon-gtk.h"
+#include                                        "hildon-helper.h"
 
 G_DEFINE_TYPE                                   (HildonButton, hildon_button, GTK_TYPE_BUTTON);
 
@@ -458,7 +459,7 @@ hildon_button_set_arrangement                   (HildonButton            *button
     /* Pack everything */
     if (arrangement == HILDON_BUTTON_ARRANGEMENT_VERTICAL) {
         priv->label_box = gtk_vbox_new (FALSE, 0);
-        hildon_helper_set_logical_font (priv->value, "SmallSystemFont");
+        hildon_helper_set_logical_font (GTK_WIDGET (priv->value), "SmallSystemFont");
     } else {
         priv->label_box = gtk_hbox_new (FALSE, 0);
     }
