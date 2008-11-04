@@ -1,5 +1,13 @@
 2008-11-04  Claudio Saavedra  <csaavedra@igalia.com>
 
+	[Release 2.1.20]
+
+	* NEWS: updates
+	* configure.ac: bump version
+	* debian/changelog: updates
+
+2008-11-04  Claudio Saavedra  <csaavedra@igalia.com>
+
 	* src/hildon-button.c: (hildon_button_set_arrangement): Fix some
 	compilation time warnings.
 

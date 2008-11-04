@@ -1,3 +1,35 @@
+[2.1.20 release]
+
+  Bug fixes:
+
+  * Fixes: NB#89541 (Crash in pannable area when closing picker dialog)
+  * Fixes: NB#90994 (HildonPannableArea does not connect "destroyed"
+    on child)
+  * Fixes: NB#91192 (Memory leak in HildonTouchSelector default print
+    function)
+  * Fixes: NB#91135 (Deprecate legacy hildon widgets)
+  * Fixes: NB#90662 (HildonButton "value" and "detail" text is
+    unformatted)
+  * Fixes: NB#91104 (Remove stepper buttons from legacy hildon widgets)
+  * Fixes: NB#91016 (Change toolbar sizes, simplification)
+  * Fixes: NB#91385 (Hildon Touch List panning should be ALWAYS vertical only)
+
+  Deprecations:
+
+  * All Fremantle deprecated widgets has been marked as such with
+    HILDON_DISABLE_DEPRECATED marks.
+
+  Other:
+
+  * Improved sizing of the HildonTouchSelector/HildonPickerDialog widgets.
+  * Corrected alignment of HildonCheckButton contents.
+  * Many cancel-like button fixes.
+
+  ABI:
+
+  * Reverted change introduced in 2.1.16 that broke ABI compatibility. See
+    NB#91636 for further explanation.
+
 [2.1.18 release]
 
   Bug fixes:
