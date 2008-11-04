@@ -46,8 +46,6 @@ typedef struct                                  _HildonTextView HildonTextView;
 
 typedef struct                                  _HildonTextViewClass HildonTextViewClass;
 
-typedef struct                                  _HildonTextViewPrivate HildonTextViewPrivate;
-
 struct                                          _HildonTextViewClass
 {
     GtkTextViewClass parent_class;
@@ -56,9 +54,6 @@ struct                                          _HildonTextViewClass
 struct                                          _HildonTextView
 {
     GtkTextView parent;
-
-    /* private */
-    HildonTextViewPrivate *priv;
 };
 
 

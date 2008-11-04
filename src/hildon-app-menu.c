@@ -161,7 +161,7 @@ hildon_app_menu_insert                          (HildonAppMenu *menu,
     g_return_if_fail (HILDON_IS_APP_MENU (menu));
     g_return_if_fail (GTK_IS_BUTTON (item));
 
-    priv = menu->priv;
+    priv = HILDON_APP_MENU_GET_PRIVATE(menu);
 
     /* Add the item to the menu */
     gtk_widget_show (GTK_WIDGET (item));
@@ -229,7 +229,7 @@ hildon_app_menu_reorder_child                   (HildonAppMenu *menu,
     g_return_if_fail (GTK_IS_BUTTON (item));
     g_return_if_fail (position >= 0);
 
-    priv = menu->priv;
+    priv = HILDON_APP_MENU_GET_PRIVATE (menu);
     old_position = g_list_index (priv->buttons, item);
 
     g_return_if_fail (old_position >= 0);
@@ -257,7 +257,7 @@ hildon_app_menu_add_filter                      (HildonAppMenu *menu,
     g_return_if_fail (HILDON_IS_APP_MENU (menu));
     g_return_if_fail (GTK_IS_BUTTON (filter));
 
-    priv = menu->priv;
+    priv = HILDON_APP_MENU_GET_PRIVATE(menu);
 
     /* Add the filter to the menu */
     gtk_widget_show (GTK_WIDGET (filter));
@@ -286,7 +286,7 @@ hildon_app_menu_set_columns                     (HildonAppMenu *menu,
     g_return_if_fail (HILDON_IS_APP_MENU (menu));
     g_return_if_fail (columns > 0);
 
-    priv = menu->priv;
+    priv = HILDON_APP_MENU_GET_PRIVATE (menu);
 
     if (columns != priv->columns) {
         priv->columns = columns;
@@ -330,7 +330,9 @@ item_visibility_changed                         (GtkWidget     *item,
                                                  GParamSpec    *arg1,
                                                  HildonAppMenu *menu)
 {
-    hildon_app_menu_repack_items (menu, g_list_index (menu->priv->buttons, item));
+    HildonAppMenuPrivate *priv = HILDON_APP_MENU_GET_PRIVATE (menu);
+
+    hildon_app_menu_repack_items (menu, g_list_index (priv->buttons, item));
 }
 
 static void
@@ -351,7 +353,7 @@ remove_item_from_list                           (GList    **list,
 static void
 hildon_app_menu_map                             (GtkWidget *widget)
 {
-    HildonAppMenuPrivate *priv = HILDON_APP_MENU (widget)->priv;
+    HildonAppMenuPrivate *priv = HILDON_APP_MENU_GET_PRIVATE(widget);
 
     GTK_WIDGET_CLASS (hildon_app_menu_parent_class)->map (widget);
 
@@ -387,7 +389,7 @@ hildon_app_menu_map                             (GtkWidget *widget)
 static void
 hildon_app_menu_unmap                           (GtkWidget *widget)
 {
-    HildonAppMenuPrivate *priv = HILDON_APP_MENU (widget)->priv;
+    HildonAppMenuPrivate *priv = HILDON_APP_MENU_GET_PRIVATE(widget);
 
     /* Remove the grab */
     if (priv->transfer_window != NULL) {
@@ -470,7 +472,7 @@ hildon_app_menu_button_press                    (GtkWidget *widget,
                                                  GdkEventButton *event)
 {
     int x, y;
-    HildonAppMenuPrivate *priv = HILDON_APP_MENU (widget)->priv;
+    HildonAppMenuPrivate *priv = HILDON_APP_MENU_GET_PRIVATE(widget);
 
     gdk_window_get_position (widget->window, &x, &y);
 
@@ -489,7 +491,7 @@ static gboolean
 hildon_app_menu_button_release                  (GtkWidget *widget,
                                                  GdkEventButton *event)
 {
-    HildonAppMenuPrivate *priv = HILDON_APP_MENU (widget)->priv;
+    HildonAppMenuPrivate *priv = HILDON_APP_MENU_GET_PRIVATE(widget);
 
     if (priv->pressed_outside) {
         int x, y;
@@ -585,7 +587,9 @@ hildon_app_menu_apply_style                     (GtkWidget *widget)
     GdkScreen *screen;
     gint width;
     guint horizontal_spacing, vertical_spacing, inner_border, external_border;
-    HildonAppMenuPrivate *priv = HILDON_APP_MENU (widget)->priv;
+    HildonAppMenuPrivate *priv;
+
+    priv = HILDON_APP_MENU_GET_PRIVATE (widget);
 
     gtk_widget_style_get (widget,
                           "horizontal-spacing", &horizontal_spacing,
@@ -621,7 +625,7 @@ hildon_app_menu_style_set                       (GtkWidget *widget,
 static void
 hildon_app_menu_repack_filters                  (HildonAppMenu *menu)
 {
-    HildonAppMenuPrivate *priv = menu->priv;
+    HildonAppMenuPrivate *priv = HILDON_APP_MENU_GET_PRIVATE(menu);
     GList *iter;
 
     for (iter = priv->filters; iter != NULL; iter = iter->next) {
@@ -651,9 +655,11 @@ static void
 hildon_app_menu_repack_items                    (HildonAppMenu *menu,
                                                  gint           start_from)
 {
-    HildonAppMenuPrivate *priv = menu->priv;
+    HildonAppMenuPrivate *priv;
     gint row, col;
     GList *iter;
+
+    priv = HILDON_APP_MENU_GET_PRIVATE(menu);
 
     /* Remove buttons from their parent */
     if (start_from != -1) {
@@ -706,8 +712,6 @@ hildon_app_menu_init                            (HildonAppMenu *menu)
     GtkWidget *alignment;
     HildonAppMenuPrivate *priv = HILDON_APP_MENU_GET_PRIVATE(menu);
 
-    menu->priv = priv;
-
     /* Initialize private variables */
     priv->parent_window = NULL;
     priv->transfer_window = NULL;
@@ -743,7 +747,7 @@ hildon_app_menu_init                            (HildonAppMenu *menu)
 static void
 hildon_app_menu_finalize                        (GObject *object)
 {
-    HildonAppMenuPrivate *priv = HILDON_APP_MENU (object)->priv;
+    HildonAppMenuPrivate *priv = HILDON_APP_MENU_GET_PRIVATE(object);
 
     if (priv->transfer_window)
         gdk_window_destroy (priv->transfer_window);
