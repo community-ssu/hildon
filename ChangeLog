@@ -24,7 +24,7 @@
 	* src/hildon-window.c: (paint_toolbar): Update toolbar sizes and
 	remove special cases that are no longer necessary.
 
-	Fixes NB#91016 (Change toolbar sizes, simplification)
+	Fixes: NB#91016 (Change toolbar sizes, simplification)
 
 2008-11-03  Claudio Saavedra  <csaavedra@igalia.com>
 
