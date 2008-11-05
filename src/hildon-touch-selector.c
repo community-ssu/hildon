@@ -95,8 +95,6 @@
 
 G_DEFINE_TYPE (HildonTouchSelector, hildon_touch_selector, GTK_TYPE_VBOX)
 
-#define CENTER_ON_SELECTED_ITEM_DELAY 50
-
 /*
  * IMPLEMENTATION NOTES:
  * Struct to maintain the data of each column. The columns are the elements
@@ -120,13 +118,15 @@ struct _HildonTouchSelectorPrivate
 {
   GSList *columns;              /* the selection columns */
   GtkWidget *hbox;              /* the container for the selector's columns */
+  gboolean initial_scroll;      /* whether initial fancy scrolling to selection */
 
   HildonTouchSelectorPrintFunc print_func;
 };
 
 enum
 {
-  PROP_HAS_MULTIPLE_SELECTION = 1
+  PROP_HAS_MULTIPLE_SELECTION = 1,
+  PROP_INITIAL_SCROLL
 };
 
 enum
@@ -137,12 +137,17 @@ enum
 
 static gint hildon_touch_selector_signals[LAST_SIGNAL] = { 0 };
 
-static void hildon_touch_selector_get_property (GObject * object,
-                                                guint prop_id,
-                                                GValue * value, GParamSpec * pspec);
-
+static void
+hildon_touch_selector_get_property              (GObject * object,
+                                                 guint prop_id,
+                                                 GValue * value,
+                                                 GParamSpec * pspec);
+static void
+hildon_touch_selector_set_property              (GObject *object,
+                                                 guint prop_id,
+                                                 const GValue *value,
+                                                 GParamSpec *pspec);
 /* gtkwidget */
-static void hildon_touch_selector_map           (GtkWidget * widget);
 
 /* gtkcontainer */
 static void hildon_touch_selector_remove        (GtkContainer * container,
@@ -157,8 +162,8 @@ static HildonTouchSelectorColumn *_create_new_column (HildonTouchSelector * sele
                                                  GtkCellRenderer * renderer,
                                                  va_list args);
 static gboolean
-_hildon_touch_selector_center_on_selected_items (gpointer data);
-
+_hildon_touch_selector_center_on_selected_items (GtkWidget *widget,
+                                                 gpointer data);
 static void
 _hildon_touch_selector_set_model                (HildonTouchSelector * selector,
                                                  gint num_column,
@@ -207,11 +212,10 @@ hildon_touch_selector_class_init (HildonTouchSelectorClass * class)
   container_class = GTK_CONTAINER_CLASS (class);
 
   /* GObject */
-
   gobject_class->get_property = hildon_touch_selector_get_property;
+  gobject_class->set_property = hildon_touch_selector_set_property;
 
   /* GtkWidget */
-  widget_class->map = hildon_touch_selector_map;
 
   /* GtkContainer */
   container_class->remove = hildon_touch_selector_remove;
@@ -254,6 +258,17 @@ hildon_touch_selector_class_init (HildonTouchSelectorClass * class)
                                                          FALSE,
                                                          G_PARAM_READABLE));
 
+  g_object_class_install_property (G_OBJECT_CLASS (gobject_class),
+                                   PROP_INITIAL_SCROLL,
+                                   g_param_spec_boolean ("initial-scroll",
+                                                         "Initial scroll",
+                                                         "Whether to scroll to the"
+                                                         "current selection when"
+                                                         "the selector is first"
+                                                         "shown",
+                                                         TRUE,
+                                                         G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
+
   /* style properties */
   /* We need to ensure fremantle mode for the treeview in order to work
      properly. This is not about the appearance, this is about behaviour */
@@ -270,10 +285,31 @@ hildon_touch_selector_get_property (GObject * object,
                                     guint prop_id,
                                     GValue * value, GParamSpec * pspec)
 {
+  HildonTouchSelectorPrivate *priv = HILDON_TOUCH_SELECTOR (object)->priv;
+
   switch (prop_id) {
   case PROP_HAS_MULTIPLE_SELECTION:
     g_value_set_boolean (value,
                          hildon_touch_selector_has_multiple_selection (HILDON_TOUCH_SELECTOR (object)));
+    break;
+  case PROP_INITIAL_SCROLL:
+    g_value_set_boolean (value, priv->initial_scroll);
+    break;
+  default:
+    G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+    break;
+  }
+}
+
+static void
+hildon_touch_selector_set_property (GObject *object, guint prop_id,
+                                    const GValue *value, GParamSpec *pspec)
+{
+  HildonTouchSelectorPrivate *priv = HILDON_TOUCH_SELECTOR (object)->priv;
+
+  switch (prop_id) {
+  case PROP_INITIAL_SCROLL:
+    priv->initial_scroll = g_value_get_boolean (value);
     break;
   default:
     G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -293,6 +329,7 @@ hildon_touch_selector_init (HildonTouchSelector * selector)
   selector->priv->columns = NULL;
 
   selector->priv->print_func = NULL;
+  selector->priv->initial_scroll = TRUE;
   selector->priv->hbox = gtk_hbox_new (FALSE, 0);
 
   gtk_box_pack_end (GTK_BOX (selector), selector->priv->hbox,
@@ -315,14 +352,6 @@ hildon_touch_selector_init (HildonTouchSelector * selector)
  *
  * Please take a look to hildon_touch_selector_remove for more information.
  */
-static void
-hildon_touch_selector_map (GtkWidget * widget)
-{
-  GTK_WIDGET_CLASS (hildon_touch_selector_parent_class)->map (widget);
-
-  g_timeout_add (CENTER_ON_SELECTED_ITEM_DELAY,
-                 _hildon_touch_selector_center_on_selected_items, widget);
-}
 
 /*------------------------------ GtkContainer ------------------------------ */
 
@@ -526,6 +555,10 @@ _create_new_column (HildonTouchSelector * selector,
   /* connect to the changed signal connection */
   g_signal_connect (G_OBJECT (selection), "changed",
                     G_CALLBACK (_selection_changed_cb), new_column);
+
+  g_signal_connect_after (G_OBJECT (panarea), "realize",
+                          G_CALLBACK (_hildon_touch_selector_center_on_selected_items),
+                          new_column);
 
   return new_column;
 }
@@ -1536,49 +1569,47 @@ hildon_touch_selector_get_current_text (HildonTouchSelector * selector)
 }
 
 static gboolean
-_hildon_touch_selector_center_on_selected_items (gpointer data)
+_hildon_touch_selector_center_on_selected_items (GtkWidget *widget,
+                                                 gpointer data)
 {
   HildonTouchSelector *selector = NULL;
   HildonTouchSelectorColumn *column = NULL;
-  GSList *iter_column = NULL;
   GtkTreeIter iter;
-  GtkTreePath *path;
+  GtkTreePath *path = NULL;
   GdkRectangle rect;
   gint y;
-  gint i;
+  gint num_column = -1;
   HildonTouchSelectorSelectionMode selection_mode;
 
-  /* ensure to center on the initial values */
-  selector = HILDON_TOUCH_SELECTOR (data);
+  column = HILDON_TOUCH_SELECTOR_COLUMN (data);
+  selector = column->priv->parent;
 
+  if (!selector->priv->initial_scroll) {
+    return FALSE;
+  }
   selection_mode = hildon_touch_selector_get_column_selection_mode (selector);
+  num_column = g_slist_index (selector->priv->columns, column);
 
-  iter_column = selector->priv->columns;
-  i = 0;
-  while (iter_column) {
-    column = HILDON_TOUCH_SELECTOR_COLUMN (iter_column->data);
+  if ((num_column == 0)
+      && (selection_mode == HILDON_TOUCH_SELECTOR_SELECTION_MODE_MULTIPLE)) {
 
-    if ((i == 0)
-        && (selection_mode == HILDON_TOUCH_SELECTOR_SELECTION_MODE_MULTIPLE)) {
-      break;
-    }
-    if (hildon_touch_selector_get_selected (selector, i, &iter)) {
-      path = gtk_tree_model_get_path (column->priv->model, &iter);
-      gtk_tree_view_get_background_area (GTK_TREE_VIEW
-                                         (column->priv->tree_view), path, NULL,
-                                         &rect);
+    return FALSE;
+  }
 
-      gtk_tree_view_convert_bin_window_to_tree_coords (GTK_TREE_VIEW
-                                                       (column->priv->tree_view), 0,
-                                                       rect.y, NULL, &y);
+  if (hildon_touch_selector_get_selected (selector, num_column, &iter)) {
+    path = gtk_tree_model_get_path (column->priv->model, &iter);
+    gtk_tree_view_get_background_area (GTK_TREE_VIEW
+                                       (column->priv->tree_view), path, NULL,
+                                       &rect);
 
-      hildon_pannable_area_scroll_to (HILDON_PANNABLE_AREA
-                                      (column->priv->panarea), -1, y);
+    gtk_tree_view_convert_bin_window_to_tree_coords (GTK_TREE_VIEW
+                                                     (column->priv->tree_view), 0,
+                                                     rect.y, NULL, &y);
 
-      gtk_tree_path_free (path);
-    }
-    iter_column = iter_column->next;
-    i++;
+    hildon_pannable_area_scroll_to (HILDON_PANNABLE_AREA
+                                    (column->priv->panarea), -1, y);
+
+    gtk_tree_path_free (path);
   }
 
   return FALSE;
