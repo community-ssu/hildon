@@ -68,7 +68,7 @@ enum
   LAST_SIGNAL
 };
 
-#define DEFAULT_DONE_BUTTON_TEXT        "Done"
+#define DEFAULT_DONE_BUTTON_TEXT        _("wdgt_bd_done")
 
 static void
 hildon_picker_dialog_set_property (GObject * object,

@@ -1,5 +1,10 @@
 2008-11-05  Claudio Saavedra  <csaavedra@igalia.com>
 
+	* src/hildon-picker-dialog.c: Use appropriate logical id
+	for the default "Done" text.
+
+2008-11-05  Claudio Saavedra  <csaavedra@igalia.com>
+
 	* configure.ac: post release version bump
 	* debian/changelog: version bump
 
