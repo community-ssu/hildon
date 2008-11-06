@@ -1,3 +1,13 @@
+2008-11-06  Claudio Saavedra  <csaavedra@igalia.com>
+
+	* src/hildon-app-menu.c: (hildon_app_menu_set_parent_window),
+	(hildon_app_menu_key_press): Remove leftover usage of the
+	private structure in HildonAppMenu struct.
+	* src/hildon-app-menu.h: Remove leftover private structure
+	from the HildonAppMenu struct.
+
+	Fixes a crasher when using the HildonAppMenu.
+
 2008-11-05  Claudio Saavedra  <csaavedra@igalia.com>
 
 	* src/hildon-picker-dialog.c: Use appropriate logical id
