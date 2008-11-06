@@ -93,11 +93,6 @@ main                                            (int argc,
 
     gtk_init (&argc, &argv);
 
-    gtk_rc_parse_string ("style \"default\" {\n"
-                         "bg[NORMAL] = \"#505050\""
-                         "}\n"
-                         "class \"HildonAppMenu\" style \"default\"\n");
-
     label = gtk_label_new ("This is an example of the\nHildonAppMenu widget.\n\n"
                            "Click on the titlebar\nto pop up the menu.");
     label2 = gtk_label_new ("No menu option has been selected yet.");

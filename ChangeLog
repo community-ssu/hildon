@@ -1,5 +1,10 @@
 2008-11-06  Claudio Saavedra  <csaavedra@igalia.com>
 
+	* examples/hildon-app-menu-example.c: (main): Do not set RC style
+	properties, not needed at all.
+
+2008-11-06  Claudio Saavedra  <csaavedra@igalia.com>
+
 	* src/hildon-note-private.h: Add strings for the icon and stock_icon
 	properties.
 	* src/hildon-note.c: (hildon_note_set_property),
