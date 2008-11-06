@@ -71,10 +71,12 @@ hildon_note_new_confirmation_add_buttons        (GtkWindow *parent,
                                                  const gchar *description, 
                                                  ...);
 
+#ifndef HILDON_DISABLE_DEPRECATED
 GtkWidget*
 hildon_note_new_confirmation_with_icon_name     (GtkWindow *parent,
                                                  const gchar *description,
                                                  const gchar *icon_name);
+#endif
 
 GtkWidget*
 hildon_note_new_cancel_with_progress_bar        (GtkWindow *parent,
@@ -84,12 +86,13 @@ hildon_note_new_cancel_with_progress_bar        (GtkWindow *parent,
 GtkWidget*
 hildon_note_new_information                     (GtkWindow *parent,
                                                  const gchar *description);
-                                       
+#ifndef HILDON_DISABLE_DEPRECATED
 GtkWidget*
 hildon_note_new_information_with_icon_name      (GtkWindow *parent,
                                                  const gchar *description,
                                                  const gchar *icon_name);
-                                                       
+#endif
+
 void 
 hildon_note_set_button_text                     (HildonNote *note, 
                                                  const gchar *text);

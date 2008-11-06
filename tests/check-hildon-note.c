@@ -280,6 +280,7 @@ START_TEST (test_new_information_invalid)
 }
 END_TEST
 
+#ifndef HILDON_DISABLE_DEPRECATED
 /* ----- Test case for new_confirmation_with_icon_name -----*/
 /**
  * Purpose: Check that note dialog is properly created with description regular values. 
@@ -380,7 +381,7 @@ START_TEST (test_new_confirmation_with_icon_name_invalid)
   GValue icon_name_value={0, };
   HildonNoteType note_type;
   HildonNote * invalid_note;
-   
+
   g_value_init (&value, G_TYPE_STRING);
   g_value_init (&icon_name_value, G_TYPE_STRING);
   g_value_init (&enum_value, G_TYPE_INT);
@@ -420,6 +421,7 @@ START_TEST (test_new_confirmation_with_icon_name_invalid)
   g_value_unset(&enum_value);
 }
 END_TEST
+#endif
 
 /* ----- Test case for new_cancel_with_progress_bar -----*/
 
@@ -555,7 +557,9 @@ Suite *create_hildon_note_suite()
 
   /* Create test cases */
   TCase *tc1 = tcase_create("new_confirmation");
+#ifndef HILDON_DISABLE_DEPRECATED
   TCase *tc2 = tcase_create("new_confirmation_with_icon_name");
+#endif
   TCase *tc3 = tcase_create("new_information");
   TCase *tc4 = tcase_create("new_cancel_with_progress_bar");
 
@@ -565,11 +569,13 @@ Suite *create_hildon_note_suite()
   tcase_add_test(tc1, test_new_confirmation_invalid);
   suite_add_tcase (s, tc1);
 
+#ifndef HILDON_DISABLE_DEPRECATED
   /* Create test case for hildon_note_new_confirmation_with_icon_name and add it to the suite */
   tcase_add_checked_fixture(tc2, fx_setup_default_note, fx_teardown_default_note);
   tcase_add_test(tc2, test_new_confirmation_with_icon_name_regular);
   tcase_add_test(tc2, test_new_confirmation_with_icon_name_invalid);
   suite_add_tcase (s, tc2);
+#endif
 
   /* Create test case for hildon_note_new_with_information and add it to the suite */
   tcase_add_checked_fixture(tc3, fx_setup_default_note, fx_teardown_default_note);

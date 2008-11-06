@@ -39,7 +39,6 @@ struct                                          _HildonNotePrivate
     GtkWidget *cancelButton;
     GtkWidget *label;
     GtkWidget *box;
-    GtkWidget *icon;
     GdkWindow *transfer_window;
 
     HildonNoteType note_n;
@@ -47,6 +46,12 @@ struct                                          _HildonNotePrivate
     gulong sound_signal_handler;
 
     gchar *original_description;
+
+#ifndef HILDON_DISABLE_DEPRECATED
+  /* These strings stored for backwards compatibility */
+    gchar *icon;
+    gchar *stock_icon;
+#endif
 };
 
 G_END_DECLS

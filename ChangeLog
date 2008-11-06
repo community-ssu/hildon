@@ -1,5 +1,27 @@
 2008-11-06  Claudio Saavedra  <csaavedra@igalia.com>
 
+	* src/hildon-note-private.h: Add strings for the icon and stock_icon
+	properties.
+	* src/hildon-note.c: (hildon_note_set_property),
+	(hildon_note_get_property), (hildon_note_class_init),
+	(hildon_note_init), (hildon_note_finalize), (hildon_note_rebuild),
+	(hildon_note_new_confirmation_add_buttons): Remove icons.
+	(hildon_note_new_confirmation_with_icon_name): Deprecate.
+	(hildon_note_new_information_with_icon_name): Deprecate.
+	(hildon_note_new_confirmation): Act directly, without calling
+	the deprecated constructor.
+	(hildon_note_new_information): Act directly, without calling
+	the deprecated constructor.
+	* src/hildon-note.h: Mark deprecate methods as such.
+	* tests/check-hildon-note.c: (create_hildon_note_suite): Do
+	not run tests on the deprecated methods if built with deprecation
+	disabled.
+
+	Fixes: NB#91688 (Never show icons in information notes/confirmation
+	notes)
+
+2008-11-06  Claudio Saavedra  <csaavedra@igalia.com>
+
 	* src/hildon-app-menu.c: (hildon_app_menu_set_parent_window),
 	(hildon_app_menu_key_press): Remove leftover usage of the
 	private structure in HildonAppMenu struct.
