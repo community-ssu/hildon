@@ -298,10 +298,14 @@ void G_GNUC_INTERNAL
 hildon_app_menu_set_parent_window              (HildonAppMenu *self,
                                                 GtkWindow     *parent_window)
 {
+    HildonAppMenuPrivate *priv;
+
     g_return_if_fail (HILDON_IS_APP_MENU (self));
     g_return_if_fail (parent_window == NULL || GTK_IS_WINDOW (parent_window));
 
-    self->priv->parent_window = parent_window;
+    priv = HILDON_APP_MENU_GET_PRIVATE(self);
+
+    priv->parent_window = parent_window;
 }
 
 static void
@@ -419,6 +423,7 @@ hildon_app_menu_key_press                       (GtkWidget   *widget,
                                                  GdkEventKey *event)
 {
     GtkWindow *parent_window;
+    HildonAppMenuPrivate *priv;
 
     g_return_val_if_fail (HILDON_IS_APP_MENU (widget), FALSE);
     g_return_val_if_fail (event != NULL, FALSE);
@@ -426,7 +431,8 @@ hildon_app_menu_key_press                       (GtkWidget   *widget,
     if (GTK_WIDGET_CLASS (hildon_app_menu_parent_class)->key_press_event (widget, event))
         return TRUE;
 
-    parent_window = HILDON_APP_MENU (widget)->priv->parent_window;
+    priv = HILDON_APP_MENU_GET_PRIVATE (widget);
+    parent_window = priv->parent_window;
 
     if (parent_window) {
         guint accel_key, accel_mods;

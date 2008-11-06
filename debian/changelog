@@ -1,3 +1,9 @@
+libhildon (2.1.20-2) unstable; urgency=low
+
+  * Fix a crasher in HildonAppMenu.
+
+ -- Claudio Saavedra <csaavedra@igalia.com>  Thu, 06 Nov 2008 12:37:03 +0200
+
 libhildon (2.1.20-1) unstable; urgency=low
 
   Bug fixes:
