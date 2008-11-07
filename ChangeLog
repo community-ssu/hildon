@@ -1,3 +1,11 @@
+2008-11-06  Alejandro Pinheiro  <apinheiro@igalia.com>
+
+	* debian/rules: Added --enable-maintainer-mode
+	* Makefile.am: Added ACLOCAL_AMFLAGS
+
+	This allows to properly regenerate the Makefiles if you modify the
+	configure.ac or any Makefile.am.
+
 2008-11-06  Claudio Saavedra  <csaavedra@igalia.com>
 
 	* examples/hildon-app-menu-example.c: (main): Do not set RC style
