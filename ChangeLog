@@ -1,3 +1,12 @@
+2008-11-10  Alejandro Pinheiro  <apinheiro@igalia.com>
+
+	* src/hildon-touch-selector.c: (_create_new_column): Disable treeview
+	search mode, in order to avoid lose the focus on the treeview when
+	a hw key (like enter) is pressed.
+
+	Fixes: NB#91995 (Calendar is crashing after pressing 'Enter' HW key
+	in HildonDateSelector dialog)
+
 2008-11-06  Alejandro Pinheiro  <apinheiro@igalia.com>
 
 	* debian/rules: Added --enable-maintainer-mode

@@ -523,6 +523,8 @@ _create_new_column (HildonTouchSelector * selector,
   }
 
   tv = GTK_TREE_VIEW (hildon_gtk_tree_view_new (HILDON_UI_MODE_EDIT));
+  gtk_tree_view_set_enable_search (tv, FALSE);
+
   gtk_tree_view_set_model (tv, model);
   gtk_tree_view_set_rules_hint (tv, TRUE);
 
