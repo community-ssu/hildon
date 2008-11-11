@@ -206,6 +206,9 @@ static gboolean hildon_pannable_area_button_release_cb (GtkWidget * widget,
                                                         GdkEventButton * event);
 static gboolean hildon_pannable_area_scroll_cb (GtkWidget *widget,
                                                 GdkEventScroll *event);
+static void hildon_pannable_area_child_mapped (GtkWidget *widget,
+                                               GdkEvent  *event,
+                                               gpointer user_data);
 static void hildon_pannable_area_add (GtkContainer *container, GtkWidget *child);
 static void hildon_pannable_area_remove (GtkContainer *container, GtkWidget *child);
 static void hildon_pannable_calculate_vel_factor (HildonPannableArea * self);
@@ -601,6 +604,7 @@ static void
 hildon_pannable_area_dispose (GObject * object)
 {
   HildonPannableAreaPrivate *priv = HILDON_PANNABLE_AREA (object)->priv;
+  GtkWidget *child = gtk_bin_get_child (GTK_BIN (object));
 
   if (priv->idle_id) {
     g_source_remove (priv->idle_id);
@@ -619,6 +623,12 @@ hildon_pannable_area_dispose (GObject * object)
   if (priv->vadjust) {
     g_object_unref (priv->vadjust);
     priv->vadjust = NULL;
+  }
+
+  if (child) {
+    g_signal_handlers_disconnect_by_func (GTK_WIDGET (child),
+                                          G_CALLBACK (hildon_pannable_area_child_mapped),
+                                          object);
   }
 
   if (G_OBJECT_CLASS (hildon_pannable_area_parent_class)->dispose)
@@ -1327,7 +1337,7 @@ hildon_pannable_area_button_press_cb (GtkWidget * widget,
   priv->vel_x = 0;
   priv->vel_y = 0;
 
-  if ((priv->child) && (priv->child != gtk_bin_get_child (GTK_BIN (widget))->window)) {
+  if (priv->child) {
 
     g_object_add_weak_pointer ((GObject *) priv->child,
 			       (gpointer) & priv->child);
@@ -2004,6 +2014,16 @@ hildon_pannable_area_scroll_cb (GtkWidget *widget,
   return TRUE;
 }
 
+static void
+hildon_pannable_area_child_mapped (GtkWidget *widget,
+                                   GdkEvent  *event,
+                                   gpointer user_data)
+{
+  HildonPannableAreaPrivate *priv = HILDON_PANNABLE_AREA (user_data)->priv;
+
+  if (priv->event_window != NULL && priv->enabled)
+    gdk_window_raise (priv->event_window);
+}
 
 static void
 hildon_pannable_area_add (GtkContainer *container, GtkWidget *child)
@@ -2014,6 +2034,10 @@ hildon_pannable_area_add (GtkContainer *container, GtkWidget *child)
 
   gtk_widget_set_parent (child, GTK_WIDGET (container));
   GTK_BIN (container)->child = child;
+
+  g_signal_connect_after (child, "map-event",
+                          G_CALLBACK (hildon_pannable_area_child_mapped),
+                          container);
 
   if (!gtk_widget_set_scroll_adjustments (child, priv->hadjust, priv->vadjust)) {
     g_warning ("%s: cannot add non scrollable widget, "
@@ -2029,6 +2053,10 @@ hildon_pannable_area_remove (GtkContainer *container, GtkWidget *child)
   g_return_if_fail (gtk_bin_get_child (GTK_BIN (container)) == child);
 
   gtk_widget_set_scroll_adjustments (child, NULL, NULL);
+
+  g_signal_handlers_disconnect_by_func (GTK_WIDGET (child),
+                                        G_CALLBACK (hildon_pannable_area_child_mapped),
+                                        container);
 
   /* chain parent class handler to remove child */
   GTK_CONTAINER_CLASS (hildon_pannable_area_parent_class)->remove (container, child);

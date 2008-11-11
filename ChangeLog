@@ -1,3 +1,18 @@
+2008-11-11  Alejandro G. Castro	 <alex@igalia.com>
+
+	* src/hildon-pnnable-area.c,
+	(hildon_pannable_area_dispose),
+	(hildon_pannable_area_button_press_cb),
+	(hildon_pannable_area_child_mapped),
+	(hildon_pannable_area_add),
+	(hildon_pannable_area_remove): Added code to control the position
+	of the event_window when adding and removing children from the
+	pannable. We have to raise the event window when the child is
+	mapped.
+
+	Fixes: NB#89811 (Not able to select first image thumbnail in multi
+	selection mode using custom widget inside pannable)
+
 2008-11-11  Claudio Saavedra  <csaavedra@igalia.com>
 
 	* configure.ac: post release version bump
