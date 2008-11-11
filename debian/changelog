@@ -1,12 +1,28 @@
-libhildon (2.1.21-1~unreleased1) unstable; urgency=low
-
-  [ Claudio Saavedra ]
-  * bump unreleased, remove this entry before releasing 2.1.22-1
+libhildon (2.1.22-1) unstable; urgency=low
 
   [ Alejandro Pinheiro ]
   * Added --enable-maintainer-mode on debian/rules
 
- -- Alejandro Pinheiro <apinheiro@igalia.com>  Thu, 06 Nov 2008 18:18:36 +0100
+  Bug fixes:
+
+  * Fixes: NB#91688 (Never show icons in information notes/confirmation
+    notes)
+  * Fixes: NB#91995 (Calendar is crashing after pressing 'Enter' HW key
+    in HildonDateSelector dialog)
+
+  Deprecations:
+
+  * hildon_note_new_confirmation_with_icon_name(): deprecated
+  * hildon_note_new_information_with_icon_name(): deprecated
+  * HildonNote::icon and HildonNote::stock_icon: deprecated
+
+  Other:
+
+  * Logical ids fixes.
+  * Examples updated.
+  * Build system improved.
+
+ -- Claudio Saavedra <csaavedra@igalia.com>  Tue, 11 Nov 2008 07:05:33 -0300
 
 libhildon (2.1.20-1) unstable; urgency=low
 

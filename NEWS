@@ -1,3 +1,24 @@
+[2.1.22 release]
+
+  Bug fixes:
+
+  * Fixes: NB#91688 (Never show icons in information notes/confirmation
+    notes)
+  * Fixes: NB#91995 (Calendar is crashing after pressing 'Enter' HW key
+    in HildonDateSelector dialog)
+
+  Deprecations:
+
+  * hildon_note_new_confirmation_with_icon_name(): deprecated
+  * hildon_note_new_information_with_icon_name(): deprecated
+  * HildonNote::icon and HildonNote::stock_icon: deprecated
+
+  Other:
+
+  * Logical ids fixes.
+  * Examples updated.
+  * Build system improved.
+
 [2.1.20 release]
 
   Bug fixes:
