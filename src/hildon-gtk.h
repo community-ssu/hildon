@@ -52,6 +52,7 @@ GtkWidget *
 hildon_gtk_radio_button_new_from_widget         (HildonSizeType  size,
                                                  GtkRadioButton *radio_group_member);
 
+#ifdef MAEMO_GTK
 GtkWidget *
 hildon_gtk_tree_view_new                        (HildonUIMode mode);
 
@@ -65,6 +66,7 @@ hildon_gtk_icon_view_new                        (HildonUIMode mode);
 GtkWidget *
 hildon_gtk_icon_view_new_with_model             (HildonUIMode  mode,
                                                  GtkTreeModel *model);
+#endif /* MAEMO_GTK */
 
 void
 hildon_gtk_window_set_progress_indicator        (GtkWindow    *window,

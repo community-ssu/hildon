@@ -21,8 +21,6 @@ EXAMPLES				= hildon-window-example				\
 					  hildon-pannable-area-example-2		\
 					  hildon-pannable-area-example-3		\
 					  hildon-pannable-area-example-4		\
-					  hildon-pannable-area-touch-list-example	\
-					  hildon-pannable-area-touch-grid-example	\
 					  hildon-logical-color-example			\
 					  hildon-app-menu-example			\
 					  hildon-stackable-window-example		\
@@ -38,6 +36,12 @@ EXAMPLES				= hildon-window-example				\
 					  hildon-touch-selector-example			\
 					  hildon-touch-selector-multi-cells-example	\
 					  hildon-touch-selector-entry-example
+if USE_MAEMO_GTK
+MAEMO_GTK_EXAMPLES                      = hildon-pannable-area-touch-list-example	\
+					  hildon-pannable-area-touch-grid-example
+else
+MAEMO_GTK_EXAMPLES                      =
+endif
 
 DEPRECATED_EXAMPLES			= hildon-weekday-picker-example			\
 					  hildon-sort-dialog-example			\
@@ -65,7 +69,12 @@ DEPRECATED_EXAMPLES			= hildon-weekday-picker-example			\
 
 
 if HILDON_DISABLE_DEPRECATED
+if USE_MAEMO_GTK
+noinst_PROGRAMS   		 	= $(EXAMPLES) 				\
+					  $(MAEMO_GTK_EXAMPLES)
+else
 noinst_PROGRAMS   		 	= $(EXAMPLES)
+endif
 else
 noinst_PROGRAMS   		 	= $(EXAMPLES) 				\
 			     		  $(DEPRECATED_EXAMPLES)

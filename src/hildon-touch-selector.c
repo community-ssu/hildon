@@ -522,7 +522,12 @@ _create_new_column (HildonTouchSelector * selector,
     }
   }
 
+#ifdef MAEMO_GTK
   tv = GTK_TREE_VIEW (hildon_gtk_tree_view_new (HILDON_UI_MODE_EDIT));
+#else
+  tv = GTK_TREE_VIEW (gtk_tree_view_new ());
+#endif /* MAEMO_GTK */
+
   gtk_tree_view_set_enable_search (tv, FALSE);
 
   gtk_tree_view_set_model (tv, model);

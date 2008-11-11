@@ -1,5 +1,26 @@
 2008-11-11  Alejandro G. Castro	 <alex@igalia.com>
 
+	Fixed the compilation without maemo gtk adding ifdefs with
+	MAEMO_CHANGES define to the code, we have to check this version
+	more carefully.
+
+	* examples/Makefile.am: Added control to avoid some examples that
+	just make sense with maemo gtk.
+
+	* src/hildon-gtk.c:
+	* src/hildon-gtk.h: Remove some functions that use the maemo gtk
+	hildon modes with the define.
+
+	* examples/hildon-edit-toolbar-example.c,
+	(create_icon_view): Create the icon view without hildon-gtk
+	helpers if we are not using maemo gtk.
+
+	* src/hildon-touch-selector.c,
+	(_create_new_column): Create the treeview without hildon-gtk
+	helpers if we are not using maemo gtk.
+
+2008-11-11  Alejandro G. Castro	 <alex@igalia.com>
+
 	* src/hildon-pnnable-area.c,
 	(hildon_pannable_area_dispose),
 	(hildon_pannable_area_button_press_cb),

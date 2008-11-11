@@ -239,6 +239,7 @@ hildon_gtk_radio_button_new_from_widget         (HildonSizeType  size,
     return button;
 }
 
+#ifdef MAEMO_GTK
 /**
  * hildon_gtk_tree_view_new:
  * @mode: the Hildon UI mode
@@ -302,6 +303,7 @@ hildon_gtk_icon_view_new_with_model             (HildonUIMode  mode,
 {
     return g_object_new (GTK_TYPE_ICON_VIEW, "hildon-ui-mode", mode, "model", model, NULL);
 }
+#endif /* MAEMO_GTK */
 
 /**
  * hildon_gtk_window_set_progress_indicator:
