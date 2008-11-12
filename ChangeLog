@@ -1,3 +1,8 @@
+2008-11-12  Alberto Garcia  <agarcia@igalia.com>
+
+	* examples/hildon-app-menu-example.c (create_menu): Make all
+	buttons finger size.
+
 2008-11-11  Alejandro G. Castro	 <alex@igalia.com>
 
 	Fixed the compilation without maemo gtk adding ifdefs with

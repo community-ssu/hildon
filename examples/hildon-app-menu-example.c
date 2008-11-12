@@ -41,38 +41,46 @@ create_menu                                     (GtkWidget     *label,
                                                  GtkAccelGroup *accel)
 {
     GtkWidget *button;
+    HildonSizeType buttonsize = HILDON_SIZE_FINGER_HEIGHT | HILDON_SIZE_AUTO_WIDTH;
     HildonAppMenu *menu = HILDON_APP_MENU (hildon_app_menu_new ());
 
     /* Options */
-    button = gtk_button_new_with_label ("Menu command one");
+    button = hildon_gtk_button_new (buttonsize);
+    gtk_button_set_label (GTK_BUTTON (button), "Menu command one");
     g_signal_connect_after (button, "clicked", G_CALLBACK (menu_button_clicked), label);
     hildon_app_menu_append (menu, GTK_BUTTON (button));
 
     gtk_widget_add_accelerator (button, "activate", accel, GDK_r, GDK_CONTROL_MASK, GTK_ACCEL_VISIBLE);
 
-    button = gtk_button_new_with_label ("Menu command two");
+    button = hildon_gtk_button_new (buttonsize);
+    gtk_button_set_label (GTK_BUTTON (button), "Menu command two");
     g_signal_connect_after (button, "clicked", G_CALLBACK (menu_button_clicked), label);
     hildon_app_menu_append (menu, GTK_BUTTON (button));
 
-    button = gtk_button_new_with_label ("Menu command three");
+    button = hildon_gtk_button_new (buttonsize);
+    gtk_button_set_label (GTK_BUTTON (button), "Menu command three");
     g_signal_connect_after (button, "clicked", G_CALLBACK (menu_button_clicked), label);
     hildon_app_menu_append (menu, GTK_BUTTON (button));
 
-    button = gtk_button_new_with_label ("Menu command four");
+    button = hildon_gtk_button_new (buttonsize);
+    gtk_button_set_label (GTK_BUTTON (button), "Menu command four");
     g_signal_connect_after (button, "clicked", G_CALLBACK (menu_button_clicked), label);
     hildon_app_menu_append (menu, GTK_BUTTON (button));
 
-    button = gtk_button_new_with_label ("Menu command five");
+    button = hildon_gtk_button_new (buttonsize);
+    gtk_button_set_label (GTK_BUTTON (button), "Menu command five");
     g_signal_connect_after (button, "clicked", G_CALLBACK (menu_button_clicked), label);
     hildon_app_menu_append (menu, GTK_BUTTON (button));
 
     /* Filters */
-    button = gtk_radio_button_new_with_label (NULL, "filter one");
+    button = hildon_gtk_radio_button_new (buttonsize, NULL);
+    gtk_button_set_label (GTK_BUTTON (button), "filter one");
     g_signal_connect_after (button, "clicked", G_CALLBACK (menu_button_clicked), label);
     hildon_app_menu_add_filter (menu, GTK_BUTTON (button));
     gtk_toggle_button_set_mode (GTK_TOGGLE_BUTTON (button), FALSE);
 
-    button = gtk_radio_button_new_with_label_from_widget (GTK_RADIO_BUTTON (button), "filter two");
+    button = hildon_gtk_radio_button_new_from_widget (buttonsize, GTK_RADIO_BUTTON (button));
+    gtk_button_set_label (GTK_BUTTON (button), "filter two");
     g_signal_connect_after (button, "clicked", G_CALLBACK (menu_button_clicked), label);
     hildon_app_menu_add_filter (menu, GTK_BUTTON (button));
     gtk_toggle_button_set_mode (GTK_TOGGLE_BUTTON (button), FALSE);
