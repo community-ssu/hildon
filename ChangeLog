@@ -1,3 +1,10 @@
+2008-11-12  Alejandro G. Castro	 <alex@igalia.com>
+
+	* src/hildon-gtk.c:
+	* src/hildon-gtk.h: Fixed compilation problem with MAEMO_CHANGES
+	activated, we have to think about how to deal with both defines
+	MAEMO_GTK and MAEMO_CHANGES.
+
 2008-11-12  Alberto Garcia  <agarcia@igalia.com>
 
 	* examples/hildon-app-menu-example.c (create_menu): Make all
@@ -6,8 +13,8 @@
 2008-11-11  Alejandro G. Castro	 <alex@igalia.com>
 
 	Fixed the compilation without maemo gtk adding ifdefs with
-	MAEMO_CHANGES define to the code, we have to check this version
-	more carefully.
+	MAEMO_GTK define to the code, we have to check this version more
+	carefully.
 
 	* examples/Makefile.am: Added control to avoid some examples that
 	just make sense with maemo gtk.
