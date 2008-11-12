@@ -1,3 +1,8 @@
+2008-11-12  Claudio Saavedra  <csaavedra@igalia.com>
+
+	* src/hildon-window.c (-find_findtoolbar_index), (-find_findtoolbar):
+	Remove unused methods.
+
 2008-11-12  Alberto Garcia  <agarcia@igalia.com>
 
 	* src/hildon-button.c (hildon_button_init):

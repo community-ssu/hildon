@@ -861,26 +861,6 @@ visible_toolbar                                 (gpointer data,
         (*((gint *)user_data))++;
 }
 
-static void 
-find_findtoolbar_index                          (gpointer data, 
-                                                 gpointer user_data)
-{
-    gint *pass_bundle = (gint *)user_data;
-
-    if(((GtkBoxChild *)data)->widget->allocation.y < pass_bundle[0]
-            && GTK_WIDGET_VISIBLE (((GtkBoxChild *)data)->widget))
-        pass_bundle[1]++;
-}
-
-static void
-find_findtoolbar                                (gpointer data, 
-                                                 gpointer user_data)
-{
-    if(HILDON_IS_FIND_TOOLBAR (((GtkBoxChild *)data)->widget)
-            && GTK_WIDGET_VISIBLE (((GtkBoxChild *)data)->widget))
-        (*((GtkWidget **)user_data)) = ((GtkBoxChild *)data)->widget;
-}
-
 static void
 paint_toolbar                                   (GtkWidget *widget, 
                                                  GtkBox *box, 
