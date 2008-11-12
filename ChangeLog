@@ -1,3 +1,8 @@
+2008-11-12  Alberto Garcia  <agarcia@igalia.com>
+
+	* src/hildon-button.c (hildon_button_init):
+	Make button images center-aligned by default
+
 2008-11-12  Alejandro G. Castro	 <alex@igalia.com>
 
 	* src/hildon-gtk.c:

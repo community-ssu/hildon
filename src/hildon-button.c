@@ -286,8 +286,8 @@ hildon_button_init                              (HildonButton *self)
     priv->alignment = gtk_alignment_new (0.5, 0.5, 0, 0);
     priv->image = NULL;
     priv->image_position = GTK_POS_LEFT;
-    priv->image_xalign = 0.0;
-    priv->image_yalign = 0.0;
+    priv->image_xalign = 0.5;
+    priv->image_yalign = 0.5;
     priv->hbox = NULL;
     priv->label_box = NULL;
 
