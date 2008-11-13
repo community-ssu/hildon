@@ -69,15 +69,12 @@ DEPRECATED_EXAMPLES			= hildon-weekday-picker-example			\
 
 
 if HILDON_DISABLE_DEPRECATED
-if USE_MAEMO_GTK
 noinst_PROGRAMS   		 	= $(EXAMPLES) 				\
 					  $(MAEMO_GTK_EXAMPLES)
 else
-noinst_PROGRAMS   		 	= $(EXAMPLES)
-endif
-else
 noinst_PROGRAMS   		 	= $(EXAMPLES) 				\
-			     		  $(DEPRECATED_EXAMPLES)
+			     		  $(DEPRECATED_EXAMPLES)		\
+					  $(MAEMO_GTK_EXAMPLES)
 endif
 
 # Hildon window

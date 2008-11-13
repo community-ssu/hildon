@@ -1,3 +1,8 @@
+2008-11-13  Alejandro G. Castro	 <alex@igalia.com>
+
+	* examples/Makefile.am: Fixed problem with the USE_MAEMO_GTK
+	conditional in the Makefile.am
+
 2008-11-12  Claudio Saavedra  <csaavedra@igalia.com>
 
 	* src/hildon-window.c (-find_findtoolbar_index), (-find_findtoolbar):
