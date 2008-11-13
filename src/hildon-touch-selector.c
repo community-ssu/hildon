@@ -1159,7 +1159,7 @@ hildon_touch_selector_get_column_selection_mode (HildonTouchSelector * selector)
 {
   HildonTouchSelectorSelectionMode result =
     HILDON_TOUCH_SELECTOR_SELECTION_MODE_SINGLE;
-  GtkSelectionMode treeview_mode = GTK_SELECTION_SINGLE;
+  GtkSelectionMode treeview_mode = GTK_SELECTION_BROWSE;
   HildonTouchSelectorColumn *column = NULL;
   GtkTreeSelection *selection = NULL;
 
@@ -1198,9 +1198,16 @@ hildon_touch_selector_set_column_selection_mode (HildonTouchSelector * selector,
   GtkTreeSelection *selection = NULL;
   GtkSelectionMode treeview_mode = GTK_SELECTION_MULTIPLE;
   GtkTreeIter iter;
+  HildonTouchSelectorSelectionMode current_mode;
 
   g_return_if_fail (HILDON_IS_TOUCH_SELECTOR (selector));
   g_return_if_fail (hildon_touch_selector_get_num_columns (selector) > 0);
+
+  current_mode = hildon_touch_selector_get_column_selection_mode (selector);
+
+  if (current_mode == mode) {
+    return;
+  }
 
   column = HILDON_TOUCH_SELECTOR_COLUMN ((g_slist_nth (selector->priv->columns, 0))->data);
   tv = column->priv->tree_view;
@@ -1208,7 +1215,7 @@ hildon_touch_selector_set_column_selection_mode (HildonTouchSelector * selector,
   if (tv) {
     switch (mode) {
     case HILDON_TOUCH_SELECTOR_SELECTION_MODE_SINGLE:
-      treeview_mode = GTK_SELECTION_SINGLE;
+      treeview_mode = GTK_SELECTION_BROWSE;
       break;
     case HILDON_TOUCH_SELECTOR_SELECTION_MODE_MULTIPLE:
       treeview_mode = GTK_SELECTION_MULTIPLE;

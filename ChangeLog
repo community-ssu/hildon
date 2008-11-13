@@ -1,3 +1,14 @@
+2008-11-13  Alejandro Pinheiro	 <apinheiro@igalia.com>
+
+	* src/hildon-touch-selector.c:
+	(hildon_touch_selector_set_column_selection_mode): Used of
+	GTK_SELECTION_BROWSE instead of GTK_SELECTION_SINGLE gtk tree selection
+	mode setting HILDON_TOUCH_SELECTOR_SELECTION_MODE_SINGLE. Added a check
+	to avoid re-seting the same selection mode.
+
+	Fixes: NB#91863 (hildon_touch_selector_set_column_selection_mode()
+	breaks HildonPickerDialog)
+
 2008-11-13  Alejandro G. Castro	 <alex@igalia.com>
 
 	* examples/Makefile.am: Fixed problem with the USE_MAEMO_GTK
