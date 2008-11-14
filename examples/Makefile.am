@@ -17,10 +17,10 @@ EXAMPLES				= hildon-window-example				\
 					  hildon-find-toolbar-example			\
 					  hildon-edit-toolbar-example			\
 					  hildon-wizard-dialog-example			\
-					  hildon-pannable-area-example			\
-					  hildon-pannable-area-example-2		\
-					  hildon-pannable-area-example-3		\
-					  hildon-pannable-area-example-4		\
+					  hildon-pannable-area-tree-view-example	\
+					  hildon-pannable-area-scroll-jump-example	\
+					  hildon-pannable-area-buttons-scroll-example	\
+					  hildon-pannable-area-gesture-signals-example	\
 					  hildon-logical-color-example			\
 					  hildon-app-menu-example			\
 					  hildon-stackable-window-example		\
@@ -323,26 +323,26 @@ hildon_hvolumebar_timer_example_CFLAGS		= $(HILDON_OBJ_CFLAGS)			\
 						  $(EXTRA_CFLAGS)
 hildon_hvolumebar_timer_example_SOURCES		= hildon-hvolumebar-timer-example.c
 
-# Hildon pannable area
-hildon_pannable_area_example_LDADD		= $(HILDON_OBJ_LIBS)
-hildon_pannable_area_example_CFLAGS		= $(HILDON_OBJ_CFLAGS)			\
-						  $(EXTRA_CFLAGS)
-hildon_pannable_area_example_SOURCES		= hildon-pannable-area-example.c
+# Hildon pannable area tree view example
+hildon_pannable_area_tree_view_example_LDADD		= $(HILDON_OBJ_LIBS)
+hildon_pannable_area_tree_view_example_CFLAGS		= $(HILDON_OBJ_CFLAGS)			\
+						  	   $(EXTRA_CFLAGS)
+hildon_pannable_area_tree_view_example_SOURCES		= hildon-pannable-area-tree-view-example.c
 
-# Hildon pannable area 2
-hildon_pannable_area_example_2_LDADD		= $(HILDON_OBJ_LIBS)
-hildon_pannable_area_example_2_CFLAGS		= $(HILDON_OBJ_CFLAGS)
-hildon_pannable_area_example_2_SOURCES		= hildon-pannable-area-example-2.c
+# Hildon pannable area scroll jump example
+hildon_pannable_area_scroll_jump_example_LDADD		= $(HILDON_OBJ_LIBS)
+hildon_pannable_area_scroll_jump_example_CFLAGS		= $(HILDON_OBJ_CFLAGS)
+hildon_pannable_area_scroll_jump_example_SOURCES	= hildon-pannable-area-scroll-jump-example.c
 
-# Hildon pannable area 3
-hildon_pannable_area_example_3_LDADD		= $(HILDON_OBJ_LIBS)
-hildon_pannable_area_example_3_CFLAGS		= $(HILDON_OBJ_CFLAGS)
-hildon_pannable_area_example_3_SOURCES		= hildon-pannable-area-example-3.c
+# Hildon pannable area buttons scroll example
+hildon_pannable_area_buttons_scroll_example_LDADD		= $(HILDON_OBJ_LIBS)
+hildon_pannable_area_buttons_scroll_example_CFLAGS		= $(HILDON_OBJ_CFLAGS)
+hildon_pannable_area_buttons_scroll_example_SOURCES		= hildon-pannable-area-buttons-scroll-example.c
 
-# Hildon pannable area 4
-hildon_pannable_area_example_4_LDADD		= $(HILDON_OBJ_LIBS)
-hildon_pannable_area_example_4_CFLAGS		= $(HILDON_OBJ_CFLAGS)
-hildon_pannable_area_example_4_SOURCES		= hildon-pannable-area-example-4.c
+# Hildon pannable area gesture signals example
+hildon_pannable_area_gesture_signals_example_LDADD		= $(HILDON_OBJ_LIBS)
+hildon_pannable_area_gesture_signals_example_CFLAGS		= $(HILDON_OBJ_CFLAGS)
+hildon_pannable_area_gesture_signals_example_SOURCES		= hildon-pannable-area-gesture-signals-example.c
 
 # Hildon pannable area touch list
 hildon_pannable_area_touch_list_example_LDADD	= $(HILDON_OBJ_LIBS)
@@ -477,10 +477,10 @@ examples_DATA				= Makefile.static                               \
 					  hildon-wizard-dialog-example.c		\
 					  hildon-hvolumebar-timer-example.c		\
 					  hildon-toolbar-seekbar-example.c		\
-					  hildon-pannable-area-example.c		\
-					  hildon-pannable-area-example-2.c		\
-					  hildon-pannable-area-example-3.c		\
-					  hildon-pannable-area-example-4.c		\
+					  hildon-pannable-area-tree-view-example	\
+					  hildon-pannable-area-scroll-jump-example	\
+					  hildon-pannable-area-buttons-scroll-example	\
+					  hildon-pannable-area-gesture-signals-example	\
 					  hildon-pannable-area-touch-list-example.c	\
 					  hildon-pannable-area-touch-grid-example.c	\
 					  hildon-logical-color-example.c		\

@@ -1,3 +1,13 @@
+2008-11-14  Alejandro G. Castro	 <alex@igalia.com>
+
+	* examples/Makefile.am,
+	* examples/hildon-pannable-area-buttons-scroll-example.c,
+	* examples/hildon-pannable-area-gesture-signals-example.c,
+	* examples/hildon-pannable-area-scroll-jump-example.c,
+	* examples/hildon-pannable-area-tree-view-example.c:
+	Renamed the pannable area examples, now they have more meaningful
+	names.
+
 2008-11-13  Alejandro Pinheiro	 <apinheiro@igalia.com>
 
 	* src/hildon-touch-selector.c:
