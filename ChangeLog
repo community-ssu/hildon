@@ -1,5 +1,20 @@
 2008-11-14  Alejandro G. Castro	 <alex@igalia.com>
 
+	Reviewed the use of MAEMO_GTK define, now we add the define in the
+	compilation line, and we also add it to the pc file.
+
+	* configure.ac: Added MAEMO_GTK define to the compilation command
+	and removed it from the config.h.
+
+	* pkgconfig/hildon.pc.in: Added MAEMO_GTK, that way applications
+	do not have to take care about this define if the library was
+	compiled with it.
+
+	* src/hildon-gtk.c:
+	* src/hildon-gtk.h: Replaced MAEMO_CHANGES with MAEMO_GTK.
+
+2008-11-14  Alejandro G. Castro	 <alex@igalia.com>
+
 	* examples/Makefile.am,
 	* examples/hildon-pannable-area-buttons-scroll-example.c,
 	* examples/hildon-pannable-area-gesture-signals-example.c,
