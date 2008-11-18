@@ -884,7 +884,7 @@ hildon_color_chooser_dialog_area_expose         (GtkWidget *widget,
         y = ((i / w) * (tot_h + spacing));
 
         gdk_draw_rectangle (widget->window,
-                widget->style->black_gc,
+                (i == num_selected) ? widget->style->bg_gc[GTK_STATE_SELECTED] : widget->style->bg_gc[GTK_STATE_NORMAL],
                 TRUE,
                 (i == num_selected) ? x : x + 2,  
                 (i == num_selected) ? y : y + 2,
@@ -892,7 +892,7 @@ hildon_color_chooser_dialog_area_expose         (GtkWidget *widget,
                 (i == num_selected) ? tot_h : tot_h - 4);
 
         gdk_draw_rectangle(widget->window,
-                widget->style->white_gc,
+                (i == num_selected) ? widget->style->bg_gc[GTK_STATE_NORMAL] : widget->style->white_gc,
                 TRUE,
                 x + 3,  
                 y + 3,

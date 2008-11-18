@@ -1,3 +1,12 @@
+2008-11-18  Claudio Saavedra  <csaavedra@igalia.com>
+
+	* src/hildon-color-chooser-dialog.c: Use theme colors for the selected
+	color frame and some minor tweaks to make it more consistent with
+	current theming.
+
+	Fixes: NB#91769 (HildonColorChooserDialog's selected colour is
+	highlighted but not visible)
+
 2008-11-14  Alejandro G. Castro	 <alex@igalia.com>
 
 	* examples/Makefile.am: Fixed typo in the Makefile.am.
