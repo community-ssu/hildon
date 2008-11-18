@@ -1,5 +1,9 @@
 2008-11-14  Alejandro G. Castro	 <alex@igalia.com>
 
+	* examples/Makefile.am: Fixed typo in the Makefile.am.
+
+2008-11-14  Alejandro G. Castro	 <alex@igalia.com>
+
 	Reviewed the use of MAEMO_GTK define, now we add the define in the
 	compilation line, and we also add it to the pc file.
 

@@ -477,10 +477,10 @@ examples_DATA				= Makefile.static                               \
 					  hildon-wizard-dialog-example.c		\
 					  hildon-hvolumebar-timer-example.c		\
 					  hildon-toolbar-seekbar-example.c		\
-					  hildon-pannable-area-tree-view-example	\
-					  hildon-pannable-area-scroll-jump-example	\
-					  hildon-pannable-area-buttons-scroll-example	\
-					  hildon-pannable-area-gesture-signals-example	\
+					  hildon-pannable-area-tree-view-example.c	\
+					  hildon-pannable-area-scroll-jump-example.c	\
+					  hildon-pannable-area-buttons-scroll-example.c	\
+					  hildon-pannable-area-gesture-signals-example.c\
 					  hildon-pannable-area-touch-list-example.c	\
 					  hildon-pannable-area-touch-grid-example.c	\
 					  hildon-logical-color-example.c		\
