@@ -60,7 +60,7 @@ scan-build.stamp: $(HFILE_GLOB) $(CFILE_GLOB)
 	  gtkdoc-scan --module=$(DOC_MODULE) --source-dir=$(DOC_SOURCE_DIR) --ignore-headers="$(IGNORE_HFILES)" $(SCAN_OPTIONS) $(EXTRA_HFILES)
 	touch scan-build.stamp
 
-$(DOC_MODULE)-decl.txt $(SCANOBJ_FILES): scan-build.stamp
+$(DOC_MODULE)-decl.txt $(DOC_MODULE)-sections.txt $(SCANOBJ_FILES): scan-build.stamp
 	@true
 
 #### templates ####

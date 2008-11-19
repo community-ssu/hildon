@@ -1,3 +1,8 @@
+2008-11-19  Alberto Garcia  <agarcia@igalia.com>
+
+	* doc/gtk-doc.make:
+	Fix dependency to allow parallel compilation with make -jX
+
 2008-11-18  Claudio Saavedra  <csaavedra@igalia.com>
 
 	* src/hildon-color-chooser-dialog.c: Use theme colors for the selected
