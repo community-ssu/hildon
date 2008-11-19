@@ -379,6 +379,9 @@ hildon_note_init                                (HildonNote *dialog)
 
     gtk_dialog_set_has_separator (GTK_DIALOG (dialog), FALSE);
     gtk_window_set_modal (GTK_WINDOW (dialog), TRUE);
+
+    /* We use special hint to turn the note into information notification. */
+    gtk_window_set_type_hint (GTK_WINDOW (dialog), GDK_WINDOW_TYPE_HINT_NOTIFICATION);
 }
 
 
@@ -435,9 +438,6 @@ hildon_note_realize                             (GtkWidget *widget)
     if (priv->sound_signal_handler == 0)
         priv->sound_signal_handler = g_signal_connect_after(widget, 
                 "expose-event", G_CALLBACK (sound_handling), NULL);
-
-    /* We use special hint to turn the note into information notification. */
-    gdk_window_set_type_hint (widget->window, GDK_WINDOW_TYPE_HINT_NOTIFICATION);
 
     /* Set the _HILDON_NOTIFICATION_TYPE property so Matchbox places the window correctly */
     display = gdk_drawable_get_display (widget->window);

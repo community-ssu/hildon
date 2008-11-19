@@ -1,3 +1,12 @@
+2008-11-19  Claudio Saavedra  <csaavedra@igalia.com>
+
+	Patch contributed by Adam Endrodi (adam.endrodi@blumsoft.eu)
+
+	* src/hildon-note.c: (hildon_note_init), (hildon_note_realize): Set properly
+	the WINDOW_TYPE property.
+
+	Fixes: NB#92897 (HildonNotes have incorrect WINDOW_TYPE)
+
 2008-11-19  Alberto Garcia  <agarcia@igalia.com>
 
 	* doc/gtk-doc.make:
