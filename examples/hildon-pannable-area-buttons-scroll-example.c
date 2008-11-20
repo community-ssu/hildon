@@ -23,10 +23,6 @@
  *
  */
 
-#include                                        <stdio.h>
-#include                                        <stdlib.h>
-#include                                        <glib.h>
-#include                                        <gtk/gtk.h>
 #include                                        "hildon.h"
 
 GtkWidget *btn;
@@ -71,7 +67,8 @@ main (int argc, char **args)
     for (i = 0; i < 80; i++) {
             gchar *label = g_strdup_printf ("Button number %d", i);
 
-            button = gtk_button_new_with_label (label);
+            button = hildon_gtk_button_new (HILDON_SIZE_FINGER_HEIGHT | HILDON_SIZE_AUTO_WIDTH);
+            gtk_button_set_label (GTK_BUTTON (button), label);
             gtk_box_pack_start (GTK_BOX (vbox), button, TRUE, TRUE, 0);
             g_signal_connect (G_OBJECT (button), "clicked", G_CALLBACK (on_button_clicked), GINT_TO_POINTER (i));
             g_free (label);
@@ -84,7 +81,8 @@ main (int argc, char **args)
     vbox = gtk_vbox_new (FALSE, 10);
     hbox = gtk_hbox_new (FALSE, 10);
 
-    button = gtk_button_new_with_label ("Find the latest clicked button");
+    button = hildon_gtk_button_new (HILDON_SIZE_FINGER_HEIGHT | HILDON_SIZE_AUTO_WIDTH);
+    gtk_button_set_label (GTK_BUTTON (button), "Find the latest clicked button");
     g_signal_connect (G_OBJECT (button), "clicked", G_CALLBACK (find_button_clicked), panarea);
     gtk_box_pack_start (GTK_BOX (hbox), button, FALSE, FALSE, 0);
 

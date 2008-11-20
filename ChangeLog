@@ -1,3 +1,8 @@
+2008-11-20  Alberto Garcia  <agarcia@igalia.com>
+
+	* examples/hildon-pannable-area-buttons-scroll-example.c:
+	Make all buttons finger height
+
 2008-11-19  Alejandro Pinheiro  <apinheiro@igalia.com>
 
 	* src/hildon-touch-selector.c: updated the HildonTouchSelector::changed
