@@ -7,7 +7,6 @@ EXAMPLES				= hildon-window-example				\
 					  hildon-caption-example			\
 					  hildon-note-example				\
 					  hildon-icon-sizes-example			\
-					  hildon-insensitive-example			\
 					  hildon-window-menu-example			\
 					  hildon-window-cmn-menu-example		\
 					  hildon-toolbar-example			\
@@ -65,7 +64,8 @@ DEPRECATED_EXAMPLES			= hildon-weekday-picker-example			\
 					  hildon-bread-crumb-trail-example		\
 					  hildon-seekbar-example			\
 					  hildon-toolbar-seekbar-example		\
-					  hildon-hvolumebar-timer-example
+					  hildon-hvolumebar-timer-example		\
+					  hildon-insensitive-example
 
 
 if HILDON_DISABLE_DEPRECATED

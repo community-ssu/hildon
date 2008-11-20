@@ -1,5 +1,22 @@
 2008-11-20  Alberto Garcia  <agarcia@igalia.com>
 
+	Based on a patch by Claudio Saavedra (csaavedra@igalia.com)
+
+	* src/hildon-volumebar.h
+	* src/hildon-volumebar.c (hildon_volumebar_set_range_insensitive_message)
+	(hildon_volumebar_set_range_insensitive_messagef): Mark as deprecated.
+
+	* src/hildon-helper.h
+	* src/hildon-helper.c (hildon_helper_set_insensitive_message)
+	(hildon_helper_set_insensitive_messagef): Mark as deprecated.
+
+	* examples/Makefile.am:
+	Deprecate hildon-insensitive-example
+
+	Fixes: NB#92664 (Deprecate hildon_helper_set_insensitive_message)
+
+2008-11-20  Alberto Garcia  <agarcia@igalia.com>
+
 	* examples/hildon-pannable-area-buttons-scroll-example.c:
 	Make all buttons finger height
 

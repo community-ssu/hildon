@@ -746,7 +746,9 @@ hildon_volumebar_level_change                   (HildonVolumebar *self)
  *
  * Used to asign an insensitive message to the slider of the given volumebar.
  * It simply calls hildon_helper_set_insensitive_message on the slider/range of 
- * the volumebar. 
+ * the volumebar.
+ *
+ * Deprecated: As of hildon 2.2, it is strongly discouraged to use insensitive messages.
  */
 void
 hildon_volumebar_set_range_insensitive_message  (HildonVolumebar *widget,
@@ -767,6 +769,8 @@ hildon_volumebar_set_range_insensitive_message  (HildonVolumebar *widget,
  * @varargs : arguments for the format string
  *
  * A helper printf-like variant of hildon_helper_set_insensitive_message.
+ *
+ * Deprecated: As of hildon 2.2, it is strongly discouraged to use insensitive messages.
  */
 void
 hildon_volumebar_set_range_insensitive_messagef (HildonVolumebar *widget,

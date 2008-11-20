@@ -90,6 +90,7 @@ hildon_volumebar_set_mute                       (HildonVolumebar *self,
 GtkAdjustment* 
 hildon_volumebar_get_adjustment                 (HildonVolumebar *self);
 
+#ifndef HILDON_DISABLE_DEPRECATED
 void
 hildon_volumebar_set_range_insensitive_message  (HildonVolumebar *widget,
                                                  const gchar *message);
@@ -98,6 +99,7 @@ void
 hildon_volumebar_set_range_insensitive_messagef (HildonVolumebar *widget,
                                                  const gchar *format,
                                                  ...);
+#endif
 
 G_END_DECLS
 

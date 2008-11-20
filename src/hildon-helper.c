@@ -31,6 +31,8 @@
  * on widget styles and probing functions for touch events.
  */
 
+#undef                                          HILDON_DISABLE_DEPRECATED
+
 #ifdef                                          HAVE_CONFIG_H
 #include                                        <config.h>
 #endif
@@ -373,6 +375,8 @@ show_insensitive_message                        (GtkWidget *widget,
  * This function assigns an insensitive message to a @widget. When the @widget is
  * in an insensitive state and the user activates it, the @message will be displayed
  * using a standard #HildonBanner.
+ *
+ * Deprecated: As of hildon 2.2, it is strongly discouraged to use insensitive messages.
  **/
 void
 hildon_helper_set_insensitive_message           (GtkWidget *widget,
@@ -404,6 +408,8 @@ hildon_helper_set_insensitive_message           (GtkWidget *widget,
  * @Varargs: arguments for the format string
  *
  * A version of hildon_helper_set_insensitive_message with string formatting.
+ *
+ * Deprecated: As of hildon 2.2, it is strongly discouraged to use insensitive messages.
  **/
 void
 hildon_helper_set_insensitive_messagef          (GtkWidget *widget,
