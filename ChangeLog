@@ -1,3 +1,17 @@
+2008-11-19  Alejandro Pinheiro  <apinheiro@igalia.com>
+
+	* src/hildon-touch-selector.c: updated the HildonTouchSelector::changed
+	documentation
+	* src/hildon-date-selector.c: (_update_day_model): Modified in order to
+	update the day model only if it is really required, and to avoid the
+	full-reconstruction aproach. Now it only add or remove the required days.
+
+	The purpose of this is avoid superfluous HildonTouchSelector::changed
+	signals
+
+	Fixes: NB#92744 (HildonDateSelector emits multiple "changed" singal
+	with strange parameters)
+
 2008-11-19  Claudio Saavedra  <csaavedra@igalia.com>
 
 	Patch contributed by Adam Endrodi (adam.endrodi@blumsoft.eu)

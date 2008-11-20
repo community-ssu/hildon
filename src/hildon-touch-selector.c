@@ -164,6 +164,7 @@ static HildonTouchSelectorColumn *_create_new_column (HildonTouchSelector * sele
 static gboolean
 _hildon_touch_selector_center_on_selected_items (GtkWidget *widget,
                                                  gpointer data);
+
 static void
 _hildon_touch_selector_set_model                (HildonTouchSelector * selector,
                                                  gint num_column,
@@ -221,6 +222,7 @@ hildon_touch_selector_class_init (HildonTouchSelectorClass * class)
   container_class->remove = hildon_touch_selector_remove;
 
   /* HildonTouchSelector */
+  class->changed = NULL;
   class->set_model = _hildon_touch_selector_set_model;
 
   class->has_multiple_selection = _hildon_touch_selector_has_multiple_selection;
@@ -228,13 +230,12 @@ hildon_touch_selector_class_init (HildonTouchSelectorClass * class)
   /* signals */
   /**
    * HildonTouchSelector::changed:
+   * @column: the concrete column being modified
    * @widget: the object which received the signal
    *
-   * The changed signal is emitted when the active
-   * item is changed. This can be due to the user selecting
-   * a different item from the list, or due to a
-   * call to hildon_touch_selector_select_iter() on
-   * one of the columns.
+   * The changed signal is emitted when the active item on any column is changed.
+   * This can be due to the user selecting a different item from the list, or
+   * due to a call to hildon_touch_selector_select_iter() on one of the columns.
    *
    */
   hildon_touch_selector_signals[CHANGED] =

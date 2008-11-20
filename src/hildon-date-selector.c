@@ -87,6 +87,8 @@ struct _HildonDateSelectorPrivate
   gint creation_day;
   gint creation_month;
   gint creation_year;           /* date at creation time */
+
+  gint current_num_days;
 };
 
 static void hildon_date_selector_finalize (GObject * object);
@@ -234,6 +236,7 @@ hildon_date_selector_init (HildonDateSelector * selector)
   selector->priv->year_model = _create_year_model (selector);
   selector->priv->month_model = _create_month_model (selector);
   selector->priv->day_model = _create_day_model (selector);
+  selector->priv->current_num_days = 31;
 
   /* We add the columns, checking the locale order */
   iter = selector->priv->column_order;
@@ -477,6 +480,7 @@ static GtkTreeModel *
 _update_day_model (HildonDateSelector * selector)
 {
   GtkListStore *store_days = NULL;
+  GtkTreePath *path = NULL;
   gint i = 0;
   GtkTreeIter iter;
   static gchar label[255];
@@ -486,31 +490,37 @@ _update_day_model (HildonDateSelector * selector)
   guint current_month = 0;
   guint num_days = 31;
 
-  hildon_date_selector_get_date (selector, NULL, NULL, &current_day);
-
-  hildon_touch_selector_get_selected (HILDON_TOUCH_SELECTOR (selector),
-                                      selector->priv->month_column, &iter);
-  gtk_tree_model_get (selector->priv->month_model,
-                      &iter, COLUMN_INT, &current_month, -1);
-
-  hildon_touch_selector_get_selected (HILDON_TOUCH_SELECTOR (selector),
-                                      selector->priv->year_column, &iter);
-  gtk_tree_model_get (selector->priv->year_model,
-                      &iter, COLUMN_INT, &current_year, -1);
+  hildon_date_selector_get_date (selector, &current_year, &current_month,
+                                 &current_day);
 
   num_days = _month_days (current_month, current_year);
-
   store_days = GTK_LIST_STORE (selector->priv->day_model);
-  gtk_list_store_clear (store_days);
 
-  for (i = 1; i <= num_days; i++) {
-    tm.tm_mday = i;
-    strftime (label, 255, _("wdgt_va_day_numeric"), &tm);
-
-    gtk_list_store_append (store_days, &iter);
-    gtk_list_store_set (store_days, &iter,
-                        COLUMN_STRING, label, COLUMN_INT, i, -1);
+  if (num_days == selector->priv->current_num_days) {
+    return GTK_TREE_MODEL (store_days);
   }
+
+  if (num_days > selector->priv->current_num_days) {
+    for (i = selector->priv->current_num_days + 1; i <= num_days; i++) {
+      tm.tm_mday = i;
+      strftime (label, 255, _("wdgt_va_day_numeric"), &tm);
+
+      gtk_list_store_append (store_days, &iter);
+      gtk_list_store_set (store_days, &iter,
+                          COLUMN_STRING, label, COLUMN_INT, i, -1);
+    }
+  } else {
+    path = gtk_tree_path_new_from_indices (num_days,
+                                           -1);
+    gtk_tree_model_get_iter (GTK_TREE_MODEL (store_days), &iter, path);
+    do {
+    }while (gtk_list_store_remove (store_days, &iter));
+
+    gtk_tree_path_free (path);
+  }
+
+
+  selector->priv->current_num_days = num_days;
 
   /* now we select a day */
   if (current_day >= num_days) {
@@ -558,6 +568,8 @@ _manage_selector_change_cb (HildonTouchSelector * touch_selector,
   if ((num_column == selector->priv->month_column) ||
       (num_column == selector->priv->year_column)) /* it is required to check that with
                                                     * the years too,remember: leap years
+                                                    * update_day_model will check if
+                                                    * the number of days is different
                                                     */
   {
     _update_day_model (selector);
@@ -595,7 +607,7 @@ hildon_date_selector_new ()
 
 
 /**
- * hildon_date_selector_select_date:
+ * hildon_date_selector_select_current_date:
  * @selector: the #HildonDateSelector
  * @year:  the current year
  * @month: the current month (0-11)
