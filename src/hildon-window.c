@@ -416,9 +416,6 @@ hildon_window_realize                           (GtkWidget *widget)
     /* Update the topmost status */
     active_window = hildon_window_get_active_window();
     hildon_window_update_topmost (HILDON_WINDOW (widget), active_window);
-
-    /* Update the window title */
-    hildon_window_update_title(HILDON_WINDOW (widget));
 }
 
 static void
@@ -838,12 +835,7 @@ hildon_window_notify                            (GObject *gobject,
 {
     HildonWindow *window = HILDON_WINDOW (gobject);
 
-    if (g_str_equal (param->name, "title"))
-    {
-
-        hildon_window_update_title (window);
-    }
-    else if (g_str_equal (param->name, "is-topmost"))
+    if (g_str_equal (param->name, "is-topmost"))
     {
         hildon_window_is_topmost_notify (window);
     }
@@ -1363,48 +1355,6 @@ hildon_window_update_topmost                    (HildonWindow *self,
         priv->is_topmost = FALSE;
         hildon_window_is_topmost_notify (self);
         g_object_notify (G_OBJECT (self), "is-topmost");
-    }
-}
-
-/*
- * If the application
- * was given a name (with g_set_application_name(), set 
- * "ProgramName - WindowTitle" as the displayed
- * title
- */
-void G_GNUC_INTERNAL
-hildon_window_update_title                      (HildonWindow *window)
-{
-    const gchar * application_name;
-
-    g_return_if_fail (HILDON_IS_WINDOW (window));
-
-    if (!GTK_WIDGET_REALIZED (window))
-    {
-        return;
-    }
-
-    application_name = g_get_application_name ();
-
-    if (application_name && application_name[0])
-    {
-        const gchar *old_title = gtk_window_get_title (GTK_WINDOW (window));
-
-        if (old_title)
-        {
-            gchar *title = NULL;
-                
-            if (strlen (old_title) == 0) 
-                title = g_strdup (application_name);
-            else
-                title = g_strjoin (TITLE_SEPARATOR, application_name,
-                                   old_title, NULL);
-
-            gdk_window_set_title (GTK_WIDGET (window)->window, title);
-
-            g_free (title);
-        }
-
     }
 }
 

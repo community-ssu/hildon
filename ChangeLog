@@ -1,5 +1,14 @@
 2008-11-21  Claudio Saavedra  <csaavedra@igalia.com>
 
+	* src/hildon-window.c: (hildon_window_realize),
+	(hildon_window_notify), (-hildon_window_update_title): Do not set
+	the application name in the window title.
+
+	Fixes: NB#89754 (Applications shouldn't display their names in the
+	window title)
+
+2008-11-21  Claudio Saavedra  <csaavedra@igalia.com>
+
 	* src/hildon-note-private.h:
 	* src/hildon-note.c: (hildon_note_set_property),
 	(hildon_note_get_property), (hildon_note_class_init),
