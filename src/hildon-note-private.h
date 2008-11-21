@@ -47,11 +47,9 @@ struct                                          _HildonNotePrivate
 
     gchar *original_description;
 
-#ifndef HILDON_DISABLE_DEPRECATED
   /* These strings stored for backwards compatibility */
     gchar *icon;
     gchar *stock_icon;
-#endif
 };
 
 G_END_DECLS

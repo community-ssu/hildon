@@ -1,3 +1,15 @@
+2008-11-21  Claudio Saavedra  <csaavedra@igalia.com>
+
+	* src/hildon-note-private.h:
+	* src/hildon-note.c: (hildon_note_set_property),
+	(hildon_note_get_property), (hildon_note_class_init),
+	(hildon_note_init), (hildon_note_finalize),
+	(hildon_note_new_confirmation_with_icon_name),
+	(hildon_note_new_information_with_icon_name):
+
+	No need to mark as deprecated the actual code. Revert
+	to avoid missing symbols in widgets using deprecated API.
+
 2008-11-20  Alberto Garcia  <agarcia@igalia.com>
 
 	Based on a patch by Claudio Saavedra (csaavedra@igalia.com)

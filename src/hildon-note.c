@@ -67,6 +67,8 @@
 #include                                        <X11/Xatom.h>
 #include                                        <gdk/gdkx.h>
 
+#undef HILDON_DISABLE_DEPRECATED
+
 #include                                        "hildon-note.h"
 #include                                        "hildon-defines.h"
 #include                                        "hildon-sound.h"
@@ -120,13 +122,9 @@ enum
     PROP_0,
     PROP_HILDON_NOTE_TYPE,
     PROP_HILDON_NOTE_DESCRIPTION,
-#ifndef HILDON_DISABLE_DEPRECATED
     PROP_HILDON_NOTE_ICON,
-#endif
     PROP_HILDON_NOTE_PROGRESSBAR,
-#ifndef HILDON_DISABLE_DEPRECATED
     PROP_HILDON_NOTE_STOCK_ICON
-#endif
 };
 
 static GtkDialogClass*                          parent_class;
@@ -162,7 +160,6 @@ hildon_note_set_property                        (GObject *object,
             
             break;
 
-#ifndef HILDON_DISABLE_DEPRECATED
         case PROP_HILDON_NOTE_ICON:
             if (priv->icon) {
               g_free (priv->icon);
@@ -176,7 +173,6 @@ hildon_note_set_property                        (GObject *object,
             }
             priv->stock_icon = g_value_dup_string (value);
             break;
-#endif
 
         case PROP_HILDON_NOTE_PROGRESSBAR:
             widget = g_value_get_object (value);
@@ -224,7 +220,6 @@ hildon_note_get_property                        (GObject *object,
             g_value_set_string (value, priv->original_description);
             break;
 
-#ifndef HILDON_DISABLE_DEPRECATED
         case PROP_HILDON_NOTE_ICON:
             g_value_set_string (value, priv->icon);
             break;
@@ -232,7 +227,7 @@ hildon_note_get_property                        (GObject *object,
         case PROP_HILDON_NOTE_STOCK_ICON:
             g_value_set_string (value, priv->stock_icon);
             break;
-#endif
+
         case PROP_HILDON_NOTE_PROGRESSBAR:
             g_value_set_object (value, priv->progressbar);
             break;
@@ -312,7 +307,6 @@ hildon_note_class_init                          (HildonNoteClass *class)
                 "",
                 G_PARAM_READWRITE));
 
-#ifndef HILDON_DISABLE_DEPRECATED
     /**
      * HildonNote:icon:
      *
@@ -342,7 +336,6 @@ hildon_note_class_init                          (HildonNoteClass *class)
                 "The stock name of the icon that appears in the note dialog",
                 "",
                 G_PARAM_READWRITE));
-#endif
 
     /**
      * HildonNote:progressbar:
@@ -367,10 +360,8 @@ hildon_note_init                                (HildonNote *dialog)
     priv->label = gtk_label_new (NULL);
     gtk_label_set_line_wrap (GTK_LABEL (priv->label), TRUE);
 
-#ifndef HILDON_DISABLE_DEPRECATED
     priv->icon = NULL;
     priv->stock_icon = NULL;
-#endif
 
     /* Acquire real references to our internal children, since
        they are not nessecarily packed into container in each
@@ -397,7 +388,6 @@ hildon_note_finalize                            (GObject *obj_self)
     if (priv->label)
         g_object_unref (priv->label);
 
-#ifndef HILDON_DISABLE_DEPRECATED
     if (priv->icon) {
         g_free (priv->icon);
         priv->icon = NULL;
@@ -406,7 +396,6 @@ hildon_note_finalize                            (GObject *obj_self)
         g_free (priv->stock_icon);
         priv->stock_icon = NULL;
     }
-#endif
 
     if (priv->progressbar)
         g_object_unref (priv->progressbar);
@@ -650,7 +639,6 @@ hildon_note_new_confirmation                    (GtkWindow *parent,
     return dialog;
 }
 
-#ifndef HILDON_DISABLE_DEPRECATED
 /**
  * hildon_note_new_confirmation_with_icon_name:
  * @parent: the parent window. The X window ID of the parent window
@@ -676,7 +664,6 @@ hildon_note_new_confirmation_with_icon_name     (GtkWindow *parent,
 {
   return hildon_note_new_confirmation (parent, description);
 }
-#endif
 
 /**
  * hildon_note_new_information:
@@ -711,7 +698,6 @@ hildon_note_new_information                     (GtkWindow *parent,
     return dialog;
 }
 
-#ifndef HILDON_DISABLE_DEPRECATED
 /**
  * hildon_note_new_information_with_icon_name:
  * @parent: the parent window. The X window ID of the parent window
@@ -737,7 +723,6 @@ hildon_note_new_information_with_icon_name      (GtkWindow * parent,
 {
     return hildon_note_new_information (parent, description);
 }
-#endif
 
 /* FIXME This documentation string LIES! */
 
