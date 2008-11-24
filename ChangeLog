@@ -1,5 +1,13 @@
 2008-11-24  Claudio Saavedra  <csaavedra@igalia.com>
 
+	[Release 2.1.24]
+
+	* NEWS: updates
+	* configure.ac: bump version
+	* debian/changelog: updates
+
+2008-11-24  Claudio Saavedra  <csaavedra@igalia.com>
+
 	Based on initial code by Christian Dywan (christian@imendio.com)
 
 	* doc/hildon-docs.sgml: Add section for hildon-main.
