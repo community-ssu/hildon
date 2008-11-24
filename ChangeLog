@@ -16,7 +16,6 @@
 	future for other hildon specific bits.
 
 	Fixes: NB#92476 (Update icon size constants to Fremantle (hildon-defines.h))
-	Fixes: NB#93075 (Update icon size constants to Fremantle)
 
 2008-11-21  Claudio Saavedra  <csaavedra@igalia.com>
 
