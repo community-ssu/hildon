@@ -4,11 +4,11 @@
 
   * Fixes: NB#89811 (Not able to select first image thumbnail in multi
     selection mode using custom widget inside pannable)
+  * Fixes: NB#91863 (hildon_touch_selector_set_column_selection_mode()
+    breaks HildonPickerDialog)
   * Fixes: NB#91769 (HildonColorChooserDialog's selected colour is
     highlighted but not visible)
   * Fixes: NB#92897 (HildonNotes have incorrect WINDOW_TYPE)
-    Fixes: NB#92744 (HildonDateSelector emits multiple "changed" singal
-    with strange parameters)
   * Fixes: NB#92744 (HildonDateSelector emits multiple "changed" singal
     with strange parameters)
   * Fixes: NB#92664 (Deprecate hildon_helper_set_insensitive_message)

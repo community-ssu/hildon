@@ -1,10 +1,5 @@
 2008-11-24  Claudio Saavedra  <csaavedra@igalia.com>
 
-	* configure.ac: post release version bump
-	* debian/changelog: version bump
-
-2008-11-24  Claudio Saavedra  <csaavedra@igalia.com>
-
 	[Release 2.1.24]
 
 	* NEWS: updates
