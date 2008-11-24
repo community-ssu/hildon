@@ -1,3 +1,23 @@
+2008-11-24  Claudio Saavedra  <csaavedra@igalia.com>
+
+	Based on initial code by Christian Dywan (christian@imendio.com)
+
+	* doc/hildon-docs.sgml: Add section for hildon-main.
+	* examples/*.c: (main): Replace gtk_main() calls with hildon_gtk_main().
+	* src/Makefile.am: Add new hildon-main.[ch]
+	* src/hildon-defines.h: Update the icon sizes.
+	* src/hildon-main.c: (+hildon_init), (+hildon_gtk_init): Add
+	new library initialization files and register icon sizes.
+	* src/hildon-main.h: New declarations.
+	* src/hildon.h: Include hildon-main.h
+
+	Add new initialization functions to the library. These methods
+	will register the hildon specific icon sizes and can be used in the
+	future for other hildon specific bits.
+
+	Fixes: NB#92476 (Update icon size constants to Fremantle (hildon-defines.h))
+	Fixes: NB#93075 (Update icon size constants to Fremantle)
+
 2008-11-21  Claudio Saavedra  <csaavedra@igalia.com>
 
 	* src/hildon-window.c: (hildon_window_realize),

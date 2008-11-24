@@ -124,12 +124,12 @@ get_visible_content (GtkWidget * window)
 }
 
 int
-main (int argc, char **args)
+main (int argc, char **argv)
 {
   HildonProgram *program = NULL;
   GtkWidget *window = NULL;
 
-  gtk_init (&argc, &args);
+  hildon_gtk_init (&argc, &argv);
 
   program = hildon_program_get_instance ();
   g_set_application_name

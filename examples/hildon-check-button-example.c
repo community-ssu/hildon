@@ -43,7 +43,7 @@ main                                            (int    argc,
     GtkWidget *table;
     int i;
 
-    gtk_init (&argc, &argv);
+    hildon_gtk_init (&argc, &argv);
 
     win = gtk_window_new (GTK_WINDOW_TOPLEVEL);
     vbox = GTK_BOX (gtk_vbox_new (FALSE, 10));

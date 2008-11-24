@@ -29,13 +29,13 @@
 #include                                        "hildon.h"
 
 int
-main                                            (int argc, 
-                                                 char **args)
+main                                            (int argc,
+                                                 char **argv)
 {
-    gtk_init (&argc, &args);
-    
+    hildon_gtk_init (&argc, &argv);
+
     GtkDialog *dialog = GTK_DIALOG (hildon_login_dialog_new (NULL));
-    
+
     hildon_login_dialog_set_message ((HildonLoginDialog *) dialog, "Enter password to login");
 
     gtk_widget_show_all (GTK_WIDGET (dialog));

@@ -26,12 +26,12 @@
 
 int
 main                                            (int argc,
-                                                 char **args)
+                                                 char **argv)
 {
     HildonDialog *d, *d2;
     GtkWidget *label, *label2;
 
-    gtk_init (&argc, &args);
+    hildon_gtk_init (&argc, &argv);
 
     /* First dialog, using hildon_dialog_new() */
 

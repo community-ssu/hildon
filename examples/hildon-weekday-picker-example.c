@@ -29,11 +29,11 @@
 #include                                        "hildon.h"
 
 int
-main                                            (int argc, 
-                                                 char **args)
+main                                            (int argc,
+                                                 char **argv)
 {
-    gtk_init (&argc, &args);
-    
+    hildon_gtk_init (&argc, &argv);
+
     GtkDialog *dialog = GTK_DIALOG (gtk_dialog_new ());
 
     GtkWidget *picker = hildon_weekday_picker_new ();

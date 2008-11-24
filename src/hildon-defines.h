@@ -32,8 +32,23 @@
 
 G_BEGIN_DECLS
 
-#define                                         HILDON_ICON_SIZE_SMALL \
-                                                gtk_icon_size_from_name ("gtk-menu")
+/* New hildon icon sizes. */
+
+#define HILDON_ICON_SIZE_XSMALL                  gtk_icon_size_from_name ("hildon-xsmall")
+
+#define HILDON_ICON_SIZE_SMALL                   gtk_icon_size_from_name ("hildon-small")
+
+#define HILDON_ICON_SIZE_STYLUS                  gtk_icon_size_from_name ("hildon-stylus")
+
+#define HILDON_ICON_SIZE_FINGER                  gtk_icon_size_from_name ("hildon-finger")
+
+#define HILDON_ICON_SIZE_THUMB                   gtk_icon_size_from_name ("hildon-thumb")
+
+#define HILDON_ICON_SIZE_LARGE                   gtk_icon_size_from_name ("hildon-large")
+
+#define HILDON_ICON_SIZE_XLARGE                  gtk_icon_size_from_name ("hildon-xlarge")
+
+/* Old hildon icon sizes. To be removed. */
 
 #define                                         HILDON_ICON_SIZE_TOOLBAR \
                                                 gtk_icon_size_from_name ("gtk-menu")
@@ -49,9 +64,29 @@ G_BEGIN_DECLS
 
 /* Actual icon sizes */
 
+/* New sizes */
+#define                                         HILDON_ICON_PIXEL_SIZE_XSMALL \
+                                                hildon_get_icon_pixel_size (HILDON_ICON_SIZE_XSMALL)
+
 #define                                         HILDON_ICON_PIXEL_SIZE_SMALL \
                                                 hildon_get_icon_pixel_size (HILDON_ICON_SIZE_SMALL)
 
+#define                                         HILDON_ICON_PIXEL_SIZE_STYLUS \
+                                                hildon_get_icon_pixel_size (HILDON_ICON_SIZE_STYLUS)
+
+#define                                         HILDON_ICON_PIXEL_SIZE_FINGER \
+                                                hildon_get_icon_pixel_size (HILDON_ICON_SIZE_FINGER)
+
+#define                                         HILDON_ICON_PIXEL_SIZE_THUMB \
+                                                hildon_get_icon_pixel_size (HILDON_ICON_SIZE_THUMB)
+
+#define                                         HILDON_ICON_PIXEL_SIZE_LARGE \
+                                                hildon_get_icon_pixel_size (HILDON_ICON_SIZE_LARGE)
+
+#define                                         HILDON_ICON_PIXEL_SIZE_XLARGE \
+                                                hildon_get_icon_pixel_size (HILDON_ICON_SIZE_XLARGE)
+
+/* old sizes */
 #define                                         HILDON_ICON_PIXEL_SIZE_TOOLBAR \
                                                 hildon_get_icon_pixel_size (HILDON_ICON_SIZE_TOOLBAR)
 

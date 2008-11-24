@@ -64,7 +64,7 @@ main                                            (int    argc,
     GtkWidget *placeholderentry, *placeholderbutton, *placeholderhbox;
     GtkBox *vbox;
 
-    gtk_init (&argc, &argv);
+    hildon_gtk_init (&argc, &argv);
 
     /* Window and vbox to pack everything */
     win = hildon_stackable_window_new ();

@@ -42,11 +42,12 @@ on_mute_clicked                                 (GtkWidget *clicked,
 }
 
 int
-main                                            (int argc, 
-                                                 char **args)
+main                                            (int argc,
+                                                 char **argv)
 {
-    gtk_init (&argc, &args);
-    
+    hildon_gtk_init (&argc, &argv);
+
+
     GtkDialog *dialog = GTK_DIALOG (gtk_dialog_new ());
     GtkButton *button = GTK_BUTTON (gtk_button_new_with_label ("mute"));
 

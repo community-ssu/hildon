@@ -59,7 +59,7 @@ static const gchar* artists [] = {
 };
 
 int
-main (int argc, char **args)
+main (int argc, char **argv)
 {
   HildonProgram *program = NULL;
   GtkWidget *window = NULL;
@@ -67,7 +67,7 @@ main (int argc, char **args)
   GtkWidget *selector;
   gint i;
 
-  gtk_init (&argc, &args);
+  hildon_gtk_init (&argc, &argv);
 
   program = hildon_program_get_instance ();
   g_set_application_name

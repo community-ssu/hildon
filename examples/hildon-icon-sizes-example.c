@@ -29,17 +29,23 @@
 #include                                        "hildon.h"
 
 int
-main                                            (int argc, 
-                                                 char **args)
+main                                            (int argc,
+                                                 char **argv)
 {
-    gtk_init (&argc, &args);
+    hildon_gtk_init (&argc, &argv);
 
+    g_debug ("Extra small pixel size: %d", HILDON_ICON_PIXEL_SIZE_XSMALL);
     g_debug ("Small pixel size: %d", HILDON_ICON_PIXEL_SIZE_SMALL);
+    g_debug ("Stylus pixel size: %d", HILDON_ICON_PIXEL_SIZE_STYLUS);
+    g_debug ("Finger pixel size: %d", HILDON_ICON_PIXEL_SIZE_FINGER);
+    g_debug ("Thumb pixel size: %d", HILDON_ICON_PIXEL_SIZE_THUMB);
+    g_debug ("Large pixel size: %d", HILDON_ICON_PIXEL_SIZE_LARGE);
+    g_debug ("Extra large pixel size: %d", HILDON_ICON_PIXEL_SIZE_XLARGE);
     g_debug ("Wizard pixel size: %d", HILDON_ICON_PIXEL_SIZE_WIZARD);
     g_debug ("Toolbar pixel size: %d", HILDON_ICON_PIXEL_SIZE_TOOLBAR);
     g_debug ("Note pixel size: %d", HILDON_ICON_PIXEL_SIZE_NOTE);
     g_debug ("Big note pixel size: %d", HILDON_ICON_PIXEL_SIZE_BIG_NOTE);
-    
+
     return 0;
 }
 

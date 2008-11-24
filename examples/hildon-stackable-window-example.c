@@ -96,11 +96,11 @@ add_window                                      (GtkWidget *w)
 
 int
 main                                            (int argc,
-                                                 char **args)
+                                                 char **argv)
 {
     GtkWidget *window;
 
-    gtk_init (&argc, &args);
+    hildon_gtk_init (&argc, &argv);
 
     g_set_application_name ("stack");
 

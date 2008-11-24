@@ -49,11 +49,11 @@ on_button_press                                 (GtkWidget *widget,
 }
 
 int
-main                                            (int argc, 
-                                                 char **args)
+main                                            (int argc,
+                                                 char **argv)
 {
-    gtk_init (&argc, &args);
-    
+    hildon_gtk_init (&argc, &argv);
+
     HildonProgram *program = hildon_program_get_instance ();
     GtkDrawingArea *area = GTK_DRAWING_AREA (gtk_drawing_area_new ());
     gtk_widget_set_size_request (GTK_WIDGET (area), 320, 240);

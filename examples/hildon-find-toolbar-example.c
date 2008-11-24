@@ -41,11 +41,11 @@ on_history_append                               (void)
 }
 
 int
-main                                            (int argc, 
-                                                 char **args)
+main                                            (int argc,
+                                                 char **argv)
 {
-    gtk_init (&argc, &args);
-    
+    hildon_gtk_init (&argc, &argv);
+
     HildonProgram *program = hildon_program_get_instance ();
 
     GtkWidget *window = hildon_window_new ();

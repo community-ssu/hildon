@@ -50,11 +50,11 @@ create_button_with_icon                         (const gchar *icon)
 }
 
 int
-main                                            (int argc, 
-                                                 char **args)
+main                                            (int argc,
+                                                 char **argv)
 {
-    gtk_init (&argc, &args);
-   
+    hildon_gtk_init (&argc, &argv);
+
     GtkDialog *dialog = GTK_DIALOG (gtk_dialog_new ());
     gtk_window_set_title (GTK_WINDOW (dialog), "icons");
 

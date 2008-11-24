@@ -104,7 +104,7 @@ search_button_clicked (GtkButton *button,
 }
 
 int
-main (int argc, char **args)
+main (int argc, char **argv)
 {
   int i;
   HildonProgram *program;
@@ -118,7 +118,7 @@ main (int argc, char **args)
   gboolean jump = FALSE;
   GSList *stocks, *item;
 
-  gtk_init (&argc, &args);
+  hildon_gtk_init (&argc, &argv);
 
   program = hildon_program_get_instance ();
 

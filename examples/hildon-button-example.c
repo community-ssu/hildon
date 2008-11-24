@@ -248,7 +248,7 @@ main                                            (int    argc,
     GtkBox *hbox;
     GtkWidget *align;
 
-    gtk_init (&argc, &argv);
+    hildon_gtk_init (&argc, &argv);
 
     vbox = GTK_BOX (gtk_vbox_new (FALSE, 10));
     hbox = GTK_BOX (gtk_hbox_new (TRUE, 10));

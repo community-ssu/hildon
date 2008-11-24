@@ -39,12 +39,12 @@ on_error (GtkWidget *widget, HildonDateTimeError error_type)
 }
 
 int
-main (int argc, char **args)
+main (int argc, char **argv)
 {
     guint y, m, d;
 
-    gtk_init (&argc, &args);
-    
+    hildon_gtk_init (&argc, &argv);
+
     GtkDialog *dialog = GTK_DIALOG (gtk_dialog_new ());
     HildonDateEditor *date_editor = HILDON_DATE_EDITOR (hildon_date_editor_new ());
 

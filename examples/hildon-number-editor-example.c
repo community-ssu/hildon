@@ -30,10 +30,10 @@
 
 int
 main                                            (int argc, 
-                                                 char **args)
+                                                 char **argv)
 {
-    gtk_init (&argc, &args);
-    
+    hildon_gtk_init (&argc, &argv);
+
     GtkDialog *dialog = GTK_DIALOG (gtk_dialog_new ());
     GtkWidget *editor = hildon_number_editor_new (2, 5);
     GtkWidget *label = gtk_label_new ("Enter number:");

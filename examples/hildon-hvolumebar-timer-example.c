@@ -83,9 +83,9 @@ on_idle                                         (void)
 
 int
 main                                            (int argc, 
-                                                 char **args)
+                                                 char **argv)
 {
-    gtk_init (&argc, &args);
+    hildon_gtk_init (&argc, &argv);
 
     g_timeout_add (2000, (GSourceFunc) on_idle, NULL);
 

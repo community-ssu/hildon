@@ -26,14 +26,14 @@ on_picker_value_changed (HildonPickerButton * button, gpointer data)
 }
 
 int
-main (int argc, char **args)
+main (int argc, char **argv)
 {
   HildonProgram *program = NULL;
   GtkWidget *window = NULL;
   GtkWidget *button;
   GtkWidget *selector;
 
-  gtk_init (&argc, &args);
+  hildon_gtk_init (&argc, &argv);
 
   program = hildon_program_get_instance ();
   g_set_application_name ("hildon-picker-button-example");

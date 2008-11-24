@@ -51,10 +51,10 @@ on_page_switch (GtkNotebook *notebook,
 }
 
 int
-main (int argc, char **args)
+main (int argc, char **argv)
 {
-    gtk_init (&argc, &args);
-   
+    hildon_gtk_init (&argc, &argv);
+
     GtkWidget *notebook = gtk_notebook_new ();
     GtkWidget *label_1 = gtk_label_new ("Page 1");
     GtkWidget *label_2 = gtk_label_new ("Page 2");

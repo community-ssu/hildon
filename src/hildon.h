@@ -80,5 +80,6 @@
 #include                                        "hildon-check-button.h"
 #include                                        "hildon-gtk.h"
 #include                                        "hildon-dialog.h"
+#include                                        "hildon-main.h"
 
 #endif 

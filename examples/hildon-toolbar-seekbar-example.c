@@ -30,17 +30,15 @@
 
 int
 main                                            (int argc, 
-                                                 char **args)
+                                                 char **argv)
 {
-    gtk_init (&argc, &args);
-    
+    hildon_gtk_init (&argc, &argv);
+
     HildonProgram *program = hildon_program_get_instance ();
 
     GtkWidget *window = hildon_window_new ();
     hildon_program_add_window (program, HILDON_WINDOW (window));
 
-    gtk_init (&argc, &args);
-    
     HildonSeekbar *bar = HILDON_SEEKBAR (hildon_seekbar_new ());
     gtk_widget_set_size_request (GTK_WIDGET (bar), 400, -1);
 

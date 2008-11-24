@@ -240,7 +240,7 @@ int main (int argc, char **argv)
   GtkCellRenderer *renderer;
   GtkTreeViewColumn *column;
 
-  gtk_init (&argc, &argv);
+  hildon_gtk_init (&argc, &argv);
 
   /* Main window */
 #if 1

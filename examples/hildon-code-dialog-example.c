@@ -40,10 +40,10 @@ on_input                                        (void)
 
 int
 main                                            (int argc, 
-                                                 char **args)
+                                                 char **argv)
 {
-    gtk_init (&argc, &args);
-    
+    hildon_gtk_init (&argc, &argv);
+
     GtkDialog *dialog = GTK_DIALOG (hildon_code_dialog_new ());
     g_signal_connect (G_OBJECT (dialog), "input", G_CALLBACK (on_input), NULL);
 

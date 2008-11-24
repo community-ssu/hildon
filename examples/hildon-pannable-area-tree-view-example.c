@@ -55,7 +55,7 @@ get_sawtooth_label (gchar **label, guint num)
 }
 
 int
-main (int argc, char **args)
+main (int argc, char **argv)
 {
     int i;
     HildonProgram *program;
@@ -64,7 +64,7 @@ main (int argc, char **args)
     GtkCellRenderer *renderer;
     GtkListStore *store;
 
-    gtk_init (&argc, &args);
+    hildon_gtk_init (&argc, &argv);
 
     program = hildon_program_get_instance ();
 

@@ -29,10 +29,10 @@
 #include                                        "hildon.h"
 
 int
-main (int argc, char **args)
+main (int argc, char **argv)
 {
-    gtk_init (&argc, &args);
-    
+    hildon_gtk_init (&argc, &argv);
+
     GtkDialog *dialog = GTK_DIALOG (hildon_sort_dialog_new (NULL));
 
     hildon_sort_dialog_add_sort_key (HILDON_SORT_DIALOG (dialog), "First key");

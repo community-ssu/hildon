@@ -99,7 +99,7 @@ main                                            (int argc,
     HildonAppMenu *menu;
     GtkAccelGroup *accel;
 
-    gtk_init (&argc, &argv);
+    hildon_gtk_init (&argc, &argv);
 
     label = gtk_label_new ("This is an example of the\nHildonAppMenu widget.\n\n"
                            "Click on the titlebar\nto pop up the menu.");

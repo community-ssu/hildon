@@ -176,7 +176,7 @@ main                                            (int    argc,
   GtkWidget *button;
   GtkWidget *area;
 
-  gtk_init (&argc, &argv);
+  hildon_gtk_init (&argc, &argv);
 
   gtk_rc_parse_string ("style \"fremantle-widget\" {\n"
                        "  GtkWidget::hildon-mode = 1\n"
