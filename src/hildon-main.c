@@ -32,12 +32,7 @@
 
 /**
  * hildon_init:
- * @argc: Address of the <parameter>argc</parameter>
- * parameter of your main() function. Changed if any arguments were
- * handled.
- * @argv: Address of the <parameter>argv</parameter>
- * parameter of main().  Any parameters understood by hildon_init()
- * are stripped before return.
+ * @void:
  *
  * Initializes the hildon library. Call this function after calling gtk_init()
  * and before using any hildon or GTK+ functions in your program.
