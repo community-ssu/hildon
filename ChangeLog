@@ -1,3 +1,8 @@
+2008-11-25  Alberto Garcia  <agarcia@igalia.com>
+
+	* src/hildon-app-menu.c (hildon_app_menu_realize):
+	Use the XA_ATOM type for the _NET_WM_WINDOW_TYPE property.
+
 2008-11-24  Claudio Saavedra  <csaavedra@igalia.com>
 
 	* configure.ac: post release version bump

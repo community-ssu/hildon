@@ -554,20 +554,22 @@ grab_transfer_window_get                        (GtkWidget *widget)
 static void
 hildon_app_menu_realize                         (GtkWidget *widget)
 {
-    GdkDisplay *display;
+    Atom property, window_type;
+    Display *xdisplay;
+    GdkDisplay *gdkdisplay;
     GdkScreen *screen;
-    Atom atom;
-    const gchar *notification_type = "_HILDON_WM_WINDOW_TYPE_APP_MENU";
 
     GTK_WIDGET_CLASS (hildon_app_menu_parent_class)->realize (widget);
 
     gdk_window_set_decorations (widget->window, GDK_DECOR_BORDER);
 
-    display = gdk_drawable_get_display (widget->window);
-    atom = gdk_x11_get_xatom_by_name_for_display (display, "_NET_WM_WINDOW_TYPE");
-    XChangeProperty (GDK_WINDOW_XDISPLAY (widget->window), GDK_WINDOW_XID (widget->window),
-                     atom, XA_STRING, 8, PropModeReplace, (guchar *) notification_type,
-                     strlen (notification_type));
+    gdkdisplay = gdk_drawable_get_display (widget->window);
+    xdisplay = GDK_WINDOW_XDISPLAY (widget->window);
+
+    property = gdk_x11_get_xatom_by_name_for_display (gdkdisplay, "_NET_WM_WINDOW_TYPE");
+    window_type = XInternAtom (xdisplay, "_HILDON_WM_WINDOW_TYPE_APP_MENU", False);
+    XChangeProperty (xdisplay, GDK_WINDOW_XID (widget->window), property,
+                     XA_ATOM, 32, PropModeReplace, (guchar *) &window_type, 1);
 
     /* Detect any screen changes */
     screen = gtk_widget_get_screen (widget);
