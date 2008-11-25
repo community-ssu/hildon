@@ -103,6 +103,7 @@
     <xi:include href="xml/hildon-helper.xml"/>
     <xi:include href="xml/hildon-defines.xml"/>
     <xi:include href="xml/hildon-bread-crumb.xml"/>
+    <xi:include href="xml/hildon-window-stack.xml"/>
   </chapter>
 
   <index>

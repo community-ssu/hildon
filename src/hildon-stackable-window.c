@@ -25,6 +25,7 @@
 /**
  * SECTION:hildon-stackable-window
  * @short_description: Widget representing a stackable, top-level window in the Hildon framework.
+ * @see_also: #HildonWindowStack
  *
  * The #HildonStackableWindow is a GTK+ widget which represents a
  * top-level window in the Hildon framework. It is derived from
@@ -32,14 +33,21 @@
  * in a hierarchical way so users can go from any window back to the
  * application's root window.
  *
+ * The user can only see and interact with the window on top of the
+ * stack. Although all other windows are mapped and visible, they are
+ * obscured by the topmost one so in practice they appear as if they
+ * were hidden.
+ *
  * To add a window to the stack, just use gtk_widget_show(). The
- * previous one will be automatically hidden. When the new window is
- * destroyed, the previous one will appear again.
+ * previous one will be obscured by the new one. When the new window
+ * is destroyed, the previous one will appear again.
  *
  * Alternatively, you can remove a window from the top of the stack
- * without destroying it by using
- * hildon_program_pop_window_stack(). The window will be automatically
- * hidden and the previous one will appear.
+ * without destroying it by using hildon_window_stack_pop(). The
+ * window will be automatically hidden and the previous one will
+ * appear.
+ *
+ * For advanced details on stack handling, see #HildonWindowStack
  *
  * <example>
  * <title>Basic HildonStackableWindow example</title>
@@ -53,7 +61,6 @@
  * <!-- -->
  *     // ... configure new window
  * <!-- -->
- *     // This automatically hides the previous window
  *     gtk_widget_show (win);
  * }
  * <!-- -->
@@ -84,12 +91,53 @@
 
 #include                                        <X11/X.h>
 #include                                        <X11/Xatom.h>
+#include                                        <gdk/gdkx.h>
 
 #include                                        "hildon-stackable-window.h"
 #include                                        "hildon-stackable-window-private.h"
 #include                                        "hildon-app-menu-private.h"
+#include                                        "hildon-window-stack.h"
+#include                                        "hildon-window-stack-private.h"
 
 G_DEFINE_TYPE (HildonStackableWindow, hildon_stackable_window, HILDON_TYPE_WINDOW);
+
+void G_GNUC_INTERNAL
+hildon_stackable_window_set_stack               (HildonStackableWindow *self,
+                                                 HildonWindowStack     *stack,
+                                                 gint                   position)
+{
+    HildonStackableWindowPrivate *priv = HILDON_STACKABLE_WINDOW_GET_PRIVATE (self);
+
+    if (stack)
+        g_object_ref (stack);
+
+    if (priv->stack)
+        g_object_unref (priv->stack);
+
+    priv->stack = stack;
+    priv->stack_position = position;
+}
+
+/**
+ * hildon_stackable_window_get_stack:
+ * @self: a #HildonStackableWindow
+ *
+ * Returns the stack where window @self is on, or %NULL if the window
+ * is not stacked.
+ *
+ * Return value: a #HildonWindowStack, or %NULL
+ **/
+HildonWindowStack *
+hildon_stackable_window_get_stack               (HildonStackableWindow *self)
+{
+    HildonStackableWindowPrivate *priv;
+
+    g_return_val_if_fail (HILDON_IS_STACKABLE_WINDOW (self), NULL);
+
+    priv = HILDON_STACKABLE_WINDOW_GET_PRIVATE (self);
+
+    return priv->stack;
+}
 
 /**
  * hildon_stackable_window_set_main_menu:
@@ -161,33 +209,49 @@ hildon_stackable_window_toggle_menu             (HildonWindow *self,
 }
 
 static void
-hildon_stackable_window_realize                 (GtkWidget *widget)
+hildon_stackable_window_map                     (GtkWidget *widget)
 {
     GdkDisplay *display;
     Atom atom;
-    unsigned long val = 1;
+    unsigned long val;
+    HildonStackableWindowPrivate *priv = HILDON_STACKABLE_WINDOW_GET_PRIVATE (widget);
 
-    GTK_WIDGET_CLASS (hildon_stackable_window_parent_class)->realize (widget);
+    val = priv->stack_position;
 
     /* Set additional property "_HILDON_STACKABLE_WINDOW", to allow the WM to manage
        it as a stackable window. */
     display = gdk_drawable_get_display (widget->window);
     atom = gdk_x11_get_xatom_by_name_for_display (display, "_HILDON_STACKABLE_WINDOW");
     XChangeProperty (GDK_DISPLAY_XDISPLAY (display), GDK_WINDOW_XID (widget->window), atom,
-                     XA_ATOM, 32, PropModeReplace,
+                     XA_INTEGER, 32, PropModeReplace,
                      (unsigned char *) &val, 1);
+
+    GTK_WIDGET_CLASS (hildon_stackable_window_parent_class)->map (widget);
 }
 
 static void
 hildon_stackable_window_show                    (GtkWidget *widget)
 {
-    GTK_WIDGET_CLASS (hildon_stackable_window_parent_class)->show (widget);
+    HildonStackableWindowPrivate *priv = HILDON_STACKABLE_WINDOW_GET_PRIVATE (widget);
+
+    /* Stack the window if not already stacked */
+    if (priv->stack == NULL) {
+        HildonWindowStack *stack = hildon_window_stack_get_default ();
+        hildon_window_stack_push_1 (stack, HILDON_STACKABLE_WINDOW (widget));
+    } else {
+        GTK_WIDGET_CLASS (hildon_stackable_window_parent_class)->show (widget);
+    }
 }
 
 static void
 hildon_stackable_window_hide                    (GtkWidget *widget)
 {
+    HildonStackableWindowPrivate *priv = HILDON_STACKABLE_WINDOW_GET_PRIVATE (widget);
     GTK_WIDGET_CLASS (hildon_stackable_window_parent_class)->hide (widget);
+
+    if (priv->stack) {
+        hildon_window_stack_remove (HILDON_STACKABLE_WINDOW (widget));
+    }
 }
 
 static void
@@ -213,7 +277,7 @@ hildon_stackable_window_class_init              (HildonStackableWindowClass *kla
 
     obj_class->finalize             = hildon_stackable_window_finalize;
 
-    widget_class->realize           = hildon_stackable_window_realize;
+    widget_class->map               = hildon_stackable_window_map;
     widget_class->show              = hildon_stackable_window_show;
     widget_class->hide              = hildon_stackable_window_hide;
 
@@ -228,6 +292,8 @@ hildon_stackable_window_init                    (HildonStackableWindow *self)
     HildonStackableWindowPrivate *priv = HILDON_STACKABLE_WINDOW_GET_PRIVATE (self);
 
     priv->app_menu = NULL;
+    priv->stack = NULL;
+    priv->stack_position = -1;
 }
 
 /**

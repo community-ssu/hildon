@@ -1,5 +1,35 @@
 2008-11-25  Alberto Garcia  <agarcia@igalia.com>
 
+	* doc/hildon-docs.sgml
+	* doc/hildon.types
+	* src/Makefile.am
+	* src/hildon.h
+	* src/hildon-window-stack-private.h
+	* src/hildon-window-stack.h
+	* src/hildon-window-stack.c:
+	New HildonWindowStack object, that adds support for multiple
+	stacks of windows per process.
+
+	* src/hildon-stackable-window-private.h
+	* src/hildon-stackable-window.h
+	* src/hildon-stackable-window.c (hildon_stackable_window_set_stack)
+	(hildon_stackable_window_get_stack, hildon_stackable_window_map)
+	(hildon_stackable_window_show, hildon_stackable_window_hide)
+	(hildon_stackable_window_class_init)
+	(hildon_stackable_window_init):
+	Use HildonWindowStack for stack management.
+
+	* src/hildon-program.c (hildon_program_pop_window_stack)
+	(hildon_program_peek_window_stack)
+	(hildon_program_go_to_root_window):
+	Add a fallback implementation to the deprecated functions using
+	HildonWindowStack.
+
+	* examples/hildon-stackable-window-example.c:
+	Use the new HildonWindowStack API.
+
+2008-11-25  Alberto Garcia  <agarcia@igalia.com>
+
 	* src/hildon-stackable-window-private.h
 	* src/hildon-stackable-window.c (hildon_stackable_window_show)
 	(hildon_stackable_window_hide, hildon_stackable_window_init):

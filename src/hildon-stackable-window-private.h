@@ -32,11 +32,18 @@ typedef struct                                  _HildonStackableWindowPrivate Hi
 struct                                          _HildonStackableWindowPrivate
 {
     HildonAppMenu *app_menu;
+    HildonWindowStack *stack;
+    gint stack_position;
 };
 
 #define                                         HILDON_STACKABLE_WINDOW_GET_PRIVATE(obj) \
                                                 (G_TYPE_INSTANCE_GET_PRIVATE ((obj),\
                                                 HILDON_TYPE_STACKABLE_WINDOW, HildonStackableWindowPrivate))
+
+void G_GNUC_INTERNAL
+hildon_stackable_window_set_stack               (HildonStackableWindow *self,
+                                                 HildonWindowStack     *stack,
+                                                 gint                   position);
 
 G_END_DECLS
 

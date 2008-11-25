@@ -56,6 +56,8 @@ G_BEGIN_DECLS
                                                 HILDON_TYPE_STACKABLE_WINDOW, \
                                                 HildonStackableWindowClass))
 
+typedef struct                                  _HildonWindowStack HildonWindowStack;
+
 typedef struct                                  _HildonStackableWindow HildonStackableWindow;
 typedef struct                                  _HildonStackableWindowClass HildonStackableWindowClass;
 
@@ -84,6 +86,9 @@ hildon_stackable_window_new                     (void);
 void
 hildon_stackable_window_set_main_menu           (HildonStackableWindow *self,
                                                  HildonAppMenu *menu);
+
+HildonWindowStack *
+hildon_stackable_window_get_stack               (HildonStackableWindow *self);
 
 G_END_DECLS
 

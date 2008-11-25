@@ -69,6 +69,7 @@
 #include                                        "hildon-weekday-picker.h"
 #include                                        "hildon-window.h"
 #include                                        "hildon-stackable-window.h"
+#include                                        "hildon-window-stack.h"
 #include                                        "hildon-wizard-dialog.h"
 #include                                        "hildon-calendar.h"
 #include                                        "hildon-bread-crumb-trail.h"
