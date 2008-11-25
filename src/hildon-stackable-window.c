@@ -88,26 +88,8 @@
 #include                                        "hildon-stackable-window.h"
 #include                                        "hildon-stackable-window-private.h"
 #include                                        "hildon-app-menu-private.h"
-#include                                        "hildon-program.h"
-#include                                        "hildon-window-private.h"
-#include                                        "hildon-program-private.h"
 
 G_DEFINE_TYPE (HildonStackableWindow, hildon_stackable_window, HILDON_TYPE_WINDOW);
-
-void G_GNUC_INTERNAL
-hildon_stackable_window_set_going_home          (HildonStackableWindow *self,
-                                                 gboolean going_home)
-{
-    HildonStackableWindowPrivate *priv = HILDON_STACKABLE_WINDOW_GET_PRIVATE (self);
-    priv->going_home = going_home;
-}
-
-gboolean G_GNUC_INTERNAL
-hildon_stackable_window_get_going_home          (HildonStackableWindow *self)
-{
-    HildonStackableWindowPrivate *priv = HILDON_STACKABLE_WINDOW_GET_PRIVATE (self);
-    return priv->going_home;
-}
 
 /**
  * hildon_stackable_window_set_main_menu:
@@ -199,21 +181,12 @@ hildon_stackable_window_realize                 (GtkWidget *widget)
 static void
 hildon_stackable_window_show                    (GtkWidget *widget)
 {
-    HildonProgram *program = hildon_program_get_instance ();
-    HildonStackableWindow *current_win = HILDON_STACKABLE_WINDOW (widget);
-    HildonStackableWindow *previous_win = hildon_program_peek_window_stack (program);
-
-    if (previous_win != current_win)
-        _hildon_program_add_to_stack (program, current_win);
-
     GTK_WIDGET_CLASS (hildon_stackable_window_parent_class)->show (widget);
 }
 
 static void
 hildon_stackable_window_hide                    (GtkWidget *widget)
 {
-    HildonProgram *program = hildon_program_get_instance ();
-    _hildon_program_remove_from_stack (program, HILDON_STACKABLE_WINDOW (widget));
     GTK_WIDGET_CLASS (hildon_stackable_window_parent_class)->hide (widget);
 }
 
@@ -254,7 +227,6 @@ hildon_stackable_window_init                    (HildonStackableWindow *self)
 {
     HildonStackableWindowPrivate *priv = HILDON_STACKABLE_WINDOW_GET_PRIVATE (self);
 
-    priv->going_home = FALSE;
     priv->app_menu = NULL;
 }
 

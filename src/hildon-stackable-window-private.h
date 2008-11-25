@@ -31,20 +31,12 @@ typedef struct                                  _HildonStackableWindowPrivate Hi
 
 struct                                          _HildonStackableWindowPrivate
 {
-    gboolean going_home;
     HildonAppMenu *app_menu;
 };
 
 #define                                         HILDON_STACKABLE_WINDOW_GET_PRIVATE(obj) \
                                                 (G_TYPE_INSTANCE_GET_PRIVATE ((obj),\
                                                 HILDON_TYPE_STACKABLE_WINDOW, HildonStackableWindowPrivate))
-
-void G_GNUC_INTERNAL
-hildon_stackable_window_set_going_home          (HildonStackableWindow *self,
-                                                 gboolean going_home);
-
-gboolean G_GNUC_INTERNAL
-hildon_stackable_window_get_going_home          (HildonStackableWindow *self);
 
 G_END_DECLS
 

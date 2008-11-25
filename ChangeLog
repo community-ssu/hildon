@@ -1,5 +1,21 @@
 2008-11-25  Alberto Garcia  <agarcia@igalia.com>
 
+	* src/hildon-stackable-window-private.h
+	* src/hildon-stackable-window.c (hildon_stackable_window_show)
+	(hildon_stackable_window_hide, hildon_stackable_window_init):
+	Remove all window stack management.
+
+	* src/hildon-program-private.h
+	* src/hildon-program.h
+	* src/hildon-program.c (hildon_program_init)
+	(hildon_program_pop_window_stack)
+	(hildon_program_peek_window_stack)
+	(hildon_program_go_to_root_window):
+	Remove all window stack management and mark functions as
+	deprecated.
+
+2008-11-25  Alberto Garcia  <agarcia@igalia.com>
+
 	* src/hildon-app-menu.c (hildon_app_menu_realize):
 	Use the XA_ATOM type for the _NET_WM_WINDOW_TYPE property.
 
