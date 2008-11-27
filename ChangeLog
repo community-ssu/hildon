@@ -8,7 +8,7 @@
 	* src/hildon-volumebar.c: (hildon_volumebar_class_init):
 	* src/hildon-weekday-picker.c: (hildon_weekday_picker_class_init):
 
-	Replace deprecated GTK+ marshalers and replace them with the ones provided
+	Remove deprecated GTK+ marshalers and replace them with the ones provided
 	by GLib, for those available, add a marshaler for BOOLEAN:VOID, which
 	is not available in GLib, and use it.
 
