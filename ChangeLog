@@ -1,3 +1,10 @@
+2008-11-27  Claudio Saavedra  <csaavedra@igalia.com>
+
+	reviewed by: <delete if not using a buddy>
+
+	* examples/hildon-dialog-example.c: (main):
+	* src/hildon-touch-selector.c: (_default_print_func):
+
 2008-11-27  Alberto Garcia  <agarcia@igalia.com>
 
 	* src/hildon-button.h

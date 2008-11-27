@@ -460,10 +460,14 @@ _default_print_func (HildonTouchSelector * selector)
     g_object_get (G_OBJECT(column), "text-column", &text_column, NULL);
 
     if (hildon_touch_selector_get_selected (selector, i, &iter)) {
-
-      if (text_column != -1 ) {
+      if (text_column == -1 ) {
+        g_warning ("Trying to use the default print function in HildonTouchSelector, but "
+                   "\"text-column\" property is not set for HildonTouchSelectorColumn %p.", column);
+        current_string = NULL;
+      } else {
         gtk_tree_model_get (model, &iter, text_column, &current_string, -1);
       }
+
       if (i != 0) {
         aux = g_strconcat (result, ":", current_string, NULL);
         g_free (result);
