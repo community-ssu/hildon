@@ -456,7 +456,7 @@ _default_print_func (HildonTouchSelector * selector)
 
   for (i = initial_value; i < num_columns; i++) {
     model = hildon_touch_selector_get_model (selector, i);
-    column = hildon_touch_selector_get_column (selector, 0);
+    column = hildon_touch_selector_get_column (selector, i);
     g_object_get (G_OBJECT(column), "text-column", &text_column, NULL);
 
     if (hildon_touch_selector_get_selected (selector, i, &iter)) {
