@@ -85,6 +85,8 @@ hildon_picker_dialog_get_property (GObject * object,
 /* private functions */
 static gboolean requires_done_button (HildonPickerDialog * dialog);
 
+static void     setup_interaction_mode (HildonPickerDialog * dialog);
+
 static void
 _select_on_selector_changed_cb (HildonTouchSelector * dialog,
                                 gint column, gpointer data);
@@ -256,7 +258,32 @@ requires_done_button (HildonPickerDialog * dialog)
     (HILDON_TOUCH_SELECTOR (dialog->priv->selector));
 }
 
-/* ------------------------------ PUBLIC METHODS ---------------------------- */
+static void
+setup_interaction_mode (HildonPickerDialog * dialog)
+{
+  if (dialog->priv->signal_changed_id) {
+    g_signal_handler_disconnect (dialog->priv->selector,
+                                 dialog->priv->signal_changed_id);
+  }
+
+  if (requires_done_button (dialog)) {
+    gtk_dialog_set_has_separator (GTK_DIALOG (dialog), TRUE);
+    gtk_widget_show (GTK_DIALOG (dialog)->action_area);
+        /* update the title */
+    dialog->priv->signal_changed_id =
+      g_signal_connect (G_OBJECT (dialog->priv->selector), "changed",
+                        G_CALLBACK (_update_title_on_selector_changed_cb),
+                        dialog);
+  } else {
+    gtk_dialog_set_has_separator (GTK_DIALOG (dialog), FALSE);
+    gtk_widget_hide (GTK_DIALOG (dialog)->action_area);
+    dialog->priv->signal_changed_id =
+      g_signal_connect (G_OBJECT (dialog->priv->selector), "changed",
+                        G_CALLBACK (_select_on_selector_changed_cb), dialog);
+  }
+}
+
+/*------------------------- PUBLIC METHODS ---------------------------- */
 
 /**
  * hildon_picker_dialog_new:
@@ -308,26 +335,7 @@ _hildon_picker_dialog_set_selector (HildonPickerDialog * dialog,
     g_object_ref (dialog->priv->selector);
   }
 
-  if (dialog->priv->signal_changed_id) {
-    g_signal_handler_disconnect (dialog->priv->selector,
-                                 dialog->priv->signal_changed_id);
-  }
-
-  if (requires_done_button (dialog)) {
-    gtk_dialog_set_has_separator (GTK_DIALOG (dialog), TRUE);
-    gtk_widget_show (GTK_DIALOG (dialog)->action_area);
-    /* update the title */
-    dialog->priv->signal_changed_id =
-      g_signal_connect (G_OBJECT (dialog->priv->selector), "changed",
-                        G_CALLBACK (_update_title_on_selector_changed_cb),
-                        dialog);
-  } else {
-    gtk_dialog_set_has_separator (GTK_DIALOG (dialog), FALSE);
-    gtk_widget_hide (GTK_DIALOG (dialog)->action_area);
-    dialog->priv->signal_changed_id =
-      g_signal_connect (G_OBJECT (dialog->priv->selector), "changed",
-                        G_CALLBACK (_select_on_selector_changed_cb), dialog);
-  }
+  setup_interaction_mode (dialog);
 
   return TRUE;
 }

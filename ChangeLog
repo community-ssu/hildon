@@ -1,5 +1,11 @@
 2008-11-27  Claudio Saavedra  <csaavedra@igalia.com>
 
+	* src/hildon-picker-dialog.c: (+setup_interaction_mode),
+	(_hildon_picker_dialog_set_selector): Factor out the code
+	to set up the dialog interaction mode.
+
+2008-11-27  Claudio Saavedra  <csaavedra@igalia.com>
+
 	* src/hildon-picker-dialog.c: (hildon_picker_dialog_init),
 	(_hildon_picker_dialog_set_selector): Rename signal_id private variable
 	to signal_changed_id.
