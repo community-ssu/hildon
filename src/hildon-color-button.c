@@ -211,7 +211,7 @@ hildon_color_button_class_init                  (HildonColorButtonClass *klass)
                      G_SIGNAL_RUN_LAST,
                      0,
                      NULL, NULL,
-                     gtk_marshal_VOID__OBJECT,
+                     g_cclosure_marshal_VOID__OBJECT,
                      G_TYPE_NONE, 1,
                      HILDON_TYPE_COLOR_CHOOSER_DIALOG);
 

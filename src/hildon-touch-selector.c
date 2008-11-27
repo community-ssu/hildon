@@ -132,6 +132,7 @@ enum
 enum
 {
   CHANGED,
+  COLUMNS_CHANGED,
   LAST_SIGNAL
 };
 
@@ -244,7 +245,7 @@ hildon_touch_selector_class_init (HildonTouchSelectorClass * class)
                   G_SIGNAL_RUN_LAST,
                   G_STRUCT_OFFSET (HildonTouchSelectorClass, changed),
                   NULL, NULL,
-                  gtk_marshal_NONE__INT, G_TYPE_NONE, 1, G_TYPE_INT);
+                  g_cclosure_marshal_VOID__INT, G_TYPE_NONE, 1, G_TYPE_INT);
   /* properties */
 
   g_object_class_install_property (gobject_class, PROP_HAS_MULTIPLE_SELECTION,

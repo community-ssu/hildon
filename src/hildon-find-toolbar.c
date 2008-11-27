@@ -45,6 +45,7 @@
 #include                                        "hildon-find-toolbar.h"
 #include                                        "hildon-defines.h"
 #include                                        "hildon-find-toolbar-private.h"
+#include                                        "hildon-marshalers.h"
 
 #define                                         _(String) \
                                                 dgettext("hildon-libs", String)
@@ -624,7 +625,7 @@ hildon_find_toolbar_class_init                  (HildonFindToolbarClass *klass)
                 "search", HILDON_TYPE_FIND_TOOLBAR,
                 G_SIGNAL_RUN_LAST, G_STRUCT_OFFSET 
                 (HildonFindToolbarClass, search),
-                NULL, NULL, gtk_marshal_VOID__VOID,
+                NULL, NULL, g_cclosure_marshal_VOID__VOID,
                 G_TYPE_NONE, 0);
 
     /**
@@ -638,7 +639,7 @@ hildon_find_toolbar_class_init                  (HildonFindToolbarClass *klass)
                 "close", HILDON_TYPE_FIND_TOOLBAR,
                 G_SIGNAL_RUN_LAST, G_STRUCT_OFFSET 
                 (HildonFindToolbarClass, close),
-                NULL, NULL, gtk_marshal_VOID__VOID,
+                NULL, NULL, g_cclosure_marshal_VOID__VOID,
                 G_TYPE_NONE, 0);
 
     /**
@@ -653,7 +654,7 @@ hildon_find_toolbar_class_init                  (HildonFindToolbarClass *klass)
                 "invalid_input", HILDON_TYPE_FIND_TOOLBAR,
                 G_SIGNAL_RUN_LAST, G_STRUCT_OFFSET 
                 (HildonFindToolbarClass, invalid_input),
-                NULL, NULL, gtk_marshal_VOID__VOID,
+                NULL, NULL, g_cclosure_marshal_VOID__VOID,
                 G_TYPE_NONE, 0);
 
     /**
@@ -668,7 +669,7 @@ hildon_find_toolbar_class_init                  (HildonFindToolbarClass *klass)
                 G_SIGNAL_RUN_LAST, G_STRUCT_OFFSET 
                 (HildonFindToolbarClass, history_append),
                 g_signal_accumulator_true_handled, NULL, 
-                gtk_marshal_BOOLEAN__VOID,
+                _hildon_marshal_BOOLEAN__VOID,
                 G_TYPE_BOOLEAN, 0);
 }
 

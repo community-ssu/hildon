@@ -189,7 +189,7 @@ hildon_volumebar_class_init                     (HildonVolumebarClass *volumebar
            G_STRUCT_OFFSET
            (HildonVolumebarClass,
             mute_toggled), NULL, NULL,
-           gtk_marshal_VOID__VOID,
+           g_cclosure_marshal_VOID__VOID,
            G_TYPE_NONE, 0);
 
    signals[LEVEL_CHANGED_SIGNAL] = g_signal_new ("level_changed",
@@ -201,7 +201,7 @@ hildon_volumebar_class_init                     (HildonVolumebarClass *volumebar
            (HildonVolumebarClass,
             level_changed), NULL,
            NULL,
-           gtk_marshal_VOID__VOID,
+           g_cclosure_marshal_VOID__VOID,
            G_TYPE_NONE, 0);
 
    gobject_class->notify                = hildon_volumebar_notify;

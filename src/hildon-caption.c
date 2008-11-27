@@ -215,7 +215,7 @@ hildon_caption_class_init                       (HildonCaptionClass *caption_cla
             G_SIGNAL_ACTION,
             G_STRUCT_OFFSET (HildonCaptionClass,
                 activate), NULL, NULL,
-            gtk_marshal_VOID__VOID,
+            g_cclosure_marshal_VOID__VOID,
             G_TYPE_NONE, 0);
 
     /**

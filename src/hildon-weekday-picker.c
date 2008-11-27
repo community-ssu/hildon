@@ -174,7 +174,7 @@ hildon_weekday_picker_class_init                (HildonWeekdayPickerClass *picke
             G_SIGNAL_ACTION,
             G_STRUCT_OFFSET (HildonWeekdayPickerClass, selection_changed), 
             NULL, NULL,
-            gtk_marshal_VOID__INT,
+            g_cclosure_marshal_VOID__INT,
             G_TYPE_NONE, 1, G_TYPE_INT);
 }
 
