@@ -207,7 +207,11 @@ _custom_print_func (HildonTouchSelector * touch_selector)
   tm.tm_hour = hours;
 
   if (selector->priv->ampm_format) {
-    strftime (string, 255, _("wdgt_va_12h_time"), &tm);
+    if (selector->priv->pm) {
+      strftime (string, 255, _("wdgt_va_12h_time_pm"), &tm);
+    } else {
+      strftime (string, 255, _("wdgt_va_12h_time_am"), &tm);
+    }
   } else {
     strftime (string, 255, _("wdgt_va_24h_time"), &tm);
   }
@@ -284,21 +288,16 @@ _create_ampm_model (HildonTimeSelector * selector)
   GtkListStore *store_ampm = NULL;
   GtkTreeIter iter;
   static gchar label[255];
-  struct tm tm = { 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
   store_ampm = gtk_list_store_new (2, G_TYPE_STRING, G_TYPE_INT);
 
-  tm.tm_hour = 0;
-  strftime (label, 255, _("wdgt_va_am_pm"), &tm);
-
+  snprintf (label, 255, _("wdgt_va_am"));
   gtk_list_store_append (store_ampm, &iter);
   gtk_list_store_set (store_ampm, &iter,
                       COLUMN_STRING, label,
                       COLUMN_INT, 0, -1);
 
-  tm.tm_hour = 12;
-  strftime (label, 255, _("wdgt_va_am_pm"), &tm);
-
+  snprintf (label, 255, _("wdgt_va_pm"));
   gtk_list_store_append (store_ampm, &iter);
   gtk_list_store_set (store_ampm, &iter,
                       COLUMN_STRING, label,
@@ -349,7 +348,7 @@ static void
 _check_ampm_format (HildonTimeSelector * selector)
 {
   GConfClient *client = NULL;
-  gboolean value = FALSE;
+  gboolean value = TRUE;
   GError *error = NULL;
 
   client = gconf_client_get_default ();
@@ -361,7 +360,7 @@ _check_ampm_format (HildonTimeSelector * selector)
     g_error_free (error);
   }
 
-  selector->priv->ampm_format = value;
+  selector->priv->ampm_format = !value;
   selector->priv->pm = TRUE;
 }
 

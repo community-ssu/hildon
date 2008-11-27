@@ -1,3 +1,13 @@
+2008-11-27  Alejandro Pinheiro  <apinheiro@igalia.com>
+
+	* src/hildon-time-selector.c: (_custom_print_func), (_create_ampm_model)
+	Updated the logical ids related to ampm format, as now it is required to
+	show it correctly localized even on languages with no default abbreviations
+	for am or pm
+	(_check_am_pm_format): check correctly the 24h format gconf property
+
+	Fixes: NB#93680 (HildonTimePicker need fully localized am/pm)
+
 2008-11-27  Alberto Garcia  <agarcia@igalia.com>
 
 	* src/hildon-button.c: Documentation updates.
