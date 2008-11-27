@@ -1,3 +1,7 @@
+2008-11-27  Alberto Garcia  <agarcia@igalia.com>
+
+	* src/hildon-button.c: Documentation updates.
+
 2008-11-27  Claudio Saavedra  <csaavedra@igalia.com>
 
 	* src/hildon-marshalers.list: Add BOOLEAN:VOID.

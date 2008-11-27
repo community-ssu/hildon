@@ -21,18 +21,28 @@
  * @short_description: Widget representing a button in the Hildon framework.
  *
  * The #HildonButton is a GTK widget which represents a clickable
- * button. It is derived from the GtkButton widget and provides
+ * button. It is derived from the #GtkButton widget and provides
  * additional commodities specific to the Hildon framework.
  *
  * The height of a #HildonButton can be set to either "finger" height
  * or "thumb" height. It can also be configured to use halfscreen or
  * fullscreen width. Alternatively, either dimension can be set to
- * "auto" so it behaves like a standard GtkButton.
+ * "auto" so it behaves like a standard #GtkButton.
  *
  * The #HildonButton can hold any valid child widget, but it usually
  * contains two labels, named title and value, and it can also contain
- * an image. To change the alignment of the button contents, use
- * gtk_button_set_alignment()
+ * an image. The contents of the button are packed together and they
+ * do not expand by default (they don't use the full space of the
+ * button).
+ *
+ * To change the alignment of both labels, use gtk_button_set_alignment()
+ *
+ * To make them expand and use the full space of the button, use
+ * hildon_button_set_alignment().
+ *
+ * To change the relative alignment of each label, use
+ * hildon_button_set_title_alignment() and
+ * hildon_button_set_value_alignment().
  *
  * If only one label is needed, #GtkButton can be used as well, see
  * also hildon_gtk_button_new().
