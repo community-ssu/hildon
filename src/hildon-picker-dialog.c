@@ -51,7 +51,7 @@ struct _HildonPickerDialogPrivate
   GtkWidget *selector;
   GtkWidget *button;
 
-  gulong signal_id;
+  gulong signal_changed_id;
 };
 
 /* properties */
@@ -151,7 +151,7 @@ hildon_picker_dialog_init (HildonPickerDialog * dialog)
     hildon_dialog_add_button (HILDON_DIALOG (dialog), "", GTK_RESPONSE_OK);
   gtk_widget_grab_default (dialog->priv->button);
 
-  dialog->priv->signal_id = 0;
+  dialog->priv->signal_changed_id = 0;
 }
 
 
@@ -308,23 +308,23 @@ _hildon_picker_dialog_set_selector (HildonPickerDialog * dialog,
     g_object_ref (dialog->priv->selector);
   }
 
-  if (dialog->priv->signal_id) {
+  if (dialog->priv->signal_changed_id) {
     g_signal_handler_disconnect (dialog->priv->selector,
-                                 dialog->priv->signal_id);
+                                 dialog->priv->signal_changed_id);
   }
 
   if (requires_done_button (dialog)) {
     gtk_dialog_set_has_separator (GTK_DIALOG (dialog), TRUE);
     gtk_widget_show (GTK_DIALOG (dialog)->action_area);
     /* update the title */
-    dialog->priv->signal_id =
+    dialog->priv->signal_changed_id =
       g_signal_connect (G_OBJECT (dialog->priv->selector), "changed",
                         G_CALLBACK (_update_title_on_selector_changed_cb),
                         dialog);
   } else {
     gtk_dialog_set_has_separator (GTK_DIALOG (dialog), FALSE);
     gtk_widget_hide (GTK_DIALOG (dialog)->action_area);
-    dialog->priv->signal_id =
+    dialog->priv->signal_changed_id =
       g_signal_connect (G_OBJECT (dialog->priv->selector), "changed",
                         G_CALLBACK (_select_on_selector_changed_cb), dialog);
   }
