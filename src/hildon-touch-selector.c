@@ -231,10 +231,10 @@ hildon_touch_selector_class_init (HildonTouchSelectorClass * class)
   /* signals */
   /**
    * HildonTouchSelector::changed:
-   * @column: the concrete column being modified
    * @widget: the object which received the signal
+   * @column: the concrete column being modified
    *
-   * The changed signal is emitted when the active item on any column is changed.
+   * The ::changed signal is emitted when the active item on any column is changed.
    * This can be due to the user selecting a different item from the list, or
    * due to a call to hildon_touch_selector_select_iter() on one of the columns.
    *
