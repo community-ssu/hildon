@@ -1,3 +1,18 @@
+2008-11-27  Alberto Garcia  <agarcia@igalia.com>
+
+	* src/hildon-button.h
+	* src/hildon-button.c (hildon_button_set_property)
+	(hildon_button_get_property, hildon_button_class_init)
+	(hildon_button_set_style, hildon_button_get_style):
+	New "style" property to change the visual appearance of the
+	button.
+
+	* src/hildon-picker-button.c (hildon_picker_button_new):
+	Set the new "style" property to HILDON_BUTTON_STYLE_PICKER.
+
+	Fixes: NB#93281 (new API: hildon_button_set_picker_style() to set
+	HildonButton look like PickerButton)
+
 2008-11-27  Claudio Saavedra  <csaavedra@igalia.com>
 
 	* src/hildon-touch-selector.c: (_default_print_func): Get the correct

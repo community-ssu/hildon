@@ -63,6 +63,11 @@ typedef enum {
    HILDON_BUTTON_ARRANGEMENT_VERTICAL
 }                                               HildonButtonArrangement;
 
+typedef enum {
+   HILDON_BUTTON_STYLE_NORMAL,
+   HILDON_BUTTON_STYLE_PICKER
+}                                               HildonButtonStyle;
+
 GType
 hildon_button_get_type                          (void) G_GNUC_CONST;
 
@@ -143,6 +148,13 @@ hildon_button_add_size_groups                   (HildonButton *button,
                                                  GtkSizeGroup *title_size_group,
                                                  GtkSizeGroup *value_size_group,
                                                  GtkSizeGroup *image_size_group);
+
+void
+hildon_button_set_style                         (HildonButton      *button,
+                                                 HildonButtonStyle  style);
+
+HildonButtonStyle
+hildon_button_get_style                         (HildonButton *button);
 
 G_END_DECLS
 

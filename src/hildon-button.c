@@ -98,13 +98,15 @@ struct                                          _HildonButtonPrivate
     GtkPositionType image_position;
     gfloat image_xalign;
     gfloat image_yalign;
+    HildonButtonStyle style;
 };
 
 enum {
     PROP_TITLE = 1,
     PROP_VALUE,
     PROP_SIZE,
-    PROP_ARRANGEMENT
+    PROP_ARRANGEMENT,
+    PROP_STYLE
 };
 
 static void
@@ -136,6 +138,9 @@ hildon_button_set_property                      (GObject      *object,
     case PROP_ARRANGEMENT:
         hildon_button_set_arrangement (button, g_value_get_enum (value));
         break;
+    case PROP_STYLE:
+        hildon_button_set_style (button, g_value_get_enum (value));
+        break;
     default:
         G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
         break;
@@ -157,6 +162,9 @@ hildon_button_get_property                      (GObject    *object,
         break;
     case PROP_VALUE:
         g_value_set_string (value, hildon_button_get_value (button));
+        break;
+    case PROP_STYLE:
+        g_value_set_enum (value, hildon_button_get_style (button));
         break;
     default:
         G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -254,6 +262,17 @@ hildon_button_class_init                        (HildonButtonClass *klass)
             HILDON_TYPE_BUTTON_ARRANGEMENT,
             HILDON_BUTTON_ARRANGEMENT_HORIZONTAL,
             G_PARAM_WRITABLE | G_PARAM_CONSTRUCT_ONLY));
+
+    g_object_class_install_property (
+        gobject_class,
+        PROP_STYLE,
+        g_param_spec_enum (
+            "style",
+            "Style",
+            "Visual style of the button",
+            HILDON_TYPE_BUTTON_STYLE,
+            HILDON_BUTTON_STYLE_NORMAL,
+            G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
 
     gtk_widget_class_install_style_property (
         widget_class,
@@ -798,6 +817,69 @@ hildon_button_set_image_alignment               (HildonButton *button,
     priv->image_yalign = yalign;
 
     hildon_button_construct_child (button);
+}
+
+/**
+ * hildon_button_set_style:
+ * @button: A #HildonButton
+ * @style: A #HildonButtonStyle for @button
+ *
+ * Sets the style of @button to @style. This changes the visual
+ * appearance of the button (colors, font sizes) according to the
+ * particular style chosen, but the general layout is not altered.
+ *
+ * Use %HILDON_BUTTON_STYLE_NORMAL to make it look like a normal
+ * #HildonButton, or %HILDON_BUTTON_STYLE_PICKER to make it look like
+ * a #HildonPickerButton.
+ */
+void
+hildon_button_set_style                         (HildonButton      *button,
+                                                 HildonButtonStyle  style)
+{
+    HildonButtonPrivate *priv;
+    const gchar *color;
+
+    g_return_if_fail (HILDON_IS_BUTTON (button));
+
+    switch (style) {
+    case HILDON_BUTTON_STYLE_NORMAL:
+        color = "SecondaryTextColor";
+        break;
+    case HILDON_BUTTON_STYLE_PICKER:
+        color = "ActiveTextColor";
+        break;
+    default:
+        g_return_if_reached ();
+    }
+
+    priv = HILDON_BUTTON_GET_PRIVATE (button);
+
+    hildon_helper_set_logical_color (GTK_WIDGET (priv->value), GTK_RC_FG, GTK_STATE_NORMAL, color);
+    hildon_helper_set_logical_color (GTK_WIDGET (priv->value), GTK_RC_FG, GTK_STATE_PRELIGHT, color);
+
+    priv->style = style;
+
+    g_object_notify (G_OBJECT (button), "style");
+}
+
+/**
+ * hildon_button_get_style:
+ * @button: A #HildonButton
+ *
+ * Gets the visual style of the button.
+ *
+ * Returns: a #HildonButtonStyle
+ */
+HildonButtonStyle
+hildon_button_get_style                         (HildonButton *button)
+{
+    HildonButtonPrivate *priv;
+
+    g_return_val_if_fail (HILDON_IS_BUTTON (button), HILDON_BUTTON_STYLE_NORMAL);
+
+    priv = HILDON_BUTTON_GET_PRIVATE (button);
+
+    return priv->style;
 }
 
 static void
