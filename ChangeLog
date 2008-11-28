@@ -5,18 +5,18 @@
 	HildonTouchSelector::columns-changed.
 	(+on_selector_columns_changed): Set up the interaction mode everytime a
 	column is added or removed from the HildonTouchSelector.
-	(_hildon_picker_dialog_set_selector): Connect to HildonTouchSelector::columns-changed
-	and keep track of it.
+	(_hildon_picker_dialog_set_selector): Connect to
+	HildonTouchSelector::columns-changed and keep track of it.
 
-	Make sure to update the interaction mode of the dialog everytime a column is added
-	or removed in the HildonTouchSelector.
+	Make sure to update the interaction mode of the dialog everytime a
+	column is added	or removed in the HildonTouchSelector.
 
 	Fixes: NB#93228 (Done button is not shown always in listpicker)
 
 2008-11-27  Claudio Saavedra  <csaavedra@igalia.com>
 
-	* src/hildon-touch-selector.c: (hildon_touch_selector_class_init): Add a new
-	::columns-changed signal.
+	* src/hildon-touch-selector.c: (hildon_touch_selector_class_init): Add
+	a new ::columns-changed signal.
 	(hildon_touch_selector_append_column): Emit ::columns-changed.
 	(hildon_touch_selector_remove_column): Emit ::columns-changed.
 
@@ -44,8 +44,8 @@
 
 	* src/hildon-time-selector.c: (_custom_print_func), (_create_ampm_model)
 	Updated the logical ids related to ampm format, as now it is required to
-	show it correctly localized even on languages with no default abbreviations
-	for am or pm
+	show it correctly localized even on languages with no default
+	abbreviations for am or pm
 	(_check_am_pm_format): check correctly the 24h format gconf property
 
 	Fixes: NB#93680 (HildonTimePicker need fully localized am/pm)
@@ -64,9 +64,9 @@
 	* src/hildon-volumebar.c: (hildon_volumebar_class_init):
 	* src/hildon-weekday-picker.c: (hildon_weekday_picker_class_init):
 
-	Remove deprecated GTK+ marshalers and replace them with the ones provided
-	by GLib, for those available, add a marshaler for BOOLEAN:VOID, which
-	is not available in GLib, and use it.
+	Remove deprecated GTK+ marshalers and replace them with the ones
+	provided by GLib, for those available, add a marshaler for
+	BOOLEAN:VOID, which is not available in GLib, and use it.
 
 2008-11-27  Claudio Saavedra  <csaavedra@igalia.com>
 
