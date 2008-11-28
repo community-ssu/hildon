@@ -355,6 +355,17 @@ remove_item_from_list                           (GList    **list,
 }
 
 static void
+hildon_app_menu_show                            (GtkWidget *widget)
+{
+    HildonAppMenuPrivate *priv = HILDON_APP_MENU_GET_PRIVATE(widget);
+
+    /* Show the menu only if it's not empty */
+    if (priv->buttons || priv->filters) {
+        GTK_WIDGET_CLASS (hildon_app_menu_parent_class)->show (widget);
+    }
+}
+
+static void
 hildon_app_menu_map                             (GtkWidget *widget)
 {
     HildonAppMenuPrivate *priv = HILDON_APP_MENU_GET_PRIVATE(widget);
@@ -777,6 +788,7 @@ hildon_app_menu_class_init                      (HildonAppMenuClass *klass)
     GtkWidgetClass *widget_class = (GtkWidgetClass *)klass;
 
     gobject_class->finalize = hildon_app_menu_finalize;
+    widget_class->show = hildon_app_menu_show;
     widget_class->map = hildon_app_menu_map;
     widget_class->unmap = hildon_app_menu_unmap;
     widget_class->realize = hildon_app_menu_realize;
