@@ -1,5 +1,15 @@
 2008-11-27  Claudio Saavedra  <csaavedra@igalia.com>
 
+	* src/hildon-touch-selector.c: (hildon_touch_selector_class_init): Add a new
+	::columns-changed signal.
+	(hildon_touch_selector_append_column): Emit ::columns-changed.
+	(hildon_touch_selector_remove_column): Emit ::columns-changed.
+
+	Add a ::columns-changed signal, emitted when the number of columns in a
+	HildonTouchSelector changes.
+
+2008-11-27  Claudio Saavedra  <csaavedra@igalia.com>
+
 	* src/hildon-picker-dialog.c: (+setup_interaction_mode),
 	(_hildon_picker_dialog_set_selector): Factor out the code
 	to set up the dialog interaction mode.

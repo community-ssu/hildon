@@ -246,6 +246,22 @@ hildon_touch_selector_class_init (HildonTouchSelectorClass * class)
                   G_STRUCT_OFFSET (HildonTouchSelectorClass, changed),
                   NULL, NULL,
                   g_cclosure_marshal_VOID__INT, G_TYPE_NONE, 1, G_TYPE_INT);
+
+  /**
+   * HildonTouchSelector::columns-changed:
+   * @selector: the object which received the signal
+   *
+   * The ::columns-changed signal is emitted when the number
+   * of columns in the #HildonTouchSelector change.
+   *
+   */
+  hildon_touch_selector_signals[COLUMNS_CHANGED] =
+    g_signal_new ("columns-changed",
+                  G_OBJECT_CLASS_TYPE (class),
+                  G_SIGNAL_RUN_LAST, 0,
+                  NULL, NULL,
+                  g_cclosure_marshal_VOID__VOID, G_TYPE_NONE, 0);
+
   /* properties */
 
   g_object_class_install_property (gobject_class, PROP_HAS_MULTIPLE_SELECTION,
@@ -1009,6 +1025,8 @@ hildon_touch_selector_append_column (HildonTouchSelector * selector,
     return NULL;
   }
 
+  g_signal_emit (selector, hildon_touch_selector_signals[COLUMNS_CHANGED], 0);
+
   return new_column;
 }
 
@@ -1075,6 +1093,8 @@ hildon_touch_selector_remove_column (HildonTouchSelector * selector, gint column
   gtk_container_remove (GTK_CONTAINER (priv->hbox), current_column->priv->panarea);
   priv->columns = g_slist_remove (priv->columns, current_column);
   g_object_unref (current_column);
+
+  g_signal_emit (selector, hildon_touch_selector_signals[COLUMNS_CHANGED], 0);
 
   return TRUE;
 }
