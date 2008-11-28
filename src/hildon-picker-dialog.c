@@ -52,6 +52,7 @@ struct _HildonPickerDialogPrivate
   GtkWidget *button;
 
   gulong signal_changed_id;
+  gulong signal_columns_changed_id;
 };
 
 /* properties */
@@ -154,6 +155,7 @@ hildon_picker_dialog_init (HildonPickerDialog * dialog)
   gtk_widget_grab_default (dialog->priv->button);
 
   dialog->priv->signal_changed_id = 0;
+  dialog->priv->signal_columns_changed_id = 0;
 }
 
 
@@ -224,6 +226,15 @@ _update_title_on_selector_changed_cb (HildonTouchSelector * selector,
   g_free (new_title);
 }
 
+static void
+on_selector_columns_changed (HildonTouchSelector * selector, gpointer userdata)
+{
+  HildonPickerDialog * dialog;
+
+  dialog = HILDON_PICKER_DIALOG (userdata);
+
+  setup_interaction_mode (dialog);
+}
 
 void
 hildon_picker_dialog_set_done_label (HildonPickerDialog * dialog,
@@ -337,6 +348,14 @@ _hildon_picker_dialog_set_selector (HildonPickerDialog * dialog,
 
   setup_interaction_mode (dialog);
 
+  if (dialog->priv->signal_columns_changed_id) {
+     g_signal_handler_disconnect (dialog->priv->selector,
+                                  dialog->priv->signal_columns_changed_id);
+   }
+
+  dialog->priv->signal_columns_changed_id = g_signal_connect (G_OBJECT (dialog->priv->selector),
+                                                              "columns-changed",
+                                                              G_CALLBACK (on_selector_columns_changed), dialog);
   return TRUE;
 }
 

@@ -1,5 +1,20 @@
 2008-11-27  Claudio Saavedra  <csaavedra@igalia.com>
 
+	* src/hildon-picker-dialog.c:
+	(hildon_picker_dialog_init): Initialize	the signal id for
+	HildonTouchSelector::columns-changed.
+	(+on_selector_columns_changed): Set up the interaction mode everytime a
+	column is added or removed from the HildonTouchSelector.
+	(_hildon_picker_dialog_set_selector): Connect to HildonTouchSelector::columns-changed
+	and keep track of it.
+
+	Make sure to update the interaction mode of the dialog everytime a column is added
+	or removed in the HildonTouchSelector.
+
+	Fixes: NB#93228 (Done button is not shown always in listpicker)
+
+2008-11-27  Claudio Saavedra  <csaavedra@igalia.com>
+
 	* src/hildon-touch-selector.c: (hildon_touch_selector_class_init): Add a new
 	::columns-changed signal.
 	(hildon_touch_selector_append_column): Emit ::columns-changed.
