@@ -44,6 +44,10 @@
  * hildon_button_set_title_alignment() and
  * hildon_button_set_value_alignment().
  *
+ * In hildon-button-example.c included in the Hildon distribution you
+ * can see examples of how to create the most common button
+ * layouts.
+ *
  * If only one label is needed, #GtkButton can be used as well, see
  * also hildon_gtk_button_new().
  *

@@ -1,5 +1,13 @@
 2008-11-28  Alberto Garcia  <agarcia@igalia.com>
 
+	* src/hildon-button.c: Add a reference to the button examples in
+	hildon-button-example.c
+
+	* examples/hildon-button-example.c: Added examples of the most
+	common button layouts.
+
+2008-11-28  Alberto Garcia  <agarcia@igalia.com>
+
 	* src/hildon-app-menu.c (hildon_app_menu_show)
 	(hildon_app_menu_class_init): Don't show the menu if it's empty.
 
