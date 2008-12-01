@@ -53,6 +53,8 @@ struct _HildonPickerDialogPrivate
 
   gulong signal_changed_id;
   gulong signal_columns_changed_id;
+
+  GSList *current_selection;
 };
 
 /* properties */
@@ -72,33 +74,59 @@ enum
 #define DEFAULT_DONE_BUTTON_TEXT        _("wdgt_bd_done")
 
 static void
-hildon_picker_dialog_set_property (GObject * object,
-                                   guint prop_id,
-                                   const GValue * value,
-                                   GParamSpec * pspec);
+hildon_picker_dialog_set_property               (GObject * object,
+                                                 guint prop_id,
+                                                 const GValue * value,
+                                                 GParamSpec * pspec);
 
 static void
-hildon_picker_dialog_get_property (GObject * object,
-                                   guint prop_id,
-                                   GValue * value, GParamSpec * pspec);
+hildon_picker_dialog_get_property               (GObject * object,
+                                                 guint prop_id,
+                                                 GValue * value, GParamSpec * pspec);
+
+static void
+hildon_picker_dialog_finalize                   (GObject *object);
+
 /* gtkwidget */
+static void
+hildon_picker_dialog_show                       (GtkWidget *widget);
 
 /* private functions */
-static gboolean requires_done_button (HildonPickerDialog * dialog);
-
-static void     setup_interaction_mode (HildonPickerDialog * dialog);
+static gboolean
+requires_done_button                            (HildonPickerDialog * dialog);
 
 static void
-_select_on_selector_changed_cb (HildonTouchSelector * dialog,
-                                gint column, gpointer data);
+setup_interaction_mode                          (HildonPickerDialog * dialog);
+
+static void
+_select_on_selector_changed_cb                  (HildonTouchSelector * dialog,
+                                                 gint column,
+                                                 gpointer data);
 
 static gboolean
-_hildon_picker_dialog_set_selector (HildonPickerDialog * dialog,
-                                    HildonTouchSelector * selector);
+_hildon_picker_dialog_set_selector              (HildonPickerDialog * dialog,
+                                                 HildonTouchSelector * selector);
 
 static void
-_update_title_on_selector_changed_cb (HildonTouchSelector * selector,
-                                      gint column, gpointer data);
+_update_title_on_selector_changed_cb            (HildonTouchSelector * selector,
+                                                 gint column,
+                                                 gpointer data);
+
+static void
+_on_dialog_response                             (GtkDialog *dialog,
+                                                 gint response_id,
+                                                 gpointer data);
+
+static void
+_save_current_selection                         (HildonPickerDialog *dialog);
+
+static void
+_restore_current_selection                      (HildonPickerDialog *dialog);
+
+static void
+_clean_current_selection                        (HildonPickerDialog *dialog);
+
+/**********************************************************************************/
 
 static void
 hildon_picker_dialog_class_init (HildonPickerDialogClass * class)
@@ -116,8 +144,10 @@ hildon_picker_dialog_class_init (HildonPickerDialogClass * class)
   /* GObject */
   gobject_class->set_property = hildon_picker_dialog_set_property;
   gobject_class->get_property = hildon_picker_dialog_get_property;
+  gobject_class->finalize = hildon_picker_dialog_finalize;
 
   /* GtkWidget */
+  widget_class->show = hildon_picker_dialog_show;
 
   /* HildonPickerDialog */
   class->set_selector = _hildon_picker_dialog_set_selector;
@@ -156,6 +186,12 @@ hildon_picker_dialog_init (HildonPickerDialog * dialog)
 
   dialog->priv->signal_changed_id = 0;
   dialog->priv->signal_columns_changed_id = 0;
+
+  dialog->priv->current_selection = NULL;
+
+  g_signal_connect (G_OBJECT (dialog),
+                    "response", G_CALLBACK (_on_dialog_response),
+                    NULL);
 }
 
 
@@ -194,6 +230,22 @@ hildon_picker_dialog_get_property (GObject * object,
   }
 }
 
+static void
+hildon_picker_dialog_finalize (GObject *object)
+{
+  _clean_current_selection (HILDON_PICKER_DIALOG (object));
+
+  G_OBJECT_CLASS (hildon_picker_dialog_parent_class)->finalize (object);
+}
+
+static void
+hildon_picker_dialog_show                       (GtkWidget *widget)
+{
+  _save_current_selection (HILDON_PICKER_DIALOG (widget));
+
+  GTK_WIDGET_CLASS (hildon_picker_dialog_parent_class)->show (widget);
+}
+
 /* ------------------------------ PRIVATE METHODS ---------------------------- */
 static void
 _select_on_selector_changed_cb (HildonTouchSelector * selector,
@@ -224,6 +276,16 @@ _update_title_on_selector_changed_cb (HildonTouchSelector * selector,
   gtk_window_set_title (GTK_WINDOW (dialog), new_title);
 
   g_free (new_title);
+}
+
+static void
+_on_dialog_response                             (GtkDialog *dialog,
+                                                 gint response_id,
+                                                 gpointer data)
+{
+  if (response_id == GTK_RESPONSE_DELETE_EVENT) {
+    _restore_current_selection (HILDON_PICKER_DIALOG (dialog));
+  }
 }
 
 static void
@@ -261,6 +323,78 @@ hildon_picker_dialog_get_done_label (HildonPickerDialog * dialog)
 
   return gtk_button_get_label (GTK_BUTTON (priv->button));
 }
+
+static void
+_clean_current_selection (HildonPickerDialog *dialog)
+{
+  if (dialog->priv->current_selection) {
+    g_slist_foreach (dialog->priv->current_selection,
+                     (GFunc) (gtk_tree_path_free), NULL);
+    g_slist_free (dialog->priv->current_selection);
+    dialog->priv->current_selection = NULL;
+  }
+}
+
+static void
+_save_current_selection (HildonPickerDialog *dialog)
+{
+  HildonTouchSelector *selector = NULL;
+  GtkTreeIter iter;
+  GtkTreeModel *model = NULL;
+  gint i = -1;
+  GtkTreePath *path = NULL;
+
+  selector = HILDON_TOUCH_SELECTOR (dialog->priv->selector);
+
+  _clean_current_selection (dialog);
+
+  for (i = 0; i  < hildon_touch_selector_get_num_columns (selector); i++) {
+    hildon_touch_selector_get_selected (selector, i, &iter);
+    model = hildon_touch_selector_get_model (selector, i);
+
+    path = gtk_tree_model_get_path (model, &iter);
+    dialog->priv->current_selection
+      = g_slist_append (dialog->priv->current_selection, path);
+  }
+}
+
+static void
+_restore_current_selection (HildonPickerDialog *dialog)
+{
+  GSList *iter = NULL;
+  GSList *current_selection = NULL;
+  GtkTreePath *current_path = NULL;
+  HildonTouchSelector *selector = NULL;
+  gint i = -1;
+  GtkTreeModel *model = NULL;
+  GtkTreeIter tree_iter;
+
+  if (dialog->priv->current_selection) {
+    current_selection = dialog->priv->current_selection;
+    selector = HILDON_TOUCH_SELECTOR (dialog->priv->selector);
+
+    if (hildon_touch_selector_get_num_columns (selector) !=
+        g_slist_length (current_selection)) {
+      /* We conclude that if the current selection has the same
+         numbers of columns that the selector, all this ok
+         Anyway this shouldn't happen. */
+      g_critical ("Trying to restore the selection on a selector after change"
+                  " the number of columns. Are you removing columns while the"
+                  " dialog is open?");
+      return;
+    }
+    i = 0;
+    for (iter = current_selection; iter; iter = g_slist_next (iter),i++) {
+      current_path = (GtkTreePath *) (iter->data);
+      model = hildon_touch_selector_get_model (selector, i);
+
+      gtk_tree_model_get_iter (model, &tree_iter, current_path);
+
+      hildon_touch_selector_select_iter (selector, i, &tree_iter, FALSE);
+    }
+  }
+}
+
 
 static gboolean
 requires_done_button (HildonPickerDialog * dialog)
@@ -327,7 +461,8 @@ _hildon_picker_dialog_set_selector (HildonPickerDialog * dialog,
     gtk_container_remove (GTK_CONTAINER (GTK_DIALOG (dialog)->vbox),
                           dialog->priv->selector);
     g_object_unref (dialog->priv->selector);
-    gtk_widget_set_size_request (GTK_WIDGET (dialog->priv->selector), -1, 320);
+    gtk_widget_set_size_request (GTK_WIDGET (dialog->priv->selector), -1,
+                                 HILDON_TOUCH_SELECTOR_HEIGHT);
     dialog->priv->selector = NULL;
   }
 

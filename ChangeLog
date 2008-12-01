@@ -1,3 +1,17 @@
+2008-12-01  Alejandro Pinheiro  <apinheiro@igalia.com>
+
+	* src/hildon-picker-dialog.c:
+	(_on_dialog_response), (_save_current_selection),
+	(_restore_current_selection), (_clean_current_selection),
+	(hildon_picker_dialog_finalize), (hildon_picker_dialog_show)
+	Defined new functions in order to save the current internal selector
+	selection previous open the dialog, in case that the use cancel the
+	interaction, so the widget restores the previous selection.
+
+	Fixes: NB#92032
+
+	(requires_done_button): use of macro HILDON_TOUCH_SELECTOR_HEIGHT
+
 2008-11-28  Alberto Garcia  <agarcia@igalia.com>
 
 	* src/hildon-button.c: Add a reference to the button examples in
