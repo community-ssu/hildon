@@ -728,7 +728,7 @@ hildon_app_menu_repack_items                    (HildonAppMenu *menu,
     /* The number of rows/columns might have changed, so we have to
      * resize the table */
     if (col == 0) {
-        gtk_table_resize (priv->table, row, priv->columns);
+        gtk_table_resize (priv->table, MAX (row, 1), priv->columns);
     } else {
         gtk_table_resize (priv->table, row + 1, priv->columns);
     }

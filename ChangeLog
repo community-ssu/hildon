@@ -1,3 +1,8 @@
+2008-12-02  Alberto Garcia  <agarcia@igalia.com>
+
+	* src/hildon-app-menu.c (hildon_app_menu_repack_items):
+	Fix warning if all menu items are hidden.
+
 2008-12-02  Claudio Saavedra  <csaavedra@igalia.com>
 
 	Patch contributed by Daniel Borgmann (danielb@openismus.com)
