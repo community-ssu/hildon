@@ -1,5 +1,18 @@
 2008-12-02  Alberto Garcia  <agarcia@igalia.com>
 
+	Based on a patch by Adam Endrodi (adam.endrodi@blumsoft.eu)
+
+	* src/hildon-window-stack.c (hildon_window_stack_get_leader_window)
+	(hildon_window_stack_window_realized)
+	(hildon_window_stack_remove, _hildon_window_stack_do_push):
+	Set the leader GdkWindow when a window is stacked and realized,
+	unset it when it's unstacked.
+	(hildon_window_stack_finalize): Destroy the leader GdkWindow.
+
+	Fixes: NB#94350 (HildonWindoiwStack:s have the same X Window group)
+
+2008-12-02  Alberto Garcia  <agarcia@igalia.com>
+
 	* src/hildon-stackable-window.h
 	* src/hildon-window-stack.h:
 	Protect definition of HildonWindowStack using the preprocessor.

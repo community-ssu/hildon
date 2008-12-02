@@ -61,6 +61,7 @@ struct                                          _HildonWindowStackPrivate
 {
     GList *list;
     GtkWindowGroup *group;
+    GdkWindow *leader; /* X Window group hint for all windows in a group */
 };
 
 #define                                         HILDON_WINDOW_STACK_GET_PRIVATE(obj) \
@@ -119,6 +120,44 @@ hildon_window_stack_size                        (HildonWindowStack *stack)
     return g_list_length (stack->priv->list);
 }
 
+static GdkWindow *
+hildon_window_stack_get_leader_window           (HildonWindowStack *stack,
+                                                 GtkWidget         *win)
+{
+    /* Create the X Window group (leader) if we haven't. */
+    if (!stack->priv->leader) {
+        if (stack == hildon_window_stack_get_default ()) {
+            GdkDisplay *dpy;
+
+            /* We're the default stack, use the default group. */
+            dpy = gtk_widget_get_display (win);
+            stack->priv->leader = gdk_display_get_default_group (dpy);
+        } else {
+            static GdkWindowAttr attr = {
+                .window_type = GDK_WINDOW_TOPLEVEL,
+                .x = 10, .y = 10, .width = 10, .height = 10,
+                .wclass = GDK_INPUT_OUTPUT, .event_mask = 0,
+            };
+            GdkWindow *root;
+
+            /* Create a new X Window group. */
+            root = gtk_widget_get_root_window (win);
+            stack->priv->leader = gdk_window_new (root, &attr, GDK_WA_X | GDK_WA_Y);
+        }
+    }
+
+    return stack->priv->leader;
+}
+
+/* Set the X Window group of a window when it is realized. */
+static void
+hildon_window_stack_window_realized             (GtkWidget         *win,
+                                                 HildonWindowStack *stack)
+{
+    GdkWindow *leader = hildon_window_stack_get_leader_window (stack, win);
+    gdk_window_set_group (win->window, leader);
+}
+
 /* Remove a window from its stack, no matter its position */
 void G_GNUC_INTERNAL
 hildon_window_stack_remove                      (HildonStackableWindow *win)
@@ -130,6 +169,10 @@ hildon_window_stack_remove                      (HildonStackableWindow *win)
         hildon_stackable_window_set_stack (win, NULL, -1);
         stack->priv->list = g_list_remove (stack->priv->list, win);
         gtk_window_set_transient_for (GTK_WINDOW (win), NULL);
+        if (GTK_WIDGET (win)->window) {
+            gdk_window_set_group (GTK_WIDGET (win)->window, NULL);
+        }
+        g_signal_handlers_disconnect_by_func (win, hildon_window_stack_window_realized, stack);
     }
 }
 
@@ -180,6 +223,11 @@ _hildon_window_stack_do_push                    (HildonWindowStack     *stack,
         } else {
             gtk_window_group_add_window (stack->priv->group, GTK_WINDOW (win));
         }
+
+        /* Set win's group after it's been realized. */
+        g_signal_connect (win, "realize",
+                          G_CALLBACK (hildon_window_stack_window_realized),
+                          stack);
 
         return TRUE;
     } else {
@@ -460,6 +508,11 @@ hildon_window_stack_finalize (GObject *object)
 
     if (stack->priv->group)
         g_object_unref (stack->priv->group);
+
+    /* Since the default group stack shouldn't be finalized,
+     * it's safe to destroy the X Window group we created. */
+    if (stack->priv->leader)
+        gdk_window_destroy (stack->priv->leader);
 
     G_OBJECT_CLASS (hildon_window_stack_parent_class)->finalize (object);
 }
