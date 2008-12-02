@@ -1,3 +1,14 @@
+2008-12-02  Claudio Saavedra  <csaavedra@igalia.com>
+
+	Patch contributed by Daniel Borgmann (danielb@openismus.com)
+
+	* src/hildon-controlbar.c:
+	* src/hildon-hvolumebar.c:
+	* src/hildon-vvolumebar.c: (hildon_vvolumebar_size_allocate):
+	Multiple scale size defines updates.
+
+	Fixes: NB#94322 (Scale Updates)
+
 2008-12-02  Alberto Garcia  <agarcia@igalia.com>
 
 	* examples/hildon-app-menu-example.c (create_menu)

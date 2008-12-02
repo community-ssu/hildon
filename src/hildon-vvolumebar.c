@@ -54,23 +54,23 @@
 #include                                        "hildon-volumebar-private.h"
 
 /* Volume bar */
-#define                                         DEFAULT_BAR_WIDTH 58
+#define                                         DEFAULT_BAR_WIDTH 60
 
 #define                                         MINIMUM_BAR_HEIGHT 165
 
 /* Toggle button */
 
-#define                                         DEFAULT_VERTICAL_TBUTTON_WIDTH 26
+#define                                         DEFAULT_VERTICAL_TBUTTON_WIDTH 60
 
-#define                                         DEFAULT_VERTICAL_TBUTTON_HEIGHT 26
+#define                                         DEFAULT_VERTICAL_TBUTTON_HEIGHT 60
 
-#define                                         DEFAULT_ENDING_SIZE 20
+#define                                         DEFAULT_ENDING_SIZE 0
 
 /* Gap to leave for mute button */
 
-#define                                         HORIZONTAL_MUTE_GAP 16
+#define                                         HORIZONTAL_MUTE_GAP 0
 
-#define                                         VERTICAL_MUTE_GAP 6
+#define                                         VERTICAL_MUTE_GAP 0
 
 static HildonVolumebarClass*                    parent_class;
 
@@ -263,6 +263,7 @@ hildon_vvolumebar_size_allocate                 (GtkWidget *widget,
         /* Allocate space for the mute button */
         button_allocation.x = allocation->x + HORIZONTAL_MUTE_GAP;
         button_allocation.y = allocation->y + allocation->height -
+            DEFAULT_VERTICAL_TBUTTON_HEIGHT -
             VERTICAL_MUTE_GAP - 2 * DEFAULT_ENDING_SIZE;
         button_allocation.width = DEFAULT_VERTICAL_TBUTTON_WIDTH;
         button_allocation.height = DEFAULT_VERTICAL_TBUTTON_HEIGHT;

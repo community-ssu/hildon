@@ -51,21 +51,21 @@
 /* Defines for normal version of HVolumebar */
 /* Toggle button */
 
-#define                                         DEFAULT_TBUTTON_WIDTH 26
+#define                                         DEFAULT_TBUTTON_WIDTH 60
 
-#define                                         DEFAULT_TBUTTON_HEIGHT 26
+#define                                         DEFAULT_TBUTTON_HEIGHT 60
 
 /* Volume bar */
 #define                                         MINIMUM_BAR_WIDTH 147
 
-#define                                         DEFAULT_BAR_HEIGHT 58
+#define                                         DEFAULT_BAR_HEIGHT 60
 
 #define                                         DEFAULT_ENDING_SIZE 20
 
 /* Gap to leave for mute button */
-#define                                         VERTICAL_MUTE_GAP 16
+#define                                         VERTICAL_MUTE_GAP 0
 
-#define                                         HORIZONTAL_MUTE_GAP 6
+#define                                         HORIZONTAL_MUTE_GAP 0
 
 /* Sizes inside a toolbar */
 /* Toggle button */

@@ -61,9 +61,9 @@
 
 #define                                         DEFAULT_WIDTH 234
 
-#define                                         DEFAULT_HEIGHT 30
+#define                                         DEFAULT_HEIGHT 60
 
-#define                                         DEFAULT_BORDER_WIDTH 2
+#define                                         DEFAULT_BORDER_WIDTH 0
 
 #define                                         HILDON_CONTROLBAR_STEP_INCREMENT 1
 
