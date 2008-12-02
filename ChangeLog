@@ -1,5 +1,14 @@
 2008-12-02  Alberto Garcia  <agarcia@igalia.com>
 
+	* examples/hildon-app-menu-example.c (create_menu)
+	Show items after adding them to the menu, as in the future the
+	menu will no longer call gtk_widget_show() on the added items.
+
+	* src/hildon-app-menu.c:
+	Update example as explained above.
+
+2008-12-02  Alberto Garcia  <agarcia@igalia.com>
+
 	* src/hildon-app-menu.c
 	(hildon_app_menu_insert, hildon_app_menu_add_filter):
 	Make sure that all menu items have finger height.

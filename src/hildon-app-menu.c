@@ -63,23 +63,27 @@
  * button = gtk_button_new_with_label ("Menu command one");
  * g_signal_connect_after (button, "clicked", G_CALLBACK (button_one_clicked), userdata);
  * hildon_app_menu_append (menu, GTK_BUTTON (button));
+ * gtk_widget_show (button);
  * <!-- -->
  * // Another button
  * button = gtk_button_new_with_label ("Menu command two");
  * g_signal_connect_after (button, "clicked", G_CALLBACK (button_two_clicked), userdata);
  * hildon_app_menu_append (menu, GTK_BUTTON (button));
+ * gtk_widget_show (button);
  * <!-- -->
  * // Create a filter and add it to the menu
  * filter = gtk_radio_button_new_with_label (NULL, "Filter one");
  * gtk_toggle_button_set_mode (GTK_TOGGLE_BUTTON (filter), FALSE);
  * g_signal_connect_after (filter, "clicked", G_CALLBACK (filter_one_clicked), userdata);
  * hildon_app_menu_add_filter (menu, GTK_BUTTON (filter));
+ * gtk_widget_show (button);
  * <!-- -->
  * // Add a new filter
  * filter = gtk_radio_button_new_with_label_from_widget (GTK_RADIO_BUTTON (filter), "Filter two");
  * gtk_toggle_button_set_mode (GTK_TOGGLE_BUTTON (filter), FALSE);
  * g_signal_connect_after (filter, "clicked", G_CALLBACK (filter_two_clicked), userdata);
  * hildon_app_menu_add_filter (menu, GTK_BUTTON (filter));
+ * gtk_widget_show (button);
  * <!-- -->
  * // Add the menu to the window
  * hildon_stackable_window_set_main_menu (win, menu);

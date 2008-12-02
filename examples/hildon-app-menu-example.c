@@ -49,6 +49,7 @@ create_menu                                     (GtkWidget     *label,
     gtk_button_set_label (GTK_BUTTON (button), "Menu command one");
     g_signal_connect_after (button, "clicked", G_CALLBACK (menu_button_clicked), label);
     hildon_app_menu_append (menu, GTK_BUTTON (button));
+    gtk_widget_show (button);
 
     gtk_widget_add_accelerator (button, "activate", accel, GDK_r, GDK_CONTROL_MASK, GTK_ACCEL_VISIBLE);
 
@@ -56,21 +57,25 @@ create_menu                                     (GtkWidget     *label,
     gtk_button_set_label (GTK_BUTTON (button), "Menu command two");
     g_signal_connect_after (button, "clicked", G_CALLBACK (menu_button_clicked), label);
     hildon_app_menu_append (menu, GTK_BUTTON (button));
+    gtk_widget_show (button);
 
     button = hildon_gtk_button_new (buttonsize);
     gtk_button_set_label (GTK_BUTTON (button), "Menu command three");
     g_signal_connect_after (button, "clicked", G_CALLBACK (menu_button_clicked), label);
     hildon_app_menu_append (menu, GTK_BUTTON (button));
+    gtk_widget_show (button);
 
     button = hildon_gtk_button_new (buttonsize);
     gtk_button_set_label (GTK_BUTTON (button), "Menu command four");
     g_signal_connect_after (button, "clicked", G_CALLBACK (menu_button_clicked), label);
     hildon_app_menu_append (menu, GTK_BUTTON (button));
+    gtk_widget_show (button);
 
     button = hildon_gtk_button_new (buttonsize);
     gtk_button_set_label (GTK_BUTTON (button), "Menu command five");
     g_signal_connect_after (button, "clicked", G_CALLBACK (menu_button_clicked), label);
     hildon_app_menu_append (menu, GTK_BUTTON (button));
+    gtk_widget_show (button);
 
     /* Filters */
     button = hildon_gtk_radio_button_new (buttonsize, NULL);
@@ -78,12 +83,14 @@ create_menu                                     (GtkWidget     *label,
     g_signal_connect_after (button, "clicked", G_CALLBACK (menu_button_clicked), label);
     hildon_app_menu_add_filter (menu, GTK_BUTTON (button));
     gtk_toggle_button_set_mode (GTK_TOGGLE_BUTTON (button), FALSE);
+    gtk_widget_show (button);
 
     button = hildon_gtk_radio_button_new_from_widget (buttonsize, GTK_RADIO_BUTTON (button));
     gtk_button_set_label (GTK_BUTTON (button), "filter two");
     g_signal_connect_after (button, "clicked", G_CALLBACK (menu_button_clicked), label);
     hildon_app_menu_add_filter (menu, GTK_BUTTON (button));
     gtk_toggle_button_set_mode (GTK_TOGGLE_BUTTON (button), FALSE);
+    gtk_widget_show (button);
 
     return menu;
 }
