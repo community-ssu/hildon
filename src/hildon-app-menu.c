@@ -76,14 +76,14 @@
  * gtk_toggle_button_set_mode (GTK_TOGGLE_BUTTON (filter), FALSE);
  * g_signal_connect_after (filter, "clicked", G_CALLBACK (filter_one_clicked), userdata);
  * hildon_app_menu_add_filter (menu, GTK_BUTTON (filter));
- * gtk_widget_show (button);
+ * gtk_widget_show (filter);
  * <!-- -->
  * // Add a new filter
  * filter = gtk_radio_button_new_with_label_from_widget (GTK_RADIO_BUTTON (filter), "Filter two");
  * gtk_toggle_button_set_mode (GTK_TOGGLE_BUTTON (filter), FALSE);
  * g_signal_connect_after (filter, "clicked", G_CALLBACK (filter_two_clicked), userdata);
  * hildon_app_menu_add_filter (menu, GTK_BUTTON (filter));
- * gtk_widget_show (button);
+ * gtk_widget_show (filter);
  * <!-- -->
  * // Add the menu to the window
  * hildon_stackable_window_set_main_menu (win, menu);
