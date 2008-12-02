@@ -1,3 +1,9 @@
+2008-12-02  Alberto Garcia  <agarcia@igalia.com>
+
+	* src/hildon-app-menu.c
+	(hildon_app_menu_insert, hildon_app_menu_add_filter):
+	Make sure that all menu items have finger height.
+
 2008-12-01  Alejandro Pinheiro  <apinheiro@igalia.com>
 
 	* src/hildon-picker-dialog.c:

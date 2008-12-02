@@ -92,6 +92,7 @@
 #include                                        <X11/Xatom.h>
 #include                                        <gdk/gdkx.h>
 
+#include                                        "hildon-gtk.h"
 #include                                        "hildon-app-menu.h"
 #include                                        "hildon-app-menu-private.h"
 
@@ -162,6 +163,10 @@ hildon_app_menu_insert                          (HildonAppMenu *menu,
     g_return_if_fail (GTK_IS_BUTTON (item));
 
     priv = HILDON_APP_MENU_GET_PRIVATE(menu);
+
+    /* Force widget size */
+    hildon_gtk_widget_set_theme_size (GTK_WIDGET (item),
+                                      HILDON_SIZE_FINGER_HEIGHT | HILDON_SIZE_AUTO_WIDTH);
 
     /* Add the item to the menu */
     gtk_widget_show (GTK_WIDGET (item));
@@ -258,6 +263,10 @@ hildon_app_menu_add_filter                      (HildonAppMenu *menu,
     g_return_if_fail (GTK_IS_BUTTON (filter));
 
     priv = HILDON_APP_MENU_GET_PRIVATE(menu);
+
+    /* Force widget size */
+    hildon_gtk_widget_set_theme_size (GTK_WIDGET (filter),
+                                      HILDON_SIZE_FINGER_HEIGHT | HILDON_SIZE_AUTO_WIDTH);
 
     /* Add the filter to the menu */
     gtk_widget_show (GTK_WIDGET (filter));
