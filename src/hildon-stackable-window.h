@@ -56,7 +56,10 @@ G_BEGIN_DECLS
                                                 HILDON_TYPE_STACKABLE_WINDOW, \
                                                 HildonStackableWindowClass))
 
+#ifndef _TYPEDEF_HILDON_WINDOW_STACK_
+#define _TYPEDEF_HILDON_WINDOW_STACK_
 typedef struct                                  _HildonWindowStack HildonWindowStack;
+#endif
 
 typedef struct                                  _HildonStackableWindow HildonStackableWindow;
 typedef struct                                  _HildonStackableWindowClass HildonStackableWindowClass;

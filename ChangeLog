@@ -1,5 +1,11 @@
 2008-12-02  Alberto Garcia  <agarcia@igalia.com>
 
+	* src/hildon-stackable-window.h
+	* src/hildon-window-stack.h:
+	Protect definition of HildonWindowStack using the preprocessor.
+
+2008-12-02  Alberto Garcia  <agarcia@igalia.com>
+
 	* src/hildon-app-menu.c (hildon_app_menu_repack_items):
 	Fix warning if all menu items are hidden.
 

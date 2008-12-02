@@ -55,6 +55,10 @@ G_BEGIN_DECLS
 
 typedef struct                                  _HildonWindowStackPrivate HildonWindowStackPrivate;
 
+#ifndef _TYPEDEF_HILDON_WINDOW_STACK_
+#define _TYPEDEF_HILDON_WINDOW_STACK_
+typedef struct                                  _HildonWindowStack HildonWindowStack;
+#endif
 typedef struct                                  _HildonWindowStackClass HildonWindowStackClass;
 
 struct                                          _HildonWindowStack
