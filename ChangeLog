@@ -1,3 +1,11 @@
+2008-12-03  Claudio Saavedra  <csaavedra@igalia.com>
+
+	[Release 2.1.26]
+
+	* NEWS: updates
+	* configure.ac: bump version
+	* debian/changelog: updates
+
 2008-12-02  Alberto Garcia  <agarcia@igalia.com>
 
 	Based on a patch by Adam Endrodi (adam.endrodi@blumsoft.eu)

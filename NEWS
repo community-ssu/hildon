@@ -1,3 +1,39 @@
+[2.1.26 release]
+
+  Bug fixes:
+
+  * Fixes: NB#92230 (Scroll indication not visible in HildonTouchSelector)
+  * Fixes: NB#93281 (new API: hildon_button_set_picker_style() to set
+    HildonButton look like PickerButton)
+  * Fixes: NB#93680 (HildonTimePicker need fully localized am/pm)
+  * Fixes: NB#93228 (Done button is not shown always in listpicker)
+  * Fixes: NB#93890 (Empty HildonAppMenu is pop-up)
+  * Fixes: NB#92032 (In calendar application, date values in 'new event'
+    are not proper)
+  * Fixes: NB#94322 (Scale Updates)
+  * Fixes: NB#94350 (HildonWindowStack:s have the same X Window group)
+
+  New API:
+
+  * HildonWindowStack: Support for multiple window stacks per application.
+  * HildonButton::style property. See below.
+  * hildon_button_set_picker_style(): Sets a different style to the value label
+    in HildonButton.
+  * HildonTouchSelector:columns-changed signal: Emitted every time the number
+    of columns in a HildonTouchSelector changes.
+
+  Deprecations:
+
+  * hildon_program_pop_window_stack(),
+    hildon_program_peek_window_stack(),
+    hildon_program_go_to_root_window(): Superseded by HildonWindowStack.
+
+  Other:
+
+  * Many code fixes.
+  * Examples updates and improvements.
+  * Documentation improvements.
+
 [2.1.24 release]
 
   Bug fixes:
