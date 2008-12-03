@@ -9,7 +9,7 @@
 	unset it when it's unstacked.
 	(hildon_window_stack_finalize): Destroy the leader GdkWindow.
 
-	Fixes: NB#94350 (HildonWindoiwStack:s have the same X Window group)
+	Fixes: NB#94350 (HildonWindowStack:s have the same X Window group)
 
 2008-12-02  Alberto Garcia  <agarcia@igalia.com>
 
