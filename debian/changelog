@@ -1,3 +1,9 @@
+libhildon (2.1.27-1~unreleased) unstable; urgency=low
+
+  * unreleased bump, remove before releasing.
+
+ -- Claudio Saavedra <csaavedra@igalia.com>  Wed, 03 Dec 2008 16:01:41 +0100
+
 libhildon (2.1.26-1) unstable; urgency=low
 
   Bug fixes:
