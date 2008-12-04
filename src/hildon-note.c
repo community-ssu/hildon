@@ -312,7 +312,7 @@ hildon_note_class_init                          (HildonNoteClass *class)
      *
      * Icon for the note.
      *
-     * Deprecated: Since 2.2.0.
+     * Deprecated: Since 2.2
      */
     g_object_class_install_property (object_class,
             PROP_HILDON_NOTE_ICON,
@@ -327,7 +327,7 @@ hildon_note_class_init                          (HildonNoteClass *class)
      *
      * Stock icon name for the note.
      *
-     * Deprecated: Since 2.2.0.
+     * Deprecated: Since 2.2
      */
     g_object_class_install_property (object_class,
             PROP_HILDON_NOTE_STOCK_ICON,
@@ -652,7 +652,7 @@ hildon_note_new_confirmation                    (GtkWindow *parent,
  * Create a new confirmation note. Confirmation note has a text (description) 
  * that you specify and two buttons.
  *
- * Deprecated: Since 2.2.0, icons are not shown in confirmation notes. Icons set
+ * Deprecated: Since 2.2, icons are not shown in confirmation notes. Icons set
  * with this function will be ignored. Use hildon_note_new_confirmation() instead.
  *
  * Returns: a #GtkWidget pointer of the note
@@ -711,7 +711,7 @@ hildon_note_new_information                     (GtkWindow *parent,
  * Create a new information note. Information note has text(description) 
  * that you specify, an OK button and an icon.
  * 
- * Deprecated: Since 2.2.0, icons are not shown in confirmation notes. Icons set
+ * Deprecated: Since 2.2, icons are not shown in confirmation notes. Icons set
  * with this function will be ignored. Use hildon_note_new_information() instead.
  *
  * Returns: a #GtkWidget pointer of the note

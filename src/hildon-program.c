@@ -655,7 +655,7 @@ hildon_program_get_common_menu                  (HildonProgram *self)
  * does not support #GtkMenu objects. See
  * hildon_program_set_common_menu() for that.
  *
- * Since: Hildon 2.2
+ * Since: 2.2
  **/
 void
 hildon_program_set_common_app_menu              (HildonProgram *self,
@@ -691,7 +691,7 @@ hildon_program_set_common_app_menu              (HildonProgram *self,
  * Return value: the #HildonAppMenu that was set as common menu for this
  * #HildonProgram, or %NULL of no common app menu was set.
  *
- * Since: Hildon 2.2
+ * Since: 2.2
  **/
 HildonAppMenu*
 hildon_program_get_common_app_menu              (HildonProgram *self)

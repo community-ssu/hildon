@@ -1705,7 +1705,7 @@ hildon_window_add_accel_group (HildonWindow *self,
  * instead. #HildonStackableWindow uses #HildonAppMenu rather than
  * #GtkMenu.
  *
- * Since: Hildon 2.2
+ * Since: 2.2
  **/ 
 void
 hildon_window_set_main_menu (HildonWindow* self,
