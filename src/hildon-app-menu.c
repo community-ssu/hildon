@@ -319,6 +319,21 @@ hildon_app_menu_set_parent_window              (HildonAppMenu *self,
     priv = HILDON_APP_MENU_GET_PRIVATE(self);
 
     priv->parent_window = parent_window;
+
+    if (parent_window == NULL && GTK_WIDGET_VISIBLE (self))
+        gtk_widget_hide (GTK_WIDGET (self));
+}
+
+gpointer G_GNUC_INTERNAL
+hildon_app_menu_get_parent_window              (HildonAppMenu *self)
+{
+    HildonAppMenuPrivate *priv;
+
+    g_return_val_if_fail (HILDON_IS_APP_MENU (self), NULL);
+
+    priv = HILDON_APP_MENU_GET_PRIVATE (self);
+
+    return priv->parent_window;
 }
 
 static void

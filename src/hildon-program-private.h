@@ -44,6 +44,7 @@ struct                                          _HildonProgramPrivate
     gboolean is_topmost;
     guint window_count;
     GtkWidget *common_menu;
+    GtkWidget *common_app_menu;
     GtkWidget *common_toolbar;
     GSList *windows;
     Window window_group;

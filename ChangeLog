@@ -1,3 +1,25 @@
+2008-12-04  Alberto Garcia  <agarcia@igalia.com>
+
+	* src/hildon-program.h
+	* src/hildon-program-private.h
+	* src/hildon-program.c (hildon_program_init)
+	(hildon_program_set_common_app_menu)
+	(hildon_program_get_common_app_menu):
+	New API for setting a common HildonAppMenu for all
+	HildonStackableWindows registered with the HildonProgram.
+
+	* src/hildon-stackable-window.c
+	(hildon_stackable_window_toggle_menu):
+	Use the common HildonAppMenu if a window doesn't have a specific
+	one.
+
+	* src/hildon-app-menu-private.h
+	* src/hildon-app-menu.c
+	(hildon_app_menu_get_parent_window):
+	Function to obtain the window a HildonAppMenu is attached to.
+	(hildon_app_menu_set_parent_window):
+	Hide the menu if the parent window is set to NULL.
+
 2008-12-04  Claudio Saavedra  <csaavedra@igalia.com>
 
 	* src/hildon-gtk.c: (hildon_gtk_tree_view_new): Explicitly

@@ -42,6 +42,9 @@ void G_GNUC_INTERNAL
 hildon_app_menu_set_parent_window              (HildonAppMenu *self,
                                                 GtkWindow     *parent_window);
 
+gpointer G_GNUC_INTERNAL
+hildon_app_menu_get_parent_window              (HildonAppMenu *self);
+
 G_END_DECLS
 
 #endif /* __HILDON_APP_MENU_PRIVATE_H__ */

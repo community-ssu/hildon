@@ -88,6 +88,7 @@
 #include                                        "hildon-program-private.h"
 #include                                        "hildon-window-private.h"
 #include                                        "hildon-window-stack.h"
+#include                                        "hildon-app-menu-private.h"
 
 static void
 hildon_program_init                             (HildonProgram *self);
@@ -151,6 +152,8 @@ hildon_program_init                             (HildonProgram *self)
     priv->window_count = 0;
     priv->is_topmost = FALSE;
     priv->window_group = GDK_WINDOW_XID (gdk_display_get_default_group (gdk_display_get_default()));
+    priv->common_menu = NULL;
+    priv->common_app_menu = NULL;
     priv->common_toolbar = NULL;
     priv->windows = NULL;
 }
@@ -571,9 +574,11 @@ hildon_program_get_can_hibernate                (HildonProgram *self)
  * Sets a GtkMenu that will appear in all the #HildonWindow registered
  * with the #HildonProgram. Only one common GtkMenu can be set, further
  * calls will detach the previous common GtkMenu. A #HildonWindow
- * can use it's own GtkMenu with hildon_window_set_menu()
+ * can use its own GtkMenu with hildon_window_set_menu()
  *
- * This method does not support #HildonAppMenu objects.
+ * This method is not intented for #HildonStackableWindow<!-- -->s and
+ * does not support #HildonAppMenu objects. See
+ * hildon_program_set_common_app_menu() for that.
  **/
 void
 hildon_program_set_common_menu                  (HildonProgram *self, 
@@ -632,6 +637,73 @@ hildon_program_get_common_menu                  (HildonProgram *self)
     g_assert (priv);
 
     return GTK_MENU (priv->common_menu);
+}
+
+/**
+ * hildon_program_set_common_app_menu:
+ * @self: The #HildonProgram in which the common menu should be used
+ * @menu: A #HildonAppMenu to use as common menu for the program
+ *
+ * Sets a #HildonAppMenu that will appear in all the
+ * #HildonStackableWindow<!-- -->s registered with the
+ * #HildonProgram. Only one common #HildonAppMenu can be set, further
+ * calls will detach the previous common #HildonAppMenu. A
+ * #HildonStackableWindow can use its own #HildonAppMenu with
+ * hildon_stackable_window_set_main_menu()
+ *
+ * This method is not intented for standard #HildonWindow<!-- -->s and
+ * does not support #GtkMenu objects. See
+ * hildon_program_set_common_menu() for that.
+ *
+ * Since: Hildon 2.2
+ **/
+void
+hildon_program_set_common_app_menu              (HildonProgram *self,
+                                                 HildonAppMenu *menu)
+{
+    HildonProgramPrivate *priv;
+    GtkWidget *old_menu;
+
+    g_return_if_fail (HILDON_IS_PROGRAM (self));
+    g_return_if_fail (menu == NULL || HILDON_IS_APP_MENU (menu));
+
+    priv = HILDON_PROGRAM_GET_PRIVATE (self);
+    g_assert (priv);
+
+    old_menu = priv->common_app_menu;
+
+    /* Set new menu */
+    priv->common_app_menu = GTK_WIDGET (menu);
+    if (menu)
+        g_object_ref_sink (menu);
+
+    /* Hide and unref old menu */
+    if (old_menu) {
+        hildon_app_menu_set_parent_window (HILDON_APP_MENU (old_menu), NULL);
+        g_object_unref (old_menu);
+    }
+}
+
+/**
+ * hildon_program_get_common_app_menu:
+ * @self: The #HildonProgram from which to retrieve the common app menu
+ *
+ * Return value: the #HildonAppMenu that was set as common menu for this
+ * #HildonProgram, or %NULL of no common app menu was set.
+ *
+ * Since: Hildon 2.2
+ **/
+HildonAppMenu*
+hildon_program_get_common_app_menu              (HildonProgram *self)
+{
+    HildonProgramPrivate *priv;
+
+    g_return_val_if_fail (HILDON_IS_PROGRAM (self), NULL);
+
+    priv = HILDON_PROGRAM_GET_PRIVATE (self);
+    g_assert (priv);
+
+    return HILDON_APP_MENU (priv->common_app_menu);
 }
 
 /**

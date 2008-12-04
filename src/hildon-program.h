@@ -101,6 +101,13 @@ GtkMenu*
 hildon_program_get_common_menu                  (HildonProgram *self);
 
 void
+hildon_program_set_common_app_menu              (HildonProgram *self,
+                                                 HildonAppMenu *menu);
+
+HildonAppMenu*
+hildon_program_get_common_app_menu              (HildonProgram *self);
+
+void
 hildon_program_set_common_toolbar               (HildonProgram *self, 
                                                  GtkToolbar *toolbar);
 

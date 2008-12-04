@@ -98,6 +98,8 @@
 #include                                        "hildon-app-menu-private.h"
 #include                                        "hildon-window-stack.h"
 #include                                        "hildon-window-stack-private.h"
+#include                                        "hildon-window-private.h"
+#include                                        "hildon-program.h"
 
 G_DEFINE_TYPE (HildonStackableWindow, hildon_stackable_window, HILDON_TYPE_WINDOW);
 
@@ -182,28 +184,38 @@ hildon_stackable_window_toggle_menu             (HildonWindow *self,
 						 guint32 time)
 {
     HildonStackableWindowPrivate *priv;
+    HildonAppMenu *menu_to_use = NULL;
 
     g_return_val_if_fail (HILDON_IS_STACKABLE_WINDOW (self), FALSE);
     priv = HILDON_STACKABLE_WINDOW_GET_PRIVATE (self);
     g_assert (priv != NULL);
 
-    if (priv->app_menu)
-    {
-        if (GTK_WIDGET_MAPPED (GTK_WIDGET (priv->app_menu))) {
-            gtk_widget_hide (GTK_WIDGET (priv->app_menu));
+    if (priv->app_menu) {
+        menu_to_use = priv->app_menu;
+    } else {
+        HildonProgram *program = HILDON_WINDOW_GET_PRIVATE (self)->program;
+
+        if (program) {
+            menu_to_use = hildon_program_get_common_app_menu (program);
+            if (menu_to_use) {
+                if (self != hildon_app_menu_get_parent_window (HILDON_APP_MENU (menu_to_use)))
+                    gtk_widget_hide (GTK_WIDGET (menu_to_use));
+            }
+        }
+    }
+
+    if (menu_to_use) {
+        if (GTK_WIDGET_MAPPED (GTK_WIDGET (menu_to_use))) {
+            gtk_widget_hide (GTK_WIDGET (menu_to_use));
         } else {
-            hildon_app_menu_set_parent_window (priv->app_menu, GTK_WINDOW (self));
-            gtk_widget_show (GTK_WIDGET (priv->app_menu));
+            hildon_app_menu_set_parent_window (menu_to_use, GTK_WINDOW (self));
+            gtk_widget_show (GTK_WIDGET (menu_to_use));
         }
 
         return TRUE;
-    }
-    else if (HILDON_WINDOW_CLASS (hildon_stackable_window_parent_class)->toggle_menu)
-    {
+    } else if (HILDON_WINDOW_CLASS (hildon_stackable_window_parent_class)->toggle_menu) {
         return HILDON_WINDOW_CLASS (hildon_stackable_window_parent_class)->toggle_menu (self, button, time);
-    }
-    else
-    {
+    } else {
         return FALSE;
     }
 }
