@@ -252,7 +252,8 @@ hildon_gtk_radio_button_new_from_widget         (HildonSizeType  size,
 GtkWidget *
 hildon_gtk_tree_view_new                        (HildonUIMode mode)
 {
-    return g_object_new (GTK_TYPE_TREE_VIEW, "hildon-ui-mode", mode, NULL);
+    return g_object_new (GTK_TYPE_TREE_VIEW, "hildon-ui-mode", mode,
+                         "enable-search", FALSE, NULL);
 }
 
 /**

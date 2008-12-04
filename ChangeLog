@@ -1,3 +1,9 @@
+2008-12-04  Claudio Saavedra  <csaavedra@igalia.com>
+
+	* src/hildon-gtk.c: (hildon_gtk_tree_view_new): Explicitilely
+	set GtkTreeView::enable-search to FALSE, to avoid the interactive
+	search widget to popup.
+
 2008-12-03  Claudio Saavedra  <csaavedra@igalia.com>
 
 	* configure.ac: post release version bump
