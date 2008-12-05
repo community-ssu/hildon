@@ -80,6 +80,9 @@ hildon_wizard_dialog_get_property               (GObject *object,
 static void 
 finalize                                        (GObject *object);
 
+static void
+destroy                                         (GObject *object);
+
 static void 
 response                                        (HildonWizardDialog *wizard, 
                                                  gint response_id,
@@ -138,7 +141,7 @@ static void
 hildon_wizard_dialog_class_init                 (HildonWizardDialogClass *wizard_dialog_class)
 {
     GObjectClass *object_class = G_OBJECT_CLASS (wizard_dialog_class);
-
+    GtkObjectClass *gtk_object_class = GTK_OBJECT_CLASS (wizard_dialog_class);
     parent_class = g_type_class_peek_parent (wizard_dialog_class);
 
     g_type_class_add_private (wizard_dialog_class, sizeof (HildonWizardDialogPrivate));
@@ -147,6 +150,7 @@ hildon_wizard_dialog_class_init                 (HildonWizardDialogClass *wizard
     object_class->set_property = hildon_wizard_dialog_set_property;
     object_class->get_property = hildon_wizard_dialog_get_property;
     object_class->finalize     = finalize;
+    gtk_object_class->destroy  = destroy;
 
     /**
      * HildonWizardDialog:wizard-name:
@@ -205,6 +209,25 @@ finalize                                        (GObject *object)
         G_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
+static void
+destroy                                         (GObject *object)
+{
+    HildonWizardDialogPrivate *priv = HILDON_WIZARD_DIALOG_GET_PRIVATE (object);
+
+    g_assert (priv);
+
+    if (priv->forward_function)
+    {
+      if (priv->forward_function_data &&
+	  priv->forward_data_destroy)
+	priv->forward_data_destroy (priv->forward_function_data);
+
+      priv->forward_function = NULL;
+      priv->forward_function_data = NULL;
+      priv->forward_data_destroy = NULL;
+    }
+}
+
 /* Disable or enable the Previous, Next and Finish buttons */
 static void
 make_buttons_sensitive                          (HildonWizardDialog *wizard_dialog,
@@ -241,6 +264,10 @@ hildon_wizard_dialog_init                       (HildonWizardDialog *wizard_dial
     priv->notebook = NULL;
     priv->wizard_name = NULL;
     priv->autotitle = TRUE;
+
+    priv->forward_function = NULL;
+    priv->forward_function_data = NULL;
+    priv->forward_data_destroy = NULL;
 
     /* Add response buttons: finish, previous, next */
     gtk_dialog_add_button (dialog, _("wdgt_bd_finish"), HILDON_WIZARD_DIALOG_FINISH);
@@ -426,15 +453,19 @@ response                                        (HildonWizardDialog *wizard_dial
             break;
 
         case HILDON_WIZARD_DIALOG_NEXT:
-            ++current;
-            is_last = (current == last);
-            is_first = (current == 0);
-            make_buttons_sensitive (wizard_dialog,
-                                    !is_first, !is_first, !is_last);
-            gtk_notebook_next_page (notebook); /* go to next page */
+
+            if (priv->forward_function &&
+                (*priv->forward_function) (priv->notebook, current, priv->forward_function_data)) {
+              ++current;
+              is_last = (current == last);
+              is_first = (current == 0);
+              make_buttons_sensitive (wizard_dialog,
+                                      !is_first, !is_first, !is_last);
+              gtk_notebook_next_page (notebook); /* go to next page */
+            }
             break;
 
-        case HILDON_WIZARD_DIALOG_FINISH:      
+        case HILDON_WIZARD_DIALOG_FINISH:
             return;
 
     }
@@ -481,3 +512,36 @@ hildon_wizard_dialog_new                        (GtkWindow *parent,
     return widget;
 }
 
+/**
+ * hildon_wizard_dialog_set_forward_page_func:
+ * @dialog: a #HildonWizardDialog
+ * @page_func: the #HildonWizardDialogPageFunc
+ * @data: user data for @page_func
+ * @destroy: destroy notifier for @data
+ *
+ * Sets the page forwarding function to be @page_func. This function
+ * will be used to determine whether it is possible to go to the next page
+ * when the user presses the forward button. Setting @page_func to %NULL
+ * wil make the wizard to simply go always to the next page.
+ *
+ * Since: 2.2
+ **/
+void
+hildon_wizard_dialog_set_forward_page_func      (HildonWizardDialog *wizard_dialog,
+                                                 HildonWizardDialogPageFunc page_func,
+                                                 gpointer data,
+                                                 GDestroyNotify destroy)
+{
+  g_return_if_fail (HILDON_IS_WIZARD_DIALOG (wizard_dialog));
+
+  HildonWizardDialogPrivate *priv = HILDON_WIZARD_DIALOG_GET_PRIVATE (wizard_dialog);
+
+  if (priv->forward_data_destroy &&
+      priv->forward_function_data) {
+    (*priv->forward_data_destroy) (priv->forward_function_data);
+  }
+
+  priv->forward_function = page_func;
+  priv->forward_function_data = data;
+  priv->forward_data_destroy = destroy;
+}

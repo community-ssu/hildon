@@ -1,3 +1,22 @@
+2008-12-05  Claudio Saavedra  <csaavedra@igalia.com>
+
+	* examples/hildon-wizard-dialog-example.c: (on_page_switch),
+	(some_page_func), (main): Update the example to use a
+	HildonWizardDialogPageFunc function.
+
+	* src/hildon-wizard-dialog-private.h: Add private data for
+	the HildonWizardDialogPageFunc function usage.
+
+	* src/hildon-wizard-dialog.c: (hildon_wizard_dialog_class_init),
+	(destroy), (hildon_wizard_dialog_init), (response),
+	(hildon_wizard_dialog_set_forward_page_func):
+	* src/hildon-wizard-dialog.h: Add a HildonWizardDialogPageFunc function,
+	that applications can use to stop a HildonWizardDialog to jump to
+	the next page.
+
+	Fixes: NB#94214 (No way to stop HildonWizardDialog from going to
+	next page)
+
 2008-12-04  Alberto Garcia  <agarcia@igalia.com>
 
 	* src/hildon-program.h

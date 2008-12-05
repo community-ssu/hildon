@@ -24,6 +24,7 @@
 
 #include                                        <stdio.h>
 #include                                        <stdlib.h>
+#include                                        <string.h>
 #include                                        <glib.h>
 #include                                        <gtk/gtk.h>
 #include                                        "hildon.h"
@@ -43,11 +44,28 @@ on_page_switch (GtkNotebook *notebook,
     g_debug ("Page %d", num);
 
     if (num == 1) {
-        g_debug ("Making next insensitive! %d", num);
-        gtk_dialog_set_response_sensitive (GTK_DIALOG (dialog), HILDON_WIZARD_DIALOG_NEXT, FALSE);
+    /*     g_debug ("Making next insensitive! %d", num); */
+    /*     gtk_dialog_set_response_sensitive (GTK_DIALOG (dialog), HILDON_WIZARD_DIALOG_NEXT, FALSE); */
     }
-    
+
     return TRUE;
+}
+
+static gboolean
+some_page_func (GtkNotebook *nb,
+                gint current,
+                gpointer userdata)
+{
+  HildonEntry *entry;
+
+  /* Validate data only for the third page. */
+  switch (current) {
+  case 2:
+    entry = HILDON_ENTRY (gtk_notebook_get_nth_page (nb, current));
+    return (strlen (hildon_entry_get_text (entry)) != 0);
+  default:
+    return TRUE;
+  }
 }
 
 int
@@ -58,14 +76,19 @@ main (int argc, char **argv)
     GtkWidget *notebook = gtk_notebook_new ();
     GtkWidget *label_1 = gtk_label_new ("Page 1");
     GtkWidget *label_2 = gtk_label_new ("Page 2");
-    GtkWidget *label_3 = gtk_label_new ("Page 3");
+    GtkWidget *entry_3 = hildon_entry_new (HILDON_SIZE_AUTO);
+    hildon_entry_set_placeholder (HILDON_ENTRY (entry_3), " Write something to continue");
+    GtkWidget *label_4 = gtk_label_new ("Page 4");
 
     gtk_notebook_append_page (GTK_NOTEBOOK (notebook), label_1, NULL);
     gtk_notebook_append_page (GTK_NOTEBOOK (notebook), label_2, NULL);
-    gtk_notebook_append_page (GTK_NOTEBOOK (notebook), label_3, NULL);
+    gtk_notebook_append_page (GTK_NOTEBOOK (notebook), entry_3, NULL);
+    gtk_notebook_append_page (GTK_NOTEBOOK (notebook), label_4, NULL);
 
     GtkWidget *dialog = hildon_wizard_dialog_new (NULL, "Wizard", GTK_NOTEBOOK (notebook));
     g_signal_connect (G_OBJECT (notebook), "switch-page", G_CALLBACK (on_page_switch), dialog);
+    hildon_wizard_dialog_set_forward_page_func (HILDON_WIZARD_DIALOG (dialog),
+                                                some_page_func, NULL, NULL);
 
     gtk_widget_show_all (dialog);
     gtk_dialog_run (GTK_DIALOG (dialog));

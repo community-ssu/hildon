@@ -40,6 +40,10 @@ struct                                          _HildonWizardDialogPrivate
     gchar *wizard_name;
     GtkNotebook *notebook;
     gboolean autotitle;
+
+    HildonWizardDialogPageFunc forward_function;
+    gpointer forward_function_data;
+    GDestroyNotify forward_data_destroy;
 };
 
 G_END_DECLS

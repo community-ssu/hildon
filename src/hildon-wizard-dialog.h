@@ -73,6 +73,8 @@ struct                                          _HildonWizardDialogClass
     GtkDialogClass parent_class;
 };
 
+typedef gboolean (*HildonWizardDialogPageFunc) (GtkNotebook *notebook, gint current_page, gpointer data);
+
 GType G_GNUC_CONST
 hildon_wizard_dialog_get_type                   (void);
 
@@ -80,6 +82,12 @@ GtkWidget*
 hildon_wizard_dialog_new                        (GtkWindow *parent,
                                                  const char *wizard_name,
                                                  GtkNotebook *notebook);
+
+void
+hildon_wizard_dialog_set_forward_page_func      (HildonWizardDialog *dialog,
+                                                 HildonWizardDialogPageFunc pagefunc,
+                                                 gpointer data,
+                                                 GDestroyNotify destroy);
 
 G_END_DECLS
 
