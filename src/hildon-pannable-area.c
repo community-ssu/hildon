@@ -2086,6 +2086,8 @@ hildon_pannable_calculate_vel_factor (HildonPannableArea * self)
  * Create a new pannable area widget
  *
  * Returns: the newly created #HildonPannableArea
+ *
+ * Since: 2.2
  */
 
 GtkWidget *
@@ -2106,6 +2108,8 @@ hildon_pannable_area_new (void)
  * Create a new #HildonPannableArea widget and set various properties
  *
  * returns: the newly create #HildonPannableArea
+ *
+ * Since: 2.2
  */
 
 GtkWidget *
@@ -2128,6 +2132,8 @@ hildon_pannable_area_new_full (gint mode, gboolean enabled,
  *
  * Convenience function used to add a child to a #GtkViewport, and add the
  * viewport to the scrolled window.
+ *
+ * Since: 2.2
  */
 
 void
@@ -2202,6 +2208,8 @@ hildon_pannable_area_add_with_viewport (HildonPannableArea * area,
  * already realized. Check the hildon_pannable_area_jump_to_child() for
  * more tips regarding how to call this function during
  * initialization.
+ *
+ * Since: 2.2
  **/
 void
 hildon_pannable_area_scroll_to (HildonPannableArea *area,
@@ -2292,6 +2300,8 @@ hildon_pannable_area_scroll_to (HildonPannableArea *area,
  * already realized. Check the hildon_pannable_area_jump_to_child() for
  * more tips regarding how to call this function during
  * initialization.
+ *
+ * Since: 2.2
  **/
 void
 hildon_pannable_area_jump_to (HildonPannableArea *area,
@@ -2373,6 +2383,8 @@ hildon_pannable_area_jump_to (HildonPannableArea *area,
  * already realized. Check the hildon_pannable_area_jump_to_child() for
  * more tips regarding how to call this function during
  * initialization.
+ *
+ * Since: 2.2
  **/
 void
 hildon_pannable_area_scroll_to_child (HildonPannableArea *area, GtkWidget *child)
@@ -2414,6 +2426,8 @@ hildon_pannable_area_scroll_to_child (HildonPannableArea *area, GtkWidget *child
  * GTK_WIDGET_REALIZED macro. If you want to call this function during
  * the initialization process of the widget do it inside a callback to
  * the ::realize signal, using g_signal_connect_after() function.
+ *
+ * Since: 2.2
  **/
 void
 hildon_pannable_area_jump_to_child (HildonPannableArea *area, GtkWidget *child)
@@ -2451,6 +2465,8 @@ hildon_pannable_area_jump_to_child (HildonPannableArea *area, GtkWidget *child)
  * case no widget found it returns NULL.
  *
  * returns: the #GtkWidget if we find a widget, NULL in any other case
+ *
+ * Since: 2.2
  **/
 GtkWidget*
 hildon_pannable_get_child_widget_at (HildonPannableArea *area,

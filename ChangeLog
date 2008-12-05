@@ -1,5 +1,12 @@
 2008-12-05  Claudio Saavedra  <csaavedra@igalia.com>
 
+	Patch contributed by Iván Gómez (igomez@igalia.com)
+
+	* src/hildon-pannable-area.c: Add "since" tags to the new API in
+	hildon 2.2.
+
+2008-12-05  Claudio Saavedra  <csaavedra@igalia.com>
+
 	* examples/hildon-wizard-dialog-example.c: (on_page_switch),
 	(some_page_func), (main): Update the example to use a
 	HildonWizardDialogPageFunc function.
