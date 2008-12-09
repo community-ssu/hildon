@@ -25,7 +25,7 @@
  *
  * #HildonTouchSelectorEntry is a selector widget with a text entry, similar in
  * behaviour to #GtkComboBoxEntry, that allows user to select an item from a
- * predefined list or to enter a different one in a #GtkEntry. Items can also
+ * predefined list or to enter a different one in a #HildonEntry. Items can also
  * be searched and selected by typing in the entry.
  *
  * The main difference between the #GtkTreeModel used by #HildonTouchSelector
@@ -45,6 +45,7 @@
 
 #include "hildon-touch-selector.h"
 #include "hildon-touch-selector-entry.h"
+#include "hildon-entry.h"
 
 G_DEFINE_TYPE (HildonTouchSelectorEntry, hildon_touch_selector_entry, HILDON_TYPE_TOUCH_SELECTOR)
 
@@ -165,7 +166,7 @@ hildon_touch_selector_entry_init (HildonTouchSelectorEntry *self)
 
   priv = HILDON_TOUCH_SELECTOR_ENTRY_GET_PRIVATE (self);
 
-  priv->entry = gtk_entry_new ();
+  priv->entry = hildon_entry_new (HILDON_SIZE_AUTO);
   gtk_entry_set_activates_default (GTK_ENTRY (priv->entry), TRUE);
 
   completion = gtk_entry_completion_new ();
