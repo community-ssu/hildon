@@ -454,7 +454,7 @@ response                                        (HildonWizardDialog *wizard_dial
 
         case HILDON_WIZARD_DIALOG_NEXT:
 
-            if (priv->forward_function &&
+          if (!priv->forward_function ||
                 (*priv->forward_function) (priv->notebook, current, priv->forward_function_data)) {
               ++current;
               is_last = (current == last);

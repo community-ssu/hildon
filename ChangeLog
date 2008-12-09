@@ -1,5 +1,10 @@
 2008-12-09  Claudio Saavedra  <csaavedra@igalia.com>
 
+	* src/hildon-wizard-dialog.c: (response): Move forward if there is
+	no HildonWizardDialogPageFunc.
+
+2008-12-09  Claudio Saavedra  <csaavedra@igalia.com>
+
 	Patch contributed by Iván Gómez (igomez@igalia.com)
 
 	* src/hildon-app-menu.c:
