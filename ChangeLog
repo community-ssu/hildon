@@ -1,5 +1,14 @@
 2008-12-09  Claudio Saavedra  <csaavedra@igalia.com>
 
+	[Release 2.1.28]
+
+	* NEWS: updates
+	* configure.ac: bump version
+	* debian/changelog: updates
+	* debian/control: bump gtk+ dependency
+
+2008-12-09  Claudio Saavedra  <csaavedra@igalia.com>
+
 	* src/hildon-dialog.c: Mark as deprecated.
 	* src/hildon-dialog.h: Mark as deprecated.
 	* src/hildon-picker-dialog.h: Allow HildonPickerDialog to derive

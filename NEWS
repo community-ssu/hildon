@@ -1,3 +1,37 @@
+[2.1.28 release]
+
+  Bug fixes:
+
+  * Fixes: NB#94214 (No way to stop HildonWizardDialog from going to
+    next page)
+  * Fixes: NB#94972 (Hildon Picker with Entry should use HildonEntry
+    widget, not GtkEntry)
+  * Fixes: NB#90867 (Deprecate HildonDialog and use GtkDialog (with
+    maemo changes) instead)
+
+  New API:
+
+  * hildon_program_set/get_common_app_menu(): Use to set a common
+    HildonAppMenu for all stackable windows in a HildonProgram.
+  * hildon_wizard_dialog_set_forward_page_func(): Use to define a
+    HildonWizardDialogPageFunc function to control flow of the wizard.
+  * hildon_gtk_tree_view_set_ui_mode(): Method to change the UI mode.
+  * hildon_gtk_icon_view_set_ui_mode(): Method to change the UI mode.
+  * HildonPannableArea::size-request-policy: Size requisition policy property.
+  * hildon_pannable_area_set/get_size_request_policy(): Method to change the
+    size request policy.
+
+  Deprecations:
+
+  * HildonDialog. Prefer GtkDialog instead.
+
+  Other:
+
+  * Examples updated, code fixes, documentation updates.
+  * Explicitely set the interactive search widget off in hildon specific
+    GtkTreeView.
+  * Bump GTK+ dependency to 2.12.12.
+
 [2.1.26 release]
 
   Bug fixes:

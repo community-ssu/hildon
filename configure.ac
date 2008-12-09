@@ -1,4 +1,4 @@
-AC_INIT([Hildon gtk widgets], [2.1.27], [hildon@projects.maemo.org], [hildon])
+AC_INIT([Hildon gtk widgets], [2.1.28], [hildon@projects.maemo.org], [hildon])
 AC_CANONICAL_SYSTEM
 
 AM_CONFIG_HEADER(config.h)
@@ -25,7 +25,7 @@ AC_SUBST(API_VERSION_MAJOR)
 #    increment current, and set revision to 0.
 # 5. If any interfaces have been added since the last public release, then increment age.
 # 6. If any interfaces have been removed since the last public release, then set age to 0.  
-AS_LIBTOOL(HILDON, 18, 4, 18)
+AS_LIBTOOL(HILDON, 18, 5, 18)
 AM_INIT_AUTOMAKE
 
 AC_PROG_CC
@@ -35,7 +35,7 @@ AC_PROG_AWK
 
 AC_HEADER_STDC
 
-GTK_VERSION=2.12.9
+GTK_VERSION=2.12.12
 
 PKG_CHECK_MODULES(GTK, gtk+-2.0 >= $GTK_VERSION)
 AC_SUBST(GTK_LIBS)
