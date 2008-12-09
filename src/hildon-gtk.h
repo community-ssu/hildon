@@ -46,12 +46,20 @@ GtkWidget *
 hildon_gtk_tree_view_new_with_model             (HildonUIMode  mode,
                                                  GtkTreeModel *model);
 
+void
+hildon_gtk_tree_view_set_ui_mode                (GtkTreeView  *treeview,
+                                                 HildonUIMode  mode);
+
 GtkWidget *
 hildon_gtk_icon_view_new                        (HildonUIMode mode);
 
 GtkWidget *
 hildon_gtk_icon_view_new_with_model             (HildonUIMode  mode,
                                                  GtkTreeModel *model);
+
+void
+hildon_gtk_icon_view_set_ui_mode                (GtkIconView  *iconview,
+                                                 HildonUIMode  mode);
 #endif /* MAEMO_GTK */
 
 void

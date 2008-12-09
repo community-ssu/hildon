@@ -220,6 +220,21 @@ hildon_gtk_tree_view_new_with_model             (HildonUIMode  mode,
 }
 
 /**
+ * hildon_gtk_tree_view_set_ui_mode:
+ * @treeview: A #GtkTreeView
+ * @mode: The new #HildonUIMode
+ *
+ * Sets the UI mode of @treeview to @mode.
+ **/
+void
+hildon_gtk_tree_view_set_ui_mode                (GtkTreeView  *treeview,
+                                                 HildonUIMode  mode)
+{
+    g_return_if_fail (GTK_IS_TREE_VIEW (treeview));
+    g_object_set (treeview, "hildon-ui-mode", mode, NULL);
+}
+
+/**
  * hildon_gtk_icon_view_new:
  * @mode: the Hildon UI mode
  *
@@ -249,6 +264,21 @@ hildon_gtk_icon_view_new_with_model             (HildonUIMode  mode,
                                                  GtkTreeModel *model)
 {
     return g_object_new (GTK_TYPE_ICON_VIEW, "hildon-ui-mode", mode, "model", model, NULL);
+}
+
+/**
+ * hildon_gtk_icon_view_set_ui_mode:
+ * @iconview: A #GtkIconView
+ * @mode: The new #HildonUIMode
+ *
+ * Sets the UI mode of @iconview to @mode.
+ **/
+void
+hildon_gtk_icon_view_set_ui_mode                (GtkIconView  *iconview,
+                                                 HildonUIMode  mode)
+{
+    g_return_if_fail (GTK_IS_ICON_VIEW (iconview));
+    g_object_set (iconview, "hildon-ui-mode", mode, NULL);
 }
 #endif /* MAEMO_GTK */
 

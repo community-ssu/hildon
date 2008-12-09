@@ -1,3 +1,11 @@
+2008-12-09  Alberto Garcia  <agarcia@igalia.com>
+
+	* src/hildon-gtk.h
+	* src/hildon-gtk.c
+	(hildon_gtk_tree_view_set_ui_mode)
+	(hildon_gtk_icon_view_set_ui_mode): New functions to change the UI
+	mode of treeviews and iconviews.
+
 2008-12-09  Claudio Saavedra  <csaavedra@igalia.com>
 
 	* src/hildon-touch-selector-entry.c:
