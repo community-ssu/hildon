@@ -27,9 +27,11 @@
  * @short_description: Widget representing a popup window in the Hildon framework.
  * @see_also: #HildonCodeDialog, #HildonColorChooserDialog, #HildonFontSelectionDialog, #HildonGetPasswordDialog, #HildonLoginDialog, #HildonSetPasswordDialog, #HildonSortDialog, #HildonWizardDialog
  *
- * The HildonDialog is a GTK widget which represent a popup window in the
- * Hildon framework. It is derived from the GtkDialog and provides additional
+ * #HildonDialog is a GTK widget which represent a popup window in the
+ * Hildon framework. It is derived from #GtkDialog and provides additional
  * commodities specific to the Hildon framework.
+ *
+ * As of hildon 2.2, #HildonDialog has been deprecated in favor of #GtkDialog.
  *
  * <example>
  * <title>Simple <structname>HildonDialog</structname> usage</title>
@@ -55,6 +57,8 @@
  * </programlisting>
  * </example>
  */
+
+#undef                                          HILDON_DISABLE_DEPRECATED
 
 #include                                        "hildon-dialog.h"
 #include                                        "hildon-gtk.h"

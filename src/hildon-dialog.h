@@ -22,6 +22,8 @@
  *
  */
 
+#ifndef                                         HILDON_DISABLE_DEPRECATED
+
 #ifndef                                         __HILDON_DIALOG_H__
 #define                                         __HILDON_DIALOG_H__
 
@@ -95,3 +97,5 @@ hildon_dialog_add_buttons                       (HildonDialog *dialog,
 G_END_DECLS
 
 #endif                                          /* __HILDON_DIALOG_H__ */
+
+#endif                                          /* HILDON_DISABLE_DEPRECATED */

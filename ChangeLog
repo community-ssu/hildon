@@ -1,3 +1,15 @@
+2008-12-09  Claudio Saavedra  <csaavedra@igalia.com>
+
+	* src/hildon-dialog.c: Mark as deprecated.
+	* src/hildon-dialog.h: Mark as deprecated.
+	* src/hildon-picker-dialog.h: Allow HildonPickerDialog to derive
+	from HildonDialog and still work, even if
+	HILDON_DISABLE_DEPRECATED is defined. This is required as we can't currently
+	break the ABI and simply make HildonPickerDialog derive from GtkDialog.
+
+	Fixes: NB#90867 (Deprecate HildonDialog and use GtkDialog (with
+	maemo changes) instead)
+
 2008-12-09  Alejandro G. Castro	 <alex@igalia.com>
 
 	* src/hildon-pannable_area.h:
