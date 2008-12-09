@@ -1,3 +1,17 @@
+2008-12-09  Alejandro G. Castro	 <alex@igalia.com>
+
+	* src/hildon-pannable_area.h:
+	* src/hildon-pannable_area.c:
+	(hildon_pannable_area_class_init),
+	(hildon_pannable_area_set_property),
+	(hildon_pannable_area_get_property),
+	(hildon_pannable_area_size_request),
+	(hildon_pannable_area_get_size_request_policy),
+	(hildon_pannable_area_set_size_request_policy): Added new API
+	allowing applications to control the request policy. Now they can
+	choose to use the minimum (HILDON_MOVEMENT_MINIMUM) size or the
+	children allocation (HILDON_MOVEMENT_CHILDREN).
+
 2008-12-09  Alberto Garcia  <agarcia@igalia.com>
 
 	* src/hildon-gtk.h

@@ -97,6 +97,20 @@ typedef enum {
 } HildonMovementDirection;
 
 /**
+ * HildonSizeRequestPolicy:
+ * @HILDON_SIZE_REQUEST_MINIMUM: The minimum size the widget could use
+ * to paint itself
+ * @HILDON_SIZE_REQUEST_CHILDREN: The minimum size of the children of
+ * the widget
+ *
+ * Used to control the size request policy of the widget
+ */
+typedef enum {
+  HILDON_SIZE_REQUEST_MINIMUM,
+  HILDON_SIZE_REQUEST_CHILDREN
+} HildonSizeRequestPolicy;
+
+/**
  * HildonPannableArea:
  *
  * HildonPannableArea has no publicly accessible fields
@@ -143,6 +157,9 @@ void hildon_pannable_area_jump_to_child         (HildonPannableArea *area,
                                                  GtkWidget *child);
 GtkWidget* hildon_pannable_get_child_widget_at  (HildonPannableArea *area,
                                                  gdouble x, gdouble y);
+HildonSizeRequestPolicy hildon_pannable_area_get_size_request_policy (HildonPannableArea *area);
+void hildon_pannable_area_set_size_request_policy (HildonPannableArea *area,
+                                                   HildonSizeRequestPolicy size_from_child);
 
 G_END_DECLS
 
