@@ -1,3 +1,17 @@
+2008-12-09  Claudio Saavedra  <csaavedra@igalia.com>
+
+	Patch contributed by Iván Gómez (igomez@igalia.com)
+
+	* src/hildon-app-menu.c:
+	* src/hildon-button.c:
+	* src/hildon-picker-dialog.c: (hildon_picker_dialog_class_init):
+	* src/hildon-stackable-window.c:
+	* src/hildon-time-selector.c:
+	* src/hildon-touch-selector.c:
+	* src/hildon-window.c:
+
+	Add more "since" tags to the new API in hildon 2.2.
+
 2008-12-05 14:42:11  Tim Janik  <timj@imendio.com>
 
 	* src/hildon-gtk.h: removed hildon_gtk_widget_set_theme_size() and

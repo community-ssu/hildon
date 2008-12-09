@@ -385,6 +385,8 @@ _set_pm (HildonTimeSelector * selector, gboolean pm)
  * Creates a new #HildonTimeSelector
  *
  * Returns: a new #HildonTimeSelector
+ *
+ * Since: 2.2
  **/
 GtkWidget *
 hildon_time_selector_new ()
@@ -403,6 +405,7 @@ hildon_time_selector_new ()
  * The format of the hours acceptes is always 24h format, with a range
  * (0-23):(0-59).
  *
+ * Since: 2.2
  **/
 gboolean
 hildon_time_selector_set_time (HildonTimeSelector * selector,
@@ -446,6 +449,7 @@ hildon_time_selector_set_time (HildonTimeSelector * selector,
  *
  * This method returns the date always in 24h format, with a range (0-23):(0-59)
  *
+ * Since: 2.2
  **/
 void
 hildon_time_selector_get_time (HildonTimeSelector * selector,

@@ -140,6 +140,8 @@ G_DEFINE_TYPE (HildonAppMenu, hildon_app_menu, GTK_TYPE_WINDOW);
  * Creates a new #HildonAppMenu.
  *
  * Return value: A #HildonAppMenu.
+ *
+ * Since: 2.2
  **/
 GtkWidget *
 hildon_app_menu_new                             (void)
@@ -155,6 +157,8 @@ hildon_app_menu_new                             (void)
  * @position : The position in the item list where @item is added (from 0 to n-1).
  *
  * Adds @item to @menu at the position indicated by @position.
+ *
+ * Since: 2.2
  */
 void
 hildon_app_menu_insert                          (HildonAppMenu *menu,
@@ -196,6 +200,8 @@ hildon_app_menu_insert                          (HildonAppMenu *menu,
  * @item : A #GtkButton to add to the #HildonAppMenu
  *
  * Adds @item to the end of the menu's item list.
+ *
+ * Since: 2.2
  */
 void
 hildon_app_menu_append                          (HildonAppMenu *menu,
@@ -210,6 +216,8 @@ hildon_app_menu_append                          (HildonAppMenu *menu,
  * @item : A #GtkButton to add to the #HildonAppMenu
  *
  * Adds @item to the beginning of the menu's item list.
+ *
+ * Since: 2.2
  */
 void
 hildon_app_menu_prepend                         (HildonAppMenu *menu,
@@ -225,6 +233,8 @@ hildon_app_menu_prepend                         (HildonAppMenu *menu,
  * @position : The new position to place @item (from 0 to n-1).
  *
  * Moves a #GtkButton to a new position within #HildonAppMenu.
+ *
+ * Since: 2.2
  */
 void
 hildon_app_menu_reorder_child                   (HildonAppMenu *menu,
@@ -256,6 +266,8 @@ hildon_app_menu_reorder_child                   (HildonAppMenu *menu,
  * @filter : A #GtkButton to add to the #HildonAppMenu.
  *
  * Adds the @filter to @menu.
+ *
+ * Since: 2.2
  */
 void
 hildon_app_menu_add_filter                      (HildonAppMenu *menu,

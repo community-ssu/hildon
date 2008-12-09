@@ -128,6 +128,8 @@ hildon_stackable_window_set_stack               (HildonStackableWindow *self,
  * is not stacked.
  *
  * Return value: a #HildonWindowStack, or %NULL
+ *
+ * Since: 2.2
  **/
 HildonWindowStack *
 hildon_stackable_window_get_stack               (HildonStackableWindow *self)
@@ -154,6 +156,8 @@ hildon_stackable_window_get_stack               (HildonStackableWindow *self)
  * Note that #HildonStackableWindow widgets use #HildonAppMenu rather
  * than #GtkMenu, so you're not supposed to use
  * hildon_window_set_main_menu() with a #HildonStackableWindow.
+ *
+ * Since: 2.2
  **/
 void
 hildon_stackable_window_set_main_menu           (HildonStackableWindow *self,
@@ -314,6 +318,8 @@ hildon_stackable_window_init                    (HildonStackableWindow *self)
  * Creates a new #HildonStackableWindow.
  *
  * Return value: A #HildonStackableWindow
+ *
+ * Since: 2.2
  **/
 GtkWidget*
 hildon_stackable_window_new                     (void)

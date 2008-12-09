@@ -440,6 +440,8 @@ hildon_button_add_size_groups                   (HildonButton *button,
  * child widget using gtk_container_add().
  *
  * Returns: a new #HildonButton
+ *
+ * Since: 2.2
  **/
 GtkWidget *
 hildon_button_new                               (HildonSizeType          size,
@@ -461,6 +463,8 @@ hildon_button_new                               (HildonSizeType          size,
  * %NULL. You can set it to a non-%NULL value at any time later.
  *
  * Returns: a new #HildonButton
+ *
+ * Since: 2.2
  **/
 GtkWidget *
 hildon_button_new_with_text                     (HildonSizeType           size,
@@ -519,6 +523,8 @@ hildon_button_set_arrangement                   (HildonButton            *button
  *
  * If @title is set to %NULL, the title label will be hidden and the
  * value label will be realigned.
+ *
+ * Since: 2.2
  **/
 void
 hildon_button_set_title                         (HildonButton *button,
@@ -555,6 +561,8 @@ hildon_button_set_title                         (HildonButton *button,
  * If @value is set to %NULL, the value label will be hidden and the
  * title label will be realigned.
  *
+ *
+ * Since: 2.2
  **/
 void
 hildon_button_set_value                         (HildonButton *button,
@@ -588,6 +596,8 @@ hildon_button_set_value                         (HildonButton *button,
  *
  * Returns: The text of the title label. This string is owned by the
  * widget and must not be modified or freed.
+ *
+ * Since: 2.2
  **/
 const gchar *
 hildon_button_get_title                         (HildonButton *button)
@@ -610,6 +620,8 @@ hildon_button_get_title                         (HildonButton *button)
  *
  * Returns: The text of the value label. This string is owned by the
  * widget and must not be modified or freed.
+ *
+ * Since: 2.2
  **/
 const gchar *
 hildon_button_get_value                         (HildonButton *button)
@@ -630,6 +642,8 @@ hildon_button_get_value                         (HildonButton *button)
  * @value: new text for the button value (secondary label)
  *
  * Convenience function to change both labels of a #HildonButton
+ *
+ * Since: 2.2
  **/
 void
 hildon_button_set_text                          (HildonButton *button,
@@ -647,6 +661,8 @@ hildon_button_set_text                          (HildonButton *button,
  *
  * Sets the image of @button to the given widget. The previous image
  * (if any) will be removed.
+ *
+ * Since: 2.2
  **/
 void
 hildon_button_set_image                         (HildonButton *button,
@@ -679,6 +695,8 @@ hildon_button_set_image                         (HildonButton *button,
  * previously set with hildon_button_set_image()
  *
  * Returns: a #GtkWidget or %NULL in case there is no image
+ *
+ * Since: 2.2
  **/
 GtkWidget *
 hildon_button_get_image                         (HildonButton *button)
@@ -699,6 +717,8 @@ hildon_button_get_image                         (HildonButton *button)
  *
  * Sets the position of the image inside @button. Only %GTK_POS_LEFT
  * and %GTK_POS_RIGHT are currently supported.
+ *
+ * Since: 2.2
  **/
 void
 hildon_button_set_image_position                (HildonButton    *button,
@@ -731,6 +751,8 @@ hildon_button_set_image_position                (HildonButton    *button,
  * Sets the alignment of the contents of the widget. If you don't need
  * to change @xscale or @yscale you can just use
  * gtk_button_set_alignment() instead.
+ *
+ * Since: 2.2
  **/
 void
 hildon_button_set_alignment                     (HildonButton *button,
@@ -763,6 +785,8 @@ hildon_button_set_alignment                     (HildonButton *button,
  * Sets the alignment of the title label. See also
  * hildon_button_set_alignment() to set the alignment of the whole
  * contents of the button.
+ *
+ * Since: 2.2
  **/
 void
 hildon_button_set_title_alignment               (HildonButton *button,
@@ -787,6 +811,8 @@ hildon_button_set_title_alignment               (HildonButton *button,
  * Sets the alignment of the value label. See also
  * hildon_button_set_alignment() to set the alignment of the whole
  * contents of the button.
+ *
+ * Since: 2.2
  **/
 void
 hildon_button_set_value_alignment               (HildonButton *button,
@@ -811,6 +837,8 @@ hildon_button_set_value_alignment               (HildonButton *button,
  * Sets the alignment of the image. See also
  * hildon_button_set_alignment() to set the alignment of the whole
  * contents of the button.
+ *
+ * Since: 2.2
  **/
 void
 hildon_button_set_image_alignment               (HildonButton *button,
@@ -845,6 +873,8 @@ hildon_button_set_image_alignment               (HildonButton *button,
  * Use %HILDON_BUTTON_STYLE_NORMAL to make it look like a normal
  * #HildonButton, or %HILDON_BUTTON_STYLE_PICKER to make it look like
  * a #HildonPickerButton.
+ *
+ * Since: 2.2
  */
 void
 hildon_button_set_style                         (HildonButton      *button,
@@ -883,6 +913,8 @@ hildon_button_set_style                         (HildonButton      *button,
  * Gets the visual style of the button.
  *
  * Returns: a #HildonButtonStyle
+ *
+ * Since: 2.2
  */
 HildonButtonStyle
 hildon_button_get_style                         (HildonButton *button)

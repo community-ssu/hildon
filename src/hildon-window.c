@@ -34,7 +34,7 @@
  * Among these windows in the Hildon framework can have a single menu
  * attached, which is toggled with a hardware key or by tapping
  * a custom button in the window frame. This menu can be set
- * by providing a GtkMenu to the hildon_window_set_menu() method.
+ * by providing a GtkMenu to the hildon_window_set_main_menu() method.
  *
  * Similarly a window in the Hildon framework can have several toolbars
  * attached. These can be added to the HildonWindow with
@@ -56,7 +56,7 @@
  * <!-- -->
  * icon_pixbuf = create_icon();
  * <!-- -->
- * hildon_window_set_menu (window, menu);
+ * hildon_window_set_main_menu (window, menu);
  * <!-- -->
  * hildon_window_add_toolbar (window, toolbar);
  * <!-- -->

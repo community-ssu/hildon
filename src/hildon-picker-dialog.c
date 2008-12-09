@@ -159,6 +159,8 @@ hildon_picker_dialog_class_init (HildonPickerDialogClass * class)
    * HildonPickerDialog
    *
    * Button label
+   *
+   * Since: 2.2
    */
   g_object_class_install_property (gobject_class,
                                    PROP_DONE_BUTTON_TEXT,
@@ -298,6 +300,13 @@ on_selector_columns_changed (HildonTouchSelector * selector, gpointer userdata)
   setup_interaction_mode (dialog);
 }
 
+/**
+ * hildon_picker_dialog_set_done_label:
+ * @dialog: 
+ * @label: 
+ *
+ * Since: 2.2
+ **/
 void
 hildon_picker_dialog_set_done_label (HildonPickerDialog * dialog,
                                      const gchar * label)
@@ -312,6 +321,16 @@ hildon_picker_dialog_set_done_label (HildonPickerDialog * dialog,
   gtk_button_set_label (GTK_BUTTON (priv->button), label);
 }
 
+/**
+ * hildon_picker_dialog_get_done_label:
+ * @dialog: 
+ *
+ * 
+ *
+ * Returns: 
+ *
+ * Since: 2.2
+ **/
 const gchar *
 hildon_picker_dialog_get_done_label (HildonPickerDialog * dialog)
 {
@@ -437,6 +456,8 @@ setup_interaction_mode (HildonPickerDialog * dialog)
  * Creates a new #HildonPickerDialog
  *
  * Returns: a new #HildonPickerDialog
+ *
+ * Since: 2.2
  **/
 GtkWidget *
 hildon_picker_dialog_new (GtkWindow * parent)
@@ -494,6 +515,17 @@ _hildon_picker_dialog_set_selector (HildonPickerDialog * dialog,
   return TRUE;
 }
 
+/**
+ * hildon_picker_dialog_set_selector:
+ * @dialog: 
+ * @selector: 
+ *
+ * 
+ *
+ * Returns: 
+ *
+ * Since: 2.2
+ **/
 gboolean
 hildon_picker_dialog_set_selector (HildonPickerDialog * dialog,
                                    HildonTouchSelector * selector)
@@ -504,6 +536,16 @@ hildon_picker_dialog_set_selector (HildonPickerDialog * dialog,
   return HILDON_PICKER_DIALOG_GET_CLASS (dialog)->set_selector (dialog, selector);
 }
 
+/**
+ * hildon_picker_dialog_get_selector:
+ * @dialog: 
+ *
+ * 
+ *
+ * Returns: 
+ *
+ * Since: 2.2
+ **/
 HildonTouchSelector *
 hildon_picker_dialog_get_selector (HildonPickerDialog * dialog)
 {
