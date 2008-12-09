@@ -1,4 +1,4 @@
-libhildon (2.1.26-1) unstable; urgency=low
+libhildon (2.1.26-1nobug94350) unstable; urgency=low
 
   Bug fixes:
 
@@ -11,7 +11,6 @@ libhildon (2.1.26-1) unstable; urgency=low
   * Fixes: NB#92032 (In calendar application, date values in 'new event'
     are not proper)
   * Fixes: NB#94322 (Scale Updates)
-  * Fixes: NB#94350 (HildonWindowStack:s have the same X Window group)
 
   New API:
 
