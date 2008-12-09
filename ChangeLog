@@ -26,14 +26,17 @@
 
 	Add more "since" tags to the new API in hildon 2.2.
 
-2008-12-05 14:42:11  Tim Janik  <timj@imendio.com>
+2008-12-05  Tim Janik  <timj@imendio.com>
+
+	Patch contributed by Christian Dywan (christian@imendio.com)
 
 	* src/hildon-gtk.h: removed hildon_gtk_widget_set_theme_size() and
 	HildonSizeType, which are supplied by Gtk+ now.
 
 	* src/hildon-dialog.c: leave theming and sizing of buttons to GtkDialog.
 
-	* Fixes NB#90867, patch by Christian Dywan.
+	Partially fixes NB#90867 (Deprecate HildonDialog and use GtkDialog
+	(with maemo changes) instead)
 
 2008-12-05  Claudio Saavedra  <csaavedra@igalia.com>
 
