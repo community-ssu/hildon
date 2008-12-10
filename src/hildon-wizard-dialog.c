@@ -81,7 +81,7 @@ static void
 finalize                                        (GObject *object);
 
 static void
-destroy                                         (GObject *object);
+destroy                                         (GtkObject *object);
 
 static void 
 response                                        (HildonWizardDialog *wizard, 
@@ -210,7 +210,7 @@ finalize                                        (GObject *object)
 }
 
 static void
-destroy                                         (GObject *object)
+destroy                                         (GtkObject *object)
 {
     HildonWizardDialogPrivate *priv = HILDON_WIZARD_DIALOG_GET_PRIVATE (object);
 

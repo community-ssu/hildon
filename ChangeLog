@@ -1,3 +1,7 @@
+2008-12-10  Alberto Garcia  <agarcia@igalia.com>
+
+	* src/hildon-wizard-dialog.c (destroy): Fix compilation warning
+
 2008-12-09  Claudio Saavedra  <csaavedra@igalia.com>
 
 	* configure.ac: post release version bump
