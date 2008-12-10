@@ -1,3 +1,8 @@
+2008-12-10  Thomas Thurman  <thomas.thurman@collabora.co.uk>
+
+        * examples/hildon-progress-indicator-example.c: new file
+        * examples/Makefile.am: include the new example program
+
 2008-12-10  Alberto Garcia  <agarcia@igalia.com>
 
 	* src/hildon-wizard-dialog.c (destroy): Fix compilation warning
@@ -237,6 +242,7 @@
 
 	Fixes: NB#93890 (Empty HildonAppMenu is pop-up)
 
+>>>>>>> .r33194
 2008-11-27  Claudio Saavedra  <csaavedra@igalia.com>
 
 	* src/hildon-picker-dialog.c:

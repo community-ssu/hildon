@@ -34,7 +34,8 @@ EXAMPLES				= hildon-window-example				\
 					  hildon-check-button-example			\
 					  hildon-touch-selector-example			\
 					  hildon-touch-selector-multi-cells-example	\
-					  hildon-touch-selector-entry-example
+					  hildon-touch-selector-entry-example           \
+					  hildon-progress-indicator-example
 if USE_MAEMO_GTK
 MAEMO_GTK_EXAMPLES                      = hildon-pannable-area-touch-list-example	\
 					  hildon-pannable-area-touch-grid-example
@@ -434,6 +435,12 @@ hildon_touch_selector_entry_example_CFLAGS	= $(HILDON_OBJ_CFLAGS)			\
 					          $(EXTRA_CFLAGS)
 hildon_touch_selector_entry_example_SOURCES	= hildon-touch-selector-entry-example.c
 
+# Hildon progress indicator
+hildon_progress_indicator_example_LDADD	        = $(HILDON_OBJ_LIBS)
+hildon_progress_indicator_example_CFLAGS	= $(HILDON_OBJ_CFLAGS)			\
+					          $(EXTRA_CFLAGS)
+hildon_progress_indicator_example_SOURCES	= hildon-progress-indicator-example.c
+
 endif
 
 examplesdir                             = $(datadir)/doc/libhildon1-examples/examples
@@ -497,4 +504,5 @@ examples_DATA				= Makefile.static                               \
 					  hildon-check-button-example.c			\
 					  hildon-touch-selector-example.c		\
 					  hildon-touch-selector-multi-cells-example.c	\
-					  hildon-touch-selector-entry-example.c
+					  hildon-touch-selector-entry-example.c	        \
+                                          hildon-progress-indicator-example.c
