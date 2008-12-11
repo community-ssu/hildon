@@ -1,5 +1,15 @@
 2008-12-11  Alberto Garcia  <agarcia@igalia.com>
 
+	* src/hildon-wizard-dialog.h
+	* src/hildon-wizard-dialog.c
+	(hildon_wizard_dialog_set_forward_page_func)
+	* src/hildon-pannable-area.h
+	* src/hildon-pannable-area.c
+	(hildon_pannable_area_set_size_request_policy):
+	Documentation fixes.
+
+2008-12-11  Alberto Garcia  <agarcia@igalia.com>
+
 	* doc/hildon-sections.txt: Fixed warning about unused symbols.
 
 2008-12-11  Alberto Garcia  <agarcia@igalia.com>

@@ -2546,8 +2546,7 @@ hildon_pannable_area_get_size_request_policy (HildonPannableArea *area)
 /**
  * hildon_pannable_area_set_size_request_policy:
  * @area: A #HildonPannableArea.
- * @size_request_policy: One of the allowed policies
- * #HildonSizeRequestPolicy
+ * @size_request_policy: One of the allowed #HildonSizeRequestPolicy
  *
  * This function sets the pannable area size request policy. That
  * policy controls the way the size_request is done in the pannable

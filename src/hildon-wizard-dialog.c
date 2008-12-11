@@ -514,7 +514,7 @@ hildon_wizard_dialog_new                        (GtkWindow *parent,
 
 /**
  * hildon_wizard_dialog_set_forward_page_func:
- * @dialog: a #HildonWizardDialog
+ * @wizard_dialog: a #HildonWizardDialog
  * @page_func: the #HildonWizardDialogPageFunc
  * @data: user data for @page_func
  * @destroy: destroy notifier for @data

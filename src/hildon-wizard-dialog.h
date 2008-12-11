@@ -84,8 +84,8 @@ hildon_wizard_dialog_new                        (GtkWindow *parent,
                                                  GtkNotebook *notebook);
 
 void
-hildon_wizard_dialog_set_forward_page_func      (HildonWizardDialog *dialog,
-                                                 HildonWizardDialogPageFunc pagefunc,
+hildon_wizard_dialog_set_forward_page_func      (HildonWizardDialog *wizard_dialog,
+                                                 HildonWizardDialogPageFunc page_func,
                                                  gpointer data,
                                                  GDestroyNotify destroy);
 
