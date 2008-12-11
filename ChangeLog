@@ -1,5 +1,11 @@
 2008-12-11  Claudio Saavedra  <csaavedra@igalia.com>
 
+	* src/hildon-picker-button.c: (hildon_picker_button_init),
+	(hildon_picker_button_new): Set the HildonButton::style property
+	in the init method, to propagate the value to the derived classes.
+
+2008-12-11  Claudio Saavedra  <csaavedra@igalia.com>
+
 	* src/hildon-button.c: (hildon_button_class_init): Do not make
 	the "style" property a construct property.
 

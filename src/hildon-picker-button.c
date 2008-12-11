@@ -265,6 +265,9 @@ hildon_picker_button_init (HildonPickerButton * self)
   priv->dialog = NULL;
   priv->selector = NULL;
   priv->done_button_text = NULL;
+
+  hildon_button_set_style (HILDON_BUTTON (self),
+                           HILDON_BUTTON_STYLE_PICKER);
 }
 
 static gboolean
@@ -314,7 +317,7 @@ hildon_picker_button_new (HildonSizeType          size,
 
   button = g_object_new (HILDON_TYPE_PICKER_BUTTON,
                          "arrangement", arrangement, "size", size,
-                         "style", HILDON_BUTTON_STYLE_PICKER, NULL);
+                         NULL);
 
   return button;
 }
