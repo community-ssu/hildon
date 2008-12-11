@@ -1,5 +1,9 @@
 2008-12-11  Alberto Garcia  <agarcia@igalia.com>
 
+	* doc/hildon-sections.txt: Fixed warning about unused symbols.
+
+2008-12-11  Alberto Garcia  <agarcia@igalia.com>
+
 	* doc/hildon-sections.txt: Added sections file.
 
 2008-12-11  Claudio Saavedra  <csaavedra@igalia.com>
