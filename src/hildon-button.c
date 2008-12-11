@@ -286,7 +286,7 @@ hildon_button_class_init                        (HildonButtonClass *klass)
             "Visual style of the button",
             HILDON_TYPE_BUTTON_STYLE,
             HILDON_BUTTON_STYLE_NORMAL,
-            G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
+            G_PARAM_READWRITE));
 
     gtk_widget_class_install_style_property (
         widget_class,
