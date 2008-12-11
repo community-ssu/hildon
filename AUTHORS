@@ -1,9 +1,16 @@
 Maintainer:
-  Michael Dominic Kostrzewa <michael.kostrzewa@nokia.com>
+  Claudio Saavedra <csaavedra@igalia.com>
 
 Previous maintainers:
+  Michael Dominic Kostrzewa <michael.kostrzewa@nokia.com>
   Luc Pionchon <luc.pionchon@nokia.com>
 
-Authors: 
-  Michael Dominic Kostrzewa <michael.kostrzewa@nokia.com>
-  Xan Lopez <xan.lopez@nokia.com>
+Authors:
+ Alberto García <agarcia@igalia.com>
+ Alejandro G. Castro <acastro@igalia.com>
+ Alejandro Pinheiro <apinheiro@igalia.com>
+ Claudio Saavedra <csaavedra@igalia.com>
+
+Previous authors:
+ Michael Dominic Kostrzewa <michael.kostrzewa@nokia.com>
+ Xan Lopez <xan.lopez@nokia.com>

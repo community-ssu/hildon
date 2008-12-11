@@ -3,7 +3,7 @@
  *
  * Copyright (C) 2008 Nokia Corporation, all rights reserved.
  *
- * Contact: Karl Lattimer <karl.lattimer@nokia.com>
+ * Contact: Rodrigo Novo <rodrigo.novo@nokia.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public License

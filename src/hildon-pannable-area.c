@@ -3,7 +3,7 @@
  *
  * Copyright (C) 2008 Nokia Corporation, all rights reserved.
  *
- * Contact: Karl Lattimer <karl.lattimer@nokia.com>
+ * Contact: Rodrigo Novo <rodrigo.novo@nokia.com>
  *
  * This widget is based on MokoFingerScroll from libmokoui
  * OpenMoko Application Framework UI Library

@@ -1,3 +1,8 @@
+2008-12-11  Claudio Saavedra  <csaavedra@igalia.com>
+
+	* AUTHORS: Updates.
+	* src/*.[ch]: Updates.
+
 2008-12-10  Thomas Thurman  <thomas.thurman@collabora.co.uk>
 
         * examples/hildon-progress-indicator-example.c: new file

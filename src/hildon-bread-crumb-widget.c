@@ -3,7 +3,7 @@
  *
  * Copyright (C) 2007 Nokia Corporation, all rights reserved.
  *
- * Contact: Michael Dominic Kostrzewa <michael.kostrzewa@nokia.com>
+ * Contact: Rodrigo Novo <rodrigo.novo@nokia.com>
  * Author: Xan Lopez <xan.lopez@nokia.com>
  *
  * This library is free software; you can redistribute it and/or

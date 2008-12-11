@@ -9,7 +9,7 @@
  * HldonCalendar modifications
  * Copyright (C) 2005, 2006 Nokia Corporation. 
  *
- * Contact: Michael Dominic Kostrzewa <michael.kostrzewa@nokia.com>
+ * Contact: Rodrigo Novo <rodrigo.novo@nokia.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
