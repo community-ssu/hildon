@@ -308,3 +308,33 @@ hildon_gtk_window_set_progress_indicator        (GtkWindow    *window,
                    atom, XA_INTEGER, 32, PropModeReplace,
                    (guchar *)&state, 1);
 }
+
+/**
+ * hildon_gtk_hscale_new:
+ * @void: 
+ *
+ * Creates a new horizontal scale widget that lets the user select
+ * a value. The value is technically a double between 0.0 and 1.0.
+ * See gtk_adjustment_configure() for reconfiguring the adjustment.
+ *
+ * The scale is hildonized, which means that a click or tap immediately
+ * jumps to the desired position, see gtk_range_set_relative_steps().
+ * Further more the value is not displayed, see gtk_scale_set_draw_value().
+ *
+ * Returns: a new hildonized #GtkHScale
+ *
+ * Since: 2.2
+ **/
+GtkWidget*
+hildon_gtk_hscale_new                           (void)
+{
+  GtkWidget *scale = gtk_hscale_new_with_range (0.0, 1.0, 0.1);
+  g_object_set (scale,
+                "draw-value", FALSE,
+#ifdef MAEMO_GTK
+                "relative-steps", FALSE,
+#endif
+                NULL);
+
+  return scale;
+}
