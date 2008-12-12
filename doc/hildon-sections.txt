@@ -486,6 +486,10 @@ hildon_pannable_area_jump_to_child
 hildon_pannable_get_child_widget_at
 hildon_pannable_area_get_size_request_policy
 hildon_pannable_area_set_size_request_policy
+hildon_pannable_area_get_hadjustment
+hildon_pannable_area_get_vadjustment
+hildon_pannable_area_set_hadjustment
+hildon_pannable_area_set_vadjustment
 <SUBSECTION Standard>
 HILDON_PANNABLE_AREA
 HILDON_IS_PANNABLE_AREA
@@ -1126,6 +1130,7 @@ hildon_gtk_icon_view_new
 hildon_gtk_icon_view_new_with_model
 hildon_gtk_icon_view_set_ui_mode
 hildon_gtk_window_set_progress_indicator
+hildon_gtk_hscale_new
 </SECTION>
 
 <SECTION>
