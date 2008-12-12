@@ -137,6 +137,8 @@ enum {
   PROP_SCROLL_TIME,
   PROP_INITIAL_HINT,
   PROP_SIZE_REQUEST_POLICY,
+  PROP_HADJUSTMENT,
+  PROP_VADJUSTMENT,
   PROP_LAST
 };
 
@@ -396,6 +398,21 @@ hildon_pannable_area_class_init (HildonPannableAreaClass * klass)
                                                       G_PARAM_READWRITE|
                                                       G_PARAM_CONSTRUCT));
 
+  g_object_class_install_property (object_class,
+				   PROP_HADJUSTMENT,
+				   g_param_spec_object ("hadjustment",
+							"Horizontal Adjustment",
+							"The GtkAdjustment for the horizontal position",
+							GTK_TYPE_ADJUSTMENT,
+							G_PARAM_READABLE));
+  g_object_class_install_property (object_class,
+				   PROP_VADJUSTMENT,
+				   g_param_spec_object ("vadjustment",
+							"Vertical Adjustment",
+							"The GtkAdjustment for the vertical position",
+							GTK_TYPE_ADJUSTMENT,
+							G_PARAM_READABLE));
+
   gtk_widget_class_install_style_property (widget_class,
 					   g_param_spec_uint
 					   ("indicator-width",
@@ -535,7 +552,16 @@ hildon_pannable_area_get_property (GObject * object,
   case PROP_SIZE_REQUEST_POLICY:
     g_value_set_enum (value, priv->size_request_policy);
     break;
-
+  case PROP_HADJUSTMENT:
+    g_value_set_object (value,
+                        hildon_pannable_area_get_hadjustment
+                        (HILDON_PANNABLE_AREA (object)));
+    break;
+  case PROP_VADJUSTMENT:
+    g_value_set_object (value,
+                        hildon_pannable_area_get_vadjustment
+                        (HILDON_PANNABLE_AREA (object)));
+    break;
   default:
     G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
   }
@@ -2517,6 +2543,41 @@ hildon_pannable_get_child_widget_at (HildonPannableArea *area,
 
   return child_widget;
 }
+
+
+/**
+ * hildon_pannable_get_hadjustment:
+ * @area: A #HildonPannableArea.
+ *
+ * Returns the horizontal adjustment
+ *
+ * returns: The horizontal #GtkAdjustment
+ **/
+GtkAdjustment*
+hildon_pannable_area_get_hadjustment            (HildonPannableArea *area)
+{
+
+  g_return_val_if_fail (HILDON_IS_PANNABLE_AREA (area), NULL);
+
+  return area->priv->hadjust;
+}
+
+/**
+ * hildon_pannable_get_vadjustment:
+ * @area: A #HildonPannableArea.
+ *
+ * Returns the vertical adjustment
+ *
+ * returns: The vertical #GtkAdjustment
+ **/
+GtkAdjustment*
+hildon_pannable_area_get_vadjustment            (HildonPannableArea *area)
+{
+  g_return_val_if_fail (HILDON_IS_PANNABLE_AREA (area), NULL);
+
+  return area->priv->vadjust;
+}
+
 
 /**
  * hildon_pannable_area_get_size_request_policy:

@@ -160,6 +160,8 @@ GtkWidget* hildon_pannable_get_child_widget_at  (HildonPannableArea *area,
 HildonSizeRequestPolicy hildon_pannable_area_get_size_request_policy (HildonPannableArea *area);
 void hildon_pannable_area_set_size_request_policy (HildonPannableArea *area,
                                                    HildonSizeRequestPolicy size_request_policy);
+GtkAdjustment* hildon_pannable_area_get_hadjustment (HildonPannableArea *area);
+GtkAdjustment* hildon_pannable_area_get_vadjustment (HildonPannableArea *area);
 
 G_END_DECLS
 

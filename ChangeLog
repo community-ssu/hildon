@@ -1,5 +1,26 @@
 2008-12-12  Alejandro G. Castro	 <alex@igalia.com>
 
+	Added API to pannable are in order to get its adjustments. We
+	added two properties to manage the values we had in the private
+	structure.
+
+	* src/hildon-pannable-area.c:
+	(hildon_pannable_area_class_init): Added hadjustment and
+	vadjustment properties in order to expose horizontal and vertical
+	adjustment.
+	(hildon_pannable_area_get_property),
+	(hildon_pannable_area_set_property): Added code to handle the new
+	properties
+	(hildon_pannable_area_get_hadjustment),
+	(hildon_pannable_area_get_vadjustment): API functions to get the
+	adjustments
+	* src/hildon-pannable-area.h:
+	(hildon_pannable_area_get_hadjustment),
+	(hildon_pannable_area_get_vadjustment): API functions to get the
+	adjustments
+
+2008-12-12  Alejandro G. Castro	 <alex@igalia.com>
+
 	Fixed some leaks, after valgrinding.
 
 	* src/hildon-touch-selector.c:
