@@ -1,3 +1,15 @@
+2008-12-12  Alejandro G. Castro	 <alex@igalia.com>
+
+	Fixed some leaks, after valgrinding.
+
+	* src/hildon-touch-selector.c:
+	(_default_print_func): Fixed a leak.
+	(hildon_touch_selector_append_column): Fixed a leak.
+	* src/hildon-date-button.c:
+	(hildon_date_button_init): Fixed a leak.
+	* src/hildon-date-selector.c
+	(hildon_date_selector_finalize): Fixed a leak.
+
 2008-12-12  Claudio Saavedra  <csaavedra@igalia.com>
 
 	Based on a patch by Christian Dywan (christian@imendio.com)

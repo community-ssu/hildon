@@ -282,6 +282,7 @@ hildon_date_selector_finalize (GObject * object)
   selector = HILDON_DATE_SELECTOR (object);
 
   g_slist_free (selector->priv->column_order);
+  g_free (selector->priv->format);
 
   (*G_OBJECT_CLASS (hildon_date_selector_parent_class)->finalize) (object);
 }

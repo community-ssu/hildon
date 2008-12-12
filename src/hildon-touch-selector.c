@@ -459,6 +459,12 @@ _default_print_func (HildonTouchSelector * selector)
         g_free (result);
         result = aux;
       }
+
+      if (current_string) {
+        g_free (current_string);
+        current_string = NULL;
+      }
+
       i++;
     }
 
@@ -1024,7 +1030,6 @@ hildon_touch_selector_append_column (HildonTouchSelector * selector,
 
     va_start (args, cell_renderer);
     new_column = _create_new_column (selector, model, cell_renderer, args);
-    g_object_ref_sink (new_column);
     va_end (args);
 
     selector->priv->columns = g_slist_append (selector->priv->columns,

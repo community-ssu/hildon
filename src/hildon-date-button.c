@@ -86,6 +86,8 @@ hildon_date_button_init (HildonDateButton * self)
 
   hildon_picker_button_set_selector (HILDON_PICKER_BUTTON (self),
                                      HILDON_TOUCH_SELECTOR (date_selector));
+
+  g_object_unref (date_selector);
 }
 
 /**
