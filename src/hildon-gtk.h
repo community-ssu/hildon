@@ -69,6 +69,9 @@ hildon_gtk_window_set_progress_indicator        (GtkWindow    *window,
 GtkWidget*
 hildon_gtk_hscale_new                           (void);
 
+GtkWidget*
+hildon_gtk_vscale_new                           (void);
+
 G_END_DECLS
 
 #endif /* __HILDON_GTK_H__ */

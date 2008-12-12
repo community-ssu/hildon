@@ -1,5 +1,14 @@
 2008-12-12  Claudio Saavedra  <csaavedra@igalia.com>
 
+	* doc/hildon-sections.txt: Add below method.
+	* src/hildon-gtk.c: (+hildon_gtk_vscale_new): New vertical
+	version for the hildonized scale.
+	* src/hildon-gtk.h: Add the definition.
+
+	Fixes: NB#93744 (Tapping should jump to location on GtkScale)
+
+2008-12-12  Claudio Saavedra  <csaavedra@igalia.com>
+
 	* doc/hildon-sections.txt: Add missing entries for new methods.
 
 2008-12-12  Alejandro G. Castro	 <alex@igalia.com>
