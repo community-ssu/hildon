@@ -693,7 +693,7 @@ hildon_time_editor_get_property                 (GObject *object,
     }
 }
 
-/*
+/**
  * hildon_time_editor_new:
  *
  * This function creates a new time editor. 

@@ -422,9 +422,11 @@ hildon_program_common_toolbar_topmost_window    (gpointer window,
 /**
  * hildon_program_get_instance:
  *
- * Return value: Returns the #HildonProgram for the current process.
- * The object is created on the first call. Note that you're not supposed 
- * to unref the returned object since it's not reffed in the first place.
+ * Returns the #HildonProgram for the current process. The object is
+ * created on the first call. Note that you're not supposed to unref
+ * the returned object since it's not reffed in the first place.
+ *
+ * Return value: the #HildonProgram.
  **/
 HildonProgram*
 hildon_program_get_instance                     (void)
@@ -551,9 +553,11 @@ hildon_program_set_can_hibernate                (HildonProgram *self,
 /**
  * hildon_program_get_can_hibernate:
  * @self: The #HildonProgram which can hibernate or not
- * 
- * Return value: Whether or not this #HildonProgram is set to be
- * support hibernation from the Hildon task navigator
+ *
+ * Returns whether the #HildonProgram is set to be support hibernation
+ * from the Hildon task navigator
+ *
+ * Return value: %TRUE if the program can hibernate, %FALSE otherwise.
  **/
 gboolean
 hildon_program_get_can_hibernate                (HildonProgram *self)
@@ -627,8 +631,10 @@ hildon_program_set_common_menu                  (HildonProgram *self,
  * hildon_program_get_common_menu:
  * @self: The #HildonProgram from which to retrieve the common menu
  *
- * Return value: the GtkMenu that was set as common menu for this
- * #HildonProgram, or %NULL of no common menu was set.
+ * Returns the #GtkMenu that was set as common menu for this
+ * #HildonProgram.
+ *
+ * Return value: the #GtkMenu or %NULL of no common menu was set.
  **/
 GtkMenu*
 hildon_program_get_common_menu                  (HildonProgram *self)
@@ -692,8 +698,11 @@ hildon_program_set_common_app_menu              (HildonProgram *self,
  * hildon_program_get_common_app_menu:
  * @self: The #HildonProgram from which to retrieve the common app menu
  *
- * Return value: the #HildonAppMenu that was set as common menu for this
- * #HildonProgram, or %NULL of no common app menu was set.
+ * Returns the #HildonAppMenu that was set as common menu for this
+ * #HildonProgram.
+ *
+ * Return value: the #HildonAppMenu or %NULL of no common app menu was
+ * set.
  *
  * Since: 2.2
  **/
@@ -764,8 +773,11 @@ hildon_program_set_common_toolbar               (HildonProgram *self,
  * hildon_program_get_common_toolbar:
  * @self: The #HildonProgram from which to retrieve the common toolbar
  *
- * Return value: the GtkToolbar that was set as common toolbar for this
- * #HildonProgram, or %NULL of no common menu was set.
+ * Returns the #GtkToolbar that was set as common toolbar for this
+ * #HildonProgram.
+ *
+ * Return value: the #GtkToolbar or %NULL of no common toolbar was
+ * set.
  **/
 GtkToolbar*
 hildon_program_get_common_toolbar               (HildonProgram *self)
@@ -784,8 +796,11 @@ hildon_program_get_common_toolbar               (HildonProgram *self)
  * hildon_program_get_is_topmost:
  * @self: A #HildonWindow
  *
- * Return value: Whether or not one of the program's window or dialog is 
- * currenltly activated by the window manager.
+ * Returns whether one of the program's windows or dialogs is
+ * currently activated by the window manager.
+ *
+ * Return value: %TRUE if a window or dialog is topmost, %FALSE
+ * otherwise.
  **/
 gboolean
 hildon_program_get_is_topmost                   (HildonProgram *self)

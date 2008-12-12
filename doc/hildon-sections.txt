@@ -1146,6 +1146,7 @@ hildon_play_system_sound
 
 <SECTION>
 <FILE>hildon-enum-types</FILE>
+<SUBSECTION Standard>
 HILDON_TYPE_CAPTION_STATUS
 HILDON_TYPE_CAPTION_ICON_POSITION
 HILDON_TYPE_NOTE_TYPE
@@ -1161,7 +1162,6 @@ HILDON_TYPE_MOVEMENT_DIRECTION
 HILDON_TYPE_SIZE_REQUEST_POLICY
 HILDON_TYPE_BUTTON_ARRANGEMENT
 HILDON_TYPE_BUTTON_STYLE
-<SUBSECTION Standard>
 hildon_caption_status_get_type
 hildon_caption_icon_position_get_type
 hildon_note_type_get_type

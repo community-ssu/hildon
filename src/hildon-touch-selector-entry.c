@@ -185,6 +185,15 @@ hildon_touch_selector_entry_init (HildonTouchSelectorEntry *self)
   gtk_box_pack_start (GTK_BOX (self), priv->entry, FALSE, FALSE, 0);
 }
 
+/**
+ * hildon_touch_selector_entry_new:
+ *
+ * Creates a #HildonTouchSelectorEntry
+ *
+ * Returns: A new #HildonTouchSelectorEntry
+ *
+ * Since: 2.2
+ **/
 GtkWidget *
 hildon_touch_selector_entry_new (void)
 {

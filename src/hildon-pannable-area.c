@@ -2546,7 +2546,7 @@ hildon_pannable_get_child_widget_at (HildonPannableArea *area,
 
 
 /**
- * hildon_pannable_get_hadjustment:
+ * hildon_pannable_area_get_hadjustment:
  * @area: A #HildonPannableArea.
  *
  * Returns the horizontal adjustment
@@ -2563,7 +2563,7 @@ hildon_pannable_area_get_hadjustment            (HildonPannableArea *area)
 }
 
 /**
- * hildon_pannable_get_vadjustment:
+ * hildon_pannable_area_get_vadjustment:
  * @area: A #HildonPannableArea.
  *
  * Returns the vertical adjustment
