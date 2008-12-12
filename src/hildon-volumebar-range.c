@@ -98,7 +98,7 @@ enum
  *
  * Initializes and returns the type of a hildon volumebar range.
  *
- * @Returns: GType of #HildonVolumebarRange
+ * Returns: GType of #HildonVolumebarRange
  */
 GType G_GNUC_CONST
 hildon_volumebar_range_get_type                 (void)

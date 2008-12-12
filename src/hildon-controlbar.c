@@ -156,7 +156,7 @@ hildon_controlbar_change_value                  (GtkRange *range,
  *
  * Initializes and returns the type of a hildon control bar.
  *
- * @Returns: GType of #HildonControlbar
+ * Returns: GType of #HildonControlbar
  */
 GType G_GNUC_CONST
 hildon_controlbar_get_type                      (void)

@@ -269,6 +269,8 @@ hildon_program_get_property                     (GObject *object,
  * hildon_program_pop_window_stack:
  * @self: A #HildonProgram
  *
+ * Pops a window from the stack.
+ *
  * Deprecated: Use hildon_window_stack_pop() instead
  *
  * Returns: A #HildonStackableWindow, or %NULL
@@ -801,6 +803,8 @@ hildon_program_get_is_topmost                   (HildonProgram *self)
 /**
  * hildon_program_go_to_root_window:
  * @self: A #HildonProgram
+ *
+ * Goes to the root window of the stack.
  *
  * Deprecated: See #HildonWindowStack
  */

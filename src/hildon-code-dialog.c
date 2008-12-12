@@ -122,7 +122,7 @@ static guint                                    input_signal;
  *
  * Initializes and returns the type of a hildon code dialog.
  *
- * @Returns: GType of #HildonCodeDialog
+ * Returns: GType of #HildonCodeDialog
  */
 GType G_GNUC_CONST
 hildon_code_dialog_get_type                     (void)

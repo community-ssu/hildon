@@ -227,6 +227,8 @@ hildon_edit_toolbar_new                         (void)
 
 /**
  * hildon_edit_toolbar_new_with_text:
+ * @label: Text for the toolbar label.
+ * @button: Text for the toolbar button.
  *
  * Creates a new #HildonEditToolbar, with the toolbar label set to
  * @label and the button label set to @button.

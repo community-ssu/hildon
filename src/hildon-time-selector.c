@@ -406,6 +406,8 @@ hildon_time_selector_new ()
  * (0-23):(0-59).
  *
  * Since: 2.2
+ *
+ * Returns: %TRUE on success, %FALSE otherwise
  **/
 gboolean
 hildon_time_selector_set_time (HildonTimeSelector * selector,

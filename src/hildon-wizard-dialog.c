@@ -107,7 +107,7 @@ enum
  *
  * Initializes and returns the type of a hildon wizard dialog.
  *
- * @Returns: GType of #HildonWzardDialog
+ * Returns: GType of #HildonWzardDialog
  */
 GType G_GNUC_CONST
 hildon_wizard_dialog_get_type                   (void)

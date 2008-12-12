@@ -1,3 +1,30 @@
+2008-12-12  Alberto Garcia  <agarcia@igalia.com>
+
+	* doc/hildon-sections.txt
+	* src/hildon-caption.c
+	* src/hildon-code-dialog.c
+	* src/hildon-color-button.c
+	* src/hildon-controlbar.c
+	* src/hildon-date-editor.c
+	* src/hildon-date-selector.c
+	* src/hildon-edit-toolbar.c
+	* src/hildon-find-toolbar.c
+	* src/hildon-font-selection-dialog.c
+	* src/hildon-gtk.c
+	* src/hildon-program.c
+	* src/hildon-range-editor.c
+	* src/hildon-seekbar.c
+	* src/hildon-time-editor.c
+	* src/hildon-time-selector.c
+	* src/hildon-volumebar-range.c
+	* src/hildon-volumebar.c
+	* src/hildon-vvolumebar.c
+	* src/hildon-weekday-picker.c
+	* src/hildon-window.c
+	* src/hildon-wizard-dialog.c:
+
+	Lots of documentation fixes.
+
 2008-12-12  Claudio Saavedra  <csaavedra@igalia.com>
 
 	Patch contributed by Iván Gómez (igomez@igalia.com)

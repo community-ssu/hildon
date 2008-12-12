@@ -155,7 +155,7 @@ static guint                                    signals [LAST_SIGNAL] = { 0, };
  *
  * Initializes and returns the type of a hildon color button.
  *
- * @Returns: GType of #HildonColorButton.
+ * Returns: GType of #HildonColorButton.
  */
 GType G_GNUC_CONST
 hildon_color_button_get_type                    (void)

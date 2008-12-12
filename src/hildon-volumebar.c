@@ -127,7 +127,7 @@ static guint                                    signals [LAST_SIGNAL] = { 0 };
  *
  * Initializes and returns the type of a hildon volumebar.
  *
- * @Returns: GType of #HildonVolumebar
+ * Returns: GType of #HildonVolumebar
  */
 GType G_GNUC_CONST 
 hildon_volumebar_get_type                       (void)

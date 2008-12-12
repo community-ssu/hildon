@@ -1778,9 +1778,11 @@ hildon_window_set_menu                          (HildonWindow *self,
 /**
  * hildon_window_get_is_topmost:
  * @self: A #HildonWindow
- * 
- * Return value: Whether or not the #HildonWindow is currenltly activated
- * by the window manager.
+ *
+ * Returns whether the #HildonWindow is currenty activated by the
+ * window manager.
+ *
+ * Return value: %TRUE if @self is currently activated, %FALSE otherwise.
  **/
 gboolean
 hildon_window_get_is_topmost                    (HildonWindow *self)

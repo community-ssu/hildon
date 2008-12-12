@@ -619,6 +619,8 @@ hildon_date_selector_new ()
  * Sets the current active date on the #HildonDateSelector widget
  *
  * Since: 2.2
+ *
+ * Returns: %TRUE on success, %FALSE otherwise
  **/
 gboolean
 hildon_date_selector_select_current_date (HildonDateSelector * selector,
@@ -718,7 +720,9 @@ hildon_date_selector_get_date (HildonDateSelector * selector,
  * Utility function, too keep this API more similar to the previously existing
  * hildon-calendar widget.
  *
- * Since: 2.2 
+ * Since: 2.2
+ *
+ * Returns: %TRUE on success, %FALSE otherwise
  **/
 gboolean hildon_date_selector_select_month (HildonDateSelector *selector,
                                             guint month, guint year)

@@ -150,7 +150,7 @@ enum
  *
  * Initializes and returns the type of a hildon caption.
  *
- * @Returns: GType of #HildonCaption
+ * Returns: GType of #HildonCaption
  */
 GType G_GNUC_CONST 
 hildon_caption_get_type                         (void)
@@ -838,7 +838,7 @@ hildon_caption_set_size_group                   (const HildonCaption *self,
  *
  * Query given captioned control for the #GtkSizeGroup assigned to it.
  *
- * @Returns : a #GtkSizeGroup
+ * Returns: a #GtkSizeGroup
  * 
  */
 GtkSizeGroup*
@@ -871,7 +871,7 @@ hildon_caption_get_size_group                   (const HildonCaption *self)
  * The default behaviour for the caption's activate signal is to call	 
  * gtk_widget_activate on it's control.
  * 
- * @Returns : a #GtkWidget pointer of Caption
+ * Returns: a #GtkWidget pointer of Caption
  */
 GtkWidget*
 hildon_caption_new                              (GtkSizeGroup *group, 
@@ -904,7 +904,7 @@ hildon_caption_new                              (GtkSizeGroup *group,
  * 
  * Query #HildonCaption whether this captioned control is a mandatory one.
  *
- * @Returns : is this captioned control a mandatory one?
+ * Returns: is this captioned control a mandatory one?
  */
 gboolean 
 hildon_caption_is_mandatory                     (const HildonCaption *caption)
@@ -949,7 +949,7 @@ hildon_caption_set_icon_position                (HildonCaption *caption,
  *
  * Gets #HildonCaption icon position.
  *
- * @Returns : one of the values from #HildonCaptionIconPosition.
+ * Returns: one of the values from #HildonCaptionIconPosition.
  *
  */
 
@@ -982,11 +982,11 @@ hildon_caption_set_status                       (HildonCaption *caption,
 
 /**
  * hildon_caption_get_status:
- * @caption : a #HildonCaption
+ * @caption: a #HildonCaption
  *
  * Gets #HildonCaption status.
  *
- * @Returns : one of the values from #HildonCaptionStatus
+ * Returns: one of the values from #HildonCaptionStatus
  */
 HildonCaptionStatus 
 hildon_caption_get_status                       (const HildonCaption *caption)
@@ -1023,7 +1023,7 @@ hildon_caption_set_icon_image                   (HildonCaption *caption,
  *
  * Gets icon of #HildonCaption
  *
- * @Returns : the #GtkImage widget that is being used as the icon by the
+ * Returns: the #GtkImage widget that is being used as the icon by the
  *            hildon_caption, or NULL if no icon image is in use.
  */
 GtkWidget*
@@ -1081,7 +1081,7 @@ hildon_caption_set_label_markup                 (HildonCaption *caption,
  *
  * Gets label of #HildonCaption
  * 
- * @Returns : the text currently being used as the label of the caption
+ * Returns: the text currently being used as the label of the caption
  *  control. The string is owned by the label and the caller should never 
  *  free or modify this value.
  */
@@ -1120,7 +1120,7 @@ hildon_caption_set_separator                    (HildonCaption *caption,
  *
  * Gets separator string of #HildonCaption
  *
- * @Returns : the text currently being used as the separator of the caption
+ * Returns: the text currently being used as the separator of the caption
  *  control. The string is owned by the caption control and the caller should
  *  never free or modify this value.   
  */
@@ -1197,7 +1197,7 @@ hildon_caption_set_child_expand                 (HildonCaption *caption,
  *
  * Gets childs expandability.
  *
- * @Returns : wheter the child is expandable or not.
+ * Returns: wheter the child is expandable or not.
  */
 gboolean 
 hildon_caption_get_child_expand                 (const HildonCaption *caption)

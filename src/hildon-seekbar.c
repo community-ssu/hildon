@@ -129,7 +129,7 @@ enum
  * 
  * Initializes, and returns the type of a hildon seekbar.
  * 
- * @Returns : GType of #HildonSeekbar
+ * Returns: GType of #HildonSeekbar
  * 
  */
 GType G_GNUC_CONST 

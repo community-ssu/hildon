@@ -148,7 +148,7 @@ static guint                                    HildonFindToolbar_signal [LAST_S
  *
  * Initializes and returns the type of a hildon fond toolbar.
  *
- * @Returns: GType of #HildonFindToolbar
+ * Returns: GType of #HildonFindToolbar
  */
 GType G_GNUC_CONST
 hildon_find_toolbar_get_type                    (void)

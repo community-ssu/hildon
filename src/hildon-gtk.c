@@ -311,7 +311,6 @@ hildon_gtk_window_set_progress_indicator        (GtkWindow    *window,
 
 /**
  * hildon_gtk_hscale_new:
- * @void: 
  *
  * Creates a new horizontal scale widget that lets the user select
  * a value. The value is technically a double between 0.0 and 1.0.
@@ -341,7 +340,6 @@ hildon_gtk_hscale_new                           (void)
 
 /**
  * hildon_gtk_vscale_new:
- * @void: 
  *
  * Creates a new vertical scale widget that lets the user select
  * a value. The value is technically a double between 0.0 and 1.0.

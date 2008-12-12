@@ -1,6 +1,5 @@
 <SECTION>
 <FILE>hildon-date-selector</FILE>
-HildonDateSelectorPrivate
 <TITLE>HildonDateSelector</TITLE>
 HildonDateSelector
 hildon_date_selector_new
@@ -17,6 +16,7 @@ HILDON_DATE_SELECTOR_CLASS
 HILDON_IS_DATE_SELECTOR_CLASS
 HILDON_DATE_SELECTOR_GET_CLASS
 HildonDateSelectorClass
+HildonDateSelectorPrivate
 </SECTION>
 
 <SECTION>
@@ -97,6 +97,8 @@ HILDON_BUTTON
 HILDON_IS_BUTTON
 HILDON_TYPE_BUTTON
 hildon_button_get_type
+hildon_button_arrangement_get_type
+hildon_button_style_get_type
 HILDON_BUTTON_CLASS
 HILDON_IS_BUTTON_CLASS
 HILDON_BUTTON_GET_CLASS
@@ -185,7 +187,6 @@ HildonCaptionClass
 
 <SECTION>
 <FILE>hildon-touch-selector-column</FILE>
-HildonTouchSelectorColumnPrivate
 <TITLE>HildonTouchSelectorColumn</TITLE>
 HildonTouchSelectorColumn
 <SUBSECTION Standard>
@@ -197,6 +198,7 @@ HILDON_TOUCH_SELECTOR_COLUMN_CLASS
 HILDON_IS_TOUCH_SELECTOR_COLUMN_CLASS
 HILDON_TOUCH_SELECTOR_COLUMN_GET_CLASS
 HildonTouchSelectorColumnClass
+HildonTouchSelectorColumnPrivate
 </SECTION>
 
 <SECTION>
@@ -222,7 +224,6 @@ HildonSortDialogClass
 
 <SECTION>
 <FILE>hildon-bread-crumb-widget</FILE>
-HildonBreadCrumbWidgetPrivate
 <TITLE>HildonBreadCrumbWidget</TITLE>
 HildonBreadCrumbWidget
 <SUBSECTION Standard>
@@ -234,6 +235,7 @@ HILDON_BREAD_CRUMB_WIDGET_CLASS
 HILDON_IS_BREAD_CRUMB_WIDGET_CLASS
 HILDON_BREAD_CRUMB_WIDGET_GET_CLASS
 HildonBreadCrumbWidgetClass
+HildonBreadCrumbWidgetPrivate
 </SECTION>
 
 <SECTION>
@@ -261,7 +263,6 @@ HildonFindToolbarClass
 <SECTION>
 <FILE>hildon-picker-dialog</FILE>
 HILDON_DISABLE_DEPRECATED
-HildonPickerDialogPrivate
 <TITLE>HildonPickerDialog</TITLE>
 HildonPickerDialog
 hildon_picker_dialog_new
@@ -278,6 +279,7 @@ HILDON_PICKER_DIALOG_CLASS
 HILDON_IS_PICKER_DIALOG_CLASS
 HILDON_PICKER_DIALOG_GET_CLASS
 HildonPickerDialogClass
+HildonPickerDialogPrivate
 </SECTION>
 
 <SECTION>
@@ -304,6 +306,7 @@ HILDON_CALENDAR_CLASS
 HILDON_IS_CALENDAR_CLASS
 HILDON_CALENDAR_GET_CLASS
 HildonCalendarClass
+hildon_calendar_display_options_get_type
 </SECTION>
 
 <SECTION>
@@ -347,7 +350,6 @@ HildonWeekdayPickerClass
 
 <SECTION>
 <FILE>hildon-app-menu</FILE>
-HildonAppMenuPrivate
 <TITLE>HildonAppMenu</TITLE>
 HildonAppMenu
 hildon_app_menu_new
@@ -365,6 +367,7 @@ HILDON_APP_MENU_CLASS
 HILDON_IS_APP_MENU_CLASS
 HILDON_APP_MENU_GET_CLASS
 HildonAppMenuClass
+HildonAppMenuPrivate
 </SECTION>
 
 <SECTION>
@@ -401,11 +404,11 @@ HILDON_TYPE_WIZARD_DIALOG
 HILDON_WIZARD_DIALOG_CLASS
 HILDON_IS_WIZARD_DIALOG_CLASS
 HildonWizardDialogClass
+hildon_wizard_dialog_response_get_type
 </SECTION>
 
 <SECTION>
 <FILE>hildon-bread-crumb-trail</FILE>
-HildonBreadCrumbTrailPrivate
 <TITLE>HildonBreadCrumbTrail</TITLE>
 HildonBreadCrumbTrail
 hildon_bread_crumb_trail_new
@@ -423,6 +426,7 @@ HILDON_BREAD_CRUMB_TRAIL_CLASS
 HILDON_IS_BREAD_CRUMB_TRAIL_CLASS
 HILDON_BREAD_CRUMB_TRAIL_GET_CLASS
 HildonBreadCrumbTrailClass
+HildonBreadCrumbTrailPrivate
 </SECTION>
 
 <SECTION>
@@ -449,7 +453,6 @@ HildonControlbarClass
 
 <SECTION>
 <FILE>hildon-check-button</FILE>
-HildonCheckButtonPrivate
 <TITLE>HildonCheckButton</TITLE>
 HildonCheckButton
 hildon_check_button_new
@@ -465,6 +468,7 @@ HILDON_CHECK_BUTTON_CLASS
 HILDON_IS_CHECK_BUTTON_CLASS
 HILDON_CHECK_BUTTON_GET_CLASS
 HildonCheckButtonClass
+HildonCheckButtonPrivate
 </SECTION>
 
 <SECTION>
@@ -473,7 +477,6 @@ HildonPannableAreaMode
 HildonMovementMode
 HildonMovementDirection
 HildonSizeRequestPolicy
-HildonPannableAreaPrivate
 <TITLE>HildonPannableArea</TITLE>
 HildonPannableArea
 hildon_pannable_area_new
@@ -488,17 +491,17 @@ hildon_pannable_area_get_size_request_policy
 hildon_pannable_area_set_size_request_policy
 hildon_pannable_area_get_hadjustment
 hildon_pannable_area_get_vadjustment
-hildon_pannable_area_set_hadjustment
-hildon_pannable_area_set_vadjustment
 <SUBSECTION Standard>
 HILDON_PANNABLE_AREA
 HILDON_IS_PANNABLE_AREA
 HILDON_TYPE_PANNABLE_AREA
 hildon_pannable_area_get_type
+hildon_size_request_policy_get_type
 HILDON_PANNABLE_AREA_CLASS
 HILDON_IS_PANNABLE_AREA_CLASS
 HILDON_PANNABLE_AREA_GET_CLASS
 HildonPannableAreaClass
+HildonPannableAreaPrivate
 </SECTION>
 
 <SECTION>
@@ -573,6 +576,7 @@ HILDON_NUMBER_EDITOR_CLASS
 HILDON_IS_NUMBER_EDITOR_CLASS
 HILDON_NUMBER_EDITOR_GET_CLASS
 HildonNumberEditorClass
+hildon_number_editor_error_type_get_type
 </SECTION>
 
 <SECTION>
@@ -691,6 +695,7 @@ HILDON_WINDOW_CLASS
 HILDON_IS_WINDOW_CLASS
 HILDON_WINDOW_GET_CLASS
 HildonWindowClass
+hildon_window_clipboard_operation_get_type
 </SECTION>
 
 <SECTION>
@@ -795,7 +800,6 @@ HildonColorChooserDialogClass
 
 <SECTION>
 <FILE>hildon-entry</FILE>
-HildonEntryPrivate
 <TITLE>HildonEntry</TITLE>
 HildonEntry
 hildon_entry_new
@@ -811,11 +815,11 @@ HILDON_ENTRY_CLASS
 HILDON_IS_ENTRY_CLASS
 HILDON_ENTRY_GET_CLASS
 HildonEntryClass
+HildonEntryPrivate
 </SECTION>
 
 <SECTION>
 <FILE>hildon-window-stack</FILE>
-HildonWindowStackPrivate
 <TITLE>HildonWindowStack</TITLE>
 HildonWindowStack
 hildon_window_stack_get_default
@@ -838,6 +842,7 @@ HILDON_WINDOW_STACK_CLASS
 HILDON_IS_WINDOW_STACK_CLASS
 HILDON_WINDOW_STACK_GET_CLASS
 HildonWindowStackClass
+HildonWindowStackPrivate
 </SECTION>
 
 <SECTION>
@@ -859,7 +864,6 @@ HildonFontSelectionDialogClass
 
 <SECTION>
 <FILE>hildon-touch-selector</FILE>
-HildonTouchSelectorPrivate
 HildonTouchSelectorPrintFunc
 <TITLE>HildonTouchSelector</TITLE>
 HildonTouchSelector
@@ -898,6 +902,7 @@ HILDON_TOUCH_SELECTOR_CLASS
 HILDON_IS_TOUCH_SELECTOR_CLASS
 HILDON_TOUCH_SELECTOR_GET_CLASS
 HildonTouchSelectorClass
+HildonTouchSelectorPrivate
 </SECTION>
 
 <SECTION>
@@ -955,7 +960,6 @@ HildonColorChooserClass
 
 <SECTION>
 <FILE>hildon-time-selector</FILE>
-HildonTimeSelectorPrivate
 <TITLE>HildonTimeSelector</TITLE>
 HildonTimeSelector
 hildon_time_selector_new
@@ -970,6 +974,7 @@ HILDON_TIME_SELECTOR_CLASS
 HILDON_IS_TIME_SELECTOR_CLASS
 HILDON_TIME_SELECTOR_GET_CLASS
 HildonTimeSelectorClass
+HildonTimeSelectorPrivate
 </SECTION>
 
 <SECTION>
@@ -1141,36 +1146,37 @@ hildon_play_system_sound
 
 <SECTION>
 <FILE>hildon-enum-types</FILE>
-hildon_caption_status_get_type
 HILDON_TYPE_CAPTION_STATUS
-hildon_caption_icon_position_get_type
 HILDON_TYPE_CAPTION_ICON_POSITION
-hildon_note_type_get_type
 HILDON_TYPE_NOTE_TYPE
-hildon_number_editor_error_type_get_type
 HILDON_TYPE_NUMBER_EDITOR_ERROR_TYPE
-hildon_date_time_error_get_type
 HILDON_TYPE_DATE_TIME_ERROR
-hildon_touch_selector_selection_mode_get_type
 HILDON_TYPE_TOUCH_SELECTOR_SELECTION_MODE
-hildon_window_clipboard_operation_get_type
 HILDON_TYPE_WINDOW_CLIPBOARD_OPERATION
-hildon_wizard_dialog_response_get_type
 HILDON_TYPE_WIZARD_DIALOG_RESPONSE
-hildon_calendar_display_options_get_type
 HILDON_TYPE_CALENDAR_DISPLAY_OPTIONS
-hildon_pannable_area_mode_get_type
 HILDON_TYPE_PANNABLE_AREA_MODE
-hildon_movement_mode_get_type
 HILDON_TYPE_MOVEMENT_MODE
-hildon_movement_direction_get_type
 HILDON_TYPE_MOVEMENT_DIRECTION
-hildon_size_request_policy_get_type
 HILDON_TYPE_SIZE_REQUEST_POLICY
-hildon_button_arrangement_get_type
 HILDON_TYPE_BUTTON_ARRANGEMENT
-hildon_button_style_get_type
 HILDON_TYPE_BUTTON_STYLE
+<SUBSECTION Standard>
+hildon_caption_status_get_type
+hildon_caption_icon_position_get_type
+hildon_note_type_get_type
+hildon_number_editor_error_type_get_type
+hildon_date_time_error_get_type
+hildon_touch_selector_selection_mode_get_type
+hildon_window_clipboard_operation_get_type
+hildon_wizard_dialog_response_get_type
+hildon_calendar_display_options_get_type
+hildon_pannable_area_mode_get_type
+hildon_movement_mode_get_type
+hildon_movement_direction_get_type
+hildon_size_request_policy_get_type
+hildon_button_arrangement_get_type
+hildon_button_style_get_type
 </SECTION>
 
 <SECTION>

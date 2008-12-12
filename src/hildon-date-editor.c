@@ -206,7 +206,7 @@ static guint                                    date_editor_signals[LAST_SIGNAL]
  *
  * Initializes and returns the type of a hildon date editor.
  *
- * @Returns: GType of #HildonDateEditor
+ * Returns: GType of #HildonDateEditor
  */
 GType G_GNUC_CONST
 hildon_date_editor_get_type                     (void)

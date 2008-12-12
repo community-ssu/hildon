@@ -170,7 +170,7 @@ static GtkDialogClass*                          parent_class = NULL;
  *
  * Initializes and returns the type of a hildon font selection dialog
  *
- * @Returns: GType of #HildonFontSelectionDialog
+ * Returns: GType of #HildonFontSelectionDialog
  */
 GType G_GNUC_CONST
 hildon_font_selection_dialog_get_type           (void)

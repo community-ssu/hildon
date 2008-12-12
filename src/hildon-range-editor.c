@@ -802,7 +802,7 @@ hildon_range_editor_refresh_widths              (HildonRangeEditorPrivate *priv)
  * 
  * Initializes, and returns the type of a hildon range editor.
  * 
- * @Returns : GType of #HildonRangeEditor
+ * Returns: GType of #HildonRangeEditor
  * 
  */
 GType G_GNUC_CONST
