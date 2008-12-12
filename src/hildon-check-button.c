@@ -80,6 +80,8 @@ struct                                          _HildonCheckButtonPrivate
  * @button: A #HildonCheckButton
  *
  * Emits the #HildonCheckButton::toggled signal on the #HildonCheckButton.
+ *
+ * Since: 2.2
  */
 void
 hildon_check_button_toggled                     (HildonCheckButton *button)
@@ -95,6 +97,8 @@ hildon_check_button_toggled                     (HildonCheckButton *button)
  * @is_active: new state for the button
  *
  * Sets the state of @button to @is_active
+ *
+ * Since: 2.2
  **/
 void
 hildon_check_button_set_active                  (HildonCheckButton *button,
@@ -119,6 +123,8 @@ hildon_check_button_set_active                  (HildonCheckButton *button,
  * Gets the state of the button.
  *
  * Return value: %TRUE if @button is active, %FALSE otherwise.
+ *
+ * Since: 2.2 
  **/
 gboolean
 hildon_check_button_get_active                  (HildonCheckButton *button)
@@ -135,6 +141,8 @@ hildon_check_button_get_active                  (HildonCheckButton *button)
  * This function creates a #HildonCheckButton.
  *
  * Return value: A newly created #HildonCheckButton
+ *
+ * Since: 2.2
  **/
 GtkWidget *
 hildon_check_button_new                         (HildonSizeType size)
@@ -169,6 +177,8 @@ hildon_check_button_class_init                  (HildonCheckButtonClass *klass)
      * HildonCheckButton::toggled
      *
      * Emitted when the #HildonCheckButton's state is changed
+     *
+     * Since: 2.2
      */
     signals[TOGGLED] =
         g_signal_new ("toggled",

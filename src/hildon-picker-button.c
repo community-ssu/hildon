@@ -245,6 +245,8 @@ hildon_picker_button_class_init (HildonPickerButtonClass * klass)
    *
    * The ::value-changed signal is emitted each time the user chooses a different
    * item from the #HildonTouchSelector related, and the value label gets updated.
+   *
+   * Since: 2.2
    */
   picker_button_signals[VALUE_CHANGED] =
     g_signal_new ("value-changed",
@@ -308,6 +310,8 @@ _current_selector_empty (HildonPickerButton *button)
  * parameters.
  *
  * Returns: a newly created #HildonPickerButton
+ *
+ * Since: 2.2
  **/
 GtkWidget *
 hildon_picker_button_new (HildonSizeType          size,
@@ -329,6 +333,8 @@ hildon_picker_button_new (HildonSizeType          size,
  *
  * Sets @selector as the #HildonTouchSelector to be shown in the
  * #HildonPickerDialog that @button brings up.
+ *
+ * Since: 2.2
  **/
 void
 hildon_picker_button_set_selector (HildonPickerButton * button,
@@ -371,6 +377,8 @@ hildon_picker_button_set_selector (HildonPickerButton * button,
  * Retrieves the #HildonTouchSelector associated to @button.
  *
  * Returns: a #HildonTouchSelector
+ *
+ * Since: 2.2
  **/
 HildonTouchSelector *
 hildon_picker_button_get_selector (HildonPickerButton * button)
@@ -393,6 +401,8 @@ hildon_picker_button_get_selector (HildonPickerButton * button)
  * one is used.
  *
  * Returns: an integer which is the index of the currently active item, or -1 if there's no active item.
+ *
+ * Since: 2.2
  **/
 gint
 hildon_picker_button_get_active                 (HildonPickerButton * button)
@@ -413,6 +423,8 @@ hildon_picker_button_get_active                 (HildonPickerButton * button)
  * Sets the active item of the #HildonTouchSelector associated to
  * @button to @index. If the selector has several columns, only the
  * first one is used.
+ *
+ * Since: 2.2
  **/
 void
 hildon_picker_button_set_active                 (HildonPickerButton * button,
@@ -439,6 +451,8 @@ hildon_picker_button_set_active                 (HildonPickerButton * button,
  *
  * Returns: the custom string to be used, or %NULL if the default
  * #HildonPickerDialog::done-button-text is to be used.
+ *
+ * Since: 2.2
  **/
 const gchar *
 hildon_picker_button_get_done_button_text (HildonPickerButton *button)
@@ -460,6 +474,8 @@ hildon_picker_button_get_done_button_text (HildonPickerButton *button)
  * Sets a custom string to be used in the \"done\" button in the #HildonPickerDialog
  * launched. If not set, the default HildonPickerButton::done-button-text property
  * value will be used.
+ *
+ * Since: 2.2
  **/
 void
 hildon_picker_button_set_done_button_text (HildonPickerButton *button,

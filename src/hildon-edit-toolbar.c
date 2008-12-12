@@ -96,6 +96,7 @@ hildon_edit_toolbar_class_init                  (HildonEditToolbarClass *klass)
      *
      * Emitted when the toolbar button has been activated (pressed and released).
      *
+     * Since: 2.2
      */
     toolbar_signals[BUTTON_CLICKED] =
         g_signal_new ("button_clicked",
@@ -112,6 +113,7 @@ hildon_edit_toolbar_class_init                  (HildonEditToolbarClass *klass)
      * Emitted when the toolbar back button (arrow) has been activated
      * (pressed and released).
      *
+     * Since: 2.2
      */
     toolbar_signals[ARROW_CLICKED] =
         g_signal_new ("arrow_clicked",
@@ -175,6 +177,8 @@ hildon_edit_toolbar_init                        (HildonEditToolbar *self)
  *
  * Sets the label of @toolbar to @label. This will clear any
  * previously set value.
+ *
+ * Since: 2.2
  */
 void
 hildon_edit_toolbar_set_label                   (HildonEditToolbar *toolbar,
@@ -193,6 +197,8 @@ hildon_edit_toolbar_set_label                   (HildonEditToolbar *toolbar,
  *
  * Sets the label of the toolbar button to @label. This will clear any
  * previously set value.
+ *
+ * Since: 2.2
  */
 void
 hildon_edit_toolbar_set_button_label            (HildonEditToolbar *toolbar,
@@ -210,6 +216,8 @@ hildon_edit_toolbar_set_button_label            (HildonEditToolbar *toolbar,
  * Creates a new #HildonEditToolbar.
  *
  * Returns: a new #HildonEditToolbar
+ *
+ * Since: 2.2
  */
 GtkWidget *
 hildon_edit_toolbar_new                         (void)
@@ -224,6 +232,8 @@ hildon_edit_toolbar_new                         (void)
  * @label and the button label set to @button.
  *
  * Returns: a new #HildonEditToolbar
+ *
+ * Since: 2.2
  */
 GtkWidget *
 hildon_edit_toolbar_new_with_text               (const gchar *label,

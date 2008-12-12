@@ -599,6 +599,8 @@ _month_days (gint month, gint year)
  * Creates a new #HildonDateSelector
  *
  * Returns: a new #HildonDateSelector
+ *
+ * Since: 2.2
  **/
 GtkWidget *
 hildon_date_selector_new ()
@@ -616,6 +618,7 @@ hildon_date_selector_new ()
  *
  * Sets the current active date on the #HildonDateSelector widget
  *
+ * Since: 2.2
  **/
 gboolean
 hildon_date_selector_select_current_date (HildonDateSelector * selector,
@@ -668,7 +671,7 @@ hildon_date_selector_select_current_date (HildonDateSelector * selector,
  *
  * Gets the current active date on the #HildonDateSelector widget
  *
- *
+ * Since: 2.2
  **/
 void
 hildon_date_selector_get_date (HildonDateSelector * selector,
@@ -715,7 +718,7 @@ hildon_date_selector_get_date (HildonDateSelector * selector,
  * Utility function, too keep this API more similar to the previously existing
  * hildon-calendar widget.
  *
- *
+ * Since: 2.2 
  **/
 gboolean hildon_date_selector_select_month (HildonDateSelector *selector,
                                             guint month, guint year)
@@ -737,7 +740,7 @@ gboolean hildon_date_selector_select_month (HildonDateSelector *selector,
  * Utility function, too keep this API more similar to the previously existing
  * hildon-calendar widget.
  *
- *
+ * Since: 2.2
  **/
 void
 hildon_date_selector_select_day (HildonDateSelector *selector, guint day)

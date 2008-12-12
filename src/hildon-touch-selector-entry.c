@@ -122,6 +122,7 @@ hildon_touch_selector_entry_class_init (HildonTouchSelectorEntryClass *klass)
    * hildon_touch_selector_entry_set_text_column() and
    * hildon_touch_selector_entry_get_text_column() to manage this.
    *
+   * Since: 2.2
    **/
   g_object_class_install_property (G_OBJECT_CLASS (klass),
                                    PROP_TEXT_COLUMN,
@@ -198,6 +199,8 @@ hildon_touch_selector_entry_new (void)
  * hildon_touch_selector_prepend_text(), hildon_touch_selector_insert_text().
  *
  * Returns: A new #HildonTouchSelectorEntry
+ *
+ * Since: 2.2
  **/
 GtkWidget *
 hildon_touch_selector_entry_new_text (void)
@@ -252,6 +255,7 @@ _text_column_modified (GObject *pspec, GParamSpec *gobject, gpointer data)
  * Sets the model column which touch selector box should use to get strings
  * from to be @text_column.
  *
+ * Since: 2.2
  **/
 void
 hildon_touch_selector_entry_set_text_column (HildonTouchSelectorEntry *selector,
@@ -275,6 +279,7 @@ hildon_touch_selector_entry_set_text_column (HildonTouchSelectorEntry *selector,
  *
  * Returns: the number of the column used as a text column.
  *
+ * Since: 2.2
  **/
 gint
 hildon_touch_selector_entry_get_text_column (HildonTouchSelectorEntry *selector)

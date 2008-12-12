@@ -105,6 +105,8 @@ hildon_entry_refresh_contents                   (GtkWidget *entry)
  *
  * Note that you must never use gtk_entry_set_text() to set the text
  * of a #HildonEntry.
+ *
+ * Since: 2.2
  */
 void
 hildon_entry_set_text                           (HildonEntry *entry,
@@ -135,6 +137,8 @@ hildon_entry_set_text                           (HildonEntry *entry,
  *
  * Returns: the text in @entry. This text must not be modified or
  * freed.
+ *
+ * Since: 2.2
  */
 const gchar *
 hildon_entry_get_text                           (HildonEntry *entry)
@@ -154,6 +158,8 @@ hildon_entry_get_text                           (HildonEntry *entry)
  * @text: the new text
  *
  * Sets the placeholder text in @entry to @text.
+ *
+ * Since: 2.2
  */
 void
 hildon_entry_set_placeholder                    (HildonEntry *entry,
@@ -173,6 +179,8 @@ hildon_entry_set_placeholder                    (HildonEntry *entry,
  * Creates a new entry.
  *
  * Returns: a new #HildonEntry
+ *
+ * Since: 2.2
  */
 GtkWidget *
 hildon_entry_new                                (HildonSizeType size)

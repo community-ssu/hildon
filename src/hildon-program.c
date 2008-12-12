@@ -579,6 +579,8 @@ hildon_program_get_can_hibernate                (HildonProgram *self)
  * This method is not intented for #HildonStackableWindow<!-- -->s and
  * does not support #HildonAppMenu objects. See
  * hildon_program_set_common_app_menu() for that.
+ *
+ * Since: 2.2
  **/
 void
 hildon_program_set_common_menu                  (HildonProgram *self, 

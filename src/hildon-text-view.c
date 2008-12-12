@@ -103,6 +103,8 @@ hildon_text_view_refresh_contents               (GtkWidget *text_view)
  *
  * Note that you must never use gtk_text_view_set_buffer() to set the
  * buffer of a #HildonTextView.
+ *
+ * Since: 2.2
  */
 void
 hildon_text_view_set_buffer                     (HildonTextView *text_view,
@@ -150,6 +152,8 @@ hildon_text_view_set_buffer                     (HildonTextView *text_view,
  * buffer.
  *
  * Returns: a #GtkTextBuffer
+ *
+ * Since: 2.2
  */
 GtkTextBuffer *
 hildon_text_view_get_buffer                     (HildonTextView *text_view)
@@ -171,6 +175,8 @@ hildon_text_view_get_buffer                     (HildonTextView *text_view)
  * @text: the new text
  *
  * Sets the placeholder text in @text_view to @text.
+ *
+ * Since: 2.2
  */
 void
 hildon_text_view_set_placeholder                (HildonTextView *text_view,
@@ -191,6 +197,8 @@ hildon_text_view_set_placeholder                (HildonTextView *text_view,
  * Creates a new text view.
  *
  * Returns: a new #HildonTextView
+ *
+ * Since: 2.2 
  */
 GtkWidget *
 hildon_text_view_new                            (void)

@@ -97,6 +97,8 @@ hildon_time_button_init (HildonTimeButton * self)
  * parameters.
  *
  * Returns: a new #HildonTimeButton
+ *
+ * Since: 2.2
  **/
 GtkWidget *
 hildon_time_button_new (HildonSizeType          size,
@@ -113,6 +115,8 @@ hildon_time_button_new (HildonSizeType          size,
  * @minutes: return location for the minutes of the time selected
  *
  * Retrieves the time from @button.
+ *
+ * Since: 2.2
  **/
 void
 hildon_time_button_get_time (HildonTimeButton * button,
@@ -135,6 +139,8 @@ hildon_time_button_get_time (HildonTimeButton * button,
  *
  * Sets the time to be displayed in @button. This time will
  * be selected by default on the #HildonTimeSelector.
+ *
+ * Since: 2.2
  **/
 void
 hildon_time_button_set_time (HildonTimeButton * button,

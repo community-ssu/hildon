@@ -99,6 +99,8 @@ hildon_date_button_init (HildonDateButton * self)
  * parameters.
  *
  * Returns: a new #HildonDateButton
+ *
+ * Since: 2.2
  **/
 GtkWidget *
 hildon_date_button_new (HildonSizeType          size,
@@ -119,6 +121,8 @@ hildon_date_button_new (HildonSizeType          size,
  * @day: return location for the selected day
  *
  * Retrieves currently selected date from @button.
+ *
+ * Since: 2.2
  **/
 void
 hildon_date_button_get_date (HildonDateButton * button,
@@ -143,6 +147,7 @@ hildon_date_button_get_date (HildonDateButton * button,
  * Sets the date in @button. The date set will be displayed
  * and will be the default selected option on the shown #HildonDateSelector.
  *
+ * Since: 2.2
  **/
 void
 hildon_date_button_set_date (HildonDateButton * button,

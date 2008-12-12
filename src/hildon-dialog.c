@@ -81,6 +81,8 @@ hildon_dialog_init                              (HildonDialog *self)
  * Creates a new #HildonDialog widget
  *
  * Returns: the newly created #HildonDialog
+ *
+ * Since: 2.2
  */
 GtkWidget*
 hildon_dialog_new                               (void)
@@ -102,6 +104,8 @@ hildon_dialog_new                               (void)
  * more information.
  *
  * Return value: a new #HildonDialog
+ *
+ * Since: 2.2
  */
 GtkWidget*
 hildon_dialog_new_with_buttons                  (const gchar *title,
@@ -166,6 +170,8 @@ hildon_dialog_new_with_buttons                  (const gchar *title,
  * has finger size.
  *
  * Returns: the button widget that was added
+ *
+ * Since: 2.2
  */
 GtkWidget *
 hildon_dialog_add_button                        (HildonDialog *dialog,
@@ -186,6 +192,8 @@ hildon_dialog_add_button                        (HildonDialog *dialog,
  * Adds several buttons to the dialog. Works exactly like
  * gtk_dialog_add_buttons(), the only difference being that the
  * buttons have finger size.
+ *
+ * Since: 2.2
  */
 void
 hildon_dialog_add_buttons                       (HildonDialog *dialog,

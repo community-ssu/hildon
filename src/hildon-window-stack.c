@@ -77,6 +77,8 @@ G_DEFINE_TYPE (HildonWindowStack, hildon_window_stack, G_TYPE_OBJECT);
  * doesn't need to be created by the application.
  *
  * Return value: the default #HildonWindowStack
+ * 
+ * Since: 2.2
  **/
 HildonWindowStack *
 hildon_window_stack_get_default                 (void)
@@ -95,6 +97,8 @@ hildon_window_stack_get_default                 (void)
  * Creates a new #HildonWindowStack. The stack is initially empty.
  *
  * Return value: a new #HildonWindowStack
+ *
+ * Since: 2.2
  **/
 HildonWindowStack *
 hildon_window_stack_new                         (void)
@@ -111,6 +115,8 @@ hildon_window_stack_new                         (void)
  * Returns the number of windows in @stack
  *
  * Return value: Number of windows in @stack
+ *
+ * Since: 2.2
  **/
 gint
 hildon_window_stack_size                        (HildonWindowStack *stack)
@@ -184,6 +190,8 @@ hildon_window_stack_remove                      (HildonStackableWindow *win)
  *
  * Return value: the window on top of the stack, or %NULL if the stack
  * is empty.
+ *
+ * Since: 2.2
  **/
 GtkWidget *
 hildon_window_stack_peek                        (HildonWindowStack *stack)
@@ -254,6 +262,8 @@ _hildon_window_stack_do_pop                     (HildonWindowStack *stack)
  *
  * Adds @win to the top of @stack, and shows it. The window must not
  * be already stacked.
+ *
+ * Since: 2.2
  **/
 void
 hildon_window_stack_push_1                      (HildonWindowStack     *stack,
@@ -272,6 +282,8 @@ hildon_window_stack_push_1                      (HildonWindowStack     *stack,
  *
  * Return value: the window on top of the stack, or %NULL if the stack
  * is empty.
+ *
+ * Since: 2.2
  **/
 GtkWidget *
 hildon_window_stack_pop_1                       (HildonWindowStack *stack)
@@ -291,6 +303,8 @@ hildon_window_stack_pop_1                       (HildonWindowStack *stack)
  * them. Everything is done in a single transition, so the user will
  * only see the last window in @list during this operation. None of
  * the windows must be already stacked.
+ *
+ * Since: 2.2
  **/
 void
 hildon_window_stack_push_list                   (HildonWindowStack *stack,
@@ -328,6 +342,8 @@ hildon_window_stack_push_list                   (HildonWindowStack *stack,
  * Pushes all windows to the top of @stack, and shows them. Everything
  * is done in a single transition, so the user will only see the last
  * window. None of the windows must be already stacked.
+ *
+ * Since: 2.2
  **/
 void
 hildon_window_stack_push                        (HildonWindowStack     *stack,
@@ -365,6 +381,8 @@ hildon_window_stack_push                        (HildonWindowStack     *stack,
  * If @popped_windows is not %NULL, the list of popped windows is
  * stored there (ordered bottom-up). That list must be freed by the
  * user.
+ *
+ * Since: 2.2
  **/
 void
 hildon_window_stack_pop                         (HildonWindowStack  *stack,
@@ -409,6 +427,8 @@ hildon_window_stack_pop                         (HildonWindowStack  *stack,
  * If @popped_windows is not %NULL, the list of popped windows is
  * stored there (ordered bottom-up). That list must be freed by the
  * user.
+ *
+ * Since: 2.2
  **/
 void
 hildon_window_stack_pop_and_push_list           (HildonWindowStack  *stack,
@@ -472,6 +492,8 @@ hildon_window_stack_pop_and_push_list           (HildonWindowStack  *stack,
  * If @popped_windows is not %NULL, the list of popped windows is
  * stored there (ordered bottom-up). That list must be freed by the
  * user.
+ *
+ * Since: 2.2
  **/
 void
 hildon_window_stack_pop_and_push                (HildonWindowStack      *stack,

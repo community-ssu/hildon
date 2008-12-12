@@ -1,5 +1,24 @@
 2008-12-12  Claudio Saavedra  <csaavedra@igalia.com>
 
+	Patch contributed by Iván Gómez (igomez@igalia.com)
+
+	* src/hildon-check-button.c:
+	* src/hildon-date-button.c:
+	* src/hildon-date-selector.c:
+	* src/hildon-dialog.c:
+	* src/hildon-edit-toolbar.c:
+	* src/hildon-entry.c:
+	* src/hildon-picker-button.c:
+	* src/hildon-program.c:
+	* src/hildon-text-view.c:
+	* src/hildon-time-button.c:
+	* src/hildon-touch-selector-entry.c:
+	* src/hildon-window-stack.c:
+
+	Add more "since" tags to the new API.
+
+2008-12-12  Claudio Saavedra  <csaavedra@igalia.com>
+
 	* doc/hildon-sections.txt: Add below method.
 	* src/hildon-gtk.c: (+hildon_gtk_vscale_new): New vertical
 	version for the hildonized scale.
