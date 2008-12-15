@@ -164,11 +164,34 @@ hildon_check_button_clicked                     (GtkButton *button)
 }
 
 static void
+hildon_check_button_apply_style                 (GtkWidget *widget)
+{
+    guint checkbox_size;
+    HildonCheckButtonPrivate *priv = HILDON_CHECK_BUTTON (widget)->priv;
+
+    gtk_widget_style_get (widget, "checkbox-size", &checkbox_size, NULL);
+
+    g_object_set (priv->toggle_renderer, "indicator-size", checkbox_size, NULL);
+}
+
+static void
+hildon_check_button_style_set                   (GtkWidget *widget,
+                                                 GtkStyle  *previous_style)
+{
+    if (GTK_WIDGET_CLASS (hildon_check_button_parent_class)->style_set)
+        GTK_WIDGET_CLASS (hildon_check_button_parent_class)->style_set (widget, previous_style);
+
+    hildon_check_button_apply_style (widget);
+}
+
+static void
 hildon_check_button_class_init                  (HildonCheckButtonClass *klass)
 {
     GObjectClass *gobject_class = (GObjectClass*) klass;
+    GtkWidgetClass *widget_class = (GtkWidgetClass*) klass;
     GtkButtonClass *button_class = (GtkButtonClass*) klass;
 
+    widget_class->style_set = hildon_check_button_style_set;
     button_class->clicked = hildon_check_button_clicked;
 
     klass->toggled = NULL;
@@ -188,6 +211,15 @@ hildon_check_button_class_init                  (HildonCheckButtonClass *klass)
                       NULL, NULL,
                       g_cclosure_marshal_VOID__VOID,
                       G_TYPE_NONE, 0);
+
+    gtk_widget_class_install_style_property (
+        widget_class,
+        g_param_spec_uint (
+            "checkbox-size",
+            "Size of the check box",
+            "Size of the check box",
+            0, G_MAXUINT, 26,
+            G_PARAM_READABLE));
 
     g_type_class_add_private (klass, sizeof (HildonCheckButtonPrivate));
 }
@@ -211,4 +243,6 @@ hildon_check_button_init                        (HildonCheckButton *button)
 
     /* Add cell view to the image */
     gtk_button_set_image (GTK_BUTTON (button), cell_view);
+
+    hildon_check_button_apply_style (GTK_WIDGET (button));
 }
