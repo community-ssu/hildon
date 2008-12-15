@@ -1,3 +1,22 @@
+[2.1.30 release]
+
+  Bug fixes:
+
+  * Fixes: NB#93744 (Tapping should jump to location on GtkScale)
+
+  New API:
+
+  * hildon_pannable_area_get_[sv]adjustment(): Method to retrieve the GtkAdjustments
+    in HildonPannableArea.
+
+  Other:
+
+  * Code fixes.
+  * Leaks fixed.
+  * New progress indicator example (Thomas Thurman)
+  * Documentation improvements and updates (Ivan Gomez).
+  * Theme properly HildonPickerButton derived classes.
+
 [2.1.28 release]
 
   Bug fixes:
