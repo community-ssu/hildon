@@ -1,5 +1,14 @@
 2008-12-16  Alberto Garcia  <agarcia@igalia.com>
 
+	* src/hildon-app-menu.c (hildon_app_menu_set_parent_window)
+	(hildon_app_menu_finalize): If the parent window of the menu is
+	hidden, hide the menu too.
+
+	Fixes: NB#94460 (stackable window's menu is not closed when its
+	window is hidden)
+
+2008-12-16  Alberto Garcia  <agarcia@igalia.com>
+
 	* debian/changelog
 	* debian/libhildon1-examples.install
 	* debian/rules
