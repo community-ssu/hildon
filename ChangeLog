@@ -1,5 +1,14 @@
 2008-12-16  Claudio Saavedra  <csaavedra@igalia.com>
 
+	[Release 2.1.32]
+
+	* NEWS: updates
+	* configure.ac: bump version
+	* debian/changelog: updates
+	* debian/control: bump gtk+ dependency
+
+2008-12-16  Claudio Saavedra  <csaavedra@igalia.com>
+
 	patch by Christian Dywan (christian@imendio.com)
 
 	* src/hildon-gtk.c: (hildon_gtk_hscale_new),

@@ -1,3 +1,14 @@
+[2.1.32 release]
+
+  Bug fixes:
+
+  * Fixes: NB#95714 (GtkCellView in HildonCheckButton should be
+    larger / configurable size)
+
+  Other
+
+   * Update a GtkRange property change in GTK+ (Christian Dywan)
+
 [2.1.30 release]
 
   Bug fixes:
