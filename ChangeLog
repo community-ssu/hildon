@@ -1,3 +1,12 @@
+2008-12-16  Alberto Garcia  <agarcia@igalia.com>
+
+	* debian/changelog
+	* debian/libhildon1-examples.install
+	* debian/rules
+	* examples/Makefile.am:
+	Use dh_install to install all examples.
+	Use DEB_SRCDIR instead of defining SOURCE_DIR
+
 2008-12-16  Claudio Saavedra  <csaavedra@igalia.com>
 
 	* configure.ac: post release version bump.

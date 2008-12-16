@@ -1,6 +1,8 @@
 libhildon (2.1.33-1~unreleased) unstable; urgency=low
 
   * unreleased
+  * Use dh_install to install all examples.
+  * Use DEB_SRCDIR instead of defining SOURCE_DIR
 
  -- Claudio Saavedra <csaavedra@igalia.com>  Tue, 16 Dec 2008 13:25:38 +0100
 

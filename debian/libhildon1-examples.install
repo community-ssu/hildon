@@ -1,2 +1,2 @@
-debian/tmp/usr/share/doc/libhildon1-examples/examples
-
+examples/*.c usr/share/doc/libhildon1-examples/examples
+examples/Makefile.static usr/share/doc/libhildon1-examples/examples
