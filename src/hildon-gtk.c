@@ -317,7 +317,7 @@ hildon_gtk_window_set_progress_indicator        (GtkWindow    *window,
  * See gtk_adjustment_configure() for reconfiguring the adjustment.
  *
  * The scale is hildonized, which means that a click or tap immediately
- * jumps to the desired position, see gtk_range_set_relative_steps().
+ * jumps to the desired position, see gtk_range_set_jump_to_position().
  * Further more the value is not displayed, see gtk_scale_set_draw_value().
  *
  * Returns: a new hildonized #GtkHScale
@@ -331,7 +331,7 @@ hildon_gtk_hscale_new                           (void)
   g_object_set (scale,
                 "draw-value", FALSE,
 #ifdef MAEMO_GTK
-                "relative-steps", FALSE,
+                "jump-to-position", TRUE,
 #endif
                 NULL);
 
@@ -346,7 +346,7 @@ hildon_gtk_hscale_new                           (void)
  * See gtk_adjustment_configure() for reconfiguring the adjustment.
  *
  * The scale is hildonized, which means that a click or tap immediately
- * jumps to the desired position, see gtk_range_set_relative_steps().
+ * jumps to the desired position, see gtk_range_set_jump_to_position().
  * Further more the value is not displayed, see gtk_scale_set_draw_value().
  *
  * Returns: a new hildonized #GtkVScale
@@ -360,7 +360,7 @@ hildon_gtk_vscale_new                           (void)
   g_object_set (scale,
                 "draw-value", FALSE,
 #ifdef MAEMO_GTK
-                "relative-steps", FALSE,
+                "jump-to-position", TRUE,
 #endif
                 NULL);
 
