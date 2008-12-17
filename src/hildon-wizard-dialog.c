@@ -412,7 +412,11 @@ create_title                                    (HildonWizardDialog *wizard_dial
         const gchar *steps = gtk_notebook_get_tab_label_text (notebook,
                 gtk_notebook_get_nth_page (notebook, current));
 
-        str = g_strdup_printf (_("%s: %s"), priv->wizard_name, steps);
+        if (steps) {
+          str = g_strdup_printf ("%s: %s", priv->wizard_name, steps);
+        } else {
+          str = g_strdup (priv->wizard_name);
+        }
     }
 
     /* Update the dialog to display the generated title */

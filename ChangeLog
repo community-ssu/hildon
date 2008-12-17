@@ -1,3 +1,9 @@
+2008-12-17  Claudio Saavedra  <csaavedra@igalia.com>
+
+	* src/hildon-wizard-dialog.c: (create_title): Remove translation
+	mark from the wizard title, as it's not really necessary. Also,
+	do not display the page title if not set.
+
 2008-12-17  Alberto Garcia  <agarcia@igalia.com>
 
 	* src/hildon-app-menu.c (hildon_app_menu_set_parent_window)
