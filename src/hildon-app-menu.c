@@ -99,6 +99,7 @@
 #include                                        "hildon-gtk.h"
 #include                                        "hildon-app-menu.h"
 #include                                        "hildon-app-menu-private.h"
+#include                                        "hildon-window.h"
 
 static GdkWindow *
 grab_transfer_window_get                        (GtkWidget *widget);
@@ -320,10 +321,12 @@ hildon_app_menu_set_columns                     (HildonAppMenu *menu,
 }
 
 static void
-parent_window_hidden                           (GtkWidget *parent_win,
-                                                GtkWidget *menu)
+parent_window_hidden                           (HildonWindow *parent_win,
+                                                GParamSpec   *arg1,
+                                                GtkWidget    *menu)
 {
-    gtk_widget_hide (menu);
+    if (!hildon_window_get_is_topmost (parent_win))
+        gtk_widget_hide (menu);
 }
 
 void G_GNUC_INTERNAL
@@ -343,7 +346,7 @@ hildon_app_menu_set_parent_window              (HildonAppMenu *self,
 
     /* Connect a new handler */
     if (parent_window)
-        g_signal_connect (parent_window, "unmap", G_CALLBACK (parent_window_hidden), self);
+        g_signal_connect (parent_window, "notify::is-topmost", G_CALLBACK (parent_window_hidden), self);
 
     priv->parent_window = parent_window;
 

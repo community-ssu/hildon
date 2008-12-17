@@ -1,3 +1,9 @@
+2008-12-17  Alberto Garcia  <agarcia@igalia.com>
+
+	* src/hildon-app-menu.c (hildon_app_menu_set_parent_window)
+	(parent_window_hidden): Use the window's "is-topmost" property to
+	detect when to hide the menu.
+
 2008-12-16  Alberto Garcia  <agarcia@igalia.com>
 
 	* src/hildon-app-menu.c (hildon_app_menu_set_parent_window)
