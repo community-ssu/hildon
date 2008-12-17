@@ -472,7 +472,6 @@
 
 	Fixes: NB#93890 (Empty HildonAppMenu is pop-up)
 
->>>>>>> .r33194
 2008-11-27  Claudio Saavedra  <csaavedra@igalia.com>
 
 	* src/hildon-picker-dialog.c:
