@@ -129,6 +129,21 @@ enum
 
 static GtkDialogClass*                          parent_class;
 
+static gboolean
+event_box_press_event                           (GtkEventBox    *event_box,
+                                                 GdkEventButton *event,
+                                                 GtkDialog      *note)
+{
+    HildonNotePrivate *priv = HILDON_NOTE_GET_PRIVATE (note);
+
+    if (priv->note_n == HILDON_NOTE_TYPE_INFORMATION ||
+        priv->note_n == HILDON_NOTE_TYPE_INFORMATION_THEME) {
+            gtk_dialog_response (note, GTK_RESPONSE_DELETE_EVENT);
+            return TRUE;
+    } else {
+            return FALSE;
+    }
+}
 
 static void
 hildon_note_set_property                        (GObject *object,
@@ -360,12 +375,19 @@ hildon_note_init                                (HildonNote *dialog)
     priv->label = gtk_label_new (NULL);
     gtk_label_set_line_wrap (GTK_LABEL (priv->label), TRUE);
 
+    priv->event_box = gtk_event_box_new ();
     priv->icon = NULL;
     priv->stock_icon = NULL;
+
+    gtk_event_box_set_visible_window (GTK_EVENT_BOX (priv->event_box), FALSE);
+    gtk_event_box_set_above_child (GTK_EVENT_BOX (priv->event_box), TRUE);
+    g_signal_connect (priv->event_box, "button-press-event",
+                      G_CALLBACK (event_box_press_event), dialog);
 
     /* Acquire real references to our internal children, since
        they are not nessecarily packed into container in each
        layout */
+    g_object_ref_sink (priv->event_box);
     g_object_ref_sink (priv->label);
 
     gtk_dialog_set_has_separator (GTK_DIALOG (dialog), FALSE);
@@ -385,6 +407,9 @@ hildon_note_finalize                            (GObject *obj_self)
     /* FIXME Some of this stuff should be moved to dispose */
 
     /* Free internal data */
+    if (priv->event_box)
+        g_object_unref (priv->event_box);
+
     if (priv->label)
         g_object_unref (priv->label);
 
@@ -473,6 +498,7 @@ hildon_note_rebuild                             (HildonNote *note)
     /* Reuse exiting content widgets for new layout */
     unpack_widget (priv->label);
     unpack_widget (priv->progressbar);
+    unpack_widget (priv->event_box);
 
     /* Destroy old layout and buttons */
     if (priv->box) {
@@ -518,21 +544,23 @@ hildon_note_rebuild                             (HildonNote *note)
     if (IsHorizontal) {
         /* Pack item with label horizontally */
         priv->box = gtk_hbox_new (FALSE, HILDON_MARGIN_DEFAULT);
-        gtk_container_add (GTK_CONTAINER (dialog->vbox), priv->box);
+        gtk_container_add (GTK_CONTAINER (priv->event_box), priv->box);
 
         gtk_box_pack_start (GTK_BOX (priv->box), priv->label, TRUE, TRUE, 0);
 
     } else {
         /* Pack item with label vertically */
         priv->box = gtk_vbox_new (FALSE, HILDON_MARGIN_DOUBLE);
-        gtk_container_add (GTK_CONTAINER (dialog->vbox), priv->box);
+        gtk_container_add (GTK_CONTAINER (priv->event_box), priv->box);
         gtk_box_pack_start (GTK_BOX (priv->box), priv->label, TRUE, TRUE, 0);
 
         if (priv->progressbar)
             gtk_box_pack_start (GTK_BOX (priv->box), priv->progressbar, FALSE, FALSE, 0);
     }
 
-    gtk_widget_show_all (priv->box);
+    gtk_container_add (GTK_CONTAINER (dialog->vbox), priv->event_box);
+
+    gtk_widget_show_all (priv->event_box);
 }
 
 /**

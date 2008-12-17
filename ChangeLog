@@ -1,3 +1,13 @@
+2008-12-17  Alberto Garcia  <agarcia@igalia.com>
+
+	* src/hildon-note-private.h
+	* src/hildon-note.c (event_box_press_event, hildon_note_init)
+	(hildon_note_finalize, hildon_note_rebuild): Close information
+	notes when they receive a button press.
+
+	Fixes: NB#89890 (Information notes does not get disappeared after
+	few seconds)
+
 2008-12-17  Claudio Saavedra  <csaavedra@igalia.com>
 
 	* src/hildon-wizard-dialog.c: (create_title): Remove translation

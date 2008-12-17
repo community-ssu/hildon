@@ -39,6 +39,7 @@ struct                                          _HildonNotePrivate
     GtkWidget *cancelButton;
     GtkWidget *label;
     GtkWidget *box;
+    GtkWidget *event_box;
     GdkWindow *transfer_window;
 
     HildonNoteType note_n;
