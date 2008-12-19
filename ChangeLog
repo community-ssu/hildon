@@ -1,3 +1,9 @@
+2008-12-19  Claudio Saavedra  <csaavedra@igalia.com>
+
+	* src/hildon-touch-selector.c:
+	(_hildon_touch_selector_has_multiple_selection): No need
+	to initialize the variables here.
+
 2008-12-17  Alberto Garcia  <agarcia@igalia.com>
 
 	* src/hildon-note-private.h

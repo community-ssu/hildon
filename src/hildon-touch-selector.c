@@ -1703,8 +1703,8 @@ _hildon_touch_selector_center_on_selected_items (GtkWidget *widget,
 static gboolean
 _hildon_touch_selector_has_multiple_selection (HildonTouchSelector * selector)
 {
-  HildonTouchSelectorSelectionMode mode = HILDON_TOUCH_SELECTOR_SELECTION_MODE_SINGLE;
-  gint n_columns = 0;
+  HildonTouchSelectorSelectionMode mode;
+  gint n_columns;
 
   n_columns = hildon_touch_selector_get_num_columns (selector);
   mode = hildon_touch_selector_get_column_selection_mode (selector);
