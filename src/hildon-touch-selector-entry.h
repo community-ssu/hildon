@@ -78,6 +78,13 @@ hildon_touch_selector_entry_set_text_column     (HildonTouchSelectorEntry *selec
 gint
 hildon_touch_selector_entry_get_text_column     (HildonTouchSelectorEntry *selector);
 
+HildonGtkInputMode
+hildon_touch_selector_entry_get_input_mode (HildonTouchSelectorEntry * selector);
+
+void
+hildon_touch_selector_entry_set_input_mode (HildonTouchSelectorEntry * selector,
+                                            HildonGtkInputMode input_mode);
+
 G_END_DECLS
 
 #endif /* __HILDON_TOUCH_SELECTOR_ENTRY__ */

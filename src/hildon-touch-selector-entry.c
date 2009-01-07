@@ -306,6 +306,51 @@ hildon_touch_selector_entry_get_text_column (HildonTouchSelectorEntry *selector)
   return text_column;
 }
 
+/**
+ * hildon_touch_selector_entry_set_input_mode:
+ * @selector: a #HildonTouchSelectorEntry
+ * @input_mode: #HildonGtkInputMode mask
+ *
+ * Sets the input mode to be used in the #GtkEntry in @selector. See hildon_gtk_entry_set_input_mode()
+ * for details.
+ *
+ * Since: 2.2
+ **/
+void
+hildon_touch_selector_entry_set_input_mode (HildonTouchSelectorEntry * selector,
+                                            HildonGtkInputMode input_mode)
+{
+  HildonTouchSelectorEntryPrivate *priv;
+
+  g_return_if_fail (HILDON_IS_TOUCH_SELECTOR_ENTRY (selector));
+  priv = HILDON_TOUCH_SELECTOR_ENTRY_GET_PRIVATE (selector);
+
+  hildon_gtk_entry_set_input_mode (GTK_ENTRY (priv->entry), input_mode);
+}
+
+/**
+ * hildon_touch_selector_entry_get_input_mode:
+ * @selector: a #HildonTouchSelectorEntry
+ *
+ * Gets the input mode used in the #GtkEntry in @selector. See hildon_gtk_entry_get_input_mode()
+ * for details.
+ *
+ * Returns: a mask of #HildonGtkInputMode
+ *
+ * Since: 2.2
+ **/
+HildonGtkInputMode
+hildon_touch_selector_entry_get_input_mode (HildonTouchSelectorEntry * selector)
+{
+  HildonTouchSelectorEntryPrivate *priv;
+
+  g_return_val_if_fail (HILDON_IS_TOUCH_SELECTOR_ENTRY (selector), HILDON_GTK_INPUT_MODE_ALPHA);
+
+  priv = HILDON_TOUCH_SELECTOR_ENTRY_GET_PRIVATE (selector);
+
+  return hildon_gtk_entry_get_input_mode (GTK_ENTRY (priv->entry));
+}
+
 static void
 entry_on_text_changed (GtkEditable * editable,
                        gpointer userdata)
