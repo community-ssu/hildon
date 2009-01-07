@@ -1,3 +1,14 @@
+2009-01-07  Alberto Garcia  <agarcia@igalia.com>
+
+	* src/hildon-app-menu.c (hildon_app_menu_set_parent_window)
+	(hildon_app_menu_finalize): When a window is hidden it doesn't
+	emit notify::is-topmost, so make sure than the menu also
+	disappears in that case.
+	(parent_window_topmost_notify): Renamed from parent_window_hidden
+
+	Fixes: NB#94460 (stackable window's menu is not closed when its
+	window is hidden)
+
 2009-01-07  Claudio Saavedra  <csaavedra@igalia.com>
 
 	* src/hildon-touch-selector-entry.c:
