@@ -1,8 +1,19 @@
-libhildon (2.1.33-1~unreleased) unstable; urgency=low
+libhildon (2.1.34-1) unstable; urgency=low
 
-  * unreleased
+  [ Alberto Garcia ]
   * Use dh_install to install all examples.
   * Use DEB_SRCDIR instead of defining SOURCE_DIR
+
+  Bug fixes:
+
+  * Fixes: NB#94460 (stackable window's menu is not closed when its
+  window is hidden)
+  * Fixes: NB#89890 (Information notes does not get disappeared after
+  few seconds)
+
+  Other:
+
+  * Code cleanups, minor fixes.
 
  -- Claudio Saavedra <csaavedra@igalia.com>  Tue, 16 Dec 2008 13:25:38 +0100
 

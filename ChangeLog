@@ -1,3 +1,11 @@
+2009-01-07  Claudio Saavedra  <csaavedra@igalia.com>
+
+	[Release 2.1.34]
+
+	* NEWS: Updates.
+	* configure.ac: Bump version.
+	* debian/changelog: Updates.
+
 2008-12-19  Claudio Saavedra  <csaavedra@igalia.com>
 
 	* src/hildon-touch-selector.c:
