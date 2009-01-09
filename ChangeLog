@@ -1,3 +1,13 @@
+2009-01-09  Claudio Saavedra  <csaavedra@igalia.com>
+
+	* src/hildon-picker-button.c:
+	(+hildon_picker_button_on_dialog_response),
+	(hildon_picker_button_clicked): Present the dialog instead of
+	running it with gtk_dialog_run().
+
+	Fixes: NB#97015 (HildonPickerButton shouldn't gtk_dialog_run() the
+	picker dialog)
+
 2009-01-07  Alberto Garcia  <agarcia@igalia.com>
 
 	* src/hildon-app-menu.c (hildon_app_menu_set_parent_window)

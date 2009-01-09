@@ -137,11 +137,34 @@ hildon_picker_button_finalize (GObject * object)
 }
 
 static void
+hildon_picker_button_on_dialog_response (GtkDialog *dialog,
+                                         gint       response,
+                                         gpointer   user_data)
+{
+  HildonPickerButton *button;
+  HildonPickerButtonPrivate *priv;
+  gchar *value;
+
+  button = HILDON_PICKER_BUTTON (user_data);
+  priv = GET_PRIVATE (button);
+
+  switch (response) {
+  case GTK_RESPONSE_OK:
+    value = hildon_touch_selector_get_current_text
+      (HILDON_TOUCH_SELECTOR (priv->selector));
+    hildon_button_set_value (HILDON_BUTTON (button), value);
+    g_free (value);
+    g_signal_emit (button, picker_button_signals[VALUE_CHANGED], 0);
+    break;
+  }
+  gtk_widget_hide (priv->dialog);
+}
+
+static void
 hildon_picker_button_clicked (GtkButton * button)
 {
   GtkWidget *parent;
   HildonPickerButtonPrivate *priv;
-  gint response;
 
   priv = GET_PRIVATE (HILDON_PICKER_BUTTON (button));
 
@@ -172,19 +195,13 @@ hildon_picker_button_clicked (GtkButton * button)
   if (_current_selector_empty (HILDON_PICKER_BUTTON (button))) {
     g_warning ("There are no elements in the selector. Nothing to show.");
   } else {
-    gchar *value;
-    response = gtk_dialog_run (GTK_DIALOG (priv->dialog));
-    switch (response) {
-    case GTK_RESPONSE_OK:
-      value = hildon_touch_selector_get_current_text
-              (HILDON_TOUCH_SELECTOR (priv->selector));
-      hildon_button_set_value (HILDON_BUTTON (button), value);
-      g_free (value);
-      g_signal_emit (HILDON_PICKER_BUTTON (button),
-                     picker_button_signals[VALUE_CHANGED], 0);
-      break;
-    }
-    gtk_widget_hide (priv->dialog);
+    g_signal_connect (priv->dialog, "response",
+                      G_CALLBACK (hildon_picker_button_on_dialog_response),
+                      button);
+    g_signal_connect (priv->dialog, "delete-event",
+                      G_CALLBACK (gtk_widget_hide_on_delete),
+                      NULL);
+    gtk_window_present (GTK_WINDOW (priv->dialog));
   }
 }
 
