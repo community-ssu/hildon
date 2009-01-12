@@ -47,6 +47,7 @@
 #define RATIO_TOLERANCE 0.000001
 #define DND_THRESHOLD_INC 20
 #define SCROLLBAR_FADE_DELAY 30
+#define SCROLL_FADE_TIMEOUT 10
 
 G_DEFINE_TYPE (HildonPannableArea, hildon_pannable_area, GTK_TYPE_BIN)
 
@@ -902,7 +903,7 @@ hildon_pannable_area_grab_notify (GtkWidget *widget,
 
     if (!priv->scroll_indicator_timeout) {
       priv->scroll_indicator_timeout = gdk_threads_add_timeout
-        ((gint) (1000.0 / (gdouble) priv->sps),
+        ((gint) (1000.0 / (gdouble) SCROLL_FADE_TIMEOUT),
          (GSourceFunc) hildon_pannable_area_scroll_indicator_fade, widget);
     }
 
@@ -1081,7 +1082,7 @@ hildon_pannable_area_initial_effect (GtkWidget * widget)
       priv->scroll_indicator_alpha = 1.0;
 
       priv->scroll_indicator_timeout =
-        gdk_threads_add_timeout ((gint) (1000.0 / (gdouble) priv->sps),
+        gdk_threads_add_timeout ((gint) (1000.0 / (gdouble) SCROLL_FADE_TIMEOUT),
                                  (GSourceFunc) hildon_pannable_area_scroll_indicator_fade,
                                  widget);
     }
@@ -1361,7 +1362,7 @@ hildon_pannable_area_button_press_cb (GtkWidget * widget,
 
   if (!priv->scroll_indicator_timeout){
     priv->scroll_indicator_timeout = gdk_threads_add_timeout
-      ((gint) (1000.0 / (gdouble) (priv->sps*2)),
+      ((gint) (1000.0 / (gdouble) (SCROLL_FADE_TIMEOUT)),
        (GSourceFunc) hildon_pannable_area_scroll_indicator_fade, widget);
   }
 
@@ -1937,7 +1938,7 @@ hildon_pannable_area_button_release_cb (GtkWidget * widget,
 
   if (!priv->scroll_indicator_timeout) {
     priv->scroll_indicator_timeout = gdk_threads_add_timeout
-      ((gint) (1000.0 / (gdouble) priv->sps),
+      ((gint) (1000.0 / (gdouble) SCROLL_FADE_TIMEOUT),
        (GSourceFunc) hildon_pannable_area_scroll_indicator_fade, widget);
   }
 
@@ -2028,7 +2029,7 @@ hildon_pannable_area_scroll_cb (GtkWidget *widget,
 
   if (!priv->scroll_indicator_timeout) {
     priv->scroll_indicator_timeout = gdk_threads_add_timeout
-      ((gint) (1000.0 / (gdouble) (priv->sps*2)),
+      ((gint) (1000.0 / (gdouble) (SCROLL_FADE_TIMEOUT)),
        (GSourceFunc) hildon_pannable_area_scroll_indicator_fade, widget);
   }
 
@@ -2335,7 +2336,7 @@ hildon_pannable_area_scroll_to (HildonPannableArea *area,
 
   if (!priv->scroll_indicator_timeout)
     priv->scroll_indicator_timeout = gdk_threads_add_timeout
-      ((gint) (1000.0 / (gdouble) priv->sps),
+      ((gint) (1000.0 / (gdouble) SCROLL_FADE_TIMEOUT),
        (GSourceFunc) hildon_pannable_area_scroll_indicator_fade, area);
 
   if (!priv->idle_id)

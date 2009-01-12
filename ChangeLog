@@ -1,3 +1,14 @@
+2009-01-12  Alejandro G. Castro  <alex@igalia.com>
+
+	* src/hildon-pannable-area.c,
+	(hildon_pannable_area_grab_notify),
+	(hildon_pannable_area_initial_effect),
+	(hildon_pannable_area_button_press_cb),
+	(hildon_pannable_area_button_release_cb),
+	(hildon_pannable_area_scroll_cb),
+	(hildon_pannable_area_scroll_to): Review the timeout management of
+	the scrollbar, the frecuency was incorrectly set.
+
 2009-01-09  Claudio Saavedra  <csaavedra@igalia.com>
 
 	* src/hildon-picker-button.c:
