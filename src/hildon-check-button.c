@@ -18,10 +18,21 @@
  * SECTION:hildon-check-button
  * @short_description: Button with a check box inside
  *
- * This is a button containing a check box and a label. Functions are
- * provided to get and set the value of the check box. For the label
- * use gtk_button_set_label(). Note that this button does NOT support
- * an image, so don't use gtk_button_set_image()
+ * #HildonCheckButton is a button containing a label and a check box
+ * which will remain 'pressed-in' when clicked. Clicking again will
+ * make the check box toggle its state.
+ *
+ * The state of a #HildonCheckButton can be set using
+ * hildon_check_button_set_active(), and retrieved using
+ * hildon_check_button_get_active(). The label can be set using
+ * gtk_button_set_label() and retrieved using gtk_button_get_label().
+ *
+ * <note>
+ *   <para>
+ * #HildonCheckButton does NOT support an image, so don't use
+ * gtk_button_set_image().
+ *   </para>
+ * </note>
  *
  * <example>
  * <title>Using a Hildon check button</title>
@@ -52,7 +63,6 @@
  * }
  * </programlisting>
  * </example>
-
  */
 
 #include                                        "hildon-check-button.h"
@@ -80,6 +90,7 @@ struct                                          _HildonCheckButtonPrivate
  * @button: A #HildonCheckButton
  *
  * Emits the #HildonCheckButton::toggled signal on the #HildonCheckButton.
+ * There is no good reason for an application ever to call this function.
  *
  * Since: 2.2
  */
@@ -96,7 +107,9 @@ hildon_check_button_toggled                     (HildonCheckButton *button)
  * @button: A #HildonCheckButton
  * @is_active: new state for the button
  *
- * Sets the state of @button to @is_active
+ * Sets the status of a #HildonCheckButton. Set to %TRUE if you want
+ * @button to be 'pressed-in', and %FALSE to raise it. This action
+ * causes the #HildonCheckButton::toggled signal to be emitted.
  *
  * Since: 2.2
  **/
@@ -120,11 +133,11 @@ hildon_check_button_set_active                  (HildonCheckButton *button,
  * hildon_check_button_get_active:
  * @button: A #HildonCheckButton
  *
- * Gets the state of the button.
+ * Gets the current state of @button.
  *
  * Return value: %TRUE if @button is active, %FALSE otherwise.
  *
- * Since: 2.2 
+ * Since: 2.2
  **/
 gboolean
 hildon_check_button_get_active                  (HildonCheckButton *button)
@@ -138,7 +151,7 @@ hildon_check_button_get_active                  (HildonCheckButton *button)
  * hildon_check_button_new:
  * @size: Flags indicating the size of the new button
  *
- * This function creates a #HildonCheckButton.
+ * Creates a new #HildonCheckButton.
  *
  * Return value: A newly created #HildonCheckButton
  *
@@ -199,7 +212,7 @@ hildon_check_button_class_init                  (HildonCheckButtonClass *klass)
     /**
      * HildonCheckButton::toggled
      *
-     * Emitted when the #HildonCheckButton's state is changed
+     * Emitted when the #HildonCheckButton's state is changed.
      *
      * Since: 2.2
      */

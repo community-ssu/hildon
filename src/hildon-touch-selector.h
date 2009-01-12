@@ -78,6 +78,13 @@ struct                                          _HildonTouchSelectorClass
   gboolean (*has_multiple_selection)            (HildonTouchSelector *selector);
 };
 
+/**
+ * HildonTouchSelectorSelectionMode:
+ * @HILDON_TOUCH_SELECTOR_SELECTION_MODE_SINGLE: Users can select one item
+ * @HILDON_TOUCH_SELECTOR_SELECTION_MODE_MULTIPLE: Users can select one to many items
+ *
+ * Describes the selection mode of a #HildonTouchSelector.
+ **/
 typedef enum
 {
   HILDON_TOUCH_SELECTOR_SELECTION_MODE_SINGLE,

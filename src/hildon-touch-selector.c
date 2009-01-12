@@ -65,6 +65,88 @@
  * need to specify properly the property for your custom model in order to get a
  * non-empty string representation, or define your custom print function.
  *
+ * <example>
+ * <title>Creating a HildonTouchSelector</title>
+ * <programlisting>
+ * void
+ * selection_changed (HildonTouchSelector * selector,
+ *                    gpointer *user_data)
+ * {
+ *   gchar *current_selection = NULL;
+ * <!-- -->
+ *   current_selection = hildon_touch_selector_get_current_text (selector);
+ *   g_debug ("Current selection : &percnt;s", current_selection);
+ * }
+ * <!-- -->
+ * static GtkWidget *
+ * create_customized_selector ()
+ * {
+ *   GtkWidget *selector = NULL;
+ *   GSList *icon_list = NULL;
+ *   GtkListStore *store_icons = NULL;
+ *   GSList *item = NULL;
+ *   GtkCellRenderer *renderer = NULL;
+ *   HildonTouchSelectorColumn *column = NULL;
+ * <!-- -->
+ *   selector = hildon_touch_selector_new ();
+ * <!-- -->
+ *   icon_list = gtk_stock_list_ids ();
+ * <!-- -->
+ *   store_icons = gtk_list_store_new (1, G_TYPE_STRING);
+ *   for (item = icon_list; item; item = g_slist_next (item)) {
+ *     GtkTreeIter iter;
+ *     gchar *label = item->data;
+ * <!-- -->
+ *     gtk_list_store_append (store_icons, &amp;iter);
+ *     gtk_list_store_set (store_icons, &amp;iter, 0, label, -1);
+ *     g_free (label);
+ *   }
+ *   g_slist_free (icon_list);
+ * <!-- -->
+ *   renderer = gtk_cell_renderer_pixbuf_new ();
+ *   gtk_cell_renderer_set_fixed_size (renderer, -1, 100);
+ * <!-- -->
+ *   column = hildon_touch_selector_append_column (HILDON_TOUCH_SELECTOR (selector),
+ *                                                 GTK_TREE_MODEL (store_icons),
+ *                                                 renderer, "stock-id", 0, NULL);
+ * <!-- -->
+ *   g_object_set (G_OBJECT (column), "text-column", 0, NULL);
+ * <!-- -->
+ *   hildon_touch_selector_set_column_selection_mode (HILDON_TOUCH_SELECTOR (selector),
+ *                                                    HILDON_TOUCH_SELECTOR_SELECTION_MODE_MULTIPLE);
+ * <!-- -->
+ *   g_signal_connect (G_OBJECT (selector), "changed",
+ *                     G_CALLBACK (selection_changed), NULL);
+ * <!-- -->
+ *   return selector;
+ * }
+ * <!-- -->
+ * static GtkWidget *
+ * create_simple_selector ()
+ * {
+ *   GtkWidget *selector = NULL;
+ *   gint i;
+ * <!-- -->
+ *   selector = hildon_touch_selector_new_text ();
+ *   hildon_touch_selector_set_column_selection_mode (HILDON_TOUCH_SELECTOR (selector),
+ *                                                    HILDON_TOUCH_SELECTOR_SELECTION_MODE_MULTIPLE);
+ * <!-- -->
+ *   g_signal_connect (G_OBJECT (selector), "changed",
+ *                     G_CALLBACK (selection_changed), NULL);
+ * <!-- -->
+ *   for (i = 1; i <= 10 ; i++) {
+ *     gchar *label = g_strdup_printf ("Item &amp;percnt;d", i);
+ * <!-- -->
+ *     hildon_touch_selector_append_text (HILDON_TOUCH_SELECTOR (selector),
+ *                                        label);
+ * <!-- -->
+ *     g_free (label);
+ *   }
+ * <!-- -->
+ *   return selector;
+ * }
+ * </programlisting>
+ * </example>
  */
 
 /**
@@ -234,7 +316,7 @@ hildon_touch_selector_class_init (HildonTouchSelectorClass * class)
    * @widget: the object which received the signal
    * @column: the concrete column being modified
    *
-   * The ::changed signal is emitted when the active item on any column is changed.
+   * The "changed" signal is emitted when the active item on any column is changed.
    * This can be due to the user selecting a different item from the list, or
    * due to a call to hildon_touch_selector_select_iter() on one of the columns.
    *
@@ -251,7 +333,7 @@ hildon_touch_selector_class_init (HildonTouchSelectorClass * class)
    * HildonTouchSelector::columns-changed:
    * @selector: the object which received the signal
    *
-   * The ::columns-changed signal is emitted when the number
+   * The "columns-changed" signal is emitted when the number
    * of columns in the #HildonTouchSelector change.
    *
    */
@@ -425,7 +507,7 @@ _default_print_func (HildonTouchSelector * selector)
   GtkTreePath *current_path = NULL;
   GList *selected_rows = NULL;
   gint initial_value = 0;
-  gint text_column = -1; 
+  gint text_column = -1;
   HildonTouchSelectorColumn *column = NULL;
 
   num_columns = hildon_touch_selector_get_num_columns (selector);
@@ -877,7 +959,7 @@ hildon_touch_selector_new (void)
  * hildon_touch_selector_prepend_text(), hildon_touch_selector_insert_text().
  *
  * Returns: A new #HildonTouchSelector
- * 
+ *
  * Since: 2.2
  **/
 GtkWidget *

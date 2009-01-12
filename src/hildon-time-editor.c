@@ -34,6 +34,13 @@
  * minutes and seconds, and pm/am indicator as well as a button which
  * popups a #HildonTimePicker dialog.
  *
+ * <note>
+ *   <para>
+ * #HildonTimeEditor has been deprecated since Hildon 2.2 and should not
+ * be used in newly written code. Use #HildonTimeSelector instead.
+ *   </para>
+ * </note>
+ *
  * <example>
  * <title>HildonTimePicker example</title>
  * <programlisting>

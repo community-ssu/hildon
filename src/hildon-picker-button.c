@@ -30,6 +30,41 @@
  * the common use cases of buttons to select date and time, you can use #HildonDateButton
  * and #HildonTimeButton.
  *
+ * <example>
+ * <programlisting>
+ * GtkWidget *
+ * create_selector (void)
+ * {
+ *   GtkWidget *selector;
+ * <!-- -->
+ *   selector = hildon_touch_selector_new_text ();
+ * <!-- -->
+ *   hildon_touch_selector_append_text (HILDON_TOUCH_SELECTOR (selector), "America");
+ *   hildon_touch_selector_append_text (HILDON_TOUCH_SELECTOR (selector), "Europe");
+ *   hildon_touch_selector_append_text (HILDON_TOUCH_SELECTOR (selector), "Asia");
+ *   hildon_touch_selector_append_text (HILDON_TOUCH_SELECTOR (selector), "Africa");
+ *   hildon_touch_selector_append_text (HILDON_TOUCH_SELECTOR (selector), "Australia");
+ * <!-- -->
+ *   hildon_touch_selector_set_active (HILDON_TOUCH_SELECTOR (selector), 0, 2);
+ * <!-- -->
+ *   return selector;
+ * }
+ * <!-- -->
+ * GtkWidget *
+ * create_button (HildonTouchSelector *selector)
+ * {
+ *   GtkWidget *button;
+ * <!-- -->
+ *   button = hildon_picker_button_new (HILDON_SIZE_AUTO, HILDON_BUTTON_ARRANGEMENT_VERTICAL);
+ *   hildon_button_set_title (HILDON_BUTTON (button), "Continent");
+ * <!-- -->
+ *   hildon_picker_button_set_selector (HILDON_PICKER_BUTTON (button),
+ *                                      HILDON_TOUCH_SELECTOR (selector));
+ * <!-- -->
+ *   return button;
+ * }
+ * </programlisting>
+ * </example>
  */
 
 #include "hildon-picker-button.h"
@@ -488,8 +523,8 @@ hildon_picker_button_get_done_button_text (HildonPickerButton *button)
  * @button: a #HildonPickerButton
  * @done_button_text: a string
  *
- * Sets a custom string to be used in the \"done\" button in the #HildonPickerDialog
- * launched. If not set, the default HildonPickerButton::done-button-text property
+ * Sets a custom string to be used in the "done" button in #HildonPickerDialog.
+ * If unset, the default HildonPickerButton::done-button-text property
  * value will be used.
  *
  * Since: 2.2

@@ -460,7 +460,8 @@ hildon_button_new                               (HildonSizeType          size,
  * Creates a new #HildonButton with two labels, @title and @value.
  *
  * If you just don't want to use one of the labels, set it to
- * %NULL. You can set it to a non-%NULL value at any time later.
+ * %NULL. You can set it to a non-%NULL value at any time later using
+ * hildon_button_set_title() or hildon_button_set_value() .
  *
  * Returns: a new #HildonButton
  *
@@ -591,8 +592,11 @@ hildon_button_set_value                         (HildonButton *button,
  * hildon_button_get_title:
  * @button: a #HildonButton
  *
- * Gets the text from the main label (title) of @button, or %NULL if
- * none has been set.
+ * Fetches the text from the main label (title) of @button,
+ * as set by hildon_button_set_title() or hildon_button_set_text().
+ * If the label text has not been set the return value will be %NULL.
+ * This will be the case if you create an empty button with
+ * hildon_button_new() to use as a container.
  *
  * Returns: The text of the title label. This string is owned by the
  * widget and must not be modified or freed.
@@ -615,8 +619,11 @@ hildon_button_get_title                         (HildonButton *button)
  * hildon_button_get_value:
  * @button: a #HildonButton
  *
- * Gets the text from the secondary label (value) of @button, or %NULL
- * if none has been set.
+ * Fetches the text from the secondary label (value) of @button,
+ * as set by hildon_button_set_value() or hildon_button_set_text().
+ * If the label text has not been set the return value will be %NULL.
+ * This will be the case if you create an empty button with hildon_button_new()
+ * to use as a container.
  *
  * Returns: The text of the value label. This string is owned by the
  * widget and must not be modified or freed.

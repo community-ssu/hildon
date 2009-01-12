@@ -33,6 +33,13 @@
  * year) and an icon (button): clicking on the icon opens up a
  * HildonCalendarPopup.
  *
+ * <note>
+ *   <para>
+ * #HildonDateEditor has been deprecated since Hildon 2.2 and should
+ * not be used in newly written code. Use #HildonDateSelector instead.
+ *   </para>
+ * </note>
+ *
  * <example>
  * <programlisting>
  * guint y, m, d;

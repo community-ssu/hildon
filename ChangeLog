@@ -1,3 +1,18 @@
+2009-01-12  Alberto Garcia  <agarcia@igalia.com>
+
+	Based on a patch by Iván Gómez (igomez@igalia.com)
+
+	* src/hildon-button.[ch]
+	* src/hildon-calendar.c
+	* src/hildon-check-button.c
+	* src/hildon-date-editor.c
+	* src/hildon-date-selector.c
+	* src/hildon-picker-button.c
+	* src/hildon-time-editor.c
+	* src/hildon-time-selector.c
+	* src/hildon-touch-selector.[ch]:
+	Documentation updates
+
 2009-01-12  Alejandro G. Castro  <alex@igalia.com>
 
 	* src/hildon-pannable-area.c,

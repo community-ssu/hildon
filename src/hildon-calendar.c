@@ -45,6 +45,12 @@
  * standard #GtkCalendar or use #HildonDateEditor for more higher-level date setting
  * operations.
  *
+ * <note>
+ *   <para>
+ * #HildonCalendar has been deprecated since Hildon 2.2 and should not
+ * be used in newly written code. Use #HildonDateSelector instead.
+ *   </para>
+ * </note>
  */
 
 #undef                                          HILDON_DISABLE_DEPRECATED

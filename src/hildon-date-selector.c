@@ -22,9 +22,13 @@
  * SECTION:hildon-date-selector
  * @short_description: A widget to select the current date.
  *
- * HildonDateSelector is a date widget, equivalent to hildon-calendar, but with a multi-column
- * approach
+ * #HildonDateSelector is a date widget with multiple columns. Users
+ * can choose a date by selecting values in the day, month and year
+ * columns.
  *
+ * The currently selected month and year can be altered with
+ * hildon_date_selector_select_month(). The day can be selected from
+ * the active month using hildon_date_selector_select_day().
  */
 
 #define _GNU_SOURCE     /* needed for GNU nl_langinfo_l */
@@ -717,8 +721,8 @@ hildon_date_selector_get_date (HildonDateSelector * selector,
  *
  * Modify the current month and year on the current active date
  *
- * Utility function, too keep this API more similar to the previously existing
- * hildon-calendar widget.
+ * Utility function to keep this API similar to the previously
+ * existing #HildonCalendar widget.
  *
  * Since: 2.2
  *
@@ -741,8 +745,8 @@ gboolean hildon_date_selector_select_month (HildonDateSelector *selector,
  *
  * Modify the current day on the current active date
  *
- * Utility function, too keep this API more similar to the previously existing
- * hildon-calendar widget.
+ * Utility function to keep this API similar to the previously
+ * existing #HildonCalendar widget.
  *
  * Since: 2.2
  **/

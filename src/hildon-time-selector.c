@@ -22,9 +22,14 @@
  * SECTION:hildon-time-selector
  * @short_description: A widget to select the current time.
  *
- * HildonTimeSelector is a time widget, equivalent to hildon-calendar, but with a multi-column
- * approach
+ * #HildonTimeSelector allows users to choose a time by selecting hour
+ * and minute. It also allows choosing between AM or PM format.
  *
+ * The currently selected time can be altered with
+ * hildon_time_selector_set_time(), and retrieved using
+ * hildon_time_selector_get_time().
+ *
+ * Use this widget instead of deprecated HildonTimeEditor widget.
  */
 
 #define _GNU_SOURCE     /* needed for GNU nl_langinfo_l */
@@ -402,7 +407,7 @@ hildon_time_selector_new ()
  *
  * Sets the current active hour on the #HildonTimeSelector widget
  *
- * The format of the hours acceptes is always 24h format, with a range
+ * The format of the hours accepted is always 24h format, with a range
  * (0-23):(0-59).
  *
  * Since: 2.2

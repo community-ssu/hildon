@@ -58,11 +58,27 @@ struct                                          _HildonButton
     GtkButton parent;
 };
 
+
+/**
+ * HildonButtonArrangement:
+ * @HILDON_BUTTON_ARRANGEMENT_HORIZONTAL: Labels are arranged from left to right
+ * @HILDON_BUTTON_ARRANGEMENT_VERTICAL: Labels are arranged from top to bottom
+ *
+ * Describes the arrangement of labels inside a #HildonButton
+ *
+ **/
 typedef enum {
    HILDON_BUTTON_ARRANGEMENT_HORIZONTAL,
    HILDON_BUTTON_ARRANGEMENT_VERTICAL
 }                                               HildonButtonArrangement;
 
+/**
+ * HildonButtonStyle:
+ * @HILDON_BUTTON_STYLE_NORMAL: The button will look like a normal #HildonButton
+ * @HILDON_BUTTON_STYLE_PICKER: The button will look like a #HildonPickerButton
+ *
+ * Describes the visual style of a #HildonButton
+ **/
 typedef enum {
    HILDON_BUTTON_STYLE_NORMAL,
    HILDON_BUTTON_STYLE_PICKER
