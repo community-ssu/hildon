@@ -1,5 +1,21 @@
 2009-01-12  Alberto Garcia  <agarcia@igalia.com>
 
+	patch by Claudio Saavedra (csaavedra@igalia.com)
+
+	* src/hildon-text-view.c: (+hildon_text_view_button_press_event):
+	Store the press position.
+	(+hildon_text_view_button_release_event): If the release position is
+	close enough to the press position, move the cursor here. Otherwise,
+	ignore.
+	(hildon_text_view_class_init): Override GtkTextView press, release, and
+	motion event handlers, disabling this way text selection through
+	pointer interaction, and allowing the container widget to handle the
+	motion event.
+
+	Fixes: NB#95828 (HildonTextView functionality)
+
+2009-01-12  Alberto Garcia  <agarcia@igalia.com>
+
 	Based on a patch by Iván Gómez (igomez@igalia.com)
 
 	* src/hildon-button.[ch]

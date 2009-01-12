@@ -54,6 +54,9 @@
  */
 
 #include                                        "hildon-text-view.h"
+#include <math.h>
+
+#define HILDON_TEXT_VIEW_DRAG_THRESHOLD 16.0
 
 G_DEFINE_TYPE                                   (HildonTextView, hildon_text_view, GTK_TYPE_TEXT_VIEW);
 
@@ -68,6 +71,8 @@ struct                                          _HildonTextViewPrivate
     GtkTextBuffer *main_buffer;                   /* Used to show the "real" contents */
     GtkTextBuffer *placeholder_buffer;   /* Internal, used to display the placeholder */
     gulong changed_id;               /* ID of the main_buffer::changed signal handler */
+    gdouble x;                                                      /* tap x position */
+    gdouble y;                                                      /* tap y position */
 };
 
 static const gchar *placeholder_widget_name     = "hildon-text-view-placeholder";
@@ -234,6 +239,65 @@ hildon_text_view_focus_out_event                (GtkWidget     *widget,
     }
 }
 
+static gint
+hildon_text_view_button_press_event             (GtkWidget        *widget,
+                                                 GdkEventButton   *event)
+{
+    HildonTextViewPrivate *priv = HILDON_TEXT_VIEW_GET_PRIVATE (widget);
+
+    if (GTK_TEXT_VIEW (widget)->editable &&
+        hildon_gtk_im_context_filter_event (GTK_TEXT_VIEW (widget)->im_context, (GdkEvent*)event)) {
+        GTK_TEXT_VIEW (widget)->need_im_reset = TRUE;
+        return TRUE;
+    }
+
+    if (event->button == 1 && event->type == GDK_BUTTON_PRESS) {
+        priv->x = event->x;
+        priv->y = event->y;
+
+        return TRUE;
+    }
+
+    return FALSE;
+}
+
+static gint
+hildon_text_view_button_release_event           (GtkWidget        *widget,
+                                                 GdkEventButton   *event)
+{
+    GtkTextView *text_view = GTK_TEXT_VIEW (widget);
+    HildonTextViewPrivate *priv = HILDON_TEXT_VIEW_GET_PRIVATE (widget);
+    GtkTextIter iter;
+    gint x, y;
+
+    if (text_view->editable &&
+        hildon_gtk_im_context_filter_event (text_view->im_context, (GdkEvent*)event)) {
+        text_view->need_im_reset = TRUE;
+        return TRUE;
+    }
+
+    if (event->button == 1 && event->type == GDK_BUTTON_RELEASE) {
+        if (fabs (priv->x - event->x) < HILDON_TEXT_VIEW_DRAG_THRESHOLD &&
+            fabs (priv->y - event->y) < HILDON_TEXT_VIEW_DRAG_THRESHOLD) {
+            GtkTextWindowType window_type;
+
+            window_type = gtk_text_view_get_window_type (text_view, event->window);
+            gtk_text_view_window_to_buffer_coords (text_view,
+                                                   window_type,
+                                                   event->x, event->y,
+                                                   &x, &y);
+            gtk_text_view_get_iter_at_location (text_view, &iter, x, y);
+            if (gtk_text_buffer_get_char_count (priv->main_buffer))
+                gtk_text_buffer_place_cursor (priv->main_buffer, &iter);
+
+            gtk_widget_grab_focus (GTK_WIDGET (text_view));
+
+            return TRUE;
+        }
+    }
+    return FALSE;
+}
+
 static void
 hildon_text_view_finalize                       (GObject *object)
 {
@@ -256,6 +320,9 @@ hildon_text_view_class_init                     (HildonTextViewClass *klass)
     gobject_class->finalize = hildon_text_view_finalize;
     widget_class->focus_in_event = hildon_text_view_focus_in_event;
     widget_class->focus_out_event = hildon_text_view_focus_out_event;
+    widget_class->motion_notify_event = NULL;
+    widget_class->button_press_event = hildon_text_view_button_press_event;
+    widget_class->button_release_event = hildon_text_view_button_release_event;
 
     g_type_class_add_private (klass, sizeof (HildonTextViewPrivate));
 }
