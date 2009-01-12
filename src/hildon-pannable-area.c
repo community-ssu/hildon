@@ -45,7 +45,6 @@
 #define BOUNCE_STEPS 6
 #define SCROLL_BAR_MIN_SIZE 5
 #define RATIO_TOLERANCE 0.000001
-#define DND_THRESHOLD_INC 20
 #define SCROLLBAR_FADE_DELAY 30
 #define SCROLL_FADE_TIMEOUT 10
 
@@ -1774,8 +1773,8 @@ hildon_pannable_area_motion_notify_cb (GtkWidget * widget,
   y = event->y - priv->y;
 
   if (priv->first_drag && (!priv->moved) &&
-      ((ABS (x) > (dnd_threshold+DND_THRESHOLD_INC))
-       || (ABS (y) > (dnd_threshold+DND_THRESHOLD_INC)))) {
+      ((ABS (x) > (dnd_threshold))
+       || (ABS (y) > (dnd_threshold)))) {
     priv->moved = TRUE;
     x = 0;
     y = 0;

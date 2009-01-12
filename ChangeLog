@@ -1,6 +1,12 @@
 2009-01-12  Alejandro G. Castro  <alex@igalia.com>
 
 	* src/hildon-pannable-area.c,
+	(hildon_pannable_area_motion_notify_cb): Remove the extra DND
+	threshold, it was required due to X events handling.
+
+2009-01-12  Alejandro G. Castro  <alex@igalia.com>
+
+	* src/hildon-pannable-area.c,
 	(hildon_pannable_area_grab_notify),
 	(hildon_pannable_area_initial_effect),
 	(hildon_pannable_area_button_press_cb),
