@@ -344,76 +344,76 @@ hildon_picker_dialog_get_done_label (HildonPickerDialog * dialog)
 }
 
 static void
+free_path_list (GList *list)
+{
+  g_list_foreach (list, (GFunc) gtk_tree_path_free, NULL);
+  g_list_free (list);
+}
+
+static void
 _clean_current_selection (HildonPickerDialog *dialog)
 {
   if (dialog->priv->current_selection) {
-    g_slist_foreach (dialog->priv->current_selection,
-                     (GFunc) (gtk_tree_path_free), NULL);
-    g_slist_free (dialog->priv->current_selection);
-    dialog->priv->current_selection = NULL;
+    g_slist_foreach (dialog->priv->current_selection, (GFunc) free_path_list, NULL);
   }
+  dialog->priv->current_selection = NULL;
 }
 
 static void
 _save_current_selection (HildonPickerDialog *dialog)
 {
-  HildonTouchSelector *selector = NULL;
-  GtkTreeIter iter;
-  GtkTreeModel *model = NULL;
-  gint i = -1;
-  GtkTreePath *path = NULL;
+  HildonTouchSelector *selector;
+  gint i;
 
   selector = HILDON_TOUCH_SELECTOR (dialog->priv->selector);
 
   _clean_current_selection (dialog);
 
   for (i = 0; i  < hildon_touch_selector_get_num_columns (selector); i++) {
-    hildon_touch_selector_get_selected (selector, i, &iter);
-    model = hildon_touch_selector_get_model (selector, i);
-
-    path = gtk_tree_model_get_path (model, &iter);
     dialog->priv->current_selection
-      = g_slist_append (dialog->priv->current_selection, path);
+      = g_slist_append (dialog->priv->current_selection,
+                        hildon_touch_selector_get_selected_rows (selector, i));
   }
 }
 
 static void
 _restore_current_selection (HildonPickerDialog *dialog)
 {
-  GSList *iter = NULL;
-  GSList *current_selection = NULL;
-  GtkTreePath *current_path = NULL;
-  HildonTouchSelector *selector = NULL;
-  gint i = -1;
-  GtkTreeModel *model = NULL;
+  GSList *current_selection, *iter;
+  GList *selected, *selected_iter;
+  GtkTreePath *current_path;
+  HildonTouchSelector *selector;
+  GtkTreeModel *model;
   GtkTreeIter tree_iter;
+  gint i;
 
-  if (dialog->priv->current_selection) {
-    current_selection = dialog->priv->current_selection;
-    selector = HILDON_TOUCH_SELECTOR (dialog->priv->selector);
+  if (dialog->priv->current_selection == NULL)
+    return;
 
-    if (hildon_touch_selector_get_num_columns (selector) !=
-        g_slist_length (current_selection)) {
-      /* We conclude that if the current selection has the same
-         numbers of columns that the selector, all this ok
-         Anyway this shouldn't happen. */
-      g_critical ("Trying to restore the selection on a selector after change"
-                  " the number of columns. Are you removing columns while the"
-                  " dialog is open?");
-      return;
-    }
-    i = 0;
-    for (iter = current_selection; iter; iter = g_slist_next (iter),i++) {
-      current_path = (GtkTreePath *) (iter->data);
-      model = hildon_touch_selector_get_model (selector, i);
+  current_selection = dialog->priv->current_selection;
+  selector = HILDON_TOUCH_SELECTOR (dialog->priv->selector);
 
+  if (hildon_touch_selector_get_num_columns (selector) !=
+      g_slist_length (current_selection)) {
+    /* We conclude that if the current selection has the same
+       numbers of columns that the selector, all this ok
+       Anyway this shouldn't happen. */
+    g_critical ("Trying to restore the selection on a selector after change"
+                " the number of columns. Are you removing columns while the"
+                " dialog is open?");
+    return;
+  }
+
+  for (iter = current_selection, i = 0; iter; iter = g_slist_next (iter), i++) {
+    selected = (GList *) (iter->data);
+    model = hildon_touch_selector_get_model (selector, i);
+    for (selected_iter = selected; selected_iter; selected_iter = g_list_next (selected_iter)) {
+      current_path = (GtkTreePath *) selected_iter->data;
       gtk_tree_model_get_iter (model, &tree_iter, current_path);
-
       hildon_touch_selector_select_iter (selector, i, &tree_iter, FALSE);
     }
   }
 }
-
 
 static gboolean
 requires_done_button (HildonPickerDialog * dialog)

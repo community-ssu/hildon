@@ -1,3 +1,11 @@
+2009-01-13  Claudio Saavedra  <csaavedra@igalia.com>
+
+	* src/hildon-picker-dialog.c:
+	(+free_path_list): Method to free a GList of GtkTreePaths.
+	(_clean_current_selection), (_save_current_selection),
+	(_restore_current_selection): Save the current selection in
+	as a list of lists, to support multiple selection properly.
+
 2009-01-12  Alberto Garcia  <agarcia@igalia.com>
 
 	patch by Claudio Saavedra (csaavedra@igalia.com)
