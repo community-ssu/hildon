@@ -1,5 +1,9 @@
 2009-01-13  Claudio Saavedra  <csaavedra@igalia.com>
 
+	(_clean_current_selection): plug a leak in the list.
+
+2009-01-13  Claudio Saavedra  <csaavedra@igalia.com>
+
 	* src/hildon-picker-dialog.c:
 	(+free_path_list): Method to free a GList of GtkTreePaths.
 	(_clean_current_selection), (_save_current_selection),
