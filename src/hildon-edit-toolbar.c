@@ -82,13 +82,51 @@ enum {
 
 static guint                                    toolbar_signals [N_SIGNALS] = { 0 };
 
+static void
+hildon_edit_toolbar_style_set                   (GtkWidget *widget,
+                                                 GtkStyle  *previous_style)
+{
+    guint width, height;
+    HildonEditToolbarPrivate *priv = HILDON_EDIT_TOOLBAR_GET_PRIVATE (widget);
+
+    if (GTK_WIDGET_CLASS (hildon_edit_toolbar_parent_class)->style_set)
+        GTK_WIDGET_CLASS (hildon_edit_toolbar_parent_class)->style_set (widget, previous_style);
+
+    gtk_widget_style_get (widget,
+                          "arrow-width", &width,
+                          "arrow-height", &height,
+                          NULL);
+
+    gtk_widget_set_size_request (GTK_WIDGET (priv->arrow), width, height);
+}
 
 static void
 hildon_edit_toolbar_class_init                  (HildonEditToolbarClass *klass)
 {
     GObjectClass *gobject_class = (GObjectClass *) klass;
+    GtkWidgetClass *widget_class = (GtkWidgetClass *)klass;
+
+    widget_class->style_set = hildon_edit_toolbar_style_set;
 
     g_type_class_add_private (klass, sizeof (HildonEditToolbarPrivate));
+
+    gtk_widget_class_install_style_property (
+        widget_class,
+        g_param_spec_uint (
+            "arrow-width",
+            "Width of the arrow button",
+            "Width of the arrow button",
+            0, G_MAXUINT, 112,
+            G_PARAM_READABLE));
+
+    gtk_widget_class_install_style_property (
+        widget_class,
+        g_param_spec_uint (
+            "arrow-height",
+            "Height of the arrow button",
+            "Height of the arrow button",
+            0, G_MAXUINT, 56,
+            G_PARAM_READABLE));
 
     /**
      * HildonEditToolbar::button-clicked:
@@ -155,9 +193,9 @@ hildon_edit_toolbar_init                        (HildonEditToolbar *self)
     g_signal_connect (priv->button, "clicked", G_CALLBACK (button_clicked_cb), self);
     g_signal_connect (priv->arrow, "clicked", G_CALLBACK (arrow_clicked_cb), self);
 
-    /* Temporary values, should be replaced by properties or fixed values from the specs */
     gtk_box_set_spacing (hbox, 10);
-    gtk_widget_set_size_request (GTK_WIDGET (priv->arrow), 50, -1);
+
+    gtk_widget_set_name (GTK_WIDGET (priv->arrow), "hildon-edit-toolbar-arrow");
 
     gtk_box_pack_start (hbox, GTK_WIDGET (priv->label), TRUE, TRUE, 0);
     gtk_box_pack_start (hbox, GTK_WIDGET (priv->button), FALSE, FALSE, 0);

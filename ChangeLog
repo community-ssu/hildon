@@ -1,3 +1,14 @@
+2009-01-13  Alberto Garcia  <agarcia@igalia.com>
+
+	* src/hildon-edit-toolbar.c (hildon_edit_toolbar_init)
+	(hildon_edit_toolbar_class_init, hildon_edit_toolbar_style_set):
+	New "arrow-width" and "arrow-height" style properties to set the
+	size of the arrow button.
+	Set name of arrow button ("hildon-edit-toolbar-arrow").
+
+	Fixes: NB#94970 (Hildon Edit Mode Toolbar should use back button
+	graphics from theme)
+
 2009-01-13  Claudio Saavedra  <csaavedra@igalia.com>
 
 	* src/hildon-picker-button.c:
