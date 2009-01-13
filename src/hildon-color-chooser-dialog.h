@@ -30,6 +30,8 @@
 
 #include                                        <gtk/gtk.h>
 
+G_BEGIN_DECLS
+
 #define                                         HILDON_TYPE_COLOR_CHOOSER_DIALOG \
                                                 (hildon_color_chooser_dialog_get_type())
 
@@ -74,6 +76,8 @@ hildon_color_chooser_dialog_set_color           (HildonColorChooserDialog *dialo
 void
 hildon_color_chooser_dialog_get_color           (HildonColorChooserDialog *dialog,
                                                  GdkColor *color);
+
+G_END_DECLS
 
 #endif                                          /* __HILDON_COLOR_CHOOSER_DIALOG_H__ */
 

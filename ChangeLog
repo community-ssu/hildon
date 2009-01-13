@@ -1,3 +1,9 @@
+2009-01-13  Alberto Garcia  <agarcia@igalia.com>
+
+	* src/hildon-color-chooser.h
+	* src/hildon-color-chooser-dialog.h:
+	Added G_BEGIN_DECLS and G_END_DECLS
+
 2009-01-13  Claudio Saavedra  <csaavedra@igalia.com>
 
 	(_clean_current_selection): plug a leak in the list.
