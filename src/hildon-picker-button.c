@@ -251,7 +251,7 @@ hildon_picker_button_selector_selection_changed (HildonTouchSelector * selector,
   HildonPickerButtonPrivate *priv = GET_PRIVATE (button);
 
   if (!GTK_IS_WINDOW (priv->dialog) ||
-      !gtk_window_is_active (GTK_WINDOW (priv->dialog))) {
+      !GTK_WIDGET_VISIBLE (GTK_WINDOW (priv->dialog))) {
     value = hildon_touch_selector_get_current_text (HILDON_TOUCH_SELECTOR (priv->selector));
     if (value) {
       hildon_button_set_value (HILDON_BUTTON (button), value);

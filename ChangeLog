@@ -1,3 +1,13 @@
+2009-01-13  Claudio Saavedra  <csaavedra@igalia.com>
+
+	* src/hildon-picker-button.c:
+	(hildon_picker_button_selector_selection_changed): Use
+	GTK_WIDGET_VISIBLE instead of gtk_window_is_active() to check whether
+	the dialog is present.
+
+	Fixes: NB#96202 (FKB causes HildonPickerButton's value update before
+	the selection is accepted in the dialog)
+
 2009-01-13  Alberto Garcia  <agarcia@igalia.com>
 
 	* src/hildon-color-chooser.h
