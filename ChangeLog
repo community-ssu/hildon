@@ -1,5 +1,10 @@
 2009-01-14  Claudio Saavedra  <csaavedra@igalia.com>
 
+	* src/hildon-picker-dialog.c: (_clean_current_selection): Only perform
+	post-cleaning if the selection is not NULL.
+
+2009-01-14  Claudio Saavedra  <csaavedra@igalia.com>
+
 	* src/hildon-picker-dialog.c: (_restore_current_selection): Unselect
 	all items before restoring the selection.
 

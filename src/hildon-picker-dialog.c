@@ -363,9 +363,9 @@ _clean_current_selection (HildonPickerDialog *dialog)
 {
   if (dialog->priv->current_selection) {
     g_slist_foreach (dialog->priv->current_selection, (GFunc) free_path_list, NULL);
+    g_slist_free (dialog->priv->current_selection);
+    dialog->priv->current_selection = NULL;
   }
-  g_slist_free (dialog->priv->current_selection);
-  dialog->priv->current_selection = NULL;
 }
 
 static void
