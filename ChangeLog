@@ -1,3 +1,13 @@
+2009-01-14  Alejandro G. Castro  <alex@igalia.com>
+
+	* src/hildon-pannable-area.c,
+	(hildon_pannable_area_redraw): Added a call to the refresh
+	function inside the redraw because apparently in some cases the
+	change in the adjustment does not imply a size allocate.
+
+	Fixes: NB#96837 (HildonPannableArea - scroll indicator shown
+	despite the view not being scrollable)
+
 2009-01-14  Alberto Garcia  <agarcia@igalia.com>
 
 	* src/hildon-picker-dialog.c (_dialog_update_title): Fix memory

@@ -1093,6 +1093,8 @@ hildon_pannable_area_redraw (HildonPannableArea * area)
 {
   HildonPannableAreaPrivate *priv = HILDON_PANNABLE_AREA (area)->priv;
 
+  hildon_pannable_area_refresh (area);
+
   /* Redraw scroll indicators */
   if (GTK_WIDGET_DRAWABLE (area)) {
       if (priv->hscroll_visible) {
