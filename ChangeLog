@@ -1,5 +1,10 @@
 2009-01-14  Alberto Garcia  <agarcia@igalia.com>
 
+	* src/hildon-picker-dialog.c (_dialog_update_title): Fix memory
+	leak. Check for NULL before attempting to set the window title.
+
+2009-01-14  Alberto Garcia  <agarcia@igalia.com>
+
 	* src/hildon-picker-dialog.c (hildon_picker_dialog_show): Decide
 	whether to show or not the 'Done' button each time the dialog is
 	shown, as it depends on the HildonTouchSelector selection mode.

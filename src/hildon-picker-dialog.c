@@ -261,7 +261,9 @@ _dialog_update_title (HildonTouchSelector *selector,
 
   new_title = hildon_touch_selector_get_current_text (selector);
 
-  gtk_window_set_title (dialog, new_title);
+  gtk_window_set_title (dialog, new_title ? new_title : "");
+
+  g_free (new_title);
 }
 
 static void
