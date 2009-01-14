@@ -1,3 +1,27 @@
+2009-01-14  Alberto Garcia  <agarcia@igalia.com>
+
+	* src/hildon-touch-selector.c: Minor documentation fixes.
+
+	* src/hildon-picker-dialog.c (+_dialog_update_title)
+	(_select_on_selector_changed_cb)
+	(_update_title_on_selector_changed_cb)
+	(on_selector_columns_changed): Update dialog title when there's no
+	'Done' button and also when the number of columns in the selector
+	changes.
+	Code refactoring.
+
+	* src/hildon-picker-button.c (hildon_picker_button_finalize)
+	(+_selection_changed, hildon_picker_button_on_dialog_response)
+	(hildon_picker_button_selector_selection_changed)
+	(+hildon_picker_button_selector_columns_changed)
+	(hildon_picker_button_set_selector): Update button value and emit
+	'value-changed' when the number of columns in the selector
+	changes.
+	Code refactoring.
+
+	Fixes: NB#96225 (Dialog titles are not shown according to the
+	values selected in the list picker)
+
 2009-01-13  Alberto Garcia  <agarcia@igalia.com>
 
 	* src/hildon-edit-toolbar.c (hildon_edit_toolbar_init)

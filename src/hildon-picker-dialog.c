@@ -250,34 +250,34 @@ hildon_picker_dialog_show                       (GtkWidget *widget)
 
 /* ------------------------------ PRIVATE METHODS ---------------------------- */
 static void
+_dialog_update_title (HildonTouchSelector *selector,
+                      GtkWindow *dialog)
+{
+  gchar *new_title = NULL;
+
+  new_title = hildon_touch_selector_get_current_text (selector);
+
+  gtk_window_set_title (dialog, new_title);
+}
+
+static void
 _select_on_selector_changed_cb (HildonTouchSelector * selector,
                                 gint column, gpointer data)
 {
-  HildonPickerDialog *dialog = NULL;
-
   g_return_if_fail (HILDON_IS_PICKER_DIALOG (data));
 
-  dialog = HILDON_PICKER_DIALOG (data);
+  _dialog_update_title (selector, GTK_WINDOW (data));
 
-  gtk_dialog_response (GTK_DIALOG (dialog), GTK_RESPONSE_OK);
+  gtk_dialog_response (GTK_DIALOG (data), GTK_RESPONSE_OK);
 }
 
 static void
 _update_title_on_selector_changed_cb (HildonTouchSelector * selector,
                                       gint column, gpointer data)
 {
-  HildonPickerDialog *dialog = NULL;
-  gchar *new_title = NULL;
-
   g_return_if_fail (HILDON_IS_PICKER_DIALOG (data));
 
-  dialog = HILDON_PICKER_DIALOG (data);
-
-  new_title = hildon_touch_selector_get_current_text (selector);
-
-  gtk_window_set_title (GTK_WINDOW (dialog), new_title);
-
-  g_free (new_title);
+  _dialog_update_title (selector, GTK_WINDOW (data));
 }
 
 static void
@@ -298,6 +298,8 @@ on_selector_columns_changed (HildonTouchSelector * selector, gpointer userdata)
   dialog = HILDON_PICKER_DIALOG (userdata);
 
   setup_interaction_mode (dialog);
+
+  _dialog_update_title (selector, GTK_WINDOW (dialog));
 }
 
 /**
