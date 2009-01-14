@@ -1,3 +1,8 @@
+2009-01-14  Claudio Saavedra  <csaavedra@igalia.com>
+
+	* src/hildon-picker-dialog.c: (_save_current_selection): Do not query
+	for the number of columns in the HildonTouchSelector more than once.
+
 2009-01-14  Alberto Garcia  <agarcia@igalia.com>
 
 	* src/hildon-touch-selector.c: Minor documentation fixes.

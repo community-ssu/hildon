@@ -366,13 +366,14 @@ static void
 _save_current_selection (HildonPickerDialog *dialog)
 {
   HildonTouchSelector *selector;
-  gint i;
+  gint i, columns;
 
   selector = HILDON_TOUCH_SELECTOR (dialog->priv->selector);
 
   _clean_current_selection (dialog);
 
-  for (i = 0; i  < hildon_touch_selector_get_num_columns (selector); i++) {
+  columns = hildon_touch_selector_get_num_columns (selector);
+  for (i = 0; i  < columns; i++) {
     dialog->priv->current_selection
       = g_slist_append (dialog->priv->current_selection,
                         hildon_touch_selector_get_selected_rows (selector, i));
