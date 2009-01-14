@@ -175,6 +175,10 @@ hildon_touch_selector_unselect_iter             (HildonTouchSelector *selector,
                                                  gint                 column,
                                                  GtkTreeIter         *iter);
 
+void
+hildon_touch_selector_unselect_all              (HildonTouchSelector * selector,
+                                                 gint                  column);
+
 GList *
 hildon_touch_selector_get_selected_rows         (HildonTouchSelector *selector,
                                                  gint                 column);

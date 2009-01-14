@@ -1,3 +1,10 @@
+2009-01-14  Claudio Saavedra  <csaavedra@igalia.com>
+
+	* src/hildon-touch-selector.c:
+	(+hildon_touch_selector_unselect_all):
+	* src/hildon-touch-selector.h: New API to unselect all items in a
+	column of the touch selector.
+
 2009-01-14  Alejandro G. Castro  <alex@igalia.com>
 
 	* src/hildon-pannable-area.c,
