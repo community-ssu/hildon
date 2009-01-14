@@ -243,7 +243,11 @@ hildon_picker_dialog_finalize (GObject *object)
 static void
 hildon_picker_dialog_show                       (GtkWidget *widget)
 {
-  _save_current_selection (HILDON_PICKER_DIALOG (widget));
+  HildonPickerDialog *dialog = HILDON_PICKER_DIALOG (widget);
+
+  _save_current_selection (dialog);
+
+  setup_interaction_mode (dialog);
 
   GTK_WIDGET_CLASS (hildon_picker_dialog_parent_class)->show (widget);
 }

@@ -1,3 +1,12 @@
+2009-01-14  Alberto Garcia  <agarcia@igalia.com>
+
+	* src/hildon-picker-dialog.c (hildon_picker_dialog_show): Decide
+	whether to show or not the 'Done' button each time the dialog is
+	shown, as it depends on the HildonTouchSelector selection mode.
+
+	Fixes: NB#96226 (In multiple selection mode Done button is shown
+	sometimes in listpicker)
+
 2009-01-14  Claudio Saavedra  <csaavedra@igalia.com>
 
 	* src/hildon-picker-dialog.c: (_save_current_selection): Do not query
