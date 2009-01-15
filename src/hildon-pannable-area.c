@@ -47,6 +47,7 @@
 #define RATIO_TOLERANCE 0.000001
 #define SCROLLBAR_FADE_DELAY 30
 #define SCROLL_FADE_TIMEOUT 10
+#define MOTION_EVENTS_PER_SECOND 25
 
 G_DEFINE_TYPE (HildonPannableArea, hildon_pannable_area, GTK_TYPE_BIN)
 
@@ -84,11 +85,14 @@ struct _HildonPannableAreaPrivate {
   guint idle_id;
   gdouble scroll_to_x;
   gdouble scroll_to_y;
+  gdouble motion_x;
+  gdouble motion_y;
   gint overshot_dist_x;
   gint overshot_dist_y;
   gint overshooting_y;
   gint overshooting_x;
   gdouble scroll_indicator_alpha;
+  gint motion_event_scroll_timeout;
   gint scroll_indicator_timeout;
   gint scroll_indicator_event_interrupt;
   gint scroll_delay_counter;
@@ -206,6 +210,9 @@ static void hildon_pannable_area_calculate_velocity (gdouble *vel,
                                                      gdouble dist,
                                                      gdouble vmax,
                                                      guint sps);
+static gboolean hildon_pannable_area_motion_event_scroll_timeout (HildonPannableArea *area);
+static void hildon_pannable_area_motion_event_scroll (HildonPannableArea *area,
+                                                      gdouble x, gdouble y);
 static gboolean hildon_pannable_area_motion_notify_cb (GtkWidget * widget,
                                                        GdkEventMotion * event);
 static gboolean hildon_pannable_area_button_release_cb (GtkWidget * widget,
@@ -472,6 +479,7 @@ hildon_pannable_area_init (HildonPannableArea * area)
   priv->vel_y = 0;
   priv->scroll_indicator_alpha = 0.0;
   priv->scroll_indicator_timeout = 0;
+  priv->motion_event_scroll_timeout = 0;
   priv->scroll_indicator_event_interrupt = 0;
   priv->scroll_delay_counter = SCROLLBAR_FADE_DELAY;
   priv->scroll_to_x = -1;
@@ -661,6 +669,11 @@ hildon_pannable_area_dispose (GObject * object)
   if (priv->scroll_indicator_timeout){
     g_source_remove (priv->scroll_indicator_timeout);
     priv->scroll_indicator_timeout = 0;
+  }
+
+  if (priv->motion_event_scroll_timeout){
+    g_source_remove (priv->motion_event_scroll_timeout);
+    priv->motion_event_scroll_timeout = 0;
   }
 
   if (priv->hadjust) {
@@ -1676,14 +1689,15 @@ hildon_pannable_area_scroll (HildonPannableArea *area,
    * initial scroll position to the new mouse co-ordinate. This means
    * when you get to the top of the page, dragging down works immediately.
    */
-  if (!sx) {
-    priv->x = priv->ex;
-  }
+  if (priv->mode == HILDON_PANNABLE_AREA_MODE_ACCEL) {
+      if (!sx) {
+        priv->x = priv->ex;
+      }
 
-  if (!sy) {
-    priv->y = priv->ey;
-  }
-
+      if (!sy) {
+        priv->y = priv->ey;
+      }
+    }
 }
 
 static gboolean
@@ -1753,6 +1767,44 @@ hildon_pannable_area_calculate_velocity (gdouble *vel,
       rawvel * SMOOTH_FACTOR;
     *vel = *vel > 0 ? MIN (*vel, vmax)
       : MAX (dist, -1 * vmax);
+  }
+}
+
+static gboolean
+hildon_pannable_area_motion_event_scroll_timeout (HildonPannableArea *area)
+{
+  HildonPannableAreaPrivate *priv = area->priv;
+
+  if ((priv->motion_x != 0)||(priv->motion_y != 0))
+    hildon_pannable_area_scroll (area, priv->motion_x, priv->motion_y);
+
+  priv->motion_event_scroll_timeout = 0;
+
+  return FALSE;
+}
+
+static void
+hildon_pannable_area_motion_event_scroll (HildonPannableArea *area,
+                                          gdouble x, gdouble y)
+{
+  HildonPannableAreaPrivate *priv = area->priv;
+
+  if (priv->motion_event_scroll_timeout) {
+
+    priv->motion_x += x;
+    priv->motion_y += y;
+
+  } else {
+
+  /* we do not delay the first event but the next ones */
+    hildon_pannable_area_scroll (area, x, y);
+
+    priv->motion_x = 0;
+    priv->motion_y = 0;
+
+    priv->motion_event_scroll_timeout = gdk_threads_add_timeout
+      ((gint) (1000.0 / (gdouble) MOTION_EVENTS_PER_SECOND),
+       (GSourceFunc) hildon_pannable_area_motion_event_scroll_timeout, area);
   }
 }
 
@@ -1852,7 +1904,7 @@ hildon_pannable_area_motion_notify_cb (GtkWidget * widget,
       /* Scroll by the amount of pixels the cursor has moved
        * since the last motion event.
        */
-      hildon_pannable_area_scroll (area, x, y);
+      hildon_pannable_area_motion_event_scroll (area, x, y);
       priv->x = event->x;
       priv->y = event->y;
       break;
@@ -1900,7 +1952,7 @@ hildon_pannable_area_motion_notify_cb (GtkWidget * widget,
         priv->vel_x = 0;
       }
 
-      hildon_pannable_area_scroll (area, x, y);
+      hildon_pannable_area_motion_event_scroll (area, x, y);
 
       if (priv->mov_mode&HILDON_MOVEMENT_MODE_HORIZ)
         priv->x = event->x;
@@ -1948,6 +2000,12 @@ hildon_pannable_area_button_release_cb (GtkWidget * widget,
   if ((ABS (priv->vel_y) > 1.0)||
       (ABS (priv->vel_x) > 1.0)) {
     priv->scroll_indicator_alpha = 1.0;
+  }
+
+  /* move all the way to the last position */
+  if (priv->motion_event_scroll_timeout) {
+    g_source_remove (priv->motion_event_scroll_timeout);
+    hildon_pannable_area_motion_event_scroll_timeout (HILDON_PANNABLE_AREA (widget));
   }
 
   if (!priv->scroll_indicator_timeout) {

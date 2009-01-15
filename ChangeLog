@@ -1,5 +1,29 @@
 2009-01-15  Alejandro G. Castro  <alex@igalia.com>
 
+	Added delayed motion notify event handling, this way we can
+	discard redrawing if more than 25 events arrive per second.
+
+	* src/hildon-pannable-area.c,
+	(hildon_pannable_area_init): Initialized the new private atributes
+	controlling this timeout
+	(hildon_pannable_area_dispose): Remove the timeout that controls
+	the motion notify events.
+	(hildon_pannable_area_scroll): Added a condition to control the
+	use of the acceleration.
+	(hildon_pannable_area_motion_event_scroll_timeout),
+	(hildon_pannable_area_motion_event_scroll): Added this two
+	functions, they handle the motion notify events inside the
+	timeout.
+	(hildon_pannable_area_motion_notify_cb): Replaced the direct call
+	to the scroll method with the new function.
+	(hildon_pannable_area_button_release_cb): We have to remove the
+	timeout handler and move to the last position if the last motion
+	events were not handled.
+
+	Fixes: NB#97028 (Pannable area updates on every motion event)
+
+2009-01-15  Alejandro G. Castro  <alex@igalia.com>
+
 	* src/hildon-pannable-area.c,
 	(hildon_pannable_area_get_topmost): Added a new parameter to
 	filter the the windows that do not include those events. Added
