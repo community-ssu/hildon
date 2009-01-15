@@ -1,3 +1,8 @@
+2009-01-15  Claudio Saavedra  <csaavedra@igalia.com>
+
+	* src/hildon-picker-dialog.c: (_hildon_picker_dialog_set_selector): Remove
+	an unnecessary reference tracking that was leaking.
+
 2009-01-15  Alejandro G. Castro  <alex@igalia.com>
 
 	Added delayed motion notify event handling, this way we can
