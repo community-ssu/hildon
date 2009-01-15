@@ -492,8 +492,6 @@ _hildon_picker_dialog_set_selector (HildonPickerDialog * dialog,
   if (dialog->priv->selector != NULL) {
     gtk_container_remove (GTK_CONTAINER (GTK_DIALOG (dialog)->vbox),
                           dialog->priv->selector);
-    gtk_widget_set_size_request (GTK_WIDGET (dialog->priv->selector), -1,
-                                 HILDON_TOUCH_SELECTOR_HEIGHT);
     dialog->priv->selector = NULL;
   }
 
