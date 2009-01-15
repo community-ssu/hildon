@@ -1,3 +1,16 @@
+2009-01-15  Alejandro G. Castro  <alex@igalia.com>
+
+	* src/hildon-pannable-area.c,
+	(hildon_pannable_area_initial_effect): Added controls before
+	launching the timeout and the idle functions.
+	(hildon_pannable_area_scroll_indicator_fade): Reviewed the logic
+	of the method, in some situations it can return with TRUE and 0 in
+	the timeout.
+	(hildon_pannable_area_button_press_cb): We do not need to set
+	DELAY for fading out here.
+
+	Fixes: NB#95709 (Invalid casts in HildonPannableArea(?))
+
 2009-01-14  Claudio Saavedra  <csaavedra@igalia.com>
 
 	* src/hildon-picker-dialog.c: (_clean_current_selection): Only perform
