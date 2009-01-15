@@ -180,7 +180,8 @@ static gboolean hildon_pannable_area_expose_event (GtkWidget * widget,
                                                    GdkEventExpose * event);
 static GdkWindow * hildon_pannable_area_get_topmost (GdkWindow * window,
                                                      gint x, gint y,
-                                                     gint * tx, gint * ty);
+                                                     gint * tx, gint * ty,
+                                                     GdkEventMask mask);
 static void synth_crossing (GdkWindow * child,
                             gint x, gint y,
                             gint x_root, gint y_root,
@@ -1275,7 +1276,8 @@ hildon_pannable_area_expose_event (GtkWidget * widget,
 static GdkWindow *
 hildon_pannable_area_get_topmost (GdkWindow * window,
                                   gint x, gint y,
-                                  gint * tx, gint * ty)
+                                  gint * tx, gint * ty,
+                                  GdkEventMask mask)
 {
   /* Find the GdkWindow at the given point, by recursing from a given
    * parent GdkWindow. Optionally return the co-ordinates transformed
@@ -1299,11 +1301,19 @@ hildon_pannable_area_get_topmost (GdkWindow * window,
       gdk_drawable_get_size (GDK_DRAWABLE (child), &width, &height);
       gdk_window_get_position (child, &wx, &wy);
 
-      if (((x >= wx) && (x < (wx + width)) && (y >= wy)
-           && (y < (wy + height))) && (gdk_window_is_visible (child))) {
-	child_x = x - wx;
-	child_y = y - wy;
-	window = child;
+      if ((x >= wx) && (x < (wx + width)) && (y >= wy) && (y < (wy + height))) {
+        gpointer widget;
+
+        gdk_window_get_user_data (child, &widget);
+
+        if ((gdk_window_is_visible (child)) &&
+            (GTK_IS_CONTAINER (widget) ||
+             (gdk_window_get_events (child)&mask))) {
+          child_x = x - wx;
+          child_y = y - wy;
+          window = child;
+          break;
+        }
       }
     }
 
@@ -1392,7 +1402,7 @@ hildon_pannable_area_button_press_cb (GtkWidget * widget,
       (ABS (priv->vel_y) <= (priv->vmax * priv->vfast_factor)))
     priv->child =
       hildon_pannable_area_get_topmost (gtk_bin_get_child (GTK_BIN (widget))->window,
-					event->x, event->y, &x, &y);
+					event->x, event->y, &x, &y, GDK_BUTTON_PRESS_MASK);
   else
     priv->child = NULL;
 
@@ -1982,7 +1992,7 @@ hildon_pannable_area_button_release_cb (GtkWidget * widget,
 
   child =
     hildon_pannable_area_get_topmost (gtk_bin_get_child (GTK_BIN (widget))->window,
-				      event->x, event->y, &x, &y);
+				      event->x, event->y, &x, &y, GDK_BUTTON_RELEASE_MASK);
 
   event = (GdkEventButton *) gdk_event_copy ((GdkEvent *) event);
   event->x = x;
@@ -2542,7 +2552,7 @@ hildon_pannable_get_child_widget_at (HildonPannableArea *area,
 
   window = hildon_pannable_area_get_topmost
     (gtk_bin_get_child (GTK_BIN (area))->window,
-     x, y, NULL, NULL);
+     x, y, NULL, NULL, GDK_ALL_EVENTS_MASK);
 
   gdk_window_get_user_data (window, (gpointer) &child_widget);
 
