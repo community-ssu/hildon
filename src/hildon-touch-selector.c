@@ -192,6 +192,8 @@ struct _HildonTouchSelectorColumnPrivate
   GtkTreeModel *model;
   gint text_column;
   GtkTreeView *tree_view;
+  gulong realize_handler;
+  GtkTreePath *initial_path;
 
   GtkWidget *panarea;           /* the pannable widget */
 };
@@ -245,9 +247,15 @@ static HildonTouchSelectorColumn *_create_new_column (HildonTouchSelector * sele
                                                  GtkCellRenderer * renderer,
                                                  va_list args);
 static gboolean
-_hildon_touch_selector_center_on_selected_items (GtkWidget *widget,
-                                                 gpointer data);
-
+on_realize_cb                                  (GtkWidget *widget,
+                                                gpointer data);
+static void
+hildon_touch_selector_scroll_to (HildonTouchSelectorColumn *column,
+                                 GtkTreeView *tv,
+                                 GtkTreePath *path);
+static gboolean
+_hildon_touch_selector_center_on_selected_items (HildonTouchSelector *selector,
+                                                 HildonTouchSelectorColumn *column);
 static void
 _hildon_touch_selector_set_model                (HildonTouchSelector * selector,
                                                  gint num_column,
@@ -660,6 +668,8 @@ _create_new_column (HildonTouchSelector * selector,
   new_column->priv->model = model;
   new_column->priv->tree_view = tv;
   new_column->priv->panarea = panarea;
+  new_column->priv->realize_handler = 0;
+  new_column->priv->initial_path = NULL;
 
   selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (tv));
   gtk_tree_selection_set_mode (selection, GTK_SELECTION_BROWSE);
@@ -674,10 +684,6 @@ _create_new_column (HildonTouchSelector * selector,
   /* connect to the changed signal connection */
   g_signal_connect (G_OBJECT (selection), "changed",
                     G_CALLBACK (_selection_changed_cb), new_column);
-
-  g_signal_connect_after (G_OBJECT (panarea), "realize",
-                          G_CALLBACK (_hildon_touch_selector_center_on_selected_items),
-                          new_column);
 
   return new_column;
 }
@@ -1121,6 +1127,11 @@ hildon_touch_selector_append_column (HildonTouchSelector * selector,
                         TRUE, TRUE, 6);
 
     gtk_widget_show_all (new_column->priv->panarea);
+
+    if (selector->priv->initial_scroll) {
+      _hildon_touch_selector_center_on_selected_items (selector, new_column);
+    }
+
   } else {
     return NULL;
   }
@@ -1559,11 +1570,9 @@ hildon_touch_selector_select_iter (HildonTouchSelector * selector,
 {
   GtkTreePath *path;
   GtkTreeModel *model;
-  GdkRectangle rect;
   HildonTouchSelectorColumn *current_column = NULL;
   GtkTreeView *tv = NULL;
   GtkTreeSelection *selection = NULL;
-  gint y;
 
   g_return_if_fail (HILDON_IS_TOUCH_SELECTOR (selector));
   g_return_if_fail (column < hildon_touch_selector_get_num_columns (selector));
@@ -1578,13 +1587,9 @@ hildon_touch_selector_select_iter (HildonTouchSelector * selector,
   gtk_tree_selection_select_iter (selection, iter);
 
   if (scroll_to) {
-    gtk_tree_view_get_background_area (tv,
-                                       path, NULL, &rect);
-    gtk_tree_view_convert_bin_window_to_tree_coords (tv,
-                                                     0, rect.y, NULL, &y);
-    hildon_pannable_area_scroll_to (HILDON_PANNABLE_AREA (current_column->priv->panarea),
-                                    -1, y);
+    hildon_touch_selector_scroll_to (current_column, tv, path);
   }
+
   gtk_tree_path_free (path);
 }
 
@@ -1759,51 +1764,160 @@ hildon_touch_selector_get_current_text (HildonTouchSelector * selector)
   return result;
 }
 
-static gboolean
-_hildon_touch_selector_center_on_selected_items (GtkWidget *widget,
-                                                 gpointer data)
+static void
+search_nearest_element (HildonPannableArea *panarea,
+                        GtkTreeView *tv,
+                        GList *selected_rows,
+                        GtkTreePath **nearest_path)
 {
-  HildonTouchSelector *selector = NULL;
-  HildonTouchSelectorColumn *column = NULL;
-  GtkTreeIter iter;
+  GtkAdjustment *adj = NULL;
+  gdouble target_value = 0;
+  GdkRectangle rect;
+  GList *iter = NULL;
   GtkTreePath *path = NULL;
+  gint y = -1;
+  gdouble nearest_distance = -1;
+  gdouble current_distance = -1;
+  GtkTreePath *result_path = NULL;
+
+  g_assert (nearest_path != NULL);
+
+  if (selected_rows == NULL) {
+    *nearest_path = NULL;
+    return;
+  }
+
+  adj = hildon_pannable_area_get_vadjustment (panarea);
+  g_return_if_fail (adj != NULL);
+
+  /* we add this in order to check the nearest to the center of
+     the visible area */
+  target_value = gtk_adjustment_get_value (adj) + adj->page_size/2;
+
+  path = result_path = selected_rows->data;
+  gtk_tree_view_get_background_area (tv, path, NULL, &rect);
+  gtk_tree_view_convert_bin_window_to_tree_coords (tv, 0, rect.y, NULL, &y);
+  nearest_distance = abs (target_value - y);
+
+  for (iter = selected_rows->next; iter; iter = g_list_next (iter)) {
+    gtk_tree_view_get_background_area (tv, path, NULL, &rect);
+    gtk_tree_view_convert_bin_window_to_tree_coords (tv, 0, rect.y, NULL, &y);
+    current_distance = abs (target_value - y);
+    if (current_distance < nearest_distance) {
+      nearest_distance = current_distance;
+      result_path = path;
+    }
+  }
+
+  *nearest_path = result_path;
+}
+
+static gboolean
+on_realize_cb                                  (GtkWidget *widget,
+                                                gpointer data)
+{
+  HildonTouchSelectorColumn *column = NULL;
   GdkRectangle rect;
   gint y;
-  gint num_column = -1;
-  HildonTouchSelectorSelectionMode selection_mode;
 
   column = HILDON_TOUCH_SELECTOR_COLUMN (data);
-  selector = column->priv->parent;
 
-  if (!selector->priv->initial_scroll) {
-    return FALSE;
+  if (column->priv->initial_path) {
+    gtk_tree_view_get_background_area (GTK_TREE_VIEW (column->priv->tree_view),
+                                       column->priv->initial_path, NULL, &rect);
+    gtk_tree_view_convert_bin_window_to_tree_coords
+      (GTK_TREE_VIEW (column->priv->tree_view),
+       0, rect.y, NULL, &y);
+
+    hildon_pannable_area_scroll_to (HILDON_PANNABLE_AREA (column->priv->panarea),
+                                    -1, y);
+
+    gtk_tree_path_free (column->priv->initial_path);
+
+    column->priv->initial_path = NULL;
+
   }
-  selection_mode = hildon_touch_selector_get_column_selection_mode (selector);
-  num_column = g_slist_index (selector->priv->columns, column);
 
-  if ((num_column == 0)
-      && (selection_mode == HILDON_TOUCH_SELECTOR_SELECTION_MODE_MULTIPLE)) {
+  g_signal_handler_disconnect (column->priv->panarea,
+                               column->priv->realize_handler);
 
-    return FALSE;
-  }
+  return FALSE;
+}
 
-  if (hildon_touch_selector_get_selected (selector, num_column, &iter)) {
-    path = gtk_tree_model_get_path (column->priv->model, &iter);
-    gtk_tree_view_get_background_area (GTK_TREE_VIEW
-                                       (column->priv->tree_view), path, NULL,
-                                       &rect);
+static void
+hildon_touch_selector_scroll_to (HildonTouchSelectorColumn *column,
+                                 GtkTreeView *tv,
+                                 GtkTreePath *path)
+{
+  if (GTK_WIDGET_REALIZED (column->priv->panarea)) {
+    GdkRectangle rect;
+    gint y;
 
-    gtk_tree_view_convert_bin_window_to_tree_coords (GTK_TREE_VIEW
-                                                     (column->priv->tree_view), 0,
-                                                     rect.y, NULL, &y);
+    gtk_tree_view_get_background_area (tv,
+                                       path, NULL, &rect);
+    gtk_tree_view_convert_bin_window_to_tree_coords (tv,
+                                                     0, rect.y, NULL, &y);
 
     hildon_pannable_area_scroll_to (HILDON_PANNABLE_AREA
                                     (column->priv->panarea), -1, y);
+  } else {
+    if (column->priv->realize_handler != 0) {
 
-    gtk_tree_path_free (path);
+      if (column->priv->initial_path) {
+        gtk_tree_path_free (column->priv->initial_path);
+        column->priv->initial_path = NULL;
+      }
+
+      g_signal_handler_disconnect (column->priv->panarea,
+                                   column->priv->realize_handler);
+      column->priv->realize_handler = 0;
+    }
+
+    column->priv->initial_path = gtk_tree_path_copy (path);
+    column->priv->realize_handler =
+      g_signal_connect_after (G_OBJECT (column->priv->panarea), "realize",
+                              G_CALLBACK (on_realize_cb),
+                              column);
+  }
+}
+
+/**
+ *
+ * Center on the selected item of a concrete column
+ *
+ * Returns: TRUE if was able to do that
+ *          FALSE otherwise
+ */
+static gboolean
+_hildon_touch_selector_center_on_selected_items (HildonTouchSelector *selector,
+                                                 HildonTouchSelectorColumn *column)
+{
+  GtkTreePath *path = NULL;
+  GList *selected_rows = NULL;
+  gint num_column = -1;
+
+  num_column = g_slist_index (selector->priv->columns, column);
+
+  selected_rows = hildon_touch_selector_get_selected_rows (selector, num_column);
+  if (selected_rows) {
+    search_nearest_element (HILDON_PANNABLE_AREA (column->priv->panarea),
+                             GTK_TREE_VIEW (column->priv->tree_view),
+                             selected_rows,
+                             &path);
+
+    if (path != NULL) {
+      hildon_touch_selector_scroll_to (column,
+                                       GTK_TREE_VIEW (column->priv->tree_view),
+                                       path);
+    } else {
+      return FALSE;
+    }
+
+    g_list_foreach (selected_rows, (GFunc) (gtk_tree_path_free), NULL);
+    g_list_free (selected_rows);
   }
 
-  return FALSE;
+  return TRUE;
 }
 
 static gboolean
@@ -1867,4 +1981,18 @@ hildon_touch_selector_get_column (HildonTouchSelector * selector,
   g_return_val_if_fail (column < num_columns && column >= 0, NULL);
 
   return g_slist_nth_data (selector->priv->columns, column);
+}
+
+
+void
+hildon_touch_selector_center_on_selected         (HildonTouchSelector *selector)
+{
+  GSList *iter = NULL;
+
+  g_return_if_fail (HILDON_IS_TOUCH_SELECTOR (selector));
+
+  for (iter = selector->priv->columns; iter; iter = g_slist_next (iter)) {
+    _hildon_touch_selector_center_on_selected_items (selector,
+                                                    HILDON_TOUCH_SELECTOR_COLUMN (iter->data));
+  }
 }

@@ -1,3 +1,30 @@
+2009-01-16  Claudio Saavedra  <csaavedra@igalia.com>
+
+	Based on a patch by Alejandro Pinheiro (apinheiro@igalia.com) and
+	Alejandro G. Castro  (alex@igalia.com)
+
+	* src/hildon-touch-selector.c:
+	(_create_new_column): Do not connect to the "realize" signal of	the
+	pannable area.
+	(hildon_touch_selector_append_column): center on the selected items
+	when a new column is appended.
+	(hildon_touch_selector_select_iter): Factor out the code to select a
+	column to hildon_touch_selector_scroll_to().
+	(+search_nearest_element): Method to retrieve the nearest selected
+	element to the visible area of the pannable area in a column.
+	(+on_realize_cb): scroll to the initially selected item.
+	(+hildon_touch_selector_scroll_to): Scroll to the given GtkTreePath if
+	the pannable area is realized, otherwise delay this until it is.
+	(+_hildon_touch_selector_center_on_selected_items): Centers on the
+	selected items of a given column.
+	(+hildon_touch_selector_center_on_selected): Public method to center
+	all columns on the nearest selected item.
+	* src/hildon-touch-selector.h: Add definition for
+	hildon_touch_selector_center_on_selected().
+
+	Implement public API to ensure visibility of all selected items in
+	a HildonTouchSelector.
+
 2009-01-16  Alejandro G. Castro  <alex@igalia.com>
 
 	Fixed a problem in the fading when calling the scroll_to API, and
