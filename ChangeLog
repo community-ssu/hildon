@@ -1,3 +1,19 @@
+2009-01-16  Alejandro G. Castro  <alex@igalia.com>
+
+	Fixed a problem in the fading when calling the scroll_to API, and
+	improve scrollbar fading handling.
+
+	* src/hildon-pannable-area.c,
+	(hildon_pannable_area_grab_notify): avoid the timeout when the
+	alpha is zero.
+	(hildon_pannable_area_button_press_cb),
+	(hildon_pannable_area_motion_notify_cb): Code style changes.
+	(hildon_pannable_area_button_release_cb): Review the conditions
+	when releasing the mouse button to avoid unrequired fading
+	timeouts.
+	(hildon_pannable_area_scroll_to): Do not calculate and set the
+	velocity if the scroll is not required.
+
 2009-01-15  Alberto Garcia  <agarcia@igalia.com>
 
 	* src/hildon-picker-dialog.c (_hildon_picker_dialog_set_selector):

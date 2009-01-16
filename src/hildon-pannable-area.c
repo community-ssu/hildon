@@ -912,9 +912,10 @@ hildon_pannable_area_grab_notify (GtkWidget *widget,
     HildonPannableAreaPrivate *priv = HILDON_PANNABLE_AREA (widget)->priv;
 
     priv->scroll_indicator_event_interrupt = 0;
-    priv->scroll_delay_counter = SCROLLBAR_FADE_DELAY;
 
-    if (!priv->scroll_indicator_timeout) {
+    if ((!priv->scroll_indicator_timeout)&&(priv->scroll_indicator_alpha)>0.1) {
+      priv->scroll_delay_counter = SCROLLBAR_FADE_DELAY;
+
       priv->scroll_indicator_timeout = gdk_threads_add_timeout
         ((gint) (1000.0 / (gdouble) SCROLL_FADE_TIMEOUT),
          (GSourceFunc) hildon_pannable_area_scroll_indicator_fade, widget);
@@ -1387,7 +1388,7 @@ hildon_pannable_area_button_press_cb (GtkWidget * widget,
 
   priv->scroll_indicator_event_interrupt = 1;
 
-  if (!priv->scroll_indicator_timeout){
+  if (!priv->scroll_indicator_timeout) {
     priv->scroll_indicator_timeout = gdk_threads_add_timeout
       ((gint) (1000.0 / (gdouble) (SCROLL_FADE_TIMEOUT)),
        (GSourceFunc) hildon_pannable_area_scroll_indicator_fade, widget);
@@ -1938,7 +1939,6 @@ hildon_pannable_area_motion_notify_cb (GtkWidget * widget,
         priv->vel_y = 0;
       }
 
-
       if (priv->mov_mode&HILDON_MOVEMENT_MODE_HORIZ) {
         gdouble dist = event->x - priv->x;
 
@@ -1991,7 +1991,9 @@ hildon_pannable_area_button_release_cb (GtkWidget * widget,
   gint x, y;
   GdkWindow *child;
 
-  if (gtk_bin_get_child (GTK_BIN (widget)) == NULL)
+  if  (((event->time == priv->last_time) && (priv->last_type == 3))
+       || (gtk_bin_get_child (GTK_BIN (widget)) == NULL)
+       || (!priv->clicked) || (!priv->enabled) || (event->button != 1))
     return TRUE;
 
   priv->scroll_indicator_event_interrupt = 0;
@@ -2002,21 +2004,17 @@ hildon_pannable_area_button_release_cb (GtkWidget * widget,
     priv->scroll_indicator_alpha = 1.0;
   }
 
-  /* move all the way to the last position */
-  if (priv->motion_event_scroll_timeout) {
-    g_source_remove (priv->motion_event_scroll_timeout);
-    hildon_pannable_area_motion_event_scroll_timeout (HILDON_PANNABLE_AREA (widget));
-  }
-
   if (!priv->scroll_indicator_timeout) {
     priv->scroll_indicator_timeout = gdk_threads_add_timeout
       ((gint) (1000.0 / (gdouble) SCROLL_FADE_TIMEOUT),
        (GSourceFunc) hildon_pannable_area_scroll_indicator_fade, widget);
   }
 
-  if ((!priv->clicked) || (!priv->enabled) || (event->button != 1) ||
-      ((event->time == priv->last_time) && (priv->last_type == 3)))
-    return TRUE;
+  /* move all the way to the last position */
+  if (priv->motion_event_scroll_timeout) {
+    g_source_remove (priv->motion_event_scroll_timeout);
+    hildon_pannable_area_motion_event_scroll_timeout (HILDON_PANNABLE_AREA (widget));
+  }
 
   priv->clicked = FALSE;
 
@@ -2376,7 +2374,7 @@ hildon_pannable_area_scroll_to (HildonPannableArea *area,
 
   g_return_if_fail (x < width || y < height);
 
-  if (x > -1) {
+  if ((x > -1)&&(hscroll_visible)) {
     priv->scroll_to_x = x - priv->hadjust->page_size/2;
     dist_x = priv->scroll_to_x - priv->hadjust->value;
     if (dist_x == 0) {
@@ -2388,7 +2386,7 @@ hildon_pannable_area_scroll_to (HildonPannableArea *area,
     priv->scroll_to_x = -1;
   }
 
-  if (y > -1) {
+  if ((y > -1)&&(vscroll_visible)) {
     priv->scroll_to_y = y - priv->vadjust->page_size/2;
     dist_y = priv->scroll_to_y - priv->vadjust->value;
     if (dist_y == 0) {
