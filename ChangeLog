@@ -3,6 +3,26 @@
 	Based on a patch by Alejandro Pinheiro (apinheiro@igalia.com) and
 	Alejandro G. Castro  (alex@igalia.com)
 
+	* src/hildon-picker-dialog.c:
+	(hildon_picker_dialog_class_init): install new "center-on-show"
+	property.
+	(hildon_picker_dialog_init): initialize center_on_show to TRUE.
+	(hildon_picker_dialog_set_property): add setter code for the new
+	property.
+	(hildon_picker_dialog_get_property): add getter code for the new
+	property.
+	(hildon_picker_dialog_show): Ensure visibility of selected items in the
+	HildonTouchSelector when "center-on-show" is TRUE, which is enabled by
+	default.
+
+	Fixes: NB#92849 (Selected item is not always visible when
+	HildonTouchSelector is shown)
+
+2009-01-16  Claudio Saavedra  <csaavedra@igalia.com>
+
+	Based on a patch by Alejandro Pinheiro (apinheiro@igalia.com) and
+	Alejandro G. Castro  (alex@igalia.com)
+
 	* src/hildon-touch-selector.c:
 	(_create_new_column): Do not connect to the "realize" signal of	the
 	pannable area.

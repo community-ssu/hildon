@@ -54,6 +54,7 @@ struct _HildonPickerDialogPrivate
   gulong signal_changed_id;
   gulong signal_columns_changed_id;
 
+  gboolean center_on_show;
   GSList *current_selection;
 };
 
@@ -62,6 +63,7 @@ enum
 {
   PROP_0,
   PROP_DONE_BUTTON_TEXT,
+  PROP_CENTER_ON_SHOW,
   PROP_LAST
 };
 
@@ -172,6 +174,17 @@ hildon_picker_dialog_class_init (HildonPickerDialogClass * class)
                                                         G_PARAM_WRITABLE |
                                                         G_PARAM_CONSTRUCT));
 
+  g_object_class_install_property (gobject_class,
+                                   PROP_CENTER_ON_SHOW,
+                                   g_param_spec_boolean ("center-on-show",
+                                                         "Center on show",
+                                                         "If the dialog should center"
+                                                         " on the current selection"
+                                                         " when it is showed",
+                                                         TRUE,
+                                                         G_PARAM_READWRITE |
+                                                         G_PARAM_CONSTRUCT));
+
   g_type_class_add_private (object_class, sizeof (HildonPickerDialogPrivate));
 }
 
@@ -188,7 +201,7 @@ hildon_picker_dialog_init (HildonPickerDialog * dialog)
 
   dialog->priv->signal_changed_id = 0;
   dialog->priv->signal_columns_changed_id = 0;
-
+  dialog->priv->center_on_show = TRUE;
   dialog->priv->current_selection = NULL;
 
   g_signal_connect (G_OBJECT (dialog),
@@ -202,10 +215,17 @@ hildon_picker_dialog_set_property (GObject * object,
                                    guint param_id,
                                    const GValue * value, GParamSpec * pspec)
 {
+  HildonPickerDialog *dialog;
+
+  dialog = HILDON_PICKER_DIALOG (object);
+
   switch (param_id) {
   case PROP_DONE_BUTTON_TEXT:
     hildon_picker_dialog_set_done_label (HILDON_PICKER_DIALOG (object),
                                          g_value_get_string (value));
+    break;
+  case PROP_CENTER_ON_SHOW:
+    dialog->priv->center_on_show = g_value_get_boolean (value);
     break;
   default:
     G_OBJECT_WARN_INVALID_PROPERTY_ID (object, param_id, pspec);
@@ -226,6 +246,9 @@ hildon_picker_dialog_get_property (GObject * object,
   case PROP_DONE_BUTTON_TEXT:
     g_value_set_string (value, hildon_picker_dialog_get_done_label (dialog));
     break;
+  case PROP_CENTER_ON_SHOW:
+    g_value_set_boolean (value, dialog->priv->center_on_show);
+    break;
   default:
     G_OBJECT_WARN_INVALID_PROPERTY_ID (object, param_id, pspec);
     break;
@@ -244,9 +267,14 @@ static void
 hildon_picker_dialog_show                       (GtkWidget *widget)
 {
   HildonPickerDialog *dialog = HILDON_PICKER_DIALOG (widget);
+  HildonTouchSelector *selector;
+
+  if (dialog->priv->center_on_show) {
+    selector = hildon_picker_dialog_get_selector (dialog);
+    hildon_touch_selector_center_on_selected (selector);
+  }
 
   _save_current_selection (dialog);
-
   setup_interaction_mode (dialog);
 
   GTK_WIDGET_CLASS (hildon_picker_dialog_parent_class)->show (widget);
