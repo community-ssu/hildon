@@ -236,17 +236,17 @@ hildon_picker_button_clicked (GtkButton * button)
                           gtk_window_get_modal (GTK_WINDOW (parent)));
     gtk_window_set_title (GTK_WINDOW (priv->dialog),
                           hildon_button_get_title (HILDON_BUTTON (button)));
-  }
-
-  if (_current_selector_empty (HILDON_PICKER_BUTTON (button))) {
-    g_warning ("There are no elements in the selector. Nothing to show.");
-  } else {
     g_signal_connect (priv->dialog, "response",
                       G_CALLBACK (hildon_picker_button_on_dialog_response),
                       button);
     g_signal_connect (priv->dialog, "delete-event",
                       G_CALLBACK (gtk_widget_hide_on_delete),
                       NULL);
+  }
+
+  if (_current_selector_empty (HILDON_PICKER_BUTTON (button))) {
+    g_warning ("There are no elements in the selector. Nothing to show.");
+  } {
     gtk_window_present (GTK_WINDOW (priv->dialog));
   }
 }

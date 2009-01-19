@@ -1,3 +1,9 @@
+2009-01-19  Claudio Saavedra  <csaavedra@igalia.com>
+
+	* src/hildon-picker-button.c: (hildon_picker_button_clicked): Connect
+	the signal handlers only after creating the dialog instead of on every
+	button click.
+
 2009-01-19  Alberto Garcia  <agarcia@igalia.com>
 
 	* src/hildon-button.c (hildon_button_init)
