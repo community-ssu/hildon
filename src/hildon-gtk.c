@@ -17,7 +17,7 @@
 /**
  * SECTION:hildon-gtk
  * @short_description: Additional functions for Gtk widgets
- * @see_also: #HildonButton
+ * @see_also: #HildonButton, #HildonCheckButton
  *
  * Hildon provides some functions to extend the functionality of
  * existing Gtk widgets. This also includes convenience functions to
@@ -76,6 +76,9 @@ button_common_init                              (GtkWidget      *button,
     /* Set requested size */
     hildon_gtk_widget_set_theme_size (button, size);
 
+    /* Set focus-on-click to FALSE by default */
+    gtk_button_set_focus_on_click (GTK_BUTTON (button), FALSE);
+
     /* Make sure that all images in this button are always shown */
     g_signal_connect (button, "notify::image", G_CALLBACK (image_changed_cb), NULL);
 }
@@ -107,6 +110,9 @@ hildon_gtk_menu_new                             (void)
  * "gtk-button-images" setting. Images set using
  * gtk_button_set_image() are always shown.
  *
+ * Buttons created using this function have #GtkButton:focus-on-click
+ * set to %FALSE by default.
+ *
  * Return value: A newly created #GtkButton widget.
  **/
 GtkWidget *
@@ -127,6 +133,9 @@ hildon_gtk_button_new                           (HildonSizeType size)
  * Buttons created with this function also override the
  * "gtk-button-images" setting. Images set using
  * gtk_button_set_image() are always shown.
+ *
+ * Buttons created using this function have #GtkButton:focus-on-click
+ * set to %FALSE by default.
  *
  * Return value: A newly created #GtkToggleButton widget.
  **/
@@ -151,6 +160,9 @@ hildon_gtk_toggle_button_new                    (HildonSizeType size)
  * "gtk-button-images" setting. Images set using
  * gtk_button_set_image() are always shown.
  *
+ * Buttons created using this function have #GtkButton:focus-on-click
+ * set to %FALSE by default.
+ *
  * Return value: A newly created #GtkRadioButton widget.
  **/
 GtkWidget *
@@ -173,6 +185,9 @@ hildon_gtk_radio_button_new                     (HildonSizeType  size,
  * Buttons created with this function also override the
  * "gtk-button-images" setting. Images set using
  * gtk_button_set_image() are always shown.
+ *
+ * Buttons created using this function have #GtkButton:focus-on-click
+ * set to %FALSE by default.
  *
  * Return value: A newly created #GtkRadioButton widget.
  **/

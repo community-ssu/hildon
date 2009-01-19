@@ -257,5 +257,7 @@ hildon_check_button_init                        (HildonCheckButton *button)
     /* Add cell view to the image */
     gtk_button_set_image (GTK_BUTTON (button), cell_view);
 
+    gtk_button_set_focus_on_click (GTK_BUTTON (button), FALSE);
+
     hildon_check_button_apply_style (GTK_WIDGET (button));
 }

@@ -335,6 +335,8 @@ hildon_button_init                              (HildonButton *self)
     /* The labels are not shown automatically, see hildon_button_set_(title|value) */
     gtk_widget_set_no_show_all (GTK_WIDGET (priv->title), TRUE);
     gtk_widget_set_no_show_all (GTK_WIDGET (priv->value), TRUE);
+
+    gtk_button_set_focus_on_click (GTK_BUTTON (self), FALSE);
 }
 
 /**
