@@ -1,3 +1,8 @@
+2009-01-19  Claudio Saavedra  <csaavedra@igalia.com>
+
+	* src/hildon-date-button.c: (hildon_date_button_init): Remove an unneeded
+	g_object_unref().
+
 2009-01-16  Claudio Saavedra  <csaavedra@igalia.com>
 
 	Based on a patch by Alejandro Pinheiro (apinheiro@igalia.com) and
