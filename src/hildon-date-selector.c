@@ -686,19 +686,18 @@ hildon_date_selector_get_date (HildonDateSelector * selector,
   GtkTreeIter iter;
 
   if (year != NULL) {
-    hildon_touch_selector_get_selected (HILDON_TOUCH_SELECTOR (selector),
-                                        selector->priv->year_column, &iter);
-    gtk_tree_model_get (selector->priv->year_model,
-                        &iter, COLUMN_INT, year, -1);
+    if (hildon_touch_selector_get_selected (HILDON_TOUCH_SELECTOR (selector),
+                                            selector->priv->year_column, &iter))
+      gtk_tree_model_get (selector->priv->year_model,
+                          &iter, COLUMN_INT, year, -1);
   }
 
   if (month != NULL) {
-    hildon_touch_selector_get_selected (HILDON_TOUCH_SELECTOR (selector),
-                                        selector->priv->month_column, &iter);
-    gtk_tree_model_get (selector->priv->month_model,
-                        &iter, COLUMN_INT, month, -1);
+    if (hildon_touch_selector_get_selected (HILDON_TOUCH_SELECTOR (selector),
+                                            selector->priv->month_column, &iter))
+      gtk_tree_model_get (selector->priv->month_model,
+                          &iter, COLUMN_INT, month, -1);
   }
-
 
   if (day != NULL) {
     if (hildon_touch_selector_get_selected (HILDON_TOUCH_SELECTOR (selector),

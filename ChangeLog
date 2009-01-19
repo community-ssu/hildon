@@ -1,5 +1,15 @@
 2009-01-19  Claudio Saavedra  <csaavedra@igalia.com>
 
+	* src/hildon-date-selector.c: (hildon_date_selector_get_date): Check
+	that there's actually a month or year selected before obtaining them.
+	* src/hildon-picker-dialog.c: (_restore_current_selection): Block emission
+	of the HildonTouchSelector::changed signal, as it was emitted on every
+	single item selection.
+
+	Fix some warnings and possible crashers due to the selection restoring.
+
+2009-01-19  Claudio Saavedra  <csaavedra@igalia.com>
+
 	* src/hildon-picker-button.c: (hildon_picker_button_clicked): Connect
 	the signal handlers only after creating the dialog instead of on every
 	button click.
