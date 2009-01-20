@@ -80,12 +80,6 @@ hildon_time_button_class_init (HildonTimeButtonClass * klass)
 static void
 hildon_time_button_init (HildonTimeButton * self)
 {
-  GtkWidget *time_selector;
-
-  time_selector = hildon_time_selector_new ();
-
-  hildon_picker_button_set_selector (HILDON_PICKER_BUTTON (self),
-                                     HILDON_TOUCH_SELECTOR (time_selector));
 }
 
 /**
@@ -104,8 +98,39 @@ GtkWidget *
 hildon_time_button_new (HildonSizeType          size,
                         HildonButtonArrangement arrangement)
 {
-  return g_object_new (HILDON_TYPE_TIME_BUTTON,
-                       "title", "Time", "arrangement", arrangement, "size", size, NULL);
+  return hildon_time_button_new_step (size, arrangement, 1);
+}
+
+/**
+ * hildon_time_button_new_step:
+ * @size: One of #HildonSizeType
+ * @arrangement: one of #HildonButtonArrangement
+ * @minutes_step: step between the minutes in the selector options
+ *
+ * Creates a new #HildonTimeButton. See hildon_button_new() for details on the
+ * parameters.
+ *
+ * Returns: a new #HildonTimeButton
+ *
+ * Since: 2.2
+ **/
+GtkWidget *
+hildon_time_button_new_step (HildonSizeType          size,
+                             HildonButtonArrangement arrangement,
+                             guint                   minutes_step)
+{
+  GtkWidget *button;
+  GtkWidget *time_selector;
+
+  button = g_object_new (HILDON_TYPE_TIME_BUTTON,
+                         "title", "Time", "arrangement", arrangement, "size", size, NULL);
+
+  time_selector = hildon_time_selector_new_step (minutes_step);
+
+  hildon_picker_button_set_selector (HILDON_PICKER_BUTTON (button),
+                                     HILDON_TOUCH_SELECTOR (time_selector));
+
+  return button;
 }
 
 /**

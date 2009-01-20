@@ -62,6 +62,11 @@ GtkWidget*
 hildon_time_button_new                          (HildonSizeType         size,
                                                 HildonButtonArrangement arrangement);
 
+GtkWidget *
+hildon_time_button_new_step                     (HildonSizeType          size,
+                                                HildonButtonArrangement  arrangement,
+                                                guint                    minutes_step);
+
 void
 hildon_time_button_get_time                     (HildonTimeButton *button,
                                                  guint            *hours,

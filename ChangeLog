@@ -1,5 +1,23 @@
 2009-01-20  Alejandro G. Castro  <alex@igalia.com>
 
+	Added a new function to the HildonTimeButton widget that allows to
+	change the step of the minutes in the selector associated with the
+	button: hildon_time_button_new_step
+
+	* src/hildon-time-button.c,
+	(hildon_time_button_init),
+	(hildon_time_button_new),
+	(hildon_time_button_new_step):
+	* src/hildon-time-button.h: Added the new function and refactored
+	the code.
+	* examples/hildon-time-button-example.c,
+	(main): We have replaced the function without parameters with the
+	function with the steps set to 5
+
+	Fixes: NB#98317 (Provide parametarized API for TimePicker widget)
+
+2009-01-20  Alejandro G. Castro  <alex@igalia.com>
+
 	* src/hildon-time-selector.c,
 	(hildon_time_selector_class_init),
 	(hildon_time_selector_constructor),

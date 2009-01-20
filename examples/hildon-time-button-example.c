@@ -25,7 +25,7 @@ main (int argc, char **argv)
   gtk_window_set_default_size (GTK_WINDOW (window), 300, 200);
   hildon_program_add_window (program, HILDON_WINDOW (window));
 
-  button = hildon_time_button_new (HILDON_SIZE_AUTO, HILDON_BUTTON_ARRANGEMENT_VERTICAL);
+  button = hildon_time_button_new_step (HILDON_SIZE_AUTO, HILDON_BUTTON_ARRANGEMENT_VERTICAL, 5);
   g_signal_connect (G_OBJECT (button), "value-changed",
                     G_CALLBACK (on_picker_value_changed), NULL);
 
