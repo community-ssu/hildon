@@ -78,12 +78,19 @@ enum {
   TOTAL_TIME_COLUMNS
 };
 
+enum
+{
+  PROP_0,
+  PROP_MINUTES_STEP
+};
+
 struct _HildonTimeSelectorPrivate
 {
   GtkTreeModel *hours_model;
   GtkTreeModel *minutes_model;
   GtkTreeModel *ampm_model;
 
+  guint minutes_step;
   gboolean ampm_format;         /* if using am/pm format or 24 h one */
 
   gboolean pm;                  /* if we are on pm (only useful if ampm_format == TRUE) */
@@ -96,10 +103,18 @@ static void hildon_time_selector_finalize (GObject * object);
 static GObject* hildon_time_selector_constructor (GType type,
                                                   guint n_construct_properties,
                                                   GObjectConstructParam *construct_params);
+static void hildon_time_selector_get_property (GObject *object,
+                                               guint param_id,
+                                               GValue *value,
+                                               GParamSpec *pspec);
+static void hildon_time_selector_set_property (GObject *object,
+                                               guint param_id,
+                                               const GValue *value,
+                                               GParamSpec *pspec);
 
 /* private functions */
 static GtkTreeModel *_create_hours_model (HildonTimeSelector * selector);
-static GtkTreeModel *_create_minutes_model (HildonTimeSelector * selector);
+static GtkTreeModel *_create_minutes_model (guint minutes_step);
 static GtkTreeModel *_create_ampm_model (HildonTimeSelector * selector);
 
 static void _get_real_time (gint * hours, gint * minutes);
@@ -124,8 +139,19 @@ hildon_time_selector_class_init (HildonTimeSelectorClass * class)
   container_class = (GtkContainerClass *) class;
 
   /* GObject */
+  gobject_class->get_property = hildon_time_selector_get_property;
+  gobject_class->set_property = hildon_time_selector_set_property;
   gobject_class->constructor = hildon_time_selector_constructor;
   gobject_class->finalize = hildon_time_selector_finalize;
+
+  g_object_class_install_property (gobject_class,
+                                   PROP_MINUTES_STEP,
+                                   g_param_spec_uint ("minutes-step",
+                                                      "Step between minutes in the model",
+                                                      "Step between the minutes in the list of"
+                                                      " options of the widget ",
+                                                      1, 30, 1,
+                                                      G_PARAM_READWRITE|G_PARAM_CONSTRUCT_ONLY));
 
   /* GtkWidget */
 
@@ -151,7 +177,9 @@ hildon_time_selector_constructor (GType type,
   selector = HILDON_TIME_SELECTOR (object);
 
   /* we need initialization parameters in order to create minute models*/
-  selector->priv->minutes_model = _create_minutes_model (selector);
+  selector->priv->minutes_step = selector->priv->minutes_step ? selector->priv->minutes_step : 1;
+
+  selector->priv->minutes_model = _create_minutes_model (selector->priv->minutes_step);
 
   column = hildon_touch_selector_append_text_column (HILDON_TOUCH_SELECTOR (selector),
                                                      selector->priv->minutes_model, TRUE);
@@ -205,6 +233,46 @@ hildon_time_selector_init (HildonTimeSelector * selector)
 }
 
 static void
+hildon_time_selector_get_property (GObject *object,
+                                   guint param_id,
+                                   GValue *value,
+                                   GParamSpec *pspec)
+{
+  HildonTimeSelectorPrivate *priv = HILDON_TIME_SELECTOR_GET_PRIVATE (object);
+
+  switch (param_id)
+    {
+    case PROP_MINUTES_STEP:
+      g_value_set_uint (value, priv->minutes_step);
+      break;
+
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, param_id, pspec);
+      break;
+    }
+}
+
+static void
+hildon_time_selector_set_property (GObject *object,
+                                   guint param_id,
+                                   const GValue *value,
+                                   GParamSpec *pspec)
+{
+  HildonTimeSelectorPrivate *priv = HILDON_TIME_SELECTOR_GET_PRIVATE (object);
+
+  switch (param_id)
+    {
+    case PROP_MINUTES_STEP:
+      priv->minutes_step = g_value_get_uint (value);
+      break;
+
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, param_id, pspec);
+      break;
+    }
+}
+
+static void
 hildon_time_selector_finalize (GObject * object)
 {
   HildonTimeSelector *selector = NULL;
@@ -252,7 +320,7 @@ _custom_print_func (HildonTouchSelector * touch_selector)
 }
 
 static GtkTreeModel *
-_create_minutes_model (HildonTimeSelector * selector)
+_create_minutes_model (guint minutes_step)
 {
   GtkListStore *store_minutes = NULL;
   gint i = 0;
@@ -261,7 +329,7 @@ _create_minutes_model (HildonTimeSelector * selector)
   GtkTreeIter iter;
 
   store_minutes = gtk_list_store_new (2, G_TYPE_STRING, G_TYPE_INT);
-  for (i = 0; i <= 59; i++) {
+  for (i = 0; i <= 59; i=i+minutes_step) {
     tm.tm_min = i;
     strftime (label, 255, _("wdgt_va_minutes"), &tm);
 
@@ -423,6 +491,25 @@ hildon_time_selector_new ()
   return g_object_new (HILDON_TYPE_TIME_SELECTOR, NULL);
 }
 
+
+/**
+ * hildon_time_selector_new_step:
+ *
+ * Creates a new #HildonTimeSelector
+ * @minutes_step: step between the minutes we are going to show in the
+ * selector
+ *
+ * Returns: a new #HildonTimeSelector
+ *
+ * Since: 2.2
+ **/
+GtkWidget *
+hildon_time_selector_new_step (guint minutes_step)
+{
+  return g_object_new (HILDON_TYPE_TIME_SELECTOR, "minutes-step",
+                       minutes_step, NULL);
+}
+
 /**
  * hildon_time_selector_set_time
  * @selector: the #HildonTimeSelector
@@ -461,6 +548,8 @@ hildon_time_selector_set_time (HildonTimeSelector * selector,
   hildon_touch_selector_select_iter (HILDON_TOUCH_SELECTOR (selector),
                                      COLUMN_HOURS, &iter, FALSE);
 
+  g_assert (selector->priv->minutes_step>0);
+  minutes = minutes/selector->priv->minutes_step;
   gtk_tree_model_iter_nth_child (selector->priv->minutes_model, &iter, NULL,
                                  minutes);
   hildon_touch_selector_select_iter (HILDON_TOUCH_SELECTOR (selector),

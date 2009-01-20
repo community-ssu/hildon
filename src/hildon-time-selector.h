@@ -73,6 +73,9 @@ hildon_time_selector_get_type                   (void) G_GNUC_CONST;
 GtkWidget*
 hildon_time_selector_new                        (void);
 
+GtkWidget*
+hildon_time_selector_new_step                   (guint minutes_step);
+
 /* time management */
 gboolean
 hildon_time_selector_set_time                   (HildonTimeSelector *selector,

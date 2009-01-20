@@ -3,6 +3,22 @@
 	* src/hildon-time-selector.c,
 	(hildon_time_selector_class_init),
 	(hildon_time_selector_constructor),
+	(hildon_time_selector_get_property),
+	(hildon_time_selector_set_property),
+	(_create_minutes_model),
+	(hildon_time_selector_new_step),
+	(hildon_time_selector_set_time),
+	* src/hildon-time-selector.h: Added a new property to the
+	HildonTimeSelector (minutes-step), we use that property to control
+	the steps between the minutes in the list of the selector. We have
+	added a new function to the API to create a widget changing the
+	step: hildon_time_selector_new_step.
+
+2009-01-20  Alejandro G. Castro  <alex@igalia.com>
+
+	* src/hildon-time-selector.c,
+	(hildon_time_selector_class_init),
+	(hildon_time_selector_constructor),
 	(hildon_time_selector_init): Overrided the construct function when
 	creating the time selector object. We have moved the minutes model
 	handling code from the init to the new construction function:
