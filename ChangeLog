@@ -101,8 +101,6 @@
 	* src/hildon-gtk.c (button_common_init): Don't let buttons get the
 	focus when clicked by default.
 
-	Fixes: NB#93431 (Main window not getting the focus once dialog is closed)
-
 2009-01-19  Claudio Saavedra  <csaavedra@igalia.com>
 
 	* src/hildon-date-button.c: (hildon_date_button_init): Remove an unneeded
