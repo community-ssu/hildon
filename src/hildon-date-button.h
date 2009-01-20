@@ -65,6 +65,12 @@ GtkWidget*
 hildon_date_button_new                          (HildonSizeType          size,
                                                  HildonButtonArrangement arrangement);
 
+GtkWidget *
+hildon_date_button_new_with_year_range         (HildonSizeType size,
+                                                HildonButtonArrangement arrangement,
+                                                gint min_year,
+                                                gint max_year);
+
 void
 hildon_date_button_get_date                     (HildonDateButton *button,
                                                  guint *year,

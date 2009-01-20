@@ -112,6 +112,37 @@ hildon_date_button_new (HildonSizeType          size,
 }
 
 /**
+ * hildon_date_button_new_with_year_range:
+ * @size: One of #HildonSizeType
+ * @arrangement: one of #HildonButtonArrangement
+ * @min_year: the minimum available year or -1 to ignore
+ * @max_year: the maximum available year or -1 to ignore
+ *
+ * Creates a new #HildonDateButton with a specific valid range of years.
+ * See hildon_date_selector_new_with_year_range() for details on the range.
+ *
+ * Returns: a new #HildonDateButton
+ *
+ * Since: 2.2
+ **/
+GtkWidget *
+hildon_date_button_new_with_year_range (HildonSizeType size,
+                                        HildonButtonArrangement arrangement,
+                                        gint min_year,
+                                        gint max_year)
+{
+  GtkWidget *button;
+  GtkWidget *selector;
+
+  button = hildon_date_button_new (size, arrangement);
+  selector = hildon_date_selector_new_with_year_range (min_year, max_year);
+  hildon_picker_button_set_selector (HILDON_PICKER_BUTTON (button),
+                                     HILDON_TOUCH_SELECTOR (selector));
+
+  return button;
+}
+
+/**
  * hildon_date_button_get_date:
  * @button: a #HildonDateButton
  * @year: return location for the selected year

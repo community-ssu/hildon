@@ -1,5 +1,18 @@
 2009-01-20  Claudio Saavedra  <csaavedra@igalia.com>
 
+	* examples/hildon-date-button-example.c: (main): Use the new
+	hildon_date_button_new_with_year_range() method in the example.
+	* src/hildon-date-button.c:
+	(+hildon_date_button_new_with_year_range): New public method
+	to conveniently create a HildonDateButton with a custom year range
+	in its HildonDateSelector.
+	* src/hildon-date-button.h: Add the new public method definition.
+
+	Fixes: NB#97908 (Not possible to change the year range in
+	HildonDateSelector/HildonDateButton)
+
+2009-01-20  Claudio Saavedra  <csaavedra@igalia.com>
+
 	* src/hildon-date-selector.c:
 	(+hildon_date_selector_set_property),
 	(+hildon_date_selector_get_property),

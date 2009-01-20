@@ -47,7 +47,9 @@ main (int argc, char **argv)
   gtk_window_set_default_size (GTK_WINDOW (window), 300, 200);
   hildon_program_add_window (program, HILDON_WINDOW (window));
 
-  button = hildon_date_button_new (HILDON_SIZE_AUTO, HILDON_BUTTON_ARRANGEMENT_VERTICAL);
+  button = hildon_date_button_new_with_year_range (HILDON_SIZE_AUTO,
+						   HILDON_BUTTON_ARRANGEMENT_VERTICAL,
+                                                   1990, 2020);
   g_signal_connect (G_OBJECT (button), "value-changed",
                     G_CALLBACK (on_picker_value_changed), NULL);
 
