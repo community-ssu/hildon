@@ -1,3 +1,75 @@
+[2.1.36 release]
+
+  Bug fixes:
+
+  * Fixes: NB#93410 (API required for setting IM mode in HildonTouchSelectorEntry)
+  * Fixes: NB#94460 (stackable window's menu is not closed when its window is hidden)
+  * Fixes: NB#97015 (HildonPickerButton shouldn't gtk_dialog_run() the picker dialog)
+  * Fixes: NB#95828 (HildonTextView functionality)
+  * Fixes: NB#96202 (FKB causes HildonPickerButton's value update before the selection is accepted in the dialog)
+  * Fixes: NB#94970 (Hildon Edit Mode Toolbar should use back button graphics from theme)
+  * Fixes: NB#96225 (Dialog titles are not shown according to the values selected in the list picker)
+  * Fixes: NB#96226 (In multiple selection mode Done button is shown sometimes in listpicker)
+  * Fixes: NB#96837 (HildonPannableArea - scroll indicator shown despite the view not being scrollable)
+  * Fixes: NB#95709 (Invalid casts in HildonPannableArea(?))
+  * Fixes: NB#97458 (Pannable area prevents propagation of button press events)
+  * Fixes: NB#97028 (Pannable area updates on every motion event)
+  * Fixes: NB#92849 (Selected item is not always visible when HildonTouchSelector is shown)
+  * Fixes: NB#97908 (Not possible to change the year range in HildonDateSelector/HildonDateButton)
+  * Fixes: NB#98317 (Provide parametarized API for TimePicker widget)
+
+  New API:
+
+  * HildonPickerDialog:
+
+    - ::center-on-show property:
+      Whether to center on the selected items each time the dialog is presented.
+
+  * HildonTouchSelector:
+
+    - hildon_touch_selector_entry_set/get_input_mode: New accessors for
+      the input mode used in a HildonTouchSelectorEntry's entry.
+    - hildon_touch_selector_unselect_all(): Unselect current selection
+      in one of the columns.
+    - hildon_touch_selector_center_on_selected(): Centers on the nearest
+      selected element in each column.
+
+  * HildonDateSelector:
+
+    - ::min-year, ::max-year properties:
+      Allows to define boundaries for the year column in the selector.
+    - hildon_date_selector_new_with_year_range():
+      Create a date selector with custom year boundaries.
+
+  * HildonDateButton:
+
+    - hildon_date_button_new_with_year_range():
+      Create a button with custom year boundaries in its date selector.
+
+  * HildonEditToolbar:
+
+    - ::arrow-width and ::arrow-height style properties:
+      Allow to set the size of the arrow button.
+
+  * HildonTimeSelector:
+
+    - ::minutes-step:
+      Allows to define steps between minutes in the time selector.
+    - hildon_time_selector_new_step():
+      Allows to create a HildonTimeSelector with a custom minutes step.
+
+  * HildonTimeButton:
+
+    - hildon_time_button_new_step():
+      Allows to create a HildonTimeButton with a custom minutes step in
+      its selector.
+
+  Other:
+
+  * Improved documentation.
+  * Many code fixes and memory leaks fixed.
+  * Improved HildonPannableArea responsiveness/performance.
+
 [2.1.34 release]
 
   Bug fixes:
