@@ -1,3 +1,12 @@
+2009-01-20  Claudio Saavedra  <csaavedra@igalia.com>
+
+	* src/hildon-date-selector.c: (+hildon_date_selector_class_init):
+	Install a constructor method.
+	(+hildon_date_selector_construct_ui): construct the widget.
+	(+hildon_date_selector_constructor): new constructor.
+	(+hildon_date_selector_init): move out widget construction code to
+	the new constructor.
+
 2009-01-19  Claudio Saavedra  <csaavedra@igalia.com>
 
 	* src/hildon-date-selector.c: (hildon_date_selector_get_date): Check

@@ -95,6 +95,9 @@ struct _HildonDateSelectorPrivate
   gint current_num_days;
 };
 
+static GObject * hildon_date_selector_constructor (GType                  type,
+                                                   guint                  n_construct_properties,
+                                                   GObjectConstructParam *construct_properties);
 static void hildon_date_selector_finalize (GObject * object);
 
 /* private functions */
@@ -205,6 +208,7 @@ hildon_date_selector_class_init (HildonDateSelectorClass * class)
 
   /* GObject */
   gobject_class->finalize = hildon_date_selector_finalize;
+  gobject_class->constructor = hildon_date_selector_constructor;
 
   /* GtkWidget */
 
@@ -216,31 +220,15 @@ hildon_date_selector_class_init (HildonDateSelectorClass * class)
 }
 
 static void
-hildon_date_selector_init (HildonDateSelector * selector)
+hildon_date_selector_construct_ui (HildonDateSelector *selector)
 {
   GSList *iter = NULL;
   gint current_item = 0;
   HildonTouchSelectorColumn *column = NULL;
 
-  selector->priv = HILDON_DATE_SELECTOR_GET_PRIVATE (selector);
-
-  GTK_WIDGET_SET_FLAGS (GTK_WIDGET (selector), GTK_NO_WINDOW);
-  gtk_widget_set_redraw_on_allocate (GTK_WIDGET (selector), FALSE);
-
-  hildon_touch_selector_set_print_func (HILDON_TOUCH_SELECTOR (selector),
-                                        _custom_print_func);
-
-  _locales_init (selector->priv);
-
-  _init_column_order (selector);
-
-  _get_real_date (&selector->priv->creation_year,
-                  &selector->priv->creation_month, &selector->priv->creation_day);
-
   selector->priv->year_model = _create_year_model (selector);
   selector->priv->month_model = _create_month_model (selector);
   selector->priv->day_model = _create_day_model (selector);
-  selector->priv->current_num_days = 31;
 
   /* We add the columns, checking the locale order */
   iter = selector->priv->column_order;
@@ -268,14 +256,49 @@ hildon_date_selector_init (HildonDateSelector * selector)
       break;
     }
   }
-
-  g_signal_connect (G_OBJECT (selector),
-                    "changed", G_CALLBACK (_manage_selector_change_cb), NULL);
-
   /* By default we should select the current day */
   hildon_date_selector_select_current_date (selector, selector->priv->creation_year,
                                             selector->priv->creation_month,
                                             selector->priv->creation_day);
+}
+
+static GObject *
+hildon_date_selector_constructor (GType                  type,
+                                  guint                  n_construct_properties,
+                                  GObjectConstructParam *construct_properties)
+{
+  GObject *object;
+
+  object = G_OBJECT_CLASS (hildon_date_selector_parent_class)->constructor
+    (type, n_construct_properties, construct_properties);
+
+  hildon_date_selector_construct_ui (HILDON_DATE_SELECTOR (object));
+
+  return object;
+}
+
+static void
+hildon_date_selector_init (HildonDateSelector * selector)
+{
+  selector->priv = HILDON_DATE_SELECTOR_GET_PRIVATE (selector);
+
+  GTK_WIDGET_SET_FLAGS (GTK_WIDGET (selector), GTK_NO_WINDOW);
+  gtk_widget_set_redraw_on_allocate (GTK_WIDGET (selector), FALSE);
+
+  hildon_touch_selector_set_print_func (HILDON_TOUCH_SELECTOR (selector),
+                                        _custom_print_func);
+
+  _locales_init (selector->priv);
+
+  _init_column_order (selector);
+
+  _get_real_date (&selector->priv->creation_year,
+                  &selector->priv->creation_month, &selector->priv->creation_day);
+  selector->priv->current_num_days = 31;
+
+
+  g_signal_connect (G_OBJECT (selector),
+                    "changed", G_CALLBACK (_manage_selector_change_cb), NULL);
 }
 
 static void
