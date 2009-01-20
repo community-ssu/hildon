@@ -1,3 +1,13 @@
+2009-01-20  Alejandro G. Castro  <alex@igalia.com>
+
+	* src/hildon-time-selector.c,
+	(hildon_time_selector_class_init),
+	(hildon_time_selector_constructor),
+	(hildon_time_selector_init): Overrided the construct function when
+	creating the time selector object. We have moved the minutes model
+	handling code from the init to the new construction function:
+	hildon_time_selector_constructor.
+
 2009-01-20  Claudio Saavedra  <csaavedra@igalia.com>
 
 	* examples/hildon-date-button-example.c: (main): Use the new

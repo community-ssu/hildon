@@ -93,6 +93,9 @@ struct _HildonTimeSelectorPrivate
 };
 
 static void hildon_time_selector_finalize (GObject * object);
+static GObject* hildon_time_selector_constructor (GType type,
+                                                  guint n_construct_properties,
+                                                  GObjectConstructParam *construct_params);
 
 /* private functions */
 static GtkTreeModel *_create_hours_model (HildonTimeSelector * selector);
@@ -121,6 +124,7 @@ hildon_time_selector_class_init (HildonTimeSelectorClass * class)
   container_class = (GtkContainerClass *) class;
 
   /* GObject */
+  gobject_class->constructor = hildon_time_selector_constructor;
   gobject_class->finalize = hildon_time_selector_finalize;
 
   /* GtkWidget */
@@ -132,6 +136,35 @@ hildon_time_selector_class_init (HildonTimeSelectorClass * class)
   g_type_class_add_private (object_class, sizeof (HildonTimeSelectorPrivate));
 }
 
+static GObject*
+hildon_time_selector_constructor (GType type,
+                                  guint n_construct_properties,
+                                  GObjectConstructParam *construct_params)
+{
+  GObject *object;
+  HildonTimeSelector *selector;
+  HildonTouchSelectorColumn *column;
+
+  object = (* G_OBJECT_CLASS (hildon_time_selector_parent_class)->constructor)
+    (type, n_construct_properties, construct_params);
+
+  selector = HILDON_TIME_SELECTOR (object);
+
+  /* we need initialization parameters in order to create minute models*/
+  selector->priv->minutes_model = _create_minutes_model (selector);
+
+  column = hildon_touch_selector_append_text_column (HILDON_TOUCH_SELECTOR (selector),
+                                                     selector->priv->minutes_model, TRUE);
+  g_object_set (column, "text-column", 0, NULL);
+
+  /* By default we should select the current day */
+  hildon_time_selector_set_time (selector,
+                                 selector->priv->creation_hours,
+                                 selector->priv->creation_minutes);
+
+  return object;
+
+}
 
 static void
 hildon_time_selector_init (HildonTimeSelector * selector)
@@ -152,15 +185,11 @@ hildon_time_selector_init (HildonTimeSelector * selector)
   _check_ampm_format (selector);
 
   selector->priv->hours_model = _create_hours_model (selector);
-  selector->priv->minutes_model = _create_minutes_model (selector);
 
   column = hildon_touch_selector_append_text_column (HILDON_TOUCH_SELECTOR (selector),
                                                      selector->priv->hours_model, TRUE);
   g_object_set (column, "text-column", 0, NULL);
 
-  column = hildon_touch_selector_append_text_column (HILDON_TOUCH_SELECTOR (selector),
-                                                     selector->priv->minutes_model, TRUE);
-  g_object_set (column, "text-column", 0, NULL);
 
   if (selector->priv->ampm_format) {
     selector->priv->ampm_model = _create_ampm_model (selector);
@@ -172,11 +201,6 @@ hildon_time_selector_init (HildonTimeSelector * selector)
                       "changed", G_CALLBACK (_manage_ampm_selection_cb),
                       NULL);
   }
-
-  /* By default we should select the current day */
-  hildon_time_selector_set_time (selector,
-                                 selector->priv->creation_hours,
-                                 selector->priv->creation_minutes);
 
 }
 
