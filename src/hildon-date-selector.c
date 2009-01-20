@@ -93,6 +93,14 @@ struct _HildonDateSelectorPrivate
   gint creation_year;           /* date at creation time */
 
   gint current_num_days;
+
+  gint min_year;
+  gint max_year;
+};
+
+enum {
+  PROP_MIN_YEAR = 1,
+  PROP_MAX_YEAR,
 };
 
 static GObject * hildon_date_selector_constructor (GType                  type,
@@ -194,6 +202,48 @@ _calc_days (N_int year, N_int mm, N_int dd)
 }
 
 static void
+hildon_date_selector_set_property (GObject      *object,
+                                   guint         prop_id,
+                                   const GValue *value,
+                                   GParamSpec   *pspec)
+{
+  HildonDateSelectorPrivate *priv = HILDON_DATE_SELECTOR (object)->priv;
+
+  switch (prop_id)
+  {
+  case PROP_MIN_YEAR:
+    priv->min_year = g_value_get_int (value);
+    break;
+  case PROP_MAX_YEAR:
+    priv->max_year = g_value_get_int (value);
+    break;
+  default:
+    G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+  }
+}
+
+static void
+hildon_date_selector_get_property (GObject      *object,
+                                   guint         prop_id,
+                                   GValue       *value,
+                                   GParamSpec   *pspec)
+{
+  HildonDateSelectorPrivate *priv = HILDON_DATE_SELECTOR (object)->priv;
+
+  switch (prop_id)
+  {
+  case PROP_MIN_YEAR:
+    g_value_set_int (value, priv->min_year);
+    break;
+  case PROP_MAX_YEAR:
+    g_value_set_int (value, priv->max_year);
+    break;
+  default:
+    G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+  }
+}
+
+static void
 hildon_date_selector_class_init (HildonDateSelectorClass * class)
 {
   GObjectClass *gobject_class;
@@ -208,11 +258,39 @@ hildon_date_selector_class_init (HildonDateSelectorClass * class)
 
   /* GObject */
   gobject_class->finalize = hildon_date_selector_finalize;
+  gobject_class->get_property = hildon_date_selector_get_property;
+  gobject_class->set_property = hildon_date_selector_set_property;
   gobject_class->constructor = hildon_date_selector_constructor;
 
   /* GtkWidget */
 
   /* GtkContainer */
+
+  /* properties */
+
+  g_object_class_install_property (
+    gobject_class,
+    PROP_MIN_YEAR,
+    g_param_spec_int (
+      "min-year",
+      "Minimum year",
+      "The minimum available year in the selector",
+      1900,
+      2100,
+      1970,
+      G_PARAM_CONSTRUCT_ONLY | G_PARAM_READWRITE));
+
+  g_object_class_install_property (
+    gobject_class,
+    PROP_MAX_YEAR,
+    g_param_spec_int (
+      "max-year",
+      "Maximum year",
+      "The maximum available year in the selector",
+      1900,
+      2100,
+      2037,
+      G_PARAM_CONSTRUCT_ONLY | G_PARAM_READWRITE));
 
   /* signals */
 
@@ -469,7 +547,7 @@ _create_year_model (HildonDateSelector * selector)
   real_year = selector->priv->creation_year;
 
   store_years = gtk_list_store_new (2, G_TYPE_STRING, G_TYPE_INT);
-  for (i = real_year - INIT_YEAR; i < real_year + LAST_YEAR; i++) {
+  for (i = selector->priv->min_year; i < selector->priv->max_year + 1; i++) {
     tm.tm_year = i - 1900;
     strftime (label, 255, _("wdgt_va_year"), &tm);
 
@@ -635,7 +713,47 @@ hildon_date_selector_new ()
   return g_object_new (HILDON_TYPE_DATE_SELECTOR, NULL);
 }
 
+/**
+ * hildon_date_selector_new_with_year_range:
+ * @min_year: the minimum available year or -1 to ignore
+ * @max_year: the maximum available year or -1 to ignore
+ *
+ * Creates a new #HildonDateSelector with a specific year range.
+ * If @min_year or @max_year are set to -1, then the default
+ * upper or lower bound will be used, respectively.
+ *
+ * Returns: a new #HildonDateSelector
+ *
+ * Since: 2.2
+ **/
+GtkWidget *
+hildon_date_selector_new_with_year_range (gint min_year,
+                                          gint max_year)
+{
+  GtkWidget *selector;
 
+  g_return_val_if_fail (min_year <= max_year, NULL);
+
+  if (min_year == -1 && min_year == -1) {
+    selector = g_object_new (HILDON_TYPE_DATE_SELECTOR,
+                             NULL);
+  } else if (min_year == -1) {
+    selector = g_object_new (HILDON_TYPE_DATE_SELECTOR,
+                             "max-year", max_year,
+                             NULL);
+  } else if (max_year == -1) {
+    selector = g_object_new (HILDON_TYPE_DATE_SELECTOR,
+                             "min-year", min_year,
+                             NULL);
+  } else {
+    selector = g_object_new (HILDON_TYPE_DATE_SELECTOR,
+                             "min-year", min_year,
+                             "max-year", max_year,
+                             NULL);
+  }
+
+  return selector;
+}
 /**
  * hildon_date_selector_select_current_date:
  * @selector: the #HildonDateSelector
@@ -658,10 +776,10 @@ hildon_date_selector_select_current_date (HildonDateSelector * selector,
   gint max_year = 0;
   gint num_days = 0;
 
-  min_year = selector->priv->creation_year - INIT_YEAR;
-  max_year = selector->priv->creation_year + LAST_YEAR;
+  min_year = selector->priv->min_year;
+  max_year = selector->priv->max_year;
 
-  g_return_val_if_fail (year > min_year && year < max_year, FALSE);
+  g_return_val_if_fail (min_year <= year && year <= max_year, FALSE);
   g_return_val_if_fail (month >= 0 && month < 12, FALSE);
 
   num_days = _month_days (month, year);
@@ -669,8 +787,7 @@ hildon_date_selector_select_current_date (HildonDateSelector * selector,
 
 
   gtk_tree_model_iter_nth_child (selector->priv->year_model, &iter, NULL,
-                                 year - selector->priv->creation_year +
-                                 INIT_YEAR);
+                                 year - min_year);
   hildon_touch_selector_select_iter (HILDON_TOUCH_SELECTOR (selector),
                                      selector->priv->year_column, &iter,
                                      FALSE);

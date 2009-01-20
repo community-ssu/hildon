@@ -1,5 +1,19 @@
 2009-01-20  Claudio Saavedra  <csaavedra@igalia.com>
 
+	* src/hildon-date-selector.c:
+	(+hildon_date_selector_set_property),
+	(+hildon_date_selector_get_property),
+	(hildon_date_selector_class_init): Install new properties "min-year"
+	and "max-year" to define boundaries for the year column.
+	(_create_year_model): Use the boundary properties to populate the model.
+	(+hildon_date_selector_new_with_year_range): New public method to
+	create a HildonDateSelector with a user defined year range.
+	(hildon_date_selector_select_current_date): Use the new boundaries to
+	calculate the iterator of current year.
+	* src/hildon-date-selector.h: Add the new public method definition.
+
+2009-01-20  Claudio Saavedra  <csaavedra@igalia.com>
+
 	* src/hildon-date-selector.c: (+hildon_date_selector_class_init):
 	Install a constructor method.
 	(+hildon_date_selector_construct_ui): construct the widget.

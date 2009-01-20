@@ -72,6 +72,10 @@ hildon_date_selector_get_type                   (void) G_GNUC_CONST;
 GtkWidget*
 hildon_date_selector_new                        (void);
 
+GtkWidget *
+hildon_date_selector_new_with_year_range        (gint min_year,
+                                                 gint max_year);
+
 /* date management */
 gboolean
 hildon_date_selector_select_month               (HildonDateSelector *selector,
