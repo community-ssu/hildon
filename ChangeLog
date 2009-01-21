@@ -1,3 +1,11 @@
+2009-01-21  Alberto Garcia  <agarcia@igalia.com>
+
+	* src/hildon-window.c (hildon_window_update_topmost): Fix warning
+	that happens if the window hasn't been realized yet.
+
+	Fixes: NB#95395 (prestarted applications show GLIB WARNING ** Gdk
+	- gdkdrawable-x11.c:878 drawable is not a pixmap or window)
+
 2009-01-20  Alberto Garcia  <agarcia@igalia.com>
 
 	* src/hildon-app-menu.c (hildon_app_menu_class_init)

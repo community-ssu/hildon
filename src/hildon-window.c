@@ -1326,14 +1326,14 @@ hildon_window_update_topmost                    (HildonWindow *self,
 {
     HildonWindowPrivate *priv = HILDON_WINDOW_GET_PRIVATE (self);
 
-    Window my_window;
+    GdkWindow *my_window;
 
     g_return_if_fail (HILDON_IS_WINDOW (self));
     g_assert (priv);
 
-    my_window = GDK_WINDOW_XID (GTK_WIDGET (self)->window);
+    my_window = GTK_WIDGET (self)->window;
 
-    if (window_id == my_window)
+    if (my_window && window_id == GDK_WINDOW_XID (my_window))
     {
         if (! priv->is_topmost)
         {
