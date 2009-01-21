@@ -1,3 +1,21 @@
+2009-01-21  Claudio Saavedra  <csaavedra@igalia.com>
+
+	* src/hildon-calendar-popup.c: (hildon_calendar_popup_init):
+	* src/hildon-color-chooser-dialog.c:
+	(hildon_color_chooser_dialog_init):
+	* src/hildon-font-selection-dialog.c:
+	(hildon_font_selection_dialog_init),
+	(hildon_font_selection_dialog_show_preview):
+	* src/hildon-get-password-dialog.c:
+	* src/hildon-login-dialog.c:
+	* src/hildon-set-password-dialog.c:
+	* src/hildon-sort-dialog.c: (hildon_sort_dialog_init):
+	* src/hildon-time-picker.c: (hildon_time_picker_init):
+
+	Remove obsolete logical string IDs and update to the appropriate ones.
+
+	Fixes: NB#98609 (Use wdgt_ strings for all hildon dialog buttons)
+
 2009-01-21  Alberto Garcia  <agarcia@igalia.com>
 
 	* src/hildon-window.c (hildon_window_update_topmost): Fix warning

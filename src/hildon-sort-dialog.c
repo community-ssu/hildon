@@ -300,7 +300,7 @@ hildon_sort_dialog_init                         (HildonSortDialog * dialog)
 
     /* Create the OK/CANCEL buttons */
     (void) gtk_dialog_add_button (GTK_DIALOG(dialog),
-            _("ckdg_bd_sort_dialog_ok"),
+            _("wdgt_bd_sort"),
             GTK_RESPONSE_OK);
     (void) gtk_dialog_add_button (GTK_DIALOG(dialog),
             _("ckdg_bd_sort_dialog_cancel"),

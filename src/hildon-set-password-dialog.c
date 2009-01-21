@@ -67,7 +67,7 @@
 
 #define                                         HILDON_SET_PASSWORD_DIALOG_VERIFY_PASSWORD "ecdg_fi_set_passwd_confirm"
 
-#define                                         HILDON_SET_PASSWORD_DIALOG_OK "ecdg_bd_set_password_dialog_ok"
+#define                                         HILDON_SET_PASSWORD_DIALOG_OK "wdgt_bd_done"
 
 #define                                         HILDON_SET_PASSWORD_DIALOG_CANCEL "ecdg_bd_set_password_dialog_cancel"
 

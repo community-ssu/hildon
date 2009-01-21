@@ -755,7 +755,7 @@ hildon_font_selection_dialog_init               (HildonFontSelectionDialog *font
 
     /* Add dialog buttons */
     gtk_dialog_add_button (GTK_DIALOG (fontseldiag),
-            _("ecdg_bd_font_dialog_ok"),
+            _("wdgt_bd_done"),
             GTK_RESPONSE_OK);
 
     preview_button = gtk_button_new_with_label (_("ecdg_bd_font_dialog_preview"));
@@ -1139,7 +1139,7 @@ hildon_font_selection_dialog_show_preview       (HildonFontSelectionDialog *font
                 GTK_DIALOG_MODAL |
                 GTK_DIALOG_DESTROY_WITH_PARENT |
                 GTK_DIALOG_NO_SEPARATOR,
-                _("ecdg_bd_font_dialog_ok"),
+                _("wdgt_bd_done"),
                 GTK_RESPONSE_ACCEPT,
                 NULL);
 

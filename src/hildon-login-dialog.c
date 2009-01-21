@@ -84,7 +84,7 @@ hildon_login_dialog_get_property                (GObject *object,
 
 #define                                         HILDON_LOGIN_DIALOG_PASSWORD "frw_ti_get_user_name_and_pwd_enter_pwd"
 
-#define                                         HILDON_LOGIN_DIALOG_OK "frw_bd_get_user_name_and_pwd_ok"
+#define                                         HILDON_LOGIN_DIALOG_OK "wdgt_bd_done"
 
 #define                                         _(String) dgettext("hildon-libs", String)
 

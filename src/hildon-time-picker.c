@@ -466,7 +466,7 @@ hildon_time_picker_init                         (HildonTimePicker *picker)
     gtk_window_set_modal (GTK_WINDOW (dialog), FALSE);
     /* And final dialog packing */
     gtk_dialog_set_has_separator (dialog, FALSE);
-    gtk_dialog_add_button (dialog, _("ecdg_bd_time_picker_close"),
+    gtk_dialog_add_button (dialog, _("wdgt_bd_done"),
             GTK_RESPONSE_OK);
 
     gtk_container_add (GTK_CONTAINER (maintocenter), GTK_WIDGET(table));

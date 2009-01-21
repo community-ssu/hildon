@@ -91,7 +91,7 @@
 
 #define                                         HILDON_GET_PASSWORD_DIALOG_PASSWORD "ecdg_fi_get_old_pwd_enter_pwd"
 
-#define                                         HILDON_GET_PASSWORD_DIALOG_OK "ecdg_bd_get_old_password_dialog_ok"
+#define                                         HILDON_GET_PASSWORD_DIALOG_OK "wdgt_bd_done"
 
 #define                                         HILDON_GET_PASSWORD_DIALOG_CANCEL "ecdg_bd_get_old_password_dialog_cancel"
 
@@ -99,7 +99,7 @@
 
 #define                                         HILDON_GET_PASSWORD_VERIFY_DIALOG_PASSWORD "ecdg_fi_verify_pwd_enter_pwd"
 
-#define                                         HILDON_GET_PASSWORD_VERIFY_DIALOG_OK "ecdg_bd_verify_password_dialog_ok"
+#define                                         HILDON_GET_PASSWORD_VERIFY_DIALOG_OK "wdgt_bd_done"
 
 #define                                         HILDON_GET_PASSWORD_VERIFY_DIALOG_CANCEL "ecdg_bd_verify_password_dialog_cancel"
 
