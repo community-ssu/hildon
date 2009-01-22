@@ -1,3 +1,20 @@
+2009-01-22  Alejandro G. Castro  <alex@igalia.com>
+
+	* src/hildon-pannable-area.c,
+	(hildon_pannable_area_init),
+	(hildon_pannable_area_realize),
+	(hildon_pannable_area_size_allocate),
+	(hildon_pannable_area_map),
+	(hildon_pannable_area_unmap),
+	(hildon_pannable_draw_vscroll),
+	(hildon_pannable_draw_hscroll),
+	(hildon_pannable_area_expose_event),
+	(hildon_pannable_area_refresh): Added a new GdkWindow to the
+	pannable are to avoid the expose events go to the window and
+	redraw the window. We save this way that part of the stack and the
+	paint_boxes. We had to change the positions of the elements when
+	drawing.
+
 2009-01-21  Claudio Saavedra  <csaavedra@igalia.com>
 
 	* src/hildon-calendar-popup.c: (hildon_calendar_popup_init):
