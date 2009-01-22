@@ -2,6 +2,15 @@
 
 	Merged from trunk:
 
+	* src/hildon-time-selector.c: (hildon_time_selector_constructor),
+	(hildon_time_selector_init): Move the construction of the hours and
+	ampm columns to the constructor to preserve the order the columns
+	are appended.
+
+2009-01-22  Claudio Saavedra  <csaavedra@igalia.com>
+
+	Merged from trunk:
+
 	* src/hildon-picker-dialog.c:
 	(hildon_picker_dialog_class_init): Connect a realize method.
 	(+hildon_picker_dialog_realize): Setup the interaction mode here

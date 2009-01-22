@@ -176,6 +176,13 @@ hildon_time_selector_constructor (GType type,
 
   selector = HILDON_TIME_SELECTOR (object);
 
+  selector->priv->hours_model = _create_hours_model (selector);
+
+  column = hildon_touch_selector_append_text_column (HILDON_TOUCH_SELECTOR (selector),
+                                                     selector->priv->hours_model, TRUE);
+  g_object_set (column, "text-column", 0, NULL);
+
+
   /* we need initialization parameters in order to create minute models*/
   selector->priv->minutes_step = selector->priv->minutes_step ? selector->priv->minutes_step : 1;
 
@@ -184,6 +191,18 @@ hildon_time_selector_constructor (GType type,
   column = hildon_touch_selector_append_text_column (HILDON_TOUCH_SELECTOR (selector),
                                                      selector->priv->minutes_model, TRUE);
   g_object_set (column, "text-column", 0, NULL);
+
+  if (selector->priv->ampm_format) {
+    selector->priv->ampm_model = _create_ampm_model (selector);
+
+    hildon_touch_selector_append_text_column (HILDON_TOUCH_SELECTOR (selector),
+                                              selector->priv->ampm_model, TRUE);
+
+    g_signal_connect (G_OBJECT (selector),
+                      "changed", G_CALLBACK (_manage_ampm_selection_cb),
+                      NULL);
+  }
+
 
   /* By default we should select the current day */
   hildon_time_selector_set_time (selector,
@@ -211,24 +230,6 @@ hildon_time_selector_init (HildonTimeSelector * selector)
                   &selector->priv->creation_minutes);
 
   _check_ampm_format (selector);
-
-  selector->priv->hours_model = _create_hours_model (selector);
-
-  column = hildon_touch_selector_append_text_column (HILDON_TOUCH_SELECTOR (selector),
-                                                     selector->priv->hours_model, TRUE);
-  g_object_set (column, "text-column", 0, NULL);
-
-
-  if (selector->priv->ampm_format) {
-    selector->priv->ampm_model = _create_ampm_model (selector);
-
-    hildon_touch_selector_append_text_column (HILDON_TOUCH_SELECTOR (selector),
-                                              selector->priv->ampm_model, TRUE);
-
-    g_signal_connect (G_OBJECT (selector),
-                      "changed", G_CALLBACK (_manage_ampm_selection_cb),
-                      NULL);
-  }
 
 }
 
