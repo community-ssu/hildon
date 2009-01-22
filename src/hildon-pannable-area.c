@@ -355,7 +355,7 @@ hildon_pannable_area_class_init (HildonPannableAreaClass * klass)
 				   g_param_spec_uint ("sps",
 						      "Scrolls per second",
 						      "Amount of scroll events to generate per second.",
-						      0, G_MAXUINT, 25,
+						      0, G_MAXUINT, 15,
 						      G_PARAM_READWRITE |
 						      G_PARAM_CONSTRUCT));
 
