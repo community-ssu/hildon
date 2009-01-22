@@ -98,6 +98,9 @@ static gboolean
 requires_done_button                            (HildonPickerDialog * dialog);
 
 static void
+prepare_action_area                             (HildonPickerDialog *dialog);
+
+static void
 setup_interaction_mode                          (HildonPickerDialog * dialog);
 
 static void
@@ -275,6 +278,7 @@ hildon_picker_dialog_show                       (GtkWidget *widget)
   }
 
   _save_current_selection (dialog);
+  prepare_action_area (dialog);
   setup_interaction_mode (dialog);
 
   GTK_WIDGET_CLASS (hildon_picker_dialog_parent_class)->show (widget);
@@ -331,6 +335,7 @@ on_selector_columns_changed (HildonTouchSelector * selector, gpointer userdata)
 
   dialog = HILDON_PICKER_DIALOG (userdata);
 
+  prepare_action_area (dialog);
   setup_interaction_mode (dialog);
 
   _dialog_update_title (selector, GTK_WINDOW (dialog));
@@ -464,6 +469,18 @@ requires_done_button (HildonPickerDialog * dialog)
 }
 
 static void
+prepare_action_area (HildonPickerDialog *dialog)
+{
+  if (requires_done_button (dialog)) {
+    gtk_dialog_set_has_separator (GTK_DIALOG (dialog), TRUE);
+    gtk_widget_show (GTK_DIALOG (dialog)->action_area);
+  } else {
+    gtk_dialog_set_has_separator (GTK_DIALOG (dialog), FALSE);
+    gtk_widget_hide (GTK_DIALOG (dialog)->action_area);
+  }
+}
+
+static void
 setup_interaction_mode (HildonPickerDialog * dialog)
 {
   if (dialog->priv->signal_changed_id) {
@@ -472,16 +489,12 @@ setup_interaction_mode (HildonPickerDialog * dialog)
   }
 
   if (requires_done_button (dialog)) {
-    gtk_dialog_set_has_separator (GTK_DIALOG (dialog), TRUE);
-    gtk_widget_show (GTK_DIALOG (dialog)->action_area);
         /* update the title */
     dialog->priv->signal_changed_id =
       g_signal_connect (G_OBJECT (dialog->priv->selector), "changed",
                         G_CALLBACK (_update_title_on_selector_changed_cb),
                         dialog);
   } else {
-    gtk_dialog_set_has_separator (GTK_DIALOG (dialog), FALSE);
-    gtk_widget_hide (GTK_DIALOG (dialog)->action_area);
     dialog->priv->signal_changed_id =
       g_signal_connect (G_OBJECT (dialog->priv->selector), "changed",
                         G_CALLBACK (_select_on_selector_changed_cb), dialog);
@@ -545,6 +558,7 @@ _hildon_picker_dialog_set_selector (HildonPickerDialog * dialog,
 
   gtk_widget_show (dialog->priv->selector);
 
+  prepare_action_area (dialog);
   setup_interaction_mode (dialog);
 
   dialog->priv->signal_columns_changed_id = g_signal_connect (G_OBJECT (dialog->priv->selector),

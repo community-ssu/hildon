@@ -1,3 +1,15 @@
+2009-01-22  Claudio Saavedra  <csaavedra@igalia.com>
+
+	* src/hildon-picker-dialog.c: (hildon_picker_dialog_show),
+	(on_selector_columns_changed), (requires_done_button),
+	(+prepare_action_area), (setup_interaction_mode),
+	(_hildon_picker_dialog_set_selector):
+
+	Split the interaction mode setup into preparation of the
+	action area (prepare_action_area()) and the connection of
+	the signals in setup_interaction_mode() and update the code to
+	reflect this.
+
 2009-01-22  Alejandro G. Castro  <alex@igalia.com>
 
 	* src/hildon-pannable-area.c,
