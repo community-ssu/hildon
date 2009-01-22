@@ -1,5 +1,21 @@
 2009-01-22  Claudio Saavedra  <csaavedra@igalia.com>
 
+	* src/hildon-picker-dialog.c:
+	(hildon_picker_dialog_class_init): Connect a realize method.
+	(+hildon_picker_dialog_realize): Setup the interaction mode here
+	and not before.
+	(hildon_picker_dialog_show): Do not call setup_interaction_mode()
+	yet, do it during the realize instead.
+	(_on_dialog_response):
+	(_hildon_picker_dialog_set_selector): Do not call setup_interaction_mode()
+	if the widget is not realized, to avoid the dialog response before it
+	is even shown.
+
+	Avoid premature responses in the HildonPickerDialog that can cause it
+	to be hidden before it's even shown.
+
+2009-01-22  Claudio Saavedra  <csaavedra@igalia.com>
+
 	* src/hildon-picker-dialog.c: (hildon_picker_dialog_show),
 	(on_selector_columns_changed), (requires_done_button),
 	(+prepare_action_area), (setup_interaction_mode),

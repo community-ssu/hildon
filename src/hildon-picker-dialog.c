@@ -93,6 +93,9 @@ hildon_picker_dialog_finalize                   (GObject *object);
 static void
 hildon_picker_dialog_show                       (GtkWidget *widget);
 
+static void
+hildon_picker_dialog_realize                    (GtkWidget *widget);
+
 /* private functions */
 static gboolean
 requires_done_button                            (HildonPickerDialog * dialog);
@@ -153,6 +156,7 @@ hildon_picker_dialog_class_init (HildonPickerDialogClass * class)
 
   /* GtkWidget */
   widget_class->show = hildon_picker_dialog_show;
+  widget_class->realize = hildon_picker_dialog_realize;
 
   /* HildonPickerDialog */
   class->set_selector = _hildon_picker_dialog_set_selector;
@@ -279,9 +283,16 @@ hildon_picker_dialog_show                       (GtkWidget *widget)
 
   _save_current_selection (dialog);
   prepare_action_area (dialog);
-  setup_interaction_mode (dialog);
 
   GTK_WIDGET_CLASS (hildon_picker_dialog_parent_class)->show (widget);
+}
+
+static void
+hildon_picker_dialog_realize (GtkWidget *widget)
+{
+  setup_interaction_mode (HILDON_PICKER_DIALOG (widget));
+
+  GTK_WIDGET_CLASS (hildon_picker_dialog_parent_class)->realize (widget);
 }
 
 /* ------------------------------ PRIVATE METHODS ---------------------------- */
@@ -336,7 +347,9 @@ on_selector_columns_changed (HildonTouchSelector * selector, gpointer userdata)
   dialog = HILDON_PICKER_DIALOG (userdata);
 
   prepare_action_area (dialog);
-  setup_interaction_mode (dialog);
+  if (GTK_WIDGET_REALIZED (dialog)) {
+    setup_interaction_mode (dialog);
+  }
 
   _dialog_update_title (selector, GTK_WINDOW (dialog));
 }
@@ -559,7 +572,9 @@ _hildon_picker_dialog_set_selector (HildonPickerDialog * dialog,
   gtk_widget_show (dialog->priv->selector);
 
   prepare_action_area (dialog);
-  setup_interaction_mode (dialog);
+  if (GTK_WIDGET_REALIZED (dialog)) {
+    setup_interaction_mode (dialog);
+  }
 
   dialog->priv->signal_columns_changed_id = g_signal_connect (G_OBJECT (dialog->priv->selector),
                                                               "columns-changed",
