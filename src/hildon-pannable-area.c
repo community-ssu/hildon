@@ -1650,6 +1650,9 @@ hildon_pannable_axis_scroll (HildonPannableArea *area,
         gtk_widget_queue_resize (GTK_WIDGET (area));
       }
     } else {
+
+      gint overshot_dist_old = *overshot_dist;
+
       if (*overshot_dist > 0) {
         *overshot_dist = CLAMP ((*overshot_dist) + inc, 0, overshoot_max);
       } else if (*overshot_dist < 0) {
@@ -1658,7 +1661,9 @@ hildon_pannable_axis_scroll (HildonPannableArea *area,
         *overshooting = 0;
         gtk_adjustment_set_value (adjust, dist);
       }
-      gtk_widget_queue_resize (GTK_WIDGET (area));
+
+      if (*overshot_dist != overshot_dist_old)
+        gtk_widget_queue_resize (GTK_WIDGET (area));
     }
   }
 }

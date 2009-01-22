@@ -1,6 +1,12 @@
 2009-01-22  Alejandro G. Castro  <alex@igalia.com>
 
 	* src/hildon-pannable-area.c,
+	(hildon_pannable_axis_scroll): Avoid resize if we already have
+	reached overshoot_max.
+
+2009-01-22  Alejandro G. Castro  <alex@igalia.com>
+
+	* src/hildon-pannable-area.c,
 	(hildon_pannable_area_init),
 	(hildon_pannable_area_realize),
 	(hildon_pannable_area_size_allocate),
