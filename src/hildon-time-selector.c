@@ -431,10 +431,10 @@ _manage_ampm_selection_cb (HildonTouchSelector * touch_selector,
   g_return_if_fail (HILDON_IS_TIME_SELECTOR (touch_selector));
   selector = HILDON_TIME_SELECTOR (touch_selector);
 
-  if (num_column == COLUMN_AMPM) {
-    hildon_touch_selector_get_selected (HILDON_TOUCH_SELECTOR (selector),
-                                        COLUMN_AMPM, &iter);
-    gtk_tree_model_get (selector->priv->ampm_model, &iter, COLUMN_INT, &pm, -1);
+  if (num_column == COLUMN_AMPM &&
+      hildon_touch_selector_get_selected (HILDON_TOUCH_SELECTOR (selector),
+					  COLUMN_AMPM, &iter)) {
+     gtk_tree_model_get (selector->priv->ampm_model, &iter, COLUMN_INT, &pm, -1);
 
     selector->priv->pm = pm;
   }

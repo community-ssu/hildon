@@ -1,5 +1,11 @@
 2009-01-23  Claudio Saavedra  <csaavedra@igalia.com>
 
+	* src/hildon-time-selector.c: (_manage_ampm_selection_cb): Verify
+	that the selection is not empty before attempting to retrieve the
+	current ampm selection.
+
+2009-01-23  Claudio Saavedra  <csaavedra@igalia.com>
+
 	* src/hildon-picker-button.c:
 	(hildon_picker_button_on_dialog_response): Directly update the
 	button contents when required instead of calling _selection_changed.
