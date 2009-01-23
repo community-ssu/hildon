@@ -69,6 +69,7 @@ libhildon_@API_VERSION_MAJOR@_la_SOURCES = \
 		hildon-window.c 			\
 		hildon-stackable-window.c 		\
 		hildon-window-stack.c 			\
+		hildon-animation-actor.c 		\
 		hildon-program.c 			\
 		hildon-code-dialog.c 			\
 		hildon-enum-types.c 			\
@@ -139,6 +140,7 @@ libhildon_@API_VERSION_MAJOR@_public_headers = \
 		hildon-window.h 			\
 		hildon-stackable-window.h 		\
 		hildon-window-stack.h	 		\
+		hildon-animation-actor.h 		\
 		hildon-wizard-dialog.h			\
 		hildon-calendar.h			\
 		hildon-pannable-area.h			\
@@ -186,6 +188,7 @@ noinst_HEADERS = hildon-banner-private.h 		\
 		hildon-window-private.h 		\
 		hildon-stackable-window-private.h 	\
 		hildon-window-stack-private.h	 	\
+		hildon-animation-actor-private.h 	\
 		hildon-wizard-dialog-private.h		\
 		hildon-calendar-private.h		\
 		hildon-app-menu-private.h		\

@@ -1,15 +1,13 @@
-2009-01-23  Alberto Garcia  <agarcia@igalia.com>
+2009-01-23  Alejandro G. Castro  <alex@igalia.com>
 
-	* src/hildon-window-stack-private.h
-	* src/hildon-window-stack.c
-	* src/hildon-stackable-window.c (hildon_stackable_window_show):
-	Avoid calling gtk_widget_show() again indirectly from
-	hildon_stackable_window_show()
+	Patch contributed by: Artem Egorkine <ext-artem.egorkine@nokia.com>
 
-2009-01-23  Alberto Garcia  <agarcia@igalia.com>
-
-	* src/hildon-time-selector.c (hildon_time_selector_init): Remove
-	unused variable.
+	* src/Makefile.am,
+	* src/hildon.h,
+	* src/hildon-animation-actor.c,
+	* src/hildon-animation-actor.h: Added the animation actor class,
+	this widget represents an animation actor for WM-assisted
+	animation effects in the Hildon framework.
 
 2009-01-22  Claudio Saavedra  <csaavedra@igalia.com>
 
