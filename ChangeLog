@@ -1,3 +1,9 @@
+2009-01-23  Alberto Garcia  <agarcia@igalia.com>
+
+	* src/hildon-banner.c (hildon_banner_button_press_event): Hide
+	banners instead of destroying them when they receive a button
+	press.
+
 2009-01-23  Alejandro G. Castro  <alex@igalia.com>
 
 	Reverted commit 34028, it was causing regressions, probably the

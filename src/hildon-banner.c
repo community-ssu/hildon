@@ -546,15 +546,18 @@ static gboolean
 hildon_banner_button_press_event                (GtkWidget* widget,
 						 GdkEventButton* event)
 {
-	gboolean result = simulate_close (widget);
+    gboolean result = simulate_close (widget);
 
-	if (!result) {
-		/* signal emission not stopped - basically behave like
-		 * gtk_main_do_event() for a delete event */
-		gtk_widget_destroy (widget);
-	}
+    if (!result) {
+        /* signal emission not stopped - basically behave like
+         * gtk_main_do_event() for a delete event, but just hide the
+         * banner instead of destroying it, as it is already meant to
+         * be destroyed by hildon_banner_timeout() (if it's timed) or
+         * the application (if it's not). */
+        gtk_widget_hide (widget);
+    }
 
-	return result;
+    return result;
 }
 
 /* We start the timer for timed notifications after the window appears on screen */
