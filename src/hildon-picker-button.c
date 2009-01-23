@@ -199,11 +199,22 @@ hildon_picker_button_on_dialog_response (GtkDialog *dialog,
                                          gint       response,
                                          gpointer   user_data)
 {
-  gtk_widget_hide (GTK_WIDGET (dialog));
+  HildonPickerButton *button;
+  HildonPickerButtonPrivate *priv;
+  gchar *value;
+
+  button = HILDON_PICKER_BUTTON (user_data);
+  priv = GET_PRIVATE (button);
 
   if (response == GTK_RESPONSE_OK) {
-    _selection_changed (HILDON_PICKER_BUTTON (user_data));
+    value = hildon_touch_selector_get_current_text
+	    (HILDON_TOUCH_SELECTOR (priv->selector));
+    hildon_button_set_value (HILDON_BUTTON (button), value);
+    g_free (value);
+    g_signal_emit (button, picker_button_signals[VALUE_CHANGED], 0);
   }
+
+  gtk_widget_hide (GTK_WIDGET (dialog));
 }
 
 static void

@@ -1,3 +1,9 @@
+2009-01-23  Claudio Saavedra  <csaavedra@igalia.com>
+
+	* src/hildon-picker-button.c:
+	(hildon_picker_button_on_dialog_response): Directly update the
+	button contents when required instead of calling _selection_changed.
+
 2009-01-23  Alberto Garcia  <agarcia@igalia.com>
 
 	* src/hildon-program.c (hildon_program_update_top_most): Update
