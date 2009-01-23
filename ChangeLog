@@ -1,3 +1,11 @@
+2009-01-23  Alberto Garcia  <agarcia@igalia.com>
+
+	* src/hildon-program.c (hildon_program_update_top_most): Update
+	'is-topmost' property also when wm_hints is not set.
+
+	Fixes: NB#98383 (is-topmost signal is not emitted when task
+	switcher is clicked.)
+
 2009-01-23  Alejandro G. Castro  <alex@igalia.com>
 
 	Patch contributed by: Artem Egorkine <ext-artem.egorkine@nokia.com>
