@@ -25,6 +25,11 @@
 	Avoid calling gtk_widget_show() again indirectly from
 	hildon_stackable_window_show()
 
+2009-01-23  Alberto Garcia  <agarcia@igalia.com>
+
+	* src/hildon-time-selector.c (hildon_time_selector_init): Remove
+	unused variable.
+
 2009-01-22  Claudio Saavedra  <csaavedra@igalia.com>
 
 	* src/hildon-time-selector.c: (hildon_time_selector_constructor),
