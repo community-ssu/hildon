@@ -28,6 +28,10 @@ G_BEGIN_DECLS
 void G_GNUC_INTERNAL
 hildon_window_stack_remove                      (HildonStackableWindow *win);
 
+gboolean G_GNUC_INTERNAL
+_hildon_window_stack_do_push                    (HildonWindowStack     *stack,
+                                                 HildonStackableWindow *win);
+
 G_END_DECLS
 
 #endif                                          /* __HILDON_WINDOW_STACK_PRIVATE_H__ */

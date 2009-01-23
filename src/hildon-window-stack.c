@@ -207,7 +207,11 @@ hildon_window_stack_peek                        (HildonWindowStack *stack)
     return win;
 }
 
-static gboolean
+/* This function does everything to push a window to the stack _but_
+ * actually calling gtk_widget_show().
+ * It's up to each specific push function to decide the order in which
+ * to show windows. */
+gboolean G_GNUC_INTERNAL
 _hildon_window_stack_do_push                    (HildonWindowStack     *stack,
                                                  HildonStackableWindow *win)
 {

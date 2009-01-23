@@ -1,5 +1,13 @@
 2009-01-23  Alberto Garcia  <agarcia@igalia.com>
 
+	* src/hildon-window-stack-private.h
+	* src/hildon-window-stack.c
+	* src/hildon-stackable-window.c (hildon_stackable_window_show):
+	Avoid calling gtk_widget_show() again indirectly from
+	hildon_stackable_window_show()
+
+2009-01-23  Alberto Garcia  <agarcia@igalia.com>
+
 	* src/hildon-time-selector.c (hildon_time_selector_init): Remove
 	unused variable.
 

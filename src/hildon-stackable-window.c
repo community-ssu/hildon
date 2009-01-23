@@ -253,10 +253,10 @@ hildon_stackable_window_show                    (GtkWidget *widget)
     /* Stack the window if not already stacked */
     if (priv->stack == NULL) {
         HildonWindowStack *stack = hildon_window_stack_get_default ();
-        hildon_window_stack_push_1 (stack, HILDON_STACKABLE_WINDOW (widget));
-    } else {
-        GTK_WIDGET_CLASS (hildon_stackable_window_parent_class)->show (widget);
+        _hildon_window_stack_do_push (stack, HILDON_STACKABLE_WINDOW (widget));
     }
+
+    GTK_WIDGET_CLASS (hildon_stackable_window_parent_class)->show (widget);
 }
 
 static void
