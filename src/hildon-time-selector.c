@@ -216,8 +216,6 @@ hildon_time_selector_constructor (GType type,
 static void
 hildon_time_selector_init (HildonTimeSelector * selector)
 {
-  HildonTouchSelectorColumn *column = NULL;
-
   selector->priv = HILDON_TIME_SELECTOR_GET_PRIVATE (selector);
 
   GTK_WIDGET_SET_FLAGS (GTK_WIDGET (selector), GTK_NO_WINDOW);
