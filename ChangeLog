@@ -1,3 +1,10 @@
+2009-01-23  Alejandro G. Castro  <alex@igalia.com>
+
+	Reverted commit 34028, it was causing regressions, probably the
+	topmost condition is not correct, we have to check it in more
+	detail. We have reponed the bug: NB#97458 (Pannable area prevents
+	propagation of button press events)
+
 2009-01-23  Claudio Saavedra  <csaavedra@igalia.com>
 
 	* src/hildon-time-selector.c: (_manage_ampm_selection_cb): Verify
