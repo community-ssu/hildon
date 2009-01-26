@@ -17,7 +17,6 @@ libhildon (2.1.36-1) unstable; urgency=low
   * Fixes: NB#96226 (In multiple selection mode Done button is shown sometimes in listpicker)
   * Fixes: NB#96837 (HildonPannableArea - scroll indicator shown despite the view not being scrollable)
   * Fixes: NB#95709 (Invalid casts in HildonPannableArea(?))
-  * Fixes: NB#97458 (Pannable area prevents propagation of button press events)
   * Fixes: NB#97028 (Pannable area updates on every motion event)
   * Fixes: NB#92849 (Selected item is not always visible when HildonTouchSelector is shown)
   * Fixes: NB#97908 (Not possible to change the year range in HildonDateSelector/HildonDateButton)
