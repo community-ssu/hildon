@@ -1,3 +1,23 @@
+[2.1.38 release]
+
+  Bug fixes:
+
+  * Fixes: NB#98609 (Use wdgt_ strings for all hildon dialog buttons)
+  * Fixes: NB#98537 (Device hangs in account settings dialog)
+  * Fixes: NB#95395 (prestarted applications show GLIB WARNING ** Gdk
+    - gdkdrawable-x11.c:878 drawable is not a pixmap or window)
+  * Fixes: NB#98383 (is-topmost signal is not emitted when task
+    switcher is clicked.)
+
+  New API:
+
+  * New HildonAnimationActor widget (Artem Egorkine)
+
+  Other:
+
+  * Reverted change in pannable area that caused irresponsive applications.
+  * Pannable Area misc. improvements.
+
 [2.1.36 release]
 
   Bug fixes:

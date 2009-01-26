@@ -1,8 +1,26 @@
-libhildon (2.1.37-1~unreleased) unstable; urgency=low
+libhildon (2.1.38-1) unstable; urgency=low
 
   * fix DEB_BUILD_OPTIONS=nodocs
 
- -- Claudio Saavedra <csaavedra@igalia.com>  Mon, 26 Jan 2009 10:51:25 +0200
+  Bug fixes:
+
+  * Fixes: NB#98609 (Use wdgt_ strings for all hildon dialog buttons)
+  * Fixes: NB#98537 (Device hangs in account settings dialog)
+  * Fixes: NB#95395 (prestarted applications show GLIB WARNING ** Gdk
+    - gdkdrawable-x11.c:878 drawable is not a pixmap or window)
+  * Fixes: NB#98383 (is-topmost signal is not emitted when task
+    switcher is clicked.)
+
+  New API:
+
+  * New HildonAnimationActor widget (Artem Egorkine)
+
+  Other:
+
+  * Reverted change in pannable area that caused irresponsive applications.
+  * Pannable Area misc. improvements.
+
+ -- Claudio Saavedra <csaavedra@igalia.com>  Mon, 26 Jan 2009 10:59:00 +0200
 
 libhildon (2.1.36-2) unstable; urgency=low
 
