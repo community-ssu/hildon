@@ -1,3 +1,16 @@
+2009-01-26  Alberto Garcia  <agarcia@igalia.com>
+
+	* src/hildon-banner.h
+	* src/hildon-banner.c (hildon_banner_show_information)
+	(hildon_banner_show_informationf)
+	(hildon_banner_show_information_with_markup): Update documentation
+	to reflect that the icon_name parameter is not used anymore.
+	(hildon_banner_set_icon, hildon_banner_set_icon_from_file):
+	Remove all code from these functions and mark them as deprecated.
+	(hildon_banner_show_progress): Mark as deprecated.
+
+	Fixes: NB#98855 (HildonBanner uses qgn_note_infoprint)
+
 2009-01-26  Alejandro G. Castro  <alex@igalia.com>
 
 	* src/hildon-pannable-area.c,

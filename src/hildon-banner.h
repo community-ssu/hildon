@@ -78,10 +78,12 @@ hildon_banner_show_animation                    (GtkWidget *widget,
                                                  const gchar *animation_name,
                                                  const gchar *text);
 
+#ifndef HILDON_DISABLE_DEPRECATED
 GtkWidget*
 hildon_banner_show_progress                     (GtkWidget *widget, 
                                                  GtkProgressBar *bar,
                                                  const gchar *text);
+#endif /* HILDON_DISABLE_DEPRECATED */
 
 void      
 hildon_banner_set_text                          (HildonBanner *self,
@@ -95,6 +97,7 @@ void
 hildon_banner_set_fraction                      (HildonBanner *self,
                                                  gdouble fraction);
 
+#ifndef HILDON_DISABLE_DEPRECATED
 void     
 hildon_banner_set_icon                          (HildonBanner *self,
                                                  const gchar *icon_name);
@@ -102,6 +105,7 @@ hildon_banner_set_icon                          (HildonBanner *self,
 void     
 hildon_banner_set_icon_from_file                (HildonBanner *self,
                                                  const gchar *icon_file);
+#endif /* HILDON_DISABLE_DEPRECATED */
 
 void
 hildon_banner_set_timeout                       (HildonBanner *self,

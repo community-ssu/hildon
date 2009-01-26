@@ -43,6 +43,8 @@
 #include                                        <X11/X.h>
 #include                                        <gdk/gdkx.h>
 
+#undef                                          HILDON_DISABLE_DEPRECATED
+
 #include                                        "hildon-banner.h"
 #include                                        "hildon-banner-private.h"
 #include                                        "hildon-defines.h"
@@ -68,8 +70,6 @@
 #define                                         HILDON_BANNER_DEFAULT_TIMEOUT 3000
 
 /* default icons */
-
-#define                                         HILDON_BANNER_DEFAULT_ICON "qgn_note_infoprint"
 
 #define                                         HILDON_BANNER_DEFAULT_PROGRESS_ANIMATION "qgn_indi_pball_a"
 
@@ -897,7 +897,8 @@ hildon_banner_get_instance_for_widget           (GtkWidget *widget,
 /**
  * hildon_banner_show_information:
  * @widget: the #GtkWidget that is the owner of the banner
- * @icon_name: the name of icon to use. Can be %NULL for default icon
+ * @icon_name: since Hildon 2.2 this parameter is not used anymore and
+ * any value that you pass will be ignored
  * @text: Text to display
  *
  * This function creates and displays an information banner that
@@ -916,7 +917,6 @@ hildon_banner_show_information                  (GtkWidget *widget,
 {
     HildonBanner *banner;
 
-    g_return_val_if_fail (icon_name == NULL || icon_name[0] != 0, NULL);
     g_return_val_if_fail (text != NULL, NULL);
 
     /* Prepare banner */
@@ -934,7 +934,8 @@ hildon_banner_show_information                  (GtkWidget *widget,
 /**
  * hildon_banner_show_informationf:
  * @widget: the #GtkWidget that is the owner of the banner
- * @icon_name: the name of icon to use. Can be %NULL for default icon
+ * @icon_name: since Hildon 2.2 this parameter is not used anymore and
+ * any value that you pass will be ignored
  * @format: a printf-like format string
  * @Varargs: arguments for the format string
  *
@@ -969,7 +970,8 @@ hildon_banner_show_informationf                 (GtkWidget *widget,
 /**
  * hildon_banner_show_information_with_markup:
  * @widget: the #GtkWidget that wants to display banner
- * @icon_name: the name of icon to use. Can be %NULL for default icon.
+ * @icon_name: since Hildon 2.2 this parameter is not used anymore and
+ * any value that you pass will be ignored
  * @markup: a markup string to display (see <link linkend="PangoMarkupFormat">Pango markup format</link>)
  *
  * This function creates and displays an information banner that
@@ -1088,6 +1090,7 @@ hildon_banner_show_animation                    (GtkWidget *widget,
  * Returns: a #HildonBanner widget. You must call #gtk_widget_destroy
  *          once you are done with the banner.
  *
+ * Deprecated: Hildon 2.2: use hildon_gtk_window_set_progress_indicator() instead.
  */
 GtkWidget*
 hildon_banner_show_progress                     (GtkWidget *widget, 
@@ -1236,22 +1239,13 @@ hildon_banner_set_timeout                       (HildonBanner *self,
  *
  * Sets the icon to be used in the banner.
  *
+ * Deprecated: This function does nothing. As of hildon 2.2, hildon
+ * banners don't allow changing their icons.
  */
 void 
 hildon_banner_set_icon                          (HildonBanner *self, 
                                                  const gchar  *icon_name)
 {
-    HildonBannerPrivate *priv;
-
-    g_return_if_fail (HILDON_IS_BANNER (self));
-    priv = HILDON_BANNER_GET_PRIVATE (self);
-    g_assert (priv);
-
-    hildon_banner_ensure_child (self, NULL, 0, GTK_TYPE_IMAGE, 
-            "pixel-size", HILDON_ICON_PIXEL_SIZE_NOTE, 
-            "icon-name", icon_name ? icon_name : HILDON_BANNER_DEFAULT_ICON,
-            "yalign", 0.0, 
-            NULL);
 }
 
 /**
@@ -1261,28 +1255,11 @@ hildon_banner_set_icon                          (HildonBanner *self,
  *
  * Sets the icon from its filename to be used in the banner.
  *
+ * Deprecated: This function does nothing. As of hildon 2.2, hildon
+ * banners don't allow changing their icons.
  */
 void 
 hildon_banner_set_icon_from_file                (HildonBanner *self, 
                                                  const gchar  *icon_file)
 {
-    HildonBannerPrivate *priv;
-
-    g_return_if_fail (HILDON_IS_BANNER (self));
-    priv = HILDON_BANNER_GET_PRIVATE (self);
-    g_assert (priv);
-
-    if (icon_file != NULL) {
-        hildon_banner_ensure_child (self, NULL, 0, GTK_TYPE_IMAGE, 
-                "pixel-size", HILDON_ICON_PIXEL_SIZE_NOTE, 
-                "file", icon_file,
-                "yalign", 0.0, 
-                NULL);
-    } else {
-        hildon_banner_ensure_child (self, NULL, 0, GTK_TYPE_IMAGE, 
-                "pixel-size", HILDON_ICON_PIXEL_SIZE_NOTE, 
-                "icon-name", HILDON_BANNER_DEFAULT_ICON,
-                "yalign", 0.0, 
-                NULL);
-    }
 }
