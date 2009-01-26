@@ -1,3 +1,17 @@
+2009-01-26  Alejandro G. Castro  <alex@igalia.com>
+
+	* src/hildon-pannable-area.c,
+	(hildon_pannable_area_class_init),
+	(tranparency_color),
+	(hildon_pannable_draw_vscroll),
+	(hildon_pannable_draw_hscroll),
+	(hildon_pannable_area_expose_event): Added a new way to render the
+	scrollbars of the pannable area avoiding using cairo at all. This
+	way we improve the performance of the pannable area rendering. The
+	cairo rendering procedure is still in the code, we can control
+	which one to use changing the value of the define
+	USE_CAIRO_SCROLLBARS.
+
 2009-01-26  Claudio Saavedra  <csaavedra@igalia.com>
 
 	* configure.ac: post release version bump.
