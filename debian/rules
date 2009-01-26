@@ -1,14 +1,17 @@
 #!/usr/bin/make -f
 
-include /usr/share/cdbs/1/rules/debhelper.mk
-include /usr/share/cdbs/1/class/autotools.mk
-include /usr/share/cdbs/1/rules/utils.mk
+include /usr/share/cdbs/1/rules/buildvars.mk
 
 ifeq (,$(findstring nodocs,$(DEB_BUILD_OPTIONS)))
 ENABLE_GTK_DOC = --enable-gtk-doc
 else
 ENABLE_GTK_DOC = --disable-gtk-doc
+DEB_INDEP_PACKAGES := $(subst libhildon1-doc,,$(DEB_INDEP_PACKAGES))
 endif
+
+include /usr/share/cdbs/1/rules/debhelper.mk
+include /usr/share/cdbs/1/class/autotools.mk
+include /usr/share/cdbs/1/rules/utils.mk
 
 DEB_CONFIGURE_SCRIPT_ENV += LDFLAGS="-Wl,-O1 -Wl,--as-needed" PKG_CONFIG_PATH=/usr/lib/pkgconfig:/usr/share/pkgconfig
 DEB_CONFIGURE_EXTRA_FLAGS := $(ENABLE_GTK_DOC) --enable-maintainer-mode
