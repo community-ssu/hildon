@@ -4,6 +4,13 @@ libhildon (2.1.37-1~unreleased) unstable; urgency=low
 
  -- Claudio Saavedra <csaavedra@igalia.com>  Tue, 20 Jan 2009 15:38:48 +0200
 
+libhildon (2.1.36-2) unstable; urgency=low
+
+  * Fix a potencial lock HildonPickerButton.
+  * Fix a potencial crasher in HildonTimeSelector.
+
+ -- Claudio Saavedra <csaavedra@igalia.com>  Thu, 22 Jan 2009 19:14:33 +0200
+
 libhildon (2.1.36-1) unstable; urgency=low
 
   Bug fixes:
