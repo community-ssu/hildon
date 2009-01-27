@@ -1,3 +1,13 @@
+2009-01-27  Alberto Garcia  <agarcia@igalia.com>
+
+	* src/hildon-note.c (hildon_note_realize, +hildon_note_unrealize)
+	(+screen_size_changed, +label_size_request)
+	(hildon_note_class_init): Make the Hildon information note have a
+	minimum height, and make its text hvae a maximum width.
+
+	Fixes: NB#98614 (Hildon information note (background) should have
+	minimum height and maximum text width)
+
 2009-01-26  Alberto Garcia  <agarcia@igalia.com>
 
 	* src/hildon-banner.h

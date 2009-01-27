@@ -76,6 +76,9 @@
 #include                                        "hildon-enum-types.h"
 #include                                        "hildon-note-private.h"
 
+#define                                         HILDON_INFORMATION_NOTE_MIN_HEIGHT 140
+
+#define                                         HILDON_INFORMATION_NOTE_MARGIN 100
 
 #define                                         CONFIRMATION_SOUND_PATH \
                                                 "/usr/share/sounds/ui-confirmation_note.wav"
@@ -99,6 +102,14 @@ hildon_note_finalize                            (GObject *obj_self);
 
 static void
 hildon_note_realize                             (GtkWidget *widget);
+
+static void
+hildon_note_unrealize                           (GtkWidget *widget);
+
+static void
+label_size_request                              (GtkWidget      *label,
+                                                 GtkRequisition *req,
+                                                 GtkWidget      *note);
 
 static void 
 hildon_note_set_property                        (GObject *object,
@@ -299,6 +310,7 @@ hildon_note_class_init                          (HildonNoteClass *class)
     object_class->set_property  = hildon_note_set_property;
     object_class->get_property  = hildon_note_get_property;
     widget_class->realize       = hildon_note_realize;
+    widget_class->unrealize     = hildon_note_unrealize;
 
     g_object_class_install_property (object_class,
             PROP_HILDON_NOTE_TYPE,
@@ -431,11 +443,32 @@ hildon_note_finalize                            (GObject *obj_self)
     G_OBJECT_CLASS (parent_class)->finalize (obj_self);
 }
 
+static void
+label_size_request                              (GtkWidget      *label,
+                                                 GtkRequisition *req,
+                                                 GtkWidget      *note)
+{
+    gint note_height = MAX (HILDON_INFORMATION_NOTE_MIN_HEIGHT, req->height);
+    g_object_set (note, "height-request", note_height, NULL);
+}
+
+static void
+screen_size_changed                            (GdkScreen *screen,
+                                                GtkWidget *note)
+{
+    HildonNotePrivate *priv = HILDON_NOTE_GET_PRIVATE (note);
+    gint screen_width = gdk_screen_get_width (screen);
+    gint text_width = screen_width - HILDON_INFORMATION_NOTE_MARGIN * 2;
+
+    g_object_set (note, "width-request", screen_width, NULL);
+    g_object_set (priv->label, "width-request", text_width, NULL);
+}
 
 static void
 hildon_note_realize                             (GtkWidget *widget)
 {
     GdkDisplay *display;
+    gboolean is_info_note = FALSE;
     Atom atom;
     const gchar *notification_type;
     HildonNotePrivate *priv = HILDON_NOTE_GET_PRIVATE (widget);
@@ -460,6 +493,7 @@ hildon_note_realize                             (GtkWidget *widget)
     if (priv->note_n == HILDON_NOTE_TYPE_INFORMATION ||
         priv->note_n == HILDON_NOTE_TYPE_INFORMATION_THEME) {
         notification_type = "_HILDON_NOTIFICATION_TYPE_INFO";
+        is_info_note = TRUE;
     } else {
         notification_type = "_HILDON_NOTIFICATION_TYPE_CONFIRMATION";
     }
@@ -467,7 +501,27 @@ hildon_note_realize                             (GtkWidget *widget)
     XChangeProperty (GDK_WINDOW_XDISPLAY (widget->window), GDK_WINDOW_XID (widget->window),
                      atom, XA_STRING, 8, PropModeReplace, (guchar *) notification_type,
                      strlen (notification_type));
+
+    if (is_info_note) {
+        GdkScreen *screen = gtk_widget_get_screen (widget);
+        g_signal_connect (priv->label, "size-request", G_CALLBACK (label_size_request), widget);
+        g_signal_connect (screen, "size-changed", G_CALLBACK (screen_size_changed), widget);
+        screen_size_changed (screen, widget);
+    }
 }
+
+static void
+hildon_note_unrealize                           (GtkWidget *widget)
+{
+    HildonNotePrivate *priv = HILDON_NOTE_GET_PRIVATE (widget);
+    GdkScreen *screen = gtk_widget_get_screen (widget);
+
+    g_signal_handlers_disconnect_by_func (screen, G_CALLBACK (screen_size_changed), widget);
+    g_signal_handlers_disconnect_by_func (priv->label, G_CALLBACK (label_size_request), widget);
+
+    GTK_WIDGET_CLASS (parent_class)->unrealize (widget);
+}
+
 
 /* Helper function for removing a widget from it's container.
    we own a separate reference to each object we try to unpack,
