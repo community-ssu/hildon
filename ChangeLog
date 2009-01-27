@@ -1,3 +1,14 @@
+2009-01-27  Claudio Saavedra  <csaavedra@igalia.com>
+
+	Patch by Kristian Rietveld (kris@imendio.com)
+
+	* src/hildon-touch-selector.c: (_create_new_column): Use new
+	GtkTreeView::hildon-row-tapped signal to react to user interactions
+	instead of ::changed.
+
+	Fixes: NB#91657 (HildonPickerDialog closes immediatly when used
+	with some dynamic tree model)
+
 2009-01-27  Alberto Garcia  <agarcia@igalia.com>
 
 	* src/hildon-note.c (hildon_note_realize, +hildon_note_unrealize)

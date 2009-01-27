@@ -238,7 +238,8 @@ hildon_touch_selector_set_property              (GObject *object,
 static void hildon_touch_selector_remove        (GtkContainer * container,
                                                  GtkWidget * widget);
 /* private functions */
-static void _selection_changed_cb               (GtkTreeSelection * selection,
+static void _row_tapped_cb                      (GtkTreeView * tree_view,
+                                                 GtkTreePath * path,
                                                  gpointer user_data);
 static gchar *_default_print_func               (HildonTouchSelector * selector);
 
@@ -597,7 +598,7 @@ _default_print_func (HildonTouchSelector * selector)
 }
 
 static void
-_selection_changed_cb (GtkTreeSelection * selection, gpointer user_data)
+_row_tapped_cb (GtkTreeView * tree_view, GtkTreePath * path, gpointer user_data)
 {
   HildonTouchSelector *selector = NULL;
   HildonTouchSelectorColumn *column = NULL;
@@ -681,9 +682,9 @@ _create_new_column (HildonTouchSelector * selector,
 
   gtk_widget_grab_focus (GTK_WIDGET (tv));
 
-  /* connect to the changed signal connection */
-  g_signal_connect (G_OBJECT (selection), "changed",
-                    G_CALLBACK (_selection_changed_cb), new_column);
+  /* connect to the hildon-row-tapped signal connection */
+  g_signal_connect (G_OBJECT (tv), "hildon-row-tapped",
+                    G_CALLBACK (_row_tapped_cb), new_column);
 
   return new_column;
 }
