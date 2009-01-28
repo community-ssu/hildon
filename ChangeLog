@@ -1,3 +1,17 @@
+2009-01-28  Alberto Garcia  <agarcia@igalia.com>
+
+	* src/hildon-app-menu.c (+hildon_app_menu_show_all)
+	(+hildon_app_menu_hide_all, hildon_app_menu_class_init): Show/hide
+	all menu items, but not the menu itself.
+	(hildon_app_menu_repack_filters, hildon_app_menu_repack_items)
+	(hildon_app_menu_insert, hildon_app_menu_add_filter): Realize menu
+	items after adding them to the menu so keyboard accelerators work.
+	(hildon_app_menu_show): Don't show the menu if it contains items
+	but none of them are visible.
+
+	* examples/hildon-app-menu-example.c (create_menu): Use
+	gtk_widget_show_all() to show all menu items.
+
 2009-01-28  Claudio Saavedra  <csaavedra@igalia.com>
 
 	* src/hildon-picker-dialog.c:

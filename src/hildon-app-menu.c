@@ -63,27 +63,26 @@
  * button = gtk_button_new_with_label ("Menu command one");
  * g_signal_connect_after (button, "clicked", G_CALLBACK (button_one_clicked), userdata);
  * hildon_app_menu_append (menu, GTK_BUTTON (button));
- * gtk_widget_show (button);
  * <!-- -->
  * // Another button
  * button = gtk_button_new_with_label ("Menu command two");
  * g_signal_connect_after (button, "clicked", G_CALLBACK (button_two_clicked), userdata);
  * hildon_app_menu_append (menu, GTK_BUTTON (button));
- * gtk_widget_show (button);
  * <!-- -->
  * // Create a filter and add it to the menu
  * filter = gtk_radio_button_new_with_label (NULL, "Filter one");
  * gtk_toggle_button_set_mode (GTK_TOGGLE_BUTTON (filter), FALSE);
  * g_signal_connect_after (filter, "clicked", G_CALLBACK (filter_one_clicked), userdata);
  * hildon_app_menu_add_filter (menu, GTK_BUTTON (filter));
- * gtk_widget_show (filter);
  * <!-- -->
  * // Add a new filter
  * filter = gtk_radio_button_new_with_label_from_widget (GTK_RADIO_BUTTON (filter), "Filter two");
  * gtk_toggle_button_set_mode (GTK_TOGGLE_BUTTON (filter), FALSE);
  * g_signal_connect_after (filter, "clicked", G_CALLBACK (filter_two_clicked), userdata);
  * hildon_app_menu_add_filter (menu, GTK_BUTTON (filter));
- * gtk_widget_show (filter);
+ * <!-- -->
+ * // Show all menu items
+ * gtk_widget_show_all (GTK_WIDGET (menu));
  * <!-- -->
  * // Add the menu to the window
  * hildon_stackable_window_set_main_menu (win, menu);
@@ -184,7 +183,6 @@ hildon_app_menu_insert                          (HildonAppMenu *menu,
     hildon_app_menu_repack_items (menu, position);
 
     /* Enable accelerators */
-    gtk_widget_realize (GTK_WIDGET (item));
     g_signal_connect (item, "can-activate-accel", G_CALLBACK (can_activate_accel), NULL);
 
     /* Close the menu when the button is clicked */
@@ -292,7 +290,6 @@ hildon_app_menu_add_filter                      (HildonAppMenu *menu,
     hildon_app_menu_repack_filters (menu);
 
     /* Enable accelerators */
-    gtk_widget_realize (GTK_WIDGET (filter));
     g_signal_connect (filter, "can-activate-accel", G_CALLBACK (can_activate_accel), NULL);
 
     /* Close the menu when the button is clicked */
@@ -426,13 +423,43 @@ remove_item_from_list                           (GList    **list,
 static void
 hildon_app_menu_show                            (GtkWidget *widget)
 {
-    HildonAppMenuPrivate *priv = HILDON_APP_MENU_GET_PRIVATE(widget);
+    HildonAppMenuPrivate *priv = HILDON_APP_MENU_GET_PRIVATE (widget);
+    gboolean show_menu = FALSE;
+    GList *i;
 
-    /* Show the menu only if it's not empty */
-    if (priv->buttons || priv->filters) {
+    for (i = priv->buttons; i && !show_menu; i = i->next)
+        show_menu = GTK_WIDGET_VISIBLE (i->data);
+
+    for (i = priv->filters; i && !show_menu; i = i->next)
+        show_menu = GTK_WIDGET_VISIBLE (i->data);
+
+    /* Show menu only if it contains visible items */
+    if (show_menu) {
         GTK_WIDGET_CLASS (hildon_app_menu_parent_class)->show (widget);
     }
 }
+
+static void
+hildon_app_menu_show_all                        (GtkWidget *widget)
+{
+    HildonAppMenuPrivate *priv = HILDON_APP_MENU_GET_PRIVATE (widget);
+
+    /* Show children, but not self. */
+    g_list_foreach (priv->buttons, (GFunc) gtk_widget_show_all, NULL);
+    g_list_foreach (priv->filters, (GFunc) gtk_widget_show_all, NULL);
+}
+
+
+static void
+hildon_app_menu_hide_all                        (GtkWidget *widget)
+{
+    HildonAppMenuPrivate *priv = HILDON_APP_MENU_GET_PRIVATE (widget);
+
+    /* Hide children, but not self. */
+    g_list_foreach (priv->buttons, (GFunc) gtk_widget_hide_all, NULL);
+    g_list_foreach (priv->filters, (GFunc) gtk_widget_hide_all, NULL);
+}
+
 
 static void
 hildon_app_menu_map                             (GtkWidget *widget)
@@ -741,6 +768,8 @@ hildon_app_menu_repack_filters                  (HildonAppMenu *menu)
         if (GTK_WIDGET_VISIBLE (filter)) {
             gtk_box_pack_start (GTK_BOX (priv->filters_hbox), filter, TRUE, TRUE, 0);
             g_object_unref (filter);
+            /* GtkButton must be realized for accelerators to work */
+            gtk_widget_realize (filter);
         }
     }
 }
@@ -784,6 +813,8 @@ hildon_app_menu_repack_items                    (HildonAppMenu *menu,
             if (gtk_widget_get_parent (item) == NULL) {
                 gtk_table_attach_defaults (priv->table, item, col, col + 1, row, row + 1);
                 g_object_unref (item);
+                /* GtkButton must be realized for accelerators to work */
+                gtk_widget_realize (item);
             }
             if (++col == priv->columns) {
                 col = 0;
@@ -874,6 +905,8 @@ hildon_app_menu_class_init                      (HildonAppMenuClass *klass)
 
     gobject_class->finalize = hildon_app_menu_finalize;
     widget_class->show = hildon_app_menu_show;
+    widget_class->show_all = hildon_app_menu_show_all;
+    widget_class->hide_all = hildon_app_menu_hide_all;
     widget_class->map = hildon_app_menu_map;
     widget_class->unmap = hildon_app_menu_unmap;
     widget_class->realize = hildon_app_menu_realize;
