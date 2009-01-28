@@ -1,3 +1,17 @@
+2009-01-28  Claudio Saavedra  <csaavedra@igalia.com>
+
+	* src/hildon-picker-dialog.c:
+	(-_update_title_on_selector_changed_cb),
+	(-_dialog_update_title): Removed.
+	(_select_on_selector_changed_cb), (_on_dialog_response),
+	(on_selector_columns_changed): Do not update the dialog title.
+	(setup_interaction_mode): Do not connect to
+	HildonTouchSelector::changed signal if there's a "done" button, as
+	the dialog title doesn't need to be updated.
+
+	Fixes: NB#97468 (HildonPickerDialog doesn't need to show selected
+	contents in title)
+
 2009-01-27  Claudio Saavedra  <csaavedra@igalia.com>
 
 	Patch by Kristian Rietveld (kris@imendio.com)

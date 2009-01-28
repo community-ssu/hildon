@@ -116,11 +116,6 @@ _hildon_picker_dialog_set_selector              (HildonPickerDialog * dialog,
                                                  HildonTouchSelector * selector);
 
 static void
-_update_title_on_selector_changed_cb            (HildonTouchSelector * selector,
-                                                 gint column,
-                                                 gpointer data);
-
-static void
 _on_dialog_response                             (GtkDialog *dialog,
                                                  gint response_id,
                                                  gpointer data);
@@ -296,18 +291,6 @@ hildon_picker_dialog_realize (GtkWidget *widget)
 }
 
 /* ------------------------------ PRIVATE METHODS ---------------------------- */
-static void
-_dialog_update_title (HildonTouchSelector *selector,
-                      GtkWindow *dialog)
-{
-  gchar *new_title = NULL;
-
-  new_title = hildon_touch_selector_get_current_text (selector);
-
-  gtk_window_set_title (dialog, new_title ? new_title : "");
-
-  g_free (new_title);
-}
 
 static void
 _select_on_selector_changed_cb (HildonTouchSelector * selector,
@@ -315,18 +298,7 @@ _select_on_selector_changed_cb (HildonTouchSelector * selector,
 {
   g_return_if_fail (HILDON_IS_PICKER_DIALOG (data));
 
-  _dialog_update_title (selector, GTK_WINDOW (data));
-
   gtk_dialog_response (GTK_DIALOG (data), GTK_RESPONSE_OK);
-}
-
-static void
-_update_title_on_selector_changed_cb (HildonTouchSelector * selector,
-                                      gint column, gpointer data)
-{
-  g_return_if_fail (HILDON_IS_PICKER_DIALOG (data));
-
-  _dialog_update_title (selector, GTK_WINDOW (data));
 }
 
 static void
@@ -350,8 +322,6 @@ on_selector_columns_changed (HildonTouchSelector * selector, gpointer userdata)
   if (GTK_WIDGET_REALIZED (dialog)) {
     setup_interaction_mode (dialog);
   }
-
-  _dialog_update_title (selector, GTK_WINDOW (dialog));
 }
 
 /**
@@ -501,13 +471,7 @@ setup_interaction_mode (HildonPickerDialog * dialog)
                                  dialog->priv->signal_changed_id);
   }
 
-  if (requires_done_button (dialog)) {
-        /* update the title */
-    dialog->priv->signal_changed_id =
-      g_signal_connect (G_OBJECT (dialog->priv->selector), "changed",
-                        G_CALLBACK (_update_title_on_selector_changed_cb),
-                        dialog);
-  } else {
+  if (requires_done_button (dialog) == FALSE) {
     dialog->priv->signal_changed_id =
       g_signal_connect (G_OBJECT (dialog->priv->selector), "changed",
                         G_CALLBACK (_select_on_selector_changed_cb), dialog);
