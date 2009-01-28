@@ -1985,6 +1985,18 @@ hildon_touch_selector_get_column (HildonTouchSelector * selector,
 }
 
 
+/**
+ * hildon_touch_selector_center_on_selected:
+ * @selector: a #HildonTouchSelector
+ *
+ * Ensures all the columns in a #HildonTouchSelector show a selected
+ * item. If one of the columns is in
+ * %HILDON_TOUCH_SELECTOR_SELECTION_MODE_MULTIPLE mode, that column
+ * will be scrolled to ensure the selected item that is closest to the
+ * currently visible area is shown.
+ *
+ * Since: 2.2
+ **/
 void
 hildon_touch_selector_center_on_selected         (HildonTouchSelector *selector)
 {
