@@ -1,3 +1,11 @@
+2009-01-29  Claudio Saavedra  <csaavedra@igalia.com>
+
+	* src/hildon-button.c: (hildon_button_init): Set the
+	button style during initialization to give it the proper
+	label color.
+
+	Fixes: NB#99713 (HildonButton value label color is wrong)
+
 2009-01-28  Claudio Saavedra  <csaavedra@igalia.com>
 
 	* src/hildon-touch-selector.c: Document

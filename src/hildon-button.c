@@ -327,6 +327,8 @@ hildon_button_init                              (HildonButton *self)
     gtk_widget_set_name (GTK_WIDGET (priv->title), "hildon-button-title");
     gtk_widget_set_name (GTK_WIDGET (priv->value), "hildon-button-value");
 
+    hildon_button_set_style (self, HILDON_BUTTON_STYLE_NORMAL);
+
     gtk_misc_set_alignment (GTK_MISC (priv->title), 0, 0.5);
     gtk_misc_set_alignment (GTK_MISC (priv->value), 0, 0.5);
 
