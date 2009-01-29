@@ -31,9 +31,9 @@
  *
  * The #HildonButton can hold any valid child widget, but it usually
  * contains two labels, named title and value, and it can also contain
- * an image. The contents of the button are packed together and they
- * do not expand by default (they don't use the full space of the
- * button).
+ * an image. The contents of the button are packed together inside a
+ * #GtkAlignment and they do not expand by default (they don't use the
+ * full space of the button).
  *
  * To change the alignment of both labels, use gtk_button_set_alignment()
  *
@@ -763,6 +763,11 @@ hildon_button_set_image_position                (HildonButton    *button,
  * to change @xscale or @yscale you can just use
  * gtk_button_set_alignment() instead.
  *
+ * Note that for this method to work properly the, child widget of
+ * @button must be a #GtkAlignment. That's what #HildonButton uses by
+ * default, so this function will work unless you add a custom widget
+ * to @button.
+ *
  * Since: 2.2
  **/
 void
@@ -781,9 +786,12 @@ hildon_button_set_alignment                     (HildonButton *button,
 
     child = gtk_bin_get_child (GTK_BIN (button));
 
+    /* If the button has no child, use priv->alignment, which is the default one */
+    if (child == NULL)
+        child = priv->alignment;
+
     if (GTK_IS_ALIGNMENT (child)) {
-        gtk_button_set_alignment (GTK_BUTTON (button), xalign, yalign);
-        g_object_set (child, "xscale", xscale, "yscale", yscale, NULL);
+        gtk_alignment_set (GTK_ALIGNMENT (priv->alignment), xalign, yalign, xscale, yscale);
     }
 }
 

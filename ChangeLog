@@ -1,3 +1,8 @@
+2009-01-29  Alberto Garcia  <agarcia@igalia.com>
+
+	* src/hildon-button.c (hildon_button_set_alignment): Use
+	priv->alignment if the button has no child yet.
+
 2009-01-29  Claudio Saavedra  <csaavedra@igalia.com>
 
 	* src/hildon-button.c: (hildon_button_init): Set the
