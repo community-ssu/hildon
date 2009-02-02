@@ -1,8 +1,28 @@
-libhildon (2.1.39-1~unreleased) unstable; urgency=low
+libhildon (2.1.40-1) unstable; urgency=low
 
   * bump GTK+ dependency to 2.12.12-1maemo7
 
- -- Claudio Saavedra <csaavedra@igalia.com>  Mon, 26 Jan 2009 13:12:27 +0200
+  Bug fixes:
+
+  * Fixes: NB#98855 (HildonBanner uses qgn_note_infoprint)
+  * Fixes: NB#98614 (Hildon information note (background) should have
+    minimum height and maximum text width)
+  * Fixes: NB#91657 (HildonPickerDialog closes immediately when used
+    with some dynamic tree model)
+  * Fixes: NB#97468 (HildonPickerDialog doesn't need to show selected
+    contents in title)
+  * Fixes: NB#99713 (HildonButton value label color is wrong)
+  * Fixes: NB#94970 (Hildon Edit Mode Toolbar should use back button
+    graphics from theme)
+
+  Other:
+
+  * Do not use cairo to render the HildonPannableArea panning indicators.
+  * HildonButton layout fixes.
+  * Improved and updated examples.
+  * Documentation improvements.
+
+ -- Claudio Saavedra <csaavedra@igalia.com>  Mon, 02 Feb 2009 09:25:09 +0200
 
 libhildon (2.1.38-1) unstable; urgency=low
 

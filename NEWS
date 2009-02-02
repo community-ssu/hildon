@@ -1,3 +1,25 @@
+[2.1.40 release]
+
+  Bug fixes:
+
+  * Fixes: NB#98855 (HildonBanner uses qgn_note_infoprint)
+  * Fixes: NB#98614 (Hildon information note (background) should have
+    minimum height and maximum text width)
+  * Fixes: NB#91657 (HildonPickerDialog closes immediately when used
+    with some dynamic tree model)
+  * Fixes: NB#97468 (HildonPickerDialog doesn't need to show selected
+    contents in title)
+  * Fixes: NB#99713 (HildonButton value label color is wrong)
+  * Fixes: NB#94970 (Hildon Edit Mode Toolbar should use back button
+    graphics from theme)
+
+  Other:
+
+  * Do not use cairo to render the HildonPannableArea panning indicators.
+  * HildonButton layout fixes.
+  * Improved and updated examples.
+  * Documentation improvements.
+
 [2.1.38 release]
 
   Bug fixes:
