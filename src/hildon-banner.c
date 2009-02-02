@@ -26,12 +26,29 @@
  * SECTION:hildon-banner 
  * @short_description: A widget used to display timed notifications. 
  *
- * #HildonBanner can be used to display a short, timed notification 
- * or information to the user. It can communicate that a 
- * task has been finished or the application state has changed.
- * Banners should be used only to display non-critical pieces of 
- * information.
+ * #HildonBanner is a small, pop-up window that can be used to display
+ * a short, timed notification or information to the user. It can
+ * communicate that a task has been finished or that the application
+ * state has changed.
  *
+ * Hildon provides convenient funtions to create and show banners. To
+ * create and show information banners you can use
+ * hildon_banner_show_information(), hildon_banner_show_informationf()
+ * or hildon_banner_show_information_with_markup().
+ *
+ * Two more kinds of banners are maintained for backward compatibility
+ * but are no longer recommended in Hildon 2.2. These are the animated
+ * banner (created with hildon_banner_show_animation()) and the
+ * progress banner (created with hildon_banner_show_progress()). See
+ * hildon_gtk_window_set_progress_indicator() for the preferred way of
+ * showing progress notifications in Hildon 2.2.
+ *
+ * Information banners dissapear automatically after a certain
+ * period. This is stored in the #HildonBanner:timeout property (in
+ * miliseconds), and can be changed using hildon_banner_set_timeout().
+ *
+ * Note that #HildonBanner<!-- -->s should only be used to display
+ * non-critical pieces of information.
  */
 
 #ifdef                                          HAVE_CONFIG_H
@@ -1019,18 +1036,20 @@ hildon_banner_show_information_with_markup      (GtkWidget *widget,
  * located so that you can somehow see both.
  *
  * Please note that banners are destroyed automatically once the
- * window they are attached to is closed. The pointer that you
- * receive with this function do not contain additional references,
- * so it can become invalid without warning (this is true for
- * all toplevel windows in gtk). To make sure that the banner do not disapear
+ * window they are attached to is closed. The pointer that you receive
+ * with this function does not contain additional references, so it
+ * can become invalid without warning (this is true for all toplevel
+ * windows in gtk). To make sure that the banner does not disappear
  * automatically, you can separately ref the return value (this
- * doesn't prevent the banner from disappearing, but the object it just
- * not finalized). In this case you have to call both #gtk_widget_destroy 
- * followed by #g_object_unref (in this order).
- * 
- * Returns: a #HildonBanner widget. You must call #gtk_widget_destroy
+ * doesn't prevent the banner from disappearing, just the object from
+ * being finalized). In this case you have to call both
+ * gtk_widget_destroy() followed by g_object_unref() (in this order).
+ *
+ * Returns: a #HildonBanner widget. You must call gtk_widget_destroy()
  *          once you are done with the banner.
  *
+ * Deprecated: Hildon 2.2: use
+ * hildon_gtk_window_set_progress_indicator() instead.
  */
 GtkWidget*
 hildon_banner_show_animation                    (GtkWidget *widget, 
@@ -1193,6 +1212,9 @@ hildon_banner_set_markup                        (HildonBanner *self,
  * the scale is from 0.0 to 1.0.
  * Sets the amount of fraction the progressbar has.
  *
+ * Note that this method only has effect if @self was created with
+ * hildon_banner_show_progress()
+ *
  */
 void 
 hildon_banner_set_fraction                      (HildonBanner *self, 
@@ -1218,6 +1240,9 @@ hildon_banner_set_fraction                      (HildonBanner *self,
  * sense on the banners that are timed and that have not been yet displayed
  * on the screen.
  *
+ * Note that this method only has effect if @self is an information
+ * banner (created using hildon_banner_show_information() and
+ * friends).
  */
 void
 hildon_banner_set_timeout                       (HildonBanner *self,

@@ -1,3 +1,19 @@
+2009-02-02  Alberto Garcia  <agarcia@igalia.com>
+
+	Based on a patch by Iván Gómez (igomez@igalia.com)
+
+	* src/hildon-banner.c
+	* src/hildon-gtk.c
+	* src/hildon-main.c
+	* src/hildon-note.c
+	* src/hildon-pannable-area.c
+	* src/hildon-picker-dialog.c
+	* src/hildon-wizard-dialog.h
+	* src/hildon-wizard-dialog.c: Documentation updates.
+
+	* src/hildon-picker-dialog.c (hildon_picker_dialog_init): Use
+	gtk_dialog_add_button() instead of hildon_dialog_add_button().
+
 2009-02-02  Claudio Saavedra  <csaavedra@igalia.com>
 
 	* configure.ac: post release version bump.

@@ -22,9 +22,18 @@
  * SECTION:hildon-picker-dialog
  * @short_description: A utility widget that shows a #HildonTouchSelector widget
  *
- * HildonPickerDialog is a utility widget that shows a #HildonTouchSelector widget in
- * a new dialog (a #HildonDialog)
+ * #HildonPickerDialog is a dialog that is used to show a
+ * #HildonTouchSelector widget and a 'Done' button to allow users to
+ * finish their selections.
  *
+ * The #HildonPickerDialog will show a 'Done' button in case the
+ * #HildonTouchSelector allows multiple selection. The label of the
+ * button can be set using hildon_picker_dialog_set_done_label() and
+ * retrieved using hildon_picker_dialog_get_done_label()
+ *
+ * Note that in most cases developers don't need to deal directly with
+ * this widget. #HildonPickerButton is designed to pop up a
+ * #HildonPickerDialog and manage the interaction with it.
  */
 
 #ifdef HAVE_CONFIG_H
@@ -198,7 +207,7 @@ hildon_picker_dialog_init (HildonPickerDialog * dialog)
 
   dialog->priv->selector = NULL;
   dialog->priv->button =
-    hildon_dialog_add_button (HILDON_DIALOG (dialog), "", GTK_RESPONSE_OK);
+    gtk_dialog_add_button (GTK_DIALOG (dialog), "", GTK_RESPONSE_OK);
   gtk_widget_grab_default (dialog->priv->button);
 
   dialog->priv->signal_changed_id = 0;
@@ -326,8 +335,10 @@ on_selector_columns_changed (HildonTouchSelector * selector, gpointer userdata)
 
 /**
  * hildon_picker_dialog_set_done_label:
- * @dialog: 
- * @label: 
+ * @dialog: a #HildonPickerDialog
+ * @label: a string
+ *
+ * Sets a custom string to be used as the 'Done' button label in @dialog.
  *
  * Since: 2.2
  **/
@@ -347,11 +358,11 @@ hildon_picker_dialog_set_done_label (HildonPickerDialog * dialog,
 
 /**
  * hildon_picker_dialog_get_done_label:
- * @dialog: 
+ * @dialog: a #HildonPickerDialog
  *
- * 
+ * Retrieves current 'Done' button label.
  *
- * Returns: 
+ * Returns: the custom string to be used.
  *
  * Since: 2.2
  **/
@@ -548,12 +559,12 @@ _hildon_picker_dialog_set_selector (HildonPickerDialog * dialog,
 
 /**
  * hildon_picker_dialog_set_selector:
- * @dialog: 
- * @selector: 
+ * @dialog: a #HildonPickerDialog
+ * @selector: a #HildonTouchSelector
  *
- * 
+ * Sets @selector as the #HildonTouchSelector to be shown in @dialog
  *
- * Returns: 
+ * Returns: %TRUE if @selector was set, %FALSE otherwise
  *
  * Since: 2.2
  **/
@@ -569,11 +580,11 @@ hildon_picker_dialog_set_selector (HildonPickerDialog * dialog,
 
 /**
  * hildon_picker_dialog_get_selector:
- * @dialog: 
+ * @dialog: a #HildonPickerDialog
  *
- * 
+ * Retrieves the #HildonTouchSelector associated to @dialog.
  *
- * Returns: 
+ * Returns: a #HildonTouchSelector
  *
  * Since: 2.2
  **/

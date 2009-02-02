@@ -26,10 +26,26 @@
  * SECTION:hildon-note
  * @short_description: A widget to ask confirmation from the user.
  *
- * Notes are used to for confirmation (OK/Cancel/etc.) from the user.
- * A simple note contains an information text. Additional features
- * such as progress bars or animation can also be included.
- * 
+ * #HildonNote is a convenient way to prompt users for a small amount of
+ * input. A simple note contains an information text and, in case of
+ * confirmation notes, it shows buttons to confirm or cancel. It also can
+ * include a progress bar.
+ *
+ * This widget provides convenient functions to create either
+ * information notes, confirmation notes or cancel notes, which are
+ * useful to show the progress of a requested task allowing the user
+ * to cancel it.
+ *
+ * To create information notes you can use
+ * hildon_note_new_information(). hildon_note_new_confirmation()
+ * creates a note with a text and two buttons to confirm or
+ * cancel. Note that it is possible to create a confirmation note with
+ * customized buttons by using
+ * hildon_note_new_confirmation_add_buttons().
+ *
+ * To create a note with a text, a progress bar and cancel button,
+ * hildon_note_new_cancel_with_progress_bar() can be used.
+ *
  * <example>
  * <title>HildonNote example</title>
  * <programlisting>

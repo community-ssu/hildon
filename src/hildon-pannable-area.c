@@ -26,10 +26,16 @@
  * @short_description: A scrolling widget designed for touch screens
  * @see_also: #GtkScrolledWindow
  *
- * #HildonPannableArea implements a scrolled window designed to be used with a
- * touch screen interface. The user scrolls the child widget by activating the
- * pointing device and dragging it over the widget.
+ * #HildonPannableArea is a container widget that can be "panned" (scrolled)
+ * up and down using the touchscreen with fingers. The widget has no scrollbars,
+ * but it rather shows small scroll indicators to give an idea of the part of the
+ * content that is visible at a time. The scroll indicators appear when a dragging
+ * motion is started on the pannable area.
  *
+ * The scrolling is "kinetic", meaning the motion can be "flicked" and it will
+ * continue from the initial motion by gradually slowing down to an eventual stop.
+ * The motion can also be stopped immediately by pressing the touchscreen over the
+ * pannable area.
  */
 
 #include <math.h>

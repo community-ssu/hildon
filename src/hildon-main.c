@@ -24,6 +24,44 @@
  * SECTION:hildon-main
  * @Short_Description: Library initialization.
  *
+ * Before using Hildon, you need to initialize it; initialization connects
+ * to the window system display, and parses some standard command line
+ * arguments. See also gtk_init () to know more details on this topic.
+ *
+ * Hildon should be initialized by using hildon_gtk_init (). Notice this function
+ * also initialize gtk by calling gtk_init (). In case you need a customized
+ * initialization of GTK+ library you could use hildon_init () after the
+ * customized GTK+ initialization.
+ *
+ * <example>
+ * <title>Typical <function>main</function> function for a Hildon application</title>
+ *   <programlisting>
+ * int
+ * main (int argc, char **argv)
+ * {
+ *   /<!-- -->* Initialize i18n support *<!-- -->/
+ *   gtk_set_locale (<!-- -->);
+ * <!-- -->
+ *   /<!-- -->* Initialize the widget set *<!-- -->/
+ *   hildon_gtk_init (&amp;argc, &amp;argv);
+ * <!-- -->
+ *   /<!-- -->* Create the main window *<!-- -->/
+ *   mainwin = hildon_stackable_window_new();
+ * <!-- -->
+ *   /<!-- -->* Set up our GUI elements *<!-- -->/
+ *  ...
+ * <!-- -->
+ *   /<!-- -->* Show the application window *<!-- -->/
+ *   gtk_widget_show_all (mainwin);
+ * <!-- -->
+ *   /<!-- -->* Enter the main event loop, and wait for user interaction *<!-- -->/
+ *   gtk_main (<!-- -->);
+ * <!-- -->
+ *   /<!-- -->* The user lost interest *<!-- -->/
+ *   return 0;
+ *}
+ *  </programlisting>
+ * </example>
  */
 
 

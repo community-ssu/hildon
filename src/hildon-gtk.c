@@ -90,6 +90,8 @@ button_common_init                              (GtkWidget      *button,
  * widget name to allow Hildon specific styling.
  *
  * Return value: A newly created #GtkMenu widget.
+ *
+ * Since: 2.2
  **/
 GtkWidget *
 hildon_gtk_menu_new                             (void)
@@ -114,6 +116,8 @@ hildon_gtk_menu_new                             (void)
  * set to %FALSE by default.
  *
  * Return value: A newly created #GtkButton widget.
+ *
+ * Since: 2.2
  **/
 GtkWidget *
 hildon_gtk_button_new                           (HildonSizeType size)
@@ -138,6 +142,8 @@ hildon_gtk_button_new                           (HildonSizeType size)
  * set to %FALSE by default.
  *
  * Return value: A newly created #GtkToggleButton widget.
+ *
+ * Since: 2.2
  **/
 GtkWidget *
 hildon_gtk_toggle_button_new                    (HildonSizeType size)
@@ -164,6 +170,8 @@ hildon_gtk_toggle_button_new                    (HildonSizeType size)
  * set to %FALSE by default.
  *
  * Return value: A newly created #GtkRadioButton widget.
+ *
+ * Since: 2.2
  **/
 GtkWidget *
 hildon_gtk_radio_button_new                     (HildonSizeType  size,
@@ -190,6 +198,8 @@ hildon_gtk_radio_button_new                     (HildonSizeType  size,
  * set to %FALSE by default.
  *
  * Return value: A newly created #GtkRadioButton widget.
+ *
+ * Since: 2.2
  **/
 GtkWidget *
 hildon_gtk_radio_button_new_from_widget         (HildonSizeType  size,
@@ -209,6 +219,8 @@ hildon_gtk_radio_button_new_from_widget         (HildonSizeType  size,
  * @mode
  *
  * Return value: A newly created #GtkTreeView widget.
+ *
+ * Since: 2.2
  **/
 GtkWidget *
 hildon_gtk_tree_view_new                        (HildonUIMode mode)
@@ -226,6 +238,8 @@ hildon_gtk_tree_view_new                        (HildonUIMode mode)
  * @mode and the model initialized to @model.
  *
  * Return value: A newly created #GtkTreeView widget.
+ *
+ * Since: 2.2
  **/
 GtkWidget *
 hildon_gtk_tree_view_new_with_model             (HildonUIMode  mode,
@@ -240,6 +254,8 @@ hildon_gtk_tree_view_new_with_model             (HildonUIMode  mode,
  * @mode: The new #HildonUIMode
  *
  * Sets the UI mode of @treeview to @mode.
+ *
+ * Since: 2.2
  **/
 void
 hildon_gtk_tree_view_set_ui_mode                (GtkTreeView  *treeview,
@@ -257,6 +273,8 @@ hildon_gtk_tree_view_set_ui_mode                (GtkTreeView  *treeview,
  * @mode
  *
  * Return value: A newly created #GtkIconView widget
+ *
+ * Since: 2.2
  **/
 GtkWidget *
 hildon_gtk_icon_view_new                        (HildonUIMode mode)
@@ -273,6 +291,8 @@ hildon_gtk_icon_view_new                        (HildonUIMode mode)
  * @mode and the model intitialized to @model.
  *
  * Return value: A newly created #GtkIconView widget.
+ *
+ * Since: 2.2
  **/
 GtkWidget *
 hildon_gtk_icon_view_new_with_model             (HildonUIMode  mode,
@@ -287,6 +307,8 @@ hildon_gtk_icon_view_new_with_model             (HildonUIMode  mode,
  * @mode: The new #HildonUIMode
  *
  * Sets the UI mode of @iconview to @mode.
+ *
+ * Since: 2.2
  **/
 void
 hildon_gtk_icon_view_set_ui_mode                (GtkIconView  *iconview,
@@ -299,14 +321,15 @@ hildon_gtk_icon_view_set_ui_mode                (GtkIconView  *iconview,
 
 /**
  * hildon_gtk_window_set_progress_indicator:
- * @window: The window, we want to define its state
+ * @window: The window
  * @state: The state we want to set: 1 -> show progress indicator, 0
  *          -> hide progress indicator.
  *
- * This functions notifies the window manager that it should add a
- * progress indicator in the title of the window. It applies to
- * #HildonDialog and #HildonWindow.
+ * This functions tells the window manager to show/hide a progress
+ * indicator in the window title. It applies to #HildonDialog and
+ * #HildonWindow (including subclasses).
  *
+ * Since: 2.2
  **/
 void
 hildon_gtk_window_set_progress_indicator        (GtkWindow    *window,

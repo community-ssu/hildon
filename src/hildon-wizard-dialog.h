@@ -52,11 +52,25 @@ typedef struct                                  _HildonWizardDialog HildonWizard
 
 typedef struct                                  _HildonWizardDialogClass HildonWizardDialogClass;
 
-/* button response IDs */
+/* HILDON_WIZARD_DIALOG_CANCEL should be marked as deprecated */
 
-typedef enum 
+/**
+ * HildonWizardDialogResponse:
+ * @HILDON_WIZARD_DIALOG_CANCEL: Returned by the 'Cancel' button.
+ * @HILDON_WIZARD_DIALOG_PREVIOUS: Returned by the 'Previous' button.
+ * @HILDON_WIZARD_DIALOG_NEXT: Returned by the 'Next' button.
+ * @HILDON_WIZARD_DIALOG_FINISH: Returned by the 'Finish' button.
+ *
+ * Predefined values for use as response ids for #HildonWizardDialog.
+ *
+ * <warning>
+ *   <para>
+ *     HILDON_WIZARD_DIALOG_CANCEL is deprecated and should not be used in newly-written code.
+ *   </para>
+ * </warning>
+ **/
+typedef enum
 {
-  /* HILDON_WIZARD_DIALOG_CANCEL should be marked as deprecated */
     HILDON_WIZARD_DIALOG_CANCEL = GTK_RESPONSE_CANCEL,
     HILDON_WIZARD_DIALOG_PREVIOUS = 0,
     HILDON_WIZARD_DIALOG_NEXT,

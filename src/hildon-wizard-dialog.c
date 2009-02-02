@@ -40,6 +40,10 @@
  * Also, the response is returned, either cancel or finish.
  * Next and previous buttons are handled by the wizard dialog it self, by
  * switching the page either forward or backward in the notebook.
+ *
+ * It is possible to determinate whether users can go to the next page
+ * by setting a #HildonWizardDialogPageFunc function with
+ * hildon_wizard_dialog_set_forward_page_func()
  */
 
 #ifdef                                          HAVE_CONFIG_H
