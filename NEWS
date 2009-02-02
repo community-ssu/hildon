@@ -10,8 +10,6 @@
   * Fixes: NB#97468 (HildonPickerDialog doesn't need to show selected
     contents in title)
   * Fixes: NB#99713 (HildonButton value label color is wrong)
-  * Fixes: NB#94970 (Hildon Edit Mode Toolbar should use back button
-    graphics from theme)
 
   Other:
 

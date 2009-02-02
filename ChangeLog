@@ -1,5 +1,10 @@
 2009-02-02  Claudio Saavedra  <csaavedra@igalia.com>
 
+	* src/hildon-edit-toolbar.c: (hildon_edit_toolbar_init): Revert fix for
+	bug NB#94970 to avoid breaking theming before the theme is integrated.
+
+2009-02-02  Claudio Saavedra  <csaavedra@igalia.com>
+
 	[Release 2.1.40]
 
 	* NEWS: Updates.

@@ -186,6 +186,8 @@ hildon_edit_toolbar_init                        (HildonEditToolbar *self)
     priv->button = GTK_BUTTON (hildon_gtk_button_new (HILDON_SIZE_AUTO_WIDTH | HILDON_SIZE_FINGER_HEIGHT));
     priv->arrow = GTK_BUTTON (gtk_button_new ());
 
+    gtk_button_set_image (priv->arrow, gtk_image_new_from_stock (GTK_STOCK_GO_BACK, GTK_ICON_SIZE_LARGE_TOOLBAR));
+    gtk_button_set_relief (priv->arrow, GTK_RELIEF_NONE);
     gtk_button_set_focus_on_click (priv->arrow, FALSE);
 
     g_signal_connect (priv->button, "clicked", G_CALLBACK (button_clicked_cb), self);
