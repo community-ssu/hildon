@@ -1,3 +1,9 @@
+2009-02-02  Claudio Saavedra  <csaavedra@igalia.com>
+
+	* src/hildon-picker-dialog.c: (_restore_current_selection): Do not
+	block/unblock the signal handler if it's not actually being used.
+	Fixes some critical warnings.
+
 2009-02-02  Alberto Garcia  <agarcia@igalia.com>
 
 	Based on a patch by Iván Gómez (igomez@igalia.com)

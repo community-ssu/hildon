@@ -441,7 +441,8 @@ _restore_current_selection (HildonPickerDialog *dialog)
     return;
   }
 
-  g_signal_handler_block (selector, dialog->priv->signal_changed_id);
+  if (dialog->priv->signal_changed_id)
+    g_signal_handler_block (selector, dialog->priv->signal_changed_id);
   for (iter = current_selection, i = 0; iter; iter = g_slist_next (iter), i++) {
     selected = (GList *) (iter->data);
     model = hildon_touch_selector_get_model (selector, i);
@@ -452,7 +453,8 @@ _restore_current_selection (HildonPickerDialog *dialog)
       hildon_touch_selector_select_iter (selector, i, &tree_iter, FALSE);
     }
   }
-  g_signal_handler_unblock (selector, dialog->priv->signal_changed_id);
+  if (dialog->priv->signal_changed_id)
+    g_signal_handler_unblock (selector, dialog->priv->signal_changed_id);
 }
 
 static gboolean
