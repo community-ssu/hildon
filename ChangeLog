@@ -1,5 +1,29 @@
 2009-02-04  Alberto Garcia  <agarcia@igalia.com>
 
+	* doc/hildon-sections.txt
+	* src/hildon-window-private.h
+	* src/hildon-window.h
+	* src/hildon-window.c (hildon_window_init)
+	(hildon_window_realize, hildon_window_unrealize)
+	(hildon_window_map, hildon_window_unmap, hildon_window_expose)
+	(hildon_window_size_request, hildon_window_size_allocate)
+	(hildon_window_forall, hildon_window_show_all)
+	(hildon_window_destroy, +paint_edit_toolbar)
+	(+hildon_window_set_edit_toolbar):
+	New hildon_window_set_edit_toolbar() method, to add a
+	HildonEditToolbar to a window without having to pack it manually.
+
+	Reorganize hildon_window_size_allocate()
+
+	* src/hildon-edit-toolbar.c: Update documentation.
+
+	* examples/hildon-edit-toolbar-example.c (edit_window): Update
+	example to use the new API.
+
+	Fixes: NB#98039 (Wishlist: hildon_window_add_edit_toolbar())
+
+2009-02-04  Alberto Garcia  <agarcia@igalia.com>
+
 	* src/hildon-stackable-window.c (hildon_stackable_window_hide):
 	Remove from stack before calling parent's hide.
 

@@ -36,9 +36,12 @@
  * a custom button in the window frame. This menu can be set
  * by providing a GtkMenu to the hildon_window_set_main_menu() method.
  *
- * Similarly a window in the Hildon framework can have several toolbars
+ * Similarly, a window in the Hildon framework can have several toolbars
  * attached. These can be added to the HildonWindow with
  * hildon_window_add_toolbar().
+ *
+ * A #HildonWindow can also have a #HildonEditToolbar. To add it to
+ * the window use hildon_window_set_edit_toolbar().
  *
  * <example>
  * <title>Creating a HildonWindow</title>
@@ -223,6 +226,12 @@ paint_toolbar                                   (GtkWidget *widget,
                                                  GdkEventExpose * event, 
                                                  gboolean fullscreen);
 
+static void
+paint_edit_toolbar                              (GtkWidget *widget,
+                                                 GtkWidget *toolbar,
+                                                 GdkEventExpose *event,
+                                                 gboolean fullscreen);
+
 enum
 {
     PROP_0,
@@ -319,6 +328,7 @@ hildon_window_init                              (HildonWindow *self)
     priv->vbox = gtk_vbox_new (TRUE, TOOLBAR_MIDDLE);
     gtk_widget_set_parent (priv->vbox, GTK_WIDGET(self));
     priv->menu = NULL;
+    priv->edit_toolbar = NULL;
     priv->visible_toolbars = 0;
     priv->is_topmost = FALSE;
     priv->borders = NULL;
@@ -383,6 +393,9 @@ hildon_window_realize                           (GtkWidget *widget)
 
     gtk_widget_realize (GTK_WIDGET (priv->vbox));
 
+    if (priv->edit_toolbar != NULL)
+        gtk_widget_realize (priv->edit_toolbar);
+
     /* catch the custom button signal from mb to display the menu */
     gdk_window_add_filter (widget->window, hildon_window_event_filter, widget);
 
@@ -428,6 +441,10 @@ hildon_window_unrealize                         (GtkWidget *widget)
             widget);
 
     gtk_widget_unrealize (GTK_WIDGET (priv->vbox));
+
+    if (priv->edit_toolbar != NULL)
+        gtk_widget_unrealize (priv->edit_toolbar);
+
     GTK_WIDGET_CLASS(hildon_window_parent_class)->unrealize(widget);
 }
 
@@ -442,6 +459,9 @@ hildon_window_map                             (GtkWidget *widget)
 
   if (GTK_WIDGET_VISIBLE (priv->vbox))
     gtk_widget_map (priv->vbox);
+
+  if (priv->edit_toolbar != NULL && GTK_WIDGET_VISIBLE (priv->edit_toolbar))
+    gtk_widget_map (priv->edit_toolbar);
 }
 
 static void
@@ -451,6 +471,9 @@ hildon_window_unmap                             (GtkWidget *widget)
   g_assert (priv != NULL);
 
   gtk_widget_unmap (priv->vbox);
+
+  if (priv->edit_toolbar != NULL)
+    gtk_widget_unmap (priv->edit_toolbar);
 
   if (GTK_WIDGET_CLASS (hildon_window_parent_class)->unmap)
     GTK_WIDGET_CLASS (hildon_window_parent_class)->unmap (widget);
@@ -544,6 +567,12 @@ hildon_window_expose                            (GtkWidget *widget,
     paint_toolbar (widget, box,
             event, priv->fullscreen);
 
+    if (priv->edit_toolbar != NULL)
+    {
+        paint_edit_toolbar (widget, priv->edit_toolbar,
+                            event, priv->fullscreen);
+    }
+
     if (! priv->fullscreen) {
 
         /* Draw the left and right window border */
@@ -617,7 +646,7 @@ hildon_window_size_request                      (GtkWidget *widget,
     g_assert (priv);
 
     GtkWidget *child = GTK_BIN (widget)->child;
-    GtkRequisition req2;
+    GtkRequisition req2 = { 0 };
     gint border_width = GTK_CONTAINER(widget)->border_width;
 
     if (! priv->borders)
@@ -632,8 +661,15 @@ hildon_window_size_request                      (GtkWidget *widget,
         gtk_widget_size_request (priv->vbox, &req2);
 
     requisition->height += req2.height;
-    requisition->width = (requisition->width < req2.width) ? 
-        req2.width : requisition->width;
+    requisition->width = MAX (requisition->width, req2.width);
+
+    if (priv->edit_toolbar != NULL && GTK_WIDGET_VISIBLE (priv->edit_toolbar))
+    {
+        GtkRequisition req;
+        gtk_widget_size_request (priv->edit_toolbar, &req);
+        requisition->height += req.height;
+        requisition->width = MAX (requisition->width, req.width);
+    }
 
     requisition->width  += 2 * border_width;
     requisition->height += 2 * border_width;
@@ -654,72 +690,90 @@ hildon_window_size_allocate                     (GtkWidget *widget,
     HildonWindowPrivate *priv = HILDON_WINDOW_GET_PRIVATE (widget);
     g_assert (priv);
 
-    GtkAllocation box_alloc;
+    GtkAllocation box_alloc = { 0 };
+    GtkAllocation edittb_alloc = { 0 };
     GtkAllocation alloc = *allocation;
-    GtkRequisition req;
-    gint border_width = GTK_CONTAINER(widget)->border_width;
 
-    GtkWidget *box = priv->vbox;
-    GtkBin *bin = GTK_BIN(widget);
-    GtkBorder *b = priv->borders;
-    GtkBorder *tb = priv->toolbar_borders;
+    GtkWidget *child = gtk_bin_get_child (GTK_BIN (widget));
+    GtkBorder *tb;
 
     if (!priv->borders)
-    {
         hildon_window_get_borders (HILDON_WINDOW (widget));
-        b = priv->borders;
-        tb = priv->toolbar_borders;
-    }
+
+    tb = priv->toolbar_borders;
 
     widget->allocation = *allocation;
 
-    gtk_widget_get_child_requisition (box, &req);
-
-    box_alloc.width = allocation->width - tb->left - tb->right;
-    box_alloc.height = ( (req.height < allocation->height) ?
-            req.height : allocation->height );
-    box_alloc.x = allocation->x + tb->left;
-    box_alloc.y = allocation->y + allocation->height - box_alloc.height - tb->bottom;
-
-    if (bin->child != NULL && GTK_IS_WIDGET (bin->child)
-            && GTK_WIDGET_VISIBLE (bin->child))
+    /* Calculate allocation of edit toolbar */
+    if (priv->edit_toolbar != NULL && GTK_WIDGET_VISIBLE (priv->edit_toolbar))
     {
+        GtkRequisition req;
+        gtk_widget_get_child_requisition (priv->edit_toolbar, &req);
+        edittb_alloc.width = alloc.width - tb->left - tb->right;
+        edittb_alloc.height = MIN (req.height, alloc.height);
+        edittb_alloc.x = alloc.x + tb->left;
+        edittb_alloc.y = alloc.y + tb->top;
+
+        if (edittb_alloc.height > 0)
+        {
+            alloc.y += tb->top + tb->bottom + edittb_alloc.height;
+            alloc.height -= tb->top + tb->bottom + edittb_alloc.height;
+            gtk_widget_size_allocate (priv->edit_toolbar, &edittb_alloc);
+        }
+    }
+
+    /* Calculate allocation of normal toolbars */
+    if (priv->vbox != NULL && GTK_WIDGET_VISIBLE (priv->vbox))
+    {
+        GtkRequisition req;
+        gtk_widget_get_child_requisition (priv->vbox, &req);
+        box_alloc.width = alloc.width - tb->left - tb->right;
+        box_alloc.height = MIN (req.height, alloc.height);
+        box_alloc.x = alloc.x + tb->left;
+        box_alloc.y = alloc.y + alloc.height - box_alloc.height - tb->bottom;
+
+        if (box_alloc.height > 0)
+        {
+            alloc.height -= tb->top + tb->bottom + box_alloc.height;
+            gtk_widget_size_allocate (priv->vbox, &box_alloc);
+        }
+    }
+
+    /* Calculate allocation of the child widget */
+    if (child != NULL && GTK_WIDGET_VISIBLE (child))
+    {
+        guint border_width = gtk_container_get_border_width (GTK_CONTAINER (widget));
         alloc.x += border_width;
         alloc.y += border_width;
         alloc.width -= (border_width * 2);
-        alloc.height -= (border_width * 2) + box_alloc.height;
+        alloc.height -= (border_width * 2);
 
         if (! priv->fullscreen)
         {
+            GtkBorder *b = priv->borders;
             alloc.x += b->left;
             alloc.width -= (b->left + b->right);
-            alloc.y += b->top;
 
-            alloc.height -= b->top;
+            /* Use the top border if there's no edit toolbar */
+            if (edittb_alloc.height <= 0)
+            {
+                alloc.y += b->top;
+                alloc.height -= b->top;
+            }
 
+            /* Use the top border if there are no standard toolbars */
             if (box_alloc.height <= 0)
                 alloc.height -= b->bottom;
-            else
-                alloc.height -= (tb->top + tb->bottom);            
-        }
-        else
-        {
-            if (!(box_alloc.height <= 0))
-                alloc.height -= (tb->top + tb->bottom);              
         }
 
-        gtk_widget_size_allocate (bin->child, &alloc);
+        gtk_widget_size_allocate (child, &alloc);
     }
-
-    gtk_widget_size_allocate (box, &box_alloc);
 
     if (priv->previous_vbox_y != box_alloc.y)
     {
         /* The size of the VBox has changed, we need to redraw part
          * of the window borders */
-        gint draw_from_y = priv->previous_vbox_y < box_alloc.y?
-            priv->previous_vbox_y - tb->top:
-            box_alloc.y - tb->top;
+        gint draw_from_y = MIN (priv->previous_vbox_y, box_alloc.y) - tb->top;
 
         gtk_widget_queue_draw_area (widget, 0, draw_from_y, 
                 widget->allocation.width,
@@ -744,8 +798,12 @@ hildon_window_forall                            (GtkContainer *container,
 
     GTK_CONTAINER_CLASS (hildon_window_parent_class)->forall (container, include_internals,
             callback, callback_data);
+
     if (include_internals && priv->vbox != NULL)
         (* callback)(GTK_WIDGET (priv->vbox), callback_data);
+
+    if (include_internals && priv->edit_toolbar != NULL)
+        (* callback)(GTK_WIDGET (priv->edit_toolbar), callback_data);
 }
 
 static void
@@ -757,7 +815,11 @@ hildon_window_show_all                          (GtkWidget *widget)
     g_assert (priv != NULL);
 
     GTK_WIDGET_CLASS (hildon_window_parent_class)->show_all (widget);
+
     gtk_widget_show_all (priv->vbox);
+
+    if (priv->edit_toolbar)
+        gtk_widget_show_all (priv->edit_toolbar);
 }
 
 static void
@@ -786,6 +848,12 @@ hildon_window_destroy                           (GtkObject *obj)
         gtk_widget_unparent (priv->vbox);
         priv->vbox = NULL;    
 
+    }
+
+    if (priv->edit_toolbar != NULL)
+    {
+        gtk_widget_unparent (priv->edit_toolbar);
+        priv->edit_toolbar = NULL;
     }
 
     menu_list = g_list_copy (gtk_menu_get_for_attach_widget (GTK_WIDGET (obj)));
@@ -890,6 +958,24 @@ paint_toolbar                                   (GtkWidget *widget,
                            widget->allocation.width,
                            TOOLBAR_HEIGHT);
     }
+}
+
+static void
+paint_edit_toolbar                              (GtkWidget *widget,
+                                                 GtkWidget *toolbar,
+                                                 GdkEventExpose *event,
+                                                 gboolean fullscreen)
+{
+    if (!GTK_WIDGET_VISIBLE (toolbar))
+        return;
+
+    gtk_paint_box (widget->style, widget->window,
+                   GTK_WIDGET_STATE (widget), GTK_SHADOW_OUT,
+                   &event->area, widget, "toolbar-primary",
+                   toolbar->allocation.x,
+                   toolbar->allocation.y,
+                   toolbar->allocation.width,
+                   toolbar->allocation.height);
 }
 
 /*
@@ -1647,6 +1733,43 @@ hildon_window_remove_toolbar                    (HildonWindow *self,
     g_signal_handlers_disconnect_by_func (toolbar, toolbar_visible_notify, self);
 
     gtk_container_remove (GTK_CONTAINER (priv->vbox), GTK_WIDGET (toolbar));
+}
+
+/**
+ * hildon_window_set_edit_toolbar:
+ * @self: A #HildonWindow
+ * @toolbar: A #HildonEditToolbar, or %NULL to remove the current one.
+ *
+ * Adds a #HildonEditToolbar to the window. Note that the toolbar is
+ * not automatically shown. You need to call gtk_widget_show() on it
+ * to make it visible. It's also possible to hide the toolbar (without
+ * removing it) by calling gtk_widget_hide().
+ *
+ * A window can only have at most one edit toolbar at a time, so the
+ * previous toolbar (if any) is replaced after calling this function.
+ **/
+void
+hildon_window_set_edit_toolbar                  (HildonWindow      *self,
+                                                 HildonEditToolbar *toolbar)
+{
+    HildonWindowPrivate *priv;
+
+    g_return_if_fail (HILDON_IS_WINDOW (self));
+    g_return_if_fail (toolbar == NULL || HILDON_IS_EDIT_TOOLBAR (toolbar));
+
+    priv = HILDON_WINDOW_GET_PRIVATE (self);
+
+    if (priv->edit_toolbar != GTK_WIDGET (toolbar))
+    {
+        GtkWidget *old_toolbar = priv->edit_toolbar;
+        priv->edit_toolbar = GTK_WIDGET (toolbar);
+
+        if (priv->edit_toolbar)
+            gtk_widget_set_parent (priv->edit_toolbar, GTK_WIDGET (self));
+
+        if (old_toolbar)
+            gtk_widget_unparent (old_toolbar);
+    }
 }
 
 /**

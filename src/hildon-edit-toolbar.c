@@ -30,22 +30,24 @@
  * actually peform actions the developer must provide callbacks for
  * them.
  *
+ * To add a #HildonEditToolbar to a window use
+ * hildon_window_set_edit_toolbar().
+ *
  * <example>
  * <title>HildonEditToolbar example</title>
  * <programlisting>
  * GtkWidget *window;
- * GtkWidget *vbox;
  * GtkWidget *toolbar;
  * // Declare more widgets here ...
  * <!-- -->
  * window = hildon_stackable_window_new ();
- * vbox = gtk_vbox_new (FALSE, 10);
  * toolbar = hildon_edit_toolbar_new_with_text ("Choose items to delete", "Delete");
  * // Create more widgets here ...
  * <!-- -->
- * gtk_container_add (GTK_CONTAINER (window), vbox);
- * gtk_box_pack_start (GTK_BOX (vbox), toolbar, FALSE, FALSE, 0);
- * // Pack more widgets here ...
+ * // Add toolbar to window
+ * hildon_window_set_edit_toolbar (HILDON_WINDOW (window), HILDON_EDIT_TOOLBAR (toolbar));
+ * <!-- -->
+ * // Add other widgets ...
  * <!-- -->
  * g_signal_connect (toolbar, "button-clicked", G_CALLBACK (delete_button_clicked), someparameter);
  * g_signal_connect_swapped (toolbar, "arrow-clicked", G_CALLBACK (gtk_widget_destroy), window);

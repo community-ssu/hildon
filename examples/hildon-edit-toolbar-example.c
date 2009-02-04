@@ -141,23 +141,20 @@ edit_window                                     (void)
 {
   GtkWidget *window;
   GtkWidget *iconview;
-  GtkWidget *vbox;
   GtkWidget *toolbar;
   GtkWidget *area;
 
   window = hildon_stackable_window_new ();
   gtk_container_set_border_width (GTK_CONTAINER (window), 6);
 
-  vbox = gtk_vbox_new (FALSE, 10);
   toolbar = hildon_edit_toolbar_new_with_text ("Choose items to delete", "Delete");
   area = hildon_pannable_area_new ();
   iconview = create_icon_view (EDIT_MODE);
 
-  gtk_container_add (GTK_CONTAINER (area), iconview);
-  gtk_box_pack_start (GTK_BOX (vbox), toolbar, FALSE, FALSE, 0);
-  gtk_box_pack_start (GTK_BOX (vbox), area, TRUE, TRUE, 0);
+  hildon_window_set_edit_toolbar (HILDON_WINDOW (window), HILDON_EDIT_TOOLBAR (toolbar));
 
-  gtk_container_add (GTK_CONTAINER (window), vbox);
+  gtk_container_add (GTK_CONTAINER (area), iconview);
+  gtk_container_add (GTK_CONTAINER (window), area);
 
   g_signal_connect (toolbar, "button-clicked", G_CALLBACK (delete_button_clicked), iconview);
   g_signal_connect_swapped (toolbar, "arrow-clicked", G_CALLBACK (gtk_widget_destroy), window);

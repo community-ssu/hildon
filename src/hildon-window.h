@@ -26,6 +26,7 @@
 #define                                         __HILDON_WINDOW_H__
 
 #include                                        <gtk/gtk.h>
+#include                                        "hildon-edit-toolbar.h"
 
 G_BEGIN_DECLS
 
@@ -108,6 +109,10 @@ hildon_window_add_toolbar                       (HildonWindow *self,
 void        
 hildon_window_remove_toolbar                    (HildonWindow *self,
                                                  GtkToolbar   *toolbar);
+
+void
+hildon_window_set_edit_toolbar                  (HildonWindow      *self,
+                                                 HildonEditToolbar *toolbar);
 
 gboolean    
 hildon_window_get_is_topmost                    (HildonWindow *self);

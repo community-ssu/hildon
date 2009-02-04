@@ -37,6 +37,7 @@ struct                                          _HildonWindowPrivate
 {
     GtkWidget *menu;
     GtkWidget *vbox;
+    GtkWidget *edit_toolbar;
 
     GtkBorder *borders;
     GtkBorder *toolbar_borders;
