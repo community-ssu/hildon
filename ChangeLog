@@ -1,3 +1,12 @@
+2009-02-04  Alberto Garcia  <agarcia@igalia.com>
+
+	* src/hildon-window-stack.c (hildon_window_stack_remove): When a
+	window is removed from the middle of the stack, update the
+	transiency of the previous one.
+
+	Fixes: NB#100487 (HildonStackableWindow transiency becomes
+	incoherent)
+
 2009-02-02  Claudio Saavedra  <csaavedra@igalia.com>
 
 	* src/hildon-picker-dialog.c: (_restore_current_selection): Do not

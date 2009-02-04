@@ -172,12 +172,26 @@ hildon_window_stack_remove                      (HildonStackableWindow *win)
 
     /* If the window is stacked */
     if (stack) {
+        GList *pos;
+
         hildon_stackable_window_set_stack (win, NULL, -1);
-        stack->priv->list = g_list_remove (stack->priv->list, win);
         gtk_window_set_transient_for (GTK_WINDOW (win), NULL);
         if (GTK_WIDGET (win)->window) {
             gdk_window_set_group (GTK_WIDGET (win)->window, NULL);
         }
+
+        /* If the window removed is in the middle of the stack, update
+         * transiency of other windows */
+        pos = g_list_find (stack->priv->list, win);
+        g_assert (pos != NULL);
+        if (pos->prev) {
+            GtkWindow *upper = GTK_WINDOW (pos->prev->data);
+            GtkWindow *lower = pos->next ? GTK_WINDOW (pos->next->data) : NULL;
+            gtk_window_set_transient_for (upper, lower);
+        }
+
+        stack->priv->list = g_list_remove (stack->priv->list, win);
+
         g_signal_handlers_disconnect_by_func (win, hildon_window_stack_window_realized, stack);
     }
 }
