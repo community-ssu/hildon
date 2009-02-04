@@ -263,11 +263,12 @@ static void
 hildon_stackable_window_hide                    (GtkWidget *widget)
 {
     HildonStackableWindowPrivate *priv = HILDON_STACKABLE_WINDOW_GET_PRIVATE (widget);
-    GTK_WIDGET_CLASS (hildon_stackable_window_parent_class)->hide (widget);
 
     if (priv->stack) {
         hildon_window_stack_remove (HILDON_STACKABLE_WINDOW (widget));
     }
+
+    GTK_WIDGET_CLASS (hildon_stackable_window_parent_class)->hide (widget);
 }
 
 static void

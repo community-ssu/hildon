@@ -1,5 +1,10 @@
 2009-02-04  Alberto Garcia  <agarcia@igalia.com>
 
+	* src/hildon-stackable-window.c (hildon_stackable_window_hide):
+	Remove from stack before calling parent's hide.
+
+2009-02-04  Alberto Garcia  <agarcia@igalia.com>
+
 	* src/hildon-window-stack.c (hildon_window_stack_remove): When a
 	window is removed from the middle of the stack, update the
 	transiency of the previous one.
