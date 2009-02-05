@@ -145,8 +145,6 @@ add_window                                      (GtkWidget             *button,
         stack = hildon_window_stack_get_default ();
     }
     hildon_window_stack_push_1 (stack, HILDON_STACKABLE_WINDOW (window));
-
-    return;
 }
 
 static void

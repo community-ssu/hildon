@@ -1,5 +1,10 @@
 2009-02-05  Alberto Garcia  <agarcia@igalia.com>
 
+	* examples/hildon-stackable-window-example.c (add_window): Remove
+	unnecessary return.
+
+2009-02-05  Alberto Garcia  <agarcia@igalia.com>
+
 	* src/hildon-app-menu.c
 	(hildon_app_menu_show): Check whether the parent window of a menu
 	is topmost before popping it up.
