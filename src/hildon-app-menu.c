@@ -427,13 +427,20 @@ hildon_app_menu_show                            (GtkWidget *widget)
     gboolean show_menu = FALSE;
     GList *i;
 
+    /* Don't show menu if it doesn't contain visible items */
     for (i = priv->buttons; i && !show_menu; i = i->next)
         show_menu = GTK_WIDGET_VISIBLE (i->data);
 
     for (i = priv->filters; i && !show_menu; i = i->next)
         show_menu = GTK_WIDGET_VISIBLE (i->data);
 
-    /* Show menu only if it contains visible items */
+    /* Don't show menu if its parent window is not the topmost one */
+    if (show_menu && priv->parent_window) {
+        show_menu =
+            GTK_WIDGET_VISIBLE (priv->parent_window) &&
+            hildon_window_get_is_topmost (HILDON_WINDOW (priv->parent_window));
+    }
+
     if (show_menu) {
         GTK_WIDGET_CLASS (hildon_app_menu_parent_class)->show (widget);
     }

@@ -1,3 +1,12 @@
+2009-02-05  Alberto Garcia  <agarcia@igalia.com>
+
+	* src/hildon-app-menu.c
+	(hildon_app_menu_show): Check whether the parent window of a menu
+	is topmost before popping it up.
+
+	Fixes: NB#100468 (Application menu window is launched even when a
+	new secondary-window/dialog is pending to be shown/realized.)
+
 2009-02-05  Claudio Saavedra  <csaavedra@igalia.com>
 
 	* examples/hildon-icon-sizes-example.c: (main): Remove obsolete
