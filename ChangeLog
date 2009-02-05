@@ -1,3 +1,8 @@
+2009-02-05  Claudio Saavedra  <csaavedra@igalia.com>
+
+	* doc/hildon-sections.txt: Remove obsolete icon
+	sizes from here as well.
+
 2009-02-05  Alberto Garcia  <agarcia@igalia.com>
 
 	* examples/hildon-stackable-window-example.c (add_window): Remove
