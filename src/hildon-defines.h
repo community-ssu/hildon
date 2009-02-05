@@ -48,20 +48,10 @@ G_BEGIN_DECLS
 
 #define HILDON_ICON_SIZE_XLARGE                  gtk_icon_size_from_name ("hildon-xlarge")
 
-/* Old hildon icon sizes. To be removed. */
+/* legacy hildon icon sizes, updated for new hildon */
 
 #define                                         HILDON_ICON_SIZE_TOOLBAR \
-                                                gtk_icon_size_from_name ("gtk-menu")
-
-#define                                         HILDON_ICON_SIZE_WIZARD \
-                                                gtk_icon_size_from_name ("gtk-dialog")
-
-#define                                         HILDON_ICON_SIZE_BIG_NOTE \
-                                                gtk_icon_size_from_name ("gtk-dialog")
-
-#define                                         HILDON_ICON_SIZE_NOTE \
-                                                gtk_icon_size_from_name ("gtk-menu")
-
+                                                gtk_icon_size_from_name ("hildon-finger")
 /* Actual icon sizes */
 
 /* New sizes */
@@ -86,18 +76,9 @@ G_BEGIN_DECLS
 #define                                         HILDON_ICON_PIXEL_SIZE_XLARGE \
                                                 hildon_get_icon_pixel_size (HILDON_ICON_SIZE_XLARGE)
 
-/* old sizes */
+/* legacy sizes */
 #define                                         HILDON_ICON_PIXEL_SIZE_TOOLBAR \
                                                 hildon_get_icon_pixel_size (HILDON_ICON_SIZE_TOOLBAR)
-
-#define                                         HILDON_ICON_PIXEL_SIZE_WIZARD \
-                                                hildon_get_icon_pixel_size (HILDON_ICON_SIZE_WIZARD)
-
-#define                                         HILDON_ICON_PIXEL_SIZE_BIG_NOTE \
-                                                hildon_get_icon_pixel_size (HILDON_ICON_SIZE_BIG_NOTE)
-
-#define                                         HILDON_ICON_PIXEL_SIZE_NOTE \
-                                                hildon_get_icon_pixel_size (HILDON_ICON_SIZE_NOTE)
 
 /* Margins */
 

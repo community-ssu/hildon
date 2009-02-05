@@ -1069,7 +1069,7 @@ hildon_banner_show_animation                    (GtkWidget *widget,
     theme = gtk_icon_theme_get_default ();
     info = gtk_icon_theme_lookup_icon (theme, animation_name ?   /* FIXME: consider using: gtk_icon_theme_load_icon() */
             animation_name : HILDON_BANNER_DEFAULT_PROGRESS_ANIMATION,
-            HILDON_ICON_SIZE_NOTE, 0);
+            HILDON_ICON_SIZE_STYLUS, 0);
 
     /* Try to load animation. One could try to optimize this 
        to avoid loading the default animation during each call */
