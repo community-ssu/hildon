@@ -1,5 +1,10 @@
 2009-02-05  Claudio Saavedra  <csaavedra@igalia.com>
 
+	* examples/hildon-icon-sizes-example.c: (main): Remove obsolete
+	icon sizes.
+
+2009-02-05  Claudio Saavedra  <csaavedra@igalia.com>
+
 	Patch by Mox Soini (ext-mox.soini@nokia.com)
 
 	* src/hildon-banner.c: (hildon_banner_show_animation):

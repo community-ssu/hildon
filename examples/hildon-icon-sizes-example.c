@@ -41,10 +41,7 @@ main                                            (int argc,
     g_debug ("Thumb pixel size: %d", HILDON_ICON_PIXEL_SIZE_THUMB);
     g_debug ("Large pixel size: %d", HILDON_ICON_PIXEL_SIZE_LARGE);
     g_debug ("Extra large pixel size: %d", HILDON_ICON_PIXEL_SIZE_XLARGE);
-    g_debug ("Wizard pixel size: %d", HILDON_ICON_PIXEL_SIZE_WIZARD);
     g_debug ("Toolbar pixel size: %d", HILDON_ICON_PIXEL_SIZE_TOOLBAR);
-    g_debug ("Note pixel size: %d", HILDON_ICON_PIXEL_SIZE_NOTE);
-    g_debug ("Big note pixel size: %d", HILDON_ICON_PIXEL_SIZE_BIG_NOTE);
 
     return 0;
 }
