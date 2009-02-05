@@ -1,3 +1,15 @@
+2009-02-05  Claudio Saavedra  <csaavedra@igalia.com>
+
+	* src/hildon-touch-selector-entry.c:
+	(hildon_touch_selector_entry_init): Disable unsupported
+	input modes.
+	(hildon_touch_selector_entry_get_text_column): Emit a warning
+	if an unsupported input modes is used and explicitile state
+	these modes in the documentation.
+
+	Fixes: NB#99802 (Hildon touch selector entry not working properly
+	for some of the input modes)
+
 2009-02-05  Alejandro G. Castro  <alex@igalia.com>
 
 	* src/hildon-pannable-area.c,
