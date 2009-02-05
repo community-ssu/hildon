@@ -521,6 +521,10 @@ hildon_pannable_area_init (HildonPannableArea * area)
 			    G_CALLBACK (hildon_pannable_area_redraw), area);
   g_signal_connect_swapped (G_OBJECT (priv->vadjust), "value-changed",
 			    G_CALLBACK (hildon_pannable_area_redraw), area);
+  g_signal_connect_swapped (G_OBJECT (priv->hadjust), "changed",
+			    G_CALLBACK (hildon_pannable_area_refresh), area);
+  g_signal_connect_swapped (G_OBJECT (priv->vadjust), "changed",
+			    G_CALLBACK (hildon_pannable_area_refresh), area);
   g_signal_connect (G_OBJECT (area), "grab-notify",
                     G_CALLBACK (hildon_pannable_area_grab_notify), NULL);
 }
