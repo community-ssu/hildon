@@ -245,6 +245,7 @@ static gchar *_default_print_func               (HildonTouchSelector * selector)
 
 static HildonTouchSelectorColumn *_create_new_column (HildonTouchSelector * selector,
                                                  GtkTreeModel * model,
+                                                 gboolean *emit_changed,
                                                  GtkCellRenderer * renderer,
                                                  va_list args);
 static gboolean
@@ -618,6 +619,7 @@ _row_tapped_cb (GtkTreeView * tree_view, GtkTreePath * path, gpointer user_data)
 static HildonTouchSelectorColumn *
 _create_new_column (HildonTouchSelector * selector,
                     GtkTreeModel * model,
+		    gboolean *emit_changed,
                     GtkCellRenderer * renderer, va_list args)
 {
   HildonTouchSelectorColumn *new_column = NULL;
@@ -676,8 +678,10 @@ _create_new_column (HildonTouchSelector * selector,
   gtk_tree_selection_set_mode (selection, GTK_SELECTION_BROWSE);
 
   /* select the first item */
+  *emit_changed = FALSE;
   if (gtk_tree_model_get_iter_first (model, &iter)) {
     gtk_tree_selection_select_iter (selection, &iter);
+    *emit_changed = TRUE;
   }
 
   gtk_widget_grab_focus (GTK_WIDGET (tv));
@@ -1111,6 +1115,8 @@ hildon_touch_selector_append_column (HildonTouchSelector * selector,
 {
   va_list args;
   HildonTouchSelectorColumn *new_column = NULL;
+  gboolean emit_changed = FALSE;
+  gint colnum;
 
   g_return_val_if_fail (HILDON_IS_TOUCH_SELECTOR (selector), NULL);
   g_return_val_if_fail (GTK_IS_TREE_MODEL (model), NULL);
@@ -1118,7 +1124,7 @@ hildon_touch_selector_append_column (HildonTouchSelector * selector,
   if (model != NULL) {
 
     va_start (args, cell_renderer);
-    new_column = _create_new_column (selector, model, cell_renderer, args);
+    new_column = _create_new_column (selector, model, &emit_changed, cell_renderer, args);
     va_end (args);
 
     selector->priv->columns = g_slist_append (selector->priv->columns,
@@ -1138,6 +1144,10 @@ hildon_touch_selector_append_column (HildonTouchSelector * selector,
   }
 
   g_signal_emit (selector, hildon_touch_selector_signals[COLUMNS_CHANGED], 0);
+  if (emit_changed) {
+    colnum = g_slist_length (selector->priv->columns);
+    g_signal_emit (selector, hildon_touch_selector_signals[CHANGED], 0, colnum);
+  }
 
   return new_column;
 }
@@ -1378,6 +1388,8 @@ hildon_touch_selector_set_column_selection_mode (HildonTouchSelector * selector,
     gtk_tree_model_get_iter_first (column->priv->model, &iter);
     gtk_tree_selection_unselect_all (selection);
     gtk_tree_selection_select_iter (selection, &iter);
+
+    g_signal_emit (selector, hildon_touch_selector_signals[CHANGED], 0, column);
   }
 
 }
@@ -1457,6 +1469,8 @@ hildon_touch_selector_set_active                (HildonTouchSelector *selector,
   gtk_tree_selection_unselect_all (selection);
   if (index != -1)
     gtk_tree_selection_select_path (selection, path);
+
+  g_signal_emit (selector, hildon_touch_selector_signals[CHANGED], 0, column);
 
   gtk_tree_path_free (path);
 }
@@ -1591,6 +1605,8 @@ hildon_touch_selector_select_iter (HildonTouchSelector * selector,
     hildon_touch_selector_scroll_to (current_column, tv, path);
   }
 
+  g_signal_emit (selector, hildon_touch_selector_signals[CHANGED], 0, column);
+
   gtk_tree_path_free (path);
 }
 
@@ -1618,6 +1634,8 @@ void hildon_touch_selector_unselect_iter (HildonTouchSelector * selector,
   current_column = g_slist_nth_data (selector->priv->columns, column);
   selection = gtk_tree_view_get_selection (current_column->priv->tree_view);
   gtk_tree_selection_unselect_iter (selection, iter);
+
+  g_signal_emit (selector, hildon_touch_selector_signals[CHANGED], 0, column);
 }
 
 /**
@@ -1642,6 +1660,8 @@ hildon_touch_selector_unselect_all (HildonTouchSelector * selector,
   current_column = g_slist_nth_data (selector->priv->columns, column);
   selection = gtk_tree_view_get_selection (current_column->priv->tree_view);
   gtk_tree_selection_unselect_all (selection);
+
+  g_signal_emit (selector, hildon_touch_selector_signals[CHANGED], 0, column);
 }
 
 /**

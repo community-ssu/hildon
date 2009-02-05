@@ -1,5 +1,19 @@
 2009-02-05  Claudio Saavedra  <csaavedra@igalia.com>
 
+	* src/hildon-touch-selector.c: (_create_new_column),
+	(hildon_touch_selector_append_column),
+	(hildon_touch_selector_set_column_selection_mode),
+	(hildon_touch_selector_set_active),
+	(hildon_touch_selector_select_iter):
+	Emit the HildonTouchSelector::changed signal every time selection
+	is changed in any of the methods above.  This behavior was already
+	documented but not fully functional.
+
+	Fixes: NB#93165 (HildonTouchSelector::changed not emitted when the
+	selection is programmatically changed)
+
+2009-02-05  Claudio Saavedra  <csaavedra@igalia.com>
+
 	* doc/hildon-sections.txt: Remove obsolete icon
 	sizes from here as well.
 
