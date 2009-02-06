@@ -352,6 +352,8 @@ hildon_date_selector_constructor (GType                  type,
 
   hildon_date_selector_construct_ui (HILDON_DATE_SELECTOR (object));
 
+  g_signal_connect (object, "changed", G_CALLBACK (_manage_selector_change_cb), NULL);
+
   return object;
 }
 
@@ -373,10 +375,6 @@ hildon_date_selector_init (HildonDateSelector * selector)
   _get_real_date (&selector->priv->creation_year,
                   &selector->priv->creation_month, &selector->priv->creation_day);
   selector->priv->current_num_days = 31;
-
-
-  g_signal_connect (G_OBJECT (selector),
-                    "changed", G_CALLBACK (_manage_selector_change_cb), NULL);
 }
 
 static void

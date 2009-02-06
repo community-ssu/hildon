@@ -1,3 +1,9 @@
+2009-02-06  Alberto Garcia  <agarcia@igalia.com>
+
+	* src/hildon-date-selector.c (hildon_date_selector_init)
+	(hildon_date_selector_constructor): Don't connect to the "changed"
+	signal until the selector is completely constructed.
+
 2009-02-05  Claudio Saavedra  <csaavedra@igalia.com>
 
 	* src/hildon-touch-selector.c: (_create_new_column),
