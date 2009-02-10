@@ -1,3 +1,32 @@
+[2.1.42 release]
+
+  Bug fixes:
+
+  * Fixes: NB#100487 (HildonStackableWindow transiency becomes
+    incoherent)
+  * Fixes: NB#98039 (Wishlist: hildon_window_add_edit_toolbar())
+  * Fixes: NB#100320 (HildonPannableArea does not listen to
+    GtkAdjustment "change" signals)
+  * Fixes: NB#99802 (Hildon touch selector entry not working properly
+    for some of the input modes)
+  * Fixes: NB#100468 (Application menu window is launched even when a
+    new secondary-window/dialog is pending to be shown/realized.)
+  * Fixes: NB#93165 (HildonTouchSelector::changed not emitted when the
+    selection is programmatically changed)
+
+  Deprecations:
+
+  * Removed obsolete icon sizes:
+    HILDON_ICON_PIXEL_SIZE_WIZARD
+    HILDON_ICON_PIXEL_SIZE_BIG_NOTE
+    HILDON_ICON_PIXEL_SIZE_NOTE
+
+  Other:
+
+  * Documentation improvements.
+  * Misc. code improvements.
+  * Icon sizes updates.
+
 [2.1.40 release]
 
   Bug fixes:

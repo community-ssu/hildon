@@ -1,3 +1,11 @@
+2009-02-06  Claudio Saavedra  <csaavedra@igalia.com>
+
+	[Release 2.1.42]
+
+	* NEWS: Updates.
+	* configure.ac: Bump version.
+	* debian/changelog: Updates.
+
 2009-02-06  Alberto Garcia  <agarcia@igalia.com>
 
 	* src/hildon-date-selector.c (hildon_date_selector_init)
