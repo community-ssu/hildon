@@ -71,6 +71,7 @@
 #include                                        "hildon-stackable-window.h"
 #include                                        "hildon-window-stack.h"
 #include                                        "hildon-animation-actor.h"
+#include                                        "hildon-remote-texture.h"
 #include                                        "hildon-wizard-dialog.h"
 #include                                        "hildon-calendar.h"
 #include                                        "hildon-bread-crumb-trail.h"
@@ -84,4 +85,4 @@
 #include                                        "hildon-dialog.h"
 #include                                        "hildon-main.h"
 
-#endif 
+#endif
