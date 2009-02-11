@@ -45,6 +45,7 @@ struct                                          _HildonRemoteTexturePrivate
     guint   set_damage : 1;
     guint   set_show : 1;
     guint   set_position : 1;
+    guint   set_offset : 1;
     guint   set_scale : 1;
     guint   set_parent : 1;
 
@@ -61,8 +62,13 @@ struct                                          _HildonRemoteTexturePrivate
     guint   show;
     guint   opacity;
 
-    double   position_x;
-    double   position_y;
+    gint    x;
+    gint    y;
+    gint    width;
+    gint    height;
+
+    double   offset_x;
+    double   offset_y;
 
     double  scale_x;
     double  scale_y;

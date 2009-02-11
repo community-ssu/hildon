@@ -115,8 +115,14 @@ hildon_remote_texture_set_opacity (HildonRemoteTexture *self,
 				    gint opacity);
 void
 hildon_remote_texture_set_position (HildonRemoteTexture *self,
-                                    double x,
-                                    double y);
+                                    gint x,
+                                    gint y,
+                                    gint width,
+                                    gint height);
+void
+hildon_remote_texture_set_offset (HildonRemoteTexture *self,
+                                  double x,
+                                  double y);
 void
 hildon_remote_texture_set_scale (HildonRemoteTexture *self,
                                  double x_scale,

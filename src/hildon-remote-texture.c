@@ -66,6 +66,7 @@ static guint32 shm_atom;
 static guint32 damage_atom;
 static guint32 show_atom;
 static guint32 position_atom;
+static guint32 offset_atom;
 static guint32 scale_atom;
 static guint32 parent_atom;
 static guint32 ready_atom;
@@ -109,6 +110,9 @@ hildon_remote_texture_realize                 (GtkWidget *widget)
 	position_atom =
 	    gdk_x11_get_xatom_by_name_for_display
 	    (display, "_HILDON_TEXTURE_CLIENT_MESSAGE_POSITION");
+	offset_atom =
+            gdk_x11_get_xatom_by_name_for_display
+            (display, "_HILDON_TEXTURE_CLIENT_MESSAGE_OFFSET");
 	scale_atom =
 	    gdk_x11_get_xatom_by_name_for_display
 	    (display, "_HILDON_TEXTURE_CLIENT_MESSAGE_SCALE");
@@ -123,6 +127,7 @@ hildon_remote_texture_realize                 (GtkWidget *widget)
 	g_debug ("damage atom = %lu\n", damage_atom);
 	g_debug ("show atom = %lu\n", show_atom);
 	g_debug ("position atom = %lu\n", position_atom);
+	g_debug ("offset atom = %lu\n", offset_atom);
 	g_debug ("scale atom = %lu\n", scale_atom);
 	g_debug ("parent atom = %lu\n", parent_atom);
 	g_debug ("ready atom = %lu\n", ready_atom);
@@ -335,8 +340,15 @@ hildon_remote_texture_send_pending_messages (HildonRemoteTexture *self)
 
     if (priv->set_position)
 	hildon_remote_texture_set_position (self,
-                                            priv->position_x,
-                                            priv->position_y);
+                                            priv->x,
+                                            priv->y,
+                                            priv->width,
+                                            priv->height);
+
+    if (priv->set_offset)
+        hildon_remote_texture_set_offset (self,
+                                          priv->offset_x,
+                                          priv->offset_y);
 
     if (priv->set_scale)
 	hildon_remote_texture_set_scale (self,
@@ -453,6 +465,10 @@ hildon_remote_texture_set_image (HildonRemoteTexture *self,
 
   if (GTK_WIDGET_MAPPED (widget) && priv->ready)
     {
+       /* Defer messages until the remote texture is parented
+        * and the parent window is mapped */
+        if (!priv->parent || !GTK_WIDGET_MAPPED (GTK_WIDGET (priv->parent)))
+            return;
         hildon_remote_texture_send_message (self,
                                             shm_atom,
                                             priv->shm_key,
@@ -505,6 +521,10 @@ hildon_remote_texture_update_area (HildonRemoteTexture *self,
 
   if (GTK_WIDGET_MAPPED (widget) && priv->ready)
   {
+     /* Defer messages until the remote texture is parented
+      * and the parent window is mapped */
+      if (!priv->parent || !GTK_WIDGET_MAPPED (GTK_WIDGET (priv->parent)))
+          return;
       hildon_remote_texture_send_message (self,
                                           damage_atom,
                                           priv->damage_x1,
@@ -565,10 +585,8 @@ hildon_remote_texture_set_show_full (HildonRemoteTexture *self,
     {
 	/* Defer show messages until the remote texture is parented
 	 * and the parent window is mapped */
-
 	if (!priv->parent || !GTK_WIDGET_MAPPED (GTK_WIDGET (priv->parent)))
 	    return;
-
 	hildon_remote_texture_send_message (self,
 					     show_atom,
 					     show, opacity,
@@ -620,11 +638,12 @@ hildon_remote_texture_set_opacity (HildonRemoteTexture *self,
 }
 
 /**
- * hildon_remote_texture_set_position_full:
+ * hildon_remote_texture_set_position:
  * @self: A #HildonRemoteTexture
  * @x: Desired X coordinate
  * @y: Desired Y coordinate
- * @depth: Desired window depth (Z coordinate)
+ * @width: Desired width
+ * @height: Desired height
  *
  * Send a message to the window manager setting the offset of the remote
  * texture in the window (in Remote texture's pixels). The texture
@@ -636,6 +655,52 @@ hildon_remote_texture_set_opacity (HildonRemoteTexture *self,
  **/
 void
 hildon_remote_texture_set_position (HildonRemoteTexture *self,
+                                        gint x,
+                                        gint y,
+                                        gint width,
+                                        gint height)
+{
+    HildonRemoteTexturePrivate
+                       *priv = HILDON_REMOTE_TEXTURE_GET_PRIVATE (self);
+    GtkWidget          *widget = GTK_WIDGET (self);
+
+    priv->x = x;
+    priv->y = y;
+    priv->width = width;
+    priv->height = height;
+    priv->set_position = 1;
+
+    if (GTK_WIDGET_MAPPED (widget) && priv->ready)
+    {
+        /* Defer messages until the remote texture is parented
+         * and the parent window is mapped */
+
+        if (!priv->parent || !GTK_WIDGET_MAPPED (GTK_WIDGET (priv->parent)))
+            return;
+        hildon_remote_texture_send_message (self,
+                                            position_atom,
+                                            x, y,
+                                            width, height, 0);
+        priv->set_position = 0;
+    }
+}
+
+/**
+ * hildon_remote_texture_set_offset:
+ * @self: A #HildonRemoteTexture
+ * @x: Desired X offset
+ * @y: Desired Y offset
+ *
+ * Send a message to the window manager setting the offset of the remote
+ * texture in the window (in Remote texture's pixels). The texture
+ * is also subject to the animation effects rendered by the compositing
+ * window manager on that window (like those by task switcher).
+ *
+ * If the remote texture WM-counterpart is not ready, the show message
+ * will be queued until the WM is ready for it.
+ **/
+void
+hildon_remote_texture_set_offset (HildonRemoteTexture *self,
                                     double x,
                                     double y)
 {
@@ -643,17 +708,22 @@ hildon_remote_texture_set_position (HildonRemoteTexture *self,
 	               *priv = HILDON_REMOTE_TEXTURE_GET_PRIVATE (self);
     GtkWidget          *widget = GTK_WIDGET (self);
 
-    priv->position_x = x;
-    priv->position_y = y;
-    priv->set_position = 1;
+    priv->offset_x = x;
+    priv->offset_y = y;
+    priv->set_offset = 1;
 
     if (GTK_WIDGET_MAPPED (widget) && priv->ready)
     {
-	hildon_remote_texture_send_message (self,
-					    position_atom,
-					    (gint)(x*65536), (gint)(y*65536),
-					    0, 0, 0);
-	priv->set_position = 0;
+        /* Defer messages until the remote texture is parented
+         * and the parent window is mapped */
+
+        if (!priv->parent || !GTK_WIDGET_MAPPED (GTK_WIDGET (priv->parent)))
+            return;
+        hildon_remote_texture_send_message (self,
+                                            offset_atom,
+                                            (gint)(x*65536), (gint)(y*65536),
+                                            0, 0, 0);
+        priv->set_offset = 0;
     }
 }
 
@@ -678,12 +748,16 @@ hildon_remote_texture_set_scale (HildonRemoteTexture *self,
 
     if (GTK_WIDGET_MAPPED (widget) && priv->ready)
     {
-	hildon_remote_texture_send_message (self,
-					     scale_atom,
-					     priv->scale_x * (1 << 16),
-					     priv->scale_y * (1 << 16),
-					     0, 0, 0);
-	priv->set_scale = 0;
+        /* Defer messages until the remote texture is parented
+         * and the parent window is mapped */
+        if (!priv->parent || !GTK_WIDGET_MAPPED (GTK_WIDGET (priv->parent)))
+            return;
+        hildon_remote_texture_send_message (self,
+                                             scale_atom,
+                                             priv->scale_x * (1 << 16),
+                                             priv->scale_y * (1 << 16),
+                                             0, 0, 0);
+        priv->set_scale = 0;
     }
 }
 

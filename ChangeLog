@@ -1,3 +1,11 @@
+2009-02-11  Gordon Williams <gordon.williams@collabora.co.uk>
+
+	* src/hildon-remote-texture.c
+	* src/hildon-remote-texture.h
+	* src/hildon-remote-texture-private.h
+	* examples/hildon-remote-texture-example.c:
+	Updates/fixes to remote-texture and its example.
+
 2009-02-11  Claudio Saavedra  <csaavedra@igalia.com>
 
 	Patch by Mox Soini (ext-mox.soini@nokia.com)

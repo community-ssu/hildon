@@ -19,15 +19,19 @@
  * An area 640x480 in the top-left corner will be updated with an animation
  * to show how to modify the area. */
 
+#define DO_ANIM 1 /* whether to animate the area defined below */
+
 #define ANIM_X 0
 #define ANIM_Y 0
 #define ANIM_WIDTH 640
 #define ANIM_HEIGHT 480
 #define ANIM_FRAMES 64
 
+/* this could come from ftol, but we hardcode it for this example */
 static key_t shm_key = 0xCAFEBEEF;
+
 static gint  bpp, width, height;
-static guchar *shm = 0; /* shared mem */
+static guchar *shm = 0; /* shared mem area */
 static int anim_frame = 0;
 
 static double scale = 1;
@@ -44,7 +48,7 @@ static void timeout_cb (void *obj)
 {
     HildonRemoteTexture *actor = HILDON_REMOTE_TEXTURE (obj);
 
-    if (shm) {
+    if (shm && DO_ANIM) {
       gint x,y;
 
       for (y=0;y<ANIM_HEIGHT;y++)
@@ -64,14 +68,20 @@ static void timeout_cb (void *obj)
 
     if (!pressed)
       {
-        x += x_inc;
-        y += y_inc;
-        x_inc = x_inc * 0.8;
-        y_inc = y_inc * 0.8;
-        hildon_remote_texture_set_position (actor, x, y);
+        if (fabs(x_inc)>0.01 || fabs(y_inc)>0.01)
+          {
+            x += x_inc;
+            y += y_inc;
+            x_inc = x_inc * 0.8;
+            y_inc = y_inc * 0.8;
+            hildon_remote_texture_set_offset (actor, x, y);
+          }
 
-        scale_smooth = scale_smooth*0.9 + scale*0.1;
-        hildon_remote_texture_set_scale (actor, scale_smooth, scale_smooth);
+        if (fabs(scale - scale_smooth)>0.01)
+          {
+            scale_smooth = scale_smooth*0.9 + scale*0.1;
+            hildon_remote_texture_set_scale (actor, scale_smooth, scale_smooth);
+          }
       }
 
 }
@@ -116,7 +126,7 @@ static void motion_cb (GtkWidget *widget,
 
       x += x_inc;
       y += y_inc;
-      hildon_remote_texture_set_position (actor, x, y);
+      hildon_remote_texture_set_offset (actor, x, y);
     }
 
   last_x = event->x;
@@ -146,8 +156,6 @@ main (int argc, char **argv)
     bpp             = gdk_pixbuf_get_n_channels (pixbuf); /* assume 8 bit */
     gpixels         = gdk_pixbuf_get_pixels (pixbuf);
     g_debug("Creating Shared Memory");
-
-
     size_t shm_size = width*height*bpp;
     int shmid;
 
@@ -166,41 +174,36 @@ main (int argc, char **argv)
     }
 
     memcpy(shm, gpixels, shm_size);
-
     g_debug("Done.");
 
-
-
+    /* Craete the program with the remote texture */
     HildonProgram *program = hildon_program_get_instance ();
-
     HildonWindow *window = HILDON_WINDOW(
         hildon_window_new());
     hildon_program_add_window (program, window);
-    gtk_window_set_decorated (GTK_WINDOW (window), FALSE);
     gtk_widget_show (GTK_WIDGET(window));
 
     HildonRemoteTexture *actor = HILDON_REMOTE_TEXTURE
 	(hildon_remote_texture_new ());
-    gtk_window_resize(GTK_WINDOW(actor), W, H);
 
     g_set_application_name ("Animation");
 
-    g_signal_connect (G_OBJECT (actor),
+    g_signal_connect (G_OBJECT (window),
                       "delete_event",
                       G_CALLBACK (gtk_main_quit), NULL);
-    g_signal_connect (G_OBJECT (actor),
+    g_signal_connect (G_OBJECT (window),
                               "button-press-event",
                               G_CALLBACK (press_cb),
                               actor);
-    g_signal_connect (G_OBJECT (actor),
+    g_signal_connect (G_OBJECT (window),
                                   "button-release-event",
                                   G_CALLBACK (release_cb),
                                   actor);
-    g_signal_connect (G_OBJECT (actor),
+    g_signal_connect (G_OBJECT (window),
                       "motion-notify-event",
                       G_CALLBACK (motion_cb),
                       actor);
-    gtk_widget_add_events (GTK_WIDGET(actor),
+    gtk_widget_add_events (GTK_WIDGET(window),
                            GDK_BUTTON_PRESS_MASK|
                            GDK_BUTTON_MOTION_MASK|
                            GDK_BUTTON_RELEASE_MASK);
@@ -209,9 +212,12 @@ main (int argc, char **argv)
     gtk_widget_show_all (GTK_WIDGET (actor));
     gdk_flush ();
 
+    /* vital: add this remote texture to a proper window */
     hildon_remote_texture_set_parent(actor, GTK_WINDOW(window));
+    /* Set the actual data we'll be displaying, via the shm key */
     hildon_remote_texture_set_image(actor, shm_key, width, height, bpp);
-    hildon_remote_texture_set_position (actor, x, y);
+    /* Set the actual position on the screen */
+    hildon_remote_texture_set_position (actor, 0, 56, W, H-56);
     hildon_remote_texture_set_show (actor, 1);
 
     g_timeout_add (25, (GSourceFunc)timeout_cb, actor);
