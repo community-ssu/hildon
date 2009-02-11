@@ -73,12 +73,12 @@ hildon_banner_show_information_with_markup      (GtkWidget *widget,
                                                  const gchar *icon_name,
                                                  const gchar *markup);
 
+#ifndef HILDON_DISABLE_DEPRECATED
 GtkWidget*
 hildon_banner_show_animation                    (GtkWidget *widget, 
                                                  const gchar *animation_name,
                                                  const gchar *text);
 
-#ifndef HILDON_DISABLE_DEPRECATED
 GtkWidget*
 hildon_banner_show_progress                     (GtkWidget *widget, 
                                                  GtkProgressBar *bar,

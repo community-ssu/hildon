@@ -1,3 +1,8 @@
+2009-02-11  Alberto Garcia  <agarcia@igalia.com>
+
+	* src/hildon-banner.h: Mark hildon_banner_show_animation() with a
+	deprecation guard.
+
 2009-02-11  Gordon Williams <gordon.williams@collabora.co.uk>
 
 	* src/hildon-remote-texture.c
