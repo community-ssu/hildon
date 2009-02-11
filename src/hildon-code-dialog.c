@@ -60,7 +60,7 @@
 #define                                         c_(String) \
                                                 dgettext("hildon-common-strings", String)
 
-#define                                         DEVICELOCK_OK _("secu_enter_lock_code_dialog_ok")
+#define                                         DEVICELOCK_OK _("wdgt_bd_done")
 
 #define                                         DEVICELOCK_TITLE _("secu_application_title")
 

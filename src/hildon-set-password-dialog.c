@@ -79,7 +79,7 @@
 
 #define                                         HILDON_SET_MODIFY_PASSWORD_DIALOG_VERIFY_PASSWORD "ckdg_fi_dialog_c_passwd_ver_pwd"
 
-#define                                         HILDON_SET_MODIFY_PASSWORD_DIALOG_OK "ckdg_bd_change_password_dialog_ok"
+#define                                         HILDON_SET_MODIFY_PASSWORD_DIALOG_OK "wdgt_bd_done"
 
 #define                                         HILDON_SET_MODIFY_PASSWORD_DIALOG_CANCEL "ckdg_bd_change_password_dialog_cancel"
 
