@@ -577,6 +577,24 @@ hildon_banner_button_press_event                (GtkWidget* widget,
     return result;
 }
 
+#if defined(MAEMO_GTK)
+static void
+hildon_banner_map                               (GtkWidget *widget)
+{
+    if (GTK_WIDGET_CLASS (hildon_banner_parent_class)->map) {
+        /* Make the banner temporary _before_ mapping it, to avoid closing
+         * other temporary windows */
+        gtk_window_set_is_temporary (GTK_WINDOW (widget), TRUE);
+
+        GTK_WIDGET_CLASS (hildon_banner_parent_class)->map (widget);
+
+        /* Make the banner non-temporary _after_ mapping it, to avoid
+         * being closed by other non-temporary windows */
+        gtk_window_set_is_temporary (GTK_WINDOW (widget), FALSE);
+    }
+}
+#endif
+
 /* We start the timer for timed notifications after the window appears on screen */
 static gboolean 
 hildon_banner_map_event                         (GtkWidget *widget, 
@@ -591,29 +609,6 @@ hildon_banner_map_event                         (GtkWidget *widget,
 
     return result;
 }  
-
-#if defined(MAEMO_GTK)
-
-static GdkAtom atom_temporaries = GDK_NONE;
-
-/* Do nothing for _GTK_DELETE_TEMPORARIES */
-static gint
-hildon_banner_client_event                      (GtkWidget *widget,
-                                                 GdkEventClient  *event)
-{
-  gboolean handled = FALSE;
-
-  if (atom_temporaries == GDK_NONE)
-    atom_temporaries = gdk_atom_intern_static_string ("_GTK_DELETE_TEMPORARIES");
-
-  if (event->message_type == atom_temporaries)
-    {
-      handled = TRUE;
-    }
-
-  return handled;
-}
-#endif
 
 static void
 hildon_banner_reset_wrap_state (HildonBanner *banner)
@@ -779,7 +774,7 @@ hildon_banner_class_init                        (HildonBannerClass *klass)
     widget_class->realize = hildon_banner_realize;
     widget_class->button_press_event = hildon_banner_button_press_event;
 #if defined(MAEMO_GTK)
-    widget_class->client_event = hildon_banner_client_event;
+    widget_class->map = hildon_banner_map;
 #endif
 
     /* Install properties.
@@ -847,10 +842,6 @@ hildon_banner_init                              (HildonBanner *self)
     gtk_box_pack_start (GTK_BOX (priv->layout), priv->label, TRUE, TRUE, 0);
 
     gtk_window_set_accept_focus (GTK_WINDOW (self), FALSE);
-
-#if defined(MAEMO_GTK)
-    gtk_window_set_is_temporary (GTK_WINDOW (self), TRUE);
-#endif
 
     hildon_banner_reset_wrap_state (self);
 
