@@ -365,6 +365,7 @@ START_TEST (test_set_color_invalid)
     }
   
   gtk_widget_destroy(aux_object);
+  g_free (ret_color);
 }
 END_TEST
 

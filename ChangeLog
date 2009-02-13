@@ -1,5 +1,10 @@
 2009-02-13  Claudio Saavedra  <csaavedra@igalia.com>
 
+	* tests/check-hildon-color-button.c (START_TEST): do not leak
+	ret_color.
+
+2009-02-13  Claudio Saavedra  <csaavedra@igalia.com>
+
 	* src/hildon-font-selection-dialog.c
 	(hildon_font_selection_dialog_get_preview_text): Return NULL
 	instead of FALSE on the g_return_val_if_fail().
