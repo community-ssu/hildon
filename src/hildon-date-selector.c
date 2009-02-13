@@ -592,7 +592,7 @@ _update_day_model (HildonDateSelector * selector)
   guint current_day = 0;
   guint current_year = 0;
   guint current_month = 0;
-  guint num_days = 31;
+  gint num_days = 31;
 
   hildon_date_selector_get_date (selector, &current_year, &current_month,
                                  &current_day);
