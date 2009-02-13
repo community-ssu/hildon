@@ -354,7 +354,6 @@ hildon_caption_expose                           (GtkWidget *widget,
 
     g_assert (HILDON_IS_CAPTION (widget));
     priv = HILDON_CAPTION_GET_PRIVATE (widget);
-    g_assert (priv);
 
     if (! GTK_WIDGET_DRAWABLE (widget))
         return FALSE;
@@ -395,7 +394,6 @@ hildon_caption_set_property                     (GObject *object,
                                                  GParamSpec *pspec)
 {
     HildonCaptionPrivate *priv = HILDON_CAPTION_GET_PRIVATE (object);
-    g_assert (priv);
 
     switch (param_id) 
     {
@@ -580,7 +578,6 @@ hildon_caption_init                             (HildonCaption *caption)
 
     /* Initialize startup state */
     priv = HILDON_CAPTION_GET_PRIVATE (caption);
-    g_assert (priv);
 
     priv->status = HILDON_CAPTION_OPTIONAL;
     priv->icon = NULL;
@@ -620,7 +617,6 @@ hildon_caption_set_focus                        (GtkWindow *window,
                                                  GtkWidget *caption)
 {
     HildonCaptionPrivate *priv = HILDON_CAPTION_GET_PRIVATE (caption);
-    g_assert (priv);
 
     /* check if ancestor gone */
     if (! widget)
@@ -655,7 +651,6 @@ hildon_caption_hierarchy_changed                (GtkWidget *widget,
     HildonCaptionPrivate *priv;
 
     priv = HILDON_CAPTION_GET_PRIVATE (widget);
-    g_assert (priv);
 
     if (GTK_WIDGET_CLASS (parent_class)->hierarchy_changed)
         GTK_WIDGET_CLASS (parent_class)->hierarchy_changed (widget, previous_toplevel);
@@ -688,7 +683,6 @@ hildon_caption_size_request                     (GtkWidget *widget,
     g_return_if_fail (HILDON_IS_CAPTION(widget));
 
     priv = HILDON_CAPTION_GET_PRIVATE (widget);
-    g_assert (priv);
 
     /* Use the same size requisition for the main box of the caption */
     gtk_widget_size_request (priv->caption_area, &req);
@@ -716,7 +710,6 @@ hildon_caption_size_allocate                    (GtkWidget *widget,
 
     g_assert (HILDON_IS_CAPTION (widget));
     priv = HILDON_CAPTION_GET_PRIVATE (widget);
-    g_assert (priv);
 
     /* Get the rtl status */
     rtl = (gtk_widget_get_direction (widget) == GTK_TEXT_DIR_RTL);
@@ -806,7 +799,6 @@ hildon_caption_forall                           (GtkContainer *container,
     g_assert (callback != NULL);
 
     priv = HILDON_CAPTION_GET_PRIVATE (container);
-    g_assert (priv);
 
     /* Execute callback for the child widgets */
     if (GTK_CONTAINER_CLASS (parent_class)->forall)
@@ -848,7 +840,6 @@ hildon_caption_get_size_group                   (const HildonCaption *self)
     g_return_val_if_fail (HILDON_IS_CAPTION (self), NULL);
 
     priv = HILDON_CAPTION_GET_PRIVATE(self);
-    g_assert (priv);
 
     return priv->group;
 }
@@ -914,7 +905,6 @@ hildon_caption_is_mandatory                     (const HildonCaption *caption)
     g_return_val_if_fail (HILDON_IS_CAPTION (caption), FALSE);
 
     priv = HILDON_CAPTION_GET_PRIVATE (caption);
-    g_assert (priv);
 
     return (priv->status == HILDON_CAPTION_MANDATORY);
 }
@@ -933,7 +923,6 @@ hildon_caption_set_icon_position                (HildonCaption *caption,
 {
     g_return_if_fail (HILDON_IS_CAPTION (caption));
     HildonCaptionPrivate *priv = HILDON_CAPTION_GET_PRIVATE (caption);
-    g_assert (priv);
 
     g_return_if_fail (priv->caption_area != NULL);
     
@@ -959,7 +948,6 @@ hildon_caption_get_icon_position                (const HildonCaption *caption)
     g_return_val_if_fail (HILDON_IS_CAPTION (caption), 0);
 
     HildonCaptionPrivate *priv = HILDON_CAPTION_GET_PRIVATE (caption);
-    g_assert (priv);
 
     return priv->icon_position;
 }
@@ -995,7 +983,6 @@ hildon_caption_get_status                       (const HildonCaption *caption)
     g_return_val_if_fail (HILDON_IS_CAPTION (caption), HILDON_CAPTION_OPTIONAL);
 
     priv = HILDON_CAPTION_GET_PRIVATE(caption);
-    g_assert (priv);
 
     return priv->status;
 }
@@ -1034,7 +1021,6 @@ hildon_caption_get_icon_image                   (const HildonCaption *caption)
     g_return_val_if_fail (HILDON_IS_CAPTION (caption), NULL);
 
     priv = HILDON_CAPTION_GET_PRIVATE (caption);
-    g_assert (priv);
 
     return priv->icon;
 }
@@ -1091,7 +1077,6 @@ hildon_caption_get_label                        (const HildonCaption *caption)
     HildonCaptionPrivate *priv;
     g_return_val_if_fail (HILDON_IS_CAPTION (caption), "");
     priv = HILDON_CAPTION_GET_PRIVATE (caption);
-    g_assert (priv);
 
     return (gchar*) gtk_label_get_text (GTK_LABEL (priv->label));
 }
@@ -1131,7 +1116,6 @@ hildon_caption_get_separator                    (const HildonCaption *caption)
     g_return_val_if_fail (HILDON_IS_CAPTION (caption), "");
 
     priv = HILDON_CAPTION_GET_PRIVATE (caption);
-    g_assert (priv);
 
     return priv->separator;
 }
@@ -1172,7 +1156,6 @@ hildon_caption_set_child_expand                 (HildonCaption *caption,
     g_return_if_fail (HILDON_IS_CAPTION (caption));
 
     priv = HILDON_CAPTION_GET_PRIVATE (caption);
-    g_assert (priv);
 
     /* Did the setting really change? */
     if (priv->expand == expand)
@@ -1206,7 +1189,6 @@ hildon_caption_get_child_expand                 (const HildonCaption *caption)
     g_return_val_if_fail (HILDON_IS_CAPTION (caption), FALSE);
 
     priv = HILDON_CAPTION_GET_PRIVATE (caption);
-    g_assert (priv);
 
     return priv->expand;
 }
@@ -1280,7 +1262,6 @@ hildon_caption_set_label_alignment              (HildonCaption *caption,
     g_return_if_fail (HILDON_IS_CAPTION (caption));
 
     priv = HILDON_CAPTION_GET_PRIVATE (caption);
-    g_assert (priv);
 
     g_object_set (priv->label, "yalign", alignment, NULL);
     g_object_set (priv->icon_align, "yalign", alignment, NULL);
@@ -1304,7 +1285,6 @@ hildon_caption_get_label_alignment              (HildonCaption *caption)
 
     g_return_val_if_fail (HILDON_IS_CAPTION (caption), 0);
     priv = HILDON_CAPTION_GET_PRIVATE (caption);
-    g_assert (priv);
 
     g_object_get (priv->label, "yalign", &result, NULL);
 

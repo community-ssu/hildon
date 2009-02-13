@@ -1,3 +1,16 @@
+2009-02-12  Claudio Saavedra  <csaavedra@igalia.com>
+
+	* src/hildon-caption.c: (hildon_caption_expose),
+	(hildon_caption_set_property), (hildon_caption_init),
+	(hildon_caption_set_focus), (hildon_caption_hierarchy_changed),
+	(hildon_caption_size_request), (hildon_caption_size_allocate),
+	(hildon_caption_forall), (hildon_caption_set_separator),
+	(hildon_caption_activate), (hildon_caption_set_child_expand),
+	(hildon_caption_set_label_text),
+	(hildon_caption_get_label_alignment):
+
+	Remove unnecessary g_assert() calls.
+
 2009-02-12  Alberto Garcia  <agarcia@igalia.com>
 
 	* src/hildon-banner.c
