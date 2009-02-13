@@ -669,7 +669,9 @@ hildon_range_editor_size_allocate               (GtkWidget *widget,
                                                  GtkAllocation *allocation)
 {
     HildonRangeEditorPrivate *priv;
-    GtkAllocation child1_allocation, child2_allocation, child3_allocation;
+    GtkAllocation child1_allocation = {0};
+    GtkAllocation child2_allocation = {0};
+    GtkAllocation child3_allocation = {0};
 
     priv = HILDON_RANGE_EDITOR_GET_PRIVATE (widget);
     g_assert (priv);

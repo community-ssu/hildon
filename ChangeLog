@@ -1,3 +1,12 @@
+2009-02-13  Claudio Saavedra  <csaavedra@igalia.com>
+
+	* src/hildon-caption.c (hildon_caption_size_allocate):
+	* src/hildon-pannable-area.c (hildon_pannable_area_size_request):
+	* src/hildon-range-editor.c (hildon_range_editor_size_allocate):
+
+	Initialize allocation variables to 0, to avoid eventually using
+	unitialized variables.
+
 2009-02-12  Claudio Saavedra  <csaavedra@igalia.com>
 
 	* src/hildon-bread-crumb-trail.c

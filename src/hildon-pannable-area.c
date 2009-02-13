@@ -789,7 +789,7 @@ static void
 hildon_pannable_area_size_request (GtkWidget * widget,
 				   GtkRequisition * requisition)
 {
-  GtkRequisition child_requisition;
+  GtkRequisition child_requisition = {0};
   HildonPannableAreaPrivate *priv = HILDON_PANNABLE_AREA (widget)->priv;
   GtkWidget *child = gtk_bin_get_child (GTK_BIN (widget));
 

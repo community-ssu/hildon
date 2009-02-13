@@ -700,7 +700,7 @@ hildon_caption_size_allocate                    (GtkWidget *widget,
 {
     GtkAllocation child_alloc;
     GtkAllocation caption_alloc;
-    GtkRequisition req, child_req;
+    GtkRequisition req, child_req = {0};
     GtkWidget *child = NULL;
     HildonCaptionPrivate *priv = NULL;
     gboolean rtl;
