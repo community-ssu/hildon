@@ -1,5 +1,12 @@
 2009-02-13  Claudio Saavedra  <csaavedra@igalia.com>
 
+	* src/hildon-date-selector.c (hildon_date_selector_construct_ui),
+	(hildon_date_selector_constructor): Do not select the current
+	date until we are handle the "changed" signal, to avoid having bogus
+	elements in the days model.
+
+2009-02-13  Claudio Saavedra  <csaavedra@igalia.com>
+
 	* src/hildon-date-selector.c (_update_day_model): Use a gint variable
 	for num_days, since _month_days() can return a negative value.
 

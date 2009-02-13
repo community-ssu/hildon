@@ -334,10 +334,6 @@ hildon_date_selector_construct_ui (HildonDateSelector *selector)
       break;
     }
   }
-  /* By default we should select the current day */
-  hildon_date_selector_select_current_date (selector, selector->priv->creation_year,
-                                            selector->priv->creation_month,
-                                            selector->priv->creation_day);
 }
 
 static GObject *
@@ -346,13 +342,21 @@ hildon_date_selector_constructor (GType                  type,
                                   GObjectConstructParam *construct_properties)
 {
   GObject *object;
+  HildonDateSelector *selector;
 
   object = G_OBJECT_CLASS (hildon_date_selector_parent_class)->constructor
     (type, n_construct_properties, construct_properties);
 
-  hildon_date_selector_construct_ui (HILDON_DATE_SELECTOR (object));
+  selector = HILDON_DATE_SELECTOR (object);
+
+  hildon_date_selector_construct_ui (selector);
 
   g_signal_connect (object, "changed", G_CALLBACK (_manage_selector_change_cb), NULL);
+
+  /* By default we should select the current day */
+  hildon_date_selector_select_current_date (selector, selector->priv->creation_year,
+                                            selector->priv->creation_month,
+                                            selector->priv->creation_day);
 
   return object;
 }
