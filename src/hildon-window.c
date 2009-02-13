@@ -350,7 +350,6 @@ hildon_window_init                              (HildonWindow *self)
 static void
 hildon_window_finalize                          (GObject * obj_self)
 {
-    HildonWindow *self;
     HildonWindowPrivate *priv; 
       
     g_return_if_fail (HILDON_WINDOW (obj_self));
@@ -358,8 +357,6 @@ hildon_window_finalize                          (GObject * obj_self)
     priv = HILDON_WINDOW_GET_PRIVATE (obj_self);
     g_assert (priv != NULL);
     
-    self = HILDON_WINDOW (obj_self);
-
     if (priv->escape_timeout) {
       g_source_remove (priv->escape_timeout);
       priv->escape_timeout = 0;

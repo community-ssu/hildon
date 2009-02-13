@@ -396,8 +396,6 @@ hildon_bread_crumb_trail_size_allocate (GtkWidget *widget,
   for (p = first_hide; p; p = p->next)
     {
       item = HILDON_BREAD_CRUMB (p->data);
-      child = GTK_WIDGET (item);
-
       gtk_widget_set_child_visible (GTK_WIDGET (item), FALSE);
     }
 }

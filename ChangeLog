@@ -1,5 +1,22 @@
 2009-02-12  Claudio Saavedra  <csaavedra@igalia.com>
 
+	* src/hildon-bread-crumb-trail.c
+	(hildon_bread_crumb_trail_size_allocate):
+	* src/hildon-calendar.c (hildon_calendar_set_background):
+	* src/hildon-caption.c (hildon_caption_hierarchy_changed):
+	* src/hildon-range-editor.c (hildon_range_editor_get_range):
+	* src/hildon-seekbar.c (hildon_seekbar_init):
+	* src/hildon-time-editor.c (hildon_time_editor_get_time):
+	* src/hildon-time-selector.c (hildon_time_selector_finalize):
+	* src/hildon-touch-selector-entry.c
+	(hildon_touch_selector_get_text_from_model):
+	* src/hildon-touch-selector.c (hildon_touch_selector_class_init):
+	* src/hildon-window.c (hildon_window_finalize):
+
+	Remove many unused variables.
+
+2009-02-12  Claudio Saavedra  <csaavedra@igalia.com>
+
 	* src/hildon-seekbar.c: (hildon_seekbar_init),
 	(hildon_seekbar_size_request), (hildon_seekbar_size_allocate):
 

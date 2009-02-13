@@ -896,10 +896,7 @@ hildon_range_editor_get_range                   (HildonRangeEditor *editor,
                                                  gint *start,
                                                  gint *end)
 {
-    HildonRangeEditorPrivate *priv;
-
     g_return_if_fail (HILDON_IS_RANGE_EDITOR (editor) && start && end);
-    priv = HILDON_RANGE_EDITOR_GET_PRIVATE (editor);
 
     *start = hildon_range_editor_get_lower (editor);
     *end = hildon_range_editor_get_higher (editor);

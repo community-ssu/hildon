@@ -297,12 +297,10 @@ hildon_touch_selector_class_init (HildonTouchSelectorClass * class)
 {
   GObjectClass *gobject_class;
   GtkObjectClass *object_class;
-  GtkWidgetClass *widget_class;
   GtkContainerClass *container_class;
 
   gobject_class = G_OBJECT_CLASS (class);
   object_class = GTK_OBJECT_CLASS (class);
-  widget_class = GTK_WIDGET_CLASS (class);
   container_class = GTK_CONTAINER_CLASS (class);
 
   /* GObject */

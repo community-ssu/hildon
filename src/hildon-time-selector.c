@@ -274,10 +274,6 @@ hildon_time_selector_set_property (GObject *object,
 static void
 hildon_time_selector_finalize (GObject * object)
 {
-  HildonTimeSelector *selector = NULL;
-
-  selector = HILDON_TIME_SELECTOR (object);
-
   /* FIXME: FILL ME !! */
 
   (*G_OBJECT_CLASS (hildon_time_selector_parent_class)->finalize) (object);

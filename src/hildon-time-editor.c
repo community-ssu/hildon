@@ -1206,12 +1206,7 @@ hildon_time_editor_get_time                     (HildonTimeEditor *editor,
                                                  guint *minutes, 
                                                  guint *seconds)
 {
-    HildonTimeEditorPrivate *priv;
-
     g_return_if_fail (HILDON_IS_TIME_EDITOR (editor));
-
-    priv = HILDON_TIME_EDITOR_GET_PRIVATE (editor);
-    g_assert (priv);
 
     ticks_to_time (hildon_time_editor_get_ticks (editor), hours, minutes, seconds);
 }

@@ -3569,11 +3569,9 @@ hildon_calendar_thaw                            (HildonCalendar *calendar)
 static void
 hildon_calendar_set_background                  (GtkWidget *widget)
 {
-    HildonCalendar *calendar;
     HildonCalendarPrivate *private_data;
     gint i;
 
-    calendar = HILDON_CALENDAR (widget);
     private_data = HILDON_CALENDAR_GET_PRIVATE (widget);
 
     if (GTK_WIDGET_REALIZED (widget))

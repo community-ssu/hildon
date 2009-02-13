@@ -425,15 +425,12 @@ entry_on_text_changed (GtkEditable * editable,
 static gchar *
 hildon_touch_selector_get_text_from_model (HildonTouchSelectorEntry * selector)
 {
-  HildonTouchSelectorEntryPrivate *priv;
   GtkTreeModel *model;
   GtkTreeIter iter;
   GtkTreePath *path;
   GList *selected_rows;
   gchar *text;
   gint text_column = -1;
-
-  priv = HILDON_TOUCH_SELECTOR_ENTRY_GET_PRIVATE (selector);
 
   model = hildon_touch_selector_get_model (HILDON_TOUCH_SELECTOR (selector), 0);
   text_column = hildon_touch_selector_entry_get_text_column (selector);

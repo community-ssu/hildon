@@ -648,9 +648,6 @@ hildon_caption_hierarchy_changed                (GtkWidget *widget,
                                                  GtkWidget *previous_toplevel)
 {
     GtkWidget *current_ancestor;
-    HildonCaptionPrivate *priv;
-
-    priv = HILDON_CAPTION_GET_PRIVATE (widget);
 
     if (GTK_WIDGET_CLASS (parent_class)->hierarchy_changed)
         GTK_WIDGET_CLASS (parent_class)->hierarchy_changed (widget, previous_toplevel);

@@ -227,10 +227,7 @@ hildon_seekbar_class_init                       (HildonSeekbarClass *seekbar_cla
 static void
 hildon_seekbar_init                             (HildonSeekbar *seekbar)
 {
-    HildonSeekbarPrivate *priv;
     GtkRange *range = GTK_RANGE(seekbar);
-
-    priv = HILDON_SEEKBAR_GET_PRIVATE (seekbar);
 
     /* Initialize range widget */
     range->orientation = GTK_ORIENTATION_HORIZONTAL;
