@@ -1,3 +1,22 @@
+2009-02-13  Alejandro G. Castro  <alex@igalia.com>
+
+	This patch was applied before but reverted because it caused
+	problems, we have changed the main condition and tested the
+	regressions we detected before and they work ok.
+
+        * src/hildon-pannable-area.c,
+        (hildon_pannable_area_get_topmost): Added a new parameter to
+        filter the the windows that do not include those events. Added
+        also a condition when finding the window to filter windows that do
+        not ask for those events.
+        (hildon_pannable_area_button_press_cb),
+        (hildon_pannable_area_button_release_cb),
+        (hildon_pannable_get_child_widget_at): Reviewed the call the the
+        topmost function, we have added the new parameter.
+
+        Fixes: NB#97458 (Pannable area prevents propagation of button
+        press events)
+
 2009-02-13  Claudio Saavedra  <csaavedra@igalia.com>
 
 	* tests/check-hildon-color-button.c (START_TEST): do not leak
