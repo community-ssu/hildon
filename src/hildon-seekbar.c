@@ -231,7 +231,6 @@ hildon_seekbar_init                             (HildonSeekbar *seekbar)
     GtkRange *range = GTK_RANGE(seekbar);
 
     priv = HILDON_SEEKBAR_GET_PRIVATE (seekbar);
-    g_assert (priv);
 
     /* Initialize range widget */
     range->orientation = GTK_ORIENTATION_HORIZONTAL;
@@ -525,7 +524,6 @@ hildon_seekbar_size_request                     (GtkWidget *widget,
 
     self = HILDON_SEEKBAR (widget);
     priv = HILDON_SEEKBAR_GET_PRIVATE (self);
-    g_assert (priv);
 
     parent = gtk_widget_get_ancestor (GTK_WIDGET (self), GTK_TYPE_TOOLBAR);
 
@@ -547,7 +545,6 @@ hildon_seekbar_size_allocate                    (GtkWidget *widget,
     HildonSeekbarPrivate *priv;
 
     priv = HILDON_SEEKBAR_GET_PRIVATE (widget);
-    g_assert (priv);
 
     if (priv->is_toolbar == TRUE)
     {
