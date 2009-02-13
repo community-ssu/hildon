@@ -1365,7 +1365,7 @@ hildon_font_selection_dialog_get_preview_text   (HildonFontSelectionDialog * fsd
     /* FIXME Return a const pointer? */
     HildonFontSelectionDialogPrivate *priv;
 
-    g_return_val_if_fail (HILDON_IS_FONT_SELECTION_DIALOG (fsd), FALSE);
+    g_return_val_if_fail (HILDON_IS_FONT_SELECTION_DIALOG (fsd), NULL);
         
     priv = HILDON_FONT_SELECTION_DIALOG_GET_PRIVATE (fsd);
     g_assert (priv);

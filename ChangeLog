@@ -1,5 +1,11 @@
 2009-02-13  Claudio Saavedra  <csaavedra@igalia.com>
 
+	* src/hildon-font-selection-dialog.c
+	(hildon_font_selection_dialog_get_preview_text): Return NULL
+	instead of FALSE on the g_return_val_if_fail().
+
+2009-02-13  Claudio Saavedra  <csaavedra@igalia.com>
+
 	* src/hildon-time-selector.c (hildon_time_selector_set_time):
 	* src/hildon-date-selector.c
 	(hildon_date_selector_select_current_date):
