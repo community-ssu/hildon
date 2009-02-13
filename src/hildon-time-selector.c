@@ -527,8 +527,8 @@ hildon_time_selector_set_time (HildonTimeSelector * selector,
   GtkTreeIter iter;
   gint hours_item = 0;
 
-  g_return_val_if_fail (hours >= 0 && hours <= 23, FALSE);
-  g_return_val_if_fail (minutes >= 0 && minutes <= 59, FALSE);
+  g_return_val_if_fail (hours <= 23, FALSE);
+  g_return_val_if_fail (minutes <= 59, FALSE);
 
   if (selector->priv->ampm_format) {
     _set_pm (selector, hours >= 12);

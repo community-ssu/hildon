@@ -1,5 +1,13 @@
 2009-02-13  Claudio Saavedra  <csaavedra@igalia.com>
 
+	* src/hildon-time-selector.c (hildon_time_selector_set_time):
+	* src/hildon-date-selector.c
+	(hildon_date_selector_select_current_date):
+	Do not compare unsigned integers to be greater than or equal 0,
+	because it's always TRUE.
+
+2009-02-13  Claudio Saavedra  <csaavedra@igalia.com>
+
 	* src/hildon-date-selector.c (hildon_date_selector_construct_ui),
 	(hildon_date_selector_constructor): Do not select the current
 	date until we are handle the "changed" signal, to avoid having bogus

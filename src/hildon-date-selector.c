@@ -782,7 +782,7 @@ hildon_date_selector_select_current_date (HildonDateSelector * selector,
   max_year = selector->priv->max_year;
 
   g_return_val_if_fail (min_year <= year && year <= max_year, FALSE);
-  g_return_val_if_fail (month >= 0 && month < 12, FALSE);
+  g_return_val_if_fail (month < 12, FALSE);
 
   num_days = _month_days (month, year);
   g_return_val_if_fail (day > 0 && day <= num_days, FALSE);
