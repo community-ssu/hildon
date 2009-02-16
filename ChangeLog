@@ -1,3 +1,10 @@
+2009-02-16  Alejandro G. Castro  <alex@igalia.com>
+
+	* src/hildon-pannable-area.c,
+	(hildon_pannable_area_motion_notify_cb): Removed the use of the
+	gtk-dnd-drag-threshold, it was too big. We have defined our own
+	dnd define and set a smaller value: PANNIG_THRESHOLD.
+
 2009-02-16  Alberto Garcia  <agarcia@igalia.com>
 
 	* src/hildon-banner.c (hildon_banner_show_animation): Don't allow

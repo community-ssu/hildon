@@ -58,6 +58,7 @@
 #define SCROLLBAR_FADE_DELAY 30
 #define SCROLL_FADE_TIMEOUT 10
 #define MOTION_EVENTS_PER_SECOND 25
+#define PANNIG_THRESHOLD 3
 
 G_DEFINE_TYPE (HildonPannableArea, hildon_pannable_area, GTK_TYPE_BIN)
 
@@ -1969,7 +1970,6 @@ hildon_pannable_area_motion_notify_cb (GtkWidget * widget,
 {
   HildonPannableArea *area = HILDON_PANNABLE_AREA (widget);
   HildonPannableAreaPrivate *priv = area->priv;
-  gint dnd_threshold;
   gdouble x, y;
   gdouble delta;
 
@@ -1986,17 +1986,12 @@ hildon_pannable_area_motion_notify_cb (GtkWidget * widget,
     priv->first_drag = TRUE;
   }
 
-  /* Only start the scroll if the mouse cursor passes beyond the
-   * DnD threshold for dragging.
-   */
-  g_object_get (G_OBJECT (gtk_settings_get_default ()),
-		"gtk-dnd-drag-threshold", &dnd_threshold, NULL);
   x = event->x - priv->x;
   y = event->y - priv->y;
 
   if (priv->first_drag && (!priv->moved) &&
-      ((ABS (x) > (dnd_threshold))
-       || (ABS (y) > (dnd_threshold)))) {
+      ((ABS (x) > (PANNIG_THRESHOLD))
+       || (ABS (y) > (PANNIG_THRESHOLD)))) {
     priv->moved = TRUE;
     x = 0;
     y = 0;
