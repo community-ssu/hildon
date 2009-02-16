@@ -58,7 +58,7 @@
 #define SCROLLBAR_FADE_DELAY 30
 #define SCROLL_FADE_TIMEOUT 10
 #define MOTION_EVENTS_PER_SECOND 25
-#define PANNIG_THRESHOLD 3
+#define PANNING_THRESHOLD 3
 
 G_DEFINE_TYPE (HildonPannableArea, hildon_pannable_area, GTK_TYPE_BIN)
 
@@ -2014,8 +2014,8 @@ hildon_pannable_area_motion_notify_cb (GtkWidget * widget,
   y = event->y - priv->y;
 
   if (priv->first_drag && (!priv->moved) &&
-      ((ABS (x) > (PANNIG_THRESHOLD))
-       || (ABS (y) > (PANNIG_THRESHOLD)))) {
+      ((ABS (x) > (PANNING_THRESHOLD))
+       || (ABS (y) > (PANNING_THRESHOLD)))) {
     priv->moved = TRUE;
     x = 0;
     y = 0;

@@ -1,5 +1,11 @@
 2009-02-16  Alejandro G. Castro  <alex@igalia.com>
 
+	* src/hildon-pannable-area.c
+	(hildon_pannable_area_motion_notify_cb): Fixed typo in the name of
+	the PANNING_THRESHOLD.
+
+2009-02-16  Alejandro G. Castro  <alex@igalia.com>
+
 	* src/hildon-pannable-area.c,
 	(hildon_pannable_area_class_init): Increased the maximum speed.
 	(hildon_pannable_area_get_property),
