@@ -123,7 +123,7 @@ hildon_time_button_new_step (HildonSizeType          size,
   GtkWidget *time_selector;
 
   button = g_object_new (HILDON_TYPE_TIME_BUTTON,
-                         "title", "Time", "arrangement", arrangement, "size", size, NULL);
+                         "title", _("wdgt_ti_time"), "arrangement", arrangement, "size", size, NULL);
 
   time_selector = hildon_time_selector_new_step (minutes_step);
 

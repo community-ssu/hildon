@@ -1,3 +1,12 @@
+2009-02-16  Claudio Saavedra  <csaavedra@igalia.com>
+
+	* src/hildon-date-button.c (hildon_date_button_new):
+	* src/hildon-time-button.c (hildon_time_button_new_step):
+	Use new logical strings to set the button default title.
+
+	Fixes: NB#99915 (Date and Time options are not localised in Date
+	and Time setttings)
+
 2009-02-16  Alejandro G. Castro  <alex@igalia.com>
 
 	* src/hildon-pannable-area.c

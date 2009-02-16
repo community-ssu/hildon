@@ -105,7 +105,7 @@ hildon_date_button_new (HildonSizeType          size,
                         HildonButtonArrangement arrangement)
 {
   return g_object_new (HILDON_TYPE_DATE_BUTTON,
-                       "title", "Date",
+                       "title", _("wdgt_ti_date"),
                        "arrangement", arrangement,
                        "size", size,
                        NULL);
