@@ -1,3 +1,13 @@
+2009-02-16  Alejandro G. Castro  <alex@igalia.com>
+
+	* src/hildon-pannable-area.c,
+	(hildon_pannable_area_class_init): Increased the maximum speed.
+	(hildon_pannable_area_get_property),
+	(hildon_pannable_area_set_property),
+	(hildon_pannable_area_timeout): Added a new low friction mode, it
+	allows the user avoid friction when launching the widget fast
+	enough. It is interesting to traverse long lists.
+
 2009-02-16  Alberto Garcia  <agarcia@igalia.com>
 
 	* src/hildon-stackable-window.c (hildon_stackable_window_class_init)

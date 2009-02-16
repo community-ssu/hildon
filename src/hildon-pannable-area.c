@@ -111,6 +111,7 @@ struct _HildonPannableAreaPrivate {
   gint hovershoot_max;
   gboolean initial_hint;
   gboolean initial_effect;
+  gboolean low_friction_mode;
   gboolean first_drag;
 
   gboolean size_request_policy;
@@ -151,6 +152,7 @@ enum {
   PROP_HOVERSHOOT_MAX,
   PROP_SCROLL_TIME,
   PROP_INITIAL_HINT,
+  PROP_LOW_FRICTION_MODE,
   PROP_SIZE_REQUEST_POLICY,
   PROP_HADJUSTMENT,
   PROP_VADJUSTMENT,
@@ -343,7 +345,7 @@ hildon_pannable_area_class_init (HildonPannableAreaClass * klass)
 							"Maximum scroll velocity",
 							"Maximum distance the child widget should scroll "
 							"per 'frame', in pixels.",
-							0, G_MAXDOUBLE, 60,
+							0, G_MAXDOUBLE, 96,
 							G_PARAM_READWRITE |
 							G_PARAM_CONSTRUCT));
 
@@ -410,6 +412,15 @@ hildon_pannable_area_class_init (HildonPannableAreaClass * klass)
  				   g_param_spec_boolean ("initial-hint",
  							 "Initial hint",
  							 "Whether to hint the user about the pannability of the container.",
+ 							 FALSE,
+							 G_PARAM_READWRITE |
+ 							 G_PARAM_CONSTRUCT));
+
+  g_object_class_install_property (object_class,
+ 				   PROP_LOW_FRICTION_MODE,
+ 				   g_param_spec_boolean ("low-friction-mode",
+ 							 "Do not decelerate the initial velocity",
+ 							 "Avoid decelerating the panning movement, like no friction, the widget will stop in the edges or if the user clicks.",
  							 FALSE,
 							 G_PARAM_READWRITE |
  							 G_PARAM_CONSTRUCT));
@@ -582,6 +593,9 @@ hildon_pannable_area_get_property (GObject * object,
   case PROP_INITIAL_HINT:
     g_value_set_boolean (value, priv->initial_hint);
     break;
+  case PROP_LOW_FRICTION_MODE:
+    g_value_set_boolean (value, priv->low_friction_mode);
+    break;
   case PROP_SIZE_REQUEST_POLICY:
     g_value_set_enum (value, priv->size_request_policy);
     break;
@@ -668,6 +682,9 @@ hildon_pannable_area_set_property (GObject * object,
     break;
   case PROP_INITIAL_HINT:
     priv->initial_hint = g_value_get_boolean (value);
+    break;
+  case PROP_LOW_FRICTION_MODE:
+    priv->low_friction_mode = g_value_get_boolean (value);
     break;
   case PROP_SIZE_REQUEST_POLICY:
     hildon_pannable_area_set_size_request_policy (HILDON_PANNABLE_AREA (object),
@@ -1884,8 +1901,15 @@ hildon_pannable_area_timeout (HildonPannableArea * area)
         }
 
       } else {
-        priv->vel_x *= priv->decel;
-        priv->vel_y *= priv->decel;
+        if ((!priv->low_friction_mode) ||
+            ((priv->mov_mode&HILDON_MOVEMENT_MODE_HORIZ) &&
+             (ABS (priv->vel_x) < 0.8*priv->vmax)))
+          priv->vel_x *= priv->decel;
+
+        if ((!priv->low_friction_mode) ||
+            ((priv->mov_mode&HILDON_MOVEMENT_MODE_VERT) &&
+             (ABS (priv->vel_y) < 0.8*priv->vmax)))
+          priv->vel_y *= priv->decel;
 
         if ((ABS (priv->vel_x) < 1.0) && (ABS (priv->vel_y) < 1.0)) {
           priv->vel_x = 0;
