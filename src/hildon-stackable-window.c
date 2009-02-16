@@ -271,6 +271,23 @@ hildon_stackable_window_hide                    (GtkWidget *widget)
     GTK_WIDGET_CLASS (hildon_stackable_window_parent_class)->hide (widget);
 }
 
+static gboolean
+hildon_stackable_window_delete_event            (GtkWidget   *widget,
+                                                 GdkEventAny *event)
+{
+    HildonStackableWindowPrivate *priv = HILDON_STACKABLE_WINDOW_GET_PRIVATE (widget);
+    gboolean retvalue = FALSE;
+
+    if (priv->stack && hildon_window_stack_peek (priv->stack) != widget) {
+        /* Ignore the delete event if this window is not the topmost one */
+        retvalue = TRUE;
+    } else if (GTK_WIDGET_CLASS (hildon_stackable_window_parent_class)->delete_event) {
+        retvalue = GTK_WIDGET_CLASS (hildon_stackable_window_parent_class)->delete_event (widget, event);
+    }
+
+    return retvalue;
+}
+
 static void
 hildon_stackable_window_finalize                (GObject *object)
 {
@@ -297,6 +314,7 @@ hildon_stackable_window_class_init              (HildonStackableWindowClass *kla
     widget_class->map               = hildon_stackable_window_map;
     widget_class->show              = hildon_stackable_window_show;
     widget_class->hide              = hildon_stackable_window_hide;
+    widget_class->delete_event      = hildon_stackable_window_delete_event;
 
     window_class->toggle_menu       = hildon_stackable_window_toggle_menu;
 

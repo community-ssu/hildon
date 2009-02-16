@@ -1,3 +1,11 @@
+2009-02-16  Alberto Garcia  <agarcia@igalia.com>
+
+	* src/hildon-stackable-window.c (hildon_stackable_window_class_init)
+	(+hildon_stackable_window_delete_event): Ignore delete events if
+	the window is not the topmost one.
+
+	Fixes: NB#101698 (Back button long press and delete-event handling)
+
 2009-02-16  Alejandro G. Castro  <alex@igalia.com>
 
 	* src/hildon-pannable-area.c,
