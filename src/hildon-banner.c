@@ -1016,8 +1016,9 @@ hildon_banner_show_information_with_markup      (GtkWidget *widget,
 /**
  * hildon_banner_show_animation:
  * @widget: the #GtkWidget that wants to display banner
- * @animation_name: The progress animation to use. You usually can just
- *                  pass %NULL for the default animation.
+ * @animation_name: since Hildon 2.2 this parameter is not used
+ *                  anymore and any value that you pass will be
+ *                  ignored
  * @text: the text to display.
  *
  * Shows an animated progress notification. It's recommended not to try
@@ -1053,13 +1054,11 @@ hildon_banner_show_animation                    (GtkWidget *widget,
     GtkWidget *image_widget;
     const gchar *filename;
 
-    g_return_val_if_fail (animation_name == NULL || animation_name[0] != 0, NULL);
     g_return_val_if_fail (text != NULL, NULL);
 
     /* Find out which animation to use */
     theme = gtk_icon_theme_get_default ();
-    info = gtk_icon_theme_lookup_icon (theme, animation_name ?   /* FIXME: consider using: gtk_icon_theme_load_icon() */
-            animation_name : HILDON_BANNER_DEFAULT_PROGRESS_ANIMATION,
+    info = gtk_icon_theme_lookup_icon (theme, HILDON_BANNER_DEFAULT_PROGRESS_ANIMATION,
             HILDON_ICON_SIZE_STYLUS, 0);
 
     /* Try to load animation. One could try to optimize this 

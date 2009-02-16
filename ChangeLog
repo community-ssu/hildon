@@ -1,3 +1,10 @@
+2009-02-16  Alberto Garcia  <agarcia@igalia.com>
+
+	* src/hildon-banner.c (hildon_banner_show_animation): Don't allow
+	user-defined icons, use always the default one.
+
+	Fixes: NB#101916 (Do not allow custom icons on animation banner)
+
 2009-02-13  Alejandro G. Castro  <alex@igalia.com>
 
 	This patch was applied before but reverted because it caused
