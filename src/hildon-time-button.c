@@ -25,10 +25,18 @@
  * a different time from the selector, this will be shown in the button.
  */
 
+#include <libintl.h>
+
 #include "hildon-time-selector.h"
 #include "hildon-touch-selector.h"
 #include "hildon-picker-button.h"
 #include "hildon-time-button.h"
+
+#define                                         _(String) \
+                                                dgettext("hildon-libs", String)
+
+#define                                         c_(String) \
+                                                dgettext("hildon-common-strings", String)
 
 G_DEFINE_TYPE (HildonTimeButton, hildon_time_button, HILDON_TYPE_PICKER_BUTTON)
 

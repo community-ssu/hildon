@@ -1,3 +1,8 @@
+2009-02-17  Alberto Garcia  <agarcia@igalia.com>
+
+	* src/hildon-date-button.c
+	* src/hildon-time-button.c: Add gettext macros
+
 2009-02-16  Claudio Saavedra  <csaavedra@igalia.com>
 
 	* src/hildon-date-button.c (hildon_date_button_new):

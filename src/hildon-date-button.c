@@ -14,9 +14,17 @@
  *
  */
 
+#include <libintl.h>
+
 #include "hildon-date-button.h"
 #include "hildon-date-selector.h"
 #include "hildon-touch-selector.h"
+
+#define                                         _(String) \
+                                                dgettext("hildon-libs", String)
+
+#define                                         c_(String) \
+                                                dgettext("hildon-common-strings", String)
 
 /**
  * SECTION:hildon-date-button
