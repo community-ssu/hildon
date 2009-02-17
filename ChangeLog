@@ -1,5 +1,14 @@
 2009-02-17  Alberto Garcia  <agarcia@igalia.com>
 
+	* src/hildon-pannable-area.c (hildon_pannable_draw_vscroll)
+	(hildon_pannable_draw_hscroll): Make a copy of the graphic context
+	instead of modifying the one in the widget style.
+
+	Fixes: NB#101043 (Second row of all the command button are
+	displayed in transparent mode.)
+
+2009-02-17  Alberto Garcia  <agarcia@igalia.com>
+
 	* src/hildon-date-button.c
 	* src/hildon-time-button.c: Add gettext macros
 

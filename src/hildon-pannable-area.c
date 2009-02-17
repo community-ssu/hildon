@@ -1146,6 +1146,7 @@ hildon_pannable_draw_vscroll (GtkWidget *widget,
   HildonPannableAreaPrivate *priv = HILDON_PANNABLE_AREA (widget)->priv;
   gfloat y, height;
   GdkColor transp_color;
+  GdkGC *gc;
 
   gdk_draw_rectangle (widget->window,
                       widget->style->bg_gc[GTK_STATE_NORMAL],
@@ -1172,13 +1173,15 @@ hildon_pannable_draw_vscroll (GtkWidget *widget,
   tranparency_color (&transp_color, *back_color, *scroll_color,
                      priv->scroll_indicator_alpha);
 
-  gdk_gc_set_rgb_fg_color (widget->style->fg_gc[GTK_STATE_INSENSITIVE],
-                           &transp_color);
+  gc = gdk_gc_new (GDK_DRAWABLE (widget->window));
+  gdk_gc_copy (gc, widget->style->fg_gc[GTK_STATE_INSENSITIVE]);
+  gdk_gc_set_rgb_fg_color (gc, &transp_color);
 
-  gdk_draw_rectangle (widget->window,
-                      widget->style->fg_gc[GTK_STATE_INSENSITIVE],
+  gdk_draw_rectangle (widget->window, gc,
                       TRUE, priv->vscroll_rect.x, y,
                       priv->vscroll_rect.width, height);
+
+  gdk_gc_unref (gc);
 }
 
 static void
@@ -1189,6 +1192,7 @@ hildon_pannable_draw_hscroll (GtkWidget *widget,
   HildonPannableAreaPrivate *priv = HILDON_PANNABLE_AREA (widget)->priv;
   gfloat x, width;
   GdkColor transp_color;
+  GdkGC *gc;
 
   gdk_draw_rectangle (widget->window,
                       widget->style->bg_gc[GTK_STATE_INSENSITIVE],
@@ -1216,13 +1220,15 @@ hildon_pannable_draw_hscroll (GtkWidget *widget,
   tranparency_color (&transp_color, *back_color, *scroll_color,
                      priv->scroll_indicator_alpha);
 
-  gdk_gc_set_rgb_fg_color (widget->style->fg_gc[GTK_STATE_INSENSITIVE],
-                           &transp_color);
+  gc = gdk_gc_new (GDK_DRAWABLE (widget->window));
+  gdk_gc_copy (gc, widget->style->fg_gc[GTK_STATE_INSENSITIVE]);
+  gdk_gc_set_rgb_fg_color (gc, &transp_color);
 
-  gdk_draw_rectangle (widget->window,
-                      widget->style->fg_gc[GTK_STATE_INSENSITIVE],
+  gdk_draw_rectangle (widget->window, gc,
                       TRUE, x, priv->hscroll_rect.y, width,
                       priv->hscroll_rect.height);
+
+  gdk_gc_unref (gc);
 }
 
 #endif /* USE_CAIRO_SCROLLBARS */
