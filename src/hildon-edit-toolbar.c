@@ -191,7 +191,7 @@ hildon_edit_toolbar_init                        (HildonEditToolbar *self)
     GtkBox *hbox2;
 
     hbox2 = GTK_BOX (gtk_hbox_new (FALSE, 0));
-    align = GTK_ALIGNMENT (gtk_alignment_new (0, 0.5, 1, 0));
+    align = GTK_ALIGNMENT (gtk_alignment_new (0, 0.5, 1, 1));
     priv->label = GTK_LABEL (gtk_label_new (NULL));
     priv->button = GTK_BUTTON (hildon_gtk_button_new (HILDON_SIZE_AUTO));
     separator = gtk_vseparator_new ();

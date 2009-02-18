@@ -1,5 +1,10 @@
 2009-02-18  Alberto Garcia  <agarcia@igalia.com>
 
+	* src/hildon-edit-toolbar.c (hildon_edit_toolbar_init): Use the
+	full height of the toolbar for the button and the label.
+
+2009-02-18  Alberto Garcia  <agarcia@igalia.com>
+
 	* src/hildon-edit-toolbar.c (hildon_edit_toolbar_init): Add some
 	padding before the label and after the button.
 
