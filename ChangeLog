@@ -1,5 +1,10 @@
 2009-02-18  Alberto Garcia  <agarcia@igalia.com>
 
+	* examples/hildon-button-example.c (common_buttons_window): Don't
+	leak size groups.
+
+2009-02-18  Alberto Garcia  <agarcia@igalia.com>
+
 	* src/hildon-pannable-area.c (hildon_pannable_area_class_init):
 	Set default movement mode to HILDON_MOVEMENT_MODE_VERT.
 

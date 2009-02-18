@@ -415,6 +415,12 @@ common_buttons_window                           (GtkButton *b,
     hildon_pannable_area_add_with_viewport (HILDON_PANNABLE_AREA (panarea), GTK_WIDGET (vbox));
     gtk_container_add (GTK_CONTAINER (win), panarea);
 
+    g_object_unref (title1);
+    g_object_unref (value1);
+    g_object_unref (title2);
+    g_object_unref (value2);
+    g_object_unref (centered);
+
     gtk_widget_show_all (win);
 }
 
