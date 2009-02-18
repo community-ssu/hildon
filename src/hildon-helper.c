@@ -158,6 +158,7 @@ attach_new_color_element                        (GtkWidget *widget,
             element->state == state &&
             element->is_color == TRUE) {
             /* Reusing ... */
+            g_free (element->logical_color_name);
             element->logical_color_name = g_strdup (color_name);
             return style_list;
         }

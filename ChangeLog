@@ -1,5 +1,12 @@
 2009-02-18  Alberto Garcia  <agarcia@igalia.com>
 
+	* src/hildon-helper.c (attach_new_color_element): Fix memory
+	leak.
+
+	Fixes: NB#102262 (memory leak in hildon_button_set_style())
+
+2009-02-18  Alberto Garcia  <agarcia@igalia.com>
+
 	* examples/hildon-button-example.c (common_buttons_window): Don't
 	leak size groups.
 
