@@ -1,3 +1,10 @@
+2009-02-18  Alberto Garcia  <agarcia@igalia.com>
+
+	* src/hildon-gtk.c: Check that the window is realized.
+
+	Fixes: NB#102225 (Crash setting the progress indicator to a non
+	visible window)
+
 2009-02-17  Alberto Garcia  <agarcia@igalia.com>
 
 	* src/hildon-pannable-area.c (hildon_pannable_draw_vscroll)

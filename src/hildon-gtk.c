@@ -321,7 +321,7 @@ hildon_gtk_icon_view_set_ui_mode                (GtkIconView  *iconview,
 
 /**
  * hildon_gtk_window_set_progress_indicator:
- * @window: The window
+ * @window: a #GtkWindow.
  * @state: The state we want to set: 1 -> show progress indicator, 0
  *          -> hide progress indicator.
  *
@@ -329,20 +329,27 @@ hildon_gtk_icon_view_set_ui_mode                (GtkIconView  *iconview,
  * indicator in the window title. It applies to #HildonDialog and
  * #HildonWindow (including subclasses).
  *
+ * Note that @window must be realized for this to work.
+ *
  * Since: 2.2
  **/
 void
 hildon_gtk_window_set_progress_indicator        (GtkWindow    *window,
                                                  guint        state)
 {
-  GtkWidget *widget = GTK_WIDGET (window);
+  GdkWindow *gdkwin;
   GdkDisplay *display;
   Atom atom;
 
-  display = gdk_drawable_get_display (widget->window);
+  g_return_if_fail (GTK_IS_WINDOW (window));
+  g_return_if_fail (GTK_WIDGET_REALIZED (window));
+
+  gdkwin = GTK_WIDGET (window)->window;
+
+  display = gdk_drawable_get_display (gdkwin);
   atom = gdk_x11_get_xatom_by_name_for_display (display, "_HILDON_WM_WINDOW_PROGRESS_INDICATOR");
 
-  XChangeProperty (GDK_DISPLAY_XDISPLAY (display), GDK_WINDOW_XID (widget->window),
+  XChangeProperty (GDK_DISPLAY_XDISPLAY (display), GDK_WINDOW_XID (gdkwin),
                    atom, XA_INTEGER, 32, PropModeReplace,
                    (guchar *)&state, 1);
 }
