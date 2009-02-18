@@ -63,6 +63,9 @@
 
 G_DEFINE_TYPE                                   (HildonEditToolbar, hildon_edit_toolbar, GTK_TYPE_HBOX);
 
+#define                                         TOOLBAR_LEFT_PADDING 8
+#define                                         TOOLBAR_RIGHT_PADDING 8
+
 #define                                         HILDON_EDIT_TOOLBAR_GET_PRIVATE(obj) \
                                                 (G_TYPE_INSTANCE_GET_PRIVATE ((obj), \
                                                 HILDON_TYPE_EDIT_TOOLBAR, HildonEditToolbarPrivate));
@@ -183,8 +186,12 @@ hildon_edit_toolbar_init                        (HildonEditToolbar *self)
 {
     HildonEditToolbarPrivate *priv = HILDON_EDIT_TOOLBAR_GET_PRIVATE (self);
     GtkWidget *separator;
+    GtkAlignment *align;
     GtkBox *hbox = GTK_BOX (self);
+    GtkBox *hbox2;
 
+    hbox2 = GTK_BOX (gtk_hbox_new (FALSE, 0));
+    align = GTK_ALIGNMENT (gtk_alignment_new (0, 0.5, 1, 0));
     priv->label = GTK_LABEL (gtk_label_new (NULL));
     priv->button = GTK_BUTTON (hildon_gtk_button_new (HILDON_SIZE_AUTO));
     separator = gtk_vseparator_new ();
@@ -196,17 +203,22 @@ hildon_edit_toolbar_init                        (HildonEditToolbar *self)
     g_signal_connect (priv->arrow, "clicked", G_CALLBACK (arrow_clicked_cb), self);
 
     gtk_box_set_spacing (hbox, 0);
+    gtk_alignment_set_padding (align, 0, 0, TOOLBAR_LEFT_PADDING, TOOLBAR_RIGHT_PADDING);
 
     gtk_widget_set_name (GTK_WIDGET (self), "toolbar-edit-mode");
     gtk_widget_set_name (GTK_WIDGET (priv->arrow), "hildon-edit-toolbar-arrow");
 
-    gtk_box_pack_start (hbox, GTK_WIDGET (priv->label), TRUE, TRUE, 0);
-    gtk_box_pack_start (hbox, GTK_WIDGET (priv->button), FALSE, FALSE, 0);
+    gtk_container_add (GTK_CONTAINER (align), GTK_WIDGET (hbox2));
+    gtk_box_pack_start (hbox2, GTK_WIDGET (priv->label), TRUE, TRUE, 0);
+    gtk_box_pack_start (hbox2, GTK_WIDGET (priv->button), FALSE, FALSE, 0);
+
+    gtk_box_pack_start (hbox, GTK_WIDGET (align), TRUE, TRUE, 0);
     gtk_box_pack_start (hbox, separator, FALSE, FALSE, 0);
     gtk_box_pack_start (hbox, GTK_WIDGET (priv->arrow), FALSE, FALSE, 0);
 
     gtk_misc_set_alignment (GTK_MISC (priv->label), 0, 0.5);
 
+    gtk_widget_show (GTK_WIDGET (align));
     gtk_widget_show (GTK_WIDGET (priv->label));
     gtk_widget_show (GTK_WIDGET (priv->button));
     gtk_widget_show (separator);

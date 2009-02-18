@@ -1,5 +1,10 @@
 2009-02-18  Alberto Garcia  <agarcia@igalia.com>
 
+	* src/hildon-edit-toolbar.c (hildon_edit_toolbar_init): Add some
+	padding before the label and after the button.
+
+2009-02-18  Alberto Garcia  <agarcia@igalia.com>
+
 	* src/hildon-window.c (paint_edit_toolbar): Fix style detail.
 
 	* src/hildon-edit-toolbar.c (hildon_edit_toolbar_init):
