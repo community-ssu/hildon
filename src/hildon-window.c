@@ -968,7 +968,7 @@ paint_edit_toolbar                              (GtkWidget *widget,
 
     gtk_paint_box (widget->style, widget->window,
                    GTK_WIDGET_STATE (widget), GTK_SHADOW_OUT,
-                   &event->area, widget, "toolbar-primary",
+                   &event->area, widget, "toolbar-edit-mode",
                    toolbar->allocation.x,
                    toolbar->allocation.y,
                    toolbar->allocation.width,

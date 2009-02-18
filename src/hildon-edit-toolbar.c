@@ -182,10 +182,12 @@ static void
 hildon_edit_toolbar_init                        (HildonEditToolbar *self)
 {
     HildonEditToolbarPrivate *priv = HILDON_EDIT_TOOLBAR_GET_PRIVATE (self);
+    GtkWidget *separator;
     GtkBox *hbox = GTK_BOX (self);
 
     priv->label = GTK_LABEL (gtk_label_new (NULL));
-    priv->button = GTK_BUTTON (hildon_gtk_button_new (HILDON_SIZE_AUTO_WIDTH | HILDON_SIZE_FINGER_HEIGHT));
+    priv->button = GTK_BUTTON (hildon_gtk_button_new (HILDON_SIZE_AUTO));
+    separator = gtk_vseparator_new ();
     priv->arrow = GTK_BUTTON (gtk_button_new ());
 
     gtk_button_set_focus_on_click (priv->arrow, FALSE);
@@ -193,18 +195,21 @@ hildon_edit_toolbar_init                        (HildonEditToolbar *self)
     g_signal_connect (priv->button, "clicked", G_CALLBACK (button_clicked_cb), self);
     g_signal_connect (priv->arrow, "clicked", G_CALLBACK (arrow_clicked_cb), self);
 
-    gtk_box_set_spacing (hbox, 10);
+    gtk_box_set_spacing (hbox, 0);
 
+    gtk_widget_set_name (GTK_WIDGET (self), "toolbar-edit-mode");
     gtk_widget_set_name (GTK_WIDGET (priv->arrow), "hildon-edit-toolbar-arrow");
 
     gtk_box_pack_start (hbox, GTK_WIDGET (priv->label), TRUE, TRUE, 0);
     gtk_box_pack_start (hbox, GTK_WIDGET (priv->button), FALSE, FALSE, 0);
+    gtk_box_pack_start (hbox, separator, FALSE, FALSE, 0);
     gtk_box_pack_start (hbox, GTK_WIDGET (priv->arrow), FALSE, FALSE, 0);
 
     gtk_misc_set_alignment (GTK_MISC (priv->label), 0, 0.5);
 
     gtk_widget_show (GTK_WIDGET (priv->label));
     gtk_widget_show (GTK_WIDGET (priv->button));
+    gtk_widget_show (separator);
     gtk_widget_show (GTK_WIDGET (priv->arrow));
 }
 

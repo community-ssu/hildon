@@ -1,5 +1,17 @@
 2009-02-18  Alberto Garcia  <agarcia@igalia.com>
 
+	* src/hildon-window.c (paint_edit_toolbar): Fix style detail.
+
+	* src/hildon-edit-toolbar.c (hildon_edit_toolbar_init):
+	Add a GtkVSeparator between the button and the back arrow.
+	Let the button have automatic size.
+	Set a name to the widget for theming handling.
+
+	Fixes: NB#101793 (Make edit toolbar the same height as window
+	title bar (use title area theming))
+
+2009-02-18  Alberto Garcia  <agarcia@igalia.com>
+
 	* src/hildon-helper.c (attach_new_color_element): Fix memory
 	leak.
 
