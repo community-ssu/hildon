@@ -1,5 +1,16 @@
 2009-02-19  Claudio Saavedra  <csaavedra@igalia.com>
 
+	Patch by Gabriel Schulhof (gabriel.schulhof@nokia.com)
+
+	* src/hildon-pannable-area.c (hildon_pannable_draw_vscroll),
+	(hildon_pannable_draw_hscroll): Consider the adjustment's lower
+	bound when calculating the scroll indicator position.
+
+	Fixes: NB#102338 (HildonPannableArea scrolling indicator does not
+	treat ->lower correctly)
+
+2009-02-19  Claudio Saavedra  <csaavedra@igalia.com>
+
         * src/hildon-caption.c (hildon_caption_class_init): Remove the
         expose event handling, since it is not necessary to draw the focus
         anymore.

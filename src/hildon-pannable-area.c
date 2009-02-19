@@ -1020,12 +1020,12 @@ hildon_pannable_draw_vscroll (GtkWidget * widget,
   cairo_clip (cr);
 
   /* Calculate the scroll bar height and position */
-  y = (priv->vadjust->value / priv->vadjust->upper) *
+  y = ((priv->vadjust->value - priv->vadjust->lower) / (priv->vadjust->upper - priv->vadjust->lower)) *
     (widget->allocation.height -
      (priv->hscroll_visible ? priv->area_width : 0));
-  height = (((priv->vadjust->value +
+  height = ((((priv->vadjust->value - priv->vadjust->lower) +
               priv->vadjust->page_size) /
-             priv->vadjust->upper) *
+             (priv->vadjust->upper - priv->vadjust->lower)) *
             (widget->allocation.height -
              (priv->hscroll_visible ? priv->area_width : 0))) - y;
 
@@ -1082,10 +1082,10 @@ hildon_pannable_draw_hscroll (GtkWidget * widget,
   cairo_clip (cr);
 
   /* calculate the scrollbar width and position */
-  x = (priv->hadjust->value / priv->hadjust->upper) *
+  x = ((priv->hadjust->value - priv->hadjust->lower) / (priv->hadjust->upper - priv->hadjust->lower)) *
     (widget->allocation.width - (priv->vscroll_visible ? priv->area_width : 0));
-  width =(((priv->hadjust->value +
-            priv->hadjust->page_size) / priv->hadjust->upper) *
+  width =((((priv->hadjust->value - priv->hadjust->lower) +
+            priv->hadjust->page_size) / (priv->hadjust->upper - priv->hadjust->lower)) *
           (widget->allocation.width -
            (priv->vscroll_visible ? priv->area_width : 0))) - x;
 
@@ -1155,10 +1155,10 @@ hildon_pannable_draw_vscroll (GtkWidget *widget,
                       priv->vscroll_rect.width,
                       priv->vscroll_rect.height);
 
-  y = (priv->vadjust->value / priv->vadjust->upper) *
+  y = ((priv->vadjust->value - priv->vadjust->lower) / (priv->vadjust->upper - priv->vadjust->lower)) *
     (widget->allocation.height - (priv->hscroll_visible ? priv->area_width : 0));
-  height = (((priv->vadjust->value + priv->vadjust->page_size) /
-             priv->vadjust->upper) *
+  height = ((((priv->vadjust->value - priv->vadjust->lower) + priv->vadjust->page_size) /
+             (priv->vadjust->upper - priv->vadjust->lower)) *
             (widget->allocation.height -
              (priv->hscroll_visible ? priv->area_width : 0))) - y;
 
@@ -1202,10 +1202,10 @@ hildon_pannable_draw_hscroll (GtkWidget *widget,
                       priv->hscroll_rect.height);
 
   /* calculate the scrollbar width and position */
-  x = (priv->hadjust->value / priv->hadjust->upper) *
+  x = ((priv->hadjust->value - priv->hadjust->lower) / (priv->hadjust->upper - priv->hadjust->lower)) *
     (widget->allocation.width - (priv->vscroll_visible ? priv->area_width : 0));
-  width =(((priv->hadjust->value +
-            priv->hadjust->page_size) / priv->hadjust->upper) *
+  width =((((priv->hadjust->value - priv->hadjust->lower) +
+            priv->hadjust->page_size) / (priv->hadjust->upper - priv->hadjust->lower)) *
           (widget->allocation.width -
            (priv->vscroll_visible ? priv->area_width : 0))) - x;
 
