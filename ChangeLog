@@ -1,3 +1,9 @@
+2009-02-19  Claudio Saavedra  <csaavedra@igalia.com>
+
+	reviewed by: <delete if not using a buddy>
+
+	* src/hildon-caption.c (hildon_caption_class_init):
+
 2009-02-18  Alberto Garcia  <agarcia@igalia.com>
 
 	* src/hildon-edit-toolbar.c (hildon_edit_toolbar_init): Use the

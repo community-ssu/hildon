@@ -98,10 +98,6 @@ hildon_caption_get_property                     (GObject *object,
                                                  GValue *value, 
                                                  GParamSpec *pspec);
 
-static gboolean 
-hildon_caption_expose                           (GtkWidget *widget,
-                                                 GdkEventExpose *event);
-
 static void 
 hildon_caption_destroy                          (GtkObject *self);
 
@@ -200,7 +196,6 @@ hildon_caption_class_init                       (HildonCaptionClass *caption_cla
     container_class->set_child_property         = hildon_caption_set_child_property;
     container_class->get_child_property         = hildon_caption_get_child_property;
 
-    widget_class->expose_event                  = hildon_caption_expose;
     widget_class->hierarchy_changed             = hildon_caption_hierarchy_changed;
     widget_class->size_request                  = hildon_caption_size_request;
     widget_class->size_allocate                 = hildon_caption_size_allocate;
@@ -337,54 +332,6 @@ hildon_caption_destroy                          (GtkObject *self)
     /* Parent classes destroy takes care of user packed contents */
     if (GTK_OBJECT_CLASS (parent_class)->destroy)
         GTK_OBJECT_CLASS (parent_class)->destroy (self);
-}
-
-/* Parent, eventbox will run allocate also for the child which may be
- * owning a window too. This window is then moved and resized
- * and we do not want to do that (it causes flickering).
- */
-static gboolean 
-hildon_caption_expose                           (GtkWidget *widget,
-                                                 GdkEventExpose *event)
-{
-    HildonCaptionPrivate *priv = NULL;
-    GtkRequisition req;
-    GtkAllocation alloc;
-    gfloat align;
-
-    g_assert (HILDON_IS_CAPTION (widget));
-    priv = HILDON_CAPTION_GET_PRIVATE (widget);
-
-    if (! GTK_WIDGET_DRAWABLE (widget))
-        return FALSE;
-
-    GTK_WIDGET_CLASS (parent_class)->expose_event (widget, event);
-
-    /* If our child control is focused, we draw nice looking focus
-       graphics for the caption */  
-    if (priv->is_focused && priv->text)
-    {
-        /* Determine focus box dimensions */
-        gtk_widget_get_child_requisition (priv->caption_area, &req);
-        align = hildon_caption_get_label_alignment (HILDON_CAPTION(widget));
-
-        alloc.width = priv->caption_area->allocation.width + HILDON_CAPTION_SPACING;
-        alloc.height = MIN (req.height + (2 * widget->style->ythickness), priv->caption_area->allocation.height);
-
-        alloc.x = priv->caption_area->allocation.x - HILDON_CAPTION_SPACING; /* - left margin */
-        alloc.y = priv->caption_area->allocation.y + 
-            MAX (((priv->caption_area->allocation.height - alloc.height) * align), 0);
-
-        /* Paint the focus box */
-        gtk_paint_box (widget->style, widget->window, GTK_STATE_ACTIVE,
-                GTK_SHADOW_OUT, NULL, widget, "selection",
-                alloc.x, alloc.y, alloc.width, alloc.height);
-
-        /* Paint caption contents on top of the focus box */
-        GTK_WIDGET_GET_CLASS (priv->caption_area)->expose_event (priv->caption_area, event);
-    }
-
-    return FALSE;
 }
 
 static void 
