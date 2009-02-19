@@ -1,3 +1,13 @@
+2009-02-19  Alberto Garcia  <agarcia@igalia.com>
+
+	* src/hildon-banner.c:
+	Update the maximum width of timed banners.
+	(force_to_wrap_truncated): Enforce the maximum text width if the
+	label is wrapped.
+
+	Fixes: NB#102413 (The text margins (wrapping) in information
+	banner should be HILDON_MARGIN_TRIPLE)
+
 2009-02-19  Claudio Saavedra  <csaavedra@igalia.com>
 
 	Patch by Gabriel Schulhof (gabriel.schulhof@nokia.com)

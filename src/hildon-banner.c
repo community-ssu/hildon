@@ -78,7 +78,8 @@
 
 #define                                         HILDON_BANNER_PROGRESS_WIDTH 104
 
-#define                                         HILDON_BANNER_LABEL_MAX_TIMED 375
+#define                                         HILDON_BANNER_LABEL_MAX_TIMED \
+                                                (800 - ((HILDON_MARGIN_TRIPLE) * 2))
 
 #define                                         HILDON_BANNER_LABEL_MAX_PROGRESS 375 /*265*/
 
@@ -659,7 +660,8 @@ force_to_wrap_truncated                         (HildonBanner *banner)
      * width, enforce the maximum allowed width now.
      */
     if (priv->has_been_wrapped
-        || width_text >= width_max) {
+        || width_text >= width_max
+        || pango_layout_is_wrapped (layout)) {
         /* Force wrapping by setting the maximum size */
         width = width_max;
 
