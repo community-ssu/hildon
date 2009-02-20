@@ -1,3 +1,14 @@
+2009-02-20  Alejandro G. Castro  <alex@igalia.com>
+
+	* src/hildon-pannable-area.c,
+	(hildon_pannable_area_get_topmost),
+	(hildon_pannable_area_button_press_cb),
+	(hildon_pannable_area_button_release_cb),
+	(hildon_pannable_get_child_widget_at): Reverted the patch for the
+	topmost function adding the event mask. We have to try a
+	differente approach because it is still causing problems (NB#9745,
+	reopened).
+
 2009-02-19  Alberto Garcia  <agarcia@igalia.com>
 
 	* src/hildon-banner.c:
