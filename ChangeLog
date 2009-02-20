@@ -1,3 +1,38 @@
+2009-02-20  Alejandro G. Castro  <alex@igalia.com>
+
+	Reviewed the geometry that handles the children size and
+	scrollbar, now it tries a size and reviews the results depending
+	on the scrollbars visibility.
+
+	* src/hildon-pannable-area.c,
+	(hildon_pannable_area_realize): Fixed a typo.
+	(hildon_pannable_area_child_allocate_calculate): Added this
+	function to calculate the child allocation.
+	(hildon_pannable_area_size_allocate): Reviewed the allocation
+	code.
+	(hildon_pannable_area_check_scrollbars),
+	(hildon_pannable_area_refresh): Refactored refresh function, this
+	way we can call the code handling the scrollbars without causing a
+	size_request, it is interesting in the allocate.
+	(hildon_pannable_area_init): Replace the callbacks of the
+	value_changed and changed signals to propertly deal with the
+	geometry.
+	(hildon_pannable_area_grab_notify),
+	(hildon_pannable_area_initial_effect),
+	(hildon_pannable_area_launch_fade_timeout),
+	(hildon_pannable_area_adjust_changed),
+	(hildon_pannable_area_adjust_value_changed),
+	(hildon_pannable_area_redraw),
+	(hildon_pannable_area_button_press_cb),
+	(hildon_pannable_area_button_release_cb),
+	(hildon_pannable_area_scroll_cb),
+	(hildon_pannable_area_scroll_to): Refactor the fade timeout launch
+	code and use the new functions adjust_changed and
+	adjust_value_changed.
+
+	Fixes: NB#101603 (Focus is not even for the text entry boxes in
+	Contact editor dialog)
+
 2009-02-20  Claudio Saavedra  <csaavedra@igalia.com>
 
 	[Release 2.1.44]
