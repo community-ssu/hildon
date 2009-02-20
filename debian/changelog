@@ -1,8 +1,45 @@
-libhildon (2.1.43-1~unreleased) unstable; urgency=low
+libhildon (2.1.44-1) unstable; urgency=low
 
-  * unreleased bump
+  Bug fixes:
 
- -- Claudio Saavedra <csaavedra@igalia.com>  Tue, 10 Feb 2009 16:16:35 +0200
+ * Fixes: NB#100646 (Logical strings is shown for ok in set
+   password,Password needed dialogs)
+ * Fixes: NB#100445 (Hildon banner gets destroyed when a dialog is
+   opened)
+ * Fixes: NB#101916 (Do not allow custom icons on animation banner)
+ * Fixes: NB#101698 (Back button long press and delete-event handling)
+ * Fixes: NB#99915 (Date and Time options are not localised in Date
+   and Time setttings)
+ * Fixes: NB#101043 (Second row of all the command button are
+   displayed in transparent mode.)
+ * Fixes: NB#102225 (Crash setting the progress indicator to a non
+   visible window)
+ * Fixes: NB#102262 (memory leak in hildon_button_set_style())
+ * Fixes: NB#101793 (Make edit toolbar the same height as window
+   title bar (use title area theming))
+ * Fixes: NB#102467 (Do not show highlight on the text in
+   HildonCaption)
+ * Fixes: NB#102338 (HildonPannableArea scrolling indicator does not
+   treat ->lower correctly)
+ * Fixes: NB#102413 (The text margins (wrapping) in information
+   banner should be HILDON_MARGIN_TRIPLE)
+
+  New API:
+
+  * HildonRemoteTexture (Gordon Williams)
+  * HildonPannableArea:low-friction-mode property.
+
+  Deprecations:
+
+  * hildon_banner_show_annimation(): No more user defined icons.
+
+  Other:
+
+  * Theming improvements.
+  * Increased the maximum speed of the pannable area to improve usability.
+  * Memory leaks fixed and other code fixes.
+
+ -- Claudio Saavedra <csaavedra@igalia.com>  Fri, 20 Feb 2009 15:12:02 +0200
 
 libhildon (2.1.42-1) unstable; urgency=low
 
