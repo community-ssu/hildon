@@ -3,8 +3,9 @@ MAINTAINERCLEANFILES 					= Makefile.in
 if BUILD_TESTS
 
 noinst_PROGRAMS				= check_test
+TESTS					= check_test
 
-TESTS					= check_test.c 				\
+tests					= check_test.c 				\
 					  check_utils.c 			\
 					  check-hildon-caption.c 		\
 					  check-hildon-helper.c 		\
@@ -34,9 +35,9 @@ DEPRECATED_TESTS			= check-hildon-range-editor.c 		\
 					  check-hildon-color-chooser.c
 
 if HILDON_DISABLE_DEPRECATED
-check_test_SOURCES   		 	= $(TESTS)
+check_test_SOURCES   		 	= $(tests)
 else
-check_test_SOURCES   		 	= $(TESTS) 				\
+check_test_SOURCES   		 	= $(tests) 				\
 			     		  $(DEPRECATED_TESTS)
 endif
 
