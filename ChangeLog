@@ -1,5 +1,15 @@
 2009-02-23  Claudio Saavedra  <csaavedra@igalia.com>
 
+	* src/hildon-picker-dialog.c (+selection_completed): Returns TRUE
+	if all columns in the selector have an item selected.
+	(_on_dialog_response): Stop "response" signal emission if there is
+	any selector column without selected items.
+
+	Fixes: NB#101889 (Picker dialog should not close when nothing is
+	selected in multiple selection list)
+
+2009-02-23  Claudio Saavedra  <csaavedra@igalia.com>
+
 	* src/hildon-font-selection-dialog.c
 	(hildon_font_selection_dialog_class_init),
 	(hildon_font_selection_dialog_init): Remove the preview

@@ -310,12 +310,40 @@ _select_on_selector_changed_cb (HildonTouchSelector * selector,
   gtk_dialog_response (GTK_DIALOG (data), GTK_RESPONSE_OK);
 }
 
+static gboolean
+selection_completed (HildonPickerDialog *dialog)
+{
+  HildonPickerDialogPrivate *priv;
+  GList *list;
+  gint i, n_cols;
+  gboolean all_selected = TRUE;
+
+  priv = HILDON_PICKER_DIALOG_GET_PRIVATE (dialog);
+
+  n_cols = hildon_touch_selector_get_num_columns (HILDON_TOUCH_SELECTOR (priv->selector));
+  for (i = 0; i < n_cols; i++) {
+    list = hildon_touch_selector_get_selected_rows (HILDON_TOUCH_SELECTOR (priv->selector), i);
+    if (list == NULL) {
+      all_selected = FALSE;
+      break;
+    }
+    g_list_foreach (list, (GFunc)gtk_tree_path_free, NULL);
+    g_list_free (list);
+  }
+
+  return all_selected;
+}
+
 static void
 _on_dialog_response                             (GtkDialog *dialog,
                                                  gint response_id,
                                                  gpointer data)
 {
-  if (response_id == GTK_RESPONSE_DELETE_EVENT) {
+  if (response_id == GTK_RESPONSE_OK) {
+    if (selection_completed (HILDON_PICKER_DIALOG (dialog)) == FALSE) {
+      g_signal_stop_emission_by_name (dialog, "response");
+    }
+  } else if (response_id == GTK_RESPONSE_DELETE_EVENT) {
     _restore_current_selection (HILDON_PICKER_DIALOG (dialog));
   }
 }
