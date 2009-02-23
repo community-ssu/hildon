@@ -28,7 +28,8 @@
  * with certain properties.
  *
  * Font selection can be made using this widget. Users can select font name, 
- * size, style, etc. Users can also preview text in the selected font.
+ * size, style, etc. Since hildon 2.2, the previously available preview dialog
+ * has been removed.
  */
 
 #undef                                          HILDON_DISABLE_DEPRECATED
@@ -100,15 +101,17 @@ typedef struct
 
 }                                               HildonFontSelectionDialogSettings;
 
+#if 0
 static gboolean
 hildon_font_selection_dialog_preview_key_press  (GtkWidget *widget,
                                                  GdkEventKey *event,
                                                  gpointer unused);
+#endif
 
 static int
 cmp_families                                    (const void *a, 
                                                  const void *b);
-
+#if 0
 static void   
 hildon_font_selection_dialog_show_preview       (HildonFontSelectionDialog *fontsel);
 
@@ -116,6 +119,7 @@ static PangoAttrList*
 hildon_font_selection_dialog_create_attrlist    (HildonFontSelectionDialog *fontsel, 
                                                  guint start_index,
                                                  guint len);
+#endif
 
 static void   
 hildon_font_selection_dialog_show_available_positionings (HildonFontSelectionDialogPrivate *priv);
@@ -143,11 +147,13 @@ color_modified_cb                               (HildonColorButton *button,
                                                  GParamSpec *pspec,
                                                  gpointer fsd_priv);
 
+#if 0
 static void   
 add_preview_text_attr                           (PangoAttrList *list, 
                                                  PangoAttribute *attr, 
                                                  guint start, 
                                                  guint len);
+#endif
 
 static void   
 toggle_clicked                                  (GtkButton *button, 
@@ -726,6 +732,8 @@ hildon_font_selection_dialog_class_init         (HildonFontSelectionDialogClass 
      * HildonFontSelectionDialog:preview-text:
      *
      * The text used for the preview dialog.
+     *
+     * Deprecated: this property is unused since hildon 2.2
      */
     g_object_class_install_property (gobject_class, PROP_PREVIEW_TEXT,
             g_param_spec_string("preview-text",
@@ -743,7 +751,7 @@ static void
 hildon_font_selection_dialog_init               (HildonFontSelectionDialog *fontseldiag)
 {
     HildonFontSelectionDialogPrivate *priv = HILDON_FONT_SELECTION_DIALOG_GET_PRIVATE (fontseldiag);
-    GtkWidget *preview_button;
+    /* GtkWidget *preview_button; */
 
     g_assert (priv);
     priv->notebook = GTK_NOTEBOOK (gtk_notebook_new ());
@@ -758,8 +766,9 @@ hildon_font_selection_dialog_init               (HildonFontSelectionDialog *font
             _("wdgt_bd_done"),
             GTK_RESPONSE_OK);
 
+#if 0
     preview_button = gtk_button_new_with_label (_("ecdg_bd_font_dialog_preview"));
-    gtk_box_pack_start (GTK_BOX(GTK_DIALOG (fontseldiag)->action_area), 
+    gtk_box_pack_start (GTK_BOX(GTK_DIALOG (fontseldiag)->action_area),
             preview_button, FALSE, TRUE, 0);
 
     g_signal_connect_swapped (preview_button, "clicked",
@@ -767,6 +776,7 @@ hildon_font_selection_dialog_init               (HildonFontSelectionDialog *font
             (hildon_font_selection_dialog_show_preview),
             fontseldiag);
     gtk_widget_show(preview_button);
+#endif
 
     /*Set default preview text*/
     priv->preview_text = g_strdup (_("ecdg_fi_preview_font_preview_text"));
@@ -949,6 +959,7 @@ cmp_families                                    (const void *a,
     return g_utf8_collate (a_name, b_name);
 }
 
+#if 0
 /* Exits the preview dialog with GTK_RESPONSE_CANCEL if Esc key
  * was pressed 
  * FIXME This should be handled automatically */
@@ -1215,6 +1226,7 @@ hildon_font_selection_dialog_show_preview       (HildonFontSelectionDialog *font
     gtk_dialog_run (GTK_DIALOG (preview_dialog));
     gtk_widget_destroy (preview_dialog);
 }
+#endif
 
 static gboolean 
 is_internal_font                                (const gchar * name)
@@ -1354,8 +1366,10 @@ hildon_font_selection_dialog_new                (GtkWindow *parent,
  * hildon_font_selection_dialog_get_preview_text:
  * @fsd: the font selection dialog
  *
- * Gets the text in preview dialog, which does not include the 
+ * Gets the text in preview dialog, which does not include the
  * reference text. The returned string must be freed by the user.
+ * Please note that since hildon 2.2, the preview has been discontinued,
+ * so this setting has no effect.
  *
  * Returns: a string pointer
  */
@@ -1379,7 +1393,9 @@ hildon_font_selection_dialog_get_preview_text   (HildonFontSelectionDialog * fsd
  * @text: the text to be displayed in the preview dialog
  *
  * The default preview text is
- * "The quick brown fox jumped over the lazy dogs"
+ * "The quick brown fox jumped over the lazy dogs". Please note that since
+ * hildon 2.2, the preview has been discontinued, so this setting has no effect.
+ *
  */
 void
 hildon_font_selection_dialog_set_preview_text   (HildonFontSelectionDialog *fsd, 

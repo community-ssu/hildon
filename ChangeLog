@@ -1,3 +1,15 @@
+2009-02-23  Claudio Saavedra  <csaavedra@igalia.com>
+
+	* src/hildon-font-selection-dialog.c
+	(hildon_font_selection_dialog_class_init),
+	(hildon_font_selection_dialog_init): Remove the preview
+	button and dialog, since previewing with default theming is likely
+	to be overcomplicated. The :preview property has now no effect.
+	Update documentation blurbs to inform about this.
+
+	Fixes: NB#92297 (Preview content is not clearly visible for
+	default colour text)
+
 2009-02-20  Alejandro G. Castro  <alex@igalia.com>
 
 	Reviewed the geometry that handles the children size and
