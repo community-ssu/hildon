@@ -1,3 +1,22 @@
+2009-02-23  Alejandro G. Castro  <alex@igalia.com>
+
+	This patch was applied before but reverted because it caused
+	problems, we have changed the main condition and tested the
+	regressions we detected before and they work ok. We have done a
+	complete review of the topmost algorithm in order to get a more
+	general solution.
+
+        * src/hildon-pannable-area.c,
+        (hildon_pannable_area_get_topmost): Added a new parameter to
+        filter the the windows that do not include those events.
+        (hildon_pannable_area_button_press_cb),
+        (hildon_pannable_area_button_release_cb),
+        (hildon_pannable_get_child_widget_at): Reviewed the call the the
+        topmost function, we have added the new parameter.
+
+        Fixes: NB#97458 (Pannable area prevents propagation of button
+        press events)
+
 2009-02-23  Claudio Saavedra  <csaavedra@igalia.com>
 
 	* src/hildon-picker-dialog.c (+selection_completed): Returns TRUE
