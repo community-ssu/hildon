@@ -114,6 +114,9 @@ static void
 hildon_note_rebuild                             (HildonNote *note);
 
 static void
+hildon_note_rename                              (HildonNote *note);
+
+static void
 hildon_note_finalize                            (GObject *obj_self);
 
 static void
@@ -189,6 +192,7 @@ hildon_note_set_property                        (GObject *object,
 
         case PROP_HILDON_NOTE_TYPE:
             priv->note_n = g_value_get_enum (value);
+	    hildon_note_rename (note);
             hildon_note_rebuild (note);
             break;
 
@@ -549,6 +553,33 @@ unpack_widget                                   (GtkWidget *widget)
 
     if (widget && widget->parent)
         gtk_container_remove (GTK_CONTAINER (widget->parent), widget);
+}
+
+/*
+  Name the widget and text label based on the note type. This is used
+  by the theme to give proper backgrounds depending on the note type.
+*/
+static void
+hildon_note_rename                              (HildonNote *note)
+{
+  GEnumValue *value;
+  GEnumClass *enum_class;
+  gchar *name;
+
+  HildonNotePrivate *priv = HILDON_NOTE_GET_PRIVATE (note);
+
+  enum_class = g_type_class_ref (HILDON_TYPE_NOTE_TYPE);
+  value = g_enum_get_value (enum_class, priv->note_n);
+
+  name = g_strconcat ("HildonNote-", value->value_nick, NULL);
+  gtk_widget_set_name (GTK_WIDGET (note), name);
+  g_free (name);
+
+  name = g_strconcat ("HildonNoteLabel-", value->value_nick, NULL);
+  gtk_widget_set_name (priv->label, name);
+  g_free (name);
+
+  g_type_class_unref (enum_class);
 }
 
 static void

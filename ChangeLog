@@ -1,3 +1,13 @@
+2009-02-24  Claudio Saavedra  <csaavedra@igalia.com>
+
+	* src/hildon-note.c (hildon_note_set_property): call
+	hildon_note_rename() on HildonNote:note-type set.
+	(hildon_note_rename): Name the note and its label, based on the
+	HildonNote:note-type property.
+
+	See NB#98597 (Hildon Note and Hildon Banner should use themeable
+	background image)
+
 2009-02-24  Alejandro G. Castro  <alex@igalia.com>
 
 	* src/hildon-pannable-area.c,
