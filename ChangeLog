@@ -1,3 +1,9 @@
+2009-02-24  Alejandro G. Castro  <alex@igalia.com>
+
+	* src/hildon-pannable-area.c,
+	(hildon_pannable_area_class_init): Reduced SPS, 25 it is too big
+	for the treeview overshooting.
+
 2009-02-24  Claudio Saavedra  <csaavedra@igalia.com>
 
 	* src/hildon-banner.c (+hildon_banner_bind_style):
