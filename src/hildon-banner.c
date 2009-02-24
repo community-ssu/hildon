@@ -111,8 +111,8 @@ static GQuark
 hildon_banner_timed_quark                       (void);
 
 static void 
-hildon_banner_bind_label_style                  (HildonBanner *self,
-                                                 const gchar *name);
+hildon_banner_bind_style                        (HildonBanner *self,
+						 const gchar *name);
 
 static gboolean 
 hildon_banner_timeout                           (gpointer data);
@@ -279,18 +279,23 @@ hildon_banner_timed_quark                       (void)
     return quark;
 }
 
-/* Set the label name to make the correct rc-style attached into it */
+/* Set the widget and label name to make the correct rc-style attached into them */
 static void 
-hildon_banner_bind_label_style                  (HildonBanner *self,
-                                                 const gchar *name)
+hildon_banner_bind_style                  (HildonBanner *self,
+					   const gchar *name_sufix)
 {
     HildonBannerPrivate *priv = HILDON_BANNER_GET_PRIVATE (self);
+    gchar *name;
+
     g_assert (priv);
 
-    GtkWidget *label = priv->label;
+    name = g_strconcat ("HildonBannerLabel-", name_sufix, NULL);
+    gtk_widget_set_name (priv->label, name);
+    g_free (name);
 
-    /* Too bad that we cannot really reset the widget name */
-    gtk_widget_set_name (label, name ? name : g_type_name (GTK_WIDGET_TYPE (label)));
+    name = g_strconcat ("HildonBanner-", name_sufix, NULL);
+    gtk_widget_set_name (GTK_WIDGET (self), name);
+    g_free (name);
 }
 
 /* In timeout function we automatically destroy timed banners */
@@ -933,7 +938,7 @@ hildon_banner_show_information                  (GtkWidget *widget,
     banner = hildon_banner_get_instance_for_widget (widget, TRUE);
 
     hildon_banner_set_text (banner, text);
-    hildon_banner_bind_label_style (banner, NULL);
+    hildon_banner_bind_style (banner, "information");
 
     /* Show the banner, since caller cannot do that */
     gtk_widget_show_all (GTK_WIDGET (banner));
@@ -1007,7 +1012,7 @@ hildon_banner_show_information_with_markup      (GtkWidget *widget,
     banner = hildon_banner_get_instance_for_widget (widget, TRUE);
 
     hildon_banner_set_markup (banner, markup);
-    hildon_banner_bind_label_style (banner, NULL);
+    hildon_banner_bind_style (banner, "information");
 
     /* Show the banner, since caller cannot do that */
     gtk_widget_show_all (GTK_WIDGET (banner));
@@ -1080,7 +1085,7 @@ hildon_banner_show_animation                    (GtkWidget *widget,
             GTK_TYPE_IMAGE, "yalign", 0.0, NULL);
 
     hildon_banner_set_text (banner, text);
-    hildon_banner_bind_label_style (banner, NULL);
+    hildon_banner_bind_style (banner, "animation");
 
     /* And show it */
     gtk_widget_show_all (GTK_WIDGET (banner));
@@ -1125,7 +1130,7 @@ hildon_banner_show_progress                     (GtkWidget *widget,
             HILDON_BANNER_PROGRESS_WIDTH, -1);
 
     hildon_banner_set_text (banner, text);
-    hildon_banner_bind_label_style (banner, NULL);
+    hildon_banner_bind_style (banner, "progress");
 
     /* Show the banner */
     gtk_widget_show_all (GTK_WIDGET (banner));
