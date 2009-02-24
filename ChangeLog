@@ -1,3 +1,11 @@
+2009-02-24  Alejandro G. Castro  <alex@igalia.com>
+
+	* src/hildon-pannable-area.c,
+	(hildon_pannable_area_class_init),
+	(hildon_pannable_area_motion_notify_cb): Reviewed the default
+	panning parameters, increased SPS and deceleration factor. Added
+	also a margin to control fake directions.
+
 2009-02-23  Claudio Saavedra  <csaavedra@igalia.com>
 
 	Patch by Sven Herzberg (sven@imendio.com)

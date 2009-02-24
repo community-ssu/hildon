@@ -59,6 +59,7 @@
 #define SCROLL_FADE_TIMEOUT 10
 #define MOTION_EVENTS_PER_SECOND 25
 #define PANNING_THRESHOLD 3
+#define DIRECTION_ERROR_MARGIN 10
 
 G_DEFINE_TYPE (HildonPannableArea, hildon_pannable_area, GTK_TYPE_BIN)
 
@@ -376,7 +377,7 @@ hildon_pannable_area_class_init (HildonPannableAreaClass * klass)
 							"Deceleration multiplier",
 							"The multiplier used when decelerating when in "
 							"acceleration scrolling mode.",
-							0, 1.0, 0.90,
+							0, 1.0, 0.93,
 							G_PARAM_READWRITE |
 							G_PARAM_CONSTRUCT));
 
@@ -385,7 +386,7 @@ hildon_pannable_area_class_init (HildonPannableAreaClass * klass)
 				   g_param_spec_uint ("sps",
 						      "Scrolls per second",
 						      "Amount of scroll events to generate per second.",
-						      0, G_MAXUINT, 15,
+						      0, G_MAXUINT, 25,
 						      G_PARAM_READWRITE |
 						      G_PARAM_CONSTRUCT));
 
@@ -2115,9 +2116,14 @@ hildon_pannable_area_motion_notify_cb (GtkWidget * widget,
                    priv->vadjust->page_size);
 
         if (!((vscroll_visible)&&
-              (priv->mov_mode&HILDON_MOVEMENT_MODE_VERT)))
-          priv->moved = FALSE;
+              (priv->mov_mode&HILDON_MOVEMENT_MODE_VERT))) {
 
+          /* even in case we do not have to move we check if this
+             could be a fake horizontal movement */
+          if (ABS (priv->iy - event->y) -
+              ABS (priv->ix - event->x) >= DIRECTION_ERROR_MARGIN)
+            priv->moved = FALSE;
+        }
       } else {
         gboolean hscroll_visible;
 
@@ -2132,8 +2138,14 @@ hildon_pannable_area_motion_notify_cb (GtkWidget * widget,
                            priv->hadjust->page_size);
 
         if (!((hscroll_visible)&&
-              (priv->mov_mode&HILDON_MOVEMENT_MODE_HORIZ)))
-          priv->moved = FALSE;
+              (priv->mov_mode&HILDON_MOVEMENT_MODE_HORIZ))) {
+
+          /* even in case we do not have to move we check if this
+             could be a fake vertical movement */
+          if (ABS (priv->ix - event->x) -
+              ABS (priv->iy - event->y) >= DIRECTION_ERROR_MARGIN)
+            priv->moved = FALSE;
+        }
       }
     }
 
