@@ -19,6 +19,7 @@
 #include "hildon-date-button.h"
 #include "hildon-date-selector.h"
 #include "hildon-touch-selector.h"
+#include "hildon-picker-button-private.h"
 
 #define                                         _(String) \
                                                 dgettext("hildon-libs", String)
@@ -197,11 +198,16 @@ hildon_date_button_set_date (HildonDateButton * button,
 
   selector = hildon_picker_button_get_selector (HILDON_PICKER_BUTTON (button));
 
+  hildon_picker_button_disable_value_changed (HILDON_PICKER_BUTTON (button), TRUE);
   hildon_date_selector_select_current_date (HILDON_DATE_SELECTOR (selector),
                                             year, month, day);
+  hildon_picker_button_disable_value_changed (HILDON_PICKER_BUTTON (button), FALSE);
+
   date = hildon_touch_selector_get_current_text (HILDON_TOUCH_SELECTOR (selector));
 
   hildon_button_set_value (HILDON_BUTTON (button), date);
 
   g_free (date);
+
+  hildon_picker_button_value_changed (HILDON_PICKER_BUTTON (button));
 }

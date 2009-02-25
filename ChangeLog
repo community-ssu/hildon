@@ -1,3 +1,24 @@
+2009-02-25  Alberto Garcia  <agarcia@igalia.com>
+
+	* doc/hildon-sections.txt
+	* src/hildon-picker-button.h
+	* src/hildon-picker-button.c (+hildon_picker_button_value_changed)
+	(_selection_changed, hildon_picker_button_on_dialog_response)
+	(hildon_picker_button_class_init, hildon_picker_button_set_selector):
+	New hildon_picker_button_value_changed() method.
+
+	* src/Makefile.am
+	* src/hildon-picker-button-private.h
+	* src/hildon-picker-button.c (hildon_picker_button_init)
+	(+hildon_picker_button_disable_value_changed): Add protected
+	function for disabling the "value-changed" signal.
+
+	* src/hildon-date-button.c (hildon_date_button_set_date):
+	Don't emit "value-changed" for each one of the three columns.
+
+	Fixes: NB#103242 ("HildonPickerButton:value-changed" is emitted
+	before actual change of values)
+
 2009-02-24  Alejandro G. Castro  <alex@igalia.com>
 
 	* src/hildon-pannable-area.c,

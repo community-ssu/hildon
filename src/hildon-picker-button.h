@@ -56,6 +56,8 @@ struct                                          _HildonPickerButton
 struct                                          _HildonPickerButtonClass
 {
   HildonButtonClass parent_class;
+
+  void (* value_changed) (HildonPickerButton *button);
 };
 
 GType
@@ -85,6 +87,9 @@ hildon_picker_button_get_done_button_text       (HildonPickerButton * button);
 void
 hildon_picker_button_set_done_button_text       (HildonPickerButton *button,
                                                  const gchar *done_button_text);
+
+void
+hildon_picker_button_value_changed              (HildonPickerButton *button);
 
 G_END_DECLS
 

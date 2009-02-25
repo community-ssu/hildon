@@ -68,6 +68,7 @@
  */
 
 #include "hildon-picker-button.h"
+#include "hildon-picker-button-private.h"
 #include "hildon-picker-dialog.h"
 
 G_DEFINE_TYPE (HildonPickerButton, hildon_picker_button, HILDON_TYPE_BUTTON)
@@ -82,6 +83,7 @@ struct _HildonPickerButtonPrivate
   GtkWidget *selector;
   GtkWidget *dialog;
   gchar *done_button_text;
+  guint disable_value_changed : 1;
 };
 
 /* Signals */
@@ -178,6 +180,35 @@ hildon_picker_button_finalize (GObject * object)
   G_OBJECT_CLASS (hildon_picker_button_parent_class)->finalize (object);
 }
 
+/**
+ * hildon_picker_button_value_changed:
+ * @button: a #HildonPickerButton
+ *
+ * Emits a "#HildonPickerButton::value-changed" signal to the given
+ * #HildonPickerButton
+ **/
+void
+hildon_picker_button_value_changed              (HildonPickerButton *button)
+{
+  HildonPickerButtonPrivate *priv;
+  g_return_if_fail (HILDON_IS_PICKER_BUTTON (button));
+  priv = GET_PRIVATE (button);
+
+  if (!priv->disable_value_changed)
+    g_signal_emit (button, picker_button_signals[VALUE_CHANGED], 0);
+}
+
+G_GNUC_INTERNAL void
+hildon_picker_button_disable_value_changed      (HildonPickerButton *button,
+                                                 gboolean            disable)
+{
+  HildonPickerButtonPrivate *priv;
+  g_return_if_fail (HILDON_IS_PICKER_BUTTON (button));
+  priv = GET_PRIVATE (button);
+
+  priv->disable_value_changed = disable;
+}
+
 static void
 _selection_changed (HildonPickerButton *button)
 {
@@ -189,7 +220,7 @@ _selection_changed (HildonPickerButton *button)
     if (value) {
       hildon_button_set_value (HILDON_BUTTON (button), value);
       g_free (value);
-      g_signal_emit (button, picker_button_signals[VALUE_CHANGED], 0);
+      hildon_picker_button_value_changed (button);
     }
   }
 }
@@ -211,7 +242,7 @@ hildon_picker_button_on_dialog_response (GtkDialog *dialog,
 	    (HILDON_TOUCH_SELECTOR (priv->selector));
     hildon_button_set_value (HILDON_BUTTON (button), value);
     g_free (value);
-    g_signal_emit (button, picker_button_signals[VALUE_CHANGED], 0);
+    hildon_picker_button_value_changed (button);
   }
 
   gtk_widget_hide (GTK_WIDGET (dialog));
@@ -293,6 +324,8 @@ hildon_picker_button_class_init (HildonPickerButtonClass * klass)
 
   button_class->clicked = hildon_picker_button_clicked;
 
+  klass->value_changed = NULL;
+
   g_object_class_install_property (object_class,
                                    PROP_SELECTOR,
                                    g_param_spec_object ("touch-selector",
@@ -321,7 +354,7 @@ hildon_picker_button_class_init (HildonPickerButtonClass * klass)
     g_signal_new ("value-changed",
                   G_TYPE_FROM_CLASS (klass),
                   G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
-                  0,
+                  G_STRUCT_OFFSET (HildonPickerButtonClass, value_changed),
                   NULL, NULL,
                   g_cclosure_marshal_VOID__VOID, G_TYPE_NONE, 0, NULL);
 }
@@ -336,6 +369,7 @@ hildon_picker_button_init (HildonPickerButton * self)
   priv->dialog = NULL;
   priv->selector = NULL;
   priv->done_button_text = NULL;
+  priv->disable_value_changed = FALSE;
 
   hildon_button_set_style (HILDON_BUTTON (self),
                            HILDON_BUTTON_STYLE_PICKER);
@@ -441,8 +475,7 @@ hildon_picker_button_set_selector (HildonPickerButton * button,
   if (value) {
     hildon_button_set_value (HILDON_BUTTON (button), value);
     g_free (value);
-    g_signal_emit (HILDON_PICKER_BUTTON (button),
-                   picker_button_signals[VALUE_CHANGED], 0);
+    hildon_picker_button_value_changed (button);
   }
 }
 

@@ -167,6 +167,7 @@ noinst_HEADERS = hildon-banner-private.h 		\
 		hildon-private.h			\
 		hildon-caption-private.h 		\
 		hildon-code-dialog-private.h 		\
+		hildon-picker-button-private.h 		\
 		hildon-color-button-private.h 		\
 		hildon-color-chooser-dialog-private.h 	\
 		hildon-color-chooser-private.h 		\

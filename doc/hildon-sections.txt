@@ -1069,6 +1069,7 @@ hildon_picker_button_set_active
 hildon_picker_button_get_active
 hildon_picker_button_get_done_button_text
 hildon_picker_button_set_done_button_text
+hildon_picker_button_value_changed
 <SUBSECTION Standard>
 HILDON_PICKER_BUTTON
 HILDON_IS_PICKER_BUTTON
