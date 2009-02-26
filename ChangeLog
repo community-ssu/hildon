@@ -1,6 +1,16 @@
 2009-02-26  Alejandro G. Castro  <alex@igalia.com>
 
 	* src/hildon-pannable-area.c,
+	(hildon_pannable_area_realize),
+	(hildon_pannable_area_unrealize),
+	(hildon_pannable_draw_vscroll),
+	(hildon_pannable_draw_hscroll): Changed the method to handle the
+	GC used to draw the transparent scrollbar, this way we avoid
+	creating the GC all the time when drawing the scrollbars.
+
+2009-02-26  Alejandro G. Castro  <alex@igalia.com>
+
+	* src/hildon-pannable-area.c,
 	(hildon_pannable_area_init),
 	(hildon_pannable_area_remove): Removed some unnecessary casts.
 	(hildon_pannable_area_dispose): Disconnected some signals before
