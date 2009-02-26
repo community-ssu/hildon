@@ -218,11 +218,9 @@ hildon_edit_toolbar_init                        (HildonEditToolbar *self)
 
     gtk_misc_set_alignment (GTK_MISC (priv->label), 0, 0.5);
 
-    gtk_widget_show (GTK_WIDGET (align));
-    gtk_widget_show (GTK_WIDGET (priv->label));
-    gtk_widget_show (GTK_WIDGET (priv->button));
-    gtk_widget_show (separator);
-    gtk_widget_show (GTK_WIDGET (priv->arrow));
+    gtk_widget_show_all (GTK_WIDGET (align));
+    gtk_widget_show_all (separator);
+    gtk_widget_show_all (GTK_WIDGET (priv->arrow));
 }
 
 /**
