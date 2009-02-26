@@ -1,3 +1,11 @@
+2009-02-26  Alejandro G. Castro  <alex@igalia.com>
+
+	* src/hildon-pannable-area.c,
+	(hildon_pannable_area_init),
+	(hildon_pannable_area_remove): Removed some unnecessary casts.
+	(hildon_pannable_area_dispose): Disconnected some signals before
+	releasing the adjustments.
+
 2009-02-26  Alberto Garcia  <agarcia@igalia.com>
 
 	* src/hildon-edit-toolbar.c (hildon_edit_toolbar_init):

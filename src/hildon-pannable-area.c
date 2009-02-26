@@ -541,15 +541,15 @@ hildon_pannable_area_init (HildonPannableArea * area)
   g_object_ref_sink (G_OBJECT (priv->hadjust));
   g_object_ref_sink (G_OBJECT (priv->vadjust));
 
-  g_signal_connect_swapped (G_OBJECT (priv->hadjust), "value-changed",
+  g_signal_connect_swapped (priv->hadjust, "value-changed",
 			    G_CALLBACK (hildon_pannable_area_adjust_value_changed), area);
-  g_signal_connect_swapped (G_OBJECT (priv->vadjust), "value-changed",
+  g_signal_connect_swapped (priv->vadjust, "value-changed",
 			    G_CALLBACK (hildon_pannable_area_adjust_value_changed), area);
-  g_signal_connect_swapped (G_OBJECT (priv->hadjust), "changed",
+  g_signal_connect_swapped (priv->hadjust, "changed",
 			    G_CALLBACK (hildon_pannable_area_adjust_changed), area);
-  g_signal_connect_swapped (G_OBJECT (priv->vadjust), "changed",
+  g_signal_connect_swapped (priv->vadjust, "changed",
 			    G_CALLBACK (hildon_pannable_area_adjust_changed), area);
-  g_signal_connect (G_OBJECT (area), "grab-notify",
+  g_signal_connect (area, "grab-notify",
                     G_CALLBACK (hildon_pannable_area_grab_notify), NULL);
 }
 
@@ -728,19 +728,36 @@ hildon_pannable_area_dispose (GObject * object)
     priv->motion_event_scroll_timeout = 0;
   }
 
+  if (child) {
+    g_signal_handlers_disconnect_by_func (child,
+                                          hildon_pannable_area_child_mapped,
+                                          object);
+  }
+
+  g_signal_handlers_disconnect_by_func (object,
+                                        hildon_pannable_area_grab_notify,
+                                        NULL);
+
   if (priv->hadjust) {
+    g_signal_handlers_disconnect_by_func (priv->hadjust,
+                                          hildon_pannable_area_adjust_value_changed,
+                                          object);
+    g_signal_handlers_disconnect_by_func (priv->hadjust,
+                                          hildon_pannable_area_adjust_changed,
+                                          object);
     g_object_unref (priv->hadjust);
     priv->hadjust = NULL;
   }
+
   if (priv->vadjust) {
+    g_signal_handlers_disconnect_by_func (priv->vadjust,
+                                          hildon_pannable_area_adjust_value_changed,
+                                          object);
+    g_signal_handlers_disconnect_by_func (priv->vadjust,
+                                          hildon_pannable_area_adjust_changed,
+                                          object);
     g_object_unref (priv->vadjust);
     priv->vadjust = NULL;
-  }
-
-  if (child) {
-    g_signal_handlers_disconnect_by_func (GTK_WIDGET (child),
-                                          G_CALLBACK (hildon_pannable_area_child_mapped),
-                                          object);
   }
 
   if (G_OBJECT_CLASS (hildon_pannable_area_parent_class)->dispose)
@@ -2440,8 +2457,8 @@ hildon_pannable_area_remove (GtkContainer *container, GtkWidget *child)
 
   gtk_widget_set_scroll_adjustments (child, NULL, NULL);
 
-  g_signal_handlers_disconnect_by_func (GTK_WIDGET (child),
-                                        G_CALLBACK (hildon_pannable_area_child_mapped),
+  g_signal_handlers_disconnect_by_func (child,
+                                        hildon_pannable_area_child_mapped,
                                         container);
 
   /* chain parent class handler to remove child */
