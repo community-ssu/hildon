@@ -1,5 +1,16 @@
 2009-02-27  Alberto Garcia  <agarcia@igalia.com>
 
+	* doc/hildon-sections.txt
+	* src/hildon-app-menu.h
+	* src/hildon-app-menu.c (+hildon_app_menu_popup):
+	New function to pop up a HildonAppMenu
+
+	* src/hildon-stackable-window.c
+	(hildon_stackable_window_toggle_menu):
+	Use hildon_app_menu_popup() to show the menu.
+
+2009-02-27  Alberto Garcia  <agarcia@igalia.com>
+
 	* src/hildon-app-menu.c (hildon_app_menu_show)
 	(hildon_app_menu_map, +hildon_app_menu_find_intruder): Hide the
 	menu if there's another window between it and its parent window.

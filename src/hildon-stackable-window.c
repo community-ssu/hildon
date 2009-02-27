@@ -212,8 +212,7 @@ hildon_stackable_window_toggle_menu             (HildonWindow *self,
         if (GTK_WIDGET_MAPPED (GTK_WIDGET (menu_to_use))) {
             gtk_widget_hide (GTK_WIDGET (menu_to_use));
         } else {
-            hildon_app_menu_set_parent_window (menu_to_use, GTK_WINDOW (self));
-            gtk_widget_show (GTK_WIDGET (menu_to_use));
+            hildon_app_menu_popup (menu_to_use, GTK_WINDOW (self));
         }
 
         return TRUE;

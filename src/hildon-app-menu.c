@@ -35,7 +35,7 @@
  * To use a #HildonAppMenu, add it to a #HildonStackableWindow using
  * hildon_stackable_window_set_main_menu(). The menu will appear when
  * the user presses the window title bar. Alternatively, you can show
- * it by hand using gtk_widget_show().
+ * it by hand using hildon_app_menu_popup().
  *
  * The menu will be automatically hidden when one of its buttons is
  * clicked. Use g_signal_connect_after() when connecting callbacks to
@@ -873,6 +873,25 @@ hildon_app_menu_repack_items                    (HildonAppMenu *menu,
     if (GTK_WIDGET_VISIBLE (GTK_WIDGET (menu))) {
         gtk_window_reshow_with_initial_size (GTK_WINDOW (menu));
     }
+}
+
+/**
+ * hildon_app_menu_popup:
+ * @menu: a #HildonAppMenu
+ * @parent_window: a #GtkWindow
+ *
+ * Displays a menu on top of a window and makes it available for
+ * selection.
+ **/
+void
+hildon_app_menu_popup                           (HildonAppMenu *menu,
+                                                 GtkWindow     *parent_window)
+{
+    g_return_if_fail (HILDON_IS_APP_MENU (menu));
+    g_return_if_fail (GTK_IS_WINDOW (parent_window));
+
+    hildon_app_menu_set_parent_window (menu, parent_window);
+    gtk_widget_show (GTK_WIDGET (menu));
 }
 
 static void

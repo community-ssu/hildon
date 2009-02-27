@@ -88,6 +88,10 @@ void
 hildon_app_menu_add_filter                      (HildonAppMenu *menu,
                                                  GtkButton     *filter);
 
+void
+hildon_app_menu_popup                           (HildonAppMenu *menu,
+                                                 GtkWindow     *parent_window);
+
 G_END_DECLS
 
 #endif /* __HILDON_APP_MENU_H__ */

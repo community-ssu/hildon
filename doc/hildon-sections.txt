@@ -358,6 +358,7 @@ hildon_app_menu_prepend
 hildon_app_menu_insert
 hildon_app_menu_reorder_child
 hildon_app_menu_add_filter
+hildon_app_menu_popup
 <SUBSECTION Standard>
 HILDON_APP_MENU
 HILDON_IS_APP_MENU
