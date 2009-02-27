@@ -1,3 +1,9 @@
+2009-02-27  Alberto Garcia  <agarcia@igalia.com>
+
+	* src/hildon-picker-button.h
+	* src/hildon-picker-button.c (hildon_picker_button_class_init):
+	Remove "value_changed" slot to avoid ABI breakage
+
 2009-02-26  Alejandro G. Castro  <alex@igalia.com>
 
 	* src/hildon-pannable-area.c,

@@ -56,8 +56,6 @@ struct                                          _HildonPickerButton
 struct                                          _HildonPickerButtonClass
 {
   HildonButtonClass parent_class;
-
-  void (* value_changed) (HildonPickerButton *button);
 };
 
 GType

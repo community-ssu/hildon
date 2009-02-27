@@ -324,8 +324,6 @@ hildon_picker_button_class_init (HildonPickerButtonClass * klass)
 
   button_class->clicked = hildon_picker_button_clicked;
 
-  klass->value_changed = NULL;
-
   g_object_class_install_property (object_class,
                                    PROP_SELECTOR,
                                    g_param_spec_object ("touch-selector",
@@ -354,7 +352,7 @@ hildon_picker_button_class_init (HildonPickerButtonClass * klass)
     g_signal_new ("value-changed",
                   G_TYPE_FROM_CLASS (klass),
                   G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
-                  G_STRUCT_OFFSET (HildonPickerButtonClass, value_changed),
+                  0,
                   NULL, NULL,
                   g_cclosure_marshal_VOID__VOID, G_TYPE_NONE, 0, NULL);
 }
