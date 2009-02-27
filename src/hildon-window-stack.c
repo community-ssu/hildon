@@ -368,12 +368,11 @@ hildon_window_stack_push                        (HildonWindowStack     *stack,
                                                  HildonStackableWindow *win1,
                                                  ...)
 {
-    HildonStackableWindow *win;
+    HildonStackableWindow *win = win1;
     GList *list = NULL;
     va_list args;
 
     va_start (args, win1);
-    win = va_arg (args, HildonStackableWindow *);
 
     while (win != NULL) {
         list = g_list_prepend (list, win);
@@ -381,6 +380,8 @@ hildon_window_stack_push                        (HildonWindowStack     *stack,
     }
 
     va_end (args);
+
+    list = g_list_reverse (list);
 
     hildon_window_stack_push_list (stack, list);
     g_list_free (list);
@@ -520,12 +521,11 @@ hildon_window_stack_pop_and_push                (HildonWindowStack      *stack,
                                                  HildonStackableWindow  *win1,
                                                  ...)
 {
-    HildonStackableWindow *win;
+    HildonStackableWindow *win = win1;
     GList *list = NULL;
     va_list args;
 
     va_start (args, win1);
-    win = va_arg (args, HildonStackableWindow *);
 
     while (win != NULL) {
         list = g_list_prepend (list, win);
@@ -533,6 +533,8 @@ hildon_window_stack_pop_and_push                (HildonWindowStack      *stack,
     }
 
     va_end (args);
+
+    list = g_list_reverse (list);
 
     hildon_window_stack_pop_and_push_list (stack, nwindows, popped_windows, list);
     g_list_free (list);
