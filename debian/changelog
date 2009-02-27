@@ -1,3 +1,10 @@
+libhildon (2.1.44-3) unstable; urgency=high
+
+  * Remove hildon-remote-texture.h from hildon.h to avoid breaking applications
+  not defining _XOPEN_SOURCE.
+
+ -- Claudio Saavedra <csaavedra@igalia.com>  Fri, 27 Feb 2009 12:43:35 +0200
+
 libhildon (2.1.44-2) unstable; urgency=low
 
   * Fix the edit toolbar display.
