@@ -434,13 +434,6 @@ hildon_app_menu_show                            (GtkWidget *widget)
     for (i = priv->filters; i && !show_menu; i = i->next)
         show_menu = GTK_WIDGET_VISIBLE (i->data);
 
-    /* Don't show menu if its parent window is not the topmost one */
-    if (show_menu && priv->parent_window) {
-        show_menu =
-            GTK_WIDGET_VISIBLE (priv->parent_window) &&
-            hildon_window_get_is_topmost (HILDON_WINDOW (priv->parent_window));
-    }
-
     if (show_menu) {
         GTK_WIDGET_CLASS (hildon_app_menu_parent_class)->show (widget);
     }
@@ -467,6 +460,43 @@ hildon_app_menu_hide_all                        (GtkWidget *widget)
     g_list_foreach (priv->filters, (GFunc) gtk_widget_hide_all, NULL);
 }
 
+/*
+ * There's a race condition that can freeze the UI if a dialog appears
+ * between a HildonAppMenu and its parent window, see NB#100468
+ */
+static gboolean
+hildon_app_menu_find_intruder                   (gpointer data)
+{
+    GtkWidget *widget = GTK_WIDGET (data);
+    HildonAppMenuPrivate *priv = HILDON_APP_MENU_GET_PRIVATE (widget);
+
+    /* If there's a window between the menu and its parent window, hide the menu */
+    if (priv->parent_window) {
+        gboolean intruder_found = FALSE;
+        GdkScreen *screen = gtk_widget_get_screen (widget);
+        GList *stack = gdk_screen_get_window_stack (screen);
+        GList *parent_pos = g_list_find (stack, GTK_WIDGET (priv->parent_window)->window);
+        GList *toplevels = gtk_window_list_toplevels ();
+        GList *i;
+
+        for (i = toplevels; i != NULL && !intruder_found; i = i->next) {
+            if (i->data != widget && i->data != priv->parent_window) {
+                if (g_list_find (parent_pos, GTK_WIDGET (i->data)->window)) {
+                    intruder_found = TRUE;
+                }
+            }
+        }
+
+        g_list_foreach (stack, (GFunc) g_object_unref, NULL);
+        g_list_free (stack);
+        g_list_free (toplevels);
+
+        if (intruder_found)
+            gtk_widget_hide (widget);
+    }
+
+    return FALSE;
+}
 
 static void
 hildon_app_menu_map                             (GtkWidget *widget)
@@ -502,6 +532,8 @@ hildon_app_menu_map                             (GtkWidget *widget)
             priv->transfer_window = NULL;
         }
     }
+
+    gdk_threads_add_idle (hildon_app_menu_find_intruder, widget);
 }
 
 static void

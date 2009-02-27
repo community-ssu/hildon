@@ -1,5 +1,14 @@
 2009-02-27  Alberto Garcia  <agarcia@igalia.com>
 
+	* src/hildon-app-menu.c (hildon_app_menu_show)
+	(hildon_app_menu_map, +hildon_app_menu_find_intruder): Hide the
+	menu if there's another window between it and its parent window.
+
+	Fixes: NB#100468 (Application menu window is launched even when a
+	new secondary-window/dialog is pending to be shown/realized)
+
+2009-02-27  Alberto Garcia  <agarcia@igalia.com>
+
 	* src/hildon-window-stack.c (hildon_window_stack_push)
 	(hildon_window_stack_pop_and_push):
 	Don't forget to push/pop the first window.
