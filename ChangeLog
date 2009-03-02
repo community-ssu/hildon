@@ -1,5 +1,16 @@
 2009-03-02  Alberto Garcia  <agarcia@igalia.com>
 
+	* doc/hildon-sections.txt
+	* src/hildon-app-menu.h
+	* src/hildon-app-menu.c (+hildon_app_menu_get_items)
+	(+hildon_app_menu_get_filters): New methods to get the contents of
+	a HildonAppMenu.
+
+	Fixes: NB#103761 (HildonAppMenu doesn't have methods to get its
+	children)
+
+2009-03-02  Alberto Garcia  <agarcia@igalia.com>
+
 	* src/hildon-app-menu.c (hildon_app_menu_popup):
 	Add "Since" tag.
 

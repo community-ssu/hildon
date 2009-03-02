@@ -896,6 +896,51 @@ hildon_app_menu_popup                           (HildonAppMenu *menu,
     gtk_widget_show (GTK_WIDGET (menu));
 }
 
+/**
+ * hildon_app_menu_get_items:
+ * @menu: a #HildonAppMenu
+ *
+ * Returns a list of all items (regular items, not filters) contained
+ * in @menu.
+ *
+ * Returns: a newly-allocated list containing the items in @menu
+ *
+ * Since: 2.2
+ **/
+GList *
+hildon_app_menu_get_items                       (HildonAppMenu *menu)
+{
+    HildonAppMenuPrivate *priv;
+
+    g_return_if_fail (HILDON_IS_APP_MENU (menu));
+
+    priv = HILDON_APP_MENU_GET_PRIVATE (menu);
+
+    return g_list_copy (priv->buttons);
+}
+
+/**
+ * hildon_app_menu_get_filters:
+ * @menu: a #HildonAppMenu
+ *
+ * Returns a list of all filters contained in @menu.
+ *
+ * Returns: a newly-allocated list containing the filters in @menu
+ *
+ * Since: 2.2
+ **/
+GList *
+hildon_app_menu_get_filters                     (HildonAppMenu *menu)
+{
+    HildonAppMenuPrivate *priv;
+
+    g_return_if_fail (HILDON_IS_APP_MENU (menu));
+
+    priv = HILDON_APP_MENU_GET_PRIVATE (menu);
+
+    return g_list_copy (priv->filters);
+}
+
 static void
 hildon_app_menu_init                            (HildonAppMenu *menu)
 {

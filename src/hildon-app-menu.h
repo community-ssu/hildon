@@ -92,6 +92,12 @@ void
 hildon_app_menu_popup                           (HildonAppMenu *menu,
                                                  GtkWindow     *parent_window);
 
+GList *
+hildon_app_menu_get_items                       (HildonAppMenu *menu);
+
+GList *
+hildon_app_menu_get_filters                     (HildonAppMenu *menu);
+
 G_END_DECLS
 
 #endif /* __HILDON_APP_MENU_H__ */
