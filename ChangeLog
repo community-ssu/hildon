@@ -1,3 +1,10 @@
+2009-03-02  Claudio Saavedra  <csaavedra@igalia.com>
+
+	* examples/hildon-remote-texture-example.c: Include
+	hildon-remote-texture.h explicitely.
+	* src/hildon.h: Remove hildon-remote-texture.h to avoid breaking
+	applications not defining _XOPEN_SOURCE which don't require this header.
+
 2009-02-27  Alberto Garcia  <agarcia@igalia.com>
 
 	* doc/hildon-sections.txt

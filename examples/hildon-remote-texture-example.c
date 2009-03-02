@@ -7,6 +7,7 @@
 #include <string.h>
 #include <math.h>
 #include "hildon.h"
+#include "hildon-remote-texture.h"
 
 #define W 800
 #define H 480
