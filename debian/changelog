@@ -1,3 +1,35 @@
+libhildon (2.1.46-1) unstable; urgency=low
+
+  Bug fixes:
+
+  * Fixes: NB#101603 (Focus is not even for the text entry boxes in
+    Contact editor dialog)
+  * Fixes: NB#92297 (Preview content is not clearly visible for
+    default colour text)
+  * Fixes: NB#101889 (Picker dialog should not close when nothing is
+    selected in multiple selection list)
+  * Fixes: NB#97458 (Pannable area prevents propagation of button
+    press events)
+  * Fixes: NB#103242 ("HildonPickerButton:value-changed" is emitted
+    before actual change of values)
+  * Fixes: NB#100468 (Application menu window is launched even when a
+    new secondary-window/dialog is pending to be shown/realized)
+
+  New API:
+
+  * hildon_app_menu_popup(): New function to pop up a HildonAppMenu
+  * hildon_picker_button_value_changed(): Programmatically emit "value-changed".
+
+  Other:
+
+  * unit testing suite fixes (Sven Herzberg)
+  * Removed hildon-remote-texture.h from hildon.h.
+  * Themability improvements.
+  * Code fixes.
+  * HildonPannableArea improvements.
+
+ -- Claudio Saavedra <csaavedra@igalia.com>  Mon, 02 Mar 2009 11:38:42 +0200
+
 libhildon (2.1.44-1) unstable; urgency=low
 
   Bug fixes:

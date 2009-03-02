@@ -1,5 +1,13 @@
 2009-03-02  Claudio Saavedra  <csaavedra@igalia.com>
 
+	[Release 2.1.46]
+
+	* NEWS: Updates.
+	* configure.ac: Bump version.
+	* debian/changelog: Updates.
+
+2009-03-02  Claudio Saavedra  <csaavedra@igalia.com>
+
 	* examples/hildon-remote-texture-example.c: Include
 	hildon-remote-texture.h explicitely.
 	* src/hildon.h: Remove hildon-remote-texture.h to avoid breaking
