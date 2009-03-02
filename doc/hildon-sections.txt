@@ -53,8 +53,10 @@ HildonRangeEditorClass
 <TITLE>HildonStackableWindow</TITLE>
 HildonStackableWindow
 hildon_stackable_window_new
-hildon_stackable_window_set_main_menu
+hildon_stackable_window_set_app_menu
+hildon_stackable_window_get_app_menu
 hildon_stackable_window_get_stack
+hildon_stackable_window_set_main_menu
 <SUBSECTION Standard>
 HILDON_STACKABLE_WINDOW
 HILDON_IS_STACKABLE_WINDOW
@@ -682,9 +684,10 @@ HildonWindowClipboardOperation
 HildonWindow
 hildon_window_new
 hildon_window_add_with_scrollbar
-hildon_window_get_menu
 hildon_window_set_main_menu
+hildon_window_get_main_menu
 hildon_window_set_menu
+hildon_window_get_menu
 hildon_window_add_toolbar
 hildon_window_remove_toolbar
 hildon_window_set_edit_toolbar

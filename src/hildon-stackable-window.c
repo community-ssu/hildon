@@ -144,7 +144,7 @@ hildon_stackable_window_get_stack               (HildonStackableWindow *self)
 }
 
 /**
- * hildon_stackable_window_set_main_menu:
+ * hildon_stackable_window_set_app_menu:
  * @self: a #HildonStackableWindow
  * @menu: a #HildonAppMenu to be used for this window
  *
@@ -160,7 +160,7 @@ hildon_stackable_window_get_stack               (HildonStackableWindow *self)
  * Since: 2.2
  **/
 void
-hildon_stackable_window_set_main_menu           (HildonStackableWindow *self,
+hildon_stackable_window_set_app_menu            (HildonStackableWindow *self,
                                                  HildonAppMenu *menu)
 {
     HildonStackableWindowPrivate *priv;
@@ -180,6 +180,43 @@ hildon_stackable_window_set_main_menu           (HildonStackableWindow *self,
     /* Unref old menu */
     if (old_menu)
         g_object_unref (old_menu);
+}
+
+/**
+ * hildon_stackable_window_get_app_menu:
+ * @self: a #HildonStackableWindow
+ *
+ * Returns the #HildonAppMenu assigned to @self, or %NULL if it's
+ * unset. Note that the window is still the owner of the menu.
+ *
+ * Returns: a #HildonAppMenu
+ *
+ * Since: 2.2
+ **/
+HildonAppMenu *
+hildon_stackable_window_get_app_menu            (HildonStackableWindow *self)
+{
+    HildonStackableWindowPrivate *priv;
+
+    g_return_val_if_fail (HILDON_IS_STACKABLE_WINDOW (self), NULL);
+
+    priv = HILDON_STACKABLE_WINDOW_GET_PRIVATE (self);
+
+    return priv->app_menu;
+}
+
+/**
+ * hildon_stackable_window_set_main_menu:
+ * @self: a #HildonStackableWindow
+ * @menu: a #HildonAppMenu to be used for this window
+ *
+ * Deprecated: Hildon 2.2: use hildon_stackable_window_set_app_menu()
+ **/
+void
+hildon_stackable_window_set_main_menu           (HildonStackableWindow *self,
+                                                 HildonAppMenu *menu)
+{
+    hildon_stackable_window_set_app_menu (self, menu);
 }
 
 static gboolean

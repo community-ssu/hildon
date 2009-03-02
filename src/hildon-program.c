@@ -654,7 +654,7 @@ hildon_program_get_common_menu                  (HildonProgram *self)
  * #HildonProgram. Only one common #HildonAppMenu can be set, further
  * calls will detach the previous common #HildonAppMenu. A
  * #HildonStackableWindow can use its own #HildonAppMenu with
- * hildon_stackable_window_set_main_menu()
+ * hildon_stackable_window_set_app_menu()
  *
  * This method is not intented for standard #HildonWindow<!-- -->s and
  * does not support #GtkMenu objects. See

@@ -117,7 +117,7 @@ main                                            (int argc,
 
     menu = create_menu (label2, accel);
 
-    hildon_stackable_window_set_main_menu (HILDON_STACKABLE_WINDOW (win), menu);
+    hildon_stackable_window_set_app_menu (HILDON_STACKABLE_WINDOW (win), menu);
 
     gtk_window_add_accel_group (GTK_WINDOW (win), accel);
     g_object_unref (accel);

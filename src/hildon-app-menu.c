@@ -33,7 +33,7 @@
  * (#GtkToggleButton or #GtkRadioButton).
  *
  * To use a #HildonAppMenu, add it to a #HildonStackableWindow using
- * hildon_stackable_window_set_main_menu(). The menu will appear when
+ * hildon_stackable_window_set_app_menu(). The menu will appear when
  * the user presses the window title bar. Alternatively, you can show
  * it by hand using hildon_app_menu_popup().
  *
@@ -85,7 +85,7 @@
  * gtk_widget_show_all (GTK_WIDGET (menu));
  * <!-- -->
  * // Add the menu to the window
- * hildon_stackable_window_set_main_menu (win, menu);
+ * hildon_stackable_window_set_app_menu (win, menu);
  * </programlisting>
  * </example>
  *

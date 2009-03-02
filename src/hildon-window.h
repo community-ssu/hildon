@@ -89,17 +89,20 @@ void
 hildon_window_add_with_scrollbar                (HildonWindow *self,
                                                  GtkWidget    *child);
 
-GtkMenu*    
-hildon_window_get_menu                          (HildonWindow *self);
-
 void
 hildon_window_set_main_menu                     (HildonWindow *self,
 						 GtkMenu      *menu);
+
+GtkMenu*
+hildon_window_get_main_menu                     (HildonWindow *self);
 
 #ifndef HILDON_DISABLE_DEPRECATED
 void        
 hildon_window_set_menu                          (HildonWindow *self,
                                                  GtkMenu      *menu);
+
+GtkMenu*
+hildon_window_get_menu                          (HildonWindow *self);
 #endif
 
 void    

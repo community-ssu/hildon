@@ -1770,8 +1770,8 @@ hildon_window_set_edit_toolbar                  (HildonWindow      *self,
 }
 
 /**
- * hildon_window_get_menu:
- * @self : #HildonWindow
+ * hildon_window_get_main_menu:
+ * @self : a #HildonWindow
  * 
  * Gets the #GtMenu assigned to the #HildonAppview. Note that the 
  * window is still the owner of the menu.
@@ -1779,7 +1779,7 @@ hildon_window_set_edit_toolbar                  (HildonWindow      *self,
  * Return value: The #GtkMenu assigned to this application view. 
  **/
 GtkMenu*
-hildon_window_get_menu                          (HildonWindow * self)
+hildon_window_get_main_menu                     (HildonWindow * self)
 {
     HildonWindowPrivate *priv;
 
@@ -1788,6 +1788,20 @@ hildon_window_get_menu                          (HildonWindow * self)
     priv = HILDON_WINDOW_GET_PRIVATE (self);
 
     return GTK_MENU (priv->menu);
+}
+
+/**
+ * hildon_window_get_menu:
+ * @self : a #HildonWindow
+ *
+ * Return value: a #GtkMenu
+ *
+ * Deprecated: Hildon 2.2: use hildon_window_get_main_menu()
+ **/
+GtkMenu*
+hildon_window_get_menu                          (HildonWindow * self)
+{
+    return hildon_window_get_main_menu (self);
 }
 
 /* Since we've been asking developers to call gtk_window_add_accel_group()
@@ -1821,7 +1835,7 @@ hildon_window_add_accel_group (HildonWindow *self,
  *
  * Note that if you're using a #HildonStackableWindow (and not just a
  * standard #HildonWindow) you should use
- * hildon_stackable_window_set_main_menu()
+ * hildon_stackable_window_set_app_menu()
  * instead. #HildonStackableWindow uses #HildonAppMenu rather than
  * #GtkMenu.
  *

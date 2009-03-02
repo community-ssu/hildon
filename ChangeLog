@@ -1,3 +1,27 @@
+2009-03-02  Alberto Garcia  <agarcia@igalia.com>
+
+	* src/hildon-window.h
+	* src/hildon-window.c (+hildon_window_get_main_menu)
+	(hildon_window_get_menu): Created hildon_window_get_main_menu()
+	and deprecated hildon_window_get_menu().
+
+	* src/hildon-stackable-window.h
+	* src/hildon-stackable-window.c
+	(+hildon_stackable_window_set_app_menu)
+	(+hildon_stackable_window_get_app_menu)
+	(hildon_stackable_window_set_main_menu): Created
+	hildon_stackable_window_{get,set}_app_menu() and deprecated
+	hildon_stackable_window_set_main_menu().
+
+	* doc/hildon-sections.txt
+	* examples/hildon-app-menu-example.c (main)
+	* src/hildon-app-menu.c
+	* src/hildon-program.c:
+	Updated examples and documentation.
+
+	Fixes: NB#103758 (No way to obtain a menu from a
+	HildonStackableWindow)
+
 2009-03-02  Claudio Saavedra  <csaavedra@igalia.com>
 
 	[Release 2.1.46]
