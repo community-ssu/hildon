@@ -882,6 +882,8 @@ hildon_app_menu_repack_items                    (HildonAppMenu *menu,
  *
  * Displays a menu on top of a window and makes it available for
  * selection.
+ *
+ * Since: 2.2
  **/
 void
 hildon_app_menu_popup                           (HildonAppMenu *menu,
