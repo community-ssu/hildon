@@ -912,7 +912,7 @@ hildon_app_menu_get_items                       (HildonAppMenu *menu)
 {
     HildonAppMenuPrivate *priv;
 
-    g_return_if_fail (HILDON_IS_APP_MENU (menu));
+    g_return_val_if_fail (HILDON_IS_APP_MENU (menu), NULL);
 
     priv = HILDON_APP_MENU_GET_PRIVATE (menu);
 
@@ -934,7 +934,7 @@ hildon_app_menu_get_filters                     (HildonAppMenu *menu)
 {
     HildonAppMenuPrivate *priv;
 
-    g_return_if_fail (HILDON_IS_APP_MENU (menu));
+    g_return_val_if_fail (HILDON_IS_APP_MENU (menu), NULL);
 
     priv = HILDON_APP_MENU_GET_PRIVATE (menu);
 
