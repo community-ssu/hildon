@@ -2043,13 +2043,13 @@ hildon_pannable_area_calculate_velocity (gdouble *vel,
 {
   gdouble rawvel;
 
-  if (ABS (dist) >= 0.00001) {
+  if (ABS (dist) >= RATIO_TOLERANCE) {
     rawvel = ((dist / ABS (delta)) *
               (gdouble) sps) * FORCE;
     *vel = *vel * (1 - SMOOTH_FACTOR) +
       rawvel * SMOOTH_FACTOR;
     *vel = *vel > 0 ? MIN (*vel, vmax)
-      : MAX (dist, -1 * vmax);
+      : MAX (*vel, -1 * vmax);
   }
 }
 
@@ -2253,10 +2253,11 @@ hildon_pannable_area_motion_notify_cb (GtkWidget * widget,
     }
   }
 
+  priv->last_time = event->time;
+  priv->last_type = 2;
+
   if (priv->child) {
     /* Send motion notify to child */
-    priv->last_time = event->time;
-    priv->last_type = 2;
     event = (GdkEventMotion *) gdk_event_copy ((GdkEvent *) event);
     event->x = priv->cx + (event->x - priv->ix);
     event->y = priv->cy + (event->y - priv->iy);
