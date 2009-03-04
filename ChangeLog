@@ -1,3 +1,14 @@
+2009-03-04  Alberto Garcia  <agarcia@igalia.com>
+
+	* src/hildon-program-private.h
+	* src/hildon-program.c
+	(hildon_program_set_common_menu)
+	(hildon_program_get_common_menu)
+	(hildon_program_set_common_app_menu)
+	(hildon_program_get_common_app_menu):
+	Change common menu pointers from GtkWidget* to GtkMenu* and
+	HildonAppMenu* to avoid unnecessary casts.
+
 2009-03-03  Alberto Garcia  <agarcia@igalia.com>
 
 	* src/hildon-window.c (hildon_window_set_main_menu):

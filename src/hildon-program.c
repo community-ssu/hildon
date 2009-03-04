@@ -598,13 +598,13 @@ hildon_program_set_common_menu                  (HildonProgram *self,
     {
         if (GTK_WIDGET_VISIBLE (priv->common_menu))
         {
-            gtk_menu_popdown (GTK_MENU (priv->common_menu));
+            gtk_menu_popdown (priv->common_menu);
             gtk_menu_shell_deactivate (GTK_MENU_SHELL (priv->common_menu));
         }
 
-        if (gtk_menu_get_attach_widget (GTK_MENU (priv->common_menu)))
+        if (gtk_menu_get_attach_widget (priv->common_menu))
         {
-            gtk_menu_detach (GTK_MENU (priv->common_menu));
+            gtk_menu_detach (priv->common_menu);
         }
         else
         {
@@ -612,7 +612,7 @@ hildon_program_set_common_menu                  (HildonProgram *self,
         }
     }
 
-    priv->common_menu = GTK_WIDGET (menu);
+    priv->common_menu = menu;
 
     if (priv->common_menu)
     {
@@ -641,7 +641,7 @@ hildon_program_get_common_menu                  (HildonProgram *self)
     priv = HILDON_PROGRAM_GET_PRIVATE (self);
     g_assert (priv);
 
-    return GTK_MENU (priv->common_menu);
+    return priv->common_menu;
 }
 
 /**
@@ -667,7 +667,7 @@ hildon_program_set_common_app_menu              (HildonProgram *self,
                                                  HildonAppMenu *menu)
 {
     HildonProgramPrivate *priv;
-    GtkWidget *old_menu;
+    HildonAppMenu *old_menu;
 
     g_return_if_fail (HILDON_IS_PROGRAM (self));
     g_return_if_fail (menu == NULL || HILDON_IS_APP_MENU (menu));
@@ -678,13 +678,13 @@ hildon_program_set_common_app_menu              (HildonProgram *self,
     old_menu = priv->common_app_menu;
 
     /* Set new menu */
-    priv->common_app_menu = GTK_WIDGET (menu);
+    priv->common_app_menu = menu;
     if (menu)
         g_object_ref_sink (menu);
 
     /* Hide and unref old menu */
     if (old_menu) {
-        hildon_app_menu_set_parent_window (HILDON_APP_MENU (old_menu), NULL);
+        hildon_app_menu_set_parent_window (old_menu, NULL);
         g_object_unref (old_menu);
     }
 }
@@ -711,7 +711,7 @@ hildon_program_get_common_app_menu              (HildonProgram *self)
     priv = HILDON_PROGRAM_GET_PRIVATE (self);
     g_assert (priv);
 
-    return HILDON_APP_MENU (priv->common_app_menu);
+    return priv->common_app_menu;
 }
 
 /**
