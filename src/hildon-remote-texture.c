@@ -32,14 +32,11 @@
  * be positioned and scaled, without altering its' contents.
  */
 
-#include                                        <X11/X.h>
+#include                                        <gdk/gdkx.h>
 #include                                        <X11/Xatom.h>
 
 #include                                        "hildon-remote-texture.h"
 #include                                        "hildon-remote-texture-private.h"
-#include                                        "hildon-program.h"
-#include                                        "hildon-window-private.h"
-#include                                        "hildon-program-private.h"
 
 G_DEFINE_TYPE (HildonRemoteTexture, hildon_remote_texture, GTK_TYPE_WINDOW);
 

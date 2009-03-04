@@ -145,14 +145,11 @@
  * </example>
  */
 
-#include                                        <X11/X.h>
+#include                                        <gdk/gdkx.h>
 #include                                        <X11/Xatom.h>
 
 #include                                        "hildon-animation-actor.h"
 #include                                        "hildon-animation-actor-private.h"
-#include                                        "hildon-program.h"
-#include                                        "hildon-window-private.h"
-#include                                        "hildon-program-private.h"
 
 G_DEFINE_TYPE (HildonAnimationActor, hildon_animation_actor, GTK_TYPE_WINDOW);
 

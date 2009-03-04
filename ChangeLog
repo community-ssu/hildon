@@ -1,5 +1,11 @@
 2009-03-04  Alberto Garcia  <agarcia@igalia.com>
 
+	* src/hildon-remote-texture.c
+	* src/hildon-animation-actor.c:
+	Don't include unused private headers.
+
+2009-03-04  Alberto Garcia  <agarcia@igalia.com>
+
 	* src/hildon-program-private.h
 	* src/hildon-program.c
 	(hildon_program_set_common_menu)
