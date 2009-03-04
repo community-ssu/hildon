@@ -70,6 +70,34 @@ struct                                          _HildonWindowStackPrivate
 
 G_DEFINE_TYPE (HildonWindowStack, hildon_window_stack, G_TYPE_OBJECT);
 
+enum {
+    PROP_GROUP = 1,
+};
+
+static void
+hildon_window_stack_set_window_group             (HildonWindowStack *stack,
+                                                  GtkWindowGroup    *group)
+{
+    g_return_if_fail (HILDON_IS_WINDOW_STACK (stack));
+    g_return_if_fail (!group || GTK_IS_WINDOW_GROUP (group));
+
+    /* The window group is only to be set once during construction */
+    g_return_if_fail (stack->priv->group == NULL);
+
+    if (!group)
+        group = gtk_window_group_new ();
+
+    stack->priv->group = group;
+}
+
+static GtkWindowGroup *
+hildon_window_stack_get_window_group             (HildonWindowStack *stack)
+{
+    g_return_val_if_fail (HILDON_IS_WINDOW_STACK (stack), NULL);
+
+    return stack->priv->group;
+}
+
 /**
  * hildon_window_stack_get_default:
  *
@@ -85,8 +113,9 @@ hildon_window_stack_get_default                 (void)
 {
     static HildonWindowStack *stack = NULL;
     if (G_UNLIKELY (stack == NULL)) {
-        stack = g_object_new (HILDON_TYPE_WINDOW_STACK, NULL);
-        stack->priv->group = gtk_window_get_group (NULL);
+        stack = g_object_new (HILDON_TYPE_WINDOW_STACK,
+                              "window-group", gtk_window_get_group (NULL),
+                              NULL);
     }
     return stack;
 }
@@ -104,7 +133,6 @@ HildonWindowStack *
 hildon_window_stack_new                         (void)
 {
     HildonWindowStack *stack = g_object_new (HILDON_TYPE_WINDOW_STACK, NULL);
-    stack->priv->group = gtk_window_group_new ();
     return stack;
 }
 
@@ -560,11 +588,61 @@ hildon_window_stack_finalize (GObject *object)
 }
 
 static void
+hildon_window_stack_set_property                (GObject      *object,
+                                                 guint         prop_id,
+                                                 const GValue *value,
+                                                 GParamSpec   *pspec)
+{
+    HildonWindowStack *stack = HILDON_WINDOW_STACK (object);
+
+    switch (prop_id)
+    {
+    case PROP_GROUP:
+        hildon_window_stack_set_window_group (stack, g_value_get_object (value));
+        break;
+    default:
+        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+        break;
+    }
+}
+
+static void
+hildon_window_stack_get_property                (GObject    *object,
+                                                 guint       prop_id,
+                                                 GValue     *value,
+                                                 GParamSpec *pspec)
+{
+    HildonWindowStack *stack = HILDON_WINDOW_STACK (object);
+
+    switch (prop_id)
+    {
+    case PROP_GROUP:
+        g_value_set_object (value, hildon_window_stack_get_window_group (stack));
+        break;
+    default:
+        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+        break;
+    }
+}
+
+static void
 hildon_window_stack_class_init (HildonWindowStackClass *klass)
 {
     GObjectClass *gobject_class = (GObjectClass *)klass;
 
+    gobject_class->set_property = hildon_window_stack_set_property;
+    gobject_class->get_property = hildon_window_stack_get_property;
     gobject_class->finalize = hildon_window_stack_finalize;
+
+    g_object_class_install_property (
+        gobject_class,
+        PROP_GROUP,
+        g_param_spec_object (
+            "window-group",
+            "GtkWindowGroup for this stack",
+            "GtkWindowGroup that all windows on this stack belong to",
+            GTK_TYPE_WINDOW_GROUP,
+            G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY));
 
     g_type_class_add_private (klass, sizeof (HildonWindowStackPrivate));
 }

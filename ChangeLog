@@ -1,5 +1,15 @@
 2009-03-04  Alberto Garcia  <agarcia@igalia.com>
 
+	* src/hildon-window-stack.c (hildon_window_stack_get_default)
+	(hildon_window_stack_new, +hildon_window_stack_set_property)
+	(+hildon_window_stack_get_property)
+	(hildon_window_stack_class_init)
+	(+hildon_window_stack_set_window_group)
+	(+hildon_window_stack_get_window_group):
+	Make the window group a construction property.
+
+2009-03-04  Alberto Garcia  <agarcia@igalia.com>
+
 	* doc/hildon-sections.txt
 	* src/hildon-stackable-window-private.h
 	* src/hildon-stackable-window.h
