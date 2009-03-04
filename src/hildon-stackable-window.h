@@ -92,13 +92,6 @@ hildon_stackable_window_set_main_menu           (HildonStackableWindow *self,
                                                  HildonAppMenu *menu);
 #endif
 
-void
-hildon_stackable_window_set_app_menu            (HildonStackableWindow *self,
-                                                 HildonAppMenu *menu);
-
-HildonAppMenu *
-hildon_stackable_window_get_app_menu            (HildonStackableWindow *self);
-
 HildonWindowStack *
 hildon_stackable_window_get_stack               (HildonStackableWindow *self);
 

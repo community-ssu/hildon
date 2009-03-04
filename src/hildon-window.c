@@ -32,9 +32,13 @@
  * framework.
  *
  * Among these windows in the Hildon framework can have a single menu
- * attached, which is toggled with a hardware key or by tapping
- * a custom button in the window frame. This menu can be set
- * by providing a GtkMenu to the hildon_window_set_main_menu() method.
+ * attached, which is toggled with a hardware key or by tapping a
+ * custom button in the window frame. This menu can be either a
+ * #GtkMenu or a #HildonAppMenu (set with
+ * hildon_window_set_main_menu() and hildon_window_set_app_menu()
+ * respectively). Only one type of menu can be used at the same time.
+ *
+ * In Hildon 2.2, #HildonAppMenu is the recommended menu to use.
  *
  * Similarly, a window in the Hildon framework can have several toolbars
  * attached. These can be added to the HildonWindow with
@@ -48,7 +52,7 @@
  * <programlisting>
  * HildonWindow *window;
  * GtkToolbar *toolbar;
- * GtkMenu *menu;
+ * HildonAppMenu *menu;
  * GdkPixbuf *icon_pixbuf;
  * <!-- -->
  * window = HILDON_WINDOW (hildon_window_new());
@@ -59,7 +63,7 @@
  * <!-- -->
  * icon_pixbuf = create_icon();
  * <!-- -->
- * hildon_window_set_main_menu (window, menu);
+ * hildon_window_set_app_menu (window, menu);
  * <!-- -->
  * hildon_window_add_toolbar (window, toolbar);
  * <!-- -->
@@ -90,6 +94,7 @@
 
 #include                                        "hildon-window.h"
 #include                                        "hildon-window-private.h"
+#include                                        "hildon-app-menu-private.h"
 #include                                        "hildon-find-toolbar.h"
 #include                                        "hildon-defines.h"
 
@@ -328,6 +333,7 @@ hildon_window_init                              (HildonWindow *self)
     priv->vbox = gtk_vbox_new (TRUE, TOOLBAR_MIDDLE);
     gtk_widget_set_parent (priv->vbox, GTK_WIDGET(self));
     priv->menu = NULL;
+    priv->app_menu = NULL;
     priv->edit_toolbar = NULL;
     priv->visible_toolbars = 0;
     priv->is_topmost = FALSE;
@@ -851,6 +857,13 @@ hildon_window_destroy                           (GtkObject *obj)
     {
         gtk_widget_unparent (priv->edit_toolbar);
         priv->edit_toolbar = NULL;
+    }
+
+    if (priv->app_menu)
+    {
+        hildon_app_menu_set_parent_window (priv->app_menu, NULL);
+        g_object_unref (priv->app_menu);
+        priv->app_menu = NULL;
     }
 
     menu_list = g_list_copy (gtk_menu_get_for_attach_widget (GTK_WIDGET (obj)));
@@ -1466,6 +1479,93 @@ hildon_window_toggle_menu                       (HildonWindow *self,
 }
 
 
+static gboolean
+hildon_window_toggle_gtk_menu                   (HildonWindow *self,
+						 GtkMenu      *menu,
+						 guint         button,
+						 guint32       time)
+{
+    gboolean retvalue = FALSE;
+
+    g_return_val_if_fail (HILDON_IS_WINDOW (self), FALSE);
+    g_return_val_if_fail (GTK_IS_MENU (menu), FALSE);
+
+    if (gtk_menu_get_attach_widget (menu) != GTK_WIDGET (self))
+    {
+        g_object_ref (menu);
+        if (gtk_menu_get_attach_widget (menu))
+        {
+            gtk_menu_detach (menu);
+        }
+        gtk_menu_attach_to_widget (menu, GTK_WIDGET (self), &detach_menu_func);
+        g_object_unref (menu);
+    }
+
+    if (GTK_WIDGET_MAPPED (menu))
+    {
+        gtk_menu_popdown (menu);
+        gtk_menu_shell_deactivate (GTK_MENU_SHELL (menu));
+        retvalue = TRUE;
+    }
+    else
+    {
+        /* Check if the menu has items */
+        GList *menu_children = gtk_container_get_children (GTK_CONTAINER (menu));
+
+        if (menu_children)
+        {
+            HildonWindowPrivate *priv = HILDON_WINDOW_GET_PRIVATE (self);
+            g_list_free (menu_children);
+
+            /* Apply right theming */
+            gtk_widget_set_name (GTK_WIDGET (menu), "menu_force_with_corners");
+
+            if (priv->fullscreen)
+            {
+                gtk_menu_popup (menu, NULL, NULL,
+                                (GtkMenuPositionFunc)
+                                hildon_window_menu_popup_func_full,
+                                self, button, time);
+            }
+            else
+            {
+                gtk_menu_popup (menu, NULL, NULL,
+                                (GtkMenuPositionFunc)
+                                hildon_window_menu_popup_func,
+                                self, button, time);
+            }
+            gtk_menu_shell_select_first (GTK_MENU_SHELL (menu), TRUE);
+            retvalue = TRUE;
+        }
+    }
+
+    return retvalue;
+}
+
+static gboolean
+hildon_window_toggle_app_menu                   (HildonWindow  *self,
+						 HildonAppMenu *menu)
+{
+    g_return_val_if_fail (HILDON_IS_WINDOW (self), FALSE);
+    g_return_val_if_fail (HILDON_IS_APP_MENU (menu), FALSE);
+
+    if (self != hildon_app_menu_get_parent_window (menu))
+    {
+        gtk_widget_hide (GTK_WIDGET (menu));
+    }
+
+    if (GTK_WIDGET_MAPPED (menu))
+    {
+        gtk_widget_hide (GTK_WIDGET (menu));
+    }
+    else
+    {
+        hildon_app_menu_popup (menu, GTK_WINDOW (self));
+    }
+
+    return TRUE;
+}
+
 /*
  * Toggles the display of the HildonWindow menu.
  * Returns whether or not something was done (whether or not we had a menu
@@ -1476,80 +1576,37 @@ hildon_window_toggle_menu_real                  (HildonWindow * self,
 						 guint button,
 						 guint32 time)
 {
-    GtkMenu *menu_to_use = NULL;
-    GList *menu_children = NULL;
+    gboolean retvalue = FALSE;
     HildonWindowPrivate *priv = HILDON_WINDOW_GET_PRIVATE (self);
 
     g_return_val_if_fail (HILDON_IS_WINDOW (self), FALSE);
-    g_assert (priv != NULL);
 
     /* Select which menu to use, Window specific has highest priority,
      * then program specific */
     if (priv->menu)
     {
-        menu_to_use = GTK_MENU (priv->menu);
+        retvalue = hildon_window_toggle_gtk_menu (self, priv->menu, button, time);
+    }
+    else if (priv->app_menu)
+    {
+        retvalue = hildon_window_toggle_app_menu (self, priv->app_menu);
     }
     else if (priv->program)
     {
-        menu_to_use = hildon_program_get_common_menu (priv->program);
-        if (menu_to_use && gtk_menu_get_attach_widget (menu_to_use) != 
-                GTK_WIDGET (self))
-        {
-            g_object_ref (menu_to_use);
-            if (gtk_menu_get_attach_widget (menu_to_use))
-            {
-                gtk_menu_detach (menu_to_use);
-            }
+        GtkMenu *gtkmenu = hildon_program_get_common_menu (priv->program);
+        HildonAppMenu *appmenu = hildon_program_get_common_app_menu (priv->program);
 
-            gtk_menu_attach_to_widget (menu_to_use, GTK_WIDGET (self), 
-                    &detach_menu_func);
-            g_object_unref (menu_to_use);
+        if (gtkmenu)
+        {
+            retvalue = hildon_window_toggle_gtk_menu (self, gtkmenu, button, time);
+        }
+        else if (appmenu)
+        {
+            retvalue = hildon_window_toggle_app_menu (self, appmenu);
         }
     }
 
-    if (! menu_to_use)
-    {
-        return FALSE;
-    }
-
-
-    if (GTK_WIDGET_MAPPED (GTK_WIDGET (menu_to_use)))
-    {
-        gtk_menu_popdown (menu_to_use);
-        gtk_menu_shell_deactivate (GTK_MENU_SHELL (menu_to_use));
-        return TRUE;
-    }
-
-    /* Check if the menu has items */
-    menu_children = gtk_container_get_children (GTK_CONTAINER (menu_to_use));
-
-    if (menu_children)
-    {
-        g_list_free (menu_children);
-
-        /* Apply right theming */
-        gtk_widget_set_name (GTK_WIDGET (menu_to_use),
-                "menu_force_with_corners");
-
-        if (priv->fullscreen) 
-        {
-            gtk_menu_popup (menu_to_use, NULL, NULL,
-                    (GtkMenuPositionFunc)
-                    hildon_window_menu_popup_func_full,
-                    self, button, time);
-        }
-        else
-        {
-            gtk_menu_popup (menu_to_use, NULL, NULL,
-                    (GtkMenuPositionFunc)
-                    hildon_window_menu_popup_func,
-                    self, button, time);
-        }
-        gtk_menu_shell_select_first (GTK_MENU_SHELL (menu_to_use), TRUE);
-        return TRUE;
-    }
-
-    return FALSE;
+    return retvalue;
 }
 
 /*
@@ -1776,6 +1833,9 @@ hildon_window_set_edit_toolbar                  (HildonWindow      *self,
  * Gets the #GtMenu assigned to the #HildonAppview. Note that the 
  * window is still the owner of the menu.
  * 
+ * Note that if you're using a #HildonAppMenu rather than a #GtkMenu
+ * you should use hildon_window_get_app_menu() instead.
+ *
  * Return value: The #GtkMenu assigned to this application view. 
  **/
 GtkMenu*
@@ -1787,7 +1847,7 @@ hildon_window_get_main_menu                     (HildonWindow * self)
 
     priv = HILDON_WINDOW_GET_PRIVATE (self);
 
-    return GTK_MENU (priv->menu);
+    return priv->menu;
 }
 
 /**
@@ -1796,7 +1856,8 @@ hildon_window_get_main_menu                     (HildonWindow * self)
  *
  * Return value: a #GtkMenu
  *
- * Deprecated: Hildon 2.2: use hildon_window_get_main_menu()
+ * Deprecated: In Hildon 2.2 this function has been renamed to
+ * hildon_window_get_main_menu() for consistency
  **/
 GtkMenu*
 hildon_window_get_menu                          (HildonWindow * self)
@@ -1833,11 +1894,8 @@ hildon_window_add_accel_group (HildonWindow *self,
  * menu. #HildonWindow takes ownership of the passed menu and you're
  * not supposed to free it yourself anymore.
  *
- * Note that if you're using a #HildonStackableWindow (and not just a
- * standard #HildonWindow) you should use
- * hildon_stackable_window_set_app_menu()
- * instead. #HildonStackableWindow uses #HildonAppMenu rather than
- * #GtkMenu.
+ * Note that if you're using a #HildonAppMenu rather than a #GtkMenu
+ * you should use hildon_window_set_app_menu() instead.
  **/ 
 void
 hildon_window_set_main_menu (HildonWindow* self,
@@ -1852,22 +1910,22 @@ hildon_window_set_main_menu (HildonWindow* self,
 
     if (priv->menu != NULL)
     {
-	accel_group = gtk_menu_get_accel_group (GTK_MENU (priv->menu));
+	accel_group = gtk_menu_get_accel_group (priv->menu);
 	if (accel_group != NULL)
 	    gtk_window_remove_accel_group (GTK_WINDOW (self), accel_group);
 
-        gtk_menu_detach (GTK_MENU (priv->menu));
+        gtk_menu_detach (priv->menu);
         g_object_unref (priv->menu);
     }
 
-    priv->menu = (menu != NULL) ? GTK_WIDGET (menu) : NULL;
+    priv->menu = menu;
     if (priv->menu != NULL)
     {
-        gtk_widget_set_name (priv->menu, "menu_force_with_corners");
-        gtk_menu_attach_to_widget (GTK_MENU (priv->menu), GTK_WIDGET (self), &detach_menu_func);
-        g_object_ref (GTK_MENU (priv->menu));
+        gtk_widget_set_name (GTK_WIDGET (priv->menu), "menu_force_with_corners");
+        gtk_menu_attach_to_widget (priv->menu, GTK_WIDGET (self), &detach_menu_func);
+        g_object_ref (priv->menu);
 
-	accel_group = gtk_menu_get_accel_group (GTK_MENU (priv->menu));
+	accel_group = gtk_menu_get_accel_group (priv->menu);
 	if (accel_group != NULL)
 	    hildon_window_add_accel_group (self, accel_group);
     }
@@ -1880,7 +1938,7 @@ hildon_window_set_main_menu (HildonWindow* self,
  * 
  * Sets the menu to be used for this window. This menu overrides
  * a program-wide menu that may have been set with
- * hildon_program_set_common_menu. Pass NULL to remove the current
+ * hildon_program_set_common_menu(). Pass %NULL to remove the current
  * menu. HildonWindow takes ownership of the passed menu and you're
  * not supposed to free it yourself anymore.
  *
@@ -1927,3 +1985,66 @@ hildon_window_get_is_topmost                    (HildonWindow *self)
     return priv->is_topmost;
 }
 
+/**
+ * hildon_window_set_app_menu:
+ * @self: a #HildonWindow
+ * @menu: a #HildonAppMenu to be used for this window
+ *
+ * Sets the menu to be used for this window. Pass %NULL to remove the
+ * current menu. Any reference to a previous menu will be dropped.
+ * #HildonWindow takes ownership of the passed menu and
+ * you're not supposed to free it yourself anymore.
+ *
+ * Note that if you're using a #GtkMenu rather than a #HildonAppMenu
+ * you should use hildon_window_set_main_menu() instead.
+ *
+ * Since: 2.2
+ **/
+void
+hildon_window_set_app_menu                      (HildonWindow  *self,
+                                                 HildonAppMenu *menu)
+{
+    HildonWindowPrivate *priv;
+    HildonAppMenu *old_menu;
+
+    g_return_if_fail (HILDON_IS_WINDOW (self));
+    g_return_if_fail (!menu || HILDON_IS_APP_MENU (menu));
+    priv = HILDON_WINDOW_GET_PRIVATE (self);
+
+    old_menu = priv->app_menu;
+
+    /* Add new menu */
+    priv->app_menu = menu;
+    if (menu)
+        g_object_ref_sink (menu);
+
+    /* Unref old menu */
+    if (old_menu)
+        g_object_unref (old_menu);
+}
+
+/**
+ * hildon_window_get_app_menu:
+ * @self: a #HildonWindow
+ *
+ * Returns the #HildonAppMenu assigned to @self, or %NULL if it's
+ * unset. Note that the window is still the owner of the menu.
+ *
+ * Note that if you're using a #GtkMenu rather than a #HildonAppMenu
+ * you should use hildon_window_get_main_menu() instead.
+ *
+ * Returns: a #HildonAppMenu
+ *
+ * Since: 2.2
+ **/
+HildonAppMenu *
+hildon_window_get_app_menu                      (HildonWindow *self)
+{
+    HildonWindowPrivate *priv;
+
+    g_return_val_if_fail (HILDON_IS_WINDOW (self), NULL);
+
+    priv = HILDON_WINDOW_GET_PRIVATE (self);
+
+    return priv->app_menu;
+}

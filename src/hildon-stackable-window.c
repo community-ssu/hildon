@@ -95,11 +95,8 @@
 
 #include                                        "hildon-stackable-window.h"
 #include                                        "hildon-stackable-window-private.h"
-#include                                        "hildon-app-menu-private.h"
 #include                                        "hildon-window-stack.h"
 #include                                        "hildon-window-stack-private.h"
-#include                                        "hildon-window-private.h"
-#include                                        "hildon-program.h"
 
 G_DEFINE_TYPE (HildonStackableWindow, hildon_stackable_window, HILDON_TYPE_WINDOW);
 
@@ -144,120 +141,17 @@ hildon_stackable_window_get_stack               (HildonStackableWindow *self)
 }
 
 /**
- * hildon_stackable_window_set_app_menu:
- * @self: a #HildonStackableWindow
- * @menu: a #HildonAppMenu to be used for this window
- *
- * Sets the menu to be used for this window. Pass %NULL to remove the
- * current menu. Any reference to a previous menu will be dropped.
- * #HildonStackableWindow takes ownership of the passed menu and
- * you're not supposed to free it yourself anymore.
- *
- * Note that #HildonStackableWindow widgets use #HildonAppMenu rather
- * than #GtkMenu, so you're not supposed to use
- * hildon_window_set_main_menu() with a #HildonStackableWindow.
- *
- * Since: 2.2
- **/
-void
-hildon_stackable_window_set_app_menu            (HildonStackableWindow *self,
-                                                 HildonAppMenu *menu)
-{
-    HildonStackableWindowPrivate *priv;
-    HildonAppMenu *old_menu;
-
-    g_return_if_fail (HILDON_IS_STACKABLE_WINDOW (self));
-    g_return_if_fail (!menu || HILDON_IS_APP_MENU (menu));
-    priv = HILDON_STACKABLE_WINDOW_GET_PRIVATE (self);
-
-    old_menu = priv->app_menu;
-
-    /* Add new menu */
-    priv->app_menu = menu;
-    if (menu)
-        g_object_ref_sink (menu);
-
-    /* Unref old menu */
-    if (old_menu)
-        g_object_unref (old_menu);
-}
-
-/**
- * hildon_stackable_window_get_app_menu:
- * @self: a #HildonStackableWindow
- *
- * Returns the #HildonAppMenu assigned to @self, or %NULL if it's
- * unset. Note that the window is still the owner of the menu.
- *
- * Returns: a #HildonAppMenu
- *
- * Since: 2.2
- **/
-HildonAppMenu *
-hildon_stackable_window_get_app_menu            (HildonStackableWindow *self)
-{
-    HildonStackableWindowPrivate *priv;
-
-    g_return_val_if_fail (HILDON_IS_STACKABLE_WINDOW (self), NULL);
-
-    priv = HILDON_STACKABLE_WINDOW_GET_PRIVATE (self);
-
-    return priv->app_menu;
-}
-
-/**
  * hildon_stackable_window_set_main_menu:
  * @self: a #HildonStackableWindow
  * @menu: a #HildonAppMenu to be used for this window
  *
- * Deprecated: Hildon 2.2: use hildon_stackable_window_set_app_menu()
+ * Deprecated: Hildon 2.2: use hildon_window_set_app_menu()
  **/
 void
 hildon_stackable_window_set_main_menu           (HildonStackableWindow *self,
                                                  HildonAppMenu *menu)
 {
-    hildon_stackable_window_set_app_menu (self, menu);
-}
-
-static gboolean
-hildon_stackable_window_toggle_menu             (HildonWindow *self,
-						 guint button,
-						 guint32 time)
-{
-    HildonStackableWindowPrivate *priv;
-    HildonAppMenu *menu_to_use = NULL;
-
-    g_return_val_if_fail (HILDON_IS_STACKABLE_WINDOW (self), FALSE);
-    priv = HILDON_STACKABLE_WINDOW_GET_PRIVATE (self);
-    g_assert (priv != NULL);
-
-    if (priv->app_menu) {
-        menu_to_use = priv->app_menu;
-    } else {
-        HildonProgram *program = HILDON_WINDOW_GET_PRIVATE (self)->program;
-
-        if (program) {
-            menu_to_use = hildon_program_get_common_app_menu (program);
-            if (menu_to_use) {
-                if (self != hildon_app_menu_get_parent_window (HILDON_APP_MENU (menu_to_use)))
-                    gtk_widget_hide (GTK_WIDGET (menu_to_use));
-            }
-        }
-    }
-
-    if (menu_to_use) {
-        if (GTK_WIDGET_MAPPED (GTK_WIDGET (menu_to_use))) {
-            gtk_widget_hide (GTK_WIDGET (menu_to_use));
-        } else {
-            hildon_app_menu_popup (menu_to_use, GTK_WINDOW (self));
-        }
-
-        return TRUE;
-    } else if (HILDON_WINDOW_CLASS (hildon_stackable_window_parent_class)->toggle_menu) {
-        return HILDON_WINDOW_CLASS (hildon_stackable_window_parent_class)->toggle_menu (self, button, time);
-    } else {
-        return FALSE;
-    }
+    hildon_window_set_app_menu (HILDON_WINDOW (self), menu);
 }
 
 static void
@@ -325,34 +219,14 @@ hildon_stackable_window_delete_event            (GtkWidget   *widget,
 }
 
 static void
-hildon_stackable_window_finalize                (GObject *object)
-{
-    HildonStackableWindowPrivate *priv = HILDON_STACKABLE_WINDOW_GET_PRIVATE (object);
-
-    if (priv->app_menu) {
-        hildon_app_menu_set_parent_window (priv->app_menu, NULL);
-        g_object_unref (GTK_WIDGET (priv->app_menu));
-    }
-
-    if (G_OBJECT_CLASS (hildon_stackable_window_parent_class)->finalize)
-        G_OBJECT_CLASS (hildon_stackable_window_parent_class)->finalize (object);
-}
-
-static void
 hildon_stackable_window_class_init              (HildonStackableWindowClass *klass)
 {
-    GObjectClass      *obj_class    = G_OBJECT_CLASS (klass);
     GtkWidgetClass    *widget_class = GTK_WIDGET_CLASS (klass);
-    HildonWindowClass *window_class = HILDON_WINDOW_CLASS (klass);
-
-    obj_class->finalize             = hildon_stackable_window_finalize;
 
     widget_class->map               = hildon_stackable_window_map;
     widget_class->show              = hildon_stackable_window_show;
     widget_class->hide              = hildon_stackable_window_hide;
     widget_class->delete_event      = hildon_stackable_window_delete_event;
-
-    window_class->toggle_menu       = hildon_stackable_window_toggle_menu;
 
     g_type_class_add_private (klass, sizeof (HildonStackableWindowPrivate));
 }
@@ -362,7 +236,6 @@ hildon_stackable_window_init                    (HildonStackableWindow *self)
 {
     HildonStackableWindowPrivate *priv = HILDON_STACKABLE_WINDOW_GET_PRIVATE (self);
 
-    priv->app_menu = NULL;
     priv->stack = NULL;
     priv->stack_position = -1;
 }

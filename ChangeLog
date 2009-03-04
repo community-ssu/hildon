@@ -1,5 +1,33 @@
 2009-03-04  Alberto Garcia  <agarcia@igalia.com>
 
+	* doc/hildon-sections.txt
+	* src/hildon-stackable-window-private.h
+	* src/hildon-stackable-window.h
+	* src/hildon-stackable-window.c
+	(-hildon_stackable_window_set_app_menu)
+	(-hildon_stackable_window_get_app_menu)
+	(-hildon_stackable_window_toggle_menu)
+	(-hildon_stackable_window_finalize)
+	(hildon_stackable_window_class_init)
+	(hildon_stackable_window_init)
+	* src/hildon-window-private.h
+	* src/hildon-window.h
+	* src/hildon-window.c (hildon_window_init)
+	(hildon_window_destroy, +hildon_window_toggle_gtk_menu)
+	(+hildon_window_toggle_app_menu, hildon_window_toggle_menu_real)
+	(hildon_window_get_main_menu, hildon_window_set_main_menu)
+	(+hildon_window_set_app_menu, +hildon_window_get_app_menu):
+	Moved all HildonAppMenu code to HildonWindow. The menu does not
+	require a HildonStackableWindow anymore.
+
+	* src/hildon-app-menu.c
+	* src/hildon-program.c
+	* examples/hildon-app-menu-example.c (main):
+	Update examples and documentation to reflect HildonAppMenu
+	changes.
+
+2009-03-04  Alberto Garcia  <agarcia@igalia.com>
+
 	* src/hildon-remote-texture.c
 	* src/hildon-animation-actor.c:
 	Don't include unused private headers.

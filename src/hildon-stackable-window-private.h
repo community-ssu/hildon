@@ -31,7 +31,6 @@ typedef struct                                  _HildonStackableWindowPrivate Hi
 
 struct                                          _HildonStackableWindowPrivate
 {
-    HildonAppMenu *app_menu;
     HildonWindowStack *stack;
     gint stack_position;
 };

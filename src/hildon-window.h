@@ -26,6 +26,7 @@
 #define                                         __HILDON_WINDOW_H__
 
 #include                                        <gtk/gtk.h>
+#include                                        "hildon-app-menu.h"
 #include                                        "hildon-edit-toolbar.h"
 
 G_BEGIN_DECLS
@@ -95,6 +96,13 @@ hildon_window_set_main_menu                     (HildonWindow *self,
 
 GtkMenu*
 hildon_window_get_main_menu                     (HildonWindow *self);
+
+void
+hildon_window_set_app_menu                      (HildonWindow  *self,
+                                                 HildonAppMenu *menu);
+
+HildonAppMenu *
+hildon_window_get_app_menu                      (HildonWindow *self);
 
 #ifndef HILDON_DISABLE_DEPRECATED
 void        

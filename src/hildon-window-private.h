@@ -35,7 +35,8 @@ typedef struct                                  _HildonWindowPrivate HildonWindo
 
 struct                                          _HildonWindowPrivate
 {
-    GtkWidget *menu;
+    GtkMenu *menu;
+    HildonAppMenu *app_menu;
     GtkWidget *vbox;
     GtkWidget *edit_toolbar;
 

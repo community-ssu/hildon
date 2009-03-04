@@ -35,9 +35,9 @@
  * and can be unregistered similarly with hildon_program_remove_window().
  *
  * The #HildonProgram provides the programmer with commodities such
- * as applying a common toolbar and menu to all the #HildonWindow
- * registered to it. This is done with hildon_program_set_common_menu()
- * and hildon_program_set_common_toolbar().
+ * as applying a common toolbar and menu to all #HildonWindow<!-- -->s
+ * registered to it. This is done with hildon_program_set_common_menu(),
+ * hildon_program_set_common_app_menu() and hildon_program_set_common_toolbar().
  *
  * The #HildonProgram is also used to apply program-wide properties that
  * are specific to the Hildon framework. For instance
@@ -51,7 +51,7 @@
  * HildonWindow *window1;
  * HildonWindow *window2;
  * GtkToolbar *common_toolbar, *window_specific_toolbar;
- * GtkMenu *menu;
+ * HildonAppMenu *menu;
  * <!-- -->
  * program = HILDON_PROGRAM (hildon_program_get_instance ());
  * <!-- -->
@@ -66,7 +66,7 @@
  * hildon_program_add_window (program, window1);
  * hildon_program_add_window (program, window2);
  * <!-- -->
- * hildon_program_set_common_menu (program, menu);
+ * hildon_program_set_common_app_menu (program, menu);
  * <!-- -->
  * hildon_program_set_common_toolbar (program, common_toolbar);
  * hildon_window_add_toolbar (window1, window_specific_toolbar);
@@ -443,8 +443,8 @@ hildon_program_get_instance                     (void)
  *
  * Registers a #HildonWindow as belonging to a given #HildonProgram. This
  * allows to apply program-wide settings as all the registered windows,
- * such as hildon_program_set_common_menu() and
- * hildon_pogram_set_common_toolbar()
+ * such as hildon_program_set_common_menu(), hildon_program_set_common_app_menu()
+ * and hildon_pogram_set_common_toolbar().
  **/
 void
 hildon_program_add_window                       (HildonProgram *self, 
@@ -491,8 +491,8 @@ hildon_program_add_window                       (HildonProgram *self,
  * @window: The @HildonWindow to unregister
  *
  * Used to unregister a window from the program. Subsequent calls to
- * hildon_program_set_common_menu() and hildon_pogram_set_common_toolbar()
- * will not affect the window
+ * hildon_program_set_common_menu(), hildon_program_set_common_app_menu()
+ * and hildon_pogram_set_common_toolbar() will not affect the window.
  **/
 void
 hildon_program_remove_window                    (HildonProgram *self, 
@@ -570,15 +570,15 @@ hildon_program_get_can_hibernate                (HildonProgram *self)
 /**
  * hildon_program_set_common_menu:
  * @self: The #HildonProgram in which the common menu should be used
- * @menu: A GtkMenu to use as common menu for the program
+ * @menu: A #GtkMenu to use as common menu for the program
  *
- * Sets a GtkMenu that will appear in all the #HildonWindow registered
- * with the #HildonProgram. Only one common GtkMenu can be set, further
- * calls will detach the previous common GtkMenu. A #HildonWindow
- * can use its own GtkMenu with hildon_window_set_menu()
+ * Sets a #GtkMenu that will appear in all #HildonWindow<!-- -->s
+ * registered with the #HildonProgram. Only one common #GtkMenu can be
+ * set, further calls will detach the previous common #GtkMenu. A
+ * #HildonWindow can use its own #GtkMenu with
+ * hildon_window_set_menu()
  *
- * This method is not intented for #HildonStackableWindow<!-- -->s and
- * does not support #HildonAppMenu objects. See
+ * This method does not support #HildonAppMenu<!-- -->s. See
  * hildon_program_set_common_app_menu() for that.
  *
  * Since: 2.2
@@ -649,15 +649,13 @@ hildon_program_get_common_menu                  (HildonProgram *self)
  * @self: The #HildonProgram in which the common menu should be used
  * @menu: A #HildonAppMenu to use as common menu for the program
  *
- * Sets a #HildonAppMenu that will appear in all the
- * #HildonStackableWindow<!-- -->s registered with the
- * #HildonProgram. Only one common #HildonAppMenu can be set, further
- * calls will detach the previous common #HildonAppMenu. A
- * #HildonStackableWindow can use its own #HildonAppMenu with
- * hildon_stackable_window_set_app_menu()
+ * Sets a #HildonAppMenu that will appear in all
+ * #HildonWindow<!-- -->s registered with the #HildonProgram. Only
+ * one common #HildonAppMenu can be set, further calls will detach the
+ * previous common #HildonAppMenu. A #HildonWindow can use its own
+ * #HildonAppMenu with hildon_window_set_app_menu()
  *
- * This method is not intented for standard #HildonWindow<!-- -->s and
- * does not support #GtkMenu objects. See
+ * This method does not support #GtkMenu<!-- -->s. See
  * hildon_program_set_common_menu() for that.
  *
  * Since: 2.2
