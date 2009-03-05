@@ -755,15 +755,15 @@ hildon_time_editor_get_time_separators          (GtkLabel *hm_sep_label,
     g_date_set_dmy (&locale_test_date, 1, 2, 1970);
     (void) g_date_strftime (buffer, sizeof (buffer), "%X", &locale_test_date);
 
+    /* Find h-m separator */
+    iter = buffer;
+    while (*iter && g_ascii_isdigit (*iter)) iter++;
+    /* Extract h-m separator*/
+    endp = iter;
+    while (*endp && ! g_ascii_isdigit (*endp)) endp++;
+
     if (hm_sep_label != NULL)
     {
-        /* Find h-m separator */
-        iter = buffer;
-        while (*iter && g_ascii_isdigit (*iter)) iter++;
-
-        /* Extract h-m separator*/
-        endp = iter;
-        while (*endp && ! g_ascii_isdigit (*endp)) endp++;
         separator = g_strndup (iter, endp - iter);
         gtk_label_set_label (hm_sep_label, separator);
         g_free (separator);
