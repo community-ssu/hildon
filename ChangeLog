@@ -1,3 +1,8 @@
+2009-03-05  Claudio Saavedra  <csaavedra@igalia.com>
+
+	* src/hildon-date-selector.c (_month_days): Check for month to be
+	strictly less than 12, since otherwise we may overrun the array.
+
 2009-03-04  Alberto Garcia  <agarcia@igalia.com>
 
 	* src/hildon-date-button.c (+hildon_date_button_new_full)

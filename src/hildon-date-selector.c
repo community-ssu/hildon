@@ -692,7 +692,7 @@ _month_days (gint month, gint year)
     {31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31}
   };
 
-  g_return_val_if_fail (month >= 0 && month <= 12, -1);
+  g_return_val_if_fail (month >= 0 && month < 12, -1);
 
   return month_days[_leap (year)][month];
 }
