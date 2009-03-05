@@ -25,27 +25,25 @@
 /**
  * SECTION:hildon-window
  * @short_description: Widget representing a top-level window in the Hildon framework.
+ * @see_also: #HildonProgram, #HildonStackableWindow
  *
- * The HildonWindow is a GTK widget which represents a top-level
- * window in the Hildon framework. It is derived from the GtkWindow
+ * #HildonWindow is a GTK widget which represents a top-level
+ * window in the Hildon framework. It is derived from #GtkWindow
  * and provides additional commodities specific to the Hildon
  * framework.
  *
- * Among these windows in the Hildon framework can have a single menu
- * attached, which is toggled with a hardware key or by tapping a
- * custom button in the window frame. This menu can be either a
- * #GtkMenu or a #HildonAppMenu (set with
+ * #HildonWindow<!-- -->s can have a menu attached, which is toggled
+ * with a hardware key or by tapping on the window frame. This menu
+ * can be either a #GtkMenu or a #HildonAppMenu (set with
  * hildon_window_set_main_menu() and hildon_window_set_app_menu()
  * respectively). Only one type of menu can be used at the same time.
- *
  * In Hildon 2.2, #HildonAppMenu is the recommended menu to use.
  *
- * Similarly, a window in the Hildon framework can have several toolbars
- * attached. These can be added to the HildonWindow with
- * hildon_window_add_toolbar().
- *
- * A #HildonWindow can also have a #HildonEditToolbar. To add it to
- * the window use hildon_window_set_edit_toolbar().
+ * Similarly, a #HildonWindow can have several toolbars
+ * attached. These can be added with hildon_window_add_toolbar(). In
+ * addition to those, a #HildonWindow can also have a
+ * #HildonEditToolbar. To add it to the window use
+ * hildon_window_set_edit_toolbar().
  *
  * <example>
  * <title>Creating a HildonWindow</title>
@@ -1642,9 +1640,9 @@ hildon_window_escape_timeout                    (gpointer data)
 /**
  * hildon_window_new: 
  * 
- * Creates a new HildonWindow.
+ * Creates a new #HildonWindow.
  * 
- * Return value: A @HildonWindow.
+ * Return value: A #HildonWindow.
  **/
 GtkWidget*
 hildon_window_new                               (void)
@@ -1655,13 +1653,13 @@ hildon_window_new                               (void)
 }
 
 /**
- * hildon_window_add_with_scrollbar
- * @self : A @HildonWindow
- * @child : A @GtkWidget
+ * hildon_window_add_with_scrollbar:
+ * @self: A #HildonWindow
+ * @child: A #GtkWidget
  *
- * Adds the @child to the HildonWindow and creates a scrollbar
- * for it. Similar as adding first a @GtkScrolledWindow and then the
- * @child to it.
+ * Adds @child to the #HildonWindow and creates a scrollbar for
+ * it. Similar to adding first a #GtkScrolledWindow and then @child to
+ * it.
  */
 void
 hildon_window_add_with_scrollbar                (HildonWindow *self,
@@ -1721,13 +1719,13 @@ toolbar_visible_notify                          (GtkWidget *toolbar, GParamSpec 
 
 /**
  * hildon_window_add_toolbar:
- * @self: A @HildonWindow
- * @toolbar: A #GtkToolbar to add to the HildonWindow
+ * @self: A #HildonWindow
+ * @toolbar: A #GtkToolbar to add to the #HildonWindow
  *
  * Adds a toolbar to the window. Note that the toolbar is not automatically
- * shown. You need to call #gtk_widget_show_all on it to make it visible. 
+ * shown. You need to call gtk_widget_show_all() on it to make it visible.
  * It's also possible to hide the toolbar (without removing it) by calling
- * #gtk_widget_hide.
+ * gtk_widget_hide()
  **/
 void 
 hildon_window_add_toolbar                       (HildonWindow *self, 
@@ -1761,11 +1759,11 @@ hildon_window_add_toolbar                       (HildonWindow *self,
 
 /**
  * hildon_window_remove_toolbar:
- * @self: A @HildonWindow
- * @toolbar: A #GtkToolbar to remove from the HildonWindow
+ * @self: A #HildonWindow
+ * @toolbar: A #GtkToolbar to remove from the #HildonWindow
  *
  * Removes a toolbar from the window. Note that this decreases the refference
- * count on the widget. If you want to keep the toolbar alive call #g_object_ref 
+ * count on the widget. If you want to keep the toolbar alive call g_object_ref()
  * before calling this function.
  **/
 void
@@ -1828,11 +1826,11 @@ hildon_window_set_edit_toolbar                  (HildonWindow      *self,
 
 /**
  * hildon_window_get_main_menu:
- * @self : a #HildonWindow
- * 
- * Gets the #GtMenu assigned to the #HildonAppview. Note that the 
+ * @self: a #HildonWindow
+ *
+ * Gets the #GtkMenu assigned to the #HildonAppview. Note that the
  * window is still the owner of the menu.
- * 
+ *
  * Note that if you're using a #HildonAppMenu rather than a #GtkMenu
  * you should use hildon_window_get_app_menu() instead.
  *
@@ -1852,7 +1850,7 @@ hildon_window_get_main_menu                     (HildonWindow * self)
 
 /**
  * hildon_window_get_menu:
- * @self : a #HildonWindow
+ * @self: a #HildonWindow
  *
  * Return value: a #GtkMenu
  *
@@ -1887,7 +1885,7 @@ hildon_window_add_accel_group (HildonWindow *self,
  * hildon_window_set_main_menu:
  * @self: A #HildonWindow
  * @menu: The #GtkMenu to be used for this #HildonWindow
- * 
+ *
  * Sets the menu to be used for this window. This menu overrides
  * a program-wide menu that may have been set with
  * hildon_program_set_common_menu(). Pass %NULL to remove the current
@@ -1896,7 +1894,7 @@ hildon_window_add_accel_group (HildonWindow *self,
  *
  * Note that if you're using a #HildonAppMenu rather than a #GtkMenu
  * you should use hildon_window_set_app_menu() instead.
- **/ 
+ **/
 void
 hildon_window_set_main_menu (HildonWindow* self,
 			     GtkMenu     * menu)
@@ -1935,7 +1933,7 @@ hildon_window_set_main_menu (HildonWindow* self,
  * hildon_window_set_menu:
  * @self: A #HildonWindow
  * @menu: The #GtkMenu to be used for this #HildonWindow
- * 
+ *
  * Sets the menu to be used for this window. This menu overrides
  * a program-wide menu that may have been set with
  * hildon_program_set_common_menu(). Pass %NULL to remove the current
@@ -1948,7 +1946,7 @@ hildon_window_set_main_menu (HildonWindow* self,
  * doesn't do this.
  *
  * Deprecated: Hildon 2.2: use hildon_window_set_main_menu()
- **/ 
+ **/
 void
 hildon_window_set_menu                          (HildonWindow *self, 
                                                  GtkMenu *menu)

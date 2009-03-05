@@ -27,19 +27,19 @@
  * @short_description: An object that represents an application running in the Hildon framework.
  * @see_also: #HildonWindow, #HildonStackableWindow
  *
- * The #HildonProgram is an object used to represent an application running
+ * #HildonProgram is an object used to represent an application running
  * in the Hildon framework.
  *
- * Such an application is thought to have one or more #HildonWindow. These
- * shall be registered to the #HildonProgram with hildon_program_add_window(),
+ * Applications can have one or more #HildonWindow<!-- -->s. These
+ * can be registered in the #HildonProgram with hildon_program_add_window(),
  * and can be unregistered similarly with hildon_program_remove_window().
  *
- * The #HildonProgram provides the programmer with commodities such
- * as applying a common toolbar and menu to all #HildonWindow<!-- -->s
- * registered to it. This is done with hildon_program_set_common_menu(),
+ * #HildonProgram provides the programmer with commodities such
+ * as applying a common toolbar and menu to all registered
+ * #HildonWindow<!-- -->s. This is done with hildon_program_set_common_menu(),
  * hildon_program_set_common_app_menu() and hildon_program_set_common_toolbar().
  *
- * The #HildonProgram is also used to apply program-wide properties that
+ * #HildonProgram is also used to apply program-wide properties that
  * are specific to the Hildon framework. For instance
  * hildon_program_set_can_hibernate() sets whether or not an application
  * can be set to hibernate by the Hildon task navigator, in situations of
@@ -444,7 +444,7 @@ hildon_program_get_instance                     (void)
  * Registers a #HildonWindow as belonging to a given #HildonProgram. This
  * allows to apply program-wide settings as all the registered windows,
  * such as hildon_program_set_common_menu(), hildon_program_set_common_app_menu()
- * and hildon_pogram_set_common_toolbar().
+ * and hildon_program_set_common_toolbar().
  **/
 void
 hildon_program_add_window                       (HildonProgram *self, 
@@ -488,11 +488,11 @@ hildon_program_add_window                       (HildonProgram *self,
 /**
  * hildon_program_remove_window:
  * @self: The #HildonProgram to which the window should be unregistered
- * @window: The @HildonWindow to unregister
+ * @window: The #HildonWindow to unregister
  *
  * Used to unregister a window from the program. Subsequent calls to
  * hildon_program_set_common_menu(), hildon_program_set_common_app_menu()
- * and hildon_pogram_set_common_toolbar() will not affect the window.
+ * and hildon_program_set_common_toolbar() will not affect the window.
  **/
 void
 hildon_program_remove_window                    (HildonProgram *self, 
@@ -715,12 +715,12 @@ hildon_program_get_common_app_menu              (HildonProgram *self)
 /**
  * hildon_program_set_common_toolbar:
  * @self: The #HildonProgram in which the common toolbar should be used
- * @toolbar: A GtkToolbar to use as common toolbar for the program
+ * @toolbar: A #GtkToolbar to use as common toolbar for the program
  *
- * Sets a GtkToolbar that will appear in all the #HildonWindow registered
- * to the #HildonProgram. Only one common GtkToolbar can be set, further
- * call will detach the previous common GtkToolbar. A #HildonWindow
- * can use its own GtkToolbar with hildon_window_add_toolbar(). Both
+ * Sets a #GtkToolbar that will appear in all the #HildonWindow registered
+ * to the #HildonProgram. Only one common #GtkToolbar can be set, further
+ * call will detach the previous common #GtkToolbar. A #HildonWindow
+ * can use its own #GtkToolbar with hildon_window_add_toolbar(). Both
  * #HildonProgram and #HildonWindow specific toolbars will be shown
  **/
 void

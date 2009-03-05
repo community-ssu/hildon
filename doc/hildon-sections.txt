@@ -3,6 +3,7 @@
 <TITLE>HildonDateSelector</TITLE>
 HildonDateSelector
 hildon_date_selector_new
+hildon_date_selector_new_with_year_range
 hildon_date_selector_select_month
 hildon_date_selector_select_day
 hildon_date_selector_select_current_date
@@ -710,6 +711,7 @@ hildon_window_clipboard_operation_get_type
 <TITLE>HildonTimeButton</TITLE>
 HildonTimeButton
 hildon_time_button_new
+hildon_time_button_new_step
 hildon_time_button_get_time
 hildon_time_button_set_time
 <SUBSECTION Standard>
@@ -891,8 +893,10 @@ hildon_touch_selector_get_column
 hildon_touch_selector_set_active
 hildon_touch_selector_get_active
 hildon_touch_selector_get_selected
+hildon_touch_selector_center_on_selected
 hildon_touch_selector_select_iter
 hildon_touch_selector_unselect_iter
+hildon_touch_selector_unselect_all
 hildon_touch_selector_get_selected_rows
 hildon_touch_selector_set_model
 hildon_touch_selector_get_model
@@ -917,6 +921,7 @@ HildonTouchSelectorPrivate
 <TITLE>HildonDateButton</TITLE>
 HildonDateButton
 hildon_date_button_new
+hildon_date_button_new_with_year_range
 hildon_date_button_get_date
 hildon_date_button_set_date
 <SUBSECTION Standard>
@@ -970,6 +975,7 @@ HildonColorChooserClass
 <TITLE>HildonTimeSelector</TITLE>
 HildonTimeSelector
 hildon_time_selector_new
+hildon_time_selector_new_step
 hildon_time_selector_set_time
 hildon_time_selector_get_time
 <SUBSECTION Standard>
@@ -1110,6 +1116,8 @@ hildon_touch_selector_entry_new
 hildon_touch_selector_entry_new_text
 hildon_touch_selector_entry_set_text_column
 hildon_touch_selector_entry_get_text_column
+hildon_touch_selector_entry_set_input_mode
+hildon_touch_selector_entry_get_input_mode
 <SUBSECTION Standard>
 HILDON_TOUCH_SELECTOR_ENTRY
 HILDON_IS_TOUCH_SELECTOR_ENTRY

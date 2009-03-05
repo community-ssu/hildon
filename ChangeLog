@@ -1,5 +1,13 @@
 2009-03-04  Alberto Garcia  <agarcia@igalia.com>
 
+	* doc/hildon-sections.txt
+	* src/hildon-program.c
+	* src/hildon-stackable-window.c
+	* src/hildon-window.c:
+	Documentation updates
+
+2009-03-04  Alberto Garcia  <agarcia@igalia.com>
+
 	* src/hildon-window-stack.c (hildon_window_stack_get_default)
 	(hildon_window_stack_new, +hildon_window_stack_set_property)
 	(+hildon_window_stack_get_property)
