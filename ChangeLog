@@ -1,3 +1,9 @@
+2009-03-05  Alberto Garcia  <agarcia@igalia.com>
+
+	* src/hildon-time-button.c (hildon_time_button_new_step):
+	Use the "touch-selector" property to set the selector directly
+	when creating the object.
+
 2009-03-05  Alejandro G. Castro  <alex@igalia.com>
 
 	Added a new example application that allows tuning the pannable

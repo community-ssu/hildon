@@ -127,18 +127,12 @@ hildon_time_button_new_step (HildonSizeType          size,
                              HildonButtonArrangement arrangement,
                              guint                   minutes_step)
 {
-  GtkWidget *button;
-  GtkWidget *time_selector;
-
-  button = g_object_new (HILDON_TYPE_TIME_BUTTON,
-                         "title", _("wdgt_ti_time"), "arrangement", arrangement, "size", size, NULL);
-
-  time_selector = hildon_time_selector_new_step (minutes_step);
-
-  hildon_picker_button_set_selector (HILDON_PICKER_BUTTON (button),
-                                     HILDON_TOUCH_SELECTOR (time_selector));
-
-  return button;
+  return g_object_new (HILDON_TYPE_TIME_BUTTON,
+                       "title", _("wdgt_ti_time"),
+                       "arrangement", arrangement,
+                       "size", size,
+                       "touch-selector", hildon_time_selector_new_step (minutes_step),
+                       NULL);
 }
 
 /**
