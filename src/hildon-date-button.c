@@ -89,12 +89,19 @@ hildon_date_button_class_init (HildonDateButtonClass * klass)
 static void
 hildon_date_button_init (HildonDateButton * self)
 {
-  GtkWidget *date_selector;
+}
 
-  date_selector = hildon_date_selector_new ();
-
-  hildon_picker_button_set_selector (HILDON_PICKER_BUTTON (self),
-                                     HILDON_TOUCH_SELECTOR (date_selector));
+static GtkWidget *
+hildon_date_button_new_full (HildonSizeType           size,
+                             HildonButtonArrangement  arrangement,
+                             GtkWidget               *selector)
+{
+  return g_object_new (HILDON_TYPE_DATE_BUTTON,
+                       "title", _("wdgt_ti_date"),
+                       "arrangement", arrangement,
+                       "size", size,
+                       "touch-selector", selector,
+                       NULL);
 }
 
 /**
@@ -113,11 +120,8 @@ GtkWidget *
 hildon_date_button_new (HildonSizeType          size,
                         HildonButtonArrangement arrangement)
 {
-  return g_object_new (HILDON_TYPE_DATE_BUTTON,
-                       "title", _("wdgt_ti_date"),
-                       "arrangement", arrangement,
-                       "size", size,
-                       NULL);
+  GtkWidget *selector = hildon_date_selector_new ();
+  return hildon_date_button_new_full (size, arrangement, selector);
 }
 
 /**
@@ -140,15 +144,9 @@ hildon_date_button_new_with_year_range (HildonSizeType size,
                                         gint min_year,
                                         gint max_year)
 {
-  GtkWidget *button;
   GtkWidget *selector;
-
-  button = hildon_date_button_new (size, arrangement);
   selector = hildon_date_selector_new_with_year_range (min_year, max_year);
-  hildon_picker_button_set_selector (HILDON_PICKER_BUTTON (button),
-                                     HILDON_TOUCH_SELECTOR (selector));
-
-  return button;
+  return hildon_date_button_new_full (size, arrangement, selector);
 }
 
 /**

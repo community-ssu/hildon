@@ -1,5 +1,16 @@
 2009-03-04  Alberto Garcia  <agarcia@igalia.com>
 
+	* src/hildon-date-button.c (+hildon_date_button_new_full)
+	(hildon_date_button_new, hildon_date_button_new_with_year_range)
+	(hildon_date_button_init): Set the date selector using a
+	construction property, to make it happen after HildonButton's
+	"value" property is set.
+
+	Fixes: NB#104439 (hildon_date_button_new() isn't set to the
+	current date by default)
+
+2009-03-04  Alberto Garcia  <agarcia@igalia.com>
+
 	* doc/hildon-sections.txt
 	* src/hildon-program.c
 	* src/hildon-stackable-window.c
