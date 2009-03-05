@@ -533,6 +533,10 @@ hildon_app_menu_map                             (GtkWidget *widget)
         }
     }
 
+    /* Make the menu temporary when it's mapped, so it's closed if a
+     * new window appears */
+    gtk_window_set_is_temporary (GTK_WINDOW (widget), TRUE);
+
     gdk_threads_add_idle (hildon_app_menu_find_intruder, widget);
 }
 
@@ -552,6 +556,8 @@ hildon_app_menu_unmap                           (GtkWidget *widget)
     }
 
     GTK_WIDGET_CLASS (hildon_app_menu_parent_class)->unmap (widget);
+
+    gtk_window_set_is_temporary (GTK_WINDOW (widget), FALSE);
 }
 
 static void

@@ -1,3 +1,12 @@
+2009-03-05  Alberto Garcia  <agarcia@igalia.com>
+
+	* src/hildon-app-menu.c (hildon_app_menu_map)
+	(hildon_app_menu_unmap): Make the menu temporary when it's mapped,
+	so it's closed if a new window appears.
+
+	Fixes: NB#104485 (Not able to address the call when application
+	menu is opened at background)
+
 2009-03-05  Claudio Saavedra  <csaavedra@igalia.com>
 
 	* src/hildon-color-button.c (hildon_color_button_get_property):Add
