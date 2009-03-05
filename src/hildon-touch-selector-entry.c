@@ -83,6 +83,7 @@ hildon_touch_selector_entry_get_property (GObject *object, guint property_id,
   case PROP_TEXT_COLUMN:
     g_value_set_int (value,
                      hildon_touch_selector_entry_get_text_column (HILDON_TOUCH_SELECTOR_ENTRY (object)));
+    break;
   default:
     G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
   }
@@ -96,6 +97,7 @@ hildon_touch_selector_entry_set_property (GObject *object, guint property_id,
   case PROP_TEXT_COLUMN:
     hildon_touch_selector_entry_set_text_column (HILDON_TOUCH_SELECTOR_ENTRY (object),
                                                  g_value_get_int (value));
+    break;
   default:
     G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
   }
