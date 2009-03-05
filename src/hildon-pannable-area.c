@@ -50,16 +50,11 @@
 
 #define USE_CAIRO_SCROLLBARS 0
 
-#define SMOOTH_FACTOR 0.85
-#define FORCE 5
-#define BOUNCE_STEPS 6
 #define SCROLL_BAR_MIN_SIZE 5
 #define RATIO_TOLERANCE 0.000001
-#define SCROLLBAR_FADE_DELAY 30
-#define SCROLL_FADE_TIMEOUT 10
+#define SCROLL_FADE_TIMEOUT 100
 #define MOTION_EVENTS_PER_SECOND 25
-#define PANNING_THRESHOLD 3
-#define DIRECTION_ERROR_MARGIN 10
+#define CURSOR_STOPPED_TIMEOUT 125
 
 G_DEFINE_TYPE (HildonPannableArea, hildon_pannable_area, GTK_TYPE_BIN)
 
@@ -84,9 +79,15 @@ struct _HildonPannableAreaPrivate {
   gdouble vmax;
   gdouble vfast_factor;
   gdouble decel;
+  gdouble drag_inertia;
   gdouble scroll_time;
   gdouble vel_factor;
   guint sps;
+  guint panning_threshold;
+  guint scrollbar_fade_delay;
+  guint bounce_steps;
+  guint force;
+  guint direction_error_margin;
   gdouble vel_x;
   gdouble vel_y;
   GdkWindow *child;
@@ -148,7 +149,13 @@ enum {
   PROP_VELOCITY_MAX,
   PROP_VELOCITY_FAST_FACTOR,
   PROP_DECELERATION,
+  PROP_DRAG_INERTIA,
   PROP_SPS,
+  PROP_PANNING_THRESHOLD,
+  PROP_SCROLLBAR_FADE_DELAY,
+  PROP_BOUNCE_STEPS,
+  PROP_FORCE,
+  PROP_DIRECTION_ERROR_MARGIN,
   PROP_VSCROLLBAR_POLICY,
   PROP_HSCROLLBAR_POLICY,
   PROP_VOVERSHOOT_MAX,
@@ -242,6 +249,8 @@ static void hildon_pannable_area_calculate_velocity (gdouble *vel,
                                                      gdouble delta,
                                                      gdouble dist,
                                                      gdouble vmax,
+                                                     gdouble drag_inertia,
+                                                     gdouble force,
                                                      guint sps);
 static gboolean hildon_pannable_area_motion_event_scroll_timeout (HildonPannableArea *area);
 static void hildon_pannable_area_motion_event_scroll (HildonPannableArea *area,
@@ -384,6 +393,17 @@ hildon_pannable_area_class_init (HildonPannableAreaClass * klass)
 							G_PARAM_CONSTRUCT));
 
   g_object_class_install_property (object_class,
+				   PROP_DRAG_INERTIA,
+				   g_param_spec_double ("drag_inertia",
+							"Inertia of the cursor dragging",
+							"Percentage of the calculated speed in each moment we are are going to use"
+                                                        "to calculate the launch speed, the other part would be the speed"
+                                                        "calculated previously",
+							0, 1.0, 0.85,
+							G_PARAM_READWRITE |
+							G_PARAM_CONSTRUCT));
+
+  g_object_class_install_property (object_class,
 				   PROP_SPS,
 				   g_param_spec_uint ("sps",
 						      "Scrolls per second",
@@ -393,10 +413,62 @@ hildon_pannable_area_class_init (HildonPannableAreaClass * klass)
 						      G_PARAM_CONSTRUCT));
 
   g_object_class_install_property (object_class,
+				   PROP_PANNING_THRESHOLD,
+				   g_param_spec_uint ("panning_threshold",
+						      "Threshold to consider a motion event an scroll",
+						      "Amount of pixels to consider a motion event an scroll, if it is less"
+                                                      "it is a click detected incorrectly by the touch screen.",
+						      0, G_MAXUINT, 3,
+						      G_PARAM_READWRITE |
+						      G_PARAM_CONSTRUCT));
+
+  g_object_class_install_property (object_class,
+				   PROP_SCROLLBAR_FADE_DELAY,
+				   g_param_spec_uint ("scrollbar_fade_delay",
+						      "Time before starting to fade the scrollbar",
+						      "Time the scrollbar is going to be visible if the widget is not in"
+                                                      "action in miliseconds",
+						      0, G_MAXUINT, 3000,
+						      G_PARAM_READWRITE |
+						      G_PARAM_CONSTRUCT));
+
+  g_object_class_install_property (object_class,
+				   PROP_BOUNCE_STEPS,
+				   g_param_spec_uint ("bounce_steps",
+						      "Bounce steps",
+						      "Number of steps that is going to be used to bounce when hitting the"
+                                                      "edge, the rubberband effect depends on it",
+						      0, G_MAXUINT, 6,
+						      G_PARAM_READWRITE |
+						      G_PARAM_CONSTRUCT));
+
+  g_object_class_install_property (object_class,
+				   PROP_FORCE,
+				   g_param_spec_uint ("force",
+						      "Multiplier of the calculated speed",
+						      "Force applied to the movement, multiplies the calculated speed of the"
+                                                      "user movement the cursor in the screen",
+						      0, G_MAXUINT, 5,
+						      G_PARAM_READWRITE |
+						      G_PARAM_CONSTRUCT));
+
+  g_object_class_install_property (object_class,
+				   PROP_DIRECTION_ERROR_MARGIN,
+				   g_param_spec_uint ("direction_error_margin",
+						      "Margin in the direction detection",
+						      "After detecting the direction of the movement (horizontal or"
+                                                      "vertical), we can add this margin of error to allow the movement in"
+                                                      "the other direction even apparently it is not",
+						      0, G_MAXUINT, 10,
+						      G_PARAM_READWRITE |
+						      G_PARAM_CONSTRUCT));
+
+  g_object_class_install_property (object_class,
 				   PROP_VOVERSHOOT_MAX,
 				   g_param_spec_int ("vovershoot_max",
                                                      "Vertical overshoot distance",
-                                                     "Space we allow the widget to pass over its vertical limits when hitting the edges, set 0 in order to deactivate overshooting.",
+                                                     "Space we allow the widget to pass over its vertical limits when"
+                                                     "hitting the edges, set 0 in order to deactivate overshooting.",
                                                      0, G_MAXINT, 150,
                                                      G_PARAM_READWRITE |
                                                      G_PARAM_CONSTRUCT));
@@ -405,7 +477,8 @@ hildon_pannable_area_class_init (HildonPannableAreaClass * klass)
 				   PROP_HOVERSHOOT_MAX,
 				   g_param_spec_int ("hovershoot_max",
                                                      "Horizontal overshoot distance",
-                                                     "Space we allow the widget to pass over its horizontal limits when hitting the edges, set 0 in order to deactivate overshooting.",
+                                                     "Space we allow the widget to pass over its horizontal limits when"
+                                                     "hitting the edges, set 0 in order to deactivate overshooting.",
                                                      0, G_MAXINT, 150,
                                                      G_PARAM_READWRITE |
                                                      G_PARAM_CONSTRUCT));
@@ -414,8 +487,7 @@ hildon_pannable_area_class_init (HildonPannableAreaClass * klass)
 				   PROP_SCROLL_TIME,
 				   g_param_spec_double ("scroll_time",
 							"Time to scroll to a position",
-							"The time to scroll to a position when calling the hildon_pannable_scroll_to function"
-							"acceleration scrolling mode.",
+							"The time to scroll to a position when calling the hildon_pannable_scroll_to function",
 							1.0, 20.0, 10.0,
 							G_PARAM_READWRITE |
 							G_PARAM_CONSTRUCT));
@@ -433,7 +505,8 @@ hildon_pannable_area_class_init (HildonPannableAreaClass * klass)
  				   PROP_LOW_FRICTION_MODE,
  				   g_param_spec_boolean ("low-friction-mode",
  							 "Do not decelerate the initial velocity",
- 							 "Avoid decelerating the panning movement, like no friction, the widget will stop in the edges or if the user clicks.",
+ 							 "Avoid decelerating the panning movement, like no friction, the widget"
+                                                         "will stop in the edges or if the user clicks.",
  							 FALSE,
 							 G_PARAM_READWRITE |
  							 G_PARAM_CONSTRUCT));
@@ -525,7 +598,7 @@ hildon_pannable_area_init (HildonPannableArea * area)
   priv->scroll_indicator_timeout = 0;
   priv->motion_event_scroll_timeout = 0;
   priv->scroll_indicator_event_interrupt = 0;
-  priv->scroll_delay_counter = SCROLLBAR_FADE_DELAY;
+  priv->scroll_delay_counter = priv->scrollbar_fade_delay;
   priv->scroll_to_x = -1;
   priv->scroll_to_y = -1;
   priv->first_drag = TRUE;
@@ -585,8 +658,27 @@ hildon_pannable_area_get_property (GObject * object,
   case PROP_DECELERATION:
     g_value_set_double (value, priv->decel);
     break;
+  case PROP_DRAG_INERTIA:
+    g_value_set_double (value, priv->drag_inertia);
+    break;
   case PROP_SPS:
     g_value_set_uint (value, priv->sps);
+    break;
+  case PROP_PANNING_THRESHOLD:
+    g_value_set_uint (value, priv->panning_threshold);
+    break;
+  case PROP_SCROLLBAR_FADE_DELAY:
+    /* convert to miliseconds */
+    g_value_set_uint (value, priv->scrollbar_fade_delay * SCROLL_FADE_TIMEOUT);
+    break;
+  case PROP_BOUNCE_STEPS:
+    g_value_set_uint (value, priv->bounce_steps);
+    break;
+  case PROP_FORCE:
+    g_value_set_uint (value, priv->force);
+    break;
+  case PROP_DIRECTION_ERROR_MARGIN:
+    g_value_set_uint (value, priv->direction_error_margin);
     break;
   case PROP_VSCROLLBAR_POLICY:
     g_value_set_enum (value, priv->vscrollbar_policy);
@@ -669,8 +761,27 @@ hildon_pannable_area_set_property (GObject * object,
 
     priv->decel = g_value_get_double (value);
     break;
+  case PROP_DRAG_INERTIA:
+    priv->drag_inertia = g_value_get_double (value);
+    break;
   case PROP_SPS:
     priv->sps = g_value_get_uint (value);
+    break;
+  case PROP_PANNING_THRESHOLD:
+    priv->panning_threshold = g_value_get_uint (value);
+    break;
+  case PROP_SCROLLBAR_FADE_DELAY:
+    /* convert to miliseconds */
+    priv->scrollbar_fade_delay = g_value_get_uint (value)/(SCROLL_FADE_TIMEOUT);
+    break;
+  case PROP_BOUNCE_STEPS:
+    priv->bounce_steps = g_value_get_uint (value);
+    break;
+  case PROP_FORCE:
+    priv->force = g_value_get_uint (value);
+    break;
+  case PROP_DIRECTION_ERROR_MARGIN:
+    priv->direction_error_margin = g_value_get_uint (value);
     break;
   case PROP_VSCROLLBAR_POLICY:
     priv->vscrollbar_policy = g_value_get_enum (value);
@@ -1037,7 +1148,7 @@ hildon_pannable_area_grab_notify (GtkWidget *widget,
     priv->scroll_indicator_event_interrupt = 0;
 
     if ((!priv->scroll_indicator_timeout)&&(priv->scroll_indicator_alpha)>0.1) {
-      priv->scroll_delay_counter = SCROLLBAR_FADE_DELAY;
+      priv->scroll_delay_counter = priv->scrollbar_fade_delay;
 
       hildon_pannable_area_launch_fade_timeout (HILDON_PANNABLE_AREA (widget),
                                                 priv->scroll_indicator_alpha);
@@ -1342,7 +1453,7 @@ hildon_pannable_area_launch_fade_timeout (HildonPannableArea * area,
 
   if (!priv->scroll_indicator_timeout)
     priv->scroll_indicator_timeout =
-      gdk_threads_add_timeout ((gint) (1000.0 / (gdouble) SCROLL_FADE_TIMEOUT),
+      gdk_threads_add_timeout (SCROLL_FADE_TIMEOUT,
                                (GSourceFunc) hildon_pannable_area_scroll_indicator_fade,
                                area);
 }
@@ -1366,7 +1477,7 @@ hildon_pannable_area_adjust_value_changed (HildonPannableArea * area,
 
     if ((priv->vscroll_visible) || (priv->hscroll_visible)) {
       priv->scroll_indicator_event_interrupt = 0;
-      priv->scroll_delay_counter = SCROLLBAR_FADE_DELAY;
+      priv->scroll_delay_counter = priv->scrollbar_fade_delay;
 
       hildon_pannable_area_launch_fade_timeout (area, 1.0);
     }
@@ -1861,22 +1972,24 @@ hildon_pannable_axis_scroll (HildonPannableArea *area,
   } else {
     if (!priv->clicked) {
 
-      /* When the overshoot has started we continue for BOUNCE_STEPS more steps into the overshoot
-       * before we reverse direction. The deceleration factor is calculated based on
-       * the percentage distance from the first item with each iteration, therefore always
-       * returning us to the top/bottom most element
+      /* When the overshoot has started we continue for
+       * PROP_BOUNCE_STEPS more steps into the overshoot before we
+       * reverse direction. The deceleration factor is calculated
+       * based on the percentage distance from the first item with
+       * each iteration, therefore always returning us to the
+       * top/bottom most element
        */
       if (*overshot_dist > 0) {
 
-        if ((*overshooting < BOUNCE_STEPS) && (*vel > 0)) {
+        if ((*overshooting < priv->bounce_steps) && (*vel > 0)) {
           (*overshooting)++;
           *vel = (((gdouble)*overshot_dist)/overshoot_max) * (*vel);
-        } else if ((*overshooting >= BOUNCE_STEPS) && (*vel > 0)) {
+        } else if ((*overshooting >= priv->bounce_steps) && (*vel > 0)) {
           *vel *= -1;
           (*overshooting)--;
         } else if ((*overshooting > 1) && (*vel < 0)) {
           (*overshooting)--;
-          /* we add the MAX in order to avoid very small speeds */
+          /* we add the MIN in order to avoid very small speeds */
           *vel = MIN ((((gdouble)*overshot_dist)/overshoot_max) * (*vel), -10.0);
         }
 
@@ -1886,15 +1999,15 @@ hildon_pannable_axis_scroll (HildonPannableArea *area,
 
       } else if (*overshot_dist < 0) {
 
-        if ((*overshooting < BOUNCE_STEPS) && (*vel < 0)) {
+        if ((*overshooting < priv->bounce_steps) && (*vel < 0)) {
           (*overshooting)++;
           *vel = (((gdouble)*overshot_dist)/overshoot_max) * (*vel) * -1;
-        } else if ((*overshooting >= BOUNCE_STEPS) && (*vel < 0)) {
+        } else if ((*overshooting >= priv->bounce_steps) && (*vel < 0)) {
           *vel *= -1;
           (*overshooting)--;
         } else if ((*overshooting > 1) && (*vel > 0)) {
           (*overshooting)--;
-          /* we add the MIN in order to avoid very small speeds */
+          /* we add the MAX in order to avoid very small speeds */
           *vel = MAX ((((gdouble)*overshot_dist)/overshoot_max) * (*vel) * -1, 10.0);
         }
 
@@ -2039,15 +2152,17 @@ hildon_pannable_area_calculate_velocity (gdouble *vel,
                                          gdouble delta,
                                          gdouble dist,
                                          gdouble vmax,
+                                         gdouble drag_inertia,
+                                         gdouble force,
                                          guint sps)
 {
   gdouble rawvel;
 
   if (ABS (dist) >= RATIO_TOLERANCE) {
-    rawvel = ((dist / ABS (delta)) *
-              (gdouble) sps) * FORCE;
-    *vel = *vel * (1 - SMOOTH_FACTOR) +
-      rawvel * SMOOTH_FACTOR;
+    rawvel = (dist / ABS (delta)) *
+      ((gdouble) sps) * force;
+    *vel = *vel * (1 - drag_inertia) +
+      rawvel * drag_inertia;
     *vel = *vel > 0 ? MIN (*vel, vmax)
       : MAX (*vel, -1 * vmax);
   }
@@ -2117,8 +2232,8 @@ hildon_pannable_area_motion_notify_cb (GtkWidget * widget,
   y = event->y - priv->y;
 
   if (priv->first_drag && (!priv->moved) &&
-      ((ABS (x) > (PANNING_THRESHOLD))
-       || (ABS (y) > (PANNING_THRESHOLD)))) {
+      ((ABS (x) > (priv->panning_threshold))
+       || (ABS (y) > (priv->panning_threshold)))) {
     priv->moved = TRUE;
     x = 0;
     y = 0;
@@ -2145,7 +2260,7 @@ hildon_pannable_area_motion_notify_cb (GtkWidget * widget,
           /* even in case we do not have to move we check if this
              could be a fake horizontal movement */
           if (ABS (priv->iy - event->y) -
-              ABS (priv->ix - event->x) >= DIRECTION_ERROR_MARGIN)
+              ABS (priv->ix - event->x) >= priv->direction_error_margin)
             priv->moved = FALSE;
         }
       } else {
@@ -2167,7 +2282,7 @@ hildon_pannable_area_motion_notify_cb (GtkWidget * widget,
           /* even in case we do not have to move we check if this
              could be a fake vertical movement */
           if (ABS (priv->ix - event->x) -
-              ABS (priv->iy - event->y) >= DIRECTION_ERROR_MARGIN)
+              ABS (priv->iy - event->y) >= priv->direction_error_margin)
             priv->moved = FALSE;
         }
       }
@@ -2220,6 +2335,8 @@ hildon_pannable_area_motion_notify_cb (GtkWidget * widget,
                                                  delta,
                                                  dist,
                                                  priv->vmax,
+                                                 priv->drag_inertia,
+                                                 priv->force,
                                                  priv->sps);
       } else {
         y = 0;
@@ -2233,6 +2350,8 @@ hildon_pannable_area_motion_notify_cb (GtkWidget * widget,
                                                  delta,
                                                  dist,
                                                  priv->vmax,
+                                                 priv->drag_inertia,
+                                                 priv->force,
                                                  priv->sps);
       } else {
         x = 0;
@@ -2285,7 +2404,13 @@ hildon_pannable_area_button_release_cb (GtkWidget * widget,
     return TRUE;
 
   priv->scroll_indicator_event_interrupt = 0;
-  priv->scroll_delay_counter = SCROLLBAR_FADE_DELAY;
+  priv->scroll_delay_counter = priv->scrollbar_fade_delay;
+
+  if ((priv->last_type == 2)&&
+      (event->time - priv->last_time > CURSOR_STOPPED_TIMEOUT)) {
+    priv->vel_y = 0.0;
+    priv->vel_x = 0.0;
+  }
 
   if ((ABS (priv->vel_y) > 1.0)||
       (ABS (priv->vel_x) > 1.0)) {
@@ -2308,12 +2433,12 @@ hildon_pannable_area_button_release_cb (GtkWidget * widget,
 
     /* If overshoot has been initiated with a finger down, on release set max speed */
     if (priv->overshot_dist_y != 0) {
-      priv->overshooting_y = BOUNCE_STEPS; /* Hack to stop a bounce in the finger down case */
+      priv->overshooting_y = priv->bounce_steps; /* Hack to stop a bounce in the finger down case */
       priv->vel_y = priv->vmax;
     }
 
     if (priv->overshot_dist_x != 0) {
-      priv->overshooting_x = BOUNCE_STEPS; /* Hack to stop a bounce in the finger down case */
+      priv->overshooting_x = priv->bounce_steps; /* Hack to stop a bounce in the finger down case */
       priv->vel_x = priv->vmax;
     }
 
@@ -2379,7 +2504,7 @@ hildon_pannable_area_scroll_cb (GtkWidget *widget,
     return TRUE;
 
   priv->scroll_indicator_event_interrupt = 0;
-  priv->scroll_delay_counter = SCROLLBAR_FADE_DELAY + 20;
+  priv->scroll_delay_counter = priv->scrollbar_fade_delay + 20;
 
   hildon_pannable_area_launch_fade_timeout (HILDON_PANNABLE_AREA (widget), 1.0);
 

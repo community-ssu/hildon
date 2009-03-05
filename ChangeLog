@@ -1,3 +1,27 @@
+2009-03-05  Alejandro G. Castro  <alex@igalia.com>
+
+	Added a new example application that allows tuning the pannable
+	area and replaced defines with properties in order to simplify the
+	tuning: PROP_DRAG_INERTIA, PROP_PANNING_THRESHOLD,
+	PROP_SCROLLBAR_FADE_DELAY, PROP_BOUNCE_STEPS, PROP_FORCE and
+	PROP_DIRECTION_ERROR_MARGIN.
+
+	* examples/hildon-pannable-area-tuning-example.c: New example
+	application.
+	* src/hildon-pannable-area.c,
+	(hildon_pannable_area_class_init),
+	(hildon_pannable_area_init),
+	(hildon_pannable_area_get_property),
+	(hildon_pannable_area_set_property),
+	(hildon_pannable_area_launch_fade_timeout),
+	(hildon_pannable_area_adjust_value_changed),
+	(hildon_pannable_axis_scroll),
+	(hildon_pannable_area_motion_notify_cb),
+	(hildon_pannable_area_scroll_cb),
+	(hildon_pannable_area_button_release_cb): We have converted some
+	of the defines that control the widget to properties to simplify
+	the tuning.
+
 2009-03-05  Alberto Garcia  <agarcia@igalia.com>
 
 	* src/hildon-app-menu.c (hildon_app_menu_map)

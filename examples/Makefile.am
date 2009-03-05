@@ -17,6 +17,7 @@ EXAMPLES				= hildon-window-example				\
 					  hildon-edit-toolbar-example			\
 					  hildon-wizard-dialog-example			\
 					  hildon-pannable-area-tree-view-example	\
+					  hildon-pannable-area-tuning-example		\
 					  hildon-pannable-area-scroll-jump-example	\
 					  hildon-pannable-area-buttons-scroll-example	\
 					  hildon-pannable-area-gesture-signals-example	\
@@ -330,6 +331,12 @@ hildon_pannable_area_tree_view_example_LDADD		= $(HILDON_OBJ_LIBS)
 hildon_pannable_area_tree_view_example_CFLAGS		= $(HILDON_OBJ_CFLAGS)			\
 						  	   $(EXTRA_CFLAGS)
 hildon_pannable_area_tree_view_example_SOURCES		= hildon-pannable-area-tree-view-example.c
+
+# Hildon pannable area tuning example
+hildon_pannable_area_tuning_example_LDADD		= $(HILDON_OBJ_LIBS)
+hildon_pannable_area_tuning_example_CFLAGS		= $(HILDON_OBJ_CFLAGS)			\
+						  	   $(EXTRA_CFLAGS)
+hildon_pannable_area_tuning_example_SOURCES		= hildon-pannable-area-tuning-example.c
 
 # Hildon pannable area scroll jump example
 hildon_pannable_area_scroll_jump_example_LDADD		= $(HILDON_OBJ_LIBS)
