@@ -1,5 +1,13 @@
 2009-03-06  Alberto Garcia  <agarcia@igalia.com>
 
+	* src/hildon-find-toolbar.c
+	(hildon_find_toolbar_emit_close)
+	(hildon_find_toolbar_emit_invalid_input)
+	(hildon_find_toolbar_entry_activate):
+	Use g_signal_emit() instead of g_signal_emit_by_name()
+
+2009-03-06  Alberto Garcia  <agarcia@igalia.com>
+
 	Patch by Mox Soini (ext-mox.soini@nokia.com)
 
 	* tests/TEST-CASES.txt

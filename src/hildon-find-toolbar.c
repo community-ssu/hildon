@@ -475,7 +475,7 @@ hildon_find_toolbar_emit_close                  (GtkButton *button,
 #endif
 
     /* Clicked close button */
-    g_signal_emit_by_name (self, "close", NULL);
+    g_signal_emit (self, HildonFindToolbar_signal [CLOSE], 0);
 }
 
 #ifdef MAEMO_GTK 
@@ -485,7 +485,7 @@ hildon_find_toolbar_emit_invalid_input          (GtkEntry *entry,
                                                  gpointer self)
 {
     if(type == GTK_INVALID_INPUT_MAX_CHARS_REACHED)
-        g_signal_emit_by_name (self, "invalid_input", NULL);
+        g_signal_emit (self, HildonFindToolbar_signal [INVALID_INPUT], 0);
 }
 #endif
 
@@ -499,8 +499,8 @@ hildon_find_toolbar_entry_activate              (GtkWidget *widget,
     /* NB#40936 stop focus from moving to next widget */
     g_signal_stop_emission_by_name (widget, "activate");
 
-    g_signal_emit_by_name (find_toolbar, "search", NULL);
-    g_signal_emit_by_name (find_toolbar, "history_append", &rb, NULL);
+    g_signal_emit (find_toolbar, HildonFindToolbar_signal [SEARCH], 0);
+    g_signal_emit (find_toolbar, HildonFindToolbar_signal [HISTORY_APPEND], 0, &rb);
 }
 
 static void
