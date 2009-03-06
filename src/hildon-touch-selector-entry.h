@@ -22,6 +22,7 @@
 #define                                         __HILDON_TOUCH_SELECTOR_ENTRY__
 
 #include                                        "hildon-touch-selector.h"
+#include                                        "hildon-entry.h"
 
 G_BEGIN_DECLS
 
@@ -84,6 +85,9 @@ hildon_touch_selector_entry_get_input_mode (HildonTouchSelectorEntry * selector)
 void
 hildon_touch_selector_entry_set_input_mode (HildonTouchSelectorEntry * selector,
                                             HildonGtkInputMode input_mode);
+
+HildonEntry *
+hildon_touch_selector_entry_get_entry (HildonTouchSelectorEntry * selector);
 
 G_END_DECLS
 
