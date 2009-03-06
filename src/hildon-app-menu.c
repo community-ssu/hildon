@@ -757,7 +757,8 @@ hildon_app_menu_apply_style                     (GtkWidget *widget)
 {
     GdkScreen *screen;
     gint width;
-    guint horizontal_spacing, vertical_spacing, inner_border, external_border;
+    guint horizontal_spacing, vertical_spacing, filter_vertical_spacing;
+    guint inner_border, external_border;
     HildonAppMenuPrivate *priv;
 
     priv = HILDON_APP_MENU_GET_PRIVATE (widget);
@@ -765,6 +766,7 @@ hildon_app_menu_apply_style                     (GtkWidget *widget)
     gtk_widget_style_get (widget,
                           "horizontal-spacing", &horizontal_spacing,
                           "vertical-spacing", &vertical_spacing,
+                          "filter-vertical-spacing", &filter_vertical_spacing,
                           "inner-border", &inner_border,
                           "external-border", &external_border,
                           NULL);
@@ -772,7 +774,7 @@ hildon_app_menu_apply_style                     (GtkWidget *widget)
     /* Set spacings */
     gtk_table_set_row_spacings (priv->table, vertical_spacing);
     gtk_table_set_col_spacings (priv->table, horizontal_spacing);
-    gtk_box_set_spacing (priv->vbox, vertical_spacing);
+    gtk_box_set_spacing (priv->vbox, filter_vertical_spacing);
 
     /* Set inner border */
     gtk_container_set_border_width (GTK_CONTAINER (widget), inner_border);
@@ -1046,6 +1048,15 @@ hildon_app_menu_class_init                      (HildonAppMenuClass *klass)
             "Vertical spacing on menu items",
             "Vertical spacing between each menu item. Does not apply to filter buttons.",
             0, G_MAXUINT, 16,
+            G_PARAM_READABLE));
+
+    gtk_widget_class_install_style_property (
+        widget_class,
+        g_param_spec_uint (
+            "filter-vertical-spacing",
+            "Vertical spacing between filters and menu items",
+            "Vertical spacing between filters and menu items",
+            0, G_MAXUINT, 8,
             G_PARAM_READABLE));
 
     gtk_widget_class_install_style_property (
