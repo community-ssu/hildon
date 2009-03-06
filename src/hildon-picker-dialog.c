@@ -45,6 +45,7 @@
 #include <libintl.h>
 
 #include "hildon-touch-selector.h"
+#include "hildon-touch-selector-entry.h"
 #include "hildon-picker-dialog.h"
 
 #define _(String)  dgettext("hildon-libs", String)
@@ -65,6 +66,7 @@ struct _HildonPickerDialogPrivate
 
   gboolean center_on_show;
   GSList *current_selection;
+  gchar *current_text;
 };
 
 /* properties */
@@ -214,6 +216,7 @@ hildon_picker_dialog_init (HildonPickerDialog * dialog)
   dialog->priv->signal_columns_changed_id = 0;
   dialog->priv->center_on_show = TRUE;
   dialog->priv->current_selection = NULL;
+  dialog->priv->current_text = NULL;
 
   g_signal_connect (G_OBJECT (dialog),
                     "response", G_CALLBACK (_on_dialog_response),
@@ -421,6 +424,10 @@ _clean_current_selection (HildonPickerDialog *dialog)
     g_slist_free (dialog->priv->current_selection);
     dialog->priv->current_selection = NULL;
   }
+  if (dialog->priv->current_text) {
+    g_free (dialog->priv->current_text);
+    dialog->priv->current_text = NULL;
+  }
 }
 
 static void
@@ -438,6 +445,10 @@ _save_current_selection (HildonPickerDialog *dialog)
     dialog->priv->current_selection
       = g_slist_append (dialog->priv->current_selection,
                         hildon_touch_selector_get_selected_rows (selector, i));
+  }
+  if (HILDON_IS_TOUCH_SELECTOR_ENTRY (selector)) {
+	  HildonEntry *entry = hildon_touch_selector_entry_get_entry (HILDON_TOUCH_SELECTOR_ENTRY (selector));
+	  dialog->priv->current_text = g_strdup (hildon_entry_get_text (entry));
   }
 }
 
@@ -480,6 +491,10 @@ _restore_current_selection (HildonPickerDialog *dialog)
       gtk_tree_model_get_iter (model, &tree_iter, current_path);
       hildon_touch_selector_select_iter (selector, i, &tree_iter, FALSE);
     }
+  }
+  if (HILDON_IS_TOUCH_SELECTOR_ENTRY (selector) && dialog->priv->current_text != NULL) {
+    HildonEntry *entry = hildon_touch_selector_entry_get_entry (HILDON_TOUCH_SELECTOR_ENTRY (selector));
+    hildon_entry_set_text (entry, dialog->priv->current_text);
   }
   if (dialog->priv->signal_changed_id)
     g_signal_handler_unblock (selector, dialog->priv->signal_changed_id);

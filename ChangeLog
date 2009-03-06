@@ -1,5 +1,18 @@
 2009-03-06  Claudio Saavedra  <csaavedra@igalia.com>
 
+	* src/hildon-picker-dialog.c (hildon_picker_dialog_init):
+	add a current_text field to store the text entered in the
+	touch selector entry.
+	(_clean_current_selection): clean up the current text as well.
+	(_save_current_selection), (_restore_current_selection):
+	Save/restore the text in the entry if the selector is a
+	HildonTouchSelectorEntry.
+
+	Fixes: NB#102541 (value entered in the touch selector entry is not
+	shown when opened for second time)
+
+2009-03-06  Claudio Saavedra  <csaavedra@igalia.com>
+
 	* doc/hildon-sections.txt:
 	* src/hildon-touch-selector-entry.c
 	(+hildon_touch_selector_entry_get_entry):
