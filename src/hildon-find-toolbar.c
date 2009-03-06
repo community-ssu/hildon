@@ -96,10 +96,6 @@ hildon_find_toolbar_history_append              (HildonFindToolbar *self,
                                                  gpointer data);
 
 static void
-hildon_find_toolbar_emit_search                 (GtkButton *button, 
-                                                 gpointer self);
-
-static void
 hildon_find_toolbar_emit_close                  (GtkButton *button, 
                                                  gpointer self);
 
@@ -464,17 +460,6 @@ hildon_find_toolbar_history_append              (HildonFindToolbar *self,
 }
 
 static void
-hildon_find_toolbar_emit_search                 (GtkButton *button, 
-                                                 gpointer self)
-{
-    gboolean rb;
-
-    /* Clicked search button. Perform search and add search prefix to history */
-    g_signal_emit_by_name(self, "search", NULL);
-    g_signal_emit_by_name(self, "history_append", &rb, NULL);
-}
-
-static void
 hildon_find_toolbar_emit_close                  (GtkButton *button, 
                                                  gpointer self)
 {
@@ -719,32 +704,17 @@ hildon_find_toolbar_init                        (HildonFindToolbar *self)
             "activate",
             G_CALLBACK(hildon_find_toolbar_entry_activate), self);
 
-    /* Find button */
-    priv->find_button = gtk_tool_button_new (
-            gtk_image_new_from_icon_name ("qgn_toolb_browser_gobutton",
-                HILDON_ICON_SIZE_TOOLBAR),
-            "Find");
-
-    g_signal_connect (priv->find_button, "clicked",
-            G_CALLBACK(hildon_find_toolbar_emit_search), self);
-    gtk_widget_show_all( GTK_WIDGET(priv->find_button));
-    gtk_toolbar_insert ( GTK_TOOLBAR(self), priv->find_button, -1);
-    gtk_widget_set_size_request (GTK_WIDGET (priv->find_button), 72, -1);
-    if ( GTK_WIDGET_CAN_FOCUS( GTK_BIN(priv->find_button)->child) )
-        GTK_WIDGET_UNSET_FLAGS(
-                GTK_BIN(priv->find_button)->child, GTK_CAN_FOCUS);
-
     /* Separator */
     priv->separator = gtk_separator_tool_item_new();
+    gtk_widget_set_size_request (GTK_WIDGET (priv->separator), 72, -1);
     gtk_widget_show(GTK_WIDGET(priv->separator));
     gtk_toolbar_insert (GTK_TOOLBAR(self), priv->separator, -1);
 
     /* Close button */
     priv->close_button = gtk_tool_button_new (
-            gtk_image_new_from_icon_name ("qgn_toolb_gene_close",
+            gtk_image_new_from_icon_name ("general_close",
                 HILDON_ICON_SIZE_TOOLBAR),
             "Close");
-    gtk_widget_set_size_request (GTK_WIDGET (priv->close_button), 72, -1);
     g_signal_connect(priv->close_button, "clicked",
             G_CALLBACK(hildon_find_toolbar_emit_close), self);
     gtk_widget_show_all(GTK_WIDGET(priv->close_button));

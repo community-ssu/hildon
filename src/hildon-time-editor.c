@@ -90,7 +90,7 @@
 
 #define                                         ICON_PRESSED 4
 
-#define                                         ICON_NAME "qgn_widg_timedit"
+#define                                         ICON_NAME "widgets_time_editor"
 
 #define                                         ICON_SIZE "timepicker-size"
 

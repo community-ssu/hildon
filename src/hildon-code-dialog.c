@@ -52,7 +52,7 @@
 
 #define                                         WIDTH  (100-HILDON_MARGIN_DEFAULT)
 
-#define                                         BACKSPACE_ICON "qgn_calculator_backspace"
+#define                                         BACKSPACE_ICON "general_backspace"
 
 #define                                         _(String) \
                                                 dgettext("hildon-libs", String)

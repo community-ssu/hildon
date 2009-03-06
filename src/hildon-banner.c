@@ -89,7 +89,7 @@
 
 /* default icons */
 
-#define                                         HILDON_BANNER_DEFAULT_PROGRESS_ANIMATION "qgn_indi_pball_a"
+#define                                         HILDON_BANNER_DEFAULT_PROGRESS_ANIMATION "indicator_update"
 
 enum 
 {

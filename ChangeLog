@@ -1,3 +1,24 @@
+2009-03-06  Alberto Garcia  <agarcia@igalia.com>
+
+	Patch by Mox Soini (ext-mox.soini@nokia.com)
+
+	* tests/TEST-CASES.txt
+	* tests/check-hildon-banner.c
+	* tests/check-hildon-note.c
+	* src/hildon-banner.c
+	* src/hildon-code-dialog.c
+	* src/hildon-date-editor.c (real_set_calendar_icon_state)
+	* src/hildon-time-editor.c
+	* examples/hildon-lookup-example.c (main):
+	Replace obsolete icon names with new ones.
+
+	* src/hildon-find-toolbar-private.h:
+	* src/hildon-find-toolbar.c (hildon_find_toolbar_init)
+	(-hildon_find_toolbar_emit_search):
+	Remove find button and change icon of close button.
+
+	Fixes: NB#104819 (Clean up old icon names from hildon-widgets)
+
 2009-03-05  Alberto Garcia  <agarcia@igalia.com>
 
 	* src/hildon-time-button.c (hildon_time_button_new_step):

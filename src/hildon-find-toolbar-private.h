@@ -33,7 +33,6 @@ struct                                          _HildonFindToolbarPrivate
 {
   GtkWidget*		label;
   GtkComboBoxEntry*	entry_combo_box;
-  GtkToolItem*		find_button;
   GtkToolItem*		separator;
   GtkToolItem*		close_button;
 

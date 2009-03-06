@@ -285,7 +285,7 @@ END_TEST
 /**
  * Purpose: Check that note dialog is properly created with description regular values. 
  * Cases considered:
- *    - Create new confirmation note with description set to TEST_STRING and icon name "qgn_list_cp_calibration".
+ *    - Create new confirmation note with description set to TEST_STRING and icon name "control_calibration_target".
  *    - Create new confirmation note with description set to "" and icon name NULL.
  *
  */
@@ -306,7 +306,7 @@ START_TEST (test_new_confirmation_with_icon_name_regular)
 
   /* Test 1: create new confirmation note with description set to TEST_STRING */
   description = TEST_STRING;
-  icon_name="qgn_list_cp_calibration";
+  icon_name="control_calibration_target";
   note = HILDON_NOTE(hildon_note_new_confirmation_with_icon_name(n_window,description,icon_name));
   fail_if(!HILDON_IS_NOTE(note),
           "hildon-note: Creation failed with hildon_note_new_confirmation_with_icon_name");
@@ -412,7 +412,7 @@ START_TEST (test_new_confirmation_with_icon_name_invalid)
   invalid_note=NULL;
 
   /* Test 2: create new confirmation note with description set to "NULL" */
-  invalid_note = HILDON_NOTE(hildon_note_new_confirmation_with_icon_name(n_window,NULL,"qgn_list_cp_calibration"));
+  invalid_note = HILDON_NOTE(hildon_note_new_confirmation_with_icon_name(n_window,NULL,"control_calibration_target"));
   fail_if(HILDON_IS_NOTE(invalid_note),
           "hildon-note: Creation succeeded with hildon_note_new_confirmation_with_icon_name with message == NULL");
 

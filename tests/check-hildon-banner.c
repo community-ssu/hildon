@@ -65,7 +65,7 @@ fx_teardown_default_banner ()
  * Purpose: Check creation of new animation banner with regular values
  * Cases considered:
  *    - Create an animation banner with NULL animation name and TEST_STRING text. 
- *    - Create an animation banner with qgn_list_mahjong animation name and "" text.
+ *    - Create an animation banner with dummy animation name and "" text.
  */
 START_TEST (test_show_animation_regular)
 {
@@ -86,9 +86,9 @@ START_TEST (test_show_animation_regular)
   
   gtk_widget_destroy(GTK_WIDGET(hildon_banner));
 
-  /*Test 2: Create an animation banner with animation name set to "qgn_list_mahjong" and text set to "". */
+  /*Test 2: Create an animation banner with animation name set to "dummy" and text set to "". */
   text="";
-  animation_name = "qgn_list_mahjong";
+  animation_name = "dummy";
   hildon_banner = HILDON_BANNER(hildon_banner_show_animation(b_window,animation_name,text));
     
   fail_if(!HILDON_IS_BANNER(hildon_banner),
@@ -124,7 +124,7 @@ START_TEST (test_show_animation_invalid)
     
   /*Test 2: Create an animation banner with NULL window. */
   text="";
-  animation_name = "qgn_list_mahjong";
+  animation_name = "dummy";
   hildon_banner = HILDON_BANNER(hildon_banner_show_animation(NULL,animation_name,text));
     
   fail_if(!HILDON_IS_BANNER(hildon_banner),

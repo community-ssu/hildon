@@ -2511,7 +2511,7 @@ the list of tests (Section 2). Use the following example as a template:
          - Errors detected: none.
 
 	 1. Create confirmation with icon name note with regular values. 
-            a) Create new confirmation note with description set to a combination of letters, numbers and symbols and icon name "qgn_list_cp_calibration".
+            a) Create new confirmation note with description set to a combination of letters, numbers and symbols and icon name "dummy".
             b) Create new confirmation note with description set to "" and icon name NULL.
 	    
          2. Create confirmation with icon name note with invalid values.
@@ -2619,7 +2619,7 @@ the list of tests (Section 2). Use the following example as a template:
 
          1. Check creation of new animation banner with regular values.
             a) Create an animation banner with NULL animation name and a text.
-            b) Create an animation banner with qgn_list_mahjong animation name and an empty text.
+            b) Create an animation banner with dummy animation name and an empty text.
 
          2. Check creation of new animation banner with invalid values.
             a) Create an animation banner with NULL text. 

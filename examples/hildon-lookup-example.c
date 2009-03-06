@@ -65,14 +65,10 @@ main                                            (int argc,
     gtk_table_attach (table, create_button_with_icon (GTK_STOCK_CANCEL), 1, 2, 0, 1, 0, 0, 0, 0);
     gtk_table_attach (table, create_button_with_icon (GTK_STOCK_QUIT), 2, 3, 0, 1, 0, 0, 0, 0);
     
-    gtk_table_attach (table, create_button_with_icon (GTK_STOCK_MEDIA_PLAY), 0, 1, 1, 2, 0, 0, 0, 0);
+    gtk_table_attach (table, create_button_with_icon (GTK_STOCK_SAVE), 0, 1, 1, 2, 0, 0, 0, 0);
     gtk_table_attach (table, create_button_with_icon (GTK_STOCK_MEDIA_PAUSE), 1, 2, 1, 2, 0, 0, 0, 0);
-    gtk_table_attach (table, create_button_with_icon ("qgn_note_info"), 2, 3, 1, 2, 0, 0, 0, 0);
+    gtk_table_attach (table, create_button_with_icon (GTK_STOCK_FILE), 2, 3, 1, 2, 0, 0, 0, 0);
     
-    gtk_table_attach (table, create_button_with_icon ("qgn_note_infoprint"), 0, 1, 2, 3, 0, 0, 0, 0);
-    gtk_table_attach (table, create_button_with_icon ("qgn_indi_pball_a"), 1, 2, 2, 3, 0, 0, 0, 0);
-    gtk_table_attach (table, create_button_with_icon ("qgn_note_confirm"), 2, 3, 2, 3, 0, 0, 0, 0);
-
     gtk_table_set_col_spacings (table, 6);
     gtk_table_set_row_spacings (table, 6);
 

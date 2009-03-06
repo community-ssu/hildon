@@ -346,7 +346,7 @@ real_set_calendar_icon_state                    (HildonDateEditorPrivate *priv,
     g_assert (priv);
 
     gtk_image_set_from_icon_name (GTK_IMAGE (priv->calendar_icon),
-            pressed ? "qgn_widg_datedit_pr" : "qgn_widg_datedit", HILDON_ICON_SIZE_SMALL);
+                                  "widgets_date_editor", HILDON_ICON_SIZE_SMALL);
 
     priv->calendar_icon_pressed = pressed;
 }
