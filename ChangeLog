@@ -1,6 +1,13 @@
 2009-03-09  Alejandro G. Castro  <alex@igalia.com>
 
 	* src/hildon-pannable-area.c,
+	(hildon_pannable_area_class_init): Changed the max speed, now
+	users can launch the widget very fast. Reduced the default force,
+	that way it is easier to control the launch speed.
+
+2009-03-09  Alejandro G. Castro  <alex@igalia.com>
+
+	* src/hildon-pannable-area.c,
 	(hildon_pannable_area_button_release_cb): Removed this check
  	because it causes problems when the device is overloaded.
 

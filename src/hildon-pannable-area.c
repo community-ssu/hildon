@@ -367,7 +367,7 @@ hildon_pannable_area_class_init (HildonPannableAreaClass * klass)
 							"Maximum scroll velocity",
 							"Maximum distance the child widget should scroll "
 							"per 'frame', in pixels.",
-							0, G_MAXDOUBLE, 96,
+							0, G_MAXDOUBLE, 500,
 							G_PARAM_READWRITE |
 							G_PARAM_CONSTRUCT));
 
@@ -448,7 +448,7 @@ hildon_pannable_area_class_init (HildonPannableAreaClass * klass)
 						      "Multiplier of the calculated speed",
 						      "Force applied to the movement, multiplies the calculated speed of the"
                                                       "user movement the cursor in the screen",
-						      0, G_MAXUINT, 5,
+						      0, G_MAXUINT, 4,
 						      G_PARAM_READWRITE |
 						      G_PARAM_CONSTRUCT));
 
