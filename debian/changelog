@@ -1,3 +1,39 @@
+libhildon (2.1.48-1) unstable; urgency=low
+
+  Bug fixes:
+
+  * Fixes: NB#103758 (No way to obtain a menu from a  HildonStackableWindow)
+  * Fixes: NB#103761 (HildonAppMenu doesn't have methods to get its children)
+  * Fixes: NB#104439 (hildon_date_button_new() isn't set to the current date by
+    default)
+  * Fixes: NB#104485 (Not able to address the call when application menu is
+  opened at background)
+  * Fixes: NB#104819 (Clean up old icon names from hildon-widgets)
+  * Fixes: NB#104815 (I need accessor to the entry inside
+  HildonTouchSelectorEntry)
+  * Fixes: NB#102541 (value entered in the touch selector entry is not shown
+  when opened for second time)
+
+  New API:
+
+  * HildonAppMenu:
+    hildon_app_menu_get_items()
+    hildon_app_menu_get_filters()
+    HildonAppMenu::filter-vertical-spacing style property.
+  * hildon_stackable_window_{get,set}_app_menu()
+  * hildon_window_get_main_menu()
+  * hildon_touch_selector_entry_get_entry()
+  * HildonPannableArea properties:
+    ::drag-inertia, ::panning-threshold, ::scrollbar-fade-delay,
+    ::bounce-steps, ::force and ::direction-error-margin
+
+  Deprecations:
+
+  * hildon_window_get_menu(): use hildon_window_get_main_menu()
+  * hildon_stackable_window_set_main_menu(): use hildon_stackable_window_set_app_menu()
+
+ -- Claudio Saavedra <csaavedra@igalia.com>  Mon, 09 Mar 2009 10:15:08 +0200
+
 libhildon (2.1.46-1) unstable; urgency=low
 
   Bug fixes:
