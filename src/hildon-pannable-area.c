@@ -2406,11 +2406,14 @@ hildon_pannable_area_button_release_cb (GtkWidget * widget,
   priv->scroll_indicator_event_interrupt = 0;
   priv->scroll_delay_counter = priv->scrollbar_fade_delay;
 
+/* This check does not work properly when the system is overloaded */
+#if 0
   if ((priv->last_type == 2)&&
       (event->time - priv->last_time > CURSOR_STOPPED_TIMEOUT)) {
     priv->vel_y = 0.0;
     priv->vel_x = 0.0;
   }
+#endif
 
   if ((ABS (priv->vel_y) > 1.0)||
       (ABS (priv->vel_x) > 1.0)) {
