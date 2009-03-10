@@ -77,6 +77,7 @@ struct _HildonPannableAreaPrivate {
   gboolean moved;
   gdouble vmin;
   gdouble vmax;
+  gdouble vmax_overshooting;
   gdouble vfast_factor;
   gdouble decel;
   gdouble drag_inertia;
@@ -147,6 +148,7 @@ enum {
   PROP_MOVEMENT_MODE,
   PROP_VELOCITY_MIN,
   PROP_VELOCITY_MAX,
+  PROP_VEL_MAX_OVERSHOOTING,
   PROP_VELOCITY_FAST_FACTOR,
   PROP_DECELERATION,
   PROP_DRAG_INERTIA,
@@ -372,6 +374,16 @@ hildon_pannable_area_class_init (HildonPannableAreaClass * klass)
 							G_PARAM_CONSTRUCT));
 
   g_object_class_install_property (object_class,
+				   PROP_VEL_MAX_OVERSHOOTING,
+				   g_param_spec_double ("velocity_overshooting_max",
+							"Maximum scroll velocity when overshooting",
+							"Maximum distance the child widget should scroll "
+							"per 'frame', in pixels when it overshoots after hitting the edge.",
+							0, G_MAXDOUBLE, 80,
+							G_PARAM_READWRITE |
+							G_PARAM_CONSTRUCT));
+
+  g_object_class_install_property (object_class,
 				   PROP_VELOCITY_FAST_FACTOR,
 				   g_param_spec_double ("velocity_fast_factor",
 							"Fast velocity factor",
@@ -438,7 +450,7 @@ hildon_pannable_area_class_init (HildonPannableAreaClass * klass)
 						      "Bounce steps",
 						      "Number of steps that is going to be used to bounce when hitting the"
                                                       "edge, the rubberband effect depends on it",
-						      0, G_MAXUINT, 6,
+						      0, G_MAXUINT, 3,
 						      G_PARAM_READWRITE |
 						      G_PARAM_CONSTRUCT));
 
@@ -652,6 +664,9 @@ hildon_pannable_area_get_property (GObject * object,
   case PROP_VELOCITY_MAX:
     g_value_set_double (value, priv->vmax);
     break;
+  case PROP_VEL_MAX_OVERSHOOTING:
+    g_value_set_double (value, priv->vmax_overshooting);
+    break;
   case PROP_VELOCITY_FAST_FACTOR:
     g_value_set_double (value, priv->vfast_factor);
     break;
@@ -752,6 +767,9 @@ hildon_pannable_area_set_property (GObject * object,
     break;
   case PROP_VELOCITY_MAX:
     priv->vmax = g_value_get_double (value);
+    break;
+  case PROP_VEL_MAX_OVERSHOOTING:
+    priv->vmax_overshooting = g_value_get_double (value);
     break;
   case PROP_VELOCITY_FAST_FACTOR:
     priv->vfast_factor = g_value_get_double (value);
@@ -1424,10 +1442,10 @@ hildon_pannable_area_initial_effect (GtkWidget * widget)
          the vertical one. */
       if ((vscroll_visible)&&(priv->vovershoot_max != 0)) {
         priv->overshot_dist_y = priv->vovershoot_max;
-        priv->vel_y = priv->vmax * 0.1;
+        priv->vel_y = priv->vmax_overshooting;
       } else if ((hscroll_visible)&&(priv->hovershoot_max != 0)) {
         priv->overshot_dist_x = priv->hovershoot_max;
-        priv->vel_x = priv->vmax * 0.1;
+        priv->vel_x = priv->vmax_overshooting;
       }
 
       if (vscroll_visible || hscroll_visible) {
@@ -1940,6 +1958,7 @@ hildon_pannable_axis_scroll (HildonPannableArea *area,
         *overshooting = 1;
         *scroll_to = -1;
         *overshot_dist = CLAMP (*overshot_dist + *vel, 0, overshoot_max);
+        *vel = MIN (priv->vmax_overshooting, *vel);
         gtk_widget_queue_resize (GTK_WIDGET (area));
       } else {
         *vel = 0.0;
@@ -1953,6 +1972,7 @@ hildon_pannable_axis_scroll (HildonPannableArea *area,
         *overshooting = 1;
         *scroll_to = -1;
         *overshot_dist = CLAMP (*overshot_dist + *vel, -overshoot_max, 0);
+        *vel = MAX (-priv->vmax_overshooting, *vel);
         gtk_widget_queue_resize (GTK_WIDGET (area));
       } else {
         *vel = 0.0;
@@ -1986,11 +2006,9 @@ hildon_pannable_axis_scroll (HildonPannableArea *area,
           *vel = (((gdouble)*overshot_dist)/overshoot_max) * (*vel);
         } else if ((*overshooting >= priv->bounce_steps) && (*vel > 0)) {
           *vel *= -1;
-          (*overshooting)--;
         } else if ((*overshooting > 1) && (*vel < 0)) {
-          (*overshooting)--;
           /* we add the MIN in order to avoid very small speeds */
-          *vel = MIN ((((gdouble)*overshot_dist)/overshoot_max) * (*vel), -10.0);
+          *vel = MIN ((((gdouble)*overshot_dist)*0.4) * -1, -2.0);
         }
 
         *overshot_dist = CLAMP (*overshot_dist + *vel, 0, overshoot_max);
@@ -2004,11 +2022,9 @@ hildon_pannable_axis_scroll (HildonPannableArea *area,
           *vel = (((gdouble)*overshot_dist)/overshoot_max) * (*vel) * -1;
         } else if ((*overshooting >= priv->bounce_steps) && (*vel < 0)) {
           *vel *= -1;
-          (*overshooting)--;
         } else if ((*overshooting > 1) && (*vel > 0)) {
-          (*overshooting)--;
           /* we add the MAX in order to avoid very small speeds */
-          *vel = MAX ((((gdouble)*overshot_dist)/overshoot_max) * (*vel) * -1, 10.0);
+          *vel = MAX ((((gdouble)*overshot_dist)*0.4) * -1, 2.0);
         }
 
         *overshot_dist = CLAMP (*overshot_dist + (*vel), -overshoot_max, 0);
@@ -2437,12 +2453,12 @@ hildon_pannable_area_button_release_cb (GtkWidget * widget,
     /* If overshoot has been initiated with a finger down, on release set max speed */
     if (priv->overshot_dist_y != 0) {
       priv->overshooting_y = priv->bounce_steps; /* Hack to stop a bounce in the finger down case */
-      priv->vel_y = priv->vmax;
+      priv->vel_y = priv->vmax_overshooting;
     }
 
     if (priv->overshot_dist_x != 0) {
       priv->overshooting_x = priv->bounce_steps; /* Hack to stop a bounce in the finger down case */
-      priv->vel_x = priv->vmax;
+      priv->vel_x = priv->vmax_overshooting;
     }
 
     if (!priv->idle_id)

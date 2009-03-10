@@ -1,3 +1,16 @@
+2009-03-10  Alejandro G. Castro  <alex@igalia.com>
+
+	* src/hildon-pannable-area.c,
+	(hildon_pannable_area_class_init),
+	(hildon_pannable_area_get_property),
+	(hildon_pannable_area_set_property),
+	(hildon_pannable_area_initial_effect),
+	(hildon_pannable_axis_scroll),
+	(hildon_pannable_area_button_release_cb): Reviewed the
+	overshooting effect, now it has its own max
+	speed (PROP_VEL_MAX_OVERSHOOTING). Modified the calculation of the
+	speed when bouncing.
+
 2009-03-09  Claudio Saavedra  <csaavedra@igalia.com>
 
 	[Release 2.1.48]
