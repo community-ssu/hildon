@@ -687,8 +687,8 @@ hildon_app_menu_button_release                  (GtkWidget *widget,
 }
 
 static gboolean
-hildon_app_menu_delete_event_handler                   (GtkWidget   *widget,
-                                                        GdkEventAny *event)
+hildon_app_menu_delete_event_handler            (GtkWidget   *widget,
+                                                 GdkEventAny *event)
 {
     /* Hide the menu if it receives a delete-event, but don't destroy it */
     gtk_widget_hide (widget);
