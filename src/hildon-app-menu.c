@@ -755,10 +755,8 @@ hildon_app_menu_unrealize                       (GtkWidget *widget)
 static void
 hildon_app_menu_apply_style                     (GtkWidget *widget)
 {
-    GdkScreen *screen;
-    gint width;
     guint horizontal_spacing, vertical_spacing, filter_vertical_spacing;
-    guint inner_border, external_border;
+    guint inner_border;
     HildonAppMenuPrivate *priv;
 
     priv = HILDON_APP_MENU_GET_PRIVATE (widget);
@@ -768,7 +766,6 @@ hildon_app_menu_apply_style                     (GtkWidget *widget)
                           "vertical-spacing", &vertical_spacing,
                           "filter-vertical-spacing", &filter_vertical_spacing,
                           "inner-border", &inner_border,
-                          "external-border", &external_border,
                           NULL);
 
     /* Set spacings */
@@ -778,11 +775,6 @@ hildon_app_menu_apply_style                     (GtkWidget *widget)
 
     /* Set inner border */
     gtk_container_set_border_width (GTK_CONTAINER (widget), inner_border);
-
-    /* Set default size */
-    screen = gtk_widget_get_screen (widget);
-    width = gdk_screen_get_width (screen) - external_border * 2;
-    gtk_window_set_default_size (GTK_WINDOW (widget), width, -1);
 }
 
 static void
@@ -876,10 +868,6 @@ hildon_app_menu_repack_items                    (HildonAppMenu *menu,
         gtk_table_resize (priv->table, MAX (row, 1), priv->columns);
     } else {
         gtk_table_resize (priv->table, row + 1, priv->columns);
-    }
-
-    if (GTK_WIDGET_VISIBLE (GTK_WIDGET (menu))) {
-        gtk_window_reshow_with_initial_size (GTK_WINDOW (menu));
     }
 }
 
@@ -1066,14 +1054,5 @@ hildon_app_menu_class_init                      (HildonAppMenuClass *klass)
             "Border between menu edges and buttons",
             "Border between menu edges and buttons",
             0, G_MAXUINT, 16,
-            G_PARAM_READABLE));
-
-    gtk_widget_class_install_style_property (
-        widget_class,
-        g_param_spec_uint (
-            "external-border",
-            "Border between menu and screen edges",
-            "Border between the right and left edges of the menu and the screen edges",
-            0, G_MAXUINT, 40,
             G_PARAM_READABLE));
 }

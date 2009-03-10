@@ -1,3 +1,14 @@
+2009-03-10  Alberto Garcia  <agarcia@igalia.com>
+
+	* src/hildon-app-menu.c
+	(hildon_app_menu_apply_style, hildon_app_menu_class_init):
+	Remove the "external-border" style property, let the menu take its
+	natural size (or the one set by the window manager)
+	(hildon_app_menu_repack_items):
+	Don't reshow the menu, avoid flickers.
+
+	Partially fixes NB#94957 (Smoothly opened application menu)
+
 2009-03-10  Claudio Saavedra  <csaavedra@igalia.com>
 
 	[Release 2.1.50]
