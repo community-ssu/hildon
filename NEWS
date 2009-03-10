@@ -1,3 +1,10 @@
+[2.1.50 release]
+
+  Bug fixes:
+
+  * Fixes: NB#105012 (buttons inside a pannable area not getting release
+    event when dragging/releasing)
+
 [2.1.48 release]
 
   Bug fixes:

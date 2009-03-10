@@ -1,3 +1,10 @@
+libhildon (2.1.50-1) unstable; urgency=low
+
+  * Fixes: NB#105012 (buttons inside a pannable area not getting release
+    event when dragging/releasing)
+
+ -- Claudio Saavedra <csaavedra@igalia.com>  Tue, 10 Mar 2009 16:40:03 +0200
+
 libhildon (2.1.48-1) unstable; urgency=low
 
   Bug fixes:
