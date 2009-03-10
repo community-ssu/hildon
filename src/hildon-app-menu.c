@@ -686,6 +686,15 @@ hildon_app_menu_button_release                  (GtkWidget *widget,
     }
 }
 
+static gboolean
+hildon_app_menu_delete_event_handler                   (GtkWidget   *widget,
+                                                        GdkEventAny *event)
+{
+    /* Hide the menu if it receives a delete-event, but don't destroy it */
+    gtk_widget_hide (widget);
+    return TRUE;
+}
+
 /* Grab transfer window (based on the one from GtkMenu) */
 static GdkWindow *
 grab_transfer_window_get                        (GtkWidget *widget)
@@ -1017,6 +1026,7 @@ hildon_app_menu_class_init                      (HildonAppMenuClass *klass)
     widget_class->button_press_event = hildon_app_menu_button_press;
     widget_class->button_release_event = hildon_app_menu_button_release;
     widget_class->style_set = hildon_app_menu_style_set;
+    widget_class->delete_event = hildon_app_menu_delete_event_handler;
 
     g_type_class_add_private (klass, sizeof (HildonAppMenuPrivate));
 

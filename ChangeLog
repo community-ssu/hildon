@@ -1,5 +1,14 @@
 2009-03-10  Alberto Garcia  <agarcia@igalia.com>
 
+	* src/hildon-app-menu.c (+hildon_app_menu_delete_event_handler)
+	(hildon_app_menu_class_init): Hide the menu if it receives a
+	delete-event, but don't destroy it
+
+	Fixes: NB#104485 (Not able to address the call when application
+	menu is opened at background)
+
+2009-03-10  Alberto Garcia  <agarcia@igalia.com>
+
 	* src/hildon-app-menu.c
 	(hildon_app_menu_apply_style, hildon_app_menu_class_init):
 	Remove the "external-border" style property, let the menu take its
