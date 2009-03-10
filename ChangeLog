@@ -1,6 +1,15 @@
 2009-03-10  Alejandro G. Castro  <alex@igalia.com>
 
 	* src/hildon-pannable-area.c,
+	(hildon_pannable_area_motion_notify_cb): We control that the
+	direction error margin is used just in case the movement is
+	allowed in the other direction.
+
+	Fixes: NB#105012 (Check boxes don't change state when toggled)
+
+2009-03-10  Alejandro G. Castro  <alex@igalia.com>
+
+	* src/hildon-pannable-area.c,
 	(hildon_pannable_area_class_init),
 	(hildon_pannable_area_get_property),
 	(hildon_pannable_area_set_property),

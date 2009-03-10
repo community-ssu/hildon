@@ -2255,10 +2255,11 @@ hildon_pannable_area_motion_notify_cb (GtkWidget * widget,
     y = 0;
 
     if (priv->first_drag) {
+        gboolean vscroll_visible;
+        gboolean hscroll_visible;
 
       if (ABS (priv->iy - event->y) >=
           ABS (priv->ix - event->x)) {
-        gboolean vscroll_visible;
 
         g_signal_emit (area,
                        pannable_area_signals[VERTICAL_MOVEMENT],
@@ -2273,14 +2274,18 @@ hildon_pannable_area_motion_notify_cb (GtkWidget * widget,
         if (!((vscroll_visible)&&
               (priv->mov_mode&HILDON_MOVEMENT_MODE_VERT))) {
 
+          hscroll_visible = (priv->hadjust->upper - priv->hadjust->lower >
+                             priv->hadjust->page_size);
+
           /* even in case we do not have to move we check if this
              could be a fake horizontal movement */
-          if (ABS (priv->iy - event->y) -
-              ABS (priv->ix - event->x) >= priv->direction_error_margin)
+          if (!((hscroll_visible)&&
+                (priv->mov_mode&HILDON_MOVEMENT_MODE_HORIZ)) ||
+              (ABS (priv->iy - event->y) -
+               ABS (priv->ix - event->x) >= priv->direction_error_margin))
             priv->moved = FALSE;
         }
       } else {
-        gboolean hscroll_visible;
 
         g_signal_emit (area,
                        pannable_area_signals[HORIZONTAL_MOVEMENT],
@@ -2295,10 +2300,15 @@ hildon_pannable_area_motion_notify_cb (GtkWidget * widget,
         if (!((hscroll_visible)&&
               (priv->mov_mode&HILDON_MOVEMENT_MODE_HORIZ))) {
 
+          vscroll_visible = (priv->vadjust->upper - priv->vadjust->lower >
+                             priv->vadjust->page_size);
+
           /* even in case we do not have to move we check if this
              could be a fake vertical movement */
-          if (ABS (priv->ix - event->x) -
-              ABS (priv->iy - event->y) >= priv->direction_error_margin)
+          if (!((vscroll_visible) &&
+                (priv->mov_mode&HILDON_MOVEMENT_MODE_VERT)) ||
+              (ABS (priv->ix - event->x) -
+               ABS (priv->iy - event->y) >= priv->direction_error_margin))
             priv->moved = FALSE;
         }
       }
