@@ -460,7 +460,7 @@ hildon_pannable_area_class_init (HildonPannableAreaClass * klass)
 						      "Multiplier of the calculated speed",
 						      "Force applied to the movement, multiplies the calculated speed of the"
                                                       "user movement the cursor in the screen",
-						      0, G_MAXUINT, 4,
+						      0, G_MAXUINT, 120,
 						      G_PARAM_READWRITE |
 						      G_PARAM_CONSTRUCT));
 
@@ -2175,8 +2175,7 @@ hildon_pannable_area_calculate_velocity (gdouble *vel,
   gdouble rawvel;
 
   if (ABS (dist) >= RATIO_TOLERANCE) {
-    rawvel = (dist / ABS (delta)) *
-      ((gdouble) sps) * force;
+    rawvel = (dist / ABS (delta)) * force;
     *vel = *vel * (1 - drag_inertia) +
       rawvel * drag_inertia;
     *vel = *vel > 0 ? MIN (*vel, vmax)

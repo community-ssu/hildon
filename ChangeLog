@@ -1,3 +1,10 @@
+2009-03-11  Alejandro G. Castro  <alex@igalia.com>
+
+	* src/hildon-pannable-area.c,
+	(hildon_pannable_area_class_init),
+	(hildon_pannable_area_calculate_velocity): Modify the use of the
+	force and adapt the value.
+
 2009-03-10  Alberto Garcia  <agarcia@igalia.com>
 
 	* src/hildon-app-menu.c (+hildon_app_menu_delete_event_handler)
