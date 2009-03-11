@@ -1,3 +1,11 @@
+2009-03-11  Alberto Garcia  <agarcia@igalia.com>
+
+	* src/hildon-date-button.c (hildon_date_button_get_date)
+	(hildon_date_button_set_date): Make sure that the button has a
+	selector.
+
+	Fixes: NB#105507 (hildon_date_button_set_date leads to crash.)
+
 2009-03-11  Alejandro G. Castro  <alex@igalia.com>
 
 	* src/hildon-pannable-area.c,

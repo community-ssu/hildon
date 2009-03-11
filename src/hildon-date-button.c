@@ -170,6 +170,8 @@ hildon_date_button_get_date (HildonDateButton * button,
 
   selector = hildon_picker_button_get_selector (HILDON_PICKER_BUTTON (button));
 
+  g_return_if_fail (HILDON_IS_TOUCH_SELECTOR (selector));
+
   hildon_date_selector_get_date (HILDON_DATE_SELECTOR (selector), year, month, day);
 }
 
@@ -195,6 +197,8 @@ hildon_date_button_set_date (HildonDateButton * button,
   g_return_if_fail (HILDON_IS_DATE_BUTTON (button));
 
   selector = hildon_picker_button_get_selector (HILDON_PICKER_BUTTON (button));
+
+  g_return_if_fail (HILDON_IS_TOUCH_SELECTOR (selector));
 
   hildon_picker_button_disable_value_changed (HILDON_PICKER_BUTTON (button), TRUE);
   hildon_date_selector_select_current_date (HILDON_DATE_SELECTOR (selector),
