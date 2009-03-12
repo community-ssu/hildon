@@ -1,5 +1,19 @@
 2009-03-12  Claudio Saavedra  <csaavedra@igalia.com>
 
+	Based on a patch by Daniel Borgmann (danielb@openismus.com)
+
+	* src/hildon-entry.c (hildon_entry_refresh_contents),
+	(hildon_entry_get_text), (hildon_entry_init): Do not use the
+	widget name, set the logical color directly instead and a boolean
+	showing_placeholder instead.
+	* src/hildon-text-view.c (hildon_text_view_refresh_contents): Do not
+	use the widget name here either.
+
+	Fixes: NB#105678 (HildonTextView should use logical colours
+	instead of setting widget name)
+
+2009-03-12  Claudio Saavedra  <csaavedra@igalia.com>
+
 	Patch by Daniel Elster (danielk@openismus.com)
 
 	* src/hildon-touch-selector.[ch] (HildonTouchSelectorPrintFunc):

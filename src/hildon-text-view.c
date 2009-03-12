@@ -75,8 +75,6 @@ struct                                          _HildonTextViewPrivate
     gdouble y;                                                      /* tap y position */
 };
 
-static const gchar *placeholder_widget_name     = "hildon-text-view-placeholder";
-
 /* Function used to decide whether to show the placeholder or not */
 static void
 hildon_text_view_refresh_contents               (GtkWidget *text_view)
@@ -86,11 +84,11 @@ hildon_text_view_refresh_contents               (GtkWidget *text_view)
 
     if ((bufsize > 0) || GTK_WIDGET_HAS_FOCUS (text_view)) {
         /* Display the main buffer if it contains text or the widget is focused */
-        gtk_widget_set_name (text_view, NULL);
+        hildon_helper_set_logical_color (text_view, GTK_RC_TEXT, GTK_STATE_NORMAL, "ReversedTextColor");
         gtk_text_view_set_buffer (GTK_TEXT_VIEW (text_view), priv->main_buffer);
     } else {
         /* Otherwise, display the placeholder */
-        gtk_widget_set_name (text_view, placeholder_widget_name);
+        hildon_helper_set_logical_color (text_view, GTK_RC_TEXT, GTK_STATE_NORMAL, "SecondaryTextColor");
         gtk_text_view_set_buffer (GTK_TEXT_VIEW (text_view), priv->placeholder_buffer);
     }
 }

@@ -51,6 +51,7 @@
  */
 
 #include                                        "hildon-entry.h"
+#include                                        "hildon-helper.h"
 
 G_DEFINE_TYPE                                   (HildonEntry, hildon_entry, GTK_TYPE_ENTRY);
 
@@ -61,24 +62,23 @@ G_DEFINE_TYPE                                   (HildonEntry, hildon_entry, GTK_
 struct                                          _HildonEntryPrivate
 {
     gchar *placeholder;
+    gboolean showing_placeholder;
 };
-
-static const gchar *placeholder_widget_name     = "hildon-entry-placeholder";
 
 /* Function used to decide whether to show the placeholder or not */
 static void
 hildon_entry_refresh_contents                   (GtkWidget *entry)
 {
     HildonEntryPrivate *priv = HILDON_ENTRY (entry)->priv;
-    gboolean showing_placeholder, entry_has_focus;
+    gboolean entry_has_focus;
 
-    showing_placeholder = g_str_equal (gtk_widget_get_name (entry), placeholder_widget_name);
     entry_has_focus = GTK_WIDGET_HAS_FOCUS (entry);
 
-    if (showing_placeholder) {
+    if (priv->showing_placeholder) {
         if (entry_has_focus) {
             /* Remove the placeholder when the widget obtains focus */
-            gtk_widget_set_name (entry, NULL);
+            hildon_helper_set_logical_color (entry, GTK_RC_TEXT, GTK_STATE_NORMAL, "ReversedTextColor");
+            priv->showing_placeholder = FALSE;
             gtk_entry_set_text (GTK_ENTRY (entry), "");
         } else {
             /* Update the placeholder (it may have been changed) */
@@ -89,7 +89,8 @@ hildon_entry_refresh_contents                   (GtkWidget *entry)
         const gchar *text = gtk_entry_get_text (GTK_ENTRY (entry));
         if (text[0] == '\0' && !entry_has_focus) {
             if (priv->placeholder[0] != '\0') {
-                gtk_widget_set_name (entry, placeholder_widget_name);
+                hildon_helper_set_logical_color (entry, GTK_RC_TEXT, GTK_STATE_NORMAL, "SecondaryTextColor");
+                priv->showing_placeholder = TRUE;
                 gtk_entry_set_text (GTK_ENTRY (entry), priv->placeholder);
             }
         }
@@ -145,7 +146,7 @@ hildon_entry_get_text                           (HildonEntry *entry)
 {
     g_return_val_if_fail (HILDON_IS_ENTRY (entry), NULL);
 
-    if (g_str_equal (gtk_widget_get_name (GTK_WIDGET (entry)), placeholder_widget_name)) {
+    if (entry->priv->showing_placeholder) {
         return "";
     }
 
@@ -247,4 +248,5 @@ hildon_entry_init                               (HildonEntry *self)
 {
     self->priv = HILDON_ENTRY_GET_PRIVATE (self);
     self->priv->placeholder = g_strdup ("");
+    self->priv->showing_placeholder = FALSE;
 }
