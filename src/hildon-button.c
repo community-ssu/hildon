@@ -243,7 +243,7 @@ hildon_button_class_init                        (HildonButtonClass *klass)
             "Title",
             "Text of the title label inside the button",
             NULL,
-            G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
+            G_PARAM_READWRITE));
 
     g_object_class_install_property (
         gobject_class,
@@ -253,7 +253,7 @@ hildon_button_class_init                        (HildonButtonClass *klass)
             "Value",
             "Text of the value label inside the button",
             NULL,
-            G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
+            G_PARAM_READWRITE));
 
     g_object_class_install_property (
         gobject_class,

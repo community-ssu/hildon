@@ -330,7 +330,7 @@ hildon_picker_button_class_init (HildonPickerButtonClass * klass)
                                                         "HildonTouchSelector widget",
                                                         "HildonTouchSelector widget to be launched on button clicked",
                                                         HILDON_TYPE_TOUCH_SELECTOR,
-                                                        G_PARAM_READWRITE));
+                                                        G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
   g_object_class_install_property (object_class,
                                    PROP_DONE_BUTTON_TEXT,
                                    g_param_spec_string ("done-button-text",
@@ -442,10 +442,10 @@ hildon_picker_button_set_selector (HildonPickerButton * button,
                                    HildonTouchSelector * selector)
 {
   HildonPickerButtonPrivate *priv;
-  gchar *value;
+  gchar *value = NULL;
 
   g_return_if_fail (HILDON_IS_PICKER_BUTTON (button));
-  g_return_if_fail (HILDON_IS_TOUCH_SELECTOR (selector));
+  g_return_if_fail (!selector || HILDON_IS_TOUCH_SELECTOR (selector));
 
   priv = GET_PRIVATE (button);
 
@@ -459,22 +459,29 @@ hildon_picker_button_set_selector (HildonPickerButton * button,
     g_object_unref (priv->selector);
   }
 
-  priv->selector = g_object_ref (selector);
+  priv->selector = GTK_WIDGET (selector);
 
-  g_signal_connect (G_OBJECT (selector), "changed",
-                    G_CALLBACK (hildon_picker_button_selector_selection_changed),
-                    button);
+  if (selector) {
+    g_object_ref (selector);
 
-  g_signal_connect (G_OBJECT (selector), "columns-changed",
-                    G_CALLBACK (hildon_picker_button_selector_columns_changed),
-                    button);
+    g_signal_connect (G_OBJECT (selector), "changed",
+                      G_CALLBACK (hildon_picker_button_selector_selection_changed),
+                      button);
 
-  value = hildon_touch_selector_get_current_text (HILDON_TOUCH_SELECTOR (priv->selector));
-  if (value) {
-    hildon_button_set_value (HILDON_BUTTON (button), value);
-    g_free (value);
-    hildon_picker_button_value_changed (button);
+    g_signal_connect (G_OBJECT (selector), "columns-changed",
+                      G_CALLBACK (hildon_picker_button_selector_columns_changed),
+                      button);
+
+    value = hildon_touch_selector_get_current_text (HILDON_TOUCH_SELECTOR (priv->selector));
   }
+
+  if (!value)
+    value = g_strdup ("");
+
+  hildon_button_set_value (HILDON_BUTTON (button), value);
+  hildon_picker_button_value_changed (button);
+
+  g_free (value);
 }
 
 /**

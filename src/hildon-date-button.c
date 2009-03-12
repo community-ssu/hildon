@@ -74,11 +74,26 @@ hildon_date_button_set_property (GObject * object, guint property_id,
 #endif
 
 static void
+hildon_date_button_constructed (GObject *object)
+{
+  HildonPickerButton *button = HILDON_PICKER_BUTTON (object);
+
+  if (G_OBJECT_CLASS (hildon_date_button_parent_class)->constructed)
+      G_OBJECT_CLASS (hildon_date_button_parent_class)->constructed (object);
+
+  if (hildon_picker_button_get_selector (button) == NULL) {
+      GtkWidget *selector = hildon_date_selector_new ();
+      hildon_picker_button_set_selector (button, HILDON_TOUCH_SELECTOR (selector));
+  }
+}
+
+static void
 hildon_date_button_class_init (HildonDateButtonClass * klass)
 {
-#if 0
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
+  object_class->constructed = hildon_date_button_constructed;
+#if 0
   g_type_class_add_private (klass, sizeof (HildonDateButtonPrivate));
 
   object_class->get_property = hildon_date_button_get_property;

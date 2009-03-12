@@ -1,3 +1,18 @@
+2009-03-12  Alberto Garcia  <agarcia@igalia.com>
+
+	* src/hildon-button.c (hildon_button_class_init): Don't make
+	"title" and "value" construction properties, to prevent them from
+	overwriting labels set from derived classes.
+
+	* src/hildon-picker-button.c
+	(hildon_picker_button_set_selector): Allow setting a NULL selector.
+	(hildon_picker_button_class_init): Make touch-selector a
+	construction property.
+
+	* src/hildon-date-button.c (hildon_date_button_class_init)
+	(+hildon_date_button_constructed): Add a default date selector if
+	none is provided.
+
 2009-03-12  Claudio Saavedra  <csaavedra@igalia.com>
 
 	* src/hildon-touch-selector.c: Small documentation fixes.
