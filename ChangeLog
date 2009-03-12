@@ -1,5 +1,9 @@
 2009-03-12  Claudio Saavedra  <csaavedra@igalia.com>
 
+	* src/hildon-touch-selector.c: Small documentation fixes.
+
+2009-03-12  Claudio Saavedra  <csaavedra@igalia.com>
+
 	Based on a patch by Daniel Borgmann (danielb@openismus.com)
 
 	* src/hildon-entry.c (hildon_entry_refresh_contents),

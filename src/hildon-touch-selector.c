@@ -1441,8 +1441,8 @@ hildon_touch_selector_set_print_func (HildonTouchSelector * selector,
  * hildon_touch_selector_set_print_func_full:
  * @selector: a #HildonTouchSelector
  * @func: a #HildonTouchSelectorPrintFunc function
- * @user_data: a pointer to user data, or NULL
- * @destroy_func: a callback for freeing the user data, or NULL
+ * @user_data: a pointer to user data or %NULL
+ * @destroy_func: a callback for freeing the user data or %NULL
  *
  * Sets the function to be used by hildon_touch_selector_get_current_text()
  * to produce a text representation of the currently selected items in @selector.
