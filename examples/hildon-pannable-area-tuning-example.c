@@ -2,7 +2,7 @@
  * This file is a part of hildon examples
  *
  * Copyright (C) 2009 Nokia Corporation, all rights reserved.
- * Copyright (C) 2006 The Free Software Foundation
+ * Copyright (C) 2006 Claudio Saavedra
  *
  * Author: Claudio Saavedra <csaavedra@alumnos.utalca.cl>
  *

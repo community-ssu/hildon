@@ -1,3 +1,7 @@
+2009-03-12  Claudio Saavedra  <csaavedra@igalia.com>
+
+	* examples/hildon-pannable-area-tuning-example.c: Fix copyright.
+
 2009-03-12  Alejandro G. Castro  <alex@igalia.com>
 
 	* src/hildon-pannable-area.c,
