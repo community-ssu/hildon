@@ -123,7 +123,8 @@ static void _manage_ampm_selection_cb (HildonTouchSelector * selector,
 static void _check_ampm_format (HildonTimeSelector * selector);
 static void _set_pm (HildonTimeSelector * selector, gboolean pm);
 
-static gchar *_custom_print_func (HildonTouchSelector * selector);
+static gchar *_custom_print_func (HildonTouchSelector * selector,
+                                  gpointer user_data);
 
 static void
 hildon_time_selector_class_init (HildonTimeSelectorClass * class)
@@ -282,7 +283,8 @@ hildon_time_selector_finalize (GObject * object)
 /* ------------------------------ PRIVATE METHODS ---------------------------- */
 
 static gchar *
-_custom_print_func (HildonTouchSelector * touch_selector)
+_custom_print_func (HildonTouchSelector * touch_selector,
+                    gpointer user_data)
 {
   gchar *result = NULL;
   struct tm tm = { 0, 0, 0, 0, 0, 0, 0, 0, 0 };

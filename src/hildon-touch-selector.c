@@ -205,6 +205,8 @@ struct _HildonTouchSelectorPrivate
   gboolean initial_scroll;      /* whether initial fancy scrolling to selection */
 
   HildonTouchSelectorPrintFunc print_func;
+  gpointer print_user_data;
+  GDestroyNotify print_destroy_func;
 };
 
 enum
@@ -221,6 +223,9 @@ enum
 };
 
 static gint hildon_touch_selector_signals[LAST_SIGNAL] = { 0 };
+
+static void
+hildon_touch_selector_dispose                   (GObject * object);
 
 static void
 hildon_touch_selector_get_property              (GObject * object,
@@ -241,7 +246,8 @@ static void hildon_touch_selector_remove        (GtkContainer * container,
 static void _row_tapped_cb                      (GtkTreeView * tree_view,
                                                  GtkTreePath * path,
                                                  gpointer user_data);
-static gchar *_default_print_func               (HildonTouchSelector * selector);
+static gchar *_default_print_func               (HildonTouchSelector * selector,
+                                                 gpointer user_data);
 
 static HildonTouchSelectorColumn *_create_new_column (HildonTouchSelector * selector,
                                                  GtkTreeModel * model,
@@ -304,6 +310,7 @@ hildon_touch_selector_class_init (HildonTouchSelectorClass * class)
   container_class = GTK_CONTAINER_CLASS (class);
 
   /* GObject */
+  gobject_class->dispose = hildon_touch_selector_dispose;
   gobject_class->get_property = hildon_touch_selector_get_property;
   gobject_class->set_property = hildon_touch_selector_set_property;
 
@@ -437,12 +444,28 @@ hildon_touch_selector_init (HildonTouchSelector * selector)
   selector->priv->columns = NULL;
 
   selector->priv->print_func = NULL;
+  selector->priv->print_user_data = NULL;
+  selector->priv->print_destroy_func = NULL;
   selector->priv->initial_scroll = TRUE;
   selector->priv->hbox = gtk_hbox_new (FALSE, 0);
 
   gtk_box_pack_end (GTK_BOX (selector), selector->priv->hbox,
                     TRUE, TRUE, 0);
   gtk_widget_show (selector->priv->hbox);
+}
+
+static void
+hildon_touch_selector_dispose (GObject * object)
+{
+  GObjectClass *gobject_class;
+
+  hildon_touch_selector_set_print_func_full (HILDON_TOUCH_SELECTOR (object),
+                                             NULL, NULL, NULL);
+
+  gobject_class = G_OBJECT_CLASS (hildon_touch_selector_parent_class);
+
+  if (gobject_class->dispose)
+    (* gobject_class->dispose) (object);
 }
 
 /*
@@ -501,7 +524,7 @@ hildon_touch_selector_remove (GtkContainer * container, GtkWidget * widget)
  * Since: 2.2
  **/
 static gchar *
-_default_print_func (HildonTouchSelector * selector)
+_default_print_func (HildonTouchSelector * selector, gpointer user_data)
 {
   gchar *result = NULL;
   gchar *aux = NULL;
@@ -1411,7 +1434,44 @@ hildon_touch_selector_set_print_func (HildonTouchSelector * selector,
 {
   g_return_if_fail (HILDON_IS_TOUCH_SELECTOR (selector));
 
+  hildon_touch_selector_set_print_func_full (selector, func, NULL, NULL);
+}
+
+/**
+ * hildon_touch_selector_set_print_func_full:
+ * @selector: a #HildonTouchSelector
+ * @func: a #HildonTouchSelectorPrintFunc function
+ * @user_data: a pointer to user data, or NULL
+ * @destroy_func: a callback for freeing the user data, or NULL
+ *
+ * Sets the function to be used by hildon_touch_selector_get_current_text()
+ * to produce a text representation of the currently selected items in @selector.
+ * The default function will return a concatenation of comma separated items
+ * selected in each column in @selector. Use this to override this method if you
+ * need a particular representation for your application.
+ *
+ * Since: 2.2
+ **/
+void
+hildon_touch_selector_set_print_func_full (HildonTouchSelector          *selector,
+                                           HildonTouchSelectorPrintFunc  func,
+                                           gpointer                      user_data,
+                                           GDestroyNotify                destroy_func)
+{
+  gpointer       old_user_data;
+  GDestroyNotify old_destroy_func;
+
+  g_return_if_fail (HILDON_IS_TOUCH_SELECTOR (selector));
+
+  old_user_data = selector->priv->print_user_data;
+  old_destroy_func = selector->priv->print_destroy_func;
+
   selector->priv->print_func = func;
+  selector->priv->print_user_data = user_data;
+  selector->priv->print_destroy_func = destroy_func;
+
+  if (old_destroy_func && old_user_data != user_data)
+    (*old_destroy_func) (old_user_data);
 }
 
 /**
@@ -1775,9 +1835,9 @@ hildon_touch_selector_get_current_text (HildonTouchSelector * selector)
   g_return_val_if_fail (HILDON_IS_TOUCH_SELECTOR (selector), NULL);
 
   if (selector->priv->print_func) {
-    result = (*selector->priv->print_func) (selector);
+    result = (*selector->priv->print_func) (selector, selector->priv->print_user_data);
   } else {
-    result = _default_print_func (selector);
+    result = _default_print_func (selector, NULL);
   }
 
   return result;

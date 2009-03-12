@@ -139,7 +139,7 @@ hildon_touch_selector_entry_class_init (HildonTouchSelectorEntryClass *klass)
 }
 
 static gchar *
-hildon_touch_selector_entry_print_func (HildonTouchSelector * selector)
+hildon_touch_selector_entry_print_func (HildonTouchSelector * selector, gpointer user_data)
 {
   HildonTouchSelectorEntryPrivate *priv;
   GtkTreeModel *model;

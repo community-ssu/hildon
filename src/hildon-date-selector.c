@@ -124,7 +124,8 @@ static GtkTreeModel *_update_day_model (HildonDateSelector * selector);
 static gint _month_days (gint month, gint year);
 static void _init_column_order (HildonDateSelector * selector);
 
-static gchar *_custom_print_func (HildonTouchSelector * selector);
+static gchar *_custom_print_func (HildonTouchSelector * selector,
+                                  gpointer user_data);
 
 /***************************************************************************/
 /* The following date routines are taken from the lib_date package.  Keep
@@ -396,7 +397,7 @@ hildon_date_selector_finalize (GObject * object)
 
 /* ------------------------------ PRIVATE METHODS ---------------------------- */
 static gchar *
-_custom_print_func (HildonTouchSelector * touch_selector)
+_custom_print_func (HildonTouchSelector * touch_selector, gpointer user_data)
 {
   HildonDateSelector *selector = NULL;
   gchar *result = NULL;

@@ -52,7 +52,8 @@ typedef struct                                  _HildonTouchSelector HildonTouch
 typedef struct                                  _HildonTouchSelectorClass HildonTouchSelectorClass;
 typedef struct                                  _HildonTouchSelectorPrivate HildonTouchSelectorPrivate;
 
-typedef gchar *(*HildonTouchSelectorPrintFunc)  (HildonTouchSelector * selector);
+typedef gchar *(*HildonTouchSelectorPrintFunc)  (HildonTouchSelector * selector,
+                                                 gpointer user_data);
 
 struct                                          _HildonTouchSelector
 {
@@ -198,6 +199,12 @@ hildon_touch_selector_get_current_text          (HildonTouchSelector *selector);
 void
 hildon_touch_selector_set_print_func            (HildonTouchSelector          *selector,
                                                  HildonTouchSelectorPrintFunc  func);
+
+void
+hildon_touch_selector_set_print_func_full       (HildonTouchSelector          *selector,
+                                                 HildonTouchSelectorPrintFunc  func,
+                                                 gpointer                      user_data,
+                                                 GDestroyNotify                destroy_func);
 
 HildonTouchSelectorPrintFunc
 hildon_touch_selector_get_print_func            (HildonTouchSelector *selector);

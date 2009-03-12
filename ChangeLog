@@ -1,5 +1,31 @@
 2009-03-12  Claudio Saavedra  <csaavedra@igalia.com>
 
+	Patch by Daniel Elster (danielk@openismus.com)
+
+	* src/hildon-touch-selector.[ch] (HildonTouchSelectorPrintFunc):
+	Add user_data parameter.
+	(hildon_touch_selector_set_print_func_full): New function akin
+	hildon_touch_selector_set_print_func() but with support for user
+	data and a destroy callback.
+	(hildon_touch_selector_dispose): Implement GObjectClass::dispose
+	to clean up the print function user data.
+	(hildon_touch_selector_class_init): Install dispose function.
+	(HildonTouchSelectorPrivate::print_user_data),
+	(HildonTouchSelectorPrivate::print_destroy_func): New private
+	member data.
+	(hildon_touch_selector_init): Initialize new private members.
+	(hildon_touch_selector_get_current_text): Pass along user data
+	to the print function.
+	(_default_print_func): Add dummy user_data to parameter list.
+	* hildon-date-selector.c (_custom_print_func): ditto,
+	* hildon-time-selector.c (_custom_print_func): ditto,
+	* hildon-touch-selector-entry.c
+	(hildon_touch_selector_entry_print_func): ditto.
+
+	Fixes: NB#105455 (HildonTouchSelectorPrintFunc lacks user data)
+
+2009-03-12  Claudio Saavedra  <csaavedra@igalia.com>
+
 	* examples/hildon-pannable-area-tuning-example.c: Fix copyright.
 
 2009-03-12  Alejandro G. Castro  <alex@igalia.com>
