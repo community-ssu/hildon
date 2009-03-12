@@ -1,5 +1,9 @@
 2009-03-12  Alberto Garcia  <agarcia@igalia.com>
 
+	* src/hildon-text-view.c: Fix compilation warning.
+
+2009-03-12  Alberto Garcia  <agarcia@igalia.com>
+
 	* src/hildon-button.c (hildon_button_class_init): Don't make
 	"title" and "value" construction properties, to prevent them from
 	overwriting labels set from derived classes.

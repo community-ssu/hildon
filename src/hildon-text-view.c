@@ -54,6 +54,7 @@
  */
 
 #include                                        "hildon-text-view.h"
+#include                                        "hildon-helper.h"
 #include <math.h>
 
 #define HILDON_TEXT_VIEW_DRAG_THRESHOLD 16.0
