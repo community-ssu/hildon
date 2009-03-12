@@ -1,3 +1,13 @@
+2009-03-12  Alejandro G. Castro  <alex@igalia.com>
+
+	* src/hildon-pannable-area.c,
+	(hildon_pannable_area_init),
+	(hildon_pannable_area_button_press_cb),
+	(hildon_pannable_area_motion_notify_cb): We have added code to
+	handle the leave and enter events when using the motion events.
+
+	Fixes: NB#105407 (hilghlight is not cancelled when panning starts)
+
 2009-03-11  Alberto Garcia  <agarcia@igalia.com>
 
 	* src/hildon-date-button.c (hildon_date_button_get_date)

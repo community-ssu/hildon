@@ -74,6 +74,7 @@ struct _HildonPannableAreaPrivate {
   gboolean clicked;
   guint32 last_time;	/* Last event time, to stop infinite loops */
   gint last_type;
+  gboolean last_in;
   gboolean moved;
   gdouble vmin;
   gdouble vmax;
@@ -92,6 +93,8 @@ struct _HildonPannableAreaPrivate {
   gdouble vel_x;
   gdouble vel_y;
   GdkWindow *child;
+  gint child_width;
+  gint child_height;
   gint ix;			/* Initial click mouse co-ordinates */
   gint iy;
   gint cx;			/* Initial click child window mouse co-ordinates */
@@ -615,6 +618,9 @@ hildon_pannable_area_init (HildonPannableArea * area)
   priv->scroll_to_y = -1;
   priv->first_drag = TRUE;
   priv->initial_effect = TRUE;
+  priv->child_width = 0;
+  priv->child_height = 0;
+  priv->last_in = TRUE;
 
   hildon_pannable_calculate_vel_factor (area);
 
@@ -1827,6 +1833,10 @@ hildon_pannable_area_button_press_cb (GtkWidget * widget,
 
   if (priv->child) {
 
+    gdk_drawable_get_size (priv->child, &priv->child_width,
+                           &priv->child_height);
+    priv->last_in = TRUE;
+
     g_object_add_weak_pointer ((GObject *) priv->child,
 			       (gpointer) & priv->child);
 
@@ -2311,6 +2321,16 @@ hildon_pannable_area_motion_notify_cb (GtkWidget * widget,
             priv->moved = FALSE;
         }
       }
+
+      if ((priv->moved)&&(priv->child)) {
+        gint pos_x, pos_y;
+
+        pos_x = priv->cx + (event->x - priv->ix);
+        pos_y = priv->cy + (event->y - priv->iy);
+
+        synth_crossing (priv->child, pos_x, pos_y, event->x_root,
+                        event->y_root, event->time, FALSE);
+      }
     }
 
     priv->first_drag = FALSE;
@@ -2394,6 +2414,23 @@ hildon_pannable_area_motion_notify_cb (GtkWidget * widget,
 
     default:
       break;
+    }
+  } else if (priv->child) {
+    gboolean in;
+    gint pos_x, pos_y;
+
+    pos_x = priv->cx + (event->x - priv->ix);
+    pos_y = priv->cy + (event->y - priv->iy);
+
+    in = (((0 <= pos_x)&&(priv->child_width >= pos_x)) &&
+          ((0 <= pos_y)&&(priv->child_height >= pos_y)));
+
+    if (((!priv->last_in)&&in)||((priv->last_in)&&(!in))) {
+
+      synth_crossing (priv->child, pos_x, pos_y, event->x_root,
+                      event->y_root, event->time, in);
+
+      priv->last_in = in;
     }
   }
 
