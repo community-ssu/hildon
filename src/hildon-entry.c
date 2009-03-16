@@ -89,7 +89,7 @@ hildon_entry_refresh_contents                   (GtkWidget *entry)
         const gchar *text = gtk_entry_get_text (GTK_ENTRY (entry));
         if (text[0] == '\0' && !entry_has_focus) {
             if (priv->placeholder[0] != '\0') {
-                hildon_helper_set_logical_color (entry, GTK_RC_TEXT, GTK_STATE_NORMAL, "SecondaryTextColor");
+                hildon_helper_set_logical_color (entry, GTK_RC_TEXT, GTK_STATE_NORMAL, "ReversedSecondaryTextColor");
                 priv->showing_placeholder = TRUE;
                 gtk_entry_set_text (GTK_ENTRY (entry), priv->placeholder);
             }

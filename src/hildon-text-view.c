@@ -89,7 +89,7 @@ hildon_text_view_refresh_contents               (GtkWidget *text_view)
         gtk_text_view_set_buffer (GTK_TEXT_VIEW (text_view), priv->main_buffer);
     } else {
         /* Otherwise, display the placeholder */
-        hildon_helper_set_logical_color (text_view, GTK_RC_TEXT, GTK_STATE_NORMAL, "SecondaryTextColor");
+        hildon_helper_set_logical_color (text_view, GTK_RC_TEXT, GTK_STATE_NORMAL, "ReversedSecondaryTextColor");
         gtk_text_view_set_buffer (GTK_TEXT_VIEW (text_view), priv->placeholder_buffer);
     }
 }

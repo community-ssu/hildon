@@ -1,3 +1,9 @@
+2009-03-16  Claudio Saavedra  <csaavedra@igalia.com>
+
+	* src/hildon-entry.c (hildon_entry_refresh_contents):
+	* src/hildon-text-view.c (hildon_text_view_refresh_contents):
+	Use "ReversedSecondaryTextColor" for the placeholder text.
+
 2009-03-12  Alberto Garcia  <agarcia@igalia.com>
 
 	* src/hildon-text-view.c: Fix compilation warning.
