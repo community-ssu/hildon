@@ -395,6 +395,11 @@ entry_on_text_changed (GtkEditable * editable,
     hildon_touch_selector_entry_get_text_column (HILDON_TOUCH_SELECTOR_ENTRY (selector));
 
   prefix = gtk_entry_get_text (entry);
+
+  if (strcmp (prefix, "") == 0) {
+	  return;
+  }
+
   model = hildon_touch_selector_get_model (selector, 0);
 
   if (!gtk_tree_model_get_iter_first (model, &iter)) {
