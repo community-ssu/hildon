@@ -673,6 +673,7 @@ _create_new_column (HildonTouchSelector * selector,
 #endif /* MAEMO_GTK */
 
   gtk_tree_view_set_enable_search (tv, FALSE);
+  GTK_WIDGET_UNSET_FLAGS (GTK_WIDGET (tv), GTK_CAN_FOCUS);
 
   gtk_tree_view_set_model (tv, model);
   gtk_tree_view_set_rules_hint (tv, TRUE);

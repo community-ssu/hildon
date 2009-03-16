@@ -1,5 +1,14 @@
 2009-03-16  Claudio Saavedra  <csaavedra@igalia.com>
 
+	* src/hildon-touch-selector.c (_create_new_column): Unset GTK_CAN_FOCUS
+	for the treeview in the new column. This way, the touch list will never
+	grab the focus.
+
+	Fixes: NB#105190 (Text input area of HildonTouchSelectorEntry to
+	be selected manually for the HW keys to work)
+
+2009-03-16  Claudio Saavedra  <csaavedra@igalia.com>
+
 	* src/hildon-touch-selector-entry.c (entry_on_text_changed): Do a simple
 	comparison instead of using strcmp(). Fixes a compiler warning as well.
 
