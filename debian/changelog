@@ -1,3 +1,29 @@
+libhildon (2.1.52-1) unstable; urgency=low
+
+  Bug fixes:
+
+  * Fixes: NB#104485 (Not able to address the call when application menu is
+    opened at background)
+  * Fixes: NB#105507 (hildon_date_button_set_date leads to crash.)
+  * Fixes: NB#105407 (highlight is not cancelled when panning starts)
+  * Fixes: NB#105455 (HildonTouchSelectorPrintFunc lacks user data)
+  * Fixes: NB#105678 (HildonTextView should use logical colours instead of
+    setting widget name)
+
+  New API:
+
+  * (HildonTouchSelectorPrintFunc *) (HildonTouchSelector * selector, gpointer user_data)
+  User data parameter added to (HildonTouchSelectorPrintFunc *) signature.
+  * hildon_touch_selector_set_print_func_full (): support for user data and a destroy callback.
+
+  Other:
+
+  * More HildonPannableArea fine tunning.
+  * Documentation improvements.
+  * Minor theming fixes.
+
+ -- Claudio Saavedra <csaavedra@igalia.com>  Mon, 16 Mar 2009 10:50:54 +0200
+
 libhildon (2.1.50-1) unstable; urgency=low
 
   * Fixes: NB#105012 (buttons inside a pannable area not getting release
