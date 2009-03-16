@@ -6,7 +6,10 @@
 
 <book id="index" xmlns:xi="http://www.w3.org/2003/XInclude">
   <bookinfo>
-    <title>hildon &version; Reference Manual</title>
+    <title>hildon Reference Manual</title>
+    <releaseinfo>
+      for hildon &version;
+    </releaseinfo>
   </bookinfo>
 
   <chapter>
