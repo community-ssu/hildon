@@ -1,8 +1,7 @@
 2009-03-16  Claudio Saavedra  <csaavedra@igalia.com>
 
-	reviewed by: <delete if not using a buddy>
-
 	* src/hildon-touch-selector-entry.c (entry_on_text_changed):
+	Do not jump to the first item if the text in the entry is removed.
 
 2009-03-16  Claudio Saavedra  <csaavedra@igalia.com>
 
