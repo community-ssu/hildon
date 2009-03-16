@@ -1,5 +1,10 @@
 2009-03-16  Claudio Saavedra  <csaavedra@igalia.com>
 
+	* src/hildon-touch-selector-entry.c (entry_on_text_changed): Do a simple
+	comparison instead of using strcmp(). Fixes a compiler warning as well.
+
+2009-03-16  Claudio Saavedra  <csaavedra@igalia.com>
+
 	* doc/hildon-docs.sgml: Do not set the library version in the
 	document title, use the releaseinfo tag for that purpose instead.
 

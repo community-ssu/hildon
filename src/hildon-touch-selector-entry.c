@@ -396,7 +396,7 @@ entry_on_text_changed (GtkEditable * editable,
 
   prefix = gtk_entry_get_text (entry);
 
-  if (strcmp (prefix, "") == 0) {
+  if (prefix[0] == '\0') {
 	  return;
   }
 
