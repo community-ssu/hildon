@@ -433,7 +433,7 @@ hildon_pannable_area_class_init (HildonPannableAreaClass * klass)
 						      "Threshold to consider a motion event an scroll",
 						      "Amount of pixels to consider a motion event an scroll, if it is less"
                                                       "it is a click detected incorrectly by the touch screen.",
-						      0, G_MAXUINT, 3,
+						      0, G_MAXUINT, 6,
 						      G_PARAM_READWRITE |
 						      G_PARAM_CONSTRUCT));
 

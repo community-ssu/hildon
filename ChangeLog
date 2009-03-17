@@ -1,3 +1,13 @@
+2009-03-17  Alejandro G. Castro  <alex@igalia.com>
+
+	* src/hildon-pannable-area.c,
+	(hildon_pannable_area_class_init): Modified the default panning
+	threshold of the widget to 6px.
+
+	Fixes: NB#105427 (Clicking and dragging ( for pixel values more
+	than the threshold value ) within the button is not sending the
+	event to the clild)
+
 2009-03-16  Claudio Saavedra  <csaavedra@igalia.com>
 
 	* src/hildon-touch-selector.c (_create_new_column): Unset GTK_CAN_FOCUS
