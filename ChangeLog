@@ -1,3 +1,12 @@
+2009-03-17  Alejandro Pinheiro  <apinheiro@igalia.com>
+
+	* examples/hildon-pannable-area-touch-list-example.c
+	* examples/hildon-pannagle-area-touch-grid-example.c
+	* examples/hildon-edit-toolbar-example.c
+	* examples/hildon-touch-selector-multi-cells-example.c
+	Removed the call to gtk_rc_parse_string, as it is not required since
+	some time ago.
+
 2009-03-17  Alejandro G. Castro  <alex@igalia.com>
 
 	* src/hildon-pannable-area.c,

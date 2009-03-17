@@ -128,11 +128,6 @@ main (int argc, char **argv)
 
   gtk_container_set_border_width (GTK_CONTAINER (window), 6);
 
-  gtk_rc_parse_string ("style \"fremantle-widget\" {\n"
-                       " GtkWidget::hildon-mode = 1 \n"
-                       "} widget \"*.fremantle-widget\" style \"fremantle-widget\"\n");
-
-
   GtkWidget *vbox = get_visible_content (window);
 
   gtk_container_add (GTK_CONTAINER (window), GTK_WIDGET (vbox));

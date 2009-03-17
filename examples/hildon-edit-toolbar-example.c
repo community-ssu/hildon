@@ -175,10 +175,6 @@ main                                            (int    argc,
 
   hildon_gtk_init (&argc, &argv);
 
-  gtk_rc_parse_string ("style \"fremantle-widget\" {\n"
-                       "  GtkWidget::hildon-mode = 1\n"
-                       "} class \"GtkIconView\" style \"fremantle-widget\"");
-
   window = hildon_stackable_window_new ();
   g_signal_connect (window, "destroy", G_CALLBACK (gtk_main_quit), NULL);
   gtk_container_set_border_width (GTK_CONTAINER (window), 6);
