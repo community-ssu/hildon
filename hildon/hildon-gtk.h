@@ -79,6 +79,9 @@ void
 hildon_gtk_window_set_portrait_flags            (GtkWindow           *window,
                                                  HildonPortraitFlags  portrait_flags);
 
+void
+hildon_gtk_window_take_screenshot               (GtkWindow *window,
+                                                 gboolean   take);
 GtkWidget*
 hildon_gtk_hscale_new                           (void);
 

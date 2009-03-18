@@ -1,3 +1,11 @@
+2009-05-15  Alberto Garcia  <agarcia@igalia.com>
+
+	* hildon/hildon-gtk.h
+	* hildon/hildon-gtk.c (hildon_gtk_window_take_screenshot):
+	New API function to take a screenshot of a window
+
+	Fixes: NB#106374 (Need API to take a loading screenshot)
+
 2009-05-15  Alejandro Pinheiro  <apinheiro@igalia.com>
 
 	* hildon/hildon-time-selector.c

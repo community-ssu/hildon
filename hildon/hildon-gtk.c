@@ -442,6 +442,41 @@ hildon_gtk_window_set_portrait_flags            (GtkWindow           *window,
 }
 
 /**
+ * hildon_gtk_window_take_screenshot:
+ * @window: a #GtkWindow
+ * @take: %TRUE to take a screenshot, %FALSE to destroy the existing one.
+ *
+ * Tells the window manager to take a screenshot of @window, or to
+ * destroy the existing one. @window must be mapped.
+ **/
+void
+hildon_gtk_window_take_screenshot               (GtkWindow *window,
+                                                 gboolean   take)
+{
+    GdkEventClient *ev;
+    GdkWindow *rootwin;
+
+    g_return_if_fail (GTK_IS_WINDOW (window));
+    g_return_if_fail (GTK_WIDGET_MAPPED (window));
+
+    rootwin = gdk_screen_get_root_window (gtk_window_get_screen (window));
+
+    ev = (GdkEventClient *) gdk_event_new (GDK_CLIENT_EVENT);
+    ev->window = g_object_ref (rootwin);
+    ev->send_event = TRUE;
+    ev->message_type = gdk_atom_intern ("_HILDON_LOADING_SCREENSHOT", FALSE);
+    ev->data_format = 32;
+    ev->data.l[0] = take ? 1 : 0;
+    ev->data.l[1] = GDK_WINDOW_XID (GTK_WIDGET (window)->window);
+    ev->data.l[2] = 0;
+
+    gdk_event_send_client_message ((GdkEvent *) ev, GDK_WINDOW_XWINDOW (rootwin));
+
+    gdk_event_free ((GdkEvent *) ev);
+}
+
+
+/**
  * hildon_gtk_hscale_new:
  *
  * Creates a new horizontal scale widget that lets the user select
