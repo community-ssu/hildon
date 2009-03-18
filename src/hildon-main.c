@@ -70,7 +70,6 @@
 
 /**
  * hildon_init:
- * @void:
  *
  * Initializes the hildon library. Call this function after calling gtk_init()
  * and before using any hildon or GTK+ functions in your program.
@@ -79,6 +78,15 @@
 void
 hildon_init (void)
 {
+  static gboolean initialized = FALSE;
+
+  if (initialized) {
+    g_critical ("Tried to initialized Hildon more than once.");
+    return;
+  } else {
+    initialized = TRUE;
+  }
+
   /* Register icon sizes */
   gtk_icon_size_register ("hildon-xsmall", 16, 16);
   gtk_icon_size_register ("hildon-small", 24, 24);
