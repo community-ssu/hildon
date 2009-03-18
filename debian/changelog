@@ -2,7 +2,7 @@ libhildon (2.1.52-1) unstable; urgency=low
 
   Bug fixes:
 
-  * Fixes: NB#104485 (Not able to address the call when application menu is
+  * Fixes NB#104485 (Not able to address the call when application menu is
     opened at background)
   * Fixes: NB#105507 (hildon_date_button_set_date leads to crash.)
   * Fixes: NB#105407 (highlight is not cancelled when panning starts)
