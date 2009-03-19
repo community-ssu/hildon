@@ -1,3 +1,15 @@
+2009-03-19  Alejandro G. Castro  <alex@igalia.com>
+
+	Patch by Alberto Garcia (agarcia@igalia.com)
+
+	* src/hildon-date-button.c,
+	(hildon_date_button_class_init),
+	(hildon_date_button_init): Removed the construct property handling
+	and created a default selector in the init method.
+	* src/hildon-picker-button.c,
+	(hildon_picker_button_class_init): Removed the construct flag of the
+	selector property.
+
 2009-03-18  Alberto Garcia  <agarcia@igalia.com>
 
 	* src/hildon-main.c (hildon_init):
