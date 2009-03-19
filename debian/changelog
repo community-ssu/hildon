@@ -1,3 +1,9 @@
+libhildon (2.1.52-2) unstable; urgency=low
+
+  * Reverted some changes that were causing problems in the date-button creation
+
+ -- Alejandro G. Castro <alex@igalia.com>  Thu, 19 Mar 2009 13:58:33 +0200
+
 libhildon (2.1.52-1) unstable; urgency=low
 
   Bug fixes:
