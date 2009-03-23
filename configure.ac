@@ -1,4 +1,4 @@
-AC_INIT([Hildon gtk widgets], [2.1.52], [hildon@projects.maemo.org], [hildon])
+AC_INIT([Hildon gtk widgets], [2.1.54], [hildon@projects.maemo.org], [hildon])
 AC_CANONICAL_SYSTEM
 
 AM_CONFIG_HEADER(config.h)

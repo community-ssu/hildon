@@ -1,3 +1,21 @@
+[2.1.54 release]
+
+  Bug fixes:
+
+  * Fixes: NB#105190 (Text input area of HildonTouchSelectorEntry to
+    be selected manually for the HW keys to work)
+  * Fixes: NB#105427 (Clicking and dragging ( for pixel values more
+    than the threshold value ) within the button is not sending the
+    event to the child)
+  * Fixes: NB#106607 (hildon_init should issue error message upon
+    successive calls)
+
+  Other:
+
+  * Improved usability in HildonPannableArea and HildonTouchSelectorEntry.
+  * Some examples cleaned up.
+  * Code fixes.
+
 [2.1.52 release]
 
   Bug fixes:
