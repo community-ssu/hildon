@@ -937,6 +937,8 @@ hildon_pannable_area_realize (GtkWidget * widget)
   gdk_window_set_user_data (widget->window, widget);
 
   /* create the events window */
+  attributes.x = 0;
+  attributes.y = 0;
   attributes.event_mask = gtk_widget_get_events (widget)
     | GDK_BUTTON_MOTION_MASK
     | GDK_BUTTON_PRESS_MASK

@@ -1,3 +1,9 @@
+2009-03-24  Alejandro G. Castro  <alex@igalia.com>
+
+	* src/hildon-pannable-area.c,
+	(hildon_pannable_area_realize): Fixed position of the event_window
+	in the realize method.
+
 2009-03-24  Alberto Garcia  <agarcia@igalia.com>
 
 	* src/hildon-app-menu-private.h
