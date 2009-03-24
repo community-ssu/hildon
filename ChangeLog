@@ -1,3 +1,14 @@
+2009-03-24  Alejandro G. Castro  <alex@igalia.com>
+
+	* src/hildon-pannable-area.c,
+	(hildon_pannable_area_class_init),
+	(hildon_pannable_leave_notify_event): Added a handler of the
+	leave-notify-signal to consider when no motion notify before
+	leaving.
+
+	Fixes: NB#107494 (Items stay selected when clicking and moving
+	away when inside pannable area)
+
 2009-03-23  Claudio Saavedra  <csaavedra@igalia.com>
 
 	[Release 2.1.54]
