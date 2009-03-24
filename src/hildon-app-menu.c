@@ -470,6 +470,8 @@ hildon_app_menu_find_intruder                   (gpointer data)
     GtkWidget *widget = GTK_WIDGET (data);
     HildonAppMenuPrivate *priv = HILDON_APP_MENU_GET_PRIVATE (widget);
 
+    priv->find_intruder_idle_id = 0;
+
     /* If there's a window between the menu and its parent window, hide the menu */
     if (priv->parent_window) {
         gboolean intruder_found = FALSE;
@@ -537,7 +539,7 @@ hildon_app_menu_map                             (GtkWidget *widget)
      * new window appears */
     gtk_window_set_is_temporary (GTK_WINDOW (widget), TRUE);
 
-    gdk_threads_add_idle (hildon_app_menu_find_intruder, widget);
+    priv->find_intruder_idle_id = gdk_threads_add_idle (hildon_app_menu_find_intruder, widget);
 }
 
 static void
@@ -574,7 +576,9 @@ hildon_app_menu_grab_notify                     (GtkWidget *widget,
 static gboolean
 hildon_app_menu_hide_idle                       (gpointer widget)
 {
+    HildonAppMenuPrivate *priv = HILDON_APP_MENU_GET_PRIVATE (widget);
     gtk_widget_hide (GTK_WIDGET (widget));
+    priv->hide_idle_id = 0;
     return FALSE;
 }
 
@@ -627,7 +631,7 @@ hildon_app_menu_key_press                       (GtkWidget   *widget,
 
             if (gtk_accel_group_query (accel_group, accel_key, accel_mods, NULL)) {
                 gtk_window_activate_key (parent_window, event);
-                gdk_threads_add_idle (hildon_app_menu_hide_idle, widget);
+                priv->hide_idle_id = gdk_threads_add_idle (hildon_app_menu_hide_idle, widget);
                 break;
             }
         }
@@ -959,6 +963,8 @@ hildon_app_menu_init                            (HildonAppMenu *menu)
     priv->buttons = NULL;
     priv->filters = NULL;
     priv->columns = 2;
+    priv->find_intruder_idle_id = 0;
+    priv->hide_idle_id = 0;
 
     /* Create boxes and tables */
     priv->filters_hbox = GTK_BOX (gtk_hbox_new (TRUE, 0));
@@ -988,6 +994,16 @@ static void
 hildon_app_menu_finalize                        (GObject *object)
 {
     HildonAppMenuPrivate *priv = HILDON_APP_MENU_GET_PRIVATE(object);
+
+    if (priv->find_intruder_idle_id) {
+        g_source_remove (priv->find_intruder_idle_id);
+        priv->find_intruder_idle_id = 0;
+    }
+
+    if (priv->hide_idle_id) {
+        g_source_remove (priv->hide_idle_id);
+        priv->hide_idle_id = 0;
+    }
 
     if (priv->parent_window) {
         g_signal_handlers_disconnect_by_func (priv->parent_window, parent_window_topmost_notify, object);

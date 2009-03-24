@@ -1,3 +1,15 @@
+2009-03-24  Alberto Garcia  <agarcia@igalia.com>
+
+	* src/hildon-app-menu-private.h
+	* src/hildon-app-menu.c (hildon_app_menu_find_intruder)
+	(hildon_app_menu_map, hildon_app_menu_hide_idle)
+	(hildon_app_menu_key_press, hildon_app_menu_init)
+	(hildon_app_menu_finalize):
+	Make sure that all idle functions are removed when the widget is
+	destroyed.
+
+	Fixes: NB#107583 (Hildon app menu crashes in various applications)
+
 2009-03-24  Claudio Saavedra  <csaavedra@igalia.com>
 
 	[Release 2.1.56]
