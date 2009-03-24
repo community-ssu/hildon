@@ -2462,7 +2462,7 @@ hildon_pannable_leave_notify_event (GtkWidget *widget,
   HildonPannableArea *area = HILDON_PANNABLE_AREA (widget);
   HildonPannableAreaPrivate *priv = area->priv;
 
-  if (priv->last_in) {
+  if ((priv->child)&&(priv->last_in)) {
     priv->last_in = FALSE;
 
     synth_crossing (priv->child, 0, 0, event->x_root,

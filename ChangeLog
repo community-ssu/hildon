@@ -1,6 +1,12 @@
 2009-03-24  Alejandro G. Castro  <alex@igalia.com>
 
 	* src/hildon-pannable-area.c,
+	(hildon_pannable_leave_notify_event): Check if the child is NULL
+	to avoid sending the leave.
+
+2009-03-24  Alejandro G. Castro  <alex@igalia.com>
+
+	* src/hildon-pannable-area.c,
 	(hildon_pannable_area_class_init),
 	(hildon_pannable_leave_notify_event): Added a handler of the
 	leave-notify-signal to consider when no motion notify before
