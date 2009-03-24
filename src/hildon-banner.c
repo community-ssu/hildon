@@ -91,6 +91,14 @@
 
 #define                                         HILDON_BANNER_DEFAULT_PROGRESS_ANIMATION "indicator_update"
 
+/* animation related stuff */
+
+#define                                         HILDON_BANNER_ANIMATION_FRAMERATE ((float)1000/150)
+
+#define                                         HILDON_BANNER_ANIMATION_TMPL "indicator_update%d"
+
+#define                                         HILDON_BANNER_ANIMATION_NFRAMES 8
+
 enum 
 {
     PROP_0,
@@ -909,6 +917,47 @@ hildon_banner_get_instance_for_widget           (GtkWidget *widget,
     return g_object_new (HILDON_TYPE_BANNER, "parent-window", window, "is-timed", timed, NULL);
 }
 
+static GtkWidget *
+hildon_banner_create_animation (void)
+{
+    GtkWidget *image;
+    GdkPixbufSimpleAnim *anim;
+    GdkPixbuf *frame;
+    GtkIconTheme *theme;
+    GError *error = NULL;
+    gchar *icon_name;
+    gint i;
+
+    anim = gdk_pixbuf_simple_anim_new (HILDON_ICON_PIXEL_SIZE_FINGER,
+				       HILDON_ICON_PIXEL_SIZE_FINGER,
+				       HILDON_BANNER_ANIMATION_FRAMERATE);
+    gdk_pixbuf_simple_anim_set_loop (anim, TRUE);
+    theme = gtk_icon_theme_get_default ();
+
+    for (i = 1; i <= HILDON_BANNER_ANIMATION_NFRAMES; i++) {
+	icon_name = g_strdup_printf (HILDON_BANNER_ANIMATION_TMPL, i);
+	frame = gtk_icon_theme_load_icon (theme, icon_name, HILDON_ICON_PIXEL_SIZE_FINGER,
+					  0, &error);
+
+	if (error) {
+	    g_warning ("Icon theme lookup for icon `%s' failed: %s",
+		       icon_name, error->message);
+	    g_error_free (error);
+	    error = NULL;
+	} else {
+		gdk_pixbuf_simple_anim_add_frame (anim, frame);
+	}
+
+	g_object_unref (frame);
+	g_free (icon_name);
+    }
+
+    image = gtk_image_new_from_animation (GDK_PIXBUF_ANIMATION (anim));
+    g_object_unref (anim);
+
+    return image;
+}
+
 /**
  * hildon_banner_show_information:
  * @widget: the #GtkWidget that is the owner of the banner
@@ -1056,28 +1105,11 @@ hildon_banner_show_animation                    (GtkWidget *widget,
                                                  const gchar *text)
 {
     HildonBanner *banner;
-    GtkIconTheme *theme; 
-    GtkIconInfo *info;
     GtkWidget *image_widget;
-    const gchar *filename;
 
     g_return_val_if_fail (text != NULL, NULL);
 
-    /* Find out which animation to use */
-    theme = gtk_icon_theme_get_default ();
-    info = gtk_icon_theme_lookup_icon (theme, HILDON_BANNER_DEFAULT_PROGRESS_ANIMATION,
-            HILDON_ICON_SIZE_STYLUS, 0);
-
-    /* Try to load animation. One could try to optimize this 
-       to avoid loading the default animation during each call */
-    if (info) {
-        filename = gtk_icon_info_get_filename (info);
-        image_widget = gtk_image_new_from_file (filename);
-        gtk_icon_info_free (info);
-    } else {
-        g_warning ("Icon theme lookup for icon failed!");
-        image_widget = NULL;
-    }
+    image_widget = hildon_banner_create_animation ();
 
     /* Prepare banner */
     banner = hildon_banner_get_instance_for_widget (widget, FALSE);
