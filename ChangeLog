@@ -1,5 +1,20 @@
 2009-03-24  Claudio Saavedra  <csaavedra@igalia.com>
 
+	* src/hildon-entry.c
+	(+hildon_entry_show_placeholder),
+	(+hildon_entry_hide_placeholder), Methods to show/hide the placeholder text
+	that replace hildon_entry_update_contents().
+	(hildon_entry_set_text),
+	(hildon_entry_set_placeholder),
+	(hildon_entry_focus_in_event),
+	(hildon_entry_focus_out_event): Determine when it is needed
+	either to show or hide the placeholder and call the above methods.
+
+	Fixes: NB#107471 (hildon_entry_set_text() not setting the text
+	when the placeholder text is already set)
+
+2009-03-24  Claudio Saavedra  <csaavedra@igalia.com>
+
 	* src/hildon-banner.c (+hildon_banner_create_animation): Build a
 	simple GdkPixbufAnim using the new icons for the banner.
 	(hildon_banner_show_animation): Use the above mentioned method to

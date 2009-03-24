@@ -65,36 +65,26 @@ struct                                          _HildonEntryPrivate
     gboolean showing_placeholder;
 };
 
-/* Function used to decide whether to show the placeholder or not */
 static void
-hildon_entry_refresh_contents                   (GtkWidget *entry)
+hildon_entry_show_placeholder (HildonEntry *entry)
 {
     HildonEntryPrivate *priv = HILDON_ENTRY (entry)->priv;
-    gboolean entry_has_focus;
 
-    entry_has_focus = GTK_WIDGET_HAS_FOCUS (entry);
+    priv->showing_placeholder = TRUE;
+    gtk_entry_set_text (GTK_ENTRY (entry), priv->placeholder);
+    hildon_helper_set_logical_color (GTK_WIDGET (entry),
+				     GTK_RC_TEXT, GTK_STATE_NORMAL, "ReversedSecondaryTextColor");
+}
 
-    if (priv->showing_placeholder) {
-        if (entry_has_focus) {
-            /* Remove the placeholder when the widget obtains focus */
-            hildon_helper_set_logical_color (entry, GTK_RC_TEXT, GTK_STATE_NORMAL, "ReversedTextColor");
-            priv->showing_placeholder = FALSE;
-            gtk_entry_set_text (GTK_ENTRY (entry), "");
-        } else {
-            /* Update the placeholder (it may have been changed) */
-            gtk_entry_set_text (GTK_ENTRY (entry), priv->placeholder);
-        }
-    } else {
-        /* Show the placeholder when the widget is empty and has no focus */
-        const gchar *text = gtk_entry_get_text (GTK_ENTRY (entry));
-        if (text[0] == '\0' && !entry_has_focus) {
-            if (priv->placeholder[0] != '\0') {
-                hildon_helper_set_logical_color (entry, GTK_RC_TEXT, GTK_STATE_NORMAL, "ReversedSecondaryTextColor");
-                priv->showing_placeholder = TRUE;
-                gtk_entry_set_text (GTK_ENTRY (entry), priv->placeholder);
-            }
-        }
-    }
+static void
+hildon_entry_hide_placeholder (HildonEntry *entry, const gchar *text)
+{
+    HildonEntryPrivate *priv = HILDON_ENTRY (entry)->priv;
+
+    priv->showing_placeholder = FALSE;
+    gtk_entry_set_text (GTK_ENTRY (entry), text);
+    hildon_helper_set_logical_color (GTK_WIDGET (entry),
+				     GTK_RC_TEXT, GTK_STATE_NORMAL, "ReversedTextColor");
 }
 
 /**
@@ -115,12 +105,11 @@ hildon_entry_set_text                           (HildonEntry *entry,
 {
     g_return_if_fail (HILDON_IS_ENTRY (entry) && text != NULL);
 
-    gtk_widget_set_name (GTK_WIDGET (entry), NULL);
-    gtk_entry_set_text (GTK_ENTRY (entry), text);
-
-    /* If the entry is cleared show the placeholder */
-    if (text[0] == '\0')
-        hildon_entry_refresh_contents (GTK_WIDGET (entry));
+    if (text[0] == '\0' && !GTK_WIDGET_HAS_FOCUS (entry)) {
+	    hildon_entry_show_placeholder (entry);
+    } else {
+	    hildon_entry_hide_placeholder (entry, text);
+    }
 }
 
 /**
@@ -170,7 +159,12 @@ hildon_entry_set_placeholder                    (HildonEntry *entry,
 
     g_free (entry->priv->placeholder);
     entry->priv->placeholder = g_strdup (text);
-    hildon_entry_refresh_contents (GTK_WIDGET (entry));
+
+    /* Show the placeholder if it needs to be updated or if should be shown now. */
+    if (entry->priv->showing_placeholder ||
+        (!GTK_WIDGET_HAS_FOCUS (entry) && gtk_entry_get_text (GTK_ENTRY (entry)) [0] == '\0')) {
+        hildon_entry_show_placeholder (entry);
+    }
 }
 
 /**
@@ -197,7 +191,9 @@ static gboolean
 hildon_entry_focus_in_event                     (GtkWidget     *widget,
                                                  GdkEventFocus *event)
 {
-    hildon_entry_refresh_contents (widget);
+    if (HILDON_ENTRY (widget)->priv->showing_placeholder) {
+	    hildon_entry_hide_placeholder (HILDON_ENTRY (widget), "");
+    }
 
     if (GTK_WIDGET_CLASS (hildon_entry_parent_class)->focus_in_event) {
         return GTK_WIDGET_CLASS (hildon_entry_parent_class)->focus_in_event (widget, event);
@@ -210,7 +206,9 @@ static gboolean
 hildon_entry_focus_out_event                    (GtkWidget     *widget,
                                                  GdkEventFocus *event)
 {
-    hildon_entry_refresh_contents (widget);
+    if (gtk_entry_get_text (GTK_ENTRY (widget)) [0] == '\0') {
+        hildon_entry_show_placeholder (HILDON_ENTRY (widget));
+    }
 
     if (GTK_WIDGET_CLASS (hildon_entry_parent_class)->focus_out_event) {
         return GTK_WIDGET_CLASS (hildon_entry_parent_class)->focus_out_event (widget, event);
