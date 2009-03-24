@@ -1,3 +1,15 @@
+libhildon (2.1.56-1) unstable; urgency=low
+
+  * Fixes: NB#107494 (Items stay selected when clicking and moving
+    away when inside pannable area)
+  * Fixes: NB#103564 (Make hildon animation banner use individual image
+    files as the animation)
+  * Fixes: NB#107471 (hildon_entry_set_text() not setting the text
+    when the placeholder text is already set)
+  * Bump GTK+ dependency to 2:2.12.12-1maemo12.
+
+ -- Claudio Saavedra <csaavedra@igalia.com>  Tue, 24 Mar 2009 16:56:29 +0200
+
 libhildon (2.1.54-1) unstable; urgency=low
 
   Bug fixes:

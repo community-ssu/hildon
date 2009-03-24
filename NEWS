@@ -1,3 +1,12 @@
+[2.1.56 release]
+
+  * Fixes: NB#107494 (Items stay selected when clicking and moving
+    away when inside pannable area)
+  * Fixes: NB#103564 (Make hildon animation banner use individual image
+    files as the animation)
+  * Fixes: NB#107471 (hildon_entry_set_text() not setting the text
+    when the placeholder text is already set)
+
 [2.1.54 release]
 
   Bug fixes:

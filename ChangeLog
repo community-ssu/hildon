@@ -1,5 +1,13 @@
 2009-03-24  Claudio Saavedra  <csaavedra@igalia.com>
 
+	[Release 2.1.56]
+
+	* NEWS: Updates.
+	* configure.ac: Bump version.
+	* debian/changelog: Updates.
+
+2009-03-24  Claudio Saavedra  <csaavedra@igalia.com>
+
 	* src/hildon-entry.c
 	(+hildon_entry_show_placeholder),
 	(+hildon_entry_hide_placeholder), Methods to show/hide the placeholder text
