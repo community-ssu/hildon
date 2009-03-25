@@ -1,3 +1,13 @@
+2009-03-25  Alberto Garcia  <agarcia@igalia.com>
+
+	Patch by Adam Endrodi (adam.endrodi@blumsoft.eu)
+
+	* src/hildon-program.c (hildon_program_update_top_most):
+	Update is-topmost when _MB_CURRENT_APP_WINDOW is 0
+
+	Fixes: NB#106998 (HildonProgram's is-topmost property doesn't
+	change when the user tasks in/out of an application)
+
 2009-03-25  Alejandro Pinheiro Iglesias <apinheiro@igalia.com>
 
 	* configure.ac: added libcangerra-gtk dependency

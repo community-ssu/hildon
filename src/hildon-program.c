@@ -335,7 +335,7 @@ hildon_program_window_list_is_is_topmost        (gpointer data,
 static void
 hildon_program_update_top_most                  (HildonProgram *program)
 {
-    XWMHints *wm_hints;
+    gboolean is_topmost;
     Window active_window;
     HildonProgramPrivate *priv;
 
@@ -343,11 +343,12 @@ hildon_program_update_top_most                  (HildonProgram *program)
     g_assert (priv);
     
     active_window = hildon_window_get_active_window();
+    is_topmost = FALSE;
 
     if (active_window)
     {
       gint xerror;
-      gboolean is_topmost = FALSE;
+      XWMHints *wm_hints;
       
       gdk_error_trap_push ();
       wm_hints = XGetWMHints (GDK_DISPLAY (), active_window);
@@ -360,13 +361,13 @@ hildon_program_update_top_most                  (HildonProgram *program)
         is_topmost = (wm_hints->window_group == priv->window_group);
         XFree (wm_hints);
       }
+    }
 
-      /* Send notification if is_topmost has changed */
-      if (!priv->is_topmost != !is_topmost)
-      {
-        priv->is_topmost = is_topmost;
-        g_object_notify (G_OBJECT (program), "is-topmost");
-      }
+    /* Send notification if is_topmost has changed */
+    if (!priv->is_topmost != !is_topmost)
+    {
+      priv->is_topmost = is_topmost;
+      g_object_notify (G_OBJECT (program), "is-topmost");
     }
 
     /* Check each window if it was is_topmost */
