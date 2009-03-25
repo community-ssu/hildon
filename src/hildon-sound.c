@@ -31,6 +31,7 @@
 #include <unistd.h>
 #include <gconf/gconf-client.h>
 #include <canberra.h>
+#include <canberra-gtk.h>
 
 #include "hildon-sound.h"
 
@@ -76,15 +77,13 @@ hildon_play_system_sound(const gchar *sample)
     volume = ((1.0 - (float)gconf_vol / 2.0)) * (-6.0);
 #endif
 
-    if ((ret = ca_context_create(&ca_con)) != CA_SUCCESS) {
-        g_warning("ca_context_create: %s\n", ca_strerror(ret));
-        return;
+    ca_con = ca_gtk_context_get ();
+
+    if (ca_con == NULL) {
+      g_warning ("ca_gtk_context_get doesn't return a proper context \n");
+      return;
     }
-    if ((ret = ca_context_open(ca_con)) != CA_SUCCESS) {
-        g_warning("ca_context_open: %s\n", ca_strerror(ret));
-        ca_context_destroy(ca_con);
-        return;
-    }
+
     ca_proplist_create(&pl);
     ca_proplist_sets(pl, CA_PROP_MEDIA_FILENAME, sample);
     ca_proplist_setf(pl, CA_PROP_CANBERRA_VOLUME, "%f", volume);
@@ -93,5 +92,4 @@ hildon_play_system_sound(const gchar *sample)
     g_debug("ca_context_play_full (vol %f): %s\n", volume, ca_strerror(ret));
 
     ca_proplist_destroy(pl);
-    ca_context_destroy(ca_con);
 }

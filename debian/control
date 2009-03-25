@@ -2,13 +2,13 @@ Source: libhildon
 Section: x11
 Priority: optional
 Maintainer: Claudio Saavedra <csaavedra@igalia.com>
-Build-Depends: debhelper (>= 5), cdbs, libgtk2.0-dev (>= 2:2.12.12-1maemo12), libcanberra-dev, libxi-dev, libxt-dev, libpng12-dev, libgconf2-dev, gtk-doc-tools, libgtk2.0-doc, libglib2.0-doc
+Build-Depends: debhelper (>= 5), cdbs, libgtk2.0-dev (>= 2:2.12.12-1maemo12), libcanberra-dev, libcanberra-gtk-dev, libxi-dev, libxt-dev, libpng12-dev, libgconf2-dev, gtk-doc-tools, libgtk2.0-doc, libglib2.0-doc
 Standards-Version: 3.6.0
 
 Package: libhildon1-dev
 Section: devel
 Architecture: any
-Depends: libhildon1 (= ${binary:Version}), pkg-config, libgtk2.0-dev (>= 2:2.12.12-1maemo12), libgconf2-dev, libcanberra-dev
+Depends: libhildon1 (= ${binary:Version}), pkg-config, libgtk2.0-dev (>= 2:2.12.12-1maemo12), libgconf2-dev, libcanberra-dev, libcanberra-gtk-dev
 Description: Hildon libraries development files
 
 Package: libhildon1

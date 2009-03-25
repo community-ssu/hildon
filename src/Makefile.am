@@ -18,13 +18,15 @@ libhildon_@API_VERSION_MAJOR@_la_LIBADD = \
 		$(GTK_LIBS) 			\
 	  	$(GCONF_LIBS) 			\
 	  	$(CANBERRA_LIBS)		\
+	  	$(CANBERRAGTK_LIBS)		\
 	  	@HILDON_LT_LDFLAGS@
 
 libhildon_@API_VERSION_MAJOR@_la_CFLAGS	= \
 		$(GTK_CFLAGS) 			\
 		$(GCONF_CFLAGS) 		\
 		$(EXTRA_CFLAGS)			\
-		$(CANBERRA_CFLAGS)
+		$(CANBERRA_CFLAGS)		\
+		$(CANBERRAGTK_CFLAGS)
 
 libhildon_@API_VERSION_MAJOR@_la_SOURCES = \
 		hildon-private.c			\

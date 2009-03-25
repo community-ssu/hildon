@@ -1,3 +1,13 @@
+2009-03-25  Alejandro Pinheiro Iglesias <apinheiro@igalia.com>
+
+	* configure.ac: added libcangerra-gtk dependency
+	* debian/control: added libcanberra-gtk dependency
+	* src/Makefile.am: added libcanberra gtk related flags
+	* src/hildon-sound.c: use ca_gtk_context_get to get a canberra context
+	instead of use it.
+
+	Fixes: NB#106067 (hildon_play_system_sound() play sound only first time called)
+
 2009-03-25  Alberto Garcia  <agarcia@igalia.com>
 
 	* src/hildon-program.c (hildon_program_remove_window)
