@@ -931,7 +931,7 @@ hildon_banner_create_animation (void)
     anim = gdk_pixbuf_simple_anim_new (HILDON_ICON_PIXEL_SIZE_FINGER,
 				       HILDON_ICON_PIXEL_SIZE_FINGER,
 				       HILDON_BANNER_ANIMATION_FRAMERATE);
-    gdk_pixbuf_simple_anim_set_loop (anim, TRUE);
+/*    gdk_pixbuf_simple_anim_set_loop (anim, TRUE); */
     theme = gtk_icon_theme_get_default ();
 
     for (i = 1; i <= HILDON_BANNER_ANIMATION_NFRAMES; i++) {
