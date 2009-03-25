@@ -453,6 +453,7 @@ hildon_program_add_window                       (HildonProgram *self,
     HildonProgramPrivate *priv;
     
     g_return_if_fail (HILDON_IS_PROGRAM (self));
+    g_return_if_fail (HILDON_IS_WINDOW (window));
     
     priv = HILDON_PROGRAM_GET_PRIVATE (self);
     g_assert (priv);
@@ -501,10 +502,13 @@ hildon_program_remove_window                    (HildonProgram *self,
     HildonProgramPrivate *priv;
     
     g_return_if_fail (HILDON_IS_PROGRAM (self));
+    g_return_if_fail (HILDON_IS_WINDOW (window));
     
     priv = HILDON_PROGRAM_GET_PRIVATE (self);
     g_assert (priv);
     
+    g_return_if_fail (g_slist_find (priv->windows, window));
+
     hildon_window_unset_program (window);
 
     priv->windows = g_slist_remove (priv->windows, window);

@@ -1,3 +1,10 @@
+2009-03-25  Alberto Garcia  <agarcia@igalia.com>
+
+	* src/hildon-program.c (hildon_program_remove_window)
+	(hildon_program_add_window): Add checks for the window
+	parameter. Don't decrease the window counter if the window is not
+	registered.
+
 2009-03-24  Alejandro G. Castro  <alex@igalia.com>
 
 	* src/hildon-pannable-area.c,
