@@ -31,11 +31,49 @@
 #include <unistd.h>
 #include <gconf/gconf-client.h>
 #include <canberra.h>
-#include <canberra-gtk.h>
 
 #include "hildon-sound.h"
 
 #define ALARM_GCONF_PATH "/apps/osso/sound/system_alert_volume"
+
+static ca_context *
+hildon_ca_context_get (void);
+
+/*
+ * hildon_ca_context_get:
+ *
+ * hildon maintains a single application-global ca_context object. 
+ *
+ * This functions is based on ca_gtk_context_get
+ *
+ * Returns: a ca_context object
+ */
+ca_context *hildon_ca_context_get (void) {
+    static GStaticPrivate context_private = G_STATIC_PRIVATE_INIT;
+    ca_context *c = NULL;
+    const gchar *name = NULL;
+    gint ret;
+
+    if ((c = g_static_private_get(&context_private)))
+        return c;
+
+    if ((ret = ca_context_create(&c)) != CA_SUCCESS) {
+        g_warning("ca_context_create: %s\n", ca_strerror(ret));
+        return NULL;
+    }
+    if ((ret = ca_context_open(c)) != CA_SUCCESS) {
+        g_warning("ca_context_open: %s\n", ca_strerror(ret));
+        ca_context_destroy(c);
+        return NULL;
+    }
+
+    if ((name = g_get_application_name()))
+        ca_context_change_props(c, CA_PROP_APPLICATION_NAME, name, NULL);
+
+    g_static_private_set(&context_private, c, (GDestroyNotify) ca_context_destroy);
+
+    return c;
+}
 
 /**
  * hildon_play_system_sound:
@@ -77,12 +115,7 @@ hildon_play_system_sound(const gchar *sample)
     volume = ((1.0 - (float)gconf_vol / 2.0)) * (-6.0);
 #endif
 
-    ca_con = ca_gtk_context_get ();
-
-    if (ca_con == NULL) {
-      g_warning ("ca_gtk_context_get doesn't return a proper context \n");
-      return;
-    }
+    ca_con = hildon_ca_context_get ();
 
     ca_proplist_create(&pl);
     ca_proplist_sets(pl, CA_PROP_MEDIA_FILENAME, sample);
