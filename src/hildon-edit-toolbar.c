@@ -63,7 +63,7 @@
 
 G_DEFINE_TYPE                                   (HildonEditToolbar, hildon_edit_toolbar, GTK_TYPE_HBOX);
 
-#define                                         TOOLBAR_LEFT_PADDING 8
+#define                                         TOOLBAR_LEFT_PADDING 24
 #define                                         TOOLBAR_RIGHT_PADDING 8
 
 #define                                         HILDON_EDIT_TOOLBAR_GET_PRIVATE(obj) \
@@ -105,6 +105,26 @@ hildon_edit_toolbar_style_set                   (GtkWidget *widget,
     gtk_widget_set_size_request (GTK_WIDGET (priv->arrow), width, height);
 }
 
+static gboolean
+hildon_edit_toolbar_expose                      (GtkWidget      *widget,
+                                                 GdkEventExpose *event)
+{
+    if (GTK_WIDGET_DRAWABLE (widget)) {
+        gtk_paint_flat_box (widget->style,
+                            widget->window,
+                            GTK_STATE_NORMAL,
+                            GTK_SHADOW_NONE,
+                            &event->area, widget, "edit-toolbar",
+                            widget->allocation.x, widget->allocation.y,
+                            widget->allocation.width, widget->allocation.height);
+    }
+
+    if (GTK_WIDGET_CLASS (hildon_edit_toolbar_parent_class)->expose_event)
+        return GTK_WIDGET_CLASS (hildon_edit_toolbar_parent_class)->expose_event (widget, event);
+
+    return FALSE;
+}
+
 static void
 hildon_edit_toolbar_class_init                  (HildonEditToolbarClass *klass)
 {
@@ -112,6 +132,7 @@ hildon_edit_toolbar_class_init                  (HildonEditToolbarClass *klass)
     GtkWidgetClass *widget_class = (GtkWidgetClass *)klass;
 
     widget_class->style_set = hildon_edit_toolbar_style_set;
+    widget_class->expose_event = hildon_edit_toolbar_expose;
 
     g_type_class_add_private (klass, sizeof (HildonEditToolbarPrivate));
 

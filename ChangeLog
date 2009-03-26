@@ -1,3 +1,15 @@
+2009-03-26  Alberto Garcia  <agarcia@igalia.com>
+
+	Patch by Daniel Borgmann (danielb@openismus.com)
+
+	* src/hildon-edit-toolbar.c:
+	Adjust the left padding.
+	(hildon_edit_toolbar_class_init, +hildon_edit_toolbar_expose):
+	Paint background of the edit toolbar.
+
+	Fixes: NB#107897 (Patch to make editmodetoolbar background
+	themeable and adjust margin)
+
 2009-03-25  Alberto Garcia  <agarcia@igalia.com>
 
 	Patch by Adam Endrodi (adam.endrodi@blumsoft.eu)
