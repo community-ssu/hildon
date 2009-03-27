@@ -1,3 +1,8 @@
+2009-03-27  Claudio Saavedra  <csaavedra@igalia.com>
+
+	* src/hildon-sound.c (hildon_ca_context_get): Mark function as static and
+	coding style fixes.
+
 2009-03-26  Alejandro Pinheiro Iglesias <apinheiro@igalia.com>
 
 	* configure.ac: removed libcangerra-gtk dependency

@@ -36,19 +36,20 @@
 
 #define ALARM_GCONF_PATH "/apps/osso/sound/system_alert_volume"
 
-static ca_context *
-hildon_ca_context_get (void);
+static ca_context *hildon_ca_context_get (void);
 
 /*
  * hildon_ca_context_get:
  *
- * hildon maintains a single application-global ca_context object. 
+ * hildon maintains a single application-global ca_context object.
  *
  * This functions is based on ca_gtk_context_get
  *
  * Returns: a ca_context object
  */
-ca_context *hildon_ca_context_get (void) {
+static ca_context *
+hildon_ca_context_get (void)
+{
     static GStaticPrivate context_private = G_STATIC_PRIVATE_INIT;
     ca_context *c = NULL;
     const gchar *name = NULL;
