@@ -1,3 +1,13 @@
+[2.1.58 release]
+
+  * Fixes: NB#107583 (Hildon app menu crashes in various applications)
+  * Fixes: NB#106067 (hildon_play_system_sound() play sound only first
+    time called)
+  * Fixes: NB#106998 (HildonProgram's is-topmost property doesn't
+    change when the user tasks in/out of an application)
+  * Fixes: NB#107897 (Patch to make editmodetoolbar background
+    themeable and adjust margin)
+
 [2.1.56 release]
 
   * Fixes: NB#107494 (Items stay selected when clicking and moving

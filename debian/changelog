@@ -1,3 +1,15 @@
+libhildon (2.1.58-1) unstable; urgency=low
+
+  * Fixes: NB#107583 (Hildon app menu crashes in various applications)
+  * Fixes: NB#106067 (hildon_play_system_sound() play sound only first
+    time called)
+  * Fixes: NB#106998 (HildonProgram's is-topmost property doesn't
+    change when the user tasks in/out of an application)
+  * Fixes: NB#107897 (Patch to make editmodetoolbar background
+    themeable and adjust margin)
+
+ -- Claudio Saavedra <csaavedra@igalia.com>  Mon, 30 Mar 2009 11:31:07 +0300
+
 libhildon (2.1.56-2) unstable; urgency=low
 
   * Do not use new gtk+ API yet to avoid depending on a new GTK+ version.
