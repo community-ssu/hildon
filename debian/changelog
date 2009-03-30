@@ -1,3 +1,9 @@
+libhildon (2.1.56-2) unstable; urgency=low
+
+  * Do not use new gtk+ API yet to avoid depending on a new GTK+ version.
+
+ -- Claudio Saavedra <csaavedra@igalia.com>  Wed, 25 Mar 2009 20:59:01 +0200
+
 libhildon (2.1.56-1) unstable; urgency=low
 
   * Fixes: NB#107494 (Items stay selected when clicking and moving
