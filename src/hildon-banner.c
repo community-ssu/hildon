@@ -107,9 +107,6 @@ enum
 
 static GtkWidget*                               global_timed_banner = NULL;
 
-static Window 
-get_current_app_window                          (void);
-
 static GQuark 
 hildon_banner_timed_quark                       (void);
 
@@ -191,38 +188,6 @@ hildon_banner_get_instance_for_widget           (GtkWidget *widget,
                                                  gboolean timed);
 
 G_DEFINE_TYPE (HildonBanner, hildon_banner, GTK_TYPE_WINDOW)
-
-/* copy/paste from old infoprint implementation: Use matchbox 
-   properties to find the topmost application window */
-static Window 
-get_current_app_window                          (void)
-{
-    unsigned long n;
-    unsigned long extra;
-    int format;
-    int status;
-
-    Atom atom_current_app_window = gdk_x11_get_xatom_by_name ("_MB_CURRENT_APP_WINDOW");
-    Atom realType;
-    Window win_result = None;
-    guchar *data_return = NULL;
-
-    status = XGetWindowProperty (GDK_DISPLAY(), GDK_ROOT_WINDOW (), 
-            atom_current_app_window, 0L, 16L,
-            0, XA_WINDOW, &realType, &format,
-            &n, &extra, 
-            &data_return);
-
-    if (status == Success && realType == XA_WINDOW && format == 32 && n == 1 && data_return != NULL)
-    {
-        win_result = ((Window*) data_return)[0];
-    } 
-
-    if (data_return) 
-        XFree (data_return);    
-
-    return win_result;
-}
 
 static GQuark 
 hildon_banner_timed_quark                       (void)

@@ -1,3 +1,8 @@
+2009-04-01  Alberto Garcia  <agarcia@igalia.com>
+
+	* src/hildon-banner.c (-get_current_app_window):
+	Remove unused function.
+
 2009-04-01  Alejandro G. Castro  <alex@igalia.com>
 
 	* src/hildon-pannable-area.c: Modified the documentation of the
