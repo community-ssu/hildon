@@ -1,3 +1,18 @@
+2009-03-30  Alberto Garcia  <agarcia@igalia.com>
+
+	* src/hildon-defines.h: Define HILDON_WINDOW_TITLEBAR_HEIGHT
+
+	* src/hildon-banner.c
+	Change HILDON_BANNER_WINDOW_Y to HILDON_WINDOW_TITLEBAR_HEIGHT.
+	(hildon_banner_map)
+	Make sure that the banner is correctly placed the first time it's
+	shown.
+	(hildon_banner_check_position, -check_fullscreen_state):
+	Show the banner in the same place no matter if the window is in
+	fullscreen mode or not.
+
+	Fixes: NB#107386 (Odd stacking behaviour for information banners)
+
 2009-04-01  Claudio Saavedra  <csaavedra@igalia.com>
 
 	* src/hildon-touch-selector.c (_default_print_func): reorder

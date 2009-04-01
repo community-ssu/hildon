@@ -90,6 +90,8 @@ G_BEGIN_DECLS
 
 #define                                         HILDON_MARGIN_TRIPLE 24
 
+#define                                         HILDON_WINDOW_TITLEBAR_HEIGHT 56
+
 /* Hard keys */
 
 #define                                         HILDON_HARDKEY_UP GDK_Up

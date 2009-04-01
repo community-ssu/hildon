@@ -70,9 +70,7 @@
 
 #define                                         HILDON_BANNER_WINDOW_X 0
 
-#define                                         HILDON_BANNER_WINDOW_Y 73
-
-#define                                         HILDON_BANNER_WINDOW_FULLSCREEN_Y 20
+#define                                         HILDON_BANNER_WINDOW_Y HILDON_WINDOW_TITLEBAR_HEIGHT
 
 /* max widths */
 
@@ -111,9 +109,6 @@ static GtkWidget*                               global_timed_banner = NULL;
 
 static Window 
 get_current_app_window                          (void);
-
-static gboolean 
-check_fullscreen_state                          (Window window);
 
 static GQuark 
 hildon_banner_timed_quark                       (void);
@@ -227,53 +222,6 @@ get_current_app_window                          (void)
         XFree (data_return);    
 
     return win_result;
-}
-
-/* Checks if a window is in fullscreen state or not. This
-   information is needed when banners are positioned on screen.
-   copy/paste from old infoprint implementation.  */
-static gboolean 
-check_fullscreen_state                          (Window window)
-{
-    unsigned long n;
-    unsigned long extra;
-    int format, status, i; 
-    guchar *data_return = NULL;
-
-    Atom realType;
-    Atom atom_window_state = gdk_x11_get_xatom_by_name ("_NET_WM_STATE");
-    Atom atom_fullscreen   = gdk_x11_get_xatom_by_name ("_NET_WM_STATE_FULLSCREEN");
-
-    if (window == None)
-        return FALSE;
-
-    /* in some cases XGetWindowProperty seems to generate BadWindow,
-       so at the moment this function does not always work perfectly */
-    gdk_error_trap_push ();
-    status = XGetWindowProperty (GDK_DISPLAY (), window,
-            atom_window_state, 0L, 1000000L,
-            0, XA_ATOM, &realType, &format,
-            &n, &extra, &data_return);
-
-    gdk_flush ();
-
-    if (gdk_error_trap_pop ())
-        return FALSE;
-
-    if (status == Success && realType == XA_ATOM && format == 32 && n > 0)
-    {
-        for (i=0; i < n; i++)
-            if  (((Atom*)data_return)[i] && ((Atom*)data_return)[i] == atom_fullscreen)
-            {
-                if (data_return) XFree (data_return);
-                return TRUE;
-            }
-    }
-
-    if (data_return) 
-        XFree (data_return);
-
-    return FALSE;
 }
 
 static GQuark 
@@ -605,6 +553,8 @@ hildon_banner_map                               (GtkWidget *widget)
         /* Make the banner non-temporary _after_ mapping it, to avoid
          * being closed by other non-temporary windows */
         gtk_window_set_is_temporary (GTK_WINDOW (widget), FALSE);
+
+        hildon_banner_check_position (widget);
     }
 }
 #endif
@@ -733,8 +683,7 @@ hildon_banner_check_position                    (GtkWidget *widget)
 
     x = HILDON_BANNER_WINDOW_X;
 
-    y = check_fullscreen_state (get_current_app_window ()) ? 
-        HILDON_BANNER_WINDOW_FULLSCREEN_Y : HILDON_BANNER_WINDOW_Y;
+    y = HILDON_BANNER_WINDOW_Y;
 
     gtk_window_move (GTK_WINDOW (widget), x, y);
 }
