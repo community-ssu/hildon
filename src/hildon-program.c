@@ -354,7 +354,11 @@ hildon_program_update_top_most                  (HildonProgram *program)
       wm_hints = XGetWMHints (GDK_DISPLAY (), active_window);
       xerror = gdk_error_trap_pop ();
       if (xerror)
+      {
+        if (wm_hints)
+          XFree (wm_hints);
         return;
+      }
 
       if (wm_hints)
       {

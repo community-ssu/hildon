@@ -1,5 +1,12 @@
 2009-04-01  Alberto Garcia  <agarcia@igalia.com>
 
+	* src/hildon-program.c (hildon_program_update_top_most):
+	Fix memory leak.
+
+	Fixes: NB#109179 (Memory leak in Hildon program)
+
+2009-04-01  Alberto Garcia  <agarcia@igalia.com>
+
 	* src/hildon-banner.c (-get_current_app_window):
 	Remove unused function.
 
