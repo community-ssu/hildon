@@ -1,3 +1,11 @@
+2009-05-15  Alberto Garcia  <agarcia@igalia.com>
+
+	* hildon/hildon-window.c (hildon_window_size_request):
+	Always request the full size of the screen (minus the title bar if
+	not in fullscreen mode).
+
+	Fixes: NB#107486 (HildonWindow should size itself properly)
+
 2009-05-14  Claudio Saavedra  <csaavedra@igalia.com>
 
 	* hildon/hildon-note-private.h: Add idle_handler to the private data.

@@ -689,45 +689,29 @@ static void
 hildon_window_size_request                      (GtkWidget *widget, 
                                                  GtkRequisition *requisition)
 {
+    GdkScreen *screen = gtk_widget_get_screen (widget);
     HildonWindowPrivate *priv = HILDON_WINDOW_GET_PRIVATE (widget);
+    GtkWidget *child;
+    GtkRequisition req;
     g_assert (priv);
 
-    GtkWidget *child = GTK_BIN (widget)->child;
-    GtkRequisition req2 = { 0 };
-    gint border_width = GTK_CONTAINER(widget)->border_width;
+    child = gtk_bin_get_child (GTK_BIN (widget));
 
-    if (! priv->borders)
-    {
-        hildon_window_get_borders (HILDON_WINDOW (widget));
-    }
+    if (child != NULL && GTK_WIDGET_VISIBLE (child))
+        gtk_widget_size_request (child, &req);
 
-    if (child)
-        gtk_widget_size_request (child, requisition);
-
-    if (priv->vbox != NULL)
-        gtk_widget_size_request (priv->vbox, &req2);
-
-    requisition->height += req2.height;
-    requisition->width = MAX (requisition->width, req2.width);
+    if (priv->vbox != NULL && GTK_WIDGET_VISIBLE (priv->vbox))
+        gtk_widget_size_request (priv->vbox, &req);
 
     if (priv->edit_toolbar != NULL && GTK_WIDGET_VISIBLE (priv->edit_toolbar))
-    {
-        GtkRequisition req;
         gtk_widget_size_request (priv->edit_toolbar, &req);
-        requisition->height += req.height;
-        requisition->width = MAX (requisition->width, req.width);
-    }
 
-    requisition->width  += 2 * border_width;
-    requisition->height += 2 * border_width;
+    /* Request the full size of the screen */
+    requisition->width = gdk_screen_get_width (screen);
+    requisition->height = gdk_screen_get_height (screen);
 
     if (! priv->fullscreen)
-    {
-        requisition->height += priv->borders->top;
-        if (req2.height == 0)
-            requisition->height += priv->borders->bottom;
-        requisition->width += priv->borders->left + priv->borders->right;
-    }
+        requisition->height -= HILDON_WINDOW_TITLEBAR_HEIGHT;
 }
 
 static void
