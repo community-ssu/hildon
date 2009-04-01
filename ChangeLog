@@ -1,3 +1,16 @@
+2009-04-01  Alberto Garcia  <agarcia@igalia.com>
+
+	* src/hildon-app-menu-private.h
+	* src/hildon-app-menu.c
+	(hildon_app_menu_class_init):
+	Bring back the 'external-border' style property
+	(hildon_app_menu_class_init, hildon_app_menu_init)
+	(hildon_app_menu_apply_style, hildon_app_menu_size_request):
+	Set a fixed width-request for the menu, independent of the number
+	of items.
+
+	Fixes: NB#94957 (Smoothly opened application menu)
+
 2009-03-30  Alberto Garcia  <agarcia@igalia.com>
 
 	* src/hildon-defines.h: Define HILDON_WINDOW_TITLEBAR_HEIGHT

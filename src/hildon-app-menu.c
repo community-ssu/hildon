@@ -728,6 +728,17 @@ grab_transfer_window_get                        (GtkWidget *widget)
 }
 
 static void
+hildon_app_menu_size_request                    (GtkWidget      *widget,
+                                                 GtkRequisition *requisition)
+{
+    HildonAppMenuPrivate *priv = HILDON_APP_MENU_GET_PRIVATE (widget);
+
+    GTK_WIDGET_CLASS (hildon_app_menu_parent_class)->size_request (widget, requisition);
+
+    requisition->width = priv->width_request;
+}
+
+static void
 hildon_app_menu_realize                         (GtkWidget *widget)
 {
     Atom property, window_type;
@@ -768,8 +779,9 @@ hildon_app_menu_unrealize                       (GtkWidget *widget)
 static void
 hildon_app_menu_apply_style                     (GtkWidget *widget)
 {
+    GdkScreen *screen;
     guint horizontal_spacing, vertical_spacing, filter_vertical_spacing;
-    guint inner_border;
+    guint inner_border, external_border;
     HildonAppMenuPrivate *priv;
 
     priv = HILDON_APP_MENU_GET_PRIVATE (widget);
@@ -779,6 +791,7 @@ hildon_app_menu_apply_style                     (GtkWidget *widget)
                           "vertical-spacing", &vertical_spacing,
                           "filter-vertical-spacing", &filter_vertical_spacing,
                           "inner-border", &inner_border,
+                          "external-border", &external_border,
                           NULL);
 
     /* Set spacings */
@@ -788,6 +801,15 @@ hildon_app_menu_apply_style                     (GtkWidget *widget)
 
     /* Set inner border */
     gtk_container_set_border_width (GTK_CONTAINER (widget), inner_border);
+
+    /* Compute width request */
+    screen = gtk_widget_get_screen (widget);
+    if (gdk_screen_get_width (screen) < gdk_screen_get_height (screen)) {
+        external_border = 0;
+    }
+    priv->width_request = gdk_screen_get_width (screen) - external_border * 2;
+    gtk_window_move (GTK_WINDOW (widget), external_border, 0);
+    gtk_widget_queue_resize (widget);
 }
 
 static void
@@ -963,6 +985,7 @@ hildon_app_menu_init                            (HildonAppMenu *menu)
     priv->buttons = NULL;
     priv->filters = NULL;
     priv->columns = 2;
+    priv->width_request = -1;
     priv->find_intruder_idle_id = 0;
     priv->hide_idle_id = 0;
 
@@ -1043,6 +1066,7 @@ hildon_app_menu_class_init                      (HildonAppMenuClass *klass)
     widget_class->button_release_event = hildon_app_menu_button_release;
     widget_class->style_set = hildon_app_menu_style_set;
     widget_class->delete_event = hildon_app_menu_delete_event_handler;
+    widget_class->size_request = hildon_app_menu_size_request;
 
     g_type_class_add_private (klass, sizeof (HildonAppMenuPrivate));
 
@@ -1080,5 +1104,15 @@ hildon_app_menu_class_init                      (HildonAppMenuClass *klass)
             "Border between menu edges and buttons",
             "Border between menu edges and buttons",
             0, G_MAXUINT, 16,
+            G_PARAM_READABLE));
+
+    gtk_widget_class_install_style_property (
+        widget_class,
+        g_param_spec_uint (
+            "external-border",
+            "Border between menu and screen edges (in horizontal mode)",
+            "Border between the right and left edges of the menu and "
+            "the screen edges (in horizontal mode)",
+            0, G_MAXUINT, 50,
             G_PARAM_READABLE));
 }

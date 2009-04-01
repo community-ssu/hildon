@@ -36,6 +36,7 @@ struct                                          _HildonAppMenuPrivate
     GList *buttons;
     GList *filters;
     guint columns;
+    gint width_request;
     guint find_intruder_idle_id;
     guint hide_idle_id;
 };
