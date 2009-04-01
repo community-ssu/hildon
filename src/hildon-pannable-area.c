@@ -515,7 +515,7 @@ hildon_pannable_area_class_init (HildonPannableAreaClass * klass)
  				   g_param_spec_boolean ("initial-hint",
  							 "Initial hint",
  							 "Whether to hint the user about the pannability of the container.",
- 							 FALSE,
+ 							 TRUE,
 							 G_PARAM_READWRITE |
  							 G_PARAM_CONSTRUCT));
 
@@ -1442,33 +1442,19 @@ hildon_pannable_area_initial_effect (GtkWidget * widget)
   gboolean hscroll_visible, vscroll_visible;
 
   if (priv->initial_hint) {
-    if (((priv->vovershoot_max != 0)||(priv->hovershoot_max != 0)) &&
-        ((priv->mode == HILDON_PANNABLE_AREA_MODE_AUTO) ||
-         (priv->mode == HILDON_PANNABLE_AREA_MODE_ACCEL))) {
-      vscroll_visible = (priv->vadjust->upper - priv->vadjust->lower >
-                 priv->vadjust->page_size);
-      hscroll_visible = (priv->hadjust->upper - priv->hadjust->lower >
-                 priv->hadjust->page_size);
-      /* If scrolling is possible in both axes, only hint about scrolling in
-         the vertical one. */
-      if ((vscroll_visible)&&(priv->vovershoot_max != 0)) {
-        priv->overshot_dist_y = priv->vovershoot_max;
-        priv->vel_y = priv->vmax_overshooting;
-      } else if ((hscroll_visible)&&(priv->hovershoot_max != 0)) {
-        priv->overshot_dist_x = priv->hovershoot_max;
-        priv->vel_x = priv->vmax_overshooting;
-      }
 
-      if (vscroll_visible || hscroll_visible) {
-        if (!priv->idle_id)
-          priv->idle_id = gdk_threads_add_timeout ((gint) (1000.0 / (gdouble) priv->sps),
-                                                   (GSourceFunc)
-                                                   hildon_pannable_area_timeout, widget);
-      }
-    }
+    vscroll_visible = (priv->vadjust->upper - priv->vadjust->lower >
+                       priv->vadjust->page_size);
+    hscroll_visible = (priv->hadjust->upper - priv->hadjust->lower >
+                       priv->hadjust->page_size);
 
-    if (priv->vscroll_visible || priv->hscroll_visible)
+    if (priv->vscroll_visible || priv->hscroll_visible) {
+
+      priv->scroll_indicator_event_interrupt = 0;
+      priv->scroll_delay_counter = priv->scrollbar_fade_delay;
+
       hildon_pannable_area_launch_fade_timeout (HILDON_PANNABLE_AREA (widget), 1.0);
+    }
   }
 }
 

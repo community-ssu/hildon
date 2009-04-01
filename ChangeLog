@@ -1,3 +1,14 @@
+2009-04-01  Alejandro G. Castro  <alex@igalia.com>
+
+	* src/hildon-pannable-area.c,
+	(hildon_pannable_area_class_init): Changed the default value of
+	the initial_hint to TRUE.
+	(hildon_pannable_area_initial_effect): Changed the initial effect,
+	not the effect is just the fade-out of the scrollbars.
+
+	Fixes: NB#107775 (No scrollbars can be seen when several items are
+	available in a dialog)
+
 2009-04-01  Alberto Garcia  <agarcia@igalia.com>
 
 	* src/hildon-program.c (hildon_program_update_top_most):
