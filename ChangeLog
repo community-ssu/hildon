@@ -1,3 +1,10 @@
+2009-04-01  Claudio Saavedra  <csaavedra@igalia.com>
+
+	* src/hildon-touch-selector.c (_default_print_func): Plug a memory leak
+	for multicolumn selectors.
+
+	Fixes: NB#109099 (Memory leak in Hildon touch selector)
+
 2009-03-30  Claudio Saavedra  <csaavedra@igalia.com>
 
 	[Release 2.1.58]

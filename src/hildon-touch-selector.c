@@ -609,6 +609,8 @@ _default_print_func (HildonTouchSelector * selector, gpointer user_data)
       if (i != 0) {
         aux = g_strconcat (result, ":", current_string, NULL);
         g_free (result);
+	g_free (current_string);
+	current_string = NULL;
         result = aux;
       } else {
         result = current_string;
