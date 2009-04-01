@@ -1,5 +1,10 @@
 2009-04-01  Claudio Saavedra  <csaavedra@igalia.com>
 
+	* src/hildon-touch-selector.c (_default_print_func): reorder
+	concatenation for clarity.
+
+2009-04-01  Claudio Saavedra  <csaavedra@igalia.com>
+
 	* src/hildon-touch-selector.c (_default_print_func): Plug a memory leak
 	for multicolumn selectors.
 
