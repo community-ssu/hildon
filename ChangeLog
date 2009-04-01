@@ -1,3 +1,11 @@
+2009-04-01  Alejandro G. Castro  <alex@igalia.com>
+
+	* src/hildon-pannable-area.c: Modified the documentation of the
+	get adjustments functions to explain the problem of using the
+	adjustment directly.
+	(hildon_pannable_area_class_init): Improved the explanation about
+	the velocity.
+
 2009-04-01  Alberto Garcia  <agarcia@igalia.com>
 
 	* src/hildon-app-menu-private.h

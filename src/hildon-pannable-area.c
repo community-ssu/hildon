@@ -364,7 +364,7 @@ hildon_pannable_area_class_init (HildonPannableAreaClass * klass)
 				   g_param_spec_double ("velocity_min",
 							"Minimum scroll velocity",
 							"Minimum distance the child widget should scroll "
-							"per 'frame', in pixels.",
+							"per 'frame', in pixels per frame.",
 							0, G_MAXDOUBLE, 0,
 							G_PARAM_READWRITE |
 							G_PARAM_CONSTRUCT));
@@ -374,7 +374,7 @@ hildon_pannable_area_class_init (HildonPannableAreaClass * klass)
 				   g_param_spec_double ("velocity_max",
 							"Maximum scroll velocity",
 							"Maximum distance the child widget should scroll "
-							"per 'frame', in pixels.",
+							"per 'frame', in pixels per frame.",
 							0, G_MAXDOUBLE, 500,
 							G_PARAM_READWRITE |
 							G_PARAM_CONSTRUCT));
@@ -384,7 +384,7 @@ hildon_pannable_area_class_init (HildonPannableAreaClass * klass)
 				   g_param_spec_double ("velocity_overshooting_max",
 							"Maximum scroll velocity when overshooting",
 							"Maximum distance the child widget should scroll "
-							"per 'frame', in pixels when it overshoots after hitting the edge.",
+							"per 'frame', in pixels per frame when it overshoots after hitting the edge.",
 							0, G_MAXDOUBLE, 80,
 							G_PARAM_READWRITE |
 							G_PARAM_CONSTRUCT));
@@ -3107,7 +3107,11 @@ hildon_pannable_get_child_widget_at (HildonPannableArea *area,
  * hildon_pannable_area_get_hadjustment:
  * @area: A #HildonPannableArea.
  *
- * Returns the horizontal adjustment
+ * Returns the horizontal adjustment. This adjustment is the internal
+ * widget adjustment used to control the animations. Do not modify it
+ * directly to change the position of the pannable, to do that use the
+ * pannable API. If you modify the object directly it could cause
+ * artifacts in the animations.
  *
  * returns: The horizontal #GtkAdjustment
  **/
@@ -3124,7 +3128,11 @@ hildon_pannable_area_get_hadjustment            (HildonPannableArea *area)
  * hildon_pannable_area_get_vadjustment:
  * @area: A #HildonPannableArea.
  *
- * Returns the vertical adjustment
+ * Returns the vertical adjustment. This adjustment is the internal
+ * widget adjustment used to control the animations. Do not modify it
+ * directly to change the position of the pannable, to do that use the
+ * pannable API. If you modify the object directly it could cause
+ * artifacts in the animations.
  *
  * returns: The vertical #GtkAdjustment
  **/
