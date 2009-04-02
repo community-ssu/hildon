@@ -62,7 +62,7 @@
 
 #define                                         DEVICELOCK_OK _("wdgt_bd_done")
 
-#define                                         DEVICELOCK_TITLE _("secu_application_title")
+#define                                         DEVICELOCK_TITLE dgettext("osso-system-lock", "secu_application_title")
 
 #define                                         DEVICELOCK_MAX_CHAR_REACHED c_("ckdg_ib_maximum_characters_reached")
         

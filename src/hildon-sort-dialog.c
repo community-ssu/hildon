@@ -302,9 +302,6 @@ hildon_sort_dialog_init                         (HildonSortDialog * dialog)
     (void) gtk_dialog_add_button (GTK_DIALOG(dialog),
             _("wdgt_bd_sort"),
             GTK_RESPONSE_OK);
-    (void) gtk_dialog_add_button (GTK_DIALOG(dialog),
-            _("ckdg_bd_sort_dialog_cancel"),
-            GTK_RESPONSE_CANCEL);
     /* FIXME: Hardcoded sizes are bad */
     gtk_window_resize (GTK_WINDOW (dialog), 370, 100);
     gtk_widget_show_all (GTK_DIALOG (dialog)->vbox);

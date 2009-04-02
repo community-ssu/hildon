@@ -1,3 +1,14 @@
+2009-04-02  Claudio Saavedra  <csaavedra@igalia.com>
+
+	* debian/control: Depend on osso-system-lock localization package.
+	* src/hildon-code-dialog.c: Obtain the secu_application_title
+	translation from osso-system-lock.
+	* src/hildon-get-password-dialog.c (create_contents): Do not mark
+	for translation the atk related strings, that's not necessary.
+	* src/hildon-set-password-dialog.c (create_contents): Ditto.
+	* src/hildon-sort-dialog.c (hildon_sort_dialog_init): Remove the
+	cancel button, it is not required.
+
 2009-04-02  Alejandro G. Castro  <alex@igalia.com>
 
 	* src/hildon-pannable-area.c,

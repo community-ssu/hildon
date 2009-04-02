@@ -423,7 +423,7 @@ create_contents                                 (HildonGetPasswordDialog *dialog
     control = gtk_entry_new ();
     if ((atk_aux = gtk_widget_get_accessible(control)))
       {
-	atk_object_set_name(atk_aux, _("Passwd"));
+	atk_object_set_name(atk_aux, "Passwd");
       }
 
     gtk_entry_set_width_chars (GTK_ENTRY (control), 20);

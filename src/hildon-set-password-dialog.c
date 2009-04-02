@@ -280,7 +280,7 @@ create_contents                                 (HildonSetPasswordDialog *dialog
     priv->pwd1st_entry = gtk_entry_new ();
     if ((atk_aux = gtk_widget_get_accessible(priv->pwd1st_entry)))
       {
-	atk_object_set_name(atk_aux, _("Old Passwd"));
+	atk_object_set_name(atk_aux, "Old Passwd");
       }
     
 
@@ -305,7 +305,7 @@ create_contents                                 (HildonSetPasswordDialog *dialog
     priv->pwd2nd_entry = gtk_entry_new();
     if ((atk_aux = gtk_widget_get_accessible(priv->pwd2nd_entry)))
       {
-	atk_object_set_name(atk_aux, _("New Passwd"));
+	atk_object_set_name(atk_aux, "New Passwd");
       }
 
 
