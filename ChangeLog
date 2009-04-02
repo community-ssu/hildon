@@ -1,3 +1,21 @@
+2009-04-02  Alberto Garcia  <agarcia@igalia.com>
+
+	* doc/hildon-sections.txt
+	* src/hildon-window-private.h
+	* src/hildon-window.h
+	* src/hildon-window.c (hildon_window_class_init)
+	(hildon_window_init, hildon_window_finalize)
+	(hildon_window_realize, hildon_window_get_property)
+	(hildon_window_set_property, hildon_window_update_markup)
+	(hildon_window_get_markup, hildon_window_set_markup):
+	New "markup" property and hildon_window_{get,set}_markup() methods.
+
+	* examples/hildon-stackable-window-example.c (new_window):
+	Update example to use hildon_window_set_markup()
+
+	Fixes: NB#106375 (Need API to retitle a window with a title
+	including markup)
+
 2009-04-01  Alejandro G. Castro  <alex@igalia.com>
 
 	* src/hildon-pannable-area.c,

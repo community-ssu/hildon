@@ -695,6 +695,8 @@ hildon_window_add_toolbar
 hildon_window_remove_toolbar
 hildon_window_set_edit_toolbar
 hildon_window_get_is_topmost
+hildon_window_set_markup
+hildon_window_get_markup
 <SUBSECTION Standard>
 HILDON_WINDOW
 HILDON_IS_WINDOW

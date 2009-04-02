@@ -45,6 +45,8 @@ struct                                          _HildonWindowPrivate
 
     GtkAllocation allocation;
 
+    gchar *markup;
+
     guint fullscreen;
     guint is_topmost;
     guint escape_timeout;

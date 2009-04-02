@@ -62,6 +62,11 @@ new_window                                      (HildonStackableWindow *parent)
     gtk_window_set_title (GTK_WINDOW (window), text);
     g_free (text);
 
+    /* Marked up window title */
+    text = g_strdup_printf ("Stack number <i>%d</i> - window <i>%d</i>", stack_number, win_number);
+    hildon_window_set_markup (HILDON_WINDOW (window), text);
+    g_free (text);
+
     /* Main label */
     text = g_strdup_printf ("Stack number %d\nWindow number %d", stack_number, win_number);
     label = gtk_label_new (text);

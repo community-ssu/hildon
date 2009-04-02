@@ -128,6 +128,13 @@ hildon_window_set_edit_toolbar                  (HildonWindow      *self,
 gboolean    
 hildon_window_get_is_topmost                    (HildonWindow *self);
 
+const gchar *
+hildon_window_get_markup                        (HildonWindow *window);
+
+void
+hildon_window_set_markup                        (HildonWindow *window,
+                                                 const gchar  *markup);
+
 G_END_DECLS
 
 #endif                                          /* __HILDON_WINDOW_H__ */

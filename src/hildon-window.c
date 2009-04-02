@@ -158,6 +158,15 @@ hildon_window_get_property                      (GObject *object,
                                                  GParamSpec *pspec);
 
 static void
+hildon_window_set_property                      (GObject      *object,
+                                                 guint         property_id,
+                                                 const GValue *value,
+                                                 GParamSpec   *pspec);
+
+static void
+hildon_window_update_markup                     (HildonWindow *window);
+
+static void
 hildon_window_destroy                           (GtkObject *obj);
 
 static void
@@ -238,7 +247,8 @@ paint_edit_toolbar                              (GtkWidget *widget,
 enum
 {
     PROP_0,
-    PROP_IS_TOPMOST
+    PROP_IS_TOPMOST,
+    PROP_MARKUP
 };
 
 enum
@@ -259,6 +269,7 @@ hildon_window_class_init                        (HildonWindowClass * window_clas
     GtkContainerClass *container_class  = GTK_CONTAINER_CLASS (window_class);
 
     object_class->get_property          = hildon_window_get_property;
+    object_class->set_property          = hildon_window_set_property;
     object_class->notify                = hildon_window_notify;
     widget_class->size_allocate         = hildon_window_size_allocate;
     widget_class->size_request          = hildon_window_size_request;
@@ -297,6 +308,13 @@ hildon_window_class_init                        (HildonWindowClass * window_clas
                 "manager",
                 FALSE,
                 G_PARAM_READABLE));
+
+    g_object_class_install_property (object_class, PROP_MARKUP,
+            g_param_spec_string ("markup",
+                "Marked up text for the window title",
+                "Marked up text for the window title",
+                NULL,
+                G_PARAM_READWRITE));
 
     gtk_widget_class_install_style_property (widget_class,
             g_param_spec_boxed ("borders",
@@ -338,6 +356,7 @@ hildon_window_init                              (HildonWindow *self)
     priv->borders = NULL;
     priv->toolbar_borders = NULL;
     priv->escape_timeout = 0;
+    priv->markup = NULL;
 
     priv->fullscreen = FALSE;
 
@@ -361,6 +380,8 @@ hildon_window_finalize                          (GObject * obj_self)
     priv = HILDON_WINDOW_GET_PRIVATE (obj_self);
     g_assert (priv != NULL);
     
+    g_free (priv->markup);
+
     if (priv->escape_timeout) {
       g_source_remove (priv->escape_timeout);
       priv->escape_timeout = 0;
@@ -426,6 +447,9 @@ hildon_window_realize                           (GtkWidget *widget)
         hildon_window_set_can_hibernate_property (HILDON_WINDOW (widget),
                 &can_hibernate);
     }
+
+    if (priv->markup)
+        hildon_window_update_markup (HILDON_WINDOW (widget));
 
     /* Update the topmost status */
     active_window = hildon_window_get_active_window();
@@ -495,8 +519,30 @@ hildon_window_get_property                      (GObject *object,
             g_value_set_boolean (value, priv->is_topmost);
             break;
 
+        case PROP_MARKUP:
+            g_value_set_string (value, priv->markup);
+            break;
+
         default:
             G_OBJECT_WARN_INVALID_PROPERTY_ID(object, property_id, pspec);
+            break;
+    }
+}
+
+static void
+hildon_window_set_property                      (GObject      *object,
+                                                 guint         property_id,
+                                                 const GValue *value,
+                                                 GParamSpec   *pspec)
+{
+    switch (property_id) {
+
+        case PROP_MARKUP:
+            hildon_window_set_markup (HILDON_WINDOW (object), g_value_get_string (value));
+            break;
+
+        default:
+            G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
             break;
     }
 }
@@ -2045,4 +2091,78 @@ hildon_window_get_app_menu                      (HildonWindow *self)
     priv = HILDON_WINDOW_GET_PRIVATE (self);
 
     return priv->app_menu;
+}
+
+static void
+hildon_window_update_markup                     (HildonWindow *window)
+{
+    HildonWindowPrivate *priv = HILDON_WINDOW_GET_PRIVATE (window);
+    GdkAtom markup_atom = gdk_atom_intern ("_HILDON_WM_NAME", FALSE);
+    GdkAtom utf8_atom = gdk_atom_intern ("UTF8_STRING", FALSE);
+    GdkWindow *gdkwin = GTK_WIDGET (window)->window;
+
+    if (priv->markup) {
+        gdk_property_change (gdkwin, markup_atom, utf8_atom, 8,
+                             GDK_PROP_MODE_REPLACE, (const guchar *) priv->markup,
+                             strlen (priv->markup));
+    } else {
+        gdk_property_delete (gdkwin, markup_atom);
+    }
+}
+
+/**
+ * hildon_window_get_markup:
+ * @window: a #HildonWindow
+ *
+ * Gets the marked up title of the window title. See hildon_window_set_markup()
+ *
+ * Returns: the marked up title of the window, or %NULL if none has
+ * been set explicitely. The returned string is owned by the widget
+ * and must not be modified or freed.
+ **/
+const gchar *
+hildon_window_get_markup                        (HildonWindow *window)
+{
+    HildonWindowPrivate *priv;
+
+    g_return_val_if_fail (HILDON_IS_WINDOW (window), NULL);
+
+    priv = HILDON_WINDOW_GET_PRIVATE (window);
+
+    return priv->markup;
+}
+
+/**
+ * hildon_window_set_markup:
+ * @window: a #HildonWindow
+ * @markup: the marked up title of the window, or %NULL to unset the
+ * current one
+ *
+ * Sets the marked up title of @window. The accepted format is the one
+ * used in Pango (see #PangoMarkupFormat) with the exception of
+ * &lt;span&gt;.
+ *
+ * Note that you need support from the window manager for this title
+ * to be used. See gtk_window_set_title() for the standard way of
+ * setting the title of a window.
+ **/
+void
+hildon_window_set_markup                        (HildonWindow *window,
+                                                 const gchar  *markup)
+{
+    HildonWindowPrivate *priv;
+    gchar *new_markup;
+
+    g_return_if_fail (HILDON_IS_WINDOW (window));
+
+    priv = HILDON_WINDOW_GET_PRIVATE (window);
+
+    new_markup = g_strdup (markup);
+    g_free (priv->markup);
+    priv->markup = new_markup;
+
+    if (GTK_WIDGET_REALIZED (window))
+        hildon_window_update_markup (window);
+
+    g_object_notify (G_OBJECT (window), "markup");
 }
