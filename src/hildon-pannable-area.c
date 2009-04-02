@@ -385,7 +385,7 @@ hildon_pannable_area_class_init (HildonPannableAreaClass * klass)
 							"Maximum scroll velocity when overshooting",
 							"Maximum distance the child widget should scroll "
 							"per 'frame', in pixels per frame when it overshoots after hitting the edge.",
-							0, G_MAXDOUBLE, 80,
+							0, G_MAXDOUBLE, 20,
 							G_PARAM_READWRITE |
 							G_PARAM_CONSTRUCT));
 

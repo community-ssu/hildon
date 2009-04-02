@@ -1,3 +1,9 @@
+2009-04-02  Alejandro G. Castro  <alex@igalia.com>
+
+	* src/hildon-pannable-area.c,
+	(hildon_pannable_area_class_init): Modified the default value of
+	the overshooting max speed, we have reduced it.
+
 2009-04-02  Alberto Garcia  <agarcia@igalia.com>
 
 	* doc/hildon-sections.txt
