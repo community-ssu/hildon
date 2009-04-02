@@ -1,3 +1,16 @@
+2009-04-02  Alejandro Pinheiro  <apinheiro@igalia.com>
+
+	* src/hildon-picker-dialog.c: removed HILDON_TOUCH_SELECTOR_HEIGHT
+	(_hildon_picker_dialog_set_selector): removed call to
+	gtk_widget_set_size_request
+	* src/hildon-touch-selector.c
+	(_create_new_column): change the pannable size request policy
+
+	Avoid to use a hardcoded height for the hildon picker dialog. In order
+	to get that, we needed to change the hildon pannable size request
+	policy
+	Fixes: NB#109369 (Hard-coded height in HildonPickerDialog)
+
 2009-04-02  Claudio Saavedra  <csaavedra@igalia.com>
 
 	* debian/control: Depend on osso-system-lock localization package.
