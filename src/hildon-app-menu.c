@@ -421,25 +421,6 @@ remove_item_from_list                           (GList    **list,
 }
 
 static void
-hildon_app_menu_show                            (GtkWidget *widget)
-{
-    HildonAppMenuPrivate *priv = HILDON_APP_MENU_GET_PRIVATE (widget);
-    gboolean show_menu = FALSE;
-    GList *i;
-
-    /* Don't show menu if it doesn't contain visible items */
-    for (i = priv->buttons; i && !show_menu; i = i->next)
-        show_menu = GTK_WIDGET_VISIBLE (i->data);
-
-    for (i = priv->filters; i && !show_menu; i = i->next)
-        show_menu = GTK_WIDGET_VISIBLE (i->data);
-
-    if (show_menu) {
-        GTK_WIDGET_CLASS (hildon_app_menu_parent_class)->show (widget);
-    }
-}
-
-static void
 hildon_app_menu_show_all                        (GtkWidget *widget)
 {
     HildonAppMenuPrivate *priv = HILDON_APP_MENU_GET_PRIVATE (widget);
@@ -920,11 +901,27 @@ void
 hildon_app_menu_popup                           (HildonAppMenu *menu,
                                                  GtkWindow     *parent_window)
 {
+    HildonAppMenuPrivate *priv;
+    gboolean show_menu = FALSE;
+    GList *i;
+
     g_return_if_fail (HILDON_IS_APP_MENU (menu));
     g_return_if_fail (GTK_IS_WINDOW (parent_window));
 
-    hildon_app_menu_set_parent_window (menu, parent_window);
-    gtk_widget_show (GTK_WIDGET (menu));
+    priv = HILDON_APP_MENU_GET_PRIVATE (menu);
+
+    /* Don't show menu if it doesn't contain visible items */
+    for (i = priv->buttons; i && !show_menu; i = i->next)
+        show_menu = GTK_WIDGET_VISIBLE (i->data);
+
+    for (i = priv->filters; i && !show_menu; i = i->next)
+        show_menu = GTK_WIDGET_VISIBLE (i->data);
+
+    if (show_menu) {
+        hildon_app_menu_set_parent_window (menu, parent_window);
+        gtk_widget_show (GTK_WIDGET (menu));
+    }
+
 }
 
 /**
@@ -1053,7 +1050,6 @@ hildon_app_menu_class_init                      (HildonAppMenuClass *klass)
     GtkWidgetClass *widget_class = (GtkWidgetClass *)klass;
 
     gobject_class->finalize = hildon_app_menu_finalize;
-    widget_class->show = hildon_app_menu_show;
     widget_class->show_all = hildon_app_menu_show_all;
     widget_class->hide_all = hildon_app_menu_hide_all;
     widget_class->map = hildon_app_menu_map;

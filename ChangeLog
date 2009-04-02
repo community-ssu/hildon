@@ -1,3 +1,10 @@
+2009-04-02  Alberto Garcia  <agarcia@igalia.com>
+
+	* src/hildon-app-menu.c (hildon_app_menu_popup)
+	(hildon_app_menu_class_init, -hildon_app_menu_show):
+	Remove hildon_app_menu_show() and move all its checks to
+	hildon_app_menu_popup()
+
 2009-04-02  Alejandro Pinheiro  <apinheiro@igalia.com>
 
 	* src/hildon-picker-dialog.c: removed HILDON_TOUCH_SELECTOR_HEIGHT
