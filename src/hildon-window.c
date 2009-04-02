@@ -482,7 +482,7 @@ hildon_window_map                             (GtkWidget *widget)
   if (GTK_WIDGET_CLASS (hildon_window_parent_class)->map)
     GTK_WIDGET_CLASS (hildon_window_parent_class)->map (widget);
 
-  if (GTK_WIDGET_VISIBLE (priv->vbox))
+  if (priv->vbox != NULL && GTK_WIDGET_VISIBLE (priv->vbox))
     gtk_widget_map (priv->vbox);
 
   if (priv->edit_toolbar != NULL && GTK_WIDGET_VISIBLE (priv->edit_toolbar))
