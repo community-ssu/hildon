@@ -1,3 +1,26 @@
+2009-04-03  Claudio Saavedra  <csaavedra@igalia.com>
+
+	Based on a patch by Mox Soini (ext-mox.soini@nokia.com)
+
+	* src/hildon-get-password-dialog.c
+	(hildon_get_password_set_property),
+	(hildon_get_password_get_property), (create_contents):
+	* src/hildon-login-dialog-private.h:
+	* src/hildon-login-dialog.c (hildon_login_dialog_set_property),
+	(hildon_login_dialog_init), (hildon_login_dialog_get_username),
+	(hildon_login_dialog_get_password):
+	* src/hildon-set-password-dialog-private.h:
+	* src/hildon-set-password-dialog.c
+	(hildon_set_password_set_property),
+	(hildon_set_password_get_property), (create_contents),
+	(hildon_set_password_response_change),
+	(hildon_set_password_response_set), (hildon_checkbox_toggled):
+
+	Pimp these dialogs, to make them use HildonEntry and HildonCheckBox
+	instead and look more Fremantle style.
+
+	Fixes: NB#109639 (Update hildon passwd dialogs to Hildon 2.2)
+
 2009-04-03  Alberto Garcia  <agarcia@igalia.com>
 
 	* doc/hildon-sections.txt

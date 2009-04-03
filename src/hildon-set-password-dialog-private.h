@@ -36,7 +36,6 @@ typedef struct                                  _HildonSetPasswordDialogPrivate 
 
 struct                                          _HildonSetPasswordDialogPrivate 
 {
-    GtkWidget *checkbox_caption;
     GtkWidget *checkbox;
 
     GtkLabel *message_label;

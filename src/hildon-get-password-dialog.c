@@ -84,6 +84,7 @@
 #include                                        "hildon-caption.h"
 #include                                        "hildon-banner.h"
 #include                                        "hildon-get-password-dialog-private.h"
+#include                                        "hildon-entry.h"
 
 #define                                         _(String) dgettext("hildon-libs", String)
 
@@ -167,7 +168,7 @@ hildon_get_password_set_property                (GObject *object,
             break;
 
         case PROP_PASSWORD:
-            gtk_entry_set_text(GTK_ENTRY (gtk_bin_get_child (GTK_BIN (priv->password_entry))), 
+            hildon_entry_set_text(HILDON_ENTRY (gtk_bin_get_child (GTK_BIN (priv->password_entry))),
                     g_value_get_string(value));
             break;
 
@@ -227,7 +228,7 @@ hildon_get_password_get_property                (GObject *object,
             break;
 
         case PROP_PASSWORD:
-            string = gtk_entry_get_text (GTK_ENTRY (gtk_bin_get_child (GTK_BIN (priv->password_entry))));
+            string = hildon_entry_get_text (HILDON_ENTRY (gtk_bin_get_child (GTK_BIN (priv->password_entry))));
             g_value_set_string (value, string);
             break;
 
@@ -420,7 +421,7 @@ create_contents                                 (HildonGetPasswordDialog *dialog
                     GTK_RESPONSE_CANCEL);
 
     /* Create password text entry */
-    control = gtk_entry_new ();
+    control = hildon_entry_new (HILDON_SIZE_FINGER_HEIGHT | HILDON_SIZE_AUTO_WIDTH);
     if ((atk_aux = gtk_widget_get_accessible(control)))
       {
 	atk_object_set_name(atk_aux, "Passwd");

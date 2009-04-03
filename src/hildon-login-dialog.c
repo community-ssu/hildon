@@ -51,6 +51,7 @@
 #include                                        "hildon-login-dialog.h"
 #include                                        "hildon-caption.h"
 #include                                        "hildon-login-dialog-private.h"
+#include                                        "hildon-entry.h"
 
 enum
 {
@@ -144,12 +145,12 @@ hildon_login_dialog_set_property                (GObject *object,
 
         case PROP_USERNAME:
             /* Set the current username displayed in the dialog */
-            gtk_entry_set_text (priv->username_entry, g_value_get_string (value));
+            hildon_entry_set_text (HILDON_ENTRY (priv->username_entry), g_value_get_string (value));
             break;
 
         case PROP_PASSWORD:
             /* Set the currently entered password */
-            gtk_entry_set_text (priv->password_entry, g_value_get_string (value));
+            hildon_entry_set_text (HILDON_ENTRY (priv->password_entry), g_value_get_string (value));
             break;
 
         default:
@@ -272,7 +273,7 @@ hildon_login_dialog_init                        (HildonLoginDialog *dialog)
     gtk_dialog_add_button (GTK_DIALOG (dialog), _(HILDON_LOGIN_DIALOG_OK), GTK_RESPONSE_OK);
 
     /* Setup username entry */
-    priv->username_entry = GTK_ENTRY (gtk_entry_new ());
+    priv->username_entry = hildon_entry_new (HILDON_SIZE_FINGER_HEIGHT | HILDON_SIZE_AUTO_WIDTH);
 
 #ifdef MAEMO_GTK 
     g_object_set (priv->username_entry, "hildon-input-mode", HILDON_GTK_INPUT_MODE_FULL, NULL);
@@ -289,7 +290,7 @@ hildon_login_dialog_init                        (HildonLoginDialog *dialog)
             GTK_WIDGET (caption), FALSE, FALSE, 0);
 
     /* Setup password entry */
-    priv->password_entry = GTK_ENTRY (gtk_entry_new ());
+    priv->password_entry = hildon_entry_new (HILDON_SIZE_FINGER_HEIGHT | HILDON_SIZE_AUTO_WIDTH);
 
 #ifdef MAEMO_GTK
     g_object_set (priv->password_entry, "hildon-input-mode", HILDON_GTK_INPUT_MODE_FULL, NULL);
@@ -380,7 +381,7 @@ hildon_login_dialog_get_username                (HildonLoginDialog *dialog)
     priv = HILDON_LOGIN_DIALOG_GET_PRIVATE (dialog);
     g_assert (priv);
 
-    return gtk_entry_get_text (priv->username_entry);
+    return hildon_entry_get_text (HILDON_ENTRY (priv->username_entry));
 }
 
 /**
@@ -401,7 +402,7 @@ hildon_login_dialog_get_password                (HildonLoginDialog *dialog)
     priv = HILDON_LOGIN_DIALOG_GET_PRIVATE (dialog);
     g_assert (priv);
 
-    return gtk_entry_get_text (priv->password_entry);
+    return hildon_entry_get_text (HILDON_ENTRY (priv->password_entry));
 }
 
 /**

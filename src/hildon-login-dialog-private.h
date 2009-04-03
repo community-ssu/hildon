@@ -37,8 +37,8 @@ typedef struct                                  _HildonLoginDialogPrivate Hildon
 struct                                          _HildonLoginDialogPrivate 
 {
     GtkLabel *message_label;
-    GtkEntry *username_entry;
-    GtkEntry *password_entry;
+    GtkWidget *username_entry;
+    GtkWidget *password_entry;
 };
 
 G_END_DECLS

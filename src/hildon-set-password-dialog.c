@@ -60,6 +60,8 @@
 #include                                        "hildon-defines.h"
 #include                                        "hildon-banner.h"
 #include                                        "hildon-set-password-dialog-private.h"
+#include                                        "hildon-entry.h"
+#include                                        "hildon-check-button.h"
 
 #define                                         HILDON_SET_PASSWORD_DIALOG_TITLE "ecdg_ti_set_password"
 
@@ -163,7 +165,7 @@ hildon_set_password_set_property                (GObject *object,
 
         case PROP_PASSWORD:
             /* Update password entry to display new value */
-            gtk_entry_set_text (GTK_ENTRY (priv->pwd1st_entry), g_value_get_string (value));
+            hildon_entry_set_text (HILDON_ENTRY (priv->pwd1st_entry), g_value_get_string (value));
             break;
 
         case PROP_HILDON_PASSWORD_DIALOG:
@@ -202,7 +204,7 @@ hildon_set_password_get_property                (GObject *object,
 
         case PROP_PASSWORD:
             g_value_set_string (value,
-                    gtk_entry_get_text (GTK_ENTRY (priv->pwd1st_entry)));
+                    hildon_entry_get_text (HILDON_ENTRY (priv->pwd1st_entry)));
             break;
 
         case PROP_HILDON_PASSWORD_DIALOG:
@@ -245,18 +247,12 @@ create_contents                                 (HildonSetPasswordDialog *dialog
         priv->pwd2nd_caption_string = _(HILDON_SET_MODIFY_PASSWORD_DIALOG_VERIFY_PASSWORD);
 
         /* Setup checkbox to enable/disable password protection */
-        priv->checkbox = gtk_check_button_new ();
-        gtk_widget_show (priv->checkbox);
-        priv->checkbox_caption = hildon_caption_new
-            (group,
-             _(HILDON_SET_MODIFY_PASSWORD_DIALOG_LABEL),
-             priv->checkbox,
-             NULL, HILDON_CAPTION_OPTIONAL);
-        hildon_caption_set_separator (HILDON_CAPTION (priv->checkbox_caption), "");
+	priv->checkbox = hildon_check_button_new (HILDON_SIZE_AUTO_WIDTH | HILDON_SIZE_FINGER_HEIGHT);
+	gtk_button_set_label (GTK_BUTTON (priv->checkbox), _(HILDON_SET_MODIFY_PASSWORD_DIALOG_LABEL));
         gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dialog)->vbox),
-                priv->checkbox_caption, TRUE, TRUE, 0);
-        gtk_widget_show (priv->checkbox_caption);
-        gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (priv->checkbox),
+                priv->checkbox, TRUE, TRUE, 0);
+        gtk_widget_show (priv->checkbox);
+        hildon_check_button_set_active (HILDON_CHECK_BUTTON (priv->checkbox),
                 TRUE);
         gtk_signal_connect (GTK_OBJECT (priv->checkbox), "toggled",
                 G_CALLBACK (hildon_checkbox_toggled), dialog);
@@ -277,7 +273,7 @@ create_contents                                 (HildonSetPasswordDialog *dialog
     }
 
     /* Create the password field */
-    priv->pwd1st_entry = gtk_entry_new ();
+    priv->pwd1st_entry = hildon_entry_new (HILDON_SIZE_FINGER_HEIGHT | HILDON_SIZE_AUTO_WIDTH);
     if ((atk_aux = gtk_widget_get_accessible(priv->pwd1st_entry)))
       {
 	atk_object_set_name(atk_aux, "Old Passwd");
@@ -302,7 +298,7 @@ create_contents                                 (HildonSetPasswordDialog *dialog
     gtk_widget_show (priv->pwd1st_caption);
 
     /* Create the password verify field */
-    priv->pwd2nd_entry = gtk_entry_new();
+    priv->pwd2nd_entry = hildon_entry_new (HILDON_SIZE_FINGER_HEIGHT | HILDON_SIZE_AUTO_WIDTH);
     if ((atk_aux = gtk_widget_get_accessible(priv->pwd2nd_entry)))
       {
 	atk_object_set_name(atk_aux, "New Passwd");
@@ -334,10 +330,6 @@ create_contents                                 (HildonSetPasswordDialog *dialog
     gtk_dialog_add_button (GTK_DIALOG (dialog),  _(priv->protection
                                 ? HILDON_SET_MODIFY_PASSWORD_DIALOG_OK
                                 : HILDON_SET_PASSWORD_DIALOG_OK), GTK_RESPONSE_OK);
-
-    gtk_dialog_add_button (GTK_DIALOG (dialog), _(priv->protection
-                               ? HILDON_SET_MODIFY_PASSWORD_DIALOG_CANCEL
-                               : HILDON_SET_PASSWORD_DIALOG_CANCEL), GTK_RESPONSE_CANCEL);
 
     gtk_widget_show_all (GTK_DIALOG (dialog)->vbox);
     gtk_widget_show_all (GTK_DIALOG (dialog)->action_area);
@@ -437,7 +429,7 @@ hildon_set_password_response_change             (GtkDialog *dialog,
     /* User accepted the dialog */
     if (arg1 == GTK_RESPONSE_OK) {
         /* Is the checkbox marked, so password protection is still in use? */  
-        if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (priv->checkbox))){
+        if (hildon_check_button_get_active (HILDON_CHECK_BUTTON (priv->checkbox))){
             /* Yes, Something is given as password as well? */
             if (text1[0] != '\0') {
                 if (strcmp (text1, text2) == 0) {
@@ -459,8 +451,8 @@ hildon_set_password_response_change             (GtkDialog *dialog,
                     g_signal_stop_emission_by_name (G_OBJECT(dialog),
                             "response");
 
-                    gtk_entry_set_text (pwd1st_entry, "");
-                    gtk_entry_set_text (pwd2nd_entry, "");
+                    hildon_entry_set_text (HILDON_ENTRY (pwd1st_entry), "");
+                    hildon_entry_set_text (HILDON_ENTRY (pwd2nd_entry), "");
 
                     hildon_banner_show_information (GTK_WIDGET (dialog), NULL,
                             c_(HILDON_SET_PASSWORD_DIALOG_MISMATCH));
@@ -478,7 +470,7 @@ hildon_set_password_response_change             (GtkDialog *dialog,
                     /* Error: Second field doesn't match
                        the empty first field, so start over */
                     hildon_banner_show_information (GTK_WIDGET (dialog), NULL, c_(HILDON_SET_PASSWORD_DIALOG_MISMATCH));
-                    gtk_entry_set_text(pwd2nd_entry, "");
+                    hildon_entry_set_text (HILDON_ENTRY (pwd2nd_entry), "");
                 }
 
                 gtk_widget_grab_focus (GTK_WIDGET (pwd1st_entry));
@@ -561,8 +553,8 @@ hildon_set_password_response_set                (GtkDialog *dialog,
             } else {
                 /* Error: Passwords don't match, so start over */
                 g_signal_stop_emission_by_name (G_OBJECT(dialog), "response");
-                gtk_entry_set_text (pwd1st_entry, "");
-                gtk_entry_set_text (pwd2nd_entry, "");
+                hildon_entry_set_text (HILDON_ENTRY (pwd1st_entry), "");
+                hildon_entry_set_text (HILDON_ENTRY (pwd2nd_entry), "");
                 hildon_banner_show_information (GTK_WIDGET (dialog), NULL, c_(HILDON_SET_PASSWORD_DIALOG_MISMATCH));
 
                 gtk_widget_grab_focus (GTK_WIDGET (priv->pwd1st_entry));
@@ -577,7 +569,7 @@ hildon_set_password_response_set                (GtkDialog *dialog,
                 /* Error: Second field doesn't match
                    the empty first field, so start over */
                 hildon_banner_show_information (GTK_WIDGET (dialog), NULL, c_(HILDON_SET_PASSWORD_DIALOG_MISMATCH));
-                gtk_entry_set_text (pwd2nd_entry, "");
+                hildon_entry_set_text (HILDON_ENTRY (pwd2nd_entry), "");
             }
 
             gtk_widget_grab_focus (GTK_WIDGET (pwd1st_entry));
@@ -599,7 +591,7 @@ hildon_checkbox_toggled                         (GtkWidget *widget,
 
     /* If the user enabled/disabled the password protection feature
        we enable/disable password entries accordingly */
-    active = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (widget));
+    active = hildon_check_button_get_active (HILDON_CHECK_BUTTON (widget));
     gtk_widget_set_sensitive (GTK_WIDGET (priv->pwd1st_entry), active);
     gtk_widget_set_sensitive (GTK_WIDGET (priv->pwd2nd_entry), active);
 }
