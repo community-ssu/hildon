@@ -836,6 +836,7 @@ HildonWindowStack
 hildon_window_stack_get_default
 hildon_window_stack_new
 hildon_window_stack_size
+hildon_window_stack_get_windows
 hildon_window_stack_peek
 hildon_window_stack_push
 hildon_window_stack_push_list

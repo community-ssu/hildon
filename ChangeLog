@@ -1,3 +1,11 @@
+2009-04-03  Alberto Garcia  <agarcia@igalia.com>
+
+	* doc/hildon-sections.txt
+	* src/hildon-window-stack.h
+	* src/hildon-window-stack.c
+	(+hildon_window_stack_get_windows):
+	New API to obtain the list of windows on a stack.
+
 2009-04-02  Alberto Garcia  <agarcia@igalia.com>
 
 	* src/hildon-app-menu.c (hildon_app_menu_popup)

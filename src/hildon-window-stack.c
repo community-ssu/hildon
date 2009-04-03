@@ -225,6 +225,24 @@ hildon_window_stack_remove                      (HildonStackableWindow *win)
 }
 
 /**
+ * hildon_window_stack_get_windows:
+ * @stack: a #HildonWindowStack
+ *
+ * Returns the list of windows on this stack (topmost first). The
+ * widgets in the list are not individually referenced. Once you are
+ * done with the list you must call g_list_free().
+ *
+ * Returns: a newly-allocated list of #HildonStackableWindow<!-- -->s
+ **/
+GList *
+hildon_window_stack_get_windows                 (HildonWindowStack *stack)
+{
+    g_return_val_if_fail (HILDON_IS_WINDOW_STACK (stack), NULL);
+
+    return g_list_copy (stack->priv->list);
+}
+
+/**
  * hildon_window_stack_peek:
  * @stack: A %HildonWindowStack
  *

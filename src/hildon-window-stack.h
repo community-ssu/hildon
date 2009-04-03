@@ -92,6 +92,9 @@ hildon_window_stack_new                         (void);
 gint
 hildon_window_stack_size                        (HildonWindowStack *stack);
 
+GList *
+hildon_window_stack_get_windows                 (HildonWindowStack *stack);
+
 GtkWidget *
 hildon_window_stack_peek                        (HildonWindowStack *stack);
 
