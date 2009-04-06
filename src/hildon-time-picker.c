@@ -31,7 +31,16 @@
  * using up/down arrows on hours and minutes. There are two arrows for minutes,
  * so that minutes can be added also in 10 min increments.This widget is mainly 
  * used as a part of #HildonTimeEditor implementation.
- * 
+ *
+ * <note>
+ *   <para>
+ * #HildonTimePicker has been deprecated since Hildon 2.2 and should not
+ * be used in newly written code. See
+ * <link linkend="hildon-migrating-time-widgets">Migrating Time Widgets</link>
+ * section to know how to migrate this deprecated widget.
+ *   </para>
+ * </note>
+ *
  * <example>
  * <title>HildonTimePicker example</title>
  * <programlisting>

@@ -30,6 +30,14 @@
  * There are two buttons to scroll the value in number field. 
  * Manual input is also possible.
  *
+ * <note>
+ *   <para>
+ * #HildonNumberEditor has been deprecated since Hildon 2.2
+ * See <link linkend="hildon-migrating-number-widgets">Migrating Number Widgets</link>
+ * section to know how to migrate this deprecated widget.
+ *   </para>
+ * </note>
+ *
  * <example>
  * <title>HildonNumberEditor example</title>
  * <programlisting>

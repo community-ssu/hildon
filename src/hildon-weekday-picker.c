@@ -35,7 +35,16 @@
  * a certain event should take place, for example, which days a Calendar event 
  * should be repeated on. It is used in Calendar in the Repeat dialog, in Tasks 
  * in the Repeat dialog and in the Email set-up wizard.
- * 
+ *
+ * <note>
+ *   <para>
+ * #HildonWeekdayPicker has been deprecated since Hildon 2.2 and should not
+ * be used in newly written code. See
+ * <link linkend="hildon-migrating-date-widgets">Migrating Date Widgets</link>
+ * section to know how to migrate this deprecated widget.
+ *   </para>
+ * </note>
+ *
  * <example>
  * <title>HildonWeekdayPicker example</title>
  * <programlisting>

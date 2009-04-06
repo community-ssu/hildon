@@ -30,7 +30,15 @@
  * #HildonControlbar is a horizontally positioned range widget that is
  * visually divided into blocks and supports setting a minimum and
  * maximum value for the range.
- * 
+ *
+ * <note>
+ *   <para>
+ * #HildonControlbar has been deprecated since Hildon 2.2
+ * See <link linkend="hildon-migrating-control-bar">Migrating Control Bars</link>
+ * section to know how to migrate this deprecated widget.
+ *   </para>
+ * </note>
+ *
  * <example>
  * <title>HildonControlbar example</title>
  * <programlisting>

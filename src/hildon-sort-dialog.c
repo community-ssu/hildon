@@ -30,6 +30,14 @@
  * and a field by which items are sorted in a list. The combo boxes
  * display the current value when the dialog is opened.
  *
+ * <note>
+ *   <para>
+ * #HildonSortDialog has been deprecated since Hildon 2.2
+ * See <link linkend="hildon-migrating-sort-dialogs">Migrating Sort Dialogs</link>
+ * section to know how to migrate this deprecated widget.
+ *   </para>
+ * </note>
+ *
  * <example>
  * <title>An example for using HildonSortDialog</title>
  * <programlisting>

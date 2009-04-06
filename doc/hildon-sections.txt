@@ -1143,6 +1143,7 @@ HILDON_CHECK_VERSION
 
 <SECTION>
 <FILE>hildon-gtk</FILE>
+<TITLE>Additions to GTK+</TITLE>
 hildon_gtk_menu_new
 hildon_gtk_button_new
 hildon_gtk_toggle_button_new
@@ -1161,6 +1162,7 @@ hildon_gtk_vscale_new
 
 <SECTION>
 <FILE>hildon-sound</FILE>
+<TITLE>Sound Utilities</TITLE>
 hildon_play_system_sound
 </SECTION>
 
@@ -1201,6 +1203,7 @@ hildon_button_style_get_type
 
 <SECTION>
 <FILE>hildon-helper</FILE>
+<TITLE>Helper Functions</TITLE>
 hildon_helper_set_logical_font
 hildon_helper_set_logical_color
 hildon_helper_event_button_is_finger
@@ -1223,6 +1226,7 @@ hildon_helper_set_thumb_scrollbar
 
 <SECTION>
 <FILE>hildon-defines</FILE>
+<TITLE>Defines</TITLE>
 HILDON_ICON_SIZE_XSMALL
 HILDON_ICON_SIZE_SMALL
 HILDON_ICON_SIZE_STYLUS
@@ -1259,6 +1263,7 @@ hildon_get_icon_pixel_size
 
 <SECTION>
 <FILE>hildon-main</FILE>
+<TITLE>Main</TITLE>
 hildon_init
 hildon_gtk_init
 </SECTION>

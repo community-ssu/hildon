@@ -1,0 +1,53 @@
+<refentry id="hildon-compiling" revision="4 Feb 2001">
+<refmeta>
+<refentrytitle>Compiling Hildon Applications</refentrytitle>
+<manvolnum>3</manvolnum>
+<refmiscinfo>HILDON Library</refmiscinfo>
+</refmeta>
+
+<refnamediv>
+<refname>Compiling Hildon Applications</refname>
+<refpurpose>
+How to compile your Hildon application
+</refpurpose>
+</refnamediv>
+
+<refsect1>
+<title>Compiling Hildon Applications on UNIX</title>
+
+<para>
+To compile a Hildon application, you need to tell the compiler where to
+find the Hildon header files and libraries. This is done with the
+<literal>pkg-config</literal> utility.
+</para>
+<para>
+The following interactive shell session demonstrates how
+<literal>pkg-config</literal> is used (the actual output on
+your system may be different):
+<programlisting>
+$ pkg-config --cflags hildon-1
+-DMAEMO_CHANGES -DMAEMO_GTK -I/usr/include/hildon-1 -I/usr/include/gtk-2.0 -I/usr/lib/gtk-2.0/include -I/usr/include/atk-1.0 -I/usr/include/cairo -I/usr/include/pango-1.0
+-I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include -I/usr/include/freetype2 -I/usr/include/libpng12 -I/usr/include/pixman-1
+$ pkg-config --libs hildon-1
+-lhildon-1 -lgtk-x11-2.0 -lgdk-x11-2.0 -latk-1.0 -lgdk_pixbuf-2.0 -lpangocairo-1.0 -lpango-1.0 -lcairo -lgobject-2.0 -lgmodule-2.0 -lglib-2.0
+</programlisting>
+</para>
+<para>
+The simplest way to compile a program is to use the "backticks"
+feature of the shell. If you enclose a command in backticks
+(<emphasis>not single quotes</emphasis>), then its output will be
+substituted into the command line before execution. So, to compile
+a Hildon Hello World you should type the following:
+<programlisting>
+$ cc `pkg-config --cflags --libs hildon-1` hello.c -o hello
+</programlisting>
+</para>
+
+<para>
+If you want to make sure that your program doesn't use any deprecated
+functions, you can define the preprocessor symbol HILDON_DISABLE_DEPRECATED
+by using the command line option <literal>-DHILDON_DISABLE_DEPRECATED=1</literal>.
+</para>
+
+</refsect1>
+</refentry>

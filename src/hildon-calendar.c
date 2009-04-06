@@ -40,15 +40,16 @@
  * SECTION:hildon-calendar
  * @short_description: A calendar widget
  *
- * HildonCalendar is a slightly modified #GtkCalendar. It has an almost same API 
- * but a slightly different look and behaviour. Use this widget instead of 
+ * #HildonCalendar is a slightly modified #GtkCalendar. It has an almost same API
+ * but a slightly different look and behaviour. Use this widget instead of
  * standard #GtkCalendar or use #HildonDateEditor for more higher-level date setting
  * operations.
  *
  * <note>
  *   <para>
- * #HildonCalendar has been deprecated since Hildon 2.2 and should not
- * be used in newly written code. Use #HildonDateSelector instead.
+ * #HildonCalendar has been deprecated since Hildon 2.2
+ * See <link linkend="hildon-migrating-date-widgets">Migrating Date Widgets</link>
+ * section to know how to migrate this deprecated widget.
  *   </para>
  * </note>
  */

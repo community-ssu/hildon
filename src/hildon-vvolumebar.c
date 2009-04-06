@@ -30,9 +30,19 @@
  * #HildonVVolumebar is a subclass of #HildonVolumebar.  It displays a
  * vertical volume bar that allows increasing or decreasing volume
  * within a predefined range, and muting when users click the mute icon.
- * 
+ *
+ * <note>
+ *   <para>
+ * #HildonVVolumebar has been deprecated since Hildon 2.2 and should not
+ * be used in newly written code. See
+ * <link linkend="hildon-migrating-volume-bar">Migrating Volume Bars</link>
+ * section to know how to migrate this deprecated widget.
+ *   </para>
+ * </note>
+ *
  * Here is an example that creates a vertical volume bar and connects
  * both its signals.
+ *
  * <example>
  * <title>HildonVVolumebar example</title>
  * <programlisting>

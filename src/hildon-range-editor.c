@@ -29,7 +29,16 @@
  * HidlonRangeEditor allows entering a pair of integers, e.g. the lower
  * and higher bounds of a range. A minimum and maximum can also be set
  * for the bounds.
- * 
+ *
+ * <note>
+ *   <para>
+ * #HildonRangeEditor has been deprecated since Hildon 2.2 and should not
+ * be used in newly written code. See
+ * <link linkend="hildon-migrating-number-widgets">Migrating Number Widgets</link>
+ * section to know how to migrate this deprecated widget.
+ *   </para>
+ * </note>
+ *
  * <example>
  * <programlisting>
  *      range_editor = hildon_range_editor_new ();

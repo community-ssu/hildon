@@ -37,7 +37,9 @@
  * <note>
  *   <para>
  * #HildonTimeEditor has been deprecated since Hildon 2.2 and should not
- * be used in newly written code. Use #HildonTimeSelector instead.
+ * be used in newly written code. See
+ * <link linkend="hildon-migrating-time-widgets">Migrating Time Widgets</link>
+ * section to know how to migrate this deprecated widget.
  *   </para>
  * </note>
  *

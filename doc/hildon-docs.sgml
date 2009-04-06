@@ -1,116 +1,210 @@
 <?xml version="1.0"?>
-<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN" 
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN"
                "http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd" [
 <!ENTITY version SYSTEM "version.xml">
+<!ENTITY hildon-Building SYSTEM "building.sgml">
+<!ENTITY hildon-Compiling SYSTEM "compiling.sgml">
+<!ENTITY hildon-Building SYSTEM "building.sgml">
+<!ENTITY hildon-Running SYSTEM "running.sgml">
+<!ENTITY hildon-Resources SYSTEM "resources.sgml">
+<!ENTITY hildon-Migration SYSTEM "migration.sgml">
+<!ENTITY hildon-main SYSTEM "xml/hildon-main.xml">
+<!ENTITY hildon-gtk SYSTEM "xml/hildon-gtk.xml">
+<!ENTITY hildon-defines SYSTEM "xml/hildon-defines.xml">
+<!ENTITY HildonWindowStack SYSTEM "xml/hildon-window-stack.xml">
+<!ENTITY hildon-sound SYSTEM "xml/hildon-sound.xml">
 ]>
 
 <book id="index" xmlns:xi="http://www.w3.org/2003/XInclude">
   <bookinfo>
-    <title>hildon Reference Manual</title>
-    <releaseinfo>
-      for hildon &version;
-    </releaseinfo>
+    <title>Hildon Reference Manual</title>
+    <releaseinfo>for Hildon &version;</releaseinfo>
   </bookinfo>
 
-  <chapter>
-    <title>Object Hierarchy</title>
-    <xi:include href="xml/tree_index.sgml"/>
-  </chapter>
+  <part id="hildon">
+    <title>Hildon Overview</title>
+    <partintro>
+      <para>
+        Hildon Widgets is a set of widgets present in the Hildon framework.
+        Its aim is to create finger-friendly graphical interfaces specially
+        designed for use in mobile devices.
+      </para>
+      <para>
+        This set of widgets is based on GTK+ and were first developed for
+        the Maemo platform, used by Nokia Internet Tablets.
+      </para>
+      <para>
+        Hildon depends on the following libraries:
+        <variablelist>
 
-  <chapter>
-    <title>Widgets gallery</title>
-    <xi:include href="visual_index.xml"/>
-  </chapter>
+          <varlistentry>
+            <term>GTK+</term>
+            <listitem>
+              <para>
+                GTK+ is a library for creating graphical user interfaces.
+              </para></listitem>
+          </varlistentry>
 
-  <chapter>
-    <title>Toplevel Widgets</title>
-    <xi:include href="xml/hildon-window.xml"/>
-    <xi:include href="xml/hildon-stackable-window.xml"/>
-    <xi:include href="xml/hildon-program.xml"/>
-  </chapter>
+          <varlistentry>
+            <term>GConf</term>
+            <listitem><para>
+                GConf is a system for storing application preferences. It is intended for user preferences; not configuration of something like Apache, or arbitrary data storage.
+              </para></listitem>
+          </varlistentry>
 
-  <chapter>
-    <title>Selectors</title>
-    <xi:include href="xml/hildon-button.xml"/>
-    <xi:include href="xml/hildon-check-button.xml"/>
-    <xi:include href="xml/hildon-color-button.xml"/>
-    <xi:include href="xml/hildon-color-chooser.xml"/>
-    <xi:include href="xml/hildon-controlbar.xml"/>
-    <xi:include href="xml/hildon-volumebar.xml"/>
-    <xi:include href="xml/hildon-vvolumebar.xml"/>
-    <xi:include href="xml/hildon-hvolumebar.xml"/>
-    <xi:include href="xml/hildon-seekbar.xml"/>
-    <xi:include href="xml/hildon-calendar-popup.xml"/>
-    <xi:include href="xml/hildon-calendar.xml"/>
-    <xi:include href="xml/hildon-weekday-picker.xml"/>
-    <xi:include href="xml/hildon-time-picker.xml"/>
-    <xi:include href="xml/hildon-app-menu.xml"/>
-    <xi:include href="xml/hildon-touch-selector.xml"/>
-    <xi:include href="xml/hildon-touch-selector-column.xml"/>
-    <xi:include href="xml/hildon-touch-selector-entry.xml"/>
-    <xi:include href="xml/hildon-date-selector.xml"/>
-    <xi:include href="xml/hildon-time-selector.xml"/>
-    <xi:include href="xml/hildon-picker-button.xml"/>
-    <xi:include href="xml/hildon-time-button.xml"/>
-    <xi:include href="xml/hildon-date-button.xml"/>
-  </chapter>
+          <varlistentry>
+            <term>libcanberra</term>
+            <listitem><para>
+                libcanberra is an implementation of the XDG Sound Theme and Name Specifications, for generating event sounds on free desktops, such as GNOME.
+              </para></listitem>
+          </varlistentry>
 
-  <chapter>
-    <title>Containers</title>
-    <xi:include href="xml/hildon-pannable-area.xml"/>
-  </chapter>
+        </variablelist>
 
-  <chapter>
-    <title>Editors</title>
-    <xi:include href="xml/hildon-number-editor.xml"/>
-    <xi:include href="xml/hildon-range-editor.xml"/>
-    <xi:include href="xml/hildon-time-editor.xml"/>
-    <xi:include href="xml/hildon-date-editor.xml"/>
-    <xi:include href="xml/hildon-entry.xml"/>
-    <xi:include href="xml/hildon-text-view.xml"/>
-  </chapter>
+      </para>
+    </partintro>
+    &hildon-Building;
+    &hildon-Compiling;
+    &hildon-Running;
+    &hildon-Resources;
+  </part>
 
-  <chapter>
-    <title>Miscellaneous controls</title>
-    <xi:include href="xml/hildon-find-toolbar.xml"/>
-    <xi:include href="xml/hildon-edit-toolbar.xml"/>
-    <xi:include href="xml/hildon-caption.xml"/>
-    <xi:include href="xml/hildon-bread-crumb-trail.xml"/>
-  </chapter>
-
-  <chapter>
-    <title>Notifications</title>
-    <xi:include href="xml/hildon-banner.xml"/>
-    <xi:include href="xml/hildon-note.xml"/>
-  </chapter>
-
-  <chapter>
-    <title>Dialogs</title>
-    <xi:include href="xml/hildon-dialog.xml"/>
-    <xi:include href="xml/hildon-color-chooser-dialog.xml"/>
-    <xi:include href="xml/hildon-set-password-dialog.xml"/>
-    <xi:include href="xml/hildon-get-password-dialog.xml"/>
-    <xi:include href="xml/hildon-login-dialog.xml"/>
-    <xi:include href="xml/hildon-sort-dialog.xml"/>
-    <xi:include href="xml/hildon-font-selection-dialog.xml"/>
-    <xi:include href="xml/hildon-code-dialog.xml"/>
-    <xi:include href="xml/hildon-wizard-dialog.xml"/>
-    <xi:include href="xml/hildon-picker-dialog.xml"/>
-  </chapter>
-
-  <chapter>
-    <title>Other</title>
+  <part id="hildonbase">
+    <title>Hildon Core Reference</title>
     <xi:include href="xml/hildon-main.xml"/>
     <xi:include href="xml/hildon-gtk.xml"/>
-    <xi:include href="xml/hildon-sound.xml"/>
-    <xi:include href="xml/hildon-helper.xml"/>
     <xi:include href="xml/hildon-defines.xml"/>
-    <xi:include href="xml/hildon-bread-crumb.xml"/>
-    <xi:include href="xml/hildon-window-stack.xml"/>
-  </chapter>
+    <xi:include href="xml/hildon-helper.xml"/>
+    <xi:include href="xml/hildon-sound.xml"/>
+    <xi:include href="xml/hildon-program.xml"/>
+  </part>
+
+  <part id="hildonobjects">
+    <title>Hildon Widgets and Objects</title>
+
+    <chapter>
+      <title>Object Hierarchy</title>
+      <xi:include href="xml/tree_index.sgml"/>
+    </chapter>
+
+    <chapter>
+      <title>Widgets gallery</title>
+      <xi:include href="visual_index.xml"/>
+    </chapter>
+
+    <chapter>
+      <title>Toplevel Widgets</title>
+      <xi:include href="xml/hildon-window.xml"/>
+      <xi:include href="xml/hildon-stackable-window.xml"/>
+    </chapter>
+
+    <chapter>
+      <title>Window Stacking</title>
+      <xi:include href="xml/hildon-window-stack.xml"/>
+    </chapter>
+
+    <chapter>
+      <title>Buttons and Toggles</title>
+      <xi:include href="xml/hildon-button.xml"/>
+      <xi:include href="xml/hildon-check-button.xml"/>
+      <xi:include href="xml/hildon-picker-button.xml"/>
+      <xi:include href="xml/hildon-date-button.xml"/>
+      <xi:include href="xml/hildon-time-button.xml"/>
+    </chapter>
+
+    <chapter>
+      <title>Display and Notification Widgets</title>
+      <xi:include href="xml/hildon-caption.xml"/>
+      <xi:include href="xml/hildon-banner.xml"/>
+      <xi:include href="xml/hildon-note.xml"/>
+    </chapter>
+
+    <chapter>
+      <title>Data Selection and Handling</title>
+      <xi:include href="xml/hildon-touch-selector.xml"/>
+      <xi:include href="xml/hildon-touch-selector-column.xml"/>
+      <xi:include href="xml/hildon-touch-selector-entry.xml"/>
+      <xi:include href="xml/hildon-date-selector.xml"/>
+      <xi:include href="xml/hildon-time-selector.xml"/>
+    </chapter>
+
+    <chapter>
+      <title>Navigation Widgets</title>
+      <xi:include href="xml/hildon-pannable-area.xml"/>
+    </chapter>
+
+    <chapter>
+      <title>Text Display and Handling</title>
+      <xi:include href="xml/hildon-entry.xml"/>
+      <xi:include href="xml/hildon-text-view.xml"/>
+    </chapter>
+
+    <chapter>
+      <title>Menus and Toolbars</title>
+      <xi:include href="xml/hildon-app-menu.xml"/>
+      <xi:include href="xml/hildon-find-toolbar.xml"/>
+      <xi:include href="xml/hildon-edit-toolbar.xml"/>
+    </chapter>
+
+    <chapter>
+      <title>Dialogs</title>
+      <xi:include href="xml/hildon-wizard-dialog.xml"/>
+      <xi:include href="xml/hildon-picker-dialog.xml"/>
+    </chapter>
+
+    <chapter>
+      <title>Deprecated</title>
+      <xi:include href="xml/hildon-color-button.xml"/>
+      <xi:include href="xml/hildon-color-chooser.xml"/>
+      <xi:include href="xml/hildon-controlbar.xml"/>
+      <xi:include href="xml/hildon-volumebar.xml"/>
+      <xi:include href="xml/hildon-vvolumebar.xml"/>
+      <xi:include href="xml/hildon-hvolumebar.xml"/>
+      <xi:include href="xml/hildon-seekbar.xml"/>
+      <xi:include href="xml/hildon-calendar.xml"/>
+      <xi:include href="xml/hildon-calendar-popup.xml"/>
+      <xi:include href="xml/hildon-weekday-picker.xml"/>
+      <xi:include href="xml/hildon-time-picker.xml"/>
+      <xi:include href="xml/hildon-number-editor.xml"/>
+      <xi:include href="xml/hildon-range-editor.xml"/>
+      <xi:include href="xml/hildon-time-editor.xml"/>
+      <xi:include href="xml/hildon-date-editor.xml"/>
+      <xi:include href="xml/hildon-bread-crumb-trail.xml"/>
+      <xi:include href="xml/hildon-dialog.xml"/>
+      <xi:include href="xml/hildon-color-chooser-dialog.xml"/>
+      <xi:include href="xml/hildon-set-password-dialog.xml"/>
+      <xi:include href="xml/hildon-get-password-dialog.xml"/>
+      <xi:include href="xml/hildon-login-dialog.xml"/>
+      <xi:include href="xml/hildon-sort-dialog.xml"/>
+      <xi:include href="xml/hildon-font-selection-dialog.xml"/>
+      <xi:include href="xml/hildon-code-dialog.xml"/>
+      <xi:include href="xml/hildon-bread-crumb.xml"/>
+    </chapter>
+
+  </part>
+
+  <part id="hildonmigration">
+    <title>Migration</title>
+    <partintro>
+      <para>This section helps you migrate widgets that are deprecated by
+      providing an alternative to them. Most sections have examples
+      of how a given deprecated widget was used and provide another example
+      of how the functionality of that widget should be accomplished in
+      newly written code.</para>
+    </partintro>
+    &hildon-Migration;
+  </part>
 
   <index>
     <title>Index</title>
+  </index>
+
+  <index role="deprecated">
+    <title>Index of deprecated symbols</title>
+  </index>
+
+  <index role="2.2">
+    <title>Index of new symbols in 2.2</title>
   </index>
 
   <!-- New symbols index -->

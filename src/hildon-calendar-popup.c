@@ -31,6 +31,15 @@
  * also contains arrow buttons for changing the month/year. If an
  * entered date is invalid, an information message will be shown.
  *
+ * <note>
+ *   <para>
+ * #HildonCalendarPopup has been deprecated since Hildon 2.2 and should not
+ * be used in newly written code.
+ * See <link linkend="hildon-migrating-date-widgets">Migrating Date Widgets</link>
+ * section to know how to migrate this deprecated widget.
+ *   </para>
+ * </note>
+ *
  * <example>
  * <title>HildonCalendarPopup example</title>
  * <programlisting>

@@ -30,6 +30,15 @@
  * #HildonVolumebar is a base class for widgets that display a volume bar that
  * allows increasing or decreasing volume within a predefined range, and muting
  * the volume when users click the mute icon.
+ *
+ * <note>
+ *   <para>
+ * #HildonVolumebar has been deprecated since Hildon 2.2 and should not
+ * be used in newly written code. See
+ * <link linkend="hildon-migrating-volume-bar">Migrating Volume Bars</link>
+ * section to know how to migrate this deprecated widget.
+ *   </para>
+ * </note>
  */
 
 #undef                                          HILDON_DISABLE_DEPRECATED

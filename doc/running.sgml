@@ -1,0 +1,28 @@
+<refentry id="hildon-running">
+<refmeta>
+<refentrytitle>Running Hildon Applications</refentrytitle>
+<manvolnum>3</manvolnum>
+<refmiscinfo>Hildon Library</refmiscinfo>
+</refmeta>
+
+<refnamediv>
+<refname>Running Hildon Applications</refname>
+<refpurpose>
+How to run and debug your Hildon application
+</refpurpose>
+</refnamediv>
+
+<refsect1>
+<title>Running and debugging Hildon Applications</title>
+
+<para>
+Since Hildon is built on top of GTK+, all Hildon applications
+support the same standard commandline options and inspect 
+the same environment variables that a GTK+ application does. 
+To know more about this, read 
+<link linkend="gtk-running">Running GTK+ Applications</link>
+</para>
+
+</refsect1>
+
+</refentry>

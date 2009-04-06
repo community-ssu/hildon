@@ -30,7 +30,15 @@
  * The #HildonHVolumebar widget displays a horizontal volume bar that allows
  * increasing or decreasing volume within a pre-defined range, and includes 
  * a mute icon which users can click to mute the sound.
- * 
+ *
+ * <note>
+ *   <para>
+ * #HildonHVolumeBar has been deprecated since Hildon 2.2
+ * See <link linkend="hildon-migrating-volume-bar">Migrating Volume Bars</link>
+ * section to know how to migrate this deprecated widget.
+ *   </para>
+ * </note>
+ *
  * <example>
  * <programlisting>
  * GtkWidget *volbar = hildon_hvolumebar_new ();

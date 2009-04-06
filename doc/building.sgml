@@ -1,0 +1,246 @@
+<refentry id="hildon-building">
+<refmeta>
+<refentrytitle>Compiling the Hildon libraries</refentrytitle>
+<manvolnum>3</manvolnum>
+<refmiscinfo>Hildon Library</refmiscinfo>
+</refmeta>
+
+<refnamediv>
+<refname>Compiling the Hildon Libraries</refname>
+<refpurpose>
+How to compile Hildon itself
+</refpurpose>
+</refnamediv>
+  <refsect1 id="overview">
+    <title>Building Hildon on UNIX-like systems</title>
+    <para>
+      This chapter covers building and installing Hildon on UNIX and
+      UNIX-like systems such as GNU/Linux.
+    </para>
+    <para>
+      On UNIX-like systems Hildon uses the standard GNU build system,
+      using <application>autoconf</application> for package
+      configuration and resolving portability issues,
+      <application>automake</application> for building makefiles that
+      comply with the GNU Coding Standards, and
+      <application>libtool</application> for building shared libraries
+      on multiple platforms.
+    </para>
+    <para>
+      The first thing to do before start building Hildon widgets is to
+      uncompress the source tarball packages. For example:
+    </para>
+    <programlisting>
+      $ tar xvzf hildon-widgets-2.2.0.tar.gz
+      $ tar xvjf hildon-widgets-2.2.0.tar.bz2
+    </programlisting>
+    <para>
+      In the toplevel of the directory that is created, there will be
+      a shell script called <filename>configure</filename> which
+      you then run to take the template makefiles called
+      <filename>Makefile.in</filename> in the package and create
+      makefiles customized for your operating system. The <filename>configure</filename>
+      script can be passed various command line arguments to determine how
+      the package is built and installed. The most commonly useful
+      argument is the <systemitem>--prefix</systemitem> argument which
+      determines where the package is installed. To install a package
+      in <filename>/opt/hildon</filename> you would run configure as:
+    </para>
+    <programlisting>
+      $ ./configure --prefix=/opt/hildon
+    </programlisting>
+    <para>
+      A full list of options can be found by running
+      <filename>configure</filename> with the
+      <systemitem>--help</systemitem> argument. In general, the defaults are
+      right and should be trusted. After you've run
+      <filename>configure</filename>, you then run the
+      <command>make</command> and <command>make install</command> commands
+      to build the package and install it, respectively.
+    </para>
+    <programlisting>
+      $ make
+      $ make install
+    </programlisting>
+    <para>
+      If you don't have permission to write to the directory you are
+      installing in, you may have to change to root temporarily before
+      running <literal>make install</literal>. Also, if you are
+      installing in a system directory, on some systems you will need
+      to run <command>ldconfig</command> after <literal>make
+      install</literal> so that the newly installed libraries will be
+      found.
+    </para>
+    <para>
+      Several environment variables are useful to pass to set before
+      running configure. <envar>CPPFLAGS</envar> contains options to
+      pass to the C compiler, and is used to tell the compiler where
+      to look for include files. The <envar>LDFLAGS</envar> variable
+      is used in a similar fashion for the linker. Finally, the
+      <envar>PKG_CONFIG_PATH</envar> environment variable contains
+      a search path that <command>pkg-config</command> (see below)
+      uses when looking for for file describing how to compile
+      programs using different libraries. If you were installing Hildon
+      and its dependencies into <filename>/opt/hildon</filename>, you
+      might want to set these variables as:
+    </para>
+    <programlisting>
+      $ CPPFLAGS="-I/opt/hildon/include"
+      $ LDFLAGS="-L/opt/hildon/lib"
+      $ PKG_CONFIG_PATH="/opt/hildon/lib/pkgconfig"
+      $ export CPPFLAGS LDFLAGS PKG_CONFIG_PATH
+    </programlisting>
+    <para>
+      You may also need to set the <envar>LD_LIBRARY_PATH</envar>
+      environment variable so the systems dynamic linker can find
+      the newly installed libraries, and the <envar>PATH</envar>
+      environment program so that utility binaries installed by
+      the various libraries will be found.
+    </para>
+    <programlisting>
+      $ LD_LIBRARY_PATH="/opt/hildon/lib"
+      $ PATH="/opt/hildon/bin:$PATH"
+      $ export LD_LIBRARY_PATH PATH
+    </programlisting>
+  </refsect1>
+  <refsect1 id="dependencies">
+    <title>Dependencies</title>
+    <para>
+      Before you can compile the Hildon widget toolkit, you need to have
+      various other tools and libraries installed on your
+      system. The two tools needed during the build process (apart from
+      the tools mentioned above such as <application>autoconf</application>)
+      are <command>pkg-config</command> and GNU make.
+    </para>
+    <itemizedlist>
+      <listitem>
+	<para>
+	  <ulink
+	  url="http://pkg-config.freedesktop.org">pkg-config</ulink>
+	  is a tool for tracking the compilation flags needed for
+	  libraries that are used by the Hildon libraries. For each
+	  library, a small <literal>.pc</literal> text file is installed
+          in a standard location that contains the compilation flags
+          needed for that library along with version number information.
+	</para>
+      </listitem>
+      <listitem>
+	<para>
+	  The Hildon makefiles will mostly work with different versions
+	  of <command>make</command>, however, there tends to be
+	  a few incompatibilities, so the Hildon team recommends
+	  installing <ulink url="http://www.gnu.org/software/make">GNU
+	  make</ulink> if you don't already have it on your system
+	  and using it.
+	</para>
+      </listitem>
+      <listitem>
+	<para>
+          GTK+
+	</para>
+      </listitem>
+      <listitem>
+	<para>
+          Canberra
+	</para>
+      </listitem>
+    </itemizedlist>
+  </refsect1>
+  <refsect1 id="extra-configuration-options">
+    <title>Extra Configuration Options</title>
+    <para>
+      In addition to the normal options, the
+      <command>configure</command> script for the Hildon library
+      supports a number of additional arguments.
+      <cmdsynopsis>
+        <command>configure</command>
+        <group>
+          <arg>--disable-gtk-doc</arg>
+          <arg>--enable-gtk-doc</arg>
+        </group>
+        <group>
+          <arg>--enable-deprecated=[no|yes]</arg>
+        </group>
+        <group>
+          <arg>--with-examples=[no|yes]</arg>
+        </group>
+        <group>
+          <arg>--with-html-dir=PATH</arg>
+        </group>
+        <group>
+          <arg>--with-maemo-gtk=[no|yes]</arg>
+        </group>
+        <group>
+          <arg>--with-asserts=[no|yes]</arg>
+        </group>
+      </cmdsynopsis>
+    </para>
+    <formalpara>
+      <title><systemitem>--disable-gtk-doc</systemitem> and
+        <systemitem>--enable-gtk-doc</systemitem></title>
+
+      <para>
+        The <application>gtk-doc</application> package is
+        used to generate the reference documentation included
+        with Hildon. By default, support for <application>gtk-doc</application>
+        is disabled because it requires several extra dependencies
+        to be installed. If you have
+        <application>gtk-doc</application> installed and
+        are modifying Hildon, you may want to enable
+        <application>gtk-doc</application> support by passing
+        in <systemitem>--enable-gtk-doc</systemitem>. If not
+        enabled, pre-generated HTML files distributed with Hildon
+        will be installed.
+      </para>
+    </formalpara>
+
+    <formalpara>
+      <title><systemitem>--enable-deprecated</systemitem></title>
+
+      <para>
+        This option allows you to specify whether deprecated widgets included in the
+        package will be built or not.
+      </para>
+    </formalpara>
+
+    <formalpara>
+      <title><systemitem>--with-examples</systemitem></title>
+
+      <para>
+        This option allows you to specify whether examples included in the
+        package will be built or not.
+      </para>
+    </formalpara>
+
+    <formalpara>
+      <title><systemitem>--with-html-dir</systemitem></title>
+
+      <para>
+        This option allows you to specify the directory to install the
+        generated documentation.
+      </para>
+    </formalpara>
+
+    <formalpara>
+      <title><systemitem>--with-maemo-gtk</systemitem></title>
+
+      <para>
+        Use Maemo GTK+ API (enabled by default).
+      </para>
+    </formalpara>
+
+    <formalpara>
+      <title><systemitem>--with-asserts</systemitem></title>
+
+      <para>
+        Build with the assertion checks
+      </para>
+    </formalpara>
+
+  </refsect1>
+
+</refentry>
+
+<!-- Local Variables: -->
+<!-- sgml-parent-document: ("hildon-docs.sgml" "chapter" "refentry")  -->
+<!-- End: -->

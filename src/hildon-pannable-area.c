@@ -561,7 +561,16 @@ hildon_pannable_area_class_init (HildonPannableAreaClass * klass)
 					    "Pixel width used to draw the scroll indicators.",
 					    0, G_MAXUINT, 8,
 					    G_PARAM_READWRITE));
-
+  /**
+   * HildonPannableArea::horizontal-movement:
+   * @hildonpannable: the object which received the signal
+   * @direction: the direction of the movement #HILDON_MOVEMENT_UP or #HILDON_MOVEMENT_DOWN
+   * @initial_x: the x value of the touched point in the area when the motion started
+   * @initial_y: the y value of the touched point in the area when the motion started
+   *
+   * The horizontal-movement signal is emitted when the pannable area
+   * starts a horizontal movement.
+   */
   pannable_area_signals[HORIZONTAL_MOVEMENT] =
     g_signal_new ("horizontal_movement",
 		  G_TYPE_FROM_CLASS (object_class),
@@ -574,6 +583,16 @@ hildon_pannable_area_class_init (HildonPannableAreaClass * klass)
 		  G_TYPE_DOUBLE,
 		  G_TYPE_DOUBLE);
 
+  /**
+   * HildonPannableArea::vertical-movement:
+   * @hildonpannable: the object which received the signal
+   * @direction: the direction of the movement #HILDON_MOVEMENT_LEFT or #HILDON_MOVEMENT_RIGHT
+   * @initial_x: the x value when the motion started
+   * @initial_y: the y value when the motion started
+   *
+   * The vertical-movement signal is emitted when the pannable area
+   * starts a vertical movement.
+   */
   pannable_area_signals[VERTICAL_MOVEMENT] =
     g_signal_new ("vertical_movement",
 		  G_TYPE_FROM_CLASS (object_class),

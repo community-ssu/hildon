@@ -1,3 +1,38 @@
+2009-04-06  Alberto Garcia  <agarcia@igalia.com>
+
+	Patch by Iván Gómez (igomez@igalia.com)
+
+	* doc/building.sgml
+	* doc/compiling.sgml
+	* doc/hildon-docs.sgml
+	* doc/hildon-sections.txt
+	* doc/migration.sgml
+	* doc/resources.sgml
+	* doc/running.sgml:
+	New chapters on using the Hildon library.
+	Updated the general structure of the reference manual.
+	Other minor documentation fixes.
+
+	* src/hildon-calendar-popup.c
+	* src/hildon-calendar.c
+	* src/hildon-controlbar.c
+	* src/hildon-date-editor.c
+	* src/hildon-dialog.c
+	* src/hildon-hvolumebar.c
+	* src/hildon-number-editor.c
+	* src/hildon-range-editor.c
+	* src/hildon-sort-dialog.c
+	* src/hildon-time-editor.c
+	* src/hildon-time-picker.c
+	* src/hildon-volumebar-range.c
+	* src/hildon-volumebar.c
+	* src/hildon-vvolumebar.c
+	* src/hildon-weekday-picker.c:
+	Add deprecation notes
+
+	* src/hildon-pannable-area.c (hildon_pannable_area_class_init):
+	Document 'horizontal-movement' and 'vertical-movement' signals.
+
 2009-04-06  Claudio Saavedra  <csaavedra@igalia.com>
 
 	[Release 2.1.60]

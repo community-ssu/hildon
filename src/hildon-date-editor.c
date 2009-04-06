@@ -33,10 +33,13 @@
  * year) and an icon (button): clicking on the icon opens up a
  * HildonCalendarPopup.
  *
+ *
  * <note>
  *   <para>
  * #HildonDateEditor has been deprecated since Hildon 2.2 and should
- * not be used in newly written code. Use #HildonDateSelector instead.
+ * not be used in newly written code. Use #HildonDateSelector instead. See
+ * <link linkend="hildon-migrating-date-widgets">Migrating Date Widgets</link>
+ * section to know how to migrate this deprecated widget.
  *   </para>
  * </note>
  *

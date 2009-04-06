@@ -32,7 +32,15 @@
  * that #HildonVolumebar can meet its specifications.
  *
  * Currently #HildonVolumebarRange models range of [0..100].
- * 
+ *
+ * <note>
+ *   <para>
+ * #HildonVolumebarRange has been deprecated since Hildon 2.2 and should not
+ * be used in newly written code. See
+ * <link linkend="hildon-migrating-volume-bar">Migrating Volume Bars</link>
+ * section to know how to migrate this deprecated widget.
+ *   </para>
+ * </note>
  */
 
 #include                                        <gdk/gdkkeysyms.h>
