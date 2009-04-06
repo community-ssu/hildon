@@ -1,3 +1,27 @@
+[2.1.60 release]
+
+  * Fixes: NB#109099 (Memory leak in Hildon touch selector)
+  * Fixes: NB#107386 (Odd stacking behaviour for information banners)
+  * Fixes: NB#94957 (Smoothly opened application menu)
+  * Fixes: NB#109179 (Memory leak in Hildon program)
+  * Fixes: NB#107775 (No scrollbars can be seen when several items are
+    available in a dialog)
+  * Fixes: NB#106375 (Need API to retitle a window with a title
+    including markup)
+  * Fixes: NB#109369 (Hard-coded height in HildonPickerDialog)
+  * Fixes: NB#109639 (Update hildon passwd dialogs to Hildon 2.2)
+
+  New API:
+
+  * hildon_window_stack_get_windows()
+  * New "markup" property and hildon_window_{get,set}_markup()
+    methods.
+
+  Other:
+
+  * More HildonPannableArea tunning.
+  * Fixed some memory leaks.
+
 [2.1.58 release]
 
   * Fixes: NB#107583 (Hildon app menu crashes in various applications)

@@ -1,3 +1,11 @@
+2009-04-06  Claudio Saavedra  <csaavedra@igalia.com>
+
+	[Release 2.1.60]
+
+	* NEWS: Updates.
+	* configure.ac: Bump version.
+	* debian/changelog: Updates.
+
 2009-04-06  Alejandro G. Castro  <alex@igalia.com>
 
 	* src/hildon-pannable-area.c,
