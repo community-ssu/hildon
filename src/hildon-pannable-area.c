@@ -54,7 +54,7 @@
 #define RATIO_TOLERANCE 0.000001
 #define SCROLL_FADE_TIMEOUT 100
 #define MOTION_EVENTS_PER_SECOND 25
-#define CURSOR_STOPPED_TIMEOUT 125
+#define CURSOR_STOPPED_TIMEOUT 80
 
 G_DEFINE_TYPE (HildonPannableArea, hildon_pannable_area, GTK_TYPE_BIN)
 
@@ -365,7 +365,7 @@ hildon_pannable_area_class_init (HildonPannableAreaClass * klass)
 							"Minimum scroll velocity",
 							"Minimum distance the child widget should scroll "
 							"per 'frame', in pixels per frame.",
-							0, G_MAXDOUBLE, 0,
+							0, G_MAXDOUBLE, 20,
 							G_PARAM_READWRITE |
 							G_PARAM_CONSTRUCT));
 
@@ -2476,14 +2476,58 @@ hildon_pannable_area_button_release_cb (GtkWidget * widget,
   priv->scroll_indicator_event_interrupt = 0;
   priv->scroll_delay_counter = priv->scrollbar_fade_delay;
 
-/* This check does not work properly when the system is overloaded */
-#if 0
-  if ((priv->last_type == 2)&&
-      (event->time - priv->last_time > CURSOR_STOPPED_TIMEOUT)) {
-    priv->vel_y = 0.0;
-    priv->vel_x = 0.0;
+  /* move all the way to the last position */
+  if (priv->motion_event_scroll_timeout) {
+    g_source_remove (priv->motion_event_scroll_timeout);
+    hildon_pannable_area_motion_event_scroll_timeout (HILDON_PANNABLE_AREA (widget));
+    priv->motion_x = 0;
+    priv->motion_y = 0;
   }
-#endif
+
+  if (priv->last_type == 2) {
+    gdouble delta = event->time - priv->last_time;
+
+    if (priv->mov_mode&HILDON_MOVEMENT_MODE_VERT) {
+      gdouble dist = event->y - priv->y;
+
+      if (ABS (dist) >= 1.0) {
+        hildon_pannable_area_calculate_velocity (&priv->vel_y,
+                                                 delta,
+                                                 dist,
+                                                 priv->vmax,
+                                                 priv->drag_inertia,
+                                                 priv->force,
+                                                 priv->sps);
+
+        priv->motion_y = dist;
+        hildon_pannable_area_motion_event_scroll_timeout (HILDON_PANNABLE_AREA (widget));
+      } else
+        if (delta >= CURSOR_STOPPED_TIMEOUT) {
+          y = 0;
+          priv->vel_y = 0;
+        }
+    }
+
+    if (priv->mov_mode&HILDON_MOVEMENT_MODE_HORIZ) {
+      gdouble dist = event->x - priv->x;
+
+      if (ABS (dist) >= 1.0) {
+        hildon_pannable_area_calculate_velocity (&priv->vel_x,
+                                                 delta,
+                                                 dist,
+                                                 priv->vmax,
+                                                 priv->drag_inertia,
+                                                 priv->force,
+                                                 priv->sps);
+        priv->motion_x = dist;
+        hildon_pannable_area_motion_event_scroll_timeout (HILDON_PANNABLE_AREA (widget));
+      } else
+        if (delta >= CURSOR_STOPPED_TIMEOUT) {
+          x = 0;
+          priv->vel_x = 0;
+        }
+    }
+  }
 
   if ((ABS (priv->vel_y) > 1.0)||
       (ABS (priv->vel_x) > 1.0)) {
@@ -2492,12 +2536,6 @@ hildon_pannable_area_button_release_cb (GtkWidget * widget,
 
   hildon_pannable_area_launch_fade_timeout (HILDON_PANNABLE_AREA (widget),
                                             priv->scroll_indicator_alpha);
-
-  /* move all the way to the last position */
-  if (priv->motion_event_scroll_timeout) {
-    g_source_remove (priv->motion_event_scroll_timeout);
-    hildon_pannable_area_motion_event_scroll_timeout (HILDON_PANNABLE_AREA (widget));
-  }
 
   priv->clicked = FALSE;
 
@@ -2515,10 +2553,14 @@ hildon_pannable_area_button_release_cb (GtkWidget * widget,
       priv->vel_x = priv->vmax_overshooting;
     }
 
-    if (!priv->idle_id)
-      priv->idle_id = gdk_threads_add_timeout ((gint) (1000.0 / (gdouble) priv->sps),
-                                               (GSourceFunc)
-                                               hildon_pannable_area_timeout, widget);
+    if ((ABS (priv->vel_y) >= priv->vmin) ||
+        (ABS (priv->vel_x) >= priv->vmin)) {
+
+      if (!priv->idle_id)
+        priv->idle_id = gdk_threads_add_timeout ((gint) (1000.0 / (gdouble) priv->sps),
+                                                 (GSourceFunc)
+                                                 hildon_pannable_area_timeout, widget);
+    }
   }
 
   priv->last_time = event->time;

@@ -1,3 +1,14 @@
+2009-04-06  Alejandro G. Castro  <alex@igalia.com>
+
+	* src/hildon-pannable-area.c,
+	(hildon_pannable_area_class_init): increased the minimum velocity.
+	(hildon_pannable_area_button_release_cb): Updated the
+	CURSOR_STOPPED_TIMEOUT, tuning the widge for the new events
+	setup. Review the code to control that last event.
+
+	Fixes: NB#109790 (Releasing finger in pannable area easily causes
+	unwanted scrolling)
+
 2009-04-03  Claudio Saavedra  <csaavedra@igalia.com>
 
 	Based on a patch by Mox Soini (ext-mox.soini@nokia.com)
