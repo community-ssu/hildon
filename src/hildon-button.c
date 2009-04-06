@@ -347,6 +347,8 @@ hildon_button_init                              (HildonButton *self)
  * @size_group: A #GtkSizeGroup for the button title (main label)
  *
  * Adds the title label of @button to @size_group.
+ *
+ * Since: 2.2
  **/
 void
 hildon_button_add_title_size_group              (HildonButton *button,
@@ -368,6 +370,8 @@ hildon_button_add_title_size_group              (HildonButton *button,
  * @size_group: A #GtkSizeGroup for the button value (secondary label)
  *
  * Adds the value label of @button to @size_group.
+ *
+ * Since: 2.2
  **/
 void
 hildon_button_add_value_size_group              (HildonButton *button,
@@ -390,6 +394,8 @@ hildon_button_add_value_size_group              (HildonButton *button,
  *
  * Adds the image of @button to @size_group. You must add an image
  * using hildon_button_set_image() before calling this function.
+ *
+ * Since: 2.2
  **/
 void
 hildon_button_add_image_size_group              (HildonButton *button,
@@ -416,6 +422,8 @@ hildon_button_add_image_size_group              (HildonButton *button,
  *
  * Convenience function to add title, value and image to size
  * groups. %NULL size groups will be ignored.
+ *
+ * Since: 2.2
  **/
 void
 hildon_button_add_size_groups                   (HildonButton *button,
@@ -565,7 +573,6 @@ hildon_button_set_title                         (HildonButton *button,
  *
  * If @value is set to %NULL, the value label will be hidden and the
  * title label will be realigned.
- *
  *
  * Since: 2.2
  **/

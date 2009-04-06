@@ -153,6 +153,12 @@
     </chapter>
 
     <chapter>
+      <title>Other</title>
+      <xi:include href="xml/hildon-animation-actor.xml"/>
+      <xi:include href="xml/hildon-remote-texture.xml"/>
+    </chapter>
+
+    <chapter>
       <title>Deprecated</title>
       <xi:include href="xml/hildon-color-button.xml"/>
       <xi:include href="xml/hildon-color-chooser.xml"/>

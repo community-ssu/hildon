@@ -200,6 +200,8 @@ hildon_remote_texture_init                    (HildonRemoteTexture *self)
  * Creates a new #HildonRemoteTexture.
  *
  * Return value: A #HildonRemoteTexture
+ *
+ * Since: 2.2
  **/
 GtkWidget*
 hildon_remote_texture_new                     (void)
@@ -395,6 +397,8 @@ hildon_remote_texture_send_all_messages (HildonRemoteTexture *self)
  *
  * This is an internal utility function that application will
  * not need to call directly.
+ *
+ * Since: 2.2
  **/
 void
 hildon_remote_texture_send_message (HildonRemoteTexture *self,
@@ -442,6 +446,8 @@ hildon_remote_texture_send_message (HildonRemoteTexture *self,
  * @width: width of image in pixels
  * @height: height of image in pixels
  * @bpp: BYTES per pixel - usually 2,3 or 4
+ *
+ * Since: 2.2
  */
 void
 hildon_remote_texture_set_image (HildonRemoteTexture *self,
@@ -488,6 +494,8 @@ hildon_remote_texture_set_image (HildonRemoteTexture *self,
  * This signals to hildon-desktop that a specific region of the memory area
  * has changed. This will trigger a redraw and will update the relevant tiles
  * of the texture.
+ *
+ * Since: 2.2
  */
 void
 hildon_remote_texture_update_area (HildonRemoteTexture *self,
@@ -558,6 +566,8 @@ hildon_remote_texture_update_area (HildonRemoteTexture *self,
  *
  * If the remote texture WM-counterpart is not ready, the show message
  * will be queued until the WM is ready for it.
+ *
+ * Since: 2.2
  **/
 void
 hildon_remote_texture_set_show_full (HildonRemoteTexture *self,
@@ -600,6 +610,8 @@ hildon_remote_texture_set_show_full (HildonRemoteTexture *self,
  * This function is a shortcut for hildon_remote_texture_set_show_full(),
  * setting the overall actor visibility without changing it's opacity
  * setting.
+ *
+ * Since: 2.2
  **/
 void
 hildon_remote_texture_set_show (HildonRemoteTexture *self,
@@ -622,6 +634,8 @@ hildon_remote_texture_set_show (HildonRemoteTexture *self,
  *
  * See hildon_remote_texture_set_show_full() for description of the range
  * of values @opacity argument takes.
+ *
+ * Since: 2.2
  **/
 void
 hildon_remote_texture_set_opacity (HildonRemoteTexture *self,
@@ -649,6 +663,8 @@ hildon_remote_texture_set_opacity (HildonRemoteTexture *self,
  *
  * If the remote texture WM-counterpart is not ready, the show message
  * will be queued until the WM is ready for it.
+ *
+ * Since: 2.2
  **/
 void
 hildon_remote_texture_set_position (HildonRemoteTexture *self,
@@ -695,6 +711,8 @@ hildon_remote_texture_set_position (HildonRemoteTexture *self,
  *
  * If the remote texture WM-counterpart is not ready, the show message
  * will be queued until the WM is ready for it.
+ *
+ * Since: 2.2
  **/
 void
 hildon_remote_texture_set_offset (HildonRemoteTexture *self,
@@ -729,6 +747,8 @@ hildon_remote_texture_set_offset (HildonRemoteTexture *self,
  * @self: A #HildonRemoteTexture
  * @x_scale: The scale factor for the memory area to be rendered in the X-axis
  * @y_scale: The scale factor for the memory area to be rendered in the X-axis
+ *
+ * Since: 2.2
  **/
 void
 hildon_remote_texture_set_scale (HildonRemoteTexture *self,
@@ -825,6 +845,8 @@ hildon_remote_texture_map_event (GtkWidget *widget,
  *
  * If the remote texture WM-counterpart is not ready, the show message
  * will be queued until the WM is ready for it.
+ *
+ * Since: 2.2
  **/
 void
 hildon_remote_texture_set_parent (HildonRemoteTexture *self,

@@ -202,7 +202,7 @@ hildon_text_view_set_placeholder                (HildonTextView *text_view,
  *
  * Returns: a new #HildonTextView
  *
- * Since: 2.2 
+ * Since: 2.2
  */
 GtkWidget *
 hildon_text_view_new                            (void)

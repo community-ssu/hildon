@@ -186,6 +186,8 @@ hildon_picker_button_finalize (GObject * object)
  *
  * Emits a "#HildonPickerButton::value-changed" signal to the given
  * #HildonPickerButton
+ *
+ * Since: 2.2
  **/
 void
 hildon_picker_button_value_changed              (HildonPickerButton *button)

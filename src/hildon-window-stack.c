@@ -105,7 +105,7 @@ hildon_window_stack_get_window_group             (HildonWindowStack *stack)
  * doesn't need to be created by the application.
  *
  * Return value: the default #HildonWindowStack
- * 
+ *
  * Since: 2.2
  **/
 HildonWindowStack *
@@ -233,6 +233,8 @@ hildon_window_stack_remove                      (HildonStackableWindow *win)
  * done with the list you must call g_list_free().
  *
  * Returns: a newly-allocated list of #HildonStackableWindow<!-- -->s
+ *
+ * Since: 2.2
  **/
 GList *
 hildon_window_stack_get_windows                 (HildonWindowStack *stack)

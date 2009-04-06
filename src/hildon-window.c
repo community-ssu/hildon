@@ -1845,6 +1845,8 @@ hildon_window_remove_toolbar                    (HildonWindow *self,
  *
  * A window can only have at most one edit toolbar at a time, so the
  * previous toolbar (if any) is replaced after calling this function.
+ *
+ * Since: 2.2
  **/
 void
 hildon_window_set_edit_toolbar                  (HildonWindow      *self,
@@ -1881,6 +1883,8 @@ hildon_window_set_edit_toolbar                  (HildonWindow      *self,
  * you should use hildon_window_get_app_menu() instead.
  *
  * Return value: The #GtkMenu assigned to this application view. 
+ *
+ * Since: 2.2
  **/
 GtkMenu*
 hildon_window_get_main_menu                     (HildonWindow * self)
@@ -2119,6 +2123,8 @@ hildon_window_update_markup                     (HildonWindow *window)
  * Returns: the marked up title of the window, or %NULL if none has
  * been set explicitely. The returned string is owned by the widget
  * and must not be modified or freed.
+ *
+ * Since: 2.2
  **/
 const gchar *
 hildon_window_get_markup                        (HildonWindow *window)
@@ -2145,6 +2151,8 @@ hildon_window_get_markup                        (HildonWindow *window)
  * Note that you need support from the window manager for this title
  * to be used. See gtk_window_set_title() for the standard way of
  * setting the title of a window.
+ *
+ * Since: 2.2
  **/
 void
 hildon_window_set_markup                        (HildonWindow *window,

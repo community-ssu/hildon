@@ -74,6 +74,7 @@
  * Initializes the hildon library. Call this function after calling gtk_init()
  * and before using any hildon or GTK+ functions in your program.
  *
+ * Since: 2.2
  **/
 void
 hildon_init (void)
@@ -110,6 +111,7 @@ hildon_init (void)
  * libraries. Use this function to replace a call to gtk_init() and also
  * initialize the hildon library. See hildon_init() and gtk_init() for details.
  *
+ * Since: 2.2
  **/
 void
 hildon_gtk_init (int *argc, char ***argv)

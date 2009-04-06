@@ -335,6 +335,7 @@ hildon_touch_selector_class_init (HildonTouchSelectorClass * class)
    * This can be due to the user selecting a different item from the list, or
    * due to a call to hildon_touch_selector_select_iter() on one of the columns.
    *
+   * Since: 2.2
    */
   hildon_touch_selector_signals[CHANGED] =
     g_signal_new ("changed",
@@ -351,6 +352,7 @@ hildon_touch_selector_class_init (HildonTouchSelectorClass * class)
    * The "columns-changed" signal is emitted when the number
    * of columns in the #HildonTouchSelector change.
    *
+   * Since: 2.2
    */
   hildon_touch_selector_signals[COLUMNS_CHANGED] =
     g_signal_new ("columns-changed",

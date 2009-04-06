@@ -1,5 +1,27 @@
 2009-04-06  Alberto Garcia  <agarcia@igalia.com>
 
+	* src/hildon-animation-actor.c
+	* src/hildon-button.c
+	* src/hildon-main.c
+	* src/hildon-pannable-area.c
+	* src/hildon-picker-button.c
+	* src/hildon-program.c
+	* src/hildon-remote-texture.c
+	* src/hildon-text-view.c
+	* src/hildon-touch-selector.c
+	* src/hildon-window-stack.c
+	* src/hildon-window.c:
+	Add missing 'Since: 2.2' tags.
+
+	* doc/hildon-sections.txt:
+	Add some missing symbols.
+
+	* doc/hildon-docs.sgml:
+	New 'Other' section for HildonAnimationActor and
+	HildonRemoteTexture
+
+2009-04-06  Alberto Garcia  <agarcia@igalia.com>
+
 	Patch by Iván Gómez (igomez@igalia.com)
 
 	* doc/building.sgml

@@ -570,6 +570,8 @@ hildon_pannable_area_class_init (HildonPannableAreaClass * klass)
    *
    * The horizontal-movement signal is emitted when the pannable area
    * starts a horizontal movement.
+   *
+   * Since: 2.2
    */
   pannable_area_signals[HORIZONTAL_MOVEMENT] =
     g_signal_new ("horizontal_movement",
@@ -592,6 +594,8 @@ hildon_pannable_area_class_init (HildonPannableAreaClass * klass)
    *
    * The vertical-movement signal is emitted when the pannable area
    * starts a vertical movement.
+   *
+   * Since: 2.2
    */
   pannable_area_signals[VERTICAL_MOVEMENT] =
     g_signal_new ("vertical_movement",
@@ -3161,6 +3165,8 @@ hildon_pannable_get_child_widget_at (HildonPannableArea *area,
  * artifacts in the animations.
  *
  * returns: The horizontal #GtkAdjustment
+ *
+ * Since: 2.2
  **/
 GtkAdjustment*
 hildon_pannable_area_get_hadjustment            (HildonPannableArea *area)
@@ -3182,6 +3188,8 @@ hildon_pannable_area_get_hadjustment            (HildonPannableArea *area)
  * artifacts in the animations.
  *
  * returns: The vertical #GtkAdjustment
+ *
+ * Since: 2.2
  **/
 GtkAdjustment*
 hildon_pannable_area_get_vadjustment            (HildonPannableArea *area)
@@ -3204,6 +3212,8 @@ hildon_pannable_area_get_vadjustment            (HildonPannableArea *area)
  *
  * returns: the policy is currently being used in the widget
  * #HildonSizeRequestPolicy.
+ *
+ * Since: 2.2
  **/
 HildonSizeRequestPolicy
 hildon_pannable_area_get_size_request_policy (HildonPannableArea *area)
@@ -3232,6 +3242,7 @@ hildon_pannable_area_get_size_request_policy (HildonPannableArea *area)
  * parameter will not have any effect with
  * #HILDON_SIZE_REQUEST_MINIMUM set.
  *
+ * Since: 2.2
  **/
 void
 hildon_pannable_area_set_size_request_policy (HildonPannableArea *area,

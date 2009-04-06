@@ -308,6 +308,8 @@ hildon_animation_actor_init                    (HildonAnimationActor *self)
  * Creates a new #HildonAnimationActor.
  *
  * Return value: A #HildonAnimationActor
+ *
+ * Since: 2.2
  **/
 GtkWidget*
 hildon_animation_actor_new                     (void)
@@ -521,6 +523,8 @@ hildon_animation_actor_send_all_messages (HildonAnimationActor *self)
  *
  * This is an internal utility function that application will
  * not need to call directly.
+ *
+ * Since: 2.2
  **/
 void
 hildon_animation_actor_send_message (HildonAnimationActor *self,
@@ -593,6 +597,8 @@ hildon_animation_actor_send_message (HildonAnimationActor *self,
  *
  * If the animation actor WM-counterpart is not ready, the show message
  * will be queued until the WM is ready for it.
+ *
+ * Since: 2.2
  **/
 void
 hildon_animation_actor_set_show_full (HildonAnimationActor *self,
@@ -637,6 +643,8 @@ hildon_animation_actor_set_show_full (HildonAnimationActor *self,
  * This function is a shortcut for hildon_animation_actor_set_show_full(),
  * setting the overall actor visibility without changing it's opacity
  * setting.
+ *
+ * Since: 2.2
  **/
 void
 hildon_animation_actor_set_show (HildonAnimationActor *self,
@@ -659,6 +667,8 @@ hildon_animation_actor_set_show (HildonAnimationActor *self,
  *
  * See hildon_animation_actor_set_show_full() for description of the range
  * of values @opacity argument takes.
+ *
+ * Since: 2.2
  **/
 void
 hildon_animation_actor_set_opacity (HildonAnimationActor *self,
@@ -701,6 +711,8 @@ hildon_animation_actor_set_opacity (HildonAnimationActor *self,
  *
  * If the animation actor WM-counterpart is not ready, the show message
  * will be queued until the WM is ready for it.
+ *
+ * Since: 2.2
  **/
 void
 hildon_animation_actor_set_position_full (HildonAnimationActor *self,
@@ -735,6 +747,8 @@ hildon_animation_actor_set_position_full (HildonAnimationActor *self,
  *
  * A shortcut for hildon_animation_actor_set_position_full(),
  * changing the window position, but preserving it's depth setting.
+ *
+ * Since: 2.2
  **/
 void
 hildon_animation_actor_set_position (HildonAnimationActor *self,
@@ -755,6 +769,8 @@ hildon_animation_actor_set_position (HildonAnimationActor *self,
  *
  * A shortcut for hildon_animation_actor_set_position_full(),
  * changing the window depth, but preserving it's position.
+ *
+ * Since: 2.2
  **/
 void
 hildon_animation_actor_set_depth (HildonAnimationActor *self,
@@ -777,6 +793,8 @@ hildon_animation_actor_set_depth (HildonAnimationActor *self,
  *
  * This function is just like hildon_animation_actor_set_scale(),
  * but the scale factors are given as 16-bit fixed-point number.
+ *
+ * Since: 2.2
  **/
 void
 hildon_animation_actor_set_scalex (HildonAnimationActor *self,
@@ -817,6 +835,8 @@ hildon_animation_actor_set_scalex (HildonAnimationActor *self,
  *
  * If the animation actor WM-counterpart is not ready, the show message
  * will be queued until the WM is ready for it.
+ *
+ * Since: 2.2
  **/
 void
 hildon_animation_actor_set_scale (HildonAnimationActor *self,
@@ -840,6 +860,8 @@ hildon_animation_actor_set_scale (HildonAnimationActor *self,
  *
  * This function is just like hildon_animation_actor_set_rotation(),
  * but the rotation angle is given as 16-bit fixed-point number.
+ *
+ * Since: 2.2
  **/
 void
 hildon_animation_actor_set_rotationx (HildonAnimationActor *self,
@@ -909,6 +931,8 @@ hildon_animation_actor_set_rotationx (HildonAnimationActor *self,
  *
  * If the animation actor WM-counterpart is not ready, the show message
  * will be queued until the WM is ready for it.
+ *
+ * Since: 2.2
  **/
 void
 hildon_animation_actor_set_rotation (HildonAnimationActor *self,
@@ -935,6 +959,8 @@ hildon_animation_actor_set_rotation (HildonAnimationActor *self,
  *
  * If the animation actor WM-counterpart is not ready, the show message
  * will be queued until the WM is ready for it.
+ *
+ * Since: 2.2
  **/
 void
 hildon_animation_actor_set_anchor (HildonAnimationActor *self,
@@ -983,6 +1009,8 @@ hildon_animation_actor_set_anchor (HildonAnimationActor *self,
  *
  * If the animation actor WM-counterpart is not ready, the show message
  * will be queued until the WM is ready for it.
+ *
+ * Since: 2.2
  **/
 void
 hildon_animation_actor_set_anchor_from_gravity (HildonAnimationActor *self,
@@ -1072,6 +1100,8 @@ hildon_animation_actor_map_event (GtkWidget *widget,
  *
  * If the animation actor WM-counterpart is not ready, the show message
  * will be queued until the WM is ready for it.
+ *
+ * Since: 2.2
  **/
 void
 hildon_animation_actor_set_parent (HildonAnimationActor *self,
