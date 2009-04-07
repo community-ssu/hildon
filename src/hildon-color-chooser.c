@@ -701,13 +701,12 @@ hildon_color_chooser_pointer_motion             (GtkWidget *widget,
     HildonColorChooser *sel = HILDON_COLOR_CHOOSER (widget);
     HildonColorChooserPrivate *priv = HILDON_COLOR_CHOOSER_GET_PRIVATE (widget);
 
-    GdkModifierType mods;
     gint x, y, tmp;
 
     g_assert (priv);
 
-    if (event->is_hint || (event->window != widget->window))
-        gdk_window_get_pointer (widget->window, &x, &y, &mods);
+    x = (gint) event->x;
+    y = (gint) event->y;
 
     if (priv->mousestate == 1) {
         if (x >= priv->spa.x && x <= priv->spa.x + priv->spa.width &&
@@ -739,6 +738,8 @@ hildon_color_chooser_pointer_motion             (GtkWidget *widget,
         } else if (priv->mousein == TRUE) {
         }
     }
+
+    gdk_event_request_motions (event);
 
     return FALSE;
 }

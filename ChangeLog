@@ -1,5 +1,11 @@
 2009-04-07  Claudio Saavedra  <csaavedra@igalia.com>
 
+	* src/hildon-color-chooser.c (hildon_color_chooser_pointer_motion):
+	Use the event coordinates instead of gdk_window_get_pointer(). Also,
+	request more motions after using it.
+
+2009-04-07  Claudio Saavedra  <csaavedra@igalia.com>
+
 	* src/hildon-calendar.c (hildon_calendar_expose),
 	(hildon_calendar_paint_main), (hildon_calendar_enter_notify):
 	Remove unused variables.
