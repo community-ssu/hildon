@@ -1576,9 +1576,9 @@ hildon_touch_selector_get_active                (HildonTouchSelector *selector,
   current_column = g_slist_nth_data (selector->priv->columns, column);
 
   selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (current_column->priv->tree_view));
-  model = gtk_tree_view_get_model (GTK_TREE_VIEW (current_column->priv->tree_view));
+  g_return_val_if_fail (gtk_tree_selection_get_selected (selection, NULL, &iter), -1);
 
-  gtk_tree_selection_get_selected (selection, NULL, &iter);
+  model = gtk_tree_view_get_model (GTK_TREE_VIEW (current_column->priv->tree_view));
   path = gtk_tree_model_get_path (model, &iter);
   index = (gtk_tree_path_get_indices (path))[0];
 
