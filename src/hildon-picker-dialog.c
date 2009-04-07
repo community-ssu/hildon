@@ -54,6 +54,8 @@
 
 G_DEFINE_TYPE (HildonPickerDialog, hildon_picker_dialog, HILDON_TYPE_DIALOG)
 
+#define HILDON_TOUCH_SELECTOR_HEIGHT            320
+
 struct _HildonPickerDialogPrivate
 {
   GtkWidget *selector;
@@ -582,6 +584,10 @@ _hildon_picker_dialog_set_selector (HildonPickerDialog * dialog,
                       dialog->priv->selector, TRUE, TRUE, 0);
 
   g_object_unref (selector);
+
+  /* Ensure that the dialog's height is correct */
+  gtk_widget_set_size_request (GTK_WIDGET (dialog->priv->selector), -1,
+                               HILDON_TOUCH_SELECTOR_HEIGHT);
 
   gtk_widget_show (dialog->priv->selector);
 

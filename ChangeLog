@@ -1,3 +1,13 @@
+2009-04-07  Alejandro Pinheiro <apinheiro@igalia.com>
+
+	* src/hildon-picker-dialog.c
+	* src/hildon-touch-selector.c
+	Reverting the change that tried to avoid the hardcoded height on
+	the picker dialog, as causes problems on the hildon-touch-selector
+	initial-hint
+
+	Fixes NB#110029 (selectors not scrolling to selected value)
+
 2009-04-07  Alberto Garcia  <agarcia@igalia.com>
 
 	* src/hildon-touch-selector.c: Fix typos
