@@ -1,5 +1,11 @@
 2009-04-07  Claudio Saavedra  <csaavedra@igalia.com>
 
+	* src/hildon-calendar.c (hildon_calendar_expose),
+	(hildon_calendar_paint_main), (hildon_calendar_enter_notify):
+	Remove unused variables.
+
+2009-04-07  Claudio Saavedra  <csaavedra@igalia.com>
+
 	* tests/check-hildon-color-chooser.c (START_TEST): Remove unused
 	variable assignment.
 

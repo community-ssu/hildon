@@ -2085,10 +2085,8 @@ static gboolean
 hildon_calendar_expose                          (GtkWidget *widget,
                                                  GdkEventExpose *event)
 {
-    HildonCalendar *calendar;
     HildonCalendarPrivate *private_data;
 
-    calendar = HILDON_CALENDAR (widget);
     private_data = HILDON_CALENDAR_GET_PRIVATE (widget);
 
     if (GTK_WIDGET_DRAWABLE (widget))
@@ -2569,14 +2567,12 @@ hildon_calendar_paint_day                       (GtkWidget *widget,
 static void
 hildon_calendar_paint_main                      (GtkWidget *widget)
 {
-    HildonCalendar *calendar;
     HildonCalendarPrivate *private_data;
     gint row, col;
 
     g_return_if_fail (HILDON_IS_CALENDAR (widget));
     g_return_if_fail (widget->window != NULL);
 
-    calendar = HILDON_CALENDAR (widget);
     private_data = HILDON_CALENDAR_GET_PRIVATE (widget);
 
     if (private_data->freeze_count)
@@ -3337,10 +3333,8 @@ static gboolean
 hildon_calendar_enter_notify                    (GtkWidget *widget,
                                                  GdkEventCrossing *event)
 {
-    HildonCalendar *calendar;
     HildonCalendarPrivate *private_data;
 
-    calendar = HILDON_CALENDAR (widget);
     private_data = HILDON_CALENDAR_GET_PRIVATE (widget);
 
     if (event->window == private_data->arrow_win[ARROW_MONTH_LEFT])
