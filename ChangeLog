@@ -1,5 +1,10 @@
 2009-04-07  Claudio Saavedra  <csaavedra@igalia.com>
 
+	* tests/check-hildon-color-chooser.c (START_TEST): Remove unused
+	variable assignment.
+
+2009-04-07  Claudio Saavedra  <csaavedra@igalia.com>
+
 	* src/hildon-touch-selector.c (hildon_touch_selector_get_active):
 	Check the return value of gtk_tree_selection_get_selected()
 	for safety.

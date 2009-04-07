@@ -123,8 +123,6 @@ START_TEST (test_set_color_limits)
   fail_if(!HILDON_IS_COLOR_CHOOSER(color_chooser),
           "hildon-color-chooser: Creation failed.");   
     
-  b_color = gdk_color_copy(&color);
-    
   /* Test 1: Set the color #000000 */
   gdk_color_parse( "#000000", &color);
   b_color = gdk_color_copy(&color);
@@ -216,8 +214,6 @@ START_TEST (test_set_color_invalid)
   fail_if(!HILDON_IS_COLOR_CHOOSER(color_chooser),
           "hildon-color-chooser: Creation failed.");
    
-  b_color = gdk_color_copy(&color);
-    
   /* Initialize color to check that invalid values doesn't set colors*/
   gdk_color_parse( "#000000", &color);
   b_color = gdk_color_copy(&color);
