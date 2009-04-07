@@ -2,7 +2,7 @@ libhildon (2.1.60-1) unstable; urgency=low
 
   * Fixes: NB#109099 (Memory leak in Hildon touch selector)
   * Fixes: NB#107386 (Odd stacking behaviour for information banners)
-  * Fixes: NB#94957 (Smoothly opened application menu)
+  * Fixes NB#94957 (Smoothly opened application menu)
   * Fixes: NB#109179 (Memory leak in Hildon program)
   * Fixes: NB#107775 (No scrollbars can be seen when several items are
     available in a dialog)
