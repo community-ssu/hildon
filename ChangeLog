@@ -1,3 +1,7 @@
+2009-04-07  Alberto Garcia  <agarcia@igalia.com>
+
+	* src/hildon-touch-selector.c: Fix typos
+
 2009-04-07  Claudio Saavedra  <csaavedra@igalia.com>
 
 	* src/hildon-color-chooser.c (hildon_color_chooser_pointer_motion):

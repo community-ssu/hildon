@@ -1082,8 +1082,8 @@ hildon_touch_selector_prepend_text (HildonTouchSelector * selector,
  * @position: the position to insert @text.
  * @text: A non %NULL text string.
  *
- * Inserts a new entry in particular position of a #HildoTouchSelector created
- * with hildon_touch_selector_new_text().
+ * Inserts a new entry in a particular position of a
+ * #HildonTouchSelector created with hildon_touch_selector_new_text().
  *
  * Since: 2.2
  **/
