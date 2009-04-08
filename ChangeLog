@@ -1,3 +1,14 @@
+2009-04-08  Alejandro G. Castro  <alex@igalia.com>
+
+	* src/hildon-pannable-area.c,
+	(hildon_pannable_area_init),
+	(hildon_pannable_area_size_request),
+	(hildon_pannable_area_style_set),
+	(hildon_pannable_draw_vscroll),
+	(hildon_pannable_draw_hscroll),
+	(hildon_pannable_area_check_scrollbars): Replaced area_width with
+	indicator_width to clarify the use of the attribute.
+
 2009-04-08  Claudio Saavedra  <csaavedra@igalia.com>
 
 	[Release 2.1.62]
