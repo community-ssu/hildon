@@ -6,7 +6,7 @@
 	the picker dialog, as causes problems on the hildon-touch-selector
 	initial-hint
 
-	Fixes NB#110029 (selectors not scrolling to selected value)
+	Fixes: NB#110029 (selectors not scrolling to selected value)
 
 2009-04-07  Alberto Garcia  <agarcia@igalia.com>
 
