@@ -1,3 +1,9 @@
+[2.1.62 release]
+
+  * Fixes: NB#110029 (selectors not scrolling to selected value)
+  * Coverity reported fixes.
+  * Improved documentation (Ivan Gomez)
+
 [2.1.60 release]
 
   * Fixes: NB#109099 (Memory leak in Hildon touch selector)
