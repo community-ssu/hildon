@@ -1,3 +1,19 @@
+2009-04-13  Alejandro G. Castro  <alex@igalia.com>
+
+	Deprecation of the hildon_pannable_area_set_size_request_policy
+	API, the only policy properly supported in gtk+ nowadays is the
+	minimum size.
+
+	* src/hildon-pannable-area.c,
+	(hildon_pannable_area_size_request): Added a workaround for the
+	size_request to avoid the problems of huge pixmaps in case someone
+	is still using the function.
+	* src/hildon-pannable-area.h: Deprecated the enum with the
+	policies.
+
+	Fixes: NB#110244 (Problems with the
+	hildon_pannable_area_set_size_request_policy API)
+
 2009-04-08  Alejandro G. Castro  <alex@igalia.com>
 
 	* src/hildon-pannable-area.c,

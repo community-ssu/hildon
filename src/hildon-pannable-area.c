@@ -55,6 +55,8 @@
 #define SCROLL_FADE_TIMEOUT 100
 #define MOTION_EVENTS_PER_SECOND 25
 #define CURSOR_STOPPED_TIMEOUT 80
+#define PANNABLE_MAX_WIDTH 788
+#define PANNABLE_MAX_HEIGHT 378
 
 G_DEFINE_TYPE (HildonPannableArea, hildon_pannable_area, GTK_TYPE_BIN)
 
@@ -1020,7 +1022,8 @@ hildon_pannable_area_size_request (GtkWidget * widget,
   } else {
     switch (priv->size_request_policy) {
       case HILDON_SIZE_REQUEST_CHILDREN:
-        requisition->width = child_requisition.width;
+        requisition->width = MIN (PANNABLE_MAX_WIDTH,
+                                  child_requisition.width);
         break;
       case HILDON_SIZE_REQUEST_MINIMUM:
       default:
@@ -1033,7 +1036,8 @@ hildon_pannable_area_size_request (GtkWidget * widget,
   } else {
     switch (priv->size_request_policy) {
       case HILDON_SIZE_REQUEST_CHILDREN:
-        requisition->height = child_requisition.height;
+        requisition->height = MIN (PANNABLE_MAX_HEIGHT,
+                                   child_requisition.height);
         break;
       case HILDON_SIZE_REQUEST_MINIMUM:
       default:
@@ -3243,6 +3247,12 @@ hildon_pannable_area_get_size_request_policy (HildonPannableArea *area)
  * #HILDON_SIZE_REQUEST_MINIMUM set.
  *
  * Since: 2.2
+ *
+ * Deprecated: This method and the policy request is deprecated, DO
+ * NOT use it in future code, the only policy properly supported in
+ * gtk+ nowadays is the minimum size. Use #gtk_window_set_default_size
+ * or #gtk_window_set_geometry_hints with the proper size in your case
+ * to define the height of your dialogs.
  **/
 void
 hildon_pannable_area_set_size_request_policy (HildonPannableArea *area,

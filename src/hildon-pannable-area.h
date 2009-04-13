@@ -104,6 +104,11 @@ typedef enum {
  * the widget
  *
  * Used to control the size request policy of the widget
+ *
+ * Deprecated: This define and the policy request is deprecated, DO
+ * NOT use it in future code. Check
+ * #hildon_pannable_area_set_size_request_policy documentation for
+ * more information.
  */
 typedef enum {
   HILDON_SIZE_REQUEST_MINIMUM,
