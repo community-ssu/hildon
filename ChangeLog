@@ -1,3 +1,14 @@
+2009-04-14  Alberto Garcia  <agarcia@igalia.com>
+
+	* src/hildon-button.c (hildon_button_set_arrangement):
+	Due to NB#88126, if one of the labels is too long it will be
+	painted outside the button. The 'value' label is more likely to be
+	the longest one, so we change its packing options in order to
+	truncate it if necessary. As a side effect, the 'title' label will
+	no longer be truncated.
+
+	Fixes: NB#110689 (HildonPickerButton doesn't ellipsize very long values)
+
 2009-04-14  Claudio Saavedra  <csaavedra@igalia.com>
 
 	[Release 2.1.64]
