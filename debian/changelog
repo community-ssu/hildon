@@ -1,3 +1,10 @@
+libhildon (2.1.64-1) unstable; urgency=low
+
+  * Fixes: NB#110244 (Problems with the
+    hildon_pannable_area_set_size_request_policy API)
+
+ -- Claudio Saavedra <csaavedra@igalia.com>  Tue, 14 Apr 2009 11:17:53 +0300
+
 libhildon (2.1.62-1) unstable; urgency=low
 
   * Fixes: NB#110029 (selectors not scrolling to selected value)

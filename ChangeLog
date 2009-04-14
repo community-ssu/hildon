@@ -1,3 +1,11 @@
+2009-04-14  Claudio Saavedra  <csaavedra@igalia.com>
+
+	[Release 2.1.64]
+
+	* NEWS: Updates.
+	* configure.ac: Bump version.
+	* debian/changelog: Updates.
+
 2009-04-13  Alejandro G. Castro  <alex@igalia.com>
 
 	Deprecation of the hildon_pannable_area_set_size_request_policy
