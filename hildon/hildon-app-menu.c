@@ -178,10 +178,10 @@ hildon_app_menu_insert                          (HildonAppMenu *menu,
                                       HILDON_SIZE_FINGER_HEIGHT | HILDON_SIZE_AUTO_WIDTH);
 
     /* Add the item to the menu */
-    gtk_widget_show (GTK_WIDGET (item));
     g_object_ref_sink (item);
     priv->buttons = g_list_insert (priv->buttons, item, position);
-    hildon_app_menu_repack_items (menu, position);
+    if (GTK_WIDGET_VISIBLE (item))
+        hildon_app_menu_repack_items (menu, position);
 
     /* Enable accelerators */
     g_signal_connect (item, "can-activate-accel", G_CALLBACK (can_activate_accel), NULL);
@@ -285,10 +285,10 @@ hildon_app_menu_add_filter                      (HildonAppMenu *menu,
                                       HILDON_SIZE_FINGER_HEIGHT | HILDON_SIZE_AUTO_WIDTH);
 
     /* Add the filter to the menu */
-    gtk_widget_show (GTK_WIDGET (filter));
     g_object_ref_sink (filter);
     priv->filters = g_list_append (priv->filters, filter);
-    hildon_app_menu_repack_filters (menu);
+    if (GTK_WIDGET_VISIBLE (filter))
+        hildon_app_menu_repack_filters (menu);
 
     /* Enable accelerators */
     g_signal_connect (filter, "can-activate-accel", G_CALLBACK (can_activate_accel), NULL);
