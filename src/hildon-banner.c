@@ -842,15 +842,15 @@ hildon_banner_create_animation (void)
     gchar *icon_name;
     gint i;
 
-    anim = gdk_pixbuf_simple_anim_new (HILDON_ICON_PIXEL_SIZE_FINGER,
-				       HILDON_ICON_PIXEL_SIZE_FINGER,
+    anim = gdk_pixbuf_simple_anim_new (HILDON_ICON_PIXEL_SIZE_STYLUS,
+				       HILDON_ICON_PIXEL_SIZE_STYLUS,
 				       HILDON_BANNER_ANIMATION_FRAMERATE);
     gdk_pixbuf_simple_anim_set_loop (anim, TRUE);
     theme = gtk_icon_theme_get_default ();
 
     for (i = 1; i <= HILDON_BANNER_ANIMATION_NFRAMES; i++) {
 	icon_name = g_strdup_printf (HILDON_BANNER_ANIMATION_TMPL, i);
-	frame = gtk_icon_theme_load_icon (theme, icon_name, HILDON_ICON_PIXEL_SIZE_FINGER,
+	frame = gtk_icon_theme_load_icon (theme, icon_name, HILDON_ICON_PIXEL_SIZE_STYLUS,
 					  0, &error);
 
 	if (error) {

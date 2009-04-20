@@ -1,5 +1,14 @@
 2009-04-20  Alberto Garcia  <agarcia@igalia.com>
 
+	Patch by Mox Soini (ext-mox.soini@nokia.com)
+
+	* src/hildon-banner.c (hildon_banner_create_animation):
+	Use stylus-sized icons in animation banner.
+
+	Fixes: NB#111206 (stylus sized icon for animation banner)
+
+2009-04-20  Alberto Garcia  <agarcia@igalia.com>
+
 	* src/hildon-gtk.h
 	* src/hildon-gtk.c
 	(+hildon_gtk_window_set_do_not_disturb):
