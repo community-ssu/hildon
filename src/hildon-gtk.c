@@ -319,6 +319,29 @@ hildon_gtk_icon_view_set_ui_mode                (GtkIconView  *iconview,
 }
 #endif /* MAEMO_GTK */
 
+static void
+set_clear_window_flag                           (GtkWindow   *window,
+                                                 const gchar *atomname,
+                                                 gboolean     flag)
+{
+    GdkWindow *gdkwin;
+    GdkAtom atom;
+
+    g_return_if_fail (GTK_IS_WINDOW (window));
+    g_return_if_fail (GTK_WIDGET_REALIZED (window));
+
+    gdkwin = GTK_WIDGET (window)->window;
+    atom = gdk_atom_intern (atomname, FALSE);
+
+    if (flag) {
+        guint32 set = 1;
+        gdk_property_change (gdkwin, atom, gdk_x11_xatom_to_atom (XA_INTEGER),
+                             32, GDK_PROP_MODE_REPLACE, (const guchar *) &set, 1);
+    } else {
+        gdk_property_delete (gdkwin, atom);
+    }
+}
+
 /**
  * hildon_gtk_window_set_progress_indicator:
  * @window: a #GtkWindow.
@@ -337,21 +360,7 @@ void
 hildon_gtk_window_set_progress_indicator        (GtkWindow    *window,
                                                  guint        state)
 {
-  GdkWindow *gdkwin;
-  GdkDisplay *display;
-  Atom atom;
-
-  g_return_if_fail (GTK_IS_WINDOW (window));
-  g_return_if_fail (GTK_WIDGET_REALIZED (window));
-
-  gdkwin = GTK_WIDGET (window)->window;
-
-  display = gdk_drawable_get_display (gdkwin);
-  atom = gdk_x11_get_xatom_by_name_for_display (display, "_HILDON_WM_WINDOW_PROGRESS_INDICATOR");
-
-  XChangeProperty (GDK_DISPLAY_XDISPLAY (display), GDK_WINDOW_XID (gdkwin),
-                   atom, XA_INTEGER, 32, PropModeReplace,
-                   (guchar *)&state, 1);
+    set_clear_window_flag (window, "_HILDON_WM_WINDOW_PROGRESS_INDICATOR", state);
 }
 
 /**

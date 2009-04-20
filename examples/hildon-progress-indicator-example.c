@@ -26,16 +26,16 @@ HildonTextView *textview;
 GtkTextBuffer *buffer;
 
 static void
-show_progress_button_clicked                    (GtkWindow   *window,
-                                                 HildonEntry *entry)
+show_progress_button_clicked                    (GtkWidget *button,
+                                                 GtkWindow *window)
 {
     g_debug ("Showing progress indicator...");
     hildon_gtk_window_set_progress_indicator (window, 1);
 }
 
 static void
-hide_progress_button_clicked                    (GtkWindow   *window,
-                                                 HildonEntry *entry)
+hide_progress_button_clicked                    (GtkWidget *button,
+                                                 GtkWindow *window)
 {
     g_debug ("Hiding progress indicator...");
     hildon_gtk_window_set_progress_indicator (window, 0);

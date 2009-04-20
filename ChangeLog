@@ -1,3 +1,12 @@
+2009-04-20  Alberto Garcia  <agarcia@igalia.com>
+
+	* examples/hildon-progress-indicator-example.c: Fix example
+
+	* src/hildon-gtk.c (set_clear_window_flag)
+	(hildon_gtk_window_set_progress_indicator):
+	Create a generic function for setting flags to a window.
+	Use GDK instead of direct Xlib calls.
+
 2009-04-14  Alberto Garcia  <agarcia@igalia.com>
 
 	* src/hildon-button.c (hildon_button_set_arrangement):
