@@ -364,6 +364,25 @@ hildon_gtk_window_set_progress_indicator        (GtkWindow    *window,
 }
 
 /**
+ * hildon_gtk_window_set_do_not_disturb:
+ * @window: a #GtkWindow
+ * @dndflag: %TRUE to set the "do-not-disturb" flag, %FALSE to clear it
+ *
+ * This function tells the window manager to set (or clear) the
+ * "do-not-disturb" flag on @window.
+ *
+ * Note that @window must be realized for this to work.
+ *
+ * Since: 2.2
+ **/
+void
+hildon_gtk_window_set_do_not_disturb            (GtkWindow *window,
+                                                 gboolean   dndflag)
+{
+    set_clear_window_flag (window, "_HILDON_DO_NOT_DISTURB", dndflag);
+}
+
+/**
  * hildon_gtk_hscale_new:
  *
  * Creates a new horizontal scale widget that lets the user select

@@ -66,6 +66,10 @@ void
 hildon_gtk_window_set_progress_indicator        (GtkWindow    *window,
                                                  guint        state);
 
+void
+hildon_gtk_window_set_do_not_disturb            (GtkWindow *window,
+                                                 gboolean   dndflag);
+
 GtkWidget*
 hildon_gtk_hscale_new                           (void);
 
