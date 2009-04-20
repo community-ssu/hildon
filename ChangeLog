@@ -1,5 +1,14 @@
 2009-04-20  Alberto Garcia  <agarcia@igalia.com>
 
+	* src/hildon-banner.c (hildon_banner_realize):
+	Mark HildonBanner as supporting portrait mode.
+	Use GDK to set window properties insetad of direct Xlib calls.
+
+	Fixes: NB#111830 (HildonBanner should be marked as supporting
+	portrait)
+
+2009-04-20  Alberto Garcia  <agarcia@igalia.com>
+
 	* src/hildon-note.c (hildon_note_rebuild):
 	Hide action area in information notes. Prevents text from being
 	slightly aligned to the left.

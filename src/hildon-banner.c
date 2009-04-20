@@ -57,7 +57,6 @@
 
 #include                                        <string.h>
 #include                                        <X11/Xatom.h>
-#include                                        <X11/X.h>
 #include                                        <gdk/gdkx.h>
 
 #undef                                          HILDON_DISABLE_DEPRECATED
@@ -656,8 +655,9 @@ hildon_banner_check_position                    (GtkWidget *widget)
 static void
 hildon_banner_realize                           (GtkWidget *widget)
 {
-    GdkDisplay *display;
-    Atom atom;
+    GdkWindow *gdkwin;
+    GdkAtom atom;
+    guint32 portrait = 1;
     const gchar *notification_type = "_HILDON_NOTIFICATION_TYPE_BANNER";
     HildonBannerPrivate *priv = HILDON_BANNER_GET_PRIVATE (widget);
     g_assert (priv);
@@ -672,12 +672,17 @@ hildon_banner_realize                           (GtkWidget *widget)
 
     hildon_banner_check_position (widget);
 
+    gdkwin = widget->window;
+
     /* Set the _HILDON_NOTIFICATION_TYPE property so Matchbox places the window correctly */
-    display = gdk_drawable_get_display (widget->window);
-    atom = gdk_x11_get_xatom_by_name_for_display (display, "_HILDON_NOTIFICATION_TYPE");
-    XChangeProperty (GDK_WINDOW_XDISPLAY (widget->window), GDK_WINDOW_XID (widget->window),
-                     atom, XA_STRING, 8, PropModeReplace, (guchar *) notification_type,
-                     strlen (notification_type));
+    atom = gdk_atom_intern ("_HILDON_NOTIFICATION_TYPE", FALSE);
+    gdk_property_change (gdkwin, atom, gdk_x11_xatom_to_atom (XA_STRING), 8, GDK_PROP_MODE_REPLACE,
+                         (gpointer) notification_type, strlen (notification_type));
+
+    /* HildonBanner supports portrait mode */
+    atom = gdk_atom_intern ("_HILDON_PORTRAIT_MODE_SUPPORT", FALSE);
+    gdk_property_change (gdkwin, atom, gdk_x11_xatom_to_atom (XA_CARDINAL), 32,
+                         GDK_PROP_MODE_REPLACE, (gpointer) &portrait, 1);
 }
 
 static void 
