@@ -588,6 +588,7 @@ hildon_note_rebuild                             (HildonNote *note)
     GtkDialog *dialog;
     HildonNotePrivate *priv;
     gboolean IsHorizontal = TRUE;
+    gboolean is_info_note = FALSE;
 
     g_assert (HILDON_IS_NOTE (note));
 
@@ -635,12 +636,26 @@ hildon_note_rebuild                             (HildonNote *note)
             IsHorizontal = FALSE;
             break;
 
-        case HILDON_NOTE_TYPE_CONFIRMATION_BUTTON:
         case HILDON_NOTE_TYPE_INFORMATION_THEME:
         case HILDON_NOTE_TYPE_INFORMATION:
+            is_info_note = TRUE;
+            break;
+
+        case HILDON_NOTE_TYPE_CONFIRMATION_BUTTON:
         default:
             break;
     }
+
+    /* Don't display the action area if this is just an information
+     * note. This prevents text from being slightly aligned to the
+     * left
+     */
+    if (is_info_note) {
+        gtk_widget_hide (dialog->action_area);
+    } else {
+        gtk_widget_show (dialog->action_area);
+    }
+    gtk_widget_set_no_show_all (dialog->action_area, is_info_note);
 
     if (IsHorizontal) {
         /* Pack item with label horizontally */
