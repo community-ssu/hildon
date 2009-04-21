@@ -868,14 +868,18 @@ hildon_app_menu_repack_items                    (HildonAppMenu *menu,
                                                  gint           start_from)
 {
     HildonAppMenuPrivate *priv;
-    gint row, col;
+    gint row, col, nvisible, i;
     GList *iter;
 
     priv = HILDON_APP_MENU_GET_PRIVATE(menu);
 
-    /* Remove buttons from their parent */
-    if (start_from != -1) {
-        for (iter = g_list_nth (priv->buttons, start_from); iter != NULL; iter = iter->next) {
+    i = nvisible = 0;
+    for (iter = priv->buttons; iter != NULL; iter = iter->next) {
+        /* Count number of visible items */
+        if (GTK_WIDGET_VISIBLE (iter->data))
+            nvisible++;
+        /* Remove buttons from their parent */
+        if (start_from != -1 && i >= start_from) {
             GtkWidget *item = GTK_WIDGET (iter->data);
             GtkWidget *parent = gtk_widget_get_parent (item);
             if (parent) {
@@ -883,10 +887,16 @@ hildon_app_menu_repack_items                    (HildonAppMenu *menu,
                 gtk_container_remove (GTK_CONTAINER (parent), item);
             }
         }
-
-        /* If items have been removed, recalculate the size of the menu */
-        gtk_window_resize (GTK_WINDOW (menu), 1, 1);
+        i++;
     }
+
+    /* If items have been removed, recalculate the size of the menu */
+    if (start_from != -1)
+        gtk_window_resize (GTK_WINDOW (menu), 1, 1);
+
+    /* Set the final size now to avoid unnecessary resizes later */
+    if (nvisible > 0)
+        gtk_table_resize (priv->table, ((nvisible - 1) / priv->columns) + 1, priv->columns);
 
     /* Add buttons */
     row = col = 0;
@@ -905,14 +915,6 @@ hildon_app_menu_repack_items                    (HildonAppMenu *menu,
                 row++;
             }
         }
-    }
-
-    /* The number of rows/columns might have changed, so we have to
-     * resize the table */
-    if (col == 0) {
-        gtk_table_resize (priv->table, MAX (row, 1), priv->columns);
-    } else {
-        gtk_table_resize (priv->table, row + 1, priv->columns);
     }
 }
 

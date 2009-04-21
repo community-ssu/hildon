@@ -1,5 +1,11 @@
 2009-05-25  Alberto Garcia  <agarcia@igalia.com>
 
+	* hildon/hildon-app-menu.c (hildon_app_menu_repack_items):
+	Resize table before adding new items to make sure that
+	gtk_table_resize() is called just once.
+
+2009-05-25  Alberto Garcia  <agarcia@igalia.com>
+
 	* hildon/hildon-app-menu-private.h
 	* hildon/hildon-app-menu.c (item_visibility_changed)
 	(filter_visibility_changed, hildon_app_menu_show_all)
