@@ -1,3 +1,13 @@
+[2.1.66 release]
+
+  * Fixes: NB#110689 (HildonPickerButton doesn't ellipsize very long values)
+  * Fixes: NB#110959 (Add API to set the do-not-disturb flag to a window)
+  * Fixes: NB#111206 (stylus sized icon for animation banner)
+  * Fixes: NB#111962 (mail_in_ui_folder_move_target_error not aligned
+    properly)
+  * Fixes: NB#111830 (HildonBanner should be marked as supporting
+    portrait)
+
 [2.1.64 release]
 
   * Fixes: NB#110244 (Problems with the

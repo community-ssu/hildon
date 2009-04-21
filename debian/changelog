@@ -1,3 +1,15 @@
+libhildon (2.1.66-1) unstable; urgency=low
+
+  * Fixes: NB#110689 (HildonPickerButton doesn't ellipsize very long values)
+  * Fixes: NB#110959 (Add API to set the do-not-disturb flag to a window)
+  * Fixes: NB#111206 (stylus sized icon for animation banner)
+  * Fixes: NB#111962 (mail_in_ui_folder_move_target_error not aligned
+    properly)
+  * Fixes: NB#111830 (HildonBanner should be marked as supporting
+    portrait)
+
+ -- Claudio Saavedra <csaavedra@igalia.com>  Tue, 21 Apr 2009 14:09:53 +0300
+
 libhildon (2.1.64-1) unstable; urgency=low
 
   * Fixes: NB#110244 (Problems with the

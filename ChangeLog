@@ -1,3 +1,11 @@
+2009-04-21  Claudio Saavedra  <csaavedra@igalia.com>
+
+	[Release 2.1.66]
+
+	* NEWS: Updates.
+	* configure.ac: Bump version.
+	* debian/changelog: Updates.
+
 2009-04-20  Alberto Garcia  <agarcia@igalia.com>
 
 	* src/hildon-banner.c (hildon_banner_realize):
