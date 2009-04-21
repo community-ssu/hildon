@@ -403,7 +403,8 @@ item_visibility_changed                         (GtkWidget     *item,
 {
     HildonAppMenuPrivate *priv = HILDON_APP_MENU_GET_PRIVATE (menu);
 
-    hildon_app_menu_repack_items (menu, g_list_index (priv->buttons, item));
+    if (! priv->inhibit_repack)
+        hildon_app_menu_repack_items (menu, g_list_index (priv->buttons, item));
 }
 
 static void
@@ -411,7 +412,10 @@ filter_visibility_changed                       (GtkWidget     *item,
                                                  GParamSpec    *arg1,
                                                  HildonAppMenu *menu)
 {
-    hildon_app_menu_repack_filters (menu);
+    HildonAppMenuPrivate *priv = HILDON_APP_MENU_GET_PRIVATE (menu);
+
+    if (! priv->inhibit_repack)
+        hildon_app_menu_repack_filters (menu);
 }
 
 static void
@@ -424,22 +428,38 @@ remove_item_from_list                           (GList    **list,
 static void
 hildon_app_menu_show_all                        (GtkWidget *widget)
 {
+    HildonAppMenu *menu = HILDON_APP_MENU (widget);
     HildonAppMenuPrivate *priv = HILDON_APP_MENU_GET_PRIVATE (widget);
+
+    priv->inhibit_repack = TRUE;
 
     /* Show children, but not self. */
     g_list_foreach (priv->buttons, (GFunc) gtk_widget_show_all, NULL);
     g_list_foreach (priv->filters, (GFunc) gtk_widget_show_all, NULL);
+
+    priv->inhibit_repack = FALSE;
+
+    hildon_app_menu_repack_items (menu, 0);
+    hildon_app_menu_repack_filters (menu);
 }
 
 
 static void
 hildon_app_menu_hide_all                        (GtkWidget *widget)
 {
+    HildonAppMenu *menu = HILDON_APP_MENU (widget);
     HildonAppMenuPrivate *priv = HILDON_APP_MENU_GET_PRIVATE (widget);
+
+    priv->inhibit_repack = TRUE;
 
     /* Hide children, but not self. */
     g_list_foreach (priv->buttons, (GFunc) gtk_widget_hide_all, NULL);
     g_list_foreach (priv->filters, (GFunc) gtk_widget_hide_all, NULL);
+
+    priv->inhibit_repack = FALSE;
+
+    hildon_app_menu_repack_items (menu, 0);
+    hildon_app_menu_repack_filters (menu);
 }
 
 /*
@@ -988,6 +1008,7 @@ hildon_app_menu_init                            (HildonAppMenu *menu)
     priv->parent_window = NULL;
     priv->transfer_window = NULL;
     priv->pressed_outside = FALSE;
+    priv->inhibit_repack = FALSE;
     priv->buttons = NULL;
     priv->filters = NULL;
     priv->columns = 2;

@@ -1,5 +1,14 @@
 2009-05-25  Alberto Garcia  <agarcia@igalia.com>
 
+	* hildon/hildon-app-menu-private.h
+	* hildon/hildon-app-menu.c (item_visibility_changed)
+	(filter_visibility_changed, hildon_app_menu_show_all)
+	(hildon_app_menu_hide_all, hildon_app_menu_init):
+	Rearrange items just once when gtk_widget_show_all()/hide_all()
+	are used.
+
+2009-05-25  Alberto Garcia  <agarcia@igalia.com>
+
 	* hildon/hildon-app-menu.c
 	(hildon_app_menu_insert, hildon_app_menu_add_filter):
 	Don't call gtk_widget_show() on added items.

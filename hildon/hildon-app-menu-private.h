@@ -33,6 +33,7 @@ struct                                          _HildonAppMenuPrivate
     GtkWindow *parent_window;
     GdkWindow *transfer_window;
     gboolean pressed_outside;
+    gboolean inhibit_repack;
     GList *buttons;
     GList *filters;
     guint columns;
