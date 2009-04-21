@@ -1,3 +1,11 @@
+2009-04-21  Alberto Garcia  <agarcia@igalia.com>
+
+	* src/hildon-app-menu.c (hildon_app_menu_find_intruder):
+	Close banners when a HildonAppMenu is popped up.
+
+	Fixes: NB#111027 (Title menu closed immediately if activated when
+	"Invalid e-mail address" banner is shown)
+
 2009-04-21  Claudio Saavedra  <csaavedra@igalia.com>
 
 	[Release 2.1.66]

@@ -99,6 +99,7 @@
 #include                                        "hildon-app-menu.h"
 #include                                        "hildon-app-menu-private.h"
 #include                                        "hildon-window.h"
+#include                                        "hildon-banner.h"
 
 static GdkWindow *
 grab_transfer_window_get                        (GtkWidget *widget);
@@ -465,7 +466,15 @@ hildon_app_menu_find_intruder                   (gpointer data)
         for (i = toplevels; i != NULL && !intruder_found; i = i->next) {
             if (i->data != widget && i->data != priv->parent_window) {
                 if (g_list_find (parent_pos, GTK_WIDGET (i->data)->window)) {
-                    intruder_found = TRUE;
+                    /* HildonBanners are not closed automatically when
+                     * a new window appears, so we must close them by
+                     * hand to make the AppMenu work as expected.
+                     * Yes, this is a hack. See NB#111027 */
+                    if (HILDON_IS_BANNER (i->data)) {
+                        gtk_widget_hide (i->data);
+                    } else {
+                        intruder_found = TRUE;
+                    }
                 }
             }
         }
