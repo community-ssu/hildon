@@ -459,12 +459,12 @@ static void
 hildon_number_editor_real_set_value             (HildonNumberEditorPrivate *priv, 
                                                  gint value)
 {
-    /* FIXME: That looks REALLY bad */
-    gchar buffer[32];
+    gchar *buffer;
 
     /* Update text in entry to new value */
-    g_snprintf (buffer, sizeof (buffer), "%d", value);
+    buffer = g_strdup_printf ("%d", value);
     gtk_entry_set_text (GTK_ENTRY (priv->num_entry), buffer);
+    g_free (buffer);
 }
 
 static gboolean

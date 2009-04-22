@@ -1,3 +1,8 @@
+2009-04-22  Claudio Saavedra  <csaavedra@igalia.com>
+
+	* src/hildon-number-editor.c (hildon_number_editor_real_set_value):
+	Use g_strdup_printf() instead of a fixed size buffer.
+
 2009-04-21  Alberto Garcia  <agarcia@igalia.com>
 
 	* src/hildon-app-menu.c (hildon_app_menu_find_intruder):
