@@ -2,6 +2,15 @@
 
 	* src/hildon-touch-selector.c
 	(hildon_touch_selector_append_text_column):
+	Make the cell renderer use the smallest width possible.
+
+	Fixes: NB#108470 (Selected items in multiple selection are either
+	having a tick that is cut or not visible at all.)
+
+2009-04-22  Alberto Garcia  <agarcia@igalia.com>
+
+	* src/hildon-touch-selector.c
+	(hildon_touch_selector_append_text_column):
 	Code cleanups
 
 2009-04-22  Claudio Saavedra  <csaavedra@igalia.com>

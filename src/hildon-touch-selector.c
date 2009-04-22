@@ -1205,6 +1205,7 @@ hildon_touch_selector_append_text_column (HildonTouchSelector * selector,
   renderer = gtk_cell_renderer_text_new ();
 
   g_object_set (renderer,
+                "width", 1,
                 "xalign", xalign,
                 NULL);
 
