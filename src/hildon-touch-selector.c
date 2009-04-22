@@ -1196,26 +1196,20 @@ HildonTouchSelectorColumn*
 hildon_touch_selector_append_text_column (HildonTouchSelector * selector,
                                           GtkTreeModel * model, gboolean center)
 {
-  GtkCellRenderer *renderer = NULL;
-  GValue val = { 0, };
+  gfloat xalign = center ? 0.5 : 0.0;
+  GtkCellRenderer *renderer;
 
   g_return_val_if_fail (HILDON_IS_TOUCH_SELECTOR (selector), NULL);
   g_return_val_if_fail (GTK_IS_TREE_MODEL (model), NULL);
 
-  if (model != NULL) {
-    renderer = gtk_cell_renderer_text_new ();
+  renderer = gtk_cell_renderer_text_new ();
 
-    if (center) {
-      g_value_init (&val, G_TYPE_FLOAT);
-      g_value_set_float (&val, 0.5);
-      g_object_set_property (G_OBJECT (renderer), "xalign", &val);
-    }
+  g_object_set (renderer,
+                "xalign", xalign,
+                NULL);
 
-    return hildon_touch_selector_append_column (selector, model, renderer,
-                                                "text", 0, NULL);
-  } else {
-    return NULL;
-  }
+  return hildon_touch_selector_append_column (selector, model, renderer,
+                                              "text", 0, NULL);
 }
 
 /**
