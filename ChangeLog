@@ -1,5 +1,14 @@
 2009-04-23  Claudio Saavedra  <csaavedra@igalia.com>
 
+	* doc/hildon-sections.txt: Add the new API.
+	* src/hildon-gtk.c (+hildon_gtk_window_set_portrait_flags): New
+	method to set the portrait flags.
+	* src/hildon-gtk.h: Add HildonPortraitFlags enum.
+
+	Fixes: NB#112328 (Adding helpers for setting portrait properties)
+
+2009-04-23  Claudio Saavedra  <csaavedra@igalia.com>
+
 	* src/hildon-gtk.c (set_clear_window_flag): Add an Atom parameter,
 	to allow using this method with other flags.
 	(hildon_gtk_window_set_progress_indicator): Update accordingly.

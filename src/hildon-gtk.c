@@ -384,6 +384,26 @@ hildon_gtk_window_set_do_not_disturb            (GtkWindow *window,
 }
 
 /**
+ * hildon_gtk_window_set_portrait_flags:
+ * @window: a #GtkWindow
+ * @portrait_flags: a combination of #HildonPortraitFlags
+ *
+ * Sets the portrait flags for @window. Note that @window should be
+ * realized, since these flags are set in its #GdkWindow.
+ *
+ * Since: 2.2
+ **/
+void
+hildon_gtk_window_set_portrait_flags (GtkWindow *window,
+                                      HildonPortraitFlags portrait_flags)
+{
+    set_clear_window_flag (window, "_HILDON_PORTRAIT_MODE_REQUEST", XA_CARDINAL,
+                           portrait_flags & HILDON_PORTRAIT_MODE_REQUEST);
+    set_clear_window_flag (window, "_HILDON_PORTRAIT_MODE_SUPPORT", XA_CARDINAL,
+                           portrait_flags & HILDON_PORTRAIT_MODE_SUPPORT);
+}
+
+/**
  * hildon_gtk_hscale_new:
  *
  * Creates a new horizontal scale widget that lets the user select

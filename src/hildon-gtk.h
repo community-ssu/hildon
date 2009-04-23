@@ -70,6 +70,15 @@ void
 hildon_gtk_window_set_do_not_disturb            (GtkWindow *window,
                                                  gboolean   dndflag);
 
+typedef enum {
+    HILDON_PORTRAIT_MODE_REQUEST = 1 << 0,
+    HILDON_PORTRAIT_MODE_SUPPORT = 1 << 1
+} HildonPortraitFlags;
+
+void
+hildon_gtk_window_set_portrait_flags             (GtkWindow *window,
+                                                  HildonPortraitFlags portrait_flags);
+
 GtkWidget*
 hildon_gtk_hscale_new                           (void);
 
