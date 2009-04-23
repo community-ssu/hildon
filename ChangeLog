@@ -1,3 +1,10 @@
+2009-04-23  Claudio Saavedra  <csaavedra@igalia.com>
+
+	* src/hildon-gtk.c (set_clear_window_flag): Add an Atom parameter,
+	to allow using this method with other flags.
+	(hildon_gtk_window_set_progress_indicator): Update accordingly.
+	(hildon_gtk_window_set_do_not_disturb): Update accordingly.
+
 2009-04-22  Alberto Garcia  <agarcia@igalia.com>
 
 	* src/hildon-touch-selector.c

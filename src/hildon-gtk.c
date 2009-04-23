@@ -322,6 +322,7 @@ hildon_gtk_icon_view_set_ui_mode                (GtkIconView  *iconview,
 static void
 set_clear_window_flag                           (GtkWindow   *window,
                                                  const gchar *atomname,
+                                                 Atom         xatom,
                                                  gboolean     flag)
 {
     GdkWindow *gdkwin;
@@ -335,7 +336,7 @@ set_clear_window_flag                           (GtkWindow   *window,
 
     if (flag) {
         guint32 set = 1;
-        gdk_property_change (gdkwin, atom, gdk_x11_xatom_to_atom (XA_INTEGER),
+        gdk_property_change (gdkwin, atom, gdk_x11_xatom_to_atom (xatom),
                              32, GDK_PROP_MODE_REPLACE, (const guchar *) &set, 1);
     } else {
         gdk_property_delete (gdkwin, atom);
@@ -360,7 +361,7 @@ void
 hildon_gtk_window_set_progress_indicator        (GtkWindow    *window,
                                                  guint        state)
 {
-    set_clear_window_flag (window, "_HILDON_WM_WINDOW_PROGRESS_INDICATOR", state);
+    set_clear_window_flag (window, "_HILDON_WM_WINDOW_PROGRESS_INDICATOR", XA_INTEGER, state);
 }
 
 /**
@@ -379,7 +380,7 @@ void
 hildon_gtk_window_set_do_not_disturb            (GtkWindow *window,
                                                  gboolean   dndflag)
 {
-    set_clear_window_flag (window, "_HILDON_DO_NOT_DISTURB", dndflag);
+    set_clear_window_flag (window, "_HILDON_DO_NOT_DISTURB", XA_INTEGER, dndflag);
 }
 
 /**
