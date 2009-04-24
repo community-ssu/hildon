@@ -1,5 +1,10 @@
 2009-04-24  Claudio Saavedra  <csaavedra@igalia.com>
 
+	* src/hildon-note.c (hildon_note_rebuild): Do not use a GtkHBox
+	in the note, since there are no horizontally arranged contents.
+
+2009-04-24  Claudio Saavedra  <csaavedra@igalia.com>
+
 	* src/hildon-gtk.c (+set_flag): new generic method to
 	set/delay a flag setting in a window.
 	(hildon_gtk_window_set_progress_indicator):

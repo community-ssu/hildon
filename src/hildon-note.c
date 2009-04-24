@@ -587,7 +587,6 @@ hildon_note_rebuild                             (HildonNote *note)
 {
     GtkDialog *dialog;
     HildonNotePrivate *priv;
-    gboolean IsHorizontal = TRUE;
     gboolean is_info_note = FALSE;
 
     g_assert (HILDON_IS_NOTE (note));
@@ -633,7 +632,6 @@ hildon_note_rebuild                             (HildonNote *note)
                     _("wdgt_bd_stop"), GTK_RESPONSE_CANCEL);
             gtk_widget_show (priv->cancelButton);
             gtk_widget_set_no_show_all (priv->cancelButton, FALSE);
-            IsHorizontal = FALSE;
             break;
 
         case HILDON_NOTE_TYPE_INFORMATION_THEME:
@@ -657,22 +655,13 @@ hildon_note_rebuild                             (HildonNote *note)
     }
     gtk_widget_set_no_show_all (dialog->action_area, is_info_note);
 
-    if (IsHorizontal) {
-        /* Pack item with label horizontally */
-        priv->box = gtk_hbox_new (FALSE, HILDON_MARGIN_DEFAULT);
-        gtk_container_add (GTK_CONTAINER (priv->event_box), priv->box);
+    /* Pack item with label vertically */
+    priv->box = gtk_vbox_new (FALSE, HILDON_MARGIN_DOUBLE);
+    gtk_container_add (GTK_CONTAINER (priv->event_box), priv->box);
+    gtk_box_pack_start (GTK_BOX (priv->box), priv->label, TRUE, TRUE, 0);
 
-        gtk_box_pack_start (GTK_BOX (priv->box), priv->label, TRUE, TRUE, 0);
-
-    } else {
-        /* Pack item with label vertically */
-        priv->box = gtk_vbox_new (FALSE, HILDON_MARGIN_DOUBLE);
-        gtk_container_add (GTK_CONTAINER (priv->event_box), priv->box);
-        gtk_box_pack_start (GTK_BOX (priv->box), priv->label, TRUE, TRUE, 0);
-
-        if (priv->progressbar)
-            gtk_box_pack_start (GTK_BOX (priv->box), priv->progressbar, FALSE, FALSE, 0);
-    }
+    if (priv->progressbar)
+        gtk_box_pack_start (GTK_BOX (priv->box), priv->progressbar, FALSE, FALSE, 0);
 
     gtk_container_add (GTK_CONTAINER (dialog->vbox), priv->event_box);
 
