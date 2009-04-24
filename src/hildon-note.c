@@ -146,6 +146,8 @@ static gboolean
 sound_handling                                  (GtkWidget *widget, 
                                                  GdkEventExpose *event, 
                                                  gpointer data);
+static void
+unpack_widget                                   (GtkWidget *widget);
 
 enum 
 {
@@ -473,6 +475,46 @@ label_size_request                              (GtkWidget      *label,
 }
 
 static void
+resize_button (GtkWidget *button, gpointer *data)
+{
+    gint width = GPOINTER_TO_INT (data);
+    g_object_set (button, "width-request", width, NULL);
+}
+
+static void
+hildon_note_orientation_update (HildonNote *note, GdkScreen *screen)
+{
+    GtkDialog *dialog = GTK_DIALOG (note);
+    HildonNotePrivate* priv = HILDON_NOTE_GET_PRIVATE (note);
+    GtkWidget *parent;
+    gint button_width, padding;
+    gboolean portrait = gdk_screen_get_width (screen) < gdk_screen_get_height (screen);
+
+    g_object_ref (dialog->action_area);
+    unpack_widget (dialog->action_area);
+
+    if (portrait) {
+        parent = dialog->vbox;
+        button_width = gdk_screen_get_width (screen) - HILDON_MARGIN_DOUBLE * 2;
+        padding = HILDON_MARGIN_DOUBLE;
+    } else {
+        parent = gtk_widget_get_parent (dialog->vbox);
+        button_width = priv->button_width;
+        padding = 0;
+    }
+
+    gtk_box_pack_end (GTK_BOX (parent), dialog->action_area,
+                      portrait, TRUE, 0);
+    gtk_box_reorder_child (GTK_BOX (parent), dialog->action_area, 0);
+    gtk_container_foreach (GTK_CONTAINER (dialog->action_area),
+                           (GtkCallback) resize_button,
+                           GINT_TO_POINTER (button_width));
+    g_object_unref (dialog->action_area);
+    gtk_container_child_set (GTK_CONTAINER (priv->box), priv->label,
+                             "padding", padding, NULL);
+}
+
+static void
 screen_size_changed                            (GdkScreen *screen,
                                                 GtkWidget *note)
 {
@@ -480,8 +522,15 @@ screen_size_changed                            (GdkScreen *screen,
     gint screen_width = gdk_screen_get_width (screen);
     gint text_width = screen_width - HILDON_INFORMATION_NOTE_MARGIN * 2;
 
-    g_object_set (note, "width-request", screen_width, NULL);
-    g_object_set (priv->label, "width-request", text_width, NULL);
+    if (priv->note_n == HILDON_NOTE_TYPE_INFORMATION ||
+        priv->note_n == HILDON_NOTE_TYPE_INFORMATION_THEME) {
+        g_object_set (note, "width-request", screen_width, NULL);
+        g_object_set (priv->label, "width-request", text_width, NULL);
+
+        return;
+    } else if (priv->note_n == HILDON_NOTE_TYPE_CONFIRMATION) {
+        hildon_note_orientation_update (HILDON_NOTE (note), screen);
+    }
 }
 
 static void
@@ -523,11 +572,12 @@ hildon_note_realize                             (GtkWidget *widget)
                      strlen (notification_type));
 
     if (is_info_note) {
-        GdkScreen *screen = gtk_widget_get_screen (widget);
         g_signal_connect (priv->label, "size-request", G_CALLBACK (label_size_request), widget);
-        g_signal_connect (screen, "size-changed", G_CALLBACK (screen_size_changed), widget);
-        screen_size_changed (screen, widget);
     }
+
+    GdkScreen *screen = gtk_widget_get_screen (widget);
+    g_signal_connect (screen, "size-changed", G_CALLBACK (screen_size_changed), widget);
+    screen_size_changed (screen, widget);
 }
 
 static void
@@ -624,6 +674,8 @@ hildon_note_rebuild                             (HildonNote *note)
             priv->cancelButton = gtk_dialog_add_button (dialog,
                     _("wdgt_bd_no"), GTK_RESPONSE_CANCEL);
             gtk_widget_show (priv->cancelButton);
+            g_object_get (priv->okButton, "width-request",
+                          &priv->button_width, NULL);
             gtk_widget_set_no_show_all (priv->cancelButton, FALSE);
             break;
 

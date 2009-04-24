@@ -45,6 +45,7 @@ struct                                          _HildonNotePrivate
     HildonNoteType note_n;
     GtkWidget *progressbar;
     gulong sound_signal_handler;
+    gint button_width;
 
     gchar *original_description;
 

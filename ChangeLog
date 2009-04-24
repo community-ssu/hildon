@@ -1,5 +1,17 @@
 2009-04-24  Claudio Saavedra  <csaavedra@igalia.com>
 
+	* src/hildon-note-private.h: Add button-width to the private data.
+	* src/hildon-note.c (+resize_button),
+	(+hildon_note_orientation_update): methods to repack widgets on orientation
+	changes.
+	(screen_size_changed): Call above method for confirmation notes.
+	(hildon_note_realize): Always connect to the "screen-size" changed signal.
+	(hildon_note_rebuild): Store the original width request from buttons.
+
+	Fixes: NB#109635 (Confirmation notes do not support portrait)
+
+2009-04-24  Claudio Saavedra  <csaavedra@igalia.com>
+
 	* src/hildon-note.c (hildon_note_rebuild): Only set the double spacing
 	when it is a progress note.
 
