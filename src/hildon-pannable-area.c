@@ -38,6 +38,8 @@
  * pannable area.
  */
 
+#undef HILDON_DISABLE_DEPRECATED
+
 #include <math.h>
 #if USE_CAIRO_SCROLLBARS == 1
 #include <cairo.h>

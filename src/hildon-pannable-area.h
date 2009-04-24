@@ -110,10 +110,12 @@ typedef enum {
  * #hildon_pannable_area_set_size_request_policy documentation for
  * more information.
  */
+#ifndef HILDON_DISABLE_DEPRECATED
 typedef enum {
   HILDON_SIZE_REQUEST_MINIMUM,
   HILDON_SIZE_REQUEST_CHILDREN
 } HildonSizeRequestPolicy;
+#endif
 
 /**
  * HildonPannableArea:
@@ -162,9 +164,11 @@ void hildon_pannable_area_jump_to_child         (HildonPannableArea *area,
                                                  GtkWidget *child);
 GtkWidget* hildon_pannable_get_child_widget_at  (HildonPannableArea *area,
                                                  gdouble x, gdouble y);
+#ifndef HILDON_DISABLE_DEPRECATED
 HildonSizeRequestPolicy hildon_pannable_area_get_size_request_policy (HildonPannableArea *area);
 void hildon_pannable_area_set_size_request_policy (HildonPannableArea *area,
                                                    HildonSizeRequestPolicy size_request_policy);
+#endif
 GtkAdjustment* hildon_pannable_area_get_hadjustment (HildonPannableArea *area);
 GtkAdjustment* hildon_pannable_area_get_vadjustment (HildonPannableArea *area);
 

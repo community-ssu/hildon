@@ -1,3 +1,9 @@
+2009-04-24  Alejandro G. Castro  <alex@igalia.com>
+
+	* src/hildon-pannable-area.c,
+	* src/hildon-pannable-area.h: Add the hildon deprecated define to
+	the size request policy function and defines.
+
 2009-04-23  Claudio Saavedra  <csaavedra@igalia.com>
 
 	* doc/hildon-sections.txt: Add the new API.
