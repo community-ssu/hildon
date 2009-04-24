@@ -29,6 +29,8 @@
 
 #include "hildon-gtk.h"
 
+typedef void (*HildonFlagFunc) (GtkWindow *window, gpointer userdata);
+
 static void
 image_visible_changed_cb                        (GtkWidget  *image,
                                                  GParamSpec *arg1,
@@ -372,6 +374,21 @@ do_set_portrait_flags                           (GtkWindow *window,
                                           0, 0, NULL, do_set_portrait_flags, NULL);
 }
 
+static void
+set_flag (GtkWindow *window,
+	  HildonFlagFunc func,
+	  gpointer userdata)
+{
+     g_return_if_fail (GTK_IS_WINDOW (window));
+     if (GTK_WIDGET_REALIZED (window)) {
+        (*func) (window, userdata);
+     } else {
+         g_signal_handlers_disconnect_matched (window, G_SIGNAL_MATCH_FUNC,
+                                               0, 0, NULL, func, NULL);
+         g_signal_connect (window, "realize", G_CALLBACK (func), userdata);
+     }
+}
+
 /**
  * hildon_gtk_window_set_progress_indicator:
  * @window: a #GtkWindow.
@@ -388,15 +405,7 @@ void
 hildon_gtk_window_set_progress_indicator        (GtkWindow    *window,
                                                  guint         state)
 {
-     gpointer stateptr = GUINT_TO_POINTER (state);
-     g_return_if_fail (GTK_IS_WINDOW (window));
-     if (GTK_WIDGET_REALIZED (window)) {
-         do_set_progress_indicator (window, stateptr);
-     } else {
-         g_signal_handlers_disconnect_matched (window, G_SIGNAL_MATCH_FUNC,
-                                               0, 0, NULL, do_set_progress_indicator, NULL);
-         g_signal_connect (window, "realize", G_CALLBACK (do_set_progress_indicator), stateptr);
-     }
+    set_flag (window, (HildonFlagFunc) do_set_progress_indicator, GUINT_TO_POINTER (state));
 }
 
 /**
@@ -413,15 +422,7 @@ void
 hildon_gtk_window_set_do_not_disturb            (GtkWindow *window,
                                                  gboolean   dndflag)
 {
-     gpointer dndptr = GINT_TO_POINTER (dndflag);
-     g_return_if_fail (GTK_IS_WINDOW (window));
-     if (GTK_WIDGET_REALIZED (window)) {
-         do_set_do_not_disturb (window, dndptr);
-     } else {
-         g_signal_handlers_disconnect_matched (window, G_SIGNAL_MATCH_FUNC,
-                                               0, 0, NULL, do_set_do_not_disturb, NULL);
-         g_signal_connect (window, "realize", G_CALLBACK (do_set_do_not_disturb), dndptr);
-     }
+    set_flag (window, (HildonFlagFunc) do_set_do_not_disturb, GUINT_TO_POINTER (dndflag));
 }
 
 /**
@@ -437,15 +438,7 @@ void
 hildon_gtk_window_set_portrait_flags (GtkWindow *window,
                                       HildonPortraitFlags portrait_flags)
 {
-     gpointer flagsptr = GINT_TO_POINTER (portrait_flags);
-     g_return_if_fail (GTK_IS_WINDOW (window));
-     if (GTK_WIDGET_REALIZED (window)) {
-         do_set_portrait_flags (window, flagsptr);
-     } else {
-         g_signal_handlers_disconnect_matched (window, G_SIGNAL_MATCH_FUNC,
-                                               0, 0, NULL, do_set_portrait_flags, NULL);
-         g_signal_connect (window, "realize", G_CALLBACK (do_set_portrait_flags), flagsptr);
-     }
+    set_flag (window, (HildonFlagFunc) do_set_portrait_flags, GUINT_TO_POINTER (portrait_flags));
 }
 
 /**
