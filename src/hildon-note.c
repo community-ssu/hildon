@@ -655,8 +655,8 @@ hildon_note_rebuild                             (HildonNote *note)
     }
     gtk_widget_set_no_show_all (dialog->action_area, is_info_note);
 
-    /* Pack item with label vertically */
-    priv->box = gtk_vbox_new (FALSE, HILDON_MARGIN_DOUBLE);
+    /* Pack label vertically. Spacing is only necessary for the progressbar note. */
+    priv->box = gtk_vbox_new (FALSE, priv->progressbar ? HILDON_MARGIN_DOUBLE : 0);
     gtk_container_add (GTK_CONTAINER (priv->event_box), priv->box);
     gtk_box_pack_start (GTK_BOX (priv->box), priv->label, TRUE, TRUE, 0);
 
