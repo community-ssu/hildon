@@ -325,14 +325,8 @@ set_clear_window_flag                           (GtkWindow   *window,
                                                  Atom         xatom,
                                                  gboolean     flag)
 {
-    GdkWindow *gdkwin;
-    GdkAtom atom;
-
-    g_return_if_fail (GTK_IS_WINDOW (window));
-    g_return_if_fail (GTK_WIDGET_REALIZED (window));
-
-    gdkwin = GTK_WIDGET (window)->window;
-    atom = gdk_atom_intern (atomname, FALSE);
+    GdkWindow *gdkwin = GTK_WIDGET (window)->window;
+    GdkAtom atom = gdk_atom_intern (atomname, FALSE);
 
     if (flag) {
         guint32 set = 1;
@@ -341,6 +335,41 @@ set_clear_window_flag                           (GtkWindow   *window,
     } else {
         gdk_property_delete (gdkwin, atom);
     }
+}
+
+static void
+do_set_progress_indicator                       (GtkWindow *window,
+                                                 gpointer   stateptr)
+{
+    guint state = GPOINTER_TO_UINT (stateptr);
+    set_clear_window_flag (window, "_HILDON_WM_WINDOW_PROGRESS_INDICATOR", XA_INTEGER, state);
+    g_signal_handlers_disconnect_matched (window, G_SIGNAL_MATCH_FUNC,
+                                          0, 0, NULL, do_set_progress_indicator, NULL);
+}
+
+static void
+do_set_do_not_disturb                           (GtkWindow *window,
+                                                 gpointer   dndptr)
+{
+    gboolean dndflag = GPOINTER_TO_INT (dndptr);
+    set_clear_window_flag (window, "_HILDON_DO_NOT_DISTURB", XA_INTEGER, dndflag);
+    g_signal_handlers_disconnect_matched (window, G_SIGNAL_MATCH_FUNC,
+                                          0, 0, NULL, do_set_do_not_disturb, NULL);
+}
+
+static void
+do_set_portrait_flags                           (GtkWindow *window,
+                                                 gpointer   flagsptr)
+{
+    HildonPortraitFlags flags = GPOINTER_TO_INT (flagsptr);
+
+    set_clear_window_flag (window, "_HILDON_PORTRAIT_MODE_REQUEST", XA_CARDINAL,
+                           flags & HILDON_PORTRAIT_MODE_REQUEST);
+    set_clear_window_flag (window, "_HILDON_PORTRAIT_MODE_SUPPORT", XA_CARDINAL,
+                           flags & HILDON_PORTRAIT_MODE_SUPPORT);
+
+    g_signal_handlers_disconnect_matched (window, G_SIGNAL_MATCH_FUNC,
+                                          0, 0, NULL, do_set_portrait_flags, NULL);
 }
 
 /**
@@ -353,15 +382,21 @@ set_clear_window_flag                           (GtkWindow   *window,
  * indicator in the window title. It applies to #HildonDialog and
  * #HildonWindow (including subclasses).
  *
- * Note that @window must be realized for this to work.
- *
  * Since: 2.2
  **/
 void
 hildon_gtk_window_set_progress_indicator        (GtkWindow    *window,
-                                                 guint        state)
+                                                 guint         state)
 {
-    set_clear_window_flag (window, "_HILDON_WM_WINDOW_PROGRESS_INDICATOR", XA_INTEGER, state);
+     gpointer stateptr = GUINT_TO_POINTER (state);
+     g_return_if_fail (GTK_IS_WINDOW (window));
+     if (GTK_WIDGET_REALIZED (window)) {
+         do_set_progress_indicator (window, stateptr);
+     } else {
+         g_signal_handlers_disconnect_matched (window, G_SIGNAL_MATCH_FUNC,
+                                               0, 0, NULL, do_set_progress_indicator, NULL);
+         g_signal_connect (window, "realize", G_CALLBACK (do_set_progress_indicator), stateptr);
+     }
 }
 
 /**
@@ -372,15 +407,21 @@ hildon_gtk_window_set_progress_indicator        (GtkWindow    *window,
  * This function tells the window manager to set (or clear) the
  * "do-not-disturb" flag on @window.
  *
- * Note that @window must be realized for this to work.
- *
  * Since: 2.2
  **/
 void
 hildon_gtk_window_set_do_not_disturb            (GtkWindow *window,
                                                  gboolean   dndflag)
 {
-    set_clear_window_flag (window, "_HILDON_DO_NOT_DISTURB", XA_INTEGER, dndflag);
+     gpointer dndptr = GINT_TO_POINTER (dndflag);
+     g_return_if_fail (GTK_IS_WINDOW (window));
+     if (GTK_WIDGET_REALIZED (window)) {
+         do_set_do_not_disturb (window, dndptr);
+     } else {
+         g_signal_handlers_disconnect_matched (window, G_SIGNAL_MATCH_FUNC,
+                                               0, 0, NULL, do_set_do_not_disturb, NULL);
+         g_signal_connect (window, "realize", G_CALLBACK (do_set_do_not_disturb), dndptr);
+     }
 }
 
 /**
@@ -388,8 +429,7 @@ hildon_gtk_window_set_do_not_disturb            (GtkWindow *window,
  * @window: a #GtkWindow
  * @portrait_flags: a combination of #HildonPortraitFlags
  *
- * Sets the portrait flags for @window. Note that @window should be
- * realized, since these flags are set in its #GdkWindow.
+ * Sets the portrait flags for @window.
  *
  * Since: 2.2
  **/
@@ -397,10 +437,15 @@ void
 hildon_gtk_window_set_portrait_flags (GtkWindow *window,
                                       HildonPortraitFlags portrait_flags)
 {
-    set_clear_window_flag (window, "_HILDON_PORTRAIT_MODE_REQUEST", XA_CARDINAL,
-                           portrait_flags & HILDON_PORTRAIT_MODE_REQUEST);
-    set_clear_window_flag (window, "_HILDON_PORTRAIT_MODE_SUPPORT", XA_CARDINAL,
-                           portrait_flags & HILDON_PORTRAIT_MODE_SUPPORT);
+     gpointer flagsptr = GINT_TO_POINTER (portrait_flags);
+     g_return_if_fail (GTK_IS_WINDOW (window));
+     if (GTK_WIDGET_REALIZED (window)) {
+         do_set_portrait_flags (window, flagsptr);
+     } else {
+         g_signal_handlers_disconnect_matched (window, G_SIGNAL_MATCH_FUNC,
+                                               0, 0, NULL, do_set_portrait_flags, NULL);
+         g_signal_connect (window, "realize", G_CALLBACK (do_set_portrait_flags), flagsptr);
+     }
 }
 
 /**

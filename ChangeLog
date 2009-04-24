@@ -1,3 +1,16 @@
+2009-04-24  Claudio Saavedra  <csaavedra@igalia.com>
+
+	Based on a patch by Alberto Garcia (agarcia@igalia.com)
+
+	* src/hildon-gtk.c (set_clear_window_flag),
+	(do_set_progress_indicator), (do_set_do_not_disturb),
+	(do_set_portrait_flags),
+	(hildon_gtk_window_set_progress_indicator),
+	(hildon_gtk_window_set_do_not_disturb),
+	(hildon_gtk_window_set_portrait_flags):
+	Allow setting dnd-flag, progress indicator, and portrait flags
+	when the window is not realized.
+
 2009-04-24  Alejandro G. Castro  <alex@igalia.com>
 
 	* src/hildon-pannable-area.c,
