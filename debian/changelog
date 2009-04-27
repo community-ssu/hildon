@@ -1,3 +1,27 @@
+libhildon (2.1.68-1) unstable; urgency=low
+
+  * Fixes: NB#109635 (Confirmation notes do not support portrait)
+  * Fixes: NB#112328 (Adding helpers for setting portrait properties)
+  * Fixes: NB#108470 (Selected items in multiple selection are either
+    having a tick that is cut or not visible at all.)
+  * NB#111027 (Title menu closed immediately if activated when
+    "Invalid e-mail address" banner is shown)
+
+  New API:
+
+  * hildon_gtk_window_set_portrait_flags()
+  *(hildon_gtk_window_set_progress_indicator),
+   (hildon_gtk_window_set_do_not_disturb),
+   (hildon_gtk_window_set_portrait_flags): will work even if the window is
+   not realized yet.
+
+  Deprecated API:
+
+  * hildon_pannable_area_get/set_size_request_policy,
+    HildonSizeRequestPolicy: deprecated.
+
+ -- Claudio Saavedra <csaavedra@igalia.com>  Mon, 27 Apr 2009 11:23:58 +0300
+
 libhildon (2.1.66-1) unstable; urgency=low
 
   * Fixes: NB#110689 (HildonPickerButton doesn't ellipsize very long values)
