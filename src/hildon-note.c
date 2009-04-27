@@ -408,6 +408,7 @@ hildon_note_init                                (HildonNote *dialog)
 
     priv->label = gtk_label_new (NULL);
     gtk_label_set_line_wrap (GTK_LABEL (priv->label), TRUE);
+    gtk_label_set_justify (GTK_LABEL (priv->label), GTK_JUSTIFY_CENTER);
 
     priv->event_box = gtk_event_box_new ();
     priv->icon = NULL;

@@ -1,3 +1,10 @@
+2009-04-27  Alberto Garcia  <agarcia@igalia.com>
+
+	* src/hildon-note.c (hildon_note_init): Center label.
+
+	Fixes: NB#111962 (mail_in_ui_folder_move_target_error not aligned
+	properly)
+
 2009-04-27  Claudio Saavedra  <csaavedra@igalia.com>
 
 	[Release 2.1.68]
