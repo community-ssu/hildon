@@ -375,9 +375,9 @@ do_set_portrait_flags                           (GtkWindow *window,
 }
 
 static void
-set_flag (GtkWindow *window,
-	  HildonFlagFunc func,
-	  gpointer userdata)
+set_flag                                        (GtkWindow      *window,
+                                                 HildonFlagFunc  func,
+                                                 gpointer        userdata)
 {
      g_return_if_fail (GTK_IS_WINDOW (window));
      if (GTK_WIDGET_REALIZED (window)) {
@@ -435,8 +435,8 @@ hildon_gtk_window_set_do_not_disturb            (GtkWindow *window,
  * Since: 2.2
  **/
 void
-hildon_gtk_window_set_portrait_flags (GtkWindow *window,
-                                      HildonPortraitFlags portrait_flags)
+hildon_gtk_window_set_portrait_flags            (GtkWindow           *window,
+                                                 HildonPortraitFlags  portrait_flags)
 {
     set_flag (window, (HildonFlagFunc) do_set_portrait_flags, GUINT_TO_POINTER (portrait_flags));
 }

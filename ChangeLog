@@ -1,5 +1,13 @@
 2009-04-27  Alberto Garcia  <agarcia@igalia.com>
 
+	* src/hildon-gtk.c:
+	Minor style fixes
+
+	* doc/hildon-sections.txt:
+	Added hildon_gtk_window_set_do_not_disturb()
+
+2009-04-27  Alberto Garcia  <agarcia@igalia.com>
+
 	* src/hildon-note.c (hildon_note_init): Center label.
 
 	Fixes: NB#111962 (mail_in_ui_folder_move_target_error not aligned

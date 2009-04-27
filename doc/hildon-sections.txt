@@ -1228,11 +1228,15 @@ hildon_gtk_tree_view_set_ui_mode
 hildon_gtk_icon_view_new
 hildon_gtk_icon_view_new_with_model
 hildon_gtk_icon_view_set_ui_mode
+hildon_gtk_window_set_do_not_disturb
 hildon_gtk_window_set_progress_indicator
 HildonPortraitFlags
 hildon_gtk_window_set_portrait_flags
 hildon_gtk_hscale_new
 hildon_gtk_vscale_new
+<SUBSECTION Standard>
+hildon_portrait_flags_get_type
+HILDON_TYPE_PORTRAIT_FLAGS
 </SECTION>
 
 <SECTION>
