@@ -1,3 +1,12 @@
+2009-04-28  Alberto Garcia  <agarcia@igalia.com>
+
+	* src/hildon-note.c (hildon_note_init):
+	Label in HildonNote must be left aligned, not centered. This
+	reverts the last commit in HildonNote.
+
+	Fixes: NB#112933 (text is not left aligned in confirmation dialog
+	is connectivity dialog)
+
 2009-04-27  Alberto Garcia  <agarcia@igalia.com>
 
 	* src/hildon-gtk.c:
