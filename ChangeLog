@@ -1,3 +1,37 @@
+2009-04-28  Alejandro Pinheiro  <apinheiro@igalia.com>
+
+	* src/hildon-time-selector.h:
+ 	Added HildonTimeSelectorFormatPolicy
+	* src/hildon-time-selector.c:
+ 	Added PROP_TIME_FORMAT_POLICY
+ 	(_check_ampm_format): renamed to check_automatic_ampm_format
+ 	(update_format_policy), (update_format_dependant_columns): new functions
+ 	(hildon_time_selector_class_init)
+ 	(hildon_time_selector_contructor)
+ 	(hildon_time_selector_init)
+ 	(hildon_time_selector_get_property)
+ 	(hildon_time_selector_set_property)
+ 	(hildon_time_selector_get_time)
+ 	(hildon_time_selector_set_time)
+	* src/hildon-touch-selector.h: new file
+	* src/hildon-touch-selector.c
+ 	(hildon_touch_selector_emit_changed)
+ 	(hildon_touch_selector_block_changed)
+ 	(hildon_touch_selector_unblock_changed)
+ 	Added functions to allow to block the emission of the "changed" signal
+	* src/hildon-picker-dialog.c
+	(hildon_picker_dialog_show): call the parent show before the custom code
+	* examples/hildon-time-button-example.c
+ 	Modified, so now you can configure the time format using the new property
+
+ 	Added a new property "time-format-policy" that allow to choose the time
+ 	format: AM/PM, 24H or AUTOMATIC. AUTOMATIC is the default one. In this
+ 	case it uses gconf in order to check if the time selector must use
+ 	AM/PM or 24H.
+
+	Fixes: NB#111606 (HildonTimeSelector should expose API to set/unset am/pm
+	mode)
+
 2009-04-28  Alberto Garcia  <agarcia@igalia.com>
 
 	* src/hildon-note.c (hildon_note_init):

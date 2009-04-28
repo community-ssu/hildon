@@ -171,6 +171,7 @@
 
 #include "hildon-pannable-area.h"
 #include "hildon-touch-selector.h"
+#include "hildon-touch-selector-private.h"
 
 #define HILDON_TOUCH_SELECTOR_GET_PRIVATE(obj)                          \
   (G_TYPE_INSTANCE_GET_PRIVATE ((obj), HILDON_TYPE_TOUCH_SELECTOR, HildonTouchSelectorPrivate))
@@ -203,6 +204,8 @@ struct _HildonTouchSelectorPrivate
   GSList *columns;              /* the selection columns */
   GtkWidget *hbox;              /* the container for the selector's columns */
   gboolean initial_scroll;      /* whether initial fancy scrolling to selection */
+
+  gboolean changed_blocked;
 
   HildonTouchSelectorPrintFunc print_func;
   gpointer print_user_data;
@@ -270,6 +273,10 @@ _hildon_touch_selector_set_model                (HildonTouchSelector * selector,
                                                  GtkTreeModel * model);
 static gboolean
 _hildon_touch_selector_has_multiple_selection   (HildonTouchSelector * selector);
+
+static void
+hildon_touch_selector_emit_value_changed        (HildonTouchSelector *selector,
+                                                 gint column);
 
 /* GtkCellLayout implementation (HildonTouchSelectorColumn)*/
 static void hildon_touch_selector_column_cell_layout_init         (GtkCellLayoutIface      *iface);
@@ -451,6 +458,8 @@ hildon_touch_selector_init (HildonTouchSelector * selector)
   selector->priv->initial_scroll = TRUE;
   selector->priv->hbox = gtk_hbox_new (FALSE, 0);
 
+  selector->priv->changed_blocked = FALSE;
+
   gtk_box_pack_end (GTK_BOX (selector), selector->priv->hbox,
                     TRUE, TRUE, 0);
   gtk_widget_show (selector->priv->hbox);
@@ -515,6 +524,27 @@ hildon_touch_selector_remove (GtkContainer * container, GtkWidget * widget)
 }
 
 /* ------------------------------ PRIVATE METHODS ---------------------------- */
+void
+hildon_touch_selector_block_changed             (HildonTouchSelector *selector)
+{
+  selector->priv->changed_blocked = TRUE;
+}
+
+void
+hildon_touch_selector_unblock_changed           (HildonTouchSelector *selector)
+{
+  selector->priv->changed_blocked = FALSE;
+}
+
+static void
+hildon_touch_selector_emit_value_changed        (HildonTouchSelector *selector,
+                                                 gint column)
+{
+  if (!selector->priv->changed_blocked) {
+    g_signal_emit (selector, hildon_touch_selector_signals[CHANGED], 0, column);
+  }
+}
+
 /**
  * default_print_func:
  * @selector: a #HildonTouchSelector
@@ -637,7 +667,7 @@ _row_tapped_cb (GtkTreeView * tree_view, GtkTreePath * path, gpointer user_data)
 
   num_column = g_slist_index (selector->priv->columns, column);
 
-  g_signal_emit (selector, hildon_touch_selector_signals[CHANGED], 0, num_column);
+  hildon_touch_selector_emit_value_changed (selector, num_column);
 }
 
 
@@ -1172,7 +1202,7 @@ hildon_touch_selector_append_column (HildonTouchSelector * selector,
   g_signal_emit (selector, hildon_touch_selector_signals[COLUMNS_CHANGED], 0);
   if (emit_changed) {
     colnum = g_slist_length (selector->priv->columns);
-    g_signal_emit (selector, hildon_touch_selector_signals[CHANGED], 0, colnum);
+    hildon_touch_selector_emit_value_changed (selector, colnum);
   }
 
   return new_column;
@@ -1410,7 +1440,8 @@ hildon_touch_selector_set_column_selection_mode (HildonTouchSelector * selector,
     gtk_tree_selection_unselect_all (selection);
     gtk_tree_selection_select_iter (selection, &iter);
 
-    g_signal_emit (selector, hildon_touch_selector_signals[CHANGED], 0, column);
+    /* the column changed was the first one */
+    hildon_touch_selector_emit_value_changed (selector, 0);
   }
 
 }
@@ -1528,7 +1559,7 @@ hildon_touch_selector_set_active                (HildonTouchSelector *selector,
   if (index != -1)
     gtk_tree_selection_select_path (selection, path);
 
-  g_signal_emit (selector, hildon_touch_selector_signals[CHANGED], 0, column);
+  hildon_touch_selector_emit_value_changed (selector, column);
 
   gtk_tree_path_free (path);
 }
@@ -1663,7 +1694,7 @@ hildon_touch_selector_select_iter (HildonTouchSelector * selector,
     hildon_touch_selector_scroll_to (current_column, tv, path);
   }
 
-  g_signal_emit (selector, hildon_touch_selector_signals[CHANGED], 0, column);
+  hildon_touch_selector_emit_value_changed (selector, column);
 
   gtk_tree_path_free (path);
 }
@@ -1693,7 +1724,7 @@ void hildon_touch_selector_unselect_iter (HildonTouchSelector * selector,
   selection = gtk_tree_view_get_selection (current_column->priv->tree_view);
   gtk_tree_selection_unselect_iter (selection, iter);
 
-  g_signal_emit (selector, hildon_touch_selector_signals[CHANGED], 0, column);
+  hildon_touch_selector_emit_value_changed (selector, column);
 }
 
 /**
@@ -1719,7 +1750,7 @@ hildon_touch_selector_unselect_all (HildonTouchSelector * selector,
   selection = gtk_tree_view_get_selection (current_column->priv->tree_view);
   gtk_tree_selection_unselect_all (selection);
 
-  g_signal_emit (selector, hildon_touch_selector_signals[CHANGED], 0, column);
+  hildon_touch_selector_emit_value_changed (selector, column);
 }
 
 /**

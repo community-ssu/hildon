@@ -47,7 +47,9 @@
 #include <locale.h>
 #include <gconf/gconf-client.h>
 
+#include "hildon-enum-types.h"
 #include "hildon-time-selector.h"
+#include "hildon-touch-selector-private.h"
 
 #define HILDON_TIME_SELECTOR_GET_PRIVATE(obj)                           \
   (G_TYPE_INSTANCE_GET_PRIVATE ((obj), HILDON_TYPE_TIME_SELECTOR, HildonTimeSelectorPrivate))
@@ -81,7 +83,8 @@ enum {
 enum
 {
   PROP_0,
-  PROP_MINUTES_STEP
+  PROP_MINUTES_STEP,
+  PROP_TIME_FORMAT_POLICY
 };
 
 struct _HildonTimeSelectorPrivate
@@ -91,6 +94,7 @@ struct _HildonTimeSelectorPrivate
   GtkTreeModel *ampm_model;
 
   guint minutes_step;
+  HildonTimeSelectorFormatPolicy format_policy;
   gboolean ampm_format;         /* if using am/pm format or 24 h one */
 
   gboolean pm;                  /* if we are on pm (only useful if ampm_format == TRUE) */
@@ -120,11 +124,21 @@ static GtkTreeModel *_create_ampm_model (HildonTimeSelector * selector);
 static void _get_real_time (gint * hours, gint * minutes);
 static void _manage_ampm_selection_cb (HildonTouchSelector * selector,
                                        gint num_column, gpointer data);
-static void _check_ampm_format (HildonTimeSelector * selector);
 static void _set_pm (HildonTimeSelector * selector, gboolean pm);
 
 static gchar *_custom_print_func (HildonTouchSelector * selector,
                                   gpointer user_data);
+
+static void
+check_automatic_ampm_format                     (HildonTimeSelector * selector);
+
+static void
+update_format_policy                            (HildonTimeSelector *selector,
+                                                 HildonTimeSelectorFormatPolicy new_policy);
+static void
+update_format_dependant_columns                 (HildonTimeSelector *selector,
+                                                 guint hours,
+                                                 guint minutes);
 
 static void
 hildon_time_selector_class_init (HildonTimeSelectorClass * class)
@@ -154,6 +168,22 @@ hildon_time_selector_class_init (HildonTimeSelectorClass * class)
                                                       1, 30, 1,
                                                       G_PARAM_READWRITE|G_PARAM_CONSTRUCT_ONLY));
 
+  /**
+   * HildonTimeSelector:time-format-policy:
+   *
+   * The visual policy of the time format
+   *
+   * Since: 2.2
+   */
+  g_object_class_install_property (gobject_class,
+                                   PROP_TIME_FORMAT_POLICY,
+                                   g_param_spec_enum ("time_format_policy",
+                                                      "time format policy",
+                                                      "Visual policy of the time format",
+                                                      HILDON_TYPE_TIME_SELECTOR_FORMAT_POLICY,
+                                                      HILDON_TIME_SELECTOR_FORMAT_POLICY_AUTOMATIC,
+                                                      G_PARAM_READWRITE|G_PARAM_CONSTRUCT));
+
   /* GtkWidget */
 
   /* GtkContainer */
@@ -163,6 +193,9 @@ hildon_time_selector_class_init (HildonTimeSelectorClass * class)
   g_type_class_add_private (object_class, sizeof (HildonTimeSelectorPrivate));
 }
 
+/* FIXME: the constructor was required because as we need the initial values
+   of the properties passed on g_object_new. But, probably use the method
+   constructed could be easier */
 static GObject*
 hildon_time_selector_constructor (GType type,
                                   guint n_construct_properties,
@@ -225,11 +258,12 @@ hildon_time_selector_init (HildonTimeSelector * selector)
   hildon_touch_selector_set_print_func (HILDON_TOUCH_SELECTOR (selector),
                                         _custom_print_func);
 
+  /* By default we use the automatic ampm format */
+  selector->priv->pm = TRUE;
+  check_automatic_ampm_format (selector);
+
   _get_real_time (&selector->priv->creation_hours,
                   &selector->priv->creation_minutes);
-
-  _check_ampm_format (selector);
-
 }
 
 static void
@@ -245,7 +279,9 @@ hildon_time_selector_get_property (GObject *object,
     case PROP_MINUTES_STEP:
       g_value_set_uint (value, priv->minutes_step);
       break;
-
+    case PROP_TIME_FORMAT_POLICY:
+      g_value_set_enum (value, priv->format_policy);
+      break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, param_id, pspec);
       break;
@@ -265,7 +301,10 @@ hildon_time_selector_set_property (GObject *object,
     case PROP_MINUTES_STEP:
       priv->minutes_step = g_value_get_uint (value);
       break;
-
+    case PROP_TIME_FORMAT_POLICY:
+      update_format_policy (HILDON_TIME_SELECTOR (object),
+                            g_value_get_enum (value));
+      break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, param_id, pspec);
       break;
@@ -275,7 +314,10 @@ hildon_time_selector_set_property (GObject *object,
 static void
 hildon_time_selector_finalize (GObject * object)
 {
-  /* FIXME: FILL ME !! */
+  /* Note: we don't require to free the models. We don't manage it using own
+     references, so will be freed on the hildon-touch-selector finalize code.
+     See the implementation notes related to that on the touch selector
+     code. */
 
   (*G_OBJECT_CLASS (hildon_time_selector_parent_class)->finalize) (object);
 }
@@ -439,7 +481,7 @@ _manage_ampm_selection_cb (HildonTouchSelector * touch_selector,
 }
 
 static void
-_check_ampm_format (HildonTimeSelector * selector)
+check_automatic_ampm_format (HildonTimeSelector * selector)
 {
   GConfClient *client = NULL;
   gboolean value = TRUE;
@@ -455,7 +497,6 @@ _check_ampm_format (HildonTimeSelector * selector)
   }
 
   selector->priv->ampm_format = !value;
-  selector->priv->pm = TRUE;
 }
 
 static void
@@ -465,12 +506,102 @@ _set_pm (HildonTimeSelector * selector, gboolean pm)
 
   selector->priv->pm = pm;
 
-  gtk_tree_model_iter_nth_child (selector->priv->ampm_model, &iter, NULL, pm);
+  if (selector->priv->ampm_model != NULL) {
+    gtk_tree_model_iter_nth_child (selector->priv->ampm_model, &iter, NULL, pm);
 
-  hildon_touch_selector_select_iter (HILDON_TOUCH_SELECTOR (selector),
-                                     COLUMN_AMPM, &iter, FALSE);
+    hildon_touch_selector_select_iter (HILDON_TOUCH_SELECTOR (selector),
+                                       COLUMN_AMPM, &iter, FALSE);
+  }
 }
 
+static void
+update_format_policy                            (HildonTimeSelector *selector,
+                                                 HildonTimeSelectorFormatPolicy new_policy)
+{
+  gboolean prev_ampm_format = FALSE;
+  guint hours;
+  guint minutes;
+  gint num_columns = -1;
+
+  num_columns = hildon_touch_selector_get_num_columns (HILDON_TOUCH_SELECTOR (selector));
+  prev_ampm_format = selector->priv->ampm_format;
+
+  if (new_policy != selector->priv->format_policy) {
+    selector->priv->format_policy = new_policy;
+
+    /* We get the hour previous all the changes, to avoid problems with the
+       changing widget structure */
+    if (num_columns >= 2) {/* we are on the object construction */
+      hildon_time_selector_get_time (selector, &hours, &minutes);
+    }
+
+    switch (new_policy)
+      {
+      case HILDON_TIME_SELECTOR_FORMAT_POLICY_AMPM:
+        selector->priv->ampm_format = TRUE;
+        break;
+      case HILDON_TIME_SELECTOR_FORMAT_POLICY_24H:
+        selector->priv->ampm_format = FALSE;
+        break;
+      case HILDON_TIME_SELECTOR_FORMAT_POLICY_AUTOMATIC:
+        check_automatic_ampm_format (selector);
+        break;
+      }
+  }
+
+  if (prev_ampm_format != selector->priv->ampm_format) {
+    update_format_dependant_columns (selector, hours, minutes);
+  }
+}
+
+static void
+update_format_dependant_columns                 (HildonTimeSelector *selector,
+                                                 guint hours,
+                                                 guint minutes)
+{
+  gint num_columns = -1;
+
+  num_columns = hildon_touch_selector_get_num_columns (HILDON_TOUCH_SELECTOR (selector));
+  if (num_columns < 2) {/* we are on the object construction */
+    return;
+  }
+
+  /* To avoid an extra and wrong VALUE_CHANGED signal on the model update */
+  hildon_touch_selector_block_changed (HILDON_TOUCH_SELECTOR(selector));
+
+  selector->priv->hours_model = _create_hours_model (selector);
+  hildon_touch_selector_set_model (HILDON_TOUCH_SELECTOR (selector),
+                                   0,
+                                   selector->priv->hours_model);
+
+  /* We need to set NOW the correct hour on the hours column, because the number of
+     columns will be updated too, so a signal COLUMNS_CHANGED will be emitted. Some
+     other widget could have connected to this signal and ask for the hour, so this
+     emission could have a wrong hour. We could use a custom func to only modify the
+     hours selection, but hildon_time_selector_time manage yet all the ampm issues
+     to select the correct one */
+  hildon_time_selector_set_time (selector, hours, minutes);
+
+  /* if we are at this function, we are sure that a change on the number of columns
+     will happen, so check the column number is not required */
+  if (selector->priv->ampm_format) {
+    selector->priv->ampm_model = _create_ampm_model (selector);
+
+    hildon_touch_selector_append_text_column (HILDON_TOUCH_SELECTOR (selector),
+                                              selector->priv->ampm_model, TRUE);
+
+    g_signal_connect (G_OBJECT (selector),
+                      "changed", G_CALLBACK (_manage_ampm_selection_cb),
+                      NULL);
+  } else {
+    selector->priv->ampm_model = NULL;
+    hildon_touch_selector_remove_column (HILDON_TOUCH_SELECTOR (selector), 2);
+  }
+
+  _set_pm (selector, hours >= 12);
+
+  hildon_touch_selector_unblock_changed (HILDON_TOUCH_SELECTOR (selector));
+}
 /* ------------------------------ PUBLIC METHODS ---------------------------- */
 
 /**
@@ -529,12 +660,13 @@ hildon_time_selector_set_time (HildonTimeSelector * selector,
   GtkTreeIter iter;
   gint hours_item = 0;
 
+  g_return_val_if_fail (HILDON_IS_TIME_SELECTOR (selector), FALSE);
   g_return_val_if_fail (hours <= 23, FALSE);
   g_return_val_if_fail (minutes <= 59, FALSE);
 
-  if (selector->priv->ampm_format) {
-    _set_pm (selector, hours >= 12);
+  _set_pm (selector, hours >= 12);
 
+  if (selector->priv->ampm_format) {
     hours_item = hours - selector->priv->pm * 12;
   } else {
     hours_item = hours;
@@ -574,11 +706,15 @@ hildon_time_selector_get_time (HildonTimeSelector * selector,
 {
   GtkTreeIter iter;
 
+  g_return_if_fail (HILDON_IS_TIME_SELECTOR (selector));
+
   if (hours != NULL) {
-    hildon_touch_selector_get_selected (HILDON_TOUCH_SELECTOR (selector),
-                                        COLUMN_HOURS, &iter);
-    gtk_tree_model_get (selector->priv->hours_model,
-                        &iter, COLUMN_INT, hours, -1);
+    if (hildon_touch_selector_get_selected (HILDON_TOUCH_SELECTOR (selector),
+                                            COLUMN_HOURS, &iter)) {
+
+      gtk_tree_model_get (selector->priv->hours_model,
+                          &iter, COLUMN_INT, hours, -1);
+    }
     if (selector->priv->ampm_format) {
       *hours %= 12;
       *hours += selector->priv->pm * 12;
@@ -586,9 +722,10 @@ hildon_time_selector_get_time (HildonTimeSelector * selector,
   }
 
   if (minutes != NULL) {
-    hildon_touch_selector_get_selected (HILDON_TOUCH_SELECTOR (selector),
-                                        COLUMN_MINUTES, &iter);
-    gtk_tree_model_get (selector->priv->minutes_model,
-                        &iter, COLUMN_INT, minutes, -1);
+    if (hildon_touch_selector_get_selected (HILDON_TOUCH_SELECTOR (selector),
+                                            COLUMN_MINUTES, &iter)) {
+      gtk_tree_model_get (selector->priv->minutes_model,
+                          &iter, COLUMN_INT, minutes, -1);
+    }
   }
 }

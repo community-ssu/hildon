@@ -66,6 +66,21 @@ struct                                          _HildonTimeSelectorClass
 };
 
 
+/**
+ * HildonTimeSelectorFormatPolicy:
+ * @HILDON_TIME_SELECTOR_FORMAT_POLICY_AMPM: The time selector will use a AMPM time format
+ * @HILDON_TIME_SELECTOR_FORMAT_POLICY_24H: The time selector will use a 24H time format
+ * @HILDON_TIME_SELECTOR_FORMAT_POLICY_AUTOMATIC: The time selector will use AMPM or 24H depending
+ *  on the current environment
+ *
+ * Describes the time format used at #HildonTimeSelector
+ **/
+typedef enum {
+  HILDON_TIME_SELECTOR_FORMAT_POLICY_AMPM,
+  HILDON_TIME_SELECTOR_FORMAT_POLICY_24H,
+  HILDON_TIME_SELECTOR_FORMAT_POLICY_AUTOMATIC
+}                                               HildonTimeSelectorFormatPolicy;
+
 /* construction */
 GType
 hildon_time_selector_get_type                   (void) G_GNUC_CONST;

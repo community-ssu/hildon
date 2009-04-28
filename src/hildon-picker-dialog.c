@@ -283,6 +283,8 @@ hildon_picker_dialog_show                       (GtkWidget *widget)
   HildonPickerDialog *dialog = HILDON_PICKER_DIALOG (widget);
   HildonTouchSelector *selector;
 
+  GTK_WIDGET_CLASS (hildon_picker_dialog_parent_class)->show (widget);
+
   if (dialog->priv->center_on_show) {
     selector = hildon_picker_dialog_get_selector (dialog);
     hildon_touch_selector_center_on_selected (selector);
@@ -291,7 +293,6 @@ hildon_picker_dialog_show                       (GtkWidget *widget)
   _save_current_selection (dialog);
   prepare_action_area (dialog);
 
-  GTK_WIDGET_CLASS (hildon_picker_dialog_parent_class)->show (widget);
 }
 
 static void

@@ -196,7 +196,8 @@ noinst_HEADERS = hildon-banner-private.h 		\
 		hildon-wizard-dialog-private.h		\
 		hildon-calendar-private.h		\
 		hildon-app-menu-private.h		\
-		hildon-bread-crumb-widget.h
+		hildon-bread-crumb-widget.h		\
+		hildon-touch-selector-private.h
 
 # Don't build the library until we have built the header that it needs:
 $(OBJECTS) $(libhildon_$(API_VERSION_MAJOR)_la_OBJECTS): hildon-enum-types.h hildon-marshalers.c hildon-marshalers.h
