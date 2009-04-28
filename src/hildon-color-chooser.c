@@ -805,8 +805,12 @@ hildon_color_chooser_set_color                  (HildonColorChooser *chooser,
     unsigned short hue, sat, val;
     unsigned long min, max;
     signed long tmp, diff;
-    HildonColorChooserPrivate *priv = HILDON_COLOR_CHOOSER_GET_PRIVATE (chooser);
+    HildonColorChooserPrivate *priv;
 
+    g_return_if_fail (HILDON_IS_COLOR_CHOOSER (chooser));
+    g_return_if_fail (color != NULL);
+
+    priv = HILDON_COLOR_CHOOSER_GET_PRIVATE (chooser);
     g_assert (priv);
 
     /* ugly nesting */

@@ -1,3 +1,8 @@
+2009-04-28  Claudio Saavedra  <csaavedra@igalia.com>
+
+	* src/hildon-color-chooser.c (hildon_color_chooser_set_color): Add
+	safety checks.
+
 2009-04-28  Alejandro Pinheiro  <apinheiro@igalia.com>
 
 	* src/hildon-time-selector.h:
