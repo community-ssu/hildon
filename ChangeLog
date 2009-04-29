@@ -1,3 +1,10 @@
+2009-04-29  Alejandro Pinheiro  <apinheiro@igalia.com>
+
+	* src/hildon-sort-dialog.c
+	(hildon_sort_dialog_add_sort_key_with_sorting)
+	(sort_key_changed)
+	Add safety checks
+
 2009-04-29  Claudio Saavedra  <csaavedra@igalia.com>
 
 	* src/Makefile.am: Move generated sources to CLEANFILES, so that

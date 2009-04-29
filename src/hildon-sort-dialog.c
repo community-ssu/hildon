@@ -161,6 +161,7 @@ sort_key_changed                                (GtkWidget *widget,
     g_assert (priv);
 
     gint index = gtk_combo_box_get_active (GTK_COMBO_BOX (widget));
+    g_return_if_fail (index < priv->index_counter && index > 0);
 
     if (priv->key_reversed [index] != priv->reversed) {
         reconstruct_combo (dialog, TRUE, priv->key_reversed [index]);
@@ -217,6 +218,7 @@ hildon_sort_dialog_add_sort_key_with_sorting    (HildonSortDialog *dialog,
     HildonSortDialogPrivate *priv;
 
     g_return_val_if_fail (HILDON_IS_SORT_DIALOG (dialog), -1);
+    g_return_val_if_fail (sort_key != NULL, -1);
 
     priv = HILDON_SORT_DIALOG_GET_PRIVATE (dialog);
     g_assert (priv);
