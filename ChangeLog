@@ -1,5 +1,9 @@
 2009-04-29  Claudio Saavedra  <csaavedra@igalia.com>
 
+	* Makefile.am: Do not distribute the debian/ directory.
+
+2009-04-29  Claudio Saavedra  <csaavedra@igalia.com>
+
 	* doc/Makefile.am: Add the extra SGML files to content_files,
 	so that they are distributed properly.
 
