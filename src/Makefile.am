@@ -1,8 +1,7 @@
 INCLUDES 	= -DG_LOG_DOMAIN=\"hildon-@API_VERSION_MAJOR@\" \
 		  -DLOCALEDIR=\"$(localedir)\"
 
-MAINTAINERCLEANFILES = \
-		Makefile.in 					\
+CLEANFILES = \
 		hildon-enum-types.c 				\
 		hildon-enum-types.h				\
 		hildon-marshalers.h 				\

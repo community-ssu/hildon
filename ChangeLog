@@ -1,5 +1,10 @@
 2009-04-29  Claudio Saavedra  <csaavedra@igalia.com>
 
+	* src/Makefile.am: Move generated sources to CLEANFILES, so that
+	make distcheck passes.
+
+2009-04-29  Claudio Saavedra  <csaavedra@igalia.com>
+
 	* Makefile.am: Enable gtk-doc during distcheck.
 
 2009-04-29  Claudio Saavedra  <csaavedra@igalia.com>
