@@ -352,7 +352,7 @@ hildon_font_selection_dialog_set_property       (GObject *object,
                                                  GParamSpec *pspec)
 {
     gint i, size;
-    const gchar *str;
+    const gchar *family;
     gboolean b;
     GdkColor *color = NULL;
     GdkColor black;
@@ -365,10 +365,11 @@ hildon_font_selection_dialog_set_property       (GObject *object,
     switch (prop_id)
     {
         case PROP_FAMILY:
-            str = g_value_get_string (value);
+            family = g_value_get_string (value);
+            g_return_if_fail (family != NULL);
             for(i = 0; i < priv->n_families; i++)
             {
-                if (strcmp (str, pango_font_family_get_name (priv->families[i]))
+                if (strcmp (family, pango_font_family_get_name (priv->families[i]))
                         == 0)
                 {
                     gtk_combo_box_set_active (GTK_COMBO_BOX (priv->cbx_font_type), i);
