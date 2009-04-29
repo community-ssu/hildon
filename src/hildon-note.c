@@ -848,7 +848,12 @@ hildon_note_new_confirmation_with_icon_name     (GtkWindow *parent,
                                                  const gchar *description,
                                                  const gchar *icon_name)
 {
-  return hildon_note_new_confirmation (parent, description);
+    GtkWidget *dialog;
+
+    dialog = hildon_note_new_confirmation (parent, description);
+    g_object_set (dialog, "icon", icon_name);
+
+    return dialog;
 }
 
 /**
@@ -907,7 +912,12 @@ hildon_note_new_information_with_icon_name      (GtkWindow * parent,
                                                  const gchar *description,
                                                  const gchar *icon_name)
 {
-    return hildon_note_new_information (parent, description);
+    GtkWidget *dialog;
+
+    dialog = hildon_note_new_information (parent, description);
+    g_object_set (dialog, "icon", icon_name);
+
+    return dialog;
 }
 
 /* FIXME This documentation string LIES! */

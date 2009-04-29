@@ -1,5 +1,11 @@
 2009-04-29  Claudio Saavedra  <csaavedra@igalia.com>
 
+	* src/hildon-note.c (hildon_note_new_confirmation_with_icon_name),
+	(hildon_note_new_information_with_icon_name): Set the "icon" property
+	to preserve soundness.
+
+2009-04-29  Claudio Saavedra  <csaavedra@igalia.com>
+
 	* src/hildon-font-selection-dialog.c
 	(hildon_font_selection_dialog_set_property): Fail when the "family"
 	property is set to NULL.
