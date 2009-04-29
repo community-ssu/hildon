@@ -20,3 +20,4 @@ deb: dist
 	tar zxvf ../$(PACKAGE)-$(VERSION).tar.gz && \
 	cd $(PACKAGE)-$(VERSION) && dpkg-buildpackage -rfakeroot
 
+DISTCHECK_CONFIGURE_FLAGS = --enable-gtk-doc

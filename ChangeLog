@@ -1,5 +1,9 @@
 2009-04-29  Claudio Saavedra  <csaavedra@igalia.com>
 
+	* Makefile.am: Enable gtk-doc during distcheck.
+
+2009-04-29  Claudio Saavedra  <csaavedra@igalia.com>
+
 	* Makefile.am: Do not distribute the debian/ directory.
 
 2009-04-29  Claudio Saavedra  <csaavedra@igalia.com>
