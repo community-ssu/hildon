@@ -1,5 +1,10 @@
 2009-04-29  Claudio Saavedra  <csaavedra@igalia.com>
 
+	* doc/Makefile.am: Add the extra SGML files to content_files,
+	so that they are distributed properly.
+
+2009-04-29  Claudio Saavedra  <csaavedra@igalia.com>
+
 	* tests/Makefile.am: Add missing test_suites.h and check_utils.h
 	to the SOURCES.
 

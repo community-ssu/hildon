@@ -92,6 +92,15 @@ HTML_IMAGES 					= $(srcdir)/images/calendar-popup.png		\
 						  $(srcdir)/images/weekday-picker.png		\
 						  $(srcdir)/images/bread-crumb-trail.png
 
+# Extra SGML files that are included by $(DOC_MAIN_SGML_FILE)
+content_files =				\
+	migration.sgml			\
+	running.sgml			\
+	building.sgml			\
+	compiling.sgml			\
+	resources.sgml			\
+	version.xml
+
 FIXXREF_OPTIONS					=
 
 include $(top_srcdir)/doc/gtk-doc.make
