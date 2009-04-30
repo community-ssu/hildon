@@ -22,7 +22,7 @@
  */
 #include                                        <glib.h>
 #include                                        <gtk/gtk.h>
-#include                                        "hildon.h"
+#include                                        <hildon/hildon.h>
 
 static void
 on_picker_value_changed (HildonPickerButton * button, gpointer data)

@@ -21,7 +21,7 @@
 #include                                        <glib.h>
 #include                                        <gtk/gtk.h>
 
-#include                                        "hildon.h"
+#include                                        <hildon/hildon.h>
 
 static const gchar* artists [] = {
   "AC/DC",

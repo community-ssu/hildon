@@ -27,7 +27,7 @@
 #include                                        <sys/stat.h>
 #include                                        <unistd.h>
 
-#include                                        "hildon.h"
+#include                                        <hildon/hildon.h>
 
 GtkWidget *treeview;
 gchar *current_root;

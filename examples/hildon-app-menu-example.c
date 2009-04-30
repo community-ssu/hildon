@@ -23,7 +23,7 @@
  */
 
 #include                                        <gtk/gtk.h>
-#include                                        "hildon.h"
+#include                                        <hildon/hildon.h>
 
 static void
 menu_button_clicked                             (GtkButton *button,

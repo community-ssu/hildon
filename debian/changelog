@@ -1,6 +1,7 @@
 libhildon (2.1.69-1~unreleased) unstable; urgency=low
 
   * unreleased bump
+  * Don't need to fix example files anymore in debian/rules
 
  -- Alberto Garcia <agarcia@igalia.com>  Thu, 30 Apr 2009 13:30:03 +0200
 

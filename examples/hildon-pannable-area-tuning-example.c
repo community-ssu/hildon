@@ -29,7 +29,7 @@
 #include <string.h>
 #include <gtk/gtk.h>
 #include <glib/gprintf.h>
-#include "hildon.h"
+#include <hildon/hildon.h>
 
 typedef struct {
     GtkWidget *pannable;

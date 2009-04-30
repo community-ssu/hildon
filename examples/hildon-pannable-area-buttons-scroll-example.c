@@ -23,7 +23,7 @@
  *
  */
 
-#include                                        "hildon.h"
+#include                                        <hildon/hildon.h>
 
 GtkWidget *btn;
 

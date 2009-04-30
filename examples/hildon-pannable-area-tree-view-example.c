@@ -26,7 +26,7 @@
 #include                                        <stdlib.h>
 #include                                        <glib.h>
 #include                                        <gtk/gtk.h>
-#include                                        "hildon.h"
+#include                                        <hildon/hildon.h>
 
 enum { TEXT_COLUMN, N_COLUMNS };
 

@@ -28,7 +28,7 @@
 #include                                        <glib.h>
 #include                                        <gtk/gtk.h>
 #include                                        <string.h>
-#include                                        "hildon.h"
+#include                                        <hildon/hildon.h>
 
 enum { PIXBUF_COLUMN, TEXT_COLUMN, N_COLUMNS };
 

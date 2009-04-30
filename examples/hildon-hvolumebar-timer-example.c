@@ -26,7 +26,7 @@
 #include                                        <stdlib.h>
 #include                                        <glib.h>
 #include                                        <gtk/gtk.h>
-#include                                        "hildon.h"
+#include                                        <hildon/hildon.h>
 
 gboolean
 on_idle                                         (void);

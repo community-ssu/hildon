@@ -20,7 +20,7 @@
  *
  */
 
-#include                                        "hildon.h"
+#include                                        <hildon/hildon.h>
 
 HildonTextView *textview;
 GtkTextBuffer *buffer;

@@ -6,7 +6,7 @@
 #include <sys/shm.h>
 #include <string.h>
 #include <math.h>
-#include "hildon.h"
+#include <hildon/hildon.h>
 #include "hildon-remote-texture.h"
 
 #define W 800

@@ -25,7 +25,7 @@
  */
 
 #include                                        <gtk/gtk.h>
-#include                                        "hildon.h"
+#include                                        <hildon/hildon.h>
 
 enum
 {

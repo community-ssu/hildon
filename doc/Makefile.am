@@ -12,13 +12,13 @@ SCAN_OPTIONS					=--deprecated-guards="HILDON_DISABLE_DEPRECATED"
 
 SCANOBJ_OPTIONS					=--type-init-func="gtk_type_init(0)"
 
-DOC_SOURCE_DIR					= $(top_srcdir)/src
-DOC_BUILD_DIR 					= $(top_builddir)/src
+DOC_SOURCE_DIR					= $(top_srcdir)/hildon
+DOC_BUILD_DIR 					= $(top_builddir)/hildon
 
 
-HFILE_GLOB					= $(top_srcdir)/src/*.h
+HFILE_GLOB					= $(top_srcdir)/hildon/*.h
 
-CFILE_GLOB					= $(top_srcdir)/src/*.c
+CFILE_GLOB					= $(top_srcdir)/hildon/*.c
 
 IGNORE_HFILES 					= hildon-banner-private.h 		\
 						  hildon-calendar-popup-private.h	\

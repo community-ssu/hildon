@@ -2,7 +2,7 @@ AC_INIT([Hildon gtk widgets], [2.1.69], [hildon@projects.maemo.org], [hildon])
 AC_CANONICAL_SYSTEM
 
 AM_CONFIG_HEADER(config.h)
-AC_CONFIG_SRCDIR([src/hildon-window.h])
+AC_CONFIG_SRCDIR([hildon/hildon-window.h])
 AC_CONFIG_MACRO_DIR([m4])
 AM_MAINTAINER_MODE
 
@@ -192,14 +192,14 @@ CFLAGS="$CFLAGS $MAEMO_CHANGES $MAEMO_GTK"
 # default vars for the examples
 # includes all the low-level flags
 # FIXME Add esd and gconf flags
-HILDON_OBJ_CFLAGS="\$(CFLAGS) \$(GTK_CFLAGS) \$(CHECK_CFLAGS) \$(GCONF_CFLAGS) -I\$(top_builddir)/src/"
-HILDON_OBJ_LIBS="\$(top_builddir)/src/libhildon-\$(API_VERSION_MAJOR).la \$(GTK_LIBS) \$(GCONF_LIBS) \$(CHECK_LIBS) `pkg-config --libs gthread-2.0`"
+HILDON_OBJ_CFLAGS="\$(CFLAGS) \$(GTK_CFLAGS) \$(CHECK_CFLAGS) \$(GCONF_CFLAGS) -I\$(top_builddir)/hildon/"
+HILDON_OBJ_LIBS="\$(top_builddir)/hildon/libhildon-\$(API_VERSION_MAJOR).la \$(GTK_LIBS) \$(GCONF_LIBS) \$(CHECK_LIBS) `pkg-config --libs gthread-2.0`"
 AC_SUBST(HILDON_OBJ_CFLAGS)
 AC_SUBST(HILDON_OBJ_LIBS)
 
 AC_CONFIG_FILES([Makefile               \
-                 src/Makefile           \
-                 src/hildon-version.h   \
+                 hildon/Makefile        \
+                 hildon/hildon-version.h \
                  pkgconfig/Makefile     \
                  examples/Makefile      \
                  pkgconfig/hildon.pc    \

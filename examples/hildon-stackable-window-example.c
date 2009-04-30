@@ -20,7 +20,7 @@
  *
  */
 
-#include                                        "hildon.h"
+#include                                        <hildon/hildon.h>
 
 static gint                                     global_stack_count = 1;
 

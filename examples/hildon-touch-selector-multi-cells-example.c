@@ -23,7 +23,7 @@
 
 #include                                        <glib.h>
 #include                                        <gtk/gtk.h>
-#include                                        "hildon.h"
+#include                                        <hildon/hildon.h>
 
 static GtkWidget *create_selector ();
 static GtkWidget *get_visible_content (GtkWidget * window);

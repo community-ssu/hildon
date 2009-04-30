@@ -1,3 +1,18 @@
+2009-04-30  Alberto Garcia  <agarcia@igalia.com>
+
+	* src/
+	* Makefile.am
+	* configure.ac
+	* doc/Makefile.am
+	* doc/hildon.types
+	* po/POTFILES.in:
+	Renamed src/ to hildon/
+
+	* examples/*.c
+	* debian/changelog
+	* debian/rules:
+	Include <hildon/hildon.h> directly in all examples.
+
 2009-04-29  Alejandro Pinheiro  <apinheiro@igalia.com>
 
 	* src/hildon-sort-dialog.c

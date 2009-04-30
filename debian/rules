@@ -24,5 +24,4 @@ $(DEB_SRCDIR)/configure:
 
 binary-post-install/libhildon1-examples::
 	( cd $(DEB_SRCDIR)/debian/libhildon1-examples/usr/share/doc/libhildon1-examples/examples && \
-	sed -i 's_"hildon.h"_<hildon/hildon.h>_' *.c && \
 	mv Makefile.static Makefile )

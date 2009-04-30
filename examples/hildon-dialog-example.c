@@ -22,7 +22,7 @@
  *
  */
 
-#include                                        "hildon.h"
+#include                                        <hildon/hildon.h>
 
 int
 main                                            (int argc,
