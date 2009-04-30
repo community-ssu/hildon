@@ -1,3 +1,9 @@
+libhildon (2.1.69-1~unreleased) unstable; urgency=low
+
+  * unreleased bump
+
+ -- Alberto Garcia <agarcia@igalia.com>  Thu, 30 Apr 2009 13:30:03 +0200
+
 libhildon (2.1.68-1) unstable; urgency=low
 
   * Fixes: NB#109635 (Confirmation notes do not support portrait)
