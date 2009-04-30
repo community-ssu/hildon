@@ -56,9 +56,6 @@ INCLUDES 					= $(GTK_CFLAGS) -I$(top_srcdir)
 
 MKDB_OPTIONS					=--sgml-mode --output-format=xml
 
-content_files					= version.xml \
-						  visual_index.xml
-
 GTKDOC_CFLAGS 					= $(HILDON_OBJ_CFLAGS)
 
 GTKDOC_LIBS 					= $(HILDON_OBJ_LIBS)
@@ -94,6 +91,7 @@ HTML_IMAGES 					= $(srcdir)/images/calendar-popup.png		\
 
 # Extra SGML files that are included by $(DOC_MAIN_SGML_FILE)
 content_files =				\
+	visual_index.sgml		\
 	migration.sgml			\
 	running.sgml			\
 	building.sgml			\
