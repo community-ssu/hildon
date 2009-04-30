@@ -1,5 +1,9 @@
 2009-04-30  Claudio Saavedra  <csaavedra@igalia.com>
 
+	* doc/Makefile.am: Fix build.
+
+2009-04-30  Claudio Saavedra  <csaavedra@igalia.com>
+
 	* doc/Makefile.am: Do not redefine content_files.
 
 2009-04-30  Alberto Garcia  <agarcia@igalia.com>

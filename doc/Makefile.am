@@ -91,13 +91,13 @@ HTML_IMAGES 					= $(srcdir)/images/calendar-popup.png		\
 
 # Extra SGML files that are included by $(DOC_MAIN_SGML_FILE)
 content_files =				\
-	visual_index.sgml		\
 	migration.sgml			\
 	running.sgml			\
 	building.sgml			\
 	compiling.sgml			\
 	resources.sgml			\
-	version.xml
+	version.xml			\
+	visual_index.xml
 
 FIXXREF_OPTIONS					=
 
