@@ -218,7 +218,8 @@ hildon_edit_toolbar_init                        (HildonEditToolbar *self)
     separator = gtk_vseparator_new ();
     priv->arrow = GTK_BUTTON (gtk_button_new ());
 
-    gtk_button_set_focus_on_click (priv->arrow, FALSE);
+    g_object_set (priv->button, "can-focus", FALSE, NULL);
+    g_object_set (priv->arrow, "can-focus", FALSE, NULL);
 
     g_signal_connect (priv->button, "clicked", G_CALLBACK (button_clicked_cb), self);
     g_signal_connect (priv->arrow, "clicked", G_CALLBACK (arrow_clicked_cb), self);

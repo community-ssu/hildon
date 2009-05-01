@@ -1,3 +1,12 @@
+2009-05-01  Alberto Garcia  <agarcia@igalia.com>
+
+	* hildon/hildon-edit-toolbar.c
+	(hildon_edit_toolbar_init):
+	Don't let buttons in HildonEditToolbar receive focus.
+
+	Fixes: NB#111160 (!HildonEditToolbar buttons are focused after
+	typing on an HW arrows key)
+
 2009-04-30  Claudio Saavedra  <csaavedra@igalia.com>
 
 	* doc/Makefile.am: Fix build.
