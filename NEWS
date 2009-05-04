@@ -1,3 +1,18 @@
+[2.1.70 release]
+
+  * Fixes: NB#111962 (mail_in_ui_folder_move_target_error not aligned
+    properly)
+  * Fixes: NB#112933 (text is not left aligned in confirmation dialog
+    is connectivity dialog)
+  * Fixes: NB#111606 (HildonTimeSelector should expose API to
+    set/unset am/pm mode)
+  * Fixes: NB#111160 (!HildonEditToolbar buttons are focused after
+    typing on an HW arrows key)
+
+  New API:
+
+  * HildonTimeSelector:time-format-policy
+
 [2.1.68 release]
 
   * Fixes: NB#109635 (Confirmation notes do not support portrait)

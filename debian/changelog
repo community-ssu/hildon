@@ -1,9 +1,22 @@
-libhildon (2.1.69-1~unreleased) unstable; urgency=low
+libhildon (2.1.70-1) unstable; urgency=low
 
-  * unreleased bump
+  * Fixes: NB#111962 (mail_in_ui_folder_move_target_error not aligned
+    properly)
+  * Fixes: NB#112933 (text is not left aligned in confirmation dialog
+    is connectivity dialog)
+  * Fixes: NB#111606 (HildonTimeSelector should expose API to
+    set/unset am/pm mode)
+  * Fixes: NB#111160 (!HildonEditToolbar buttons are focused after
+    typing on an HW arrows key)
+
+  New API:
+
+  * HildonTimeSelector:time-format-policy
+
+  [ Alberto Garcia ]
   * Don't need to fix example files anymore in debian/rules
 
- -- Alberto Garcia <agarcia@igalia.com>  Thu, 30 Apr 2009 13:30:03 +0200
+ -- Claudio Saavedra <csaavedra@igalia.com>  Mon, 04 May 2009 11:29:42 +0300
 
 libhildon (2.1.68-1) unstable; urgency=low
 
