@@ -1,3 +1,12 @@
+2009-05-04  Alberto Garcia  <agarcia@igalia.com>
+
+	* hildon/hildon-banner.c:
+	Calculate size of the banner label using the actual screen width
+	rather than using a fixed value.
+
+	Fixes: NB#114395 ('Disconnect charger...' info banner in portrait
+	is truncated)
+
 2009-05-04  Alejandro G. Castro  <alex@igalia.com>
 
 	* hildon/hildon-pannable-area.c,
