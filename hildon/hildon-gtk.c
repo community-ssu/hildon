@@ -402,8 +402,8 @@ set_flag                                        (GtkWindow      *window,
  * Since: 2.2
  **/
 void
-hildon_gtk_window_set_progress_indicator        (GtkWindow    *window,
-                                                 guint         state)
+hildon_gtk_window_set_progress_indicator        (GtkWindow *window,
+                                                 guint      state)
 {
     set_flag (window, (HildonFlagFunc) do_set_progress_indicator, GUINT_TO_POINTER (state));
 }

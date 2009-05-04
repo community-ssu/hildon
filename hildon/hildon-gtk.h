@@ -63,8 +63,8 @@ hildon_gtk_icon_view_set_ui_mode                (GtkIconView  *iconview,
 #endif /* MAEMO_GTK */
 
 void
-hildon_gtk_window_set_progress_indicator        (GtkWindow    *window,
-                                                 guint        state);
+hildon_gtk_window_set_progress_indicator        (GtkWindow *window,
+                                                 guint      state);
 
 void
 hildon_gtk_window_set_do_not_disturb            (GtkWindow *window,
@@ -76,8 +76,8 @@ typedef enum {
 } HildonPortraitFlags;
 
 void
-hildon_gtk_window_set_portrait_flags             (GtkWindow *window,
-                                                  HildonPortraitFlags portrait_flags);
+hildon_gtk_window_set_portrait_flags            (GtkWindow           *window,
+                                                 HildonPortraitFlags  portrait_flags);
 
 GtkWidget*
 hildon_gtk_hscale_new                           (void);
