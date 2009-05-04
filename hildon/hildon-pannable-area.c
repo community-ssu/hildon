@@ -565,15 +565,18 @@ hildon_pannable_area_class_init (HildonPannableAreaClass * klass)
 					    "Pixel width used to draw the scroll indicators.",
 					    0, G_MAXUINT, 8,
 					    G_PARAM_READWRITE));
-  /**
+
+ /**
    * HildonPannableArea::horizontal-movement:
    * @hildonpannable: the object which received the signal
-   * @direction: the direction of the movement #HILDON_MOVEMENT_UP or #HILDON_MOVEMENT_DOWN
-   * @initial_x: the x value of the touched point in the area when the motion started
-   * @initial_y: the y value of the touched point in the area when the motion started
+   * @direction: the direction of the movement #HILDON_MOVEMENT_LEFT or #HILDON_MOVEMENT_RIGHT
+   * @initial_x: the x coordinate of the point where the user clicked to start the movement
+   * @initial_y: the y coordinate of the point where the user clicked to start the movement
    *
    * The horizontal-movement signal is emitted when the pannable area
-   * starts a horizontal movement.
+   * detects a horizontal movement. The detection does not mean the
+   * widget is going to move (i.e. maybe the children are smaller
+   * horizontally than the screen).
    *
    * Since: 2.2
    */
@@ -592,12 +595,14 @@ hildon_pannable_area_class_init (HildonPannableAreaClass * klass)
   /**
    * HildonPannableArea::vertical-movement:
    * @hildonpannable: the object which received the signal
-   * @direction: the direction of the movement #HILDON_MOVEMENT_LEFT or #HILDON_MOVEMENT_RIGHT
-   * @initial_x: the x value when the motion started
-   * @initial_y: the y value when the motion started
+   * @direction: the direction of the movement #HILDON_MOVEMENT_UP or #HILDON_MOVEMENT_DOWN
+   * @initial_x: the x coordinate of the point where the user clicked to start the movement
+   * @initial_y: the y coordinate of the point where the user clicked to start the movement
    *
    * The vertical-movement signal is emitted when the pannable area
-   * starts a vertical movement.
+   * detects a vertical movement. The detection does not mean the
+   * widget is going to move (i.e. maybe the children are smaller
+   * vertically than the screen).
    *
    * Since: 2.2
    */
@@ -612,7 +617,6 @@ hildon_pannable_area_class_init (HildonPannableAreaClass * klass)
                   G_TYPE_INT,
 		  G_TYPE_DOUBLE,
 		  G_TYPE_DOUBLE);
-
 
 }
 
