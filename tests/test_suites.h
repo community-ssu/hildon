@@ -58,6 +58,6 @@ Suite *create_hildon_scroll_area_suite(void);
 Suite *create_hildon_window_suite(void);
 Suite *create_hildon_program_suite(void);
 Suite *create_hildon_composite_widget_suite(void);
-
+Suite *create_hildon_picker_button_suite (void);
 
 #endif

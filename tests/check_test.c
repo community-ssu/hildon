@@ -82,6 +82,7 @@ configure_tests(gint environment)
   srunner_add_suite(sr, create_hildon_banner_suite());
   srunner_add_suite(sr, create_hildon_window_suite());
   srunner_add_suite(sr, create_hildon_helper_suite());
+  srunner_add_suite(sr, create_hildon_picker_button_suite());
 
   /* Disable tests that need maemo environment to be up if it is not running */
   if (environment != ENVIRONMENT_MAEMO_ERROR)

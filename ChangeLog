@@ -1,5 +1,14 @@
 2009-05-05  Claudio Saavedra  <csaavedra@igalia.com>
 
+	* tests/Makefile.am: Add check for HildonPickerButton.
+	* tests/check-hildon-picker-button.c (fx_setup), (fx_teardown),
+	(START_TEST), (create_hildon_picker_button_suite): Add three simple
+	checks for the HildonPickerButton.
+	* tests/check_test.c (configure_tests): Add the test suite.
+	* tests/test_suites.h: likewise.
+
+2009-05-05  Claudio Saavedra  <csaavedra@igalia.com>
+
 	* hildon/hildon-touch-selector.c
 	(+on_row_changed): Emit HildonTouchSelector:changed when the
 	contents of a selected row change.

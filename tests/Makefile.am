@@ -14,7 +14,8 @@ tests					= check_test.c 				\
 					  check-hildon-wizard-dialog.c 		\
 					  check-hildon-find-toolbar.c 		\
 					  check-hildon-window.c 		\
-					  check-hildon-program.c
+					  check-hildon-program.c		\
+					  check-hildon-picker-button.c
 
 
 DEPRECATED_TESTS			= check-hildon-range-editor.c 		\
