@@ -1,3 +1,13 @@
+2009-05-05  Claudio Saavedra  <csaavedra@igalia.com>
+
+	* hildon/hildon-touch-selector.c
+	(+on_row_changed): Emit HildonTouchSelector:changed when the
+	contents of a selected row change.
+	(_create_new_column), (_hildon_touch_selector_set_model): connect
+	to GtkTreeModel:row-changed on a newly set model.
+
+	Fixes: NB#114253 (HildonPickerButton not refreshing its value)
+
 2009-05-05  Alberto Garcia  <agarcia@igalia.com>
 
 	Based on a patch by Mox Soini (ext-mox.soini@nokia.com)
