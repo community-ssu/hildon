@@ -1,3 +1,15 @@
+2009-05-05  Alberto Garcia  <agarcia@igalia.com>
+
+	Based on a patch by Mox Soini (ext-mox.soini@nokia.com)
+
+	* hildon/hildon-banner.c (hildon_banner_destroy)
+	(hildon_banner_show_progress, hildon_banner_set_fraction):
+	Remove the progress bar from HildonBanner and use a progress
+	indicator instead.
+
+	Fixes: NB#113761 (Update progress banner to use progress
+	indicator)
+
 2009-05-04  Alberto Garcia  <agarcia@igalia.com>
 
 	* hildon/hildon-banner.c:

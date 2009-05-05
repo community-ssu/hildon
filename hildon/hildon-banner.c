@@ -64,6 +64,7 @@
 #include                                        "hildon-banner.h"
 #include                                        "hildon-banner-private.h"
 #include                                        "hildon-defines.h"
+#include                                        "hildon-gtk.h"
 
 /* position relative to the screen */
 
@@ -386,6 +387,10 @@ hildon_banner_destroy                           (GtkObject *object)
     /* Remove the data from parent window for timed banners. Those hold reference */
     if (priv->is_timed && parent_window != NULL) {
         g_object_set_qdata (parent_window, hildon_banner_timed_quark (), NULL);
+    }
+
+    if (!priv->is_timed && priv->parent) {
+        hildon_gtk_window_set_progress_indicator (priv->parent, 0);
     }
 
     (void) hildon_banner_clear_timeout (self);
@@ -1047,8 +1052,8 @@ hildon_banner_show_animation                    (GtkWidget *widget,
 /**
  * hildon_banner_show_progress:
  * @widget: the #GtkWidget that wants to display banner
- * @bar: Progressbar to use. You usually can just pass %NULL, unless
- *       you want somehow customized progress bar.
+ * @bar: since Hildon 2.2 this parameter is not used anymore and
+ * any value that you pass will be ignored
  * @text: text to display.
  *
  * Shows progress notification. See #hildon_banner_show_animation
@@ -1067,21 +1072,18 @@ hildon_banner_show_progress                     (GtkWidget *widget,
     HildonBanner *banner;
     HildonBannerPrivate *priv;
 
-    g_return_val_if_fail (bar == NULL || GTK_IS_PROGRESS_BAR (bar), NULL);
     g_return_val_if_fail (text != NULL, NULL);
-
 
     /* Prepare banner */
     banner = hildon_banner_get_instance_for_widget (widget, FALSE);
     priv = HILDON_BANNER_GET_PRIVATE (banner);
     g_assert (priv);
-    hildon_banner_ensure_child (banner, (GtkWidget *) bar, -1, GTK_TYPE_PROGRESS_BAR, NULL);
-
-    gtk_widget_set_size_request (priv->main_item,
-            HILDON_BANNER_PROGRESS_WIDTH, -1);
 
     hildon_banner_set_text (banner, text);
     hildon_banner_bind_style (banner, "progress");
+
+    if (priv->parent)
+        hildon_gtk_window_set_progress_indicator (priv->parent, 1);
 
     /* Show the banner */
     gtk_widget_show_all (GTK_WIDGET (banner));
@@ -1163,19 +1165,13 @@ hildon_banner_set_markup                        (HildonBanner *self,
  * Note that this method only has effect if @self was created with
  * hildon_banner_show_progress()
  *
+ * Deprecated: This function does nothing. As of Hildon 2.2, hildon
+ * banners don't have progress bars.
  */
 void 
 hildon_banner_set_fraction                      (HildonBanner *self, 
                                                  gdouble fraction)
 {
-    HildonBannerPrivate *priv;
-
-    g_return_if_fail (HILDON_IS_BANNER (self));
-    priv = HILDON_BANNER_GET_PRIVATE (self);
-    g_assert (priv);
-
-    g_return_if_fail (GTK_IS_PROGRESS_BAR (priv->main_item));
-    gtk_progress_bar_set_fraction (GTK_PROGRESS_BAR (priv->main_item), fraction);
 }
 
 /**
