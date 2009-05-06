@@ -215,6 +215,10 @@ hildon_touch_selector_has_multiple_selection    (HildonTouchSelector *selector);
 void
 hildon_touch_selector_center_on_selected        (HildonTouchSelector *selector);
 
+void
+hildon_touch_selector_optimal_size_request      (HildonTouchSelector *selector,
+                                                 GtkRequisition *requisition);
+
 G_END_DECLS
 
 #endif /* __HILDON_TOUCH_SELECTOR_H__ */

@@ -2157,3 +2157,65 @@ hildon_touch_selector_center_on_selected         (HildonTouchSelector *selector)
                                                     HILDON_TOUCH_SELECTOR_COLUMN (iter->data));
   }
 }
+
+/**
+ * hildon_touch_selector_optimal_size_request
+ * @selector: a #HildonTouchSelector
+ * @requisition: a #GtkRequisition
+ *
+ * Gets the optimal size request of the touch selector. This function is mostly
+ * intended for dialog implementations that include a #HildonTouchSelector and
+ * want to optimize the screen real state, for example, when you want a dialog
+ * to show as much of the selector, avoiding any extra empty space below the
+ * selector.
+ *
+ * See #HildonPickerDialog implementation for an example.
+ *
+ * This function is oriented to be used in the size_request of a dialog or window,
+ * if you are not sure do not use it.
+ *
+ * There is a precondition to this function: Since this function does not
+ * call the "size_request" method, it can only be used when you know that
+ * gtk_widget_size_request() has been called since the last time a resize was
+ * queued.
+ *
+ * Since: 2.2
+ **/
+void
+hildon_touch_selector_optimal_size_request      (HildonTouchSelector *selector,
+                                                 GtkRequisition *requisition)
+{
+  GSList *iter = NULL;
+  gint height = 0;
+
+  g_return_if_fail (HILDON_IS_TOUCH_SELECTOR (selector));
+
+  iter = selector->priv->columns;
+
+  /* Default optimal values are the current ones */
+  gtk_widget_get_child_requisition (GTK_WIDGET (selector),
+                                    requisition);
+
+  if (iter == NULL) {
+    height = requisition->height;
+  }
+
+  /* Compute optimal height */
+  while (iter) {
+    HildonTouchSelectorColumn *column;
+    GtkWidget *child;
+    GtkRequisition child_requisition = {0};
+
+    column = HILDON_TOUCH_SELECTOR_COLUMN (iter->data);
+    child = GTK_WIDGET (column->priv->tree_view);
+
+    gtk_widget_get_child_requisition (child, &child_requisition);
+
+    height = MAX (height, child_requisition.height);
+
+    iter = g_slist_next (iter);
+  }
+
+  requisition->height = height;
+}
+

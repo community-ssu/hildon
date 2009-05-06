@@ -1,3 +1,21 @@
+2009-05-06 Alejandro Pinheiro <apinheiro@igalia.com>
+
+	* hildon/hildon-touch-selector.[ch]
+	(hildon_touch_selector_optimal_size_request): function added to get a
+	optimal size request from the touch selector, when you want a dialog to
+	show as much of the selector
+	* hildon/hildon-picker-dialog.c:
+	Removed HILDON_TOUCH_SELECTOR_HEIGHT macro
+	(hildon_app_menu_class_init):
+	New "max-height-landscape" and "max-height-portrait" style properties
+	(hildon_picker_dialog_size_request): redefined GtkWidget::size_request
+	(hildon_picker_dialog_get_max_height): returns the maximum height using
+	the style properties defined and checking the current portrait/landscape
+	status
+	(_hildon_picker_dialog_set_selector): removed the set_size_request
+
+	Fixes: NB#109369 (Hard-coded height in HildonPickerDialog)
+
 2009-05-06  Claudio Saavedra  <csaavedra@igalia.com>
 
 	* hildon/hildon-bread-crumb-trail.c:

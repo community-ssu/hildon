@@ -54,8 +54,6 @@
 
 G_DEFINE_TYPE (HildonPickerDialog, hildon_picker_dialog, HILDON_TYPE_DIALOG)
 
-#define HILDON_TOUCH_SELECTOR_HEIGHT            320
-
 struct _HildonPickerDialogPrivate
 {
   GtkWidget *selector;
@@ -107,6 +105,10 @@ hildon_picker_dialog_show                       (GtkWidget *widget);
 static void
 hildon_picker_dialog_realize                    (GtkWidget *widget);
 
+static void
+hildon_picker_dialog_size_request               (GtkWidget *widget,
+                                                 GtkRequisition *requisition);
+
 /* private functions */
 static gboolean
 requires_done_button                            (HildonPickerDialog * dialog);
@@ -140,6 +142,9 @@ _restore_current_selection                      (HildonPickerDialog *dialog);
 static void
 _clean_current_selection                        (HildonPickerDialog *dialog);
 
+static guint
+hildon_picker_dialog_get_max_height             (HildonPickerDialog *dialog);
+
 /**********************************************************************************/
 
 static void
@@ -163,6 +168,7 @@ hildon_picker_dialog_class_init (HildonPickerDialogClass * class)
   /* GtkWidget */
   widget_class->show = hildon_picker_dialog_show;
   widget_class->realize = hildon_picker_dialog_realize;
+  widget_class->size_request = hildon_picker_dialog_size_request,
 
   /* HildonPickerDialog */
   class->set_selector = _hildon_picker_dialog_set_selector;
@@ -197,6 +203,28 @@ hildon_picker_dialog_class_init (HildonPickerDialogClass * class)
                                                          TRUE,
                                                          G_PARAM_READWRITE |
                                                          G_PARAM_CONSTRUCT));
+
+  /* Using the default height, we get 5 full rows. With the header it sums 404 pixels */
+  gtk_widget_class_install_style_property (widget_class,
+                                           g_param_spec_uint
+                                           ("max-height-landscape",
+                                            "Max dialog height on landscape mode",
+                                            "Maximum dialog height on landscape mode",
+                                            0,
+                                            G_MAXUINT,
+                                            358,
+                                            G_PARAM_READWRITE));
+
+  /* Using the default height, we get 9 full rows. With the header it sums 684 pixels */
+  gtk_widget_class_install_style_property (widget_class,
+                                           g_param_spec_uint
+                                           ("max-height-portrait",
+                                            "Max dialog height on portrait mode",
+                                            "Maximum dialog height on portrait mode",
+                                            0,
+                                            G_MAXUINT,
+                                            638,
+                                            G_PARAM_READWRITE));
 
   g_type_class_add_private (object_class, sizeof (HildonPickerDialogPrivate));
 }
@@ -296,6 +324,43 @@ hildon_picker_dialog_show                       (GtkWidget *widget)
 }
 
 static void
+hildon_picker_dialog_size_request               (GtkWidget *widget,
+                                                 GtkRequisition *requisition)
+{
+  HildonTouchSelector *selector;
+
+  selector = hildon_picker_dialog_get_selector (HILDON_PICKER_DIALOG (widget));
+
+  if (selector) {
+    GtkRequisition child_requisition;
+    GtkRequisition optimal_requisition;
+    GtkBin *bin;
+    guint max_height;
+
+    bin = GTK_BIN (widget);
+
+    requisition->width = GTK_CONTAINER (widget)->border_width * 2;
+    /* Adding pannable container border using 4 instead of 2 */
+    requisition->height = GTK_CONTAINER (widget)->border_width * 4;
+
+    /* assure the requisition is done */
+    gtk_widget_size_request (bin->child, &child_requisition);
+
+    hildon_touch_selector_optimal_size_request (selector,
+                                                &optimal_requisition);
+
+    requisition->width += child_requisition.width;
+
+    max_height = hildon_picker_dialog_get_max_height (HILDON_PICKER_DIALOG (widget));
+
+    requisition->height = MIN (max_height,
+                               requisition->height + optimal_requisition.height);
+  } else
+    GTK_WIDGET_CLASS (hildon_picker_dialog_parent_class)->size_request
+      (widget, requisition);
+}
+
+static void
 hildon_picker_dialog_realize (GtkWidget *widget)
 {
   setup_interaction_mode (HILDON_PICKER_DIALOG (widget));
@@ -304,6 +369,34 @@ hildon_picker_dialog_realize (GtkWidget *widget)
 }
 
 /* ------------------------------ PRIVATE METHODS ---------------------------- */
+
+static guint
+hildon_picker_dialog_get_max_height             (HildonPickerDialog *dialog)
+{
+  gboolean landscape = TRUE;
+  guint max_value = 0;
+  GdkScreen *screen = NULL;
+
+  screen = gtk_widget_get_screen (GTK_WIDGET (dialog));
+  if (screen != NULL) {
+    if (gdk_screen_get_width (screen) > gdk_screen_get_height (screen)) {
+      landscape = TRUE;
+    } else {
+      landscape = FALSE;
+    }
+  }
+
+  if (landscape) {
+    gtk_widget_style_get (GTK_WIDGET (dialog), "max-height-landscape",
+                          &max_value, NULL);
+  } else {
+    gtk_widget_style_get (GTK_WIDGET (dialog), "max-height-portrait",
+                          &max_value, NULL);
+  }
+
+  return max_value;
+}
+
 
 static void
 _select_on_selector_changed_cb (HildonTouchSelector * selector,
@@ -585,10 +678,6 @@ _hildon_picker_dialog_set_selector (HildonPickerDialog * dialog,
                       dialog->priv->selector, TRUE, TRUE, 0);
 
   g_object_unref (selector);
-
-  /* Ensure that the dialog's height is correct */
-  gtk_widget_set_size_request (GTK_WIDGET (dialog->priv->selector), -1,
-                               HILDON_TOUCH_SELECTOR_HEIGHT);
 
   gtk_widget_show (dialog->priv->selector);
 
