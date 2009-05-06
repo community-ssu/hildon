@@ -1,3 +1,11 @@
+2009-05-06  Alberto Garcia  <agarcia@igalia.com>
+
+	* hildon/hildon-app-menu.c (hildon_app_menu_init):
+	Don't make the menu a modal window, it causes strange interactions
+	with the pointer grab and it's not really needed.
+
+	Fixes: NB#105529 (Empty App menu is launched in a scenario.)
+
 2009-05-06 Alejandro Pinheiro <apinheiro@igalia.com>
 
 	* hildon/hildon-touch-selector.[ch]
