@@ -1,3 +1,13 @@
+2009-05-06  Claudio Saavedra  <csaavedra@igalia.com>
+
+	* hildon/hildon-bread-crumb-trail.c:
+	* hildon/hildon-bread-crumb.c:
+	* hildon/hildon-seekbar.c:
+	Add reference to replacements for these deprecated widgets.
+
+	Fixes: MB#4461 (Documentation: All deprecations should mention
+	replacements)
+
 2009-05-06 Alejandro Pinheiro <apinheiro@igalia.com>
 
 	* examples/hildon-remote-texture-example.c

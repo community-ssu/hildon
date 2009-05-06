@@ -35,6 +35,10 @@
  * It has built-in support for text and icon bread crumbs, but the trail only requires a very
  * simple interface to be implemented for its children and thus new types of items can be
  * implemented if needed. See #HildonBreadCrumb for more details.
+ *
+ * #HildonBreadCrumbTrail is deprecated since hildon 2.2. You should instead use
+ * #HildonStackableWindow to represent hierarchical structure in
+ * applications.
  */
 
 #undef HILDON_DISABLE_DEPRECATED

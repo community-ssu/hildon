@@ -32,6 +32,9 @@
  * stream/the amount currently downloaded).  The position is clamped
  * between zero and the total time, or zero and the fraction in case of
  * a stream.
+ *
+ * #HildonSeekbar has been deprecated since hildon 2.2. Use #GtkScale
+ * instead. See hildon_gtk_hscale_new() and hildon_gtk_vscale_new().
  */
 
 #undef                                          HILDON_DISABLE_DEPRECATED

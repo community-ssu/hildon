@@ -29,6 +29,10 @@
  *
  * #HildonBreadCrumb is an interface for creating new types of items
  * for the #HildonBreadCrumbTrail widget.
+ *
+ * #HildonBreadCrumb is deprecated since hildon 2.2. You should instead use
+ * #HildonStackableWindow to represent hierarchical structure in
+ * applications.
  */
 
 #undef HILDON_DISABLE_DEPRECATED
