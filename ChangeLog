@@ -1,3 +1,10 @@
+2009-05-06 Alejandro Pinheiro <apinheiro@igalia.com>
+
+	* examples/hildon-remote-texture-example.c
+
+	Change the include to the hildon-remote-texture in order to compile
+	properly the examples on the installed libhildon1-examples package
+
 2009-05-05  Claudio Saavedra  <csaavedra@igalia.com>
 
 	* tests/Makefile.am: Add check for HildonPickerButton.
