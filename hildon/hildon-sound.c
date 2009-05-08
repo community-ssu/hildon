@@ -25,6 +25,9 @@
 /**
  * SECTION:hildon-sound
  * @short_description: libcanberra-based utility function for playing a sound.
+ *
+ * Please note that this method is only provided for backwards compatibility,
+ * but we highly recommend you to use canberra-gtk directly instead.
  * 
  */
 
@@ -81,7 +84,11 @@ hildon_ca_context_get (void)
  * @sample: sound file to play
  * 
  * Plays the given sample using libcanberra.
- * Volume level is received from gconf. 
+ * Volume level is received from gconf.
+ *
+ * This method sets the "dialog-information" role for the sound played,
+ * so you need to keep this into account when using it. For any purpose, it
+ * is highly recommended that you use canberra-gtk instead of this method.
  */
 void 
 hildon_play_system_sound(const gchar *sample)
@@ -120,6 +127,7 @@ hildon_play_system_sound(const gchar *sample)
 
     ca_proplist_create(&pl);
     ca_proplist_sets(pl, CA_PROP_MEDIA_FILENAME, sample);
+    ca_proplist_sets(pl, CA_PROP_MEDIA_ROLE, "dialog-information");
     ca_proplist_setf(pl, CA_PROP_CANBERRA_VOLUME, "%f", volume);
 
     ret = ca_context_play_full(ca_con, 0, pl, NULL, NULL);

@@ -1,3 +1,8 @@
+2009-05-08  Claudio Saavedra  <csaavedra@igalia.com>
+
+	* hildon/hildon-sound.c (hildon_play_system_sound): Set the
+	"dialog-information" role for the sound being played.
+
 2009-05-06  Alberto Garcia  <agarcia@igalia.com>
 
 	* hildon/hildon-app-menu.c (hildon_app_menu_init):
