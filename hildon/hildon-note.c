@@ -851,7 +851,7 @@ hildon_note_new_confirmation_with_icon_name     (GtkWindow *parent,
     GtkWidget *dialog;
 
     dialog = hildon_note_new_confirmation (parent, description);
-    g_object_set (dialog, "icon", icon_name);
+    g_object_set (dialog, "icon", icon_name, NULL);
 
     return dialog;
 }
@@ -915,7 +915,7 @@ hildon_note_new_information_with_icon_name      (GtkWindow * parent,
     GtkWidget *dialog;
 
     dialog = hildon_note_new_information (parent, description);
-    g_object_set (dialog, "icon", icon_name);
+    g_object_set (dialog, "icon", icon_name, NULL);
 
     return dialog;
 }

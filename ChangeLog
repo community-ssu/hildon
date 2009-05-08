@@ -1,3 +1,12 @@
+2009-05-08  Alberto Garcia  <agarcia@igalia.com>
+
+	* hildon/hildon-note.c
+	(hildon_note_new_information_with_icon_name)
+	(hildon_note_new_confirmation_with_icon_name):
+	Terminate the list of parameters in g_object_set() calls
+
+	Fixes: NB#115166 (Formatting memory card is not taking place)
+
 2009-05-08  Claudio Saavedra  <csaavedra@igalia.com>
 
 	* hildon/hildon-sound.c (hildon_play_system_sound): Set the
