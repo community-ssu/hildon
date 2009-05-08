@@ -1,3 +1,16 @@
+2009-05-08  Alejandro Pinheiro <apinheiro@igalia.com>
+
+ 	* hildon/hildon-note-private.h: Removed sound_signal_handler
+ 	* hildon/hildon-note.c
+ 	(on_show_cb): new callback on note "show" event, this simply adds
+ 	a idle, with the function sound_handling
+ 	(sound_handling): removed the sound_signal_handler management
+ 	(hildon_note_init): connect note "show" event to on_show_cb
+ 	(hildon_note_realize): remove the connection to "expose-event"
+
+	Fixes: NB#115242 (Sound is not played every time for the 'Switch off
+	device?' confirmation note
+
 2009-05-08  Alberto Garcia  <agarcia@igalia.com>
 
 	* hildon/hildon-note.c

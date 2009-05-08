@@ -142,10 +142,12 @@ hildon_note_get_property                        (GObject *object,
                                                  GValue *value, 
                                                  GParamSpec *pspec);
 
-static gboolean
-sound_handling                                  (GtkWidget *widget, 
-                                                 GdkEventExpose *event, 
+static void
+on_show_cb                                      (GtkWidget *widget,
                                                  gpointer data);
+static gboolean
+sound_handling                                  (gpointer data);
+
 static void
 unpack_widget                                   (GtkWidget *widget);
 
@@ -419,6 +421,11 @@ hildon_note_init                                (HildonNote *dialog)
     g_signal_connect (priv->event_box, "button-press-event",
                       G_CALLBACK (event_box_press_event), dialog);
 
+    /* Because ESD is synchronous, we wish to play sound after the
+       note is already on screen to avoid blocking its appearance */
+    g_signal_connect (GTK_WIDGET (dialog), "show",
+                      G_CALLBACK (on_show_cb), NULL);
+
     /* Acquire real references to our internal children, since
        they are not nessecarily packed into container in each
        layout */
@@ -549,12 +556,6 @@ hildon_note_realize                             (GtkWidget *widget)
 
     /* Border only, no titlebar */
     gdk_window_set_decorations (widget->window, GDK_DECOR_BORDER);
-
-    /* Because ESD is synchronous, we wish to play sound after the
-       note is already on screen to avoid blocking its appearance */
-    if (priv->sound_signal_handler == 0)
-        priv->sound_signal_handler = g_signal_connect_after(widget, 
-                "expose-event", G_CALLBACK (sound_handling), NULL);
 
     /* Set the _HILDON_NOTIFICATION_TYPE property so Matchbox places the window correctly */
     display = gdk_drawable_get_display (widget->window);
@@ -1020,18 +1021,19 @@ hildon_note_set_button_texts                    (HildonNote *note,
     }
 }
 
-/* We play a system sound when the note comes visible */
-static gboolean
-sound_handling                                  (GtkWidget *widget, 
-                                                 GdkEventExpose *event, 
+static void
+on_show_cb                                      (GtkWidget *widget,
                                                  gpointer data)
 {
-    HildonNotePrivate *priv = HILDON_NOTE_GET_PRIVATE (widget);
+    g_idle_add (sound_handling, widget);
+}
+
+/* We play a system sound when the note comes visible */
+static gboolean
+sound_handling                                  (gpointer data)
+{
+    HildonNotePrivate *priv = HILDON_NOTE_GET_PRIVATE (data);
     g_assert (priv);
-
-    g_signal_handler_disconnect (widget, priv->sound_signal_handler);
-
-    priv->sound_signal_handler = 0;
 
     switch (priv->note_n)
     {
