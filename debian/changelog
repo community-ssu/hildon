@@ -1,3 +1,9 @@
+libhildon (2.1.73-1) unstable; urgency=low
+
+  * unreleased
+
+ -- Claudio Saavedra <csaavedra@igalia.com>  Mon, 11 May 2009 13:22:15 +0300
+
 libhildon (2.1.72-1) unstable; urgency=low
 
    * Fixes: NB#114395 ('Disconnect charger...' info banner in portrait is truncated)
