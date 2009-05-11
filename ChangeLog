@@ -1,3 +1,9 @@
+2009-05-11  Alberto Garcia  <agarcia@igalia.com>
+
+	* hildon/hildon-button.c
+	(hildon_button_set_title, hildon_button_set_value):
+	Hide labels containing an empty string.
+
 2009-05-11  Claudio Saavedra  <csaavedra@igalia.com>
 
 	* configure.ac: post release version bump

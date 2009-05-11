@@ -534,8 +534,8 @@ hildon_button_set_arrangement                   (HildonButton            *button
  *
  * This will clear any previously set title.
  *
- * If @title is set to %NULL, the title label will be hidden and the
- * value label will be realigned.
+ * If @title is set to %NULL or an empty string, the title label will
+ * be hidden and the value label will be realigned.
  *
  * Since: 2.2
  **/
@@ -552,7 +552,7 @@ hildon_button_set_title                         (HildonButton *button,
 
     /* If the button has no title, hide the label so the value is
      * properly aligned */
-    if (title) {
+    if (title && title[0] != '\0') {
         hildon_button_construct_child (button);
         gtk_widget_show (GTK_WIDGET (priv->title));
     } else {
@@ -571,8 +571,8 @@ hildon_button_set_title                         (HildonButton *button,
  *
  * This will clear any previously set value.
  *
- * If @value is set to %NULL, the value label will be hidden and the
- * title label will be realigned.
+ * If @value is set to %NULL or an empty string, the value label will
+ * be hidden and the title label will be realigned.
  *
  * Since: 2.2
  **/
@@ -589,7 +589,7 @@ hildon_button_set_value                         (HildonButton *button,
 
     /* If the button has no value, hide the label so the title is
      * properly aligned */
-    if (value) {
+    if (value && value[0] != '\0') {
         hildon_button_construct_child (button);
         gtk_widget_show (GTK_WIDGET (priv->value));
     } else {
