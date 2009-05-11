@@ -1,3 +1,20 @@
+[2.1.72 release]
+
+  * Fixes: NB#114395 ('Disconnect charger...' info banner in portrait is truncated)
+  * Fixes: NB#113761 (Update progress banner to use progress indicator)
+  * Fixes: NB#114253 (HildonPickerButton not refreshing its value)
+  * Fixes: NB#109369 (Hard-coded height in HildonPickerDialog)
+  * Fixes: NB#105529 (Empty App menu is launched in a scenario.)
+  * Fixes: NB#115166 (Formatting memory card is not taking place)
+  * Fixes: NB#115242 (Sound is not played every time for the 'Switch off
+     device?' confirmation note)
+
+   Other:
+
+  * New unit tests for HildonPickerButton
+  * Set "dialog-information" role for sounds played by hildon_play_system_sound()
+  * Documentation and examples fixes.
+
 [2.1.70 release]
 
   * Fixes: NB#111962 (mail_in_ui_folder_move_target_error not aligned

@@ -1,8 +1,18 @@
-libhildon (2.1.71-1) unstable; urgency=low
+libhildon (2.1.72-1) unstable; urgency=low
 
-  * unreleased
+   * Fixes: NB#114395 ('Disconnect charger...' info banner in portrait is truncated)
+   * Fixes: NB#113761 (Update progress banner to use progress indicator)
+   * Fixes: NB#114253 (HildonPickerButton not refreshing its value)
+   * Fixes: NB#109369 (Hard-coded height in HildonPickerDialog)
+   * Fixes: NB#105529 (Empty App menu is launched in a scenario.)
+   * Fixes: NB#115166 (Formatting memory card is not taking place)
+   * Fixes: NB#115242 (Sound is not played every time for the 'Switch off
+     device?' confirmation note)
+   * New unit tests for HildonPickerButton
+   * Set "dialog-information" role for sounds played by hildon_play_system_sound()
+   * Documentation and examples fixes.
 
- -- Claudio Saavedra <csaavedra@igalia.com>  Mon, 04 May 2009 11:49:46 +0300
+ -- Claudio Saavedra <csaavedra@igalia.com>  Mon, 11 May 2009 10:54:29 +0300
 
 libhildon (2.1.70-1) unstable; urgency=low
 
