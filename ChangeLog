@@ -9,7 +9,7 @@
  	(hildon_note_realize): remove the connection to "expose-event"
 
 	Fixes: NB#115242 (Sound is not played every time for the 'Switch off
-	device?' confirmation note
+	device?' confirmation note)
 
 2009-05-08  Alberto Garcia  <agarcia@igalia.com>
 
