@@ -1,3 +1,10 @@
+2009-05-13  Claudio Saavedra  <csaavedra@igalia.com>
+
+	* tests/Makefile.am: Include top_srcdir to make possible to build
+	tests in a different builddir.
+	* tests/*.c: Include <hildon/hildon-*.h> to allow building tests
+	on a different builddir.
+
 2009-05-12  Claudio Saavedra  <csaavedra@igalia.com>
 
 	* hildon/hildon-touch-selector.c (disconnect_model_handlers),

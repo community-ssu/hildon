@@ -31,7 +31,7 @@
 #include "test_suites.h"
 #include "check_utils.h"
 
-#include "hildon-wizard-dialog.h"
+#include <hildon/hildon-wizard-dialog.h>
 
 #define DEFAULT_NOTEBOOK_PAGES 3
 

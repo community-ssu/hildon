@@ -25,7 +25,7 @@
 #include <gtk/gtkmain.h>
 
 #include "check_utils.h"
-#include "hildon-window.h"
+#include <hildon/hildon-window.h>
 
 /**
  * Creates a window of a fixed, well known size

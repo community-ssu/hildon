@@ -31,10 +31,10 @@
 #include <gtk/gtkwindow.h>
 #include "test_suites.h"
 #include "check_utils.h"
-#include "hildon-caption.h"
+#include <hildon/hildon-caption.h>
 
 #include <gtk/gtkvbox.h>
-#include "hildon-window.h"
+#include <hildon/hildon-window.h>
 
 #include <libintl.h>
 

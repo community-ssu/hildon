@@ -28,8 +28,8 @@
 #include "test_suites.h"
 #include "check_utils.h"
 
-#include "hildon-color-chooser.h"
-#include "hildon-window.h"
+#include <hildon/hildon-color-chooser.h>
+#include <hildon/hildon-window.h>
 
 #define MAX_COLOR 65535
 

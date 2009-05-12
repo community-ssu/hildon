@@ -27,7 +27,7 @@
 #include <gtk/gtkmain.h>
 #include <gconf/gconf-client.h>
 #include "test_suites.h"
-#include "hildon-system-sound.h"
+#include <hildon/hildon-system-sound.h>
 
 /* This define was copied from the hildon-system-sound.c */
 #define ALARM_GCONF_PATH "/apps/osso/sound/system_alert_volume"

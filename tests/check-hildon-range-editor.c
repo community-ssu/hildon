@@ -28,7 +28,7 @@
 #include "test_suites.h"
 #include "check_utils.h"
 
-#include "hildon-range-editor.h"
+#include <hildon/hildon-range-editor.h>
 #include <unistd.h>
 
 /* -------------------- Fixtures -------------------- */

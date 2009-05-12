@@ -29,8 +29,8 @@
 #include "check_utils.h"
 #include <string.h>
 
-#include "hildon-find-toolbar.h"
-#include "hildon-window.h"
+#include <hildon/hildon-find-toolbar.h>
+#include <hildon/hildon-window.h>
 
 /* -------------------- Fixtures -------------------- */
 

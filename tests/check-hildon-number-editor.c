@@ -29,7 +29,7 @@
 #include "test_suites.h"
 #include "check_utils.h"
 
-#include "hildon-number-editor.h"
+#include <hildon/hildon-number-editor.h>
 
 /* -------------------- Fixtures -------------------- */
 

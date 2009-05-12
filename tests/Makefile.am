@@ -1,4 +1,5 @@
 MAINTAINERCLEANFILES 					= Makefile.in
+INCLUDES						= -I$(top_srcdir)
 
 if BUILD_TESTS
 

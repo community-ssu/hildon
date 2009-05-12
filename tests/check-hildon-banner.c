@@ -27,8 +27,8 @@
 #include <gtk/gtkmain.h>
 #include "test_suites.h"
 #include "check_utils.h"
-#include "hildon-banner.h"
-#include "hildon-window.h"
+#include <hildon/hildon-banner.h>
+#include <hildon/hildon-window.h>
 
 /* -------------------- Fixtures -------------------- */
 

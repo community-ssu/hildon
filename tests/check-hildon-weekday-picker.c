@@ -28,9 +28,9 @@
 #include "test_suites.h"
 #include "check_utils.h"
 
-#include "hildon-weekday-picker.h"
-#include "hildon-window.h"
-#include "hildon-caption.h"
+#include <hildon/hildon-weekday-picker.h>
+#include <hildon/hildon-window.h>
+#include <hildon/hildon-caption.h>
 
 /* -------------------- Fixtures -------------------- */
 

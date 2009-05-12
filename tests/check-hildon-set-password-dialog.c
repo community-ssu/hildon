@@ -29,8 +29,8 @@
 #include "test_suites.h"
 #include "check_utils.h"
 
-#include "hildon-set-password-dialog.h"
-#include "hildon-window.h"
+#include <hildon/hildon-set-password-dialog.h>
+#include <hildon/hildon-window.h>
 
 /* -------------------- Fixtures -------------------- */
 

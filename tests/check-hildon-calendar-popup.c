@@ -29,7 +29,7 @@
 #include "test_suites.h"
 #include "check_utils.h"
 
-#include "hildon-calendar-popup.h"
+#include <hildon/hildon-calendar-popup.h>
 
 /* -------------------- Fixtures -------------------- */
 

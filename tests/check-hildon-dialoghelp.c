@@ -31,7 +31,7 @@
 #include "check_utils.h"
 
 #include <gdk/gdkx.h>
-#include "hildon-dialoghelp.h"
+#include <hildon/hildon-dialoghelp.h>
 
 /* -------------------- Fixtures -------------------- */
 static GtkWidget * dialoghelp = NULL;

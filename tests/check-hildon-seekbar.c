@@ -30,7 +30,7 @@
 #include "test_suites.h"
 #include "check_utils.h"
 
-#include "hildon-seekbar.h"
+#include <hildon/hildon-seekbar.h>
 
 /* -------------------- Fixtures -------------------- */
 

@@ -27,7 +27,7 @@
 #include <gtk/gtkmain.h>
 #include <gtk/gtklabel.h>
 #include "test_suites.h"
-#include "hildon-helper.h"
+#include <hildon/hildon-helper.h>
 
 /* -------------------- Fixtures -------------------- */
 

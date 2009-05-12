@@ -28,7 +28,7 @@
 #include "test_suites.h"
 #include "check_utils.h"
 
-#include "hildon-sort-dialog.h"
+#include <hildon/hildon-sort-dialog.h>
 
 #define SORT_KEY_0 "maemo"
 #define SORT_KEY_1 TEST_STRING

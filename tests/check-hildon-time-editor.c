@@ -32,7 +32,7 @@
 
 #include <unistd.h>
 
-#include "hildon-time-editor.h"
+#include <hildon/hildon-time-editor.h>
 
 #define MIN_DURATION 0
 #define MAX_DURATION 359999

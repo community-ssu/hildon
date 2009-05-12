@@ -40,7 +40,7 @@
 #include <glib/gprintf.h>
 #include "test_suites.h"
 
-#include "hildon-scroll-area.h"
+#include <hildon/hildon-scroll-area.h>
 
 enum
   {

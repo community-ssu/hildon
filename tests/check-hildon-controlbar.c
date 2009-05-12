@@ -28,7 +28,7 @@
 #include <gtk/gtkcontainer.h>
 #include "test_suites.h"
 #include "check_utils.h"
-#include "hildon-controlbar.h"
+#include <hildon/hildon-controlbar.h>
 
 /* -------------------- Fixtures -------------------- */
 static HildonControlbar *controlbar = NULL;

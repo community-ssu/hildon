@@ -29,7 +29,7 @@
 #include <glib/gprintf.h>
 #include "test_suites.h"
 #include "check_utils.h"
-#include "hildon-color-button.h"
+#include <hildon/hildon-color-button.h>
 
 /* -------------------- Fixtures -------------------- */
 static HildonColorButton *color_button = NULL;

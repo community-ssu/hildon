@@ -31,7 +31,7 @@
 #include "test_suites.h"
 #include "check_utils.h"
 
-#include "hildon-code-dialog.h"
+#include <hildon/hildon-code-dialog.h>
 
 /* -------------------- Fixtures -------------------- */
 

@@ -30,7 +30,7 @@
 #include "test_suites.h"
 #include "check_utils.h"
 
-#include "hildon-font-selection-dialog.h"
+#include <hildon/hildon-font-selection-dialog.h>
 
 #define PREVIEW_TEXT TEST_STRING
 #define DEFAULT_FONT_FAMILY "Sans"

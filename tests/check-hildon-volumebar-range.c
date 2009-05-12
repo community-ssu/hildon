@@ -28,7 +28,7 @@
 #include "test_suites.h"
 #include "check_utils.h"
 
-#include "hildon-volumebar-range.h"
+#include <hildon/hildon-volumebar-range.h>
 
 /* Copied from hildon-volumebar-range.h because
    there is no way to retrieve this values */

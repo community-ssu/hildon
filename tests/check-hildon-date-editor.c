@@ -29,7 +29,7 @@
 #include "test_suites.h"
 #include "check_utils.h"
 
-#include "hildon-date-editor.h"
+#include <hildon/hildon-date-editor.h>
 
 /* Taken from the values of the properties of HildonDateEditor */
 #define MAX_YEAR 2037

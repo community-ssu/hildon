@@ -28,10 +28,10 @@
 #include "test_suites.h"
 #include "check_utils.h"
 
-#include "hildon-window.h"
-#include "hildon-volumebar.h"
-#include "hildon-hvolumebar.h"
-#include "hildon-vvolumebar.h"
+#include <hildon/hildon-window.h>
+#include <hildon/hildon-volumebar.h>
+#include <hildon/hildon-hvolumebar.h>
+#include <hildon/hildon-vvolumebar.h>
 
 /* -------------------- Fixtures -------------------- */
 
