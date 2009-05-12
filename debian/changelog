@@ -4,6 +4,12 @@ libhildon (2.1.73-1) unstable; urgency=low
 
  -- Claudio Saavedra <csaavedra@igalia.com>  Mon, 11 May 2009 13:22:15 +0300
 
+libhildon (2.1.72-2) unstable; urgency=low
+
+  * Fixes: NB#116289 (Hildon home crashes while adding task shortcuts.)
+
+ -- Claudio Saavedra <csaavedra@igalia.com>  Tue, 12 May 2009 19:12:56 +0300
+
 libhildon (2.1.72-1) unstable; urgency=low
 
    * Fixes: NB#114395 ('Disconnect charger...' info banner in portrait is truncated)
