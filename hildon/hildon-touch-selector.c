@@ -485,6 +485,13 @@ hildon_touch_selector_dispose (GObject * object)
     (* gobject_class->dispose) (object);
 }
 
+static void
+disconnect_model_handlers (HildonTouchSelectorColumn *col, HildonTouchSelector *selector)
+{
+  g_signal_handlers_disconnect_by_func (col->priv->model,
+					on_row_changed, selector);
+}
+
 /*
  * IMPLEMENTATION NOTES:
  * Some people sent questions regarding a missing dispose/finalize function on
@@ -516,6 +523,7 @@ hildon_touch_selector_remove (GtkContainer * container, GtkWidget * widget)
 
   /* Remove the extra data related to the columns, if required. */
   if (widget == selector->priv->hbox) {
+    g_slist_foreach (selector->priv->columns, (GFunc) disconnect_model_handlers, selector);
     g_slist_foreach (selector->priv->columns, (GFunc) g_object_unref, NULL);
 
     g_slist_free (selector->priv->columns);

@@ -1,3 +1,12 @@
+2009-05-12  Claudio Saavedra  <csaavedra@igalia.com>
+
+	* hildon/hildon-touch-selector.c (disconnect_model_handlers),
+	(hildon_touch_selector_remove): Disconnect model's signal handler
+	on column removal.
+
+	Fixes: NB#116289 (Hildon home crashes while adding task
+	shortcuts.)
+
 2009-05-11  Alberto Garcia  <agarcia@igalia.com>
 
 	* hildon/hildon-button.c
