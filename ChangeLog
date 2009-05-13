@@ -1,5 +1,16 @@
 2009-05-13  Claudio Saavedra  <csaavedra@igalia.com>
 
+	Based on a patch by Christian Dywan (christian@imendio.com)
+
+	* doc/hildon-sections.txt:
+	* hildon/hildon-helper.c (+hildon_format_file_size_for_display):
+	* hildon/hildon-helper.h: New file size formatting method.
+	* debian/changelog:
+	* debian/control: Depend on osso-filemanager l10n package for
+	proper localization strings.
+
+2009-05-13  Claudio Saavedra  <csaavedra@igalia.com>
+
 	* tests/Makefile.am: Include top_srcdir to make possible to build
 	tests in a different builddir.
 	* tests/*.c: Include <hildon/hildon-*.h> to allow building tests

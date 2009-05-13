@@ -1289,6 +1289,7 @@ hildon_helper_event_button_is_finger
 hildon_helper_set_insensitive_message
 hildon_helper_set_insensitive_messagef
 hildon_helper_set_thumb_scrollbar
+hildon_format_file_size_for_display
 </SECTION>
 
 <SECTION>

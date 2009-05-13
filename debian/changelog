@@ -1,6 +1,7 @@
 libhildon (2.1.73-1) unstable; urgency=low
 
   * unreleased
+  * Depend on osso-filemanager l10n package.
 
  -- Claudio Saavedra <csaavedra@igalia.com>  Mon, 11 May 2009 13:22:15 +0300
 

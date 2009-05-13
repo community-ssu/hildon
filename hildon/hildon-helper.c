@@ -503,6 +503,42 @@ hildon_helper_set_thumb_scrollbar               (GtkScrolledWindow *win,
         gtk_widget_set_name (win->vscrollbar, (thumb) ? "hildon-thumb-scrollbar" : NULL);
 }
 
+/**
+ * hildon_format_file_size_for_display:
+ * @size: a size in bytes
+ *
+ * Formats a file size in bytes for display in applications.
+ *
+ * This function is similar to g_format_file_size_for_display() but the
+ * translations are from Maemo so might differ slightly.
+ *
+ * Since: 2.2
+ **/
+gchar *
+hildon_format_file_size_for_display             (goffset size)
+{
+    #define _HFM(string) g_dgettext ("osso-filemanager", string)
+
+    if (size < 1024)
+        return g_strdup_printf (_HFM ("ckdg_va_properties_size_kb"),
+                                1);
+    else if (size < 100 * 1024)
+        return g_strdup_printf (_HFM ("ckdg_va_properties_size_1kb_99k"),
+                                size / 1024);
+    else if (size < 1024 * 1024)
+        return g_strdup_printf (_HFM ("ckdg_va_properties_size_100kb_1mb"),
+                                size / 1024);
+    else if (size < 10 * 1024 * 1024)
+        return g_strdup_printf (_HFM ("ckdg_va_properties_size_1mb_10mb"),
+                                size / (1024.0f * 1024.0f));
+    else if (size < 1024 * 1024 * 1024)
+        return g_strdup_printf (_HFM ("ckdg_va_properties_size_10mb_1gb"),
+                                size / (1024.0f * 1024.0f));
+    else
+        return g_strdup_printf (_HFM ("ckdg_va_properties_size_1gb_or_greater"),
+                                size / (1024.0f * 1024.0f * 1024.0f));
+}
+
 
 
 

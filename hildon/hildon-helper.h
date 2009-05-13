@@ -59,6 +59,9 @@ void
 hildon_helper_set_thumb_scrollbar               (GtkScrolledWindow *win, 
                                                  gboolean thumb);
 
+gchar *
+hildon_format_file_size_for_display             (goffset size);
+
 G_END_DECLS
 
 #endif                                          /* __HILDON_HELPER_H__ */
