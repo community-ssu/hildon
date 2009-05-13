@@ -277,9 +277,29 @@ hildon_animation_actor_hide                    (GtkWidget *widget)
 }
 
 static void
+hildon_animation_actor_finalize                (GObject *object)
+{
+    HildonAnimationActor        *self = HILDON_ANIMATION_ACTOR (object);
+    HildonAnimationActorPrivate
+	               *priv = HILDON_ANIMATION_ACTOR_GET_PRIVATE (self);
+
+    if (priv->parent)
+    {
+	if (priv->parent_map_event_cb_id)
+	    g_signal_handler_disconnect (priv->parent,
+					 priv->parent_map_event_cb_id);
+
+	g_object_unref (priv->parent);
+    }
+}
+
+static void
 hildon_animation_actor_class_init              (HildonAnimationActorClass *klass)
 {
+    GObjectClass      *gobject_class = G_OBJECT_CLASS (klass);
     GtkWidgetClass    *widget_class = GTK_WIDGET_CLASS (klass);
+
+    gobject_class->finalize         = hildon_animation_actor_finalize;
 
     widget_class->realize           = hildon_animation_actor_realize;
     widget_class->unrealize         = hildon_animation_actor_unrealize;

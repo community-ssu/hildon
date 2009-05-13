@@ -169,9 +169,29 @@ hildon_remote_texture_hide                    (GtkWidget *widget)
 }
 
 static void
+hildon_remote_texture_finalize                (GObject *object)
+{
+    HildonRemoteTexture        *self = HILDON_REMOTE_TEXTURE (object);
+    HildonRemoteTexturePrivate
+                       *priv = HILDON_REMOTE_TEXTURE_GET_PRIVATE (self);
+
+    if (priv->parent)
+    {
+        if (priv->parent_map_event_cb_id)
+            g_signal_handler_disconnect (priv->parent,
+                                         priv->parent_map_event_cb_id);
+
+        g_object_unref (priv->parent);
+    }
+}
+
+static void
 hildon_remote_texture_class_init              (HildonRemoteTextureClass *klass)
 {
+    GObjectClass      *gobject_class = G_OBJECT_CLASS (klass);
     GtkWidgetClass    *widget_class = GTK_WIDGET_CLASS (klass);
+
+    gobject_class->finalize         = hildon_remote_texture_finalize;
 
     widget_class->realize           = hildon_remote_texture_realize;
     widget_class->unrealize         = hildon_remote_texture_unrealize;
