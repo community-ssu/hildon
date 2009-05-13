@@ -1132,13 +1132,10 @@ the list of tests (Section 2). Use the following example as a template:
  	     d) Set and get base color defined by #0000FF.
 
          3. Test that invalid color values do not cause problems.
-             a) Set and get base color defined by #00FFFF and pixel 0.
-             b) Set and get base color defined by #0ABCDE and pixel 0.
-             c) Set and get base color defined by #FF00FF and pixel 0.
-             d) Set the color (65536,65536,65536).
-             d) Set and get base color defined by NULL color.
-             e) Set base color on NULL object.
-             f) Get base color from NULL object.
+             a) Set the color (65536,65536,65536).
+             b) Set and get base color defined by NULL color.
+             c) Set base color on NULL object.
+             d) Get base color from NULL object.
 
    - hildon_color_selector_new: [TODO] 
 

@@ -1,5 +1,11 @@
 2009-06-08  Claudio Saavedra  <csaavedra@igalia.com>
 
+	* tests/TEST-CASES.txt: Remove bogus tests.
+	* tests/check-hildon-color-chooser.c: (test_set_color_invalid):
+	Remove three bogus tests that were actually setting valid colors.
+
+2009-06-08  Claudio Saavedra  <csaavedra@igalia.com>
+
 	* configure.ac: post release version bump
 	* debian/changelog: post release version bump
 
@@ -427,6 +433,12 @@
 
 	Fixes: NB#116786 (Image viewer crases whie trying to launch menu,
 	in a scenario)
+
+2009-05-13  Claudio Saavedra  <csaavedra@igalia.com>
+
+	* tests/TEST-CASES.txt: Remove other bogus test.
+	* tests/check-hildon-controlbar.c: (test_set_value_invalid):
+	Remove bogus test that was setting/retrieving a valid value.
 
 2009-05-13  Artem Egorkine  <ext-artem.egorkine@nokia.com>
 

@@ -193,9 +193,6 @@ END_TEST
 /**
  * Purpose: Check that invalid base colors are set and get properly
  * Cases considered:
- *    - Set and get base color defined by #00FFFF and pixel 0.
- *    - Set and get base color defined by #0ABCDE and pixel 0.
- *    - Set and get base color defined by #FF00FF and pixel 0.
  *    - Set the color (65536,65536,65536).
  *    - Set and get base color defined by NULL color.
  *    - Set base color on NULL object.
@@ -221,49 +218,8 @@ START_TEST (test_set_color_invalid)
   hildon_color_chooser_set_color(color_chooser,b_color);
   gdk_color_free(b_color);
 
-  /* Test 1: Set the color #00FFFF*/
-  gdk_color_parse( "#00FFFF", &color);
-  b_color = gdk_color_copy(&color);
 
-  hildon_color_chooser_set_color(color_chooser,b_color);
-  hildon_color_chooser_get_color(color_chooser,ret_color);    
-    
-  fail_if ((0 != ret_color->red) || (0 != ret_color->green) || (0 != ret_color->blue),
-           "hildon-color-chooser: The returned RGB color is %i/%i/%i and should be %i/%i/%i",
-           ret_color->red, ret_color->green, ret_color->blue,
-           0, 0, 0);
-
-  gdk_color_free(b_color);
-
-  /* Test 2: Set the color #FFFFFF */
-  gdk_color_parse( "#0ABCDE", &color);
-  b_color = gdk_color_copy(&color);
-
-  hildon_color_chooser_set_color(color_chooser,b_color);
-  hildon_color_chooser_get_color(color_chooser,ret_color);    
-
-  fail_if ((0 != ret_color->red) || (0 != ret_color->green) || (0 != ret_color->blue),
-           "hildon-color-chooser: The returned RGB color is %i/%i/%i and should be %i/%i/%i",
-           ret_color->red, ret_color->green, ret_color->blue,
-           0, 0, 0);
-
-  gdk_color_free(b_color);
-
-  /* Test 2: Set the color #FF00FF */
-  gdk_color_parse( "#FF00FF", &color);
-  b_color = gdk_color_copy(&color);
-
-  hildon_color_chooser_set_color(color_chooser,b_color);
-  hildon_color_chooser_get_color(color_chooser,ret_color);    
-
-  fail_if ((0 != ret_color->red) || (0 != ret_color->green) || (0 != ret_color->blue),
-           "hildon-color-chooser: The returned RGB color is %i/%i/%i and should be %i/%i/%i",
-           ret_color->red, ret_color->green, ret_color->blue,
-           0, 0, 0);
-
-  gdk_color_free(b_color);
-
-  /* Test 3: Set the color (65536,65536,65536)*/
+  /* Test 1: Set the color (65536,65536,65536)*/
   gdk_color_parse( "#000000", &color);
   b_color = gdk_color_copy(&color);
   red = MAX_COLOR+1;
@@ -282,13 +238,13 @@ START_TEST (test_set_color_invalid)
            ret_color->red, ret_color->green, ret_color->blue,
            0, 0, 0);
     
-  /* Test 5: Set the color NULL on color chooser*/
+  /* Test 2: Set the color NULL on color chooser*/
   hildon_color_chooser_set_color(color_chooser,NULL);
 
-  /* Test 6: Set the color on NULL object*/
+  /* Test 3: Set the color on NULL object*/
   hildon_color_chooser_set_color(NULL,b_color);
 
-  /* Test 7: Get color from NULL object*/
+  /* Test 4: Get color from NULL object*/
   hildon_color_chooser_get_color(NULL, ret_color);
 
   if (b_color)
