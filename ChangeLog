@@ -1,3 +1,9 @@
+2009-06-18  Claudio Saavedra  <csaavedra@igalia.com>
+
+	* tests/TEST-CASES.txt: Remove other bogus test.
+	* tests/check-hildon-controlbar.c: (test_set_value_invalid):
+	Remove bogus test that was setting/retrieving a valid value.
+
 2009-06-08  Claudio Saavedra  <csaavedra@igalia.com>
 
 	* tests/TEST-CASES.txt: Remove bogus tests.
@@ -433,12 +439,6 @@
 
 	Fixes: NB#116786 (Image viewer crases whie trying to launch menu,
 	in a scenario)
-
-2009-05-13  Claudio Saavedra  <csaavedra@igalia.com>
-
-	* tests/TEST-CASES.txt: Remove other bogus test.
-	* tests/check-hildon-controlbar.c: (test_set_value_invalid):
-	Remove bogus test that was setting/retrieving a valid value.
 
 2009-05-13  Artem Egorkine  <ext-artem.egorkine@nokia.com>
 

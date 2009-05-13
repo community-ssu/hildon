@@ -377,15 +377,6 @@ START_TEST (test_set_value_invalid)
   fail_if (value != max_value,
            "hildon-controlbar: The returned value is %d and should be %d",
            value, max_value);
-
-  /* Test 7: Set a value of G_MAXINT in the range [2,G_MAXINT] */
-  init_value=G_MAXINT;
-  hildon_controlbar_set_range(controlbar,2,G_MAXINT);
-  hildon_controlbar_set_value(controlbar,init_value);
-  value=hildon_controlbar_get_value(controlbar);
-  fail_if (value != G_MAXINT-1,
-           "hildon-controlbar: The returned value is %d and should be %d",
-           value, G_MAXINT-1);
 }
 END_TEST
 

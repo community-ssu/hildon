@@ -1070,7 +1070,6 @@ the list of tests (Section 2). Use the following example as a template:
              d) Set a value of G_MININT in the range [2,1000].
              e) Set a value of 1001 in the range [2,1000].
              f) Set a value of G_MAXINT in the range [2,1000].
-             g) Set a value of G_MAXINT in the range [2,G_MAXINT].
 
    - hildon_controlbar_set_max: [TODO] 
    - hildon_controlbar_get_max: [TODO] 
