@@ -415,6 +415,7 @@ hildon_note_init                                (HildonNote *dialog)
     priv->event_box = gtk_event_box_new ();
     priv->icon = NULL;
     priv->stock_icon = NULL;
+    priv->idle_handler = 0;
 
     gtk_event_box_set_visible_window (GTK_EVENT_BOX (priv->event_box), FALSE);
     gtk_event_box_set_above_child (GTK_EVENT_BOX (priv->event_box), TRUE);
@@ -462,6 +463,10 @@ hildon_note_finalize                            (GObject *obj_self)
     if (priv->stock_icon) {
         g_free (priv->stock_icon);
         priv->stock_icon = NULL;
+    }
+    if (priv->idle_handler) {
+        g_source_remove (priv->idle_handler);
+        priv->idle_handler = 0;
     }
 
     if (priv->progressbar)
@@ -1025,7 +1030,10 @@ static void
 on_show_cb                                      (GtkWidget *widget,
                                                  gpointer data)
 {
-    g_idle_add (sound_handling, widget);
+    HildonNotePrivate *priv;
+
+    priv = HILDON_NOTE_GET_PRIVATE (widget);
+    priv->idle_handler = g_idle_add (sound_handling, widget);
 }
 
 /* We play a system sound when the note comes visible */
@@ -1050,6 +1058,8 @@ sound_handling                                  (gpointer data)
         default:
             break;
     };
+
+    priv->idle_handler = 0;
 
     return FALSE;
 }

@@ -47,6 +47,7 @@ struct                                          _HildonNotePrivate
     gint button_width;
 
     gchar *original_description;
+    guint idle_handler;
 
   /* These strings stored for backwards compatibility */
     gchar *icon;

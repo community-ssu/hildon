@@ -1,3 +1,13 @@
+2009-05-14  Claudio Saavedra  <csaavedra@igalia.com>
+
+	* hildon/hildon-note-private.h: Add idle_handler to the private data.
+	* hildon/hildon-note.c (hildon_note_init), (hildon_note_finalize),
+	(on_show_cb), (sound_handling): Disconnect the idle handler for
+	the sound when the note is finalized to avoid possible crashes.
+
+	Fixes: NB#116786 (Image viewer crases whie trying to launch menu,
+	in a scenario)
+
 2009-05-13  Artem Egorkine  <ext-artem.egorkine@nokia.com>
 
 	* src/hildon-animation-actor.c,
