@@ -519,14 +519,15 @@ update_format_policy                            (HildonTimeSelector *selector,
                                                  HildonTimeSelectorFormatPolicy new_policy)
 {
   gboolean prev_ampm_format = FALSE;
-  guint hours;
-  guint minutes;
   gint num_columns = -1;
 
   num_columns = hildon_touch_selector_get_num_columns (HILDON_TOUCH_SELECTOR (selector));
   prev_ampm_format = selector->priv->ampm_format;
 
   if (new_policy != selector->priv->format_policy) {
+    guint hours;
+    guint minutes;
+
     selector->priv->format_policy = new_policy;
 
     /* We get the hour previous all the changes, to avoid problems with the
@@ -547,10 +548,10 @@ update_format_policy                            (HildonTimeSelector *selector,
         check_automatic_ampm_format (selector);
         break;
       }
-  }
 
-  if (prev_ampm_format != selector->priv->ampm_format) {
-    update_format_dependant_columns (selector, hours, minutes);
+    if (prev_ampm_format != selector->priv->ampm_format) {
+      update_format_dependant_columns (selector, hours, minutes);
+    }
   }
 }
 
