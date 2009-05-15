@@ -468,7 +468,6 @@ hildon_gtk_window_take_screenshot               (GtkWindow *window,
     ev->data_format = 32;
     ev->data.l[0] = take ? 1 : 0;
     ev->data.l[1] = GDK_WINDOW_XID (GTK_WIDGET (window)->window);
-    ev->data.l[2] = 0;
 
     gdk_event_send_client_message ((GdkEvent *) ev, GDK_WINDOW_XWINDOW (rootwin));
 
