@@ -1,3 +1,23 @@
+[2.1.74 release]
+
+  * Fixes: NB#116289 (Hildon home crashes while adding task shortcuts.)
+  * Fixes: NB#116682 (Destroying parented animation actors when parent
+    in unmapped leads to crash) (Artem Egorkine)
+  * Fixes: NB#116786 (Image viewer crases whie trying to launch menu,
+    in a scenario)
+  * Fixes: NB#107486 (HildonWindow should size itself properly)
+  * Fixes: NB#106374 (Need API to take a loading screenshot)
+
+  New API:
+  * hildon_format_file_size_for_display() (Christian Dywan)
+  * hildon_gtk_window_take_screenshot()
+
+  Other:
+
+  * Fix tests build during distcheck.
+  * HildonButton minor fixes.
+  * Coverity reported fixes.
+
 [2.1.72 release]
 
   * Fixes: NB#114395 ('Disconnect charger...' info banner in portrait is truncated)
