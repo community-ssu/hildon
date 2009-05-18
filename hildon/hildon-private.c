@@ -1,7 +1,7 @@
 /*
  * This file is a part of hildon
  *
- * Copyright (C) 2005, 2006 Nokia Corporation, all rights reserved.
+ * Copyright (C) 2005, 2006, 2009 Nokia Corporation, all rights reserved.
  *
  * Contact: Rodrigo Novo <rodrigo.novo@nokia.com>
  *
@@ -31,6 +31,7 @@
 #include                                        "hildon-private.h"
 #include                                        "hildon-date-editor.h"
 #include                                        "hildon-time-editor.h"
+#include                                        "hildon-defines.h"
 
 /* This function is a private function of hildon. It hadles focus 
  * changing for composite hildon widgets: HildonDateEditor, 
@@ -79,3 +80,44 @@ hildon_private_composite_focus                  (GtkWidget *widget,
 }
 
 
+G_GNUC_INTERNAL GtkWidget *
+hildon_private_create_animation                 (gfloat       framerate,
+                                                 const gchar *template,
+                                                 gint         nframes)
+{
+    GtkWidget *image;
+    GdkPixbufSimpleAnim *anim;
+    GtkIconTheme *theme;
+    gint i;
+
+    anim = gdk_pixbuf_simple_anim_new (HILDON_ICON_PIXEL_SIZE_STYLUS,
+                                       HILDON_ICON_PIXEL_SIZE_STYLUS,
+                                       framerate);
+    gdk_pixbuf_simple_anim_set_loop (anim, TRUE);
+    theme = gtk_icon_theme_get_default ();
+
+    for (i = 1; i <= nframes; i++) {
+        GdkPixbuf *frame;
+        GError *error = NULL;
+        gchar *icon_name = g_strdup_printf (template, i);
+        frame = gtk_icon_theme_load_icon (theme, icon_name,
+                                          HILDON_ICON_PIXEL_SIZE_STYLUS,
+                                          0, &error);
+
+        if (error) {
+            g_warning ("Icon theme lookup for icon `%s' failed: %s",
+                       icon_name, error->message);
+            g_error_free (error);
+        } else {
+            gdk_pixbuf_simple_anim_add_frame (anim, frame);
+        }
+
+        g_object_unref (frame);
+        g_free (icon_name);
+    }
+
+    image = gtk_image_new_from_animation (GDK_PIXBUF_ANIMATION (anim));
+    g_object_unref (anim);
+
+    return image;
+}

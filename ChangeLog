@@ -1,5 +1,29 @@
 2009-06-15  Alberto Garcia  <agarcia@igalia.com>
 
+	* hildon/Makefile.am
+	* hildon/hildon-edit-toolbar-private.h
+	* hildon/hildon-edit-toolbar.c
+	(+hildon_edit_toolbar_set_progress_indicator)
+	(hildon_edit_toolbar_init): Add progress indicator to the
+	toolbar.
+
+	* hildon/hildon-gtk.c
+	(hildon_gtk_window_set_progress_indicator):
+	If the window contains a HildonEditToolbar, enable the progress
+	indicator there too.
+
+	* hildon/hildon-private.h
+	* hildon/hildon-private.c
+	(+hildon_private_create_animation)
+	* hildon/hildon-banner.c
+	(-hildon_banner_create_animation):
+	Moved to hildon-private.c
+
+	Fixes: NB#102373 (Progress indicator also for the Edit mode
+	toolbar)
+
+2009-06-15  Alberto Garcia  <agarcia@igalia.com>
+
 	* hildon/hildon-app-menu-private.h
 	* hildon/hildon-app-menu.c (hildon_app_menu_insert)
 	(hildon_app_menu_add_filter, +menu_item_button_event)

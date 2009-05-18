@@ -1,7 +1,7 @@
 /*
  * This file is a part of hildon
  *
- * Copyright (C) 2005, 2006 Nokia Corporation, all rights reserved.
+ * Copyright (C) 2005, 2006, 2009 Nokia Corporation, all rights reserved.
  *
  * Contact: Rodrigo Novo <rodrigo.novo@nokia.com>
  *
@@ -35,6 +35,11 @@ gboolean G_GNUC_INTERNAL
 hildon_private_composite_focus                  (GtkWidget *widget, 
                                                  GtkDirectionType direction,
                                                  GtkDirectionType *effective_direction);
+
+G_GNUC_INTERNAL GtkWidget *
+hildon_private_create_animation                 (gfloat       framerate,
+                                                 const gchar *template,
+                                                 gint         nframes);
 
 G_END_DECLS
 

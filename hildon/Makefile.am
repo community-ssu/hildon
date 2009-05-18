@@ -171,6 +171,7 @@ noinst_HEADERS = hildon-calendar-popup-private.h 	\
 		hildon-color-chooser-private.h 		\
 		hildon-controlbar-private.h 		\
 		hildon-date-editor-private.h 		\
+		hildon-edit-toolbar-private.h 		\
 		hildon-find-toolbar-private.h 		\
 		hildon-font-selection-dialog-private.h 	\
 		hildon-get-password-dialog-private.h 	\

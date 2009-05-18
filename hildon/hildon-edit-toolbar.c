@@ -59,12 +59,18 @@
  */
 
 #include                                        "hildon-edit-toolbar.h"
+#include                                        "hildon-edit-toolbar-private.h"
+#include                                        "hildon-private.h"
 #include                                        "hildon-gtk.h"
 
 G_DEFINE_TYPE                                   (HildonEditToolbar, hildon_edit_toolbar, GTK_TYPE_HBOX);
 
 #define                                         TOOLBAR_LEFT_PADDING 24
 #define                                         TOOLBAR_RIGHT_PADDING 8
+
+#define                                         HILDON_EDIT_TOOLBAR_ANIMATION_FRAMERATE ((float)1000/150)
+#define                                         HILDON_EDIT_TOOLBAR_ANIMATION_TMPL "indicator_update%d"
+#define                                         HILDON_EDIT_TOOLBAR_ANIMATION_NFRAMES 8
 
 #define                                         HILDON_EDIT_TOOLBAR_GET_PRIVATE(obj) \
                                                 (G_TYPE_INSTANCE_GET_PRIVATE ((obj), \
@@ -74,7 +80,9 @@ typedef struct                                  _HildonEditToolbarPrivate Hildon
 
 struct                                          _HildonEditToolbarPrivate
 {
+    GtkBox *hbox;
     GtkLabel *label;
+    GtkWidget *animation;
     GtkButton *button;
     GtkButton *arrow;
 };
@@ -209,11 +217,14 @@ hildon_edit_toolbar_init                        (HildonEditToolbar *self)
     GtkWidget *separator;
     GtkAlignment *align;
     GtkBox *hbox = GTK_BOX (self);
-    GtkBox *hbox2;
 
-    hbox2 = GTK_BOX (gtk_hbox_new (FALSE, 0));
+    priv->hbox = GTK_BOX (gtk_hbox_new (FALSE, 0));
     align = GTK_ALIGNMENT (gtk_alignment_new (0, 0.5, 1, 1));
     priv->label = GTK_LABEL (gtk_label_new (NULL));
+    priv->animation = hildon_private_create_animation (
+        HILDON_EDIT_TOOLBAR_ANIMATION_FRAMERATE,
+        HILDON_EDIT_TOOLBAR_ANIMATION_TMPL,
+        HILDON_EDIT_TOOLBAR_ANIMATION_NFRAMES);
     priv->button = GTK_BUTTON (hildon_gtk_button_new (HILDON_SIZE_AUTO));
     separator = gtk_vseparator_new ();
     priv->arrow = GTK_BUTTON (gtk_button_new ());
@@ -230,15 +241,19 @@ hildon_edit_toolbar_init                        (HildonEditToolbar *self)
     gtk_widget_set_name (GTK_WIDGET (self), "toolbar-edit-mode");
     gtk_widget_set_name (GTK_WIDGET (priv->arrow), "hildon-edit-toolbar-arrow");
 
-    gtk_container_add (GTK_CONTAINER (align), GTK_WIDGET (hbox2));
-    gtk_box_pack_start (hbox2, GTK_WIDGET (priv->label), TRUE, TRUE, 0);
-    gtk_box_pack_start (hbox2, GTK_WIDGET (priv->button), FALSE, FALSE, 0);
+    gtk_container_add (GTK_CONTAINER (align), GTK_WIDGET (priv->hbox));
+    gtk_box_pack_start (priv->hbox, GTK_WIDGET (priv->label), TRUE, TRUE, 0);
+    gtk_box_pack_start (priv->hbox, priv->animation, TRUE, TRUE, 10);
+    gtk_box_pack_start (priv->hbox, GTK_WIDGET (priv->button), FALSE, FALSE, 0);
+
+    gtk_widget_set_no_show_all (priv->animation, TRUE);
 
     gtk_box_pack_start (hbox, GTK_WIDGET (align), TRUE, TRUE, 0);
     gtk_box_pack_start (hbox, separator, FALSE, FALSE, 0);
     gtk_box_pack_start (hbox, GTK_WIDGET (priv->arrow), FALSE, FALSE, 0);
 
     gtk_misc_set_alignment (GTK_MISC (priv->label), 0, 0.5);
+    gtk_misc_set_alignment (GTK_MISC (priv->animation), 0, 0.5);
 
     gtk_widget_show_all (GTK_WIDGET (align));
     gtk_widget_show_all (separator);
@@ -322,4 +337,22 @@ hildon_edit_toolbar_new_with_text               (const gchar *label,
     hildon_edit_toolbar_set_button_label (HILDON_EDIT_TOOLBAR (toolbar), button);
 
     return toolbar;
+}
+
+void G_GNUC_INTERNAL
+hildon_edit_toolbar_set_progress_indicator      (HildonEditToolbar *toolbar,
+                                                 gboolean           show)
+{
+    HildonEditToolbarPrivate *priv;
+    g_return_if_fail (HILDON_IS_EDIT_TOOLBAR (toolbar));
+    priv = HILDON_EDIT_TOOLBAR_GET_PRIVATE (toolbar);
+    if (show) {
+        gtk_widget_show (priv->animation);
+        gtk_box_set_child_packing (priv->hbox, GTK_WIDGET (priv->label),
+                                   FALSE, FALSE, 0, GTK_PACK_START);
+    } else {
+        gtk_box_set_child_packing (priv->hbox, GTK_WIDGET (priv->label),
+                                   TRUE, TRUE, 0, GTK_PACK_START);
+        gtk_widget_hide (priv->animation);
+    }
 }

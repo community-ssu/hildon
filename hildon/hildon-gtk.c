@@ -28,6 +28,10 @@
 #include <gdk/gdkx.h>
 
 #include "hildon-gtk.h"
+#include "hildon-window.h"
+#include "hildon-window-private.h"
+#include "hildon-edit-toolbar.h"
+#include "hildon-edit-toolbar-private.h"
 
 typedef void (*HildonFlagFunc) (GtkWindow *window, gpointer userdata);
 
@@ -406,6 +410,13 @@ hildon_gtk_window_set_progress_indicator        (GtkWindow *window,
                                                  guint      state)
 {
     set_flag (window, (HildonFlagFunc) do_set_progress_indicator, GUINT_TO_POINTER (state));
+    if (HILDON_IS_WINDOW (window)) {
+        HildonWindowPrivate *priv = HILDON_WINDOW_GET_PRIVATE (window);
+        if (priv->edit_toolbar) {
+            HildonEditToolbar *tb = HILDON_EDIT_TOOLBAR (priv->edit_toolbar);
+            hildon_edit_toolbar_set_progress_indicator (tb, state);
+        }
+    }
 }
 
 /**
