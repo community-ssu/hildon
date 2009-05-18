@@ -1,3 +1,9 @@
+libhildon (2.1.75-1) unstable; urgency=low
+
+  * unreleased
+
+ -- Claudio Saavedra <csaavedra@igalia.com>  Mon, 18 May 2009 13:08:12 +0300
+
 libhildon (2.1.74-1) unstable; urgency=low
 
   * Fixes: NB#116682 (Destroying parented animation actors when parent
