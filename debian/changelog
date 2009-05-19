@@ -4,11 +4,16 @@ libhildon (2.1.75-1) unstable; urgency=low
 
  -- Claudio Saavedra <csaavedra@igalia.com>  Mon, 18 May 2009 13:08:12 +0300
 
+libhildon (2.1.74-2) unstable; urgency=low
+
+  * Revert fix for NB#107486.
+
+ -- Claudio Saavedra <csaavedra@igalia.com>  Tue, 19 May 2009 16:12:44 +0300
+
 libhildon (2.1.74-1) unstable; urgency=low
 
   * Fixes: NB#116682 (Destroying parented animation actors when parent
     in unmapped leads to crash) (Artem Egorkine)
-  * Fixes: NB#107486 (HildonWindow should size itself properly)
   * Fixes: NB#106374 (Need API to take a loading screenshot)
   * New: hildon_format_file_size_for_display() (Christian Dywan)
   * New: hildon_gtk_window_take_screenshot()
