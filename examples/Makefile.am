@@ -3,6 +3,7 @@ MAINTAINERCLEANFILES			= Makefile.in
 if BUILD_EXAMPLES
 EXAMPLES				= hildon-window-example				\
 					  hildon-banner-example				\
+					  hildon-banner-dnd-example			\
 					  hildon-banner-long-example			\
 					  hildon-caption-example			\
 					  hildon-note-example				\
@@ -139,6 +140,12 @@ hildon_banner_example_LDADD		= $(HILDON_OBJ_LIBS)
 hildon_banner_example_CFLAGS		= $(HILDON_OBJ_CFLAGS)			\
 					  $(EXTRA_CFLAGS)
 hildon_banner_example_SOURCES		= hildon-banner-example.c
+
+# Hildon banner
+hildon_banner_dnd_example_LDADD		= $(HILDON_OBJ_LIBS)
+hildon_banner_dnd_example_CFLAGS	= $(HILDON_OBJ_CFLAGS)			\
+					  $(EXTRA_CFLAGS)
+hildon_banner_dnd_example_SOURCES	= hildon-banner-dnd-example.c
 
 # Hildon banner long
 hildon_banner_long_example_LDADD	= $(HILDON_OBJ_LIBS)

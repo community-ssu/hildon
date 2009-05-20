@@ -42,6 +42,9 @@ struct                                          _HildonBannerPrivate
     guint    is_timed : 1, has_been_wrapped : 1, has_been_truncated : 1;
     guint    timeout;
     GtkWindow *parent;
+
+    gboolean require_override_dnd;
+    gboolean overrides_dnd;
 };
 
 /* For internal use of hildon libraries only */

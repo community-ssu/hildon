@@ -36,6 +36,13 @@
  * hildon_banner_show_information(), hildon_banner_show_informationf()
  * or hildon_banner_show_information_with_markup().
  *
+ * If the application window has set the _HILDON_DO_NOT_DISTURB flag (using
+ * hildon_gtk_window_set_do_not_disturb() for example), the banner will not
+ * be showed. If you need to override this flag for important information,
+ * you can use the method hildon_banner_show_information_override_dnd().
+ * Please, take into account that this is only for important information.
+ *
+ *
  * Two more kinds of banners are maintained for backward compatibility
  * but are no longer recommended in Hildon 2.2. These are the animated
  * banner (created with hildon_banner_show_animation()) and the
@@ -186,6 +193,15 @@ hildon_banner_ensure_child                      (HildonBanner *self,
 static HildonBanner*
 hildon_banner_get_instance_for_widget           (GtkWidget *widget, 
                                                  gboolean timed);
+
+static void
+hildon_banner_set_override_flag                 (HildonBanner *banner);
+
+static GtkWidget*
+hildon_banner_real_show_information             (GtkWidget *widget,
+                                                 const gchar *text,
+                                                 gboolean override_dnd);
+
 
 G_DEFINE_TYPE (HildonBanner, hildon_banner, GTK_TYPE_WINDOW)
 
@@ -688,6 +704,12 @@ hildon_banner_realize                           (GtkWidget *widget)
     atom = gdk_atom_intern ("_HILDON_PORTRAIT_MODE_SUPPORT", FALSE);
     gdk_property_change (gdkwin, atom, gdk_x11_xatom_to_atom (XA_CARDINAL), 32,
                          GDK_PROP_MODE_REPLACE, (gpointer) &portrait, 1);
+
+    /* Manage override flag */
+    if ((priv->require_override_dnd)&&(!priv->overrides_dnd)) {
+      hildon_banner_set_override_flag (HILDON_BANNER (widget));
+        priv->overrides_dnd = TRUE;
+    }
 }
 
 static void 
@@ -768,6 +790,8 @@ hildon_banner_init                              (HildonBanner *self)
     g_assert (priv);
 
     priv->parent = NULL;
+    priv->overrides_dnd = FALSE;
+    priv->require_override_dnd = FALSE;
 
     /* Initialize the common layout inside banner */
     priv->layout = gtk_hbox_new (FALSE, HILDON_MARGIN_DEFAULT);
@@ -903,20 +927,76 @@ hildon_banner_show_information                  (GtkWidget *widget,
                                                  const gchar *icon_name,
                                                  const gchar *text)
 {
+    return hildon_banner_real_show_information (widget, text, FALSE);
+}
+
+/**
+ * hildon_banner_show_information_override_dnd:
+ * @widget: the #GtkWidget that is the owner of the banner
+ * @icon_name: since Hildon 2.2 this parameter is not used anymore and
+ * any value that you pass will be ignored
+ * @text: Text to display
+ *
+ * Equivalent to hildon_banner_show_information() but it overrides the do not
+ * disturb flag, in the special cases that could be needed. It is required
+ * because this method calls internally gtk_widget_show before returns the banner,
+ * but the do not disturb flag is checked on the mapping of the widget
+ *
+ *
+ * Returns: The newly created banner
+ *
+ * Since: 2.2
+ *
+ */
+GtkWidget*
+hildon_banner_show_information_override_dnd     (GtkWidget *widget,
+                                                 const gchar *icon_name,
+                                                 const gchar *text)
+{
+    return hildon_banner_real_show_information (widget, text, TRUE);
+}
+
+static void
+hildon_banner_set_override_flag                 (HildonBanner *banner)
+{
+    guint32 state = 1;
+
+    gdk_property_change (GTK_WIDGET (banner)->window,
+                         gdk_atom_intern_static_string ("_HILDON_DO_NOT_DISTURB_OVERRIDE"),
+                         gdk_x11_xatom_to_atom (XA_INTEGER),
+                         32,
+                         GDK_PROP_MODE_REPLACE,
+                         (const guchar*) &state,
+                         1);
+}
+
+
+static GtkWidget*
+hildon_banner_real_show_information             (GtkWidget *widget,
+                                                 const gchar *text,
+                                                 gboolean override_dnd)
+{
     HildonBanner *banner;
+    HildonBannerPrivate *priv = NULL;
 
     g_return_val_if_fail (text != NULL, NULL);
 
     /* Prepare banner */
     banner = hildon_banner_get_instance_for_widget (widget, TRUE);
+    priv = HILDON_BANNER_GET_PRIVATE (banner);
 
     hildon_banner_set_text (banner, text);
     hildon_banner_bind_style (banner, "information");
 
+    if (override_dnd) {
+      /* so on the realize it will set the property */
+      priv->require_override_dnd = TRUE;
+    }
+
     /* Show the banner, since caller cannot do that */
     gtk_widget_show_all (GTK_WIDGET (banner));
 
-    return (GtkWidget *) banner;
+    return GTK_WIDGET (banner);
 }
 
 /**

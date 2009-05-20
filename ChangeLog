@@ -1,3 +1,24 @@
+2009-05-21  Alejandro Pinheiro  <apinheiro@igalia.com>
+
+	* hildon/hildon-banner-private.h: new require_override_dnd and
+	overrides_dnd variables
+	* hildon/hildon-banner.h:
+	(hildon_banner_show_information_override_dnd): new method, that shows
+	the information but sets the override flag, in order to show important
+	messages
+	* hildon/hildon-banner.c
+	(hildon_banner_show_information_override_dnd): new method
+	(hildon_banner_set_override_flag): new utility function
+	(hildon_banner_real_show_information): new utility function, in order to
+	generalize the current hildon_banner_show_information_override_dnd and
+	hildon_banner_show_information_override_dnd
+	* examples/Makefile.am
+	* examples/hildon-banner-dnd-example.c: New example that show how to
+	use the new hildon_banner_show_information_override_dnd
+
+	Fixes: NB#114874 (There is no possibility to show hildon banners with
+	DND flag set)
+
 2009-05-20  Claudio Saavedra  <csaavedra@igalia.com>
 
 	* hildon/hildon-pannable-area.c: Add a comment explaining the math

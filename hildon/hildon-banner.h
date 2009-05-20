@@ -68,6 +68,11 @@ hildon_banner_show_informationf                 (GtkWidget *widget,
                                                  const gchar *format, 
                                                  ...);
 
+GtkWidget*
+hildon_banner_show_information_override_dnd     (GtkWidget *widget,
+                                                 const gchar *icon_name,
+                                                 const gchar *text);
+
 GtkWidget*       
 hildon_banner_show_information_with_markup      (GtkWidget *widget, 
                                                  const gchar *icon_name,
