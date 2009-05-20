@@ -815,9 +815,8 @@ hildon_pannable_area_set_property (GObject * object,
     priv->vfast_factor = g_value_get_double (value);
     break;
   case PROP_DECELERATION:
-    hildon_pannable_calculate_vel_factor (HILDON_PANNABLE_AREA (object));
-
     priv->decel = g_value_get_double (value);
+    hildon_pannable_calculate_vel_factor (HILDON_PANNABLE_AREA (object));
     break;
   case PROP_DRAG_INERTIA:
     priv->drag_inertia = g_value_get_double (value);
