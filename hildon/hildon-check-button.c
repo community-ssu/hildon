@@ -72,6 +72,10 @@ enum {
   LAST_SIGNAL
 };
 
+enum {
+    PROP_SIZE = 1
+};
+
 static guint                                    signals[LAST_SIGNAL] = { 0 };
 
 G_DEFINE_TYPE                                   (HildonCheckButton, hildon_check_button, GTK_TYPE_BUTTON);
@@ -160,9 +164,7 @@ hildon_check_button_get_active                  (HildonCheckButton *button)
 GtkWidget *
 hildon_check_button_new                         (HildonSizeType size)
 {
-    GtkWidget *button = g_object_new (HILDON_TYPE_CHECK_BUTTON, "xalign", 0.0, NULL);
-    hildon_gtk_widget_set_theme_size (button, size);
-    return button;
+    return g_object_new (HILDON_TYPE_CHECK_BUTTON, "xalign", 0.0, "size", size, NULL);
 }
 
 static void
@@ -198,12 +200,30 @@ hildon_check_button_style_set                   (GtkWidget *widget,
 }
 
 static void
+set_property                                    (GObject      *object,
+                                                 guint         prop_id,
+                                                 const GValue *value,
+                                                 GParamSpec   *pspec)
+{
+    switch (prop_id)
+    {
+    case PROP_SIZE:
+        hildon_gtk_widget_set_theme_size (GTK_WIDGET (object), g_value_get_flags (value));
+        break;
+    default:
+        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+        break;
+    }
+}
+
+static void
 hildon_check_button_class_init                  (HildonCheckButtonClass *klass)
 {
     GObjectClass *gobject_class = (GObjectClass*) klass;
     GtkWidgetClass *widget_class = (GtkWidgetClass*) klass;
     GtkButtonClass *button_class = (GtkButtonClass*) klass;
 
+    gobject_class->set_property = set_property;
     widget_class->style_set = hildon_check_button_style_set;
     button_class->clicked = hildon_check_button_clicked;
 
@@ -233,6 +253,17 @@ hildon_check_button_class_init                  (HildonCheckButtonClass *klass)
             "Size of the check box",
             0, G_MAXUINT, 26,
             G_PARAM_READABLE));
+
+    g_object_class_install_property (
+        gobject_class,
+        PROP_SIZE,
+        g_param_spec_flags (
+            "size",
+            "Size",
+            "Size request for the button",
+            HILDON_TYPE_SIZE_TYPE,
+            HILDON_SIZE_AUTO,
+            G_PARAM_WRITABLE));
 
     g_type_class_add_private (klass, sizeof (HildonCheckButtonPrivate));
 }

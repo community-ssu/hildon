@@ -55,6 +55,10 @@
 
 G_DEFINE_TYPE                                   (HildonEntry, hildon_entry, GTK_TYPE_ENTRY);
 
+enum {
+    PROP_SIZE = 1
+};
+
 #define                                         HILDON_ENTRY_GET_PRIVATE(obj) \
                                                 (G_TYPE_INSTANCE_GET_PRIVATE ((obj), \
                                                 HILDON_TYPE_ENTRY, HildonEntryPrivate));
@@ -64,6 +68,23 @@ struct                                          _HildonEntryPrivate
     gchar *placeholder;
     gboolean showing_placeholder;
 };
+
+static void
+set_property                                    (GObject      *object,
+                                                 guint         prop_id,
+                                                 const GValue *value,
+                                                 GParamSpec   *pspec)
+{
+    switch (prop_id)
+    {
+    case PROP_SIZE:
+        hildon_gtk_widget_set_theme_size (GTK_WIDGET (object), g_value_get_flags (value));
+        break;
+    default:
+        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+        break;
+    }
+}
 
 static void
 hildon_entry_show_placeholder (HildonEntry *entry)
@@ -180,11 +201,7 @@ hildon_entry_set_placeholder                    (HildonEntry *entry,
 GtkWidget *
 hildon_entry_new                                (HildonSizeType size)
 {
-    GtkWidget *entry = g_object_new (HILDON_TYPE_ENTRY, NULL);
-
-    hildon_gtk_widget_set_theme_size (entry, size);
-
-    return entry;
+    return g_object_new (HILDON_TYPE_ENTRY, "size", size, NULL);
 }
 
 static gboolean
@@ -234,9 +251,21 @@ hildon_entry_class_init                         (HildonEntryClass *klass)
     GObjectClass *gobject_class = (GObjectClass *)klass;
     GtkWidgetClass *widget_class = (GtkWidgetClass *)klass;
 
+    gobject_class->set_property = set_property;
     gobject_class->finalize = hildon_entry_finalize;
     widget_class->focus_in_event = hildon_entry_focus_in_event;
     widget_class->focus_out_event = hildon_entry_focus_out_event;
+
+    g_object_class_install_property (
+        gobject_class,
+        PROP_SIZE,
+        g_param_spec_flags (
+            "size",
+            "Size",
+            "Size request for the entry",
+            HILDON_TYPE_SIZE_TYPE,
+            HILDON_SIZE_AUTO,
+            G_PARAM_WRITABLE));
 
     g_type_class_add_private (klass, sizeof (HildonEntryPrivate));
 }

@@ -1,3 +1,15 @@
+2009-05-20  Alberto Garcia  <agarcia@igalia.com>
+
+	* hildon/hildon-entry.c
+	(hildon_entry_class_init, +set_property, hildon_entry_new)
+	* hildon/hildon-check-button.c
+	(hildon_check_button_class_init)
+	(+set_property, hildon_check_button_new):
+	Make the theme size a property.
+
+	Fixes: NB#117928 (Widgets such as Entry and CheckButton (and
+	others) do too much in the _new function)
+
 2009-05-18  Claudio Saavedra  <csaavedra@igalia.com>
 
 	* configure.ac: post release version bump
