@@ -2747,13 +2747,13 @@ static void
 hildon_pannable_calculate_vel_factor (HildonPannableArea * self)
 {
   HildonPannableAreaPrivate *priv = self->priv;
-  gfloat fct = 0;
+  gfloat fct = 1;
   gfloat fct_i = 1;
   gint i, n;
 
   n = ceil (priv->sps * priv->scroll_time);
 
-  for (i = 0; i < n && fct_i >= RATIO_TOLERANCE; i++) {
+  for (i = 1; i < n && fct_i >= RATIO_TOLERANCE; i++) {
     fct_i *= priv->decel;
     fct += fct_i;
   }

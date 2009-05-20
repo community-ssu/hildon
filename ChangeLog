@@ -1,5 +1,11 @@
 2009-05-20  Claudio Saavedra  <csaavedra@igalia.com>
 
+	* hildon/hildon-pannable-area.c
+	(hildon_pannable_calculate_vel_factor): Correct the sum of the
+	deceleration factors.
+
+2009-05-20  Claudio Saavedra  <csaavedra@igalia.com>
+
 	* hildon/hildon-pannable-area.c (hildon_pannable_area_class_init):
 	Reduce the default value for 'scroll_time' to 1 second, since the
 	current initial scrolling takes too much time.
