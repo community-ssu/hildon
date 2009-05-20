@@ -674,9 +674,18 @@ hildon_banner_check_position                    (GtkWidget *widget)
 }
 
 static void
+screen_size_changed                            (GdkScreen *screen,
+                                                GtkWindow *banner)
+
+{
+    gtk_window_reshow_with_initial_size (banner);
+}
+
+static void
 hildon_banner_realize                           (GtkWidget *widget)
 {
     GdkWindow *gdkwin;
+    GdkScreen *screen;
     GdkAtom atom;
     guint32 portrait = 1;
     const gchar *notification_type = "_HILDON_NOTIFICATION_TYPE_BANNER";
@@ -710,6 +719,18 @@ hildon_banner_realize                           (GtkWidget *widget)
       hildon_banner_set_override_flag (HILDON_BANNER (widget));
         priv->overrides_dnd = TRUE;
     }
+
+    screen = gtk_widget_get_screen (widget);
+    g_signal_connect (screen, "size-changed", G_CALLBACK (screen_size_changed), widget);
+}
+
+static void
+hildon_banner_unrealize                         (GtkWidget *widget)
+{
+    GdkScreen *screen = gtk_widget_get_screen (widget);
+    g_signal_handlers_disconnect_by_func (screen, G_CALLBACK (screen_size_changed), widget);
+
+    GTK_WIDGET_CLASS (hildon_banner_parent_class)->unrealize (widget);
 }
 
 static void 
@@ -733,6 +754,7 @@ hildon_banner_class_init                        (HildonBannerClass *klass)
     GTK_OBJECT_CLASS (klass)->destroy = hildon_banner_destroy;
     widget_class->map_event = hildon_banner_map_event;
     widget_class->realize = hildon_banner_realize;
+    widget_class->unrealize = hildon_banner_unrealize;
     widget_class->button_press_event = hildon_banner_button_press_event;
 #if defined(MAEMO_GTK)
     widget_class->map = hildon_banner_map;
