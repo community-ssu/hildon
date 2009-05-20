@@ -1,5 +1,13 @@
 2009-05-21  Alejandro Pinheiro  <apinheiro@igalia.com>
 
+	* hildon/hildon-banner.[ch]:
+	(hildon_banner_show_information_override_dnd): remove icon_name from the
+	method definition as it is ignored.
+	* examples/hildon-banner-dnd-example.c: updated with the change on
+	hildon-banner.h API
+
+2009-05-21  Alejandro Pinheiro  <apinheiro@igalia.com>
+
 	* hildon/hildon-banner-private.h: new require_override_dnd and
 	overrides_dnd variables
 	* hildon/hildon-banner.h:

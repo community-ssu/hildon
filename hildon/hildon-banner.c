@@ -38,7 +38,7 @@
  *
  * If the application window has set the _HILDON_DO_NOT_DISTURB flag (using
  * hildon_gtk_window_set_do_not_disturb() for example), the banner will not
- * be showed. If you need to override this flag for important information,
+ * be shown. If you need to override this flag for important information,
  * you can use the method hildon_banner_show_information_override_dnd().
  * Please, take into account that this is only for important information.
  *
@@ -933,8 +933,6 @@ hildon_banner_show_information                  (GtkWidget *widget,
 /**
  * hildon_banner_show_information_override_dnd:
  * @widget: the #GtkWidget that is the owner of the banner
- * @icon_name: since Hildon 2.2 this parameter is not used anymore and
- * any value that you pass will be ignored
  * @text: Text to display
  *
  * Equivalent to hildon_banner_show_information() but it overrides the do not
@@ -950,7 +948,6 @@ hildon_banner_show_information                  (GtkWidget *widget,
  */
 GtkWidget*
 hildon_banner_show_information_override_dnd     (GtkWidget *widget,
-                                                 const gchar *icon_name,
                                                  const gchar *text)
 {
     return hildon_banner_real_show_information (widget, text, TRUE);

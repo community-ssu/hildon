@@ -36,7 +36,7 @@ on_information_clicked                          (GtkWidget *widget)
 {
   GtkWidget* banner = NULL;
 
-  banner = hildon_banner_show_information_override_dnd (widget, NULL,
+  banner = hildon_banner_show_information_override_dnd (widget,
                                                         "Real important information!!");
 
   hildon_banner_set_timeout (HILDON_BANNER (banner), 5000);
