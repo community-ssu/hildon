@@ -656,8 +656,6 @@ hildon_pannable_area_init (HildonPannableArea * area)
   priv->child_height = 0;
   priv->last_in = TRUE;
 
-  hildon_pannable_calculate_vel_factor (area);
-
   gtk_widget_add_events (GTK_WIDGET (area), GDK_POINTER_MOTION_HINT_MASK);
 
   priv->hadjust =
