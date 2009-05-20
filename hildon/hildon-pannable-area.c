@@ -2743,6 +2743,32 @@ hildon_pannable_area_remove (GtkContainer *container, GtkWidget *child)
   GTK_CONTAINER_CLASS (hildon_pannable_area_parent_class)->remove (container, child);
 }
 
+/**
+ * This method calculates a factor necessary to determine the initial distance
+ * to jump in hildon_pannable_area_scroll_to(). For fixed time and frames per
+ * second, we know in how many frames 'n' we need to reach the destination
+ * point. We know that, for a distance d,
+ *
+ *   d = d_0 + d_1 + ... + d_n
+ *
+ * where d_i is the distance travelled in the i-th frame and decel_factor is
+ * the deceleration factor. This can be rewritten as
+ *
+ *   d = d_0 + (d_0 * decel_factor) + ... + (d_n-1 * decel_factor),
+ *
+ * since the distance travelled on each frame is the distance travelled in the
+ * previous frame reduced by the deceleration factor. Reducing this and
+ * factoring d_0 out, we get
+ *
+ *   d = d_0 (1 + decel_factor + ... + decel_factor^(n-1)).
+ *
+ * Since the sum is independent of the distance to be travelled, we can define
+ * vel_factor as
+ *
+ *   vel_factor = 1 + decel_factor + ... + decel_factor^(n-1).
+ *
+ * That's the gem we calculate in this method.
+ **/
 static void
 hildon_pannable_calculate_vel_factor (HildonPannableArea * self)
 {

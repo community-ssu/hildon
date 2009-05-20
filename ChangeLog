@@ -1,5 +1,10 @@
 2009-05-20  Claudio Saavedra  <csaavedra@igalia.com>
 
+	* hildon/hildon-pannable-area.c: Add a comment explaining the math
+	behind hildon_pannable_calculate_vel_factor().
+
+2009-05-20  Claudio Saavedra  <csaavedra@igalia.com>
+
 	* hildon/hildon-pannable-area.c
 	(hildon_pannable_calculate_vel_factor): Correct the sum of the
 	deceleration factors.
