@@ -1,5 +1,11 @@
 2009-05-20  Claudio Saavedra  <csaavedra@igalia.com>
 
+	* hildon/hildon-pannable-area.c (hildon_pannable_area_class_init):
+	Reduce the default value for 'scroll_time' to 1 second, since the
+	current initial scrolling takes too much time.
+
+2009-05-20  Claudio Saavedra  <csaavedra@igalia.com>
+
 	* hildon/hildon-pannable-area.c (hildon_pannable_area_init): Do not
 	calculate velocity factor during initialization, since the properties
 	are not yet set.

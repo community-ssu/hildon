@@ -510,7 +510,7 @@ hildon_pannable_area_class_init (HildonPannableAreaClass * klass)
 				   g_param_spec_double ("scroll_time",
 							"Time to scroll to a position",
 							"The time to scroll to a position when calling the hildon_pannable_scroll_to function",
-							1.0, 20.0, 10.0,
+							0.0, 20.0, 1.0,
 							G_PARAM_READWRITE |
 							G_PARAM_CONSTRUCT));
 
