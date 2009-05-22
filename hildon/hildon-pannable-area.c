@@ -824,7 +824,20 @@ hildon_pannable_area_set_property (GObject * object,
     priv->sps = g_value_get_uint (value);
     break;
   case PROP_PANNING_THRESHOLD:
-    priv->panning_threshold = g_value_get_uint (value);
+    {
+      GtkSettings *settings = gtk_settings_get_default ();
+      GtkSettingsValue svalue = { NULL, { 0, }, };
+
+      priv->panning_threshold = g_value_get_uint (value);
+
+      /* insure gtk dnd is the same we are using, not allowed
+         different thresholds in the same application */
+      svalue.origin = "panning_threshold";
+      g_value_init (&svalue.value, G_TYPE_LONG);
+      g_value_set_long (&svalue.value, priv->panning_threshold);
+      gtk_settings_set_property_value (settings, "gtk-dnd-drag-threshold", &svalue);
+      g_value_unset (&svalue.value);
+    }
     break;
   case PROP_SCROLLBAR_FADE_DELAY:
     /* convert to miliseconds */
