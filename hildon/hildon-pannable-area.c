@@ -75,7 +75,7 @@ struct _HildonPannableAreaPrivate {
   gdouble ex;		/* Used to store mouse co-ordinates of the last */
   gdouble ey;		/* motion event in acceleration mode */
   gboolean enabled;
-  gboolean clicked;
+  gboolean button_pressed;
   guint32 last_time;	/* Last event time, to stop infinite loops */
   gint last_type;
   gboolean last_in;
@@ -630,7 +630,7 @@ hildon_pannable_area_init (HildonPannableArea * area)
   area->priv = priv;
 
   priv->moved = FALSE;
-  priv->clicked = FALSE;
+  priv->button_pressed = FALSE;
   priv->last_time = 0;
   priv->last_type = 0;
   priv->vscroll_visible = TRUE;
@@ -1549,7 +1549,7 @@ hildon_pannable_area_scroll_indicator_fade(HildonPannableArea * area)
 
   /* if moving do not fade out */
   if (((ABS (priv->vel_y)>1.0)||
-       (ABS (priv->vel_x)>1.0))&&(!priv->clicked)) {
+       (ABS (priv->vel_x)>1.0))&&(!priv->button_pressed)) {
 
     return TRUE;
   }
@@ -1817,7 +1817,7 @@ hildon_pannable_area_button_press_cb (GtkWidget * widget,
   priv->scroll_to_x = -1;
   priv->scroll_to_y = -1;
 
-  if (priv->clicked && priv->child) {
+  if (priv->button_pressed && priv->child) {
     /* Widget stole focus on last click, send crossing-out event */
     synth_crossing (priv->child, 0, 0, event->x_root, event->y_root,
 		    event->time, FALSE);
@@ -1837,7 +1837,7 @@ hildon_pannable_area_button_press_cb (GtkWidget * widget,
   else
     priv->child = NULL;
 
-  priv->clicked = TRUE;
+  priv->button_pressed = TRUE;
 
   /* Stop scrolling on mouse-down (so you can flick, then hold to stop) */
   priv->vel_x = 0;
@@ -2012,7 +2012,7 @@ hildon_pannable_axis_scroll (HildonPannableArea *area,
 
     gtk_adjustment_set_value (adjust, dist);
   } else {
-    if (!priv->clicked) {
+    if (!priv->button_pressed) {
 
       /* When the overshoot has started we continue for
        * PROP_BOUNCE_STEPS more steps into the overshoot before we
@@ -2138,7 +2138,7 @@ hildon_pannable_area_timeout (HildonPannableArea * area)
     return FALSE;
   }
 
-  if (!priv->clicked) {
+  if (!priv->button_pressed) {
     /* Decelerate gradually when pointer is raised */
     if ((!priv->overshot_dist_y) &&
         (!priv->overshot_dist_x)) {
@@ -2255,7 +2255,7 @@ hildon_pannable_area_motion_notify_cb (GtkWidget * widget,
   if (gtk_bin_get_child (GTK_BIN (widget)) == NULL)
     return TRUE;
 
-  if ((!priv->enabled) || (!priv->clicked) ||
+  if ((!priv->enabled) || (!priv->button_pressed) ||
       ((event->time == priv->last_time) && (priv->last_type == 2))) {
     gdk_window_get_pointer (widget->window, NULL, NULL, 0);
     return TRUE;
@@ -2491,7 +2491,7 @@ hildon_pannable_area_button_release_cb (GtkWidget * widget,
 
   if  (((event->time == priv->last_time) && (priv->last_type == 3))
        || (gtk_bin_get_child (GTK_BIN (widget)) == NULL)
-       || (!priv->clicked) || (!priv->enabled) || (event->button != 1))
+       || (!priv->button_pressed) || (!priv->enabled) || (event->button != 1))
     return TRUE;
 
   priv->scroll_indicator_event_interrupt = 0;
@@ -2558,7 +2558,7 @@ hildon_pannable_area_button_release_cb (GtkWidget * widget,
   hildon_pannable_area_launch_fade_timeout (HILDON_PANNABLE_AREA (widget),
                                             priv->scroll_indicator_alpha);
 
-  priv->clicked = FALSE;
+  priv->button_pressed = FALSE;
 
   if (priv->mode == HILDON_PANNABLE_AREA_MODE_AUTO ||
       priv->mode == HILDON_PANNABLE_AREA_MODE_ACCEL) {

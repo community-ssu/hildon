@@ -1,3 +1,15 @@
+2009-05-25  Alejandro G. Castro  <alex@igalia.com>
+
+	* hildon/hildon-pannable-area.c,
+	(hildon_pannable_area_init),
+	(hildon_pannable_area_scroll_indicator_fade),
+	(hildon_pannable_area_button_press_cb),
+	(hildon_pannable_axis_scroll),
+	(hildon_pannable_area_timeout),
+	(hildon_pannable_area_motion_notify_cb),
+	(hildon_pannable_area_button_release_cb): Changed the name of the
+	clicked attribute to button_pressed, it is more clear about its use.
+
 2009-05-25  Alejandro Pinheiro <apinheiro@igalia.com>
 
 	* src/hildon-pannable-area.c
