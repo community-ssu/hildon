@@ -369,7 +369,7 @@ hildon_pannable_area_class_init (HildonPannableAreaClass * klass)
 							"Minimum scroll velocity",
 							"Minimum distance the child widget should scroll "
 							"per 'frame', in pixels per frame.",
-							0, G_MAXDOUBLE, 20,
+							0, G_MAXDOUBLE, 10,
 							G_PARAM_READWRITE |
 							G_PARAM_CONSTRUCT));
 
@@ -440,7 +440,7 @@ hildon_pannable_area_class_init (HildonPannableAreaClass * klass)
 						      "Threshold to consider a motion event an scroll",
 						      "Amount of pixels to consider a motion event an scroll, if it is less"
                                                       "it is a click detected incorrectly by the touch screen.",
-						      0, G_MAXUINT, 6,
+						      0, G_MAXUINT, 25,
 						      G_PARAM_READWRITE |
 						      G_PARAM_CONSTRUCT));
 
@@ -470,7 +470,7 @@ hildon_pannable_area_class_init (HildonPannableAreaClass * klass)
 						      "Multiplier of the calculated speed",
 						      "Force applied to the movement, multiplies the calculated speed of the"
                                                       "user movement the cursor in the screen",
-						      0, G_MAXUINT, 120,
+						      0, G_MAXUINT, 50,
 						      G_PARAM_READWRITE |
 						      G_PARAM_CONSTRUCT));
 

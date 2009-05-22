@@ -1,6 +1,12 @@
 2009-05-25  Alejandro G. Castro  <alex@igalia.com>
 
 	* hildon/hildon-pannable-area.c,
+	(hildon_pannable_area_class_init): Changed some of the default
+	values, now it should be less responsive and more accurate.
+
+2009-05-25  Alejandro G. Castro  <alex@igalia.com>
+
+	* hildon/hildon-pannable-area.c,
 	(hildon_pannable_area_init),
 	(hildon_pannable_area_scroll_indicator_fade),
 	(hildon_pannable_area_button_press_cb),
