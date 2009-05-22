@@ -1,5 +1,11 @@
 2009-05-25  Alejandro G. Castro  <alex@igalia.com>
 
+	* hildon/hildon-pannable-area.c
+	(hildon_pannable_area_button_release_cb): Added a threshold to
+	push the animation if the speed is big (MAX_SPEED_THRESHOLD).
+
+2009-05-25  Alejandro G. Castro  <alex@igalia.com>
+
 	* hildon/hildon-pannable-area.c,
 	(hildon_pannable_area_set_property): Added code to sync the gtk
 	dnd threshold with the panning threshold.

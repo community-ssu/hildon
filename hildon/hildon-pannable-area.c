@@ -57,6 +57,7 @@
 #define SCROLL_FADE_TIMEOUT 100
 #define MOTION_EVENTS_PER_SECOND 25
 #define CURSOR_STOPPED_TIMEOUT 80
+#define MAX_SPEED_THRESHOLD 250
 #define PANNABLE_MAX_WIDTH 788
 #define PANNABLE_MAX_HEIGHT 378
 
@@ -2589,6 +2590,12 @@ hildon_pannable_area_button_release_cb (GtkWidget * widget,
 
     if ((ABS (priv->vel_y) >= priv->vmin) ||
         (ABS (priv->vel_x) >= priv->vmin)) {
+
+      if (ABS (priv->vel_x) > MAX_SPEED_THRESHOLD)
+        priv->vel_x = (priv->vel_x > 0) ? priv->vmax : -priv->vmax;
+
+      if (ABS (priv->vel_y) > MAX_SPEED_THRESHOLD)
+        priv->vel_y = (priv->vel_y > 0) ? priv->vmax : -priv->vmax;
 
       if (!priv->idle_id)
         priv->idle_id = gdk_threads_add_timeout ((gint) (1000.0 / (gdouble) priv->sps),
