@@ -647,7 +647,8 @@ hildon_pannable_area_init (HildonPannableArea * area)
   priv->scroll_indicator_timeout = 0;
   priv->motion_event_scroll_timeout = 0;
   priv->scroll_indicator_event_interrupt = 0;
-  priv->scroll_delay_counter = priv->scrollbar_fade_delay;
+  priv->scroll_delay_counter = 0;
+  priv->scrollbar_fade_delay = 0;
   priv->scroll_to_x = -1;
   priv->scroll_to_y = -1;
   priv->first_drag = TRUE;
@@ -1469,24 +1470,15 @@ static void
 hildon_pannable_area_initial_effect (GtkWidget * widget)
 {
   HildonPannableAreaPrivate *priv = HILDON_PANNABLE_AREA (widget)->priv;
-  gboolean hscroll_visible, vscroll_visible;
 
-  if (priv->initial_hint) {
+  if (priv->vscroll_visible || priv->hscroll_visible) {
 
-    vscroll_visible = (priv->vadjust->upper - priv->vadjust->lower >
-                       priv->vadjust->page_size);
-    hscroll_visible = (priv->hadjust->upper - priv->hadjust->lower >
-                       priv->hadjust->page_size);
+    priv->scroll_indicator_event_interrupt = 0;
+    priv->scroll_delay_counter = priv->scrollbar_fade_delay;
 
-    if (priv->vscroll_visible || priv->hscroll_visible) {
+    hildon_pannable_area_launch_fade_timeout (HILDON_PANNABLE_AREA (widget), 1.0);
 
-      priv->scroll_indicator_event_interrupt = 0;
-      priv->scroll_delay_counter = priv->scrollbar_fade_delay;
-
-      hildon_pannable_area_launch_fade_timeout (HILDON_PANNABLE_AREA (widget), 1.0);
-
-      priv->initial_effect = FALSE;
-    }
+    priv->initial_effect = FALSE;
   }
 }
 
@@ -1616,8 +1608,7 @@ hildon_pannable_area_expose_event (GtkWidget * widget,
   GdkColor scroll_color = widget->style->fg[GTK_STATE_INSENSITIVE];
 #endif
 
-  if (G_UNLIKELY (priv->initial_effect)) {
-
+  if (G_UNLIKELY ((priv->initial_hint) && (priv->initial_effect))) {
     hildon_pannable_area_initial_effect (widget);
   }
 

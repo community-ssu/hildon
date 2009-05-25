@@ -1,6 +1,16 @@
 2009-05-25  Alejandro Pinheiro <apinheiro@igalia.com>
 
 	* src/hildon-pannable-area.c
+	(hildon_pannable_area_init): set scroll_delay_counter and scrollbar_fade_delay
+	to 0
+	(hildon_pannable_area_initial_effect): avoid to compute horizontal and
+	vertical scrollbar visibility, and use the data on private section instead,
+	remove the initial_hint check
+	(hildon_pannable_area_expose_event): add the initial_hint check here
+
+2009-05-25  Alejandro Pinheiro <apinheiro@igalia.com>
+
+	* src/hildon-pannable-area.c
 	(hildon_pannable_area_initial_effect): set to FALSE initial_effect
 	if the fadeout effect was used
 	(hildon_pannable_area_expose_event): check if it is required to
