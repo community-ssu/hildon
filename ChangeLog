@@ -1,3 +1,7 @@
+2009-05-25  Alberto Garcia  <agarcia@igalia.com>
+
+	* hildon/hildon-app-menu.c: Doc updates.
+
 2009-05-25  Claudio Saavedra  <csaavedra@igalia.com>
 
 	* hildon/hildon-banner.c: Remove leftover macro.

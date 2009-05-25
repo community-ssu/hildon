@@ -20,8 +20,8 @@
  * SECTION:hildon-app-menu
  * @short_description: Widget representing the application menu in the Hildon framework.
  *
- * The #HildonAppMenu is a GTK widget which represents an application
- * menu in the Hildon framework.
+ * #HildonAppMenu is a GTK widget which represents an application menu
+ * in the Hildon framework.
  *
  * This menu opens from the top of the screen and contains a number of
  * entries (#GtkButton) organized in one or two columns, depending on
@@ -29,8 +29,12 @@
  * if the screen is resized). Entries are added left to right and top
  * to bottom.
  *
- * Besides that, the #HildonAppMenu can contain a group of filter buttons
- * (#GtkToggleButton or #GtkRadioButton).
+ * Besides that, #HildonAppMenu can contain a group of filter buttons
+ * (#GtkToggleButton or #GtkRadioButton). Filters are meant to change
+ * the way data is presented in the application, rather than change
+ * the layout of the menu itself. For example, a file manager can have
+ * filters to decide the order used to display a list of files (name,
+ * date, size, etc.).
  *
  * To use a #HildonAppMenu, add it to a #HildonWindow using
  * hildon_window_set_app_menu(). The menu will appear when the user
