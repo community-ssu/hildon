@@ -1562,8 +1562,8 @@ hildon_pannable_area_scroll_indicator_fade(HildonPannableArea * area)
   HildonPannableAreaPrivate *priv = area->priv;
 
   /* if moving do not fade out */
-  if (((ABS (priv->vel_y)>1.0)||
-       (ABS (priv->vel_x)>1.0))&&(!priv->button_pressed)) {
+  if (((ABS (priv->vel_y)>priv->vmin)||
+       (ABS (priv->vel_x)>priv->vmin))&&(!priv->button_pressed)) {
 
     return TRUE;
   }
@@ -2564,8 +2564,8 @@ hildon_pannable_area_button_release_cb (GtkWidget * widget,
     }
   }
 
-  if ((ABS (priv->vel_y) > 1.0)||
-      (ABS (priv->vel_x) > 1.0)) {
+  if ((ABS (priv->vel_y) > priv->vmin)||
+      (ABS (priv->vel_x) > priv->vmin)) {
     priv->scroll_indicator_alpha = 1.0;
   }
 
