@@ -1,8 +1,18 @@
-libhildon (2.1.75-1) unstable; urgency=low
+libhildon (2.1.76-1) unstable; urgency=low
 
-  * unreleased
+  * Fixes: NB#117928 (Widgets such as Entry and CheckButton (and
+    others) do too much in the _new function)
+  * Fixes: NB#114874 (There is no possibility to show hildon banners with
+    DND flag set)
+  * Fixes: NB#117870 ('Disconnect charger...' info banner is truncated
+    on transition from landscape to portrait)
+  * Fixes: NB#109063 (HildonAppMenu shouldn't show its items
+    automatically when they're added)
+  * Fixes: NB#116607 (Pannable area should always have scrollbar visible
+    initially if the application can be scrolled)
+  * Several HildonPannableArea usability improvements.
 
- -- Claudio Saavedra <csaavedra@igalia.com>  Mon, 18 May 2009 13:08:12 +0300
+ -- Claudio Saavedra <csaavedra@igalia.com>  Mon, 25 May 2009 20:00:39 +0200
 
 libhildon (2.1.74-2) unstable; urgency=low
 
