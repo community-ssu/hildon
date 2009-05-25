@@ -1484,6 +1484,8 @@ hildon_pannable_area_initial_effect (GtkWidget * widget)
       priv->scroll_delay_counter = priv->scrollbar_fade_delay;
 
       hildon_pannable_area_launch_fade_timeout (HILDON_PANNABLE_AREA (widget), 1.0);
+
+      priv->initial_effect = FALSE;
     }
   }
 }
@@ -1614,6 +1616,11 @@ hildon_pannable_area_expose_event (GtkWidget * widget,
   GdkColor scroll_color = widget->style->fg[GTK_STATE_INSENSITIVE];
 #endif
 
+  if (G_UNLIKELY (priv->initial_effect)) {
+
+    hildon_pannable_area_initial_effect (widget);
+  }
+
   if (gtk_bin_get_child (GTK_BIN (widget))) {
 
     if (priv->scroll_indicator_alpha > 0.1) {
@@ -1700,13 +1707,6 @@ hildon_pannable_area_expose_event (GtkWidget * widget,
 			  priv->hscroll_rect.height);
     }
 
-  }
-
-  if (G_UNLIKELY (priv->initial_effect)) {
-
-    hildon_pannable_area_initial_effect (widget);
-
-    priv->initial_effect = FALSE;
   }
 
   return GTK_WIDGET_CLASS (hildon_pannable_area_parent_class)->expose_event (widget, event);
