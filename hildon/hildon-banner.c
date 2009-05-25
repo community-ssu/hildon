@@ -81,8 +81,6 @@
 
 /* max widths */
 
-#define                                         HILDON_BANNER_PROGRESS_WIDTH 104
-
 #define                                         HILDON_BANNER_LABEL_MAX_TIMED \
                                                 (gdk_screen_width() - ((HILDON_MARGIN_TRIPLE) * 2))
 
