@@ -1,3 +1,8 @@
+2009-05-26  Alberto Garcia  <agarcia@igalia.com>
+
+	* hildon/hildon-window-stack.c (_hildon_window_stack_do_push):
+	Check if the window is already realized when pushing it.
+
 2009-05-25  Claudio Saavedra  <csaavedra@igalia.com>
 
 	* configure.ac: post release version bump

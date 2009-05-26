@@ -298,10 +298,14 @@ _hildon_window_stack_do_push                    (HildonWindowStack     *stack,
             gtk_window_group_add_window (stack->priv->group, GTK_WINDOW (win));
         }
 
-        /* Set win's group after it's been realized. */
-        g_signal_connect (win, "realize",
-                          G_CALLBACK (hildon_window_stack_window_realized),
-                          stack);
+        /* Set window group */
+        if (GTK_WIDGET_REALIZED (win)) {
+            hildon_window_stack_window_realized (GTK_WIDGET (win), stack);
+        } else {
+            g_signal_connect (win, "realize",
+                              G_CALLBACK (hildon_window_stack_window_realized),
+                              stack);
+        }
 
         return TRUE;
     } else {
