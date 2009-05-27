@@ -149,8 +149,8 @@ hildon_touch_selector_entry_print_func (HildonTouchSelector * selector, gpointer
 
   priv = HILDON_TOUCH_SELECTOR_ENTRY_GET_PRIVATE (selector);
 
-  if (*(gtk_entry_get_text (GTK_ENTRY (priv->entry))) != '\0') {
-    text = g_strdup (gtk_entry_get_text (GTK_ENTRY (priv->entry)));
+  if (*(hildon_entry_get_text (HILDON_ENTRY (priv->entry))) != '\0') {
+    text = g_strdup (hildon_entry_get_text (HILDON_ENTRY (priv->entry)));
   } else {
     model = hildon_touch_selector_get_model (selector, 0);
     if (hildon_touch_selector_get_selected (selector, 0, &iter)) {
@@ -381,20 +381,20 @@ entry_on_text_changed (GtkEditable * editable,
   HildonTouchSelectorEntryPrivate *priv;
   GtkTreeModel *model;
   GtkTreeIter iter;
-  GtkEntry *entry;
+  HildonEntry *entry;
   const gchar *prefix;
   gchar *text;
   gboolean found = FALSE;
   gint text_column = -1;
 
-  entry = GTK_ENTRY (editable);
+  entry = HILDON_ENTRY (editable);
   selector = HILDON_TOUCH_SELECTOR (userdata);
   priv = HILDON_TOUCH_SELECTOR_ENTRY_GET_PRIVATE (selector);
 
   text_column =
     hildon_touch_selector_entry_get_text_column (HILDON_TOUCH_SELECTOR_ENTRY (selector));
 
-  prefix = gtk_entry_get_text (entry);
+  prefix = hildon_entry_get_text (entry);
 
   if (prefix[0] == '\0') {
 	  return;
@@ -472,7 +472,7 @@ hildon_touch_selector_entry_changed (HildonTouchSelector * selector,
 
   text = hildon_touch_selector_get_text_from_model (HILDON_TOUCH_SELECTOR_ENTRY (selector));
   if (text != NULL) {
-    gtk_entry_set_text (GTK_ENTRY (priv->entry), text);
+    hildon_entry_set_text (HILDON_ENTRY (priv->entry), text);
     gtk_editable_select_region (GTK_EDITABLE (priv->entry), 0, -1);
     g_free (text);
   }
