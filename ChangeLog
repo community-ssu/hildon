@@ -1,3 +1,11 @@
+2009-05-27  Alberto Garcia  <agarcia@igalia.com>
+
+	* hildon/hildon-app-menu.c (hildon_app_menu_map):
+	Create grab transfer window before calling parent's map function.
+
+	Fixes: NB#115988 (hildon_app_menu_popup creates menu with
+	"crushed" button(s) in the top left corner)
+
 2009-05-26  Alberto Garcia  <agarcia@igalia.com>
 
 	* hildon/hildon-window-stack.c (_hildon_window_stack_do_push):

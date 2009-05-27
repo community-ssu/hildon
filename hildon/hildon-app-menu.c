@@ -519,13 +519,14 @@ hildon_app_menu_map                             (GtkWidget *widget)
 {
     HildonAppMenuPrivate *priv = HILDON_APP_MENU_GET_PRIVATE(widget);
 
+    if (priv->transfer_window == NULL)
+        priv->transfer_window = grab_transfer_window_get (widget);
+
     GTK_WIDGET_CLASS (hildon_app_menu_parent_class)->map (widget);
 
     /* Grab pointer and keyboard */
-    if (priv->transfer_window == NULL) {
+    if (priv->transfer_window != NULL) {
         gboolean has_grab = FALSE;
-
-        priv->transfer_window = grab_transfer_window_get (widget);
 
         if (gdk_pointer_grab (priv->transfer_window, TRUE,
                               GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK |
