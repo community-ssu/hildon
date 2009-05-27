@@ -239,6 +239,7 @@ hildon_picker_dialog_init (HildonPickerDialog * dialog)
   dialog->priv->button =
     gtk_dialog_add_button (GTK_DIALOG (dialog), "", GTK_RESPONSE_OK);
   gtk_widget_grab_default (dialog->priv->button);
+  gtk_dialog_set_has_separator (GTK_DIALOG (dialog), FALSE);
 
   dialog->priv->signal_changed_id = 0;
   dialog->priv->signal_columns_changed_id = 0;
@@ -605,10 +606,8 @@ static void
 prepare_action_area (HildonPickerDialog *dialog)
 {
   if (requires_done_button (dialog)) {
-    gtk_dialog_set_has_separator (GTK_DIALOG (dialog), TRUE);
     gtk_widget_show (GTK_DIALOG (dialog)->action_area);
   } else {
-    gtk_dialog_set_has_separator (GTK_DIALOG (dialog), FALSE);
     gtk_widget_hide (GTK_DIALOG (dialog)->action_area);
   }
 }
