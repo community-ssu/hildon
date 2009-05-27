@@ -1,5 +1,11 @@
 2009-05-27  Claudio Saavedra  <csaavedra@igalia.com>
 
+	* hildon/hildon-touch-selector-entry.c
+	(hildon_touch_selector_entry_init): Change the entry's size
+	to HILDON_SIZE_FINGER_HEIGHT, avoiding unnecessary scaling.
+
+2009-05-27  Claudio Saavedra  <csaavedra@igalia.com>
+
 	* hildon/hildon-entry.c (hildon_entry_class_init): Set the default
 	height to HILDON_SIZE_AUTO_WIDTH and HILDON_SIZE_FINGER_HEIGHT, to
 	avoid unnecessary scaling.

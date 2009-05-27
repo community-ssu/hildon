@@ -171,7 +171,7 @@ hildon_touch_selector_entry_init (HildonTouchSelectorEntry *self)
 
   priv = HILDON_TOUCH_SELECTOR_ENTRY_GET_PRIVATE (self);
 
-  priv->entry = hildon_entry_new (HILDON_SIZE_AUTO);
+  priv->entry = hildon_entry_new (HILDON_SIZE_FINGER_HEIGHT);
   gtk_entry_set_activates_default (GTK_ENTRY (priv->entry), TRUE);
   input_mode = hildon_gtk_entry_get_input_mode (GTK_ENTRY (priv->entry));
 
