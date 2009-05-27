@@ -239,6 +239,7 @@ hildon_picker_dialog_init (HildonPickerDialog * dialog)
   dialog->priv->button =
     gtk_dialog_add_button (GTK_DIALOG (dialog), "", GTK_RESPONSE_OK);
   gtk_widget_grab_default (dialog->priv->button);
+  gtk_button_set_focus_on_click (GTK_BUTTON (dialog->priv->button), FALSE);
   gtk_dialog_set_has_separator (GTK_DIALOG (dialog), FALSE);
 
   dialog->priv->signal_changed_id = 0;

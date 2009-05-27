@@ -1,5 +1,15 @@
 2009-05-27  Claudio Saavedra  <csaavedra@igalia.com>
 
+	* hildon/hildon-picker-dialog.c (hildon_picker_dialog_init): Unset
+	"focus-on-click" from the dialog button, to avoid stealing the
+	focus from the entry.
+
+	Fixes: NB#118903 (Account setup wizard: Text in Search field
+	should be focused when "Region" touch list picker is reopened
+	again)
+
+2009-05-27  Claudio Saavedra  <csaavedra@igalia.com>
+
 	* hildon/hildon-picker-dialog.c (hildon_picker_dialog_init),
 	(prepare_action_area): Completely hide the dialog separator.
 
