@@ -104,6 +104,7 @@
 #include                                        "hildon-app-menu-private.h"
 #include                                        "hildon-window.h"
 #include                                        "hildon-banner.h"
+#include                                        "hildon-animation-actor.h"
 
 static GdkWindow *
 grab_transfer_window_get                        (GtkWidget *widget);
@@ -496,7 +497,7 @@ hildon_app_menu_find_intruder                   (gpointer data)
                      * Yes, this is a hack. See NB#111027 */
                     if (HILDON_IS_BANNER (i->data)) {
                         gtk_widget_hide (i->data);
-                    } else {
+                    } else if (!HILDON_IS_ANIMATION_ACTOR (i->data)) {
                         intruder_found = TRUE;
                     }
                 }
