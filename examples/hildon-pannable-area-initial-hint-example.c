@@ -31,21 +31,34 @@
 enum { TEXT_COLUMN, N_COLUMNS };
 
 static void
-on_button_clicked (GtkButton *button,
+on_add_clicked (GtkButton *button,
+                gpointer user_data)
+{
+  GtkListStore *store = NULL;
+  GtkTreeIter   iter;
+
+  store = GTK_LIST_STORE (user_data);
+
+  gtk_list_store_append (store, &iter);
+  gtk_list_store_set (store, &iter,
+                      TEXT_COLUMN, "Extra row", -1);
+}
+
+static void
+on_remove_clicked (GtkButton *button,
                    gpointer user_data)
 {
   GtkListStore *store = NULL;
   GtkTreeIter   iter;
-  gint          i;
 
   store = GTK_LIST_STORE (user_data);
 
-  for (i = 0; i < 5; i++) {
-    gtk_list_store_append (store, &iter);
-    gtk_list_store_set (store, &iter,
-                        TEXT_COLUMN, "Extra row", -1);
+  if (gtk_tree_model_get_iter_first (GTK_TREE_MODEL (store),
+                                     &iter)) {
+    gtk_list_store_remove (store, &iter);
   }
 }
+
 
 static GtkWidget*
 create_content ()
@@ -80,7 +93,7 @@ create_content ()
   /* Add some rows to the treeview */
   store = gtk_list_store_new (N_COLUMNS, G_TYPE_STRING);
 
-  for (i = 0; i < 3; i++) {
+  for (i = 0; i < 6; i++) {
     GtkTreeIter iter;
 
     gtk_list_store_append (store, &iter);
@@ -97,10 +110,14 @@ create_content ()
 
   vbox = gtk_vbox_new (FALSE, 5);
 
-  button = gtk_button_new_with_label ("Add some rows");
-  g_signal_connect (G_OBJECT (button), "clicked", G_CALLBACK (on_button_clicked), store);
-
+  button = gtk_button_new_with_label ("Add a row");
+  g_signal_connect (G_OBJECT (button), "clicked", G_CALLBACK (on_add_clicked), store);
   gtk_box_pack_start (GTK_BOX (vbox), button, FALSE, FALSE, 0);
+
+  button = gtk_button_new_with_label ("Remove a row");
+  g_signal_connect (G_OBJECT (button), "clicked", G_CALLBACK (on_remove_clicked), store);
+  gtk_box_pack_start (GTK_BOX (vbox), button, FALSE, FALSE, 0);
+
   gtk_box_pack_start (GTK_BOX (vbox), panarea, TRUE, TRUE, 6);
 
   return vbox;

@@ -1,3 +1,16 @@
+2009-05-28  Alejandro Pinheiro <apinheiro@igalia.com>
+
+	* hildon/hildon-pannable-area.c
+	(hildon_pannable_area_initial_effect): Remove the initial_effect
+	management, check initial_hint
+	(hildon_pannable_are_expose_event): Remove the initial_hint management,
+	set initial_effect to FALSE
+	(hildon_pannable_are_refresh): Check if we need to show the scrollbars,
+	by launching the fade_timeout if the scrollbars state has changed and are
+	visible
+	* examples/hildon-pannable-area-initial-hint-example.c
+	Modified to allow to remove rows too. Add and remove rows one by one.
+
 2009-05-28  Alberto Garcia  <agarcia@igalia.com>
 
 	* hildon/hildon-app-menu.c (hildon_app_menu_find_intruder):

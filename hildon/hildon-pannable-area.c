@@ -1485,14 +1485,14 @@ hildon_pannable_area_initial_effect (GtkWidget * widget)
 {
   HildonPannableAreaPrivate *priv = HILDON_PANNABLE_AREA (widget)->priv;
 
-  if (priv->vscroll_visible || priv->hscroll_visible) {
+  if (priv->initial_hint) {
+    if (priv->vscroll_visible || priv->hscroll_visible) {
 
-    priv->scroll_indicator_event_interrupt = 0;
-    priv->scroll_delay_counter = priv->scrollbar_fade_delay;
+      priv->scroll_indicator_event_interrupt = 0;
+      priv->scroll_delay_counter = priv->scrollbar_fade_delay;
 
-    hildon_pannable_area_launch_fade_timeout (HILDON_PANNABLE_AREA (widget), 1.0);
-
-    priv->initial_effect = FALSE;
+      hildon_pannable_area_launch_fade_timeout (HILDON_PANNABLE_AREA (widget), 1.0);
+    }
   }
 }
 
@@ -1622,8 +1622,10 @@ hildon_pannable_area_expose_event (GtkWidget * widget,
   GdkColor scroll_color = widget->style->fg[GTK_STATE_INSENSITIVE];
 #endif
 
-  if (G_UNLIKELY ((priv->initial_hint) && (priv->initial_effect))) {
+  if (G_UNLIKELY (priv->initial_effect)) {
     hildon_pannable_area_initial_effect (widget);
+
+    priv->initial_effect = FALSE;
   }
 
   if (gtk_bin_get_child (GTK_BIN (widget))) {
@@ -1951,7 +1953,16 @@ hildon_pannable_area_refresh (HildonPannableArea * area)
 {
   if (GTK_WIDGET_DRAWABLE (area) &&
       hildon_pannable_area_check_scrollbars (area)) {
+    HildonPannableAreaPrivate *priv = area->priv;
+
     gtk_widget_queue_resize (GTK_WIDGET (area));
+
+    if ((priv->vscroll_visible) || (priv->hscroll_visible)) {
+      priv->scroll_indicator_event_interrupt = 0;
+      priv->scroll_delay_counter = area->priv->scrollbar_fade_delay;
+
+      hildon_pannable_area_launch_fade_timeout (area, 1.0);
+    }
   } else {
     hildon_pannable_area_redraw (area);
   }
