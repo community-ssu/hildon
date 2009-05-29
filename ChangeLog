@@ -1,5 +1,13 @@
 2009-05-29  Claudio Saavedra  <csaavedra@igalia.com>
 
+	[Release 2.1.78]
+
+	* NEWS: Updates.
+	* configure.ac: Bump version.
+	* debian/changelog: Updates.
+
+2009-05-29  Claudio Saavedra  <csaavedra@igalia.com>
+
 	* hildon/hildon-banner-private.h: Add a GtkAlignment to the private
 	structure.
 	* hildon/hildon-banner.c (hildon_banner_init): Use a GtkAlignment

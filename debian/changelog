@@ -1,8 +1,16 @@
-libhildon (2.1.77-1) unstable; urgency=low
+libhildon (2.1.78-1) unstable; urgency=low
 
-  * unreleased
+  * Fixes: NB#115988 (hildon_app_menu_popup creates menu with "crushed"
+    button(s) in the top left corner)
+  * Fixes: NB#118903 (Account setup wizard: Text in Search field should
+    be focused when "Region" touch list picker is reopened again)
+  * Fixes: NB#117927 (Application menu not usable with animation
+    actors)
+  * Fixes: NB#108265 (Animation banner not properly centered)
+  * HildonEntry sizing improvements.
+  * Other code fixes.
 
- -- Claudio Saavedra <csaavedra@igalia.com>  Mon, 25 May 2009 20:09:08 +0200
+ -- Claudio Saavedra <csaavedra@igalia.com>  Fri, 29 May 2009 17:33:27 +0200
 
 libhildon (2.1.76-1) unstable; urgency=low
 

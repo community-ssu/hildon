@@ -1,3 +1,15 @@
+[2.1.78 release]
+
+  * Fixes: NB#115988 (hildon_app_menu_popup creates menu with "crushed"
+    button(s) in the top left corner)
+  * Fixes: NB#118903 (Account setup wizard: Text in Search field should
+    be focused when "Region" touch list picker is reopened again)
+  * Fixes: NB#117927 (Application menu not usable with animation
+    actors)
+  * Fixes: NB#108265 (Animation banner not properly centered)
+  * HildonEntry sizing improvements.
+  * Other code fixes.
+
 [2.1.76 release]
 
   * Fixes: NB#117928 (Widgets such as Entry and CheckButton (and
