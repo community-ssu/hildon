@@ -36,6 +36,7 @@ typedef struct                                  _HildonBannerPrivate HildonBanne
 struct                                          _HildonBannerPrivate
 {
     GtkWidget *main_item;
+    GtkWidget *alignment;
     GtkWidget *label;
     GtkWidget *layout;
     guint timeout_id;

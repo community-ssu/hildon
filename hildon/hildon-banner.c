@@ -814,6 +814,7 @@ hildon_banner_init                              (HildonBanner *self)
     priv->require_override_dnd = FALSE;
 
     /* Initialize the common layout inside banner */
+    priv->alignment = gtk_alignment_new (0.5, 0.5, 0, 0);
     priv->layout = gtk_hbox_new (FALSE, HILDON_MARGIN_DEFAULT);
 
     priv->label = g_object_new (GTK_TYPE_LABEL, NULL);
@@ -821,8 +822,9 @@ hildon_banner_init                              (HildonBanner *self)
     gtk_label_set_line_wrap_mode (GTK_LABEL (priv->label), PANGO_WRAP_WORD_CHAR);
 
     gtk_container_set_border_width (GTK_CONTAINER (priv->layout), HILDON_MARGIN_DEFAULT);
-    gtk_container_add (GTK_CONTAINER (self), priv->layout);
-    gtk_box_pack_start (GTK_BOX (priv->layout), priv->label, TRUE, TRUE, 0);
+    gtk_container_add (GTK_CONTAINER (self), priv->alignment);
+    gtk_container_add (GTK_CONTAINER (priv->alignment), priv->layout);
+    gtk_box_pack_start (GTK_BOX (priv->layout), priv->label, FALSE, FALSE, 0);
 
     gtk_window_set_accept_focus (GTK_WINDOW (self), FALSE);
 
@@ -865,7 +867,7 @@ hildon_banner_ensure_child                      (HildonBanner *self,
         /* Use user provided widget or create a new one */
         priv->main_item = widget = user_widget ? 
             user_widget : GTK_WIDGET (g_object_new_valist(type, first_property, args));
-        gtk_box_pack_start (GTK_BOX (priv->layout), widget, TRUE, TRUE, 0);
+        gtk_box_pack_start (GTK_BOX (priv->layout), widget, FALSE, FALSE, 0);
     }
 
     /* We make sure that the widget exists in desired position. Different

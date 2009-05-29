@@ -1,3 +1,14 @@
+2009-05-29  Claudio Saavedra  <csaavedra@igalia.com>
+
+	* hildon/hildon-banner-private.h: Add a GtkAlignment to the private
+	structure.
+	* hildon/hildon-banner.c (hildon_banner_init): Use a GtkAlignment
+	to ensure the banner contents are centered, instead of relying on
+	the expand and fill properties in GtkHBox.
+	(hildon_banner_ensure_child): Do not expand nor fill the child widget.
+
+	Fixes: NB#108265 (Animation banner not properly centered)
+
 2009-05-28  Alejandro Pinheiro <apinheiro@igalia.com>
 
 	* hildon/hildon-pannable-area.c
