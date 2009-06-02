@@ -2195,6 +2195,7 @@ hildon_touch_selector_optimal_size_request      (HildonTouchSelector *selector,
 {
   GSList *iter = NULL;
   gint height = 0;
+  gint base_height = 0;
 
   g_return_if_fail (HILDON_IS_TOUCH_SELECTOR (selector));
 
@@ -2206,9 +2207,13 @@ hildon_touch_selector_optimal_size_request      (HildonTouchSelector *selector,
 
   if (iter == NULL) {
     height = requisition->height;
+  } else {
+    /* we use the normal requisition as base, as the touch selector can has
+       extra widgets, not only the columns (ie: HildonTouchSelectorEntry) */
+    base_height = requisition->height;
   }
 
-  /* Compute optimal height */
+  /* Compute optimal height for the columns */
   while (iter) {
     HildonTouchSelectorColumn *column;
     GtkWidget *child;
@@ -2224,6 +2229,6 @@ hildon_touch_selector_optimal_size_request      (HildonTouchSelector *selector,
     iter = g_slist_next (iter);
   }
 
-  requisition->height = height;
+  requisition->height = base_height + height;
 }
 

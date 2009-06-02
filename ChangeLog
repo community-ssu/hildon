@@ -1,3 +1,12 @@
+2009-06-02  Alejandro Pinheiro  <apinheiro@igalia.com>
+
+	* hildon/hildon-touch-selector.c:
+	(hildon_touch_selector_optimal_size_request): use the current requisition
+	as the base, in order to include any possible extra widget, like the
+	hildon entry on HildonTouchSelectorEntry
+
+	Fixes: NB#119805 (Merge conflict picker dialogs are too small)
+
 2009-05-29  Claudio Saavedra  <csaavedra@igalia.com>
 
 	* configure.ac: post release version bump
