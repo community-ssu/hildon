@@ -36,6 +36,7 @@ EXAMPLES				= hildon-window-example				\
 					  hildon-time-button-example			\
 					  hildon-check-button-example			\
 					  hildon-touch-selector-example			\
+					  hildon-touch-selector-normal-mode-example	\
 					  hildon-touch-selector-multi-cells-example	\
 					  hildon-touch-selector-entry-example           \
 					  hildon-progress-indicator-example		\
@@ -443,6 +444,12 @@ hildon_touch_selector_example_LDADD	= $(HILDON_OBJ_LIBS)
 hildon_touch_selector_example_CFLAGS	= $(HILDON_OBJ_CFLAGS)			\
 					  $(EXTRA_CFLAGS)
 hildon_touch_selector_example_SOURCES	= hildon-touch-selector-example.c
+
+# Hildon touch picker using HILDON_UI_MODE_NORMAL
+hildon_touch_selector_normal_mode_example_LDADD		= $(HILDON_OBJ_LIBS)
+hildon_touch_selector_normal_mode_example_CFLAGS	= $(HILDON_OBJ_CFLAGS)			\
+							  $(EXTRA_CFLAGS)
+hildon_touch_selector_normal_mode_example_SOURCES	= hildon-touch-selector-normal-mode-example.c
 
 # Hildon touch picker with several cells per column
 hildon_touch_selector_multi_cells_example_LDADD		= $(HILDON_OBJ_LIBS)

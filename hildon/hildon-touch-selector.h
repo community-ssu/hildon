@@ -219,6 +219,16 @@ void
 hildon_touch_selector_optimal_size_request      (HildonTouchSelector *selector,
                                                  GtkRequisition *requisition);
 
+HildonUIMode
+hildon_touch_selector_get_hildon_ui_mode        (HildonTouchSelector *selector);
+
+gboolean
+hildon_touch_selector_set_hildon_ui_mode        (HildonTouchSelector *selector,
+                                                 HildonUIMode         mode);
+GtkTreePath*
+hildon_touch_selector_get_last_activated_row    (HildonTouchSelector *selector,
+                                                 gint                 column);
+
 G_END_DECLS
 
 #endif /* __HILDON_TOUCH_SELECTOR_H__ */

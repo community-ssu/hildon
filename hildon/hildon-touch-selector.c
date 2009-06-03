@@ -198,6 +198,7 @@ struct _HildonTouchSelectorColumnPrivate
   GtkTreePath *initial_path;
 
   GtkWidget *panarea;           /* the pannable widget */
+  GtkTreeRowReference *last_activated;
 };
 
 struct _HildonTouchSelectorPrivate
@@ -211,12 +212,15 @@ struct _HildonTouchSelectorPrivate
   HildonTouchSelectorPrintFunc print_func;
   gpointer print_user_data;
   GDestroyNotify print_destroy_func;
+
+  HildonUIMode hildon_ui_mode;
 };
 
 enum
 {
   PROP_HAS_MULTIPLE_SELECTION = 1,
-  PROP_INITIAL_SCROLL
+  PROP_INITIAL_SCROLL,
+  PROP_HILDON_UI_MODE
 };
 
 enum
@@ -250,6 +254,12 @@ static void hildon_touch_selector_remove        (GtkContainer * container,
 static void _row_tapped_cb                      (GtkTreeView * tree_view,
                                                  GtkTreePath * path,
                                                  gpointer user_data);
+static void
+hildon_touch_selector_row_activated_cb          (GtkTreeView       *tree_view,
+                                                 GtkTreePath       *path,
+                                                 GtkTreeViewColumn *column,
+                                                 gpointer           user_data);
+
 static gchar *_default_print_func               (HildonTouchSelector * selector,
                                                  gpointer user_data);
 
@@ -311,6 +321,8 @@ static void hildon_touch_selector_column_cell_layout_reorder       (GtkCellLayou
                                                                     gint                   position);
 static GList *hildon_touch_selector_column_cell_layout_get_cells   (GtkCellLayout         *cell_layout);
 
+static void
+hildon_touch_selector_check_ui_mode_coherence   (HildonTouchSelector *selector);
 
 static void
 hildon_touch_selector_class_init (HildonTouchSelectorClass * class)
@@ -400,6 +412,31 @@ hildon_touch_selector_class_init (HildonTouchSelectorClass * class)
                                                          TRUE,
                                                          G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
 
+    /**
+     * HildonTouchSelector:hildon-ui-mode:
+     *
+     * Specifies which UI mode to use in the internal treeviews.  A setting
+     * of %HILDON_UI_MODE_NORMAL will cause these tree view to disable selections
+     * and emit row-activated as soon as a row is pressed.  You can use the
+     * method hildon_touch_selector_get_last_activated_row() to get it. When
+     * %HILDON_UI_MODE_EDIT is set, selections can be made according to the
+     * setting of the mode on GtkTreeSelection.
+     *
+     * Toggling this property will cause the tree view to select an
+     * appropriate selection mode if not already done.
+     *
+     * Since: Hildon 2.2
+     */
+  g_object_class_install_property (gobject_class,
+                                   PROP_HILDON_UI_MODE,
+                                   g_param_spec_enum ("hildon-ui-mode",
+                                                      "Hildon UI Mode",
+                                                      "The Hildon UI mode according "
+                                                      "to which the touch selector "
+                                                      "should behave",
+                                                      HILDON_TYPE_UI_MODE,
+                                                      HILDON_UI_MODE_EDIT,
+                                                      G_PARAM_READWRITE));
   /* style properties */
   /* We need to ensure fremantle mode for the treeview in order to work
      properly. This is not about the appearance, this is about behaviour */
@@ -426,6 +463,9 @@ hildon_touch_selector_get_property (GObject * object,
   case PROP_INITIAL_SCROLL:
     g_value_set_boolean (value, priv->initial_scroll);
     break;
+  case PROP_HILDON_UI_MODE:
+    g_value_set_enum (value, priv->hildon_ui_mode);
+    break;
   default:
     G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
     break;
@@ -441,6 +481,10 @@ hildon_touch_selector_set_property (GObject *object, guint prop_id,
   switch (prop_id) {
   case PROP_INITIAL_SCROLL:
     priv->initial_scroll = g_value_get_boolean (value);
+    break;
+  case PROP_HILDON_UI_MODE:
+    hildon_touch_selector_set_hildon_ui_mode (HILDON_TOUCH_SELECTOR (object),
+                                              g_value_get_enum (value));
     break;
   default:
     G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -467,6 +511,8 @@ hildon_touch_selector_init (HildonTouchSelector * selector)
 
   selector->priv->changed_blocked = FALSE;
 
+  selector->priv->hildon_ui_mode = HILDON_UI_MODE_EDIT;
+
   gtk_box_pack_end (GTK_BOX (selector), selector->priv->hbox,
                     TRUE, TRUE, 0);
   gtk_widget_show (selector->priv->hbox);
@@ -487,16 +533,23 @@ hildon_touch_selector_dispose (GObject * object)
 }
 
 static void
-disconnect_model_handlers (HildonTouchSelectorColumn *col, HildonTouchSelector *selector)
+clean_column                                    (HildonTouchSelectorColumn *col,
+                                                 HildonTouchSelector *selector)
 {
   g_signal_handlers_disconnect_by_func (col->priv->model,
 					on_row_changed, selector);
+
+  if (col->priv->last_activated != NULL) {
+    gtk_tree_row_reference_free (col->priv->last_activated);
+    col->priv->last_activated = NULL;
+  }
 }
 
 /*
  * IMPLEMENTATION NOTES:
- * Some people sent questions regarding a missing dispose/finalize function on
- * this widget that could lead to leak memory, so we will clarify this topic.
+ * Some people sent questions regarding the fact that the dispose/finalize functions
+ * doesn't clean the internal widgets that could lead to leak memory, so we will
+ * clarify this topic.
  *
  * This is not required as #HildonTouchSelector extends #GtkContainer. When the
  * widget is freed, the #GtkContainer freeing memory functions are called. This
@@ -524,7 +577,7 @@ hildon_touch_selector_remove (GtkContainer * container, GtkWidget * widget)
 
   /* Remove the extra data related to the columns, if required. */
   if (widget == selector->priv->hbox) {
-    g_slist_foreach (selector->priv->columns, (GFunc) disconnect_model_handlers, selector);
+    g_slist_foreach (selector->priv->columns, (GFunc) clean_column, selector);
     g_slist_foreach (selector->priv->columns, (GFunc) g_object_unref, NULL);
 
     g_slist_free (selector->priv->columns);
@@ -555,8 +608,22 @@ static void
 hildon_touch_selector_emit_value_changed        (HildonTouchSelector *selector,
                                                  gint column)
 {
+  /* FIXME: it could be good to emit too the GtkTreePath of the element
+     selected, as now it is required to connect to the signal and then ask
+     for the element selected. We can't do this API change, in order to avoid
+     and ABI break */
   if (!selector->priv->changed_blocked) {
     g_signal_emit (selector, hildon_touch_selector_signals[CHANGED], 0, column);
+  }
+}
+
+static void
+hildon_touch_selector_check_ui_mode_coherence   (HildonTouchSelector *selector)
+{
+  g_return_if_fail (HILDON_IS_TOUCH_SELECTOR (selector));
+
+  if (hildon_touch_selector_get_num_columns (selector) > 1) {
+    hildon_touch_selector_set_hildon_ui_mode (selector, HILDON_UI_MODE_EDIT);
   }
 }
 
@@ -669,6 +736,27 @@ _default_print_func (HildonTouchSelector * selector, gpointer user_data)
 }
 
 static void
+hildon_touch_selector_row_activated_cb          (GtkTreeView       *tree_view,
+                                                 GtkTreePath       *path,
+                                                 GtkTreeViewColumn *column,
+                                                 gpointer           user_data)
+{
+  HildonTouchSelectorColumn *selector_column = NULL;
+  GtkTreeModel *model = NULL;
+
+  g_return_if_fail (HILDON_IS_TOUCH_SELECTOR_COLUMN (user_data));
+  selector_column = HILDON_TOUCH_SELECTOR_COLUMN (user_data);
+
+  model = selector_column->priv->model;
+
+  if (selector_column->priv->last_activated != NULL) {
+    gtk_tree_row_reference_free (selector_column->priv->last_activated);
+  }
+
+  selector_column->priv->last_activated = gtk_tree_row_reference_new (model, path);
+}
+
+static void
 _row_tapped_cb (GtkTreeView * tree_view, GtkTreePath * path, gpointer user_data)
 {
   HildonTouchSelector *selector = NULL;
@@ -716,7 +804,7 @@ _create_new_column (HildonTouchSelector * selector,
   }
 
 #ifdef MAEMO_GTK
-  tv = GTK_TREE_VIEW (hildon_gtk_tree_view_new (HILDON_UI_MODE_EDIT));
+  tv = GTK_TREE_VIEW (hildon_gtk_tree_view_new (selector->priv->hildon_ui_mode));
 #else
   tv = GTK_TREE_VIEW (gtk_tree_view_new ());
 #endif /* MAEMO_GTK */
@@ -752,7 +840,8 @@ _create_new_column (HildonTouchSelector * selector,
 
   /* select the first item */
   *emit_changed = FALSE;
-  if (gtk_tree_model_get_iter_first (model, &iter)) {
+  if ((gtk_tree_model_get_iter_first (model, &iter))&&
+      (selector->priv->hildon_ui_mode == HILDON_UI_MODE_EDIT)) {
     gtk_tree_selection_select_iter (selection, &iter);
     *emit_changed = TRUE;
   }
@@ -762,6 +851,9 @@ _create_new_column (HildonTouchSelector * selector,
   /* connect to the hildon-row-tapped signal connection */
   g_signal_connect (G_OBJECT (tv), "hildon-row-tapped",
                     G_CALLBACK (_row_tapped_cb), new_column);
+
+  g_signal_connect (G_OBJECT (tv), "row-activated",
+                    G_CALLBACK (hildon_touch_selector_row_activated_cb), new_column);
 
   return new_column;
 }
@@ -826,6 +918,7 @@ hildon_touch_selector_column_init (HildonTouchSelectorColumn *column)
   column->priv = G_TYPE_INSTANCE_GET_PRIVATE (column, HILDON_TYPE_TOUCH_SELECTOR_COLUMN,
                                               HildonTouchSelectorColumnPrivate);
   column->priv->text_column = -1;
+  column->priv->last_activated = NULL;
 }
 
 /**
@@ -1202,6 +1295,11 @@ hildon_touch_selector_insert_text (HildonTouchSelector * selector,
  * it to a column in @model with type %G_TYPE_STRING. See
  * hildon_touch_selector_column_set_text_column().
  *
+ * This method could change the current #HildonTouchSelector:hildon-ui-mode.
+ * %HILDON_UI_MODE_NORMAL is only allowed with one column, so if the selector
+ * is in this mode, and a additional column is added,
+ * #HildonTouchSelector:hildon-ui-mode will change to %HILDON_UI_MODE_EDIT.
+ *
  * Returns: the new column added added, %NULL otherwise.
  *
  * Since: 2.2
@@ -1247,6 +1345,8 @@ hildon_touch_selector_append_column (HildonTouchSelector * selector,
     colnum = g_slist_length (selector->priv->columns);
     hildon_touch_selector_emit_value_changed (selector, colnum);
   }
+
+  hildon_touch_selector_check_ui_mode_coherence (selector);
 
   return new_column;
 }
@@ -1439,6 +1539,10 @@ hildon_touch_selector_get_column_selection_mode (HildonTouchSelector * selector)
  * @mode: the #HildonTouchSelectorMode for @selector
  *
  * Sets the selection mode for @selector. See #HildonTouchSelectorSelectionMode.
+ *
+ * The new @mode will be set, but take into into account that the
+ * #HildonTouchSelectorSelectionMode is ignored if the @selector
+ * #HildonTouchSelector:hildon-ui-mode property is set to %HILDON_UI_MODE_NORMAL
  *
  * Since: 2.2
  **/
@@ -2256,3 +2360,115 @@ hildon_touch_selector_optimal_size_request      (HildonTouchSelector *selector,
   requisition->height = base_height + height;
 }
 
+
+
+/**
+ * hildon_touch_selector_get_hildon_ui_mode
+ * @selector: a #HildonTouchSelector
+ *
+ * Gets the current hildon-ui-mode, see #HildonUIMode for more information
+ *
+ * Returns: the current hildon-ui-mode
+ *
+ * Since: 2.2
+ **/
+HildonUIMode
+hildon_touch_selector_get_hildon_ui_mode        (HildonTouchSelector *selector)
+{
+  g_return_val_if_fail (HILDON_IS_TOUCH_SELECTOR (selector), HILDON_UI_MODE_EDIT);
+
+  return selector->priv->hildon_ui_mode;
+}
+
+/**
+ * hildon_touch_selector_set_hildon_ui_mode
+ * @selector: a #HildonTouchSelector
+ * @mode: a #HildonUIMode
+ *
+ * Sets the value of the property #HildonTouchSelector:hildon-ui-mode to be @mode,
+ * see #HildonUIMode for more information
+ *
+ * Note that the %HILDON_UI_MODE_NORMAL can be only used when the selector has
+ * one column, use the return value to check if the change was effective.
+ *
+ * Returns: %TRUE if #HildonTouchSelector:hildon-ui-mode was changed
+ *          %FALSE otherwise
+ *
+ * Since: 2.2
+ **/
+gboolean
+hildon_touch_selector_set_hildon_ui_mode        (HildonTouchSelector *selector,
+                                                 HildonUIMode         mode)
+{
+  gint num = 0;
+  GSList *iter = NULL;
+  HildonTouchSelectorColumn *column = NULL;
+  GtkTreeView *tree_view = NULL;
+
+  g_return_val_if_fail (HILDON_IS_TOUCH_SELECTOR (selector), FALSE);
+  num = hildon_touch_selector_get_num_columns (selector);
+  g_return_val_if_fail ((mode == HILDON_UI_MODE_EDIT) || (num == 1), FALSE);
+
+  if (mode == selector->priv->hildon_ui_mode) {
+    return FALSE;
+  }
+
+  for (iter = selector->priv->columns; iter; iter = g_slist_next (iter)) {
+    column = HILDON_TOUCH_SELECTOR_COLUMN (iter->data);
+    tree_view = column->priv->tree_view;
+
+    hildon_tree_view_set_hildon_ui_mode (tree_view, mode);
+
+    /* looking at the code of hildon_tree_view_set_hildon_ui_mode, it seems
+       that it call the unselect_all, but it is required anyway */
+    if (mode == HILDON_UI_MODE_NORMAL) {
+      GtkTreeSelection *selection = gtk_tree_view_get_selection (tree_view);
+
+      gtk_tree_selection_unselect_all (selection);
+    }
+  }
+
+  selector->priv->hildon_ui_mode = mode;
+
+  return TRUE;
+}
+
+/**
+ * hildon_touch_selector_get_last_activated_row
+ * @selector: a #HildonTouchSelector
+ * @column: column number
+ *
+ * Gets a #GtkTreePath of the last row activated in a column (the last row that
+ * emitted a #GtkTreeView::row-activated signal). This is mainly useful if the
+ * @selector #HildonTouchSelector:hildon-ui-mode in set to %HILDON_UI_MODE_NORMAL,
+ * as using this state there is no real selection, so a method like
+ * hildon_touch_selector_get_selected_rows() will return always a empty
+ * selection.
+ *
+ * Anyway, this method works as well on %HILDON_UI_MODE_EDIT, but in this case
+ * is better, and more useful, to get the current selection.
+ *
+ * Returns: a newly allocated #GtkTreePath pointing to the last activated row
+ *          NULL if no row were activated.
+ *
+ * Since: 2.2
+ **/
+GtkTreePath*
+hildon_touch_selector_get_last_activated_row    (HildonTouchSelector *selector,
+                                                 gint                 column)
+{
+  HildonTouchSelectorColumn *selector_column = NULL;
+
+  /* this method with check selector and that the column number is correct*/
+  selector_column = hildon_touch_selector_get_column (selector, column);
+
+  if (selector_column == NULL) {
+    return NULL;
+  }
+
+  if (selector_column->priv->last_activated != NULL) {
+    return gtk_tree_row_reference_get_path (selector_column->priv->last_activated);
+  } else {
+    return NULL;
+  }
+}

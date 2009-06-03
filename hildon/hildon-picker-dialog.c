@@ -416,8 +416,14 @@ selection_completed (HildonPickerDialog *dialog)
   GList *list;
   gint i, n_cols;
   gboolean all_selected = TRUE;
+  HildonUIMode mode = HILDON_UI_MODE_NORMAL;
 
   priv = HILDON_PICKER_DIALOG_GET_PRIVATE (dialog);
+
+  mode = hildon_touch_selector_get_hildon_ui_mode (HILDON_TOUCH_SELECTOR (priv->selector));
+  if (mode == HILDON_UI_MODE_NORMAL) {
+    return TRUE;
+  }
 
   n_cols = hildon_touch_selector_get_num_columns (HILDON_TOUCH_SELECTOR (priv->selector));
   for (i = 0; i < n_cols; i++) {

@@ -1,3 +1,36 @@
+2009-06-25  Alejandro Pinheiro  <apinheiro@igalia.com>
+
+	* hildon/hildon-picker-dialog.c:
+	(selection_completed): take into account HILDON_UI_MODE_NORMAL
+	* hildon/hildon-touch-selector.c
+	(hildon_touch_selector_init): Initialize hildon-ui-mode
+	(hildon_touch_selector_row_activated): new callback for the
+	"row-activated"	signal, in order to save the last activated
+	(hildon_touch_selector_check_ui_mode_coherence): new method that checks
+	if the current hildon-ui-mode is coherent with the touch selector
+	(hildon_touch_selector_class_init)
+	(hildon_touch_selector_get_property)
+	(hildon_touch_selector_set_property)
+	Added "hildon-ui-mode" property
+	(disconnect_model_handlers): renamed to clean_column
+	(hildon_touch_selector_remove): use clean_column function
+	(_create_new_column): use the hildon-ui-mode to create the treeview, and
+	only select the first element on HILDON_UI_MODE_EDIT
+	(hildon_touch_selector_column_init): Initialize last_activate
+	(hildon_touch_selector_append_column): check that the touch selector
+	is coherent with the current hildon-ui-mode
+	(hildon_touch_selector_get_hildon_ui_mode)
+	(hildon_touch_selector_set_hildon_ui_mode)
+	Added a getter/setter for the hildon-ui-mode property
+	(hildon_touch_selector_get_last_activated_row): Added this method in
+	order to get the last activated row.
+	* examples/hildon-touch-selector-normal-mode-example.c
+	New example, that shows how to use the HildonTouchSelector in
+	HILDON_UI_MODE_NORMAL
+
+	Fixes: NB#95685 (Add field dialog should use HILDON_UI_MODE_NORMAL), using
+	Kristian Rietveld <kris@lanedo.com> advices
+
 2009-06-25  Claudio Saavedra  <csaavedra@igalia.com>
 
 	* hildon/hildon-time-selector.c: (update_format_policy): Do
