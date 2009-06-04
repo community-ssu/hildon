@@ -1,3 +1,12 @@
+2009-06-04  Claudio Saavedra  <csaavedra@igalia.com>
+
+	* hildon/hildon-color-button.c (hildon_color_button_init): Use
+	HILDON_ICON_PIXEL_SIZE_FINGER for the color icon and 80x70 for the button
+	itself, to make it fit better with Fremantle style.
+
+	Fixes: NB#109878 (height and width of focus on color icon is not
+	consistent with other item in the application tool bar)
+
 2009-06-02  Alejandro Pinheiro  <apinheiro@igalia.com>
 
 	* hildon/hildon-touch-selector.c:

@@ -58,13 +58,9 @@
 #include                                        "hildon-color-chooser-dialog.h"
 #include                                        "hildon-color-button-private.h"
 
-#define                                         COLOR_FILLED_HEIGHT 22
+#define                                         COLOR_BUTTON_WIDTH 80
 
-#define                                         COLOR_FILLED_WIDTH 22
-
-#define                                         COLOR_BUTTON_WIDTH 52
-
-#define                                         COLOR_BUTTON_HEIGHT 48
+#define                                         COLOR_BUTTON_HEIGHT 70
 
 #define                                         OUTER_BORDER_RED 0
 
@@ -352,7 +348,8 @@ hildon_color_button_init                        (HildonColorButton *cb)
             COLOR_BUTTON_HEIGHT);
 
     gtk_widget_set_size_request (GTK_WIDGET(drawing_area),
-            COLOR_FILLED_WIDTH, COLOR_FILLED_HEIGHT);
+                                 HILDON_ICON_PIXEL_SIZE_FINGER,
+                                 HILDON_ICON_PIXEL_SIZE_FINGER);
 
     /* Connect the callback function for exposure event */
     g_signal_connect (drawing_area, "expose-event",
