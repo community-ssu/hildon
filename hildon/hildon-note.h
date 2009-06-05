@@ -33,17 +33,18 @@ G_BEGIN_DECLS
                                                 (hildon_note_get_type())
 
 #define                                         HILDON_NOTE(obj) \
-                                                (GTK_CHECK_CAST (obj, HILDON_TYPE_NOTE, HildonNote))
+                                                (G_TYPE_CHECK_INSTANCE_CAST (obj, \
+                                                HILDON_TYPE_NOTE, HildonNote))
 
 #define                                         HILDON_NOTE_CLASS(klass) \
-                                                (GTK_CHECK_CLASS_CAST ((klass), \
+                                                (G_TYPE_CHECK_CLASS_CAST ((klass), \
                                                 HILDON_TYPE_NOTE, HildonNoteClass))
 
 #define                                         HILDON_IS_NOTE(obj) \
-                                                (GTK_CHECK_TYPE (obj, HILDON_TYPE_NOTE))
+                                                (G_TYPE_CHECK_INSTANCE_TYPE (obj, HILDON_TYPE_NOTE))
 
 #define                                         HILDON_IS_NOTE_CLASS(klass) \
-                                                (GTK_CHECK_CLASS_TYPE ((klass), HILDON_TYPE_NOTE))
+                                                (G_TYPE_CHECK_CLASS_TYPE ((klass), HILDON_TYPE_NOTE))
 
 typedef struct                                  _HildonNote HildonNote;
 

@@ -37,19 +37,19 @@ G_BEGIN_DECLS
                                                 (hildon_date_editor_get_type())
 
 #define                                         HILDON_DATE_EDITOR(obj) \
-                                                (GTK_CHECK_CAST (obj,\
+                                                (G_TYPE_CHECK_INSTANCE_CAST (obj,\
                                                 HILDON_TYPE_DATE_EDITOR, HildonDateEditor))
 
 #define                                         HILDON_DATE_EDITOR_CLASS(klass) \
-                                                (GTK_CHECK_CLASS_CAST ((klass),\
+                                                (G_TYPE_CHECK_CLASS_CAST ((klass),\
                                                 HILDON_TYPE_DATE_EDITOR, HildonDateEditorClass))
 
 #define                                         HILDON_IS_DATE_EDITOR(obj) \
-                                                (GTK_CHECK_TYPE (obj,\
+                                                (G_TYPE_CHECK_INSTANCE_TYPE (obj,\
                                                 HILDON_TYPE_DATE_EDITOR))
 
 #define                                         HILDON_IS_DATE_EDITOR_CLASS(klass) \
-                                                (GTK_CHECK_CLASS_TYPE ((klass),\
+                                                (G_TYPE_CHECK_CLASS_TYPE ((klass),\
                                                 HILDON_TYPE_DATE_EDITOR))
 
 typedef struct                                  _HildonDateEditor HildonDateEditor;

@@ -37,17 +37,18 @@ G_BEGIN_DECLS
                                                 (hildon_window_get_type())
 
 #define                                         HILDON_WINDOW(obj) \
-                                                (GTK_CHECK_CAST (obj, HILDON_TYPE_WINDOW, HildonWindow))
+                                                (G_TYPE_CHECK_INSTANCE_CAST (obj, \
+                                                HILDON_TYPE_WINDOW, HildonWindow))
 
 #define                                         HILDON_WINDOW_CLASS(klass) \
-                                                (GTK_CHECK_CLASS_CAST ((klass),\
+                                                (G_TYPE_CHECK_CLASS_CAST ((klass),\
                                                 HILDON_TYPE_WINDOW, HildonWindowClass))
 
 #define                                         HILDON_IS_WINDOW(obj) \
-                                                (GTK_CHECK_TYPE (obj, HILDON_TYPE_WINDOW))
+                                                (G_TYPE_CHECK_INSTANCE_TYPE (obj, HILDON_TYPE_WINDOW))
 
 #define                                         HILDON_IS_WINDOW_CLASS(klass) \
-                                                (GTK_CHECK_CLASS_TYPE ((klass), HILDON_TYPE_WINDOW))
+                                                (G_TYPE_CHECK_CLASS_TYPE ((klass), HILDON_TYPE_WINDOW))
 
 #define                                         HILDON_WINDOW_GET_CLASS(obj) \
                                                 ((HildonWindowClass *) G_OBJECT_GET_CLASS(obj))

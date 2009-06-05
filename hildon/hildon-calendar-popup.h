@@ -38,17 +38,18 @@ typedef struct                                  _HildonCalendarPopupClass Hildon
 #define                                         HILDON_TYPE_CALENDAR_POPUP \
                                                 (hildon_calendar_popup_get_type())
 
-#define                                         HILDON_CALENDAR_POPUP(obj) (GTK_CHECK_CAST (obj,\
+#define                                         HILDON_CALENDAR_POPUP(obj) \
+                                                (G_TYPE_CHECK_INSTANCE_CAST (obj, \
                                                 HILDON_TYPE_CALENDAR_POPUP, HildonCalendarPopup))
 
-#define                                         HILDON_CALENDAR_POPUP_CLASS(klass) (GTK_CHECK_CLASS_CAST ((klass), \
+#define                                         HILDON_CALENDAR_POPUP_CLASS(klass) (G_TYPE_CHECK_CLASS_CAST ((klass), \
                                                 HILDON_TYPE_CALENDAR_POPUP, HildonCalendarPopupClass))
 
-#define                                         HILDON_IS_CALENDAR_POPUP(obj) (GTK_CHECK_TYPE (obj,\
+#define                                         HILDON_IS_CALENDAR_POPUP(obj) (G_TYPE_CHECK_INSTANCE_TYPE (obj,\
                                                 HILDON_TYPE_CALENDAR_POPUP))
 
 #define                                         HILDON_IS_CALENDAR_POPUP_CLASS(klass) \
-                                                (GTK_CHECK_CLASS_TYPE ((klass), HILDON_TYPE_CALENDAR_POPUP))
+                                                (G_TYPE_CHECK_CLASS_TYPE ((klass), HILDON_TYPE_CALENDAR_POPUP))
 
 #define                                         HILDON_CALENDAR_POPUP_GET_CLASS(obj) \
                                                 ((HildonCalendarPopupClass *) G_OBJECT_GET_CLASS(obj))

@@ -39,18 +39,19 @@ typedef struct                                  _HildonWeekdayPickerClass Hildon
                                                 (hildon_weekday_picker_get_type())
 
 #define                                         HILDON_WEEKDAY_PICKER(obj) \
-                                                (GTK_CHECK_CAST (obj, HILDON_TYPE_WEEKDAY_PICKER, \
+                                                (G_TYPE_CHECK_INSTANCE_CAST (obj, \
+                                                HILDON_TYPE_WEEKDAY_PICKER, \
                                                 HildonWeekdayPicker))
 
 #define                                         HILDON_WEEKDAY_PICKER_CLASS(klass) \
-                                                (GTK_CHECK_CLASS_CAST ((klass), \
+                                                (G_TYPE_CHECK_CLASS_CAST ((klass), \
                                                 HILDON_TYPE_WEEKDAY_PICKER, HildonWeekdayPickerClass))
 
 #define                                         HILDON_IS_WEEKDAY_PICKER(obj) \
-                                                (GTK_CHECK_TYPE (obj, HILDON_TYPE_WEEKDAY_PICKER))
+                                                (G_TYPE_CHECK_INSTANCE_TYPE (obj, HILDON_TYPE_WEEKDAY_PICKER))
 
 #define                                         HILDON_IS_WEEKDAY_PICKER_CLASS(klass) \
-                                                (GTK_CHECK_CLASS_TYPE ((klass), HILDON_TYPE_WEEKDAY_PICKER))
+                                                (G_TYPE_CHECK_CLASS_TYPE ((klass), HILDON_TYPE_WEEKDAY_PICKER))
 
 #define                                         HILDON_WEEKDAY_PICKER_GET_CLASS(obj) \
                                                 ((HildonWeekdayPickerClass *) G_OBJECT_GET_CLASS(obj))

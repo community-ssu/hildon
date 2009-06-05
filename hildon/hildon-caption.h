@@ -38,17 +38,18 @@ typedef struct                                  _HildonCaptionClass HildonCaptio
 #define                                         HILDON_TYPE_CAPTION (hildon_caption_get_type())
 
 #define                                         HILDON_CAPTION(obj) \
-                                                (GTK_CHECK_CAST (obj, HILDON_TYPE_CAPTION, HildonCaption))
+                                                (G_TYPE_CHECK_INSTANCE_CAST (obj, \
+                                                HILDON_TYPE_CAPTION, HildonCaption))
 
 #define                                         HILDON_CAPTION_CLASS(klass) \
-                                                (GTK_CHECK_CLASS_CAST ((klass),\
+                                                (G_TYPE_CHECK_CLASS_CAST ((klass),\
                                                 HILDON_TYPE_CAPTION, HildonCaptionClass))
 
 #define                                         HILDON_IS_CAPTION(obj) \
-                                                (GTK_CHECK_TYPE (obj, HILDON_TYPE_CAPTION))
+                                                (G_TYPE_CHECK_INSTANCE_TYPE (obj, HILDON_TYPE_CAPTION))
 
 #define                                         HILDON_IS_CAPTION_CLASS(klass) \
-                                                (GTK_CHECK_CLASS_TYPE ((klass), HILDON_TYPE_CAPTION))
+                                                (G_TYPE_CHECK_CLASS_TYPE ((klass), HILDON_TYPE_CAPTION))
     
 /**
  * HildonCaptionStatus:

@@ -35,17 +35,18 @@ G_BEGIN_DECLS
                                                 (hildon_vvolumebar_get_type())
 
 #define                                         HILDON_VVOLUMEBAR(obj) \
-                                                (GTK_CHECK_CAST (obj, HILDON_TYPE_VVOLUMEBAR, HildonVVolumebar))
+                                                (G_TYPE_CHECK_INSTANCE_CAST (obj, \
+                                                HILDON_TYPE_VVOLUMEBAR, HildonVVolumebar))
 
 #define                                         HILDON_VVOLUMEBAR_CLASS(klass) \
-                                                (GTK_CHECK_CLASS_CAST ((klass),\
+                                                (G_TYPE_CHECK_CLASS_CAST ((klass),\
                                                 HILDON_TYPE_VVOLUMEBAR, HildonVVolumebarClass))
 
 #define                                         HILDON_IS_VVOLUMEBAR(obj) \
-                                                (GTK_CHECK_TYPE (obj, HILDON_TYPE_VVOLUMEBAR))
+                                                (G_TYPE_CHECK_INSTANCE_TYPE (obj, HILDON_TYPE_VVOLUMEBAR))
 
 #define                                         HILDON_IS_VVOLUMEBAR_CLASS(klass) \
-                                                (GTK_CHECK_CLASS_TYPE ((klass), HILDON_TYPE_VVOLUMEBAR))
+                                                (G_TYPE_CHECK_CLASS_TYPE ((klass), HILDON_TYPE_VVOLUMEBAR))
 
 #define                                         HILDON_VVOLUMEBAR_GET_CLASS(obj) \
                                                 ((HildonVVolumebarClass *) G_OBJECT_GET_CLASS(obj))

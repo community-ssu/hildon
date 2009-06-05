@@ -40,17 +40,18 @@ typedef struct                                  _HildonSortDialogClass HildonSor
                                                 (hildon_sort_dialog_get_type())
 
 #define                                         HILDON_SORT_DIALOG(obj) \
-                                                (GTK_CHECK_CAST (obj, HILDON_TYPE_SORT_DIALOG, HildonSortDialog))
+                                                (G_TYPE_CHECK_INSTANCE_CAST (obj, \
+                                                HILDON_TYPE_SORT_DIALOG, HildonSortDialog))
 
 #define                                         HILDON_SORT_DIALOG_CLASS(klass) \
-                                                (GTK_CHECK_CLASS_CAST ((klass), HILDON_TYPE_SORT_DIALOG, \
+                                                (G_TYPE_CHECK_CLASS_CAST ((klass), HILDON_TYPE_SORT_DIALOG, \
                                                 HildonSortDialogClass))
 
 #define                                         HILDON_IS_SORT_DIALOG(obj) \
-                                                (GTK_CHECK_TYPE (obj, HILDON_TYPE_SORT_DIALOG))
+                                                (G_TYPE_CHECK_INSTANCE_TYPE (obj, HILDON_TYPE_SORT_DIALOG))
 
 #define                                         HILDON_IS_SORT_DIALOG_CLASS(klass) \
-                                                (GTK_CHECK_CLASS_TYPE ((klass), HILDON_TYPE_SORT_DIALOG))
+                                                (G_TYPE_CHECK_CLASS_TYPE ((klass), HILDON_TYPE_SORT_DIALOG))
 
 #define                                         HILDON_SORT_DIALOG_GET_CLASS(obj) \
                                                 ((HildonSortDialogClass *) G_OBJECT_GET_CLASS(obj))

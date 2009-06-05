@@ -37,14 +37,15 @@ G_BEGIN_DECLS
                                                 (hildon_dialog_get_type ())
 
 #define                                         HILDON_DIALOG(obj) \
-                                                (GTK_CHECK_CAST (obj, HILDON_TYPE_DIALOG, HildonDialog))
+                                                (G_TYPE_CHECK_INSTANCE_CAST (obj, \
+                                                HILDON_TYPE_DIALOG, HildonDialog))
 
 #define                                         HILDON_DIALOG_CLASS(klass) \
-                                                (GTK_CHECK_CLASS_CAST ((klass),\
+                                                (G_TYPE_CHECK_CLASS_CAST ((klass),\
                                                 HILDON_TYPE_DIALOG, HildonDialogClass))
 
 #define                                         HILDON_IS_DIALOG(obj) \
-                                                (GTK_CHECK_TYPE (obj, HILDON_TYPE_DIALOG))
+                                                (G_TYPE_CHECK_INSTANCE_TYPE (obj, HILDON_TYPE_DIALOG))
 
 #define                                         HILDON_IS_DIALOG_CLASS(klass) \
                                                 (GTK_CHECH_CLASS_TYPE ((klass), HILDON_TYPE_DIALOG))

@@ -35,17 +35,18 @@ G_BEGIN_DECLS
                                                 (hildon_number_editor_get_type())
 
 #define                                         HILDON_NUMBER_EDITOR(obj) \
-                                                (GTK_CHECK_CAST (obj, HILDON_TYPE_NUMBER_EDITOR, HildonNumberEditor))
+                                                (G_TYPE_CHECK_INSTANCE_CAST (obj, \
+                                                HILDON_TYPE_NUMBER_EDITOR, HildonNumberEditor))
 
 #define                                         HILDON_NUMBER_EDITOR_CLASS(klass) \
-                                                (GTK_CHECK_CLASS_CAST ((klass), HILDON_TYPE_NUMBER_EDITOR, \
+                                                (G_TYPE_CHECK_CLASS_CAST ((klass), HILDON_TYPE_NUMBER_EDITOR, \
                                                 HildonNumberEditorClass))
 
 #define                                         HILDON_IS_NUMBER_EDITOR(obj) \
-                                                (GTK_CHECK_TYPE (obj, HILDON_TYPE_NUMBER_EDITOR))
+                                                (G_TYPE_CHECK_INSTANCE_TYPE (obj, HILDON_TYPE_NUMBER_EDITOR))
 
 #define                                         HILDON_IS_NUMBER_EDITOR_CLASS(klass) \
-                                                (GTK_CHECK_CLASS_TYPE ((klass), HILDON_TYPE_NUMBER_EDITOR))
+                                                (G_TYPE_CHECK_CLASS_TYPE ((klass), HILDON_TYPE_NUMBER_EDITOR))
 
 #define                                         HILDON_NUMBER_EDITOR_GET_CLASS(obj) \
                                                 ((HildonNumberEditorClass *) G_OBJECT_GET_CLASS(obj))

@@ -34,18 +34,19 @@ G_BEGIN_DECLS
 #define                                         HILDON_TYPE_CONTROLBAR \
                                                 (hildon_controlbar_get_type())
 
-#define                                         HILDON_CONTROLBAR(obj) (GTK_CHECK_CAST (obj,\
+#define                                         HILDON_CONTROLBAR(obj) \
+                                                (G_TYPE_CHECK_INSTANCE_CAST (obj, \
                                                 HILDON_TYPE_CONTROLBAR, HildonControlbar))
 
 #define                                         HILDON_CONTROLBAR_CLASS(klass) \
-                                                (GTK_CHECK_CLASS_CAST ((klass),\
+                                                (G_TYPE_CHECK_CLASS_CAST ((klass),\
                                                 HILDON_TYPE_CONTROLBAR, HildonControlbarClass))
 
 #define                                         HILDON_IS_CONTROLBAR(obj) \
-                                                (GTK_CHECK_TYPE (obj, HILDON_TYPE_CONTROLBAR))
+                                                (G_TYPE_CHECK_INSTANCE_TYPE (obj, HILDON_TYPE_CONTROLBAR))
 
 #define                                         HILDON_IS_CONTROLBAR_CLASS(klass) \
-                                                (GTK_CHECK_CLASS_TYPE ((klass),\
+                                                (G_TYPE_CHECK_CLASS_TYPE ((klass),\
                                                 HILDON_TYPE_CONTROLBAR))
 
 #define                                         HILDON_CONTROLBAR_GET_CLASS(obj) \

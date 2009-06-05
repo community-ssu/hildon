@@ -35,18 +35,19 @@ G_BEGIN_DECLS
                                                 (hildon_get_password_dialog_get_type())
 
 #define                                         HILDON_GET_PASSWORD_DIALOG(obj) \
-                                                (GTK_CHECK_CAST (obj, HILDON_TYPE_GET_PASSWORD_DIALOG,\
+                                                (G_TYPE_CHECK_INSTANCE_CAST (obj, \
+                                                HILDON_TYPE_GET_PASSWORD_DIALOG, \
                                                 HildonGetPasswordDialog))
 
 #define                                         HILDON_GET_PASSWORD_DIALOG_CLASS(klass) \
-                                                (GTK_CHECK_CLASS_CAST ((klass), HILDON_TYPE_GET_PASSWORD_DIALOG, \
+                                                (G_TYPE_CHECK_CLASS_CAST ((klass), HILDON_TYPE_GET_PASSWORD_DIALOG, \
                                                 HildonGetPasswordDialogClass))
 
 #define                                         HILDON_IS_GET_PASSWORD_DIALOG(obj) \
-                                                (GTK_CHECK_TYPE (obj, HILDON_TYPE_GET_PASSWORD_DIALOG))
+                                                (G_TYPE_CHECK_INSTANCE_TYPE (obj, HILDON_TYPE_GET_PASSWORD_DIALOG))
 
 #define                                         HILDON_IS_GET_PASSWORD_DIALOG_CLASS(klass) \
-                                                (GTK_CHECK_CLASS_TYPE ((klass), HILDON_TYPE_GET_PASSWORD_DIALOG))
+                                                (G_TYPE_CHECK_CLASS_TYPE ((klass), HILDON_TYPE_GET_PASSWORD_DIALOG))
 
 typedef struct                                  _HildonGetPasswordDialog HildonGetPasswordDialog;
 

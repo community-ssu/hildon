@@ -35,17 +35,18 @@ G_BEGIN_DECLS
                                                 (hildon_time_editor_get_type())
 
 #define                                         HILDON_TIME_EDITOR(obj) \
-                                                (GTK_CHECK_CAST (obj, HILDON_TYPE_TIME_EDITOR, HildonTimeEditor))
+                                                (G_TYPE_CHECK_INSTANCE_CAST (obj, \
+                                                HILDON_TYPE_TIME_EDITOR, HildonTimeEditor))
 
 #define                                         HILDON_TIME_EDITOR_CLASS(klass) \
-                                                (GTK_CHECK_CLASS_CAST ((klass), HILDON_TYPE_TIME_EDITOR, \
+                                                (G_TYPE_CHECK_CLASS_CAST ((klass), HILDON_TYPE_TIME_EDITOR, \
                                                 HildonTimeEditorClass))
 
 #define                                         HILDON_IS_TIME_EDITOR(obj) \
-                                                (GTK_CHECK_TYPE (obj, HILDON_TYPE_TIME_EDITOR))
+                                                (G_TYPE_CHECK_INSTANCE_TYPE (obj, HILDON_TYPE_TIME_EDITOR))
 
 #define                                         HILDON_IS_TIME_EDITOR_CLASS(klass) \
-                                                (GTK_CHECK_CLASS_TYPE ((klass), HILDON_TYPE_TIME_EDITOR))
+                                                (G_TYPE_CHECK_CLASS_TYPE ((klass), HILDON_TYPE_TIME_EDITOR))
 
 typedef enum 
 {

@@ -35,18 +35,18 @@ G_BEGIN_DECLS
                                                 (hildon_seekbar_get_type())
 
 #define                                         HILDON_SEEKBAR(obj) \
-                                                (GTK_CHECK_CAST (obj,\
+                                                (G_TYPE_CHECK_INSTANCE_CAST (obj,\
                                                 HILDON_TYPE_SEEKBAR, HildonSeekbar))
 
 #define                                         HILDON_SEEKBAR_CLASS(klass) \
-                                                (GTK_CHECK_CLASS_CAST ((klass),\
+                                                (G_TYPE_CHECK_CLASS_CAST ((klass),\
                                                 HILDON_TYPE_SEEKBAR, HildonSeekbarClass))
 
 #define                                         HILDON_IS_SEEKBAR(obj) \
-                                                (GTK_CHECK_TYPE (obj, HILDON_TYPE_SEEKBAR))
+                                                (G_TYPE_CHECK_INSTANCE_TYPE (obj, HILDON_TYPE_SEEKBAR))
 
 #define                                         HILDON_IS_SEEKBAR_CLASS(klass) \
-                                                (GTK_CHECK_CLASS_TYPE ((klass),\
+                                                (G_TYPE_CHECK_CLASS_TYPE ((klass),\
                                                 HILDON_TYPE_SEEKBAR))
 
 #define                                         HILDON_SEEKBAR_GET_CLASS(obj) \

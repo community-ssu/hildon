@@ -1,3 +1,32 @@
+2009-06-05  Alejandro G. Castro  <alex@igalia.com>
+
+	* hildon/hildon-calendar-popup.h:
+	* hildon/hildon-caption.h:
+	* hildon/hildon-code-dialog.h:
+	* hildon/hildon-controlbar.h:
+	* hildon/hildon-date-editor.h:
+	* hildon/hildon-dialog.h:
+	* hildon/hildon-get-password-dialog.h:
+	* hildon/hildon-hvolumebar.h:
+	* hildon/hildon-login-dialog.h:
+	* hildon/hildon-note.h:
+	* hildon/hildon-number-editor.h:
+	* hildon/hildon-range-editor.h:
+	* hildon/hildon-seekbar.h:
+	* hildon/hildon-set-password-dialog.h:
+	* hildon/hildon-sort-dialog.h:
+	* hildon/hildon-time-editor.h:
+	* hildon/hildon-time-picker.h:
+	* hildon/hildon-volumebar-range.h:
+	* hildon/hildon-volumebar.h:
+	* hildon/hildon-vvolumebar.h:
+	* hildon/hildon-weekday-picker.h:
+	* hildon/hildon-window.h:
+	* hildon/hildon-wizard-dialog.h: Replaced the deprecated GTK
+	macros with the current replacements
+
+	Fixes: NB#120941 (HildonWindow using deprecated GTK_CHECK* macros)
+
 2009-06-04  Claudio Saavedra  <csaavedra@igalia.com>
 
 	* hildon/hildon-color-button.c (hildon_color_button_init): Use
