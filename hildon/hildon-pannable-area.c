@@ -134,6 +134,8 @@ struct _HildonPannableAreaPrivate {
 
   GtkAdjustment *hadjust;
   GtkAdjustment *vadjust;
+  gint x_offset;
+  gint y_offset;
 
   GtkPolicyType vscrollbar_policy;
   GtkPolicyType hscrollbar_policy;
@@ -657,6 +659,8 @@ hildon_pannable_area_init (HildonPannableArea * area)
   priv->child_width = 0;
   priv->child_height = 0;
   priv->last_in = TRUE;
+  priv->x_offset = 0;
+  priv->y_offset = 0;
 
   gtk_widget_add_events (GTK_WIDGET (area), GDK_POINTER_MOTION_HINT_MASK);
 
@@ -1111,6 +1115,7 @@ hildon_pannable_area_size_allocate (GtkWidget * widget,
   HildonPannableAreaPrivate *priv;
   GtkWidget *child = gtk_bin_get_child (GTK_BIN (widget));
   gint border_width;
+  gdouble hv, vv;
 
   border_width = GTK_CONTAINER (widget)->border_width;
 
@@ -1147,17 +1152,24 @@ hildon_pannable_area_size_allocate (GtkWidget * widget,
       gtk_widget_size_allocate (child, &child_allocation);
     }
 
+    hv = priv->hadjust->value;
+    vv = priv->vadjust->value;
+
     /* we have to do this after child size_allocate because page_size is
      * changed when we allocate the size of the children */
     if (priv->overshot_dist_y < 0) {
-      gtk_adjustment_set_value (priv->vadjust, priv->vadjust->upper -
-                                priv->vadjust->page_size);
+      priv->vadjust->value = priv->vadjust->upper - priv->vadjust->page_size;
     }
 
     if (priv->overshot_dist_x < 0) {
-      gtk_adjustment_set_value (priv->hadjust, priv->hadjust->upper -
-                                priv->hadjust->page_size);
+      priv->hadjust->value = priv->hadjust->upper - priv->hadjust->page_size;
     }
+
+    if (hv != priv->hadjust->value)
+      gtk_adjustment_value_changed (priv->hadjust);
+
+    if (vv != priv->vadjust->value)
+      gtk_adjustment_value_changed (priv->vadjust);
 
   } else {
     hildon_pannable_area_check_scrollbars (HILDON_PANNABLE_AREA (widget));
@@ -1523,9 +1535,17 @@ static void
 hildon_pannable_area_adjust_value_changed (HildonPannableArea * area,
                                            gpointer data)
 {
-  if (GTK_WIDGET_REALIZED (area)) {
-    HildonPannableAreaPrivate *priv = HILDON_PANNABLE_AREA (area)->priv;
+  HildonPannableAreaPrivate *priv = HILDON_PANNABLE_AREA (area)->priv;
+  gint xdiff, ydiff;
+  gint x = priv->x_offset;
+  gint y = priv->y_offset;
 
+  priv->x_offset = priv->hadjust->value;
+  xdiff = x - priv->x_offset;
+  priv->y_offset = priv->vadjust->value;
+  ydiff = y - priv->y_offset;
+
+  if ((xdiff || ydiff) && GTK_WIDGET_DRAWABLE (area)) {
     hildon_pannable_area_redraw (area);
 
     if ((priv->vscroll_visible) || (priv->hscroll_visible)) {
@@ -2035,7 +2055,7 @@ hildon_pannable_axis_scroll (HildonPannableArea *area,
       }
     }
 
-    gtk_adjustment_set_value (adjust, dist);
+    adjust->value = dist;
   } else {
     if (!priv->button_pressed) {
 
@@ -2093,7 +2113,10 @@ hildon_pannable_axis_scroll (HildonPannableArea *area,
         *overshot_dist = CLAMP ((*overshot_dist) + inc, -1 * overshoot_max, 0);
       } else {
         *overshooting = 0;
-        gtk_adjustment_set_value (adjust, dist);
+        adjust->value = CLAMP (dist,
+                               adjust->lower,
+                               adjust->upper -
+                               adjust->page_size);
       }
 
       if (*overshot_dist != overshot_dist_old)
@@ -2109,6 +2132,7 @@ hildon_pannable_area_scroll (HildonPannableArea *area,
   gboolean sx, sy;
   HildonPannableAreaPrivate *priv = area->priv;
   gboolean hscroll_visible, vscroll_visible;
+  gdouble hv, vv;
 
   if (gtk_bin_get_child (GTK_BIN (area)) == NULL)
     return;
@@ -2120,6 +2144,9 @@ hildon_pannable_area_scroll (HildonPannableArea *area,
 
   sx = TRUE;
   sy = TRUE;
+
+  hv = priv->hadjust->value;
+  vv = priv->vadjust->value;
 
   if (vscroll_visible) {
     hildon_pannable_axis_scroll (area, priv->vadjust, &priv->vel_y, y,
@@ -2136,6 +2163,12 @@ hildon_pannable_area_scroll (HildonPannableArea *area,
   } else {
     priv->vel_x = 0;
   }
+
+  if (hv != priv->hadjust->value)
+    gtk_adjustment_value_changed (priv->hadjust);
+
+  if (vv != priv->vadjust->value)
+    gtk_adjustment_value_changed (priv->vadjust);
 
   /* If the scroll on a particular axis wasn't succesful, reset the
    * initial scroll position to the new mouse co-ordinate. This means
@@ -3033,6 +3066,7 @@ hildon_pannable_area_jump_to (HildonPannableArea *area,
 {
   HildonPannableAreaPrivate *priv;
   gint width, height;
+  gdouble hv, vv;
 
   g_return_if_fail (HILDON_IS_PANNABLE_AREA (area));
   g_return_if_fail (GTK_WIDGET_REALIZED (area));
@@ -3049,25 +3083,32 @@ hildon_pannable_area_jump_to (HildonPannableArea *area,
 
   g_return_if_fail (x < width || y < height);
 
+  hv = priv->hadjust->value;
+  vv = priv->vadjust->value;
+
   if (x != -1) {
     gdouble jump_to = x - priv->hadjust->page_size/2;
 
-    if (jump_to > priv->hadjust->upper - priv->hadjust->page_size) {
-      jump_to = priv->hadjust->upper - priv->hadjust->page_size;
-    }
-
-    gtk_adjustment_set_value (priv->hadjust, jump_to);
+    priv->hadjust->value = CLAMP (jump_to,
+                                  priv->hadjust->lower,
+                                  priv->hadjust->upper -
+                                  priv->hadjust->page_size);
   }
 
   if (y != -1) {
     gdouble jump_to =  y - priv->vadjust->page_size/2;
 
-    if (jump_to > priv->vadjust->upper - priv->vadjust->page_size) {
-      jump_to = priv->vadjust->upper - priv->vadjust->page_size;
-    }
-
-    gtk_adjustment_set_value (priv->vadjust, jump_to);
+    priv->vadjust->value = CLAMP (jump_to,
+                                  priv->vadjust->lower,
+                                  priv->vadjust->upper -
+                                  priv->vadjust->page_size);
   }
+
+  if (hv != priv->hadjust->value)
+    gtk_adjustment_value_changed (priv->hadjust);
+
+  if (vv != priv->vadjust->value)
+    gtk_adjustment_value_changed (priv->vadjust);
 
   priv->scroll_indicator_alpha = 1.0;
 

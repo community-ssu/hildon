@@ -1,3 +1,19 @@
+2009-06-08  Alejandro G. Castro  <alex@igalia.com>
+
+	* hildon/hildon-pannable-area.c,
+	(hildon_pannable_area_init): Initialized new values to handle the
+	adjustment position.
+	(hildon_pannable_area_adjust_value_changed): Check if the values
+	changed before even call the redraw function.
+	(hildon_pannable_area_size_allocate),
+	(hildon_pannable_axis_scroll),
+	(hildon_pannable_area_scroll),
+	(hildon_pannable_area_jump_to): Improved the diagonal movement
+	case.
+
+	Fixes: NB#113065 (Image viewer image scrolling updates in X, then
+	Y)
+
 2009-06-08  Alberto Garcia  <agarcia@igalia.com>
 
 	* examples/hildon-banner-example.c:
