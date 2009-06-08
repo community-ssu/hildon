@@ -1,5 +1,14 @@
 2009-06-08  Alberto Garcia  <agarcia@igalia.com>
 
+	* examples/hildon-banner-example.c:
+	Several style updates
+	(on_animation_clicked, on_animation_idle)
+	(on_progress_clicked, on_progress_idle):
+	Add additional reference for the cases when the parent window is
+	destroyed.
+
+2009-06-08  Alberto Garcia  <agarcia@igalia.com>
+
 	* doc/hildon-sections.txt
 	* hildon/hildon-pannable-area.c
 	* hildon/hildon-banner.h

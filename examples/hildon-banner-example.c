@@ -1,7 +1,7 @@
 /*
  * This file is a part of hildon examples
  *
- * Copyright (C) 2005, 2006 Nokia Corporation, all rights reserved.
+ * Copyright (C) 2005, 2006, 2009 Nokia Corporation, all rights reserved.
  *
  * Author: Michael Dominic Kostrzewa <michael.kostrzewa@nokia.com>
  *
@@ -22,16 +22,13 @@
  *
  */
 
-#include                                        <stdio.h>
-#include                                        <stdlib.h>
-#include                                        <glib.h>
-#include                                        <gtk/gtk.h>
 #include                                        <hildon/hildon.h>
 
 static gboolean
 on_animation_idle                               (GtkWidget *banner)
 {
     gtk_widget_destroy (banner);
+    g_object_unref (banner);
     return FALSE;
 }
 
@@ -39,13 +36,14 @@ static gboolean
 on_progress_idle                                (GtkWidget *banner)
 {
     gtk_widget_destroy (banner);
+    g_object_unref (banner);
     return FALSE;
 }
 
 static gboolean
 on_information_clicked                          (GtkWidget *widget)
 {
-    GtkWidget* banner = hildon_banner_show_information (widget, NULL, "Information banner"); 
+    GtkWidget* banner = hildon_banner_show_information (widget, NULL, "Information banner");
     hildon_banner_set_timeout (HILDON_BANNER (banner), 9000);
     return TRUE;
 }
@@ -53,53 +51,55 @@ on_information_clicked                          (GtkWidget *widget)
 static gboolean
 on_animation_clicked                            (GtkWidget *widget)
 {
-    GtkWidget *banner = hildon_banner_show_animation (widget, NULL, "Animation banner"); 
-    g_timeout_add (2000, (gpointer) on_animation_idle, banner);
+    GtkWidget *banner = hildon_banner_show_animation (widget, NULL, "Animation banner");
+    g_object_ref (banner);
+    gdk_threads_add_timeout (5000, (GSourceFunc) on_animation_idle, banner);
     return TRUE;
 }
 
 static gboolean
 on_progress_clicked                             (GtkWidget *widget)
 {
-    GtkWidget *banner = hildon_banner_show_progress (widget, NULL, "Progress banner"); 
-    g_timeout_add (2000, (gpointer) on_progress_idle, banner);
+    GtkWidget *banner = hildon_banner_show_progress (widget, NULL, "Progress banner");
+    g_object_ref (banner);
+    gdk_threads_add_timeout (5000, (GSourceFunc) on_progress_idle, banner);
     return TRUE;
 }
 
 int
-main                                            (int argc, 
+main                                            (int argc,
                                                  char **argv)
 {
+    HildonProgram *program;
+    GtkWidget *window, *vbox, *button1, *button2, *button3;
+
     hildon_gtk_init (&argc, &argv);
 
-    HildonProgram *program = hildon_program_get_instance ();
+    window = hildon_window_new ();
+    program = hildon_program_get_instance ();
+    hildon_program_add_window (program, HILDON_WINDOW (window));
 
-    GtkWidget *window = hildon_window_new ();
-    hildon_program_add_window (program, HILDON_WINDOW (window));    
+    button1 = gtk_button_new_with_label ("Information");
+    g_signal_connect (button1, "clicked", G_CALLBACK (on_information_clicked), NULL);
+
+    button2 = gtk_button_new_with_label ("Animation");
+    g_signal_connect (button2, "clicked", G_CALLBACK (on_animation_clicked), NULL);
+
+    button3 = gtk_button_new_with_label ("Progress");
+    g_signal_connect (button3, "clicked", G_CALLBACK (on_progress_clicked), NULL);
+
+    vbox = gtk_vbox_new (6, FALSE);
+    gtk_box_pack_start (GTK_BOX (vbox), button1, TRUE, TRUE, 0);
+    gtk_box_pack_start (GTK_BOX (vbox), button2, TRUE, TRUE, 0);
+    gtk_box_pack_start (GTK_BOX (vbox), button3, TRUE, TRUE, 0);
 
     gtk_container_set_border_width (GTK_CONTAINER (window), 6);
+    gtk_container_add (GTK_CONTAINER (window), vbox);
 
-    GtkVBox *vbox = GTK_VBOX (gtk_vbox_new (6, FALSE));
-    GtkButton *button1 = GTK_BUTTON (gtk_button_new_with_label ("Information"));
-    g_signal_connect (G_OBJECT (button1), "clicked", G_CALLBACK (on_information_clicked), NULL);
+    gtk_widget_show_all (window);
 
-    GtkButton *button2 = GTK_BUTTON (gtk_button_new_with_label ("Animation"));
-    g_signal_connect (G_OBJECT (button2), "clicked", G_CALLBACK (on_animation_clicked), NULL);
+    g_signal_connect (window, "destroy", G_CALLBACK (gtk_main_quit), NULL);
 
-    GtkButton *button3 = GTK_BUTTON (gtk_button_new_with_label ("Progress"));
-    g_signal_connect (G_OBJECT (button3), "clicked", G_CALLBACK (on_progress_clicked), NULL);
-
-    g_signal_connect (G_OBJECT (window), "delete_event", G_CALLBACK (gtk_main_quit), NULL);
-
-    gtk_box_pack_start (GTK_BOX (vbox), GTK_WIDGET (button1), TRUE, TRUE, 0);
-    gtk_box_pack_start (GTK_BOX (vbox), GTK_WIDGET (button2), TRUE, TRUE, 0);
-    gtk_box_pack_start (GTK_BOX (vbox), GTK_WIDGET (button3), TRUE, TRUE, 0);
-    gtk_container_add (GTK_CONTAINER (window), GTK_WIDGET (vbox));
-
-    gtk_widget_show_all (GTK_WIDGET (window));
-    
     gtk_main ();
     return 0;
 }
-
-
