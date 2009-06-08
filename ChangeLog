@@ -1,3 +1,11 @@
+2009-06-08  Claudio Saavedra  <csaavedra@igalia.com>
+
+	[Release 2.1.80]
+
+	* NEWS: Updates.
+	* configure.ac: Bump version.
+	* debian/changelog: Updates.
+
 2009-06-08  Christian Dywan  <christian@lanedo.com>
 
 	* debian/changelog:
