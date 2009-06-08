@@ -2765,7 +2765,7 @@ hildon_pannable_area_remove (GtkContainer *container, GtkWidget *child)
   GTK_CONTAINER_CLASS (hildon_pannable_area_parent_class)->remove (container, child);
 }
 
-/**
+/*
  * This method calculates a factor necessary to determine the initial distance
  * to jump in hildon_pannable_area_scroll_to(). For fixed time and frames per
  * second, we know in how many frames 'n' we need to reach the destination
@@ -2790,7 +2790,7 @@ hildon_pannable_area_remove (GtkContainer *container, GtkWidget *child)
  *   vel_factor = 1 + decel_factor + ... + decel_factor^(n-1).
  *
  * That's the gem we calculate in this method.
- **/
+ */
 static void
 hildon_pannable_calculate_vel_factor (HildonPannableArea * self)
 {

@@ -1,3 +1,13 @@
+2009-06-08  Alberto Garcia  <agarcia@igalia.com>
+
+	* doc/hildon-sections.txt
+	* hildon/hildon-pannable-area.c
+	* hildon/hildon-banner.h
+	* hildon/hildon-banner.c: Documentation updates.
+
+	Fixes: MB#4643 (Documentation: hildon_banner_show_information()
+	memory management)
+
 2009-06-05  Alejandro G. Castro  <alex@igalia.com>
 
 	* hildon/hildon-calendar-popup.h:

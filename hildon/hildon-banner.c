@@ -23,8 +23,8 @@
  */
 
 /**
- * SECTION:hildon-banner 
- * @short_description: A widget used to display timed notifications. 
+ * SECTION:hildon-banner
+ * @short_description: A widget used to display timed notifications.
  *
  * #HildonBanner is a small, pop-up window that can be used to display
  * a short, timed notification or information to the user. It can
@@ -50,12 +50,27 @@
  * hildon_gtk_window_set_progress_indicator() for the preferred way of
  * showing progress notifications in Hildon 2.2.
  *
- * Information banners dissapear automatically after a certain
+ * Information banners are automatically destroyed after a certain
  * period. This is stored in the #HildonBanner:timeout property (in
  * miliseconds), and can be changed using hildon_banner_set_timeout().
  *
  * Note that #HildonBanner<!-- -->s should only be used to display
  * non-critical pieces of information.
+ *
+ * <example>
+ * <title>Using the HildonBanner widget</title>
+ * <programlisting>
+ * void show_info_banner (GtkWidget *parent)
+ * {
+ *   GtkWidget *banner;
+ * <!-- -->
+ *   banner = hildon_banner_show_information (widget, NULL, "Information banner");
+ *   hildon_banner_set_timeout (HILDON_BANNER (banner), 9000);
+ * <!-- -->
+ *   return;
+ * }
+ * </programlisting>
+ * </example>
  */
 
 #ifdef                                          HAVE_CONFIG_H
@@ -789,7 +804,7 @@ hildon_banner_class_init                        (HildonBannerClass *klass)
     /**
      * HildonBanner:timeout:
      *
-     * The time before making the banner banner go away. This needs 
+     * The time before destroying the banner. This needs
      * to be adjusted before the banner is mapped to the screen.
      *                      
      */
@@ -935,11 +950,12 @@ hildon_banner_create_animation (void)
  * any value that you pass will be ignored
  * @text: Text to display
  *
- * This function creates and displays an information banner that
- * automatically goes away after certain time period. For each window
- * in your application there can only be one timed banner, so if you
- * spawn a new banner before the earlier one has timed out, the
- * previous one will be replaced.
+ * This function creates and displays an information banner that is
+ * automatically destroyed after a certain time period (see
+ * hildon_banner_set_timeout()). For each window in your application
+ * there can only be one timed banner, so if you spawn a new banner
+ * before the earlier one has timed out, the previous one will be
+ * replaced.
  *
  * Returns: The newly created banner
  *
@@ -957,11 +973,8 @@ hildon_banner_show_information                  (GtkWidget *widget,
  * @widget: the #GtkWidget that is the owner of the banner
  * @text: Text to display
  *
- * Equivalent to hildon_banner_show_information() but it overrides the do not
- * disturb flag, in the special cases that could be needed. It is required
- * because this method calls internally gtk_widget_show before returns the banner,
- * but the do not disturb flag is checked on the mapping of the widget
- *
+ * Equivalent to hildon_banner_show_information(), but overriding the
+ * "do not disturb" flag.
  *
  * Returns: The newly created banner
  *
@@ -1026,7 +1039,7 @@ hildon_banner_real_show_information             (GtkWidget *widget,
  * @format: a printf-like format string
  * @Varargs: arguments for the format string
  *
- * A helper function for #hildon_banner_show_information with
+ * A helper function for hildon_banner_show_information() with
  * string formatting.
  *
  * Returns: the newly created banner
@@ -1061,11 +1074,12 @@ hildon_banner_show_informationf                 (GtkWidget *widget,
  * any value that you pass will be ignored
  * @markup: a markup string to display (see <link linkend="PangoMarkupFormat">Pango markup format</link>)
  *
- * This function creates and displays an information banner that
- * automatically goes away after certain time period. For each window
- * in your application there can only be one timed banner, so if you
- * spawn a new banner before the earlier one has timed out, the
- * previous one will be replaced.
+ * This function creates and displays an information banner that is
+ * automatically destroyed after certain time period (see
+ * hildon_banner_set_timeout()). For each window in your application
+ * there can only be one timed banner, so if you spawn a new banner
+ * before the earlier one has timed out, the previous one will be
+ * replaced.
  *
  * Returns: the newly created banner
  *
@@ -1106,15 +1120,20 @@ hildon_banner_show_information_with_markup      (GtkWidget *widget,
  * notifications with timed banners. In this case the banners are
  * located so that you can somehow see both.
  *
- * Please note that banners are destroyed automatically once the
+ * Unlike information banners (created with
+ * hildon_banner_show_information()), animation banners are not
+ * destroyed automatically using a timeout. You have to destroy them
+ * yourself.
+ *
+ * Please note also that these banners are destroyed automatically if the
  * window they are attached to is closed. The pointer that you receive
  * with this function does not contain additional references, so it
  * can become invalid without warning (this is true for all toplevel
  * windows in gtk). To make sure that the banner does not disappear
  * automatically, you can separately ref the return value (this
  * doesn't prevent the banner from disappearing, just the object from
- * being finalized). In this case you have to call both
- * gtk_widget_destroy() followed by g_object_unref() (in this order).
+ * being finalized). In this case you have to call
+ * gtk_widget_destroy() followed by g_object_unref().
  *
  * Returns: a #HildonBanner widget. You must call gtk_widget_destroy()
  *          once you are done with the banner.
@@ -1155,7 +1174,7 @@ hildon_banner_show_animation                    (GtkWidget *widget,
  * any value that you pass will be ignored
  * @text: text to display.
  *
- * Shows progress notification. See #hildon_banner_show_animation
+ * Shows progress notification. See hildon_banner_show_animation()
  * for more information.
  * 
  * Returns: a #HildonBanner widget. You must call #gtk_widget_destroy
@@ -1279,8 +1298,8 @@ hildon_banner_set_fraction                      (HildonBanner *self,
  * @timeout: timeout to set in miliseconds.
  *
  * Sets the timeout on the banner. After the given amount of miliseconds
- * has elapsed the banner will go away. Note that settings this only makes
- * sense on the banners that are timed and that have not been yet displayed
+ * has elapsed the banner will be destroyed. Setting this only makes
+ * sense on banners that are timed and that have not been yet displayed
  * on the screen.
  *
  * Note that this method only has effect if @self is an information

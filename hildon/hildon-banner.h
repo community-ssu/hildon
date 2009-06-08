@@ -97,11 +97,11 @@ void
 hildon_banner_set_markup                        (HildonBanner *self,
                                                  const gchar *markup);
 
+#ifndef HILDON_DISABLE_DEPRECATED
 void     
 hildon_banner_set_fraction                      (HildonBanner *self,
                                                  gdouble fraction);
 
-#ifndef HILDON_DISABLE_DEPRECATED
 void     
 hildon_banner_set_icon                          (HildonBanner *self,
                                                  const gchar *icon_name);

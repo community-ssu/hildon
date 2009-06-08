@@ -604,6 +604,7 @@ HildonBanner
 hildon_banner_show_information
 hildon_banner_show_informationf
 hildon_banner_show_information_with_markup
+hildon_banner_show_information_override_dnd
 hildon_banner_show_animation
 hildon_banner_show_progress
 hildon_banner_set_text
@@ -980,6 +981,7 @@ hildon_touch_selector_set_print_func
 hildon_touch_selector_get_print_func
 hildon_touch_selector_set_print_func_full
 hildon_touch_selector_has_multiple_selection
+hildon_touch_selector_optimal_size_request
 <SUBSECTION Standard>
 HILDON_TOUCH_SELECTOR
 HILDON_IS_TOUCH_SELECTOR
@@ -1064,6 +1066,9 @@ HILDON_IS_TIME_SELECTOR_CLASS
 HILDON_TIME_SELECTOR_GET_CLASS
 HildonTimeSelectorClass
 HildonTimeSelectorPrivate
+HILDON_TYPE_TIME_SELECTOR_FORMAT_POLICY
+HildonTimeSelectorFormatPolicy
+hildon_time_selector_format_policy_get_type
 </SECTION>
 
 <SECTION>
@@ -1230,6 +1235,7 @@ hildon_gtk_icon_view_new_with_model
 hildon_gtk_icon_view_set_ui_mode
 hildon_gtk_window_set_do_not_disturb
 hildon_gtk_window_set_progress_indicator
+hildon_gtk_window_take_screenshot
 HildonPortraitFlags
 hildon_gtk_window_set_portrait_flags
 hildon_gtk_hscale_new
