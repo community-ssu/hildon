@@ -1,3 +1,9 @@
+libhildon (2.1.81-1) unstable; urgency=low
+
+  * unreleased
+
+ -- Claudio Saavedra <csaavedra@igalia.com>  Mon, 08 Jun 2009 16:41:12 +0300
+
 libhildon (2.1.80-1) unstable; urgency=low
 
   * Fixes: NB#119805 (Merge conflict picker dialogs are too small)
