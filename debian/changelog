@@ -1,6 +1,7 @@
 libhildon (2.1.79-1) unstable; urgency=low
 
   * unreleased
+  * Improve hildon_format_file-size_for_display and use hildon-fm package.
 
  -- Claudio Saavedra <csaavedra@igalia.com>  Fri, 29 May 2009 17:41:27 +0200
 

@@ -517,17 +517,17 @@ hildon_helper_set_thumb_scrollbar               (GtkScrolledWindow *win,
 gchar *
 hildon_format_file_size_for_display             (goffset size)
 {
-    #define _HFM(string) g_dgettext ("osso-filemanager", string)
+    #define _HFM(string) g_dgettext ("hildon-fm", string)
 
     if (size < 1024)
         return g_strdup_printf (_HFM ("ckdg_va_properties_size_kb"),
                                 1);
     else if (size < 100 * 1024)
-        return g_strdup_printf (_HFM ("ckdg_va_properties_size_1kb_99k"),
-                                size / 1024);
+        return g_strdup_printf (_HFM ("ckdg_va_properties_size_1kb_99kb"),
+                                (int)size / 1024);
     else if (size < 1024 * 1024)
         return g_strdup_printf (_HFM ("ckdg_va_properties_size_100kb_1mb"),
-                                size / 1024);
+                                (int)size / 1024);
     else if (size < 10 * 1024 * 1024)
         return g_strdup_printf (_HFM ("ckdg_va_properties_size_1mb_10mb"),
                                 size / (1024.0f * 1024.0f));

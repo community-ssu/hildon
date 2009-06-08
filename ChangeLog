@@ -1,3 +1,11 @@
+2009-06-08  Christian Dywan  <christian@lanedo.com>
+
+	* debian/changelog:
+	* debian/control:
+	* hildon/hildon-helper.c (hildon_format_file_size_for_display):
+	Correct errors in hildon_format_file-size_for_display and use
+	translations from the hildon-fm package instead of osso-filemanager.
+
 2009-06-08  Alejandro G. Castro  <alex@igalia.com>
 
 	* hildon/hildon-pannable-area.c,
