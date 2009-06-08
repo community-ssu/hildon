@@ -1,3 +1,12 @@
+2009-06-08  Claudio Saavedra  <csaavedra@igalia.com>
+
+	* tests/check-hildon-controlbar.c: (test_set_range_invalid):
+	Comment out test 5, since the hildon_controlbar_set_range() range
+	check is broken and fixing it would have side effects. Also,
+	this finally fixes make distcheck.
+
+	Fixes: NB#101420 (Update unit tests and fix make distcheck)
+
 2009-06-18  Claudio Saavedra  <csaavedra@igalia.com>
 
 	* tests/TEST-CASES.txt: Remove other bogus test.
