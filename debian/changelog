@@ -9,7 +9,6 @@ libhildon (2.1.80-1) unstable; urgency=low
   * Fixes: NB#119805 (Merge conflict picker dialogs are too small)
   * Fixes: NB#109878 (height and width of focus on color icon is not
     consistent with other item in the application tool bar)
-  * Fixes: NB#120941 (HildonWindow using deprecated GTK_CHECK* macros)
   * Fixes: MB#4643 (Documentation: hildon_banner_show_information()
     memory management)
   * Fixes: NB#113065 (Image viewer image scrolling updates in X, then
