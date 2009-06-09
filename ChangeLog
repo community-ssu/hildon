@@ -1,3 +1,11 @@
+2009-06-09  Alejandro G. Castro  <alex@igalia.com>
+
+	* hildon/hildon-pannable-area.c,
+	(hildon_pannable_area_check_move),
+	(hildon_pannable_area_handle_move),
+	(hildon_pannable_area_motion_notify_cb): Refactored the
+	motion_notify method using a couple of new functions.
+
 2009-06-09  Claudio Saavedra  <csaavedra@igalia.com>
 
 	* hildon/hildon-date-selector.c:

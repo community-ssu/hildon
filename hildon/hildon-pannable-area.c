@@ -267,6 +267,14 @@ static void hildon_pannable_area_calculate_velocity (gdouble *vel,
 static gboolean hildon_pannable_area_motion_event_scroll_timeout (HildonPannableArea *area);
 static void hildon_pannable_area_motion_event_scroll (HildonPannableArea *area,
                                                       gdouble x, gdouble y);
+static void hildon_pannable_area_check_move (HildonPannableArea *area,
+                                             GdkEventMotion * event,
+                                             gdouble *x,
+                                             gdouble *y);
+static void hildon_pannable_area_handle_move (HildonPannableArea *area,
+                                              GdkEventMotion * event,
+                                              gdouble *x,
+                                              gdouble *y);
 static gboolean hildon_pannable_area_motion_notify_cb (GtkWidget * widget,
                                                        GdkEventMotion * event);
 static gboolean hildon_pannable_leave_notify_event (GtkWidget *widget,
@@ -2301,37 +2309,20 @@ hildon_pannable_area_motion_event_scroll (HildonPannableArea *area,
   }
 }
 
-static gboolean
-hildon_pannable_area_motion_notify_cb (GtkWidget * widget,
-				       GdkEventMotion * event)
+static void
+hildon_pannable_area_check_move (HildonPannableArea *area,
+                                 GdkEventMotion * event,
+                                 gdouble *x,
+                                 gdouble *y)
 {
-  HildonPannableArea *area = HILDON_PANNABLE_AREA (widget);
   HildonPannableAreaPrivate *priv = area->priv;
-  gdouble x, y;
-  gdouble delta;
-
-  if (gtk_bin_get_child (GTK_BIN (widget)) == NULL)
-    return TRUE;
-
-  if ((!priv->enabled) || (!priv->button_pressed) ||
-      ((event->time == priv->last_time) && (priv->last_type == 2))) {
-    gdk_window_get_pointer (widget->window, NULL, NULL, 0);
-    return TRUE;
-  }
-
-  if (priv->last_type == 1) {
-    priv->first_drag = TRUE;
-  }
-
-  x = event->x - priv->x;
-  y = event->y - priv->y;
 
   if (priv->first_drag && (!priv->moved) &&
-      ((ABS (x) > (priv->panning_threshold))
-       || (ABS (y) > (priv->panning_threshold)))) {
+      ((ABS (*x) > (priv->panning_threshold))
+       || (ABS (*y) > (priv->panning_threshold)))) {
     priv->moved = TRUE;
-    x = 0;
-    y = 0;
+    *x = 0;
+    *y = 0;
 
     if (priv->first_drag) {
         gboolean vscroll_visible;
@@ -2415,76 +2406,116 @@ hildon_pannable_area_motion_notify_cb (GtkWidget * widget,
                                                  hildon_pannable_area_timeout, area);
     }
   }
+}
+
+static void
+hildon_pannable_area_handle_move (HildonPannableArea *area,
+                                  GdkEventMotion * event,
+                                  gdouble *x,
+                                  gdouble *y)
+{
+  HildonPannableAreaPrivate *priv = area->priv;
+  gdouble delta;
+
+  switch (priv->mode) {
+  case HILDON_PANNABLE_AREA_MODE_PUSH:
+    /* Scroll by the amount of pixels the cursor has moved
+     * since the last motion event.
+     */
+    hildon_pannable_area_motion_event_scroll (area, *x, *y);
+    priv->x = event->x;
+    priv->y = event->y;
+    break;
+  case HILDON_PANNABLE_AREA_MODE_ACCEL:
+    /* Set acceleration relative to the initial click */
+    priv->ex = event->x;
+    priv->ey = event->y;
+    priv->vel_x = ((*x > 0) ? 1 : -1) *
+      (((ABS (*x) /
+         (gdouble) GTK_WIDGET (area)->allocation.width) *
+        (priv->vmax - priv->vmin)) + priv->vmin);
+    priv->vel_y = ((*y > 0) ? 1 : -1) *
+      (((ABS (*y) /
+         (gdouble) GTK_WIDGET (area)->allocation.height) *
+        (priv->vmax - priv->vmin)) + priv->vmin);
+    break;
+  case HILDON_PANNABLE_AREA_MODE_AUTO:
+
+    delta = event->time - priv->last_time;
+
+    if (priv->mov_mode&HILDON_MOVEMENT_MODE_VERT) {
+      gdouble dist = event->y - priv->y;
+
+      hildon_pannable_area_calculate_velocity (&priv->vel_y,
+                                               delta,
+                                               dist,
+                                               priv->vmax,
+                                               priv->drag_inertia,
+                                               priv->force,
+                                               priv->sps);
+    } else {
+      *y = 0;
+      priv->vel_y = 0;
+    }
+
+    if (priv->mov_mode&HILDON_MOVEMENT_MODE_HORIZ) {
+      gdouble dist = event->x - priv->x;
+
+      hildon_pannable_area_calculate_velocity (&priv->vel_x,
+                                               delta,
+                                               dist,
+                                               priv->vmax,
+                                               priv->drag_inertia,
+                                               priv->force,
+                                               priv->sps);
+    } else {
+      *x = 0;
+      priv->vel_x = 0;
+    }
+
+    hildon_pannable_area_motion_event_scroll (area, *x, *y);
+
+    if (priv->mov_mode&HILDON_MOVEMENT_MODE_HORIZ)
+      priv->x = event->x;
+    if (priv->mov_mode&HILDON_MOVEMENT_MODE_VERT)
+      priv->y = event->y;
+
+    break;
+  default:
+    break;
+  }
+}
+
+static gboolean
+hildon_pannable_area_motion_notify_cb (GtkWidget * widget,
+				       GdkEventMotion * event)
+{
+  HildonPannableArea *area = HILDON_PANNABLE_AREA (widget);
+  HildonPannableAreaPrivate *priv = area->priv;
+  gdouble x, y;
+
+  if (gtk_bin_get_child (GTK_BIN (widget)) == NULL)
+    return TRUE;
+
+  if ((!priv->enabled) || (!priv->button_pressed) ||
+      ((event->time == priv->last_time) && (priv->last_type == 2))) {
+    gdk_window_get_pointer (widget->window, NULL, NULL, 0);
+    return TRUE;
+  }
+
+  if (priv->last_type == 1) {
+    priv->first_drag = TRUE;
+  }
+
+  x = event->x - priv->x;
+  y = event->y - priv->y;
+
+  if (!priv->moved) {
+    hildon_pannable_area_check_move (area, event, &x, &y);
+  }
 
   if (priv->moved) {
-    switch (priv->mode) {
-    case HILDON_PANNABLE_AREA_MODE_PUSH:
-      /* Scroll by the amount of pixels the cursor has moved
-       * since the last motion event.
-       */
-      hildon_pannable_area_motion_event_scroll (area, x, y);
-      priv->x = event->x;
-      priv->y = event->y;
-      break;
-    case HILDON_PANNABLE_AREA_MODE_ACCEL:
-      /* Set acceleration relative to the initial click */
-      priv->ex = event->x;
-      priv->ey = event->y;
-      priv->vel_x = ((x > 0) ? 1 : -1) *
-	(((ABS (x) /
-	   (gdouble) widget->allocation.width) *
-	  (priv->vmax - priv->vmin)) + priv->vmin);
-      priv->vel_y = ((y > 0) ? 1 : -1) *
-	(((ABS (y) /
-	   (gdouble) widget->allocation.height) *
-	  (priv->vmax - priv->vmin)) + priv->vmin);
-      break;
-    case HILDON_PANNABLE_AREA_MODE_AUTO:
-
-      delta = event->time - priv->last_time;
-
-      if (priv->mov_mode&HILDON_MOVEMENT_MODE_VERT) {
-        gdouble dist = event->y - priv->y;
-
-        hildon_pannable_area_calculate_velocity (&priv->vel_y,
-                                                 delta,
-                                                 dist,
-                                                 priv->vmax,
-                                                 priv->drag_inertia,
-                                                 priv->force,
-                                                 priv->sps);
-      } else {
-        y = 0;
-        priv->vel_y = 0;
-      }
-
-      if (priv->mov_mode&HILDON_MOVEMENT_MODE_HORIZ) {
-        gdouble dist = event->x - priv->x;
-
-        hildon_pannable_area_calculate_velocity (&priv->vel_x,
-                                                 delta,
-                                                 dist,
-                                                 priv->vmax,
-                                                 priv->drag_inertia,
-                                                 priv->force,
-                                                 priv->sps);
-      } else {
-        x = 0;
-        priv->vel_x = 0;
-      }
-
-      hildon_pannable_area_motion_event_scroll (area, x, y);
-
-      if (priv->mov_mode&HILDON_MOVEMENT_MODE_HORIZ)
-        priv->x = event->x;
-      if (priv->mov_mode&HILDON_MOVEMENT_MODE_VERT)
-        priv->y = event->y;
-
-      break;
-
-    default:
-      break;
-    }
+    hildon_pannable_area_handle_move (area, event, &x, &y);
   } else if (priv->child) {
     gboolean in;
     gint pos_x, pos_y;
