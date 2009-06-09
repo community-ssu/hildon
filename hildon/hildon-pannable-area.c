@@ -2674,6 +2674,10 @@ hildon_pannable_area_button_release_cb (GtkWidget * widget,
     /* Send synthetic leave event */
     synth_crossing (priv->child, x, y, event->x_root,
 		    event->y_root, event->time, FALSE);
+    /* insure no click will happen for widgets that do not handle
+       leave-notify */
+    event->x = -16384;
+    event->y = -16384;
     /* Send synthetic button release event */
     ((GdkEventAny *) event)->window = g_object_ref (priv->child);
     gdk_event_put ((GdkEvent *) event);

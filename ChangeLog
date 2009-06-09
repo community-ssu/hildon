@@ -1,6 +1,13 @@
 2009-06-09  Alejandro G. Castro  <alex@igalia.com>
 
 	* hildon/hildon-pannable-area.c,
+	(hildon_pannable_area_button_release_cb): Changed the coordinates
+	of the original release in case we want to discard the release,
+	some widgets in Fremantle do not handle the leave-notify.
+
+2009-06-09  Alejandro G. Castro  <alex@igalia.com>
+
+	* hildon/hildon-pannable-area.c,
 	(hildon_pannable_area_button_release_cb): Reviewed the logic of
 	the release using the last refactored functions and avoiding the
 	movement if an element was selected.
