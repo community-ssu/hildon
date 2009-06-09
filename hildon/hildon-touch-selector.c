@@ -1158,22 +1158,24 @@ hildon_touch_selector_insert_text (HildonTouchSelector * selector,
  *
  * This functions adds a new column to the widget, whose data will
  * be obtained from the model. Only widgets added this way should used on
- * the selection logic, i.e., the print function, the #HildonTouchPicker::changed
- * signal, etc.
+ * the selection logic, the print function, the #HildonTouchSelector::changed
+ * signal, etc. Internally, a #GtkTreeView will be added to the widget, using
+ * @model as the data source.
  *
  * You can optionally pass a #GtkCellRenderer in @cell_renderer,
  * together with a %NULL-terminated list of pairs property/value, in
  * the same way you would use gtk_tree_view_column_set_attributes().
- * This will pack @cell_renderer at the start of the column, expanded by default.
- * If you prefer not to add it this way, you can simply pass %NULL to @cell_renderer
- * and use the #GtkCellLayout interface on the returned #HildonTouchSelectorColumn
- * to set your renderers.
+ * This will pack @cell_renderer at the start of the column, expanded
+ * by default.  If you prefer not to add it this way, you can simply
+ * pass %NULL to @cell_renderer and use the #GtkCellLayout interface
+ * on the returned #HildonTouchSelectorColumn to set your
+ * renderers. Please note that the returned #HildonTouchSelectorColumn
+ * is owned by @selector, you shouldn't unref it after setting it
+ * up.
  *
- * There is a prerequisite to be considered on models used: text data must
- * be in the first column.
- *
- * This method basically adds a #GtkTreeView to the widget, using the model and
- * the data received.
+ * Initially, the returned #HildonTouchSelectorColumn will have its
+ * #HildonTouchSelectorColumn:text-column property unset. You should set
+ * it to a column in @model with type %G_TYPE_STRING.
  *
  * Returns: the new column added added, %NULL otherwise.
  *

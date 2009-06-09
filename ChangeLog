@@ -1,3 +1,11 @@
+2009-06-09  Claudio Saavedra  <csaavedra@igalia.com>
+
+	* hildon/hildon-touch-selector.c: Improve the documentation for
+	hildon_touch_selector_append_column().
+
+	Fixes MB#4641 (Documentation:
+	hildon_touch_selector_append_column() ref-counting)
+
 2009-06-08  Claudio Saavedra  <csaavedra@igalia.com>
 
 	* tests/check-hildon-controlbar.c: (test_set_range_invalid):
