@@ -214,8 +214,7 @@ hildon_time_selector_constructor (GType type,
 
   column = hildon_touch_selector_append_text_column (HILDON_TOUCH_SELECTOR (selector),
                                                      selector->priv->hours_model, TRUE);
-  g_object_set (column, "text-column", 0, NULL);
-
+  hildon_touch_selector_column_set_text_column (column, 0);
 
   /* we need initialization parameters in order to create minute models*/
   selector->priv->minutes_step = selector->priv->minutes_step ? selector->priv->minutes_step : 1;
@@ -224,7 +223,7 @@ hildon_time_selector_constructor (GType type,
 
   column = hildon_touch_selector_append_text_column (HILDON_TOUCH_SELECTOR (selector),
                                                      selector->priv->minutes_model, TRUE);
-  g_object_set (column, "text-column", 0, NULL);
+  hildon_touch_selector_column_set_text_column (column, 0);
 
   if (selector->priv->ampm_format) {
     selector->priv->ampm_model = _create_ampm_model (selector);

@@ -289,7 +289,7 @@ hildon_touch_selector_entry_set_text_column (HildonTouchSelectorEntry *selector,
 
   column = hildon_touch_selector_get_column (HILDON_TOUCH_SELECTOR (selector), 0);
 
-  g_object_set (G_OBJECT (column), "text-column", text_column, NULL);
+  hildon_touch_selector_column_set_text_column (column, text_column);
 }
 
 /**
@@ -313,7 +313,7 @@ hildon_touch_selector_entry_get_text_column (HildonTouchSelectorEntry *selector)
   column = hildon_touch_selector_get_column (HILDON_TOUCH_SELECTOR (selector),
                                              0);
 
-  g_object_get (G_OBJECT (column), "text-column", &text_column, NULL);
+  text_column = hildon_touch_selector_column_get_text_column (column);
 
   return text_column;
 }

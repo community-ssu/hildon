@@ -597,7 +597,7 @@ _default_print_func (HildonTouchSelector * selector, gpointer user_data)
     selected_rows = hildon_touch_selector_get_selected_rows (selector, 0);
     model = hildon_touch_selector_get_model (selector, 0);
     column = hildon_touch_selector_get_column (selector, 0);
-    g_object_get (G_OBJECT(column), "text-column", &text_column, NULL);
+    text_column = hildon_touch_selector_column_get_text_column (column);
 
     result = g_strdup_printf ("(");
     i = 0;
@@ -641,7 +641,7 @@ _default_print_func (HildonTouchSelector * selector, gpointer user_data)
   for (i = initial_value; i < num_columns; i++) {
     model = hildon_touch_selector_get_model (selector, i);
     column = hildon_touch_selector_get_column (selector, i);
-    g_object_get (G_OBJECT(column), "text-column", &text_column, NULL);
+    text_column = hildon_touch_selector_column_get_text_column (column);
 
     if (hildon_touch_selector_get_selected (selector, i, &iter)) {
       if (text_column == -1 ) {
@@ -1074,7 +1074,7 @@ hildon_touch_selector_new_text (void)
   column = hildon_touch_selector_append_text_column (HILDON_TOUCH_SELECTOR (selector),
                                                      GTK_TREE_MODEL (store), TRUE);
 
-  g_object_set (G_OBJECT (column), "text-column", 0, NULL);
+  hildon_touch_selector_column_set_text_column (column, 0);
 
   return selector;
 }

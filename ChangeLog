@@ -1,5 +1,19 @@
 2009-06-09  Claudio Saavedra  <csaavedra@igalia.com>
 
+	* hildon/hildon-date-selector.c:
+	(hildon_date_selector_construct_ui):
+	* hildon/hildon-time-selector.c:
+	(hildon_time_selector_constructor):
+	* hildon/hildon-touch-selector-entry.c:
+	(hildon_touch_selector_entry_set_text_column),
+	(hildon_touch_selector_entry_get_text_column):
+	* hildon/hildon-touch-selector.c: (_default_print_func),
+	(hildon_touch_selector_new_text): Use
+	hildon_touch_selector_set/get_text_column() instead of
+	setting/getting the "text-column" property.
+
+2009-06-09  Claudio Saavedra  <csaavedra@igalia.com>
+
 	* doc/hildon-sections.txt: Add the new public methods below.
 
 	* examples/hildon-picker-button-multicolumn-example.c:

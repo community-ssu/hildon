@@ -318,17 +318,17 @@ hildon_date_selector_construct_ui (HildonDateSelector *selector)
     case DAY:
       column = hildon_touch_selector_append_text_column (HILDON_TOUCH_SELECTOR (selector),
                                                          selector->priv->day_model, TRUE);
-      g_object_set (G_OBJECT (column), "text-column", 0, NULL);
+      hildon_touch_selector_column_set_text_column (column, 0);
       break;
     case MONTH:
       column = hildon_touch_selector_append_text_column (HILDON_TOUCH_SELECTOR (selector),
                                                          selector->priv->month_model, TRUE);
-      g_object_set (G_OBJECT (column), "text-column", 0, NULL);
+      hildon_touch_selector_column_set_text_column (column, 0);
       break;
     case YEAR:
       column = hildon_touch_selector_append_text_column (HILDON_TOUCH_SELECTOR (selector),
                                                          selector->priv->year_model, TRUE);
-      g_object_set (G_OBJECT (column), "text-column", 0, NULL);
+      hildon_touch_selector_column_set_text_column (column, 0);
       break;
     default:
       g_error ("Current column order incorrect");
