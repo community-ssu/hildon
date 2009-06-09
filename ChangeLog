@@ -1,5 +1,10 @@
 2009-06-09  Claudio Saavedra  <csaavedra@igalia.com>
 
+	* hildon/hildon-time-selector.c: Fix the docs for
+	hildon_time_selector_new_step().
+
+2009-06-09  Claudio Saavedra  <csaavedra@igalia.com>
+
 	* hildon/hildon-touch-selector.c: Improve the documentation for
 	hildon_touch_selector_append_column().
 

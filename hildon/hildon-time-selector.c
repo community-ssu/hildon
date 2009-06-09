@@ -623,10 +623,10 @@ hildon_time_selector_new ()
 
 /**
  * hildon_time_selector_new_step:
- *
- * Creates a new #HildonTimeSelector
- * @minutes_step: step between the minutes we are going to show in the
- * selector
+ * @minutes_step: step between the minutes in the selector.
+
+ * Creates a new #HildonTimeSelector, with @minutes_step steps between
+ * the minutes in the minutes column.
  *
  * Returns: a new #HildonTimeSelector
  *
