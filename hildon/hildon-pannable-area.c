@@ -2574,8 +2574,10 @@ static gboolean
 hildon_pannable_area_button_release_cb (GtkWidget * widget,
 					GdkEventButton * event)
 {
-  HildonPannableAreaPrivate *priv = HILDON_PANNABLE_AREA (widget)->priv;
+  HildonPannableArea *area = HILDON_PANNABLE_AREA (widget);
+  HildonPannableAreaPrivate *priv = area->priv;
   gint x, y;
+  gdouble dx, dy;
   GdkWindow *child;
 
   if  (((event->time == priv->last_time) && (priv->last_type == 3))
@@ -2583,101 +2585,71 @@ hildon_pannable_area_button_release_cb (GtkWidget * widget,
        || (!priv->button_pressed) || (!priv->enabled) || (event->button != 1))
     return TRUE;
 
-  priv->scroll_indicator_event_interrupt = 0;
-  priv->scroll_delay_counter = priv->scrollbar_fade_delay;
-
-  /* move all the way to the last position */
-  if (priv->motion_event_scroll_timeout) {
-    g_source_remove (priv->motion_event_scroll_timeout);
-    hildon_pannable_area_motion_event_scroll_timeout (HILDON_PANNABLE_AREA (widget));
-    priv->motion_x = 0;
-    priv->motion_y = 0;
-  }
-
+  /* if last event was a motion-notify we have to check the movement
+     and launch the animation */
   if (priv->last_type == 2) {
-    gdouble delta = event->time - priv->last_time;
 
-    if (priv->mov_mode&HILDON_MOVEMENT_MODE_VERT) {
-      gdouble dist = event->y - priv->y;
+    dx = event->x - priv->x;
+    dy = event->y - priv->y;
 
-      if (ABS (dist) >= 1.0) {
-        hildon_pannable_area_calculate_velocity (&priv->vel_y,
-                                                 delta,
-                                                 dist,
-                                                 priv->vmax,
-                                                 priv->drag_inertia,
-                                                 priv->force,
-                                                 priv->sps);
+    hildon_pannable_area_check_move (area, (GdkEventMotion *) event, &dx, &dy);
 
-        priv->motion_y = dist;
+    if (priv->moved) {
+      gdouble delta = event->time - priv->last_time;
+
+      hildon_pannable_area_handle_move (area, (GdkEventMotion *) event, &dx, &dy);
+
+      /* move all the way to the last position now */
+      if (priv->motion_event_scroll_timeout) {
+        g_source_remove (priv->motion_event_scroll_timeout);
         hildon_pannable_area_motion_event_scroll_timeout (HILDON_PANNABLE_AREA (widget));
-      } else
-        if (delta >= CURSOR_STOPPED_TIMEOUT) {
-          y = 0;
-          priv->vel_y = 0;
-        }
-    }
+        priv->motion_x = 0;
+        priv->motion_y = 0;
+      }
 
-    if (priv->mov_mode&HILDON_MOVEMENT_MODE_HORIZ) {
-      gdouble dist = event->x - priv->x;
+      if ((ABS (dx) < 4.0) && (delta >= CURSOR_STOPPED_TIMEOUT))
+        priv->vel_x = 0;
 
-      if (ABS (dist) >= 1.0) {
-        hildon_pannable_area_calculate_velocity (&priv->vel_x,
-                                                 delta,
-                                                 dist,
-                                                 priv->vmax,
-                                                 priv->drag_inertia,
-                                                 priv->force,
-                                                 priv->sps);
-        priv->motion_x = dist;
-        hildon_pannable_area_motion_event_scroll_timeout (HILDON_PANNABLE_AREA (widget));
-      } else
-        if (delta >= CURSOR_STOPPED_TIMEOUT) {
-          x = 0;
-          priv->vel_x = 0;
-        }
+      if ((ABS (dy) < 4.0) && (delta >= CURSOR_STOPPED_TIMEOUT))
+        priv->vel_y = 0;
     }
   }
 
-  if ((ABS (priv->vel_y) > priv->vmin)||
-      (ABS (priv->vel_x) > priv->vmin)) {
-    priv->scroll_indicator_alpha = 1.0;
+  /* If overshoot has been initiated with a finger down, on release set max speed */
+  if (priv->overshot_dist_y != 0) {
+    priv->overshooting_y = priv->bounce_steps; /* Hack to stop a bounce in the finger down case */
+    priv->vel_y = priv->vmax_overshooting;
   }
 
-  hildon_pannable_area_launch_fade_timeout (HILDON_PANNABLE_AREA (widget),
-                                            priv->scroll_indicator_alpha);
+  if (priv->overshot_dist_x != 0) {
+    priv->overshooting_x = priv->bounce_steps; /* Hack to stop a bounce in the finger down case */
+    priv->vel_x = priv->vmax_overshooting;
+  }
 
   priv->button_pressed = FALSE;
 
-  if (priv->mode == HILDON_PANNABLE_AREA_MODE_AUTO ||
-      priv->mode == HILDON_PANNABLE_AREA_MODE_ACCEL) {
+  if  ((ABS (priv->vel_y) >= priv->vmin) ||
+       (ABS (priv->vel_x) >= priv->vmin)) {
 
-    /* If overshoot has been initiated with a finger down, on release set max speed */
-    if (priv->overshot_dist_y != 0) {
-      priv->overshooting_y = priv->bounce_steps; /* Hack to stop a bounce in the finger down case */
-      priv->vel_y = priv->vmax_overshooting;
-    }
+    priv->scroll_indicator_alpha = 1.0;
 
-    if (priv->overshot_dist_x != 0) {
-      priv->overshooting_x = priv->bounce_steps; /* Hack to stop a bounce in the finger down case */
-      priv->vel_x = priv->vmax_overshooting;
-    }
+    if (ABS (priv->vel_x) > MAX_SPEED_THRESHOLD)
+      priv->vel_x = (priv->vel_x > 0) ? priv->vmax : -priv->vmax;
 
-    if ((ABS (priv->vel_y) >= priv->vmin) ||
-        (ABS (priv->vel_x) >= priv->vmin)) {
+    if (ABS (priv->vel_y) > MAX_SPEED_THRESHOLD)
+      priv->vel_y = (priv->vel_y > 0) ? priv->vmax : -priv->vmax;
 
-      if (ABS (priv->vel_x) > MAX_SPEED_THRESHOLD)
-        priv->vel_x = (priv->vel_x > 0) ? priv->vmax : -priv->vmax;
-
-      if (ABS (priv->vel_y) > MAX_SPEED_THRESHOLD)
-        priv->vel_y = (priv->vel_y > 0) ? priv->vmax : -priv->vmax;
-
-      if (!priv->idle_id)
-        priv->idle_id = gdk_threads_add_timeout ((gint) (1000.0 / (gdouble) priv->sps),
-                                                 (GSourceFunc)
-                                                 hildon_pannable_area_timeout, widget);
-    }
+    if (!priv->idle_id)
+      priv->idle_id = gdk_threads_add_timeout ((gint) (1000.0 / (gdouble) priv->sps),
+                                               (GSourceFunc)
+                                               hildon_pannable_area_timeout, widget);
   }
+
+  priv->scroll_indicator_event_interrupt = 0;
+  priv->scroll_delay_counter = priv->scrollbar_fade_delay;
+
+  hildon_pannable_area_launch_fade_timeout (HILDON_PANNABLE_AREA (widget),
+                                            priv->scroll_indicator_alpha);
 
   priv->last_time = event->time;
   priv->last_type = 3;
