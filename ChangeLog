@@ -1,5 +1,24 @@
 2009-06-09  Claudio Saavedra  <csaavedra@igalia.com>
 
+	* doc/hildon-sections.txt: Add the new public methods below.
+
+	* examples/hildon-picker-button-multicolumn-example.c:
+	(create_touch_selector):
+	* examples/hildon-touch-selector-example.c: (create_selector):
+	* examples/hildon-touch-selector-multi-cells-example.c:
+	(create_selector):
+	Use hildon_touch_selector_column_set_text_column()
+
+	* hildon/hildon-touch-selector-column.h:
+	* hildon/hildon-touch-selector.c:
+	(hildon_touch_selector_column_set_text_column),
+	(hildon_touch_selector_column_get_text_column):
+	Make hildon_touch_selector_column_set/get_column() public, use
+	them in the inline example, document them, and reference to them
+	in the docs.
+
+2009-06-09  Claudio Saavedra  <csaavedra@igalia.com>
+
 	* hildon/hildon-time-selector.c: Fix the docs for
 	hildon_time_selector_new_step().
 

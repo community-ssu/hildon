@@ -68,6 +68,12 @@ struct                                          _HildonTouchSelectorColumnClass
 GType
 hildon_touch_selector_column_get_type           (void) G_GNUC_CONST;
 
+void
+hildon_touch_selector_column_set_text_column (HildonTouchSelectorColumn *column,
+                                              gint text_column);
+gint
+hildon_touch_selector_column_get_text_column (HildonTouchSelectorColumn *column);
+
 G_END_DECLS
 
 

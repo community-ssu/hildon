@@ -110,7 +110,7 @@
  *                                                 GTK_TREE_MODEL (store_icons),
  *                                                 renderer, "stock-id", 0, NULL);
  * <!-- -->
- *   g_object_set (G_OBJECT (column), "text-column", 0, NULL);
+ *   hildon_touch_selector_column_set_text_column (column, 0);
  * <!-- -->
  *   hildon_touch_selector_set_column_selection_mode (HILDON_TOUCH_SELECTOR (selector),
  *                                                    HILDON_TOUCH_SELECTOR_SELECTION_MODE_MULTIPLE);
@@ -787,12 +787,6 @@ static void
 hildon_touch_selector_column_set_property  (GObject *object, guint property_id,
                                             const GValue *value, GParamSpec *pspec);
 
-static void
-hildon_touch_selector_column_set_text_column (HildonTouchSelectorColumn *column,
-                                              gint text_column);
-static gint
-hildon_touch_selector_column_get_text_column (HildonTouchSelectorColumn *column);
-
 
 static void
 hildon_touch_selector_column_class_init (HildonTouchSelectorColumnClass *klass)
@@ -826,7 +820,19 @@ hildon_touch_selector_column_init (HildonTouchSelectorColumn *column)
   column->priv->text_column = -1;
 }
 
-static void
+/**
+ * hildon_touch_selector_column_set_text_column:
+ * @column: A #HildonTouchSelectorColumn
+ * @text_column: the index of a model column in the model for @column.
+ *
+ * Sets the model column to be displayed in @column. @text_column must point to a
+ * column in the model used with type %G_TYPE_STRING. Initially, this property
+ * is unset. You should set it before using the #HildonTouchSelector that uses
+ * @column.
+ *
+ * Since: 2.2
+ **/
+void
 hildon_touch_selector_column_set_text_column (HildonTouchSelectorColumn *column,
                                               gint text_column)
 {
@@ -838,7 +844,17 @@ hildon_touch_selector_column_set_text_column (HildonTouchSelectorColumn *column,
   g_object_notify (G_OBJECT (column), "text-column");
 }
 
-static gint
+/**
+ * hildon_touch_selector_column_get_text_column:
+ * @column: a #HildonTouchSelectorColumn
+ *
+ * Gets the model column set as the text source for @column.
+ *
+ * Returns: the index of the text column for @column, or -1 if unset.
+ *
+ * Since: 2.2
+ **/
+gint
 hildon_touch_selector_column_get_text_column (HildonTouchSelectorColumn *column)
 {
   g_return_val_if_fail (HILDON_IS_TOUCH_SELECTOR_COLUMN (column), -1);
@@ -1175,7 +1191,8 @@ hildon_touch_selector_insert_text (HildonTouchSelector * selector,
  *
  * Initially, the returned #HildonTouchSelectorColumn will have its
  * #HildonTouchSelectorColumn:text-column property unset. You should set
- * it to a column in @model with type %G_TYPE_STRING.
+ * it to a column in @model with type %G_TYPE_STRING. See
+ * hildon_touch_selector_column_set_text_column().
  *
  * Returns: the new column added added, %NULL otherwise.
  *

@@ -76,7 +76,7 @@ create_selector ()
   column = hildon_touch_selector_append_column (HILDON_TOUCH_SELECTOR (selector),
                                                 GTK_TREE_MODEL (store_icons),
                                                 renderer, "stock-id", 0, NULL);
-  g_object_set (G_OBJECT (column), "text-column", 0, NULL);
+  hildon_touch_selector_column_set_text_column (column, 0);
 
   hildon_touch_selector_set_column_selection_mode (HILDON_TOUCH_SELECTOR (selector),
                                                    HILDON_TOUCH_SELECTOR_SELECTION_MODE_MULTIPLE);

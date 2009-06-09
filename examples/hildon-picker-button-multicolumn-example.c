@@ -44,7 +44,7 @@ create_touch_selector (void)
 
   column = hildon_touch_selector_append_text_column (HILDON_TOUCH_SELECTOR (selector),
                                                      GTK_TREE_MODEL (model), TRUE);
-  g_object_set (G_OBJECT(column), "text-column", 0, NULL);
+  hildon_touch_selector_column_set_text_column (column, 0);
 
   model = gtk_list_store_new (1, G_TYPE_STRING);
 
@@ -59,7 +59,7 @@ create_touch_selector (void)
 
   column = hildon_touch_selector_append_text_column (HILDON_TOUCH_SELECTOR (selector),
                                                      GTK_TREE_MODEL (model), TRUE);
-  g_object_set (G_OBJECT(column), "text-column", 0, NULL);
+  hildon_touch_selector_column_set_text_column (column, 0);
   
   return selector;
 }

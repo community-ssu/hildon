@@ -262,6 +262,8 @@ HildonCaptionClass
 <FILE>hildon-touch-selector-column</FILE>
 <TITLE>HildonTouchSelectorColumn</TITLE>
 HildonTouchSelectorColumn
+hildon_touch_selector_column_set_text_column
+hildon_touch_selector_column_get_text_column
 <SUBSECTION Standard>
 HILDON_TOUCH_SELECTOR_COLUMN
 HILDON_IS_TOUCH_SELECTOR_COLUMN
