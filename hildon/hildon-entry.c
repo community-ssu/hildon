@@ -265,7 +265,7 @@ hildon_entry_class_init                         (HildonEntryClass *klass)
             "Size request for the entry",
             HILDON_TYPE_SIZE_TYPE,
             HILDON_SIZE_AUTO_WIDTH | HILDON_SIZE_FINGER_HEIGHT,
-            G_PARAM_WRITABLE));
+            G_PARAM_CONSTRUCT | G_PARAM_WRITABLE));
 
     g_type_class_add_private (klass, sizeof (HildonEntryPrivate));
 }

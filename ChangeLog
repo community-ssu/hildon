@@ -1,3 +1,10 @@
+2009-06-10  Claudio Saavedra  <csaavedra@igalia.com>
+
+	* hildon/hildon-entry.c (hildon_entry_class_init): Make HildonEntry:size
+	a G_PARAM_CONSTRUCT property, to allow the default size to be set.
+
+	Fixes: NB#117931 (Theming issues in accounts dialogs)
+
 2009-06-09  Alejandro G. Castro  <alex@igalia.com>
 
 	* hildon/hildon-pannable-area.c,
