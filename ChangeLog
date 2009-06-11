@@ -1,3 +1,13 @@
+2009-06-11  Alberto Garcia  <agarcia@igalia.com>
+
+	* hildon/hildon-code-dialog.c
+	* hildon/hildon-date-editor.c
+	* hildon/hildon-number-editor.c
+	* hildon/hildon-seekbar.c
+	* hildon/hildon-stackable-window.c
+	* hildon/hildon-window.c:
+	Misc documentation updates
+
 2009-06-10  Claudio Saavedra  <csaavedra@igalia.com>
 
 	* hildon/hildon-entry.c (hildon_entry_class_init): Make HildonEntry:size

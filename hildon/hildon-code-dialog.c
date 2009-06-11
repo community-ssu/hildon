@@ -606,7 +606,7 @@ hildon_code_dialog_get_code                     (HildonCodeDialog *dialog)
 }
 
 /**
- * hildon_code_dialog_clear_clode:
+ * hildon_code_dialog_clear_code:
  * @dialog: The #HildonCodeDialog whose entry should be cleared:
  *
  * Use this function to clear the user entered code.

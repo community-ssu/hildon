@@ -945,9 +945,11 @@ hildon_number_editor_set_range                  (HildonNumberEditor *editor,
 
 /**
  * hildon_number_editor_get_value:
- * @editor: pointer to #HildonNumberEditor
+ * @editor: a #HildonNumberEditor
  *
- * Returns: current NumberEditor value
+ * Gets the current value of the number editor.
+ *
+ * Returns: the current value
  */
 gint
 hildon_number_editor_get_value                  (HildonNumberEditor *editor)
@@ -964,7 +966,7 @@ hildon_number_editor_get_value                  (HildonNumberEditor *editor)
 
 /**
  * hildon_number_editor_set_value:
- * @editor: pointer to #HildonNumberEditor
+ * @editor: a #HildonNumberEditor
  * @value: numeric value for number editor
  *
  * Sets numeric value for number editor

@@ -1860,7 +1860,7 @@ hildon_window_set_edit_toolbar                  (HildonWindow      *self,
  * hildon_window_get_main_menu:
  * @self: a #HildonWindow
  *
- * Gets the #GtkMenu assigned to the #HildonAppview. Note that the
+ * Gets the #GtkMenu assigned to the #HildonWindow. Note that the
  * window is still the owner of the menu.
  *
  * Note that if you're using a #HildonAppMenu rather than a #GtkMenu
@@ -1885,6 +1885,8 @@ hildon_window_get_main_menu                     (HildonWindow * self)
 /**
  * hildon_window_get_menu:
  * @self: a #HildonWindow
+ *
+ * Gets the #GtkMenu assigned to @self
  *
  * Return value: a #GtkMenu
  *

@@ -1512,7 +1512,9 @@ hildon_date_editor_set_day                      (HildonDateEditor *editor,
 
 /**
  * hildon_date_editor_get_year:
- * @editor: the @HildonDateEditor widget
+ * @editor: the #HildonDateEditor widget
+ *
+ * Gets the year shown in the editor.
  *
  * Returns: the current year shown in the editor.
  */

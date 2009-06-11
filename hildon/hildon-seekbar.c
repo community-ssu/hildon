@@ -328,9 +328,11 @@ hildon_seekbar_new                              (void)
 
 /**
  * hildon_seekbar_get_total_time:
- * @seekbar: pointer to #HildonSeekbar widget
+ * @seekbar: a #HildonSeekbar
  *
- * Returns: total playing time of media in seconds.
+ * Gets the total playing time of the media (in seconds).
+ *
+ * Returns: total playing time.
  */
 gint
 hildon_seekbar_get_total_time                   (HildonSeekbar *seekbar)
@@ -344,7 +346,7 @@ hildon_seekbar_get_total_time                   (HildonSeekbar *seekbar)
 
 /**
  * hildon_seekbar_set_total_time:
- * @seekbar: pointer to #HildonSeekbar widget
+ * @seekbar: a #HildonSeekbar
  * @time: integer greater than zero
  *
  * Set total playing time of media in seconds.

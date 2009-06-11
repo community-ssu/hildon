@@ -145,6 +145,8 @@ hildon_stackable_window_get_stack               (HildonStackableWindow *self)
  * @self: a #HildonStackableWindow
  * @menu: a #HildonAppMenu to be used for this window
  *
+ * Sets the menu to be used for this window.
+ *
  * Deprecated: Hildon 2.2: use hildon_window_set_app_menu()
  **/
 void
