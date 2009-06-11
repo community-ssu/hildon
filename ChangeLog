@@ -1,5 +1,19 @@
 2009-06-11  Alberto Garcia  <agarcia@igalia.com>
 
+	* hildon/hildon-window.c (hildon_window_toggle_gtk_menu)
+	(+legacy_menu_realized, +legacy_menu_unmapped)
+	(+set_legacy_menu_type):
+	Set the _HILDON_WM_WINDOW_TYPE property to legacy Gtk app menus so
+	they can be identified by the window manager.
+
+	Fixes: NB#101437 (Invoking CSM on the left side of page area is
+	displayed in wrong location)
+
+	Fixes: MB#4563 (Popup menu won't locate at the left side of the
+	screen)
+
+2009-06-11  Alberto Garcia  <agarcia@igalia.com>
+
 	Remove m4/gtk-doc.m4, as it already comes with gtk-doc-tools
 
 	Fixes: MB#4616 (Compiling libhildon requires gtk-doc but does not

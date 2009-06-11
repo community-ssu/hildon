@@ -109,6 +109,9 @@
 
 #define                                         CAN_HIBERNATE_PROPERTY "_HILDON_ABLE_TO_HIBERNATE"
 
+#define                                         LEGACY_MENU_PROPERTY_NAME  "_HILDON_WM_WINDOW_TYPE"
+#define                                         LEGACY_MENU_PROPERTY_VALUE "_HILDON_WM_WINDOW_TYPE_LEGACY_MENU"
+
 #define TITLE_SEPARATOR                         " - "
 
 typedef void                                    (*HildonWindowSignal) (HildonWindow *, gint, gpointer);
@@ -1241,6 +1244,36 @@ hildon_window_focus_out_event                   (GtkWidget *widget,
   return GTK_WIDGET_CLASS (hildon_window_parent_class)->focus_out_event (widget, event);
 }
 
+static void
+set_legacy_menu_type                            (GtkMenu  *menu,
+                                                 gboolean  set)
+{
+    GdkWindow *gdkwin = GTK_WIDGET (menu->toplevel)->window;
+    GdkAtom property = gdk_atom_intern_static_string (LEGACY_MENU_PROPERTY_NAME);
+    if (set) {
+        GdkAtom type = gdk_x11_xatom_to_atom (XA_ATOM);
+        GdkAtom value = gdk_atom_intern_static_string (LEGACY_MENU_PROPERTY_VALUE);
+        gdk_property_change (gdkwin, property, type, 32,
+                             GDK_PROP_MODE_REPLACE, (const guchar *) &value, 1);
+    } else {
+        gdk_property_delete (gdkwin, property);
+    }
+}
+
+static void
+legacy_menu_realized                            (GtkMenu *menu)
+{
+    set_legacy_menu_type (menu, TRUE);
+    g_signal_handlers_disconnect_by_func (menu, legacy_menu_realized, NULL);
+}
+
+static void
+legacy_menu_unmapped                            (GtkMenu *menu)
+{
+    set_legacy_menu_type (menu, FALSE);
+    g_signal_handlers_disconnect_by_func (menu, legacy_menu_unmapped, NULL);
+}
+
 /*
  * The menu popuping needs a menu popup-function
  */
@@ -1544,6 +1577,18 @@ hildon_window_toggle_gtk_menu                   (HildonWindow *self,
         {
             HildonWindowPrivate *priv = HILDON_WINDOW_GET_PRIVATE (self);
             g_list_free (menu_children);
+
+            /* Set the 'legacy app menu' property when the widget is realized */
+            if (GTK_WIDGET_REALIZED (menu)) {
+                set_legacy_menu_type (menu, TRUE);
+            } else {
+                g_signal_connect (menu, "realize",
+                                  G_CALLBACK (legacy_menu_realized), NULL);
+            }
+
+            /* Remove it when it's unmapped */
+            g_signal_connect (menu, "unmap",
+                              G_CALLBACK (legacy_menu_unmapped), NULL);
 
             /* Apply right theming */
             gtk_widget_set_name (GTK_WIDGET (menu), "menu_force_with_corners");
