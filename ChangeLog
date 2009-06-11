@@ -1,5 +1,12 @@
 2009-06-11  Alberto Garcia  <agarcia@igalia.com>
 
+	Remove m4/gtk-doc.m4, as it already comes with gtk-doc-tools
+
+	Fixes: MB#4616 (Compiling libhildon requires gtk-doc but does not
+	use gtk-doc support)
+
+2009-06-11  Alberto Garcia  <agarcia@igalia.com>
+
 	* hildon/hildon-code-dialog.c
 	* hildon/hildon-date-editor.c
 	* hildon/hildon-number-editor.c
