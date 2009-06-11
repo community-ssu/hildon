@@ -1,5 +1,13 @@
 2009-06-15  Alberto Garcia  <agarcia@igalia.com>
 
+	* hildon/hildon-check-button.c:
+	Documentation updates
+
+	Fixes: MB#4598 (HildonCheckButton documentation doesn't say why it
+	exists)
+
+2009-06-15  Alberto Garcia  <agarcia@igalia.com>
+
 	* hildon/Makefile.am
 	* hildon/hildon-edit-toolbar-private.h
 	* hildon/hildon-edit-toolbar.c

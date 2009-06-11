@@ -22,6 +22,10 @@
  * which will remain 'pressed-in' when clicked. Clicking again will
  * make the check box toggle its state.
  *
+ * #HildonCheckButton is similar to the #GtkCheckButton widget, but
+ * with a different appearance that combines a standard button and a
+ * check box.
+ *
  * The state of a #HildonCheckButton can be set using
  * hildon_check_button_set_active(), and retrieved using
  * hildon_check_button_get_active(). The label can be set using
