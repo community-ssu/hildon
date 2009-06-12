@@ -555,7 +555,8 @@ hildon_app_menu_map                             (GtkWidget *widget)
      * new window appears */
     gtk_window_set_is_temporary (GTK_WINDOW (widget), TRUE);
 
-    priv->find_intruder_idle_id = gdk_threads_add_idle (hildon_app_menu_find_intruder, widget);
+    if (priv->find_intruder_idle_id == 0)
+        priv->find_intruder_idle_id = gdk_threads_add_idle (hildon_app_menu_find_intruder, widget);
 }
 
 static void

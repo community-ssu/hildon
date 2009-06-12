@@ -1,3 +1,11 @@
+2009-06-12  Alberto Garcia  <agarcia@igalia.com>
+
+	* hildon/hildon-app-menu.c (hildon_app_menu_map):
+	Don't install a new idle function if there's already one
+	installed.
+
+	Fixes: NB#122254
+
 2009-06-11  Alberto Garcia  <agarcia@igalia.com>
 
 	* hildon/hildon-window.c (hildon_window_toggle_gtk_menu)
