@@ -84,7 +84,6 @@
 #undef                                          HILDON_DISABLE_DEPRECATED
 
 #include                                        "hildon-banner.h"
-#include                                        "hildon-banner-private.h"
 #include                                        "hildon-defines.h"
 #include                                        "hildon-gtk.h"
 
@@ -215,8 +214,29 @@ hildon_banner_real_show_information             (GtkWidget *widget,
                                                  const gchar *text,
                                                  gboolean override_dnd);
 
-
 G_DEFINE_TYPE (HildonBanner, hildon_banner, GTK_TYPE_WINDOW)
+
+typedef struct                                  _HildonBannerPrivate HildonBannerPrivate;
+
+#define                                         HILDON_BANNER_GET_PRIVATE(obj) \
+                                                (G_TYPE_INSTANCE_GET_PRIVATE ((obj), \
+                                                HILDON_TYPE_BANNER, HildonBannerPrivate));
+
+struct                                          _HildonBannerPrivate
+{
+    GtkWidget *main_item;
+    GtkWidget *alignment;
+    GtkWidget *label;
+    GtkWidget *layout;
+    GtkWindow *parent;
+    guint      timeout;
+    guint      timeout_id;
+    guint      is_timed             : 1;
+    guint      has_been_wrapped     : 1;
+    guint      has_been_truncated   : 1;
+    guint      require_override_dnd : 1;
+    guint      overrides_dnd        : 1;
+};
 
 static GQuark 
 hildon_banner_timed_quark                       (void)

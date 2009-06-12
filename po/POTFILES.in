@@ -12,7 +12,6 @@ hildon/hildon-weekday-picker.c
 hildon/hildon-time-picker.c
 hildon/hildon-weekday-picker.h
 hildon/hildon-note.h
-hildon/hildon-banner-private.h
 hildon/hildon-time-picker.h
 hildon/hildon-calendar.c
 hildon/hildon-calendar-popup.c

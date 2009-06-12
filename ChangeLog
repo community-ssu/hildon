@@ -1,5 +1,16 @@
 2009-06-12  Alberto Garcia  <agarcia@igalia.com>
 
+	* po/POTFILES.in
+	* doc/Makefile.am
+	* hildon/Makefile.am
+	* hildon/hildon-banner-private.h
+	* hildon/hildon-banner.c:
+	Move HildonBannerPrivate to hildon-banner.c and remove
+	hildon-banner-private.h
+	Use a bit field to store private booleans.
+
+2009-06-12  Alberto Garcia  <agarcia@igalia.com>
+
 	* hildon/hildon-app-menu.c (hildon_app_menu_map):
 	Don't install a new idle function if there's already one
 	installed.

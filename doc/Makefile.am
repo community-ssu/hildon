@@ -20,8 +20,7 @@ HFILE_GLOB					= $(top_srcdir)/hildon/*.h
 
 CFILE_GLOB					= $(top_srcdir)/hildon/*.c
 
-IGNORE_HFILES 					= hildon-banner-private.h 		\
-						  hildon-calendar-popup-private.h	\
+IGNORE_HFILES 					= hildon-calendar-popup-private.h	\
 						  hildon-caption-private.h 		\
 						  hildon-code-dialog-private.h 		\
 						  hildon-color-button-private.h 	\

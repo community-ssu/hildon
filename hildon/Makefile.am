@@ -161,8 +161,7 @@ libhildon_@API_VERSION_MAJOR@_include_HEADERS = \
 		$(libhildon_@API_VERSION_MAJOR@_public_headers)		\
 		$(libhildon_@API_VERSION_MAJOR@_built_public_headers)
 
-noinst_HEADERS = hildon-banner-private.h 		\
-		hildon-calendar-popup-private.h 	\
+noinst_HEADERS = hildon-calendar-popup-private.h 	\
 		hildon-private.h			\
 		hildon-caption-private.h 		\
 		hildon-code-dialog-private.h 		\
