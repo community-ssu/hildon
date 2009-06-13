@@ -18,10 +18,10 @@
 
 /**
  * SECTION:hildon-button
- * @short_description: Widget representing a button in the Hildon framework.
+ * @short_description: Two-label buttons in the Hildon framework.
  *
- * The #HildonButton is a GTK widget which represents a clickable
- * button. It is derived from the #GtkButton widget and provides
+ * The #HildonButton is a clickable button for Hildon applications.
+ * It is derived from the #GtkButton widget and provides
  * additional commodities specific to the Hildon framework.
  *
  * The height of a #HildonButton can be set to either "finger" height

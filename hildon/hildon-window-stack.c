@@ -22,11 +22,10 @@
 
 /**
  * SECTION:hildon-window-stack
- * @short_description: Object representing a stack of windows in the Hildon framework
+ * @short_description: A stack of windows in Hildon applications.
  * @see_also: #HildonStackableWindow
  *
- * The #HildonWindowStack is an object used to represent a stack of
- * windows in the Hildon framework.
+ * The #HildonWindowStack is a stack of top-level windows.
  *
  * Stacks contain all #HildonStackableWindow<!-- -->s that are being
  * shown. The user can only interact with the topmost window from each

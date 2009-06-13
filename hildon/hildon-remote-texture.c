@@ -24,7 +24,7 @@
 
 /**
  * SECTION:hildon-remote-texture
- * @short_description: Widget representing a Clutter/GLES texture created
+ * @short_description: Clutter/GLES texture created
  * from a shared memory area.
  *
  * The #HildonRemoteTexture is a GTK+ widget which allows the rendering of

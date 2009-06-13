@@ -1,3 +1,24 @@
+2009-06-13  Claudio Saavedra  <csaavedra@igalia.com>
+
+	* hildon/hildon-animation-actor.c:
+	* hildon/hildon-app-menu.c:
+	* hildon/hildon-button.c:
+	* hildon/hildon-date-editor.c:
+	* hildon/hildon-dialog.c:
+	* hildon/hildon-edit-toolbar.c:
+	* hildon/hildon-entry.c:
+	* hildon/hildon-program.c:
+	* hildon/hildon-remote-texture.c:
+	* hildon/hildon-stackable-window.c:
+	* hildon/hildon-text-view.c:
+	* hildon/hildon-touch-selector.c:
+	* hildon/hildon-window-stack.c:
+	* hildon/hildon-window.c:
+
+	Remove redundant "represents" wording from most of the documentation.
+
+	Fixes: MB#4554 (Documentation: Annoying "represents" phrasing.)
+
 2009-06-12  Alberto Garcia  <agarcia@igalia.com>
 
 	* po/POTFILES.in

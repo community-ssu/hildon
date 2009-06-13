@@ -18,10 +18,10 @@
 
 /**
  * SECTION:hildon-app-menu
- * @short_description: Widget representing the application menu in the Hildon framework.
+ * @short_description: Application menu for Hildon applications.
  *
- * #HildonAppMenu is a GTK widget which represents an application menu
- * in the Hildon framework.
+ * #HildonAppMenu is an application menu for applications in the Hildon
+ * framework.
  *
  * This menu opens from the top of the screen and contains a number of
  * entries (#GtkButton) organized in one or two columns, depending on

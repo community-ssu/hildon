@@ -16,7 +16,7 @@
 
 /**
  * SECTION:hildon-edit-toolbar
- * @short_description: Widget representing a toolbar for editing.
+ * @short_description: Toolbar for edition of user data.
  *
  * The #HildonEditToolbar is a toolbar which contains a label and two
  * buttons, one of them being an arrow pointing backwards.

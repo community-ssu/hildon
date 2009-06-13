@@ -24,10 +24,10 @@
 
 /**
  * SECTION:hildon-dialog
- * @short_description: Widget representing a popup window in the Hildon framework.
+ * @short_description: A popup window in the Hildon framework.
  * @see_also: #HildonCodeDialog, #HildonColorChooserDialog, #HildonFontSelectionDialog, #HildonGetPasswordDialog, #HildonLoginDialog, #HildonSetPasswordDialog, #HildonSortDialog, #HildonWizardDialog
  *
- * #HildonDialog is a GTK widget which represent a popup window in the
+ * #HildonDialog is a popup window in the
  * Hildon framework. It is derived from #GtkDialog and provides additional
  * commodities specific to the Hildon framework.
  *

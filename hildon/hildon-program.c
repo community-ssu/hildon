@@ -24,7 +24,7 @@
 
 /**
  * SECTION:hildon-program
- * @short_description: An object that represents an application running in the Hildon framework.
+ * @short_description: Application abstraction in the Hildon framework.
  * @see_also: #HildonWindow, #HildonStackableWindow
  *
  * #HildonProgram is an object used to represent an application running

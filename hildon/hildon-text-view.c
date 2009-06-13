@@ -16,10 +16,10 @@
 
 /**
  * SECTION:hildon-text-view
- * @short_description: Widget representing a text view in the Hildon framework.
+ * @short_description: Text view within the Hildon framework.
  *
- * The #HildonTextView is a GTK widget which represents a text
- * view. It is derived from the #GtkTextView widget and provides
+ * The #HildonTextView is a text
+ * view derived from the #GtkTextView widget that provides
  * additional commodities specific to the Hildon framework.
  *
  * Besides all the features inherited from #GtkTextView, a

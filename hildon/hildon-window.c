@@ -24,10 +24,10 @@
 
 /**
  * SECTION:hildon-window
- * @short_description: Widget representing a top-level window in the Hildon framework.
+ * @short_description: Top-level window in the Hildon framework.
  * @see_also: #HildonProgram, #HildonStackableWindow
  *
- * #HildonWindow is a GTK widget which represents a top-level
+ * #HildonWindow is a top-level
  * window in the Hildon framework. It is derived from #GtkWindow
  * and provides additional commodities specific to the Hildon
  * framework.

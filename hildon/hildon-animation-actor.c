@@ -24,10 +24,10 @@
 
 /**
  * SECTION:hildon-animation-window
- * @short_description: Widget representing an animation actor for
+ * @short_description: Animation actor for
  * WM-assisted animation effects in the Hildon framework.
  *
- * The #HildonAnimationActor is a GTK+ widget which represents an
+ * The #HildonAnimationActor is an
  * animation actor for WM-assisted animation effects in the Hildon
  * framework. It derives from #GtkWindow and can host any widgets much
  * like a normal window. The special features available to the

@@ -799,13 +799,13 @@ hildon_date_editor_set_date                     (HildonDateEditor *editor,
 /**
  * hildon_date_editor_get_date:
  * @date: the @HildonDateEditor widget
- * @year: year
- * @month: month
- * @day: day
+ * @year: a pointer to store the selected year
+ * @month: a pointer to store the selected month
+ * @day: a pointer to store the selected day
  *
- * Gets the date represented by the date editor.
- * You can pass NULL to any of the pointers if
- * you're not interested in obtaining it. 
+ * Gets the date selected in @date.
+ * You can pass %NULL in any of the pointers if
+ * you're not interested in obtaining a particular field.
  *
  */
 void 

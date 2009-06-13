@@ -16,11 +16,10 @@
 
 /**
  * SECTION:hildon-entry
- * @short_description: Widget representing a text entry in the Hildon framework.
+ * @short_description: Text entry in the Hildon framework.
  *
- * The #HildonEntry is a GTK widget which represents a text entry. It
- * is derived from the #GtkEntry widget and provides additional
- * commodities specific to the Hildon framework.
+ * The #HildonEntry is text entry derived from the #GtkEntry widget providing
+ * additional commodities specific to the Hildon framework.
  *
  * Besides all the features inherited from #GtkEntry, a #HildonEntry
  * can also have a placeholder text. This text will be shown if the

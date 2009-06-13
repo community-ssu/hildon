@@ -30,7 +30,7 @@
  * #HildonPickerDialog activated from a button. For the most common
  * cases, you should use #HildonPickerButton.
  *
- * The composition of each column in the selector is represented by a
+ * The contents of each #HildonTouchSelector column are stored in a
  * #GtkTreeModel. To add a new column to a #HildonTouchSelector, use
  * hildon_touch_selector_append_column(). If you want to add a
  * text-only column, without special attributes, use
@@ -153,9 +153,9 @@
  * SECTION:hildon-touch-selector-column
  * @short_description: A visible column in a #HildonTouchSelector
  *
- * #HildonTouchSelectorColumn object represents a visible column in
- * #HildonTouchSelector. It allows to manage the cell renderers related to each
- * column.
+ * A #HildonTouchSelectorColumn is a column in a
+ * #HildonTouchSelector. This class implements the #GtkCellLayout interface, allowing
+ * a flexible management of the cellrenderers in each #HildonTouchSelector column.
  */
 
 #undef HILDON_DISABLE_DEPRECATED
@@ -1486,11 +1486,8 @@ hildon_touch_selector_set_column_selection_mode (HildonTouchSelector * selector,
  * @selector: a #HildonTouchSelector
  * @func: a #HildonTouchSelectorPrintFunc function
  *
- * Sets the function to be used by hildon_touch_selector_get_current_text()
- * to produce a text representation of the currently selected items in @selector.
- * The default function will return a concatenation of comma separated items
- * selected in each column in @selector. Use this to override this method if you
- * need a particular representation for your application.
+ * Sets the function to be used by hildon_touch_selector_get_current_text().
+ * See hildon_touch_selector_set_print_func_full().
  *
  * Since: 2.2
  **/
