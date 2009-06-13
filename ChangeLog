@@ -1,5 +1,17 @@
 2009-06-13  Claudio Saavedra  <csaavedra@igalia.com>
 
+	* hildon/hildon-main.c: Minor documentation fixes.
+
+2009-06-13  Claudio Saavedra  <csaavedra@igalia.com>
+
+	* doc/hildon-sections.txt:
+	* hildon/hildon-defines.h: Document the defines, organize them,
+	and mark deprecations as such.
+
+	Fixes: MB#4463 (Hildon size #defines are undocumented)
+
+2009-06-13  Claudio Saavedra  <csaavedra@igalia.com>
+
 	* hildon/hildon-animation-actor.c:
 	* hildon/hildon-app-menu.c:
 	* hildon/hildon-button.c:

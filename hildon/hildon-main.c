@@ -26,11 +26,11 @@
  *
  * Before using Hildon, you need to initialize it; initialization connects
  * to the window system display, and parses some standard command line
- * arguments. See also gtk_init () to know more details on this topic.
+ * arguments. See also gtk_init() to know more details on this topic.
  *
- * Hildon should be initialized by using hildon_gtk_init (). Notice this function
- * also initialize gtk by calling gtk_init (). In case you need a customized
- * initialization of GTK+ library you could use hildon_init () after the
+ * Hildon should be initialized by using hildon_gtk_init(). Notice this function
+ * also initialize gtk by calling gtk_init(). In case you need a customized
+ * initialization of GTK+ library you could use hildon_init() after the
  * customized GTK+ initialization.
  *
  * <example>
