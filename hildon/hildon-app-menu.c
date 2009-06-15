@@ -797,6 +797,7 @@ static void
 hildon_app_menu_apply_style                     (GtkWidget *widget)
 {
     GdkScreen *screen;
+    gint filter_group_width;
     guint horizontal_spacing, vertical_spacing, filter_vertical_spacing;
     guint inner_border, external_border;
     HildonAppMenuPrivate *priv;
@@ -806,6 +807,7 @@ hildon_app_menu_apply_style                     (GtkWidget *widget)
     gtk_widget_style_get (widget,
                           "horizontal-spacing", &horizontal_spacing,
                           "vertical-spacing", &vertical_spacing,
+                          "filter-group-width", &filter_group_width,
                           "filter-vertical-spacing", &filter_vertical_spacing,
                           "inner-border", &inner_border,
                           "external-border", &external_border,
@@ -818,6 +820,9 @@ hildon_app_menu_apply_style                     (GtkWidget *widget)
 
     /* Set inner border */
     gtk_container_set_border_width (GTK_CONTAINER (widget), inner_border);
+
+    /* Set width of the group of filter buttons */
+    gtk_widget_set_size_request (GTK_WIDGET (priv->filters_hbox), filter_group_width, -1);
 
     /* Compute width request */
     screen = gtk_widget_get_screen (widget);
@@ -1118,6 +1123,16 @@ hildon_app_menu_class_init                      (HildonAppMenuClass *klass)
             "Vertical spacing on menu items",
             "Vertical spacing between each menu item. Does not apply to filter buttons.",
             0, G_MAXUINT, 16,
+            G_PARAM_READABLE));
+
+    gtk_widget_class_install_style_property (
+        widget_class,
+        g_param_spec_int (
+            "filter-group-width",
+            "Width of the group of filter buttons",
+            "Total width of the group of filter buttons, "
+            "or -1 to use the natural size request.",
+            -1, G_MAXINT, 444,
             G_PARAM_READABLE));
 
     gtk_widget_class_install_style_property (
