@@ -103,6 +103,19 @@ hildon_note_set_button_texts                    (HildonNote *note,
                                                  const gchar *text_ok,
                                                  const gchar *text_cancel);
 
+/**
+ * HildonNoteType:
+ * @HILDON_NOTE_TYPE_CONFIRMATION: Standard confirmation note with 'Yes'
+ * and 'No' buttons.
+ * @HILDON_NOTE_TYPE_CONFIRMATION_BUTTON: Confirmation note with
+ * custom buttons.
+ * @HILDON_NOTE_TYPE_INFORMATION: Information note with an 'OK' button.
+ * @HILDON_NOTE_TYPE_INFORMATION_THEME: Deprecated information note with a themed
+ * icon. Equivalent to %HILDON_NOTE_TYPE_INFORMATION.
+ * @HILDON_NOTE_TYPE_PROGRESSBAR: Note with a #GtkProgressBar and an 'OK' button.
+ *
+ * Type of a #HildonNote, defining its behavior, contents, and theming.
+ */
 typedef enum
 {
     HILDON_NOTE_TYPE_CONFIRMATION = 0,
