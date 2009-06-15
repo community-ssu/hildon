@@ -34,6 +34,7 @@ struct                                          _HildonAppMenuPrivate
     GdkWindow *transfer_window;
     gboolean pressed_outside;
     gboolean inhibit_repack;
+    GtkButton *last_pressed_button;
     GList *buttons;
     GList *filters;
     guint columns;

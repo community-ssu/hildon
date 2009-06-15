@@ -1,5 +1,16 @@
 2009-06-15  Alberto Garcia  <agarcia@igalia.com>
 
+	* hildon/hildon-app-menu-private.h
+	* hildon/hildon-app-menu.c (hildon_app_menu_insert)
+	(hildon_app_menu_add_filter, +menu_item_button_event)
+	(hildon_app_menu_button_release, hildon_app_menu_init):
+	Make sure that buttons receive 'button-release-event' in spite of
+	the grab held by HildonAppMenu
+
+	Fixes: NB#108337 (Focus mismatch in items of AppMenu)
+
+2009-06-15  Alberto Garcia  <agarcia@igalia.com>
+
 	* hildon/hildon-app-menu.c
 	(hildon_app_menu_apply_style, hildon_app_menu_class_init):
 	New style property to set the size of the group of filter buttons.

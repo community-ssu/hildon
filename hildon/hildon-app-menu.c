@@ -131,6 +131,11 @@ filter_visibility_changed                       (GtkWidget     *item,
                                                  GParamSpec    *arg1,
                                                  HildonAppMenu *menu);
 
+static gboolean
+menu_item_button_event                          (GtkButton      *item,
+                                                 GdkEventButton *event,
+                                                 GtkWidget      *menu);
+
 static void
 remove_item_from_list                           (GList    **list,
                                                  gpointer   item);
@@ -194,6 +199,10 @@ hildon_app_menu_insert                          (HildonAppMenu *menu,
     /* Close the menu when the button is clicked */
     g_signal_connect_swapped (item, "clicked", G_CALLBACK (gtk_widget_hide), menu);
     g_signal_connect (item, "notify::visible", G_CALLBACK (item_visibility_changed), menu);
+
+    /* Keep track of the latest menu item to receive a button-press event */
+    g_signal_connect (item, "button-press-event", G_CALLBACK (menu_item_button_event), menu);
+    g_signal_connect (item, "button-release-event", G_CALLBACK (menu_item_button_event), menu);
 
     /* Remove item from list when it is destroyed */
     g_object_weak_ref (G_OBJECT (item), (GWeakNotify) remove_item_from_list, &(priv->buttons));
@@ -301,6 +310,10 @@ hildon_app_menu_add_filter                      (HildonAppMenu *menu,
     /* Close the menu when the button is clicked */
     g_signal_connect_swapped (filter, "clicked", G_CALLBACK (gtk_widget_hide), menu);
     g_signal_connect (filter, "notify::visible", G_CALLBACK (filter_visibility_changed), menu);
+
+    /* Keep track of the latest menu item to receive a button-press event */
+    g_signal_connect (filter, "button-press-event", G_CALLBACK (menu_item_button_event), menu);
+    g_signal_connect (filter, "button-release-event", G_CALLBACK (menu_item_button_event), menu);
 
     /* Remove filter from list when it is destroyed */
     g_object_weak_ref (G_OBJECT (filter), (GWeakNotify) remove_item_from_list, &(priv->filters));
@@ -421,6 +434,27 @@ filter_visibility_changed                       (GtkWidget     *item,
 
     if (! priv->inhibit_repack)
         hildon_app_menu_repack_filters (menu);
+}
+
+static gboolean
+menu_item_button_event                          (GtkButton      *item,
+                                                 GdkEventButton *event,
+                                                 GtkWidget      *menu)
+{
+    HildonAppMenuPrivate *priv = HILDON_APP_MENU_GET_PRIVATE (menu);
+
+    if (event->type == GDK_BUTTON_PRESS) {
+        priv->last_pressed_button = item;
+    } else if (event->type == GDK_BUTTON_RELEASE) {
+        /* A pressed button might not receive the button-release event due
+         * to the grab that HildonAppMenu has, so we have to simulate that
+         * event. See NB#108337 */
+        if (priv->last_pressed_button && priv->last_pressed_button != item) {
+            gtk_button_released (priv->last_pressed_button);
+        }
+        priv->last_pressed_button = NULL;
+    }
+    return FALSE;
 }
 
 static void
@@ -698,6 +732,8 @@ hildon_app_menu_button_release                  (GtkWidget *widget,
         }
 
         priv->pressed_outside = FALSE; /* Always reset pressed_outside to FALSE */
+    } else if (priv->last_pressed_button) {
+        menu_item_button_event (NULL, event, widget);
     }
 
     if (GTK_WIDGET_CLASS (hildon_app_menu_parent_class)->button_release_event) {
@@ -1023,6 +1059,7 @@ hildon_app_menu_init                            (HildonAppMenu *menu)
     priv->transfer_window = NULL;
     priv->pressed_outside = FALSE;
     priv->inhibit_repack = FALSE;
+    priv->last_pressed_button = NULL;
     priv->buttons = NULL;
     priv->filters = NULL;
     priv->columns = 2;
