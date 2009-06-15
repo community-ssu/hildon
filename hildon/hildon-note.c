@@ -28,8 +28,8 @@
  *
  * #HildonNote is a convenient way to prompt users for a small amount of
  * input. A simple note contains an information text and, in case of
- * confirmation notes, it shows buttons to confirm or cancel. It also can
- * include a progress bar.
+ * confirmation notes, it shows buttons to confirm or cancel. It can also
+ * include a #GtkProgressBar.
  *
  * This widget provides convenient functions to create either
  * information notes, confirmation notes or cancel notes, which are
@@ -336,6 +336,12 @@ hildon_note_class_init                          (HildonNoteClass *class)
     widget_class->realize       = hildon_note_realize;
     widget_class->unrealize     = hildon_note_unrealize;
 
+    /**
+     * HildonNote:type:
+     *
+     * The type of the #HildonNote, defining its contents, behavior, and
+     * theming.
+     */
     g_object_class_install_property (object_class,
             PROP_HILDON_NOTE_TYPE,
             g_param_spec_enum ("note-type",
@@ -348,7 +354,7 @@ hildon_note_class_init                          (HildonNoteClass *class)
     /**
      * HildonNote:description:
      *
-     * Description for the note.
+     * The text that appears in the #HildonNote.
      */
     g_object_class_install_property (object_class,
             PROP_HILDON_NOTE_DESCRIPTION,
@@ -391,7 +397,7 @@ hildon_note_class_init                          (HildonNoteClass *class)
     /**
      * HildonNote:progressbar:
      *
-     * Progressbar for the note (if any).
+     * If set, a #GtkProgressBar visible in the note.
      */
     g_object_class_install_property (object_class,
             PROP_HILDON_NOTE_PROGRESSBAR,
@@ -976,7 +982,7 @@ hildon_note_new_cancel_with_progress_bar        (GtkWindow *parent,
  * @text: sets the button text and if there is two buttons in dialog, 
  *   the button texts will be &lt;text&gt;, "Cancel".  
  *
- * Sets the button text to be used by the hildon_note widget.
+ * Sets the text of the button in @note.
  */
 void 
 hildon_note_set_button_text                     (HildonNote *note, 
@@ -1004,7 +1010,7 @@ hildon_note_set_button_text                     (HildonNote *note,
  * @text_ok: the new text of the default OK button
  * @text_cancel: the new text of the default cancel button 
  *
- * Sets the button texts to be used by this hildon_note widget.
+ * Sets the text for the buttons in @note.
  */
 void 
 hildon_note_set_button_texts                    (HildonNote *note,
