@@ -1,3 +1,11 @@
+2009-06-15  Claudio Saavedra  <csaavedra@igalia.com>
+
+	[Release 2.1.82]
+
+	* NEWS: Updates.
+	* configure.ac: Bump version.
+	* debian/changelog: Updates.
+
 2009-06-13  Claudio Saavedra  <csaavedra@igalia.com>
 
 	* hildon/hildon-main.c: Minor documentation fixes.

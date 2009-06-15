@@ -1,3 +1,20 @@
+[2.1.82 release]
+
+  * Fixes: NB#101420 (Update unit tests and fix make distcheck)
+  * Fixes: MB#4641 (Documentation:
+    hildon_touch_selector_append_column() ref-counting)
+  * New public API: hildon_touch_selector_set/get_column()
+  * Fixes: NB#117931 (Theming issues in accounts dialogs)
+  * Fixes: MB#4563 (Popup menu won't locate at the left side of the
+    screen)
+  * Fixes: NB#101437 (Invoking CSM on the left side of page area is
+    displayed in wrong location)
+  * Fixes: NB#122254 (random crash occured for contacts while sending
+    contact card thorugh email)
+  * Fixes: MB#4554 (Documentation: Annoying "represents" phrasing.)
+  * Fixes: MB#4463 (Hildon size #defines are undocumented)
+  * Many other documentation fixes.
+
 [2.1.80 release]
 
   * Fixes: NB#119805 (Merge conflict picker dialogs are too small)
