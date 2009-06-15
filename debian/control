@@ -8,7 +8,7 @@ Standards-Version: 3.6.0
 Package: libhildon1-dev
 Section: devel
 Architecture: any
-Depends: libhildon1 (= ${binary:Version}), pkg-config, libgtk2.0-dev (>= 2:2.12.12-1maemo12), libgconf2-dev, libcanberra-dev
+Depends: ${misc:Depends}, libhildon1 (= ${binary:Version}), pkg-config, libgtk2.0-dev (>= 2:2.12.12-1maemo12), libgconf2-dev, libcanberra-dev
 Description: Hildon libraries development files
 
 Package: libhildon1
@@ -20,17 +20,19 @@ Description: Hildon libraries
 Package: libhildon1-dbg
 Section: libdevel
 Architecture: any
-Depends: libhildon1 (= ${binary:Version})
+Depends: ${misc:Depends}, libhildon1 (= ${binary:Version})
 Description: Debug symbols for hildon libraries
 
 Package: libhildon1-examples
 Section: doc
 Architecture: all
-Depends: libhildon1-dev (= ${binary:Version})
+Depends: ${misc:Depends}, libhildon1-dev (>= ${binary:Version})
 Description: Examples source file for hildon libraries
 
 Package: libhildon1-doc
 Section: doc
 Architecture: all
+Depends: ${misc:Depends}, lynx | www-browser
+Recommends: libgtk2.0-doc
 Description: Hildon libraries documentation
 
