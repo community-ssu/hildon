@@ -23,7 +23,8 @@
  * #HildonPickerButton is a widget that lets the user select a particular item from
  * a list. Visually, it's a button with title and value labels that brings up a
  * #HildonPickerDialog. The user can then use this dialog to choose an item, which
- * will be displayed in the value label of the button.
+ * will be displayed in the value label of the button. The title of the dialog is
+ * taken from the button's main label (see hildon_button_get_title()).
  *
  * You should create your own #HildonTouchSelector at convenience and set it
  * to the #HildonPickerButton with hildon_picker_button_set_selector(). For

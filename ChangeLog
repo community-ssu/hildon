@@ -1,5 +1,13 @@
 2009-06-15  Alberto Garcia  <agarcia@igalia.com>
 
+	* hildon/hildon-picker-button.c:
+	Explain how HildonPickerButton sets the title of its dialog
+
+	Fixes: MB#4528 (HildonPickerButton docs should mention how to set
+	the title of its dialog)
+
+2009-06-15  Alberto Garcia  <agarcia@igalia.com>
+
 	* hildon/hildon-check-button.c:
 	Documentation updates
 
