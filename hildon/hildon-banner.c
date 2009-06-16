@@ -131,8 +131,7 @@ static GQuark
 hildon_banner_timed_quark                       (void);
 
 static void 
-hildon_banner_bind_style                        (HildonBanner *self,
-						 const gchar *name);
+hildon_banner_bind_style                        (HildonBanner *self);
 
 static gboolean 
 hildon_banner_timeout                           (gpointer data);
@@ -225,18 +224,19 @@ typedef struct                                  _HildonBannerPrivate HildonBanne
 
 struct                                          _HildonBannerPrivate
 {
-    GtkWidget *main_item;
-    GtkWidget *alignment;
-    GtkWidget *label;
-    GtkWidget *layout;
-    GtkWindow *parent;
-    guint      timeout;
-    guint      timeout_id;
-    guint      is_timed             : 1;
-    guint      has_been_wrapped     : 1;
-    guint      has_been_truncated   : 1;
-    guint      require_override_dnd : 1;
-    guint      overrides_dnd        : 1;
+    GtkWidget   *main_item;
+    GtkWidget   *alignment;
+    GtkWidget   *label;
+    GtkWidget   *layout;
+    GtkWindow   *parent;
+    const gchar *name_suffix;
+    guint        timeout;
+    guint        timeout_id;
+    guint        is_timed             : 1;
+    guint        has_been_wrapped     : 1;
+    guint        has_been_truncated   : 1;
+    guint        require_override_dnd : 1;
+    guint        overrides_dnd        : 1;
 };
 
 static GQuark 
@@ -252,19 +252,21 @@ hildon_banner_timed_quark                       (void)
 
 /* Set the widget and label name to make the correct rc-style attached into them */
 static void 
-hildon_banner_bind_style                  (HildonBanner *self,
-					   const gchar *name_sufix)
+hildon_banner_bind_style                  (HildonBanner *self)
 {
     HildonBannerPrivate *priv = HILDON_BANNER_GET_PRIVATE (self);
+    GdkScreen *screen = gtk_widget_get_screen (GTK_WIDGET (self));
+    gboolean portrait = gdk_screen_get_width (screen) < gdk_screen_get_height (screen);
+    const gchar *portrait_suffix = portrait ? "-portrait" : NULL;
     gchar *name;
 
     g_assert (priv);
 
-    name = g_strconcat ("HildonBannerLabel-", name_sufix, NULL);
+    name = g_strconcat ("HildonBannerLabel-", priv->name_suffix, NULL);
     gtk_widget_set_name (priv->label, name);
     g_free (name);
 
-    name = g_strconcat ("HildonBanner-", name_sufix, NULL);
+    name = g_strconcat ("HildonBanner-", priv->name_suffix, portrait_suffix, NULL);
     gtk_widget_set_name (GTK_WIDGET (self), name);
     g_free (name);
 }
@@ -712,6 +714,7 @@ screen_size_changed                            (GdkScreen *screen,
                                                 GtkWindow *banner)
 
 {
+    hildon_banner_bind_style (HILDON_BANNER (banner));
     gtk_window_reshow_with_initial_size (banner);
 }
 
@@ -848,6 +851,7 @@ hildon_banner_init                              (HildonBanner *self)
     priv->parent = NULL;
     priv->overrides_dnd = FALSE;
     priv->require_override_dnd = FALSE;
+    priv->name_suffix = NULL;
 
     /* Initialize the common layout inside banner */
     priv->alignment = gtk_alignment_new (0.5, 0.5, 0, 0);
@@ -997,8 +1001,9 @@ hildon_banner_real_show_information             (GtkWidget *widget,
     banner = hildon_banner_get_instance_for_widget (widget, TRUE);
     priv = HILDON_BANNER_GET_PRIVATE (banner);
 
+    priv->name_suffix = "information";
     hildon_banner_set_text (banner, text);
-    hildon_banner_bind_style (banner, "information");
+    hildon_banner_bind_style (banner);
 
     if (override_dnd) {
       /* so on the realize it will set the property */
@@ -1070,15 +1075,18 @@ hildon_banner_show_information_with_markup      (GtkWidget *widget,
                                                  const gchar *markup)
 {
     HildonBanner *banner;
+    HildonBannerPrivate *priv;
 
     g_return_val_if_fail (icon_name == NULL || icon_name[0] != 0, NULL);
     g_return_val_if_fail (markup != NULL, NULL);
 
     /* Prepare banner */
     banner = hildon_banner_get_instance_for_widget (widget, TRUE);
+    priv = HILDON_BANNER_GET_PRIVATE (banner);
 
+    priv->name_suffix = "information";
     hildon_banner_set_markup (banner, markup);
-    hildon_banner_bind_style (banner, "information");
+    hildon_banner_bind_style (banner);
 
     /* Show the banner, since caller cannot do that */
     gtk_widget_show_all (GTK_WIDGET (banner));
@@ -1128,6 +1136,7 @@ hildon_banner_show_animation                    (GtkWidget *widget,
 {
     HildonBanner *banner;
     GtkWidget *image_widget;
+    HildonBannerPrivate *priv;
 
     g_return_val_if_fail (text != NULL, NULL);
 
@@ -1141,8 +1150,10 @@ hildon_banner_show_animation                    (GtkWidget *widget,
     hildon_banner_ensure_child (banner, image_widget, 0,
             GTK_TYPE_IMAGE, "yalign", 0.0, NULL);
 
+    priv = HILDON_BANNER_GET_PRIVATE (banner);
+    priv->name_suffix = "animation";
     hildon_banner_set_text (banner, text);
-    hildon_banner_bind_style (banner, "animation");
+    hildon_banner_bind_style (banner);
 
     /* And show it */
     gtk_widget_show_all (GTK_WIDGET (banner));
@@ -1180,8 +1191,9 @@ hildon_banner_show_progress                     (GtkWidget *widget,
     priv = HILDON_BANNER_GET_PRIVATE (banner);
     g_assert (priv);
 
+    priv->name_suffix = "progress";
     hildon_banner_set_text (banner, text);
-    hildon_banner_bind_style (banner, "progress");
+    hildon_banner_bind_style (banner);
 
     if (priv->parent)
         hildon_gtk_window_set_progress_indicator (priv->parent, 1);

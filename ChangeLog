@@ -1,5 +1,15 @@
 2009-06-16  Alberto Garcia  <agarcia@igalia.com>
 
+	* hildon/hildon-banner.c (hildon_banner_bind_style)
+	(screen_size_changed, hildon_banner_init)
+	(hildon_banner_real_show_information)
+	(hildon_banner_show_information_with_markup)
+	(hildon_banner_show_animation, hildon_banner_show_progress):
+	Set a different widget name to banners in portrait mode, for them
+	to be themed correctly.
+
+2009-06-16  Alberto Garcia  <agarcia@igalia.com>
+
 	* hildon/hildon-note.c (hildon_note_rename, screen_size_changed):
 	Set a different widget name to notes in portrait mode, for them to
 	be themed correctly.
