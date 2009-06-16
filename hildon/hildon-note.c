@@ -552,6 +552,8 @@ screen_size_changed                            (GdkScreen *screen,
 {
     HildonNotePrivate *priv = HILDON_NOTE_GET_PRIVATE (note);
 
+    hildon_note_rename (HILDON_NOTE (note));
+
     if (priv->note_n == HILDON_NOTE_TYPE_INFORMATION ||
         priv->note_n == HILDON_NOTE_TYPE_INFORMATION_THEME) {
         gint screen_width = gdk_screen_get_width (screen);
@@ -640,13 +642,16 @@ hildon_note_rename                              (HildonNote *note)
   GEnumValue *value;
   GEnumClass *enum_class;
   gchar *name;
+  GdkScreen *screen = gtk_widget_get_screen (GTK_WIDGET (note));
+  gboolean portrait = gdk_screen_get_width (screen) < gdk_screen_get_height (screen);
+  const gchar *portrait_suffix = portrait ? "-portrait" : NULL;
 
   HildonNotePrivate *priv = HILDON_NOTE_GET_PRIVATE (note);
 
   enum_class = g_type_class_ref (HILDON_TYPE_NOTE_TYPE);
   value = g_enum_get_value (enum_class, priv->note_n);
 
-  name = g_strconcat ("HildonNote-", value->value_nick, NULL);
+  name = g_strconcat ("HildonNote-", value->value_nick, portrait_suffix, NULL);
   gtk_widget_set_name (GTK_WIDGET (note), name);
   g_free (name);
 

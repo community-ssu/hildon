@@ -1,5 +1,14 @@
 2009-06-16  Alberto Garcia  <agarcia@igalia.com>
 
+	* hildon/hildon-note.c (hildon_note_rename, screen_size_changed):
+	Set a different widget name to notes in portrait mode, for them to
+	be themed correctly.
+
+	Partially fixes: NB#118401 (HildonNote causes unnecessary
+	rescaling of images)
+
+2009-06-16  Alberto Garcia  <agarcia@igalia.com>
+
 	* hildon/hildon-note.c (hildon_note_class_init)
 	(+hildon_note_size_request, screen_size_changed):
 	Always request the full width of the screen.
