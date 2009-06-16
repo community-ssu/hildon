@@ -126,6 +126,10 @@ static void
 hildon_note_unrealize                           (GtkWidget *widget);
 
 static void
+hildon_note_size_request                        (GtkWidget      *note,
+                                                 GtkRequisition *req);
+
+static void
 label_size_request                              (GtkWidget      *label,
                                                  GtkRequisition *req,
                                                  GtkWidget      *note);
@@ -335,6 +339,7 @@ hildon_note_class_init                          (HildonNoteClass *class)
     object_class->get_property  = hildon_note_get_property;
     widget_class->realize       = hildon_note_realize;
     widget_class->unrealize     = hildon_note_unrealize;
+    widget_class->size_request  = hildon_note_size_request;
 
     /**
      * HildonNote:type:
@@ -534,16 +539,23 @@ hildon_note_orientation_update (HildonNote *note, GdkScreen *screen)
 }
 
 static void
+hildon_note_size_request                        (GtkWidget      *note,
+                                                 GtkRequisition *req)
+{
+    GTK_WIDGET_CLASS (parent_class)->size_request (note, req);
+    req->width = gdk_screen_get_width (gtk_widget_get_screen (note));
+}
+
+static void
 screen_size_changed                            (GdkScreen *screen,
                                                 GtkWidget *note)
 {
     HildonNotePrivate *priv = HILDON_NOTE_GET_PRIVATE (note);
-    gint screen_width = gdk_screen_get_width (screen);
-    gint text_width = screen_width - HILDON_INFORMATION_NOTE_MARGIN * 2;
 
     if (priv->note_n == HILDON_NOTE_TYPE_INFORMATION ||
         priv->note_n == HILDON_NOTE_TYPE_INFORMATION_THEME) {
-        g_object_set (note, "width-request", screen_width, NULL);
+        gint screen_width = gdk_screen_get_width (screen);
+        gint text_width = screen_width - HILDON_INFORMATION_NOTE_MARGIN * 2;
         g_object_set (priv->label, "width-request", text_width, NULL);
 
         return;

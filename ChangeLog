@@ -1,3 +1,11 @@
+2009-06-16  Alberto Garcia  <agarcia@igalia.com>
+
+	* hildon/hildon-note.c (hildon_note_class_init)
+	(+hildon_note_size_request, screen_size_changed):
+	Always request the full width of the screen.
+
+	Fixes: NB#118375 (unnecessary rescaling of images)
+
 2009-06-16  Alejandro G. Castro  <alex@igalia.com>
 
 	* hildon/hildon-pannable-area.c,
