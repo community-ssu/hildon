@@ -670,8 +670,6 @@ hildon_pannable_area_init (HildonPannableArea * area)
   priv->x_offset = 0;
   priv->y_offset = 0;
 
-  gtk_widget_add_events (GTK_WIDGET (area), GDK_POINTER_MOTION_HINT_MASK);
-
   priv->hadjust =
     GTK_ADJUSTMENT (gtk_adjustment_new (0.0, 0.0, 0.0, 0.0, 0.0, 0.0));
   priv->vadjust =
@@ -999,6 +997,7 @@ hildon_pannable_area_realize (GtkWidget * widget)
     | GDK_BUTTON_PRESS_MASK
     | GDK_BUTTON_RELEASE_MASK
     | GDK_SCROLL_MASK
+    | GDK_POINTER_MOTION_HINT_MASK
     | GDK_EXPOSURE_MASK | GDK_ENTER_NOTIFY_MASK | GDK_LEAVE_NOTIFY_MASK;
   attributes.wclass = GDK_INPUT_ONLY;
 

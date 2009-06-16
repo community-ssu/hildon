@@ -1,3 +1,11 @@
+2009-06-16  Alejandro G. Castro  <alex@igalia.com>
+
+	* hildon/hildon-pannable-area.c,
+	(hildon_pannable_area_init),
+	(hildon_pannable_area_realize): Replaced old code adding flags in
+	the object init, now we add it with the other flags in the realize
+	method.
+
 2009-06-16  Claudio Saavedra  <csaavedra@igalia.com>
 
 	* hildon/hildon-note.c: (hildon_note_class_init): Several
