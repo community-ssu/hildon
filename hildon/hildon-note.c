@@ -402,7 +402,7 @@ hildon_note_class_init                          (HildonNoteClass *class)
     /**
      * HildonNote:progressbar:
      *
-     * If set, a #GtkProgressBar visible in the note.
+     * If set, a #GtkProgressBar is displayed in the note.
      */
     g_object_class_install_property (object_class,
             PROP_HILDON_NOTE_PROGRESSBAR,
@@ -774,7 +774,7 @@ hildon_note_rebuild                             (HildonNote *note)
  * it would only contain the "additional" buttons? However, changing
  * this would break those applications that rely on current behaviour.
  *
- * Returns: A #GtkWidget pointer of the note
+ * Returns: A new #HildonNote.
  */
 GtkWidget*
 hildon_note_new_confirmation_add_buttons        (GtkWindow *parent,
@@ -830,12 +830,12 @@ hildon_note_new_confirmation_add_buttons        (GtkWindow *parent,
  *   important so that the window manager could handle the windows
  *   correctly. In GTK the X window ID can be checked using
  *   GDK_WINDOW_XID(GTK_WIDGET(parent)->window).
- * @description: the message to confirm
+ * @description: the message to confirm.
  *
  * Create a new confirmation note. Confirmation note has a text (description)
  * that you specify and two buttons.
  *
- * Returns: a #GtkWidget pointer of the note
+ * Returns: a new #HildonNote.
  */
 GtkWidget*
 hildon_note_new_confirmation                    (GtkWindow *parent,
@@ -872,7 +872,7 @@ hildon_note_new_confirmation                    (GtkWindow *parent,
  * Deprecated: Since 2.2, icons are not shown in confirmation notes. Icons set
  * with this function will be ignored. Use hildon_note_new_confirmation() instead.
  *
- * Returns: a #GtkWidget pointer of the note
+ * Returns: a new #HildonNote.
  */
 GtkWidget*
 hildon_note_new_confirmation_with_icon_name     (GtkWindow *parent,
@@ -894,12 +894,12 @@ hildon_note_new_confirmation_with_icon_name     (GtkWindow *parent,
  *   important so that the window manager could handle the windows
  *   correctly. In GTK the X window ID can be checked using
  *   GDK_WINDOW_XID(GTK_WIDGET(parent)->window).
- * @description: the message to confirm
+ * @description: the message to confirm.
  * 
- * Create a new information note. Information note has a text (description)
+ * Create a new information note. Information note has text (a description)
  * that you specify and an OK button.
  * 
- * Returns: a #GtkWidget pointer of the note
+ * Returns: a new #HildonNote.
  */
 GtkWidget*
 hildon_note_new_information                     (GtkWindow *parent,
@@ -927,16 +927,17 @@ hildon_note_new_information                     (GtkWindow *parent,
  *   important so that the window manager could handle the windows
  *   correctly. In GTK the X window ID can be checked using
  *   GDK_WINDOW_XID(GTK_WIDGET(parent)->window).
- * @description: the message to confirm
- * @icon_name: icon to be displayed. If NULL, default icon is used.
+ * @description: the message to confirm.
+ * @icon_name: icon to be displayed. If %NULL, the default icon is used.
  * 
- * Create a new information note. Information note has text(description) 
+ * Create a new information note. An information note has text (a description)
  * that you specify, an OK button and an icon.
  * 
  * Deprecated: Since 2.2, icons are not shown in confirmation notes. Icons set
- * with this function will be ignored. Use hildon_note_new_information() instead.
+ * with this function will be ignored. Use hildon_note_new_information()
+ * instead.
  *
- * Returns: a #GtkWidget pointer of the note
+ * Returns: a new #HildonNote.
  */
 GtkWidget*
 hildon_note_new_information_with_icon_name      (GtkWindow * parent,
@@ -960,7 +961,7 @@ hildon_note_new_information_with_icon_name      (GtkWindow * parent,
  *   important so that the window manager could handle the windows
  *   correctly. In GTK the X window ID can be checked using
  *   GDK_WINDOW_XID(GTK_WIDGET(parent)->window).
- * @description: the action to cancel
+ * @description: the action to cancel.
  * @progressbar: a pointer to #GtkProgressBar to be filled with the
  *   progressbar assigned to this note. Use this to set the fraction of
  *   progressbar done. This parameter can be %NULL as well, in which
@@ -997,8 +998,8 @@ hildon_note_new_cancel_with_progress_bar        (GtkWindow *parent,
 
 /**
  * hildon_note_set_button_text:
- * @note: a #HildonNote
- * @text: sets the button text and if there is two buttons in dialog, 
+ * @note: a #HildonNote.
+ * @text: sets the button text. If there are two buttons in dialog,
  *   the button texts will be &lt;text&gt;, "Cancel".  
  *
  * Sets the text of the button in @note.
@@ -1025,9 +1026,9 @@ hildon_note_set_button_text                     (HildonNote *note,
 
 /**
  * hildon_note_set_button_texts:
- * @note: a #HildonNote
- * @text_ok: the new text of the default OK button
- * @text_cancel: the new text of the default cancel button 
+ * @note: a #HildonNote.
+ * @text_ok: the new text of the default OK button.
+ * @text_cancel: the new text of the default cancel button.
  *
  * Sets the text for the buttons in @note.
  */

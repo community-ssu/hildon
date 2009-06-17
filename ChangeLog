@@ -1,3 +1,11 @@
+2009-06-17  David King  <davidk@openismus.com>
+
+	* hildon/hildon-note.c: Add Gtk-Doc markup where appropriate. Correct
+	several typos and errors throughout the documentation.
+
+	Fixes: MB#4701 (HildonNote documentation lacks some Gtk-Doc markup and
+	has some mistakes)
+
 2009-06-18  Alberto Garcia  <agarcia@igalia.com>
 
 	* hildon/hildon-note.c (hildon_note_realize):
