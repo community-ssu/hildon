@@ -814,9 +814,9 @@ hildon_date_selector_select_current_date (HildonDateSelector * selector,
 /**
  * hildon_date_selector_get_date:
  * @selector: the #HildonDateSelector
- * @year:  to set the current year
- * @month: to set the current month (0-11)
- * @day:   to the current day (1-31, 1-30, 1-29, 1-28) depends on the month
+ * @year:  location of the current year
+ * @month: location of the current month (0-11)
+ * @day:   location of the current day (1-31, 1-30, 1-29, 1-28), depends on the month and the year
  *
  * Gets the current active date on the #HildonDateSelector widget
  *
@@ -883,7 +883,7 @@ gboolean hildon_date_selector_select_month (HildonDateSelector *selector,
 /**
  * hildon_date_selector_select_day:
  * @selector: the #HildonDateSelector
- * @day:   the current day (1-31, 1-30, 1-29, 1-28) depends on the month
+ * @day:   the current day (1-31, 1-30, 1-29, 1-28), depends on the month and the year
  *
  * Modify the current day on the current active date
  *

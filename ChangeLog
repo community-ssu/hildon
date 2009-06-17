@@ -1,3 +1,14 @@
+2009-06-17  David King  <davidk@openismus.com>
+
+	* hildon/hildon-date-selector.c
+	(hildon_date_selector_select_current_date)
+	(hildon_date_selector_get_date): Update documentation regarding days,
+	as the day of the month is dependent on both the month and the year.
+	(hildon_date_selector_get_date): Fix documentation of output arguments.
+
+	Fixes: MB#4698 (DateSelector documentation has bad output argument
+	description, and the day depends on both the month and the year)
+
 2009-06-17  Claudio Saavedra  <csaavedra@igalia.com>
 
 	* hildon/hildon-caption.c: Other documentation fixes to
