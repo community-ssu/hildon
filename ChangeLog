@@ -1,5 +1,12 @@
 2009-06-17  Claudio Saavedra  <csaavedra@igalia.com>
 
+	* doc/hildon-docs.sgml: Add hildon-version section.
+	* doc/hildon-sections.txt:
+	* hildon/hildon-version.h.in: Document versioning macros and
+	add HILDON_VERSION.
+
+2009-06-17  Claudio Saavedra  <csaavedra@igalia.com>
+
 	* doc/hildon-sections.txt: Remove HILDON_DISABLE_DEPRECATED
 	from HildonPickerDialog section.
 
