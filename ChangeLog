@@ -1,3 +1,8 @@
+2009-06-17  Alberto Garcia  <agarcia@igalia.com>
+
+	* hildon/hildon-color-chooser.c (hildon_color_chooser_new):
+	Document this function
+
 2009-06-17  David King  <davidk@openismus.com>
 
 	* hildon/hildon-date-selector.c

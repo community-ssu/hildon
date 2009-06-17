@@ -1311,6 +1311,13 @@ hildon_color_chooser_get_color                  (HildonColorChooser *chooser,
         ((color->blue >> (16 - system_visual->blue_prec)) << system_visual->blue_shift);
 }
 
+/**
+ * hildon_color_chooser_new:
+ *
+ * Creates a new #HildonColorChooser.
+ *
+ * Returns: the new #HildonColorChooser
+ **/
 GtkWidget*
 hildon_color_chooser_new                        (void)
 {
