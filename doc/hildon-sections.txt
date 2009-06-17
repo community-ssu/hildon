@@ -337,7 +337,6 @@ HildonFindToolbarClass
 
 <SECTION>
 <FILE>hildon-picker-dialog</FILE>
-HILDON_DISABLE_DEPRECATED
 <TITLE>HildonPickerDialog</TITLE>
 HildonPickerDialog
 hildon_picker_dialog_new
@@ -355,6 +354,7 @@ HILDON_IS_PICKER_DIALOG_CLASS
 HILDON_PICKER_DIALOG_GET_CLASS
 HildonPickerDialogClass
 HildonPickerDialogPrivate
+HILDON_DISABLE_DEPRECATED
 </SECTION>
 
 <SECTION>
