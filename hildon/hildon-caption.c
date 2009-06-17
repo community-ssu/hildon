@@ -800,13 +800,13 @@ hildon_caption_get_size_group                   (const HildonCaption *self)
  * @flag : indicates whether this captioned control is mandatory or
  *         optional
  *         
- * Creates a new instance of hildon_caption widget, with a specific
+ * Creates a new instance of #HildonCaption widget, with a specific
  * control and image.
  * Note: Clicking on a focused caption will trigger the activate signal.
  * The default behaviour for the caption's activate signal is to call	 
- * gtk_widget_activate on it's control.
+ * gtk_widget_activate() on it's control.
  * 
- * Returns: a #GtkWidget pointer of Caption
+ * Returns: a #GtkWidget pointer of #HildonCaption
  */
 GtkWidget*
 hildon_caption_new                              (GtkSizeGroup *group, 
@@ -839,7 +839,7 @@ hildon_caption_new                              (GtkSizeGroup *group,
  * 
  * Query #HildonCaption whether this captioned control is a mandatory one.
  *
- * Returns: is this captioned control a mandatory one?
+ * Returns: Whether this captioned control is mandatory.
  */
 gboolean 
 hildon_caption_is_mandatory                     (const HildonCaption *caption)
@@ -935,9 +935,9 @@ hildon_caption_get_status                       (const HildonCaption *caption)
  * hildon_caption_set_icon_image:
  * @caption : a #HildonCaption
  * @icon : the #GtkImage to use as the icon. 
- *         calls gtk_widget_show on the icon if !GTK_WIDGET_VISIBLE(icon)
+ *         Calls gtk_widget_show() on the icon if it is not visible.
  *
- * Sets the icon image widget to be used by this hildon_caption widget.
+ * Sets the icon image widget to be used by this #HildonCaption widget.
  */
 void 
 hildon_caption_set_icon_image                   (HildonCaption *caption, 
@@ -955,7 +955,7 @@ hildon_caption_set_icon_image                   (HildonCaption *caption,
  * Gets icon of #HildonCaption
  *
  * Returns: the #GtkImage widget that is being used as the icon by the
- *            hildon_caption, or NULL if no icon image is in use.
+ *            #HildonCaption, or NULL if no icon image is in use.
  */
 GtkWidget*
 hildon_caption_get_icon_image                   (const HildonCaption *caption)
@@ -971,6 +971,7 @@ hildon_caption_get_icon_image                   (const HildonCaption *caption)
 
 /**
  * hildon_caption_set_label:
+ * @see_also : hildon_caption_set_separator()
  * @caption : a #HildonCaption
  * @label : the text to use
  *
@@ -993,8 +994,8 @@ hildon_caption_set_label                        (HildonCaption *caption,
  * @markup : the markup text to use
  *
  * Sets the label markup text that appears before the control. It acts like
- * #hildon_caption_set_label but is using the markup text that allows to specify
- * text properties such as bold or italic.
+ * hildon_caption_set_label() but is using the markup text that allows to
+ * specify text properties such as bold or italic.
  */
 void 
 hildon_caption_set_label_markup                 (HildonCaption *caption, 
@@ -1031,8 +1032,7 @@ hildon_caption_get_label                        (const HildonCaption *caption)
  * @separator : the separator to use
  *
  * Sets the separator character that appears after the label.  
- * The default seaparator character is ":"
- * separately.
+ * The default seaparator character is ":".
  */
 void 
 hildon_caption_set_separator                    (HildonCaption *caption, 
