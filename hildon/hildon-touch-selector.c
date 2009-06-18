@@ -152,6 +152,7 @@
 /**
  * SECTION:hildon-touch-selector-column
  * @short_description: A visible column in a #HildonTouchSelector
+ * @see_also: #HildonTouchSelector
  *
  * A #HildonTouchSelectorColumn is a column in a
  * #HildonTouchSelector. This class implements the #GtkCellLayout interface, allowing
@@ -801,6 +802,13 @@ hildon_touch_selector_column_class_init (HildonTouchSelectorColumnClass *klass)
   gobject_class->get_property = hildon_touch_selector_column_get_property;
   gobject_class->set_property = hildon_touch_selector_column_set_property;
 
+  /**
+   * HildonTouchSelectorColumn:text-column:
+   *
+   * A column in the data source model to get the strings from.
+   *
+   * Since: maemo 2.2
+   **/
   g_object_class_install_property (G_OBJECT_CLASS(klass),
                                    PROP_TEXT_COLUMN,
                                    g_param_spec_int ("text-column",

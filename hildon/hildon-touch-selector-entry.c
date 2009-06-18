@@ -121,11 +121,15 @@ hildon_touch_selector_entry_class_init (HildonTouchSelectorEntryClass *klass)
   /**
    * HildonTouchSelectorEntry:text-column:
    *
-   * Deprecated: now this property is in HildonTouchSelectorColumn use
-   * hildon_touch_selector_entry_set_text_column() and
-   * hildon_touch_selector_entry_get_text_column() to manage this.
+   * A column in the data source model to get the strings from.
    *
-   * Since: 2.2
+   * This property is deprecated. Use HildonTouchSelectorColumn:text-column
+   * instead. Use hildon_touch_selector_entry_set_text_column() and
+   * hildon_touch_selector_entry_get_text_column() to manage it.
+   *
+   * Deprecated: use HildonTouchSelectorColumn:text-column instead
+   *
+   * Since: maemo 2.2
    **/
   g_object_class_install_property (G_OBJECT_CLASS (klass),
                                    PROP_TEXT_COLUMN,
