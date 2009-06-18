@@ -88,7 +88,7 @@
 #include                                        "hildon-note.h"
 #include                                        "hildon-defines.h"
 #include                                        "hildon-sound.h"
-#include                                        "hildon-banner.h" 
+#include                                        "hildon-gtk.h"
 #include                                        "hildon-enum-types.h"
 #include                                        "hildon-note-private.h"
 
@@ -605,6 +605,8 @@ hildon_note_realize                             (GtkWidget *widget)
     GdkScreen *screen = gtk_widget_get_screen (widget);
     g_signal_connect (screen, "size-changed", G_CALLBACK (screen_size_changed), widget);
     screen_size_changed (screen, widget);
+
+    hildon_gtk_window_set_portrait_flags (GTK_WINDOW (widget), HILDON_PORTRAIT_MODE_SUPPORT);
 }
 
 static void

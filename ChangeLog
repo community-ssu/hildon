@@ -1,3 +1,10 @@
+2009-06-18  Alberto Garcia  <agarcia@igalia.com>
+
+	* hildon/hildon-note.c (hildon_note_realize):
+	Make HildonNote support portrait mode.
+
+	Fixes: NB#123448 (HildonNote is not portrait-friendly)
+
 2009-06-17  Alberto Garcia  <agarcia@igalia.com>
 
 	* hildon/hildon-color-chooser.c (hildon_color_chooser_new):
