@@ -6,7 +6,7 @@
 
 	Fixes: NB#122389
 
-2009-06-17  Alejandro Pinheiro <apinheiro@igalia.com>
+2009-06-18  Alejandro Pinheiro <apinheiro@igalia.com>
 
 	* hildon/hildon-date-selector.c
 	(hildon_date_selector_select_current_date)
@@ -27,7 +27,7 @@
 	* hildon/hildon-touch-selector.c
 	Update the documentation of the "text-column" property
 
-2009-06-17  David King  <davidk@openismus.com>
+2009-06-18  David King  <davidk@openismus.com>
 
 	* hildon/hildon-note.c: Add Gtk-Doc markup where appropriate. Correct
 	several typos and errors throughout the documentation.
