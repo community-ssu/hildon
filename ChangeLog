@@ -1,5 +1,11 @@
 2009-06-18  Alberto Garcia  <agarcia@igalia.com>
 
+	* hildon/hildon-window-stack.c
+	(hildon_window_stack_pop_and_push_list):
+	Prevent windows from having the same stack index
+
+2009-06-18  Alberto Garcia  <agarcia@igalia.com>
+
 	* hildon/hildon-window-stack.c (_hildon_window_stack_do_push):
 	Use the index of the previous window rather than the stack length
 	to calculate the new index.

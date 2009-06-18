@@ -511,14 +511,19 @@ hildon_window_stack_pop_and_push_list           (HildonWindowStack  *stack,
                                                  GList             **popped_windows,
                                                  GList              *list)
 {
-    gint i;
+    gint i, topmost_index;
     GList *l;
     GList *popped = NULL;
     GList *pushed = NULL;
+    HildonStackableWindowPrivate *priv;
 
     g_return_if_fail (HILDON_IS_WINDOW_STACK (stack));
     g_return_if_fail (nwindows > 0);
     g_return_if_fail (g_list_length (stack->priv->list) >= nwindows);
+
+    /* Store the index of the topmost window */
+    priv = HILDON_STACKABLE_WINDOW_GET_PRIVATE (hildon_window_stack_peek (stack));
+    topmost_index = priv->stack_position;
 
     /* Pop windows */
     for (i = 0; i < nwindows; i++) {
@@ -534,6 +539,15 @@ hildon_window_stack_pop_and_push_list           (HildonWindowStack  *stack,
             pushed = g_list_prepend (pushed, win);
         } else {
             g_warning ("Trying to stack a non-stackable window!");
+        }
+    }
+
+    if (pushed != NULL) {
+        /* The WM will be confused if the old topmost window and the new
+         * one have the same index, so make sure that they're different */
+        priv = HILDON_STACKABLE_WINDOW_GET_PRIVATE (hildon_window_stack_peek (stack));
+        if (priv->stack_position == topmost_index) {
+            priv->stack_position++;
         }
     }
 
