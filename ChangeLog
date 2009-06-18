@@ -1,3 +1,18 @@
+2009-06-17  Alejandro Pinheiro <apinheiro@igalia.com>
+
+	* hildon/hildon-date-selector.c
+	(hildon_date_selector_select_current_date)
+	(hildon_date_selector_get_date)
+	(hildon_date_selector_select_day):
+	Update the documentation: uses always the range (1-31), as it is obvious
+	that the final one will depend on the month and the year, but globally
+	the range is this, in a similar GtkCalendar approach
+	(hildon_date_selector_get_date):
+	Update the documentation: add NULL as a valid value for the day, month
+	and year locations
+
+	Fix some details, after talk with David King on bug MB#4698
+
 2009-06-18  Alejandro Pinheiro <apinheiro@igalia.com>
 
 	* hildon/hildon-touch-selector-entry.c
