@@ -285,9 +285,14 @@ _hildon_window_stack_do_push                    (HildonWindowStack     *stack,
 
     if (current_stack == NULL) {
         GtkWidget *parent = hildon_window_stack_peek (stack);
+        gint pos = 0;
+
+        if (parent) {
+            pos = HILDON_STACKABLE_WINDOW_GET_PRIVATE (parent)->stack_position + 1;
+        }
 
         /* Push the window */
-        hildon_stackable_window_set_stack (win, stack, g_list_length (stack->priv->list));
+        hildon_stackable_window_set_stack (win, stack, pos);
         stack->priv->list = g_list_prepend (stack->priv->list, win);
 
         /* Make the window part of the same group as its parent */
