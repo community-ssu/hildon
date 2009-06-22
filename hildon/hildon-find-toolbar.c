@@ -142,7 +142,7 @@ static guint                                    HildonFindToolbar_signal [LAST_S
 /**
  * hildon_find_toolbar_get_type:
  *
- * Initializes and returns the type of a hildon fond toolbar.
+ * Initializes and returns the type of a #HildonFindToolbar.
  *
  * Returns: GType of #HildonFindToolbar
  */
@@ -532,9 +532,9 @@ hildon_find_toolbar_class_init                  (HildonFindToolbarClass *klass)
                 G_PARAM_CONSTRUCT));
 
     /**
-     * HildonFindToolbar:label:
+     * HildonFindToolbar:prefix:
      *
-     * The label to display before the search box.
+     * The search string.
      *                      
      */
     g_object_class_install_property (object_class, PROP_PREFIX, 
@@ -570,9 +570,9 @@ hildon_find_toolbar_class_init                  (HildonFindToolbarClass *klass)
                 0, G_PARAM_READWRITE));
 
     /**
-     * HildonFindToolbar:label:
+     * HildonFindToolbar:max-characters:
      *
-     * The label to display before the search box.
+     * Maximum number of characters in search string.
      *                      
      */
     g_object_class_install_property (object_class, PROP_MAX,
@@ -726,12 +726,12 @@ hildon_find_toolbar_init                        (HildonFindToolbar *self)
 
 /**
  * hildon_find_toolbar_new:
- * @label: label for the find_toolbar, NULL to set the label to 
- *         default "Find"
+ * @label: label for the #HildonFindToolbar, %NULL to set the label to
+ *         default "Find".
  * 
- * Creates a new HildonFindToolbar.
+ * Creates a new #HildonFindToolbar.
  *
- * Returns: a new HildonFindToolbar
+ * Returns: a new #HildonFindToolbar.
  */
 GtkWidget*
 hildon_find_toolbar_new                         (const gchar *label)
@@ -748,15 +748,15 @@ hildon_find_toolbar_new                         (const gchar *label)
 
 /**
  * hildon_find_toolbar_new_with_model:
- * @label: label for the find_toolbar, NULL to set the label to 
- *         default "Find"
- * @model: a @GtkListStore
- * @column: indicating which column the search histry list will 
- *          retreive string from
+ * @label: label for the #HildonFindToolbar, %NULL to set the label to
+ *         default "Find".
+ * @model: a #GtkListStore.
+ * @column: indicates which column the search history list will
+ *          retrieve the string from.
  * 
- * Creates a new HildonFindToolbar with a model.
+ * Creates a new #HildonFindToolbar with an initial #GtkTreeModel.
  *
- * Returns: a new #HildonFindToolbar
+ * Returns: a new #HildonFindToolbar.
  */
 GtkWidget*
 hildon_find_toolbar_new_with_model              (const gchar *label,
@@ -774,11 +774,11 @@ hildon_find_toolbar_new_with_model              (const gchar *label,
 
 /**
  * hildon_find_toolbar_highlight_entry:
- * @ftb: find Toolbar whose entry is to be highlighted
- * @get_focus: if user passes TRUE to this value, then the text in
+ * @ftb: #HildonFindToolbar whose entry is to be highlighted.
+ * @get_focus: if user passes %TRUE to this value, then the text in
  * the entry will not only get highlighted, but also get focused.
  *
- * Highlights the current entry in the find toolbar.
+ * Highlights the current entry in the #HildonFindToolbar.
  * 
  */
 void
@@ -802,11 +802,11 @@ hildon_find_toolbar_highlight_entry             (HildonFindToolbar *self,
 
 /**
  * hildon_find_toolbar_set_active:
- * @toolbar: A find toolbar to operate on
- * @index: An index in the model passed during construction, or -1 to have no active item
+ * @toolbar: A #HildonFindToolbar to operate on.
+ * @index: An index in the model, or -1 to have no active item.
  *
- * Sets the active item on the toolbar's combo-box. Simply calls gtk_combo_box_set_active on 
- * the HildonFindToolbar's combo.
+ * Sets the active item on the #HildonFindToolbar's #GtkComboBox. Simply calls
+ * gtk_combo_box_set_active() on the #HildonFindToolbar's #GtkComboBox.
  * 
  */
 void
@@ -823,12 +823,14 @@ hildon_find_toolbar_set_active                  (HildonFindToolbar *toolbar,
 
 /**
  * hildon_find_toolbar_get_active:
- * @toolbar: A find toolbar to query
+ * @toolbar: A #HildonFindToolbar to query.
  *
- * Gets the index of the currently active item, or -1 if there's no active item. Simply 
- * calls gtk_combo_box_get_active on the HildonFindToolbar's combo.
+ * Gets the index of the currently active item, or -1 if there's no active item.
+ * Simply calls gtk_combo_box_get_active() on the #HildonFindToolbar's
+ * #GtkComboBox.
  *
- * Returns: An integer which is the index of the currently active item, or -1 if there's no active item.
+ * Returns: the index of the currently active item, or -1 if there is no active
+ * item.
  * 
  */
 gint
@@ -844,11 +846,11 @@ hildon_find_toolbar_get_active                  (HildonFindToolbar *toolbar)
 
 /**
  * hildon_find_toolbar_set_active_iter:
- * @toolbar: A find toolbar to operate on
- * @iter: An iter to make active
+ * @toolbar: A #HildonFindToolbar to operate on.
+ * @iter: A #GtkTreeIter to activate.
  *
- * Sets the current active item to be the one referenced by iter. Simply calls 
- * gtk_combo_box_set_active_iter on the HildonFindToolbar's combo.
+ * Sets the current active item to be the one referenced by @iter. Simply calls
+ * gtk_combo_box_set_active_iter() on the #HildonFindToolbar's #GtkComboBox.
  * 
  */
 void
@@ -865,13 +867,13 @@ hildon_find_toolbar_set_active_iter             (HildonFindToolbar *toolbar,
 
 /**
  * hildon_find_toolbar_get_active_iter:
- * @toolbar: A find toolbar to query
- * @iter: The uninitialized GtkTreeIter
+ * @toolbar: A #HildonFindToolbar to query.
+ * @iter: The uninitialized #GtkTreeIter.
  *
- * Sets iter to point to the current active item, if it exists. Simply calls 
- * gtk_combo_box_get_active_iter on the HildonFindToolbar's combo.
+ * Sets @iter to point to the current active item, if it exists. Simply calls
+ * gtk_combo_box_get_active_iter() on the #HildonFindToolbar's #GtkComboBox.
  * 
- * Returns: TRUE, if iter was set
+ * Returns: %TRUE, if @iter was set.
  *
  */
 gboolean
@@ -888,13 +890,14 @@ hildon_find_toolbar_get_active_iter             (HildonFindToolbar *toolbar,
 
 /**
  * hildon_find_toolbar_get_last_index
- * @toolbar: A find toolbar to query
+ * @toolbar: A #HildonFindToolbar to query.
  *
- * Returns the index of the last (most recently added) item in the toolbar.
- * Can be used to set this item active in the history-append signal.
+ * Returns the index of the last (most recently added) item in the
+ * #HildonFindToolbar. Can be used to set this item active in the
+ * #HildonFindToolbar::history-append signal.
  *
  * 
- * Returns: Index of the last entry
+ * Returns: Index of the most recent entry.
  *
  */
 gint32

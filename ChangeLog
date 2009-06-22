@@ -1,3 +1,12 @@
+2009-06-22  David King  <davidk@openismus.com>
+
+	* hildon/hildon-find-toolbar.c: Add Gtk-Doc markup for types,
+	constants and functions, as well as correct many typos throughout the
+	documentation text.
+
+	Fixes: MB#4700 (HildonFindToolbar documentation lacks Gtk-Doc markup,
+	and needs cleanup)
+
 2009-06-22  Claudio Saavedra  <csaavedra@igalia.com>
 
 	* configure.ac: postrelease version bump.
