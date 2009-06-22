@@ -1,3 +1,11 @@
+2009-06-22  Claudio Saavedra  <csaavedra@igalia.com>
+
+	[Release 2.1.84]
+
+	* NEWS: Updates.
+	* configure.ac: Bump version.
+	* debian/changelog: Updates.
+
 2009-06-18  Alberto Garcia  <agarcia@igalia.com>
 
 	* hildon/hildon-window-stack.c

@@ -1,3 +1,27 @@
+libhildon (2.1.84-1) unstable; urgency=low
+
+  * Fixes: NB#122033 (Filter buttons in view menus incorrectly sized)
+  * Fixes: NB#108337 (Focus mismatch in items of AppMenu)
+  * Fixes: NB#102373 (Progress indicator also for the Edit mode
+    toolbar)
+  * Fixes: MB#4598 (HildonCheckButton documentation doesn't say why it
+    exists)
+  * Fixes: MB#4528 (HildonPickerButton docs should mention how to set
+    the title of its dialog)
+  * Fixes: MB#4556 (HildonNoteType is undocumented)
+  * Fixes: NB#118375 (unnecessary rescaling of images)
+  * Fixes: MB#4697 (Documentation in HildonCaption)
+  * Fixes: MB#4698 (DateSelector documentation has bad output argument
+    description, and the day depends on both the month and the year)
+  * Fixes: NB#123448 (HildonNote is not portrait-friendly)
+  * Fixes: MB#4701 (HildonNote documentation lacks some Gtk-Doc markup and
+    has some mistakes)
+  * Fixes: NB#122389 (Stacking mixup when removing HildonStackableWindow
+    from the middle of the stack)
+  * Many other documentation improvements and fixes.
+
+ -- Claudio Saavedra <csaavedra@igalia.com>  Mon, 22 Jun 2009 11:28:51 +0300
+
 libhildon (2.1.82-1) unstable; urgency=low
 
   * Fixes: NB#101420 (Update unit tests and fix make distcheck)
