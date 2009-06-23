@@ -147,6 +147,8 @@ struct _HildonPannableAreaPrivate {
 enum {
   HORIZONTAL_MOVEMENT,
   VERTICAL_MOVEMENT,
+  PANNING_STARTED,
+  PANNING_FINISHED,
   LAST_SIGNAL
 };
 
@@ -629,6 +631,52 @@ hildon_pannable_area_class_init (HildonPannableAreaClass * klass)
 		  G_TYPE_DOUBLE,
 		  G_TYPE_DOUBLE);
 
+ /**
+   * HildonPannableArea::panning-started:
+   * @hildonpannable: the pannable area object that is going to start
+   * the panning
+   *
+   * This signal is emitted before the panning starts. Applications
+   * can return %TRUE to avoid the panning. The main difference with
+   * the vertical-movement and horizontal-movement signals is those
+   * gesture signals are launched no matter if the widget is going to
+   * move, this signal means the widget is going to start moving. It
+   * could even happen that the widget moves and there was no gesture
+   * (i.e. click meanwhile the pannable is overshooting).
+   *
+   * Returns: %TRUE to stop the panning launch. %FALSE to continue
+   * with it.
+   *
+   * Since: 2.2
+   */
+  pannable_area_signals[PANNING_STARTED] =
+    g_signal_new ("panning-started",
+                  G_TYPE_FROM_CLASS (object_class),
+                  0,
+                  0,
+                  NULL, NULL,
+                  _hildon_marshal_BOOLEAN__VOID,
+                  G_TYPE_BOOLEAN, 0);
+
+ /**
+   * HildonPannableArea::panning-finished:
+   * @hildonpannable: the pannable area object that finished the
+   * panning
+   *
+   * This signal is emitted after the kinetic panning has
+   * finished.
+   *
+   * Since: 2.2
+   */
+  pannable_area_signals[PANNING_FINISHED] =
+    g_signal_new ("panning-finished",
+                  G_TYPE_FROM_CLASS (object_class),
+                  0,
+                  0,
+                  NULL, NULL,
+                  _hildon_marshal_VOID__VOID,
+                  G_TYPE_NONE, 0);
+
 }
 
 static void
@@ -907,6 +955,7 @@ hildon_pannable_area_dispose (GObject * object)
   GtkWidget *child = gtk_bin_get_child (GTK_BIN (object));
 
   if (priv->idle_id) {
+    g_signal_emit (object, pannable_area_signals[PANNING_FINISHED], 0);
     g_source_remove (priv->idle_id);
     priv->idle_id = 0;
   }
@@ -1842,7 +1891,8 @@ hildon_pannable_area_button_press_cb (GtkWidget * widget,
 				      GdkEventButton * event)
 {
   gint x, y;
-  HildonPannableAreaPrivate *priv = HILDON_PANNABLE_AREA (widget)->priv;
+  HildonPannableArea *area = HILDON_PANNABLE_AREA (widget);
+  HildonPannableAreaPrivate *priv = area->priv;
 
   if ((!priv->enabled) || (event->button != 1) ||
       ((event->time == priv->last_time) &&
@@ -1851,7 +1901,7 @@ hildon_pannable_area_button_press_cb (GtkWidget * widget,
 
   priv->scroll_indicator_event_interrupt = 1;
 
-  hildon_pannable_area_launch_fade_timeout (HILDON_PANNABLE_AREA (widget),
+  hildon_pannable_area_launch_fade_timeout (area,
                                             priv->scroll_indicator_alpha);
 
   priv->last_time = event->time;
@@ -1885,6 +1935,11 @@ hildon_pannable_area_button_press_cb (GtkWidget * widget,
   /* Stop scrolling on mouse-down (so you can flick, then hold to stop) */
   priv->vel_x = 0;
   priv->vel_y = 0;
+  if (priv->idle_id) {
+    g_source_remove (priv->idle_id);
+    priv->idle_id = 0;
+    g_signal_emit (area, pannable_area_signals[PANNING_FINISHED], 0);
+  }
 
   if (priv->child) {
 
@@ -2199,6 +2254,7 @@ hildon_pannable_area_timeout (HildonPannableArea * area)
 
   if ((!priv->enabled) || (priv->mode == HILDON_PANNABLE_AREA_MODE_PUSH)) {
     priv->idle_id = 0;
+    g_signal_emit (area, pannable_area_signals[PANNING_FINISHED], 0);
 
     return FALSE;
   }
@@ -2234,6 +2290,8 @@ hildon_pannable_area_timeout (HildonPannableArea * area)
           priv->vel_x = 0;
           priv->vel_y = 0;
           priv->idle_id = 0;
+
+          g_signal_emit (area, pannable_area_signals[PANNING_FINISHED], 0);
 
           return FALSE;
         }
@@ -2390,6 +2448,16 @@ hildon_pannable_area_check_move (HildonPannableArea *area,
 
         synth_crossing (priv->child, pos_x, pos_y, event->x_root,
                         event->y_root, event->time, FALSE);
+      }
+
+      if (priv->moved) {
+        gboolean result_val;
+
+        g_signal_emit (area,
+                       pannable_area_signals[PANNING_STARTED],
+                       0, &result_val);
+
+        priv->moved = !result_val;
       }
     }
 
@@ -2630,6 +2698,15 @@ hildon_pannable_area_button_release_cb (GtkWidget * widget,
   if  ((ABS (priv->vel_y) >= priv->vmin) ||
        (ABS (priv->vel_x) >= priv->vmin)) {
 
+    /* we have to move because we are in overshooting position*/
+    if (!priv->moved) {
+      gboolean result_val;
+
+      g_signal_emit (area,
+                     pannable_area_signals[PANNING_STARTED],
+                     0, &result_val);
+    }
+
     priv->scroll_indicator_alpha = 1.0;
 
     if (ABS (priv->vel_x) > MAX_SPEED_THRESHOLD)
@@ -2642,6 +2719,9 @@ hildon_pannable_area_button_release_cb (GtkWidget * widget,
       priv->idle_id = gdk_threads_add_timeout ((gint) (1000.0 / (gdouble) priv->sps),
                                                (GSourceFunc)
                                                hildon_pannable_area_timeout, widget);
+  } else {
+    if (priv->moved)
+      g_signal_emit (widget, pannable_area_signals[PANNING_FINISHED], 0);
   }
 
   priv->scroll_indicator_event_interrupt = 0;
@@ -2727,6 +2807,8 @@ hildon_pannable_area_scroll_cb (GtkWidget *widget,
 
       gtk_widget_queue_resize (GTK_WIDGET (widget));
     }
+
+    g_signal_emit (widget, pannable_area_signals[PANNING_FINISHED], 0);
 
     g_source_remove (priv->idle_id);
     priv->idle_id = 0;
@@ -3136,6 +3218,7 @@ hildon_pannable_area_jump_to (HildonPannableArea *area,
       gtk_widget_queue_resize (GTK_WIDGET (area));
     }
 
+    g_signal_emit (area, pannable_area_signals[PANNING_FINISHED], 0);
     g_source_remove (priv->idle_id);
     priv->idle_id = 0;
   }

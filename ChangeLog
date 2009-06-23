@@ -1,3 +1,16 @@
+2009-06-23  Alejandro G. Castro  <alex@igalia.com>
+
+	* hildon/hildon-pannable-area.c (hildon_pannable_area_class_init)
+	(hildon_pannable_area_dispose)
+	(hildon_pannable_area_button_press_cb)
+	(hildon_pannable_area_timeout, hildon_pannable_area_check_move)
+	(hildon_pannable_area_button_release_cb)
+	(hildon_pannable_area_scroll_cb, hildon_pannable_area_jump_to):
+	New 'panning-started' and 'panning-finished' signals.
+
+	Fixes: NB#121732 (New feature request: Signal to pannable area
+	that informs when panning is stopped.)
+
 2009-06-23  Mox Soini  <ext-mox.soini@nokia.com>
 
 	* hildon/hildon-wizard-dialog.c: (create_title): Use separator
