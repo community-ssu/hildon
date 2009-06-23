@@ -1,3 +1,11 @@
+2009-06-23  Mox Soini  <ext-mox.soini@nokia.com>
+
+	* hildon/hildon-wizard-dialog.c: (create_title): Use separator
+	instead of hardcoded colon.
+
+	Fixes: NB#124090 (New calendar wizard title is not using
+	ecdg_ti_caption_separator)
+
 2009-06-22  David King  <davidk@openismus.com>
 
 	* hildon/hildon-find-toolbar.c: Add Gtk-Doc markup for types,

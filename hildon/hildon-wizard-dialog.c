@@ -417,7 +417,7 @@ create_title                                    (HildonWizardDialog *wizard_dial
                 gtk_notebook_get_nth_page (notebook, current));
 
         if (steps) {
-          str = g_strdup_printf ("%s: %s", priv->wizard_name, steps);
+          str = g_strdup_printf ("%s%s %s", priv->wizard_name, _("ecdg_ti_caption_separator"), steps);
         } else {
           str = g_strdup (priv->wizard_name);
         }
