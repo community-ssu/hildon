@@ -1,3 +1,12 @@
+2009-06-24  Claudio Saavedra  <csaavedra@igalia.com>
+
+	* configure.ac: Bump GTK+ requirement to 2.14.3.
+	* hildon/hildon-note.c: (hildon_note_rebuild): Use gtk_dialog_set_padding()
+	when using maemo-gtk to define proper margins for the notes.
+
+	Fixes: NB#124408 (Confirmation notes: the 'Yes' button overlaps
+	with the dialog edge)
+
 2009-06-24  Alberto Garcia  <agarcia@igalia.com>
 
 	* hildon/hildon-banner.c

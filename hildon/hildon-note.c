@@ -709,6 +709,13 @@ hildon_note_rebuild                             (HildonNote *note)
             g_object_get (priv->okButton, "width-request",
                           &priv->button_width, NULL);
             gtk_widget_set_no_show_all (priv->cancelButton, FALSE);
+#ifdef MAEMO_GTK
+	    gtk_dialog_set_padding (dialog,
+				    HILDON_MARGIN_DOUBLE,
+				    HILDON_MARGIN_DEFAULT,
+				    HILDON_MARGIN_DOUBLE,
+				    HILDON_MARGIN_DOUBLE);
+#endif /* MAEMO_GTK */
             break;
 
         case HILDON_NOTE_TYPE_PROGRESSBAR:
@@ -720,6 +727,13 @@ hildon_note_rebuild                             (HildonNote *note)
 
         case HILDON_NOTE_TYPE_INFORMATION_THEME:
         case HILDON_NOTE_TYPE_INFORMATION:
+#ifdef MAEMO_GTK
+	    gtk_dialog_set_padding (dialog,
+				    HILDON_MARGIN_DOUBLE,
+				    HILDON_MARGIN_DOUBLE,
+				    0,
+				    0);
+#endif /* MAEMO_GTK */
             is_info_note = TRUE;
             break;
 
