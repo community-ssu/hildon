@@ -1,3 +1,12 @@
+2009-06-24  Claudio Saavedra  <csaavedra@igalia.com>
+
+	* hildon/hildon-color-chooser.c
+	(hildon_color_chooser_pointer_motion): Take the widget allocation
+	into account.
+
+	Fixes: NB#124385 (Unable to select exact point in color mixing box
+	in color palette dialog)
+
 2009-06-23  Alejandro G. Castro  <alex@igalia.com>
 
 	* hildon/hildon-pannable-area.c (hildon_pannable_area_class_init)

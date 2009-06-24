@@ -705,8 +705,8 @@ hildon_color_chooser_pointer_motion             (GtkWidget *widget,
 
     g_assert (priv);
 
-    x = (gint) event->x;
-    y = (gint) event->y;
+    x = (int) event->x + widget->allocation.x;
+    y = (int) event->y + widget->allocation.y;
 
     if (priv->mousestate == 1) {
         if (x >= priv->spa.x && x <= priv->spa.x + priv->spa.width &&
