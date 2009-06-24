@@ -1,5 +1,14 @@
 2009-06-24  Claudio Saavedra  <csaavedra@igalia.com>
 
+	* hildon/hildon-note.c (+hildon_note_constructor),
+	(hildon_note_class_init), (+hildon_note_set_padding),
+	(hildon_note_rebuild): Install a constructor where to set the
+	padding properties in the note, so that it actually works fine.
+	Use hildon_note_set_padding() for this, and also to set it during
+	the note rebuild.
+
+2009-06-24  Claudio Saavedra  <csaavedra@igalia.com>
+
 	* configure.ac: Bump GTK+ requirement to 2.14.3.
 	* hildon/hildon-note.c: (hildon_note_rebuild): Use gtk_dialog_set_padding()
 	when using maemo-gtk to define proper margins for the notes.
