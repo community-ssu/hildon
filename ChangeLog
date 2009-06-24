@@ -1,3 +1,35 @@
+2009-06-24  Alberto Garcia  <agarcia@igalia.com>
+
+	* hildon/hildon-banner.c
+	(hildon_banner_class_init):
+	Center text.
+	(+hildon_banner_size_request):
+	Request always the full width of the screen.
+	(hildon_banner_realize)
+	(-hildon_banner_check_position, hildon_banner_map):
+	hildon_banner_check_position() is not needed in Hildon 2.2.
+	(-hildon_banner_reset_wrap_state)
+	(hildon_banner_constructor, hildon_banner_init):
+	Remove unnecessary calls to hildon_banner_reset_wrap_state()
+	(+banner_do_set_text)
+	(force_to_wrap_truncated):
+	Remove has_been_wrapped and has_been_truncated attributes.
+	(+reshow_banner, hildon_banner_real_show_information)
+	(hildon_banner_show_information_with_markup)
+	(hildon_banner_show_animation, hildon_banner_show_progress)
+	(hildon_banner_set_text, hildon_banner_set_markup):
+	Refactor code. Shrink banner vertically to use the minimum space
+	necessary everytime the text of the label is updated.
+	(screen_size_changed):
+	Call force_to_wrap_truncated() when the size of the screen
+	changes.
+
+	Fixes: NB#120500 (only device memory connect mmc in use info
+	banner is left aligned)
+
+	Fixes: NB#120613 (Size of HildonBanner varies depending on
+	previously opened banners)
+
 2009-06-24  Claudio Saavedra  <csaavedra@igalia.com>
 
 	* hildon/hildon-color-chooser.c
