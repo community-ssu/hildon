@@ -1,8 +1,9 @@
 libhildon (2.1.85-1) unstable; urgency=low
 
   * unreleased
+  * Bump GTK+ dependency to 2.14.3-1maemo5.
 
- -- Claudio Saavedra <csaavedra@igalia.com>  Mon, 22 Jun 2009 12:54:04 +0300
+ -- Claudio Saavedra <csaavedra@igalia.com>  Wed, 24 Jun 2009 10:18:58 +0300
 
 libhildon (2.1.84-1) unstable; urgency=low
 
