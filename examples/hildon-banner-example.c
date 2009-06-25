@@ -24,6 +24,8 @@
 
 #include                                        <hildon/hildon.h>
 
+#ifndef HILDON_DISABLE_DEPRECATED
+
 static gboolean
 on_animation_idle                               (GtkWidget *banner)
 {
@@ -40,6 +42,8 @@ on_progress_idle                                (GtkWidget *banner)
     return FALSE;
 }
 
+#endif
+
 static gboolean
 on_information_clicked                          (GtkWidget *widget)
 {
@@ -47,6 +51,8 @@ on_information_clicked                          (GtkWidget *widget)
     hildon_banner_set_timeout (HILDON_BANNER (banner), 9000);
     return TRUE;
 }
+
+#ifndef HILDON_DISABLE_DEPRECATED
 
 static gboolean
 on_animation_clicked                            (GtkWidget *widget)
@@ -66,12 +72,17 @@ on_progress_clicked                             (GtkWidget *widget)
     return TRUE;
 }
 
+#endif
+
 int
 main                                            (int argc,
                                                  char **argv)
 {
     HildonProgram *program;
-    GtkWidget *window, *vbox, *button1, *button2, *button3;
+    GtkWidget *window, *vbox, *button1;
+#ifndef HILDON_DISABLE_DEPRECATED
+    GtkWidget *button2, button3;
+#endif
 
     hildon_gtk_init (&argc, &argv);
 
@@ -82,16 +93,20 @@ main                                            (int argc,
     button1 = gtk_button_new_with_label ("Information");
     g_signal_connect (button1, "clicked", G_CALLBACK (on_information_clicked), NULL);
 
+#ifndef HILDON_DISABLE_DEPRECATED
     button2 = gtk_button_new_with_label ("Animation");
     g_signal_connect (button2, "clicked", G_CALLBACK (on_animation_clicked), NULL);
 
     button3 = gtk_button_new_with_label ("Progress");
     g_signal_connect (button3, "clicked", G_CALLBACK (on_progress_clicked), NULL);
+#endif
 
     vbox = gtk_vbox_new (6, FALSE);
     gtk_box_pack_start (GTK_BOX (vbox), button1, TRUE, TRUE, 0);
+#ifndef HILDON_DISABLE_DEPRECATED
     gtk_box_pack_start (GTK_BOX (vbox), button2, TRUE, TRUE, 0);
     gtk_box_pack_start (GTK_BOX (vbox), button3, TRUE, TRUE, 0);
+#endif
 
     gtk_container_set_border_width (GTK_CONTAINER (window), 6);
     gtk_container_add (GTK_CONTAINER (window), vbox);

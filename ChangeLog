@@ -1,3 +1,18 @@
+2009-06-26  Alejandro Pinheiro  <apinheiro@igalia.com>
+
+	* examples/hildon-banner-example.c: Protect deprecated hildon-banner
+	functions with #ifndef HILDON_DISABLE_DEPRECATED
+	* examples/hildon-find-toolbar.c: Protect deprecated
+	HILDON_ICON_SIZE_TOOLBAR with #ifndef HILDON_DISABLE_DEPRECATED
+	* hildon/hildon-find-toolbar.c: Change deprecated HILDON_ICON_SIZE_TOOLBAR
+	in favor of HILDON_ICON_PIXEL_SIZE_FINGER
+	* hildon/hildon-private.h: Unmark hildon_privfate_create_animation() as
+	deprecated.
+	* hildon/hildon-stackable-window.c: Added #undef HILDON_DISABLE_DEPRECATED
+	to allow proper compilation of deprecated functions defined on the header
+
+	Fixed compilation using '--enable-fatal' and '--disable-deprecated'
+
 2009-06-25  Claudio Saavedra  <csaavedra@igalia.com>
 
 	* hildon/hildon-pannable-area.c: (hildon_pannable_area_init):

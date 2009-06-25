@@ -89,6 +89,8 @@
  * </example>
  */
 
+#undef HILDON_DISABLE_DEPRECATED
+
 #include                                        <X11/X.h>
 #include                                        <X11/Xatom.h>
 #include                                        <gdk/gdkx.h>

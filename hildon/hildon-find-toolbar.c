@@ -713,7 +713,7 @@ hildon_find_toolbar_init                        (HildonFindToolbar *self)
     /* Close button */
     priv->close_button = gtk_tool_button_new (
             gtk_image_new_from_icon_name ("general_close",
-                HILDON_ICON_SIZE_TOOLBAR),
+                HILDON_ICON_PIXEL_SIZE_FINGER),
             "Close");
     g_signal_connect(priv->close_button, "clicked",
             G_CALLBACK(hildon_find_toolbar_emit_close), self);

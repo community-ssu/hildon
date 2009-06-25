@@ -22,8 +22,6 @@
  *
  */
 
-#ifndef                                         HILDON_DISABLE_DEPRECATED
-
 #ifndef                                         __HILDON_PRIVATE_H__
 #define                                         __HILDON_PRIVATE_H__
 
@@ -31,10 +29,14 @@
 
 G_BEGIN_DECLS
 
+#ifndef                                         HILDON_DISABLE_DEPRECATED
+
 gboolean G_GNUC_INTERNAL
 hildon_private_composite_focus                  (GtkWidget *widget, 
                                                  GtkDirectionType direction,
                                                  GtkDirectionType *effective_direction);
+
+#endif                                          /* HILDON_DISABLE_DEPRECATED */
 
 G_GNUC_INTERNAL GtkWidget *
 hildon_private_create_animation                 (gfloat       framerate,
@@ -44,5 +46,3 @@ hildon_private_create_animation                 (gfloat       framerate,
 G_END_DECLS
 
 #endif                                          /* __HILDON_PRIVATE_H__ */
-
-#endif                                          /* HILDON_DISABLE_DEPRECATED */
