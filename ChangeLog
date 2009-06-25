@@ -1,3 +1,10 @@
+2009-06-25  Claudio Saavedra  <csaavedra@igalia.com>
+
+	* hildon/hildon-time-selector.c: (update_format_policy): Do
+	not call update_format_dependant_columns() if not necessary.
+	(update_format_dependant_columns): Remove unnecessary check for
+	the number of columns.
+
 2009-06-24  Claudio Saavedra  <csaavedra@igalia.com>
 
 	* hildon/hildon-note.c (+hildon_note_constructor),

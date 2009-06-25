@@ -548,7 +548,7 @@ update_format_policy                            (HildonTimeSelector *selector,
         break;
       }
 
-    if (prev_ampm_format != selector->priv->ampm_format) {
+    if (prev_ampm_format != selector->priv->ampm_format && num_columns >= 2) {
       update_format_dependant_columns (selector, hours, minutes);
     }
   }
@@ -559,13 +559,6 @@ update_format_dependant_columns                 (HildonTimeSelector *selector,
                                                  guint hours,
                                                  guint minutes)
 {
-  gint num_columns = -1;
-
-  num_columns = hildon_touch_selector_get_num_columns (HILDON_TOUCH_SELECTOR (selector));
-  if (num_columns < 2) {/* we are on the object construction */
-    return;
-  }
-
   /* To avoid an extra and wrong VALUE_CHANGED signal on the model update */
   hildon_touch_selector_block_changed (HILDON_TOUCH_SELECTOR(selector));
 
