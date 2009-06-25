@@ -1,5 +1,15 @@
 2009-06-25  Claudio Saavedra  <csaavedra@igalia.com>
 
+	* hildon/hildon-pannable-area.c: (hildon_pannable_area_init):
+	Cache the panning indicator color.,
+	(hildon_pannable_area_style_set): Query the color on style changes.
+	(hildon_pannable_draw_vscroll),
+	(hildon_pannable_draw_hscroll),
+	(hildon_pannable_area_expose_event): Use the cached panning indicator
+	color instead of looking it up on every expose and more.
+
+2009-06-25  Claudio Saavedra  <csaavedra@igalia.com>
+
 	* hildon/hildon-pannable-area.c: (hildon_pannable_draw_vscroll),
 	(hildon_pannable_draw_hscroll),
 	(hildon_pannable_area_expose_event): Fix the panning indicator color,

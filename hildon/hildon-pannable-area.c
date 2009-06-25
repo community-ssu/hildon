@@ -141,6 +141,7 @@ struct _HildonPannableAreaPrivate {
   GtkPolicyType hscrollbar_policy;
 
   GdkGC *scrollbars_gc;
+  GdkColor scroll_color;
 };
 
 /*signals*/
@@ -718,6 +719,9 @@ hildon_pannable_area_init (HildonPannableArea * area)
   priv->x_offset = 0;
   priv->y_offset = 0;
 
+  gtk_style_lookup_color (GTK_WIDGET (area)->style,
+			  "SecondaryTextColor", &priv->scroll_color);
+
   priv->hadjust =
     GTK_ADJUSTMENT (gtk_adjustment_new (0.0, 0.0, 0.0, 0.0, 0.0, 0.0));
   priv->vadjust =
@@ -1241,6 +1245,7 @@ hildon_pannable_area_style_set (GtkWidget * widget,
   GTK_WIDGET_CLASS (hildon_pannable_area_parent_class)->
     style_set (widget, previous_style);
 
+  gtk_style_lookup_color (widget->style, "SecondaryTextColor", &priv->scroll_color);
   gtk_widget_style_get (widget, "indicator-width", &priv->indicator_width, NULL);
 }
 
@@ -1486,7 +1491,7 @@ hildon_pannable_draw_vscroll (GtkWidget *widget,
            height);
 
   if (priv->scroll_indicator_alpha == 1.0) {
-    gtk_style_lookup_color (widget->style, "SecondaryTextColor", &transp_color);
+    transp_color = priv->scroll_color;
   } else if (priv->scroll_indicator_alpha < 1.0) {
     tranparency_color (&transp_color, *back_color, *scroll_color,
                        priv->scroll_indicator_alpha);
@@ -1532,7 +1537,7 @@ hildon_pannable_draw_hscroll (GtkWidget *widget,
            width);
 
   if (priv->scroll_indicator_alpha == 1.0) {
-    gtk_style_lookup_color (widget->style, "SecondaryTextColor", &transp_color);
+    transp_color = priv->scroll_color;
   } else if (priv->scroll_indicator_alpha < 1.0) {
     tranparency_color (&transp_color, *back_color, *scroll_color,
                        priv->scroll_indicator_alpha);
@@ -1693,8 +1698,7 @@ hildon_pannable_area_expose_event (GtkWidget * widget,
   GdkColor scroll_color = widget->style->base[GTK_STATE_SELECTED];
 #else /* USE_CAIRO_SCROLLBARS */
   GdkColor back_color = widget->style->bg[GTK_STATE_NORMAL];
-  GdkColor scroll_color;
-  gtk_style_lookup_color (widget->style, "SecondaryTextColor", &scroll_color);
+  GdkColor scroll_color = priv->scroll_color;
 #endif
 
   if (G_UNLIKELY (priv->initial_effect)) {
