@@ -1,3 +1,10 @@
+2009-06-25  Claudio Saavedra  <csaavedra@igalia.com>
+
+	* hildon/hildon-pannable-area.c: (hildon_pannable_draw_vscroll),
+	(hildon_pannable_draw_hscroll),
+	(hildon_pannable_area_expose_event): Fix the panning indicator color,
+	so that it's "SecondaryTextColor", as desired.
+
 2009-06-25  Alejandro Pinheiro  <apinheiro@igalia.com>
 
 	* hildon/hildon-picker-dialog.c:

@@ -1461,7 +1461,7 @@ hildon_pannable_draw_vscroll (GtkWidget *widget,
   HildonPannableAreaPrivate *priv = HILDON_PANNABLE_AREA (widget)->priv;
   gfloat y, height;
   GdkColor transp_color;
-  GdkGC *gc = widget->style->fg_gc[GTK_STATE_INSENSITIVE];
+  GdkGC *gc = priv->scrollbars_gc;
 
   gdk_draw_rectangle (widget->window,
                       widget->style->bg_gc[GTK_STATE_NORMAL],
@@ -1485,14 +1485,13 @@ hildon_pannable_draw_vscroll (GtkWidget *widget,
            (priv->hscroll_visible ? priv->hscroll_rect.height : 0) -
            height);
 
-  if (priv->scroll_indicator_alpha < 1.0) {
+  if (priv->scroll_indicator_alpha == 1.0) {
+    gtk_style_lookup_color (widget->style, "SecondaryTextColor", &transp_color);
+  } else if (priv->scroll_indicator_alpha < 1.0) {
     tranparency_color (&transp_color, *back_color, *scroll_color,
                        priv->scroll_indicator_alpha);
-
-    gdk_gc_set_rgb_fg_color (priv->scrollbars_gc, &transp_color);
-
-    gc = priv->scrollbars_gc;
   }
+  gdk_gc_set_rgb_fg_color (gc, &transp_color);
 
   gdk_draw_rectangle (widget->window, gc,
                       TRUE, priv->vscroll_rect.x, y,
@@ -1507,7 +1506,7 @@ hildon_pannable_draw_hscroll (GtkWidget *widget,
   HildonPannableAreaPrivate *priv = HILDON_PANNABLE_AREA (widget)->priv;
   gfloat x, width;
   GdkColor transp_color;
-  GdkGC *gc = widget->style->fg_gc[GTK_STATE_INSENSITIVE];
+  GdkGC *gc = priv->scrollbars_gc;
 
   gdk_draw_rectangle (widget->window,
                       widget->style->bg_gc[GTK_STATE_INSENSITIVE],
@@ -1532,14 +1531,13 @@ hildon_pannable_draw_hscroll (GtkWidget *widget,
            (priv->vscroll_visible ? priv->vscroll_rect.width : 0) -
            width);
 
-  if (priv->scroll_indicator_alpha < 1.0) {
+  if (priv->scroll_indicator_alpha == 1.0) {
+    gtk_style_lookup_color (widget->style, "SecondaryTextColor", &transp_color);
+  } else if (priv->scroll_indicator_alpha < 1.0) {
     tranparency_color (&transp_color, *back_color, *scroll_color,
                        priv->scroll_indicator_alpha);
-
-    gdk_gc_set_rgb_fg_color (priv->scrollbars_gc, &transp_color);
-
-    gc = priv->scrollbars_gc;
   }
+  gdk_gc_set_rgb_fg_color (gc, &transp_color);
 
   gdk_draw_rectangle (widget->window, gc,
                       TRUE, x, priv->hscroll_rect.y, width,
@@ -1695,7 +1693,8 @@ hildon_pannable_area_expose_event (GtkWidget * widget,
   GdkColor scroll_color = widget->style->base[GTK_STATE_SELECTED];
 #else /* USE_CAIRO_SCROLLBARS */
   GdkColor back_color = widget->style->bg[GTK_STATE_NORMAL];
-  GdkColor scroll_color = widget->style->fg[GTK_STATE_INSENSITIVE];
+  GdkColor scroll_color;
+  gtk_style_lookup_color (widget->style, "SecondaryTextColor", &scroll_color);
 #endif
 
   if (G_UNLIKELY (priv->initial_effect)) {
