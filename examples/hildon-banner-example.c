@@ -81,7 +81,7 @@ main                                            (int argc,
     HildonProgram *program;
     GtkWidget *window, *vbox, *button1;
 #ifndef HILDON_DISABLE_DEPRECATED
-    GtkWidget *button2, button3;
+    GtkWidget *button2, *button3;
 #endif
 
     hildon_gtk_init (&argc, &argv);

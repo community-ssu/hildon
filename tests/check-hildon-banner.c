@@ -21,6 +21,7 @@
  * 02110-1301 USA
  *
  */
+#ifndef HILDON_DISABLE_DEPRECATED
 
 #include <stdlib.h>
 #include <check.h>
@@ -215,8 +216,6 @@ START_TEST (test_show_progress_invalid)
 }
 END_TEST
 
-
-
 /* ---------- Suite creation ---------- */
 Suite *create_hildon_banner_suite()
 {
@@ -225,7 +224,7 @@ Suite *create_hildon_banner_suite()
 
   /* Create test cases */
   TCase *tc1 = tcase_create("show_animation");
-  TCase *tc2 = tcase_create("show_animation");
+  TCase *tc2 = tcase_create("show_progress");
 
   /* Create unit tests for hildon_banner_show_animation and add it to the suite */
   tcase_add_checked_fixture(tc1, fx_setup_default_banner, fx_teardown_default_banner);
@@ -244,3 +243,5 @@ Suite *create_hildon_banner_suite()
   /* Return created suite */
   return s;             
 }
+
+#endif

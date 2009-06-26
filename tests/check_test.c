@@ -79,7 +79,11 @@ configure_tests(gint environment)
   srunner_add_suite(sr, create_hildon_note_suite());
   srunner_add_suite(sr, create_hildon_wizard_dialog_suite());
   /* srunner_add_suite(sr, create_hildon_scroll_area_suite()); */
+#ifndef HILDON_DISABLE_DEPRECATED
+  /* HildonBanner is not deprecated, but all the functions tested in
+     this suite are deprecated*/
   srunner_add_suite(sr, create_hildon_banner_suite());
+#endif
   srunner_add_suite(sr, create_hildon_window_suite());
   srunner_add_suite(sr, create_hildon_helper_suite());
   srunner_add_suite(sr, create_hildon_picker_button_suite());
