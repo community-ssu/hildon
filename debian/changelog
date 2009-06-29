@@ -1,9 +1,21 @@
-libhildon (2.1.85-1) unstable; urgency=low
+libhildon (2.1.86-1) unstable; urgency=low
 
-  * unreleased
   * Bump GTK+ dependency to 2.14.3-1maemo5.
+  * MB#4700 (HildonFindToolbar documentation lacks Gtk-Doc markup,
+    and needs cleanup)
+  * Fixes: NB#124090 (New calendar wizard title is not using
+    ecdg_ti_caption_separator)
+  * Fixes: NB#121732 (New feature request: Signal to pannable area
+    that informs when panning is stopped.)
+  * Fixes: NB#124385 (Unable to select exact point in color mixing box
+    in color palette dialog)
+  * Fixes: NB#120500 (only device memory connect mmc in use info
+    banner is left aligned)
+  * Fixes: NB#124408 (Confirmation notes: the 'Yes' button overlaps
+    with the dialog edge)
+  * Fixes: NB#95685 (Add field dialog should use HILDON_UI_MODE_NORMAL)
 
- -- Claudio Saavedra <csaavedra@igalia.com>  Wed, 24 Jun 2009 10:18:58 +0300
+ -- Claudio Saavedra <csaavedra@igalia.com>  Mon, 29 Jun 2009 11:44:17 +0200
 
 libhildon (2.1.84-1) unstable; urgency=low
 
