@@ -1,3 +1,8 @@
+2009-06-29  Adam Endrodi  <adam.endrodi@blumsoft.eu>
+
+	* hildon/hildon-program.c (hildon_program_update_top_most): Ignore
+	BadWindow error.
+
 2009-06-26  Alejandro Pinheiro  <apinheiro@igalia.com>
 
 	* tests/check-hildon-banner.c
