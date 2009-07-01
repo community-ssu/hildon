@@ -568,6 +568,8 @@ hildon_banner_map                               (GtkWidget *widget)
         /* Make the banner non-temporary _after_ mapping it, to avoid
          * being closed by other non-temporary windows */
         gtk_window_set_is_temporary (GTK_WINDOW (widget), FALSE);
+
+        gtk_window_move (GTK_WINDOW (widget), 0, HILDON_WINDOW_TITLEBAR_HEIGHT);
     }
 }
 #endif
