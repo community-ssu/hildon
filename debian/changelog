@@ -1,8 +1,8 @@
-libhildon (2.1.87-1) unstable; urgency=low
+libhildon (2.1.86-2) unstable; urgency=low
 
-  * unreleased
+  * Correctly place HildonBanner during mapping.
 
- -- Claudio Saavedra <csaavedra@igalia.com>  Mon, 29 Jun 2009 13:16:10 +0200
+ -- Claudio Saavedra <csaavedra@igalia.com>  Wed, 01 Jul 2009 11:22:22 +0200
 
 libhildon (2.1.86-1) unstable; urgency=low
 
