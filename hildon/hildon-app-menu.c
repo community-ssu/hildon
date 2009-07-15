@@ -866,7 +866,11 @@ hildon_app_menu_apply_style                     (GtkWidget *widget)
         external_border = 0;
     }
     priv->width_request = gdk_screen_get_width (screen) - external_border * 2;
-    gtk_window_move (GTK_WINDOW (widget), external_border, 0);
+
+    if (widget->window)
+      gdk_window_move_resize (widget->window,
+                              external_border, 0, 1, 1);
+
     gtk_widget_queue_resize (widget);
 }
 

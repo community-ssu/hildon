@@ -1,3 +1,12 @@
+2009-07-14  László Pere  <lpere@blumsoft.eu>
+
+	* hildon/hildon-app-menu.c: (hildon_app_menu_apply_style): Ensure that
+	the new size is applied.
+
+	Fixes: NB#124510 (The Application Menu is distorted when switched
+	between portrait and landscape mode)
+	Fixes: NB#115388 (Power key menu does not resize itself)
+
 2009-07-01  Alberto Garcia  <agarcia@igalia.com>
 
 	* hildon/hildon-banner.c (hildon_banner_map):
