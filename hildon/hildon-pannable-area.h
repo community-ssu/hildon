@@ -171,6 +171,9 @@ void hildon_pannable_area_set_size_request_policy (HildonPannableArea *area,
 #endif
 GtkAdjustment* hildon_pannable_area_get_hadjustment (HildonPannableArea *area);
 GtkAdjustment* hildon_pannable_area_get_vadjustment (HildonPannableArea *area);
+gboolean hildon_pannable_area_get_center_on_child_focus (HildonPannableArea *area);
+void hildon_pannable_area_set_center_on_child_focus (HildonPannableArea *area,
+                                                     gboolean value);
 
 G_END_DECLS
 

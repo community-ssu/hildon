@@ -142,6 +142,9 @@ struct _HildonPannableAreaPrivate {
 
   GdkGC *scrollbars_gc;
   GdkColor scroll_color;
+
+  gboolean center_on_child_focus;
+  gboolean center_on_child_focus_pending;
 };
 
 /*signals*/
@@ -181,6 +184,7 @@ enum {
   PROP_SIZE_REQUEST_POLICY,
   PROP_HADJUSTMENT,
   PROP_VADJUSTMENT,
+  PROP_CENTER_ON_CHILD_FOCUS,
   PROP_LAST
 };
 
@@ -292,6 +296,9 @@ static void hildon_pannable_area_child_mapped (GtkWidget *widget,
 static void hildon_pannable_area_add (GtkContainer *container, GtkWidget *child);
 static void hildon_pannable_area_remove (GtkContainer *container, GtkWidget *child);
 static void hildon_pannable_calculate_vel_factor (HildonPannableArea * self);
+static void hildon_pannable_area_set_focus_child (GtkContainer *container,
+                                                 GtkWidget *child);
+static void hildon_pannable_area_center_on_child_focus (HildonPannableArea *area);
 
 
 static void
@@ -324,6 +331,7 @@ hildon_pannable_area_class_init (HildonPannableAreaClass * klass)
 
   container_class->add = hildon_pannable_area_add;
   container_class->remove = hildon_pannable_area_remove;
+  container_class->set_focus_child = hildon_pannable_area_set_focus_child;
 
   klass->horizontal_movement = NULL;
   klass->vertical_movement = NULL;
@@ -572,6 +580,16 @@ hildon_pannable_area_class_init (HildonPannableAreaClass * klass)
 							GTK_TYPE_ADJUSTMENT,
 							G_PARAM_READABLE));
 
+  g_object_class_install_property (object_class,
+                                   PROP_CENTER_ON_CHILD_FOCUS,
+                                   g_param_spec_boolean ("center-on-child-focus",
+                                                         "Center on the child with the focus",
+                                                         "Whether to center the pannable on the child that receives the focus.",
+                                                         FALSE,
+                                                         G_PARAM_READWRITE |
+                                                         G_PARAM_CONSTRUCT));
+
+
   gtk_widget_class_install_style_property (widget_class,
 					   g_param_spec_uint
 					   ("indicator-width",
@@ -718,6 +736,7 @@ hildon_pannable_area_init (HildonPannableArea * area)
   priv->last_in = TRUE;
   priv->x_offset = 0;
   priv->y_offset = 0;
+  priv->center_on_child_focus_pending = FALSE;
 
   gtk_style_lookup_color (GTK_WIDGET (area)->style,
 			  "SecondaryTextColor", &priv->scroll_color);
@@ -830,6 +849,9 @@ hildon_pannable_area_get_property (GObject * object,
     g_value_set_object (value,
                         hildon_pannable_area_get_vadjustment
                         (HILDON_PANNABLE_AREA (object)));
+    break;
+  case PROP_CENTER_ON_CHILD_FOCUS:
+    g_value_set_boolean (value, priv->center_on_child_focus);
     break;
   default:
     G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
@@ -945,6 +967,9 @@ hildon_pannable_area_set_property (GObject * object,
   case PROP_SIZE_REQUEST_POLICY:
     hildon_pannable_area_set_size_request_policy (HILDON_PANNABLE_AREA (object),
                                                   g_value_get_enum (value));
+    break;
+  case PROP_CENTER_ON_CHILD_FOCUS:
+    priv->center_on_child_focus = g_value_get_boolean (value);
     break;
 
   default:
@@ -2723,9 +2748,15 @@ hildon_pannable_area_button_release_cb (GtkWidget * widget,
                                                (GSourceFunc)
                                                hildon_pannable_area_timeout, widget);
   } else {
+    if (priv->center_on_child_focus_pending) {
+      hildon_pannable_area_center_on_child_focus (area);
+    }
+
     if (priv->moved)
       g_signal_emit (widget, pannable_area_signals[PANNING_FINISHED], 0);
   }
+
+  area->priv->center_on_child_focus_pending = FALSE;
 
   priv->scroll_indicator_event_interrupt = 0;
   priv->scroll_delay_counter = priv->scrollbar_fade_delay;
@@ -2869,6 +2900,39 @@ hildon_pannable_area_add (GtkContainer *container, GtkWidget *child)
   if (!gtk_widget_set_scroll_adjustments (child, priv->hadjust, priv->vadjust)) {
     g_warning ("%s: cannot add non scrollable widget, "
                "wrap it in a viewport", __FUNCTION__);
+  }
+}
+
+/* call this function if you are not panning */
+static void
+hildon_pannable_area_center_on_child_focus      (HildonPannableArea *area)
+{
+  GtkWidget *focused_child = NULL;
+  GtkWidget *window = NULL;
+
+  window = gtk_widget_get_toplevel (GTK_WIDGET (area));
+
+  if (GTK_WIDGET_TOPLEVEL (window)) {
+    focused_child = gtk_window_get_focus (GTK_WINDOW (window));
+  }
+
+  if (focused_child) {
+    hildon_pannable_area_scroll_to_child (area, focused_child);
+  }
+}
+
+static void
+hildon_pannable_area_set_focus_child            (GtkContainer     *container,
+                                                 GtkWidget        *child)
+{
+  HildonPannableArea *area = HILDON_PANNABLE_AREA (container);
+
+  if (!area->priv->center_on_child_focus) {
+    return;
+  }
+
+  if (GTK_IS_WIDGET (child)) {
+    area->priv->center_on_child_focus_pending = TRUE;
   }
 }
 
@@ -3458,3 +3522,44 @@ hildon_pannable_area_set_size_request_policy (HildonPannableArea *area,
   g_object_notify (G_OBJECT (area), "size-request-policy");
 }
 
+/**
+ * hildon_pannable_area_get_center_on_child_focus
+ * @area: A #HildonPannableArea
+ *
+ * Gets the @area #HildonPannableArea:center-on-child-focus property
+ * value.
+ *
+ * See #HildonPannableArea:center-on-child-focus for more information.
+ *
+ * Returns: the @area #HildonPannableArea:center-on-child-focus value
+ *
+ * Since: 2.2
+ **/
+gboolean
+hildon_pannable_area_get_center_on_child_focus  (HildonPannableArea *area)
+{
+  g_return_val_if_fail (HILDON_IS_PANNABLE_AREA (area), FALSE);
+
+  return area->priv->center_on_child_focus;
+}
+
+/**
+ * hildon_pannable_area_set_center_on_child_focus
+ * @area: A #HildonPannableArea
+ * @value: the new value
+ *
+ * Sets the @area #HildonPannableArea:center-on-child-focus property
+ * to @value.
+ *
+ * See #HildonPannableArea:center-on-child-focus for more information.
+ *
+ * Since: 2.2
+ **/
+void
+hildon_pannable_area_set_center_on_child_focus  (HildonPannableArea *area,
+                                                 gboolean value)
+{
+  g_return_if_fail (HILDON_IS_PANNABLE_AREA (area));
+
+  area->priv->center_on_child_focus = value;
+}
