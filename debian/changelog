@@ -1,3 +1,9 @@
+libhildon (2.1.89-1) unstable; urgency=low
+
+  * unreleased
+
+ -- Claudio Saavedra <csaavedra@igalia.com>  Thu, 16 Jul 2009 12:26:24 +0200
+
 libhildon (2.1.88-1) unstable; urgency=low
 
   * Fixes: NB#124510 (The Application Menu is distorted when switched
