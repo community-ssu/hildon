@@ -1,3 +1,13 @@
+2009-07-16  Alejandro G. Castro  <alex@igalia.com>
+
+	* hildon/hildon-text-view.c,
+	(hildon_text_view_button_press_event): Grabbed the focus in button
+	press, this way we are sure the widget has the focus in the
+	release event, required for HIM.
+
+	Fixes: NB#121445 (Virtual keyboard opening is not working in same
+	way for each text entry field)
+
 2009-07-15  Alejandro Pinheiro <apinheiro@igalia.com>
 
 	* hildon/hildon-pannable-area.[ch](hildon_pannable_area_set_focus_child)

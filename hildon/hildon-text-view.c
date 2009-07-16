@@ -244,6 +244,8 @@ hildon_text_view_button_press_event             (GtkWidget        *widget,
 {
     HildonTextViewPrivate *priv = HILDON_TEXT_VIEW_GET_PRIVATE (widget);
 
+    gtk_widget_grab_focus (widget);
+
     if (GTK_TEXT_VIEW (widget)->editable &&
         hildon_gtk_im_context_filter_event (GTK_TEXT_VIEW (widget)->im_context, (GdkEvent*)event)) {
         GTK_TEXT_VIEW (widget)->need_im_reset = TRUE;
