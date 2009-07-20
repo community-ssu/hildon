@@ -515,7 +515,7 @@ label_size_request                              (GtkWidget      *label,
                                                  GtkRequisition *req,
                                                  GtkWidget      *note)
 {
-    gint note_height = MAX (HILDON_INFORMATION_NOTE_MIN_HEIGHT, req->height);
+    gint note_height = MAX (HILDON_INFORMATION_NOTE_MIN_HEIGHT, req->height + 2*HILDON_MARGIN_DOUBLE);
     g_object_set (note, "height-request", note_height, NULL);
 }
 

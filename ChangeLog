@@ -1,3 +1,10 @@
+2009-07-20  Claudio Saavedra  <csaavedra@igalia.com>
+
+	* hildon/hildon-note.c: (label_size_request): Take the note
+	padding into account when setting the size request.
+
+	Fixes: NB#127896 (Information notes text truncated)
+
 2009-07-16  Claudio Saavedra  <csaavedra@igalia.com>
 
 	* configure.ac: postrelease version bump.
