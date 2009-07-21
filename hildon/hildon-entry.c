@@ -74,10 +74,16 @@ set_property                                    (GObject      *object,
                                                  const GValue *value,
                                                  GParamSpec   *pspec)
 {
+    HildonSizeType size;
+
     switch (prop_id)
     {
     case PROP_SIZE:
-        hildon_gtk_widget_set_theme_size (GTK_WIDGET (object), g_value_get_flags (value));
+	size = g_value_get_flags (value);
+	/* If this is auto height, default to finger height. */
+	if (!(size & (HILDON_SIZE_FINGER_HEIGHT | HILDON_SIZE_THUMB_HEIGHT)))
+	  size |= HILDON_SIZE_FINGER_HEIGHT;
+	hildon_gtk_widget_set_theme_size (GTK_WIDGET (object), size);
         break;
     default:
         G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
