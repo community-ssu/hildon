@@ -1,3 +1,7 @@
+[2.1.90 release]
+
+  * Fixes: NB#127896 (Information notes text truncated)
+
 [2.1.88 release]
 
   * Fixes: NB#124510 (The Application Menu is distorted when switched
