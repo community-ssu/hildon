@@ -1,3 +1,9 @@
+libhildon (2.1.91-1) unstable; urgency=low
+
+  * unreleased
+
+ -- Claudio Saavedra <csaavedra@igalia.com>  Tue, 21 Jul 2009 12:19:38 +0200
+
 libhildon (2.1.90-1) unstable; urgency=low
 
    * Fixes: NB#127896 (Information notes text truncated)
