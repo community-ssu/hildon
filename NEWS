@@ -1,3 +1,7 @@
+[2.1.91 release]
+
+   * Fixes: NB#118398 (HildonEntry - unnecessary rescaling of images)
+
 [2.1.90 release]
 
   * Fixes: NB#127896 (Information notes text truncated)

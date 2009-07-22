@@ -1,3 +1,10 @@
+2009-07-22  Claudio Saavedra  <csaavedra@igalia.com>
+
+	[Release 2.1.91]
+
+	* configure.ac: bump version
+	* debian/changelog: updates
+
 2009-07-21  Claudio Saavedra  <csaavedra@igalia.com>
 
 	* hildon/hildon-entry.c: (set_property): Do not allow to set
