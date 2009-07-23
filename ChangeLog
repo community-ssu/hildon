@@ -1,3 +1,11 @@
+2009-07-23  Alejandro G. Castro  <alex@igalia.com>
+
+	* hildon/hildon-pannable-area.c,
+	(hildon_pannable_area_check_move),
+	(hildon_pannable_area_button_release_cb),
+	(hildon_pannable_area_scroll_to): Increased the priority of the
+	timeout this way it is going to be handled before the events.
+
 2009-07-22  Claudio Saavedra  <csaavedra@igalia.com>
 
 	[Release 2.1.91]
