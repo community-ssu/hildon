@@ -54,7 +54,6 @@
  */
 
 #include                                        "hildon-text-view.h"
-#include                                        "hildon-helper.h"
 #include <math.h>
 
 #define HILDON_TEXT_VIEW_DRAG_THRESHOLD 16.0
@@ -74,7 +73,44 @@ struct                                          _HildonTextViewPrivate
     gulong changed_id;               /* ID of the main_buffer::changed signal handler */
     gdouble x;                                                      /* tap x position */
     gdouble y;                                                      /* tap y position */
+    guint showing_placeholder : 1;          /* Whether the placeholder is being shown */
+    guint setting_style : 1;                /* Whether the logical color is being set */
 };
+
+
+static void
+set_logical_color                               (GtkWidget *widget)
+{
+    GdkColor color;
+    const gchar *colorname;
+    HildonTextViewPrivate *priv = HILDON_TEXT_VIEW_GET_PRIVATE (widget);
+
+    colorname = priv->showing_placeholder ? "ReversedSecondaryTextColor" : "ReversedTextColor";
+
+    gtk_widget_ensure_style (widget);
+    if (gtk_style_lookup_color (widget->style, colorname, &color) == TRUE) {
+        priv->setting_style = TRUE;
+        gtk_widget_modify_text (widget, GTK_STATE_NORMAL, &color);
+        priv->setting_style = FALSE;
+    }
+}
+
+static void
+hildon_text_view_style_set                      (GtkWidget *widget,
+                                                 GtkStyle  *previous_style)
+{
+    HildonTextViewPrivate *priv = HILDON_TEXT_VIEW_GET_PRIVATE (widget);
+
+    if (GTK_WIDGET_CLASS (hildon_text_view_parent_class)->style_set)
+        GTK_WIDGET_CLASS (hildon_text_view_parent_class)->style_set (widget, previous_style);
+
+    /* Prevent infinite recursion when calling set_logical_font() and
+     * set_logical_color() */
+    if (priv->setting_style)
+        return;
+
+    set_logical_color (widget);
+}
 
 /* Function used to decide whether to show the placeholder or not */
 static void
@@ -83,14 +119,15 @@ hildon_text_view_refresh_contents               (GtkWidget *text_view)
     HildonTextViewPrivate *priv = HILDON_TEXT_VIEW_GET_PRIVATE (text_view);
     gint bufsize = gtk_text_buffer_get_char_count (priv->main_buffer);
 
-    if ((bufsize > 0) || GTK_WIDGET_HAS_FOCUS (text_view)) {
-        /* Display the main buffer if it contains text or the widget is focused */
-        hildon_helper_set_logical_color (text_view, GTK_RC_TEXT, GTK_STATE_NORMAL, "ReversedTextColor");
-        gtk_text_view_set_buffer (GTK_TEXT_VIEW (text_view), priv->main_buffer);
-    } else {
-        /* Otherwise, display the placeholder */
-        hildon_helper_set_logical_color (text_view, GTK_RC_TEXT, GTK_STATE_NORMAL, "ReversedSecondaryTextColor");
+    /* Display the main buffer if it contains text or the widget is focused */
+    priv->showing_placeholder = (bufsize <= 0) && !(GTK_WIDGET_HAS_FOCUS (text_view));
+
+    set_logical_color (text_view);
+
+    if (priv->showing_placeholder) {
         gtk_text_view_set_buffer (GTK_TEXT_VIEW (text_view), priv->placeholder_buffer);
+    } else {
+        gtk_text_view_set_buffer (GTK_TEXT_VIEW (text_view), priv->main_buffer);
     }
 }
 
@@ -324,6 +361,7 @@ hildon_text_view_class_init                     (HildonTextViewClass *klass)
     widget_class->motion_notify_event = NULL;
     widget_class->button_press_event = hildon_text_view_button_press_event;
     widget_class->button_release_event = hildon_text_view_button_release_event;
+    widget_class->style_set = hildon_text_view_style_set;
 
     g_type_class_add_private (klass, sizeof (HildonTextViewPrivate));
 }
@@ -335,6 +373,8 @@ hildon_text_view_init                           (HildonTextView *self)
 
     priv->main_buffer = gtk_text_buffer_new (NULL);
     priv->placeholder_buffer = gtk_text_buffer_new (NULL);
+    priv->showing_placeholder = FALSE;
+    priv->setting_style = FALSE;
 
     hildon_text_view_refresh_contents (GTK_WIDGET (self));
 

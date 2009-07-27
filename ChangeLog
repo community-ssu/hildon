@@ -1,3 +1,24 @@
+2009-07-29  Alberto Garcia  <agarcia@igalia.com>
+
+	* hildon/hildon-text-view.c
+	(+set_logical_color, +hildon_text_view_style_set)
+	(hildon_text_view_refresh_contents, hildon_text_view_class_init)
+	(hildon_text_view_init)
+	* hildon/hildon-entry.c
+	(+set_logical_color, +hildon_entry_style_set)
+	(hildon_entry_show_placeholder, hildon_entry_hide_placeholder)
+	(hildon_entry_class_init, hildon_entry_init)
+	* hildon/hildon-button.c
+	(+set_logical_font, +set_logical_color)
+	(hildon_button_style_set, hildon_button_init)
+	(hildon_button_set_arrangement, hildon_button_set_style):
+	Remove all calls to hildon_helper_set_logical_font() and
+	hildon_helper_set_logical_color(), which are recursive, from
+	within Hildon.
+
+	Fixes: NB#123409 (Showing dialog consumes significant amount of
+	time)
+
 2009-07-29  Alejandro G. Castro  <alex@igalia.com>
 
 	* hildon/hildon-pannable-area.c,

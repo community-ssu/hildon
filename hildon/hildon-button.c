@@ -91,7 +91,6 @@
 #include                                        "hildon-button.h"
 #include                                        "hildon-enum-types.h"
 #include                                        "hildon-gtk.h"
-#include                                        "hildon-helper.h"
 
 G_DEFINE_TYPE                                   (HildonButton, hildon_button, GTK_TYPE_BUTTON);
 
@@ -113,6 +112,7 @@ struct                                          _HildonButtonPrivate
     gfloat image_xalign;
     gfloat image_yalign;
     HildonButtonStyle style;
+    guint setting_style : 1;
 };
 
 enum {
@@ -187,6 +187,55 @@ hildon_button_get_property                      (GObject    *object,
 }
 
 static void
+set_logical_font                                (GtkWidget *button)
+{
+    HildonButtonPrivate *priv = HILDON_BUTTON_GET_PRIVATE (button);
+
+    /* In buttons with vertical arrangement, the 'value' label uses a
+     * different font */
+    if (GTK_IS_VBOX (priv->label_box)) {
+        GtkStyle *style = gtk_rc_get_style_by_paths (
+            gtk_settings_get_default (), "SmallSystemFont", NULL, G_TYPE_NONE);
+        if (style != NULL) {
+            PangoFontDescription *font_desc = style->font_desc;
+            if (font_desc != NULL) {
+                priv->setting_style = TRUE;
+                gtk_widget_modify_font (GTK_WIDGET (priv->value), font_desc);
+                priv->setting_style = FALSE;
+            }
+        }
+    }
+}
+
+static void
+set_logical_color                               (GtkWidget *button)
+{
+    GdkColor color;
+    const gchar *colorname;
+    HildonButtonPrivate *priv = HILDON_BUTTON_GET_PRIVATE (button);
+    GtkWidget *label = GTK_WIDGET (priv->value);
+
+    switch (priv->style) {
+    case HILDON_BUTTON_STYLE_NORMAL:
+        colorname = "SecondaryTextColor";
+        break;
+    case HILDON_BUTTON_STYLE_PICKER:
+        colorname = "ActiveTextColor";
+        break;
+    default:
+        g_return_if_reached ();
+    }
+
+    gtk_widget_ensure_style (label);
+    if (gtk_style_lookup_color (label->style, colorname, &color) == TRUE) {
+        priv->setting_style = TRUE;
+        gtk_widget_modify_fg (label, GTK_STATE_NORMAL, &color);
+        gtk_widget_modify_fg (label, GTK_STATE_PRELIGHT, &color);
+        priv->setting_style = FALSE;
+    }
+}
+
+static void
 hildon_button_style_set                         (GtkWidget *widget,
                                                  GtkStyle  *previous_style)
 {
@@ -195,6 +244,11 @@ hildon_button_style_set                         (GtkWidget *widget,
 
     if (GTK_WIDGET_CLASS (hildon_button_parent_class)->style_set)
         GTK_WIDGET_CLASS (hildon_button_parent_class)->style_set (widget, previous_style);
+
+    /* Prevent infinite recursion when calling set_logical_font() and
+     * set_logical_color() */
+    if (priv->setting_style)
+        return;
 
     gtk_widget_style_get (widget,
                           "horizontal-spacing", &horizontal_spacing,
@@ -211,6 +265,9 @@ hildon_button_style_set                         (GtkWidget *widget,
     if (GTK_IS_BOX (priv->hbox)) {
         gtk_box_set_spacing (priv->hbox, image_spacing);
     }
+
+    set_logical_font (widget);
+    set_logical_color (widget);
 }
 
 static void
@@ -323,6 +380,8 @@ hildon_button_init                              (HildonButton *self)
     priv->image_yalign = 0.5;
     priv->hbox = NULL;
     priv->label_box = NULL;
+    priv->style = HILDON_BUTTON_STYLE_NORMAL;
+    priv->setting_style = FALSE;
 
     gtk_widget_set_name (GTK_WIDGET (priv->title), "hildon-button-title");
     gtk_widget_set_name (GTK_WIDGET (priv->value), "hildon-button-value");
@@ -509,7 +568,7 @@ hildon_button_set_arrangement                   (HildonButton            *button
     /* Pack everything */
     if (arrangement == HILDON_BUTTON_ARRANGEMENT_VERTICAL) {
         priv->label_box = gtk_vbox_new (FALSE, 0);
-        hildon_helper_set_logical_font (GTK_WIDGET (priv->value), "SmallSystemFont");
+        set_logical_font (GTK_WIDGET (button));
     } else {
         priv->label_box = gtk_hbox_new (FALSE, 0);
     }
@@ -907,27 +966,12 @@ hildon_button_set_style                         (HildonButton      *button,
                                                  HildonButtonStyle  style)
 {
     HildonButtonPrivate *priv;
-    const gchar *color;
 
     g_return_if_fail (HILDON_IS_BUTTON (button));
-
-    switch (style) {
-    case HILDON_BUTTON_STYLE_NORMAL:
-        color = "SecondaryTextColor";
-        break;
-    case HILDON_BUTTON_STYLE_PICKER:
-        color = "ActiveTextColor";
-        break;
-    default:
-        g_return_if_reached ();
-    }
-
     priv = HILDON_BUTTON_GET_PRIVATE (button);
 
-    hildon_helper_set_logical_color (GTK_WIDGET (priv->value), GTK_RC_FG, GTK_STATE_NORMAL, color);
-    hildon_helper_set_logical_color (GTK_WIDGET (priv->value), GTK_RC_FG, GTK_STATE_PRELIGHT, color);
-
     priv->style = style;
+    set_logical_color (GTK_WIDGET (button));
 
     g_object_notify (G_OBJECT (button), "style");
 }

@@ -50,7 +50,6 @@
  */
 
 #include                                        "hildon-entry.h"
-#include                                        "hildon-helper.h"
 
 G_DEFINE_TYPE                                   (HildonEntry, hildon_entry, GTK_TYPE_ENTRY);
 
@@ -65,7 +64,8 @@ enum {
 struct                                          _HildonEntryPrivate
 {
     gchar *placeholder;
-    gboolean showing_placeholder;
+    guint showing_placeholder : 1;
+    guint setting_style : 1;
 };
 
 static void
@@ -92,14 +92,49 @@ set_property                                    (GObject      *object,
 }
 
 static void
+set_logical_color                               (HildonEntry *entry)
+{
+    GdkColor color;
+    const gchar *colorname;
+    GtkWidget *widget = GTK_WIDGET (entry);
+    HildonEntryPrivate *priv = entry->priv;
+
+    colorname = priv->showing_placeholder ? "ReversedSecondaryTextColor" : "ReversedTextColor";
+
+    gtk_widget_ensure_style (widget);
+    if (gtk_style_lookup_color (widget->style, colorname, &color) == TRUE) {
+        priv->setting_style = TRUE;
+        gtk_widget_modify_text (widget, GTK_STATE_NORMAL, &color);
+        priv->setting_style = FALSE;
+    }
+}
+
+static void
+hildon_entry_style_set                          (GtkWidget *widget,
+                                                 GtkStyle  *previous_style)
+{
+    HildonEntry *entry = HILDON_ENTRY (widget);
+
+    if (GTK_WIDGET_CLASS (hildon_entry_parent_class)->style_set)
+        GTK_WIDGET_CLASS (hildon_entry_parent_class)->style_set (widget, previous_style);
+
+    /* Prevent infinite recursion when calling set_logical_font() and
+     * set_logical_color() */
+    if (entry->priv->setting_style)
+        return;
+
+    set_logical_color (entry);
+}
+
+static void
 hildon_entry_show_placeholder (HildonEntry *entry)
 {
     HildonEntryPrivate *priv = HILDON_ENTRY (entry)->priv;
 
     priv->showing_placeholder = TRUE;
     gtk_entry_set_text (GTK_ENTRY (entry), priv->placeholder);
-    hildon_helper_set_logical_color (GTK_WIDGET (entry),
-				     GTK_RC_TEXT, GTK_STATE_NORMAL, "ReversedSecondaryTextColor");
+
+    set_logical_color (entry);
 }
 
 static void
@@ -109,8 +144,8 @@ hildon_entry_hide_placeholder (HildonEntry *entry, const gchar *text)
 
     priv->showing_placeholder = FALSE;
     gtk_entry_set_text (GTK_ENTRY (entry), text);
-    hildon_helper_set_logical_color (GTK_WIDGET (entry),
-				     GTK_RC_TEXT, GTK_STATE_NORMAL, "ReversedTextColor");
+
+    set_logical_color (entry);
 }
 
 /**
@@ -260,6 +295,7 @@ hildon_entry_class_init                         (HildonEntryClass *klass)
     gobject_class->finalize = hildon_entry_finalize;
     widget_class->focus_in_event = hildon_entry_focus_in_event;
     widget_class->focus_out_event = hildon_entry_focus_out_event;
+    widget_class->style_set = hildon_entry_style_set;
 
     g_object_class_install_property (
         gobject_class,
@@ -281,4 +317,5 @@ hildon_entry_init                               (HildonEntry *self)
     self->priv = HILDON_ENTRY_GET_PRIVATE (self);
     self->priv->placeholder = g_strdup ("");
     self->priv->showing_placeholder = FALSE;
+    self->priv->setting_style = FALSE;
 }
