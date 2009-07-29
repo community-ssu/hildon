@@ -1,3 +1,11 @@
+2009-07-29  Alejandro G. Castro  <alex@igalia.com>
+
+	* hildon/hildon-pannable-area.c,
+	(hildon_pannable_area_timeout): Added the process updates of the
+	scrollbars window in the pannable.
+
+	Fixes: NB#130043 (scrollindicator not smooth while paning)
+
 2009-07-23  Alejandro G. Castro  <alex@igalia.com>
 
 	* hildon/hildon-pannable-area.c,

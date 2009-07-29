@@ -2333,6 +2333,8 @@ hildon_pannable_area_timeout (HildonPannableArea * area)
 
   hildon_pannable_area_scroll (area, priv->vel_x, priv->vel_y);
 
+  gdk_window_process_updates (GTK_WIDGET (area)->window, FALSE);
+
   return TRUE;
 }
 
