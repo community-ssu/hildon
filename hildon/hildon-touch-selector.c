@@ -2279,6 +2279,19 @@ hildon_touch_selector_get_column (HildonTouchSelector * selector,
  * will be scrolled to ensure the selected item that is closest to the
  * currently visible area is shown.
  *
+ * The #HildonTouchSelector:initial-scroll property configure the widget
+ * in order to use this function at the first show.
+ *
+ * Take into account that the element is not centered until the widget is
+ * realized. If the widget is not realized when the function is called, it
+ * will be postponed. If you call this functions several times before the
+ * widgets is realized, only the last one will be used.
+ *
+ * This behaviour includes any call to hildon_touch_selector_center_on_index(),
+ * so take care calling this functions, or with the
+ * #HildonTouchSelector:initial-scroll property in order to get centered on the
+ * proper element.
+ *
  * Since: 2.2
  **/
 void
@@ -2471,4 +2484,48 @@ hildon_touch_selector_get_last_activated_row    (HildonTouchSelector *selector,
   } else {
     return NULL;
   }
+}
+
+
+/**
+ * hildon_touch_selector_center_on_index:
+ * @selector: a #HildonTouchSelector
+ * @column: column number
+ * @index: the index of the item to center on
+ *
+ * Ensures that the column number @column shows the element @index
+ *
+ * This is similar to hildon_touch_selector_center_on_selected() but with the
+ * difference that allows to center on a column item not selected.
+ *
+ * Take into account that the element is not centered until the widget is
+ * realized. If the widget is not realized when the function is called, it will
+ * be postponed. If you call this function several times before the widget is
+ * realized, only the last one will be used.
+ *
+ * This behaviour includes any call to hildon_touch_selector_center_on_selected().
+ * Check this function for more tips.
+ *
+ * Since: 2.2
+ **/
+void
+hildon_touch_selector_center_on_index (HildonTouchSelector *selector,
+                                       gint column,
+                                       gint index)
+{
+  HildonTouchSelectorColumn *current_column = NULL;
+  GtkTreePath *path = NULL;
+
+  g_return_if_fail (HILDON_IS_TOUCH_SELECTOR (selector));
+  g_return_if_fail ((column >= 0) && (column < hildon_touch_selector_get_num_columns (selector)));
+  g_return_if_fail (index >= 0);
+
+  current_column = g_slist_nth_data (selector->priv->columns, column);
+
+  path = gtk_tree_path_new_from_indices (index, -1);
+
+  hildon_touch_selector_scroll_to (current_column,
+                                   current_column->priv->tree_view,
+                                   path);
+  gtk_tree_path_free (path);
 }

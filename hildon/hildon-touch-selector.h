@@ -216,6 +216,10 @@ void
 hildon_touch_selector_center_on_selected        (HildonTouchSelector *selector);
 
 void
+hildon_touch_selector_center_on_index           (HildonTouchSelector *selector,
+                                                 gint column,
+                                                 gint index);
+void
 hildon_touch_selector_optimal_size_request      (HildonTouchSelector *selector,
                                                  GtkRequisition *requisition);
 
