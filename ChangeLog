@@ -34,7 +34,7 @@
 	(hildon_pannable_area_timeout): Added the process updates of the
 	scrollbars window in the pannable.
 
-	Fixes: NB#130043 (scrollindicator not smooth while paning)
+	Fixes: NB#130043 (scrollindicator not smooth while panning)
 
 2009-07-23  Alejandro G. Castro  <alex@igalia.com>
 
