@@ -1,3 +1,11 @@
+[2.1.92 release]
+
+  * Fixes: NB#130043 (scrollindicator not smooth while panning)
+  * Fixes: NB#123409 (Showing dialog consumes significant amount of
+    time)
+  * Fixes NB#130291 (New HildonTouchSelector API is required to center on
+    any column item)
+
 [2.1.91 release]
 
    * Fixes: NB#118398 (HildonEntry - unnecessary rescaling of images)

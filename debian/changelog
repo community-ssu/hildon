@@ -1,3 +1,13 @@
+libhildon (2.1.92-1) unstable; urgency=low
+
+  * Fixes: NB#130043 (scrollindicator not smooth while panning)
+  * Fixes: NB#123409 (Showing dialog consumes significant amount of
+    time)
+  * Fixes NB#130291 (New HildonTouchSelector API is required to center on
+    any column item)
+
+ -- Claudio Saavedra <csaavedra@igalia.com>  Thu, 30 Jul 2009 16:33:53 +0200
+
 libhildon (2.1.91-1) unstable; urgency=low
 
    * Fixes: NB#118398 (HildonEntry - unnecessary rescaling of images)
