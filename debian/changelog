@@ -1,3 +1,10 @@
+libhildon (2.1.92-2) unstable; urgency=low
+
+  * Fixes: NB#131013 (unable to stop panning file manager by tapping on
+    it)
+
+ -- Claudio Saavedra <csaavedra@igalia.com>  Mon, 03 Aug 2009 12:35:48 +0200
+
 libhildon (2.1.92-1) unstable; urgency=low
 
   * Fixes: NB#130043 (scrollindicator not smooth while panning)
