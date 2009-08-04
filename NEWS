@@ -1,3 +1,10 @@
+[2.1.93 release]
+
+  * Fixes: NB#122395 (hildon_entry_set_placeholder() should be in
+    GtkEntry)
+  * Fixes: NB#131013 (unable to stop panning file manager by tapping on
+    it)
+
 [2.1.92 release]
 
   * Fixes: NB#130043 (scrollindicator not smooth while panning)
