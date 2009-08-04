@@ -1,7 +1,7 @@
 /*
  * This file is a part of hildon examples
  *
- * Copyright (C) 2008 Nokia Corporation, all rights reserved.
+ * Copyright (C) 2008, 2009 Nokia Corporation, all rights reserved.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public License
@@ -23,29 +23,28 @@
 #include                                        <gtk/gtk.h>
 #include                                        <hildon/hildon.h>
 
-HildonEntry *mainentry;
+GtkEntry *mainentry;
 
 static void
-set_text_button_clicked                         (GtkButton   *button,
-                                                 HildonEntry *entry)
+set_text_button_clicked                         (GtkButton *button,
+                                                 GtkEntry  *entry)
 {
-    hildon_entry_set_text (mainentry, hildon_entry_get_text (entry));
+    gtk_entry_set_text (mainentry, gtk_entry_get_text (entry));
 }
 
 static void
-set_placeholder_button_clicked                  (GtkButton   *button,
-                                                 HildonEntry *entry)
+set_placeholder_button_clicked                  (GtkButton *button,
+                                                 GtkEntry  *entry)
 {
-    hildon_entry_set_placeholder (mainentry, hildon_entry_get_text (entry));
+    hildon_gtk_entry_set_placeholder_text (mainentry, gtk_entry_get_text (entry));
 }
 
 static void
-text_changed                                    (HildonEntry *entry,
-                                                 GParamSpec  *arg1,
-                                                 GtkLabel    *label)
+text_changed                                    (GtkEntry   *entry,
+                                                 GParamSpec *arg1,
+                                                 GtkLabel   *label)
 {
-    /* Do *NOT* use gtk_entry_get_text () */
-    const gchar *text = hildon_entry_get_text (entry);
+    const gchar *text = gtk_entry_get_text (entry);
 
     if (text != NULL && *text != '\0') {
         gtk_label_set_text (label, text);
@@ -83,8 +82,8 @@ main                                            (int    argc,
     placeholderhbox = gtk_hbox_new (FALSE, 10);
 
     /* Main HildonEntry - this is the one showcased in this example */
-    mainentry = HILDON_ENTRY (hildon_entry_new (HILDON_SIZE_FINGER_HEIGHT | HILDON_SIZE_AUTO_WIDTH));
-    hildon_entry_set_placeholder (mainentry, "This is a placeholder - change using the buttons above");
+    mainentry = GTK_ENTRY (hildon_entry_new (HILDON_SIZE_FINGER_HEIGHT | HILDON_SIZE_AUTO_WIDTH));
+    hildon_gtk_entry_set_placeholder_text (mainentry, "This is a placeholder - change using the buttons above");
 
     /* This label is used to show the contents -not the placeholder- of the HildonEntry */
     label = gtk_label_new (NULL);

@@ -1,3 +1,24 @@
+2009-08-04  Alberto Garcia  <agarcia@igalia.com>
+
+	* hildon/hildon-text-view.c
+	* hildon/hildon-entry.c:
+	Remove all placeholder code from HildonEntry and HildonTextView
+	and use the API in GtkEntry and GtkTextView instead.
+
+	* examples/hildon-entry-example.c
+	* examples/hildon-text-view-example.c
+	* examples/hildon-wizard-dialog-example.c
+	* hildon/hildon-get-password-dialog.c
+	* hildon/hildon-login-dialog.c
+	* hildon/hildon-picker-dialog.c
+	* hildon/hildon-set-password-dialog.c
+	* hildon/hildon-touch-selector-entry.c:
+	Replace all deprecated calls to HildonEntry and HildonTextView
+	with their Gtk counterparts.
+
+	Fixes: NB#122395 (hildon_entry_set_placeholder() should be in
+	GtkEntry)
+
 2009-08-03  Alejandro G. Castro  <alex@igalia.com>
 
 	* hildon/hildon-pannable-area.c,

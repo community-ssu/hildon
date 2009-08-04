@@ -1,7 +1,7 @@
 /*
  * This file is a part of hildon
  *
- * Copyright (C) 2005, 2006 Nokia Corporation, all rights reserved.
+ * Copyright (C) 2005, 2006, 2009 Nokia Corporation, all rights reserved.
  *
  * Contact: Rodrigo Novo <rodrigo.novo@nokia.com>
  *
@@ -165,7 +165,7 @@ hildon_set_password_set_property                (GObject *object,
 
         case PROP_PASSWORD:
             /* Update password entry to display new value */
-            hildon_entry_set_text (HILDON_ENTRY (priv->pwd1st_entry), g_value_get_string (value));
+            gtk_entry_set_text (GTK_ENTRY (priv->pwd1st_entry), g_value_get_string (value));
             break;
 
         case PROP_HILDON_PASSWORD_DIALOG:
@@ -204,7 +204,7 @@ hildon_set_password_get_property                (GObject *object,
 
         case PROP_PASSWORD:
             g_value_set_string (value,
-                    hildon_entry_get_text (HILDON_ENTRY (priv->pwd1st_entry)));
+                    gtk_entry_get_text (GTK_ENTRY (priv->pwd1st_entry)));
             break;
 
         case PROP_HILDON_PASSWORD_DIALOG:
@@ -451,8 +451,8 @@ hildon_set_password_response_change             (GtkDialog *dialog,
                     g_signal_stop_emission_by_name (G_OBJECT(dialog),
                             "response");
 
-                    hildon_entry_set_text (HILDON_ENTRY (pwd1st_entry), "");
-                    hildon_entry_set_text (HILDON_ENTRY (pwd2nd_entry), "");
+                    gtk_entry_set_text (GTK_ENTRY (pwd1st_entry), "");
+                    gtk_entry_set_text (GTK_ENTRY (pwd2nd_entry), "");
 
                     hildon_banner_show_information (GTK_WIDGET (dialog), NULL,
                             c_(HILDON_SET_PASSWORD_DIALOG_MISMATCH));
@@ -470,7 +470,7 @@ hildon_set_password_response_change             (GtkDialog *dialog,
                     /* Error: Second field doesn't match
                        the empty first field, so start over */
                     hildon_banner_show_information (GTK_WIDGET (dialog), NULL, c_(HILDON_SET_PASSWORD_DIALOG_MISMATCH));
-                    hildon_entry_set_text (HILDON_ENTRY (pwd2nd_entry), "");
+                    gtk_entry_set_text (GTK_ENTRY (pwd2nd_entry), "");
                 }
 
                 gtk_widget_grab_focus (GTK_WIDGET (pwd1st_entry));
@@ -553,8 +553,8 @@ hildon_set_password_response_set                (GtkDialog *dialog,
             } else {
                 /* Error: Passwords don't match, so start over */
                 g_signal_stop_emission_by_name (G_OBJECT(dialog), "response");
-                hildon_entry_set_text (HILDON_ENTRY (pwd1st_entry), "");
-                hildon_entry_set_text (HILDON_ENTRY (pwd2nd_entry), "");
+                gtk_entry_set_text (GTK_ENTRY (pwd1st_entry), "");
+                gtk_entry_set_text (GTK_ENTRY (pwd2nd_entry), "");
                 hildon_banner_show_information (GTK_WIDGET (dialog), NULL, c_(HILDON_SET_PASSWORD_DIALOG_MISMATCH));
 
                 gtk_widget_grab_focus (GTK_WIDGET (priv->pwd1st_entry));
@@ -569,7 +569,7 @@ hildon_set_password_response_set                (GtkDialog *dialog,
                 /* Error: Second field doesn't match
                    the empty first field, so start over */
                 hildon_banner_show_information (GTK_WIDGET (dialog), NULL, c_(HILDON_SET_PASSWORD_DIALOG_MISMATCH));
-                hildon_entry_set_text (HILDON_ENTRY (pwd2nd_entry), "");
+                gtk_entry_set_text (GTK_ENTRY (pwd2nd_entry), "");
             }
 
             gtk_widget_grab_focus (GTK_WIDGET (pwd1st_entry));

@@ -1,7 +1,7 @@
 /*
  * This file is a part of hildon
  *
- * Copyright (C) 2005, 2006 Nokia Corporation, all rights reserved.
+ * Copyright (C) 2005, 2006, 2009 Nokia Corporation, all rights reserved.
  *
  * Contact: Rodrigo Novo <rodrigo.novo@nokia.com>
  *
@@ -168,7 +168,7 @@ hildon_get_password_set_property                (GObject *object,
             break;
 
         case PROP_PASSWORD:
-            hildon_entry_set_text(HILDON_ENTRY (gtk_bin_get_child (GTK_BIN (priv->password_entry))),
+            gtk_entry_set_text (GTK_ENTRY (gtk_bin_get_child (GTK_BIN (priv->password_entry))),
                     g_value_get_string(value));
             break;
 
@@ -228,7 +228,7 @@ hildon_get_password_get_property                (GObject *object,
             break;
 
         case PROP_PASSWORD:
-            string = hildon_entry_get_text (HILDON_ENTRY (gtk_bin_get_child (GTK_BIN (priv->password_entry))));
+            string = gtk_entry_get_text (GTK_ENTRY (gtk_bin_get_child (GTK_BIN (priv->password_entry))));
             g_value_set_string (value, string);
             break;
 

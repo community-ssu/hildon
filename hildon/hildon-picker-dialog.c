@@ -1,7 +1,7 @@
 /*
  * This file is a part of hildon
  *
- * Copyright (C) 2005, 2008 Nokia Corporation.
+ * Copyright (C) 2005, 2008, 2009 Nokia Corporation.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -550,7 +550,7 @@ _save_current_selection (HildonPickerDialog *dialog)
   }
   if (HILDON_IS_TOUCH_SELECTOR_ENTRY (selector)) {
 	  HildonEntry *entry = hildon_touch_selector_entry_get_entry (HILDON_TOUCH_SELECTOR_ENTRY (selector));
-	  dialog->priv->current_text = g_strdup (hildon_entry_get_text (entry));
+	  dialog->priv->current_text = g_strdup (gtk_entry_get_text (GTK_ENTRY (entry)));
   }
 }
 
@@ -596,7 +596,7 @@ _restore_current_selection (HildonPickerDialog *dialog)
   }
   if (HILDON_IS_TOUCH_SELECTOR_ENTRY (selector) && dialog->priv->current_text != NULL) {
     HildonEntry *entry = hildon_touch_selector_entry_get_entry (HILDON_TOUCH_SELECTOR_ENTRY (selector));
-    hildon_entry_set_text (entry, dialog->priv->current_text);
+    gtk_entry_set_text (GTK_ENTRY (entry), dialog->priv->current_text);
   }
   if (dialog->priv->signal_changed_id)
     g_signal_handler_unblock (selector, dialog->priv->signal_changed_id);

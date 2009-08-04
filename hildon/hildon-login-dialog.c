@@ -1,7 +1,7 @@
 /*
  * This file is a part of hildon
  *
- * Copyright (C) 2005, 2006 Nokia Corporation, all rights reserved.
+ * Copyright (C) 2005, 2006, 2009 Nokia Corporation, all rights reserved.
  *
  * Contact: Rodrigo Novo <rodrigo.novo@nokia.com>
  *
@@ -145,12 +145,12 @@ hildon_login_dialog_set_property                (GObject *object,
 
         case PROP_USERNAME:
             /* Set the current username displayed in the dialog */
-            hildon_entry_set_text (HILDON_ENTRY (priv->username_entry), g_value_get_string (value));
+            gtk_entry_set_text (GTK_ENTRY (priv->username_entry), g_value_get_string (value));
             break;
 
         case PROP_PASSWORD:
             /* Set the currently entered password */
-            hildon_entry_set_text (HILDON_ENTRY (priv->password_entry), g_value_get_string (value));
+            gtk_entry_set_text (GTK_ENTRY (priv->password_entry), g_value_get_string (value));
             break;
 
         default:
@@ -381,7 +381,7 @@ hildon_login_dialog_get_username                (HildonLoginDialog *dialog)
     priv = HILDON_LOGIN_DIALOG_GET_PRIVATE (dialog);
     g_assert (priv);
 
-    return hildon_entry_get_text (HILDON_ENTRY (priv->username_entry));
+    return gtk_entry_get_text (GTK_ENTRY (priv->username_entry));
 }
 
 /**
@@ -402,7 +402,7 @@ hildon_login_dialog_get_password                (HildonLoginDialog *dialog)
     priv = HILDON_LOGIN_DIALOG_GET_PRIVATE (dialog);
     g_assert (priv);
 
-    return hildon_entry_get_text (HILDON_ENTRY (priv->password_entry));
+    return gtk_entry_get_text (GTK_ENTRY (priv->password_entry));
 }
 
 /**

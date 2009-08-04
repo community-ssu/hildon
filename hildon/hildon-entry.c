@@ -1,7 +1,7 @@
 /*
  * This file is a part of hildon
  *
- * Copyright (C) 2008 Nokia Corporation, all rights reserved.
+ * Copyright (C) 2008, 2009 Nokia Corporation, all rights reserved.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser Public License as published by
@@ -21,16 +21,10 @@
  * The #HildonEntry is text entry derived from the #GtkEntry widget providing
  * additional commodities specific to the Hildon framework.
  *
- * Besides all the features inherited from #GtkEntry, a #HildonEntry
- * can also have a placeholder text. This text will be shown if the
- * entry is empty and doesn't have the input focus, but it's otherwise
- * ignored. Thus, calls to hildon_entry_get_text() will never return
- * the placeholder text, not even when it's being displayed.
- *
- * Although #HildonEntry is derived from #GtkEntry,
- * gtk_entry_get_text() and gtk_entry_set_text() must never be used to
- * get/set the text in this widget. hildon_entry_get_text() and
- * hildon_entry_set_text() must be used instead.
+ * A #HildonEntry can have a placeholder text. This text will be shown
+ * if the entry is empty and doesn't have the input focus, but it's
+ * otherwise ignored. Thus, calls to gtk_entry_get_text() will never
+ * return the placeholder text, not even when it's being displayed.
  *
  * <example>
  * <title>Creating a HildonEntry with a placeholder</title>
@@ -41,7 +35,7 @@
  *     GtkWidget *entry;
  * <!-- -->
  *     entry = hildon_entry_new (HILDON_SIZE_AUTO);
- *     hildon_entry_set_placeholder (HILDON_ENTRY (entry), "First name");
+ *     hildon_gtk_entry_set_placeholder_text (GTK_ENTRY (entry), "First name");
  * <!-- -->
  *     return entry;
  * }
@@ -55,17 +49,6 @@ G_DEFINE_TYPE                                   (HildonEntry, hildon_entry, GTK_
 
 enum {
     PROP_SIZE = 1
-};
-
-#define                                         HILDON_ENTRY_GET_PRIVATE(obj) \
-                                                (G_TYPE_INSTANCE_GET_PRIVATE ((obj), \
-                                                HILDON_TYPE_ENTRY, HildonEntryPrivate));
-
-struct                                          _HildonEntryPrivate
-{
-    gchar *placeholder;
-    guint showing_placeholder : 1;
-    guint setting_style : 1;
 };
 
 static void
@@ -91,63 +74,6 @@ set_property                                    (GObject      *object,
     }
 }
 
-static void
-set_logical_color                               (HildonEntry *entry)
-{
-    GdkColor color;
-    const gchar *colorname;
-    GtkWidget *widget = GTK_WIDGET (entry);
-    HildonEntryPrivate *priv = entry->priv;
-
-    colorname = priv->showing_placeholder ? "ReversedSecondaryTextColor" : "ReversedTextColor";
-
-    gtk_widget_ensure_style (widget);
-    if (gtk_style_lookup_color (widget->style, colorname, &color) == TRUE) {
-        priv->setting_style = TRUE;
-        gtk_widget_modify_text (widget, GTK_STATE_NORMAL, &color);
-        priv->setting_style = FALSE;
-    }
-}
-
-static void
-hildon_entry_style_set                          (GtkWidget *widget,
-                                                 GtkStyle  *previous_style)
-{
-    HildonEntry *entry = HILDON_ENTRY (widget);
-
-    if (GTK_WIDGET_CLASS (hildon_entry_parent_class)->style_set)
-        GTK_WIDGET_CLASS (hildon_entry_parent_class)->style_set (widget, previous_style);
-
-    /* Prevent infinite recursion when calling set_logical_font() and
-     * set_logical_color() */
-    if (entry->priv->setting_style)
-        return;
-
-    set_logical_color (entry);
-}
-
-static void
-hildon_entry_show_placeholder (HildonEntry *entry)
-{
-    HildonEntryPrivate *priv = HILDON_ENTRY (entry)->priv;
-
-    priv->showing_placeholder = TRUE;
-    gtk_entry_set_text (GTK_ENTRY (entry), priv->placeholder);
-
-    set_logical_color (entry);
-}
-
-static void
-hildon_entry_hide_placeholder (HildonEntry *entry, const gchar *text)
-{
-    HildonEntryPrivate *priv = HILDON_ENTRY (entry)->priv;
-
-    priv->showing_placeholder = FALSE;
-    gtk_entry_set_text (GTK_ENTRY (entry), text);
-
-    set_logical_color (entry);
-}
-
 /**
  * hildon_entry_set_text:
  * @entry: a #HildonEntry
@@ -155,22 +81,16 @@ hildon_entry_hide_placeholder (HildonEntry *entry, const gchar *text)
  *
  * Sets the text in @entry to @text, replacing its current contents.
  *
- * Note that you must never use gtk_entry_set_text() to set the text
- * of a #HildonEntry.
- *
  * Since: 2.2
+ *
+ * Deprecated: Use gtk_entry_set_text() instead
  */
 void
 hildon_entry_set_text                           (HildonEntry *entry,
                                                  const gchar *text)
 {
     g_return_if_fail (HILDON_IS_ENTRY (entry) && text != NULL);
-
-    if (text[0] == '\0' && !GTK_WIDGET_HAS_FOCUS (entry)) {
-	    hildon_entry_show_placeholder (entry);
-    } else {
-	    hildon_entry_hide_placeholder (entry, text);
-    }
+    gtk_entry_set_text (GTK_ENTRY (entry), text);
 }
 
 /**
@@ -179,27 +99,22 @@ hildon_entry_set_text                           (HildonEntry *entry,
  *
  * Gets the current text in @entry.
  *
- * Note that you must never use gtk_entry_get_text() to get the text
- * from a #HildonEntry.
- *
- * Also note that placeholder text (set using
- * hildon_entry_set_placeholder()) is never returned. Only text set by
- * hildon_entry_set_text() or typed by the user is considered.
+ * Note that the placeholder text (set using
+ * hildon_gtk_entry_set_placeholder_text()) is never returned. Only
+ * text set by gtk_entry_set_text() or typed by the user is
+ * considered.
  *
  * Returns: the text in @entry. This text must not be modified or
  * freed.
  *
  * Since: 2.2
+ *
+ * Deprecated: Use gtk_entry_get_text() instead
  */
 const gchar *
 hildon_entry_get_text                           (HildonEntry *entry)
 {
     g_return_val_if_fail (HILDON_IS_ENTRY (entry), NULL);
-
-    if (entry->priv->showing_placeholder) {
-        return "";
-    }
-
     return gtk_entry_get_text (GTK_ENTRY (entry));
 }
 
@@ -211,21 +126,15 @@ hildon_entry_get_text                           (HildonEntry *entry)
  * Sets the placeholder text in @entry to @text.
  *
  * Since: 2.2
+ *
+ * Deprecated: Use hildon_gtk_entry_set_placeholder_text() instead
  */
 void
 hildon_entry_set_placeholder                    (HildonEntry *entry,
                                                  const gchar *text)
 {
     g_return_if_fail (HILDON_IS_ENTRY (entry) && text != NULL);
-
-    g_free (entry->priv->placeholder);
-    entry->priv->placeholder = g_strdup (text);
-
-    /* Show the placeholder if it needs to be updated or if should be shown now. */
-    if (entry->priv->showing_placeholder ||
-        (!GTK_WIDGET_HAS_FOCUS (entry) && gtk_entry_get_text (GTK_ENTRY (entry)) [0] == '\0')) {
-        hildon_entry_show_placeholder (entry);
-    }
+    hildon_gtk_entry_set_placeholder_text (GTK_ENTRY (entry), text);
 }
 
 /**
@@ -244,58 +153,12 @@ hildon_entry_new                                (HildonSizeType size)
     return g_object_new (HILDON_TYPE_ENTRY, "size", size, NULL);
 }
 
-static gboolean
-hildon_entry_focus_in_event                     (GtkWidget     *widget,
-                                                 GdkEventFocus *event)
-{
-    if (HILDON_ENTRY (widget)->priv->showing_placeholder) {
-	    hildon_entry_hide_placeholder (HILDON_ENTRY (widget), "");
-    }
-
-    if (GTK_WIDGET_CLASS (hildon_entry_parent_class)->focus_in_event) {
-        return GTK_WIDGET_CLASS (hildon_entry_parent_class)->focus_in_event (widget, event);
-    } else {
-        return FALSE;
-    }
-}
-
-static gboolean
-hildon_entry_focus_out_event                    (GtkWidget     *widget,
-                                                 GdkEventFocus *event)
-{
-    if (gtk_entry_get_text (GTK_ENTRY (widget)) [0] == '\0') {
-        hildon_entry_show_placeholder (HILDON_ENTRY (widget));
-    }
-
-    if (GTK_WIDGET_CLASS (hildon_entry_parent_class)->focus_out_event) {
-        return GTK_WIDGET_CLASS (hildon_entry_parent_class)->focus_out_event (widget, event);
-    } else {
-        return FALSE;
-    }
-}
-
-static void
-hildon_entry_finalize                           (GObject *object)
-{
-    HildonEntryPrivate *priv = HILDON_ENTRY (object)->priv;
-
-    g_free (priv->placeholder);
-
-    if (G_OBJECT_CLASS (hildon_entry_parent_class)->finalize)
-        G_OBJECT_CLASS (hildon_entry_parent_class)->finalize (object);
-}
-
 static void
 hildon_entry_class_init                         (HildonEntryClass *klass)
 {
     GObjectClass *gobject_class = (GObjectClass *)klass;
-    GtkWidgetClass *widget_class = (GtkWidgetClass *)klass;
 
     gobject_class->set_property = set_property;
-    gobject_class->finalize = hildon_entry_finalize;
-    widget_class->focus_in_event = hildon_entry_focus_in_event;
-    widget_class->focus_out_event = hildon_entry_focus_out_event;
-    widget_class->style_set = hildon_entry_style_set;
 
     g_object_class_install_property (
         gobject_class,
@@ -307,15 +170,10 @@ hildon_entry_class_init                         (HildonEntryClass *klass)
             HILDON_TYPE_SIZE_TYPE,
             HILDON_SIZE_AUTO_WIDTH | HILDON_SIZE_FINGER_HEIGHT,
             G_PARAM_CONSTRUCT | G_PARAM_WRITABLE));
-
-    g_type_class_add_private (klass, sizeof (HildonEntryPrivate));
 }
 
 static void
 hildon_entry_init                               (HildonEntry *self)
 {
-    self->priv = HILDON_ENTRY_GET_PRIVATE (self);
-    self->priv->placeholder = g_strdup ("");
-    self->priv->showing_placeholder = FALSE;
-    self->priv->setting_style = FALSE;
+    self->priv = NULL;
 }

@@ -1,7 +1,7 @@
 /*
  * This file is a part of hildon examples
  *
- * Copyright (C) 2005, 2006, 2007 Nokia Corporation, all rights reserved.
+ * Copyright (C) 2005, 2006, 2007, 2009 Nokia Corporation, all rights reserved.
  *
  * Author: Michael Dominic Kostrzewa <michael.kostrzewa@nokia.com>
  *
@@ -56,13 +56,13 @@ some_page_func (GtkNotebook *nb,
                 gint current,
                 gpointer userdata)
 {
-  HildonEntry *entry;
+  GtkEntry *entry;
 
   /* Validate data only for the third page. */
   switch (current) {
   case 2:
-    entry = HILDON_ENTRY (gtk_notebook_get_nth_page (nb, current));
-    return (strlen (hildon_entry_get_text (entry)) != 0);
+    entry = GTK_ENTRY (gtk_notebook_get_nth_page (nb, current));
+    return (strlen (gtk_entry_get_text (entry)) != 0);
   default:
     return TRUE;
   }
@@ -77,7 +77,7 @@ main (int argc, char **argv)
     GtkWidget *label_1 = gtk_label_new ("Page 1");
     GtkWidget *label_2 = gtk_label_new ("Page 2");
     GtkWidget *entry_3 = hildon_entry_new (HILDON_SIZE_AUTO);
-    hildon_entry_set_placeholder (HILDON_ENTRY (entry_3), " Write something to continue");
+    hildon_gtk_entry_set_placeholder_text (GTK_ENTRY (entry_3), " Write something to continue");
     GtkWidget *label_4 = gtk_label_new ("Page 4");
 
     gtk_notebook_append_page (GTK_NOTEBOOK (notebook), label_1, NULL);

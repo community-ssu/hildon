@@ -1,7 +1,7 @@
 /*
  * This file is a part of hildon examples
  *
- * Copyright (C) 2008 Nokia Corporation, all rights reserved.
+ * Copyright (C) 2008, 2009 Nokia Corporation, all rights reserved.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public License
@@ -22,21 +22,21 @@
 
 #include                                        <hildon/hildon.h>
 
-HildonTextView *textview;
+GtkTextView *textview;
 GtkTextBuffer *buffer;
 
 static void
-set_text_button_clicked                         (GtkButton   *button,
-                                                 HildonEntry *entry)
+set_text_button_clicked                         (GtkButton *button,
+                                                 GtkEntry  *entry)
 {
-    gtk_text_buffer_set_text (buffer, hildon_entry_get_text (entry), -1);
+    gtk_text_buffer_set_text (buffer, gtk_entry_get_text (entry), -1);
 }
 
 static void
-set_placeholder_button_clicked                  (GtkButton   *button,
-                                                 HildonEntry *entry)
+set_placeholder_button_clicked                  (GtkButton *button,
+                                                 GtkEntry  *entry)
 {
-    hildon_text_view_set_placeholder (textview, hildon_entry_get_text (entry));
+    hildon_gtk_text_view_set_placeholder_text (textview, gtk_entry_get_text (entry));
 }
 
 static void
@@ -88,9 +88,9 @@ main                                            (int    argc,
     placeholderhbox = gtk_hbox_new (FALSE, 10);
 
     /* The text view */
-    textview = HILDON_TEXT_VIEW (hildon_text_view_new ());
-    buffer = hildon_text_view_get_buffer (textview);
-    hildon_text_view_set_placeholder (textview, "This is a placeholder - change using the buttons above");
+    textview = GTK_TEXT_VIEW (hildon_text_view_new ());
+    buffer = gtk_text_view_get_buffer (textview);
+    hildon_gtk_text_view_set_placeholder_text (textview, "This is a placeholder - change using the buttons above");
     textviewframe = gtk_frame_new (NULL);
 
     /* This label is used to show the contents -not the placeholder- of the HildonTextView */
