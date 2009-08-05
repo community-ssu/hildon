@@ -106,9 +106,6 @@
 #include                                        "hildon-banner.h"
 #include                                        "hildon-animation-actor.h"
 
-static GdkWindow *
-grab_transfer_window_get                        (GtkWidget *widget);
-
 static void
 hildon_app_menu_repack_items                    (HildonAppMenu *menu,
                                                  gint           start_from);
@@ -199,10 +196,6 @@ hildon_app_menu_insert                          (HildonAppMenu *menu,
     /* Close the menu when the button is clicked */
     g_signal_connect_swapped (item, "clicked", G_CALLBACK (gtk_widget_hide), menu);
     g_signal_connect (item, "notify::visible", G_CALLBACK (item_visibility_changed), menu);
-
-    /* Keep track of the latest menu item to receive a button-press event */
-    g_signal_connect (item, "button-press-event", G_CALLBACK (menu_item_button_event), menu);
-    g_signal_connect (item, "button-release-event", G_CALLBACK (menu_item_button_event), menu);
 
     /* Remove item from list when it is destroyed */
     g_object_weak_ref (G_OBJECT (item), (GWeakNotify) remove_item_from_list, &(priv->buttons));
@@ -310,10 +303,6 @@ hildon_app_menu_add_filter                      (HildonAppMenu *menu,
     /* Close the menu when the button is clicked */
     g_signal_connect_swapped (filter, "clicked", G_CALLBACK (gtk_widget_hide), menu);
     g_signal_connect (filter, "notify::visible", G_CALLBACK (filter_visibility_changed), menu);
-
-    /* Keep track of the latest menu item to receive a button-press event */
-    g_signal_connect (filter, "button-press-event", G_CALLBACK (menu_item_button_event), menu);
-    g_signal_connect (filter, "button-release-event", G_CALLBACK (menu_item_button_event), menu);
 
     /* Remove filter from list when it is destroyed */
     g_object_weak_ref (G_OBJECT (filter), (GWeakNotify) remove_item_from_list, &(priv->filters));
@@ -436,27 +425,6 @@ filter_visibility_changed                       (GtkWidget     *item,
         hildon_app_menu_repack_filters (menu);
 }
 
-static gboolean
-menu_item_button_event                          (GtkButton      *item,
-                                                 GdkEventButton *event,
-                                                 GtkWidget      *menu)
-{
-    HildonAppMenuPrivate *priv = HILDON_APP_MENU_GET_PRIVATE (menu);
-
-    if (event->type == GDK_BUTTON_PRESS) {
-        priv->last_pressed_button = item;
-    } else if (event->type == GDK_BUTTON_RELEASE) {
-        /* A pressed button might not receive the button-release event due
-         * to the grab that HildonAppMenu has, so we have to simulate that
-         * event. See NB#108337 */
-        if (priv->last_pressed_button && priv->last_pressed_button != item) {
-            gtk_button_released (priv->last_pressed_button);
-        }
-        priv->last_pressed_button = NULL;
-    }
-    return FALSE;
-}
-
 static void
 remove_item_from_list                           (GList    **list,
                                                  gpointer   item)
@@ -554,74 +522,10 @@ hildon_app_menu_map                             (GtkWidget *widget)
 {
     HildonAppMenuPrivate *priv = HILDON_APP_MENU_GET_PRIVATE(widget);
 
-    if (priv->transfer_window == NULL)
-        priv->transfer_window = grab_transfer_window_get (widget);
-
     GTK_WIDGET_CLASS (hildon_app_menu_parent_class)->map (widget);
-
-    /* Grab pointer and keyboard */
-    if (priv->transfer_window != NULL) {
-        gboolean has_grab = FALSE;
-
-        if (gdk_pointer_grab (priv->transfer_window, TRUE,
-                              GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK |
-                              GDK_ENTER_NOTIFY_MASK | GDK_LEAVE_NOTIFY_MASK |
-                              GDK_POINTER_MOTION_MASK, NULL, NULL,
-                              GDK_CURRENT_TIME) == GDK_GRAB_SUCCESS) {
-            if (gdk_keyboard_grab (priv->transfer_window, TRUE,
-                                   GDK_CURRENT_TIME) == GDK_GRAB_SUCCESS) {
-                has_grab = TRUE;
-            } else {
-                gdk_display_pointer_ungrab (gtk_widget_get_display (widget),
-                                            GDK_CURRENT_TIME);
-            }
-        }
-
-        if (has_grab) {
-            gtk_grab_add (widget);
-        } else {
-            gdk_window_destroy (priv->transfer_window);
-            priv->transfer_window = NULL;
-        }
-    }
-
-    /* Make the menu temporary when it's mapped, so it's closed if a
-     * new window appears */
-    gtk_window_set_is_temporary (GTK_WINDOW (widget), TRUE);
 
     if (priv->find_intruder_idle_id == 0)
         priv->find_intruder_idle_id = gdk_threads_add_idle (hildon_app_menu_find_intruder, widget);
-}
-
-static void
-hildon_app_menu_unmap                           (GtkWidget *widget)
-{
-    HildonAppMenuPrivate *priv = HILDON_APP_MENU_GET_PRIVATE(widget);
-
-    /* Remove the grab */
-    if (priv->transfer_window != NULL) {
-        gdk_display_pointer_ungrab (gtk_widget_get_display (widget),
-                                    GDK_CURRENT_TIME);
-        gtk_grab_remove (widget);
-
-        gdk_window_destroy (priv->transfer_window);
-        priv->transfer_window = NULL;
-    }
-
-    GTK_WIDGET_CLASS (hildon_app_menu_parent_class)->unmap (widget);
-
-    gtk_window_set_is_temporary (GTK_WINDOW (widget), FALSE);
-}
-
-static void
-hildon_app_menu_grab_notify                     (GtkWidget *widget,
-                                                 gboolean   was_grabbed)
-{
-    if (GTK_WIDGET_CLASS (hildon_app_menu_parent_class)->grab_notify)
-        GTK_WIDGET_CLASS (hildon_app_menu_parent_class)->grab_notify (widget, was_grabbed);
-
-    if (!was_grabbed && GTK_WIDGET_VISIBLE (widget))
-        gtk_widget_hide (widget);
 }
 
 static gboolean
@@ -692,92 +596,12 @@ hildon_app_menu_key_press                       (GtkWidget   *widget,
 }
 
 static gboolean
-hildon_app_menu_button_press                    (GtkWidget *widget,
-                                                 GdkEventButton *event)
-{
-    int x, y;
-    HildonAppMenuPrivate *priv = HILDON_APP_MENU_GET_PRIVATE(widget);
-
-    gdk_window_get_position (widget->window, &x, &y);
-
-    /* Whether the button has been pressed outside the widget */
-    priv->pressed_outside = (event->x_root < x || event->x_root > x + widget->allocation.width ||
-                             event->y_root < y || event->y_root > y + widget->allocation.height);
-
-    if (GTK_WIDGET_CLASS (hildon_app_menu_parent_class)->button_press_event) {
-        return GTK_WIDGET_CLASS (hildon_app_menu_parent_class)->button_press_event (widget, event);
-    } else {
-        return FALSE;
-    }
-}
-
-static gboolean
-hildon_app_menu_button_release                  (GtkWidget *widget,
-                                                 GdkEventButton *event)
-{
-    HildonAppMenuPrivate *priv = HILDON_APP_MENU_GET_PRIVATE(widget);
-
-    if (priv->pressed_outside) {
-        int x, y;
-        gboolean released_outside;
-
-        gdk_window_get_position (widget->window, &x, &y);
-
-        /* Whether the button has been released outside the widget */
-        released_outside = (event->x_root < x || event->x_root > x + widget->allocation.width ||
-                            event->y_root < y || event->y_root > y + widget->allocation.height);
-
-        if (released_outside) {
-            gtk_widget_hide (widget);
-        }
-
-        priv->pressed_outside = FALSE; /* Always reset pressed_outside to FALSE */
-    } else if (priv->last_pressed_button) {
-        menu_item_button_event (NULL, event, widget);
-    }
-
-    if (GTK_WIDGET_CLASS (hildon_app_menu_parent_class)->button_release_event) {
-        return GTK_WIDGET_CLASS (hildon_app_menu_parent_class)->button_release_event (widget, event);
-    } else {
-        return FALSE;
-    }
-}
-
-static gboolean
 hildon_app_menu_delete_event_handler            (GtkWidget   *widget,
                                                  GdkEventAny *event)
 {
     /* Hide the menu if it receives a delete-event, but don't destroy it */
     gtk_widget_hide (widget);
     return TRUE;
-}
-
-/* Grab transfer window (based on the one from GtkMenu) */
-static GdkWindow *
-grab_transfer_window_get                        (GtkWidget *widget)
-{
-    GdkWindow *window;
-    GdkWindowAttr attributes;
-    gint attributes_mask;
-
-    attributes.x = 0;
-    attributes.y = 0;
-    attributes.width = 10;
-    attributes.height = 10;
-    attributes.window_type = GDK_WINDOW_TEMP;
-    attributes.wclass = GDK_INPUT_ONLY;
-    attributes.override_redirect = TRUE;
-    attributes.event_mask = 0;
-
-    attributes_mask = GDK_WA_X | GDK_WA_Y | GDK_WA_NOREDIR;
-
-    window = gdk_window_new (gtk_widget_get_root_window (widget),
-                                 &attributes, attributes_mask);
-    gdk_window_set_user_data (window, widget);
-
-    gdk_window_show (window);
-
-    return window;
 }
 
 static void
@@ -1135,13 +959,9 @@ hildon_app_menu_class_init                      (HildonAppMenuClass *klass)
     widget_class->show_all = hildon_app_menu_show_all;
     widget_class->hide_all = hildon_app_menu_hide_all;
     widget_class->map = hildon_app_menu_map;
-    widget_class->unmap = hildon_app_menu_unmap;
     widget_class->realize = hildon_app_menu_realize;
     widget_class->unrealize = hildon_app_menu_unrealize;
-    widget_class->grab_notify = hildon_app_menu_grab_notify;
     widget_class->key_press_event = hildon_app_menu_key_press;
-    widget_class->button_press_event = hildon_app_menu_button_press;
-    widget_class->button_release_event = hildon_app_menu_button_release;
     widget_class->style_set = hildon_app_menu_style_set;
     widget_class->delete_event = hildon_app_menu_delete_event_handler;
     widget_class->size_request = hildon_app_menu_size_request;
