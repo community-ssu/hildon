@@ -43,6 +43,8 @@
  * </example>
  */
 
+#undef                                          HILDON_DISABLE_DEPRECATED
+
 #include                                        "hildon-entry.h"
 
 G_DEFINE_TYPE                                   (HildonEntry, hildon_entry, GTK_TYPE_ENTRY);

@@ -46,6 +46,8 @@
  * </example>
  */
 
+#undef                                          HILDON_DISABLE_DEPRECATED
+
 #include                                        "hildon-text-view.h"
 #include <math.h>
 
