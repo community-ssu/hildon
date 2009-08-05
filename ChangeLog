@@ -1,5 +1,9 @@
 2009-08-05  Alberto Garcia  <agarcia@igalia.com>
 
+	* doc/hildon-sections.txt: Add new functions
+
+2009-08-05  Alberto Garcia  <agarcia@igalia.com>
+
 	* hildon/hildon-text-view.[ch]
 	* hildon/hildon-entry.[ch]:
 	Add deprecation guards around deprecated functions.
