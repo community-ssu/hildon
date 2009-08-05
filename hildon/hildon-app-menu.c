@@ -128,11 +128,6 @@ filter_visibility_changed                       (GtkWidget     *item,
                                                  GParamSpec    *arg1,
                                                  HildonAppMenu *menu);
 
-static gboolean
-menu_item_button_event                          (GtkButton      *item,
-                                                 GdkEventButton *event,
-                                                 GtkWidget      *menu);
-
 static void
 remove_item_from_list                           (GList    **list,
                                                  gpointer   item);

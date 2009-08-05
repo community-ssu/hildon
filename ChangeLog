@@ -1,5 +1,9 @@
 2009-08-05  Claudio Saavedra  <csaavedra@igalia.com>
 
+	* hildon/hildon-app-menu.c: Remove leftover function declaration.
+
+2009-08-05  Claudio Saavedra  <csaavedra@igalia.com>
+
 	Remove the grab from HildonAppMenu
 
 	* hildon/hildon-app-menu.c:
