@@ -1,3 +1,14 @@
+2009-08-05  Claudio Saavedra  <csaavedra@igalia.com>
+
+	Remove the grab from HildonAppMenu
+
+	* hildon/hildon-app-menu.c:
+	Now hildon-desktop places a blocker window behind the menu to handle
+	its closing, so the grab is no longer needed. This simplifies its
+	implementation and allows the system blanking to succeed.
+
+	Fixes: NB#130910 (Screen gets unlocked when menu is open)
+
 2009-08-04  Claudio Saavedra  <csaavedra@igalia.com>
 
 	[Release 2.1.93]
