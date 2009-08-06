@@ -625,7 +625,7 @@ inline_limited_expose                           (HildonColorChooser *sel)
 
     } else if(! priv->expose_info.expose_queued) {
         priv->expose_info.expose_queued = 1;
-        g_timeout_add ((EXPOSE_INTERVAL - result.tv_usec) / 1000, hildon_color_chooser_expose_timer, sel);
+        gdk_threads_add_timeout ((EXPOSE_INTERVAL - result.tv_usec) / 1000, hildon_color_chooser_expose_timer, sel);
     }
 }
 

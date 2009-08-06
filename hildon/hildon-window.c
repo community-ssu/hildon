@@ -1165,7 +1165,7 @@ hildon_window_key_press_event                   (GtkWidget *widget,
         case HILDON_HARDKEY_ESC:
             if (!priv->escape_timeout)
             {
-                priv->escape_timeout = g_timeout_add 
+                priv->escape_timeout = gdk_threads_add_timeout
                     (HILDON_WINDOW_LONG_PRESS_TIME,
                      hildon_window_escape_timeout, widget);
             }
@@ -1694,8 +1694,6 @@ hildon_window_escape_timeout                    (gpointer data)
 
     g_assert (priv);
 
-    GDK_THREADS_ENTER ();
-
     /* Send fake event, simulation a situation that user
        pressed 'x' from the corner */
     event = gdk_event_new(GDK_DELETE);
@@ -1706,8 +1704,6 @@ hildon_window_escape_timeout                    (gpointer data)
     gdk_event_free(event);
 
     priv->escape_timeout = 0;
-
-    GDK_THREADS_LEAVE ();
 
     return FALSE;
 }

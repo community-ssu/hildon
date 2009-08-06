@@ -1310,7 +1310,7 @@ hildon_time_editor_entry_focus_in               (GtkWidget *widget,
                                                  GdkEventFocus *event, 
                                                  gpointer data)
 {
-    g_idle_add ((GSourceFunc) hildon_time_editor_entry_select_all,
+    gdk_threads_add_idle ((GSourceFunc) hildon_time_editor_entry_select_all,
             GTK_ENTRY (widget));
 
     return FALSE;
@@ -1505,8 +1505,6 @@ highlight_callback                              (gpointer data)
     priv = HILDON_TIME_EDITOR_GET_PRIVATE (data);
     g_assert (priv);
 
-    GDK_THREADS_ENTER ();
-
     widget = priv->error_widget;
     priv->error_widget = NULL;
 
@@ -1528,7 +1526,6 @@ highlight_callback                              (gpointer data)
 
 Done:
     priv->highlight_idle = 0;
-    GDK_THREADS_LEAVE ();
 
     return FALSE;
 }
@@ -1559,7 +1556,7 @@ hildon_time_editor_validate                     (HildonTimeEditor *editor,
             hildon_banner_show_information (priv->error_widget, NULL,
                     error_message->str);
 
-            priv->highlight_idle = g_idle_add (highlight_callback, editor);
+            priv->highlight_idle = gdk_threads_add_idle (highlight_callback, editor);
         }
 
         priv->skipper = FALSE;
@@ -1928,9 +1925,6 @@ hildon_time_editor_get_show_hours               (HildonTimeEditor *editor)
 static gboolean
 hildon_time_editor_entry_select_all             (GtkWidget *widget)
 {
-    GDK_THREADS_ENTER ();
     gtk_editable_select_region (GTK_EDITABLE (widget), 0, -1);
-    GDK_THREADS_LEAVE ();
-
     return FALSE;
 }

@@ -500,7 +500,7 @@ hildon_number_editor_button_pressed             (GtkWidget *widget,
     if (! priv->button_event_id)
     {
         change_numbers (editor, priv->button_type);
-        priv->button_event_id = g_timeout_add (timeout,
+        priv->button_event_id = gdk_threads_add_timeout (timeout,
                 (GSourceFunc) hildon_number_editor_start_timer,
                 editor);
     }
@@ -520,7 +520,7 @@ hildon_number_editor_start_timer                (HildonNumberEditor *editor)
     g_object_get (settings, "gtk-timeout-repeat", &timeout, NULL);
     timeout *= 8;
 
-    priv->button_event_id = g_timeout_add (timeout,
+    priv->button_event_id = gdk_threads_add_timeout (timeout,
             (GSourceFunc) do_mouse_timeout,
             editor);
 
@@ -536,12 +536,8 @@ do_mouse_timeout                                (HildonNumberEditor *editor)
     priv = HILDON_NUMBER_EDITOR_GET_PRIVATE (editor);
     g_assert (priv);
 
-    GDK_THREADS_ENTER ();
-
     /* Update value based on button held */
     change_numbers (editor, priv->button_type);
-
-    GDK_THREADS_LEAVE ();
 
     return TRUE;
 }
@@ -577,7 +573,7 @@ add_select_all_idle                             (HildonNumberEditorPrivate *priv
     if (! priv->select_all_idle_id)
     {
         priv->select_all_idle_id =
-            g_idle_add((GSourceFunc) hildon_number_editor_select_all, priv);
+            gdk_threads_add_idle ((GSourceFunc) hildon_number_editor_select_all, priv);
     }    
 }
 
@@ -1002,10 +998,8 @@ hildon_number_editor_set_value                  (HildonNumberEditor *editor,
 static gboolean
 hildon_number_editor_select_all                 (HildonNumberEditorPrivate *priv)
 {   
-    GDK_THREADS_ENTER ();
     gtk_editable_select_region (GTK_EDITABLE (priv->num_entry), 0, -1);
     priv->select_all_idle_id = 0;
-    GDK_THREADS_LEAVE ();
     return FALSE;
 } 
 

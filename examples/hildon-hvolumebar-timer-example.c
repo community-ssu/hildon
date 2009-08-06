@@ -77,7 +77,7 @@ on_idle                                         (void)
         cycle = (cycle + 1) % 3;
     }
 
-    g_timeout_add (2000, (GSourceFunc) on_idle, NULL);
+    gdk_threads_add_timeout (2000, (GSourceFunc) on_idle, NULL);
     return FALSE;
 }
 
@@ -87,7 +87,7 @@ main                                            (int argc,
 {
     hildon_gtk_init (&argc, &argv);
 
-    g_timeout_add (2000, (GSourceFunc) on_idle, NULL);
+    gdk_threads_add_timeout (2000, (GSourceFunc) on_idle, NULL);
 
     gtk_main ();
     

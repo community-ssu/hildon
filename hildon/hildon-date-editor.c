@@ -875,7 +875,7 @@ hildon_date_editor_entry_focus_in               (GtkWidget *widget,
                                                  GdkEventFocus *event,
                                                  gpointer data)
 {
-    g_idle_add ((GSourceFunc) hildon_date_editor_entry_select_all, GTK_ENTRY (widget));
+    gdk_threads_add_idle ((GSourceFunc) hildon_date_editor_entry_select_all, GTK_ENTRY (widget));
 
     return FALSE;
 }
@@ -1065,7 +1065,7 @@ hildon_date_editor_entry_validate               (GtkWidget *widget,
         {
             g_signal_emit (ed, date_editor_signals[DATE_ERROR], 0, error_code, &r);
 
-            g_idle_add ((GSourceFunc) hildon_date_editor_entry_select_all, widget);
+            gdk_threads_add_idle ((GSourceFunc) hildon_date_editor_entry_select_all, widget);
         }
     }
 
@@ -1080,12 +1080,7 @@ hildon_date_editor_entry_validate               (GtkWidget *widget,
 static gboolean
 hildon_date_editor_entry_select_all             (GtkWidget *widget)
 {
-    GDK_THREADS_ENTER ();
-
     gtk_editable_select_region (GTK_EDITABLE (widget), 0, -1);
-
-    GDK_THREADS_LEAVE ();
-
     return FALSE;
 }
 

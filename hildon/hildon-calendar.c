@@ -3043,8 +3043,6 @@ calendar_timer                                  (gpointer data)
     g_object_get (settings, "gtk-timeout-repeat", &timeout, NULL);
     timeout *= 8;
 
-    GDK_THREADS_ENTER ();
-
     if (private_data->timer)
     {
         arrow_action (calendar, private_data->click_child);
@@ -3052,15 +3050,13 @@ calendar_timer                                  (gpointer data)
         if (private_data->need_timer)
         {
             private_data->need_timer = FALSE;
-            private_data->timer = g_timeout_add (/*CALENDAR_TIMER_DELAY*/timeout, 
+            private_data->timer = gdk_threads_add_timeout (/*CALENDAR_TIMER_DELAY*/timeout,
                     (GSourceFunc) calendar_timer, 
                     (gpointer) calendar);
         }
         else 
             retval = TRUE;
     }
-
-    GDK_THREADS_LEAVE ();
 
     return retval;
 }
@@ -3082,7 +3078,7 @@ start_spinning                                  (GtkWidget *widget,
     if (!private_data->timer)
     {
         private_data->need_timer = TRUE;
-        private_data->timer = g_timeout_add (/*CALENDAR_INITIAL_TIMER_DELAY*/timeout, 
+        private_data->timer = gdk_threads_add_timeout (/*CALENDAR_INITIAL_TIMER_DELAY*/timeout,
                 calendar_timer,
                 (gpointer) widget);
     }

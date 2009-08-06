@@ -667,7 +667,7 @@ hildon_time_picker_arrow_press                  (GtkWidget *widget,
     /* Keep changing the time as long as button is being pressed.
        The first repeat takes 3 times longer to start than the rest. */
     
-    priv->timer_id = g_timeout_add (key_repeat * 3,
+    priv->timer_id = gdk_threads_add_timeout (key_repeat * 3,
             hildon_time_picker_key_repeat_timeout,
             picker);
 
@@ -867,8 +867,6 @@ hildon_time_picker_key_repeat_timeout           (gpointer tpicker)
     priv = HILDON_TIME_PICKER_GET_PRIVATE (tpicker);
     g_assert (priv);
 
-    GDK_THREADS_ENTER ();
-
     /* Change the time, wrapping if needed */
     newval = priv->minutes + priv->mul;
     if (newval < 0)
@@ -886,16 +884,14 @@ hildon_time_picker_key_repeat_timeout           (gpointer tpicker)
             
         /* This is the first repeat. Shorten the timeout to key_repeat
            (instead of the first time's 3*key_repeat) */
-        priv->timer_id = g_timeout_add (key_repeat,
+        priv->timer_id = gdk_threads_add_timeout (key_repeat,
                 hildon_time_picker_key_repeat_timeout,
                 picker);
         priv->start_key_repeat = FALSE;
 
-        GDK_THREADS_LEAVE ();
         return FALSE;
     }
 
-    GDK_THREADS_LEAVE ();
     return TRUE;
 }
 

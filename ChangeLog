@@ -1,3 +1,39 @@
+2009-08-06  Alberto Garcia  <agarcia@igalia.com>
+
+	* examples/hildon-hvolumebar-timer-example.c
+	(on_idle, main)
+	* hildon/hildon-banner.c
+	(hildon_banner_timeout, hildon_banner_ensure_timeout)
+	* hildon/hildon-calendar.c
+	(calendar_timer, start_spinning)
+	* hildon/hildon-color-chooser.c
+	(inline_limited_expose)
+	* hildon/hildon-date-editor.c
+	(hildon_date_editor_entry_focus_in)
+	(hildon_date_editor_entry_validate)
+	(hildon_date_editor_entry_select_all)
+	* hildon/hildon-note.c
+	(on_show_cb)
+	* hildon/hildon-number-editor.c
+	(hildon_number_editor_button_pressed)
+	(hildon_number_editor_start_timer, do_mouse_timeout),
+	(add_select_all_idle, hildon_number_editor_select_all)
+	* hildon/hildon-time-editor.c
+	(hildon_time_editor_entry_focus_in)
+	(highlight_callback, hildon_time_editor_validate)
+	(hildon_time_editor_entry_select_all)
+	* hildon/hildon-time-picker.c
+	(hildon_time_picker_arrow_press)
+	(hildon_time_picker_key_repeat_timeout)
+	* hildon/hildon-window.c
+	(hildon_window_key_press_event)
+	(hildon_window_escape_timeout):
+	Replace all calls to g_idle_add/g_timeout_add with their
+	gdk_threads counterparts.
+
+	Fixes: NB#126198 (gdk-threads API should be used to install idle
+	and timeout handlers)
+
 2009-08-06  Alejandro G. Castro  <alex@igalia.com>
 
 	* hildon/hildon-pannable-area.c,

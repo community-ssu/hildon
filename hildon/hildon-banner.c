@@ -294,8 +294,6 @@ hildon_banner_timeout                           (gpointer data)
     GtkWidget *widget;
     gboolean continue_timeout = FALSE;
 
-    GDK_THREADS_ENTER ();
-
     g_assert (HILDON_IS_BANNER (data));
 
     widget = GTK_WIDGET (data);
@@ -310,8 +308,6 @@ hildon_banner_timeout                           (gpointer data)
     }
 
     g_object_unref (widget);
-
-    GDK_THREADS_LEAVE ();
 
     return continue_timeout;
 }
@@ -338,7 +334,7 @@ hildon_banner_ensure_timeout                    (HildonBanner *self)
     g_assert (priv);
 
     if (priv->timeout_id == 0 && priv->is_timed && priv->timeout > 0)
-        priv->timeout_id = g_timeout_add (priv->timeout, 
+        priv->timeout_id = gdk_threads_add_timeout (priv->timeout,
                 hildon_banner_timeout, self);
 }
 

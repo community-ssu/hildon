@@ -1131,7 +1131,7 @@ on_show_cb                                      (GtkWidget *widget,
     HildonNotePrivate *priv;
 
     priv = HILDON_NOTE_GET_PRIVATE (widget);
-    priv->idle_handler = g_idle_add (sound_handling, widget);
+    priv->idle_handler = gdk_threads_add_idle (sound_handling, widget);
 }
 
 /* We play a system sound when the note comes visible */
