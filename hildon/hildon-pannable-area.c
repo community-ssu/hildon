@@ -411,7 +411,7 @@ hildon_pannable_area_class_init (HildonPannableAreaClass * klass)
 							"Maximum scroll velocity when overshooting",
 							"Maximum distance the child widget should scroll "
 							"per 'frame', in pixels per frame when it overshoots after hitting the edge.",
-							0, G_MAXDOUBLE, 20,
+							0, G_MAXDOUBLE, 130,
 							G_PARAM_READWRITE |
 							G_PARAM_CONSTRUCT));
 
@@ -2165,7 +2165,7 @@ hildon_pannable_axis_scroll (HildonPannableArea *area,
           *vel *= -1;
         } else if ((*overshooting > 1) && (*vel < 0)) {
           /* we add the MIN in order to avoid very small speeds */
-          *vel = MIN ((((gdouble)*overshot_dist)*0.4) * -1, -2.0);
+          *vel = MIN (((((gdouble)*overshot_dist)*0.8) * -1), -10.0);
         }
 
         *overshot_dist = CLAMP (*overshot_dist + *vel, 0, overshoot_max);
@@ -2181,7 +2181,7 @@ hildon_pannable_axis_scroll (HildonPannableArea *area,
           *vel *= -1;
         } else if ((*overshooting > 1) && (*vel > 0)) {
           /* we add the MAX in order to avoid very small speeds */
-          *vel = MAX ((((gdouble)*overshot_dist)*0.4) * -1, 2.0);
+          *vel = MAX (((((gdouble)*overshot_dist)*0.8) * -1), 10.0);
         }
 
         *overshot_dist = CLAMP (*overshot_dist + (*vel), -overshoot_max, 0);
@@ -2715,12 +2715,12 @@ hildon_pannable_area_button_release_cb (GtkWidget * widget,
   /* If overshoot has been initiated with a finger down, on release set max speed */
   if (priv->overshot_dist_y != 0) {
     priv->overshooting_y = priv->bounce_steps; /* Hack to stop a bounce in the finger down case */
-    priv->vel_y = priv->vmax_overshooting;
+    priv->vel_y = priv->overshot_dist_y * 0.9;
   }
 
   if (priv->overshot_dist_x != 0) {
     priv->overshooting_x = priv->bounce_steps; /* Hack to stop a bounce in the finger down case */
-    priv->vel_x = priv->vmax_overshooting;
+    priv->vel_x = priv->overshot_dist_x * 0.9;
   }
 
   priv->button_pressed = FALSE;

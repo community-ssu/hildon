@@ -1,3 +1,17 @@
+2009-08-06  Alejandro G. Castro  <alex@igalia.com>
+
+	* hildon/hildon-pannable-area.c,
+	(hildon_pannable_area_class_init): Increased the overshooting max
+	speed to get a faster effect.
+	(hildon_pannable_axis_scroll): Increased minimum speed and reduce
+	deceleration of the overshooting
+	(hildon_pannable_area_button_release_cb): Calculate initial
+	overshooting speed when finger on the screen using the distance to
+	launch the effect faster.
+
+	Fixes: NB#126115 (Pannable list overshooting is unusably slow for
+	lists with slow row renderers)
+
 2009-08-05  Alberto Garcia  <agarcia@igalia.com>
 
 	* doc/hildon-sections.txt: Add new functions
