@@ -1,3 +1,13 @@
+libhildon (2.1.94-1) unstable; urgency=low
+
+  * Fixes: NB#130910 (Screen gets unlocked when menu is open)
+  * Fixes: NB#126115 (Pannable list overshooting is unusably slow for
+    lists with slow row renderers)
+  * Fixes: NB#126198 (gdk-threads API should be used to install idle and
+    timeout handlers)
+
+ -- Alberto Garcia <agarcia@igalia.com>  Mon, 10 Aug 2009 17:17:34 +0200
+
 libhildon (2.1.93-1) unstable; urgency=low
 
   * Fixes: NB#122395 (hildon_entry_set_placeholder() should be in
