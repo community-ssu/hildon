@@ -1,6 +1,16 @@
 2009-08-11  Alejandro G. Castro  <alex@igalia.com>
 
 	* hildon/hildon-pannable-area.c
+	(hildon_pannable_area_size_allocate): Checked the scrollbars
+	before the first try when defining the layout, avoids two
+	allocations in some situations.
+
+	Fixes: NB#131794 (pannable area produces unnecessary allocations
+	causing performance problems)
+
+2009-08-11  Alejandro G. Castro  <alex@igalia.com>
+
+	* hildon/hildon-pannable-area.c
 	(hildon_pannable_area_button_press_cb),
 	(hildon_pannable_area_motion_notify_cb),
 	(hildon_pannable_area_button_release_cb): Added unrefs to reduce

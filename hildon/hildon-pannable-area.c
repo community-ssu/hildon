@@ -1223,6 +1223,8 @@ hildon_pannable_area_size_allocate (GtkWidget * widget,
 
   if (child && GTK_WIDGET_VISIBLE (child)) {
 
+    hildon_pannable_area_check_scrollbars (HILDON_PANNABLE_AREA (widget));
+
     hildon_pannable_area_child_allocate_calculate (widget,
                                                    allocation,
                                                    &child_allocation);
