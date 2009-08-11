@@ -1979,6 +1979,8 @@ hildon_pannable_area_button_press_cb (GtkWidget * widget,
 			       (gpointer) & priv->child);
 
     event = (GdkEventButton *) gdk_event_copy ((GdkEvent *) event);
+    /* remove the reference we added with the copy */
+    g_object_unref (priv->event_window);
     event->x = x;
     event->y = y;
     priv->cx = x;
@@ -2638,6 +2640,8 @@ hildon_pannable_area_motion_notify_cb (GtkWidget * widget,
   if (priv->child) {
     /* Send motion notify to child */
     event = (GdkEventMotion *) gdk_event_copy ((GdkEvent *) event);
+    /* remove the reference we added with the copy */
+    g_object_unref (priv->event_window);
     event->x = priv->cx + (event->x - priv->ix);
     event->y = priv->cy + (event->y - priv->iy);
     event->window = g_object_ref (priv->child);
@@ -2779,6 +2783,8 @@ hildon_pannable_area_button_release_cb (GtkWidget * widget,
 				      event->x, event->y, &x, &y, GDK_BUTTON_RELEASE_MASK);
 
   event = (GdkEventButton *) gdk_event_copy ((GdkEvent *) event);
+  /* remove the reference we added with the copy */
+  g_object_unref (priv->event_window);
   event->x = x;
   event->y = y;
 

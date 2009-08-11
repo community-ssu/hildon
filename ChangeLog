@@ -1,3 +1,14 @@
+2009-08-11  Alejandro G. Castro  <alex@igalia.com>
+
+	* hildon/hildon-pannable-area.c
+	(hildon_pannable_area_button_press_cb),
+	(hildon_pannable_area_motion_notify_cb),
+	(hildon_pannable_area_button_release_cb): Added unrefs to reduce
+	the spurious ref added in the copy, fixes leak of window.
+
+	Fixes: NB#130900 (HildonPannableArea will leak it's event_window
+	if it's realized without showing and then deleted)
+
 2009-08-10  Alberto Garcia  <agarcia@igalia.com>
 
 	[Release 2.1.94]
