@@ -1,3 +1,11 @@
+2009-08-18  Alberto Garcia  <agarcia@igalia.com>
+
+	[Release 2.1.95]
+
+	* configure.ac: bump version
+	* NEWS: updates
+	* debian/changelog: updates
+
 2009-08-11  Alejandro G. Castro  <alex@igalia.com>
 
 	* hildon/hildon-pannable-area.c

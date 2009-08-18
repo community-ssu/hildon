@@ -1,3 +1,12 @@
+libhildon (2.1.95-1) unstable; urgency=low
+
+  * Fixes: NB#131794 (pannable area produces unnecessary allocations
+    causing performance problems)
+  * Fixes: NB#130900 (HildonPannableArea will leak it's event_window
+    if it's realized without showing and then deleted)
+
+ -- Alberto Garcia <agarcia@igalia.com>  Tue, 18 Aug 2009 16:21:40 +0200
+
 libhildon (2.1.94-1) unstable; urgency=low
 
   * Fixes: NB#130910 (Screen gets unlocked when menu is open)
