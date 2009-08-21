@@ -252,8 +252,7 @@ create_contents                                 (HildonSetPasswordDialog *dialog
         gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dialog)->vbox),
                 priv->checkbox, TRUE, TRUE, 0);
         gtk_widget_show (priv->checkbox);
-        hildon_check_button_set_active (HILDON_CHECK_BUTTON (priv->checkbox),
-                TRUE);
+        gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (priv->checkbox), TRUE);
         gtk_signal_connect (GTK_OBJECT (priv->checkbox), "toggled",
                 G_CALLBACK (hildon_checkbox_toggled), dialog);
 
@@ -429,7 +428,7 @@ hildon_set_password_response_change             (GtkDialog *dialog,
     /* User accepted the dialog */
     if (arg1 == GTK_RESPONSE_OK) {
         /* Is the checkbox marked, so password protection is still in use? */  
-        if (hildon_check_button_get_active (HILDON_CHECK_BUTTON (priv->checkbox))){
+        if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (priv->checkbox))){
             /* Yes, Something is given as password as well? */
             if (text1[0] != '\0') {
                 if (strcmp (text1, text2) == 0) {
@@ -591,7 +590,7 @@ hildon_checkbox_toggled                         (GtkWidget *widget,
 
     /* If the user enabled/disabled the password protection feature
        we enable/disable password entries accordingly */
-    active = hildon_check_button_get_active (HILDON_CHECK_BUTTON (widget));
+    active = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (widget));
     gtk_widget_set_sensitive (GTK_WIDGET (priv->pwd1st_entry), active);
     gtk_widget_set_sensitive (GTK_WIDGET (priv->pwd2nd_entry), active);
 }
