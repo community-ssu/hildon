@@ -1,5 +1,13 @@
 2009-08-21  Alberto Garcia  <agarcia@igalia.com>
 
+	[Release 2.1.96]
+
+	* configure.ac: bump version
+	* NEWS: updates
+	* debian/changelog: updates
+
+2009-08-21  Alberto Garcia  <agarcia@igalia.com>
+
 	* hildon/hildon-check-button.h
 	* hildon/hildon-check-button.c
 	(hildon_check_button_clicked, hildon_check_button_class_init):

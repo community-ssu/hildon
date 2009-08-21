@@ -1,3 +1,10 @@
+libhildon (2.1.96-1) unstable; urgency=low
+
+  * Fixes: NB#132661: (HildonCheckButton should inherit from
+    GtkToggleButton)
+
+ -- Alberto Garcia <agarcia@igalia.com>  Fri, 21 Aug 2009 11:55:56 +0200
+
 libhildon (2.1.95-2) unstable; urgency=low
 
   * Fixes: NB#132584 (Pannable kinetics in large lists needs tuning)

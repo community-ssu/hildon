@@ -1,3 +1,9 @@
+[2.1.96 release]
+
+  * Fixes: NB#132661: (HildonCheckButton should inherit from
+    GtkToggleButton)
+  * Fixes: NB#132584 (Pannable kinetics in large lists needs tuning)
+
 [2.1.95 release]
 
   * Fixes: NB#131794 (pannable area produces unnecessary allocations
