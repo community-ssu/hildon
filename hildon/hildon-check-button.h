@@ -50,12 +50,15 @@ typedef struct                                  _HildonCheckButtonPrivate Hildon
 
 struct                                          _HildonCheckButtonClass
 {
-    GtkToggleButtonClass parent_class;
+    GtkButtonClass parent_class;
+
+    /* Signal handlers */
+    void (* toggled)                            (HildonCheckButton *button);
 };
 
 struct                                          _HildonCheckButton
 {
-    GtkToggleButton parent;
+    GtkButton parent;
 
     /* private */
     HildonCheckButtonPrivate *priv;
@@ -67,7 +70,6 @@ hildon_check_button_get_type                    (void) G_GNUC_CONST;
 GtkWidget *
 hildon_check_button_new                         (HildonSizeType size);
 
-#ifndef HILDON_DISABLE_DEPRECATED
 void
 hildon_check_button_set_active                  (HildonCheckButton *button,
                                                  gboolean           is_active);
@@ -77,7 +79,6 @@ hildon_check_button_get_active                  (HildonCheckButton *button);
 
 void
 hildon_check_button_toggled                     (HildonCheckButton *button);
-#endif
 
 G_END_DECLS
 

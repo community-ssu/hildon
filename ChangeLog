@@ -1,3 +1,15 @@
+2009-08-24  Claudio Saavedra  <csaavedra@igalia.com>
+
+	* examples/hildon-check-button-example.c: (button_toggled_cb):
+	* hildon/hildon-check-button.c: (hildon_check_button_toggled),
+	(hildon_check_button_set_active), (hildon_check_button_new),
+	(hildon_check_button_clicked), (hildon_check_button_class_init):
+	* hildon/hildon-check-button.h:
+	* hildon/hildon-set-password-dialog.c: (create_contents),
+	(hildon_set_password_response_change), (hildon_checkbox_toggled):
+
+	Revert "Make HildonCheckButton derive from GtkToggleButton"
+
 2009-08-21  Alberto Garcia  <agarcia@igalia.com>
 
 	[Release 2.1.96]

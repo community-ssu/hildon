@@ -23,10 +23,10 @@
 #include                                        <hildon/hildon.h>
 
 static void
-button_toggled_cb                               (GtkToggleButton *button,
-                                                 GtkLabel        *label)
+button_toggled_cb                               (HildonCheckButton *button,
+                                                 GtkLabel          *label)
 {
-    gboolean active = gtk_toggle_button_get_active (button);
+    gboolean active = hildon_check_button_get_active (button);
     const gchar *labeltext = gtk_button_get_label (GTK_BUTTON (button));
     char *text = g_strconcat (labeltext, active ? " (checked)" : " (unchecked)", NULL);
     gtk_label_set_text (label, text);

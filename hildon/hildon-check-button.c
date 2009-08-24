@@ -26,9 +26,9 @@
  * with a different appearance that combines a standard button and a
  * check box.
  *
- * #HildonCheckButton derives from #GtkToggleButton so its state can
- * be set with gtk_toggle_button_set_active(), and retrieved using
- * gtk_toggle_button_get_active(). The label can be set using
+ * The state of a #HildonCheckButton can be set using
+ * hildon_check_button_set_active(), and retrieved using
+ * hildon_check_button_get_active(). The label can be set using
  * gtk_button_set_label() and retrieved using gtk_button_get_label().
  *
  * <note>
@@ -42,11 +42,11 @@
  * <title>Using a Hildon check button</title>
  * <programlisting>
  * void
- * button_toggled (GtkToggleButton *button, gpointer user_data)
+ * button_toggled (HildonCheckButton *button, gpointer user_data)
  * {
  *     gboolean active;
  * <!-- -->
- *     active = gtk_toggle_button_get_active (button);
+ *     active = hildon_check_button_get_active (button);
  *     if (active)
  *        g_debug ("Button is active");
  *     else
@@ -69,15 +69,20 @@
  * </example>
  */
 
-#undef                                          HILDON_DISABLE_DEPRECATED
-
 #include                                        "hildon-check-button.h"
+
+enum {
+  TOGGLED,
+  LAST_SIGNAL
+};
 
 enum {
     PROP_SIZE = 1
 };
 
-G_DEFINE_TYPE                                   (HildonCheckButton, hildon_check_button, GTK_TYPE_TOGGLE_BUTTON);
+static guint                                    signals[LAST_SIGNAL] = { 0 };
+
+G_DEFINE_TYPE                                   (HildonCheckButton, hildon_check_button, GTK_TYPE_BUTTON);
 
 #define                                         HILDON_CHECK_BUTTON_GET_PRIVATE(obj) \
                                                 (G_TYPE_INSTANCE_GET_PRIVATE ((obj), \
@@ -93,8 +98,7 @@ struct                                          _HildonCheckButtonPrivate
  * @button: A #HildonCheckButton
  *
  * Emits the #HildonCheckButton::toggled signal on the #HildonCheckButton.
- *
- * Deprecated: use gtk_toggle_button_toggled()
+ * There is no good reason for an application ever to call this function.
  *
  * Since: 2.2
  */
@@ -103,7 +107,7 @@ hildon_check_button_toggled                     (HildonCheckButton *button)
 {
     g_return_if_fail (HILDON_IS_CHECK_BUTTON (button));
 
-    gtk_toggle_button_toggled (GTK_TOGGLE_BUTTON (button));
+    g_signal_emit (button, signals[TOGGLED], 0);
 }
 
 /**
@@ -111,9 +115,9 @@ hildon_check_button_toggled                     (HildonCheckButton *button)
  * @button: A #HildonCheckButton
  * @is_active: new state for the button
  *
- * Sets the status of a #HildonCheckButton.
- *
- * Deprecated: use gtk_toggle_button_set_active()
+ * Sets the status of a #HildonCheckButton. Set to %TRUE if you want
+ * @button to be 'pressed-in', and %FALSE to raise it. This action
+ * causes the #HildonCheckButton::toggled signal to be emitted.
  *
  * Since: 2.2
  **/
@@ -121,9 +125,16 @@ void
 hildon_check_button_set_active                  (HildonCheckButton *button,
                                                  gboolean           is_active)
 {
+    gboolean prev_is_active;
+
     g_return_if_fail (HILDON_IS_CHECK_BUTTON (button));
 
-    gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (button), is_active);
+    prev_is_active = hildon_check_button_get_active (button);
+
+    if (prev_is_active != is_active) {
+        gtk_button_clicked (GTK_BUTTON (button));
+        gtk_widget_queue_draw (GTK_WIDGET (button));
+    }
 }
 
 /**
@@ -134,8 +145,6 @@ hildon_check_button_set_active                  (HildonCheckButton *button,
  *
  * Return value: %TRUE if @button is active, %FALSE otherwise.
  *
- * Deprecated: use gtk_toggle_button_get_active()
- *
  * Since: 2.2
  **/
 gboolean
@@ -143,7 +152,7 @@ hildon_check_button_get_active                  (HildonCheckButton *button)
 {
     g_return_val_if_fail (HILDON_IS_CHECK_BUTTON (button), FALSE);
 
-    return gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (button));
+    return gtk_cell_renderer_toggle_get_active (button->priv->toggle_renderer);
 }
 
 /**
@@ -166,17 +175,11 @@ static void
 hildon_check_button_clicked                     (GtkButton *button)
 {
     HildonCheckButton *checkbutton = HILDON_CHECK_BUTTON (button);
-    GtkToggleButton *togglebutton = GTK_TOGGLE_BUTTON (button);
+    gboolean current = hildon_check_button_get_active (checkbutton);
 
-    togglebutton->active = !togglebutton->active;
-    gtk_cell_renderer_toggle_set_active (checkbutton->priv->toggle_renderer,
-                                         togglebutton->active);
+    gtk_cell_renderer_toggle_set_active (checkbutton->priv->toggle_renderer, !current);
 
-    gtk_toggle_button_toggled (togglebutton);
-
-    gtk_widget_queue_draw (GTK_WIDGET (button));
-
-    g_object_notify (G_OBJECT (button), "active");
+    hildon_check_button_toggled (checkbutton);
 }
 
 static void
@@ -223,15 +226,28 @@ hildon_check_button_class_init                  (HildonCheckButtonClass *klass)
     GObjectClass *gobject_class = (GObjectClass*) klass;
     GtkWidgetClass *widget_class = (GtkWidgetClass*) klass;
     GtkButtonClass *button_class = (GtkButtonClass*) klass;
-    GtkButtonClass *gtk_button_class = g_type_class_peek_parent (hildon_check_button_parent_class);
 
     gobject_class->set_property = set_property;
     widget_class->style_set = hildon_check_button_style_set;
     button_class->clicked = hildon_check_button_clicked;
-    button_class->pressed = gtk_button_class->pressed;
-    button_class->released = gtk_button_class->released;
-    button_class->enter = gtk_button_class->enter;
-    button_class->leave = gtk_button_class->leave;
+
+    klass->toggled = NULL;
+
+    /**
+     * HildonCheckButton::toggled
+     *
+     * Emitted when the #HildonCheckButton's state is changed.
+     *
+     * Since: 2.2
+     */
+    signals[TOGGLED] =
+        g_signal_new ("toggled",
+                      G_OBJECT_CLASS_TYPE (gobject_class),
+                      G_SIGNAL_RUN_FIRST,
+                      G_STRUCT_OFFSET (HildonCheckButtonClass, toggled),
+                      NULL, NULL,
+                      g_cclosure_marshal_VOID__VOID,
+                      G_TYPE_NONE, 0);
 
     gtk_widget_class_install_style_property (
         widget_class,
