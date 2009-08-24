@@ -1,3 +1,12 @@
+2009-08-26  Alberto Garcia  <agarcia@igalia.com>
+
+	* hildon/hildon-sound.c (hildon_play_system_sound):
+	Set "module-stream-restore.id" to "x-maemo-system-sound" when
+	playing system sounds
+
+	Fixes: NB#133767 (Information and confirmation note sound should
+	follow system profile setting)
+
 2009-08-26  Alejandro G. Castro  <alex@igalia.com>
 
 	* hildon/hildon-pannable-area.c,
