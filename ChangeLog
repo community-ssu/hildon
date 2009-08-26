@@ -1,3 +1,10 @@
+2009-08-26  Claudio Saavedra  <csaavedra@igalia.com>
+
+	[Release 2.1.96, this time for real]
+
+	* NEWS: updates
+	* debian/changelog: updates
+
 2009-08-26  Alejandro Pinheiro <apinheiro@igalia.com>
 
 	* hildon/hildon-pannable-area.c

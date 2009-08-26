@@ -1,7 +1,8 @@
 [2.1.96 release]
 
-  * Fixes: NB#132661: (HildonCheckButton should inherit from
-    GtkToggleButton)
+  * Fixes: NB#133252 (Opening any feed item from RSS always opens the
+         first feed item in browser)
+  * Fixes: NB#135179 (Remove pannable timeouts in unrealize function)
   * Fixes: NB#132584 (Pannable kinetics in large lists needs tuning)
 
 [2.1.95 release]

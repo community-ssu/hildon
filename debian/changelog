@@ -1,6 +1,15 @@
+libhildon (2.1.96-2) unstable; urgency=low
+
+  * Fixes: NB#133252 (Opening any feed item from RSS always opens the
+         first feed item in browser)
+  * Fixes: NB#135179 (Remove pannable timeouts in unrealize function)
+  * Reverted fix for NB#132661.
+
+ -- Claudio Saavedra <csaavedra@igalia.com>  Wed, 26 Aug 2009 10:03:19 +0200
+
 libhildon (2.1.96-1) unstable; urgency=low
 
-  * Fixes: NB#132661: (HildonCheckButton should inherit from
+  * Fixes NB#132661: (HildonCheckButton should inherit from
     GtkToggleButton)
 
  -- Alberto Garcia <agarcia@igalia.com>  Fri, 21 Aug 2009 11:55:56 +0200
