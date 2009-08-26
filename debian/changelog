@@ -1,3 +1,10 @@
+libhildon (2.1.96-4) unstable; urgency=low
+
+  * Fixes: NB#133767 (Information and confirmation note sound should
+    follow system profile setting)
+
+ -- Claudio Saavedra <csaavedra@igalia.com>  Wed, 26 Aug 2009 18:19:47 +0200
+
 libhildon (2.1.96-3) unstable; urgency=low
 
   * Fixes: NB#135344 (Pannign needs to be faster)
