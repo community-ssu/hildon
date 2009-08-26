@@ -1880,9 +1880,9 @@ hildon_pannable_area_get_topmost (GdkWindow * window,
                                                             tx, ty, mask);
         if (!selected_window) {
           if (tx)
-            *tx = x;
+            *tx = x-wx;
           if (ty)
-            *ty = y;
+            *ty = y-wy;
           selected_window = child;
         }
       } else {
