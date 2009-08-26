@@ -1,3 +1,16 @@
+2009-08-26  Alejandro G. Castro  <alex@igalia.com>
+
+	* hildon/hildon-pannable-area.c,
+	(hildon_pannable_area_remove_timeouts): Adding this new function
+	with the code that removes the timeouts of the widget.
+	(hildon_pannable_area_dispose),
+	(hildon_pannable_area_unrealize): Use the new remove function to
+	stop timeouts when unrealizing and disposing.
+	(hildon_pannable_area_scroll_to): Added a CLAMP to the position
+	calculation to avoid negative values in some cases.
+
+	Fixes: NB#135179 (Remove pannable timeouts in unrealize function)
+
 2009-08-24  Claudio Saavedra  <csaavedra@igalia.com>
 
 	* examples/hildon-check-button-example.c: (button_toggled_cb):

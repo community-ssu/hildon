@@ -198,6 +198,7 @@ static void hildon_pannable_area_set_property (GObject * object,
                                                guint property_id,
                                                const GValue * value,
                                                GParamSpec * pspec);
+static void hildon_pannable_area_remove_timeouts (GtkWidget * widget);
 static void hildon_pannable_area_dispose (GObject * object);
 static void hildon_pannable_area_realize (GtkWidget * widget);
 static void hildon_pannable_area_unrealize (GtkWidget * widget);
@@ -983,21 +984,7 @@ hildon_pannable_area_dispose (GObject * object)
   HildonPannableAreaPrivate *priv = HILDON_PANNABLE_AREA (object)->priv;
   GtkWidget *child = gtk_bin_get_child (GTK_BIN (object));
 
-  if (priv->idle_id) {
-    g_signal_emit (object, pannable_area_signals[PANNING_FINISHED], 0);
-    g_source_remove (priv->idle_id);
-    priv->idle_id = 0;
-  }
-
-  if (priv->scroll_indicator_timeout){
-    g_source_remove (priv->scroll_indicator_timeout);
-    priv->scroll_indicator_timeout = 0;
-  }
-
-  if (priv->motion_event_scroll_timeout){
-    g_source_remove (priv->motion_event_scroll_timeout);
-    priv->motion_event_scroll_timeout = 0;
-  }
+  hildon_pannable_area_remove_timeouts (GTK_WIDGET (object));
 
   if (child) {
     g_signal_handlers_disconnect_by_func (child,
@@ -1092,12 +1079,37 @@ hildon_pannable_area_realize (GtkWidget * widget)
   gdk_gc_copy (priv->scrollbars_gc, widget->style->fg_gc[GTK_STATE_INSENSITIVE]);
 }
 
+
+static void
+hildon_pannable_area_remove_timeouts (GtkWidget * widget)
+{
+  HildonPannableAreaPrivate *priv = HILDON_PANNABLE_AREA (widget)->priv;
+
+  if (priv->idle_id) {
+    g_signal_emit (widget, pannable_area_signals[PANNING_FINISHED], 0);
+    g_source_remove (priv->idle_id);
+    priv->idle_id = 0;
+  }
+
+  if (priv->scroll_indicator_timeout){
+    g_source_remove (priv->scroll_indicator_timeout);
+    priv->scroll_indicator_timeout = 0;
+  }
+
+  if (priv->motion_event_scroll_timeout){
+    g_source_remove (priv->motion_event_scroll_timeout);
+    priv->motion_event_scroll_timeout = 0;
+  }
+}
+
 static void
 hildon_pannable_area_unrealize (GtkWidget * widget)
 {
   HildonPannableAreaPrivate *priv;
 
   priv = HILDON_PANNABLE_AREA (widget)->priv;
+
+  hildon_pannable_area_remove_timeouts (widget);
 
   if (priv->event_window != NULL) {
     gdk_window_set_user_data (priv->event_window, NULL);
@@ -3171,7 +3183,9 @@ hildon_pannable_area_scroll_to (HildonPannableArea *area,
   g_return_if_fail (x < width || y < height);
 
   if ((x > -1)&&(hscroll_visible)) {
-    priv->scroll_to_x = x - priv->hadjust->page_size/2;
+    priv->scroll_to_x = CLAMP (x - priv->hadjust->page_size/2,
+                               priv->hadjust->lower,
+                               priv->hadjust->upper - priv->hadjust->page_size);
     dist_x = priv->scroll_to_x - priv->hadjust->value;
     if (dist_x == 0) {
       priv->scroll_to_x = -1;
@@ -3183,7 +3197,9 @@ hildon_pannable_area_scroll_to (HildonPannableArea *area,
   }
 
   if ((y > -1)&&(vscroll_visible)) {
-    priv->scroll_to_y = y - priv->vadjust->page_size/2;
+    priv->scroll_to_y = CLAMP (y - priv->vadjust->page_size/2,
+                               priv->vadjust->lower,
+                               priv->vadjust->upper - priv->vadjust->page_size);
     dist_y = priv->scroll_to_y - priv->vadjust->value;
     if (dist_y == 0) {
       priv->scroll_to_y = -1;
@@ -3194,7 +3210,7 @@ hildon_pannable_area_scroll_to (HildonPannableArea *area,
     priv->scroll_to_y = y;
   }
 
-  if ((priv->scroll_to_y == -1) && (priv->scroll_to_y == -1)) {
+  if ((priv->scroll_to_y == -1) && (priv->scroll_to_x == -1)) {
     return;
   }
 
