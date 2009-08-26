@@ -1,3 +1,11 @@
+2009-08-26  Alejandro G. Castro  <alex@igalia.com>
+
+	* hildon/hildon-pannable-area.c,
+	(hildon_pannable_area_class_init): Added more force and increased
+	the max speed threshold.
+
+	Fixes: NB#135344 (Pannign needs to be faster)
+
 2009-08-26  Claudio Saavedra  <csaavedra@igalia.com>
 
 	[Release 2.1.96, this time for real]

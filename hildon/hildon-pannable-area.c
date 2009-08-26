@@ -57,7 +57,7 @@
 #define SCROLL_FADE_TIMEOUT 100
 #define MOTION_EVENTS_PER_SECOND 25
 #define CURSOR_STOPPED_TIMEOUT 80
-#define MAX_SPEED_THRESHOLD 250
+#define MAX_SPEED_THRESHOLD 500
 #define PANNABLE_MAX_WIDTH 788
 #define PANNABLE_MAX_HEIGHT 378
 
@@ -493,7 +493,7 @@ hildon_pannable_area_class_init (HildonPannableAreaClass * klass)
 						      "Multiplier of the calculated speed",
 						      "Force applied to the movement, multiplies the calculated speed of the"
                                                       "user movement the cursor in the screen",
-						      0, G_MAXUINT, 50,
+						      0, G_MAXUINT, 80,
 						      G_PARAM_READWRITE |
 						      G_PARAM_CONSTRUCT));
 
