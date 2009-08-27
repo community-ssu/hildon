@@ -1,3 +1,10 @@
+2009-08-27  Alejandro G. Castro  <alex@igalia.com>
+
+	* hildon/hildon-pannable-area.c,
+	(hildon_pannable_area_class_init): Reverted tuning modifications:
+	"Pannign needs to be faster" and "Pannable kinetics in large lists
+	needs tuning".
+
 2009-08-26  Alberto Garcia  <agarcia@igalia.com>
 
 	* hildon/hildon-sound.c (hildon_play_system_sound):
