@@ -1,3 +1,9 @@
+libhildon (2.1.96-5) unstable; urgency=low
+
+  * Revert panning tunning.
+
+ -- Claudio Saavedra <csaavedra@igalia.com>  Thu, 27 Aug 2009 10:49:56 +0200
+
 libhildon (2.1.96-4) unstable; urgency=low
 
   * Fixes: NB#133767 (Information and confirmation note sound should
