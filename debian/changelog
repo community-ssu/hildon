@@ -13,7 +13,7 @@ libhildon (2.1.96-4) unstable; urgency=low
 
 libhildon (2.1.96-3) unstable; urgency=low
 
-  * Fixes: NB#135344 (Pannign needs to be faster)
+  * Fixes NB#135344 (Pannign needs to be faster)
 
  -- Claudio Saavedra <csaavedra@igalia.com>  Wed, 26 Aug 2009 15:16:46 +0200
 
@@ -63,6 +63,8 @@ libhildon (2.1.93-1) unstable; urgency=low
   * Fixes: NB#122395 (hildon_entry_set_placeholder() should be in
     GtkEntry)
   * Bump GTK+ dependency to 2.14.7-1maemo5
+  
+  
 
  -- Claudio Saavedra <csaavedra@igalia.com>  Tue, 04 Aug 2009 20:08:53 +0200
 
