@@ -523,6 +523,17 @@ hildon_app_menu_map                             (GtkWidget *widget)
         priv->find_intruder_idle_id = gdk_threads_add_idle (hildon_app_menu_find_intruder, widget);
 }
 
+static void
+hildon_app_menu_grab_notify                     (GtkWidget *widget,
+                                                 gboolean   was_grabbed)
+{
+    if (GTK_WIDGET_CLASS (hildon_app_menu_parent_class)->grab_notify)
+        GTK_WIDGET_CLASS (hildon_app_menu_parent_class)->grab_notify (widget, was_grabbed);
+
+    if (!was_grabbed && GTK_WIDGET_VISIBLE (widget))
+        gtk_widget_hide (widget);
+}
+
 static gboolean
 hildon_app_menu_hide_idle                       (gpointer widget)
 {
@@ -956,6 +967,7 @@ hildon_app_menu_class_init                      (HildonAppMenuClass *klass)
     widget_class->map = hildon_app_menu_map;
     widget_class->realize = hildon_app_menu_realize;
     widget_class->unrealize = hildon_app_menu_unrealize;
+    widget_class->grab_notify = hildon_app_menu_grab_notify;
     widget_class->key_press_event = hildon_app_menu_key_press;
     widget_class->style_set = hildon_app_menu_style_set;
     widget_class->delete_event = hildon_app_menu_delete_event_handler;

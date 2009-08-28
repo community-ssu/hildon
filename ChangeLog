@@ -1,3 +1,12 @@
+2009-08-28  Alberto Garcia  <agarcia@igalia.com>
+
+	* hildon/hildon-app-menu.c
+	(+hildon_app_menu_grab_notify, hildon_app_menu_class_init):
+	Close the menu if it receives a grab-notify signal.
+
+	Fixes: NB#134533 (UI freezes if we show a dialog with
+	gtk_dialog_run() while a menu is opened)
+
 2009-08-27  Alejandro G. Castro  <alex@igalia.com>
 
 	* hildon/hildon-pannable-area.c,
