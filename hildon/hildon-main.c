@@ -1,7 +1,7 @@
 /*
  * This file is part of the hildon library
  *
- * Copyright (C) 2008 Nokia Corporation, all rights reserved.
+ * Copyright (C) 2008, 2009 Nokia Corporation, all rights reserved.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public License
@@ -28,10 +28,10 @@
  * to the window system display, and parses some standard command line
  * arguments. See also gtk_init() to know more details on this topic.
  *
- * Hildon should be initialized by using hildon_gtk_init(). Notice this function
- * also initialize gtk by calling gtk_init(). In case you need a customized
- * initialization of GTK+ library you could use hildon_init() after the
- * customized GTK+ initialization.
+ * Hildon should be initialized by using hildon_gtk_init(). Note that
+ * this function also initializes gtk by calling gtk_init(). In case
+ * you need a customized initialization of the GTK+ library you have
+ * to use hildon_init() after the customized GTK+ initialization.
  *
  * <example>
  * <title>Typical <function>main</function> function for a Hildon application</title>

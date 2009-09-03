@@ -1,7 +1,7 @@
 /*
  * This file is a part of hildon
  *
- * Copyright (C) 2008 Nokia Corporation, all rights reserved.
+ * Copyright (C) 2008, 2009 Nokia Corporation, all rights reserved.
  *
  * Contact: Rodrigo Novo <rodrigo.novo@nokia.com>
  *
@@ -27,27 +27,32 @@
  * @short_description: Stackable top-level window in the Hildon framework.
  * @see_also: #HildonWindowStack, #HildonProgram, #HildonWindow
  *
- * The #HildonStackableWindow is a
- * top-level window that can be stacked in a #HildonWindowStack. It is derived
- * from #HildonWindow. Applications that use stackable windows are organized
- * in a hierarchical way so users can go from any window back to the
- * application's root window.
+ * #HildonStackableWindow is a top-level window that can be stacked on
+ * top of others. It is derived from #HildonWindow. Applications that
+ * use stackable windows are organized in a hierarchical way so users
+ * can go from any window back to the previous one or directly to the
+ * stack's root window.
  *
  * The user can only see and interact with the window on top of the
  * stack. Although all other windows are mapped and visible, they are
- * obscured by the topmost one so in practice they appear as if they
- * were hidden.
+ * obscured by the topmost one so in practice the user will see the
+ * whole stack as if it was a single window.
  *
  * To add a window to the stack, just use gtk_widget_show(). The
  * previous one will be obscured by the new one. When the new window
  * is destroyed, the previous one will appear again.
  *
  * Alternatively, you can remove a window from the top of the stack
- * without destroying it by using hildon_window_stack_pop(). The
- * window will be automatically hidden and the previous one will
- * appear.
+ * without destroying it by using gtk_widget_hide(). The window will
+ * be hidden and the previous one will appear automatically.
  *
- * For advanced details on stack handling, see #HildonWindowStack
+ * It is important to note that all #HildonStackableWindow<!-- -->s on
+ * a stack are always mapped and visible (from the Gtk point of view)
+ * and all visible #HildonStackableWindow<!-- -->s are always on a
+ * stack.
+ *
+ * To see how to manage multiple stacks per application and for other
+ * advanced details on stack handling, see #HildonWindowStack
  *
  * <example>
  * <title>Basic HildonStackableWindow example</title>

@@ -1232,6 +1232,7 @@ HILDON_CHECK_VERSION
 <SECTION>
 <FILE>hildon-gtk</FILE>
 <TITLE>Additions to GTK+</TITLE>
+HildonPortraitFlags
 hildon_gtk_menu_new
 hildon_gtk_button_new
 hildon_gtk_toggle_button_new
@@ -1246,7 +1247,6 @@ hildon_gtk_icon_view_set_ui_mode
 hildon_gtk_window_set_do_not_disturb
 hildon_gtk_window_set_progress_indicator
 hildon_gtk_window_take_screenshot
-HildonPortraitFlags
 hildon_gtk_window_set_portrait_flags
 hildon_gtk_hscale_new
 hildon_gtk_vscale_new

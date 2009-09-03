@@ -1,7 +1,7 @@
 /*
  * This file is a part of hildon
  *
- * Copyright (C) 2008 Nokia Corporation, all rights reserved.
+ * Copyright (C) 2008, 2009 Nokia Corporation, all rights reserved.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser Public License as published by
@@ -70,6 +70,26 @@ void
 hildon_gtk_window_set_do_not_disturb            (GtkWindow *window,
                                                  gboolean   dndflag);
 
+/**
+ * HildonPortraitFlags:
+ *
+ * These flags are used to tell the window manager whether the current
+ * window needs to be in portrait or landscape mode.
+ *
+ * If no flags are set then the window is meant to be used in
+ * landscape mode only.
+ *
+ * If %HILDON_PORTRAIT_MODE_REQUEST is set then the window is meant to
+ * be used in portrait mode only.
+ *
+ * If only %HILDON_PORTRAIT_MODE_SUPPORT is set then the current
+ * orientation will be kept, no matter if it's portrait or landscape.
+ *
+ * It is important to note that, while these flags can be used to
+ * change between portrait and landscape according to the physical
+ * orientation of the display, Hildon does not provide any method to
+ * obtain this information.
+ **/
 typedef enum {
     HILDON_PORTRAIT_MODE_REQUEST = 1 << 0,
     HILDON_PORTRAIT_MODE_SUPPORT = 1 << 1

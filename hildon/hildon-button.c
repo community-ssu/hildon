@@ -1,7 +1,7 @@
 /*
  * This file is a part of hildon
  *
- * Copyright (C) 2008 Nokia Corporation, all rights reserved.
+ * Copyright (C) 2008, 2009 Nokia Corporation, all rights reserved.
  *
  * Contact: Rodrigo Novo <rodrigo.novo@nokia.com>
  *
@@ -20,16 +20,16 @@
  * SECTION:hildon-button
  * @short_description: Two-label buttons in the Hildon framework.
  *
- * The #HildonButton is a clickable button for Hildon applications.
- * It is derived from the #GtkButton widget and provides
- * additional commodities specific to the Hildon framework.
+ * #HildonButton is a clickable button for Hildon applications. It is
+ * derived from the #GtkButton widget and provides additional
+ * commodities specific to the Hildon framework.
  *
  * The height of a #HildonButton can be set to either "finger" height
  * or "thumb" height. It can also be configured to use halfscreen or
  * fullscreen width. Alternatively, either dimension can be set to
  * "auto" so it behaves like a standard #GtkButton.
  *
- * The #HildonButton can hold any valid child widget, but it usually
+ * A #HildonButton can hold any valid child widget, but it usually
  * contains two labels, named title and value, and it can also contain
  * an image. The contents of the button are packed together inside a
  * #GtkAlignment and they do not expand by default (they don't use the
@@ -829,7 +829,7 @@ hildon_button_set_image_position                (HildonButton    *button,
  * to change @xscale or @yscale you can just use
  * gtk_button_set_alignment() instead.
  *
- * Note that for this method to work properly the, child widget of
+ * Note that for this method to work properly, the child widget of
  * @button must be a #GtkAlignment. That's what #HildonButton uses by
  * default, so this function will work unless you add a custom widget
  * to @button.

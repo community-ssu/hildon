@@ -1,7 +1,7 @@
 /*
  * This file is a part of hildon
  *
- * Copyright (C) 2008 Nokia Corporation, all rights reserved.
+ * Copyright (C) 2008, 2009 Nokia Corporation, all rights reserved.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser Public License as published by
@@ -32,6 +32,10 @@
  *
  * To add a #HildonEditToolbar to a window use
  * hildon_window_set_edit_toolbar().
+ *
+ * This toolbar is meant to replace the window title bar by emulating
+ * its appearance, so you should put the window in full screen mode
+ * with gtk_window_fullscreen().
  *
  * <example>
  * <title>HildonEditToolbar example</title>

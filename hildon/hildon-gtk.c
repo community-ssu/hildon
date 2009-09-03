@@ -1,7 +1,7 @@
 /*
  * This file is a part of hildon
  *
- * Copyright (C) 2008 Nokia Corporation, all rights reserved.
+ * Copyright (C) 2008, 2009 Nokia Corporation, all rights reserved.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser Public License as published by
@@ -114,8 +114,8 @@ hildon_gtk_menu_new                             (void)
  * This is a convenience function to create a #GtkButton setting its
  * size to one of the pre-defined Hildon sizes.
  *
- * Buttons created with this function also override the
- * "gtk-button-images" setting. Images set using
+ * Buttons created with this function also override
+ * #GtkSettings:gtk-button-images. Images set using
  * gtk_button_set_image() are always shown.
  *
  * Buttons created using this function have #GtkButton:focus-on-click
@@ -140,8 +140,8 @@ hildon_gtk_button_new                           (HildonSizeType size)
  * This is a convenience function to create a #GtkToggleButton setting
  * its size to one of the pre-defined Hildon sizes.
  *
- * Buttons created with this function also override the
- * "gtk-button-images" setting. Images set using
+ * Buttons created with this function also override
+ * #GtkSettings:gtk-button-images. Images set using
  * gtk_button_set_image() are always shown.
  *
  * Buttons created using this function have #GtkButton:focus-on-click
@@ -168,8 +168,8 @@ hildon_gtk_toggle_button_new                    (HildonSizeType size)
  * This is a convenience function to create a #GtkRadioButton setting
  * its size to one of the pre-defined Hildon sizes.
  *
- * Buttons created with this function also override the
- * "gtk-button-images" setting. Images set using
+ * Buttons created with this function also override
+ * #GtkSettings:gtk-button-images. Images set using
  * gtk_button_set_image() are always shown.
  *
  * Buttons created using this function have #GtkButton:focus-on-click
@@ -196,8 +196,8 @@ hildon_gtk_radio_button_new                     (HildonSizeType  size,
  * This is a convenience function to create a #GtkRadioButton setting
  * its size to one of the pre-defined Hildon sizes.
  *
- * Buttons created with this function also override the
- * "gtk-button-images" setting. Images set using
+ * Buttons created with this function also override
+ * #GtkSettings:gtk-button-images. Images set using
  * gtk_button_set_image() are always shown.
  *
  * Buttons created using this function have #GtkButton:focus-on-click
