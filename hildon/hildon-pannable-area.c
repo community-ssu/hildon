@@ -1616,9 +1616,11 @@ hildon_pannable_area_launch_fade_timeout (HildonPannableArea * area,
 
   if (!priv->scroll_indicator_timeout)
     priv->scroll_indicator_timeout =
-      gdk_threads_add_timeout (SCROLL_FADE_TIMEOUT,
-                               (GSourceFunc) hildon_pannable_area_scroll_indicator_fade,
-                               area);
+      gdk_threads_add_timeout_full (G_PRIORITY_HIGH_IDLE + 20,
+				    SCROLL_FADE_TIMEOUT,
+				    (GSourceFunc) hildon_pannable_area_scroll_indicator_fade,
+				    area,
+				    NULL);
 }
 
 static void
@@ -2406,9 +2408,10 @@ hildon_pannable_area_motion_event_scroll (HildonPannableArea *area,
     priv->motion_x = 0;
     priv->motion_y = 0;
 
-    priv->motion_event_scroll_timeout = gdk_threads_add_timeout
-      ((gint) (1000.0 / (gdouble) MOTION_EVENTS_PER_SECOND),
-       (GSourceFunc) hildon_pannable_area_motion_event_scroll_timeout, area);
+    priv->motion_event_scroll_timeout = gdk_threads_add_timeout_full
+      (G_PRIORITY_HIGH_IDLE + 20,
+       (gint) (1000.0 / (gdouble) MOTION_EVENTS_PER_SECOND),
+       (GSourceFunc) hildon_pannable_area_motion_event_scroll_timeout, area, NULL);
   }
 }
 
@@ -2513,10 +2516,11 @@ hildon_pannable_area_check_move (HildonPannableArea *area,
 	(priv->mode != HILDON_PANNABLE_AREA_MODE_AUTO)) {
 
       if (!priv->idle_id)
-        priv->idle_id = gdk_threads_add_timeout ((gint)
-                                                 (1000.0 / (gdouble) priv->sps),
-                                                 (GSourceFunc)
-                                                 hildon_pannable_area_timeout, area);
+        priv->idle_id = gdk_threads_add_timeout_full
+          (G_PRIORITY_HIGH_IDLE + 20,
+	   (gint)(1000.0 / (gdouble) priv->sps),
+	   (GSourceFunc)
+	   hildon_pannable_area_timeout, area, NULL);
     }
   }
 }
@@ -2764,9 +2768,10 @@ hildon_pannable_area_button_release_cb (GtkWidget * widget,
       priv->vel_y = (priv->vel_y > 0) ? priv->vmax : -priv->vmax;
 
     if (!priv->idle_id)
-      priv->idle_id = gdk_threads_add_timeout ((gint) (1000.0 / (gdouble) priv->sps),
-                                               (GSourceFunc)
-                                               hildon_pannable_area_timeout, widget);
+      priv->idle_id = gdk_threads_add_timeout_full (G_PRIORITY_HIGH_IDLE + 20,
+						    (gint) (1000.0 / (gdouble) priv->sps),
+						    (GSourceFunc) hildon_pannable_area_timeout,
+						    widget, NULL);
   } else {
     if (priv->center_on_child_focus_pending) {
       hildon_pannable_area_center_on_child_focus (area);
@@ -3217,9 +3222,10 @@ hildon_pannable_area_scroll_to (HildonPannableArea *area,
   hildon_pannable_area_launch_fade_timeout (area, 1.0);
 
   if (!priv->idle_id)
-    priv->idle_id = gdk_threads_add_timeout ((gint) (1000.0 / (gdouble) priv->sps),
-                                             (GSourceFunc)
-                                             hildon_pannable_area_timeout, area);
+    priv->idle_id = gdk_threads_add_timeout_full (G_PRIORITY_HIGH_IDLE + 20,
+						  (gint) (1000.0 / (gdouble) priv->sps),
+						  (GSourceFunc) hildon_pannable_area_timeout,
+						  area, NULL);
 }
 
 /**

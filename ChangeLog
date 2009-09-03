@@ -1,3 +1,21 @@
+2009-09-03  Claudio Saavedra  <csaavedra@igalia.com>
+
+	* hildon/hildon-pannable-area.c:
+	(hildon_pannable_area_launch_fade_timeout),
+	(hildon_pannable_area_motion_event_scroll),
+	(hildon_pannable_area_check_move),
+	(hildon_pannable_area_button_release_cb),
+	(hildon_pannable_area_scroll_to):
+
+	Use a priority of G_PRIORITY_IDLE_HIGH + 20 for all the pannable
+	area drawing operations, since this is the recommended for drawing
+	operations.
+
+	Fixes: NB#110894 (In event view containing very large description
+	field, application menu is displayed blank while panning)
+	Fixes: NB#131942 (HildonPickerDialog is seen empty when popping up
+	for the first time)
+
 2009-09-03  Alberto Garcia  <agarcia@igalia.com>
 
 	* doc/hildon-sections.txt
