@@ -1,3 +1,14 @@
+libhildon (2.1.97-1) unstable; urgency=low
+
+  * Fixes: NB#110894 (In event view containing very large description
+    field, application menu is displayed blank while panning)
+  * Fixes: NB#131942 (HildonPickerDialog is seen empty when popping up
+    for the first time)
+  * Fixes: NB#131911 (Appmenu does not resize properly, when number of
+    menu items change)
+
+ -- Claudio Saavedra <csaavedra@igalia.com>  Fri, 04 Sep 2009 15:23:38 +0300
+
 libhildon (2.1.96-6) unstable; urgency=low
 
   * Fixes: NB#134533 (UI freezes if we show a dialog with

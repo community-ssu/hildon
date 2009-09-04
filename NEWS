@@ -1,3 +1,20 @@
+[2.1.97 release]
+
+  * Fixes: NB#133252 (Opening any feed item from RSS always opens the
+         first feed item in browser)
+  * Fixes: NB#135179 (Remove pannable timeouts in unrealize function)
+  * Fixes: NB#133767 (Information and confirmation note sound should
+    follow system profile setting)
+  * Fixes: NB#134533 (UI freezes if we show a dialog with
+    gtk_dialog_run() while a menu is opened)
+  * Fixes: NB#110894 (In event view containing very large description
+    field, application menu is displayed blank while panning)
+  * Fixes: NB#131942 (HildonPickerDialog is seen empty when popping up
+    for the first time)
+  * Fixes: NB#131911 (Appmenu does not resize properly, when number of
+    menu items change)
+  * Documentation updates
+
 [2.1.96 release]
 
   * Fixes: NB#133252 (Opening any feed item from RSS always opens the
