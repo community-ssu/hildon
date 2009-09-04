@@ -18,13 +18,14 @@
  * SECTION:hildon-text-view
  * @short_description: Text view within the Hildon framework.
  *
- * The #HildonTextView is a text
- * view derived from the #GtkTextView widget that provides
- * additional commodities specific to the Hildon framework.
+ * #HildonTextView is a text view derived from the #GtkTextView widget
+ * but with a slightly different appearance designed for the Hildon
+ * 2.2 framework.
  *
- * A #HildonTextView can also have a placeholder text. This text will
- * be shown if the text view is empty and doesn't have the input
- * focus, but it's otherwise ignored. Thus, calls to
+ * Text views in Hildon 2.2 can have a placeholder text, set with
+ * hildon_gtk_text_view_set_placeholder_text(). This text will be
+ * shown if the text view is empty and doesn't have the input focus,
+ * but it's otherwise ignored. Thus, calls to
  * gtk_text_view_get_buffer() will never return the placeholder text,
  * not even when it's being displayed.
  *

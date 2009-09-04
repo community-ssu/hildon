@@ -18,11 +18,13 @@
  * SECTION:hildon-entry
  * @short_description: Text entry in the Hildon framework.
  *
- * The #HildonEntry is text entry derived from the #GtkEntry widget providing
- * additional commodities specific to the Hildon framework.
+ * #HildonEntry is text entry derived from the #GtkEntry widget but
+ * with a slightly different appearance designed for the Hildon 2.2
+ * framework.
  *
- * A #HildonEntry can have a placeholder text. This text will be shown
- * if the entry is empty and doesn't have the input focus, but it's
+ * Text entries in Hildon 2.2 can have a placeholder text, set with
+ * hildon_gtk_entry_set_placeholder_text(). This text will be shown if
+ * the entry is empty and doesn't have the input focus, but it's
  * otherwise ignored. Thus, calls to gtk_entry_get_text() will never
  * return the placeholder text, not even when it's being displayed.
  *

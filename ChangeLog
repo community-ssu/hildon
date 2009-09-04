@@ -1,5 +1,11 @@
 2009-09-04  Alberto Garcia  <agarcia@igalia.com>
 
+	* hildon/hildon-entry.c
+	* hildon/hildon-text-view.c:
+	Documentation updates
+
+2009-09-04  Alberto Garcia  <agarcia@igalia.com>
+
 	* hildon/hildon-app-menu.c (hildon_app_menu_repack_items):
 	Redraw menu when the number of items change.
 
