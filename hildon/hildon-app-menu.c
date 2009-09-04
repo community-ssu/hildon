@@ -798,6 +798,8 @@ hildon_app_menu_repack_items                    (HildonAppMenu *menu,
             }
         }
     }
+
+    gtk_widget_queue_draw (GTK_WIDGET (menu));
 }
 
 /**

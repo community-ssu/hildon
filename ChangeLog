@@ -1,3 +1,11 @@
+2009-09-04  Alberto Garcia  <agarcia@igalia.com>
+
+	* hildon/hildon-app-menu.c (hildon_app_menu_repack_items):
+	Redraw menu when the number of items change.
+
+	Fixes: NB#131911 (Appmenu does not resize properly, when number of
+	menu items change)
+
 2009-09-03  Claudio Saavedra  <csaavedra@igalia.com>
 
 	* hildon/hildon-pannable-area.c:
