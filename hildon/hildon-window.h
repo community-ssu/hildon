@@ -31,7 +31,18 @@
 
 G_BEGIN_DECLS
 
-#define                                         HILDON_WINDOW_LONG_PRESS_TIME 800 /* in ms */
+#ifndef HILDON_DISABLE_DEPRECATED
+/**
+ * HILDON_WINDOW_LONG_PRESS_TIME:
+ *
+ * Time (in miliseconds) after which a hardware key press is
+ * considered a long press.
+ *
+ * Deprecated: Hildon 2.2: this value is only meant to be used
+ * internally by Hildon.
+ */
+#define                                         HILDON_WINDOW_LONG_PRESS_TIME 800
+#endif
 
 #define                                         HILDON_TYPE_WINDOW \
                                                 (hildon_window_get_type())

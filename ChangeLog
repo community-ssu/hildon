@@ -1,3 +1,10 @@
+2009-09-04  Alberto Garcia  <agarcia@igalia.com>
+
+	* hildon/hildon-window.h:
+	Document and deprecate HILDON_WINDOW_LONG_PRESS_TIME
+
+	Fixes: MB#4580 (HILDON_WINDOW_LONG_PRESS_TIME is undocumented)
+
 2009-09-04  Claudio Saavedra  <csaavedra@igalia.com>
 
 	[Release 2.1.97]
