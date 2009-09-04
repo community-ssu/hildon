@@ -1,3 +1,13 @@
+2009-09-04  Alejandro G. Castro  <alex@igalia.com>
+
+	* hildon/hildon-pannable-area.c,
+	(hildon_pannable_area_init),
+	(hildon_pannable_area_button_press_cb),
+	(hildon_pannable_area_button_release_cb): Added a new acceleration
+	system to help traversing big lists, tuned the stop threshold.
+
+	Fixes: NB#132584 (Pannable kinetics in large lists needs tuning)
+
 2009-09-04  Alberto Garcia  <agarcia@igalia.com>
 
 	* hildon/hildon-window.h:

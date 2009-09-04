@@ -56,7 +56,7 @@
 #define RATIO_TOLERANCE 0.000001
 #define SCROLL_FADE_TIMEOUT 100
 #define MOTION_EVENTS_PER_SECOND 25
-#define CURSOR_STOPPED_TIMEOUT 80
+#define CURSOR_STOPPED_TIMEOUT 200
 #define MAX_SPEED_THRESHOLD 250
 #define PANNABLE_MAX_WIDTH 788
 #define PANNABLE_MAX_HEIGHT 378
@@ -78,6 +78,7 @@ struct _HildonPannableAreaPrivate {
   gboolean enabled;
   gboolean button_pressed;
   guint32 last_time;	/* Last event time, to stop infinite loops */
+  guint32 last_press_time;
   gint last_type;
   gboolean last_in;
   gboolean moved;
@@ -97,6 +98,8 @@ struct _HildonPannableAreaPrivate {
   guint direction_error_margin;
   gdouble vel_x;
   gdouble vel_y;
+  gdouble old_vel_x;
+  gdouble old_vel_y;
   GdkWindow *child;
   gint child_width;
   gint child_height;
@@ -711,6 +714,7 @@ hildon_pannable_area_init (HildonPannableArea * area)
   priv->moved = FALSE;
   priv->button_pressed = FALSE;
   priv->last_time = 0;
+  priv->last_press_time = 0;
   priv->last_type = 0;
   priv->vscroll_visible = TRUE;
   priv->hscroll_visible = TRUE;
@@ -722,6 +726,8 @@ hildon_pannable_area_init (HildonPannableArea * area)
   priv->idle_id = 0;
   priv->vel_x = 0;
   priv->vel_y = 0;
+  priv->old_vel_x = 0;
+  priv->old_vel_y = 0;
   priv->scroll_indicator_alpha = 0.0;
   priv->scroll_indicator_timeout = 0;
   priv->motion_event_scroll_timeout = 0;
@@ -1949,6 +1955,7 @@ hildon_pannable_area_button_press_cb (GtkWidget * widget,
                                             priv->scroll_indicator_alpha);
 
   priv->last_time = event->time;
+  priv->last_press_time = event->time;
   priv->last_type = 1;
 
   priv->scroll_to_x = -1;
@@ -1977,6 +1984,8 @@ hildon_pannable_area_button_press_cb (GtkWidget * widget,
   priv->button_pressed = TRUE;
 
   /* Stop scrolling on mouse-down (so you can flick, then hold to stop) */
+  priv->old_vel_x = priv->vel_x;
+  priv->old_vel_y = priv->vel_y;
   priv->vel_x = 0;
   priv->vel_y = 0;
   if (priv->idle_id) {
@@ -2698,6 +2707,7 @@ hildon_pannable_area_button_release_cb (GtkWidget * widget,
   gint x, y;
   gdouble dx, dy;
   GdkWindow *child;
+  gboolean force_fast = TRUE;
 
   if  (((event->time == priv->last_time) && (priv->last_type == 3))
        || (gtk_bin_get_child (GTK_BIN (widget)) == NULL)
@@ -2747,6 +2757,30 @@ hildon_pannable_area_button_release_cb (GtkWidget * widget,
 
   priv->button_pressed = FALSE;
 
+  /* if widget was moving fast in the panning, increase speed even more */
+  if ((event->time - priv->last_press_time < 200) &&
+      ((ABS (priv->old_vel_x) > priv->vmin) ||
+       (ABS (priv->old_vel_y) > priv->vmin)))
+    {
+      gint symbol = 0;
+
+      if (priv->vel_x != 0)
+        symbol = ((priv->vel_x * priv->old_vel_x) > 0) ? 1 : -1;
+
+      priv->vel_x = symbol *
+        (priv->old_vel_x + ((priv->old_vel_x > 0) ? priv->vmax : -priv->vmax));
+
+      symbol = 0;
+
+      if (priv->vel_y != 0)
+        symbol = ((priv->vel_y * priv->old_vel_y) > 0) ? 1 : -1;
+
+      priv->vel_y = symbol *
+        (priv->old_vel_y + ((priv->old_vel_y > 0) ? priv->vmax : -priv->vmax));
+
+      force_fast = FALSE;
+    }
+
   if  ((ABS (priv->vel_y) >= priv->vmin) ||
        (ABS (priv->vel_x) >= priv->vmin)) {
 
@@ -2761,11 +2795,13 @@ hildon_pannable_area_button_release_cb (GtkWidget * widget,
 
     priv->scroll_indicator_alpha = 1.0;
 
-    if (ABS (priv->vel_x) > MAX_SPEED_THRESHOLD)
-      priv->vel_x = (priv->vel_x > 0) ? priv->vmax : -priv->vmax;
+    if (force_fast) {
+      if (ABS (priv->vel_x) > MAX_SPEED_THRESHOLD)
+        priv->vel_x = (priv->vel_x > 0) ? priv->vmax : -priv->vmax;
 
-    if (ABS (priv->vel_y) > MAX_SPEED_THRESHOLD)
-      priv->vel_y = (priv->vel_y > 0) ? priv->vmax : -priv->vmax;
+      if (ABS (priv->vel_y) > MAX_SPEED_THRESHOLD)
+        priv->vel_y = (priv->vel_y > 0) ? priv->vmax : -priv->vmax;
+    }
 
     if (!priv->idle_id)
       priv->idle_id = gdk_threads_add_timeout_full (G_PRIORITY_HIGH_IDLE + 20,
