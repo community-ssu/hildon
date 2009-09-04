@@ -1,3 +1,8 @@
+[2.2.0 release]
+
+  * Fixes: NB#132584 (Pannable kinetics in large lists needs tuning)
+  * Fixes: MB#4580 (HILDON_WINDOW_LONG_PRESS_TIME is undocumented)
+
 [2.1.97 release]
 
   * Fixes: NB#133252 (Opening any feed item from RSS always opens the
