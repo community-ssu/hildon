@@ -1,3 +1,9 @@
+libhildon (2.2.0-1~rc3) unstable; urgency=low
+
+  * Increase pannable area max. speed.
+
+ -- Claudio Saavedra <csaavedra@igalia.com>  Mon, 07 Sep 2009 16:15:25 +0300
+
 libhildon (2.2.0-1~rc2) unstable; urgency=low
 
   * Fixes: NB#127018 (Panning indicator fades out too slowly)
