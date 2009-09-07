@@ -1,3 +1,8 @@
+2009-09-07  Alejandro G. Castro  <alex@igalia.com>
+
+	* hildon/hildon-pannable-area.c,
+	(hildon_pannable_area_class_init): Increased max speed.
+
 2009-09-07  Claudio Saavedra  <csaavedra@igalia.com>
 
 	[2.2.0 Release Candidate 2]
