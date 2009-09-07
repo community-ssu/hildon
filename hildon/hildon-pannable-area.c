@@ -57,7 +57,7 @@
 #define SCROLL_FADE_TIMEOUT 100
 #define MOTION_EVENTS_PER_SECOND 25
 #define CURSOR_STOPPED_TIMEOUT 200
-#define MAX_SPEED_THRESHOLD 250
+#define MAX_SPEED_THRESHOLD 290
 #define PANNABLE_MAX_WIDTH 788
 #define PANNABLE_MAX_HEIGHT 378
 
@@ -436,7 +436,7 @@ hildon_pannable_area_class_init (HildonPannableAreaClass * klass)
 							"Deceleration multiplier",
 							"The multiplier used when decelerating when in "
 							"acceleration scrolling mode.",
-							0, 1.0, 0.93,
+							0, 1.0, 0.85,
 							G_PARAM_READWRITE |
 							G_PARAM_CONSTRUCT));
 
@@ -2758,9 +2758,11 @@ hildon_pannable_area_button_release_cb (GtkWidget * widget,
   priv->button_pressed = FALSE;
 
   /* if widget was moving fast in the panning, increase speed even more */
-  if ((event->time - priv->last_press_time < 200) &&
+  if ((event->time - priv->last_press_time < 125) &&
       ((ABS (priv->old_vel_x) > priv->vmin) ||
-       (ABS (priv->old_vel_y) > priv->vmin)))
+       (ABS (priv->old_vel_y) > priv->vmin)) &&
+      ((ABS (priv->old_vel_x) > 40) ||
+       (ABS (priv->old_vel_y) > 40)))
     {
       gint symbol = 0;
 

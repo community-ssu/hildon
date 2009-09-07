@@ -1,6 +1,13 @@
 2009-09-07  Alejandro G. Castro  <alex@igalia.com>
 
 	* hildon/hildon-pannable-area.c,
+	(hildon_pannable_area_class_init),
+	(hildon_pannable_area_button_release_cb): More tuning for the
+	large lists.
+
+2009-09-07  Alejandro G. Castro  <alex@igalia.com>
+
+	* hildon/hildon-pannable-area.c,
 	(hildon_pannable_area_class_init):
 	Change the default value of the scrollbar_fade_delay.
 
