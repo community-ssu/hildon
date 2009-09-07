@@ -1,3 +1,11 @@
+2009-09-07  Alejandro G. Castro  <alex@igalia.com>
+
+	* hildon/hildon-pannable-area.c,
+	(hildon_pannable_area_class_init):
+	Change the default value of the scrollbar_fade_delay.
+
+	Fixes: NB#127018 (Panning indicator fades out too slowly)
+
 2009-09-04  Claudio Saavedra  <csaavedra@igalia.com>
 
 	[2.2.0 Release Candidate 1]

@@ -476,7 +476,7 @@ hildon_pannable_area_class_init (HildonPannableAreaClass * klass)
 						      "Time before starting to fade the scrollbar",
 						      "Time the scrollbar is going to be visible if the widget is not in"
                                                       "action in miliseconds",
-						      0, G_MAXUINT, 3000,
+						      0, G_MAXUINT, 1000,
 						      G_PARAM_READWRITE |
 						      G_PARAM_CONSTRUCT));
 
