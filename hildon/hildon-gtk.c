@@ -24,16 +24,12 @@
  * easily perform frequent tasks.
  */
 
-#include <X11/Xatom.h>
-#include <gdk/gdkx.h>
-
 #include "hildon-gtk.h"
 #include "hildon-window.h"
 #include "hildon-window-private.h"
 #include "hildon-edit-toolbar.h"
 #include "hildon-edit-toolbar-private.h"
-
-typedef void (*HildonFlagFunc) (GtkWindow *window, gpointer userdata);
+#include "hildon-private.h"
 
 static void
 image_visible_changed_cb                        (GtkWidget  *image,
@@ -326,29 +322,12 @@ hildon_gtk_icon_view_set_ui_mode                (GtkIconView  *iconview,
 #endif /* MAEMO_GTK */
 
 static void
-set_clear_window_flag                           (GtkWindow   *window,
-                                                 const gchar *atomname,
-                                                 Atom         xatom,
-                                                 gboolean     flag)
-{
-    GdkWindow *gdkwin = GTK_WIDGET (window)->window;
-    GdkAtom atom = gdk_atom_intern (atomname, FALSE);
-
-    if (flag) {
-        guint32 set = 1;
-        gdk_property_change (gdkwin, atom, gdk_x11_xatom_to_atom (xatom),
-                             32, GDK_PROP_MODE_REPLACE, (const guchar *) &set, 1);
-    } else {
-        gdk_property_delete (gdkwin, atom);
-    }
-}
-
-static void
 do_set_progress_indicator                       (GtkWindow *window,
                                                  gpointer   stateptr)
 {
     guint state = GPOINTER_TO_UINT (stateptr);
-    set_clear_window_flag (window, "_HILDON_WM_WINDOW_PROGRESS_INDICATOR", XA_INTEGER, state);
+    hildon_gtk_window_set_clear_window_flag (window, "_HILDON_WM_WINDOW_PROGRESS_INDICATOR",
+                                             XA_INTEGER, state);
     g_signal_handlers_disconnect_matched (window, G_SIGNAL_MATCH_FUNC,
                                           0, 0, NULL, do_set_progress_indicator, NULL);
 }
@@ -358,7 +337,8 @@ do_set_do_not_disturb                           (GtkWindow *window,
                                                  gpointer   dndptr)
 {
     gboolean dndflag = GPOINTER_TO_INT (dndptr);
-    set_clear_window_flag (window, "_HILDON_DO_NOT_DISTURB", XA_INTEGER, dndflag);
+    hildon_gtk_window_set_clear_window_flag (window, "_HILDON_DO_NOT_DISTURB",
+                                             XA_INTEGER, dndflag);
     g_signal_handlers_disconnect_matched (window, G_SIGNAL_MATCH_FUNC,
                                           0, 0, NULL, do_set_do_not_disturb, NULL);
 }
@@ -369,28 +349,15 @@ do_set_portrait_flags                           (GtkWindow *window,
 {
     HildonPortraitFlags flags = GPOINTER_TO_INT (flagsptr);
 
-    set_clear_window_flag (window, "_HILDON_PORTRAIT_MODE_REQUEST", XA_CARDINAL,
-                           flags & HILDON_PORTRAIT_MODE_REQUEST);
-    set_clear_window_flag (window, "_HILDON_PORTRAIT_MODE_SUPPORT", XA_CARDINAL,
-                           flags & HILDON_PORTRAIT_MODE_SUPPORT);
+    hildon_gtk_window_set_clear_window_flag (window, "_HILDON_PORTRAIT_MODE_REQUEST",
+                                             XA_CARDINAL,
+                                             flags & HILDON_PORTRAIT_MODE_REQUEST);
+    hildon_gtk_window_set_clear_window_flag (window, "_HILDON_PORTRAIT_MODE_SUPPORT",
+                                             XA_CARDINAL,
+                                             flags & HILDON_PORTRAIT_MODE_SUPPORT);
 
     g_signal_handlers_disconnect_matched (window, G_SIGNAL_MATCH_FUNC,
                                           0, 0, NULL, do_set_portrait_flags, NULL);
-}
-
-static void
-set_flag                                        (GtkWindow      *window,
-                                                 HildonFlagFunc  func,
-                                                 gpointer        userdata)
-{
-     g_return_if_fail (GTK_IS_WINDOW (window));
-     if (GTK_WIDGET_REALIZED (window)) {
-        (*func) (window, userdata);
-     } else {
-         g_signal_handlers_disconnect_matched (window, G_SIGNAL_MATCH_FUNC,
-                                               0, 0, NULL, func, NULL);
-         g_signal_connect (window, "realize", G_CALLBACK (func), userdata);
-     }
 }
 
 /**
@@ -409,7 +376,7 @@ void
 hildon_gtk_window_set_progress_indicator        (GtkWindow *window,
                                                  guint      state)
 {
-    set_flag (window, (HildonFlagFunc) do_set_progress_indicator, GUINT_TO_POINTER (state));
+    hildon_gtk_window_set_flag (window, (HildonFlagFunc) do_set_progress_indicator, GUINT_TO_POINTER (state));
     if (HILDON_IS_WINDOW (window)) {
         HildonWindowPrivate *priv = HILDON_WINDOW_GET_PRIVATE (window);
         if (priv->edit_toolbar) {
@@ -433,7 +400,7 @@ void
 hildon_gtk_window_set_do_not_disturb            (GtkWindow *window,
                                                  gboolean   dndflag)
 {
-    set_flag (window, (HildonFlagFunc) do_set_do_not_disturb, GUINT_TO_POINTER (dndflag));
+    hildon_gtk_window_set_flag (window, (HildonFlagFunc) do_set_do_not_disturb, GUINT_TO_POINTER (dndflag));
 }
 
 /**
@@ -449,7 +416,7 @@ void
 hildon_gtk_window_set_portrait_flags            (GtkWindow           *window,
                                                  HildonPortraitFlags  portrait_flags)
 {
-    set_flag (window, (HildonFlagFunc) do_set_portrait_flags, GUINT_TO_POINTER (portrait_flags));
+    hildon_gtk_window_set_flag (window, (HildonFlagFunc) do_set_portrait_flags, GUINT_TO_POINTER (portrait_flags));
 }
 
 /**

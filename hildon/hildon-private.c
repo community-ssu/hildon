@@ -121,3 +121,37 @@ hildon_private_create_animation                 (gfloat       framerate,
 
     return image;
 }
+
+
+void
+hildon_gtk_window_set_clear_window_flag                           (GtkWindow   *window,
+                                                                   const gchar *atomname,
+                                                                   Atom         xatom,
+                                                                   gboolean     flag)
+{
+    GdkWindow *gdkwin = GTK_WIDGET (window)->window;
+    GdkAtom atom = gdk_atom_intern (atomname, FALSE);
+
+    if (flag) {
+        guint32 set = 1;
+        gdk_property_change (gdkwin, atom, gdk_x11_xatom_to_atom (xatom),
+                             32, GDK_PROP_MODE_REPLACE, (const guchar *) &set, 1);
+    } else {
+        gdk_property_delete (gdkwin, atom);
+    }
+}
+
+void
+hildon_gtk_window_set_flag                                        (GtkWindow      *window,
+                                                                   HildonFlagFunc  func,
+                                                                   gpointer        userdata)
+{
+     g_return_if_fail (GTK_IS_WINDOW (window));
+     if (GTK_WIDGET_REALIZED (window)) {
+        (*func) (window, userdata);
+     } else {
+         g_signal_handlers_disconnect_matched (window, G_SIGNAL_MATCH_FUNC,
+                                               0, 0, NULL, func, NULL);
+         g_signal_connect (window, "realize", G_CALLBACK (func), userdata);
+     }
+}

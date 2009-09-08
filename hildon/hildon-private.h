@@ -26,6 +26,8 @@
 #define                                         __HILDON_PRIVATE_H__
 
 #include                                        <gtk/gtk.h>
+#include <X11/Xatom.h>
+#include <gdk/gdkx.h>
 
 G_BEGIN_DECLS
 
@@ -42,6 +44,19 @@ G_GNUC_INTERNAL GtkWidget *
 hildon_private_create_animation                 (gfloat       framerate,
                                                  const gchar *template,
                                                  gint         nframes);
+
+G_GNUC_INTERNAL void
+hildon_gtk_window_set_clear_window_flag                           (GtkWindow   *window,
+                                                                   const gchar *atomname,
+                                                                   Atom         xatom,
+                                                                   gboolean     flag);
+
+typedef void (*HildonFlagFunc) (GtkWindow *window, gpointer userdata);
+
+G_GNUC_INTERNAL void
+hildon_gtk_window_set_flag                                        (GtkWindow      *window,
+                                                                   HildonFlagFunc  func,
+                                                                   gpointer        userdata);
 
 G_END_DECLS
 

@@ -1,3 +1,18 @@
+2009-09-08  Claudio Saavedra  <csaavedra@igalia.com>
+
+	Rename and move the methods to set flags to hildon-private.h
+
+	* hildon/hildon-gtk.c: (do_set_progress_indicator),
+	(do_set_do_not_disturb), (do_set_portrait_flags): call
+	the new private method hildon_gtk_window_set_clear_window_flag()
+	(hildon_gtk_window_set_progress_indicator),
+	(hildon_gtk_window_set_do_not_disturb),
+	(hildon_gtk_window_take_screenshot): hildon_gtk_window_set_flag()
+	* hildon/hildon-private.c: (+hildon_gtk_window_set_clear_window_flag),
+	(+hildon_gtk_window_set_flag): Move from hildon-gtk.c and rename
+	properly.
+	* hildon/hildon-private.h: Add the two new private methds.
+
 2009-09-11  Alejandro G. Castro  <alex@igalia.com>
 
 	* hildon/hildon-pannable-area.c,
