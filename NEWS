@@ -4,6 +4,7 @@
   * Fixes: MB#4580 (HILDON_WINDOW_LONG_PRESS_TIME is undocumented)
   * Fixes: NB#127018 (Panning indicator fades out too slowly)
   * Improved UX for the pannable area with large lists.
+  * Fixes: 137604 (Pannable scroll_to does not move correctly)
 
 [2.1.97 release]
 
