@@ -84,6 +84,9 @@ hildon_window_get_active_window                 (void);
 void G_GNUC_INTERNAL
 hildon_window_update_title                      (HildonWindow *window);
 
+void G_GNUC_INTERNAL
+hildon_window_set_menu_flag                     (HildonWindow *window,
+                                                 gboolean   has_menu);
 G_END_DECLS
 
 #endif                                          /* __HILDON_WINDOW_PRIVATE_H__ */

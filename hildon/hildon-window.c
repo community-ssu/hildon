@@ -95,6 +95,7 @@
 #include                                        "hildon-app-menu-private.h"
 #include                                        "hildon-find-toolbar.h"
 #include                                        "hildon-defines.h"
+#include                                        "hildon-private.h"
 
 #define                                         _(String) gettext(String)
 
@@ -1958,6 +1959,25 @@ hildon_window_add_accel_group (HildonWindow *self,
     gtk_window_add_accel_group (GTK_WINDOW (self), accel_group);
 }
 
+static void
+do_set_has_menu (GtkWindow *window,
+                 gpointer   boolptr)
+{
+    gboolean has_menu = GPOINTER_TO_INT (boolptr);
+    hildon_gtk_window_set_clear_window_flag (window, "_HILDON_WM_WINDOW_MENU_INDICATOR",
+                                             XA_INTEGER, has_menu);
+    g_signal_handlers_disconnect_matched (window, G_SIGNAL_MATCH_FUNC,
+                                          0, 0, NULL, do_set_has_menu, NULL);
+}
+
+void
+hildon_window_set_menu_flag (HildonWindow *window,
+                             gboolean   has_menu)
+{
+    hildon_gtk_window_set_flag (GTK_WINDOW (window), (HildonFlagFunc) do_set_has_menu,
+                                GUINT_TO_POINTER (has_menu));
+}
+
 /**
  * hildon_window_set_main_menu:
  * @self: A #HildonWindow
@@ -1982,6 +2002,8 @@ hildon_window_set_main_menu (HildonWindow* self,
     g_return_if_fail (HILDON_IS_WINDOW (self));
 
     priv = HILDON_WINDOW_GET_PRIVATE (self);
+
+    hildon_window_set_menu_flag (self, menu != NULL);
 
     if (priv->menu != NULL)
     {
@@ -2087,6 +2109,8 @@ hildon_window_set_app_menu                      (HildonWindow  *self,
     priv = HILDON_WINDOW_GET_PRIVATE (self);
 
     old_menu = priv->app_menu;
+
+    hildon_window_set_menu_flag (self, menu != NULL);
 
     /* Add new menu */
     priv->app_menu = menu;

@@ -1,5 +1,21 @@
 2009-09-08  Claudio Saavedra  <csaavedra@igalia.com>
 
+	Set a special window property for windows with menus
+
+	* hildon/hildon-window-private.h: Add private
+	hildon_window_set_menu_flag()
+	* hildon/hildon-window.c: (+do_set_has_menu),
+	(+hildon_window_set_menu_flag): set
+	"_HILDON_WM_WINDOW_MENU_INDICATOR" to 1 in the window
+	or remove the property.
+	(hildon_window_set_main_menu),
+	(hildon_window_set_app_menu): call above methods to set or remove
+	the property when a menu is added or removed from the window.
+
+	Partially fixes: NB#137814 (Indicator for view menu in app title area)
+
+2009-09-08  Claudio Saavedra  <csaavedra@igalia.com>
+
 	Rename and move the methods to set flags to hildon-private.h
 
 	* hildon/hildon-gtk.c: (do_set_progress_indicator),
