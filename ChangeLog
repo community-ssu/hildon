@@ -1,3 +1,18 @@
+2009-09-09  Claudio Saavedra  <csaavedra@igalia.com>
+
+	Set the window menu flag for application-common menus
+
+	* hildon/hildon-program.c:
+	(+hildon_program_window_set_common_menu_flag): Set or remove the
+	menu flag from a window only this doesn't have its own menu.
+	(+hildon_program_set_common_menu_flag): adjust menu flag for
+	all windows in the program.
+	(hildon_program_add_window),
+	(hildon_program_remove_window): add/remove the menu flag when
+	a window is added to the program.
+
+	Fixes: NB#137814 (Indicator for view menu in app title area)
+
 2009-09-08  Claudio Saavedra  <csaavedra@igalia.com>
 
 	Set a special window property for windows with menus

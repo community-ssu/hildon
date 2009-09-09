@@ -411,6 +411,32 @@ hildon_program_root_window_event_filter         (GdkXEvent *xevent,
     return GDK_FILTER_CONTINUE;
 }
 
+static void
+hildon_program_window_set_common_menu_flag (HildonWindow *window,
+                                            gboolean common_menu)
+{
+    if (HILDON_IS_WINDOW (window))
+    {
+        gboolean has_menu = hildon_window_get_app_menu (window) ||
+            hildon_window_get_main_menu (window);
+
+        if (!has_menu) {
+            hildon_window_set_menu_flag (window, common_menu);
+        }
+    }
+}
+
+static void
+hildon_program_set_common_menu_flag (HildonProgram *self,
+                                     gboolean common_menu)
+{
+    HildonProgramPrivate *priv = HILDON_PROGRAM_GET_PRIVATE (self);
+
+    g_slist_foreach (priv->windows,
+                     (GFunc) hildon_program_window_set_common_menu_flag,
+                     GINT_TO_POINTER (common_menu));
+}
+
 /* 
  * Checks if the window is the topmost window of the program and in
  * that case forces the window to take the common toolbar.
@@ -491,6 +517,9 @@ hildon_program_add_window                       (HildonProgram *self,
 
     hildon_window_set_program (window, G_OBJECT (self));
 
+    if (priv->common_menu || priv->common_app_menu)
+        hildon_program_window_set_common_menu_flag (window, TRUE);
+
     priv->windows = g_slist_append (priv->windows, window);
     priv->window_count ++;
 }
@@ -528,6 +557,9 @@ hildon_program_remove_window                    (HildonProgram *self,
         gdk_window_remove_filter (gdk_get_default_root_window(),
                 hildon_program_root_window_event_filter,
                 self);
+
+    if (priv->common_menu || priv->common_app_menu)
+        hildon_program_window_set_common_menu_flag (window, FALSE);
 }
 
 /**
@@ -623,6 +655,15 @@ hildon_program_set_common_menu                  (HildonProgram *self,
         }
     }
 
+    /* Only set the menu flag if there was no common menu and
+       we are setting one. If we are unsetting the current common menu,
+       remove the commmon menu flag. Otherwise, nothing to do. */
+    if (!priv->common_menu && menu) {
+        hildon_program_set_common_menu_flag (self, TRUE);
+    } else if (priv->common_menu && !menu) {
+        hildon_program_set_common_menu_flag (self, FALSE);
+    }
+
     priv->common_menu = menu;
 
     if (priv->common_menu)
@@ -685,6 +726,15 @@ hildon_program_set_common_app_menu              (HildonProgram *self,
     g_assert (priv);
 
     old_menu = priv->common_app_menu;
+
+    /* Only set the menu flag if there was no common menu and
+       we are setting one. If we are unsetting the current common menu,
+       remove the commmon menu flag. Otherwise, nothing to do. */
+    if (!priv->common_app_menu && menu) {
+        hildon_program_set_common_menu_flag (self, TRUE);
+    } else if (priv->common_app_menu && !menu) {
+        hildon_program_set_common_menu_flag (self, FALSE);
+    }
 
     /* Set new menu */
     priv->common_app_menu = menu;
