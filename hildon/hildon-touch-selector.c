@@ -24,7 +24,9 @@
  *
  * #HildonTouchSelector is a selector widget, that allows users to
  * select items from one to many predefined lists. It is very similar
- * to #GtkComboBox, but with several individual pannable columns.
+ * to #GtkComboBox, but with several individual pannable
+ * columns. #HildonTouchSelector does not need to be placed in a
+ * #HildonPannableArea (in fact, doing so will prevent panning).
  *
  * Normally, you would use #HildonTouchSelector together with a
  * #HildonPickerDialog activated from a button. For the most common
