@@ -803,6 +803,37 @@ hildon_app_menu_repack_items                    (HildonAppMenu *menu,
 }
 
 /**
+ * hildon_app_menu_has_visible_children:
+ * @menu: a #HildonAppMenu
+ *
+ * Returns whether this menu has any visible items
+ * and/or filters. If this is %FALSE, the menu will
+ * not be popped up.
+ *
+ * Returns: whether there are visible items or filters
+ *
+ * Since: 2.2
+ **/
+gboolean
+hildon_app_menu_has_visible_children (HildonAppMenu *menu)
+{
+   HildonAppMenuPrivate *priv;
+   GList *i;
+   gboolean show_menu = FALSE;
+
+    priv = HILDON_APP_MENU_GET_PRIVATE (menu);
+
+    /* Don't show menu if it doesn't contain visible items */
+    for (i = priv->buttons; i && !show_menu; i = i->next)
+        show_menu = GTK_WIDGET_VISIBLE (i->data);
+
+    for (i = priv->filters; i && !show_menu; i = i->next)
+	    show_menu = GTK_WIDGET_VISIBLE (i->data);
+
+    return show_menu;
+}
+
+/**
  * hildon_app_menu_popup:
  * @menu: a #HildonAppMenu
  * @parent_window: a #GtkWindow
@@ -816,23 +847,10 @@ void
 hildon_app_menu_popup                           (HildonAppMenu *menu,
                                                  GtkWindow     *parent_window)
 {
-    HildonAppMenuPrivate *priv;
-    gboolean show_menu = FALSE;
-    GList *i;
-
     g_return_if_fail (HILDON_IS_APP_MENU (menu));
     g_return_if_fail (GTK_IS_WINDOW (parent_window));
 
-    priv = HILDON_APP_MENU_GET_PRIVATE (menu);
-
-    /* Don't show menu if it doesn't contain visible items */
-    for (i = priv->buttons; i && !show_menu; i = i->next)
-        show_menu = GTK_WIDGET_VISIBLE (i->data);
-
-    for (i = priv->filters; i && !show_menu; i = i->next)
-        show_menu = GTK_WIDGET_VISIBLE (i->data);
-
-    if (show_menu) {
+    if (hildon_app_menu_has_visible_children (menu)) {
         hildon_app_menu_set_parent_window (menu, parent_window);
         gtk_widget_show (GTK_WIDGET (menu));
     }

@@ -1,3 +1,11 @@
+2009-09-10  Claudio Saavedra  <csaavedra@igalia.com>
+
+	Add hildon_app_menu_has_visible_children() private method
+
+	* hildon/hildon-app-menu-private.h: Add below private method.
+	* hildon/hildon-app-menu.c: (hildon_app_menu_has_visible_children):
+	New method to check the visibility of a HildonAppMenu children.
+
 2009-09-09  Claudio Saavedra  <csaavedra@igalia.com>
 
 	Set the window menu flag for application-common menus

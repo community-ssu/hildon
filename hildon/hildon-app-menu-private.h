@@ -50,6 +50,9 @@ hildon_app_menu_set_parent_window              (HildonAppMenu *self,
 gpointer G_GNUC_INTERNAL
 hildon_app_menu_get_parent_window              (HildonAppMenu *self);
 
+gboolean G_GNUC_INTERNAL
+hildon_app_menu_has_visible_children (HildonAppMenu *menu);
+
 G_END_DECLS
 
 #endif /* __HILDON_APP_MENU_PRIVATE_H__ */
