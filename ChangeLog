@@ -1,5 +1,13 @@
 2009-09-10  Claudio Saavedra  <csaavedra@igalia.com>
 
+	Update the application menu flag for application-wise windows
+
+	* hildon/hildon-program.c: (+hildon_program_on_common_app_menu_changed),
+	(hildon_program_set_common_app_menu): Also take into account the visibility
+	of its items.
+
+2009-09-10  Claudio Saavedra  <csaavedra@igalia.com>
+
 	Emit HildonAppMenu::changed when menu items change visibility
 
 	* hildon/hildon-app-menu.c: (item_visibility_changed),

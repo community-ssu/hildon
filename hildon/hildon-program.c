@@ -696,6 +696,14 @@ hildon_program_get_common_menu                  (HildonProgram *self)
     return priv->common_menu;
 }
 
+static void
+hildon_program_on_common_app_menu_changed       (HildonAppMenu *menu,
+                                                 HildonProgram *program)
+{
+    hildon_program_set_common_menu_flag (program,
+                                         hildon_app_menu_has_visible_children (menu));
+}
+
 /**
  * hildon_program_set_common_app_menu:
  * @self: The #HildonProgram in which the common menu should be used
@@ -730,20 +738,28 @@ hildon_program_set_common_app_menu              (HildonProgram *self,
     /* Only set the menu flag if there was no common menu and
        we are setting one. If we are unsetting the current common menu,
        remove the commmon menu flag. Otherwise, nothing to do. */
-    if (!priv->common_app_menu && menu) {
+    if (!priv->common_app_menu
+        && menu && hildon_app_menu_has_visible_children (menu)) {
         hildon_program_set_common_menu_flag (self, TRUE);
-    } else if (priv->common_app_menu && !menu) {
+    } else if (priv->common_app_menu &&
+               (!menu || !hildon_app_menu_has_visible_children (menu))) {
         hildon_program_set_common_menu_flag (self, FALSE);
     }
 
     /* Set new menu */
     priv->common_app_menu = menu;
-    if (menu)
+    if (menu) {
+        g_signal_connect (menu, "changed",
+                          G_CALLBACK (hildon_program_on_common_app_menu_changed), self);
         g_object_ref_sink (menu);
+    }
 
     /* Hide and unref old menu */
     if (old_menu) {
         hildon_app_menu_set_parent_window (old_menu, NULL);
+        g_signal_handlers_disconnect_by_func (old_menu,
+                                              hildon_program_on_common_app_menu_changed,
+                                              self);
         g_object_unref (old_menu);
     }
 }
