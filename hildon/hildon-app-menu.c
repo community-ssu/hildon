@@ -133,9 +133,21 @@ remove_item_from_list                           (GList    **list,
                                                  gpointer   item);
 
 static void
+emit_menu_changed                               (HildonAppMenu *menu,
+                                                 gpointer item);
+
+static void
 hildon_app_menu_apply_style                     (GtkWidget *widget);
 
 G_DEFINE_TYPE (HildonAppMenu, hildon_app_menu, GTK_TYPE_WINDOW);
+
+enum
+{
+    CHANGED,
+    LAST_SIGNAL
+};
+
+static guint app_menu_signals[LAST_SIGNAL] = { 0 };
 
 /**
  * hildon_app_menu_new:
@@ -194,6 +206,9 @@ hildon_app_menu_insert                          (HildonAppMenu *menu,
 
     /* Remove item from list when it is destroyed */
     g_object_weak_ref (G_OBJECT (item), (GWeakNotify) remove_item_from_list, &(priv->buttons));
+    g_object_weak_ref (G_OBJECT (item), (GWeakNotify) emit_menu_changed, menu);
+
+    g_signal_emit (menu, app_menu_signals[CHANGED], 0);
 }
 
 /**
@@ -301,6 +316,9 @@ hildon_app_menu_add_filter                      (HildonAppMenu *menu,
 
     /* Remove filter from list when it is destroyed */
     g_object_weak_ref (G_OBJECT (filter), (GWeakNotify) remove_item_from_list, &(priv->filters));
+    g_object_weak_ref (G_OBJECT (filter), (GWeakNotify) emit_menu_changed, menu);
+
+    g_signal_emit (menu, app_menu_signals[CHANGED], 0);
 }
 
 static void
@@ -425,6 +443,13 @@ remove_item_from_list                           (GList    **list,
                                                  gpointer   item)
 {
     *list = g_list_remove (*list, item);
+}
+
+static void
+emit_menu_changed                               (HildonAppMenu *menu,
+                                                 gpointer item)
+{
+    g_signal_emit (menu, app_menu_signals[CHANGED], 0);
 }
 
 static void
@@ -1050,4 +1075,22 @@ hildon_app_menu_class_init                      (HildonAppMenuClass *klass)
             "the screen edges (in horizontal mode)",
             0, G_MAXUINT, 50,
             G_PARAM_READABLE));
+
+
+    /**
+     * HildonAppMenu::changed:
+     * @widget: the widget that received the signal
+     *
+     * The HildonAppMenu::changed signal is emitted whenever an
+     * item or filter is added or removed from the menu.
+     *
+     * Since: 2.2
+     */
+    app_menu_signals[CHANGED] =
+        g_signal_new ("changed",
+                      G_TYPE_FROM_CLASS (klass),
+                      G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
+                      0,
+                      NULL, NULL,
+                      g_cclosure_marshal_VOID__VOID, G_TYPE_NONE, 0, NULL);
 }

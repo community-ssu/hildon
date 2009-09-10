@@ -1,5 +1,14 @@
 2009-09-10  Claudio Saavedra  <csaavedra@igalia.com>
 
+	Add HildonAppMenu::changed signal
+
+	* hildon/hildon-app-menu.c: (hildon_app_menu_insert),
+	(hildon_app_menu_add_filter), (hildon_app_menu_class_init):
+	Emit a new HildonAppMenu:changed signal when there are changes in
+	the menu children.
+
+2009-09-10  Claudio Saavedra  <csaavedra@igalia.com>
+
 	Add hildon_app_menu_has_visible_children() private method
 
 	* hildon/hildon-app-menu-private.h: Add below private method.
