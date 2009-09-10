@@ -1,5 +1,13 @@
 2009-09-10  Alberto Garcia  <agarcia@igalia.com>
 
+	* hildon/hildon-touch-selector.c
+	(hildon_touch_selector_class_init):
+	Documentation updates
+
+	Fixes: MB#5103
+
+2009-09-10  Alberto Garcia  <agarcia@igalia.com>
+
 	* hildon/hildon-touch-selector.c:
 	Documentation updates
 

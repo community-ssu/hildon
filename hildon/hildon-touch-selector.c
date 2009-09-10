@@ -419,7 +419,8 @@ hildon_touch_selector_class_init (HildonTouchSelectorClass * class)
      *
      * Specifies which UI mode to use in the internal treeviews.  A setting
      * of %HILDON_UI_MODE_NORMAL will cause these tree view to disable selections
-     * and emit row-activated as soon as a row is pressed.  You can use the
+     * and emit row-activated as soon as a row is pressed (unless it is pressed
+     * to drag the pannable area where the treeview is). You can use the
      * method hildon_touch_selector_get_last_activated_row() to get it. When
      * %HILDON_UI_MODE_EDIT is set, selections can be made according to the
      * setting of the mode on GtkTreeSelection.
