@@ -425,6 +425,7 @@ item_visibility_changed                         (GtkWidget     *item,
 
     if (! priv->inhibit_repack)
         hildon_app_menu_repack_items (menu, g_list_index (priv->buttons, item));
+    g_signal_emit (menu, app_menu_signals[CHANGED], 0);
 }
 
 static void
@@ -436,6 +437,7 @@ filter_visibility_changed                       (GtkWidget     *item,
 
     if (! priv->inhibit_repack)
         hildon_app_menu_repack_filters (menu);
+    g_signal_emit (menu, app_menu_signals[CHANGED], 0);
 }
 
 static void

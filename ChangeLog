@@ -1,5 +1,13 @@
 2009-09-10  Claudio Saavedra  <csaavedra@igalia.com>
 
+	Emit HildonAppMenu::changed when menu items change visibility
+
+	* hildon/hildon-app-menu.c: (item_visibility_changed),
+	(filter_visibility_changed): Also emit ::changed on
+	visibility of items changed.
+
+2009-09-10  Claudio Saavedra  <csaavedra@igalia.com>
+
 	Do not set the menu flag in a window when a menu is empty
 
 	* hildon/hildon-window.c: (hildon_window_update_menu_flag),
