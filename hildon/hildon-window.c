@@ -1364,8 +1364,9 @@ hildon_window_update_menu_flag (HildonWindow *self,
     } else {
         if (!priv->program || !hildon_program_get_common_menu (priv->program))
         {
-            hildon_window_set_menu_flag (self, priv->menu != NULL
-                                         && gtk_container_get_children (GTK_CONTAINER (priv->menu)));
+            GList *menu_children = gtk_container_get_children (GTK_CONTAINER (priv->menu));
+            hildon_window_set_menu_flag (self, priv->menu != NULL && menu_children != NULL);
+            g_free (menu_children);
         }
     }
 }

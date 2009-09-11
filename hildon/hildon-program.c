@@ -658,11 +658,17 @@ hildon_program_set_common_menu                  (HildonProgram *self,
     /* Only set the menu flag if there was no common menu and
        we are setting one. If we are unsetting the current common menu,
        remove the commmon menu flag. Otherwise, nothing to do. */
-    if (!priv->common_menu && menu) {
+
+    GList *menu_children = gtk_container_get_children (GTK_CONTAINER (menu));
+    if (!priv->common_menu
+        && menu && menu_children != NULL) {
         hildon_program_set_common_menu_flag (self, TRUE);
-    } else if (priv->common_menu && !menu) {
+    } else if (priv->common_menu &&
+               (!menu || menu_children == NULL))
+    {
         hildon_program_set_common_menu_flag (self, FALSE);
     }
+    g_list_free (menu_children);
 
     priv->common_menu = menu;
 

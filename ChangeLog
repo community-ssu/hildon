@@ -1,3 +1,12 @@
+2009-09-11  Claudio Saavedra  <csaavedra@igalia.com>
+
+	Do not set any flag for empty legacy menus
+
+	* hildon/hildon-program.c: (hildon_program_set_common_menu):
+	* hildon/hildon-window.c: (hildon_window_update_menu_flag):
+	This will probably not work fine with empty legacy menus added to
+	programs or windows and populated later, but so it's life.
+
 2009-09-10  Claudio Saavedra  <csaavedra@igalia.com>
 
 	Update the application menu flag for application-wise windows
