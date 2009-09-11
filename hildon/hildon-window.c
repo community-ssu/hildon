@@ -1343,6 +1343,40 @@ hildon_window_is_topmost_notify                 (HildonWindow *window)
     }
 }
 
+static void
+hildon_window_update_menu_flag (HildonWindow *self,
+                                gboolean is_app_menu)
+{
+    HildonWindowPrivate *priv;
+
+    priv = HILDON_WINDOW_GET_PRIVATE (self);
+
+    if (is_app_menu)
+    {
+        /* Change the menu flag only if there is no program or common
+           application menu. */
+        if (!priv->program ||
+            !hildon_program_get_common_app_menu (priv->program))
+        {
+            hildon_window_set_menu_flag (self, priv->app_menu != NULL &&
+                                         hildon_app_menu_has_visible_children (priv->app_menu));
+        }
+    } else {
+        if (!priv->program || !hildon_program_get_common_menu (priv->program))
+        {
+            hildon_window_set_menu_flag (self, priv->menu != NULL
+                                         && gtk_container_get_children (GTK_CONTAINER (priv->menu)));
+        }
+    }
+}
+
+static void
+on_menu_changed (HildonAppMenu *menu,
+                 HildonWindow *window)
+{
+    hildon_window_update_menu_flag (window, TRUE);
+}
+
 /*
  * Sets the program to which the window belongs. This should only be called
  * by hildon_program_add_window
@@ -2003,8 +2037,6 @@ hildon_window_set_main_menu (HildonWindow* self,
 
     priv = HILDON_WINDOW_GET_PRIVATE (self);
 
-    hildon_window_set_menu_flag (self, menu != NULL);
-
     if (priv->menu != NULL)
     {
 	accel_group = gtk_menu_get_accel_group (priv->menu);
@@ -2026,6 +2058,8 @@ hildon_window_set_main_menu (HildonWindow* self,
 	if (accel_group != NULL)
 	    hildon_window_add_accel_group (self, accel_group);
     }
+
+    hildon_window_update_menu_flag (self, FALSE);
 }
 
 /**
@@ -2110,16 +2144,22 @@ hildon_window_set_app_menu                      (HildonWindow  *self,
 
     old_menu = priv->app_menu;
 
-    hildon_window_set_menu_flag (self, menu != NULL);
-
     /* Add new menu */
     priv->app_menu = menu;
     if (menu)
+    {
         g_object_ref_sink (menu);
+        g_signal_connect (menu, "changed", G_CALLBACK (on_menu_changed), self);
+    }
 
     /* Unref old menu */
     if (old_menu)
+    {
+        g_signal_handlers_disconnect_by_func (old_menu, on_menu_changed, self);
         g_object_unref (old_menu);
+    }
+
+    hildon_window_update_menu_flag (self, TRUE);
 }
 
 /**

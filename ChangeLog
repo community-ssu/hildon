@@ -1,5 +1,14 @@
 2009-09-10  Claudio Saavedra  <csaavedra@igalia.com>
 
+	Do not set the menu flag in a window when a menu is empty
+
+	* hildon/hildon-window.c: (hildon_window_update_menu_flag),
+	(on_menu_changed), (on_menu_changedhildon_window_set_main_menu),
+	(on_menu_changed), (hildon_window_set_main_menu): Update on menu
+	changes by using the HildonAppMenu::changed signal.
+
+2009-09-10  Claudio Saavedra  <csaavedra@igalia.com>
+
 	Add HildonAppMenu::changed signal
 
 	* hildon/hildon-app-menu.c: (hildon_app_menu_insert),
