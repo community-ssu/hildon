@@ -57,9 +57,12 @@
 #define SCROLL_FADE_TIMEOUT 100
 #define MOTION_EVENTS_PER_SECOND 25
 #define CURSOR_STOPPED_TIMEOUT 200
-#define MAX_SPEED_THRESHOLD 290
+#define MAX_SPEED_THRESHOLD 280
 #define PANNABLE_MAX_WIDTH 788
 #define PANNABLE_MAX_HEIGHT 378
+#define ACCEL_FACTOR 27
+#define MIN_ACCEL_THRESHOLD 40
+#define FAST_CLICK 125
 
 G_DEFINE_TYPE (HildonPannableArea, hildon_pannable_area, GTK_TYPE_BIN)
 
@@ -85,6 +88,8 @@ struct _HildonPannableAreaPrivate {
   gdouble vmin;
   gdouble vmax;
   gdouble vmax_overshooting;
+  gdouble accel_vel_x;
+  gdouble accel_vel_y;
   gdouble vfast_factor;
   gdouble decel;
   gdouble drag_inertia;
@@ -723,6 +728,8 @@ hildon_pannable_area_init (HildonPannableArea * area)
   priv->overshot_dist_y = 0;
   priv->overshooting_y = 0;
   priv->overshooting_x = 0;
+  priv->accel_vel_x = 0;
+  priv->accel_vel_y = 0;
   priv->idle_id = 0;
   priv->vel_x = 0;
   priv->vel_y = 0;
@@ -1255,6 +1262,13 @@ hildon_pannable_area_size_allocate (GtkWidget * widget,
                                                      &child_allocation);
 
       gtk_widget_size_allocate (child, &child_allocation);
+    }
+
+    if (priv->vadjust->page_size >= 0) {
+      priv->accel_vel_y = MIN (priv->vmax,
+                               priv->vadjust->upper/priv->vadjust->page_size*ACCEL_FACTOR);
+      priv->accel_vel_x = MIN (priv->vmax,
+                               priv->hadjust->upper/priv->hadjust->page_size*ACCEL_FACTOR);
     }
 
     hv = priv->hadjust->value;
@@ -2758,11 +2772,11 @@ hildon_pannable_area_button_release_cb (GtkWidget * widget,
   priv->button_pressed = FALSE;
 
   /* if widget was moving fast in the panning, increase speed even more */
-  if ((event->time - priv->last_press_time < 125) &&
+  if ((event->time - priv->last_press_time < FAST_CLICK) &&
       ((ABS (priv->old_vel_x) > priv->vmin) ||
        (ABS (priv->old_vel_y) > priv->vmin)) &&
-      ((ABS (priv->old_vel_x) > 40) ||
-       (ABS (priv->old_vel_y) > 40)))
+      ((ABS (priv->old_vel_x) > MIN_ACCEL_THRESHOLD) ||
+       (ABS (priv->old_vel_y) > MIN_ACCEL_THRESHOLD)))
     {
       gint symbol = 0;
 
@@ -2770,7 +2784,8 @@ hildon_pannable_area_button_release_cb (GtkWidget * widget,
         symbol = ((priv->vel_x * priv->old_vel_x) > 0) ? 1 : -1;
 
       priv->vel_x = symbol *
-        (priv->old_vel_x + ((priv->old_vel_x > 0) ? priv->vmax : -priv->vmax));
+        (priv->old_vel_x + ((priv->old_vel_x > 0) ? priv->accel_vel_x
+                            : -priv->accel_vel_x));
 
       symbol = 0;
 
@@ -2778,7 +2793,8 @@ hildon_pannable_area_button_release_cb (GtkWidget * widget,
         symbol = ((priv->vel_y * priv->old_vel_y) > 0) ? 1 : -1;
 
       priv->vel_y = symbol *
-        (priv->old_vel_y + ((priv->old_vel_y > 0) ? priv->vmax : -priv->vmax));
+        (priv->old_vel_y + ((priv->old_vel_y > 0) ? priv->accel_vel_y
+                            : -priv->accel_vel_y));
 
       force_fast = FALSE;
     }
@@ -2798,11 +2814,13 @@ hildon_pannable_area_button_release_cb (GtkWidget * widget,
     priv->scroll_indicator_alpha = 1.0;
 
     if (force_fast) {
-      if (ABS (priv->vel_x) > MAX_SPEED_THRESHOLD)
-        priv->vel_x = (priv->vel_x > 0) ? priv->vmax : -priv->vmax;
+      if ((ABS (priv->vel_x) > MAX_SPEED_THRESHOLD) &&
+          (priv->accel_vel_x > MAX_SPEED_THRESHOLD))
+        priv->vel_x = (priv->vel_x > 0) ? priv->accel_vel_x : -priv->accel_vel_x;
 
-      if (ABS (priv->vel_y) > MAX_SPEED_THRESHOLD)
-        priv->vel_y = (priv->vel_y > 0) ? priv->vmax : -priv->vmax;
+      if ((ABS (priv->vel_y) > MAX_SPEED_THRESHOLD) &&
+          (priv->accel_vel_y > MAX_SPEED_THRESHOLD))
+        priv->vel_y = (priv->vel_y > 0) ? priv->accel_vel_y : -priv->accel_vel_y;
     }
 
     if (!priv->idle_id)

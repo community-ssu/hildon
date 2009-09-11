@@ -1,3 +1,12 @@
+2009-09-11  Alejandro G. Castro  <alex@igalia.com>
+
+	* hildon/hildon-pannable-area.c,
+	(hildon_pannable_area_init),
+	(hildon_pannable_area_size_allocate),
+	(hildon_pannable_area_button_release_cb): More tuning of the
+	speed, adding a way to calculate the acceleration and fast-panning
+	based on the child size.
+
 2009-09-10  Alberto Garcia  <agarcia@igalia.com>
 
 	* hildon/hildon-touch-selector.c
