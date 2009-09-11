@@ -5,6 +5,9 @@
   * Fixes: NB#127018 (Panning indicator fades out too slowly)
   * Improved UX for the pannable area with large lists.
   * Fixes: 137604 (Pannable scroll_to does not move correctly)
+  * NB#137814 (Indicator for view menu in app title area)
+  * Fixes: NB#137604 (Pannable scroll_to does not move correctly)
+  * Documentation fixes updates (MB#5103, MB#5104)
 
 [2.1.97 release]
 

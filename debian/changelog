@@ -1,3 +1,11 @@
+libhildon (2.2.0-1~rc5) unstable; urgency=low
+
+  * NB#137814 (Indicator for view menu in app title area)
+  * Fixes: NB#137604 (Pannable scroll_to does not move correctly)
+  * Documentation fixes updates (MB#5103, MB#5104)
+
+ -- Claudio Saavedra <csaavedra@igalia.com>  Fri, 11 Sep 2009 20:24:24 +0300
+
 libhildon (2.2.0-1~rc4) unstable; urgency=low
 
   * Fix hildon_pannable_area_scroll_to() after last changes.
