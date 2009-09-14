@@ -1366,7 +1366,7 @@ hildon_window_update_menu_flag (HildonWindow *self,
         {
             GList *menu_children = gtk_container_get_children (GTK_CONTAINER (priv->menu));
             hildon_window_set_menu_flag (self, priv->menu != NULL && menu_children != NULL);
-            g_free (menu_children);
+            g_list_free (menu_children);
         }
     }
 }
