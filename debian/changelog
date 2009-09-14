@@ -1,3 +1,9 @@
+libhildon (2.2.0-1~rc6) unstable; urgency=low
+
+  * Fix a memory corruption in the fix for 137814.
+
+ -- Claudio Saavedra <csaavedra@igalia.com>  Mon, 14 Sep 2009 12:57:46 +0300
+
 libhildon (2.2.0-1~rc5) unstable; urgency=low
 
   * NB#137814 (Indicator for view menu in app title area)
