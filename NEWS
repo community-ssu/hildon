@@ -8,6 +8,8 @@
   * NB#137814 (Indicator for view menu in app title area)
   * Fixes: NB#137604 (Pannable scroll_to does not move correctly)
   * Documentation fixes updates (MB#5103, MB#5104)
+  * Fixes: NB#138857 (hildon_gtk_window_take_screenshot doesn't take a
+    screenshot)
 
 [2.1.97 release]
 
