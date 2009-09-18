@@ -1,3 +1,10 @@
+2009-09-18  Claudio Saavedra  <csaavedra@igalia.com>
+
+	* examples/hildon-banner-example.c:
+	(on_information_clicked), (on_animation_clicked), 
+	(on_progress_clicked): GtkButton:clicked handlers do not return
+	gboolean. Fix this.
+
 2009-09-17  Claudio Saavedra  <csaavedra@igalia.com>
 
 	[2.2.0 Release Candidate 7]
