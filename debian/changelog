@@ -1,6 +1,6 @@
 libhildon (2.2.0-1~rc7) unstable; urgency=low
 
-  * Fixes: 138857 (hildon_gtk_window_take_screenshot doesn't take a
+  * Fixes: NB#138857 (hildon_gtk_window_take_screenshot doesn't take a
     screenshot)
 
  -- Claudio Saavedra <csaavedra@igalia.com>  Thu, 17 Sep 2009 17:56:18 +0300
