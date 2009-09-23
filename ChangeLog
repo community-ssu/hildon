@@ -1,5 +1,12 @@
 2009-09-23  Claudio Saavedra  <csaavedra@igalia.com>
 
+	[2.2.0 Release Candidate 8]
+
+	* NEWS: Updates
+	* debian/changelog: update and bump
+
+2009-09-23  Claudio Saavedra  <csaavedra@igalia.com>
+
 	* hildon/hildon-note.c: Declare hildon_note_set_padding() only when using
 	maemo-gtk.
 

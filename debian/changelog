@@ -1,3 +1,9 @@
+libhildon (2.2.0-1~rc8) unstable; urgency=low
+
+  * Fixes: NB#140140 (Allow custom widgets to be used in banners)
+
+ -- Claudio Saavedra <csaavedra@igalia.com>  Wed, 23 Sep 2009 10:10:14 +0300
+
 libhildon (2.2.0-1~rc7) unstable; urgency=low
 
   * Fixes: NB#138857 (hildon_gtk_window_take_screenshot doesn't take a
