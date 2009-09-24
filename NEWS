@@ -11,6 +11,7 @@
   * Fixes: NB#138857 (hildon_gtk_window_take_screenshot doesn't take a
     screenshot)
   * Fixes: NB#140140 (Allow custom widgets to be used in banners)
+  * Fixes: NB#140186 (HildonPannableArea goes into an infinite loop)
 
 [2.1.97 release]
 

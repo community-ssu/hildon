@@ -1,3 +1,10 @@
+2009-09-24  Claudio Saavedra  <csaavedra@igalia.com>
+
+	[2.2.0 Release]
+
+	* NEWS: Updates
+	* debian/changelog: Bump, update.
+
 2009-09-22  Alejandro G. Castro  <alex@igalia.com>
 
 	* hildon/hildon-pannable-area.c,
