@@ -1,3 +1,9 @@
+libhildon (2.2.0-2) unstable; urgency=low
+
+  * Fixes: NB#141140 (Rotation stops when banner is present)
+
+ -- Claudio Saavedra <csaavedra@igalia.com>  Thu, 01 Oct 2009 14:39:21 +0300
+
 libhildon (2.2.0-1) unstable; urgency=low
 
   * Fixes: NB#140186 (HildonPannableArea goes into an infinite loop)
