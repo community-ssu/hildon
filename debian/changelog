@@ -1,3 +1,11 @@
+libhildon (2.2.0-3) unstable; urgency=low
+
+  * Fixes: NB#141367 (Reproducible browser crash)
+  * Fixes: NB#141447 (HildonBanner crashes if a new one is shown
+    during a delete event)
+
+ -- Claudio Saavedra <csaavedra@igalia.com>  Thu, 01 Oct 2009 20:00:24 +0300
+
 libhildon (2.2.0-2) unstable; urgency=low
 
   * Fixes: NB#141140 (Rotation stops when banner is present)

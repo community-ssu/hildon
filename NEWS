@@ -1,6 +1,9 @@
 [2.2.1 release]
 
   * Fixes: NB#141140 (Rotation stops when banner is present)
+  * Fixes: NB#141367 (Reproducible browser crash)
+  * Fixes: NB#141447 (HildonBanner crashes if a new one is shown
+    during a delete event)
 
 [2.2.0 release]
 
