@@ -4,6 +4,9 @@
   * Fixes: NB#141367 (Reproducible browser crash)
   * Fixes: NB#141447 (HildonBanner crashes if a new one is shown
     during a delete event)
+  * Fixes: NB#134010 (Device not usable after opening the image from
+    external application when image viewer contains edited and unsaved
+    image)
 
 [2.2.0 release]
 

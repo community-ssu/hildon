@@ -1,3 +1,11 @@
+libhildon (2.2.0-4) unstable; urgency=low
+
+  * Fixes: NB#134010 (Device not usable after opening the image from
+    external application when image viewer contains edited and unsaved
+    image)
+
+ -- Xabier Rodriguez Calvar <xrcalvar@igalia.com>  Wed, 14 Oct 2009 11:52:38 +0200
+
 libhildon (2.2.0-3) unstable; urgency=low
 
   * Fixes: NB#141367 (Reproducible browser crash)
