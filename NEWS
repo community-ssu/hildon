@@ -7,6 +7,7 @@
   * Fixes: NB#134010 (Device not usable after opening the image from
     external application when image viewer contains edited and unsaved
     image)
+  * Fixes: NB#141831 (memory leak in hildon-touch-selector)
 
 [2.2.0 release]
 
