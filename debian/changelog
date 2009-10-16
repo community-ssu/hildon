@@ -1,3 +1,15 @@
+libhildon (2.2.2-1) unstable; urgency=low
+
+  * Several memory leak fixes.
+  * Fixes: NB#141240 (New API: hildon_gtk_window_enable_zoom_keys())
+  * Fixes: NB#135750 (Permanent XErrors while switching between windows
+    and task switcher)
+  * Fixes: NB#125548 (HildonProgram notify::is-topmost is not working
+    properly with stacks)
+  * Fixes: NB#140339 (Unnecessary wake-ups in application due to XAtoms)
+
+ -- Claudio Saavedra <csaavedra@igalia.com>  Fri, 16 Oct 2009 16:11:23 +0300
+
 libhildon (2.2.1-2) unstable; urgency=low
 
   * Revert fix for NB#134010
