@@ -1,3 +1,9 @@
+libhildon (2.2.1-2) unstable; urgency=low
+
+  * Revert fix for NB#134010
+
+ -- Claudio Saavedra <csaavedra@igalia.com>  Fri, 16 Oct 2009 14:42:03 +0300
+
 libhildon (2.2.1-1) unstable; urgency=low
 
   * Fixes: NB#141831 (memory leak in hildon-touch-selector)
@@ -6,7 +12,7 @@ libhildon (2.2.1-1) unstable; urgency=low
 
 libhildon (2.2.0-4) unstable; urgency=low
 
-  * Fixes: NB#134010 (Device not usable after opening the image from
+  * Fixes NB#134010 (Device not usable after opening the image from
     external application when image viewer contains edited and unsaved
     image)
 
