@@ -1,3 +1,8 @@
+[2.2.3 release]
+
+  * Fixes: NB#143759 (Setting the same selector twice to a picker button
+    ends with the selector destroyed)
+
 [2.2.2 release]
 
   * Several memory leak fixes.

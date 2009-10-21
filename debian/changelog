@@ -1,3 +1,10 @@
+libhildon (2.2.3-1) unstable; urgency=low
+
+  * Fixes: NB#143759 (Setting the same selector twice to a picker button
+    ends with the selector destroyed)
+
+ -- Claudio Saavedra <csaavedra@igalia.com>  Wed, 21 Oct 2009 17:08:22 +0300
+
 libhildon (2.2.2-1) unstable; urgency=low
 
   * Several memory leak fixes.
