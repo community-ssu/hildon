@@ -1,3 +1,10 @@
+libhildon (2.2.0-2ultrastable0) unstable; urgency=low
+
+  * Fixes: NB#143914
+  * Fixes: NB#143919
+
+ -- Claudio Saavedra <csaavedra@igalia.com>  Thu, 22 Oct 2009 15:52:28 +0300
+
 libhildon (2.2.0-2) unstable; urgency=low
 
   * Fixes: NB#141140 (Rotation stops when banner is present)
