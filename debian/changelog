@@ -1,4 +1,10 @@
-libhildon (2.2.0-2ultrastable0) unstable; urgency=low
+libhildon (2.2.0-2+ultrastable1) unstable; urgency=low
+
+  * Revert fix for NB#143919
+
+ -- Alberto Garcia <agarcia@igalia.com>  Mon, 26 Oct 2009 14:38:02 +0100
+
+libhildon (2.2.0-2+ultrastable0) unstable; urgency=low
 
   * Fixes: NB#143914
   * Fixes: NB#143919
