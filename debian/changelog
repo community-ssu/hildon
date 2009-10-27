@@ -7,7 +7,7 @@ libhildon (2.2.0-2+ultrastable1) unstable; urgency=low
 libhildon (2.2.0-2+ultrastable0) unstable; urgency=low
 
   * Fixes: NB#143914
-  * Fixes: NB#143919
+  * Fixes NB#143919
   * Also fixes the leaks in the touchselector (NB#141831)
 
  -- Claudio Saavedra <csaavedra@igalia.com>  Thu, 22 Oct 2009 18:01:52 +0300
