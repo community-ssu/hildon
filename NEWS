@@ -1,3 +1,10 @@
+[2.2.4 release]
+
+  * Fixes: NB#134010 (Device not usable after opening the image from
+    external application when image viewer contains edited and unsaved
+    image)
+  * Fixes: NB#142952 (Search support for lists)
+
 [2.2.3 release]
 
   * Fixes: NB#143759 (Setting the same selector twice to a picker button
