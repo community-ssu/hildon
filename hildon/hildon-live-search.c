@@ -521,7 +521,7 @@ hildon_live_search_class_init                   (HildonLiveSearchClass *klass)
    * Returns: %TRUE to stop other handlers from being invoked for the event.
    * %FALSE to propagate the event further.
    *
-   * Since: 2.2.4
+   * Since: 2.2.5
    */
   signals[REFILTER] =
     g_signal_new ("refilter",
@@ -719,7 +719,7 @@ hildon_live_search_set_filter                   (HildonLiveSearch   *livesearch,
  *
  * Returns: The #GtkTreeModelFilter set with hildon_live_search_set_filter()
  *
- * Since: 2.2.4
+ * Since: 2.2.5
  */
 GtkTreeModelFilter *
 hildon_live_search_get_filter (HildonLiveSearch *livesearch)
@@ -938,7 +938,7 @@ hildon_live_search_restore_state                (HildonLiveSearch *livesearch,
  *
  * If this function is unset, #HildonLiveSearch:text-column is used.
  *
- * Since: 2.2.4
+ * Since: 2.2.5
  **/
 void
 hildon_live_search_set_visible_func             (HildonLiveSearch           *livesearch,

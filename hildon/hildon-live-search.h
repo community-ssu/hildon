@@ -121,7 +121,7 @@ hildon_live_search_set_text_column              (HildonLiveSearch *livesearch,
  *
  * Returns: whether the row indicated by @iter should be visible
  *
- * Since: 2.2.4
+ * Since: 2.2.5
  **/
 typedef gboolean (* HildonLiveSearchVisibleFunc) (GtkTreeModel *model,
                                                   GtkTreeIter  *iter,
