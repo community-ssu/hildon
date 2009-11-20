@@ -1,3 +1,18 @@
+[2.2.5 release]
+
+  * Improved HildonLiveSearch support in HildonTouchSelector.
+  * Better API for HildonLiveSearch.
+  * Fixes: NB#146250 (Documentation error in hildon-touch-selector.c)
+  * Fixes: NB#119708 (Text in 'Disconnect..." banner is not aligned
+    properly, when changed from portrait to lanscape mode.)
+  * Fixes: NB#134010 (Device not usable after opening the image from
+    external application when image viewer contains edited and unsaved
+    image)
+  * Fixes: NB#147342 (Done button of HildonPickerDialog doesn't work for
+    empty models)
+  * Fixes: NB#147341 (HildonTouchSelectorEntry crashes when a populated
+    model is attached)
+
 [2.2.4 release]
 
   * Fixes: NB#134010 (Device not usable after opening the image from
