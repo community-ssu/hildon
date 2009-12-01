@@ -1,3 +1,14 @@
+libhildon (2.2.6-1) unstable; urgency=low
+
+  * Fixes: NB#148188 (The required #include directives are not documented
+    for Hildon)
+  * Fixes: MB#6268 (The required #include directives are not documented
+    for Hildon)
+  * Fixes: NB#147988 (Unable to act on 'Voip and IM accounts' dialog on a
+    certain scenario.)
+
+ -- Claudio Saavedra <csaavedra@igalia.com>  Tue, 01 Dec 2009 09:29:17 +0200
+
 libhildon (2.2.5-1) unstable; urgency=low
 
   * Fixes: NB#146250 (Documentation error in hildon-touch-selector.c)

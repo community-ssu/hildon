@@ -1,3 +1,13 @@
+[2.2.6 release]
+
+  * Fixes: NB#148188 (The required #include directives are not documented
+    for Hildon)
+  * Fixes: MB#6268 (The required #include directives are not documented
+    for Hildon)
+  * Fixes: NB#147988 (Unable to act on 'Voip and IM accounts' dialog on a
+    certain scenario.)
+  * Improved string matching in the HildonTouchSelector live search.
+
 [2.2.5 release]
 
   * Improved HildonLiveSearch support in HildonTouchSelector.
