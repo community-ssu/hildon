@@ -1,3 +1,7 @@
+[2.2.7 release]
+
+  * Fixes: NB#149039 (controlpanel crashing in a scenario)
+
 [2.2.6 release]
 
   * Fixes: NB#148188 (The required #include directives are not documented
