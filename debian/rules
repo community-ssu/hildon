@@ -17,6 +17,7 @@ DEB_CONFIGURE_SCRIPT_ENV += LDFLAGS="-Wl,-O1 -Wl,--as-needed" PKG_CONFIG_PATH=/u
 DEB_CONFIGURE_EXTRA_FLAGS := $(ENABLE_GTK_DOC) --enable-maintainer-mode
 DEB_COMPRESS_EXCLUDE := .c
 DEB_DH_MAKESHLIBS_ARGS_libhildon1 := -a -V 'libhildon1 (>= 2.2.5)'
+DEB_INSTALL_CHANGELOGS_libhildon1 := --no-act
 
 config.status: $(DEB_SRCDIR)/configure
 
