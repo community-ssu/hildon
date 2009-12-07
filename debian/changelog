@@ -2,8 +2,9 @@ libhildon (2.2.8-1) unstable; urgency=low
 
   * Do not install changelogs in libhildon1 package.
     Fixes: NB#149135 (Remove doc files from hildon-widgets deb)
+  * Fix a critical warning in HildonTouchSelector.
 
- -- Claudio Saavedra <csaavedra@igalia.com>  Mon, 07 Dec 2009 11:44:27 +0200
+ -- Claudio Saavedra <csaavedra@igalia.com>  Mon, 07 Dec 2009 14:59:15 +0200
 
 libhildon (2.2.7-1) unstable; urgency=low
 
