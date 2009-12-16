@@ -1,3 +1,29 @@
+[2.2.9 release]
+
+  * Fixes: NB#137994 (scroll indicator never disappears in a scenario)
+  * Fixes: NB#126074 (size of confirmation dialog varies after rotating
+    from portrait to landscape)
+  * Fixes: NB#145156 (HildonPickerDialog: Entered Skype contact name
+    disappears from dialpad input box when call type dialog is opened and
+    cancelled)
+  * Fixes: NB#137474 (Progress note layout is not correct)
+  * Fixes: NB#141835 (HildonBanner reappears if the screen is rotated)
+  * Fixes: NB#120613 (Size of HildonBanner varies depending on previously
+    opened banners)
+  * Fixes: NB#143625 (Timed custom banner interferes with timed normal
+    banners)
+  * Fixes: NB#145298 (HildonTouchSelector: Call type button in dial pad
+    shows the skype account even after disabling.)
+  * Fixes: NB#149035 ("Never" is not deselected when selected other Repeat
+    option(like Mon or Tues or ...) in the edit alarm dialog)
+  * Fixed: NB#150319 (HildonAppMenu doesn't show when another top level
+    widget is around)
+  * Fixes: NB#150710 (live search not working for numbers)
+  * Fixes: NB#150628 (Live Search doesn't come up in Profiles applet until
+    the focus is changed)
+  * Other HildonLiveSearch minor tweaks and fixes.
+  * Support for selection inside HildonPannableArea.
+
 [2.2.8 release]
 
   * Fix a critical warning in HildonTouchSelector.
