@@ -1,4 +1,4 @@
-libhildon (2.2.9-2) unstable; urgency=low
+libhildon (2.2.10-1) unstable; urgency=low
 
   * Fixes: NB#121965 (Region touch list picker: Value in search field
     is not selected in specified scenario)
