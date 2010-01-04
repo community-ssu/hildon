@@ -6,6 +6,8 @@ libhildon (2.2.10-1) unstable; urgency=low
   * Fixes: NB#152068 (drop down list in browser appears with the first
     item highlighted)
 
+ -- Claudio Saavedra <csaavedra@igalia.com>  Mon, 04 Jan 2010 13:57:57 +0200
+
 libhildon (2.2.9-2) unstable; urgency=low
 
   * Fixes: NB#151334 (live search not proper for picker buttons)
