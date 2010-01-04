@@ -1,3 +1,16 @@
+[2.2.10 release]
+
+  * Fixes: NB#121965 (Region touch list picker: Value in search field
+    is not selected in specified scenario)
+  * Fixes: NB#151707 (HildonLiveSearch breaks keyboard shortcuts)
+  * Fixes: NB#152068 (drop down list in browser appears with the first
+    item highlighted)
+  * Fixes: NB#151334 (live search not proper for picker buttons)
+  * Fixes: NB#151339 (Picker value becomes empty when selection is made
+    via live search)
+  * New hildon_live_search_clean_selection_map()
+  * Make HildonTouchSelector::live-search read-write
+
 [2.2.9 release]
 
   * Fixes: NB#137994 (scroll indicator never disappears in a scenario)
