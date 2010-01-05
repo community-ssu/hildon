@@ -1,3 +1,9 @@
+libhildon (2.2.10-2) unstable; urgency=low
+
+  * Remove duplicate bugs from debian/changelog entries.
+
+ -- Claudio Saavedra <csaavedra@igalia.com>  Tue, 05 Jan 2010 09:43:33 +0200
+
 libhildon (2.2.10-1) unstable; urgency=low
 
   * Fixes: NB#121965 (Region touch list picker: Value in search field
@@ -32,8 +38,6 @@ libhildon (2.2.9-1) unstable; urgency=low
     banners)
   * Fixes: NB#145298 (HildonTouchSelector: Call type button in dial pad
     shows the skype account even after disabling.)
-  * Fixes: NB#149035 ("Never" is not deselected when selected other Repeat
-    option(like Mon or Tues or ...) in the edit alarm dialog)
   * Fixed: NB#150319 (HildonAppMenu doesn't show when another top level
     widget is around)
   * Fixes: NB#150710 (live search not working for numbers)
