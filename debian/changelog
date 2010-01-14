@@ -1,3 +1,17 @@
+libhildon (2.2.11-1) unstable; urgency=low
+
+  * Fixes: NB#151517 (Device "freezes" and unable to access view menu of
+    chat view in a certain scenario)
+  * Fixes: NB#151707 (HildonLiveSearch breaks keyboard shortcuts)
+  * Fixes: NB#135340 (view not scrolling according to cursor position)
+  * HildonLiveSearch support for GtkIconView
+  * API change in hildon_live_search_hook_widget()
+  * Fixed critical warning in
+    hildon_touch_selector_set_column_selection_mode()
+  * Other fixes.
+
+ -- Claudio Saavedra <csaavedra@igalia.com>  Thu, 14 Jan 2010 16:19:49 +0200
+
 libhildon (2.2.10-2) unstable; urgency=low
 
   * Remove duplicate bugs from debian/changelog entries.
