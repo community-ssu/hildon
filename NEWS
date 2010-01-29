@@ -1,3 +1,19 @@
+[ 2.2.12 release ]
+
+  * Fixes: NB#123249 (HildonTouchSelectorEntry is case-sensitive)
+  * Fixes: NB#140410 (consider increasing the SPS (samples per second)
+    value in the HildonPannableArea)
+  * Fixes: NB#152686 (Observed hildon-home criticals while adding a
+    shortcut)
+  * Fixes: NB#152909 (Making the panning indicator more evident)
+  * Fixes: MB#4579 (HildonWindowClipboardOperation is completely
+    undocumented)
+  * Fixes: MB#4640 (hildon_touch_selector_get_active_iter() needed)
+  * Fixes: MB#5284 (HildonPannableArea: size-request-policy property
+    should be deprecated)
+  * Fixes: MB#6069 (Documentation missing on HildonNote vs "Cancel"
+    button)
+
 [ 2.2.11 release ]
 
   * Fixes: NB#151517 (Device "freezes" and unable to access view menu of
