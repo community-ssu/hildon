@@ -1,3 +1,8 @@
+[ 2.2.13 release ]
+
+  * Fixes: NB#155502 (HildonPickerDialog doesn't support portrait mode)
+  * Fixes: MB#8731 (Memory leaks in widget HildonAnimationActor)
+
 [ 2.2.12 release ]
 
   * Fixes: NB#123249 (HildonTouchSelectorEntry is case-sensitive)
