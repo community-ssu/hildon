@@ -1,3 +1,10 @@
+[ 2.2.14 release ]
+
+  * Fixes: NB#156737 (Calnedar app. always crashes after changing the
+    language to Bulgarian and when trying to add a new event)
+  * Fixes: MB#9194 (hildon_pannable_area_scroll_to() example)
+  * Fixes: NB#140251 (Livesearch for File Manager)
+
 [ 2.2.13 release ]
 
   * Fixes: NB#155502 (HildonPickerDialog doesn't support portrait mode)
