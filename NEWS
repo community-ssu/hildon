@@ -1,3 +1,7 @@
+[ 2.2.15 release ]
+
+  * Fixes: NB#158130 (hildon_live_search_set_text needed for File Manager)
+
 [ 2.2.14 release ]
 
   * Fixes: NB#156737 (Calnedar app. always crashes after changing the

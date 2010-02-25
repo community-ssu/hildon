@@ -1,3 +1,9 @@
+libhildon (2.2.15-1) unstable; urgency=low
+
+  * Fixes: NB#158130 (hildon_live_search_set_text needed for File Manager)
+
+ -- Claudio Saavedra <csaavedra@igalia.com>  Thu, 25 Feb 2010 16:43:59 +0200
+
 libhildon (2.2.14-1) unstable; urgency=low
 
   * Fixes: NB#156737 (Calnedar app. always crashes after changing the
