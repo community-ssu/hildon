@@ -1,3 +1,8 @@
+[ 2.2.16 release ]
+
+  * Fixes NB#158744 (1st selected contact from the list is replaced with
+    the next one instead of appending both to the list)
+
 [ 2.2.15 release ]
 
   * Fixes: NB#158130 (hildon_live_search_set_text needed for File Manager)
