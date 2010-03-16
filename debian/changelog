@@ -1,3 +1,9 @@
+libhildon (2.2.17-1) unstable; urgency=low
+
+  * Fixes: NB#158695 (HildonTouchSelector looks bad in portrait mode)
+
+ -- Claudio Saavedra <csaavedra@igalia.com>  Tue, 16 Mar 2010 17:39:59 +0200
+
 libhildon (2.2.16-1) unstable; urgency=low
 
   * Fixes: NB#158744 (1st selected contact from the list is replaced with
