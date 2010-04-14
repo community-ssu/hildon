@@ -1,3 +1,8 @@
+[ 2.2.19 release ]
+
+  * Fixes: NB#163953 (Move live search code from HildonTouchSelector to HildonLiveSearch)
+    This time for real.
+
 [ 2.2.18 release ]
 
   * Fixes: NB#160879 (crash in pannable area with glib 2.23.5)

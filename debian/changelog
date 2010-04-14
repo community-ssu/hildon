@@ -1,3 +1,10 @@
+libhildon (2.2.19-1) unstable; urgency=low
+
+  * Fixes: NB#163953 (Move live search code from HildonTouchSelector to HildonLiveSearch)
+    This time for real.
+
+ -- Claudio Saavedra <csaavedra@igalia.com>  Wed, 14 Apr 2010 18:16:21 +0300
+
 libhildon (2.2.18-1) unstable; urgency=low
 
   * Fixes: NB#160879 (crash in pannable area with glib 2.23.5)
