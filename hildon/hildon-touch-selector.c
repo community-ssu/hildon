@@ -993,7 +993,7 @@ hildon_live_search_visible_func (GtkTreeModel *model,
                                  gpointer userdata)
 {
   gboolean visible = TRUE;
-  gchar *string;
+  gchar *string, *string_ascii;
   GSList *list_iter;
   HildonTouchSelectorColumn *col;
   HildonTouchSelector *selector;
@@ -1003,15 +1003,17 @@ hildon_live_search_visible_func (GtkTreeModel *model,
   gint text_column = GPOINTER_TO_INT (col->priv->text_column);
 
   gtk_tree_model_get (model, iter, text_column, &string, -1);
+  string_ascii = hildon_helper_normalize_string (string);
   list_iter = selector->priv->norm_tokens;
   while (visible && list_iter) {
-    visible = (string != NULL &&
-               hildon_helper_utf8_strstrcasedecomp_needle_stripped (string,
-								    (gunichar *)list_iter->data) != NULL);
+    visible = (string_ascii != NULL &&
+               hildon_helper_smart_match (string_ascii,
+                                          (const gchar *)list_iter->data));
     list_iter = list_iter->next;
   }
 
   g_free (string);
+  g_free (string_ascii);
 
   return visible;
 }
@@ -1023,7 +1025,7 @@ on_live_search_refilter (HildonLiveSearch *livesearch,
     HildonTouchSelector *selector = HILDON_TOUCH_SELECTOR (userdata);
 
     gchar **tokens = g_strsplit (hildon_live_search_get_text (livesearch), " ", -1);
-    gunichar *token;
+    gchar *token;
     gint i;
 
     if (selector->priv->norm_tokens != NULL) {
@@ -1033,7 +1035,7 @@ on_live_search_refilter (HildonLiveSearch *livesearch,
     }
 
     for (i = 0; tokens [i] != NULL; i++) {
-        token = hildon_helper_strip_string (tokens[i]);
+        token = hildon_helper_normalize_string (tokens[i]);
         if (token != NULL)
             selector->priv->norm_tokens = g_slist_prepend (selector->priv->norm_tokens,
                                                            token);
