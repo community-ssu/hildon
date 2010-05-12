@@ -1,3 +1,12 @@
+libhildon (2.2.20-1) unstable; urgency=low
+
+  * Fixes: NB#156325 (Hildon-Banner Example - Animation beside the
+    animation banner is not visible when animation button is clicked)
+  * Fixes: NB#165632 (HildonLiveSearch wasting CPU in
+    gtk_tree_model_filter_convert_child_path_to_path)
+
+ -- Claudio Saavedra <csaavedra@igalia.com>  Thu, 13 May 2010 00:10:14 +0300
+
 libhildon (2.2.19-1) unstable; urgency=low
 
   * Fixes: NB#163953 (Move live search code from HildonTouchSelector to HildonLiveSearch)

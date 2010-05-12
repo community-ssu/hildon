@@ -1,3 +1,11 @@
+[ 2.2.20 release ]
+
+  * Fixes: NB#156325 (Hildon-Banner Example - Animation beside the
+    animation banner is not visible when animation button is clicked)
+  * Fixes: NB#165632 (HildonLiveSearch wasting CPU in
+    gtk_tree_model_filter_convert_child_path_to_path)
+  * Asynchronous HildonLiveSearch searching.
+
 [ 2.2.19 release ]
 
   * Fixes: NB#163953 (Move live search code from HildonTouchSelector to HildonLiveSearch)
