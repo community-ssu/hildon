@@ -1,3 +1,17 @@
+libhildon (2.2.21-1) unstable; urgency=low
+
+  * Documentation fixes.
+  * Make the HildonLiveSearch match asynchronous.
+  * Fixes: NB#162288 (Changing the presence continously will lead to
+    multiple GLIB Criticals in syslog)
+  * Fixes: MB#9948 (Contact quick search entering L does not recognize
+    Polish "Ł")
+  * Fixes: NB#165083 (Contact quick search entering L does not
+    recognize Polish "Ł")
+  * Bump shlibs to "libhildon1 (>= 2.2.21)", due to new hildon-helper API.
+
+ -- Claudio Saavedra <csaavedra@igalia.com>  Tue, 01 Jun 2010 17:55:04 +0300
+
 libhildon (2.2.20-1) unstable; urgency=low
 
   * Fixes: NB#156325 (Hildon-Banner Example - Animation beside the

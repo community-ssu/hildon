@@ -16,7 +16,7 @@ include /usr/share/cdbs/1/rules/utils.mk
 DEB_CONFIGURE_SCRIPT_ENV += LDFLAGS="-Wl,-O1 -Wl,--as-needed" PKG_CONFIG_PATH=/usr/lib/pkgconfig:/usr/share/pkgconfig
 DEB_CONFIGURE_EXTRA_FLAGS := $(ENABLE_GTK_DOC) --enable-maintainer-mode
 DEB_COMPRESS_EXCLUDE := .c
-DEB_DH_MAKESHLIBS_ARGS_libhildon1 := -a -V 'libhildon1 (>= 2.2.18)'
+DEB_DH_MAKESHLIBS_ARGS_libhildon1 := -a -V 'libhildon1 (>= 2.2.21)'
 DEB_INSTALL_CHANGELOGS_libhildon1 := --no-act
 
 config.status: $(DEB_SRCDIR)/configure
