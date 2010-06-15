@@ -1,3 +1,9 @@
+[ 2.2.22 release ]
+
+  * Add stock items for Hildon common strings.
+  * Fixes: NB#174382 (Only filtered contacts are picked from contact
+    list)
+
 [ 2.2.21 release ]
 
   * Documentation fixes.
