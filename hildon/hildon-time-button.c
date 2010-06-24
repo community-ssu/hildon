@@ -31,7 +31,6 @@
 #include "hildon-touch-selector.h"
 #include "hildon-picker-button.h"
 #include "hildon-time-button.h"
-#include "hildon-stock.h"
 
 G_DEFINE_TYPE (HildonTimeButton, hildon_time_button, HILDON_TYPE_PICKER_BUTTON)
 
@@ -67,28 +66,12 @@ hildon_time_button_set_property (GObject * object, guint property_id,
 }
 #endif
 
-static GObject *
-hildon_time_button_constructor (GType type,
-                                guint n_construct_params,
-                                GObjectConstructParam *construct_params)
-{
-  GObject *object;
-
-  object = G_OBJECT_CLASS (hildon_time_button_parent_class)->constructor (type,
-                                                                          n_construct_params,
-                                                                          construct_params);
-  gtk_button_set_use_stock (GTK_BUTTON (object), TRUE);
-
-  return object;
-}
-
 static void
 hildon_time_button_class_init (HildonTimeButtonClass * klass)
 {
+#if 0
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
-  object_class->constructor = hildon_time_button_constructor;
-#if 0
   g_type_class_add_private (klass, sizeof (HildonTimeButtonPrivate));
 
   object_class->get_property = hildon_time_button_get_property;
@@ -139,7 +122,7 @@ hildon_time_button_new_step (HildonSizeType          size,
                              guint                   minutes_step)
 {
   return g_object_new (HILDON_TYPE_TIME_BUTTON,
-                       "title", HILDON_STOCK_TIME,
+                       "title", _("wdgt_ti_time"),
                        "arrangement", arrangement,
                        "size", size,
                        "touch-selector", hildon_time_selector_new_step (minutes_step),
