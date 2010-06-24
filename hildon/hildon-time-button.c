@@ -32,6 +32,12 @@
 #include "hildon-picker-button.h"
 #include "hildon-time-button.h"
 
+#define                                         _(String) \
+                                                dgettext("hildon-libs", String)
+
+#define                                         c_(String) \
+                                                dgettext("hildon-common-strings", String)
+
 G_DEFINE_TYPE (HildonTimeButton, hildon_time_button, HILDON_TYPE_PICKER_BUTTON)
 
 #if 0
