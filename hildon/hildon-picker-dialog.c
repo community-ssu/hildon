@@ -51,7 +51,8 @@
 #include "hildon-touch-selector.h"
 #include "hildon-touch-selector-entry.h"
 #include "hildon-picker-dialog.h"
-#include "hildon-stock.h"
+
+#define _(String)  dgettext("hildon-libs", String)
 
 #define HILDON_PICKER_DIALOG_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), HILDON_TYPE_PICKER_DIALOG, HildonPickerDialogPrivate))
 
@@ -85,7 +86,7 @@ enum
   LAST_SIGNAL
 };
 
-#define DEFAULT_DONE_BUTTON_TEXT        HILDON_STOCK_DONE
+#define DEFAULT_DONE_BUTTON_TEXT        _("wdgt_bd_done")
 
 static void
 hildon_picker_dialog_set_property               (GObject * object,

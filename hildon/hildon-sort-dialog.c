@@ -103,7 +103,6 @@
 #include                                        "hildon-sort-dialog.h"
 #include                                        "hildon-caption.h"
 #include                                        "hildon-sort-dialog-private.h"
-#include                                        "hildon-stock.h"
 
 #define                                         _(String) \
                                                 dgettext("hildon-libs", String)
@@ -311,7 +310,8 @@ hildon_sort_dialog_init                         (HildonSortDialog * dialog)
 
     /* Create the OK/CANCEL buttons */
     (void) gtk_dialog_add_button (GTK_DIALOG(dialog),
-            HILDON_STOCK_SORT, GTK_RESPONSE_OK);
+            _("wdgt_bd_sort"),
+            GTK_RESPONSE_OK);
     /* FIXME: Hardcoded sizes are bad */
     gtk_window_resize (GTK_WINDOW (dialog), 370, 100);
     gtk_widget_show_all (GTK_DIALOG (dialog)->vbox);

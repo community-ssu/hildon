@@ -55,7 +55,6 @@
 #include                                        "hildon-wizard-dialog.h"
 #include                                        "hildon-defines.h"
 #include                                        "hildon-wizard-dialog-private.h"
-#include                                        "hildon-stock.h"
 
 #define                                         _(String) dgettext("hildon-libs", String)
 
@@ -275,9 +274,9 @@ hildon_wizard_dialog_init                       (HildonWizardDialog *wizard_dial
     priv->forward_data_destroy = NULL;
 
     /* Add response buttons: finish, previous, next */
-    gtk_dialog_add_button (dialog, HILDON_STOCK_FINISH, HILDON_WIZARD_DIALOG_FINISH);
-    gtk_dialog_add_button (dialog, HILDON_STOCK_PREVIOUS, HILDON_WIZARD_DIALOG_PREVIOUS);
-    gtk_dialog_add_button (dialog, HILDON_STOCK_NEXT, HILDON_WIZARD_DIALOG_NEXT);
+    gtk_dialog_add_button (dialog, _("wdgt_bd_finish"), HILDON_WIZARD_DIALOG_FINISH);
+    gtk_dialog_add_button (dialog, _("wdgt_bd_previous"), HILDON_WIZARD_DIALOG_PREVIOUS);
+    gtk_dialog_add_button (dialog, _("wdgt_bd_next"), HILDON_WIZARD_DIALOG_NEXT);
 
     /* Set initial button states: previous and finish buttons are disabled */
     make_buttons_sensitive (wizard_dialog, FALSE, FALSE, TRUE);
