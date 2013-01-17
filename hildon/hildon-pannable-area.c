@@ -377,7 +377,7 @@ hildon_pannable_area_class_init (HildonPannableAreaClass * klass)
 						      "hscrollbar policy",
 						      "Visual policy of the horizontal scrollbar.",
 						      GTK_TYPE_POLICY_TYPE,
-						      GTK_POLICY_AUTOMATIC,
+                              GTK_POLICY_NEVER,
 						      G_PARAM_READWRITE |
 						      G_PARAM_CONSTRUCT));
 
@@ -921,6 +921,27 @@ hildon_pannable_area_set_property (GObject * object,
     break;
   case PROP_MOVEMENT_MODE:
     priv->mov_mode = g_value_get_flags (value);
+
+    if (priv->mov_mode == HILDON_MOVEMENT_MODE_VERT) {
+      /* Do not show horizontal scrollbar. */
+      priv->vscrollbar_policy = GTK_POLICY_AUTOMATIC;
+      priv->hscrollbar_policy = GTK_POLICY_NEVER;
+
+      gtk_widget_queue_resize (GTK_WIDGET (object));
+    } else if (priv->mov_mode == HILDON_MOVEMENT_MODE_HORIZ) {
+      /* Do not show vertical scrollbar. */
+        priv->vscrollbar_policy = GTK_POLICY_NEVER;
+        priv->hscrollbar_policy = GTK_POLICY_AUTOMATIC;
+
+        gtk_widget_queue_resize (GTK_WIDGET (object));
+    }
+    else {
+      /* Show both scrollbars. */
+        priv->vscrollbar_policy = GTK_POLICY_AUTOMATIC;
+        priv->hscrollbar_policy = GTK_POLICY_AUTOMATIC;
+
+        gtk_widget_queue_resize (GTK_WIDGET (object));
+    }
     break;
   case PROP_VELOCITY_MIN:
     priv->vmin = g_value_get_double (value);
