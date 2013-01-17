@@ -1,4 +1,10 @@
-libhildon (2.2.24-1) unstable; urgency=low
+libhildon (2.2.25-1) unstable; urgency=low
+
+  * PannableArea: always hide horizontal scrollbar if HILDON_MOVEMENT_MODE_VERT is set.
+
+ -- Tomasz Pieniążek <t.pieniazek@gazeta.pl>  Thu, 17 Jan 2013 19:20:00 +0200
+
+llibhildon (2.2.24-1) unstable; urgency=low
 
   * Fixes: NB#155362 (Cannot change language in Contacts from keyboard)
 
