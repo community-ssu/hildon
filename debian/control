@@ -14,7 +14,7 @@ Description: Hildon libraries development files
 Package: libhildon1
 Section: libs
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, osso-sounds-ui, hildon-libs-l10n-mr | hildon-libs-l10n-mr0, osso-system-lock-l10n-mr | osso-system-lock-l10n-mr0, hildon-fm-l10n-mr | hildon-fm-l10n-mr0
+Depends: ${shlibs:Depends}, ${misc:Depends}, osso-sounds-ui, hildon-libs-l10n-mr | hildon-libs-l10n-mr0, osso-system-lock-l10n-mr | osso-system-lock-l10n-mr0, hildon-fm-l10n-mr | hildon-fm-l10n-mr0, kernel-feature-errata-430973-workaround[armel]
 Description: Hildon libraries
 
 Package: libhildon1-dbg

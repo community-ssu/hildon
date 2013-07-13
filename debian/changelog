@@ -1,3 +1,9 @@
+libhildon (2.2.25-1+thumb0) unstable; urgency=low
+
+  * Thumb2 compiled
+
+ -- Ivaylo Dimitrov <freemangordon@abv.bg>  Sat, 13 Jul 2013 11:37:16 +0300
+
 libhildon (2.2.25-1) unstable; urgency=low
 
   * PannableArea: always hide horizontal scrollbar if HILDON_MOVEMENT_MODE_VERT is set.
