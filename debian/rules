@@ -13,6 +13,11 @@ include /usr/share/cdbs/1/rules/debhelper.mk
 include /usr/share/cdbs/1/class/autotools.mk
 include /usr/share/cdbs/1/rules/utils.mk
 
+ifneq (,$(findstring thumb,$(DEB_BUILD_OPTIONS)))
+        CFLAGS += -mthumb
+        CXXFLAGS += -mthumb
+endif
+
 DEB_CONFIGURE_SCRIPT_ENV += LDFLAGS="-Wl,-O1 -Wl,--as-needed" PKG_CONFIG_PATH=/usr/lib/pkgconfig:/usr/share/pkgconfig
 DEB_CONFIGURE_EXTRA_FLAGS := $(ENABLE_GTK_DOC) --enable-maintainer-mode
 DEB_COMPRESS_EXCLUDE := .c
